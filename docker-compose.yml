@@ -1,0 +1,31 @@
+# NAME: docker-compose.yml
+# AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
+# DATE: 04/03/2021
+# DESC: Defines Docker services for Bug
+
+version: '3.5'
+
+volumes:
+  bug:
+
+networks:
+  bug:
+    name: bug
+    driver: bridge
+
+services:
+  bug-core:
+    build: "./src"
+    user: "node"
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - BUG_CORE_PORT=3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./src:/home/node/bug-core
+    ports:
+      - 3000:3000
+    hostname: bug-core
+    networks:
+      - bug
