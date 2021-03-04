@@ -24,7 +24,6 @@ pipeline {
                 dir('src') {
                     sh 'ls'
                     sh 'npm install' 
-                    sh 'npm run react-build'
                 }
                 slackSend (color: '#30fc03', message: "*Build:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
