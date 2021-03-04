@@ -7,16 +7,16 @@
     "version": "0.0.1",
     "configurations": [
         {
-            "command": "npm run bug-start",
-            "name": "Start: Bug Core",
+            "command": "npm run dev",
+            "name": "dev: bug-core",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
             "envFile": "${workspaceRoot}/.env",
         },
         {
-            "command": "npm run bug-dev",
-            "name": "Dev: Bug Core",
+            "command": "npm run prod",
+            "name": "prod: big-core",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
