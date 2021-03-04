@@ -15,7 +15,7 @@ fs = require('fs');
 
 // Define the Express apilication
 var bug = express();
-var port = process.env.BUG_CORE_PORT || 3000;
+var port = process.env.BUG_CORE_PORT || 3005;
 
 bug.set('json spaces', 2);
 bug.use(cors());
@@ -32,9 +32,29 @@ const bodyParser = require("body-parser");
 bug.use(bodyParser.urlencoded({ extended: true }));
 bug.use(bodyParser.json());
 
-
 var Docker = require('dockerode');
 var docker = new Docker({socketPath: '/var/run/docker.sock'});
+
+function getDirectories(path) {
+  return fs.readdirSync(path).filter(function (file) {
+    return fs.statSync(path+'/'+file).isDirectory();
+  });
+}
+
+bug.get('/', (req, res) => {
+  res.send('BUG Hello World 12')
+})
+
+bug.get('/api/containers', (req, res) => {
+  docker.listContainers({all: true}, function(err, containers) {
+    res.send(containers);
+    });
+})
+
+bug.get('/api/modules', (req, res) => {
+    res.send(getDirectories('./modules'));
+})
+
 
 bug.listen(port, () => {
     console.log('INFO: Listening on port '+port.toString());

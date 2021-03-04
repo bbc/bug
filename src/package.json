@@ -8,7 +8,7 @@
   },
   "scripts": {
     "bug-start": "node bug-core",
-    "bug-dev": "nodemon bug-core",
+    "bug-dev": "nodemon --legacy-watch bug-core",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
