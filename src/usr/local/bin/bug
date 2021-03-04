@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# export whoami=`/usr/bin/whoami`;
+# if [ "$whoami" != "root" ]
+# then
+#     echo "Must be root to continue. Try 'sudo bug <cmd>'.";
+#     exit 0;
+# fi
+
+# case "$1" in
+#     enable_autologin)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:autologin 1
+#         ;;
+
+#     disable_autologin)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:autologin 0
+#         ;;
+
+#     runworker)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:runworker $2
+#         ;;
+
+#     startworker)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:startworker $2
+#         ;;
+
+#     stopworker)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:stopworker $2
+#         ;;
+
+#     stopworkers)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:stopworkers
+#         ;;
+
+#     startworkers)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:startworkers
+#         ;;
+
+#     runworkers)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:runworkers
+#         ;;
+
+#     addpanel)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:addpanel $2 $3
+#         ;;
+
+#     setpaneloption)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:setpaneloption $2 $3 $4
+#         ;;
+
+#     checkupdate)
+#         /usr/bin/apt update
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:checkupdate
+#         ;;
+
+#     upgrade)
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:stopworkers
+#         /usr/bin/apt update
+#         /usr/bin/apt -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install bbcnews-bug
+#         /usr/bin/php /usr/share/bbcnews-bug/artisan bug:startworkers
+#         ;;
+        
+#     *)
+#         echo "Usage: sudo bug "
+#         echo "                enable_autologin"
+#         echo "                disable_autologin"
+#         echo "                runworker <panelid>"
+#         echo "                startworker <panelid>"
+#         echo "                stopworker <panelid>"
+#         echo "                stopworkers"
+#         echo "                startworkers"
+#         echo "                runworkers"
+#         echo "                addpanel <module> <title>"
+#         echo "                setpaneloption <panelid> <name> <value>"
+#         echo "                checkupdate"
+#         echo "                upgrade"
+#         ;;
+# esac

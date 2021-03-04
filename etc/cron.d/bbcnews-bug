@@ -1,0 +1,13 @@
+# cron jobs for BBC News BUG application
+
+# every hour, delete all DEBUG logs older than a day
+##########################################
+#0 * * * *      root    find /var/log/bbc -type f -name '*DEBUG*' -daystart -mtime 1 -exec rm {} \;
+
+# every hour, delete all INFO logs older than 2 days
+##########################################
+#0 * * * *      root    find /var/log/bbc -type f -name '*INFO*' -daystart -mtime 2 -exec rm {} \;
+
+# every hour, check if an update is available
+##########################################
+#25 * * * *      root    /usr/local/bin/bug checkupdate
