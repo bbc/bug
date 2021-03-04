@@ -5,4 +5,4 @@ WORKDIR /home/node/bug-core
 COPY ./src .
 RUN npm install package.json
 
-CMD [ "npm", "run", "bug-dev" ]
+CMD [ "npm", "run", "dev" ]
