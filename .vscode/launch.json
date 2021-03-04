@@ -1,0 +1,26 @@
+{
+    //NAME: launch.js
+    //AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
+    //DATE: 21/02/2021
+    //DESC: VSCode Configurations for Development and Testing
+
+    "version": "0.0.1",
+    "configurations": [
+        {
+            "command": "npm run bug-start",
+            "name": "Start: Bug Core",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/src",
+            "envFile": "${workspaceRoot}/.env",
+        },
+        {
+            "command": "npm run bug-dev",
+            "name": "Dev: Bug Core",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/src",
+            "envFile": "${workspaceRoot}/.env",
+        },
+    ]
+}
