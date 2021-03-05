@@ -6,6 +6,15 @@ This is the all new version 3.
 
 It's definitely in pre-pre-pre-alpha, so please don't use it yet...
 
+## Getting Started
+
+For development on a yourlocal machine
+
+* Clone the repository
+* Change directories to the `bbcnews-bug-core/src`
+* Install dependenices with `npm install`
+* Use `npm run dev` to run on your local machine.
+* If you want to run in a docker container instead, use the steps below, for the moment this method also runs a dev version.
 
 ## Spinning up BUG Core
 
@@ -26,22 +35,3 @@ Where `bbcnews-bug-core_bug-core_1` is the name of the container that can be see
 To stop the main bug-core service use;
 
 `docker-compose down`
-
-## Spinning up BUG Core without Compose
-
-Build the BUG Core container with the following commandl
-
-`docker build -t bug-core ./src`
-
-* `-t` Tags the image created as `bug-core`
-* `./src` Looks for a `Dockerfile` to build from in the `./src` directory
-
-Next you can run the container with this command;
-
-`docker run -d -p 3000:3000 -v src:/home/node/bug-core bug-core`
-
-* `-d` - Detaches from the terminal
-* `-v src:/home/node/bug-core` Live mounts the src folder in the container when running for development.
-* `-p 3000:3000` Maps port 3000 of the containe to port 3000 of the host machine
-
-Verify your container is running using the `docker ps` command.
