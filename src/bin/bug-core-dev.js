@@ -6,7 +6,7 @@ const http = require('http');
 var server = http.createServer(bugApi);
 server.on('error', onError);
 server.on('listening', onListening);
-server.listen(process.env.PORT_DEV);
+server.listen(process.env.PORT_DEV || '3101');
 
 function onError(error) {
     if (error.syscall !== 'listen') {

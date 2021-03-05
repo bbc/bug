@@ -12,7 +12,8 @@ const customLogFormat = winston.format.combine(
     )
 );
 
-const logFolder = process.env.LOG_FOLDER;
+const logFolder = process.env.LOG_FOLDER || 'logs';
+const logName = process.env.LOG_NAME || 'bug-core';
 
 const logger = winston.createLogger(
     {
@@ -22,7 +23,7 @@ const logger = winston.createLogger(
             new winston.transports.DailyRotateFile({
                 level: 'warning',
                 format: customLogFormat,
-                filename: path.join(logFolder, process.env.LOG_NAME + '-WARNING-%DATE%.log'),
+                filename: path.join(logFolder, logName + '-WARNING-%DATE%.log'),
                 datePattern: 'YYYY-MM-DD',
                 zippedArchive: true,
                 maxSize: '200m',
@@ -31,7 +32,7 @@ const logger = winston.createLogger(
             new winston.transports.DailyRotateFile({
                 level: 'info',
                 format: customLogFormat,
-                filename: path.join(logFolder, process.env.LOG_NAME + '-INFO-%DATE%.log'),
+                filename: path.join(logFolder, logName + '-INFO-%DATE%.log'),
                 datePattern: 'YYYY-MM-DD',
                 zippedArchive: true,
                 maxSize: '200m',
@@ -40,7 +41,7 @@ const logger = winston.createLogger(
             new winston.transports.DailyRotateFile({
                 level: 'debug',
                 format: customLogFormat,
-                filename: path.join(logFolder, process.env.LOG_NAME + '-DEBUG-%DATE%.log'),
+                filename: path.join(logFolder, logName + '-DEBUG-%DATE%.log'),
                 datePattern: 'YYYY-MM-DD',
                 zippedArchive: true,
                 maxSize: '200m',
@@ -50,7 +51,8 @@ const logger = winston.createLogger(
     }
 );
 
-var consoleLogLevel = process.env.CONSOLE_LOGLEVEL.toLowerCase();
+var consoleLogLevel = process.env.CONSOLE_LOGLEVEL || 'info';
+consoleLogLevel = consoleLogLevel.toLowerCase();
 
 if (process.env.NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({
