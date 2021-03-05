@@ -1,0 +1,9 @@
+{
+    "address": "172.26.182.217",
+    "username": "cisco",
+    "password": "Facs165%",
+    "community": "facsSNMP",
+    "protected_interfaces": [
+        "gigabitethernet27"
+    ]
+}

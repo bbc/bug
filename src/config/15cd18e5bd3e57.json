@@ -1,0 +1,15 @@
+{
+    "address": "172.26.108.126",
+    "username": "bug",
+    "password": "sfsafawffasfasr33r",
+    "protected_interfaces": [
+        "ether",
+        "sfp"
+    ],
+    "excluded_interfaces": [
+        "bridge",
+        "vlan",
+        "Loopback",
+        "eoip"
+    ]
+}
