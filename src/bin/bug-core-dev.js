@@ -3,10 +3,13 @@
 const bugApi = require('./bug-core-api');
 const http = require('http');
 
+let port = process.env.PORT_DEV || '3101';
+bugApi.set('port', port);
+
 var server = http.createServer(bugApi);
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-server.listen(process.env.PORT_DEV || '3101');
 
 function onError(error) {
     if (error.syscall !== 'listen') {

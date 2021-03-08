@@ -19,12 +19,12 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
-      - BUG_CORE_PORT=3000
+      - BUG_CORE_PORT=3100
     volumes:
       - ./src:/home/node/bug-core
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - 3000:3000
+      - 3100:3100
     hostname: bug-core
     networks:
       - bug

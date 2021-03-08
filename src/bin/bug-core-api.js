@@ -12,6 +12,8 @@ require('dotenv').config();
 
 // load routes
 const systemRouter = require('@routes/system');
+const moduleRouter = require('@routes/module');
+const instanceRouter = require('@routes/instance');
 
 var bugApi = express();
 
@@ -26,6 +28,8 @@ bugApi.use(bodyParser.json())
 bugApi.use(express.static(path.join(__dirname, 'public')));
 
 bugApi.use('/api/system', systemRouter);
+bugApi.use('/api/module', moduleRouter);
+bugApi.use('/api/instance', instanceRouter);
 
 // catch 404 and forward to error handler
 // bugApi.use(function (req, res, next) {
