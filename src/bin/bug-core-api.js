@@ -14,6 +14,7 @@ require('dotenv').config();
 const systemRouter = require('@routes/system');
 const moduleRouter = require('@routes/module');
 const instanceRouter = require('@routes/instance');
+const bugRouter = require('@routes/bug');
 
 var bugApi = express();
 
@@ -27,6 +28,7 @@ bugApi.use(cookieParser());
 bugApi.use(bodyParser.json())
 bugApi.use(express.static(path.join(__dirname, 'public')));
 
+bugApi.use('/api/bug', bugRouter);
 bugApi.use('/api/system', systemRouter);
 bugApi.use('/api/module', moduleRouter);
 bugApi.use('/api/instance', instanceRouter);
