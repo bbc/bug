@@ -5,7 +5,11 @@ const modules = require('@models/modules');
 
 module.exports = async () => {
     try {
-        return await modules.list();
+        let list = await modules.list();
+        list.sort(function (a, b) {
+            return (a.longname < b.longname) ? -1 : 1;
+        });
+        return list;
     } catch (error) {
         logger.warn(`module-list: ${error.trace || error || error.message}`);
     }
