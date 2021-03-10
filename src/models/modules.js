@@ -7,7 +7,7 @@ const readdir = util.promisify(fs.readdir);
 const logger = require('@utils/logger');
 const readJson = require('@utils/read-json');
 
-exports.list = async function() {
+exports.listInfo = async function() {
 
     const modulesFolder = "modules";
 
@@ -29,6 +29,7 @@ exports.list = async function() {
                     version: packageFile['version'] ?? '',
                     description: packageFile['description'] ?? '',
                     author: packageFile['author'] ?? '',
+                    icon: packageFile['icon'] ?? '',
                     path: path.join(modulesFolder, files[i])
                 });
             }

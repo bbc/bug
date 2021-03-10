@@ -6,7 +6,7 @@
             "id": "15cac498758718",
             "order": 5,
             "title": "Switch - MJI1 GH/PC2",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": null,
             "notes": null,
             "enabled": true
@@ -15,7 +15,7 @@
             "id": "15cb43c55ee927",
             "order": 1,
             "title": "DHCP - PW Core",
-            "module": "MikrotikDHCP",
+            "module": "mikrotik-dhcp",
             "description": null,
             "notes": null,
             "enabled": false
@@ -24,7 +24,7 @@
             "id": "15cb43f3eac575",
             "order": 0,
             "title": "Matrix - PW Core",
-            "module": "BmdVideohub",
+            "module": "bmd-videohub",
             "description": null,
             "notes": null,
             "enabled": false
@@ -33,7 +33,7 @@
             "id": "15cb442111d11c",
             "order": 6,
             "title": "Switch - MJI2 JS",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": null,
             "notes": null,
             "enabled": false
@@ -42,7 +42,7 @@
             "id": "15ccb5a3855144",
             "order": 9,
             "title": "DHCP - PW Inject",
-            "module": "MikrotikDHCP",
+            "module": "mikrotik-dhcp",
             "description": null,
             "notes": null,
             "enabled": false
@@ -51,7 +51,7 @@
             "id": "15cd123244360e",
             "order": 4,
             "title": "Switch - IT Bay",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": null,
             "notes": null,
             "enabled": false
@@ -60,7 +60,7 @@
             "id": "15cd15a62758c9",
             "order": 3,
             "title": "Switch - Maint Bay",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": null,
             "notes": null,
             "enabled": false
@@ -69,7 +69,7 @@
             "id": "15cd176c266dd4",
             "order": 7,
             "title": "Switch - Atos Room",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": null,
             "notes": null,
             "enabled": false
@@ -78,7 +78,7 @@
             "id": "15cd18e5bd3e57",
             "order": 2,
             "title": "Router - PW Core",
-            "module": "MikrotikInterfaces",
+            "module": "mikrotik-interfaces",
             "description": null,
             "notes": null,
             "enabled": false
@@ -87,7 +87,7 @@
             "id": "15cd18f7540a06",
             "order": 13,
             "title": "Test Comrex",
-            "module": "Comrex",
+            "module": "comrex",
             "description": "",
             "notes": "",
             "enabled": false
@@ -96,7 +96,7 @@
             "id": "15cd2caafcc618",
             "order": 11,
             "title": "Matrix - PW Inject",
-            "module": "BmdVideohub",
+            "module": "bmd-videohub",
             "description": null,
             "notes": null,
             "enabled": false
@@ -105,7 +105,7 @@
             "id": "15cd2fe1c16c33",
             "order": 10,
             "title": "Switch - PW Inject",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": null,
             "notes": null,
             "enabled": false
@@ -114,7 +114,7 @@
             "id": "15cfe2c5f7654c",
             "order": 8,
             "title": "Switch - Unit 2",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": "",
             "notes": "",
             "enabled": false
@@ -123,7 +123,7 @@
             "id": "15d8de88b0fb8a",
             "order": 12,
             "title": "cluster switch -temp",
-            "module": "CiscoSG",
+            "module": "cisco-sg",
             "description": "",
             "notes": "",
             "enabled": false
@@ -132,7 +132,7 @@
             "id": "15dc15bf66a717",
             "order": 14,
             "title": "bridgeit",
-            "module": "TielineBridgeit",
+            "module": "tieline-bridgeit",
             "description": "",
             "notes": "",
             "enabled": false
@@ -141,7 +141,7 @@
             "id": "15dc27faceb42c",
             "order": 15,
             "title": "merlkn",
-            "module": "TielineMerlin",
+            "module": "tieline-merlin",
             "description": "",
             "notes": "",
             "enabled": false

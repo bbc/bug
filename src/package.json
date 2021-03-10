@@ -8,7 +8,7 @@
   },
   "scripts": {
     "prod": "node bin/bug-core-prod",
-    "dev": "nodemon bin/bug-core-dev",
+    "dev": "concurrently \"nodemon ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/bbc/bbcnews-bug-core#readme",
   "dependencies": {
+    "concurrently": "^6.0.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dockerode": "^3.2.1",

@@ -2,6 +2,7 @@
   "name": "bmd-videohub",
   "longname": "Blackmagic Videohub",
   "version": "1.0.0",
+  "icon": "BlurOn",
   "description": "",
   "main": "index.js",
   "scripts": {

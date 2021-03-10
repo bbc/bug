@@ -1,0 +1,145 @@
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  src: url("BBCReithSans_W_Rg.woff2") format("woff2"), url("BBCReithSans_W_Rg.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-style: italic;
+  src: url("BBCReithSans_W_It.woff2") format("woff2"), url("BBCReithSans_W_It.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-weight: bold;
+  src: url("BBCReithSans_W_Bd.woff2") format("woff2"), url("BBCReithSans_W_Bd.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-style: italic;
+  font-weight: bold;
+  src: url("BBCReithSans_W_BdIt.woff2") format("woff2"), url("BBCReithSans_W_BdIt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-weight: 300;
+  src: url("BBCReithSans_W_Lt.woff2") format("woff2"), url("BBCReithSans_W_Lt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-style: italic;
+  font-weight: 300;
+  src: url("BBCReithSans_W_LtIt.woff2") format("woff2"), url("BBCReithSans_W_LtIt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-weight: 500;
+  src: url("BBCReithSans_W_Md.woff2") format("woff2"), url("BBCReithSans_W_Md.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-style: italic;
+  font-weight: 500;
+  src: url("BBCReithSans_W_MdIt.woff2") format("woff2"), url("BBCReithSans_W_MdIt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-weight: 800;
+  src: url("BBCReithSans_W_ExBd.woff2") format("woff2"), url("BBCReithSans_W_ExBd.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSans";
+  font-style: italic;
+  font-weight: 800;
+  src: url("BBCReithSans_W_ExBdIt.woff2") format("woff2"), url("BBCReithSans_W_ExBdIt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  src: url("BBCReithSerif_W_Rg.woff2") format("woff2"), url("BBCReithSerif_W_Rg.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-style: italic;
+  src: url("BBCReithSerif_W_It.woff2") format("woff2"), url("BBCReithSerif_W_It.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-weight: bold;
+  src: url("BBCReithSerif_W_Bd.woff2") format("woff2"), url("BBCReithSerif_W_Bd.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-style: italic;
+  font-weight: bold;
+  src: url("BBCReithSerif_W_BdIt.woff2") format("woff2"), url("BBCReithSerif_W_BdIt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-weight: 300;
+  src: url("BBCReithSerif_W_Lt.woff2") format("woff2"), url("BBCReithSerif_W_Lt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-style: italic;
+  font-weight: 300;
+  src: url("BBCReithSerif_W_LtIt.woff2") format("woff2"), url("BBCReithSerif_W_LtIt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-weight: 500;
+  src: url("BBCReithSerif_W_Md.woff2") format("woff2"), url("BBCReithSerif_W_Md.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-style: italic;
+  font-weight: 500;
+  src: url("BBCReithSerif_W_MdIt.woff2") format("woff2"), url("BBCReithSerif_W_MdIt.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-weight: 800;
+  src: url("BBCReithSerif_W_ExBd.woff2") format("woff2"), url("BBCReithSerif_W_ExBd.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "ReithSerif";
+  font-style: italic;
+  font-weight: 800;
+  src: url("BBCReithSerif_W_ExBdIt.woff2") format("woff2"), url("BBCReithSerif_W_ExBdIt.woff") format("woff");
+}
