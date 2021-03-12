@@ -36,6 +36,7 @@ export default function Page() {
                     direction="row"
                     justify="flex-start"
                     alignItems="flex-start"
+                    nowrap
                     >
                     <Grid item>
                         <Menu />

@@ -10,6 +10,7 @@ import { faBug } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import DynamicIcon from '../utils/DynamicIcon';
+import Loading from './Loading';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,45 +25,64 @@ const useStyles = makeStyles((theme) => ({
         height: '10rem',
         padding: '0.8rem',
         backgroundColor: '#181818'
+    },
+    menuItemIcon: {
+        minWidth: '2.5rem',
+        opacity: 0.5
     }
 }));
 
-function mapStateToProps(state) {
-    return { instances: state.instances };
-};
+const mapStateToProps = reduxState => ({
+    instances: reduxState.instances
+});
 
-function ListItemLink(props) {
-    return <ListItem button component="a" {...props} />;
-}
-
-function renderItem(item) {
-    if(!item.enabled) {
-        return null;
-    }
-    if(!item.moduleInfo) {
-        return null;
-    }
-    return (
-        <ListItem button key={item.id}>
-            <ListItemIcon>
-                <DynamicIcon iconName={item.moduleInfo.icon} />
-            </ListItemIcon>
-            <ListItemText primary={item.title} />
-        </ListItem>
-    )
-}
-
-function Menu(props) {
-    const instanceList = props.instances.contents ?? [];
+const Menu = props => {
     const classes = useStyles();
+
+    console.log(props);
+
+    
+    function ListItemLink(props) {
+        return <ListItem button component="a" {...props} />;
+    }
+    
+    const renderMenuItem = item => {
+        if(!item.enabled) {
+            return null;
+        }
+        if(!item.moduleInfo) {
+            return null;
+        }
+        return (
+            <ListItem button key={item.id} className={classes.menuItem}>
+                <ListItemIcon className={classes.menuItemIcon}>
+                    <DynamicIcon iconName={item.moduleInfo.icon} />
+                </ListItemIcon>
+                <ListItemText primary={item.title} />
+            </ListItem>
+        )
+    }
+    
+    const renderMenuItems = props => {
+        const instanceList = props.instances.contents ?? [];
+        if(props.instances.status === 'loading') {
+            return (
+                <Loading />
+            )
+        }
+        return (
+            <List component="nav" aria-label="list of enabled modules">
+                {instanceList.map((instance) => renderMenuItem(instance))}
+            </List>
+        )
+    }
+    
     return (
         <div className={classes.root}>
             <Link to="/">
                 <FontAwesomeIcon style={{ width: '100%'}} icon={faBug} className={classes.bugLogo}/>
             </Link>
-            <List component="nav" aria-label="list of enabled modules">
-                {instanceList.map((instance) => renderItem(instance))}
-            </List>
+            {renderMenuItems(props)}
             <Divider />
             <List component="nav" aria-label="secondary mailbox folders">
                 <ListItem button>
