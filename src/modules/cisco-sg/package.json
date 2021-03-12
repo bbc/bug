@@ -1,9 +1,9 @@
 {
-    "name": "mikrotik-interfaces",
-    "longname": "Mikrotik Interfaces",
+    "name": "cisco-sg",
+    "longname": "Cisco SG Switches",
     "version": "1.0.0",
-    "description": "Monitoring and control of mikrotik interfaces",
-    "icon": "SettingsInputComponent",
+    "description": "Monitoring and control of Cisco SG-series switches",
+    "icon": "SettingsEthernet",
     "main": "index.js",
     "scripts": {
       "start": "npm index",

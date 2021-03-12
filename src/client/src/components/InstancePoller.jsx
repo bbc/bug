@@ -17,7 +17,6 @@ async function fetch(props) {
     try {
         const response = await axios.get('/api/instance/config/');
         props.update(response.data);
-        console.log(response);
     } catch (error) {
         console.error(error);
     }

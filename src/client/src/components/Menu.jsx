@@ -5,12 +5,11 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
-import InboxIcon from "@material-ui/icons/Inbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBug } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import DynamicIcon from '../utils/DynamicIcon';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,27 +35,33 @@ function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
 }
 
+function renderItem(item) {
+    if(!item.enabled) {
+        return null;
+    }
+    if(!item.moduleInfo) {
+        return null;
+    }
+    return (
+        <ListItem button key={item.id}>
+            <ListItemIcon>
+                <DynamicIcon iconName={item.moduleInfo.icon} />
+            </ListItemIcon>
+            <ListItemText primary={item.title} />
+        </ListItem>
+    )
+}
+
 function Menu(props) {
+    const instanceList = props.instances.contents ?? [];
     const classes = useStyles();
-    console.log(props);
     return (
         <div className={classes.root}>
             <Link to="/">
                 <FontAwesomeIcon style={{ width: '100%'}} icon={faBug} className={classes.bugLogo}/>
             </Link>
-            <List component="nav" aria-label="main mailbox folders">
-                <ListItem button>
-                    <ListItemIcon>
-                        <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="PW Matrix" />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <DraftsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Comrex 1" />
-                </ListItem>
+            <List component="nav" aria-label="list of enabled modules">
+                {instanceList.map((instance) => renderItem(instance))}
             </List>
             <Divider />
             <List component="nav" aria-label="secondary mailbox folders">

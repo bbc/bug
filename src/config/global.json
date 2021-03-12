@@ -27,7 +27,7 @@
             "module": "bmd-videohub",
             "description": null,
             "notes": null,
-            "enabled": false
+            "enabled": true
         },
         {
             "id": "15cb442111d11c",
@@ -36,7 +36,7 @@
             "module": "cisco-sg",
             "description": null,
             "notes": null,
-            "enabled": false
+            "enabled": true
         },
         {
             "id": "15ccb5a3855144",
@@ -54,7 +54,7 @@
             "module": "cisco-sg",
             "description": null,
             "notes": null,
-            "enabled": false
+            "enabled": true
         },
         {
             "id": "15cd15a62758c9",
@@ -63,7 +63,7 @@
             "module": "cisco-sg",
             "description": null,
             "notes": null,
-            "enabled": false
+            "enabled": true
         },
         {
             "id": "15cd176c266dd4",
@@ -72,7 +72,7 @@
             "module": "cisco-sg",
             "description": null,
             "notes": null,
-            "enabled": false
+            "enabled": true
         },
         {
             "id": "15cd18e5bd3e57",
@@ -81,7 +81,7 @@
             "module": "mikrotik-interfaces",
             "description": null,
             "notes": null,
-            "enabled": false
+            "enabled": true
         },
         {
             "id": "15cd18f7540a06",
