@@ -10,6 +10,7 @@ import DraftsIcon from "@material-ui/icons/Drafts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBug } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,13 +28,17 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+function mapStateToProps(state) {
+    return { instances: state.instances };
+};
+
 function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
 }
 
-export default function Menu() {
+function Menu(props) {
     const classes = useStyles();
-
+    console.log(props);
     return (
         <div className={classes.root}>
             <Link to="/">
@@ -66,3 +71,4 @@ export default function Menu() {
     );
 }
 
+export default connect(mapStateToProps)(Menu);

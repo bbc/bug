@@ -2,6 +2,7 @@ import React from "react";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../theme';
 import Page from './Page';
+import InstancePoller from './InstancePoller';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -24,7 +25,9 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
+            <InstancePoller>
             <Page></Page>
+            </InstancePoller>
         </ThemeProvider>
     );
 }

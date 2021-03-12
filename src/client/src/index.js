@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import reduxStore from "./redux-store";
 
-// window.store = reduxStore;
+window.store = reduxStore;
 // window.addArticle = addArticle;
 
 ReactDOM.render(

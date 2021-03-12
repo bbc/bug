@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import {
     addArticle,
+    startPoll
 } from '../redux/instancesSlice';
   
 function mapStateToProps(state) {
@@ -19,7 +20,7 @@ function test(props) {
     props.addArticle({ text: "YEH BABY", id: Date.now()});
 }
 
-function ConnectedList (props) {
+function ReduxList (props) {
     let instances = props.instances;
     console.log(instances);
     return (
@@ -34,6 +35,4 @@ function ConnectedList (props) {
     )
 }
 
-const ReduxList = connect(mapStateToProps, mapDispatchToProps)(ConnectedList);
-
-export default ReduxList;
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxList);
