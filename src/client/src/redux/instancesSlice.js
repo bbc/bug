@@ -1,11 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 // const initialState = { value: 0 }
-const initialState = [
-    { id: 0, text: 'Learn React', completed: true },
-    { id: 1, text: 'Learn Redux', completed: false, color: 'purple' },
-    { id: 2, text: 'Build something fun!', completed: false, color: 'blue' },
-]
+const initialState = []
 
 function nextTodoId(todos) {
     const maxId = todos.reduce((maxId, todo) => Math.max(todo.id, maxId), -1)
@@ -17,28 +13,22 @@ const instancesSlice = createSlice({
     name: 'instances',
     initialState,
     reducers: {
-        addArticle(state, action) {
-            // return [
-            //     ...state,
-            //     action.payload
-            // ]
-            // OR:
+        update(state, action) {
             state.push(action.payload);
-            // madness - mutable state?!?!
         },
-        increment(state) {
-            state.value++
-        },
-        decrement(state) {
-            state.value--
-        },
-        incrementByAmount(state, action) {
-            state.value += action.payload
-        },
+        // addArticle(state, action) {
+        //     // return [
+        //     //     ...state,
+        //     //     action.payload
+        //     // ]
+        //     // OR:
+        //     state.push(action.payload);
+        //     // madness - mutable state?!?!
+        // },
     },
 })
 
-export const { addArticle, increment, decrement, incrementByAmount } = instancesSlice.actions
+export const { update } = instancesSlice.actions
 export default instancesSlice.reducer
 
 
