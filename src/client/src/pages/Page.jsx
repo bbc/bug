@@ -1,43 +1,32 @@
-import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import Menu from './Menu';
-import PageHome from './PageHome';
-import Grid from '@material-ui/core/Grid';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from "react-router-dom";
+import React, { useContext } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Menu from "../components/Menu";
+import PageHome from "./PageHome";
+
+import Grid from "@material-ui/core/Grid";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const useStyles = makeStyles({
     grid: {
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: "50%",
     },
     content: {
         flexGrow: 1,
-        overflow: 'scroll'
-    }
+        overflow: "scroll",
+    },
 });
 
 export default function Page() {
-    
     const classes = useStyles();
 
     return (
         <>
             <Router>
-                <Grid
-                    className={classes.grid}
-                    container
-                    direction="row"
-                    justify="flex-start"
-                    alignItems="flex-start"
-                    nowrap
-                    >
+                <Grid className={classes.grid} container direction="row" justify="flex-start" alignItems="flex-start">
                     <Grid item>
                         <Menu />
                     </Grid>
@@ -50,9 +39,7 @@ export default function Page() {
                         </Switch>
                     </Grid>
                 </Grid>
-            
             </Router>
         </>
     );
 }
-

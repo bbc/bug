@@ -1,56 +1,51 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBug } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import DynamicIcon from '../utils/DynamicIcon';
-import Loading from './Loading';
+import DynamicIcon from "../utils/DynamicIcon";
+import Loading from "./Loading";
+import { InstanceContext } from "../data/InstanceList";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
         maxWidth: 300,
-        minWidth: '200px',
-        backgroundColor: theme.palette.menu.main
+        minWidth: "200px",
+        backgroundColor: theme.palette.menu.main,
     },
 
     bugLogo: {
         color: theme.palette.primary.main,
-        height: '10rem',
-        padding: '0.8rem',
-        backgroundColor: '#181818'
+        height: "10rem",
+        padding: "0.8rem",
+        backgroundColor: "#181818",
     },
     menuItemIcon: {
-        minWidth: '2.5rem',
-        opacity: 0.5
-    }
+        minWidth: "2.5rem",
+        opacity: 0.5,
+    },
 }));
 
-const mapStateToProps = reduxState => ({
-    instances: reduxState.instances
-});
-
-const Menu = props => {
+const Menu = (props) => {
     const classes = useStyles();
 
-    console.log(props);
+    const instanceList = useContext(InstanceContext);
 
-    
     function ListItemLink(props) {
         return <ListItem button component="a" {...props} />;
     }
-    
-    const renderMenuItem = item => {
-        if(!item.enabled) {
+
+    const renderMenuItem = (item) => {
+        if (!item.enabled) {
             return null;
         }
-        if(!item.moduleInfo) {
+        if (!item.moduleInfo) {
             return null;
         }
         return (
@@ -60,27 +55,29 @@ const Menu = props => {
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
             </ListItem>
-        )
-    }
-    
-    const renderMenuItems = props => {
-        const instanceList = props.instances.contents ?? [];
-        if(props.instances.status === 'loading') {
-            return (
-                <Loading />
-            )
+        );
+    };
+
+    const renderMenuItems = (props) => {
+        // const instanceList = props.instances.contents ?? [];
+        if (instanceList.status === "loading") {
+            return <Loading />;
         }
-        return (
-            <List component="nav" aria-label="list of enabled modules">
-                {instanceList.map((instance) => renderMenuItem(instance))}
-            </List>
-        )
-    }
-    
+        if (instanceList.status === "succeeded") {
+            return (
+                <List component="nav" aria-label="list of enabled modules">
+                    {instanceList.data.map((instance) => renderMenuItem(instance))}
+                </List>
+            );
+        } else {
+            return null;
+        }
+    };
+
     return (
         <div className={classes.root}>
             <Link to="/">
-                <FontAwesomeIcon style={{ width: '100%'}} icon={faBug} className={classes.bugLogo}/>
+                <FontAwesomeIcon style={{ width: "100%" }} icon={faBug} className={classes.bugLogo} />
             </Link>
             {renderMenuItems(props)}
             <Divider />
@@ -94,6 +91,6 @@ const Menu = props => {
             </List>
         </div>
     );
-}
+};
 
-export default connect(mapStateToProps)(Menu);
+export default Menu;

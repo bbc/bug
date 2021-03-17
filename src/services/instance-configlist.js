@@ -3,6 +3,7 @@
 const logger = require('@utils/logger');
 const globalConfig = require('@models/global-config');
 const modules = require('@models/modules');
+const delay = require('delay');
 
 module.exports = async () => {
     let result = await globalConfig.get();
@@ -10,7 +11,6 @@ module.exports = async () => {
 
     // also fetch module info
     let moduleList = await modules.listInfo();
-    // return moduleList;  
 
     for(var i in list) {
         list[i]['moduleInfo'] = moduleList.find(o => o.name === list[i]['module']) ?? null;

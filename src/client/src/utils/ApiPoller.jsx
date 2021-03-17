@@ -1,68 +1,67 @@
 import React from 'react';
 import axios from 'axios';
 
-class ApiPoller extends React.Component {
+export default class ApiPoller extends React.Component {
 
     constructor(props) {
         super(props);
         this.timer = null;
         this.source = null;
-
-        this.state = {
-            state: 'idle',
-            result: null
-        };
+        this.status = 'idle',
+        this.data = [],
+        this.error = null
     }
 
     componentDidMount() {
-        this.poll();
+        this.fetch();
     }
 
     componentWillUnmount() {
         if(this.timer) {
             clearTimeout(this.timer);
         }
-        this.source.cancel('User navigated to different page');
+        this.source.cancel();
     }
-    
-    async poll() {
+
+    handleUpdated() {
+        this.props.onChanged({
+            status: this.status,
+            data: this.data,
+            error: this.error
+        });
+    }
+
+    async fetch() {
         clearTimeout(this.timer);
 
-        this.setState({
-            state: 'loading'
-        });
+        this.status = 'loading';
+        this.handleUpdated();
 
         // create cancel token
         const CancelToken = axios.CancelToken;
         this.source = CancelToken.source();
 
-        const refreshInterval = parseInt(this.props.interval) ?? 10000;
         try {
             const response = await axios.get(this.props.url, {
                 cancelToken: this.source.token
             });
-            this.setState({
-                state: 'succeeded',
-                result: response.data
-            });
-            this.timer = setTimeout(() => { this.poll(); }, refreshInterval);
-            console.log(response.data);
+            this.status = 'succeeded';
+            this.data = response.data;
+            this.handleUpdated();
+            this.timer = setTimeout(() => { () => this.fetch(); }, 10000);
         } catch (error) {
             if(axios.isCancel(error)) {
-                console.log(error.message);
                 return;
             }
-            this.setState({
-                state: 'failed',
-            });
-            this.timer = setTimeout(() => { this.poll(); }, refreshInterval);
+            this.status = 'failed';
+            this.data = [];
+            this.handleUpdated();
+            this.timer = setTimeout(() => { () => this.fetch(); }, 20000);
             console.error(error)
         }
     }      
         
     render() {
-        return <>Hey hey hey</>;
+        return null;
     }   
 }
-
-export default ApiPoller;
