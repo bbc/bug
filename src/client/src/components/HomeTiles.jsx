@@ -4,6 +4,7 @@ import Loading from "./Loading";
 import DynamicIcon from "../utils/DynamicIcon";
 import Box from "@material-ui/core/Box";
 import { InstanceContext } from "../data/InstanceList";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     tilesContainer: {
@@ -18,7 +19,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "#262626",
         margin: "0.5rem",
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        '&:hover': {
+            background: "#333",
+        },        
     },
     tileIcon: {
         color: theme.palette.primary.main,
@@ -26,8 +30,16 @@ const useStyles = makeStyles((theme) => ({
         height: '3rem',
         margin: '0.5rem 1rem'
     },
+    tileLink: {
+        color: '#cccccc',
+        textDecoration: 'none',
+        '&:hover': {
+            color: '#fff'
+        },        
+    },
     tileTitle: {
-        fontSize: '1.2rem'
+        fontSize: '1.3rem',
+        fontWeight: 500,
     }
 }));
 
@@ -43,10 +55,12 @@ const HomeTiles = (props) => {
             return null;
         }
         return (
-            <Box className={classes.tile} key={item.id}>
-                <DynamicIcon className={classes.tileIcon} iconName={item.moduleInfo.icon} />
-                <div className={classes.tileTitle}>{item.title}</div>
-            </Box>
+            <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
+                <Box className={classes.tile}>
+                    <DynamicIcon className={classes.tileIcon} iconName={item.moduleInfo.icon} />
+                    <div className={classes.tileTitle}>{item.title}</div>
+                </Box>
+            </Link>
         );
     };
 

@@ -35,7 +35,7 @@ export default function Page() {
     return (
         <>
             <Router>
-                <div className={classes.cols} container direction="row" justify="flex-start" alignItems="flex-start">
+                <div className={classes.cols}>
                     <div className={classes.colMenu}>
                         <Menu />
                     </div>

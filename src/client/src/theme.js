@@ -3,7 +3,7 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: [
       'ReithSans'
-    ]
+    ],
   },
   palette: {
     type: 'dark',
