@@ -6,9 +6,9 @@ const readfile = util.promisify(fs.readFile);
 const logger = require('@utils/logger');
 const readJson = require('@utils/read-json');
 
-exports.get = async function(instanceId) {
+exports.get = async function(panelId) {
     try {
-        return await readJson(`config/${instanceId}.json`);
+        return await readJson(`config/${panelId}.json`);
     } catch (error) {
         logger.warn(`globalconfig: ${error.trace || error || error.message}`);
     }

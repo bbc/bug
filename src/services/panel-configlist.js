@@ -3,7 +3,6 @@
 const logger = require('@utils/logger');
 const globalConfig = require('@models/global-config');
 const modules = require('@models/modules');
-const delay = require('delay');
 
 module.exports = async () => {
     let result = await globalConfig.get();

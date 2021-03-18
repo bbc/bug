@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Loading from "./Loading";
 import DynamicIcon from "../utils/DynamicIcon";
 import Box from "@material-ui/core/Box";
-import { InstanceContext } from "../data/InstanceList";
+import { PanelContext } from "../data/PanelList";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 const HomeTiles = (props) => {
     const classes = useStyles();
-    const instanceList = useContext(InstanceContext);
+    const panelList = useContext(PanelContext);
 
     const renderTile = (item) => {
         if (!item.enabled) {
@@ -65,12 +65,12 @@ const HomeTiles = (props) => {
     };
 
     const renderTiles = (props) => {
-        if (instanceList.status === "loading") {
+        if (panelList.status === "loading") {
             return <Loading />;
         }
         return (
             <Box className={classes.tilesContainer} alignContent="flex-start" display="flex">
-                {instanceList.data.map((instance) => renderTile(instance))}
+                {panelList.data.map((panel) => renderTile(panel))}
             </Box>
         );
     };

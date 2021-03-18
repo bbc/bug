@@ -10,7 +10,7 @@ import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import DynamicIcon from "../utils/DynamicIcon";
 import Loading from "./Loading";
-import { InstanceContext } from "../data/InstanceList";
+import { PanelContext } from "../data/PanelList";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const Menu = (props) => {
     const classes = useStyles();
 
-    const instanceList = useContext(InstanceContext);
+    const panelList = useContext(PanelContext);
 
     function ListItemLink(props) {
         return <ListItem button component="a" {...props} />;
@@ -59,14 +59,14 @@ const Menu = (props) => {
     };
 
     const renderMenuItems = (props) => {
-        // const instanceList = props.instances.contents ?? [];
-        if (instanceList.status === "loading") {
+        // const panelList = props.panels.contents ?? [];
+        if (panelList.status === "loading") {
             return <Loading />;
         }
-        if (instanceList.status === "succeeded") {
+        if (panelList.status === "succeeded") {
             return (
                 <List component="nav" aria-label="list of enabled modules">
-                    {instanceList.data.map((instance) => renderMenuItem(instance))}
+                    {panelList.data.map((panel) => renderMenuItem(panel))}
                 </List>
             );
         } else {
