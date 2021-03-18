@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({}));
 
-export default function MarkerStepper(props) {
+export default function Loading(props) {
     const classes = useStyles();
 
     return (

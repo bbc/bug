@@ -6,15 +6,16 @@ const util = require('util');
 const readdir = util.promisify(fs.readdir);
 const logger = require('@utils/logger');
 const readJson = require('@utils/read-json');
+const modulesFolder = "modules";
 
-exports.listInfo = async function() {
+exports.list = async function() {
 
-    const modulesFolder = "modules";
+    //TODO cache for life of application
 
     try {
         var files = await readdir(modulesFolder);
     } catch (error) {
-        logger.warn(`module-list: ${error.trace || error || error.message}`);
+        logger.warn(`modules-list: ${error.trace || error || error.message}`);
     }
 
     var moduleArray = [];
@@ -39,4 +40,20 @@ exports.listInfo = async function() {
     }
 
     return moduleArray;
+}
+
+exports.get = async function(moduleName) {
+    try {
+        var moduleList = await exports.list();
+        for(var i in moduleList) {
+            if(moduleList[i]['name'] === moduleName) {
+                return moduleList[i];
+            }
+        }
+
+    } catch (error) {
+        logger.warn(`modules-get: ${error.trace || error || error.message}`);
+    }
+
+    return null;
 }

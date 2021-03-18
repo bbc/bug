@@ -3,14 +3,11 @@
 const logger = require('@utils/logger');
 const modulePackage = require('@models/module-package');
 
-module.exports = async () => {
+module.exports = async (moduleName) => {
     try {
-        let list = await modulePackage.list();
-        list.sort(function (a, b) {
-            return (a.longname < b.longname) ? -1 : 1;
-        });
-        return list;
+        return await modulePackage.get(moduleName);
     } catch (error) {
         logger.warn(`module-list: ${error.trace || error || error.message}`);
     }
+    return null;
 }

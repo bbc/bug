@@ -8,7 +8,8 @@ const readJson = require('@utils/read-json');
 
 exports.get = async function(panelId) {
     try {
-        return await readJson(`config/${panelId}.json`);
+        console.log(`dummydata/${panelId}.json`);
+        return await readJson(`dummydata/${panelId}.json`);
     } catch (error) {
         logger.warn(`globalconfig: ${error.trace || error || error.message}`);
     }

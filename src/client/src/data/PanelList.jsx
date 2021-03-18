@@ -1,5 +1,5 @@
 import React from 'react';
-import ApiPoller from '../utils/ApiPoller';
+import ApiPoller from '@utils/ApiPoller';
 
 export const PanelContext = React.createContext();
 

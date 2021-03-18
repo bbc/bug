@@ -1,0 +1,850 @@
+{
+    "sourcegroups": [
+        {
+            "label":"All",
+            "selected":false,
+            "index":0
+        },
+        {
+            "label":"OS",
+            "selected":false,
+            "index":1
+        },
+        {
+            "label":"CTP",
+            "selected":true,
+            "index":2
+        },
+        {
+            "label":"Ravens",
+            "selected":false,
+            "index":3
+        }
+    ],
+    "sources": [
+        {
+            "index": 0,
+            "label": "Bay 1-1 (BBC1)",
+            "selected": false,
+            "hidden": false,
+            "index_text": 1,
+            "order": 0,
+            "islocked": false
+        },
+        {
+            "index": 1,
+            "label": "Bay 1-2",
+            "selected": false,
+            "hidden": false,
+            "index_text": 2,
+            "order": 1,
+            "islocked": false
+        },
+        {
+            "index": 2,
+            "label": "Bay 1-3",
+            "selected": false,
+            "hidden": false,
+            "index_text": 3,
+            "order": 2,
+            "islocked": false
+        },
+        {
+            "index": 3,
+            "label": "Bay 1-4",
+            "selected": false,
+            "hidden": false,
+            "index_text": 4,
+            "order": 3,
+            "islocked": false
+        },
+        {
+            "index": 4,
+            "label": "Bay 1-5",
+            "selected": false,
+            "hidden": false,
+            "index_text": 5,
+            "order": 4,
+            "islocked": false
+        },
+        {
+            "index": 5,
+            "label": "Bay 1-6",
+            "selected": false,
+            "hidden": false,
+            "index_text": 6,
+            "order": 5,
+            "islocked": false
+        },
+        {
+            "index": 6,
+            "label": "Bay 3-1",
+            "selected": false,
+            "hidden": false,
+            "index_text": 7,
+            "order": 6,
+            "islocked": false
+        },
+        {
+            "index": 7,
+            "label": "Bay 3-2",
+            "selected": false,
+            "hidden": false,
+            "index_text": 8,
+            "order": 7,
+            "islocked": false
+        },
+        {
+            "index": 8,
+            "label": "Bay 3-3",
+            "selected": false,
+            "hidden": false,
+            "index_text": 9,
+            "order": 8,
+            "islocked": false
+        },
+        {
+            "index": 9,
+            "label": "Bay 3-4",
+            "selected": false,
+            "hidden": false,
+            "index_text": 10,
+            "order": 9,
+            "islocked": false
+        },
+        {
+            "index": 10,
+            "label": "Bay 3-5",
+            "selected": false,
+            "hidden": false,
+            "index_text": 11,
+            "order": 10,
+            "islocked": false
+        },
+        {
+            "index": 11,
+            "label": "Bench 4",
+            "selected": false,
+            "hidden": false,
+            "index_text": 12,
+            "order": 11,
+            "islocked": false
+        },
+        {
+            "index": 12,
+            "label": "Bench 6",
+            "selected": false,
+            "hidden": false,
+            "index_text": 13,
+            "order": 12,
+            "islocked": false
+        },
+        {
+            "index": 13,
+            "label": "SAT RX 1",
+            "selected": false,
+            "hidden": false,
+            "index_text": 14,
+            "order": 13,
+            "islocked": false
+        },
+        {
+            "index": 14,
+            "label": "SAT RX 2",
+            "selected": false,
+            "hidden": false,
+            "index_text": 15,
+            "order": 14,
+            "islocked": false
+        },
+        {
+            "index": 15,
+            "label": "Inject - 1",
+            "selected": false,
+            "hidden": false,
+            "index_text": 16,
+            "order": 15,
+            "islocked": false
+        },
+        {
+            "index": 16,
+            "label": "Inject - 2",
+            "selected": false,
+            "hidden": false,
+            "index_text": 17,
+            "order": 16,
+            "islocked": false
+        },
+        {
+            "index": 17,
+            "label": "Inject - 3",
+            "selected": false,
+            "hidden": false,
+            "index_text": 18,
+            "order": 17,
+            "islocked": false
+        },
+        {
+            "index": 18,
+            "label": "Inject - 4",
+            "selected": false,
+            "hidden": false,
+            "index_text": 19,
+            "order": 18,
+            "islocked": false
+        },
+        {
+            "index": 19,
+            "label": "Inject - 5",
+            "selected": false,
+            "hidden": false,
+            "index_text": 20,
+            "order": 19,
+            "islocked": false
+        },
+        {
+            "index": 20,
+            "label": "Inject - 6",
+            "selected": false,
+            "hidden": false,
+            "index_text": 21,
+            "order": 20,
+            "islocked": false
+        },
+        {
+            "index": 21,
+            "label": "PW Teradek RX",
+            "selected": false,
+            "hidden": false,
+            "index_text": 22,
+            "order": 21,
+            "islocked": false
+        },
+        {
+            "index": 22,
+            "label": "WMT PW Decoder",
+            "selected": false,
+            "hidden": false,
+            "index_text": 23,
+            "order": 22,
+            "islocked": false
+        },
+        {
+            "index": 23,
+            "label": "Raven Ch 1",
+            "selected": false,
+            "hidden": false,
+            "index_text": 24,
+            "order": 23,
+            "islocked": false
+        },
+        {
+            "index": 24,
+            "label": "Raven Ch 2",
+            "selected": false,
+            "hidden": false,
+            "index_text": 25,
+            "order": 24,
+            "islocked": false
+        },
+        {
+            "index": 25,
+            "label": "Hyperdeck 1",
+            "selected": false,
+            "hidden": false,
+            "index_text": 26,
+            "order": 25,
+            "islocked": false
+        },
+        {
+            "index": 26,
+            "label": "Hyperdeck 2",
+            "selected": false,
+            "hidden": false,
+            "index_text": 27,
+            "order": 26,
+            "islocked": false
+        },
+        {
+            "index": 27,
+            "label": "Inject BNC",
+            "selected": false,
+            "hidden": false,
+            "index_text": 28,
+            "order": 27,
+            "islocked": false
+        },
+        {
+            "index": 28,
+            "label": "BCN SDI",
+            "selected": false,
+            "hidden": false,
+            "index_text": 29,
+            "order": 28,
+            "islocked": false
+        },
+        {
+            "index": 29,
+            "label": "PW Live U",
+            "selected": false,
+            "hidden": false,
+            "index_text": 30,
+            "order": 29,
+            "islocked": false
+        },
+        {
+            "index": 30,
+            "label": "BCN Enc Loop",
+            "selected": true,
+            "hidden": false,
+            "index_text": 31,
+            "order": 30,
+            "islocked": false
+        },
+        {
+            "index": 31,
+            "label": "TVRO SDI",
+            "selected": false,
+            "hidden": false,
+            "index_text": 32,
+            "order": 31,
+            "islocked": false
+        },
+        {
+            "index": 32,
+            "label": "TVRO ASI",
+            "selected": false,
+            "hidden": false,
+            "index_text": 33,
+            "order": 32,
+            "islocked": false
+        },
+        {
+            "index": 33,
+            "label": "Sky Sports Rx",
+            "selected": false,
+            "hidden": false,
+            "index_text": 34,
+            "order": 33,
+            "islocked": false
+        },
+        {
+            "index": 34,
+            "label": "HD Off Air",
+            "selected": false,
+            "hidden": false,
+            "index_text": 35,
+            "order": 34,
+            "islocked": false
+        },
+        {
+            "index": 35,
+            "label": "SD Off Air",
+            "selected": false,
+            "hidden": false,
+            "index_text": 36,
+            "order": 35,
+            "islocked": false
+        },
+        {
+            "index": 36,
+            "label": "HD Black",
+            "selected": false,
+            "hidden": false,
+            "index_text": 37,
+            "order": 36,
+            "islocked": false
+        },
+        {
+            "index": 37,
+            "label": "SD BLack",
+            "selected": false,
+            "hidden": false,
+            "index_text": 38,
+            "order": 37,
+            "islocked": false
+        },
+        {
+            "index": 38,
+            "label": "HD Test",
+            "selected": false,
+            "hidden": false,
+            "index_text": 39,
+            "order": 38,
+            "islocked": false
+        },
+        {
+            "index": 39,
+            "label": "SD Test",
+            "selected": false,
+            "hidden": false,
+            "index_text": 40,
+            "order": 39,
+            "islocked": false
+        }
+    ],
+    "destinationgroups": [
+        {
+            "label":"All",
+            "selected":true,
+            "index":0
+        },
+        {
+            "label":"TX",
+            "selected":false,
+            "index":1
+        },
+        {
+            "label":"CTP",
+            "selected":false,
+            "index":2
+        },
+        {
+            "label":"Ravens",
+            "selected":false,
+            "index":3
+        }
+    ],
+    "destinations": [
+        {
+            "index": 0,
+            "label": "MJI 1",
+            "sourceindex": 30,
+            "sourcelabel": "BCN Enc Loop",
+            "index_text": 1,
+            "order": 0,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 1,
+            "label": "MJI 2",
+            "sourceindex": 38,
+            "sourcelabel": "HD Test",
+            "index_text": 2,
+            "order": 1,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 2,
+            "label": "MJI 3",
+            "sourceindex": 21,
+            "sourcelabel": "PW Teradek RX",
+            "index_text": 3,
+            "order": 2,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 3,
+            "label": "IT Bay 1-4",
+            "sourceindex": 34,
+            "sourcelabel": "HD Off Air",
+            "index_text": 4,
+            "order": 3,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 4,
+            "label": "IT Bay 1-5",
+            "sourceindex": 21,
+            "sourcelabel": "PW Teradek RX",
+            "index_text": 5,
+            "order": 4,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 5,
+            "label": "IT Bay 1-6",
+            "sourceindex": 33,
+            "sourcelabel": "Sky Sports Rx",
+            "index_text": 6,
+            "order": 5,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 6,
+            "label": "Bay 3-1",
+            "sourceindex": 38,
+            "sourcelabel": "HD Test",
+            "index_text": 7,
+            "order": 6,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 7,
+            "label": "Bay 3-2",
+            "sourceindex": 38,
+            "sourcelabel": "HD Test",
+            "index_text": 8,
+            "order": 7,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 8,
+            "label": "Bay 3-3",
+            "sourceindex": 34,
+            "sourcelabel": "HD Off Air",
+            "index_text": 9,
+            "order": 8,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 9,
+            "label": "Bay 3-4",
+            "sourceindex": 22,
+            "sourcelabel": "WMT PW Decoder",
+            "index_text": 10,
+            "order": 9,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 10,
+            "label": "Monitor 7",
+            "sourceindex": 33,
+            "sourcelabel": "Sky Sports Rx",
+            "index_text": 11,
+            "order": 10,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 11,
+            "label": "-dead-",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 12,
+            "order": 11,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 12,
+            "label": "Bench 6",
+            "sourceindex": 29,
+            "sourcelabel": "PW Live U",
+            "index_text": 13,
+            "order": 12,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 13,
+            "label": "Prep Dest 1",
+            "sourceindex": 38,
+            "sourcelabel": "HD Test",
+            "index_text": 14,
+            "order": 13,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 14,
+            "label": "Prep Dest 2",
+            "sourceindex": 33,
+            "sourcelabel": "Sky Sports Rx",
+            "index_text": 15,
+            "order": 14,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 15,
+            "label": "Inject - 1",
+            "sourceindex": 21,
+            "sourcelabel": "PW Teradek RX",
+            "index_text": 16,
+            "order": 15,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 16,
+            "label": "Inject - 2",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 17,
+            "order": 16,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 17,
+            "label": "Inject - 3",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 18,
+            "order": 17,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 18,
+            "label": "Inject - 4",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 19,
+            "order": 18,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 19,
+            "label": "Inject - 5",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 20,
+            "order": 19,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 20,
+            "label": "Inject - 6",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 21,
+            "order": 20,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 21,
+            "label": "PW CTA Teradek",
+            "sourceindex": 33,
+            "sourcelabel": "Sky Sports Rx",
+            "index_text": 22,
+            "order": 21,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 22,
+            "label": "Dest 23",
+            "sourceindex": 34,
+            "sourcelabel": "HD Off Air",
+            "index_text": 23,
+            "order": 22,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 23,
+            "label": "Raven Ch 1",
+            "sourceindex": 34,
+            "sourcelabel": "HD Off Air",
+            "index_text": 24,
+            "order": 23,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 24,
+            "label": "Raven Ch 2",
+            "sourceindex": 34,
+            "sourcelabel": "HD Off Air",
+            "index_text": 25,
+            "order": 24,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 25,
+            "label": "DSR 1500",
+            "sourceindex": 38,
+            "sourcelabel": "HD Test",
+            "index_text": 26,
+            "order": 25,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 26,
+            "label": "Inject De-Embed",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 27,
+            "order": 26,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 27,
+            "label": "Mechs",
+            "sourceindex": 33,
+            "sourcelabel": "Sky Sports Rx",
+            "index_text": 28,
+            "order": 27,
+            "islocked": true,
+            "islocallocked": false,
+            "isremotelocked": true
+        },
+        {
+            "index": 28,
+            "label": "BCN Enc",
+            "sourceindex": 22,
+            "sourcelabel": "WMT PW Decoder",
+            "index_text": 29,
+            "order": 28,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 29,
+            "label": "Quarantine 1",
+            "sourceindex": 34,
+            "sourcelabel": "HD Off Air",
+            "index_text": 30,
+            "order": 29,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 30,
+            "label": "Quarantine 2",
+            "sourceindex": 21,
+            "sourcelabel": "PW Teradek RX",
+            "index_text": 31,
+            "order": 30,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 31,
+            "label": "Quarantine 3",
+            "sourceindex": 38,
+            "sourcelabel": "HD Test",
+            "index_text": 32,
+            "order": 31,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 32,
+            "label": "TVRO ASI",
+            "sourceindex": 34,
+            "sourcelabel": "HD Off Air",
+            "index_text": 33,
+            "order": 32,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 33,
+            "label": "Dest 34",
+            "sourceindex": 33,
+            "sourcelabel": "Sky Sports Rx",
+            "index_text": 34,
+            "order": 33,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 34,
+            "label": "Dest 35",
+            "sourceindex": 33,
+            "sourcelabel": "Sky Sports Rx",
+            "index_text": 35,
+            "order": 34,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 35,
+            "label": "Inject Mon 1",
+            "sourceindex": 38,
+            "sourcelabel": "HD Test",
+            "index_text": 36,
+            "order": 35,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 36,
+            "label": "Inject Mon 2",
+            "sourceindex": 22,
+            "sourcelabel": "WMT PW Decoder",
+            "index_text": 37,
+            "order": 36,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 37,
+            "label": "Inject Mon",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 38,
+            "order": 37,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 38,
+            "label": "Extractor Room",
+            "sourceindex": 22,
+            "sourcelabel": "WMT PW Decoder",
+            "index_text": 39,
+            "order": 38,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        },
+        {
+            "index": 39,
+            "label": "CTA Monitor",
+            "sourceindex": 25,
+            "sourcelabel": "Hyperdeck 1",
+            "index_text": 40,
+            "order": 39,
+            "islocked": false,
+            "islocallocked": false,
+            "isremotelocked": false
+        }
+    ]
+}

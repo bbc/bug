@@ -8,9 +8,9 @@ import Divider from "@material-ui/core/Divider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import DynamicIcon from "../utils/DynamicIcon";
+import DynamicIcon from "@utils/DynamicIcon";
 import Loading from "./Loading";
-import { PanelContext } from "../data/PanelList";
+import { PanelContext } from "@data/PanelList";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,13 +45,13 @@ const Menu = (props) => {
         if (!item.enabled) {
             return null;
         }
-        if (!item.moduleInfo) {
+        if (!item.modulePackage) {
             return null;
         }
         return (
             <ListItem button component={Link} to={`/panel/${item.id}`} key={item.id} className={classes.menuItem}>
                 <ListItemIcon className={classes.menuItemIcon}>
-                    <DynamicIcon iconName={item.moduleInfo.icon} />
+                    <DynamicIcon iconName={item.modulePackage.icon} />
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
             </ListItem>

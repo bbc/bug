@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Loading from "./Loading";
-import DynamicIcon from "../utils/DynamicIcon";
+import DynamicIcon from "@utils/DynamicIcon";
 import Box from "@material-ui/core/Box";
-import { PanelContext } from "../data/PanelList";
+import { PanelContext } from "@data/PanelList";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,13 +51,13 @@ const HomeTiles = (props) => {
         if (!item.enabled) {
             return null;
         }
-        if (!item.moduleInfo) {
+        if (!item.modulePackage) {
             return null;
         }
         return (
             <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
                 <Box className={classes.tile}>
-                    <DynamicIcon className={classes.tileIcon} iconName={item.moduleInfo.icon} />
+                    <DynamicIcon className={classes.tileIcon} iconName={item.modulePackage.icon} />
                     <div className={classes.tileTitle}>{item.title}</div>
                 </Box>
             </Link>

@@ -1,8 +1,8 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Page from "./pages/Page";
+import Page from "@pages/Page";
 import theme from "./theme";
-import PanelList from "./data/PanelList";
+import PanelList from "@data/PanelList";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 

@@ -29,6 +29,7 @@ export default class ApiPoller extends React.Component {
             data: this.data,
             error: this.error
         });
+        // console.log(this.status, this.data);
     }
 
     async fetch() {

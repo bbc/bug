@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import HomeTitle from "../components/HomeTitle";
-import HomeTiles from "../components//HomeTiles";
+import HomeTitle from "@components/HomeTitle";
+import HomeTiles from "@components//HomeTiles";
 
 const useStyles = makeStyles({
     root: {},
