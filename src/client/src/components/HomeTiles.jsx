@@ -7,15 +7,28 @@ import { InstanceContext } from "../data/InstanceList";
 
 const useStyles = makeStyles((theme) => ({
     tilesContainer: {
-        display: "inline-block",
+        flexWrap: 'wrap',
+        margin: "0.5rem",
     },
     tile: {
         height: "6em",
+        width: '30rem',
         position: "relative",
-        display: "block",
+        display: "flex",
         backgroundColor: "#262626",
         margin: "0.5rem",
+        flexDirection: 'row',
+        alignItems: 'center'
     },
+    tileIcon: {
+        color: theme.palette.primary.main,
+        width: '3rem',
+        height: '3rem',
+        margin: '0.5rem 1rem'
+    },
+    tileTitle: {
+        fontSize: '1.2rem'
+    }
 }));
 
 const HomeTiles = (props) => {
@@ -31,10 +44,8 @@ const HomeTiles = (props) => {
         }
         return (
             <Box className={classes.tile} key={item.id}>
-                <div className={classes.tileIcon}>
-                    <DynamicIcon iconName={item.moduleInfo.icon} />
-                </div>
-                <div>{item.title}</div>
+                <DynamicIcon className={classes.tileIcon} iconName={item.moduleInfo.icon} />
+                <div className={classes.tileTitle}>{item.title}</div>
             </Box>
         );
     };
@@ -44,13 +55,13 @@ const HomeTiles = (props) => {
             return <Loading />;
         }
         return (
-            <Box alignContent="flex-start" display="flex">
+            <Box className={classes.tilesContainer} alignContent="flex-start" display="flex">
                 {instanceList.data.map((instance) => renderTile(instance))}
             </Box>
         );
     };
 
-    return <div className={classes.tilesContainer}>{renderTiles(props)}</div>;
+    return renderTiles(props);
 };
 
 export default HomeTiles;
