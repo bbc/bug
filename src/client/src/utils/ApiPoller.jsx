@@ -8,7 +8,7 @@ export default class ApiPoller extends React.Component {
         this.timer = null;
         this.source = null;
         this.status = 'idle',
-        this.data = [],
+        this.data = null,
         this.error = null
     }
 

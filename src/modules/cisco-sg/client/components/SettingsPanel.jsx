@@ -3,12 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({}));
 
-export default function MainPanel(props) {
+export default function SettingsPanel(props) {
     const classes = useStyles();
 
     return (
         <>
-            This is the videohub main panel which uses id {props.id}
+            This is the videohub settings panel
         </>
     );
 }

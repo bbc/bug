@@ -3,16 +3,10 @@ import React, { Suspense, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ApiPoller from "@utils/ApiPoller";
 import Loading from "@components/Loading";
-import MainPanel from "@modules/bmd-videohub/client/components/MainPanel";
 
 const useStyles = makeStyles({
     root: {},
 });
-
-// const ImportedPanel = React.lazy(() => import(`@modules/bmd-videohub/client/components/MainPanel`));
-// const ImportedPanel = React.lazy((moduleName) => import(`@modules/${moduleName}/client/components/MainPanel`));
-
-// const ImportedPanel = (moduleName) => React.lazy(() => import(`@modules/${moduleName}/client/components/MainPanel`));
 
 export default function PageHome(props) {
     const classes = useStyles();
@@ -24,34 +18,27 @@ export default function PageHome(props) {
         error: null,
     });
 
-
-
     const renderPanel = () => {
-        if (!panel.data) {
+        if (panel.status === 'idle') {
             return <Loading />;
         }
-        console.log(panel);
-        // const ImportedPanel = React.lazy(() => import(`@modules/${moduleName}/client/components/MainPanel`));
+        if (panel.status === 'loading') {
+            return <Loading />;
+        }
+        const ImportedPanel = React.lazy(() => import(`@modules/${panel.data.module}/client/components/MainPanel`).catch(() => console.log('Error in importing')));
         return (
             <>
-                <ApiPoller
-                    url={`/api/panel/config/${panelId}`}
-                    interval="30000"
-                    onChanged={(result) => setPanel(result)}
-                />
-                Panel id {panelId}
                 <Suspense fallback={<div>Loading...</div>}>
-                    {/* React.lazy(() => import(`${props.component}`)) */}
+                    <ImportedPanel id={panelId}/>
                 </Suspense>
-                <MainPanel></MainPanel>
             </>
         );
     };
 
     return (
-        <>
+        <div key={panelId}>
             <ApiPoller url={`/api/panel/config/${panelId}`} interval="30000" onChanged={(result) => setPanel(result)} />
             {renderPanel()}
-        </>
+        </div>
     );
 }

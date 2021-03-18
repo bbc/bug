@@ -8,7 +8,7 @@ export default function MainPanel(props) {
 
     return (
         <>
-            This is the videohub main panel which uses id {props.id}
+            This is the ciscoSG main panel which uses id {props.id}
         </>
     );
 }

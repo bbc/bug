@@ -1,4 +1,11 @@
 {
+    "id": "15ccb5a3855144",
+    "order": 9,
+    "title": "DHCP - PW Inject",
+    "module": "mikrotik-dhcp",
+    "description": null,
+    "notes": null,
+    "enabled": false,
     "address": "172.26.182.255",
     "username": "bug",
     "password": "bugisbest"

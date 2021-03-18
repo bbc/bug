@@ -51,13 +51,10 @@ const HomeTiles = (props) => {
         if (!item.enabled) {
             return null;
         }
-        if (!item.modulePackage) {
-            return null;
-        }
         return (
             <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
                 <Box className={classes.tile}>
-                    <DynamicIcon className={classes.tileIcon} iconName={item.modulePackage.icon} />
+                    <DynamicIcon className={classes.tileIcon} iconName={item._module_icon} />
                     <div className={classes.tileTitle}>{item.title}</div>
                 </Box>
             </Link>

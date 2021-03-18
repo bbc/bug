@@ -1,4 +1,11 @@
 {
+    "id": "15d8de88b0fb8a",
+    "order": 12,
+    "title": "cluster switch -temp",
+    "module": "cisco-sg",
+    "description": "",
+    "notes": "",
+    "enabled": false,
     "address": "172.26.182.216",
     "username": "cisco",
     "password": "facs1655",

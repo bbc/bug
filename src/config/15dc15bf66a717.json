@@ -1,4 +1,11 @@
 {
+    "id": "15dc15bf66a717",
+    "order": 14,
+    "title": "bridgeit",
+    "module": "tieline-bridgeit",
+    "description": "",
+    "notes": "",
+    "enabled": false,
     "address": "172.26.182.132",
     "username": "admin",
     "password": "password"

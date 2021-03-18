@@ -1,4 +1,11 @@
 {
+    "id": "15cd18e5bd3e57",
+    "order": 2,
+    "title": "Router - PW Core",
+    "module": "mikrotik-interfaces",
+    "description": null,
+    "notes": null,
+    "enabled": true,
     "address": "172.26.108.126",
     "username": "bug",
     "password": "sfsafawffasfasr33r",

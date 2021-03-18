@@ -1,4 +1,11 @@
 {
+    "id": "15cb43f3eac575",
+    "order": 0,
+    "title": "Matrix - PW Core",
+    "module": "bmd-videohub",
+    "description": null,
+    "notes": null,
+    "enabled": true,
     "address": "172.26.108.90",
     "show_number": true,
     "use_take": true,

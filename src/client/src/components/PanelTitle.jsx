@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HomeTitle() {
+export default function PanelTitle() {
     const classes = useStyles();
 
-    return <div className={classes.title}>Welcome to BUG</div>;
+    return <div className={classes.title}>{props.title}</div>;
 }

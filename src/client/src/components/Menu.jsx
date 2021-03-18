@@ -45,13 +45,10 @@ const Menu = (props) => {
         if (!item.enabled) {
             return null;
         }
-        if (!item.modulePackage) {
-            return null;
-        }
         return (
             <ListItem button component={Link} to={`/panel/${item.id}`} key={item.id} className={classes.menuItem}>
                 <ListItemIcon className={classes.menuItemIcon}>
-                    <DynamicIcon iconName={item.modulePackage.icon} />
+                    <DynamicIcon iconName={item._module_icon} />
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
             </ListItem>
@@ -59,7 +56,6 @@ const Menu = (props) => {
     };
 
     const renderMenuItems = (props) => {
-        // const panelList = props.panels.contents ?? [];
         if (panelList.status === "loading") {
             return <Loading />;
         }
