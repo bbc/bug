@@ -17,14 +17,35 @@ services:
   bug-core:
     build: "./src"
     restart: always
-    environment:
-      - NODE_ENV=production
-      - BUG_CORE_PORT=3100
     volumes:
-      - ./src:/home/node/bug-core
+      - ./src/bin:/home/node/bug-core/bin
+      - ./src/client:/home/node/bug-core/client
+      - ./src/config:/home/node/bug-core/config
+      - ./src/dummydata:/home/node/bug-core/dummydata
+      - ./src/logs:/home/node/bug-core/logs
+      - ./src/models:/home/node/bug-core/models
+      - ./src/modules:/home/node/bug-core/modules
+      - ./src/routes:/home/node/bug-core/routes
+      - ./src/services:/home/node/bug-core/services
+      - ./src/utils:/home/node/bug-core/utils
       - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
     ports:
-      - 3100:3100
+      - ${PORT_DEV}:${PORT_DEV}
     hostname: bug-core
+    networks:
+      - bug
+  
+  bmd-videohub:
+    build: "./src/modules/bmd-videohub"
+    restart: always
+    volumes:
+      - ./src/modules/bmd-videohub/server:/home/node/module/server
+    ports:
+      - ${MODULE_PORT}:${MODULE_PORT}
+    hostname: bmd-videohub
+    env_file:
+      - .env
     networks:
       - bug
