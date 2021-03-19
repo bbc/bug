@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node ./server/server",
     "dev": "nodemon ./server/server",
-    "test": "node ./server/test"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -28,6 +28,12 @@
     "nodemon": "^2.0.7",
     "superagent": "^6.1.0",
     "supertest": "^6.1.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "./node_modules/"
+    ]
   },
   "_moduleAliases": {
     "@root": ".",
