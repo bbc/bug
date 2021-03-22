@@ -1,6 +1,6 @@
-//NAME: index.js
+//NAME: videohub.js
 //AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 04/03/2021
+//DATE: 19/03/2021
 //DESC: Blackmagic Design VideoHub Module
 
 let matrix_ip = "192.168.1.1";

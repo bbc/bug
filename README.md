@@ -35,3 +35,5 @@ Where `bbcnews-bug-core_bug-core_1` is the name of the container that can be see
 To stop the main bug-core service use;
 
 `docker-compose down`
+
+Additionally a `bbcnews-bug-core_bmd-videohub_1` container is created on localhost:3000 for testing. It's volume is live linked and runs nodemon
