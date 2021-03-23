@@ -41,7 +41,7 @@ router.get('/stop/:panelid', async function (req, res, next) {
     res.json(result);
 });
 
-router.get('/list', async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     // stops the image running (probably won't ever be run from the UI)
     var result = await panelList();
     res.json(result);

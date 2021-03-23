@@ -48,26 +48,10 @@ async function stopContainer(containerName){
 async function removeContainer(containerName){
 
     const container = await docker.getContainer(containerName);
-
     const data = await container.inspect()
         
-        //     err => {
-        //     if (!_.isNull(this.logStream)) {
-        //     this.logStream.unwatch();
-        //     this.logStream = null;
-        //     }
-    
-        //     if (!err) {
-        //     this.container.remove(next);
-        //     } else if (err && _.startsWith(err.reason, 'no such container')) { // no such container
-        //     this.server.log.debug({ container_id: container }, 'Attempting to remove a container that does not exist, continuing without error.');
-        //     return next();
-        //     } else {
-        //     return next(err);
-        //     }
-        // });
-    
-
+    container.remove();
+  
 }
 
 async function startContainer(panelConfig){
