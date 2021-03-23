@@ -3,7 +3,7 @@
 const bugApi = require('./bug-core-api');
 const http = require('http');
 
-let port = process.env.PORT_DEV || '3101';
+let port = process.env.PORT_DEV_API || '3101';
 bugApi.set('port', port);
 
 var server = http.createServer(bugApi);
