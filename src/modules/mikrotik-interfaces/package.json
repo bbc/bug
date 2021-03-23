@@ -13,10 +13,12 @@
     "author": "Geoff House",
     "license": "ISC",
     "dependencies": {
+        "bitrate": "^1.0.4",
         "delay": "^5.0.0",
         "express": "^4.17.1",
         "http-errors": "^1.8.0",
         "io-videohub": "^2.0.0",
+        "lokijs": "^1.5.11",
         "module-alias": "^2.2.2",
         "morgan": "^1.10.0",
         "node-routeros": "^1.6.9",
@@ -42,6 +44,7 @@
         "@root": ".",
         "@routes": "./api/routes/",
         "@api": "./api/",
+        "@data": "./data/",
         "@utils": "./utils/"
     }
 }

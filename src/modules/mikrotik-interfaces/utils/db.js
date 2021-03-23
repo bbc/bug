@@ -1,52 +1,20 @@
-'use strict';
+const loki = require('lokijs');
+const path = require('path');
 
-const MongoClient = require('mongodb').MongoClient;
-// const Logger = require('@services/logger');
+module.exports = new Promise((resolve, reject) => {
 
-module.exports = class Db {
-    static dbObject;
+    var dataPath = path.join(__dirname,'..','data','data.json');
 
-    async connect() {
-        const dbName = 'bug';
-        if (Db.dbObject === undefined) {
-
-            // Connection URL
-            const url = 'mongodb://localhost:27017/' + dbName;
-
-            // Database Name
-            const client = new MongoClient(url, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            });
-
-            // try to connect
-            try {
-                // Logger.debug(`db->connect: attempting connection to database using url ${url}`);
-                await client.connect();
-
-                // and save it to static var 
-                Db.dbObject = client;
-            } catch (err) {
-                // Logger.error(error.trace);
+    var db = new loki(dataPath, {
+        autoload: true,
+        autoloadCallback: () => {
+            var entries = db.getCollection("interfaces");
+            if (entries === null) {
+                entries = db.addCollection("interfaces");
             }
-        }
-
-        // return the database object
-        return Db.dbObject.db(dbName);
-    }
-
-    async disconnect() {
-        if (Db.dbObject !== undefined) {
-            try {
-                // Logger.debug('db->disconnect: disconnecting database');
-                await Db.dbObject.close();
-                // Logger.debug('db->disconnect: done');
-            } catch (err) {
-                // Logger.error(error.trace);
-            }
-        }
-        else {
-            // Logger.warn(`db->disconnect: nothing to disconnect!`);
-        }
-    }
-}
+            resolve(db);
+        },
+        autosave: true,
+        autosaveInterval: 4000 // save every four seconds for our example
+    });
+});

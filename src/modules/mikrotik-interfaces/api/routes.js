@@ -8,10 +8,12 @@ const router = express.Router();
 
 // const defaultRoute = require('./routes/default');
 const status = require('./routes/status');
+const interface = require('./routes/interface');
 
 router
     // .use('/', status)
     .use('/status', status)
+    .use('/interface', interface)
     .use('*', (req, res) => {
         res.sendStatus(404);
     });
