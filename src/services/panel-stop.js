@@ -6,7 +6,8 @@ const docker = require('@utils/docker');
 
 module.exports = async (panelId) => {
     try {
-       return docker.stopContainer(panelId)
+        await docker.getContainer(panelId).stop(cb)
+        return
     } catch (error) {
         logger.warn(`panel-stop: ${error.trace || error || error.message}`);
     }
