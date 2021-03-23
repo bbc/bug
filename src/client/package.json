@@ -21,7 +21,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "react-app-rewired": "^2.1.8"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -55,9 +56,6 @@
     ]
   },
   "devDependencies": {
-    "customize-cra": "^1.0.0",
-    "react-app-rewired": "^2.1.8",
-    "react-redux": "^7.2.2",
-    "redux": "^4.0.5"
+    "customize-cra": "^1.0.0"
   }
 }

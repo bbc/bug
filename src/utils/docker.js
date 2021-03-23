@@ -3,8 +3,9 @@
 const Docker = require('dockerode');
 const logger = require('@utils/logger');
 const path = require('path');
+const socketPath =  process.env.DOCKER_SOCKET_PATH || '/var/run/docker.sock'
 
-let docker = new Docker({socketPath: '/var/run/docker.sock'});
+let docker = new Docker({socketPath: socketPath});
 
 async function listContainers(networkName){
     const containers = await docker.listContainers()
@@ -48,26 +49,10 @@ async function stopContainer(containerName){
 async function removeContainer(containerName){
 
     const container = await docker.getContainer(containerName);
-
     const data = await container.inspect()
         
-        //     err => {
-        //     if (!_.isNull(this.logStream)) {
-        //     this.logStream.unwatch();
-        //     this.logStream = null;
-        //     }
-    
-        //     if (!err) {
-        //     this.container.remove(next);
-        //     } else if (err && _.startsWith(err.reason, 'no such container')) { // no such container
-        //     this.server.log.debug({ container_id: container }, 'Attempting to remove a container that does not exist, continuing without error.');
-        //     return next();
-        //     } else {
-        //     return next(err);
-        //     }
-        // });
-    
-
+    container.remove();
+  
 }
 
 async function startContainer(panelConfig){

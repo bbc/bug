@@ -7,7 +7,7 @@ module.exports = async (moduleName) => {
     try {
         return await modulePackage.get(moduleName);
     } catch (error) {
-        logger.warn(`module-list: ${error.trace || error || error.message}`);
+        logger.warn(`module-get: ${error.trace || error || error.message}`);
     }
     return null;
 }

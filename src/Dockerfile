@@ -6,7 +6,7 @@ RUN npm install -also=dev
 
 WORKDIR /home/node/bug-core/client
 RUN npm install -also=dev
-# RUN npm run build
+RUN npm run build
 
 WORKDIR /home/node/bug-core
-CMD [ "npm", "run", "dev" ]
+CMD [ "sh", "-c", "npm run $NODE_ENV" ]
