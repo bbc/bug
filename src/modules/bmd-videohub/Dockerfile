@@ -5,4 +5,4 @@ COPY . .
 
 RUN npm install
 
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "run", "start" ]

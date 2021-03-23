@@ -25,16 +25,19 @@ module.exports = async () => {
         "What do moths study in school? Mothematics! ",
         "What do you do with a sick wasp? Take it to a waspital! ",
         "What did the sushi say to the bee? Wassabee! ",
-        "What do ants use to smell good? Deodor-ant! ",
-        "What do you call a bug with four wheels and a trunk? A Volkswagen Beetle! ",
-        "What do you call a wasp? A wanna-bee! ",
-        "What do fireflies eat? Light snacks! ",
-        "What do you call two spiders who just got married? Newlywebs! ",
+        "What do ants use to smell good? Deodor-ant!",
+        "What do you call a bug with four wheels and a trunk? A Volkswagen Beetle!",
+        "What do you call a wasp? A wanna-bee!",
+        "What do fireflies eat? Light snacks!",
+        "What do you call two spiders who just got married? Newlywebs!",
         "What is a caterpillar scared of? A dogerpillar! ",
         "What kind of bugs live in clocks? Ticks! ",
-        "What's a caterpillar's favorite weapon? A caterpolt! ",
+        "What's a caterpillar's favorite weapon? A caterpolt!",
         "What is a bug's favorite sport? Cricket.",
-        "Why was the grocery store out of butter? Because Butter flies. "
+        "Why was the grocery store out of butter? Because Butter flies.",
+        "What do you call a musical insect? A humbug!",
+        "What do you call a bee who's having a bad hair day? A frizz-bee!",
+        "What bug is always running away from everything? A flea!"
     ];
 
     let random = quotes[Math.floor(Math.random()*quotes.length)]

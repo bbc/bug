@@ -8,6 +8,7 @@ const panelGetData = require('@services/panel-getdata');
 const panelStart = require('@services/panel-start');
 const panelRestart = require('@services/panel-restart');
 const panelStop = require('@services/panel-stop');
+const panelList = require('@services/panel-list');
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -19,21 +20,30 @@ const panelStop = require('@services/panel-stop');
 // router.get('/add', async function (req, res, next) {
 // });
 
-router.get('/start', async function (req, res, next) {
+router.get('/start/:panelid', async function (req, res, next) {
     // starts and builds if necessary
-    var result = await panelStart();
+    let panelId = req.params.panelid;
+    var result = await panelStart(panelId);
     res.json(result);
 });
 
-router.get('/restart', async function (req, res, next) {
+router.get('/restart/:panelid', async function (req, res, next) {
     // stop and start (and rebuild if necessary)
-    var result = await panelRestart();
+    let panelId = req.params.panelid;
+    var result = await panelRestart(panelId);
     res.json(result);
 });
 
-router.get('/stop', async function (req, res, next) {
+router.get('/stop/:panelid', async function (req, res, next) {
     // stops the image running (probably won't ever be run from the UI)
-    var result = await panelStop();
+    let panelId = req.params.panelid;
+    var result = await panelStop(panelId);
+    res.json(result);
+});
+
+router.get('/list', async function (req, res, next) {
+    // stops the image running (probably won't ever be run from the UI)
+    var result = await panelList();
     res.json(result);
 });
 
