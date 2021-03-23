@@ -2,11 +2,10 @@
 
 const fs = require('fs')
 const util = require('util');
+const writeFile = util.promisify(fs.writeFile);
 
 module.exports = async (filepath,contents) => {
-
-    filepath = filepath + 'json'
-    const jsonString = JSON.stringify(contents)
-    await fs.writeFile(filepath, jsonString)
-
+    filepath = filepath + '.json';
+    const jsonString = await JSON.stringify(contents, null, 2);
+    writeFile(filepath, jsonString);
 }
