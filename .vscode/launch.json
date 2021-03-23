@@ -7,7 +7,7 @@
     "version": "0.0.1",
     "configurations": [
         {
-            "command": "npm run dev",
+            "command": "npm run development",
             "name": "bug-core: dev",
             "request": "launch",
             "type": "node-terminal",
@@ -15,7 +15,7 @@
             "envFile": "${workspaceRoot}/.env",
         },
         {
-            "command": "npm run prod",
+            "command": "npm run production",
             "name": "bug-core: prod",
             "request": "launch",
             "type": "node-terminal",

@@ -38,16 +38,3 @@ services:
     hostname: bug-core
     networks:
       - bug
-  
-  # bmd-videohub:
-  #   build: "./src/modules/bmd-videohub"
-  #   restart: always
-  #   volumes:
-  #     - ./src/modules/bmd-videohub/server:/home/node/module/server
-  #   ports:
-  #     - ${MODULE_PORT}:${MODULE_PORT}
-  #   hostname: bmd-videohub
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - bug

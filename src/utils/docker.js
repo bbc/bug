@@ -3,8 +3,9 @@
 const Docker = require('dockerode');
 const logger = require('@utils/logger');
 const path = require('path');
+const socketPath =  process.env.DOCKER_SOCKET_PATH || '/var/run/docker.sock'
 
-let docker = new Docker({socketPath: '/var/run/docker.sock'});
+let docker = new Docker({socketPath: socketPath});
 
 async function listContainers(networkName){
     const containers = await docker.listContainers()
