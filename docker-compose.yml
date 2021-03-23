@@ -32,7 +32,9 @@ services:
     env_file:
       - .env
     ports:
-      - 80:${PORT_PROD}
+      - ${PORT}:${PORT}
+      - ${PORT_PROD}:${PORT_PROD}
+      - ${PORT_DEV_API}:${PORT_DEV_API}
     hostname: bug-core
     networks:
       - bug
