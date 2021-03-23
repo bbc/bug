@@ -8,7 +8,7 @@
     "configurations": [
         {
             "command": "npm run dev",
-            "name": "dev: bug-core",
+            "name": "bug-core: dev",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
@@ -16,10 +16,34 @@
         },
         {
             "command": "npm run prod",
-            "name": "prod: big-core",
+            "name": "bug-core: prod",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
+            "envFile": "${workspaceRoot}/.env",
+        },
+        {
+            "command": "npm install -also=dev",
+            "name": "bug-core: install",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/src",
+            "envFile": "${workspaceRoot}/.env",
+        },
+        {
+            "command": "npm run build",
+            "name": "client: build",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/src/client",
+            "envFile": "${workspaceRoot}/.env",
+        },
+        {
+            "command": "npm install -also=dev",
+            "name": "client: install",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/src/client",
             "envFile": "${workspaceRoot}/.env",
         },
     ]

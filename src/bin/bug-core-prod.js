@@ -10,11 +10,11 @@ const bugApi = require('./bug-core-api');
 var port = process.env.PORT_PROD || '3100';
 
 // include react static client files
-bugApi.use(express.static(path.join(__dirname, 'client/build')));
+bugApi.use(express.static(path.join(__dirname, '..','client', 'build')));
 
 // serve React bugApilication 
 bugApi.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'));
 });
 
 // and start it up
