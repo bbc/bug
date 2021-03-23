@@ -6,8 +6,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/server",
-    "dev": "nodemon ./server/server",
+    "production": "node ./server/server",
+    "development": "nodemon ./server/server",
     "test": "jest"
   },
   "author": "",
