@@ -20,6 +20,7 @@ router.get('/delete/:id', async function (req, res, next) {
     // starts and builds if necessary
     const id = req.params.id;
     const result = await panelDelete(id);
+    res.json(result);
 });
 
 router.get('/', async function (req, res, next) {

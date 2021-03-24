@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const register = require('module-alias/register')
 const bodyParser = require('body-parser')
 const cors = require('cors');
+const favicon = require('serve-favicon');
 const helmet = require('helmet');
 
 // import environment variables from .env file
@@ -21,6 +22,7 @@ var bugApi = express();
 bugApi.set('json spaces', 2);
 bugApi.use(cors());
 bugApi.use(helmet());
+bugApi.use(favicon(path.join(__dirname,'..','client','public','favicon.ico')));
 
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));

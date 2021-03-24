@@ -21,13 +21,13 @@ module.exports = async (panelId) => {
         if( response.config.error === undefined ){
 
             //STEP 1 - Build the image for the module, if it's already been done this will be quick
-            const image = await buildImage(response.config.module);
+            response.image = await buildImage(response.config.module);
 
             //STEP 2 - Check if container exisits     
             if(response.config.container_id === undefined){
                 
                 //STEP 2a - Create a container     
-                container = await docker.createContainer({Image: image.tag, Cmd: ['npm','run',nodeEnv], Hostname: response.config.id, name: response.config.id});
+                container = await docker.createContainer({Image: response.image.tag, Cmd: ['npm','run',nodeEnv], Hostname: response.config.id, name: response.config.id});
                 
                 //STEP 2b - Get the containe ID and save it in the config
                 response.config.container_id = container.id;
@@ -48,7 +48,6 @@ module.exports = async (panelId) => {
                     container = await docker.getContainer(response.config.container_id);
                 } 
                 catch {
-                    console.log("HERE")
                     //If container_id exists but not coresponding container is found remove the refernce and recursion
                     delete response.config.container_id
                     await setConfig(response.config)
@@ -57,7 +56,7 @@ module.exports = async (panelId) => {
 
             }   
             //STEP 3 - Launch the Container
-            response.state = await container.start();
+            response.container = await container.start();
         }
         else{
             throw {message:"Invalid Panel ID. Does the panel exist?"}
@@ -65,7 +64,7 @@ module.exports = async (panelId) => {
 
     } catch (error) {
         response.error = error
-        logger.warn(`panel-start: ${error.trace || error || error.message}`);
+        logger.warn(__filename +': '+error);
     }
 
     return response

@@ -22,13 +22,16 @@ module.exports = async (panelId) => {
                 delete response.config.container_id
                 setConfig(response.config)
             }
+            else{
+                throw {message:"Invalid Panel ID. Does the panel exist?"}
+            }  
         }
         else{
             throw {message:"Invalid Panel ID. Does the panel exist?"}
         }  
     } catch (error) {
         response.error = error
-        logger.warn(`panel-delete: ${error.trace || error || error.message}`);
+        logger.warn(__filename +': '+error);
     }
     return response
 }

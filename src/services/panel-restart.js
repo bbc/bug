@@ -17,6 +17,9 @@ module.exports = async (panelId) => {
                 const container = await docker.getContainer(panelConfig.container_id);
                 response.state = await container.restart()
             }
+            else{
+                throw {message:"Panel has no container asccociated with it. Try starting first."}
+            }
         }
         else{
             throw {message:"Invalid Panel ID. Does the panel exist?"}
@@ -24,7 +27,7 @@ module.exports = async (panelId) => {
         
     } catch (error) {
         response.error = error
-        logger.warn(`panel-restart: ${error.trace || error || error.message}`);
+        logger.warn(__filename +': '+error);
     }
 
     return response

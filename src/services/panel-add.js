@@ -13,12 +13,14 @@ module.exports = async (panelConfig) => {
     }
 
     try {
-        panelConfig.id = await id()
+        if(panelConfig.id === undefined){
+            panelConfig.id = await id()
+        }
         response = await setConfig(panelConfig)
     }
     catch (error) {
         response.error = error
-        logger.warn(`panel-add: ${error.trace || error || error.message}`);
+        logger.warn(__filename +': '+error);
     }
 
     return response
