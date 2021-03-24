@@ -19,7 +19,7 @@ module.exports = async (moduleName) => {
              
         //Isolate just module names in a list
         for(var i=0; i < list.length; i++){
-            list[i] = list[i]
+            list[i] = list[i].name
         }
         
         //Check if module name is valid
