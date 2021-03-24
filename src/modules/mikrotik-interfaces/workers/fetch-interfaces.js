@@ -1,14 +1,19 @@
 const RosApi = require('node-routeros').RouterOSAPI;
-// const db = require('../utils/db');
 const delay = require('delay');
+const lokiDb = require('../utils/db');
+const bitrate = require('bitrate');
+var db = null;
+var dbInterfaces = null;
+
 const delayMs = 2000;
 const conn = new RosApi({
-    host: "172.24.63.254",
-    user: "admin",
-    password: "facs1655"
+    host: "172.26.108.126",
+    user: "bug",
+    password: "sfsafawffasfasr33r",
+    timeout: 5
 });
 
-const poll = async () => {
+async function getInterfaces() {
 
     // print the interface menu
     try {
@@ -23,43 +28,116 @@ const poll = async () => {
     for (var i in data) {
         interfaces.push(parseInterface(data[i]));
     }
-    console.log(interfaces);
-    // update the database
-    try {
-
-    } catch (error) {
-
-    }
-
+    return interfaces;
 };
 
+async function saveInterfaces(interfaces) {
+
+    try {
+        await Promise.all(interfaces.map(async (eachInterface) => {
+
+            var existingInterface = dbInterfaces.findOne({'id': eachInterface['id']});
+            if(existingInterface !== null) {
+                // found previous
+                timeDiff = eachInterface['timestamp'] - existingInterface['timestamp'];
+                byteDiff = parseFloat(eachInterface["rx-byte"]) - parseFloat(existingInterface["rx-byte"]);
+                eachInterface["rx-kbps"] = parseFloat(bitrate(byteDiff, timeDiff).toFixed(2));
+                eachInterface["rx-bps-text"] = bitrate(byteDiff, timeDiff, 'mbps').toFixed(2) + " Mb/s";
+                
+                // we've used it, now replace it
+                //TODO --- this doesn't quite work yet (GH)
+                await dbInterfaces.findAndUpdate(
+                    {'id': eachInterface['id']},
+                    function(int) {
+                        console.log(int, eachInterface);
+                        int = eachInterface;
+                    }
+                );
+            }
+            else {
+                await dbInterfaces.insertOne(eachInterface);
+            }
+        }));
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const main = async () => {
-    // connect
+    db = await lokiDb;
+
+    dbInterfaces = db.getCollection("interfaces");
+
     try {
         await conn.connect();
     } catch (error) {
         console.log("error connecting to device");
     }
-    //TODO add connection state to DB which gets read by UI
 
-
-    const noErrors = true;
+    var noErrors = true;
     while (noErrors) {
         try {
-            await poll();
+            const interfaces = await getInterfaces();
+            await saveInterfaces(interfaces);
         } catch (error) {
             noErrors = true;
         }
-        await delay(2000);
+        await delay(delayMs);
         console.log("loop");
     }
-
     await conn.close();
-    console.log("done");
+}
 
+const integerFields = [
+    'mtu',
+    'actual-mtu',
+    'l2mtu',
+    'max-l2mtu',
+    'link-downs',
+    'rx-byte',
+    'tx-byte',
+    'rx-packet',
+    'tx-packet',
+    'rx-drop',
+    'tx-drop',
+    'tx-queue-drop',
+    'tx-error',
+    'rx-error',
+    'fp-rx-byte',
+    'fp-tx-byte',
+    'fp-rx-packet',
+    'fp-tx-packet'
+];
+
+const booleanFields = [
+    'running',
+    'slave',
+    'disabled'
+];
+
+const parseInterface = (interface) => {
+    for (var i in integerFields) {
+        if (integerFields[i] in interface) {
+            interface[integerFields[i]] = parseInt(interface[integerFields[i]]) ?? 0;
+        }
+    }
+    for (var i in booleanFields) {
+        if (booleanFields[i] in interface) {
+            interface[booleanFields[i]] = (interface[booleanFields[i]] === 'true');
+        }
+    }
+    // overwrite '.id' field with 'id'
+    interface['id'] = interface['.id'];
+    delete interface['.id'];
+
+    // add timestamp
+    interface['timestamp'] = Date.now();
+    return interface;
 }
 
 main();
+
 
 // write to database
 
@@ -145,43 +223,3 @@ main();
 //     // Connection error
 // });
 
-const integerFields = [
-    'mtu',
-    'actual-mtu',
-    'l2mtu',
-    'max-l2mtu',
-    'link-downs',
-    'rx-byte',
-    'tx-byte',
-    'rx-packet',
-    'tx-packet',
-    'rx-drop',
-    'tx-drop',
-    'tx-queue-drop',
-    'tx-error',
-    'rx-error',
-    'fp-rx-byte',
-    'fp-tx-byte',
-    'fp-rx-packet',
-    'fp-tx-packet'
-];
-
-const booleanFields = [
-    'running',
-    'slave',
-    'disabled'
-];
-
-const parseInterface = (interface) => {
-    for (var i in integerFields) {
-        if (integerFields[i] in interface) {
-            interface[integerFields[i]] = parseInt(interface[integerFields[i]]);
-        }
-    }
-    for (var i in booleanFields) {
-        if (booleanFields[i] in interface) {
-            interface[booleanFields[i]] = (interface[booleanFields[i]] === 'true');
-        }
-    }
-    return interface;
-}
