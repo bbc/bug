@@ -5,10 +5,14 @@ const logger = require('@utils/logger');
 const readJson = require('@utils/read-json');
 
 module.exports = async (panelId) => {
+
+    let response = {}
+
     try {
-        return await readJson(path.join(__dirname,'..','config',panelId+'.json'));
+        response = await readJson(path.join(__dirname,'..','config',panelId+'.json'));
     } catch (error) {
+        response.error = error
         logger.warn(`panel-getconfig: ${error.trace || error || error.message}`);
     }
-
+    return response
 }

@@ -5,6 +5,9 @@ const modulePackage = require('@models/module-package');
 const docker = require('@utils/docker');
 
 module.exports = async () => {
+    
+    let response = {}
+
     try {
         const images =  await docker.listImages()
         let modules = await modulePackage.list();
@@ -22,8 +25,12 @@ module.exports = async () => {
             }
             list.push(module)
         }
-        return list;
+        response = list
+
     } catch (error) {
+        response.error = error
         logger.warn(`module-list: ${error.trace || error || error.message}`);
     }
+
+    return response
 }

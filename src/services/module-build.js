@@ -8,11 +8,13 @@ const moduleList = require('@services/module-list')
 const config = require('@services/panel-getconfig');
 
 module.exports = async (moduleName) => {
+
+    let response = {
+        module_name: moduleName,
+        tag: moduleName+':latest'
+    }
+
     try {
-        let status = {
-            module: moduleName,
-            tag: moduleName+':latest'
-        }
 
         //Get all modules
         let list = await moduleList()
@@ -26,15 +28,15 @@ module.exports = async (moduleName) => {
         if(list.includes(moduleName)){
 
             //Get full path in container
-            status.modulePath = path.join(__dirname,'..','modules',moduleName);
+            response.module_path = path.join(__dirname,'..','modules',moduleName);
 
             //Write a dockerfile for the module
-            writeDockerfile(status.modulePath)
+            writeDockerfile(response.module_path)
 
             //Build the image with dockerode
             const stream = await docker.buildImage(
                 {
-                    context: status.modulePath,
+                    context: response.module_path,
                     src: ['/']
                 },
                 {
@@ -48,14 +50,16 @@ module.exports = async (moduleName) => {
             //   });
         }
         else{
-            status.error = 'Module not found.'
-            logger.error('module-build: Module "'+moduleName+'" not found.')
+            throw {message:'Module `'+moduleName+'` not found.'}
         }
 
-        return status
+        
 
     } catch (error) {
+        response.error = error
         logger.warn(`module-build: ${error.trace || error || error.message}`);
     }
+
+    return response
 
 }

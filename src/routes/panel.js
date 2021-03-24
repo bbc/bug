@@ -10,6 +10,7 @@ const panelRestart = require('@services/panel-restart');
 const panelStop = require('@services/panel-stop');
 const panelList = require('@services/panel-list');
 const panelAdd = require('@services/panel-add');
+const panelDelete = require('@services/panel-delete');
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');

@@ -1,22 +1,23 @@
 {
-    "id": "15cd18e5bd3e57",
-    "order": 2,
-    "title": "Router - PW Core",
-    "module": "mikrotik-interfaces",
-    "description": null,
-    "notes": null,
-    "enabled": true,
-    "address": "172.26.108.126",
-    "username": "bug",
-    "password": "sfsafawffasfasr33r",
-    "protected_interfaces": [
-        "ether",
-        "sfp"
-    ],
-    "excluded_interfaces": [
-        "bridge",
-        "vlan",
-        "Loopback",
-        "eoip"
-    ]
+  "id": "15cd18e5bd3e57",
+  "order": 2,
+  "title": "Router - PW Core",
+  "module": "mikrotik-interfaces",
+  "description": null,
+  "notes": null,
+  "enabled": true,
+  "address": "172.26.108.126",
+  "username": "bug",
+  "password": "sfsafawffasfasr33r",
+  "protected_interfaces": [
+    "ether",
+    "sfp"
+  ],
+  "excluded_interfaces": [
+    "bridge",
+    "vlan",
+    "Loopback",
+    "eoip"
+  ],
+  "container_id": "6a7f186345fef73e6f8f3c0156ce811f1fd6f879a75025049ecfda7adaaac319"
 }
