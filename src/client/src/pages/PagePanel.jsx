@@ -1,15 +1,9 @@
 import { useParams } from "react-router-dom";
-import React, { Suspense, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { Suspense } from "react";
 import ApiPoller from "@utils/ApiPoller";
 import Loading from "@components/Loading";
 
-const useStyles = makeStyles({
-    root: {},
-});
-
 export default function PageHome(props) {
-    const classes = useStyles();
     const params = useParams();
     const panelId = params.panelid ?? "";
     const [panel, setPanel] = React.useState({
