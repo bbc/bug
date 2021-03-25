@@ -10,13 +10,18 @@ const panelRestart = require('@services/panel-restart');
 const panelStop = require('@services/panel-stop');
 const panelList = require('@services/panel-list');
 const panelAdd = require('@services/panel-add');
+const panelDelete = require('@services/panel-delete');
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
 
-// router.get('/delete', async function (req, res, next) {
-// });
+router.get('/delete/:id', async function (req, res, next) {
+    // starts and builds if necessary
+    const id = req.params.id;
+    const result = await panelDelete(id);
+    res.json(result);
+});
 
 router.get('/', async function (req, res, next) {
     // Gets a list of configured panels, their configs and states
@@ -28,6 +33,14 @@ router.get('/add', async function (req, res, next) {
     // Gets a list of configured panels, their configs and states
     const config = req.query
     const result = await panelAdd(config);
+    res.json(result);
+});
+
+
+router.get('/build/:moduleName', async function (req, res, next) {
+    // starts and builds if necessary
+    const moduleName = req.params.moduleName;
+    const result = await panelStart(moduleName);
     res.json(result);
 });
 

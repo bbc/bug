@@ -1,5 +1,7 @@
 # BUG (Broadcast Universal Gateway)
 
+![BUG Logo](https://github.com/bbc/bbcnews-bug-core/blob/main/src/client/public/icons/bug-logo-256x256.png?raw=true)
+
 BUG provides management and control of network devices in broadcast environments.
 
 This is the all new version 3.

@@ -2,3 +2,6 @@
 ._*
 node_modules
 logs
+data
+
+/src/modules/*Dockerfile

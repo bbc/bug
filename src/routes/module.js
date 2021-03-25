@@ -5,6 +5,7 @@ const router = express.Router();
 const logger = require('@utils/logger');
 const moduleList = require('@services/module-list');
 const moduleGet = require('@services/module-get');
+const moduleBuild = require('@services/module-build')
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -21,4 +22,10 @@ router.get('/:modulename', async function (req, res, next) {
     res.json(result);
 });
 
+router.get('/build/:modulename', async function (req, res, next) {
+    let moduleName = req.params.modulename;
+    var result = await moduleBuild(moduleName);
+    res.json(result);
+});
+  
 module.exports = router;

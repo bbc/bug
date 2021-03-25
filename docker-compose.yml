@@ -14,13 +14,13 @@ networks:
     driver: bridge
 
 services:
-  bug-core:
+  core:
     build: "./src"
     restart: always
     volumes:
       - ./src/bin:/home/node/bug-core/bin
       - ./src/config:/home/node/bug-core/config
-      - ./src/dummydata:/home/node/bug-core/dummydata
+      - ./src/data:/home/node/bug-core/data
       - ./src/logs:/home/node/bug-core/logs
       - ./src/models:/home/node/bug-core/models
       - ./src/modules:/home/node/bug-core/modules
