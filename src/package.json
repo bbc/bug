@@ -8,7 +8,7 @@
   },
   "scripts": {
     "production": "node bin/bug-core-prod",
-    "development": "concurrently \"nodemon --ignore './data/' --exec ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
+    "development": "concurrently \"nodemon --ignore './data/' ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
     "test": "jest"
   },
   "repository": {
