@@ -10,6 +10,7 @@ export default class ApiPoller extends React.Component {
         this.status = 'idle';
         this.data = null;
         this.error = null;
+        this.hasLoaded = false;
     }
 
     componentDidMount() {
@@ -35,7 +36,9 @@ export default class ApiPoller extends React.Component {
     async fetch() {
         clearTimeout(this.timer);
 
-        this.status = 'loading';
+        if(!this.hasLoaded) {
+            this.status = 'loading';
+        }
         this.handleUpdated();
 
         // create cancel token
@@ -48,6 +51,7 @@ export default class ApiPoller extends React.Component {
             });
             this.status = 'succeeded';
             this.data = response.data;
+            this.hasLoaded = true;
             this.handleUpdated();
             const _fetch = () => this.fetch()
             this.timer = setTimeout( _fetch, 10000 )
