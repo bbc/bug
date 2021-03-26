@@ -81,8 +81,8 @@ const Menu = (props) => {
                 <ListItem button>
                     <ListItemText primary="Settings" />
                 </ListItem>
-                <ListItemLink href="#simple-list">
-                    <ListItemText primary="Help" />
+                <ListItemLink component={Link} to="/panels">
+                    <ListItemText primary="Panels" />
                 </ListItemLink>
             </List>
         </div>

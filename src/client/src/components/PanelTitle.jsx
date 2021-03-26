@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelTitle() {
+export default function PanelTitle(props) {
     const classes = useStyles();
 
     return <div className={classes.title}>{props.title}</div>;
