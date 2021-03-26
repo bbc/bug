@@ -5,7 +5,8 @@ const tar = require('tar')
 
 module.exports = async (inputFolderPath,outputFilePath) => {
     
-    await tar.c({gzip: true},[inputFolderPath]).pipe(await fs.createWriteStream(outputFilePath));
-
+    const stream = await tar.create({gzip: true},[inputFolderPath]);
+    await sreaam.pipe(await fs.createWriteStream(outputFilePath));
+    
     return outputFilePath
 }

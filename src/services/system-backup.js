@@ -16,11 +16,10 @@ module.exports = async () => {
     try {
 
         response.panels = await readDir(response.config_folder)
-
         response.filename = 'backup-'+moment().format('DD-MM-YYYY-HH-mm-ss')+'.tgz';
-        response.filepath = path.join(response.data_folder,response.filename)
+        response.filepath = path.join(response.data_folder,'backup.tgz')
 
-        await tarFolder(response.config_folder,'backup.tgz')
+        await tarFolder(response.config_folder,response.filepath)
        
     } catch (error) {
         response.error = error
