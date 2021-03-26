@@ -54,7 +54,7 @@ const HomeTiles = (props) => {
         return (
             <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
                 <Box className={classes.tile}>
-                    <DynamicIcon className={classes.tileIcon} iconName={item._module_icon} />
+                    <DynamicIcon className={classes.tileIcon} iconName={item._module.icon} />
                     <div className={classes.tileTitle}>{item.title}</div>
                 </Box>
             </Link>
