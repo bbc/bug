@@ -36,7 +36,13 @@ module.exports = async (moduleName) => {
             }
 
             function onProgress(event) {
-                logger.debug(`docker-buildmodule: ${moduleName}`, event);
+                //TODO update mongo with progress?
+                // stream outputs stuff like 'Step 5/5 : CMD ["npm","run","development"]' 
+                // we could scrape the Step 5/5 and return a percentage done?
+                if(event && event.stream) {
+                    const streamNoNewlines = event.stream.replace(/(\r\n|\n|\r)/gm, "");
+                    logger.debug(`docker-buildmodule: ${moduleName} ${streamNoNewlines}`);
+                }
             }
         });
 

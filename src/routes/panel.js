@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const panelConfigList = require('@services/panelconfig-list');
+const panelConfigGet = require('@services/panelconfig-get');
 const panelGet = require('@services/panel-get');
 const panelGetData = require('@services/panel-getdata');
 const panelStart = require('@services/panel-start');
@@ -86,6 +87,16 @@ router.get('/config', async function (req, res, next) {
         res.json(result);
     } catch (error) {
         res.json({ error: "Failed to list panel config" });
+    }
+});
+
+
+router.get('/config/:id', async function (req, res, next) {
+    try {
+        const result = await panelConfigGet(req.params.id);
+        res.json(result);
+    } catch (error) {
+        res.json({ error: "Failed to fetch panel config" });
     }
 });
 

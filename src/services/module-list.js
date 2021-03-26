@@ -1,31 +1,26 @@
 'use strict';
 
 const logger = require('@utils/logger');
-const modulePackage = require('@models/module-package');
-const docker = require('@utils/docker');
+const moduleConfig = require('@models/module-config');
+const dockerListImages = require('@services/docker-listimages');
 
 module.exports = async () => {
-    
-    let response = {}
+
+    let response = [];
+
+    const images = await dockerListImages()
+    const moduleList = await moduleConfig.list();
 
     try {
-        const images =  await docker.listImages()
-        let modules = await modulePackage.list();
-        modules.sort(function (a, b) {
-            return (a.longname < b.longname) ? -1 : 1;
-        });
+        for (let eachModule of moduleList) {
 
-        let list = []
-        for(let module of modules){
-            for(const image of images){
-                const tag = image.RepoTags[0].split(':')[0]
-                if(tag === module.name){
-                    module.image = image
+            for (const eachImage of images) {
+                if (eachImage.module === eachModule.name) {
+                    eachModule.image = eachImage
                 }
             }
-            list.push(module)
+            response.push(eachModule)
         }
-        response = list
 
     } catch (error) {
         response.error = error
@@ -34,3 +29,7 @@ module.exports = async () => {
 
     return response
 }
+
+        // modules.sort(function (a, b) {
+        //     return (a.longname < b.longname) ? -1 : 1;
+        // });

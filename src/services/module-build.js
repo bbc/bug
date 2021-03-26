@@ -4,34 +4,31 @@ const path = require('path');
 const logger = require('@utils/logger');
 const dockerFileWrite = require('@services/dockerfile-write');
 const dockerBuildModule = require('@services/docker-buildmodule');
-const moduleList = require('@services/module-list')
+const moduleConfig = require('@models/module-config');
 
 module.exports = async (moduleName) => {
 
     try {
 
-        let list = await moduleList()
+        // fetch list of available modules
+        const moduleList = await moduleConfig.list();
 
-        // Isolate just module names in a list
-        for (var i = 0; i < list.length; i++) {
-            list[i] = list[i].name
-        }
+        var matchedModule = moduleList.find(function(eachModule, index) {
+            return (eachModule.name == moduleName);
+        });
 
-        //TODO - how do we check if this needs rebuilding?
-
-        if (!list.includes(moduleName)) {
+        if(!matchedModule) {
             logger.warn(`module-build: module '${moduleName}' not found`);
             return false;
         }
 
-        // Get full path in container
-        const module_path = path.join(__dirname, '..', 'modules', moduleName);
-
         // Write a dockerfile for the module
-        if(!await dockerFileWrite(module_path)) {
+        const modulePath = path.join(__dirname, '..', 'modules', moduleName);
+        if(!await dockerFileWrite(modulePath)) {
             return false;
         }
 
+        // and build the module
         return await dockerBuildModule(moduleName);
 
     } catch (error) {

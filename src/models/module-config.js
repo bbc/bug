@@ -21,28 +21,22 @@ exports.list = async function() {
     var moduleArray = [];
     for(var i in files) {
         try {
-            let filename = path.join(modulesFolder, files[i], 'package.json');
+            let filename = path.join(modulesFolder, files[i], 'module.json');
             var packageFile = await readJson(filename);
-            if(packageFile) {
-                moduleArray.push({
-                    name: packageFile['name'] ?? '',
-                    longname: packageFile['longname'] ?? '',
-                    version: packageFile['version'] ?? '',
-                    description: packageFile['description'] ?? '',
-                    author: packageFile['author'] ?? '',
-                    icon: packageFile['icon'] ?? '',
-                    path: path.join(modulesFolder, files[i])
-                });
+            if(!packageFile) {
+                logger.warn(`module-config: file '${filename}' not found`);
+                return null
             }
+            moduleArray.push(packageFile);
         } catch (error) {
             logger.warn(`module-list: ${error.trace || error || error.message}`);
         }
     }
-
     return moduleArray;
 }
 
 exports.get = async function(moduleName) {
+    //TODO - just get the file!
     try {
         var moduleList = await exports.list();
         for(var i in moduleList) {
