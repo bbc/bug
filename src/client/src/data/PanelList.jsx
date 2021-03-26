@@ -13,7 +13,7 @@ export default function PanelList(props) {
 
     return (
         <PanelContext.Provider value={value}>
-            <ApiPoller url="/api/panel/config/" interval="1000" onChanged={(result) => setValue(result)}/>
+            <ApiPoller url="/api/panel/" interval="1000" onChanged={(result) => setValue(result)}/>
             {props.children}
         </PanelContext.Provider>
     )

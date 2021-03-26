@@ -31,7 +31,7 @@ export default function PageHome(props) {
 
     return (
         <div key={panelId}>
-            <ApiPoller url={`/api/panel/config/${panelId}`} interval="30000" onChanged={(result) => setPanel(result)} />
+            <ApiPoller url={`/api/panel/${panelId}`} interval="30000" onChanged={(result) => setPanel(result)} />
             {renderPanel()}
         </div>
     );

@@ -48,7 +48,7 @@ const Menu = (props) => {
         return (
             <ListItem button component={Link} to={`/panel/${item.id}`} key={item.id} className={classes.menuItem}>
                 <ListItemIcon className={classes.menuItemIcon}>
-                    <DynamicIcon iconName={item._module_icon} />
+                    <DynamicIcon iconName={item._module.icon} />
                 </ListItemIcon>
                 <ListItemText primary={item.title} />
             </ListItem>
