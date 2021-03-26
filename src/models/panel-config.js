@@ -6,12 +6,25 @@ const readdir = util.promisify(fs.readdir);
 const logger = require('@utils/logger');
 const readJson = require('@utils/read-json');
 const path = require('path');
+const writeJson = require('@utils/write-json');
 
 exports.get = async function(panelId) {
     try {
         return await readJson(`config/${panelId}.json`);
     } catch (error) {
         logger.warn(`panel-config: ${error.trace || error || error.message}`);
+    }
+}
+
+exports.set = async function(panelConfig) {
+
+    try {
+        let path = path.join(__dirname,'..','config',panelConfig.id)
+        return writeJson(path,panelConfig);
+    } 
+    catch (error) {
+        logger.warn(`panel-config: ${error.trace || error || error.message}`);
+        return false;
     }
 }
 

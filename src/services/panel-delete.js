@@ -1,37 +1,38 @@
 'use strict';
 
 const logger = require('@utils/logger');
-const docker = require('@utils/docker');
-const getConfig = require('@services/panel-getconfig');
-const setConfig = require('@services/panel-setconfig');
-const panelStop = require('@services/panel-stop');
+const dockerStopContainer = require('@services/docker-stopcontainer');
+const dockerDeleteContainer = require('@services/docker-deletecontainer');
+const panelConfig = require('@models/panel-config');
+const dockerGetContainer = require('@services/docker-getcontainer');
 
 module.exports = async (panelId) => {
 
-    let response = {
-        panel_id: panelId
-    }
-
     try {
-        response.config = await getConfig(panelId)
-        if( response.config.error === undefined ){
-            if(response.config.container_id){
-                response.container = await panelStop(panelId)
-                const container = await docker.getContainer(response.config.container_id);
-                response.state = await container.remove()
-                delete response.config.container_id
-                setConfig(response.config)
-            }
-            else{
-                throw {message:"Invalid Panel ID. Does the panel exist?"}
-            }  
+
+        var config = await panelConfig.get(panelId);
+        if(!config) {
+            logger.warn(`panel-delete: panel ${panelId} not found`);
+            return false
         }
-        else{
-            throw {message:"Invalid Panel ID. Does the panel exist?"}
-        }  
+
+        let container = await dockerGetContainer(panelId);
+        if(!container) {
+            logger.warn(`panel-delete: no container found for panel id ${panelId}`);
+            return false;
+        }
+
+        logger.info(`panel-delete: stopping container for panel id ${panelId}`);
+        if(!await dockerStopContainer(container)) {
+            logger.info(`panel-delete: failed to stop container for panel id ${panelId}`);
+            return false;
+        }
+
+        logger.info(`panel-delete: deleting container for panel id ${panelId}`);
+        return await dockerDeleteContainer(container);
+
     } catch (error) {
-        response.error = error
-        logger.warn(__filename +': '+error);
+        logger.error(`panel-delete: ${error.stack || error.trace || error || error.message}`);
+        return false;
     }
-    return response
 }

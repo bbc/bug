@@ -11,9 +11,9 @@ module.exports = async (panelConfig) => {
     }
 
     try {
-        response.path = path.join(__dirname,'..','config',panelConfig.id)
-        writeJson(response.path,panelConfig);
-    } 
+        response.path = path.join(__dirname, '..', 'config', panelConfig.id)
+        writeJson(response.path, panelConfig);
+    }
     catch (error) {
         response.error = error
         logger.warn(`panel-setconfig: ${error.trace || error || error.message}`);

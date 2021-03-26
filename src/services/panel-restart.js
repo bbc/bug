@@ -1,34 +1,33 @@
 'use strict';
 
 const logger = require('@utils/logger');
-const docker = require('@utils/docker');
-const getConfig = require('@services/panel-getconfig');
+const panelConfig = require('@models/panel-config');
+const dockerRestartContainer = require('@services/docker-restartcontainer');
+const dockerGetContainer = require('@services/docker-getcontainer');
 
 module.exports = async (panelId) => {
 
-    let response = {
-        panel_id: panelId
-    }
-
     try {
-        let panelConfig = await getConfig(panelId)
-        if( panelConfig.error === undefined ){
-            if(panelConfig.container_id){
-                const container = await docker.getContainer(panelConfig.container_id);
-                response.state = await container.restart()
-            }
-            else{
-                throw {message:"Panel has no container asccociated with it. Try starting first."}
-            }
+
+        var config = await panelConfig.get(panelId);
+        if (!config) {
+            logger.warn(`panel-restart: panel ${panelId} not found`);
+            return false
         }
-        else{
-            throw {message:"Invalid Panel ID. Does the panel exist?"}
+
+        let container = await dockerGetContainer(panelId);
+        if (!container) {
+            logger.warn(`panel-restart: panel ${panelId} has no associated container - try starting first`);
+            return false
         }
-        
+
+        // restart the container
+        logger.info(`panel-restart: restarting container for panel id ${panelId}`);
+        return dockerRestartContainer(container);
+
     } catch (error) {
-        response.error = error
-        logger.warn(__filename +': '+error);
+        logger.error(`panel-restart: ${error.stack || error.trace || error || error.message}`);
+        return false;
     }
 
-    return response
 }

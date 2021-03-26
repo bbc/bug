@@ -10,3 +10,5 @@
 - move package.json fields into module.json? In case we don't use nodejs
 
 - API proxy setting in package.json doesn't use .env value - 3101 is hard coded
+
+- ignore dockerfiles in modules but not main

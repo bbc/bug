@@ -1,0 +1,49 @@
+'use strict';
+
+const path = require('path');
+const logger = require('@utils/logger');
+const docker = require('@utils/docker');
+
+module.exports = async (moduleName) => {
+    try {
+        logger.info(`docker-buildmodule: building module ${moduleName}`);
+
+        // Get full path in container
+        const module_path = path.join(__dirname, '..', 'modules', moduleName);
+
+        // Build the image with dockerode
+        let stream = await docker.buildImage({
+            context: module_path,
+            src: ['/']
+        }, {
+            t: moduleName
+        });
+
+        // watch the stream for progress
+        var progressResult = await new Promise((resolve, reject) => {
+
+            docker.modem.followProgress(stream, onFinished, onProgress);
+
+            function onFinished(err, output) {
+                if (err) {
+                    logger.warn(`docker-buildmodule: error while building module ${moduleName}:`, err);
+                    resolve(false);
+                }
+                else {
+                    logger.info(`docker-buildmodule: module ${moduleName} built OK`);
+                    resolve(true);
+                }
+            }
+
+            function onProgress(event) {
+                logger.debug(`docker-buildmodule: ${moduleName}`, event);
+            }
+        });
+
+
+        return progressResult;
+    } catch (error) {
+        logger.error(error);
+        return false;
+    }
+}

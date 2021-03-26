@@ -8,20 +8,22 @@ const setConfig = require('@services/panel-setconfig');
 
 module.exports = async (panelConfig) => {
 
-    let response = {
-        config: panelConfig
-    }
+    // SORRY - I need to rethink this
 
-    try {
-        if(panelConfig.id === undefined){
-            panelConfig.id = await id()
-        }
-        response = await setConfig(panelConfig)
-    }
-    catch (error) {
-        response.error = error
-        logger.warn(__filename +': '+error);
-    }
+    // let response = {
+    //     config: panelConfig
+    // }
 
-    return response
+    // try {
+    //     if(panelConfig.id === undefined){
+    //         panelConfig.id = await id()
+    //     }
+    //     response = await setConfig(panelConfig)
+    // }
+    // catch (error) {
+    //     logger.error(`panel-add: ${error.stack || error.trace || error || error.message}`);
+    //     return false;
+    // }
+
+    // return response
 }

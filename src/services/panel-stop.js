@@ -1,31 +1,30 @@
 'use strict';
 
 const logger = require('@utils/logger');
-const docker = require('@utils/docker');
-const getConfig = require('@services/panel-getconfig');
+const dockerGetContainer = require('@services/docker-getcontainer');
+const dockerStopContainer = require('@services/docker-stopcontainer');
+const panelConfig = require('@models/panel-config');
 
 module.exports = async (panelId) => {
 
-    let response = {
-        panel_id: panelId
-    }
-
     try {
-        let panelConfig = await getConfig(panelId)
-        if( panelConfig.error === undefined ){
-            if(panelConfig.container_id){
-                const container = await docker.getContainer(panelConfig.container_id);
-                response.state = await container.stop()
-            }
+        var config = await panelConfig.get(panelId);
+        if (!config) {
+            logger.warn(`panel-stop: panel ${panelId} not found`);
+            return false
         }
-        else{
-            throw {message:"Invalid Panel ID. Does the panel exist?"}
-        }
-        
-    } catch (error) {
-        response.error = error
-        logger.warn(`panel-delete: ${error.trace || error || error.message}`);
-    }
 
-    return response
+        let container = await dockerGetContainer(panelId);
+        if (!container) {
+            logger.warn(`panel-stop: no container found for panel id ${panelId}`);
+            return false;
+        }
+
+        logger.info(`panel-stop: stoppping container for panel id ${panelId}`);
+        return await dockerStopContainer(container);
+
+    } catch (error) {
+        logger.error(`panel-stop: ${error.stack || error.trace || error || error.message}`);
+        return false;
+    }
 }
