@@ -1,8 +1,5 @@
 {
     "name": "mikrotik-routes",
-    "longname": "Mikrotik Routes",
-    "version": "1.0.0",
-    "description": "Allows selection of default route on Mikrotik routers",
     "main": "index.js",
     "scripts": {
       "start": "npm index",

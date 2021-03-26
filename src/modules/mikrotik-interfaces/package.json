@@ -1,9 +1,5 @@
 {
     "name": "mikrotik-interfaces",
-    "longname": "Mikrotik Interfaces",
-    "version": "1.0.0",
-    "description": "Monitoring and control of mikrotik interfaces",
-    "icon": "SettingsInputComponent",
     "main": "index.js",
     "scripts": {
         "production": "node ./api/server",

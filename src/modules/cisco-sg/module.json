@@ -1,0 +1,25 @@
+{
+    "name": "cisco-sg",
+    "longname": "Cisco SG Switches",
+    "version": "1.0.0",
+    "description": "Monitoring and control of Cisco SG-series switches",
+    "icon": "SettingsEthernet",
+    "notes": "",
+    "author": "Geoff House",
+    "license": "ISC",
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "title": "",
+        "module": "mikrotik-interfaces",
+        "description": "",
+        "notes": "",
+        "enabled": true,
+        "address": "",
+        "username": "bug",
+        "password": "",
+        "passwordauth": true,
+        "community": "public",
+        "protected_interfaces": []
+    }
+}

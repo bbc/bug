@@ -1,0 +1,22 @@
+{
+    "name": "mikrotik-routes",
+    "longname": "Mikrotik Routes",
+    "version": "1.0.0",
+    "description": "Allows selection of default route on Mikrotik routers",
+    "notes": "",
+    "icon": "SettingsInputComponent",
+    "author": "Geoff House",
+    "license": "ISC",
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "title": "",
+        "module": "mikrotik-routes",
+        "description": "",
+        "notes": "",
+        "enabled": true,
+        "address": "",
+        "username": "bug",
+        "password": ""
+    }
+}

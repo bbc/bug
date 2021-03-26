@@ -1,0 +1,29 @@
+{
+    "name": "mikrotik-interfaces",
+    "longname": "Mikrotik Interfaces",
+    "description": "Monitoring and control of mikrotik interfaces",
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "SettingsInputComponent",
+    "author": "Geoff House",
+    "license": "ISC",
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "title": "",
+        "module": "mikrotik-interfaces",
+        "description": "",
+        "notes": "",
+        "enabled": true,
+        "address": "",
+        "username": "bug",
+        "password": "",
+        "protected_interfaces": [],
+        "excluded_interfaces": [
+            "bridge",
+            "vlan",
+            "Loopback",
+            "eoip"
+        ]
+    }        
+}
