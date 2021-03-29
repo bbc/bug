@@ -31,19 +31,11 @@ module.exports = async (panelId) => {
             return false
         }
 
-        panelBuildStatusModel.set(panelId, {
-            text: "Building image",
-            error: false,
-            progress: 5
-        });
+        panelBuildStatusModel.set(panelId, "Building image", 5);
 
         // build the image for the module, if it's already been done this will be quick
         if (!await moduleBuild(config.module, updateProgress)) {
-            panelBuildStatusModel.set(panelId, {
-                text: "Failed to build image",
-                error: true,
-                progress: -1
-            });
+            panelBuildStatusModel.setError(panelId, "Failed to build image");
             logger.warn("panel-start: failed to build module (image)");
             return false;
         }
@@ -52,23 +44,14 @@ module.exports = async (panelId) => {
         let container = await dockerGetContainer(panelId);
         if (!container) {
             // it doesn't exist - let's create it
-            panelBuildStatusModel.set(panelId, {
-                text: "Building container",
-                error: false,
-                progress: 10
-            });
+            panelBuildStatusModel.set(panelId, "Building container", 10);
             await dockerCreateContainer(config);
 
             // and fetch it again - to make sure it exists
             container = await dockerGetContainer(panelId);
             if (!container) {
                 // it still doesn't exist - give up
-                panelBuildStatusModel.set(panelId, {
-                    text: "Failed to build container",
-                    error: true,
-                    progress: -1
-                });
-
+                panelBuildStatusModel.setError(panelId, "Failed to build container");
                 logger.info(`panel-start: failed to create container for panel id ${panelId}`);
                 return false;
             }
@@ -76,11 +59,7 @@ module.exports = async (panelId) => {
         }
 
         // final status update (then we leave the rest to the containerinfo service)
-        panelBuildStatusModel.set(panelId, {
-            text: "Built",
-            error: false,
-            progress: -1
-        });
+        panelBuildStatusModel.set(panelId, "Built", -1);
 
         // start the container
         logger.info(`panel-start: starting container for panel id ${panelId}`);
@@ -88,11 +67,7 @@ module.exports = async (panelId) => {
         return await dockerStartContainer(container);
 
     } catch (error) {
-        panelBuildStatusModel.set(panelId, {
-            text: "Error",
-            error: true,
-            progress: -1
-        });
+        panelBuildStatusModel.setError(panelId, "Unknown error");
         logger.error(`panel-start: ${error.stack || error.trace || error || error.message}`);
         return false;
     }

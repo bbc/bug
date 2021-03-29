@@ -3,12 +3,20 @@
 const logger = require('@utils/logger');
 const Db = require('@utils/db');
 
+const connect = async () => {
+    var dbClass = new Db();
+    var db = await dbClass.connect();
+    if(!db) {
+        logger.warn("panel-buildstatus: could not connect to database");
+        return false;
+    }
+    return db;
+}
+
 exports.get = async function(panelId) {
     try {
-        var dbClass = new Db();
-        var db = await dbClass.connect();
+        let db = await connect();
         if(!db) {
-            logger.warn("panel-buildstatus: could not connect to database");
             return null;
         }
 
@@ -23,12 +31,10 @@ exports.get = async function(panelId) {
     return null;
 }
 
-exports.set = async function(panelId, status) {
+exports.set = async function(panelId, statusText, progress) {
     try {
-        var dbClass = new Db();
-        var db = await dbClass.connect();
+        let db = await connect();
         if(!db) {
-            logger.warn("panel-buildstatus: could not connect to database");
             return false;
         }
 
@@ -38,7 +44,41 @@ exports.set = async function(panelId, status) {
             },{
                 "$set": {
                     "panelid": panelId,
-                    "status": status
+                    "status": {
+                        text: statusText,
+                        progress,
+                        error: false
+                    }
+                }
+            },{
+                "upsert": true
+            }
+        );
+        return true;
+    } catch (error) {
+        logger.warn(`panel-buildstatus: ${error.trace || error || error.message}`);
+        return false;
+    }
+}
+
+exports.setError = async function(panelId, errorText) {
+    try {
+        let db = await connect();
+        if(!db) {
+            return false;
+        }
+
+        await db.collection('panelstatus').updateOne(
+            {
+                "panelid": panelId
+            },{
+                "$set": {
+                    "panelid": panelId,
+                    "status": {
+                        text: errorText,
+                        progress: -1,
+                        error: true
+                    }
                 }
             },{
                 "upsert": true
@@ -53,10 +93,8 @@ exports.set = async function(panelId, status) {
 
 exports.setProgress = async function(panelId, progress) {
     try {
-        var dbClass = new Db();
-        var db = await dbClass.connect();
+        let db = await connect();
         if(!db) {
-            logger.warn("panel-buildstatus: could not connect to database");
             return false;
         }
 
@@ -80,10 +118,8 @@ exports.setProgress = async function(panelId, progress) {
 
 exports.list = async function() {
     try {
-        var dbClass = new Db();
-        var db = await dbClass.connect();
+        let db = await connect();
         if(!db) {
-            logger.warn("panel-buildstatus: could not connect to database");
             return null;
         }
 
