@@ -1,37 +1,28 @@
 'use strict';
 
 const logger = require('@utils/logger');
-const panelConfig = require('@models/panel-config');
-const moduleConfig = require('@models/module-config');
+const panelConfigModel = require('@models/panel-config');
+const moduleConfigModel = require('@models/module-config');
 const dockerListContainerInfo = require('@services/docker-listcontainerinfo');
+const panelFilter = require('@filters/panel');
+const panelBuildStatusModel = require('@models/panel-buildstatus');
 
 module.exports = async () => {
-    const panelList = await panelConfig.list();
-
-    // also fetch module info
-    const moduleList = await moduleConfig.list();
-
-    // also fetch container info
-    const containerList = await dockerListContainerInfo();
+    const panelConfig = await panelConfigModel.list();
+    const moduleConfig = await moduleConfigModel.list();
+    const containerInfoList = await dockerListContainerInfo();
+    const panelBuildStatus = await panelBuildStatusModel.list();
 
     var filteredPanelList = [];
-    for (var i in panelList) {
-        var panelModule = moduleList.find(o => o.name === panelList[i]['module']) ?? null;
-        if(panelModule) {
-            var panelContainer = containerList.find(o => o.name === panelList[i]['id']) ?? null;
+    for (var i in panelConfig) {
+        var thisModuleConfig = moduleConfig.find(o => o.name === panelConfig[i]['module']) ?? null;
+        if(thisModuleConfig) {
+            var thisContainerInfo = containerInfoList.find(o => o.name === panelConfig[i]['id']) ?? null;
+            var thisBuildStatus = panelBuildStatus.find(o => o.panelid === panelConfig[i]['id']) ?? null;
 
-            // we don't need the defaultconfig bit in the panelModule - we we'll just remove it - every byte counts!
-            delete panelModule.defaultconfig;
-
-            filteredPanelList.push({
-                id: panelList[i]['id'],
-                order: panelList[i]['order'],
-                title: panelList[i]['title'],
-                enabled: panelList[i]['enabled'],
-                module: panelList[i]['module'],
-                _module: panelModule,
-                _container: panelContainer
-            });
+            filteredPanelList.push(
+                panelFilter(panelConfig[i], thisModuleConfig, thisContainerInfo, thisBuildStatus)
+            );
         }
     }
 

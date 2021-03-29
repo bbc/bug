@@ -33,13 +33,15 @@ module.exports = async (panelId) => {
 
         panelBuildStatusModel.set(panelId, {
             text: "Building image",
-            progress: 0
+            error: false,
+            progress: 5
         });
 
         // build the image for the module, if it's already been done this will be quick
         if (!await moduleBuild(config.module, updateProgress)) {
             panelBuildStatusModel.set(panelId, {
                 text: "Failed to build image",
+                error: true,
                 progress: -1
             });
             logger.warn("panel-start: failed to build module (image)");
@@ -52,7 +54,8 @@ module.exports = async (panelId) => {
             // it doesn't exist - let's create it
             panelBuildStatusModel.set(panelId, {
                 text: "Building container",
-                progress: -1
+                error: false,
+                progress: 10
             });
             await dockerCreateContainer(config);
 
@@ -62,6 +65,7 @@ module.exports = async (panelId) => {
                 // it still doesn't exist - give up
                 panelBuildStatusModel.set(panelId, {
                     text: "Failed to build container",
+                    error: true,
                     progress: -1
                 });
 
@@ -74,7 +78,8 @@ module.exports = async (panelId) => {
         // final status update (then we leave the rest to the containerinfo service)
         panelBuildStatusModel.set(panelId, {
             text: "Built",
-            progress: 95
+            error: false,
+            progress: -1
         });
 
         // start the container
@@ -85,6 +90,7 @@ module.exports = async (panelId) => {
     } catch (error) {
         panelBuildStatusModel.set(panelId, {
             text: "Error",
+            error: true,
             progress: -1
         });
         logger.error(`panel-start: ${error.stack || error.trace || error || error.message}`);

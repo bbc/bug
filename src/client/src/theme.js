@@ -1,9 +1,20 @@
 import { createMuiTheme }  from '@material-ui/core/styles'
 const theme = createMuiTheme({
+  overrides: {
+    MuiTableCell: {
+      root: {
+        padding: '8px 12px',
+        borderBottom: '1px solid #181818'
+      },
+    },    
+  },
   typography: {
     fontFamily: [
       'ReithSans'
     ],
+    serviceState: {
+      opacity: 0.5
+    }
   },
   palette: {
     type: 'dark',
@@ -25,6 +36,15 @@ const theme = createMuiTheme({
     secondary: { 
       main: '#000000' 
     },
+
+    success: {
+      main: '#05990c'
+    },
+
+    error: {
+      main: '#f11d1d'
+    },
+
   },
 })
 export default theme

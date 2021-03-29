@@ -79,4 +79,27 @@ exports.setProgress = async function(panelId, progress) {
 }
 
 exports.list = async function() {
+    try {
+        var dbClass = new Db();
+        var db = await dbClass.connect();
+        if(!db) {
+            logger.warn("panel-buildstatus: could not connect to database");
+            return null;
+        }
+
+        var response = [];
+        var result = await db.collection('panelstatus').find().toArray();
+        for(var eachResult of result) {
+            response.push({
+                'panelid': eachResult['panelid'],
+                'status': eachResult['status'],
+            });
+        }
+        return response;
+
+    } catch (error) {
+        logger.warn(`panel-buildstatus: ${error.trace || error || error.message}`);
+    }
+    return null;
+
 }

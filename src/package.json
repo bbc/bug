@@ -34,6 +34,7 @@
     "http-errors": "^1.8.0",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
+    "mongodb": "^3.6.5",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.22",
     "path": "^0.12.7",
@@ -54,6 +55,7 @@
   },
   "_moduleAliases": {
     "@root": ".",
+    "@filters": "./filters/",
     "@routes": "./routes/",
     "@models": "./models/",
     "@utils": "./utils/",

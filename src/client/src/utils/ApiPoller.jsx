@@ -11,6 +11,7 @@ export default class ApiPoller extends React.Component {
         this.data = null;
         this.error = null;
         this.hasLoaded = false;
+        this.interval = props.interval ?? 10000;
     }
 
     componentDidMount() {
@@ -54,7 +55,7 @@ export default class ApiPoller extends React.Component {
             this.hasLoaded = true;
             this.handleUpdated();
             const _fetch = () => this.fetch()
-            this.timer = setTimeout( _fetch, 10000 )
+            this.timer = setTimeout( _fetch, this.interval )
         } catch (error) {
             if(axios.isCancel(error)) {
                 return;
@@ -63,7 +64,7 @@ export default class ApiPoller extends React.Component {
             this.data = [];
             this.handleUpdated();
             const _fetch = () => this.fetch()
-            this.timer = setTimeout( _fetch, 20000 )
+            this.timer = setTimeout( _fetch, (this.interval * 2) )
             console.error(error)
         }
     }      

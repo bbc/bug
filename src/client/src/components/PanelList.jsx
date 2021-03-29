@@ -10,36 +10,81 @@ import Paper from "@material-ui/core/Paper";
 import { PanelContext } from "@data/PanelList";
 import PanelTitle from "@components/PanelTitle";
 import Loading from "./Loading";
-import Switch from "@material-ui/core/Switch";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+
+const state = {
+    textTransform: "uppercase",
+    opacity: 0.8,
+    fontSize: "0.8rem",
+    paddingTop: "4px",
+    fontWeight: 500
+};
 
 const useStyles = makeStyles((theme) => ({
     content: {
         margin: "1rem",
     },
+    cellMenu: {
+        width: '2rem'
+    },
+    dragIcon: {
+        opacity: 0.2
+    },
+    stateRunning: {
+         ...state,
+        color: theme.palette.success.main,
+    },
+    stateIdle: {
+         ...state,
+        color: theme.palette.primary.main,
+    },
+    stateUninitialised: {
+         ...state,
+        opacity: 0.3
+    },
+    stateBuilding: {
+         ...state,
+        color: theme.palette.primary.main,
+    },
+    stateError: {
+         ...state,
+        color: theme.palette.error.main,
+    }
 }));
 
 export default function PanelList() {
     const classes = useStyles();
     const panelList = useContext(PanelContext);
-    console.log(panelList);
     const renderRow = (panel) => {
         return (
             <TableRow key={panel.id}>
-                <TableCell></TableCell>
+                <TableCell><DragIndicatorIcon className={classes.dragIcon}/></TableCell>
                 <TableCell>
-                    <Switch
-                        checked={panel.enabled}
-                        color="primary"
-                        // onChange={handleChange}
-                    />
+                    <div className={classes.title}>{panel.title}</div>
+                    {renderState(panel)}
                 </TableCell>
-                <TableCell>{panel.title}</TableCell>
                 <TableCell>{panel.description}</TableCell>
                 <TableCell>{panel._module.longname}</TableCell>
-                <TableCell>{panel._container ? panel._container.state : "Stopped"}</TableCell>
-                <TableCell></TableCell>
+                <TableCell className={classes.cellMenu}><MoreVertIcon /></TableCell>
             </TableRow>
         );
+    };
+
+    const renderState = (panel) => {
+        if(panel._isrunning) {
+            return <div className={classes.stateRunning}>Running - {panel._container.status}</div>;
+        }
+        if(panel._isbuilding) {
+            if(panel._buildstatus.error) {
+                return <div className={classes.stateError}>ERROR - {panel._buildstatus.text}</div>;
+            }
+            if(panel._buildstatus.progress === -1) {
+                return <div className={classes.stateBuilding}>Built - IDLE</div>;
+            }
+            return <div className={classes.stateBuilding}>{panel._buildstatus.text} - {panel._buildstatus.progress}% complete</div>;
+        }
+        return <div className={classes.stateUninitialised}>IDLE</div>;
     };
 
     if (panelList.status === "loading") {
@@ -54,12 +99,10 @@ export default function PanelList() {
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell></TableCell>
-                                    <TableCell width="100">Enabled</TableCell>
+                                    <TableCell width="10"></TableCell>
                                     <TableCell>Title</TableCell>
                                     <TableCell>Description</TableCell>
                                     <TableCell>Module</TableCell>
-                                    <TableCell>State</TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
                             </TableHead>
