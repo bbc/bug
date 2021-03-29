@@ -15,6 +15,7 @@ networks:
 
 services:
   core:
+    container_name: bug-core
     build: "./src"
     restart: always
     volumes:
@@ -37,5 +38,14 @@ services:
       - ${PORT_PROD}:${PORT_PROD}
       - ${PORT_DEV_API}:${PORT_DEV_API}
     hostname: bug-core
+    networks:
+      - bug
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    container_name: bug-mongo
+    ports:
+      - 27017:27017
     networks:
       - bug

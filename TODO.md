@@ -12,3 +12,4 @@
 - API proxy setting in package.json doesn't use .env value - 3101 is hard coded
 
 - ignore dockerfiles in modules but not main
+- if a user manually removes an image, the UI/buildstatus field will be wrong. Do we care?
