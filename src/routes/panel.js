@@ -12,6 +12,8 @@ const panelStop = require('@services/panel-stop');
 const panelList = require('@services/panel-list');
 const panelAdd = require('@services/panel-add');
 const panelDelete = require('@services/panel-delete');
+const panelEnable = require('@services/panel-enable');
+const panelDisable = require('@services/panel-disable');
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -22,6 +24,7 @@ router.get('/delete/:id', async function (req, res, next) {
         const result = await panelDelete(req.params.id);
         res.json({
             status: (result ? "success" : "fail"),
+            message: "Deleted panel",
             data: null
         });
     } catch (error) {
@@ -52,6 +55,7 @@ router.get('/add', async function (req, res, next) {
         const result = await panelAdd(req.query);
         res.json({
             status: (result ? "success" : "fail"),
+            message: "Added panel",
             data: null
         });
     } catch (error) {
@@ -68,6 +72,7 @@ router.get('/build/:moduleName', async function (req, res, next) {
         const result = await panelStart(req.params.moduleName);
         res.json({
             status: (result ? "success" : "fail"),
+            message: "Successfully built module",
             data: null
         });
     } catch (error) {
@@ -84,6 +89,7 @@ router.get('/start/:id', async function (req, res, next) {
         const result = await panelStart(req.params.id);
         res.json({
             status: (result ? "success" : "fail"),
+            message: "Started panel",
             data: null
         });
     } catch (error) {
@@ -100,6 +106,7 @@ router.get('/restart/:id', async function (req, res, next) {
         const result = await panelRestart(req.params.id);
         res.json({
             status: (result ? "success" : "fail"),
+            message: "Restarted panel",
             data: null
         });
     } catch (error) {
@@ -116,6 +123,7 @@ router.get('/stop/:id', async function (req, res, next) {
         const result = await panelStop(req.params.id);
         res.json({
             status: (result ? "success" : "fail"),
+            message: "Stopped panel",
             data: null
         });
     } catch (error) {
@@ -131,12 +139,29 @@ router.get('/enable/:id', async function (req, res, next) {
         const result = await panelEnable(req.params.id);
         res.json({
             status: (result ? "success" : "fail"),
+            message: "Enabled panel",
             data: null
         });
     } catch (error) {
         res.json({ 
             status: "error",
             message: "Failed to enable panel" 
+        });
+    }
+});
+
+router.get('/disable/:id', async function (req, res, next) {
+    try {
+        const result = await panelDisable(req.params.id);
+        res.json({
+            status: (result ? "success" : "fail"),
+            message: "Disabled panel",
+            data: null
+        });
+    } catch (error) {
+        res.json({ 
+            status: "error",
+            message: "Failed to disable panel" 
         });
     }
 });

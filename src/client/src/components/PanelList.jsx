@@ -9,10 +9,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { PanelContext } from "@data/PanelList";
 import PanelTitle from "@components/PanelTitle";
+import PanelListMenu from "@components/PanelListMenu";
 import Loading from "./Loading";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-
+import Switch from "@material-ui/core/Switch";
 const state = {
     textTransform: "uppercase",
     opacity: 0.8,
@@ -59,14 +59,21 @@ export default function PanelList() {
     const renderRow = (panel) => {
         return (
             <TableRow key={panel.id}>
-                <TableCell><DragIndicatorIcon className={classes.dragIcon}/></TableCell>
+                {/* <TableCell><DragIndicatorIcon className={classes.dragIcon}/></TableCell> */}
+                <TableCell>
+                    <Switch
+                        checked={panel.enabled}
+                        color="primary"
+                        // onChange={handleChange}
+                    />
+                </TableCell>
                 <TableCell>
                     <div className={classes.title}>{panel.title}</div>
                     {renderState(panel)}
                 </TableCell>
                 <TableCell>{panel.description}</TableCell>
                 <TableCell>{panel._module.longname}</TableCell>
-                <TableCell className={classes.cellMenu}><MoreVertIcon /></TableCell>
+                <TableCell className={classes.cellMenu}><PanelListMenu panel={panel}/></TableCell>
             </TableRow>
         );
     };
@@ -79,10 +86,10 @@ export default function PanelList() {
             if(panel._buildstatus.error) {
                 return <div className={classes.stateError}>ERROR - {panel._buildstatus.text}</div>;
             }
-            if(panel._buildstatus.progress === -1) {
-                return <div className={classes.stateBuilding}>Built - IDLE</div>;
-            }
             return <div className={classes.stateBuilding}>{panel._buildstatus.text} - {panel._buildstatus.progress}% complete</div>;
+        }
+        if(panel._isbuilt) {
+            return <div className={classes.stateBuilding}>Built - IDLE</div>;
         }
         return <div className={classes.stateUninitialised}>IDLE</div>;
     };

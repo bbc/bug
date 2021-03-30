@@ -6,8 +6,8 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus) =>
     delete moduleConfig.defaultconfig;
 
     let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
-    let isBuilding = (!isRunning && panelBuildStatus) ?? false;
-    // let isBuilt = (panelBuildStatus !== null) ?? false;
+    let isBuilding = (!isRunning && (panelBuildStatus !== null) && panelBuildStatus.progress > -1) ?? false;
+    let isBuilt = (panelBuildStatus !== null) ?? false;
 
     return {
         id: panelConfig['id'],
@@ -19,7 +19,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus) =>
         _container: containerInfo,
         _buildstatus: (panelBuildStatus ? panelBuildStatus['status'] : null),
         _isrunning: isRunning,
-        _isbuilding: isBuilding
-        // _isbuilt: isBuilt
+        _isbuilding: isBuilding,
+        _isbuilt: isBuilt
     };
 }

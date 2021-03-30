@@ -31,7 +31,6 @@ export default class ApiPoller extends React.Component {
             data: this.data,
             error: this.error
         });
-        // console.log(this.status, this.data);
     }
 
     async fetch() {
@@ -51,7 +50,7 @@ export default class ApiPoller extends React.Component {
                 cancelToken: this.source.token
             });
             if(response.data.status === "error") {
-                throw response.data.error;
+                throw response.data.message;
             }
             this.status = 'succeeded';
             this.data = response.data.data;
