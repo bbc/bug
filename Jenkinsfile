@@ -6,16 +6,11 @@ pipeline {
     }
     environment {
         CI = 'true'
-        NPM_CERT_FILE = credentials('ryan-npm-cert-file')
-        NPM_KEY_FILE = credentials('ryan-npm-key-file')
     }
     stages {
         stage('Setup Environment') {
             steps {
                 sh 'node --version'
-                sh 'npm config set cert -- "$( cat $NPM_CERT_FILE )"'
-                sh 'npm config set key -- "$( cat $NPM_KEY_FILE )"'
-                sh 'npm config set @bbc:registry https://artifactory.virt.ch.bbc.co.uk/artifactory/api/npm/npmjs-private-bbc/'
                 slackSend (color: '#30fc03', message: "*Environment:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
