@@ -8,8 +8,11 @@
   },
   "scripts": {
     "production": "node bin/bug-core-prod",
-    "development": "concurrently \"nodemon --ignore './data/' ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
+    "development": "concurrently \"nodemon ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
     "test": "jest"
+  },
+  "nodemonConfig": {
+    "ignore": ["./data/", "/config/"]
   },
   "repository": {
     "type": "git",
