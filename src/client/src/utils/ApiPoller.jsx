@@ -50,8 +50,11 @@ export default class ApiPoller extends React.Component {
             const response = await axios.get(this.props.url, {
                 cancelToken: this.source.token
             });
+            if(response.data.status === "error") {
+                throw response.data.error;
+            }
             this.status = 'succeeded';
-            this.data = response.data;
+            this.data = response.data.data;
             this.hasLoaded = true;
             this.handleUpdated();
             const _fetch = () => this.fetch()

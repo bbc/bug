@@ -25,7 +25,7 @@ module.exports = async (panelId) => {
     }
 
     try {
-        var config = await panelConfig.get(panelId);
+        let config = await panelConfig.get(panelId);
         if (!config) {
             logger.warn(`panel-start: panel ${panelId} not found`);
             return false

@@ -9,8 +9,14 @@ const bugQuote = require('@services/bug-quote');
 // const authAdmin = require('@middleware/auth-admin');
 
 router.get('/quote', async function (req, res, next) {
-    var result = await bugQuote();
-    res.json(result);
+    try {
+        res.json({
+            status: "success",
+            data: await bugQuote()
+        });
+    } catch (error) {
+        res.json({ error: "Failed to fetch quote" });
+    }
 });
 
 module.exports = router;

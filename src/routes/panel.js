@@ -20,24 +20,45 @@ const panelDelete = require('@services/panel-delete');
 router.get('/delete/:id', async function (req, res, next) {
     try {
         const result = await panelDelete(req.params.id);
-        res.json(result);
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
     } catch (error) {
-        res.json({ error: "Failed to delete panel" });
+        res.json({ 
+            status: "error",
+            message: "Failed to delete panel" 
+        });
     }
 });
 
 router.get('/', async function (req, res, next) {
     // Gets a list of configured panels, their configs and states
-    var result = await panelList();
-    res.json(result);
+    try {
+        res.json({
+            status: "success",
+            data: await panelList()
+        });
+    } catch (error) {
+        res.json({ 
+            status: "error",
+            message: "Failed to list panels" 
+        });
+    }
 });
 
 router.get('/add', async function (req, res, next) {
     try {
         const result = await panelAdd(req.query);
-        res.json(result);
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
     } catch (error) {
-        res.json({ error: "Failed to add panel" });
+        res.json({ 
+            status: "error",
+            message: "Failed to add panel" 
+        });
     }
 });
 
@@ -45,9 +66,15 @@ router.get('/add', async function (req, res, next) {
 router.get('/build/:moduleName', async function (req, res, next) {
     try {
         const result = await panelStart(req.params.moduleName);
-        res.json(result);
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
     } catch (error) {
-        res.json({ error: "Failed to build module" });
+        res.json({ 
+            status: "error",
+            message: "Failed to build module" 
+        });
     }
 });
 
@@ -55,9 +82,15 @@ router.get('/start/:id', async function (req, res, next) {
     // starts and builds if necessary
     try {
         const result = await panelStart(req.params.id);
-        res.json(result);
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
     } catch (error) {
-        res.json({ error: "Failed to start panel" });
+        res.json({ 
+            status: "error",
+            message: "Failed to start panel" 
+        });
     }
 });
 
@@ -65,9 +98,15 @@ router.get('/restart/:id', async function (req, res, next) {
     // stop and start (and rebuild if necessary)
     try {
         const result = await panelRestart(req.params.id);
-        res.json(result);
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
     } catch (error) {
-        res.json({ error: "Failed to restart panel" });
+        res.json({ 
+            status: "error",
+            message: "Failed to restart panel" 
+        });
     }
 });
 
@@ -75,41 +114,79 @@ router.get('/stop/:id', async function (req, res, next) {
     // stops the image running (probably won't ever be run from the UI)
     try {
         const result = await panelStop(req.params.id);
-        res.json(result);
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
     } catch (error) {
-        res.json({ error: "Failed to stop panel" });
+        res.json({ 
+            status: "error",
+            message: "Failed to stop panel" 
+        });
+    }
+});
+
+router.get('/enable/:id', async function (req, res, next) {
+    try {
+        const result = await panelEnable(req.params.id);
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
+    } catch (error) {
+        res.json({ 
+            status: "error",
+            message: "Failed to enable panel" 
+        });
     }
 });
 
 router.get('/config', async function (req, res, next) {
     try {
-        const result = await panelConfigList();
-        res.json(result);
+        res.json({
+            status: "success",
+            data: await panelConfigList()
+        });
     } catch (error) {
-        res.json({ error: "Failed to list panel config" });
+        res.json({ 
+            status: "error",
+            message: "Failed to list panel config" 
+        });
     }
 });
 
 
 router.get('/config/:id', async function (req, res, next) {
     try {
-        const result = await panelConfigGet(req.params.id);
-        res.json(result);
+        res.json({
+            status: "success",
+            data: await panelConfigGet(req.params.id)
+        });
     } catch (error) {
         res.json({ error: "Failed to fetch panel config" });
     }
 });
 
 router.get('/:id', async function (req, res, next) {
-    const id = req.params.id;
-    const result = await panelGet(id);
-    res.json(result);
+    try {
+        res.json({
+            status: "success",
+            data: await panelGet(req.params.id)
+        });
+    } catch (error) {
+        res.json({ error: "Failed to fetch panel" });
+    }
 });
 
 router.get('/data/:id', async function (req, res, next) {
-    const id = req.params.id;
-    const result = await panelGetData(id);
-    res.json(result);
+    try {
+        res.json({
+            status: "success",
+            data: await panelGetData(req.params.id)
+        });
+    } catch (error) {
+        res.json({ error: "Failed to fetch panel data" });
+    }
 });
 
 module.exports = router;

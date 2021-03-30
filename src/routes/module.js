@@ -12,20 +12,37 @@ const moduleBuild = require('@services/module-build')
 // const authAdmin = require('@middleware/auth-admin');
 
 router.get('/', async function (req, res, next) {
-    var result = await moduleList(req);
-    res.json(result);
+    try {
+        res.json({
+            status: "success",
+            data: await moduleList()
+        });
+    } catch (error) {
+        res.json({ error: "Failed to fetch module list" });
+    }
 });
 
 router.get('/:modulename', async function (req, res, next) {
-    let moduleName = req.params.modulename;
-    var result = await moduleGet(moduleName);
-    res.json(result);
+    try {
+        res.json({
+            status: "success",
+            data: await moduleGet(req.params.modulename)
+        });
+    } catch (error) {
+        res.json({ error: "Failed to fetch module" });
+    }
 });
 
 router.get('/build/:modulename', async function (req, res, next) {
-    let moduleName = req.params.modulename;
-    var result = await moduleBuild(moduleName);
-    res.json(result);
+    const result = await moduleBuild(req.params.modulename);
+    try {
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
+    } catch (error) {
+        res.json({ error: "Failed to build module" });
+    }
 });
   
 module.exports = router;
