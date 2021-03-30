@@ -6,7 +6,18 @@ const theme = createMuiTheme({
         padding: '8px 12px',
         borderBottom: '1px solid #181818'
       },
-    },    
+    },
+    MuiMenuItem: {
+      root: {
+        color: props => (props.disabled ? "#888" : "#ffffff")
+      }
+    },
+    MuiListItemIcon: {
+      root: {
+        color: props => (props.disabled ? "#888" : "#ffffff"),
+        minWidth: "34px !important"
+      }
+    },
   },
   typography: {
     fontFamily: [
