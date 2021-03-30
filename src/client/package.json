@@ -16,13 +16,14 @@
     "axios": "^0.21.1",
     "delay": "^5.0.0",
     "module-alias": "^2.2.2",
+    "notistack": "^1.0.5",
     "react": "^17.0.1",
+    "react-app-rewired": "^2.1.8",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1",
-    "react-app-rewired": "^2.1.8"
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
