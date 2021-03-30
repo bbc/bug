@@ -13,11 +13,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import AxiosCommand from '@utils/AxiosCommand';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({}));
 
 export default function PanelListMenu(props) {
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -34,10 +36,8 @@ export default function PanelListMenu(props) {
     const disableStop = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
     const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
 
-console.log(props.panel);
-
-
     const handleStart = () => {
+        enqueueSnackbar(`Starting panel - please wait ...`, { variant: 'info'});
         AxiosCommand(`/api/panel/start/${props.panel.id}`);
         setAnchorEl(null);
     };

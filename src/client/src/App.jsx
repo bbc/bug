@@ -6,6 +6,7 @@ import PanelList from "@data/PanelList";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { SnackbarProvider } from "notistack";
 import Fade from '@material-ui/core/Fade';
+import { SnackbarConfigurator } from "@utils/Snackbar";
 
 export default function App() {
     return (
@@ -23,6 +24,7 @@ export default function App() {
                     TransitionComponent={Fade}
                     maxSnack={3}
                 >
+                    <SnackbarConfigurator />
                     <CssBaseline />
                     <PanelList>
                         <Page></Page>

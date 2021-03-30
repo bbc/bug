@@ -19,6 +19,7 @@
     "notistack": "^1.0.5",
     "react": "^17.0.1",
     "react-app-rewired": "^2.1.8",
+    "react-countup": "^4.3.3",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

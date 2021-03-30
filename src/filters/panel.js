@@ -17,7 +17,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus) =>
         module: panelConfig['module'],
         _module: moduleConfig,
         _container: containerInfo,
-        _buildstatus: (panelBuildStatus ? panelBuildStatus['status'] : null),
+        _buildstatus: panelBuildStatus,
         _isrunning: isRunning,
         _isbuilding: isBuilding,
         _isbuilt: isBuilt
