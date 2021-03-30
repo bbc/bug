@@ -15,7 +15,8 @@ module.exports = async (panelId) => {
 
         panelConfig.enabled = false;
 
-        return await panelConfigModel.set(panelConfig);
+        await panelConfigModel.set(panelConfig);
+        return true;
 
     } catch (error) {
         logger.error(`panel-disable: ${error.stack || error.trace || error || error.message}`);

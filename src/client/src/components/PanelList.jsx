@@ -15,6 +15,8 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import Switch from "@material-ui/core/Switch";
 import { useSnackbar } from 'notistack';
 import ProgressCounter from '@components/ProgressCounter';
+import AxiosCommand from '@utils/AxiosCommand';
+import BugSwitch from '@components/BugSwitch';
 
 const state = {
     textTransform: "uppercase",
@@ -69,8 +71,14 @@ export default function PanelList() {
         return ref.current;
     }
 
-    const handleEnabledChanged = () => {
-        enqueueSnackbar('I love hooks');
+    const handleEnabledChanged = (checked, panelId) => {
+        if(checked) {
+            AxiosCommand(`/api/panel/enable/${panelId}`);
+        }
+        else {
+            AxiosCommand(`/api/panel/disable/${panelId}`);
+        }
+
     };
 
     const renderRow = (panel) => {
@@ -78,11 +86,7 @@ export default function PanelList() {
             <TableRow key={panel.id}>
                 {/* <TableCell><DragIndicatorIcon className={classes.dragIcon}/></TableCell> */}
                 <TableCell>
-                    <Switch
-                        checked={panel.enabled}
-                        color="primary"
-                        onChange={handleEnabledChanged}
-                    />
+                    <BugSwitch panelId={panel.id} checked={panel.enabled} onChange={(checked) => handleEnabledChanged(checked, panel.id)}/>
                 </TableCell>
                 <TableCell>
                     <div className={classes.title}>{panel.title}</div>
