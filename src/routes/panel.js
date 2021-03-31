@@ -14,6 +14,7 @@ const panelAdd = require('@services/panel-add');
 const panelDelete = require('@services/panel-delete');
 const panelEnable = require('@services/panel-enable');
 const panelDisable = require('@services/panel-disable');
+const panelPushConfig = require('@services/panel-pushconfig');
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -166,6 +167,21 @@ router.get('/disable/:id', async function (req, res, next) {
     }
 });
 
+router.get('/pushconfig/:panelid', async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await panelPushConfig(req.params.panelid)
+        });
+    } catch (error) {
+        res.json({ 
+            status: "error",
+            message: "Failed to push panel config" 
+        });
+    }
+});
+
+
 router.get('/config', async function (req, res, next) {
     try {
         res.json({
@@ -181,33 +197,33 @@ router.get('/config', async function (req, res, next) {
 });
 
 
-router.get('/config/:id', async function (req, res, next) {
+router.get('/config/:panelid', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelConfigGet(req.params.id)
+            data: await panelConfigGet(req.params.panelid)
         });
     } catch (error) {
         res.json({ error: "Failed to fetch panel config" });
     }
 });
 
-router.get('/:id', async function (req, res, next) {
+router.get('/:panelid', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelGet(req.params.id)
+            data: await panelGet(req.params.panelid)
         });
     } catch (error) {
         res.json({ error: "Failed to fetch panel" });
     }
 });
 
-router.get('/data/:id', async function (req, res, next) {
+router.get('/data/:panelid', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelGetData(req.params.id)
+            data: await panelGetData(req.params.panelid)
         });
     } catch (error) {
         res.json({ error: "Failed to fetch panel data" });
