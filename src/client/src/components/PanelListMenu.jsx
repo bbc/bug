@@ -1,6 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-// import Loading from "./Loading";
+// import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,11 +13,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import AxiosCommand from '@utils/AxiosCommand';
 import { useSnackbar } from 'notistack';
+import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({}));
+// const useStyles = makeStyles((theme) => ({}));
 
 export default function PanelListMenu(props) {
-    const classes = useStyles();
+    // const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -52,10 +52,6 @@ export default function PanelListMenu(props) {
         setAnchorEl(null);
     };
 
-    const handleEdit = async () => {
-        setAnchorEl(null);
-    };
-
     return (
         <div>
             <IconButton aria-label="more" aria-controls="long-menu" aria-haspopup="true" onClick={handleOpenMenuClick}>
@@ -81,12 +77,14 @@ export default function PanelListMenu(props) {
                     <ListItemText primary="Restart" />
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleEdit}>
-                    <ListItemIcon>
-                        <EditIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Edit Panel" />
-                </MenuItem>
+                <Link to={`/panelconfig/${props.panel.id}`}>
+                    <MenuItem>
+                        <ListItemIcon>
+                            <EditIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Edit Panel" />
+                    </MenuItem>
+                </Link>
             </Menu>
         </div>
     );

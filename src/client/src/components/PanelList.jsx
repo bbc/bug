@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,9 +11,7 @@ import { PanelContext } from "@data/PanelList";
 import PanelTitle from "@components/PanelTitle";
 import PanelListMenu from "@components/PanelListMenu";
 import Loading from "./Loading";
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import Switch from "@material-ui/core/Switch";
-import { useSnackbar } from 'notistack';
+// import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import ProgressCounter from '@components/ProgressCounter';
 import AxiosCommand from '@utils/AxiosCommand';
 import BugSwitch from '@components/BugSwitch';
@@ -59,17 +57,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PanelList() {
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const classes = useStyles();
     const panelList = useContext(PanelContext);
-
-    const usePrevious = (value) => {
-        const ref = useRef();
-        useEffect(() => {
-            ref.current = value;
-        });
-        return ref.current;
-    }
 
     const handleEnabledChanged = (checked, panelId) => {
         if(checked) {

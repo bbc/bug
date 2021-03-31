@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useRef, useEffect } from "react";
 import CountUp from 'react-countup';
 
 const usePreviousValue = value => {
