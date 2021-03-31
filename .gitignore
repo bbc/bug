@@ -3,5 +3,5 @@
 node_modules
 logs
 data
-config
+/src/config/*
 /src/modules/*Dockerfile
