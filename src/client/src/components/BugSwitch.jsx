@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import Switch from "@material-ui/core/Switch";
 
 class BugSwitch extends React.Component {
@@ -26,11 +26,11 @@ class BugSwitch extends React.Component {
 
     render() {
         var checked = this.state.checked;
-        if(this.props.checked == this.state.checked) {
+        if(this.props.checked === this.state.checked) {
             this.enabled = true;
         }
 
-        if(this.enabled && this.props.checked != this.state.checked) {
+        if(this.enabled && this.props.checked !== this.state.checked) {
             checked = this.props.checked;
         }
         return (
