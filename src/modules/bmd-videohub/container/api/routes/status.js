@@ -3,8 +3,8 @@
 //DATE: 15/02/2021
 //DESC: System status
 
-var express = require('express'),
-status = express.Router();
+const express = require('express');
+const status = express.Router();
 
 status.get('/', function(req, res){
   var completeURL = req.protocol + '://' + req.get('host') + req.originalUrl;
@@ -20,5 +20,3 @@ status.get('/', function(req, res){
   })
 
 module.exports = status;
-
-//

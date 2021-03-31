@@ -4,12 +4,12 @@ const path = require('path');
 const logger = require('@utils/logger');
 const docker = require('@utils/docker');
 
-module.exports = async (moduleName) => {
+module.exports = async (moduleName, updateProgressCallback) => {
     try {
         logger.info(`docker-buildmodule: building module ${moduleName}`);
 
         // Get full path in container
-        const module_path = path.join(__dirname, '..', 'modules', moduleName);
+        const module_path = path.join(__dirname, '..', 'modules', moduleName, 'container');
 
         // Build the image with dockerode
         let stream = await docker.buildImage({
@@ -35,13 +35,43 @@ module.exports = async (moduleName) => {
                 }
             }
 
+            function parseProgress(output) {
+                if(output.indexOf("Step ") !== 0) {
+                    return null;
+                }
+
+                let outputSpaceArray = output.split(" ");
+                if(outputSpaceArray.length < 2) {
+                    return null;
+                }
+                if(outputSpaceArray[1].indexOf("/") === -1) {
+                    return null;
+                }
+
+                let outputSlashArray = outputSpaceArray[1].split("/");
+                if(outputSlashArray.length != 2) {
+                    return null;
+                }
+
+                if(isNaN(outputSlashArray[0]) || isNaN(outputSlashArray[1])) {
+                    return null;
+                }
+                return (100 / parseInt(outputSlashArray[1])) * parseInt(outputSlashArray[0]);
+            }
+
             function onProgress(event) {
-                //TODO update mongo with progress?
-                // stream outputs stuff like 'Step 5/5 : CMD ["npm","run","development"]' 
-                // we could scrape the Step 5/5 and return a percentage done?
                 if(event && event.stream) {
-                    const streamNoNewlines = event.stream.replace(/(\r\n|\n|\r)/gm, "");
-                    logger.debug(`docker-buildmodule: ${moduleName} ${streamNoNewlines}`);
+                    // remove newlines etc
+                    const output = event.stream.replace(/(\r\n|\n|\r)/gm, "");
+
+                    // if this line has 'Step 1/5' etc, then we'll call the calback
+                    if(updateProgressCallback) {
+                        let progress = parseProgress(output);
+                        if(progress) {
+                            updateProgressCallback(progress);
+                        }
+                    }
+                    logger.debug(`docker-buildmodule: ${moduleName} ${output}`);
                 }
             }
         });
@@ -49,7 +79,7 @@ module.exports = async (moduleName) => {
 
         return progressResult;
     } catch (error) {
-        logger.error(error);
+        logger.warn(`docker-buildmodule: ${moduleName} ${output}`);
         return false;
     }
 }

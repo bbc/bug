@@ -7,6 +7,10 @@
     "icon": "BlurOn",
     "author": "Geoff House",
     "license": "ISC",
+    "devmounts": [
+        "api",
+        "utils"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,

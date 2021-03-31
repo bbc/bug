@@ -6,7 +6,8 @@ const dockerFileWrite = require('@services/dockerfile-write');
 const dockerBuildModule = require('@services/docker-buildmodule');
 const moduleConfig = require('@models/module-config');
 
-module.exports = async (moduleName) => {
+// update is optional - if used, then docker-buildmodule will call it to update progress
+module.exports = async (moduleName, updateProgressCallback) => {
 
     try {
 
@@ -23,13 +24,14 @@ module.exports = async (moduleName) => {
         }
 
         // Write a dockerfile for the module
-        const modulePath = path.join(__dirname, '..', 'modules', moduleName);
+        const modulePath = path.join(__dirname, '..', 'modules', moduleName, 'container');
         if(!await dockerFileWrite(modulePath)) {
+            logger.warn(`module-build: failed to write dockerfile to  '${modulePath}'`);
             return false;
         }
 
         // and build the module
-        return await dockerBuildModule(moduleName);
+        return await dockerBuildModule(moduleName, updateProgressCallback);
 
     } catch (error) {
         logger.warn(`module-build: ${error.trace || error || error.message}`);

@@ -19,8 +19,8 @@ exports.get = async function(panelId) {
 exports.set = async function(panelConfig) {
 
     try {
-        let path = path.join(__dirname,'..','config',panelConfig.id)
-        return writeJson(path,panelConfig);
+        let filename = path.join(__dirname, '..', 'config', panelConfig.id);
+        return writeJson(filename, panelConfig);
     } 
     catch (error) {
         logger.warn(`panel-config: ${error.trace || error || error.message}`);

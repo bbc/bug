@@ -11,7 +11,7 @@ let app = express();
 app.set('json spaces', 2);
 
 //Define routes
-const routes = require('./api/routes');
+const routes = require('./routes');
 app.use('/api',routes);
 
 app.use(function(req, res, next){

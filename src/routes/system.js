@@ -15,8 +15,11 @@ router.get('/hello', function (req, res, next) {
 
 router.get('/backup', async function (req, res, next) {
     const result = await systemBackup();
-    //res.json(result);
-    res.download(result.filepath,result.filename);
+    try {
+        res.download(result.filepath,result.filename);
+    } catch (error) {
+        res.json({ error: "Failed to run system backup" });
+    }
 });
 
 router.get('/restore', function (req, res, next) {

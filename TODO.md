@@ -12,3 +12,6 @@
 - API proxy setting in package.json doesn't use .env value - 3101 is hard coded
 
 - ignore dockerfiles in modules but not main
+- if a user manually removes an image, the UI/buildstatus field will be wrong. Do we care?
+
+- we could use the api checksum (not yet implemented) and compare it to the checksum we can pass using axios - and long poll if it hasn't changed

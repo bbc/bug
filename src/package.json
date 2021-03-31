@@ -8,8 +8,15 @@
   },
   "scripts": {
     "production": "node bin/bug-core-prod",
-    "development": "concurrently \"nodemon --ignore './data/' ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
+    "development": "concurrently \"nodemon ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
     "test": "jest"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "./data/*",
+      "./config/*",
+      "./modules/*"
+    ]
   },
   "repository": {
     "type": "git",
@@ -22,6 +29,7 @@
   },
   "homepage": "https://github.com/bbc/bbcnews-bug-core#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "concurrently": "^6.0.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -34,6 +42,7 @@
     "http-errors": "^1.8.0",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
+    "mongodb": "^3.6.5",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.22",
     "path": "^0.12.7",
@@ -54,6 +63,7 @@
   },
   "_moduleAliases": {
     "@root": ".",
+    "@filters": "./filters/",
     "@routes": "./routes/",
     "@models": "./models/",
     "@utils": "./utils/",

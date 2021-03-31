@@ -15,12 +15,14 @@ networks:
 
 services:
   core:
+    container_name: ${CORE_NAME}
     build: "./src"
     restart: always
     volumes:
       - ./src/bin:/home/node/bug-core/bin
       - ./src/config:/home/node/bug-core/config
       - ./src/data:/home/node/bug-core/data
+      - ./src/filters:/home/node/bug-core/filters
       - ./src/logs:/home/node/bug-core/logs
       - ./src/models:/home/node/bug-core/models
       - ./src/modules:/home/node/bug-core/modules
@@ -36,6 +38,15 @@ services:
       - ${PORT}:${PORT}
       - ${PORT_PROD}:${PORT_PROD}
       - ${PORT_DEV_API}:${PORT_DEV_API}
-    hostname: bug-core
+    hostname: ${CORE_NAME}
+    networks:
+      - bug
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    container_name: bug-mongo
+    ports:
+      - 27017:27017
     networks:
       - bug

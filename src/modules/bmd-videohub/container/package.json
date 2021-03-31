@@ -1,9 +1,9 @@
 {
   "name": "bmd-videohub",
-  "main": "index.js",
+  "main": "",
   "scripts": {
-    "production": "node ./server/server",
-    "development": "nodemon ./server/server",
+    "production": "node ./api/server",
+    "development": "nodemon ./api/server",
     "test": "jest"
   },
   "author": "",
