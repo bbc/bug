@@ -24,8 +24,9 @@ module.exports = async (moduleName, updateProgressCallback) => {
         }
 
         // Write a dockerfile for the module
-        const modulePath = path.join(__dirname, '..', 'modules', moduleName);
+        const modulePath = path.join(__dirname, '..', 'modules', moduleName, 'container');
         if(!await dockerFileWrite(modulePath)) {
+            logger.warn(`module-build: failed to write dockerfile to  '${modulePath}'`);
             return false;
         }
 

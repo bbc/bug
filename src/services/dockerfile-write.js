@@ -14,21 +14,25 @@ module.exports = async (filepath) => {
             
         const filename = path.join(filepath,'Dockerfile');
         const fileArray = ['FROM node:14',
-                            'WORKDIR /home/node/module',
+                            'WORKDIR ' + process.env.MODULE_HOME,
                             'COPY . .',
                             'RUN npm install',
-                            'CMD ["npm","run","'+nodeEnv+'"]']
+                            'CMD ["npm","run","' + nodeEnv + '"]']
 
         const newFile = fileArray.join('\n');
 
         // check if any difference
-        const existingFile = await readfile(filename);
+        let existingFile = null;
+        try {
+            existingFile = await readfile(filename);
+        } catch (error) {}
 
         if(existingFile != newFile) {
             logger.info(`dockerfile-write: writing dockerfile ${filename}`);
             await writeFile(filename, newFile);
         }
     } catch (error) {
+        logger.warn(`dockerfile-write: ${error.trace || error || error.message}`);
         return false;
     }
     return true;

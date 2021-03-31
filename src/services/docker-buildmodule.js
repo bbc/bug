@@ -9,7 +9,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
         logger.info(`docker-buildmodule: building module ${moduleName}`);
 
         // Get full path in container
-        const module_path = path.join(__dirname, '..', 'modules', moduleName);
+        const module_path = path.join(__dirname, '..', 'modules', moduleName, 'container');
 
         // Build the image with dockerode
         let stream = await docker.buildImage({
@@ -79,7 +79,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
         return progressResult;
     } catch (error) {
-        logger.error(error);
+        logger.warn(`docker-buildmodule: ${moduleName} ${output}`);
         return false;
     }
 }
