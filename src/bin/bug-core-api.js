@@ -16,6 +16,7 @@ const systemRouter = require('@routes/system');
 const moduleRouter = require('@routes/module');
 const panelRouter = require('@routes/panel');
 const bugRouter = require('@routes/bug');
+const proxyRouter = require('@routes/proxy');
 
 var bugApi = express();
 
@@ -34,6 +35,7 @@ bugApi.use('/api/bug', bugRouter);
 bugApi.use('/api/system', systemRouter);
 bugApi.use('/api/module', moduleRouter);
 bugApi.use('/api/panel', panelRouter);
+bugApi.use('/api/proxy', proxyRouter);
 
 // catch 404 and forward to error handler
 // bugApi.use(function (req, res, next) {
