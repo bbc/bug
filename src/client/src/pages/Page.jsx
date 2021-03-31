@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@components/Menu";
 import PageHome from "./PageHome";
 import PagePanel from "./PagePanel";
+import PagePanelConfig from "./PagePanelConfig";
 import PagePanels from "./PagePanels";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -52,6 +53,9 @@ export default function Page() {
                             </Route>
                             <Route exact path="/panel/:panelid">
                                 <PagePanel />
+                            </Route>
+                            <Route exact path="/panelconfig/:panelid">
+                                <PagePanelConfig />
                             </Route>
                         </Switch>
                     </div>
