@@ -12,7 +12,7 @@
     "test": "jest"
   },
   "nodemonConfig": {
-    "ignore": ["./data/", "/config/"]
+    "ignore": ["./data/*", "./config/*", "./modules/*"]
   },
   "repository": {
     "type": "git",
