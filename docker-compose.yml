@@ -15,7 +15,7 @@ networks:
 
 services:
   core:
-    container_name: bug-core
+    container_name: ${CORE_NAME}
     build: "./src"
     restart: always
     volumes:
@@ -38,7 +38,7 @@ services:
       - ${PORT}:${PORT}
       - ${PORT_PROD}:${PORT_PROD}
       - ${PORT_DEV_API}:${PORT_DEV_API}
-    hostname: bug-core
+    hostname: ${CORE_NAME}
     networks:
       - bug
 
