@@ -2,47 +2,38 @@
 
 const express = require('express');
 const router = express.Router();
-const http = require('http')
 const logger = require('@utils/logger');
-const systemBackup = require('@services/system-backup');
+const axios = require('axios')
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
 
 const modulePort = process.env.MODULE_PORT || 3000 ;
 
-//TODO
-//Maybe replace http with axios?
-//set the best route - currently BUG_CORE_DOMAIN/proxy/PANEL_ID/YOUR/REQUEST/HERE
-//Handle more than get requests? Switch statement to change method?
+router.use('/:panelid', async function(req, res) {
 
-router.use('/:panel_id/', async function (req, res, next) {
+    var url = 'http://' + req.params.panelid + ':' + modulePort + '/api' + req.url;
 
-    res.setHeader('Content-Type', 'application/json');
+    try {
+        var axiosConfig = {
+            method: req.method,
+            url: url,
+            responseType: "stream",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
 
-    const options = {
-        host: req.params.panel_id,
-        path: '/api'+req.url,
-        port: modulePort,
-        timeout: 3000,
-        method: req.method.toUpperCase().replace(/delete/,"del")
-    };
+        if(req.body) {
+            axiosConfig['data'] = req.body;
+        }
 
-    http.get(options, (proxyRes) => {
-        let data = '';
-
-        proxyRes.on('data', (chunk) => {
-            data += chunk;
-        });
-
-        proxyRes.on('end', () => {
-            res.send(data);
-        });
-
-        }).on("error", (err) => {
-            res.json(err);
-        });
-
+        let axiosResponse = await axios(axiosConfig);
+        res.status(axiosResponse.status);
+        axiosResponse.data.pipe(res);
+    } catch (error) {
+        res.json(error);
+    }
 });
 
 module.exports = router;
