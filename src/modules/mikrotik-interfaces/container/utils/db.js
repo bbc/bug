@@ -4,8 +4,8 @@ const Datastore = require('nedb-promises')
 module.exports = async (collection) => {
 
     try {
-        //TODO add autocompaction
         const db = Datastore.create(path.join(__dirname,'..','data',`${collection}.json`));
+        db.persistence.setAutocompactionInterval(600)
         await db.load();
         return db;
 

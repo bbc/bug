@@ -67,17 +67,17 @@ export default function InterfaceList(props) {
                     <BugSwitch checked={!iface.disabled} onChange={(checked) => handleEnabledChanged(checked, iface.id)}/>
                 </TableCell>
                 <TableCell>{iface.name}</TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
+                <TableCell>{iface['mac-address']}</TableCell>
+                <TableCell>{iface['traffic'] ? iface['traffic']['tx-bps-text'] : ""}</TableCell>
+                <TableCell>{iface['traffic'] ? iface['traffic']['rx-bps-text'] : ""}</TableCell>
                 <TableCell className={classes.cellMenu}><InterfaceListMenu iface={iface} /></TableCell>
             </TableRow>
         );
     };
 
     const renderRows = (rows) => {
-        return (rows === null) ? null : rows.map((iface) => renderRow(iface));
+        return (rows === undefined) ? null : rows.map((iface) => renderRow(iface));
     }
 
     const renderContent = () => {
@@ -109,11 +109,10 @@ export default function InterfaceList(props) {
                 </>
             );
         } else {
-            return null;
+            return <Loading />;
         }
     }
 
-console.log("YAY");
     return (
         <>
             <ApiPoller url={`/container/${props.id}/interface`} interval="2000" onChanged={(result) => setInterfaceList(result)}/>
