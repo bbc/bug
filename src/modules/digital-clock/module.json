@@ -8,8 +8,7 @@
     "author": "Ryan McCartney",
     "license": "ISC",
     "devmounts": [
-        "api",
-        "utils"
+        "api"
     ],
     "defaultconfig": {
         "id": "",
