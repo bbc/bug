@@ -5,12 +5,9 @@
 
 version: '3.8'
 
-volumes:
-  bug:
-
 networks:
   bug:
-    name: bug
+    name: ${NETWORK_NAME}
     driver: bridge
 
 services:
@@ -19,34 +16,16 @@ services:
     build: "./src"
     restart: always
     volumes:
-      - ./src/bin:/home/node/bug-core/bin
-      - ./src/config:/home/node/bug-core/config
-      - ./src/data:/home/node/bug-core/data
-      - ./src/filters:/home/node/bug-core/filters
-      - ./src/logs:/home/node/bug-core/logs
-      - ./src/models:/home/node/bug-core/models
-      - ./src/modules:/home/node/bug-core/modules
-      - ./src/routes:/home/node/bug-core/routes
-      - ./src/services:/home/node/bug-core/services
-      - ./src/utils:/home/node/bug-core/utils
-      - ./src/client/src:/home/node/bug-core/client/src
-      - ./src/client/public:/home/node/bug-core/client/public
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env
-    ports:
-      - ${PORT}:${PORT}
-      - ${PORT_PROD}:${PORT_PROD}
-      - ${PORT_DEV_API}:${PORT_DEV_API}
     hostname: ${CORE_NAME}
     networks:
-      - bug
+      - ${NETWORK_NAME}
 
   mongo:
     image: mongo
     restart: unless-stopped
     container_name: bug-mongo
-    ports:
-      - 27017:27017
     networks:
-      - bug
+      - ${NETWORK_NAME}
