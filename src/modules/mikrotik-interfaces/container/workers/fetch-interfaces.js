@@ -1,8 +1,7 @@
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
-const lokiDb = require('../utils/db');
+const db = require('../utils/db');
 const bitrate = require('bitrate');
-var db = null;
 var dbInterfaces = null;
 
 const delayMs = 2000;
@@ -36,7 +35,7 @@ async function saveInterfaces(interfaces) {
     try {
         await Promise.all(interfaces.map(async (eachInterface) => {
 
-            var existingInterface = dbInterfaces.findOne({'id': eachInterface['id']});
+            var existingInterface = await dbInterfaces.findOne({'id': eachInterface['id']});
             if(existingInterface !== null) {
                 // found previous
                 timeDiff = eachInterface['timestamp'] - existingInterface['timestamp'];
@@ -45,17 +44,14 @@ async function saveInterfaces(interfaces) {
                 eachInterface["rx-bps-text"] = bitrate(byteDiff, timeDiff, 'mbps').toFixed(2) + " Mb/s";
                 
                 // we've used it, now replace it
-                //TODO --- this doesn't quite work yet (GH)
-                await dbInterfaces.findAndUpdate(
+                var result = await dbInterfaces.update(
                     {'id': eachInterface['id']},
-                    function(int) {
-                        console.log(int, eachInterface);
-                        int = eachInterface;
-                    }
+                    eachInterface
                 );
+
             }
             else {
-                await dbInterfaces.insertOne(eachInterface);
+                await dbInterfaces.insert(eachInterface);
             }
         }));
 
@@ -65,9 +61,18 @@ async function saveInterfaces(interfaces) {
 }
 
 const main = async () => {
-    db = await lokiDb;
 
-    dbInterfaces = db.getCollection("interfaces");
+    console.log("starting fetch-interfaces ...");
+
+    console.log(`connecting to database collection 'interfaces'`);
+    dbInterfaces = await db('interfaces');
+
+    if(!dbInterfaces) {
+        console.log("no database - cannot continue");
+        return;
+    }
+
+    console.log("database connected OK");
 
     try {
         await conn.connect();
@@ -76,15 +81,16 @@ const main = async () => {
     }
 
     var noErrors = true;
+    console.log("starting device poll....");
     while (noErrors) {
         try {
             const interfaces = await getInterfaces();
             await saveInterfaces(interfaces);
         } catch (error) {
+            console.log(error);
             noErrors = true;
         }
         await delay(delayMs);
-        console.log("loop");
     }
     await conn.close();
 }
