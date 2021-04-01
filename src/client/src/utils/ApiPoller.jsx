@@ -12,6 +12,7 @@ class ApiPoller extends React.Component {
         this.error = null;
         this.hasLoaded = false;
         this.interval = props.interval ?? 10000;
+        this.debug = (props.debug === true);
     }
 
     componentDidMount() {
@@ -26,6 +27,9 @@ class ApiPoller extends React.Component {
     }
 
     handleUpdated() {
+        if(this.debug) {
+            console.log("sending onChanged", this.status, this.data, this.error);
+        }
         this.props.onChanged({
             status: this.status,
             data: this.data,
@@ -46,9 +50,15 @@ class ApiPoller extends React.Component {
         this.source = CancelToken.source();
 
         try {
+            if(this.debug) {
+                console.log(`ApiPoller: fetching from ${this.props.url}`);
+            }
             const response = await axios.get(this.props.url, {
                 cancelToken: this.source.token,
             });
+            if(this.debug) {
+                console.log(`ApiPoller: got data from ${this.props.url}:`, response.data);
+            }
             if (response.data.status === "error") {
                 throw response.data.message;
             }

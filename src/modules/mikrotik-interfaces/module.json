@@ -7,6 +7,12 @@
     "icon": "SettingsInputComponent",
     "author": "Geoff House",
     "license": "ISC",
+    "devmounts": [
+        "api",
+        "utils",
+        "services",
+        "workers"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
@@ -25,5 +31,5 @@
             "Loopback",
             "eoip"
         ]
-    }        
+    }
 }

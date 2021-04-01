@@ -15,3 +15,7 @@
 - if a user manually removes an image, the UI/buildstatus field will be wrong. Do we care?
 
 - we could use the api checksum (not yet implemented) and compare it to the checksum we can pass using axios - and long poll if it hasn't changed
+
+- add locking so that we don't end up building the same module in parallel when you start more than one container at once
+
+- change module port to 3200 so you can run it up while still running bug in docker?

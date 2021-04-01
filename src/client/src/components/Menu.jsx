@@ -34,12 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Menu = (props) => {
     const classes = useStyles();
-
     const panelList = useContext(PanelContext);
-
-    function ListItemLink(props) {
-        return <ListItem button component="a" {...props} />;
-    }
 
     const renderMenuItem = (item) => {
         if (!item.enabled) {
@@ -77,13 +72,13 @@ const Menu = (props) => {
             </Link>
             {renderMenuItems(props)}
             <Divider />
-            <List component="nav" aria-label="secondary mailbox folders">
+            <List component="nav">
                 <ListItem button>
                     <ListItemText primary="Settings" />
                 </ListItem>
-                <ListItemLink component={Link} to="/panels">
+                <ListItem button component={Link} to="/panels">
                     <ListItemText primary="Panels" />
-                </ListItemLink>
+                </ListItem>
             </List>
         </div>
     );

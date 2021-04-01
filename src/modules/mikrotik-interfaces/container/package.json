@@ -2,21 +2,28 @@
     "name": "mikrotik-interfaces",
     "main": "index.js",
     "scripts": {
-        "production": "node ./api/server",
-        "development": "nodemon ./api/server",
+        "production": "concurrently \"node ./api/server\" \"cd workers && node fetch-interfaces.js\" \"cd workers && node fetch-linkstats.js\" \"cd workers && node fetch-traffic.js\"",
+        "development": "concurrently \"nodemon ./api/server.js\" \"cd workers && nodemon fetch-interfaces.js\"  \"cd workers && nodemon fetch-linkstats.js\" \"cd workers && nodemon fetch-traffic.js\"",
         "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "./data/*",
+            "./config/*"
+        ]
     },
     "author": "Geoff House",
     "license": "ISC",
     "dependencies": {
-        "bitrate": "^1.0.4",
+        "concurrently": "^6.0.0",
         "delay": "^5.0.0",
         "express": "^4.17.1",
         "http-errors": "^1.8.0",
         "io-videohub": "^2.0.0",
-        "lokijs": "^1.5.11",
         "module-alias": "^2.2.2",
         "morgan": "^1.10.0",
+        "nedb": "^1.8.0",
+        "nedb-promises": "^4.1.1",
         "node-routeros": "^1.6.9",
         "package.json": "^2.0.1",
         "path": "^0.12.7",

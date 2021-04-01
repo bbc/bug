@@ -35,6 +35,7 @@
     "@root": ".",
     "@routes": "./api/routes/",
     "@api": "./api/",
+    "@services": "./services/",
     "@utils": "./utils/"
   }
 }

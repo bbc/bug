@@ -1,25 +1,23 @@
 import { useParams } from "react-router-dom";
-import React, { Suspense } from "react";
-import ApiPoller from "@utils/ApiPoller";
+import React, { Suspense, useEffect } from "react";
+import AxiosGet from "@utils/AxiosGet";
 import Loading from "@components/Loading";
+import useAsyncEffect from 'use-async-effect';
 
 export default function PageHome(props) {
     const params = useParams();
     const panelId = params.panelid ?? "";
-    const [panel, setPanel] = React.useState({
-        status: "idle",
-        data: null,
-        error: null,
-    });
+    const [panel, setPanel] = React.useState(null);
+
+    useAsyncEffect(async () => {
+        setPanel(await AxiosGet(`/api/panel/${panelId}`));
+    }, []);
 
     const renderPanel = () => {
-        if (panel.status === 'idle') {
+        if (panel === null) {
             return <Loading />;
         }
-        if (panel.status === 'loading') {
-            return <Loading />;
-        }
-        const ImportedPanel = React.lazy(() => import(`@modules/${panel.data.module}/client/components/MainPanel`).catch(() => console.log('Error in importing')));
+        const ImportedPanel = React.lazy(() => import(`@modules/${panel.module}/client/components/MainPanel`).catch(() => console.log('Error in importing')));
         return (
             <>
                 <Suspense fallback={<div>Loading...</div>}>
@@ -31,7 +29,6 @@ export default function PageHome(props) {
 
     return (
         <div key={panelId}>
-            <ApiPoller url={`/api/panel/${panelId}`} interval="30000" onChanged={(result) => setPanel(result)} />
             {renderPanel()}
         </div>
     );

@@ -24,3 +24,13 @@ https://github.com/airbnb/javascript
 * read a file, access a db, save a file etc
 * divided up by logical group, but includes all CRUD for that thing
 * no business logic - access only
+
+- modules
+* the following api endpoints should be defined:
+* /api/status - returns an array including:
+-* state: 'starting', 'ready', 'failed'
+
+* /api/config - should be able to receive a config object and save it locally
+
+* module logging should be to console only
+* module APIs must follow JSON output standard (status, data, error)

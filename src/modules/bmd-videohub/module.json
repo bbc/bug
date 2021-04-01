@@ -9,7 +9,8 @@
     "license": "ISC",
     "devmounts": [
         "api",
-        "utils"
+        "utils",
+        "services"
     ],
     "defaultconfig": {
         "id": "",

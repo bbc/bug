@@ -8,8 +8,18 @@ const status = express.Router();
 const interfaceList = require('../../services/interface-list');
 
 status.get('/', async function (req, res) {
-    var result = await interfaceList(req);
-    res.json(result);
+    try {
+        res.json({
+            status: "success",
+            data: await interfaceList()
+        });
+    } catch (error) {
+        res.json({ 
+            status: "error",
+            message: "Failed to list interfaces" 
+        });
+    }
+
 })
 
 module.exports = status;
