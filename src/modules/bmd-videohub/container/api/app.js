@@ -1,21 +1,22 @@
-//NAME: app.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 19/03/2021
-//DESC: Blackmagic Design VideoHub Module
-
-const createError = require('http-errors');
 const express = require('express');
+const createError = require('http-errors');
+const register = require('module-alias/register')
+const bodyParser = require('body-parser')
 
-// Define the Express application
+// load routes
+const statusRouter = require('./routes/status');
+const configRouter = require('./routes/config');
+const defaultRouter = require('./routes/default');
+
 let app = express();
+
 app.set('json spaces', 2);
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-//Define routes
-const routes = require('./routes');
-app.use('/api',routes);
-
-app.use(function(req, res, next){
-    next(createError(404));
-});
+app.use('/api/status', statusRouter);
+app.use('/api/config', configRouter);
+app.use('*', defaultRouter);
 
 module.exports = app;
