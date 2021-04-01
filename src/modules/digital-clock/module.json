@@ -1,0 +1,24 @@
+{
+    "name": "digital-clock",
+    "longname": "Digital Clock",
+    "description": "System time made bigger.",
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "Schedule",
+    "author": "Ryan McCartney",
+    "license": "ISC",
+    "devmounts": [
+        "api",
+        "utils"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "title": "",
+        "module": "digital-clock",
+        "description": "",
+        "notes": "",
+        "enabled": true
+    }
+}
+  

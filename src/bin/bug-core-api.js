@@ -34,7 +34,7 @@ bugApi.use('/api/bug', bugRouter);
 bugApi.use('/api/system', systemRouter);
 bugApi.use('/api/module', moduleRouter);
 bugApi.use('/api/panel', panelRouter);
-bugApi.use('/api/proxy', proxyRouter);
+bugApi.use('/container', proxyRouter);
 
 // catch 404 and forward to error handler
 // bugApi.use(function (req, res, next) {

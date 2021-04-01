@@ -1,0 +1,27 @@
+{
+    "name": "tsl-mdu-3es",
+    "longname": "TSL MDU-12 3ES",
+    "description": "Monitoring and control of TSL MDUs",
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "PowerSettingsNew",
+    "author": "Ryan McCartney",
+    "license": "ISC",
+    "devmounts": [
+        "api",
+        "utils",
+        "services"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "title": "",
+        "module": "tsl-mdu-3es",
+        "description": "",
+        "notes": "",
+        "enabled": true,
+        "address": "",
+        "username": "root",
+        "password": "telsys"
+    }
+}
