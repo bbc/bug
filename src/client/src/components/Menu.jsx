@@ -28,15 +28,16 @@ import { faBug } from "@fortawesome/free-solid-svg-icons";
 import DynamicIcon from "@utils/DynamicIcon";
 import Loading from "./Loading";
 import { PanelContext } from "@data/PanelList";
+import TitleContext from '@utils/TitleContext';
 
 const drawerWidth = 260;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    backgroundColor: theme.palette.menu.main
   },
   appBar: {
+    backgroundColor: theme.palette.menu.main,
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -52,7 +53,10 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: 20,
+  },
+  toolbarIcon: {
+    marginRight: 8,
   },
   hide: {
     display: 'none',
@@ -82,6 +86,10 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: 'none',
+    color: '#cccccc',
+    '&:hover': {
+      color: '#fff'
+    },
   },
   toolbar: {
     display: 'flex',
@@ -105,8 +113,13 @@ const Menu = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [title, setTitle] = React.useState('BUG');
     const panelList = useContext(PanelContext);
   
+    const handleTitle = (newTitle) => {
+      setTitle(newTitle);
+    };
+
     const handleDrawerOpen = () => {
       setOpen(true);
     };
@@ -167,9 +180,8 @@ const Menu = (props) => {
             </IconButton>
 
             <Link className={classes.link} to="/">
-                {/* <FontAwesomeIcon style={{ width: "5%" }} icon={faBug} className={classes.bugLogo} /> */}
-                <Typography variant="h6" noWrap>
-                  BUG 3.0
+                <Typography variant="h6" noWrap className={classes.link}>
+                    <FontAwesomeIcon size="lg" icon={faBug} className={classes.toolbarIcon} /> { title }
                 </Typography>
             </Link>
         
@@ -201,7 +213,7 @@ const Menu = (props) => {
           <Divider />
           
           <List>
-            <ListItem button>
+            <ListItem button component={Link} to="/settings">
                 <ListItemIcon><SettingsIcon /></ListItemIcon>
                 <ListItemText primary="Settings" />
             </ListItem>
@@ -214,8 +226,10 @@ const Menu = (props) => {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-        
-          { props.children }
+          
+          <TitleContext.Provider value={handleTitle} >
+            { props.children }
+          </TitleContext.Provider>
         
         </main>
       </div>

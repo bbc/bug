@@ -10,18 +10,12 @@ import Grid from '@material-ui/core/Grid';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: 12,
-    marginLeft: 12,
-    marginRight: 12,
   },
   card: {
-    minWidth: 275,
+    minWidth: 200,
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-  },
-  title: {
-    fontSize: 14,
   }
 }));
 

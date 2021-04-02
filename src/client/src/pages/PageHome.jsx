@@ -1,12 +1,44 @@
 import React from "react";
-import HomeTitle from "@components/HomeTitle";
+import { makeStyles } from "@material-ui/core/styles";
 import HomeTiles from "@components//HomeTiles";
+import PageTitle from '@components/PageTitle';
+import BugQuote from '@components/BugQuote';
+import Box from "@material-ui/core/Box";
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+const useStyles = makeStyles((theme) => ({
+    tile: {
+        position: "relative",
+        display: "flex",
+        backgroundColor: "#262626",
+        margin: "auto",
+        flexDirection: 'row',
+        alignItems: 'center',     
+    },
+    quote:{
+        margin: '20px'
+    }
+}));
 
 export default function PageHome() {
+
+    const classes = useStyles();
+
     return (
         <>
-            <HomeTitle />
+            <PageTitle>Welcome to BUG</PageTitle>
             <HomeTiles />
+            
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Box className={classes.tile}>
+                        <Typography variant="body2" component="p" className={classes.quote}>
+                            <BugQuote/>
+                        </Typography>
+                    </Box>
+                </Grid>
+            </Grid>
         </>
     );
 }
