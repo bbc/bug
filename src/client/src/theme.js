@@ -15,7 +15,6 @@ const theme = createMuiTheme({
     MuiListItemIcon: {
       root: {
         color: props => (props.disabled ? "#888" : "#ffffff"),
-        minWidth: "34px !important"
       }
     },
   },
