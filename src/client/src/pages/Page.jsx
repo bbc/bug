@@ -38,28 +38,22 @@ export default function Page() {
     return (
         <>
             <Router>
-                <div className={classes.cols}>
-                    <div className={classes.colMenu}>
-                        <Menu />
-                    </div>
-
-                    <div className={classes.colContent}>
-                        <Switch>
+                <Menu>
+                    <Switch>
                         <Route exact path="/">
-                                <PageHome />
-                            </Route>
-                            <Route exact path="/panels">
-                                <PagePanels />
-                            </Route>
-                            <Route exact path="/panel/:panelid">
-                                <PagePanel />
-                            </Route>
-                            <Route exact path="/panelconfig/:panelid">
-                                <PagePanelConfig />
-                            </Route>
-                        </Switch>
-                    </div>
-                </div>
+                            <PageHome />
+                        </Route>
+                        <Route exact path="/panels">
+                            <PagePanels />
+                        </Route>
+                        <Route exact path="/panel/:panelid">
+                            <PagePanel />
+                        </Route>
+                        <Route exact path="/panelconfig/:panelid">
+                            <PagePanelConfig />
+                        </Route>
+                    </Switch>
+                </Menu>
             </Router>
         </>
     );
