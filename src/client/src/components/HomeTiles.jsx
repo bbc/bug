@@ -5,19 +5,14 @@ import DynamicIcon from "@utils/DynamicIcon";
 import Box from "@material-ui/core/Box";
 import { PanelContext } from "@data/PanelList";
 import { Link } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
-    tilesContainer: {
-        flexWrap: 'wrap',
-        margin: "0.5rem",
-    },
     tile: {
-        height: "6em",
-        width: '30rem',
         position: "relative",
         display: "flex",
         backgroundColor: "#262626",
-        margin: "0.5rem",
+        margin: "auto",
         flexDirection: 'row',
         alignItems: 'center',
         '&:hover': {
@@ -28,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary.main,
         width: '3rem',
         height: '3rem',
-        margin: '0.5rem 1rem'
+        margin: '0.6rem 1.5rem'
     },
     tileLink: {
         color: '#cccccc',
@@ -52,12 +47,14 @@ const HomeTiles = (props) => {
             return null;
         }
         return (
-            <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
-                <Box className={classes.tile}>
-                    <DynamicIcon className={classes.tileIcon} iconName={item._module.icon} />
-                    <div className={classes.tileTitle}>{item.title}</div>
-                </Box>
-            </Link>
+            <Grid item lg={4} sm={6} xs={12}>
+                <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
+                    <Box className={classes.tile}>
+                        <DynamicIcon className={classes.tileIcon} iconName={item._module.icon} />
+                        <div className={classes.tileTitle}>{item.title}</div>
+                    </Box>
+                </Link>
+            </Grid>
         );
     };
 
@@ -66,9 +63,9 @@ const HomeTiles = (props) => {
             return <Loading />;
         }
         return (
-            <Box className={classes.tilesContainer} alignContent="flex-start" display="flex">
+            <Grid container spacing={2}>
                 {panelList.data.map((panel) => renderTile(panel))}
-            </Box>
+            </Grid>
         );
     };
 

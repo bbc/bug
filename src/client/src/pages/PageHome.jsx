@@ -1,11 +1,12 @@
 import React from "react";
-import HomeTitle from "@components/HomeTitle";
 import HomeTiles from "@components//HomeTiles";
+import PageTitle from '@components/PageTitle';
 
 export default function PageHome() {
+
     return (
         <>
-            <HomeTitle />
+            <PageTitle>Welcome to BUG</PageTitle>
             <HomeTiles />
         </>
     );

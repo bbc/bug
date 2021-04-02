@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { PanelContext } from "@data/PanelList";
-import PanelTitle from "@components/PanelTitle";
+import PageTitle from "@components/PageTitle";
 import PanelListMenu from "@components/PanelListMenu";
 import Loading from "./Loading";
 // import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
@@ -110,7 +110,7 @@ export default function PanelList() {
     if (panelList.status === "succeeded") {
         return (
             <>
-                <PanelTitle title="Panel List"></PanelTitle>
+                <PageTitle>Panel List</PageTitle>
                 <div className={classes.content}>
                     <TableContainer component={Paper} square>
                         <Table className={classes.table} aria-label="simple table">

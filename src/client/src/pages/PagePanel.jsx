@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import AxiosGet from "@utils/AxiosGet";
 import Loading from "@components/Loading";
 import useAsyncEffect from 'use-async-effect';
+import PageTitle from '@components/PageTitle';
 
 export default function PageHome(props) {
     const params = useParams();
@@ -21,6 +22,7 @@ export default function PageHome(props) {
         return (
             <>
                 <Suspense fallback={<div>Loading...</div>}>
+                    <PageTitle>{ panel.name }</PageTitle>
                     <ImportedPanel id={panelId}/>
                 </Suspense>
             </>
