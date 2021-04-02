@@ -28,7 +28,6 @@ import { faBug } from "@fortawesome/free-solid-svg-icons";
 import DynamicIcon from "@utils/DynamicIcon";
 import Loading from "./Loading";
 import { PanelContext } from "@data/PanelList";
-
 import TitleContext from '@utils/TitleContext';
 
 const drawerWidth = 260;
@@ -54,7 +53,10 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: 20,
+  },
+  toolbarIcon: {
+    marginRight: 8,
   },
   hide: {
     display: 'none',
@@ -179,7 +181,7 @@ const Menu = (props) => {
 
             <Link className={classes.link} to="/">
                 <Typography variant="h6" noWrap className={classes.link}>
-                    <FontAwesomeIcon size="lg" icon={faBug} /> { ' '+title }
+                    <FontAwesomeIcon size="lg" icon={faBug} className={classes.toolbarIcon} /> { title }
                 </Typography>
             </Link>
         

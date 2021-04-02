@@ -4,7 +4,7 @@
   "module": "bmd-videohub",
   "description": "null",
   "notes": "null",
-  "enabled": false,
+  "enabled": true,
   "address": "172.26.108.90",
   "show_number": "true",
   "use_take": "true",
