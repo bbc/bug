@@ -1,0 +1,25 @@
+{
+    "name": "weather",
+    "longname": "Weather Forecast",
+    "description": "Get the Weather on Location",
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "Cloud",
+    "author": "Ryan McCartney",
+    "license": "ISC",
+    "apikey": "06f09531f033e4a3a1852f81641826b",
+    "devmounts": [
+        "api"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "title": "",
+        "module": "weather",
+        "location": "London",
+        "description": "",
+        "notes": "",
+        "enabled": true
+    }
+}
+  
