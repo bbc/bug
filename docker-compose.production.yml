@@ -1,0 +1,17 @@
+# NAME: docker-compose.production.yml
+# AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
+# DATE: 04/03/2021
+# DESC: Defines Docker services for Bug
+
+version: '3.8'
+
+services:
+  core:
+    volumes:
+      - ./src/logs:/home/node/bug-core/logs
+    environment:
+        NODE_ENV: 'production'
+    ports:
+      - ${PORT_PROD}:${PORT_PROD}
+
+  mongo:

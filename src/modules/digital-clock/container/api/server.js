@@ -8,5 +8,5 @@ const app = require("./app");
 let port = process.env.MODULE_PORT || 3000;
 
 app.listen(port, () => {
-  console.log("bmd-videohub listening on port "+port.toString());
+  console.log("digital-clock listening on port "+port.toString());
 });

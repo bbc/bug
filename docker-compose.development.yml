@@ -1,0 +1,45 @@
+# NAME: docker-compose.development.yml
+# AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
+# DATE: 04/03/2021
+# DESC: Defines Docker services for Bug
+
+version: '3.8'
+
+services:
+  core:
+    volumes:
+      - ./src/bin:/home/node/bug-core/bin
+      - ./src/config:/home/node/bug-core/config
+      - ./src/data:/home/node/bug-core/data
+      - ./src/filters:/home/node/bug-core/filters
+      - ./src/logs:/home/node/bug-core/logs
+      - ./src/models:/home/node/bug-core/models
+      - ./src/modules:/home/node/bug-core/modules
+      - ./src/routes:/home/node/bug-core/routes
+      - ./src/services:/home/node/bug-core/services
+      - ./src/utils:/home/node/bug-core/utils
+      - ./src/client/src:/home/node/bug-core/client/src
+      - ./src/client/public:/home/node/bug-core/client/public
+    environment:
+        NODE_ENV: 'development'
+    ports:
+      - ${PORT}:${PORT}
+      - ${PORT_DEV_API}:${PORT_DEV_API}
+ 
+  mongo:
+    ports:
+      - 27017:27017
+
+  mongo-web:
+    image: mongo-express
+    restart: unless-stopped
+    ports:
+      - ${MONGO_EXPRESS_PORT}:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_EXPRESS_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_EXPRESS_PASSWORD}
+    hostname: mongo-web
+    networks:
+      - ${NETWORK_NAME}
+    depends_on: 
+      - mongo

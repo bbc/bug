@@ -15,11 +15,11 @@ For development on your local machine with docker (recommended)
 * Install docker
 * Clone the repository
 * Change directories to the `bbcnews-bug-core` folder
-* Spin it up with `docker-compose up`
+* Spin it up with `docker-compose -f docker-compose.yml -f docker-compose.development.yml up -d`
 
-In this case you can switch between the production and development versions by changing the `NODE_ENV` variable in the `.env` files in the root directory.
+You can change many of the port parameters, logging locations by setting values in a `.env` file in the root directory.
 
-When developing in docker changes will automatically be relfected in docker using volume mounts and nodemon to reload. However, adding additionally packages will mean you need to rebuild the image using `docker-compose build` before running `docker-compose up` to run your newly updated image.
+When developing in docker changes will automatically be relfected in docker using volume mounts and nodemon to reload. However, adding additionally packages will mean you need to rebuild the image using `docker-compose build` before running `docker-compose -f docker-compose.yml -f docker-compose.development.yml up` to run your newly updated image.
 
 For development on a your local machine
 
@@ -32,7 +32,7 @@ For development on a your local machine
 
 * Download and unzip the latest release
 * Install docker on your system if it's not already there
-* Change directories to your unziped release and run - `docker-compose up -d`
+* Change directories to your unziped release and run - `docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d`
 * After a few minutes bug will be avalible at `http://localhost:80`
 
 
