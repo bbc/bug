@@ -30,7 +30,7 @@ import Loading from "./Loading";
 import { PanelContext } from "@data/PanelList";
 import TitleContext from '@utils/TitleContext';
 
-const drawerWidth = 260;
+const drawerWidth = 275;
 
 const useStyles = makeStyles((theme) => ({
   root: {
