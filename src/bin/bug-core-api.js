@@ -21,7 +21,23 @@ var bugApi = express();
 
 bugApi.set('json spaces', 2);
 bugApi.use(cors());
-bugApi.use(helmet());
+bugApi.use(helmet.contentSecurityPolicy({
+    reportOnly:true,
+    directives:{
+      'default-src': [ "'self'" ],
+      'base-uri': [ "'self'" ],
+      'block-all-mixed-content': [],
+      'font-src': [ "'self'", 'https:', 'http:', 'data:' ],
+      'frame-ancestors': [ "'self'" ],
+      'img-src': [ "'self'", 'data:' ],
+      'object-src': [ "'none'" ],
+      'script-src': [ "'self'" ],
+      'script-src-attr': [ "'none'" ],
+      'style-src': [ "'self'", 'https:', 'http:', "'unsafe-inline'" ],
+      'upgrade-insecure-requests': []
+    }
+}));
+
 bugApi.use(favicon(path.join(__dirname,'..','client','public','favicon.ico')));
 
 bugApi.use(express.json());
