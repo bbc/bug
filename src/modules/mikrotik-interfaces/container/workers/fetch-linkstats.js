@@ -7,7 +7,7 @@ const mikrotikParseLinkStats = require('../services/mikrotik-parselinkstats');
 
 var dbLinkStats = null;
 
-const delayMs = 2000;
+const delayMs = 5000;
 const conn = new RosApi({
     host: '172.26.108.126',
     user: 'bug',
