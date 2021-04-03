@@ -1,17 +1,17 @@
 {
-    "id": "15cd15a62758c9",
-    "order": 3,
-    "title": "Switch - Maint Bay",
-    "module": "cisco-sg",
-    "description": null,
-    "notes": null,
-    "enabled": true,
-    "address": "172.26.108.142",
-    "username": "cisco",
-    "password": "Facs165%",
-    "community": "facsSNMP",
-    "protected_interfaces": [
-        "gigabitethernet27",
-        "gigabitethernet28"
-    ]
+  "id": "15cd15a62758c9",
+  "order": 3,
+  "title": "Switch - Maint Bay",
+  "module": "cisco-sg",
+  "description": null,
+  "notes": null,
+  "enabled": false,
+  "address": "172.26.108.142",
+  "username": "cisco",
+  "password": "Facs165%",
+  "community": "facsSNMP",
+  "protected_interfaces": [
+    "gigabitethernet27",
+    "gigabitethernet28"
+  ]
 }

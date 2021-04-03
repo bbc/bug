@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import TitleContext from '@utils/TitleContext';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -11,8 +12,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelTitle(props) {
+export default function PageTitle(props) {
     const classes = useStyles();
-
-    return <div className={classes.title}>{props.title}</div>;
+    const title = React.useContext(TitleContext);
+    title(props.children);
+    return(null);
 }

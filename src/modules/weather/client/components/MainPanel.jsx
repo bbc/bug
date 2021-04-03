@@ -4,21 +4,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 
-import DigitalClock from './DigitalClock';
-import AnalogueClock from './AnalogueClock';
-import Date from './Date';
+import Weather from './Weather';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-  },
-  card: {
-    minWidth: 200,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
   }
 }));
 
@@ -30,20 +21,12 @@ export default function MainPanel(props) {
       <div className={classes.root}>
         <Grid 
           container spacing={4} 
-          direction="column"
+          direction="row"
           justify="center"
           alignItems="center"
         >
-          <Grid item lg={6} sm={12} xs={12} >
-            
-              <Card className={classes.card} >
-                <CardContent>
-                    {/* <DigitalClock/> */}
-                    <AnalogueClock/>
-                </CardContent>
-                <Date/>
-              </Card>
-  
+          <Grid item lg={12} sm={12} xs={12} >
+            <Weather/>
           </Grid>
         </Grid>
       </div>

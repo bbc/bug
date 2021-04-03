@@ -1,14 +1,14 @@
 {
-    "id": "15cd176c266dd4",
-    "order": 7,
-    "title": "Switch - Atos Room",
-    "module": "cisco-sg",
-    "description": null,
-    "notes": null,
-    "enabled": true,
-    "address": "172.26.108.141",
-    "username": "cisco",
-    "password": "Facs165%",
-    "community": "facsSNMP",
-    "protected_interfaces": []
+  "id": "15cd176c266dd4",
+  "order": 7,
+  "title": "Switch - Atos Room",
+  "module": "cisco-sg",
+  "description": null,
+  "notes": null,
+  "enabled": false,
+  "address": "172.26.108.141",
+  "username": "cisco",
+  "password": "Facs165%",
+  "community": "facsSNMP",
+  "protected_interfaces": []
 }

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import React, { Suspense } from "react";
 import ApiPoller from "@utils/ApiPoller";
 import Loading from "@components/Loading";
+import PageTitle from '@components/PageTitle';
 
 export default function PageHome(props) {
     const params = useParams();
@@ -23,6 +24,7 @@ export default function PageHome(props) {
         return (
             <>
                 <Suspense fallback={<div>Loading...</div>}>
+                    <PageTitle>{ 'Settings | '+panel.name }</PageTitle>
                     <ImportedPanel id={panelId}/>
                 </Suspense>
             </>
