@@ -23,34 +23,6 @@ async function saveInterfaces(interfaces) {
                 { upsert: true }
             );
         }
-
-        // await Promise.all(interfaces.map(async (eachInterface) => {
-
-        //     var existingInterface = await dbInterfaces.findOne({'id': eachInterface['id']});
-        //     if(existingInterface !== null) {
-        //         // found previous
-        //         timeDiff = eachInterface['timestamp'] - existingInterface['timestamp'];
-
-        //         // rxByteDiff = parseFloat(eachInterface["rx-byte"]) - parseFloat(existingInterface["rx-byte"]);
-        //         // eachInterface["rx-kbps"] = parseFloat(bitrate(rxByteDiff, timeDiff).toFixed(2));
-        //         // eachInterface["rx-bps-text"] = bitrate(rxByteDiff, timeDiff, 'mbps').toFixed(2) + " Mb/s";
-
-        //         // txByteDiff = parseFloat(eachInterface["tx-byte"]) - parseFloat(existingInterface["tx-byte"]);
-        //         // eachInterface["tx-kbps"] = parseFloat(bitrate(txByteDiff, timeDiff).toFixed(2));
-        //         // eachInterface["tx-bps-text"] = bitrate(txByteDiff, timeDiff, 'mbps').toFixed(2) + " Mb/s";
-
-        //         // we've used it, now replace it
-        //         var result = await dbInterfaces.update(
-        //             {'id': eachInterface['id']},
-        //             eachInterface
-        //         );
-
-        //     }
-        //     else {
-        //         await dbInterfaces.insert(eachInterface);
-        //     }
-        // }));
-
     } catch (error) {
         console.log(error);
     }
