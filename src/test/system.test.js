@@ -4,21 +4,21 @@
 //DESC: Boilerplate module test code
 
 const request = require("supertest");
-const system = require("./../routes/system");
+const system = require("./../bin/bug-core-api");
 
 describe("Test the '/api/system' routes", () => {
   test("Test the '/hello' method", async () => {
-    const response = await request(system).get("/hello");
+    const response = await request(system).get("api/system/hello");
     expect(response.statusCode).toBe(200);
   });
 
   test("Test the '/hello' method", async () => {
-    const response = await request(system).get("/backup");
+    const response = await request(system).get("api/system/backup");
     expect(response.statusCode).toBe(200);
   });
 
   test("Test the '/hello' method", async () => {
-    const response = await request(system).get("/restore");
+    const response = await request(system).get("api/system/restore");
     expect(response.statusCode).toBe(200);
   });
 });
