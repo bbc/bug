@@ -58,7 +58,7 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
+    "testPathIgnorePatterns": [
       "./node_modules/",
       "./modules/",
       "./client/"
