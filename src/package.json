@@ -56,14 +56,6 @@
     "supertest": "^6.1.3",
     "jest": "^26.6.3"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "./node_modules/",
-      "./modules/",
-      "./client/"
-    ]
-  },
   "_moduleAliases": {
     "@root": ".",
     "@bin": "./bin/",
@@ -73,5 +65,24 @@
     "@utils": "./utils/",
     "@services": "./services/",
     "@middleware": "./middleware/"
+  },
+  "jest": {
+    "rootDir": ".",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "./node_modules/",
+      "./modules/",
+      "./client/"
+    ]
+  },
+  "moduleNameMapper": {
+    "@root/(.*)": "./",
+    "@bin/(.*)": "./bin/",
+    "@filters/(.*)": "./filters/",
+    "@routes/(.*)": "./routes/",
+    "@models/(.*)": "./models/",
+    "@utils/(.*)": "./utils/",
+    "@services/(.*)": "./services/",
+    "@middleware/(.*)": "./middleware/"
   }
 }
