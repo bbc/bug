@@ -1,5 +1,5 @@
 {
-    "name": "digital-clock",
+    "name": "clock",
     "longname": "Digital Clock",
     "description": "System time made bigger.",
     "notes": "",
@@ -14,7 +14,7 @@
         "id": "",
         "order": 0,
         "title": "",
-        "module": "digital-clock",
+        "module": "clock",
         "description": "",
         "notes": "",
         "enabled": true
