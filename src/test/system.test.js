@@ -11,6 +11,7 @@ describe("Sample Test", () => {
   test("Sample Test 1", async () => {
     expect(200).toBe(200);
   });
+});
 
 // describe("Test the '/api/system' routes", () => {
 //   test("Test the '/hello' method", async () => {
