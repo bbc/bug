@@ -66,6 +66,7 @@
   },
   "_moduleAliases": {
     "@root": ".",
+    "@bin": "./bin/",
     "@filters": "./filters/",
     "@routes": "./routes/",
     "@models": "./models/",
