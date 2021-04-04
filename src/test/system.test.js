@@ -4,7 +4,7 @@
 //DESC: Boilerplate module test code
 
 const request = require("supertest");
-const system = require("@routes/system");
+const system = require("./../routes/system");
 
 describe("Test the '/api/system' routes", () => {
   test("Test the '/hello' method", async () => {
