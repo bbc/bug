@@ -1,9 +1,0 @@
-{
-  "id": "15ccb5a3855144",
-  "order": 0,
-  "title": "Digital Clock",
-  "module": "digital-clock",
-  "description": "A clock with the time",
-  "notes": "Notes because, why not.",
-  "enabled": true
-}

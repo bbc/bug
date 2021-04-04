@@ -1,7 +1,43 @@
-*.DS_Store
-._*
+
+# NPM
 node_modules
-logs
-data
-/src/config/*
-/src/modules/*Dockerfile
+
+#Logs
+/src/logs/*
+!/src/logs/.gitkeep
+
+#Backup Data
+/src/data/*
+!/src/data/.gitkeep
+
+# Panel Configs
+/src/config/*.json
+!/src/config/.gitkeep
+
+# Module Dockerfiles
+Dockerfile*
+!/src/Dockerfile
+
+# Global Environment Files
+.env
+.env.development
+.env.test
+.env.production
+
+# Client
+src/client/.pnp
+.pnp.js
+
+# Testing
+src/client/coverage
+
+# Client Production Build
+/src/client/build/*
+!/src/client/build/.gitkeep
+
+# misc
+._*
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
