@@ -3,9 +3,14 @@
 //DATE: 04/04/2021
 //DESC: Boilerplate module test code
 
-// const request = require("supertest");
-// const register = require('module-alias/register')
+const request = require("supertest");
+const register = require('module-alias/register')
 // const system = require("@bin/bug-core-api");
+
+describe("Sample Test", () => {
+  test("Sample Test 1", async () => {
+    expect(200).toBe(200);
+  });
 
 // describe("Test the '/api/system' routes", () => {
 //   test("Test the '/hello' method", async () => {
