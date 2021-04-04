@@ -17,11 +17,11 @@ pipeline {
         stage('Install Core and Client') { 
             steps {
                 dir('src') {
-                    sh 'npm install'
+                    sh 'npm install --also=dev'
                     sh 'npm list'
                 }
                 dir('src/client') {
-                    sh 'npm install'
+                    sh 'npm install --also=dev'
                     sh 'npm list'
                 }
                 slackSend (color: '#30fc03', message: "*Install:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
