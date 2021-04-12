@@ -35,6 +35,26 @@ For development on a your local machine
 * Change directories to your unziped release and run - `docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d`
 * After a few minutes bug will be avalible at `http://localhost:80`
 
+## Sample Environment (`.env`) File
+
+```
+PORT_PROD=80
+CORE_NAME=bug-core
+NODE_ENV=development
+CONSOLE_LOGLEVEL=debug
+LOG_FOLDER=logs
+LOG_NAME=bug-core
+NETWORK_NAME=bug
+MODULE_PORT=3200
+MODULE_HOME=/home/node/module
+
+PORT=3000
+PORT_DEV_API=3101
+
+MONGO_EXPRESS_PORT=3202
+MONGO_EXPRESS_USERNAME=admin
+MONGO_EXPRESS_PASSWORD=testing321
+```
 
 ## Helpful Docker Tips
 

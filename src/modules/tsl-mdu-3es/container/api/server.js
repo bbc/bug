@@ -8,5 +8,5 @@ const app = require("./app");
 let port = process.env.MODULE_PORT || 3000;
 
 app.listen(port, () => {
-  console.log("Example app listening on port "+port.toString());
+  console.log("tsl-mdu-3es listening on port "+port.toString());
 });
