@@ -3,6 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 export default function ConfigPanel({ register, errors, config }) {
 
     return(
@@ -22,18 +26,6 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('type')}}
-                    variant="outlined"
-                    fullWidth
-                    error={errors?.type ? true : false}
-                    defaultValue={ config?.type }
-                    type='text'
-                    label="Type"
-                />
-            </Grid>
-
-            <Grid item xs={12} >
-                <TextField
                     inputProps={{...register('description')}}
                     variant="outlined"
                     fullWidth
@@ -45,15 +37,19 @@ export default function ConfigPanel({ register, errors, config }) {
             </Grid>
 
             <Grid item xs={12} >
-                <TextField
-                    inputProps={{...register('notes')}}
-                    variant="outlined"
-                    fullWidth
-                    error={errors?.notes ? true : false}
-                    defaultValue={ config?.notes }
-                    type='text'
-                    label="Notes"
-                />
+                <FormControl variant="outlined" fullWidth>
+                    <InputLabel htmlFor="outlined-age-native-simple">Clock Type</InputLabel>
+                    <Select
+                        native
+                        defaultValue={ config?.type }
+                        label="Clock Type"
+                        error={errors?.type ? true : false}
+                        inputProps={{...register('type')}}
+                    >
+                        <option value={'digital'}>Digital</option>
+                        <option value={'analgoue'}>Analogue</option>
+                    </Select>
+                </FormControl>
             </Grid>
 
             <Grid item xs={12} >
