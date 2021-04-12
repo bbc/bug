@@ -24,7 +24,7 @@ export default function PageHome(props) {
         return (
             <>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <PageTitle>{ 'Settings | '+panel.name }</PageTitle>
+                    <PageTitle>{ 'Settings | '+panel?.data?.title }</PageTitle>
                     <ImportedPanel id={panelId}/>
                 </Suspense>
             </>

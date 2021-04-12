@@ -26,7 +26,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 
 import DynamicIcon from "@utils/DynamicIcon";
-import Loading from "./Loading";
+import Loading from "@components/Loading";
 import { PanelContext } from "@data/PanelList";
 import TitleContext from '@utils/TitleContext';
 
