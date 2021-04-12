@@ -5,6 +5,8 @@ import BugQuote from '@components/BugQuote';
 import Box from "@material-ui/core/Box";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { useDispatch } from 'react-redux';
+import pageTitleSlice from '../redux/pageTitleSlice';
 
 const useStyles = makeStyles((theme) => ({
     tile: {
@@ -23,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 export default function PageHome() {
 
     const classes = useStyles();
+    const dispatch = useDispatch()
+    dispatch(pageTitleSlice.actions.set("Home"));
 
     return (
         <>

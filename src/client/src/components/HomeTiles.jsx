@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Loading from "./Loading";
 import DynamicIcon from "@utils/DynamicIcon";
 import Box from "@material-ui/core/Box";
-import { PanelContext } from "@data/PanelList";
 import { Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
     tile: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const HomeTiles = (props) => {
     const classes = useStyles();
-    const panelList = useContext(PanelContext);
+    const panelList = useSelector(state => state.panelList);
 
     const renderTile = (item) => {
         if (!item.enabled) {

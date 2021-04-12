@@ -3,7 +3,6 @@ import React, { Suspense, useState } from "react";
 import AxiosGet from "@utils/AxiosGet";
 import Loading from "@components/Loading";
 import useAsyncEffect from 'use-async-effect';
-import PageTitle from '@components/PageTitle';
 
 export default function PageHome(props) {
     const params = useParams();
@@ -23,7 +22,6 @@ export default function PageHome(props) {
         return (
             <>
                 <Suspense fallback={<Loading />}>
-                    <PageTitle>{ panel?.title }</PageTitle>
                     <ImportedPanel panel={panel}/>
                 </Suspense>
             </>

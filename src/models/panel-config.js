@@ -12,7 +12,7 @@ exports.get = async function(panelId) {
     try {
         return await readJson(`config/${panelId}.json`);
     } catch (error) {
-        logger.warn(`panel-config: ${error.trace || error || error.message}`);
+        logger.warn(`panel-config: panel id ${panelId} - ${error.trace || error || error.message}`);
     }
 }
 
@@ -23,7 +23,7 @@ exports.set = async function(panelConfig) {
         return writeJson(filename, panelConfig);
     } 
     catch (error) {
-        logger.warn(`panel-config: ${error.trace || error || error.message}`);
+        logger.warn(`panel-config: panel id ${panelConfig.id} - ${error.trace || error || error.message}`);
         return false;
     }
 }
@@ -40,13 +40,15 @@ exports.list = async function(panelId) {
     var panelArray = [];
     for(var i in files) {
         try {
-            let filename = path.join('config', files[i]);
-            var panelFile = await readJson(filename);
-            if(panelFile) {
-                panelArray.push(panelFile);
+            const filename = path.join('config', files[i]);
+            if(filename.endsWith('.json')) {
+                const panelFile = await readJson(filename);
+                if(panelFile) {
+                    panelArray.push(panelFile);
+                }
             }
         } catch (error) {
-            logger.warn(`panel-config: ${error.trace || error || error.message}`);
+            logger.warn(`panel-config: filename ${filename} - ${error.trace || error || error.message}`);
         }
     }
     return panelArray;

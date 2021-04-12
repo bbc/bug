@@ -62,7 +62,7 @@ class ApiPoller extends React.Component {
             if (response.data.status === "error") {
                 throw response.data.message;
             }
-            this.status = "succeeded";
+            this.status = "success";
             this.data = response.data.data;
             this.hasLoaded = true;
             this.handleUpdated();

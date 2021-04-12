@@ -6,18 +6,16 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
-
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-
 import DynamicIcon from "@utils/DynamicIcon";
 import Loading from "@components/Loading";
-import { PanelContext } from "@data/PanelList";
 import BugMenuIcon from "@components/BugMenuIcon";
+import { useSelector } from 'react-redux'
 
 const Menu = (props) => {
-    const panelList = useContext(PanelContext);
+    const panelList = useSelector(state => state.panelList);
 
     const renderMenuItem = (item) => {
         if (!item.enabled) {
@@ -37,7 +35,7 @@ const Menu = (props) => {
         if (panelList.status === "loading") {
             return <Loading />;
         }
-        if (panelList.status === "succeeded") {
+        if (panelList.status === "success") {
             return (
                 <List aria-label="list of enabled modules">{panelList.data.map((panel) => renderMenuItem(panel))}</List>
             );
