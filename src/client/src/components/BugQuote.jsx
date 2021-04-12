@@ -10,8 +10,8 @@ export default function BugQuote(props) {
     }, []);
 
     return (
-        <div>
+        <>
             { quote }
-        </div>
+        </>
     );
 }

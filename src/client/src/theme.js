@@ -1,4 +1,5 @@
 import { createMuiTheme }  from '@material-ui/core/styles'
+const defaultTheme = createMuiTheme();
 const theme = createMuiTheme({
   overrides: {
     MuiTableCell: {
@@ -17,6 +18,14 @@ const theme = createMuiTheme({
         color: props => (props.disabled ? "#888" : "#ffffff"),
       }
     },
+    MuiToolbar: {
+      gutters: {
+        [defaultTheme.breakpoints.up('sm')]: {
+          paddingLeft: '16px',
+          paddingRight: '16px',
+        },
+      },
+    },    
   },
   typography: {
     fontFamily: [

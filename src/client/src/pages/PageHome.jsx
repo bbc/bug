@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import HomeTiles from "@components//HomeTiles";
-import PageTitle from '@components/PageTitle';
 import BugQuote from '@components/BugQuote';
 import Box from "@material-ui/core/Box";
 import Grid from '@material-ui/core/Grid';
@@ -27,7 +26,6 @@ export default function PageHome() {
 
     return (
         <>
-            <PageTitle>Welcome to BUG</PageTitle>
             <HomeTiles />
             
             <Grid container spacing={2}>

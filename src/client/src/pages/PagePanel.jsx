@@ -12,13 +12,14 @@ export default function PageHome(props) {
 
     useAsyncEffect(async () => {
         setPanel(await AxiosGet(`/api/panel/${panelId}`));
-    }, []);
+    }, [panelId]);
 
     const renderPanel = () => {
         if (panel === null) {
             return <Loading />;
         }
         const ImportedPanel = React.lazy(() => import(`@modules/${panel.module}/client/components/MainPanel`).catch(() => console.log('Error in importing')));
+
         return (
             <>
                 <Suspense fallback={<Loading />}>
