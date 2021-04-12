@@ -63,6 +63,7 @@ export default function PageHome(props) {
     
     const onSubmit = async (form) => {
         setLoading(true);
+        console.log(form);
         const response = await AxiosPost(`/api/panel/config/${panelId}`);
         if(!response?.error){  
             setConfig(response);
@@ -84,7 +85,7 @@ export default function PageHome(props) {
     const renderPanel = () => {
         let panel = (<Loading/>);
         if (config) {
-            const ImportedPanel = React.lazy(() => import(`@modules/${config?.module}/client/components/ConfigPanel`).catch(() => console.log('Error in importing')));
+            const ImportedPanel = React.lazy(() => import(`@modules/${config?.module}/client/components/SettingsPanel`).catch(() => console.log('Error in importing')));
             panel = (
                 <React.Fragment>
                     <Suspense fallback={<Loading/>}>
@@ -92,7 +93,7 @@ export default function PageHome(props) {
 
                         <Card className={classes.card} >
                             <CardHeader
-                            title='Configuration'
+                            title={`Configuration`}
                             />
                             <CardContent>
                                 <form onSubmit={ handleSubmit(onSubmit) } className={ classes.form } >
