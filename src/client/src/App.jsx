@@ -26,9 +26,9 @@ export default function App() {
                 >
                     <SnackbarConfigurator />
                     <CssBaseline />
-                    <PanelList>
-                        <Page></Page>
-                    </PanelList>
+                        <PanelList>
+                            <Page></Page>
+                        </PanelList>
                 </SnackbarProvider>
             </ThemeProvider>
         </>

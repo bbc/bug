@@ -47,7 +47,7 @@ const HomeTiles = (props) => {
             return null;
         }
         return (
-            <Grid item lg={4} sm={6} xs={12}>
+            <Grid item lg={4} sm={6} xs={12} key={item.id}>
                 <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
                     <Box className={classes.tile}>
                         <DynamicIcon className={classes.tileIcon} iconName={item._module.icon} />
