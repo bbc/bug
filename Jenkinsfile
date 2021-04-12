@@ -11,7 +11,6 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 sh 'node --version'
-                slackSend (color: '#30fc03', message: "*Environment:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
         stage('Install Core and Client') { 
@@ -24,7 +23,6 @@ pipeline {
                     sh 'npm install --also=dev'
                     sh 'npm list'
                 }
-                slackSend (color: '#30fc03', message: "*Install:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
         stage('Test Core and Client') { 
