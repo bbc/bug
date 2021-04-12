@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 export default function MainPanel(props) {
   const classes = useStyles();
 
+  console.log(props);
+
   return (
     <React.Fragment>
       <div className={classes.root}>

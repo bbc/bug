@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
-import AxiosGet from '@utils/AxiosGet';
 import AxiosPost from '@utils/AxiosPost';
 import { useSnackbar } from 'notistack';
 import { useHistory } from "react-router-dom";
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ConfigPanel(props) {
     const classes = useStyles();
     const history = useHistory();
-    const [config, setConfig] = React.useState({loading:true});
+    const [config, setConfig] = React.useState({ ...{loading: false}, ...props.config})
     const { enqueueSnackbar } = useSnackbar();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -57,11 +56,6 @@ export default function ConfigPanel(props) {
         setConfig({...{loading: false}, ...response});
       }
     
-    const getConfig = async (panelID) => {
-        const response = await AxiosGet(`/api/panel/config/${panelID}`);
-        setConfig({...{loading: false}, ...response });
-    }
-
     const onSubmit = async (form) => {
         const response = await updateConfig(form);
         if(!response?.error){  
@@ -80,10 +74,6 @@ export default function ConfigPanel(props) {
         }
         return contents;
     }
-
-    React.useEffect(() => {
-        getConfig(props.id);
-    },[]);
 
     const form = (
         <Card className={classes.card} >
