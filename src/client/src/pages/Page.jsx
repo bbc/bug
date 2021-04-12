@@ -173,7 +173,7 @@ const Page = (props) => {
                         <Route exact path="/panel/:panelid">
                             <PagePanel />
                         </Route>
-                        <Route exact path="/panelconfig/:panelid">
+                        <Route exact path="/panel/config/:panelid">
                             <PagePanelConfig />
                         </Route>
                         <Route exact path="/system">
