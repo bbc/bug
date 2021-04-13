@@ -7,25 +7,25 @@ version: '3.8'
 
 networks:
   bug:
-    name: ${NETWORK_NAME}
+    name: ${DOCKER_NETWORK_NAME}
     driver: bridge
 
 services:
   core:
-    container_name: ${CORE_NAME}
+    container_name: ${DOCKER_CORE_NAME}
     build: "./src"
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env
-    hostname: ${CORE_NAME}
+    hostname: ${DOCKER_CORE_NAME}
     networks:
-      - ${NETWORK_NAME}
+      - ${DOCKER_NETWORK_NAME}
 
   mongo:
     image: mongo
     restart: unless-stopped
     container_name: bug-mongo
     networks:
-      - ${NETWORK_NAME}
+      - ${DOCKER_NETWORK_NAME}

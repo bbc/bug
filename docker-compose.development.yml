@@ -24,12 +24,12 @@ services:
         NODE_ENV: 'development'
     ports:
       - ${PORT}:${PORT}
-      - ${PORT_DEV_API}:${PORT_DEV_API}
+      - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
  
   mongo:
     ports:
       - 27017:27017
-
+      
   mongo-web:
     image: mongo-express
     restart: unless-stopped
@@ -40,6 +40,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_EXPRESS_PASSWORD}
     hostname: mongo-web
     networks:
-      - ${NETWORK_NAME}
+      - ${DOCKER_NETWORK_NAME}
     depends_on: 
       - mongo

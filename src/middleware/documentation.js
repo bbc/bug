@@ -9,6 +9,10 @@ const documentation = express.Router();
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require("swagger-jsdoc");
 
+const host = process.env.BUG_CORE_HOST || 'localhost';
+const port = process.env.BUG_CORE_PORT || '3101';
+const url = `${host}:${port}/api/`
+
 const swagerOptions = {
     definition: {
       openapi: "3.0.0",
@@ -28,7 +32,7 @@ const swagerOptions = {
       },
       servers: [
         {
-          url: "http://localhost:3101/api/"
+          url: url
         }
       ]
     },

@@ -12,8 +12,8 @@ const customLogFormat = winston.format.combine(
     )
 );
 
-const logFolder = process.env.LOG_FOLDER || 'logs';
-const logName = process.env.LOG_NAME || 'bug-core';
+const logFolder = process.env.BUG_CORE_LOG_FOLDER || 'logs';
+const logName = process.env.BUG_CORE_LOG_NAME || 'bug-core';
 
 const logger = winston.createLogger(
     {
@@ -51,7 +51,7 @@ const logger = winston.createLogger(
     }
 );
 
-var consoleLogLevel = process.env.CONSOLE_LOGLEVEL || 'info';
+var consoleLogLevel = process.env.BUG_CORE_CONSOLE_LEVEL || 'info';
 consoleLogLevel = consoleLogLevel.toLowerCase();
 
 if (process.env.NODE_ENV !== 'production') {
