@@ -11,6 +11,7 @@ const helmet = require('helmet');
 require('dotenv').config();
 
 // load routes
+const documentation = require('@middleware/documentation');
 const systemRouter = require('@routes/system');
 const moduleRouter = require('@routes/module');
 const panelRouter = require('@routes/panel');
@@ -46,6 +47,7 @@ bugApi.use(cookieParser());
 bugApi.use(bodyParser.json())
 bugApi.use(express.static(path.join(__dirname, 'public')));
 
+bugApi.use('/documentation',documentation)
 bugApi.use('/api/bug', bugRouter);
 bugApi.use('/api/system', systemRouter);
 bugApi.use('/api/module', moduleRouter);

@@ -11,6 +11,15 @@ const moduleBuild = require('@services/module-build')
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
 
+/**
+ * @swagger
+ * /module:
+ *    get:
+ *      description: Returns a list of modules avalible to be added as panels.
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.get('/', async function (req, res, next) {
     try {
         res.json({
@@ -22,6 +31,15 @@ router.get('/', async function (req, res, next) {
     }
 });
 
+/**
+ * @swagger
+ * /:MODULE_NAME:
+ *    get:
+ *      description: Gets the modules information about a specifc module by it's name.
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.get('/:modulename', async function (req, res, next) {
     try {
         res.json({
@@ -33,6 +51,16 @@ router.get('/:modulename', async function (req, res, next) {
     }
 });
 
+
+/**
+ * @swagger
+ * /build/:MODULE_NAME:
+ *    get:
+ *      description: Builds the Docker image of a module by it's name.
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.get('/build/:modulename', async function (req, res, next) {
     const result = await moduleBuild(req.params.modulename);
     try {
