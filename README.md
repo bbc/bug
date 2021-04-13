@@ -38,22 +38,23 @@ For development on a your local machine
 ## Sample Environment (`.env`) File
 
 ```
-PORT_PROD=80
-CORE_NAME=bug-core
-NODE_ENV=development
-CONSOLE_LOGLEVEL=debug
-LOG_FOLDER=logs
-LOG_NAME=bug-core
-NETWORK_NAME=bug
 MODULE_PORT=3200
 MODULE_HOME=/home/node/module
 
-PORT=3000
-PORT_DEV_API=3101
+DOCKER_CORE_NAME=bug-core
+DOCKER_NETWORK_NAME=bug
+
+BUG_CORE_PORT=3101
+BUG_CORE_HOST=http://localhost
+BUG_CORE_LOG_FOLDER=logs
+BUG_CORE_LOG_NAME=bug-core
+BUG_CORE_CONSOLE_LEVEL=debug
 
 MONGO_EXPRESS_PORT=3202
 MONGO_EXPRESS_USERNAME=admin
 MONGO_EXPRESS_PASSWORD=testing321
+
+PORT=3000
 ```
 
 ## Helpful Docker Tips
