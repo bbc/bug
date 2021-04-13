@@ -8,6 +8,15 @@ const bugQuote = require('@services/bug-quote');
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
 
+/**
+ * @swagger
+ * /bug/quote:
+ *    get:
+ *      description: Gets a random and hillarous turn of phrase about invertebrates.
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.get('/quote', async function (req, res, next) {
     try {
         res.json({

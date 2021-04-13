@@ -8,11 +8,30 @@ const systemBackup = require('@services/system-backup');
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
 
+/**
+ * @swagger
+ * /system/hello:
+ *    get:
+ *      description: Test route, BUG greets you in response.
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.get('/hello', function (req, res, next) {
-    res.json("Hello");
-    logger.info("HELLO");
+    const message = 'Good morning sunshine, the earth says hello.';
+    res.json(message);
+    logger.info(message);
 });
 
+/**
+ * @swagger
+ * /system/backup:
+ *    get:
+ *      description: Get a gziped tarball of the current panel configs.
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.get('/backup', async function (req, res, next) {
     const result = await systemBackup();
     try {
@@ -22,6 +41,15 @@ router.get('/backup', async function (req, res, next) {
     }
 });
 
+/**
+ * @swagger
+ * /system/restore:
+ *    get:
+ *      description: Upload a BUG backup file to move configs between BUG panels
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.get('/restore', function (req, res, next) {
     res.json("Hello");
 });

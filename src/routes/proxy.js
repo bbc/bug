@@ -10,6 +10,15 @@ const axios = require('axios')
 
 const modulePort = process.env.MODULE_PORT || 3000 ;
 
+/**
+ * @swagger
+ * /proxy/:PANEL_ID:
+ *    get:
+ *      description: Proxies a request from the main BUG service to the API of a Panel's container. The result is returned in the response.
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
 router.use('/:panelid', async function(req, res) {
 
     var url = 'http://' + req.params.panelid + ':' + modulePort + '/api' + req.url;
