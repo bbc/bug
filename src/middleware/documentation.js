@@ -13,8 +13,8 @@ const host = process.env.BUG_CORE_HOST || 'localhost';
 const port = process.env.BUG_CORE_PORT || '3101';
 const url = `${host}:${port}/api/`
 
-const customCSS = {
-  customCss: '.swagger-ui .topbar { display: none }'
+const options = {
+  customCssUrl: '/css/documentation.css'
 };
 
 const swagerOptions = {
@@ -44,6 +44,6 @@ const swagerOptions = {
 }
 
 const swaggerDocs = swaggerJSDoc(swagerOptions);
-documentation.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs,customCSS));
+documentation.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs,options));
 
 module.exports = documentation;

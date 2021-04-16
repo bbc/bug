@@ -54,6 +54,9 @@ bugApi.use('/api/module', moduleRouter);
 bugApi.use('/api/panel', panelRouter);
 bugApi.use('/container', proxyRouter);
 
+//Serve files in the public folder
+bugApi.use(express.static(path.join(__dirname, '..','client', 'public')));
+
 // catch 404 and forward to error handler
 // bugApi.use(function (req, res, next) {
 //     const err = new Error('File Not Found');
