@@ -13,6 +13,9 @@ const bugQuote = require('@services/bug-quote');
  * /bug/quote:
  *    get:
  *      description: Gets a random and hillarous turn of phrase about invertebrates.
+ *      tags: [bug]
+ *      produces:
+ *        - application/json
  *      responses:
  *        '200':
  *          description: Success

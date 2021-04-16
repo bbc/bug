@@ -14,11 +14,20 @@ const moduleBuild = require('@services/module-build')
 /**
  * @swagger
  * /module:
- *    get:
- *      description: Returns a list of modules avalible to be added as panels.
- *      responses:
- *        '200':
- *          description: Success
+ *   get:
+ *     description: Returns a list of modules avalible to be added as panels.
+ *     tags: [module]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrievd the module list
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error getting module list
+ *         schema:
+ *           type: object
  */
 router.get('/', async function (req, res, next) {
     try {
@@ -27,18 +36,35 @@ router.get('/', async function (req, res, next) {
             data: await moduleList()
         });
     } catch (error) {
+        res.status(500);
         res.json({ error: "Failed to fetch module list" });
     }
 });
 
 /**
  * @swagger
- * /:MODULE_NAME:
- *    get:
- *      description: Gets the modules information about a specifc module by it's name.
- *      responses:
- *        '200':
- *          description: Success
+ * /module/{modulename}:
+ *   get:
+ *     description: Gets the modules information about a specifc module by it's name.
+ *     tags: [module]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: modulename
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The module name
+ *     responses:
+ *       200:
+ *         description: Successfully retrievd the module info
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error get the module information
+ *         schema:
+ *           type: object
  */
 router.get('/:modulename', async function (req, res, next) {
     try {
@@ -47,19 +73,35 @@ router.get('/:modulename', async function (req, res, next) {
             data: await moduleGet(req.params.modulename)
         });
     } catch (error) {
+        res.status(500);
         res.json({ error: "Failed to fetch module" });
     }
 });
 
-
 /**
  * @swagger
- * /build/:MODULE_NAME:
- *    get:
- *      description: Builds the Docker image of a module by it's name.
- *      responses:
- *        '200':
- *          description: Success
+ * /module/build/{modulename}:
+ *   get:
+ *     description: Builds the Docker image of a module by it's name.
+ *     tags: [module]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: modulename
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The module name
+ *     responses:
+ *       200:
+ *         description: Successfully built the module
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error building the image
+ *         schema:
+ *           type: object
  */
 router.get('/build/:modulename', async function (req, res, next) {
     const result = await moduleBuild(req.params.modulename);
@@ -69,6 +111,7 @@ router.get('/build/:modulename', async function (req, res, next) {
             data: null
         });
     } catch (error) {
+        res.status(500);
         res.json({ error: "Failed to build module" });
     }
 });

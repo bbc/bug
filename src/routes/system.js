@@ -13,6 +13,9 @@ const systemBackup = require('@services/system-backup');
  * /system/hello:
  *    get:
  *      description: Test route, BUG greets you in response.
+ *      tags: [system]
+ *      produces:
+ *        - application/json
  *      responses:
  *        '200':
  *          description: Success
@@ -28,6 +31,9 @@ router.get('/hello', function (req, res, next) {
  * /system/backup:
  *    get:
  *      description: Get a gziped tarball of the current panel configs.
+ *      tags: [system]
+ *      produces:
+ *        - application/json
  *      responses:
  *        '200':
  *          description: Success
@@ -46,6 +52,9 @@ router.get('/backup', async function (req, res, next) {
  * /system/restore:
  *    get:
  *      description: Upload a BUG backup file to move configs between BUG panels
+ *      tags: [system]
+ *      produces:
+ *        - application/json
  *      responses:
  *        '200':
  *          description: Success
