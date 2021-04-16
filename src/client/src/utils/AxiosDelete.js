@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export default async function AxiosPost(url,data) {
+export default async function AxiosDelete(url) {
 
-    let response = await axios.post(url,data);
+    let response = await axios.delete(url);
     
     switch(response.data.status) {
         case 'success':

@@ -126,7 +126,7 @@ router.post('/', async function (req, res, next) {
 /**
  * @swagger
  * /panel/build/{moduleName}:
- *   put:
+ *   get:
  *     description: Build a panel? What's the difference between this and module build?
  *     tags: [panel]
  *     produces:

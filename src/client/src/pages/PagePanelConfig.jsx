@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import useAsyncEffect from "use-async-effect";
 import AxiosGet from "@utils/AxiosGet";
-import AxiosPost from "@utils/AxiosPost";
+import AxiosPut from "@utils/AxiosPut";
 
 import Loading from "@components/Loading";
 import LoadingOverlay from "@components/LoadingOverlay";
@@ -62,7 +62,7 @@ export default function PageHome(props) {
 
     const onSubmit = async (form) => {
         setLoading(true);
-        const response = await AxiosPost(`/api/panel/config/${panelId}`);
+        const response = await AxiosPut(`/api/panel/config/${panelId}`,form);
         if (!response?.error) {
             setConfig(response);
             enqueueSnackbar(`${config?.title} has been updated.`, { variant: "success" });
