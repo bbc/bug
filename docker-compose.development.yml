@@ -15,6 +15,7 @@ services:
       - ./src/logs:/home/node/bug-core/logs
       - ./src/models:/home/node/bug-core/models
       - ./src/modules:/home/node/bug-core/modules
+      - ./src/middleware:/home/node/bug-core/middleware
       - ./src/routes:/home/node/bug-core/routes
       - ./src/services:/home/node/bug-core/services
       - ./src/utils:/home/node/bug-core/utils
