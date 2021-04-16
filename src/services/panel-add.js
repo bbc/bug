@@ -4,7 +4,7 @@ const path = require('path');
 const logger = require('@utils/logger');
 const docker = require('@utils/docker');
 const id = require('@utils/id');
-const setConfig = require('@services/panel-setconfig');
+const setConfig = require('@services/panel-configset');
 
 module.exports = async (panelConfig) => {
 

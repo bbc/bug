@@ -64,7 +64,7 @@ export default function PageHome(props) {
         setLoading(true);
         const response = await AxiosPut(`/api/panel/config/${panelId}`,form);
         if (!response?.error) {
-            setConfig(response);
+            setConfig({...config, ...response});
             enqueueSnackbar(`${config?.title} has been updated.`, { variant: "success" });
             history.goBack();
         } else {

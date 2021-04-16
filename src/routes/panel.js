@@ -2,8 +2,6 @@
 
 const express = require('express');
 const router = express.Router();
-const panelConfigList = require('@services/panelconfig-list');
-const panelConfigGet = require('@services/panelconfig-get');
 const panelGet = require('@services/panel-get');
 const panelGetData = require('@services/panel-getdata');
 const panelStart = require('@services/panel-start');
@@ -14,7 +12,10 @@ const panelAdd = require('@services/panel-add');
 const panelDelete = require('@services/panel-delete');
 const panelEnable = require('@services/panel-enable');
 const panelDisable = require('@services/panel-disable');
-const panelPushConfig = require('@services/panel-pushconfig');
+const panelConfigPush = require('@services/panel-configpush');
+const panelConfigSet = require('@services/panel-configset');
+const panelConfigList = require('@services/panel-configlist');
+const panelConfigGet = require('@services/panel-configget');
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -382,6 +383,46 @@ router.get('/disable/:panelid', async function (req, res, next) {
  * @swagger
  * /panel/config/{panelid}:
  *   put:
+ *     description: Update the config of a BUG panel
+ *     tags: [panel]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: panelid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The panel ID string
+ *     responses:
+ *       200:
+ *         description: Successfully set the config of the panel.
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error, could not set the config of the panel.
+ *         schema:
+ *           type: object
+ */
+ router.put('/config/:panelid', async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await panelConfigSet({ ...{ 'id':req.params.panelid }, ...req.body})
+        });
+    } catch (error) {
+        res.status(500);
+        res.json({ 
+            status: "error",
+            message: "Failed to set panel config" 
+        });
+    }
+});
+
+/**
+ * @swagger
+ * /panel/config/push/{panelid}:
+ *   get:
  *     description: Push a config to a BUG panel
  *     tags: [panel]
  *     produces:
@@ -403,7 +444,7 @@ router.get('/disable/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.put('/config/:panelid', async function (req, res, next) {
+router.get('/config/push/:panelid', async function (req, res, next) {
     try {
         res.json({
             status: "success",
