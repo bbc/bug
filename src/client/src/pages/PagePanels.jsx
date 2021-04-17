@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PanelList from "@components/PanelList";
-import { useDispatch } from 'react-redux';
-import pageTitleSlice from '../redux/pageTitleSlice';
+import { useDispatch } from "react-redux";
+import pageTitleSlice from "../redux/pageTitleSlice";
 
 export default function PagePanels() {
+    const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
-    dispatch(pageTitleSlice.actions.set("Panel List"));
+    useEffect(() => {
+        dispatch(pageTitleSlice.actions.set("Panel List"));
+    });
 
     return (
-        <>  
+        <>
             <PanelList />
         </>
     );
