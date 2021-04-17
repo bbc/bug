@@ -6,6 +6,7 @@ const logger = require('@utils/logger');
 const moduleList = require('@services/module-list');
 const moduleGet = require('@services/module-get');
 const moduleBuild = require('@services/module-build')
+const moduleRebuild = require('@services/module-rebuild')
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -82,7 +83,7 @@ router.get('/:modulename', async function (req, res, next) {
  * @swagger
  * /module/build/{modulename}:
  *   get:
- *     description: Builds the Docker image of a module by it's name.
+ *     description: Builds the Docker image of a module by its name
  *     tags: [module]
  *     produces:
  *       - application/json
@@ -115,5 +116,42 @@ router.get('/build/:modulename', async function (req, res, next) {
         res.json({ error: "Failed to build module" });
     }
 });
-  
+
+/**
+ * @swagger
+ * /rebuild/:MODULE_NAME:
+ *   get:
+ *     description: Rebuilds the Docker image of a module by name - not for use in application - for dev/testing purposes only
+ *     tags: [module]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: modulename
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The module name
+ *     responses:
+ *       200:
+ *         description: Successfully rebuilt the module
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error rebuilding the image
+ *         schema:
+ *           type: object
+ */
+ router.get('/rebuild/:modulename', async function (req, res, next) {
+    const result = await moduleRebuild(req.params.modulename);
+    try {
+        res.json({
+            status: (result ? "success" : "fail"),
+            data: null
+        });
+    } catch (error) {
+        res.json({ error: "Failed to rebuild module" });
+    }
+});
+
 module.exports = router;
