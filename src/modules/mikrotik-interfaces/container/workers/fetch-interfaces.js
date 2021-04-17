@@ -1,59 +1,42 @@
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
-const db = require('../utils/db');
+const mongoCollection = require('../utils/mongo-collection');
 const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
-
-var dbInterfaces = null;
-
-const delayMs = 2000;
-const conn = new RosApi({
-    host: "172.26.108.126",
-    user: "bug",
-    password: "sfsafawffasfasr33r",
-    timeout: 5
-});
-
-async function saveInterfaces(interfaces) {
-
-    try {
-        for(eachInterface of interfaces) {
-            await dbInterfaces.update(
-                {'id': eachInterface['id']},
-                eachInterface,
-                { upsert: true }
-            );
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
+const arraySave = require('../services/array-save');
 
 const main = async () => {
 
-    console.log("starting fetch-interfaces ...");
+    const delayMs = 2000;
+    const conn = new RosApi({
+        host: "172.26.108.126",
+        user: "bug",
+        password: "sfsafawffasfasr33r",
+        timeout: 5
+    });
 
-    console.log(`connecting to database collection 'interfaces'`);
-    dbInterfaces = await db('interfaces');
+    console.log("fetch-interfaces: starting ...");
 
-    if(!dbInterfaces) {
-        console.log("no database - cannot continue");
+    console.log(`fetch-interfaces: connecting to database`);
+    const db = await mongoCollection('interfaces');
+    if (!db) {
         return;
     }
-
-    console.log("database connected OK");
-
+    console.log("fetch-interfaces: database connected OK");
+    console.log("fetch-interfaces: connecting to device");
     try {
         await conn.connect();
     } catch (error) {
-        console.log("error connecting to device");
+        console.log("fetch-interfaces: error connecting to device");
+        return;
     }
+    console.log("fetch-interfaces: device connected ok");
 
     var noErrors = true;
-    console.log("starting device poll....");
+    console.log("fetch-interfaces: starting device poll....");
     while (noErrors) {
         try {
             const interfaces = await mikrotikFetchInterfaces(conn);
-            await saveInterfaces(interfaces);
+            await arraySave(db, interfaces, 'id');
         } catch (error) {
             console.log(error);
             noErrors = true;

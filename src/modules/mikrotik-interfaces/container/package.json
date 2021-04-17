@@ -21,6 +21,7 @@
         "http-errors": "^1.8.0",
         "io-videohub": "^2.0.0",
         "module-alias": "^2.2.2",
+        "mongodb": "^3.6.6",
         "morgan": "^1.10.0",
         "nedb": "^1.8.0",
         "nedb-promises": "^4.1.1",

@@ -84,7 +84,7 @@ export default function InterfaceList(props) {
         if (interfaceList.status === "loading") {
             return <Loading />;
         }
-        if (interfaceList.status === "succeeded") {
+        if (interfaceList.status === "success") {
             return (
                 <>
                     <div className={classes.content}>
@@ -115,7 +115,7 @@ export default function InterfaceList(props) {
 
     return (
         <>
-            <ApiPoller url={`/container/${props.id}/interface`} interval="2000" onChanged={(result) => setInterfaceList(result)}/>
+            <ApiPoller url={`http://localhost:3101/container/${props.id}/interface`} interval="2000" onChanged={(result) => setInterfaceList(result)}/>
             {renderContent()}
         </>
     );

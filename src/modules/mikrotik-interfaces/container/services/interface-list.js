@@ -1,23 +1,23 @@
-const db = require('../utils/db');
+const mongoCollection = require('../utils/mongo-collection');
 
 module.exports = async () => {
 
-    const dbLinkStats = await db('linkstats');
-    let linkStats = await dbLinkStats.find();
+    const dbLinkStats = await mongoCollection('linkstats');
+    let linkStats = await dbLinkStats.find().toArray();
     const linkStatsByName = [];
     for(let eachLinksStat of linkStats) {
         linkStatsByName[eachLinksStat['name']] = eachLinksStat;
     }
 
-    const dbTraffic = await db('traffic');
-    let traffic = await dbTraffic.find();
+    const dbTraffic = await mongoCollection('traffic');
+    let traffic = await dbTraffic.find().toArray();
     const trafficByName = [];
     for(let eachInterface of traffic) {
         trafficByName[eachInterface['name']] = eachInterface;
     }
 
-    const dbInterfaces = await db('interfaces');
-    let interfaces = await dbInterfaces.find();
+    const dbInterfaces = await mongoCollection('interfaces');
+    let interfaces = await dbInterfaces.find().toArray();
     if(!interfaces) {
         return null;
     }
