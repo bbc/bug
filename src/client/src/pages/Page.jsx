@@ -88,7 +88,10 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
+    },
+    pagecontent: {
+        padding: theme.spacing(2),
     },
     bugLogo: {
         color: theme.palette.secondary.main,
@@ -158,29 +161,31 @@ const Page = (props) => {
 
                     <Menu />
                 </Drawer>
-                <main className={classes.content}>
+                <div className={classes.content}>
                     <div className={classes.toolbar} />
-                    <Switch>
-                        <Route exact path="/">
-                            <PageHome />
-                        </Route>
-                        <Route exact path="/panels">
-                            <PagePanels />
-                        </Route>
-                        <Route exact path="/settings">
-                            <PageSettings />
-                        </Route>
-                        <Route exact path="/panel/:panelid">
-                            <PagePanel />
-                        </Route>
-                        <Route exact path="/panel/config/:panelid">
-                            <PagePanelConfig />
-                        </Route>
-                        <Route exact path="/system">
-                            <PageSystem />
-                        </Route>
-                    </Switch>
-                </main>
+                    <div className={classes.pagecontent}>
+                        <Switch>
+                            <Route exact path="/">
+                                <PageHome />
+                            </Route>
+                            <Route exact path="/panels">
+                                <PagePanels />
+                            </Route>
+                            <Route exact path="/settings">
+                                <PageSettings />
+                            </Route>
+                            <Route exact path="/panel/:panelid">
+                                <PagePanel />
+                            </Route>
+                            <Route exact path="/panel/config/:panelid">
+                                <PagePanelConfig />
+                            </Route>
+                            <Route exact path="/system">
+                                <PageSystem />
+                            </Route>
+                        </Switch>
+                    </div>
+                </div>
             </div>
         </Router>
     );

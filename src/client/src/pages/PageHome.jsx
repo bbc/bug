@@ -12,13 +12,14 @@ const useStyles = makeStyles((theme) => ({
     tile: {
         position: "relative",
         display: "flex",
-        backgroundColor: "#262626",
         margin: "auto",
         flexDirection: 'row',
         alignItems: 'center',     
     },
     quote:{
-        margin: '20px'
+        marginTop: theme.spacing(1),
+        color: theme.palette.primary.main,
+        fontSize: '1.1rem'
     }
 }));
 
