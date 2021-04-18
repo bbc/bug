@@ -1,10 +1,12 @@
 import { useParams, useHistory } from "react-router-dom";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import useAsyncEffect from "use-async-effect";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
+import { useDispatch } from "react-redux";
+import pageTitleSlice from "../redux/pageTitleSlice";
 
 import Loading from "@components/Loading";
 import LoadingOverlay from "@components/LoadingOverlay";
@@ -55,6 +57,12 @@ export default function PageHome(props) {
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(pageTitleSlice.actions.set(config?.title || 'Panel Configuration' ));
+    });
 
     useAsyncEffect(async () => {
         setConfig(await AxiosGet(`/api/panel/config/${panelId}`));

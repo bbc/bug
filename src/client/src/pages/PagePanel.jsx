@@ -1,14 +1,21 @@
 import { useParams } from "react-router-dom";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import AxiosGet from "@utils/AxiosGet";
 import Loading from "@components/Loading";
 import useAsyncEffect from 'use-async-effect';
+import { useDispatch } from "react-redux";
+import pageTitleSlice from "../redux/pageTitleSlice";
 
 export default function PageHome(props) {
     const params = useParams();
     const panelId = params.panelid ?? "";
-    const [panel, setPanel] = useState(null);
+    const [panel, setPanel] = useState({title: 'Panel' });
     const [config, setConfig] = useState(null);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(pageTitleSlice.actions.set(panel?.title));
+    });
 
     useAsyncEffect(async () => {
         setPanel(await AxiosGet(`/api/panel/${panelId}`));
