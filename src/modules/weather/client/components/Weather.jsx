@@ -23,24 +23,51 @@ const customStyles = {
 
 export default function Weather(props) {
 
+  console.log(props);
+
   const { data, isLoading, errorMessage } = useOpenWeather({
-    key: '06f09531f033e4a3a1852f81641826ba',
-    lat: '48.137154',
-    lon: '0',
+    key: props?.openweather_key,
+    lat: props?.latitude,
+    lon: props?.longitude,
     lang: 'en',
-    unit: 'metric',
+    unit: props?.units,
   });
 
-  return (
+  const isForecast = () => {
+    let status = true;
+    if(props.length === 'today'){
+      status = false;
+    }
+    return status;
+  }
+
+  const getLabels = () => {
+    let labels = { temperature: '°C', windSpeed: 'km/h' };
+    if(props?.units === 'imperial'){
+      labels = { temperature: 'F', windSpeed: 'Mph' };
+    }
+    else if(props?.units === 'standard'){
+      labels = { temperature: 'K', windSpeed: 'km/h' };
+    }
+    return labels;
+  }
+
+  const renderWeather = () => (
     <ReactWeather
       theme={customStyles}
       isLoading={isLoading}
       errorMessage={errorMessage}
       data={data}
       lang="en"
-      locationLabel="London"
-      unitsLabels={{ temperature: 'C', windSpeed: 'Km/h' }}
-      showForecast
-    />
+      locationLabel={ props?.label }
+      unitsLabels={ getLabels() }
+      showForecast={ isForecast() }
+  />
+  );
+ 
+  return (
+    <>
+      { renderWeather() }
+    </>
   );
 }

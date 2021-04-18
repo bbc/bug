@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 
 import Weather from './Weather';
@@ -14,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MainPanel(props) {
+
   const classes = useStyles();
 
   return (
@@ -26,7 +25,7 @@ export default function MainPanel(props) {
           alignItems="center"
         >
           <Grid item lg={12} sm={12} xs={12} >
-            <Weather/>
+            <Weather { ...props?.config } />
           </Grid>
         </Grid>
       </div>

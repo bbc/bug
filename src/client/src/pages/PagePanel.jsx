@@ -8,9 +8,14 @@ export default function PageHome(props) {
     const params = useParams();
     const panelId = params.panelid ?? "";
     const [panel, setPanel] = useState(null);
+    const [config, setConfig] = useState(null);
 
     useAsyncEffect(async () => {
         setPanel(await AxiosGet(`/api/panel/${panelId}`));
+    }, [panelId]);
+
+    useAsyncEffect(async () => {
+        setConfig(await AxiosGet(`/api/panel/config/${panelId}`));
     }, [panelId]);
     
     const renderPanel = () => {
@@ -22,7 +27,7 @@ export default function PageHome(props) {
         return (
             <>
                 <Suspense fallback={<Loading />}>
-                    <ImportedPanel panel={panel}/>
+                    <ImportedPanel panel={panel} config={config} />
                 </Suspense>
             </>
         );

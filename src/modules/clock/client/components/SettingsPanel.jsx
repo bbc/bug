@@ -47,7 +47,7 @@ export default function ConfigPanel({ register, errors, config }) {
                         inputProps={{...register('type')}}
                     >
                         <option value={'digital'}>Digital</option>
-                        <option value={'analgoue'}>Analogue</option>
+                        <option value={'analogue'}>Analogue</option>
                     </Select>
                 </FormControl>
             </Grid>

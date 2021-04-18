@@ -25,7 +25,13 @@ const useStyles = makeStyles((theme) => ({
 export default function MainPanel(props) {
   const classes = useStyles();
 
-  console.log(props);
+  const renderClock = () => {
+    let clock =  (<DigitalClock/>);
+    if( props?.config?.type === 'analogue' ){
+      clock = (<AnalogueClock/>);
+    }
+    return clock
+  }
 
   return (
     <React.Fragment>
@@ -40,8 +46,7 @@ export default function MainPanel(props) {
             
               <Card className={classes.card} >
                 <CardContent>
-                    {/* <DigitalClock/> */}
-                    <AnalogueClock/>
+                   { renderClock() }
                 </CardContent>
                 <Date/>
               </Card>
