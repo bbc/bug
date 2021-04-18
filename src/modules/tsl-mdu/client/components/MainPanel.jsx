@@ -8,7 +8,7 @@ export default function MainPanel(props) {
 
     return (
         <>
-            This is the TSL Mains Distribution Unit main panel which uses id {props.id}
+            This is the TSL Mains Distribution Unit main panel which uses id {props?.config?.id}
         </>
     );
 }
