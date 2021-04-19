@@ -95,12 +95,24 @@ router.get('/', async function (req, res, next) {
  *     produces:
  *       - application/json
  *     parameters:
- *       - in: path
- *         name: panelid
- *         schema:
- *           type: string
+ *       - in: formData
+ *         name: module
+ *         type: string
+ *         description: Module Name    
  *         required: true
- *         description: The panel ID string
+ *       - in: formData
+ *         name: id
+ *         type: string
+ *         description: Panel ID, if not set is generated automatically, however it can be set manually here.
+ *       - in: formData
+ *         name: title
+ *         type: string
+ *         description: Panel Title
+ *         required: true
+ *       - in: formData
+ *         name: description
+ *         type: string
+ *         description: Panel Description    
  *     responses:
  *       200:
  *         description: Successfully retrieved the panel data.
@@ -109,7 +121,7 @@ router.get('/', async function (req, res, next) {
  */
 router.post('/', async function (req, res, next) {
     try {
-        const result = await panelAdd(req.query);
+        const result = await panelAdd(req.body);
         res.json({
             status: (result ? "success" : "fail"),
             message: "Added panel",

@@ -5,6 +5,7 @@ import PageTitle from "@components/PageTitle";
 import PagePanelConfig from "./PagePanelConfig";
 import PageSettings from "./PageSettings";
 import PagePanels from "./PagePanels";
+import PagePanelAdd from "./PagePanelAdd";
 import PageSystem from "./PageSystem";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -173,6 +174,9 @@ const Page = (props) => {
                             </Route>
                             <Route exact path="/settings">
                                 <PageSettings />
+                            </Route>
+                            <Route exact path="/panel/add">
+                                <PagePanelAdd />
                             </Route>
                             <Route exact path="/panel/:panelid">
                                 <PagePanel />

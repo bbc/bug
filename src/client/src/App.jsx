@@ -3,6 +3,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Page from "@pages/Page";
 import theme from "./theme";
 import PanelList from "@data/PanelList";
+import ModuleList from "@data/ModuleList";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { SnackbarProvider } from "notistack";
 import Fade from '@material-ui/core/Fade';
@@ -26,9 +27,11 @@ export default function App() {
                 >
                     <SnackbarConfigurator />
                     <CssBaseline />
-                        <PanelList>
-                            <Page></Page>
-                        </PanelList>
+                        <ModuleList>
+                            <PanelList>
+                                <Page></Page>
+                            </PanelList>
+                        </ModuleList>
                 </SnackbarProvider>
             </ThemeProvider>
         </>
