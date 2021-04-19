@@ -3,6 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 export default function ConfigPanel({ register, errors, config }) {
 
     return(
@@ -10,25 +14,13 @@ export default function ConfigPanel({ register, errors, config }) {
         <React.Fragment>
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('title')}}
+                    inputProps={{...register('title', { required: true } )}}
                     variant="outlined"
                     fullWidth
                     error={errors?.title ? true : false}
                     defaultValue={ config?.title }
                     type='text'
                     label="Panel Title"
-                />
-            </Grid>
-
-            <Grid item xs={12} >
-                <TextField
-                    inputProps={{...register('type')}}
-                    variant="outlined"
-                    fullWidth
-                    error={errors?.type ? true : false}
-                    defaultValue={ config?.type }
-                    type='text'
-                    label="Type"
                 />
             </Grid>
 
@@ -46,13 +38,13 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('notes')}}
+                    inputProps={{...register('ip_address', { required: true } )}}
                     variant="outlined"
                     fullWidth
-                    error={errors?.notes ? true : false}
-                    defaultValue={ config?.notes }
+                    error={errors?.ip_address ? true : false}
+                    defaultValue={ config?.ip_address }
                     type='text'
-                    label="Notes"
+                    label="IP Adrress"
                 />
             </Grid>
 

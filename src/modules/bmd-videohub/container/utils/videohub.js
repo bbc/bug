@@ -6,8 +6,8 @@
 let matrix_ip = "192.168.1.1";
 let matric_port = "9991";
 
-var Router = require('io-videohub');
-var router = new Router({host: matrix_ip, port: matric_port});
+const Videohub = require('io-videohub');
+const videohub = new Videohub({host: matrix_ip, port: matric_port});
  
 // Make a crosspoint
 router.route(0, 10);
@@ -23,3 +23,5 @@ router.setIntputLabel(0, 'Camera 1');
  
 // Intercept errors from the underlying tcp connection
 router.connection.on('error', callback);
+
+module.exports = videohub;
