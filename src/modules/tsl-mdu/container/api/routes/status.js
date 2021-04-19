@@ -1,22 +1,27 @@
 //NAME: status.js
-//AUTH: Geoff House <geoff.house@bbc.co.uk>
-//DATE: 23/03/2021
+//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
+//DATE: 18/04/2021
 //DESC: System status
 
-var express = require('express'),
+const mduStatus = require('@services/mdu-status');
+const express = require('express'),
 status = express.Router();
 
 status.get('/', function(req, res){
-  var completeURL = req.protocol + '://' + req.get('host') + req.originalUrl;
-  let status = {
+  const completeURL = req.protocol + '://' + req.get('host') + req.originalUrl;
+  let response = {
+    status: {
     request_url: completeURL,
     request_method: req.method,
-    request_params: req.query,
-    note: "Test Response"
+    request_params: req.query
+    }
   }
 
+  response.mdu = mduStatus();
+
   res.header("Content-Type",'application/json');
-  res.json(status);
-  })
+  res.json(response);
+
+})
 
 module.exports = status;

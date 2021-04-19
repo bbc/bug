@@ -5,180 +5,145 @@
 
 const jssoup = require('jssoup').default;
 const http = require('http');
+const axios = require('axios');
 
 class TSL_MDU {
     constructor({ username='root', password='telsys', frequency=10 }) {
 
-        this.model = "TSL-MDU12-3ES"
-        
-        this.username = username
-        this.password = password
-        this.host = host
-        this.outputsCount = 12
-        this.outputs = []
-
-        this.names = []
-        this.states = []
-        this.locks = []
-        this.delays = []
-        this.fuses = [] * this.outputs
-        this.status = None
+        this.poller = null;
+        this.model = "TSL-MDU12-3ES";
+        this.username = username;
+        this.password = password;
+        this.host = host;
+        this.port = 80;
+        this.status = null;
+        this.outputsCount = 12;
+        this.outputs = [];
+        this.frequency = frequency || 5000;
 
         //Get Initial State
-        this.refreshState()
+        this.refreshState();
         
         //Start periodic update
-        setInterval(this.refreshState,frequency);
+        this.start();
 
+    }
+
+    async start(){
+        this.poller = await setInterval(this.refreshState,this.frequency);
+    }
+    
+    async stop(){
+        await clearInterval(this.poller);
     }
 
     async setDelay(output,delay){
-        this.delays[output-1] = int(delay)
-        const status = await this.sendRequest()
+        this.outputs[output-1].delay = parseInt(delay);
+        const status = await this.sendRequest();
         return status
     }
 
-    async setLock(output,state){
-        this.locks[output-1] = state
-        const status = await this.sendRequest()
+    async setLock(output,lock){
+        this.outputs[output-1].lock = lock;
+        const status = await this.sendRequest();
         return status
     }
 
     async setOutput(output,state){
-        this.states[output-1] = state
-        const status = await this.sendRequest()
+        this.outputs[output-1].state = state;
+        const status = await this.sendRequest();
         return status
     }
 
-    async setName(output,state){
-        this.names[output-1] = state
-        const status = await this.sendRequest()
+    async setName(output,name){
+        this.outputs[output-1].name = name;
+        const status = await this.sendRequest();
         return status
-    }
-
-
-    getTags(){
-        state = this.getState()
-        tags = state.get("name")+" "+state.get("location")+" "+state.get("address")+" "+state.get("model")
-
-        if(state.get("status") === 200){
-            tags += " Connected"
-        }
-        else{
-            tags += " Disconnected"
-        }
-        
-        for output in state.get("outputs"):
-            if output.get("name"):
-                tags += " "
-                tags += str(output.get("name"))
-
-        return tags.lower()
     }
 
     refreshState(){     
-        outputsPageAddress = "http://"+this.address+"/outputs.htm"
+        outputsPageAddress = "http://"+this.address+"/outputs.htm";
 
         try{
-            response = requests.get(outputsPageAddress,auth=(this.username,this.password),timeout=5)
-            this.status = response.status_code
+            response = axios.get(outputsPageAddress,auth={ username:this.username, password: this.password});
+            this.status = response.status;
         }
         catch(error){
             console.log("INFO: Can't contact "+this.address+" - connection timed out.")
-            this.status = 404
+            this.status = 400
         }
 
         if(this.status === 200){
-            soup = BeautifulSoup(response.content,'html.parser')
-            soup = soup.find('form')
-            first = True
+            const soup = new JSSoup(response?.content, false);
+            soup = soup.find('form');
+            let first = true;
             
-            for row in soup.find_all('tr'):
+            for(let row of soup.find_all('tr') ){
 
-                if first:
-                    first = False
-                else:
-                    items = row.find_all('td')
-                    i = int(items[0].text) - 1
+                if(first){
+                    first = false;
+                }
+                else{
+                    const items = row.find_all('td');
+                    const index = parseInt(items[0].text) - 1;
                         
-                    this.names[i] = items[0].input.get('value')
-                    this.fuses[i]= items[1].text.replace('\xa0','')
+                    let output = {
+                        name: items[0].input?.value,
+                        fuses: items[1].text.replace('\xa0',''),
+                    }
 
-                    if 'checked' in str(items[2].find_all('input')[0]):
-                        this.states[i] = 1 
-                    else:
-                        this.states[i] = 0
+                    if('checked' in str(items[2].find_all('input')[0])){
+                        output.state = 1;
+                    }
+                    else{
+                        output.state = 0;
+                    }
         
-                    if 'checked' in str(items[3]):
-                        this.locks[i] = 1 
-                    else:
-                        this.locks[i] = 0
+                    if('checked' in str(items[3])){
+                        output.lock = 1;
+                    }
+                    else{
+                        output.lock = 0;
+                    }
 
-                    this.delays[i] = int(items[4].input.get('value'))
+                    output.delay = parseInt(items[4]?.input?.value)
+                    this.outputs[index] = { ...this.outputs[index], ...output};
+                }
+            }
         }      
         return this.status
     }
 
-    getState(){
-        let state = {
+    getStatus(){
+        const state = {
             address: this.address,
             model: this.model,
-            outputs: this.outputs,
+            count: this.outputsCount,
             name: this.name,
             location: this.location,
             id: this.id,
             status: this.status,
-            text: ""
-        }
+            outputs: this.getOutputs()
+        };
 
-        for i in range(0,this.outputs):
-            output = {}
-            output['number'] = i+1
-            output['name'] = this.names[i]
-            output['fuse'] = this.fuses[i]
-            output['state'] = this.states[i]
-            output['lock'] = this.locks[i]
-            output['delay'] = this.delays[i]
-            output['text'] = this.fuses[i]
-            outputs.append(output)
+        return state;
+    }
 
-            state['outputs'] = outputs
- 
-        return state
+    getOutputs(){ 
+        return this.outputs;
+    }
+
+    getOutput(outputIndex){
+        return this.output[outputIndex];
     }
 
     async sendRequest(){
 
-        dataString = this.buildRequest(this.names,this.states,this.delays,this.locks)
+        const dataString = this.buildRequest(this.names,this.states,this.delays,this.locks);
+        const url = `http://${this.address}/op_config:${this.port}`;
 
-        const options = {
-            host: 'http://'+this.address,
-            path: '/op_config',
-            port: 80,
-            timeout: 5000,
-            method: 'POST',
-            data: dataString
-            auth:{this.username,this.password}
-        };
-
-        http.get(options, (response) => {
-            let data = '';
-    
-            response.on('data', (chunk) => {
-                data += chunk;
-            });
-    
-            response.on('end', () => {
-                return data;
-            });
-    
-            }).on("error", (err) => 
-            {
-                return error;
-            });
-
-        response = http.post(postAddress,data=dataString,auth=(this.username,this.password))
-        this.status = response.status_code
+        const response = await axios.post(url,auth={ username: this.username, password: this.password},dataString);
+        this.status = response.status;
 
         return this.status
     }
@@ -219,4 +184,4 @@ class TSL_MDU {
     }
 }
 
-module.exports.TSL_MDU
+export let tsl_mdu = new TSL_MDU();

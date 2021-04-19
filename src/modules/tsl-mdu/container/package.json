@@ -1,5 +1,5 @@
 {
-    "name": "tsl-mdu-3es",
+    "name": "tsl-mdu",
     "main": "server.js",
     "scripts": {
         "production": "node ./api/server",
@@ -14,13 +14,11 @@
         "express": "^4.17.1",
         "http-errors": "^1.8.0",
         "jssoup": "0.0.12",
-        "lokijs": "^1.5.11",
         "module-alias": "^2.2.2",
         "morgan": "^1.10.0",
-        "node-routeros": "^1.6.9",
         "package.json": "^2.0.1",
         "path": "^0.12.7",
-        "routeros-client": "^1.1.2"
+        "axios": "^0.21.1"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
@@ -40,6 +38,7 @@
         "@root": ".",
         "@routes": "./api/routes/",
         "@api": "./api/",
+        "@services": "./ßservices/",
         "@data": "./data/",
         "@utils": "./utils/"
     }

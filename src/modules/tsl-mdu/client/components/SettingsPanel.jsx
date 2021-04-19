@@ -67,7 +67,7 @@ export default function ConfigPanel({ register, errors, config }) {
                     fullWidth
                     error={errors?.password ? true : false}
                     defaultValue={ config?.password }
-                    type='text'
+                    type='password'
                     label="Web Interface Password"
                 />
             </Grid>

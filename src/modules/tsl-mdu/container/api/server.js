@@ -3,10 +3,10 @@
 //DATE: 23/03/2021
 //DESC: Mikrotik Interfaces module
 
-//server.js
+const register = require('module-alias/register')
 const app = require("./app");
 let port = process.env.MODULE_PORT || 3000;
 
 app.listen(port, () => {
-  console.log("tsl-mdu-3es listening on port "+port.toString());
+  console.log("tsl-mdu listening on port "+port.toString());
 });

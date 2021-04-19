@@ -6,12 +6,14 @@
 const express = require('express');
 const router = express.Router();
 
-// const defaultRoute = require('./routes/default');
+const output = require('./routes/output');
 const status = require('./routes/status');
+const config = require('./routes/config');
 
 router
-    // .use('/', status)
+    .use('/output', output)
     .use('/status', status)
+    .use('/config', config)
     .use('*', (req, res) => {
         res.sendStatus(404);
     });
