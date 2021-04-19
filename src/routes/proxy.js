@@ -34,10 +34,9 @@ const modulePort = process.env.MODULE_PORT || 3000 ;
  */
 router.use('/:panelid', async function(req, res) {
 
-    var url = 'http://' + req.params.panelid + ':' + modulePort + '/api' + req.url;
-
+    const url = `http://${req.params.panelid}:${modulePort}/api${req.url}`;
     try {
-        var axiosConfig = {
+        const axiosConfig = {
             method: req.method,
             url: url,
             responseType: "stream",
@@ -50,7 +49,7 @@ router.use('/:panelid', async function(req, res) {
             axiosConfig['data'] = req.body;
         }
 
-        let axiosResponse = await axios(axiosConfig);
+        const axiosResponse = await axios(axiosConfig);
         res.status(axiosResponse.status);
         axiosResponse.data.pipe(res);
     } catch (error) {
