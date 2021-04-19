@@ -5,6 +5,8 @@ const id = require('@utils/id');
 const setConfig = require('@services/panel-configset');
 const logger = require('@utils/logger');
 
+//TODO - Are we taking the right approach here? Is there other things we want to do when a panel is added?
+
 module.exports = async (panelConfig) => {
     try {
         if(panelConfig.id === undefined){
