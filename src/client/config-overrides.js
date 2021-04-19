@@ -23,6 +23,8 @@ module.exports = function (config, env) {
             '@components': path.resolve('src/components'),
             '@data': path.resolve('src/data'),
             '@pages': path.resolve('src/pages'),
+            '@data': path.resolve('src/data'),
+            '@redux': path.resolve('src/redux'),
             '@utils': path.resolve('src/utils'),
         }),
     )(config, env)
