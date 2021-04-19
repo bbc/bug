@@ -13,14 +13,14 @@ module.exports = async () => {
     const containerInfoList = await dockerListContainerInfo();
     const panelBuildStatus = await panelBuildStatusModel.list();
 
-    var filteredPanelList = [];
-    for (var i in panelConfig) {
-        var thisModuleConfig = moduleConfig.find(o => o.name === panelConfig[i]['module']) ?? null;
+    const filteredPanelList = [];
+    for (const i in panelConfig) {
+        const thisModuleConfig = moduleConfig.find(o => o.name === panelConfig[i]['module']) ?? null;
         if(thisModuleConfig) {
-            var thisContainerInfo = containerInfoList.find(o => o.name === panelConfig[i]['id']) ?? null;
-            var thisBuild = panelBuildStatus.find(o => o.panelid === panelConfig[i]['id']) ?? null;
+            const thisContainerInfo = containerInfoList.find(o => o.name === panelConfig[i]['id']) ?? null;
+            const thisBuild = panelBuildStatus.find(o => o.panelid === panelConfig[i]['id']) ?? null;
             // the build list returns a nested 'status' object, direct from the database - we need to pull it out
-            var thisBuildStatus = (thisBuild === null) ? null : thisBuild['status'];
+            const thisBuildStatus = (thisBuild === null) ? null : thisBuild['status'];
 
             filteredPanelList.push(
                 panelFilter(panelConfig[i], thisModuleConfig, thisContainerInfo, thisBuildStatus)
