@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import PanelList from "@components/PanelList";
+import PanelTable from "@components/panelTable/PanelTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
 import { Link } from 'react-router-dom';
@@ -28,7 +29,8 @@ export default function PagePanels() {
 
     return (
         <>
-            <PanelList />
+            {/* <PanelList /> */}
+            <PanelTable />
 
             <Link to={ '/panel/add' } color="inherit" className={classes.link}>
                 <Button variant="contained" color="default" size='large' disableElevation>
