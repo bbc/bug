@@ -5,7 +5,7 @@
 
 const register = require('module-alias/register')
 const app = require("./app");
-let port = process.env.MODULE_PORT || 3000;
+let port = process.env.MODULE_PORT || 3200;
 
 app.listen(port, () => {
   console.log("tsl-mdu listening on port "+port.toString());
