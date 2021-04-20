@@ -5,6 +5,8 @@ const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const mikrotikFetchTraffic = require('../services/mikrotik-fetchtraffic');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
+const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
+const mongoDb = require('../utils/mongo-db');
 
 const main = async () => {
 
@@ -18,13 +20,23 @@ const main = async () => {
 
     console.log('fetch-traffic: starting ...');
 
+    // initial delay (to stagger device polls)
+    await delay(2000);
+
     console.log(`fetch-traffic: connecting to database`);
-    const db = await mongoCollection('traffic');
-    if (!db) {
+    try {
+        await mongoDb.connect(myPanelId);
+    } catch (error) {
+        console.log("fetch-traffic: error connecting to database");
         return;
     }
 
-    console.log('fetch-traffic: database connected OK');
+    const trafficCollection = await mongoCollection('traffic');
+    if (!trafficCollection) {
+        return;
+    }
+    console.log("fetch-traffic: database connected OK");
+
     console.log("fetch-traffic: connecting to device");
     try {
         await conn.connect();
@@ -48,7 +60,7 @@ const main = async () => {
                     trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface['name']));
                 }
             }
-            await arraySave(db, trafficArray, 'name');
+            await arraySave(trafficCollection, trafficArray, 'name');
         } catch (error) {
             console.log('fetch-traffic: ', error);
             noErrors = true;
