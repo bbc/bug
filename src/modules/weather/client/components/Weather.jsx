@@ -23,8 +23,6 @@ const customStyles = {
 
 export default function Weather(props) {
 
-  console.log(props);
-
   const { data, isLoading, errorMessage } = useOpenWeather({
     key: props?.openweather_key,
     lat: props?.latitude,

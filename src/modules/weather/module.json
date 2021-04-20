@@ -15,7 +15,7 @@
         "title": "Weather",
         "module": "weather",
         "units": "metric",
-        "openweather_key": "06f09531f033e4a3a1852f81641826b",
+        "openweather_key": "06f09531f033e4a3a1852f81641826ba",
         "label" : "London", 
         "longitude": -0.127758, 
         "latitude": 51.507351,
