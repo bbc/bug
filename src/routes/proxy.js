@@ -12,10 +12,10 @@ const modulePort = process.env.MODULE_PORT || 3000 ;
 
 /**
  * @swagger
- * /proxy/{panel_id}/{request_url}:
+ * /container/{panel_id}/{request_url}:
  *    get:
  *      description: Proxies a request from the main BUG service to the API of a Panel's container. The result is returned in the response.
- *      tags: [proxy]
+ *      tags: [container]
  *      produces:
  *        - application/json 
  *      parameters:
