@@ -34,7 +34,7 @@ export default function PageHome(props) {
         return (
             <>
                 <Suspense fallback={<Loading />}>
-                    <ImportedPanel panel={panel} config={config} />
+                    <ImportedPanel id={panelId} config={config} panel={panel}/>
                 </Suspense>
             </>
         );

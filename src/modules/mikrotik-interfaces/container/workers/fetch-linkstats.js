@@ -7,12 +7,12 @@ const arraySave = require('../services/array-save');
 
 const main = async () => {
 
-    const delayMs = 2000;
+    const delayMs = 5000;
     const conn = new RosApi({
         host: '172.26.108.126',
         user: 'bug',
         password: 'sfsafawffasfasr33r',
-        timeout: 5
+        timeout: 10
     });
 
     console.log('fetch-linkstats: starting ...');
