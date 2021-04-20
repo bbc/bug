@@ -4,6 +4,7 @@ const mongoCollection = require('../utils/mongo-collection');
 const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const mikrotikFetchLinkStats = require('../services/mikrotik-fetchlinkstats');
 const arraySave = require('../services/array-save');
+const interfaceList = require('../services/interface-list');
 
 const main = async () => {
 
@@ -16,6 +17,9 @@ const main = async () => {
     });
 
     console.log('fetch-linkstats: starting ...');
+
+    // initial delay (to stagger device polls)
+    await delay(1000);
 
     console.log(`fetch-linkstats: connecting to database`);
     const db = await mongoCollection('linkstats');
@@ -37,7 +41,10 @@ const main = async () => {
     console.log('fetch-linkstats: starting device poll....');
     while (noErrors) {
         try {
-            const interfaces = await mikrotikFetchInterfaces(conn);
+            // fetch interface list from db (empty if not yet fetched)
+            const interfaces = await interfaceList();
+
+            // fetch link stats for each interface
             let linkStatsArray = [];
             if (interfaces) {
                 for (eachInterface of interfaces) {

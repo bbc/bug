@@ -5,13 +5,13 @@
 
 const express = require('express');
 const status = express.Router();
-const interfaceList = require('../../services/interface-list');
+const interfaceCombinedList = require('../../services/interface-combinedlist');
 
 status.get('/', async function (req, res) {
     try {
         res.json({
             status: "success",
-            data: await interfaceList()
+            data: await interfaceCombinedList()
         });
     } catch (error) {
         res.json({ 

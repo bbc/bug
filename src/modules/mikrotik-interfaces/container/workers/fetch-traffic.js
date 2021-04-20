@@ -4,6 +4,7 @@ const mongoCollection = require('../utils/mongo-collection');
 const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const mikrotikFetchTraffic = require('../services/mikrotik-fetchtraffic');
 const arraySave = require('../services/array-save');
+const interfaceList = require('../services/interface-list');
 
 const main = async () => {
 
@@ -37,7 +38,10 @@ const main = async () => {
     console.log('fetch-traffic: starting device poll....');
     while (noErrors) {
         try {
-            const interfaces = await mikrotikFetchInterfaces(conn);
+            // fetch interface list from db (empty if not yet fetched)
+            const interfaces = await interfaceList();
+
+            // fetch traffic stats for each interface
             let trafficArray = [];
             if(interfaces) {
                 for(eachInterface of interfaces) {
