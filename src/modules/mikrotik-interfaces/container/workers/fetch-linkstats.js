@@ -5,6 +5,8 @@ const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const mikrotikFetchLinkStats = require('../services/mikrotik-fetchlinkstats');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
+const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
+const mongoDb = require('../utils/mongo-db');
 
 const main = async () => {
 
@@ -22,12 +24,19 @@ const main = async () => {
     await delay(1000);
 
     console.log(`fetch-linkstats: connecting to database`);
-    const db = await mongoCollection('linkstats');
-    if (!db) {
+    try {
+        await mongoDb.connect(myPanelId);
+    } catch (error) {
+        console.log("fetch-linkstats: error connecting to database");
         return;
     }
 
+    const linkStatsCollection = await mongoCollection('linkstats');
+    if (!linkStatsCollection) {
+        return;
+    }
     console.log("fetch-linkstats: database connected OK");
+
     console.log("fetch-linkstats: connecting to device");
     try {
         await conn.connect();
@@ -53,7 +62,7 @@ const main = async () => {
                     }
                 }
             }
-            await arraySave(db, linkStatsArray, 'name');
+            await arraySave(linkStatsCollection, linkStatsArray, 'name');
         } catch (error) {
             console.log('fetch-linkstats: ', error);
             noErrors = true;
