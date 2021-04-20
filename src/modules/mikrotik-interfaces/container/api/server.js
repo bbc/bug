@@ -6,7 +6,7 @@
 //server.js
 const mongoDb = require('../utils/mongo-db');
 const app = require("./app");
-const port = process.env.MODULE_PORT || 3200;
+const port = process.env.PORT || 3200;
 const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
 
 const boot = async () => {

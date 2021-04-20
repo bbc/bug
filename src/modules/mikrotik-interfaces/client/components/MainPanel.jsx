@@ -9,7 +9,6 @@ export default function MainPanel(props) {
 
     return (
         <>
-            This is the Mikrotik interfaces main panel which uses id {props.id}
             <InterfaceList id={props.id}/>
         </>
     );

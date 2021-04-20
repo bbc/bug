@@ -12,9 +12,12 @@ module.exports = async (configObject) => {
 
         logger.info(`docker-createcontainer: creating container for panel id ${configObject.id}`);
 
+        const modulePort = process.env.MODULE_PORT || '3200';
+
         let containerOptions = {
             Image: configObject.module + ":latest",
             Cmd: ['npm', 'run', nodeEnv],
+            Env: [`PORT=${modulePort}`],
             Hostname: configObject.id,
             name: configObject.id
         };
