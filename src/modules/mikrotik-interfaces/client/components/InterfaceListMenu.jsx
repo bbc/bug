@@ -5,7 +5,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import EditIcon from '@material-ui/icons/Edit';
-import StopIcon from '@material-ui/icons/Stop';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -14,6 +13,9 @@ import Divider from '@material-ui/core/Divider';
 // import AxiosCommand from '@utils/AxiosCommand';
 import { useSnackbar } from 'notistack';
 import { Link } from "react-router-dom";
+import LockIcon from '@material-ui/icons/Lock';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
+import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
 
 // const useStyles = makeStyles((theme) => ({}));
 
@@ -36,8 +38,7 @@ export default function InterfaceListMenu(props) {
     // const disableStop = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
     // const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
 
-    const handleStart = () => {
-        enqueueSnackbar(`Starting panel - please wait ...`, { variant: 'info'});
+    const handleProtect = () => {
         // AxiosCommand(`/api/panel/start/${props.panel.id}`);
         setAnchorEl(null);
     };
@@ -58,30 +59,23 @@ export default function InterfaceListMenu(props) {
                 <MoreVertIcon />
             </IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                <MenuItem onClick={handleStart}>
+                <MenuItem>
                     <ListItemIcon>
-                        <PlayArrowIcon fontSize="small" />
+                        <SettingsInputComponentIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText primary="Start" />
+                    <ListItemText primary="View Details" />
+                </MenuItem>
+                <MenuItem onClick={handleProtect}>
+                    <ListItemIcon>
+                        <LockIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Protect" />
                 </MenuItem>
                 <MenuItem onClick={handleStop}>
                     <ListItemIcon>
-                        <StopIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Stop" />
-                </MenuItem>
-                <MenuItem onClick={handleRestart}>
-                    <ListItemIcon>
-                        <ReplayIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Restart" />
-                </MenuItem>
-                <Divider />
-                <MenuItem>
-                    <ListItemIcon>
                         <EditIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText primary="Edit Panel" />
+                    <ListItemText primary="Rename" />
                 </MenuItem>
             </Menu>
         </div>

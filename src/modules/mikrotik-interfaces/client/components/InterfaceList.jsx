@@ -12,6 +12,7 @@ import BugSwitch from '@components/BugSwitch';
 import Loading from "@components/Loading";
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import InterfaceListMenu from "./InterfaceListMenu";
+import { Sparklines, SparklinesLine } from 'react-sparklines';
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -24,6 +25,26 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         opacity: 0.1,
         display: 'block'
+    },
+    interfaceName: {
+    },
+    interfaceComment: {
+        opacity: 0.3
+    },
+    colTraffic: {
+        width: '8rem',
+        whiteSpace: 'nowrap',
+        position: 'relative'
+    },
+    spark: {
+        position: 'absolute',
+        bottom: '0.5rem',
+        width: '100%',
+        paddingRight: '0.5rem'
+    },
+    sparkText: {
+        position: 'absolute',
+        top: '0.5rem',
     }
     // cellMenu: {
     //     width: '2rem'
@@ -59,6 +80,24 @@ export default function InterfaceList(props) {
 
     };
 
+    const renderTraffic = (iface, type) => {
+        if(!iface['traffic'] || !iface['traffic'][type + '-bps-text']) {
+            return null;
+        }
+        return (
+            <>
+                <div className={classes.sparkText}>
+                    {(iface['traffic'][type + '-bps-text'] !== '0') ? iface['traffic'][type + '-bps-text'] : ""}
+                </div>
+                <div className={classes.spark}>
+                    <Sparklines data={iface['traffic'][type + "-history"]} height={40}>
+                        <SparklinesLine color="#337ab7" />
+                    </Sparklines>
+                </div>
+            </>
+        );
+    }
+
     const renderRow = (iface) => {
         return (
             <TableRow key={iface.id}>
@@ -66,12 +105,19 @@ export default function InterfaceList(props) {
                 <TableCell>
                     <BugSwitch checked={!iface.disabled} onChange={(checked) => handleEnabledChanged(checked, iface.id)}/>
                 </TableCell>
-                <TableCell>{iface.name}</TableCell>
+                <TableCell>
+                    <div className={classes.interfaceName}>{iface.name}</div>
+                    <div className={classes.interfaceComment}>{iface.comment}</div>
+                </TableCell>
                 <TableCell>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
                 <TableCell>{iface['mac-address']}</TableCell>
-                <TableCell>{iface['traffic'] ? iface['traffic']['tx-bps-text'] : ""}</TableCell>
-                <TableCell>{iface['traffic'] ? iface['traffic']['rx-bps-text'] : ""}</TableCell>
-                <TableCell className={classes.cellMenu}><InterfaceListMenu iface={iface} /></TableCell>
+                <TableCell className={classes.colTraffic}>
+                    {renderTraffic(iface, 'tx')}
+                </TableCell>
+                <TableCell className={classes.colTraffic}>
+                    {renderTraffic(iface, 'rx')}
+                </TableCell>
+                <TableCell style={{ width: '4rem'}} className={classes.cellMenu}><InterfaceListMenu iface={iface} /></TableCell>
             </TableRow>
         );
     };

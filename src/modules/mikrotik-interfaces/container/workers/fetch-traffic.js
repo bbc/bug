@@ -1,12 +1,12 @@
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
 const mongoCollection = require('../utils/mongo-collection');
-const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const mikrotikFetchTraffic = require('../services/mikrotik-fetchtraffic');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
 const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
 const mongoDb = require('../utils/mongo-db');
+const trafficAddHistory = require('../services/traffic-addhistory');
 
 const main = async () => {
 
@@ -16,6 +16,8 @@ const main = async () => {
         user: 'bug',
         password: 'sfsafawffasfasr33r',
         timeout: 5
+
+
     });
 
     console.log('fetch-traffic: starting ...');
@@ -60,6 +62,10 @@ const main = async () => {
                     trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface['name']));
                 }
             }
+
+            // add historical data (for sparklines)
+            trafficArray = await trafficAddHistory(trafficCollection, trafficArray);
+
             await arraySave(trafficCollection, trafficArray, 'name');
         } catch (error) {
             console.log('fetch-traffic: ', error);
