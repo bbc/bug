@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 
 import BugSwitch from '@components/BugSwitch';
-import PanelListMenu from "@components/PanelListMenu";
+import PanelTableMenu from "@components/panelTable/PanelTableMenu";
 import AxiosCommand from '@utils/AxiosCommand';
 import ProgressCounter from '@components/ProgressCounter';
 
@@ -84,7 +84,7 @@ export default function PanelTableRow( props ) {
           </TableCell>
           <TableCell>{props.description}</TableCell>
           <TableCell>{props._module.longname}</TableCell>
-          <TableCell className={classes.cellMenu}><PanelListMenu panel={props}/></TableCell>
+          <TableCell className={classes.cellMenu}><PanelTableMenu panel={props}/></TableCell>
       </TableRow>
     </>
   );
