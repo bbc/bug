@@ -7,7 +7,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import PanelListMenu from "@components/PanelListMenu";
+import PanelTableMenu from "@components/panelTable/PanelTableMenu";
 import Loading from "./Loading";
 import ProgressCounter from '@components/ProgressCounter';
 import AxiosCommand from '@utils/AxiosCommand';
@@ -81,7 +81,7 @@ export default function PanelList() {
                 </TableCell>
                 <TableCell>{panel.description}</TableCell>
                 <TableCell>{panel._module.longname}</TableCell>
-                <TableCell className={classes.cellMenu}><PanelListMenu panel={panel}/></TableCell>
+                <TableCell className={classes.cellMenu}><PanelTableMenu panel={panel}/></TableCell>
             </TableRow>
         );
     };

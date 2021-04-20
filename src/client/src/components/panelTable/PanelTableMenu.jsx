@@ -1,5 +1,5 @@
 import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -9,16 +9,22 @@ import StopIcon from '@material-ui/icons/Stop';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import ReplayIcon from '@material-ui/icons/Replay';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import AxiosCommand from '@utils/AxiosCommand';
+import AxiosDelete from '@utils/AxiosDelete';
 import { useSnackbar } from 'notistack';
 import { Link } from "react-router-dom";
 
-// const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+    link: {
+      textDecoration: 'none',
+    },
+  }));
 
-export default function PanelListMenu(props) {
-    // const classes = useStyles();
+export default function PanelTableMenu(props) {
+    const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -52,6 +58,11 @@ export default function PanelListMenu(props) {
         setAnchorEl(null);
     };
 
+    const handleDelete = () => {
+        AxiosDelete(`/api/panel/${props.panel.id}`);
+        setAnchorEl(null);
+    };
+
     return (
         <div>
             <IconButton aria-label="more" aria-controls="long-menu" aria-haspopup="true" onClick={handleOpenMenuClick}>
@@ -77,7 +88,7 @@ export default function PanelListMenu(props) {
                     <ListItemText primary="Restart" />
                 </MenuItem>
                 <Divider />
-                <Link to={`/panel/config/${props.panel.id}`}>
+                <Link to={`/panel/config/${props.panel.id}`} className={classes.link} >
                     <MenuItem>
                         <ListItemIcon>
                             <EditIcon fontSize="small" />
@@ -85,6 +96,12 @@ export default function PanelListMenu(props) {
                         <ListItemText primary="Edit Panel" />
                     </MenuItem>
                 </Link>
+                <MenuItem onClick={handleDelete}>
+                    <ListItemIcon disabled={disableRestart}>
+                        <DeleteIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Delete" />
+                </MenuItem>
             </Menu>
         </div>
     );
