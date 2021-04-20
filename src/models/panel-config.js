@@ -4,9 +4,10 @@ const fs = require('fs')
 const util = require('util');
 const readdir = util.promisify(fs.readdir);
 const logger = require('@utils/logger');
-const readJson = require('@utils/read-json');
 const path = require('path');
+const readJson = require('@utils/read-json');
 const writeJson = require('@utils/write-json');
+const deleteFile = require('@utils/delete-file');
 
 exports.get = async function(panelId) {
     try {
@@ -19,8 +20,20 @@ exports.get = async function(panelId) {
 exports.set = async function(panelConfig) {
 
     try {
-        let filename = path.join(__dirname, '..', 'config', panelConfig.id);
+        const filename = path.join(__dirname, '..', 'config', panelConfig.id);
         return writeJson(filename, panelConfig);
+    } 
+    catch (error) {
+        logger.warn(`panel-config: panel id ${panelConfig.id} - ${error.trace || error || error.message}`);
+        return false;
+    }
+}
+
+exports.delete = async function(panelId) {
+
+    try {
+        const filename = path.join(__dirname, '..', 'config',`${panelId}.json`);
+        return deleteFile(filename);
     } 
     catch (error) {
         logger.warn(`panel-config: panel id ${panelConfig.id} - ${error.trace || error || error.message}`);

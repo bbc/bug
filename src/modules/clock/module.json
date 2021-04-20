@@ -1,23 +1,21 @@
 {
     "name": "clock",
-    "longname": "Digital Clock",
-    "description": "System time made bigger.",
-    "notes": "",
+    "longname": "Clock",
+    "description": "Digital and Analogue Clocks",
     "version": "1.0.0",
     "icon": "Schedule",
     "author": "Ryan McCartney",
-    "license": "ISC",
+    "license": "MIT",
     "devmounts": [
         "api"
     ],
     "defaultconfig": {
         "id": "",
         "order": 0,
-        "title": "",
+        "title": "Clock",
         "module": "clock",
         "type": "digital",
-        "description": "",
-        "notes": "",
+        "description": "A Clock",
         "enabled": true
     }
 }
