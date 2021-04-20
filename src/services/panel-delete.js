@@ -30,14 +30,11 @@ module.exports = async (panelId) => {
             else {
                 logger.warn(`panel-delete: no container found for panel id ${panelId}`);
             }
-        
+            await panelConfigModel.delete(panelId)
         }
         else {
             logger.warn(`panel-delete: panel ${panelId} not found`);
         }
-
-        console.log(await panelConfigModel.delete(panelId));
-        
         return state;
     } catch (error) {
         logger.error(`panel-delete: ${error.stack || error.trace || error || error.message}`);
