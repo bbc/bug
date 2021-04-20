@@ -5,7 +5,7 @@
 
 //server.js
 const app = require("./app");
-let port = process.env.MODULE_PORT || 3200;
+let port = process.env.PORT || 3200;
 
 app.listen(port, () => {
   console.log("mirotik-interfaces api listening on port "+port.toString());
