@@ -7,17 +7,22 @@ const interfaceList = require('../services/interface-list');
 const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
 const mongoDb = require('../utils/mongo-db');
 const trafficAddHistory = require('../services/traffic-addhistory');
+const delayMs = 2000;
+const errorDelayMs = 10000;
+let trafficCollection;
 
-const main = async () => {
+process.on('uncaughtException', function(err) {
+    console.log("fetch-traffic: device poller failed ... restarting");
+    main();
+});
 
-    const delayMs = 2000;
+const pollDevice = async () => {
+
     const conn = new RosApi({
         host: '172.26.108.126',
         user: 'bug',
         password: 'sfsafawffasfasr33r',
         timeout: 5
-
-
     });
 
     console.log('fetch-traffic: starting ...');
@@ -25,26 +30,12 @@ const main = async () => {
     // initial delay (to stagger device polls)
     await delay(2000);
 
-    console.log(`fetch-traffic: connecting to database`);
     try {
-        await mongoDb.connect(myPanelId);
-    } catch (error) {
-        console.log("fetch-traffic: error connecting to database");
-        return;
-    }
-
-    const trafficCollection = await mongoCollection('traffic');
-    if (!trafficCollection) {
-        return;
-    }
-    console.log("fetch-traffic: database connected OK");
-
-    console.log("fetch-traffic: connecting to device");
-    try {
+        console.log("fetch-traffic: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
-        console.log('fetch-traffic: error connecting to device');
-        return false;
+        console.log("fetch-traffic: failed to connect to device");
+        return;
     }
     console.log("fetch-traffic: device connected ok");
 
@@ -75,5 +66,36 @@ const main = async () => {
     }
     await conn.close();
 }
+
+const main = async () => {
+
+    try {
+        console.log(`fetch-traffic: connecting to database`);
+        await mongoDb.connect(myPanelId);
+
+    } catch (error) {
+        console.log("fetch-traffic: error connecting to database");
+        return;
+    }
+
+    trafficCollection = await mongoCollection('traffic');
+
+    if (!trafficCollection) {
+        console.log("fetch-traffic: error fetching database collection");
+        await conn.close();
+        return;
+    }
+    
+    console.log("fetch-traffic: database connected OK");
+
+    while(true) {
+        try {
+            await pollDevice();
+        } catch (error) {
+            console.log('fetch-traffic: ', error);
+        }
+        await delay(errorDelayMs);
+    }
+};
 
 main();

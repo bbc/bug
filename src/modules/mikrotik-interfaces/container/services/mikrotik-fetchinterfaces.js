@@ -4,13 +4,7 @@ const mikrotikParseInterface = require('./mikrotik-parseinterface');
 
 module.exports = async (conn) => {
 
-    // print the interface menu
-    try {
-        var data = await conn.write("/interface/print");
-    } catch (error) {
-        console.log("error fetching interface information");
-        return;
-    }
+    var data = await conn.write("/interface/print");
 
     // process data
     var interfaces = [];
