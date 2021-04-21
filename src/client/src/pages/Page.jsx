@@ -3,7 +3,6 @@ import PageHome from "./PageHome";
 import PagePanel from "./PagePanel";
 import PageTitle from "@components/PageTitle";
 import PagePanelConfig from "./PagePanelConfig";
-import PageSettings from "./PageSettings";
 import PagePanels from "./PagePanels";
 import PagePanelAdd from "./PagePanelAdd";
 import PageSystem from "./PageSystem";
@@ -171,9 +170,6 @@ const Page = (props) => {
                             </Route>
                             <Route exact path="/panels">
                                 <PagePanels />
-                            </Route>
-                            <Route exact path="/settings">
-                                <PageSettings />
                             </Route>
                             <Route exact path="/panel/add">
                                 <PagePanelAdd />

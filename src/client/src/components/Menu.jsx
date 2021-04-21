@@ -66,11 +66,11 @@ const Menu = (props) => {
                 {renderMenuItems(props)}
                 <Divider />
                 <List>
-                    <ListItem button component={Link} to="/settings">
+                    <ListItem button component={Link} to="/system">
                         <ListItemIcon>
                             <SettingsIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Settings" />
+                        <ListItemText primary="System" />
                     </ListItem>
                     <ListItem button component={Link} to="/panels">
                         <ListItemIcon>

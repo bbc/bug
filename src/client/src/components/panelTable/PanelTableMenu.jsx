@@ -93,11 +93,11 @@ export default function PanelTableMenu(props) {
                         <ListItemIcon>
                             <EditIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Edit Panel" />
+                        <ListItemText primary="Edit" />
                     </MenuItem>
                 </Link>
                 <MenuItem onClick={handleDelete}>
-                    <ListItemIcon disabled={disableRestart}>
+                    <ListItemIcon>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Delete" />
