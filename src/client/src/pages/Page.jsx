@@ -92,7 +92,16 @@ const useStyles = makeStyles((theme) => ({
         // padding: theme.spacing(3),
     },
     pagecontent: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(3),
+        "@media (max-width:1200px)": {
+            padding: theme.spacing(2),
+        },
+        "@media (max-width:1024px)": {
+            padding: theme.spacing(1),
+        },
+        "@media (max-width:600px)": {
+            padding: theme.spacing(0),
+        }
     },
     bugLogo: {
         color: theme.palette.secondary.main,
