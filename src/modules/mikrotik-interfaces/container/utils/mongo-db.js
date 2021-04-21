@@ -12,6 +12,10 @@ class Mongo {
     }
 
     async connect (dbName) {
+        if(this.client.isConnected()) {
+            // already connected
+            return;
+        }
         console.log(`mongo-db: connecting to mongo db at ${url}`);
         await this.client.connect();
         console.log('mongo-db: connected to mongo db OK');

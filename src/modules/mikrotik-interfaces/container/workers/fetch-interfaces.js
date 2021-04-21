@@ -5,10 +5,17 @@ const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const arraySave = require('../services/array-save');
 const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
 const mongoDb = require('../utils/mongo-db');
+const delayMs = 2000;
+const errorDelayMs = 10000;
+let interfacesCollection;
 
-const main = async () => {
+process.on('uncaughtException', function(err) {
+    console.log("fetch-interfaces: device poller failed ... restarting");
+    main();
+});
 
-    const delayMs = 2000;
+const pollDevice = async () => {
+
     const conn = new RosApi({
         host: "172.26.108.126",
         user: "bug",
@@ -17,26 +24,12 @@ const main = async () => {
     });
 
     console.log("fetch-interfaces: starting ...");
-
-    console.log(`fetch-interfaces: connecting to database`);
-    try {
-        await mongoDb.connect(myPanelId);
-    } catch (error) {
-        console.log("fetch-interfaces: error connecting to database");
-        return;
-    }
-
-    const interfacesCollection = await mongoCollection('interfaces');
-    if (!interfacesCollection) {
-        return;
-    }
-    console.log("fetch-interfaces: database connected OK");
     
-    console.log("fetch-interfaces: connecting to device");
     try {
+        console.log("fetch-interfaces: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
-        console.log("fetch-interfaces: error connecting to device");
+        console.log("fetch-interfaces: failed to connect to device");
         return;
     }
     console.log("fetch-interfaces: device connected ok");
@@ -48,7 +41,7 @@ const main = async () => {
             const interfaces = await mikrotikFetchInterfaces(conn);
             await arraySave(interfacesCollection, interfaces, 'id');
         } catch (error) {
-            console.log(error);
+            console.log('fetch-interfaces: ', error);
             noErrors = true;
         }
         await delay(delayMs);
@@ -56,5 +49,35 @@ const main = async () => {
     await conn.close();
 }
 
-main();
+const main = async () => {
 
+    try {
+        console.log(`fetch-interfaces: connecting to database`);
+        await mongoDb.connect(myPanelId);
+
+    } catch (error) {
+        console.log("fetch-interfaces: error connecting to database");
+        return;
+    }
+
+    interfacesCollection = await mongoCollection('interfaces');
+
+    if (!interfacesCollection) {
+        console.log("fetch-interfaces: error fetching database collection");
+        await conn.close();
+        return;
+    }
+    
+    console.log("fetch-interfaces: database connected OK");
+
+    while(true) {
+        try {
+            await pollDevice();
+        } catch (error) {
+            console.log('fetch-interfaces: ', error);
+        }
+        await delay(errorDelayMs);
+    }
+};
+
+main();

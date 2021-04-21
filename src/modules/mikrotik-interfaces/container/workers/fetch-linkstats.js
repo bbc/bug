@@ -7,10 +7,17 @@ const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
 const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
 const mongoDb = require('../utils/mongo-db');
+const delayMs = 5000;
+const errorDelayMs = 10000;
+let linkStatsCollection;
 
-const main = async () => {
+process.on('uncaughtException', function(err) {
+    console.log("fetch-linkstats: device poller failed ... restarting");
+    main();
+});
 
-    const delayMs = 5000;
+const pollDevice = async () => {
+
     const conn = new RosApi({
         host: '172.26.108.126',
         user: 'bug',
@@ -23,25 +30,11 @@ const main = async () => {
     // initial delay (to stagger device polls)
     await delay(1000);
 
-    console.log(`fetch-linkstats: connecting to database`);
     try {
-        await mongoDb.connect(myPanelId);
-    } catch (error) {
-        console.log("fetch-linkstats: error connecting to database");
-        return;
-    }
-
-    const linkStatsCollection = await mongoCollection('linkstats');
-    if (!linkStatsCollection) {
-        return;
-    }
-    console.log("fetch-linkstats: database connected OK");
-
-    console.log("fetch-linkstats: connecting to device");
-    try {
+        console.log("fetch-linkstats: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
-        console.log('fetch-linkstats: error connecting to device');
+        console.log("fetch-linkstats: failed to connect to device");
         return;
     }
     console.log("fetch-linkstats: device connected ok");
@@ -71,5 +64,36 @@ const main = async () => {
     }
     await conn.close();
 }
+
+const main = async () => {
+
+    try {
+        console.log(`fetch-linkstats: connecting to database`);
+        await mongoDb.connect(myPanelId);
+
+    } catch (error) {
+        console.log("fetch-linkstats: error connecting to database");
+        return;
+    }
+
+    linkStatsCollection = await mongoCollection('linkstats');
+
+    if (!linkStatsCollection) {
+        console.log("fetch-linkstats: error fetching database collection");
+        await conn.close();
+        return;
+    }
+    
+    console.log("fetch-linkstats: database connected OK");
+
+    while(true) {
+        try {
+            await pollDevice();
+        } catch (error) {
+            console.log('fetch-linkstats: ', error);
+        }
+        await delay(errorDelayMs);
+    }
+};
 
 main();
