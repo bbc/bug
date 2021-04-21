@@ -13,10 +13,10 @@ import Loading from "@components/Loading";
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import InterfaceListMenu from "./InterfaceListMenu";
 import { Sparklines, SparklinesLine } from 'react-sparklines';
+import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles((theme) => ({
     content: {
-        margin: "1rem",
     },
     iconRunning: {
         color: theme.palette.primary.main,
@@ -26,15 +26,62 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.1,
         display: 'block'
     },
-    interfaceName: {
+    tableHead: {
+        ["@media (max-width:450px)"]: {
+            display: 'none'
+        }
     },
-    interfaceComment: {
-        opacity: 0.3
+    colRunning: {
+        width: '40px',
+        ["@media (max-width:500px)"]: {
+            display: 'none'
+        }
+    },
+    colEnabled: {
+        width: '5rem',
+        ["@media (max-width:600px)"]: {
+            display: 'none'
+        }
+    },
+    colName: {
+        minWidth: '8rem'
+    },
+    colSpeed: {
+        width: '5rem',
+        ["@media (max-width:700px)"]: {
+            display: 'none'
+        }
+    },
+    colMacAddress: {
+        width: '10rem',
+        [theme.breakpoints.down("sm")]: {
+            display: 'none'
+        }
     },
     colTraffic: {
-        width: '8rem',
+        minWidth: '6rem',
         whiteSpace: 'nowrap',
-        position: 'relative'
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        position: 'relative',
+        ["@media (max-width:450px)"]: {
+            display: 'none'
+        }
+    },
+    interfaceName: {
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        minWidth: '100%',
+        maxWidth: 0
+    },
+    interfaceComment: {
+        opacity: 0.3,
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        minWidth: '100%',
+        maxWidth: 0
     },
     spark: {
         position: 'absolute',
@@ -101,16 +148,16 @@ export default function InterfaceList(props) {
     const renderRow = (iface) => {
         return (
             <TableRow key={iface.id}>
-                <TableCell><PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon}/></TableCell>
-                <TableCell>
+                <TableCell className={classes.colRunning}><PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon}/></TableCell>
+                <TableCell className={classes.colEnabled}>
                     <BugSwitch checked={!iface.disabled} onChange={(checked) => handleEnabledChanged(checked, iface.id)}/>
                 </TableCell>
-                <TableCell>
+                <TableCell className={classes.colName}>
                     <div className={classes.interfaceName}>{iface.name}</div>
                     <div className={classes.interfaceComment}>{iface.comment}</div>
                 </TableCell>
-                <TableCell>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
-                <TableCell>{iface['mac-address']}</TableCell>
+                <TableCell className={classes.colSpeed}>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
+                <TableCell className={classes.colMacAddress}>{iface['mac-address']}</TableCell>
                 <TableCell className={classes.colTraffic}>
                     {renderTraffic(iface, 'tx')}
                 </TableCell>
@@ -136,15 +183,15 @@ export default function InterfaceList(props) {
                     <div className={classes.content}>
                         <TableContainer component={Paper} square>
                             <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
+                                <TableHead className={classes.tableHead}>
                                     <TableRow>
-                                        <TableCell width="40"></TableCell>
-                                        <TableCell>Enabled</TableCell>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell>Speed</TableCell>
-                                        <TableCell>MAC Address</TableCell>
-                                        <TableCell>TX</TableCell>
-                                        <TableCell>RX</TableCell>
+                                        <TableCell className={classes.colRunning}></TableCell>
+                                        <TableCell className={classes.colEnabled}>Enabled</TableCell>
+                                        <TableCell className={classes.colName}>Name</TableCell>
+                                        <TableCell className={classes.colSpeed}>Speed</TableCell>
+                                        <TableCell className={classes.colMacAddress}>MAC Address</TableCell>
+                                        <TableCell className={classes.colTraffic}>TX</TableCell>
+                                        <TableCell className={classes.colTraffic}>RX</TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
                                 </TableHead>
