@@ -23,7 +23,7 @@ export default function PagePanels() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("Panel List"));
+        dispatch(pageTitleSlice.actions.set("Panels"));
     });
 
     return (

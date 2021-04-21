@@ -2,7 +2,6 @@ import React from "react";
 import PageHome from "./PageHome";
 import PagePanel from "./PagePanel";
 import PagePanelConfig from "./PagePanelConfig";
-import PageSettings from "./PageSettings";
 import PagePanels from "./PagePanels";
 import PagePanelAdd from "./PagePanelAdd";
 import PageSystem from "./PageSystem";
