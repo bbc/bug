@@ -1,4 +1,4 @@
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React, { Suspense, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PageHome(props) {
-    const params = useParams();
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
