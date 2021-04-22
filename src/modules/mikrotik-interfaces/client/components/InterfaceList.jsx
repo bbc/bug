@@ -13,7 +13,6 @@ import Loading from "@components/Loading";
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import InterfaceListMenu from "./InterfaceListMenu";
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -54,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     },
     colMacAddress: {
         width: '10rem',
-        [theme.breakpoints.down("sm")]: {
+        ["@media (max-width:1200px)"]: {
             display: 'none'
         }
     },
@@ -208,7 +207,7 @@ export default function InterfaceList(props) {
 
     return (
         <>
-            <ApiPoller url={`http://localhost:3101/container/${props.id}/interface`} interval="2000" onChanged={(result) => setInterfaceList(result)}/>
+            <ApiPoller debug url={`http://localhost:3101/container/${props.id}/interface`} interval="2000" onChanged={(result) => setInterfaceList(result)}/>
             {renderContent()}
         </>
     );

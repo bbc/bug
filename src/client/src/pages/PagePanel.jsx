@@ -29,12 +29,12 @@ export default function PageHome(props) {
         if (panel === null) {
             return <Loading />;
         }
-        const ImportedPanel = React.lazy(() => import(`@modules/${panel.module}/client/components/MainPanel`).catch(() => console.log('Error in importing')));
+        const Module = React.lazy(() => import(`@modules/${panel.module}/client/Module`).catch(() => console.log('Error in importing')));
 
         return (
             <>
                 <Suspense fallback={<Loading />}>
-                    <ImportedPanel id={panelId} config={config} panel={panel}/>
+                    <Module id={panelId} config={config} panel={panel}/>
                 </Suspense>
             </>
         );
