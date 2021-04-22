@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 
-import DigitalClock from './DigitalClock';
-import AnalogueClock from './AnalogueClock';
-import Date from './Date';
+import DigitalClock from '../components/DigitalClock';
+import AnalogueClock from '../components/AnalogueClock';
+import DateString from '../components/DateString';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +47,7 @@ export default function MainPanel(props) {
                 <CardContent>
                    { renderClock() }
                 </CardContent>
-                <Date/>
+                <DateString/>
               </Card>
   
           </Grid>

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Grid from '@material-ui/core/Grid';
 
-import Weather from './Weather';
+import Weather from '../components/Weather';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -10,25 +10,13 @@ export default function ConfigPanel({ register, errors, config }) {
         <React.Fragment>
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('title')}}
+                    inputProps={{...register('title', { required: true } )}}
                     variant="outlined"
                     fullWidth
                     error={errors?.title ? true : false}
                     defaultValue={ config?.title }
                     type='text'
                     label="Panel Title"
-                />
-            </Grid>
-
-            <Grid item xs={12} >
-                <TextField
-                    inputProps={{...register('type')}}
-                    variant="outlined"
-                    fullWidth
-                    error={errors?.type ? true : false}
-                    defaultValue={ config?.type }
-                    type='text'
-                    label="Type"
                 />
             </Grid>
 
@@ -46,13 +34,37 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('notes')}}
+                    inputProps={{...register('ip_address', { required: true } )}}
                     variant="outlined"
                     fullWidth
-                    error={errors?.notes ? true : false}
-                    defaultValue={ config?.notes }
+                    error={errors?.ip_address ? true : false}
+                    defaultValue={ config?.ip_address }
                     type='text'
-                    label="Notes"
+                    label="IP Adrress"
+                />
+            </Grid>
+
+            <Grid item xs={6} >
+                <TextField
+                    inputProps={{...register('username', { required: true } )}}
+                    variant="outlined"
+                    fullWidth
+                    error={errors?.username ? true : false}
+                    defaultValue={ config?.username }
+                    type='text'
+                    label="Web Interface Username"
+                />
+            </Grid>
+
+            <Grid item xs={6} >
+                <TextField
+                    inputProps={{...register('password', { required: true } )}}
+                    variant="outlined"
+                    fullWidth
+                    error={errors?.password ? true : false}
+                    defaultValue={ config?.password }
+                    type='password'
+                    label="Web Interface Password"
                 />
             </Grid>
 

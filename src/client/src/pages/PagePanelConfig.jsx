@@ -91,7 +91,7 @@ export default function PageHome(props) {
         let panel = <Loading />;
         if (config) {
             const ImportedPanel = React.lazy(() =>
-                import(`@modules/${config?.module}/client/components/SettingsPanel`).catch(() =>
+                import(`@modules/${config?.module}/client/panels/ConfigPanel`).catch(() =>
                     console.log("Error in importing")
                 )
             );

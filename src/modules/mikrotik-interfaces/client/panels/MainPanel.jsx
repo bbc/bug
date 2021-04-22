@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import InterfaceList from './InterfaceList';
+import InterfaceList from '../components/InterfaceList';
 
 const useStyles = makeStyles((theme) => ({}));
 

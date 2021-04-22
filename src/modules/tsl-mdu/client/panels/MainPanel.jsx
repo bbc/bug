@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AxiosGet from "@utils/AxiosGet";
 import Grid from '@material-ui/core/Grid';
-import OutputCard from './OutputCard';
+import OutputCard from '../components/OutputCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -20,7 +20,7 @@
         "description": "",
         "notes": "",
         "enabled": true,
-        "address": "",
+        "ip_address": "",
         "show_number": true,
         "use_take": true,
         "source_groups": [],

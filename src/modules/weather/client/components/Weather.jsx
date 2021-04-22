@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import ReactWeather, { useOpenWeather } from 'react-open-weather';
 
 const customStyles = {

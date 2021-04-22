@@ -2,11 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -17,22 +14,18 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-export default function MainPanel(props) {
+export default function StatusCard(props) {
     const classes = useStyles();
 
     return (
-        <Grid item lg={3} sm={6} xs={12} >
+        <Grid item lg={12} sm={12} xs={12} >
       
             <Card className={classes.card} >
-                <CardHeader
-                    title={ props?.name } 
-                />
+
                 <CardContent>
-                    <ButtonGroup disableElevation variant="contained" color="primary">
-                        <Button>On</Button>
-                        <Button>Off</Button>
-                    </ButtonGroup>
+
                 </CardContent>
+
             </Card>
 
         </Grid>
