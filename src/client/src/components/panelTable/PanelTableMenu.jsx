@@ -88,7 +88,7 @@ export default function PanelTableMenu(props) {
                     <ListItemText primary="Restart" />
                 </MenuItem>
                 <Divider />
-                <Link to={`/panel/config/${props.panel.id}`} className={classes.link} >
+                <Link to={`/panel/${props.panel.id}/edit`} className={classes.link} >
                     <MenuItem>
                         <ListItemIcon>
                             <EditIcon fontSize="small" />

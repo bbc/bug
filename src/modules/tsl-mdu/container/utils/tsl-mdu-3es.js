@@ -3,21 +3,20 @@
 //DATE:  16/11/2020
 //DESC:  TSL MDU Connection Class
 
-const jssoup = require('jssoup').default;
-const http = require('http');
+const JSSoup = require('jssoup').default;
 const axios = require('axios');
 
 class TSL_MDU {
-    constructor({ username='root', password='telsys', frequency=10 }) {
+    constructor({ outputs=12, port= 80, username='root', password='telsys', frequency=10 }) {
 
         this.poller = null;
         this.model = "TSL-MDU12-3ES";
         this.username = username;
         this.password = password;
         this.host = host;
-        this.port = 80;
+        this.port = port;
         this.status = null;
-        this.outputsCount = 12;
+        this.outputsCount = outputs;
         this.outputs = [];
         this.frequency = frequency || 5000;
 
@@ -184,4 +183,4 @@ class TSL_MDU {
     }
 }
 
-export let tsl_mdu = new TSL_MDU();
+export default TSL_MDU;

@@ -1,7 +1,6 @@
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
 import useAsyncEffect from "use-async-effect";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
@@ -44,35 +43,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelConfig(props) {
-    const params = useParams();
-    const panelId = params.panelid ?? "";
+export default function PanelConfig({children, panelId, handleSubmit, config}) {
     const classes = useStyles();
     const history = useHistory();
+
     const [loading, setLoading] = useState(false);
-    const [config, setConfig] = useState(null);
+
     const { enqueueSnackbar } = useSnackbar();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
 
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(pageTitleSlice.actions.set(config?.title || 'Panel Configuration' ));
     });
-
-    useAsyncEffect(async () => {
-        setConfig(await AxiosGet(`/api/panel/config/${panelId}`));
-    }, [panelId]);
 
     const onSubmit = async (form) => {
         setLoading(true);
         const response = await AxiosPut(`/api/panel/config/${panelId}`,form);
         if (!response?.error) {
-            setConfig({...config, ...response});
             enqueueSnackbar(`${config?.title} has been updated.`, { variant: "success" });
             history.goBack();
         } else {
@@ -89,6 +76,7 @@ export default function PanelConfig(props) {
 
     const renderPanel = () => {
         let panel = <Loading />;
+        console.log('HERE')
         if (config) {
             panel = (
                 <>
@@ -97,7 +85,7 @@ export default function PanelConfig(props) {
                         <CardContent>
                             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                                 <Grid container spacing={4}>
-                                    { props.children }
+                                    { children }
                                 </Grid>
                             </form>
                         </CardContent>
