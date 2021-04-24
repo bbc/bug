@@ -27,7 +27,8 @@ module.exports = async (configObject) => {
 
             if(devMounts.length > 0) {
                 containerOptions['HostConfig'] = {
-                    Mounts: []
+                    Mounts: [],
+                    RestartPolicy: 'unless-stopped',
                 };
 
                 for(let eachMount of devMounts) {
