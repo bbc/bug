@@ -42,7 +42,7 @@ export default function PageHome(props) {
         return (
             <>
                 <Suspense fallback={<Loading />}>
-                    <Module id={panelId} config={config} panel={panel} />
+                    <Module panelid={panelId} config={config} panel={panel} />
                 </Suspense>
             </>
         );

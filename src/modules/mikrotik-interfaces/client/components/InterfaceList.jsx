@@ -207,7 +207,7 @@ export default function InterfaceList(props) {
 
     return (
         <>
-            <ApiPoller debug url={`http://localhost:3101/container/${props.id}/interface`} interval="2000" onChanged={(result) => setInterfaceList(result)}/>
+            <ApiPoller url={`http://localhost:3101/container/${props.panelid}/interface`} interval="2000" onChanged={(result) => setInterfaceList(result)}/>
             {renderContent()}
         </>
     );

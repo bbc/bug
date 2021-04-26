@@ -6,6 +6,7 @@
 const express = require('express');
 const status = express.Router();
 const interfaceCombinedList = require('../../services/interface-combinedlist');
+const interfaceCombined = require('../../services/interface-combined');
 
 status.get('/', async function (req, res) {
     try {
@@ -17,6 +18,21 @@ status.get('/', async function (req, res) {
         res.json({ 
             status: "error",
             message: "Failed to list interfaces" 
+        });
+    }
+
+})
+
+status.get('/:interfaceid', async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await interfaceCombined(req.params.interfaceid)
+        });
+    } catch (error) {
+        res.json({ 
+            status: "error",
+            message: "Failed to display interface id" 
         });
     }
 
