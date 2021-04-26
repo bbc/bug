@@ -13,7 +13,7 @@ pipeline {
                 sh 'node --version'
             }
         }
-        stage('Install Core and Client') { 
+        stage('Install') { 
             steps {
                 dir('src') {
                     sh 'npm install --also=dev'
@@ -25,7 +25,7 @@ pipeline {
                 }
             }
         }
-        stage('Test Core and Client') { 
+        stage('Test') { 
             steps {
                 dir('src') {
                     sh 'npm run test'
@@ -36,12 +36,20 @@ pipeline {
                 slackSend (color: '#30fc03', message: "*Test:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
-        stage('Build Client') { 
+        stage('Build') { 
             steps {
                 dir('src') {
-                    sh 'npm run build'
+                    sh 'docker image build --compress --tag rmccartney856/bug-core:latest ./'
                 }
-                slackSend (color: '#30fc03', message: "*Build:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+                slackSend (color: '#30fc03', message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+            }
+        }
+        stage('Publish') { 
+            steps {
+                dir('src') {
+                    sh 'docker push rmccartney856/bug-core:latest'
+                }
+                slackSend (color: '#30fc03', message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
     }

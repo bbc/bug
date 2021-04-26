@@ -33,6 +33,7 @@ services:
       
   mongo-web:
     image: mongo-express
+    container_name: bug-mongo-express
     restart: unless-stopped
     ports:
       - ${MONGO_EXPRESS_PORT}:8081
