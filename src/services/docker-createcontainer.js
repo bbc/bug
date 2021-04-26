@@ -11,45 +11,43 @@ module.exports = async (configObject) => {
     try {
 
         logger.info(`docker-createcontainer: creating container for panel id ${configObject.id}`);
-
         const modulePort = process.env.MODULE_PORT || '3200';
-
         let containerOptions = {
             Image: configObject.module + ":latest",
             Cmd: ['npm', 'run', nodeEnv],
             Env: [`PORT=${modulePort}`],
             Hostname: configObject.id,
-            name: configObject.id
+            name: configObject.id,
+            Labels: {
+                "co.uk.bbc.bug.module": configObject.module,
+                "com.docker.compose.project": "bbcnews-bug-core",
+                "com.docker.compose.service": configObject.id
+            },
+            HostConfig: {
+                Mounts: [],
+                RestartPolicy: {name:'unless-stopped'},
+                NetworkMode: 'bug'
+            },
         };
         if(nodeEnv === "development") {
             const modulesFolder = await dockerGetModulesFolder();
             const devMounts = await moduleDevMounts(configObject.module);
 
             if(devMounts.length > 0) {
-                containerOptions['HostConfig'] = {
-                    Mounts: [],
-                    RestartPolicy: 'unless-stopped',
-                };
-
+                let mounts = [];
                 for(let eachMount of devMounts) {
                     let localPath = path.join(modulesFolder, configObject.module, 'container', eachMount);
                     let remotePath = path.join(process.env.MODULE_HOME, eachMount);
-                    containerOptions['HostConfig']['Mounts'].push({
+                    mounts.push({
                         Target: remotePath,
                         Source: localPath,
                         Type: 'bind'
                     });
                 }
+                containerOptions['HostConfig']['Mounts'] = mounts;
             }
         }
         let container = await docker.createContainer(containerOptions);
-
-        logger.info(`docker-createcontainer: configuring container network for panel id ${configObject.id}`);
-        let network = await docker.getNetwork('bridge');
-        await network.disconnect({ "Container": configObject.id });
-
-        network = await docker.getNetwork('bug');
-        await network.connect({ "Container": configObject.id });
 
         logger.info(`docker-createcontainer: container id ${container.id} created OK`);
         return container;
