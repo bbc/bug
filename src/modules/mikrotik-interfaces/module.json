@@ -19,7 +19,6 @@
         "title": "",
         "module": "mikrotik-interfaces",
         "description": "",
-        "notes": "",
         "enabled": true,
         "address": "",
         "username": "bug",

@@ -16,7 +16,7 @@ export default function EditPanel(props) {
 
     return (
         <>
-            <PanelConfig panelId={ props.id } handleSubmit={ handleSubmit }>
+            <PanelConfig { ...props } handleSubmit={ handleSubmit }>
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("title") }}
@@ -27,18 +27,6 @@ export default function EditPanel(props) {
                         defaultValue={props.config?.title}
                         type="text"
                         label="Panel Title"
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <TextField
-                        inputProps={{ ...register("type") }}
-                        variant="filled"
-                        fullWidth
-                        error={errors?.type ? true : false}
-                        defaultValue={props.config?.type}
-                        type="text"
-                        label="Type"
                     />
                 </Grid>
 
@@ -56,13 +44,37 @@ export default function EditPanel(props) {
 
                 <Grid item xs={12}>
                     <TextField
-                        inputProps={{ ...register("notes") }}
+                        inputProps={{ ...register("address") }}
                         variant="filled"
                         fullWidth
-                        error={errors?.notes ? true : false}
-                        defaultValue={props.config?.notes}
+                        error={errors?.address ? true : false}
+                        defaultValue={props.config?.address}
                         type="text"
-                        label="Notes"
+                        label="IP Address"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
+                        inputProps={{ ...register("username") }}
+                        variant="filled"
+                        fullWidth
+                        error={errors?.username ? true : false}
+                        defaultValue={props.config?.username}
+                        type="text"
+                        label="Username"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
+                        inputProps={{ ...register("password") }}
+                        variant="filled"
+                        fullWidth
+                        error={errors?.password ? true : false}
+                        defaultValue={props.config?.password}
+                        type="password"
+                        label="Password"
                     />
                 </Grid>
 

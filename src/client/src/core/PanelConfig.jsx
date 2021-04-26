@@ -1,8 +1,6 @@
 import { useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import useAsyncEffect from "use-async-effect";
-import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelConfig({children, panelId, handleSubmit, config}) {
+export default function PanelConfig({children, handleSubmit, config}) {
     const classes = useStyles();
     const history = useHistory();
 
@@ -58,7 +56,7 @@ export default function PanelConfig({children, panelId, handleSubmit, config}) {
 
     const onSubmit = async (form) => {
         setLoading(true);
-        const response = await AxiosPut(`/api/panel/config/${panelId}`,form);
+        const response = await AxiosPut(`/api/panel/config/${config?.id}`,form);
         if (!response?.error) {
             enqueueSnackbar(`${config?.title} has been updated.`, { variant: "success" });
             history.goBack();
@@ -76,7 +74,6 @@ export default function PanelConfig({children, panelId, handleSubmit, config}) {
 
     const renderPanel = () => {
         let panel = <Loading />;
-        console.log('HERE')
         if (config) {
             panel = (
                 <>
@@ -97,7 +94,7 @@ export default function PanelConfig({children, panelId, handleSubmit, config}) {
     };
 
     return (
-        <div key={panelId}>
+        <div key={config?.id}>
             {renderPanel()}
             {getLoading()}
         </div>
