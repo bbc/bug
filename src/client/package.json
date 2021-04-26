@@ -45,14 +45,6 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
-  "_moduleAliases": {
-    "@root": ".",
-    "@components": "./components/",
-    "@pages": "./pages/",
-    "@redux": "./redux/",
-    "@utils": "./utils/",
-    "@data": "./data/"
-  },
   "eslintConfig": {
     "extends": [
       "react-app",

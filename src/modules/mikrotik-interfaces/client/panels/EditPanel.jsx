@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import PanelConfig from "@components/PanelConfig";
+import PanelConfig from "@core/PanelConfig";
 import { useForm } from "react-hook-form";
 
 export default function EditPanel(props) {
@@ -16,7 +16,7 @@ export default function EditPanel(props) {
 
     return (
         <>
-            <PanelConfig panelId={ props.id } config={ props.config } handleSubmit={ handleSubmit }>
+            <PanelConfig panelId={ props.id } handleSubmit={ handleSubmit }>
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("title") }}
@@ -24,7 +24,7 @@ export default function EditPanel(props) {
                         required
                         fullWidth
                         error={errors?.title ? true : false}
-                        defaultValue={config?.title}
+                        defaultValue={props.config?.title}
                         type="text"
                         label="Panel Title"
                     />
@@ -36,7 +36,7 @@ export default function EditPanel(props) {
                         variant="filled"
                         fullWidth
                         error={errors?.type ? true : false}
-                        defaultValue={config?.type}
+                        defaultValue={props.config?.type}
                         type="text"
                         label="Type"
                     />
@@ -48,7 +48,7 @@ export default function EditPanel(props) {
                         variant="filled"
                         fullWidth
                         error={errors?.description ? true : false}
-                        defaultValue={config?.description}
+                        defaultValue={props.config?.description}
                         type="text"
                         label="Description"
                     />
@@ -60,7 +60,7 @@ export default function EditPanel(props) {
                         variant="filled"
                         fullWidth
                         error={errors?.notes ? true : false}
-                        defaultValue={config?.notes}
+                        defaultValue={props.config?.notes}
                         type="text"
                         label="Notes"
                     />

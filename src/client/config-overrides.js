@@ -21,6 +21,7 @@ module.exports = function (config, env) {
         addWebpackAlias({
             '@modules': path.resolve('../modules'),
             '@components': path.resolve('src/components'),
+            '@core': path.resolve('src/core'),
             '@data': path.resolve('src/data'),
             '@pages': path.resolve('src/pages'),
             '@data': path.resolve('src/data'),
