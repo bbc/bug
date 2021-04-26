@@ -41,12 +41,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelConfig({children, handleSubmit, config}) {
+export default function PanelConfig({children, config, handleSubmit}) {
     const classes = useStyles();
     const history = useHistory();
-
     const [loading, setLoading] = useState(false);
-
     const { enqueueSnackbar } = useSnackbar();
 
     const dispatch = useDispatch();
