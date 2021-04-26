@@ -9,7 +9,7 @@ export default function MainPanel(props) {
 
     return (
         <>
-            <InterfaceList id={props.id}/>
+            <InterfaceList panelid={props.panelid}/>
         </>
     );
 }

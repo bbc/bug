@@ -2,6 +2,12 @@ const mongoCollection = require('../utils/mongo-collection');
 
 module.exports = async () => {
 
+    const dbInterfaces = await mongoCollection('interfaces');
+    let interfaces = await dbInterfaces.find().toArray();
+    if(!interfaces) {
+        return null;
+    }
+
     const dbLinkStats = await mongoCollection('linkstats');
     let linkStats = await dbLinkStats.find().toArray();
     const linkStatsByName = [];
@@ -14,12 +20,6 @@ module.exports = async () => {
     const trafficByName = [];
     for(let eachInterface of traffic) {
         trafficByName[eachInterface['name']] = eachInterface;
-    }
-
-    const dbInterfaces = await mongoCollection('interfaces');
-    let interfaces = await dbInterfaces.find().toArray();
-    if(!interfaces) {
-        return null;
     }
 
     interfaces.sort((a, b) => (a.name > b.name) ? 1 : -1)

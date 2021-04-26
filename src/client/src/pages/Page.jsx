@@ -65,7 +65,7 @@ const Page = (props) => {
                     <Route exact path="/panel/add">
                         <PagePanelAdd />
                     </Route>
-                    <Route exact path="/panel/:panelid">
+                    <Route path="/panel/:panelid">
                         <PagePanel />
                     </Route>
                     <Route exact path="/panel/config/:panelid">
