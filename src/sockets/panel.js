@@ -2,6 +2,7 @@ const panelList = require('@services/panel-list');
 const { response } = require('../bin/bug-core-api');
 
 let interval;
+let panels;
 
 const getPanelList = async () => {
     let response;
@@ -11,9 +12,9 @@ const getPanelList = async () => {
             data: await panelList()
         }
     } catch (error) {
-        response = { 
+        response = {
             status: "error",
-            message: "Failed to list panels" 
+            message: "Failed to list panels"
         }
     }
     return response
@@ -26,11 +27,15 @@ const panelHandler = (io, socket) => {
         clearInterval(interval);
     }
 
-    interval = setInterval(async () =>{
-        io.emit('panel',await getPanelList())
+    interval = setInterval(async () => {
+        const newPanels = await getPanelList();
+        if (JSON.stringify(panels) !== JSON.stringify(newPanels)) {
+            panels = newPanels;
+            io.emit('panel', panels)
+        }
     }, 1000);
-    
-    socket.on('panel',async () => {
+
+    socket.on('panel', async () => {
         socket.emit('panel', await getPanelList());
     });
 
