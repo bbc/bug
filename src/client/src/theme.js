@@ -25,7 +25,12 @@ const theme = createMuiTheme({
           paddingRight: '16px',
         },
       },
-    },    
+    },
+    MuiCard: {
+      root: {
+        borderRadius: 0
+      }
+    },
   },
   typography: {
     fontFamily: [
