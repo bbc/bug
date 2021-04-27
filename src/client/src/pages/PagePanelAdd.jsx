@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import AxiosPost from "@utils/AxiosPost";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
+import AxiosGet from "@utils/AxiosGet";
+import useAsyncEffect from 'use-async-effect';
 
 import Loading from "@components/Loading";
 import LoadingOverlay from "@components/LoadingOverlay";
@@ -43,6 +45,7 @@ export default function PageHome(props) {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
+    const [moduleList, setModuleList] = useState([]);
     const { enqueueSnackbar } = useSnackbar();
     const {
         register,
@@ -51,11 +54,11 @@ export default function PageHome(props) {
     } = useForm();
 
     const dispatch = useDispatch();
-    const moduleList = useSelector(state => state.moduleList);
 
-    useEffect(() => {
+    useAsyncEffect(async () => {
         dispatch(pageTitleSlice.actions.set("Add Panel"));
-    });
+        setModuleList(await AxiosGet(`/api/module`));
+    }, []);
 
     const onSubmit = async (form) => {
         setLoading(true);
@@ -69,9 +72,11 @@ export default function PageHome(props) {
         setLoading(false);
     };
 
-    const getModules = () => {
-        const modules = [];
-        for(let module of moduleList?.data){
+    const getModuleOptions = () => {
+        const modules = [
+            <option value={null}>Select ...</option>
+        ];
+        for(let module of moduleList){
             modules.push(<option value={module?.name}>{ module?.longname }</option>)
         }
         return modules
@@ -87,7 +92,6 @@ export default function PageHome(props) {
         <>
             <Suspense fallback={<Loading />}>
                 <Card className={classes.card}>
-                    <CardHeader title={`Panel`} />
                     <CardContent>
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                             <Grid container spacing={4}>
@@ -114,16 +118,15 @@ export default function PageHome(props) {
                                     />
                                 </Grid>
 
-                                <Grid item xs={6} >
+                                <Grid item xs={12} md={6} >
                                     <FormControl variant="outlined" fullWidth>
                                         <InputLabel htmlFor="outlined-age-native-simple">Module</InputLabel>
                                         <Select
                                             native
-                                            label="Forecast Length"
                                             error={errors?.module ? true : false}
                                             inputProps={{...register('module', { required: true } )}}
                                         >   
-                                            { getModules() }
+                                            { getModuleOptions() }
                                         </Select>
                                     </FormControl>
                                 </Grid>
