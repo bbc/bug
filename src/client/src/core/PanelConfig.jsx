@@ -48,6 +48,10 @@ export default function PanelConfig({ children, config, handleSubmit }) {
         dispatch(pageTitleSlice.actions.set(config?.title || "Panel Configuration"));
     });
 
+    const onCancel = () => {
+        history.goBack();
+    }
+
     const onSubmit = async (form) => {
         setLoading(true);
         const response = await AxiosPut(`/api/panel/config/${config?.id}`, form);
@@ -71,7 +75,7 @@ export default function PanelConfig({ children, config, handleSubmit }) {
         if (config) {
             panel = (
                 <>
-                    <PanelForm>
+                    <PanelForm onCancel={onCancel}>
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                             <PanelForm.Header>Configuration</PanelForm.Header>
                             <PanelForm.Body>
@@ -80,7 +84,7 @@ export default function PanelConfig({ children, config, handleSubmit }) {
                                 </Grid>
                             </PanelForm.Body>
                             <PanelForm.Actions>
-                                <Button type="submit" variant="contained" color="secondary" disableElevation>
+                                <Button variant="contained" color="secondary" disableElevation onClick={onCancel}>
                                     Cancel
                                 </Button>
                                 <Button type="submit" variant="contained" color="primary" disableElevation>

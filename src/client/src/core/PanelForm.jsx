@@ -47,7 +47,7 @@ const PanelForm = (props) => {
     const classes = useStyles();
     return (
         <Card className={classes.card}>
-            <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
+            <IconButton aria-label="close" className={classes.closeButton} onClick={props.onCancel}>
                 <CloseIcon />
             </IconButton>
 
