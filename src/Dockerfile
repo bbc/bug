@@ -6,7 +6,8 @@ RUN npm install
 
 WORKDIR /home/node/bug-core/client
 RUN npm install
-RUN npm run build
+
+RUN if [ "x$NODE_ENV" = "xproduction" ]; then npm run build ; fi
 
 WORKDIR /home/node/bug-core
 CMD [ "sh", "-c", "npm run $NODE_ENV" ]
