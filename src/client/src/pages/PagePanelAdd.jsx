@@ -74,10 +74,10 @@ export default function PageHome(props) {
 
     const getModuleOptions = () => {
         const modules = [
-            <option value={null}>Select ...</option>
+            <option key={`_select`} value={null}>Select ...</option>
         ];
         for(let module of moduleList){
-            modules.push(<option value={module?.name}>{ module?.longname }</option>)
+            modules.push(<option key={module.name} value={module?.name}>{ module?.longname }</option>)
         }
         return modules
     };
