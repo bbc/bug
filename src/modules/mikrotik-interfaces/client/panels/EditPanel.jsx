@@ -1,7 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import { useForm } from "react-hook-form";
 import ChipInput from 'material-ui-chip-input'
 
@@ -84,7 +83,7 @@ export default function EditPanel(props) {
 
                 <Grid item xs={12} >
                     <ChipInput
-                        inputProps={{...register('protected_interfaces')}}
+                        // inputProps={{...register('protected_interfaces')}}
                         variant="filled"
                         defaultValue={ props.config?.protected_interfaces }
                         fullWidth
@@ -95,7 +94,7 @@ export default function EditPanel(props) {
 
                 <Grid item xs={12} >
                     <ChipInput
-                        inputProps={{...register('excluded_interfaces')}}
+                        // inputProps={{...register('excluded_interfaces')}}
                         variant="filled"
                         defaultValue={ props.config?.excluded_interfaces }
                         fullWidth
@@ -104,11 +103,6 @@ export default function EditPanel(props) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="default" size="large" disableElevation>
-                        Save
-                    </Button>
-                </Grid>
             </PanelConfig>
         </>
     );

@@ -10,10 +10,12 @@ import LoadingOverlay from "@components/LoadingOverlay";
 
 import { useSnackbar } from "notistack";
 
+import PanelForm from "@core/PanelForm";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,18 +32,12 @@ const useStyles = makeStyles((theme) => ({
     link: {
         textDecoration: "none",
     },
-    card: {
-        minWidth: 300,
-        padding: theme.spacing(2),
-        textAlign: "left",
-        color: theme.palette.text.secondary,
-    },
     pos: {
         marginBottom: 12,
     },
 }));
 
-export default function PanelConfig({children, config, handleSubmit}) {
+export default function PanelConfig({ children, config, handleSubmit }) {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
@@ -49,12 +45,12 @@ export default function PanelConfig({children, config, handleSubmit}) {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set(config?.title || 'Panel Configuration' ));
+        dispatch(pageTitleSlice.actions.set(config?.title || "Panel Configuration"));
     });
 
     const onSubmit = async (form) => {
         setLoading(true);
-        const response = await AxiosPut(`/api/panel/config/${config?.id}`,form);
+        const response = await AxiosPut(`/api/panel/config/${config?.id}`, form);
         if (!response?.error) {
             enqueueSnackbar(`${config?.title} has been updated.`, { variant: "success" });
             history.goBack();
@@ -75,16 +71,24 @@ export default function PanelConfig({children, config, handleSubmit}) {
         if (config) {
             panel = (
                 <>
-                    <Card className={classes.card}>
-                        <CardHeader title={`Configuration`} />
-                        <CardContent>
-                            <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                    <PanelForm>
+                        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                            <PanelForm.Header>Configuration</PanelForm.Header>
+                            <PanelForm.Body>
                                 <Grid container spacing={4}>
-                                    { children }
+                                    {children}
                                 </Grid>
-                            </form>
-                        </CardContent>
-                    </Card>
+                            </PanelForm.Body>
+                            <PanelForm.Actions>
+                                <Button type="submit" variant="contained" color="secondary" disableElevation>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" variant="contained" color="primary" disableElevation>
+                                    Save Changes
+                                </Button>
+                            </PanelForm.Actions>
+                        </form>
+                    </PanelForm>
                 </>
             );
         }

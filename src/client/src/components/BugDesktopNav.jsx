@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: 20,
+        marginLeft: 4
     },
     drawer: {
         width: drawerWidth,

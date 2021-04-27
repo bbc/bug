@@ -21,14 +21,15 @@ const theme = createMuiTheme({
     MuiToolbar: {
       gutters: {
         [defaultTheme.breakpoints.up('sm')]: {
-          paddingLeft: '16px',
-          paddingRight: '16px',
+          paddingLeft: 0,
+          paddingRight: 0,
         },
       },
       root: {
         "& .MuiButton-outlinedPrimary": {
-          color: '#fff',
-          border: '1px solid rgba(255, 255, 255, 0.3)' 
+          color: 'rgba(255, 255, 255, 0.8)',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          marginRight: '0.5rem'
         }
       }
     },
@@ -54,6 +55,10 @@ const theme = createMuiTheme({
       paper: '#262626'
     },
 
+    appbar: {
+      default: '#212121'
+    },
+
     // --- colors ---
     menu: { 
       main: '#163550' 
@@ -64,7 +69,7 @@ const theme = createMuiTheme({
     },
 
     secondary: { 
-      main: '#000000' 
+      main: '#888888' 
     },
 
     success: {

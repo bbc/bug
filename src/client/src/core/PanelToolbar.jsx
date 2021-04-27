@@ -15,9 +15,13 @@ import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import EditIcon from "@material-ui/icons/Edit";
 import { Hidden } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+    dropdownMenu: {
+        marginLeft: "-0.5rem",
+    },
+}));
 
-/* 
+/*
  * this has optional properties:
  * - buttons - which can take buttons with links to show on the toolbar
  * - menuitems - which can take menuitems which will be shown in the list
@@ -44,25 +48,27 @@ export default function PanelToolbar(props) {
     return (
         <>
             <Hidden xsDown>
-                <Link to={`/panel/${props.panel.id}/edit`}>
-                    <Button variant="outlined" color="primary" startIcon={<EditIcon />}>
-                        Edit
-                    </Button>
-                    {props.buttons}
-                </Link>
+                <Button component={Link} to={`/panel/${props.panel.id}/edit`} variant="outlined" color="primary" startIcon={<EditIcon />}>
+                    Edit
+                </Button>
+                {props.buttons}
             </Hidden>
-            <IconButton aria-label="more" aria-controls="long-menu" aria-haspopup="true" onClick={handleOpenMenuClick}>
+            <IconButton
+                className={classes.dropdownMenu}
+                aria-label="more"
+                aria-controls="long-menu"
+                aria-haspopup="true"
+                onClick={handleOpenMenuClick}
+            >
                 <MoreIcon />
             </IconButton>
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                <Link to={`/panel/${props.panel.id}/edit`} onClick={handleClose}>
-                    <MenuItem>
-                        <ListItemIcon>
-                            <EditIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Edit Panel" />
-                    </MenuItem>
-                </Link>
+            <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
+                <MenuItem component={Link} to={`/panel/${props.panel.id}/edit`}>
+                    <ListItemIcon>
+                        <EditIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Edit Panel" />
+                </MenuItem>
                 {props.menuItems}
                 <Divider />
                 <MenuItem disabled>
