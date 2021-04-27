@@ -50,7 +50,7 @@ export default function PanelConfig({ children, config, handleSubmit }) {
 
     const onCancel = () => {
         history.goBack();
-    }
+    };
 
     const onSubmit = async (form) => {
         setLoading(true);

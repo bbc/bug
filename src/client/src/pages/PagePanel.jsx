@@ -8,7 +8,7 @@ import pageTitleSlice from "../redux/pageTitleSlice";
 import panelSlice from "../redux/panelSlice";
 import { useSelector } from "react-redux";
 
-export default function PageHome(props) {
+export default function PagePanel(props) {
     const params = useParams();
     const panelId = params.panelid ?? "";
     const [config, setConfig] = useState(null);
@@ -30,6 +30,7 @@ export default function PageHome(props) {
     useAsyncEffect(async () => {
         setConfig(await AxiosGet(`/api/panel/config/${panelId}`));
     }, [panelId]);
+
 
     const renderPanel = () => {
         if (panel === null) {

@@ -1,7 +1,6 @@
 import React from "react";
 import PageHome from "./PageHome";
 import PagePanel from "./PagePanel";
-import PagePanelConfig from "./PagePanelConfig";
 import PagePanels from "./PagePanels";
 import PagePanelAdd from "./PagePanelAdd";
 import PageSystem from "./PageSystem";
@@ -67,9 +66,6 @@ const Page = (props) => {
                     </Route>
                     <Route path="/panel/:panelid">
                         <PagePanel />
-                    </Route>
-                    <Route exact path="/panel/config/:panelid">
-                        <PagePanelConfig />
                     </Route>
                     <Route exact path="/system">
                         <PageSystem />
