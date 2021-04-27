@@ -1,22 +1,27 @@
 #!/usr/bin/env node
 
 const bugApi = require('./bug-core-api');
+const scoket = require('@sockets/socket');
 const http = require('http');
+const socket = require('../sockets/socket');
 
-let port = process.env.PORT_DEV_API || '3101';
+const port = process.env.PORT_DEV_API || '3101';
 bugApi.set('port', port);
 
-var server = http.createServer(bugApi);
+const server = http.createServer(bugApi);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+//Give the server to sockets as well
+socket(server);
 
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
 
-    var bind = typeof port === 'string'
+    const bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
 
@@ -36,8 +41,8 @@ function onError(error) {
 }
 
 function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
+    const addr = server.address();
+    const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     console.log(`Listening on ${bind}`);

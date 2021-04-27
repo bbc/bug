@@ -18,6 +18,7 @@ services:
       - ./src/middleware:/home/node/bug-core/middleware
       - ./src/routes:/home/node/bug-core/routes
       - ./src/services:/home/node/bug-core/services
+      - ./src/sockets:/home/node/bug-core/sockets
       - ./src/utils:/home/node/bug-core/utils
       - ./src/client/src:/home/node/bug-core/client/src
       - ./src/client/public:/home/node/bug-core/client/public
