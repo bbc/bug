@@ -25,6 +25,12 @@ const theme = createMuiTheme({
           paddingRight: '16px',
         },
       },
+      root: {
+        "& .MuiButton-outlinedPrimary": {
+          color: '#fff',
+          border: '1px solid rgba(255, 255, 255, 0.3)' 
+        }
+      }
     },
     MuiCard: {
       root: {

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState } from "react";
 import AxiosGet from "@utils/AxiosGet";
 import Loading from "@components/Loading";
 import useAsyncEffect from "use-async-effect";

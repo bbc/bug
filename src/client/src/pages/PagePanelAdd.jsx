@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import AxiosPost from "@utils/AxiosPost";
@@ -12,11 +12,9 @@ import Loading from "@components/Loading";
 import LoadingOverlay from "@components/LoadingOverlay";
 
 import { useSnackbar } from "notistack";
-import { useSelector } from 'react-redux'
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';

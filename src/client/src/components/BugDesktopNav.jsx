@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import BugToolbar from "@components/BugToolbar";
+import MuiToolbar from "@material-ui/core/Toolbar";
+import Toolbar from "@components/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
@@ -83,7 +83,7 @@ const BugDesktopNav = (props) => {
                 position="fixed"
                 className={classes.appBar}
             >
-                <Toolbar>
+                <MuiToolbar>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -93,8 +93,8 @@ const BugDesktopNav = (props) => {
                     >
                         {open ? <MenuOpenIcon /> : <MenuIcon />}
                     </IconButton>
-                    <BugToolbar></BugToolbar>
-                </Toolbar>
+                    <Toolbar></Toolbar>
+                </MuiToolbar>
             </AppBar>
             <Drawer
                 variant="permanent"

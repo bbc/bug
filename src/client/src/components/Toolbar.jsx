@@ -1,8 +1,7 @@
 import PageTitle from "@components/PageTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
-import React, { Suspense, useState, useEffect } from "react";
-import { Hidden } from "@material-ui/core";
+import React, { Suspense  } from "react";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -11,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const BugToolbar = (props) => {
+const Toolbar = (props) => {
     const classes = useStyles();
     const panel = useSelector((state) => state.panel);
 
@@ -27,7 +26,7 @@ const BugToolbar = (props) => {
 
         return (
             <Suspense fallback={<></>}>
-                <Toolbar />
+                <Toolbar panel={panel}/>
             </Suspense>
         );
     };
@@ -37,9 +36,9 @@ const BugToolbar = (props) => {
             <div className={classes.title}>
                 <PageTitle />
             </div>
-            <LazyToolbar />
+            <LazyToolbar/>
         </>
     );
 };
 
-export default BugToolbar;
+export default Toolbar;
