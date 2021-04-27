@@ -47,6 +47,7 @@
     "nanoid": "^3.1.22",
     "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
+    "socket.io": "^4.0.1",
     "swagger-jsdoc": "^6.0.2",
     "swagger-ui-express": "^4.1.6",
     "tar": "^6.1.0",
@@ -66,6 +67,7 @@
     "@models": "./models/",
     "@utils": "./utils/",
     "@services": "./services/",
+    "@sockets": "./sockets/",
     "@middleware": "./middleware/"
   },
   "jest": {

@@ -48,11 +48,11 @@ bugApi.use(bodyParser.json())
 bugApi.use(express.static(path.join(__dirname, 'public')));
 
 bugApi.use('/documentation',documentation)
+bugApi.use('/container', proxyRouter);
 bugApi.use('/api/bug', bugRouter);
 bugApi.use('/api/system', systemRouter);
 bugApi.use('/api/module', moduleRouter);
 bugApi.use('/api/panel', panelRouter);
-bugApi.use('/container', proxyRouter);
 
 //Serve files in the public folder
 bugApi.use(express.static(path.join(__dirname, '..','client', 'public')));

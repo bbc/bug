@@ -7,7 +7,7 @@ const path = require('path');
 const bugApi = require('./bug-core-api');
 
 // get the port from the .env file
-var port = process.env.PORT_PROD || '3100';
+const port = process.env.PORT_PROD || '3100';
 
 // include react static client files
 bugApi.use(express.static(path.join(__dirname, '..','client', 'build')));
