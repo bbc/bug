@@ -18,7 +18,7 @@ const panelRouter = require('@routes/panel');
 const bugRouter = require('@routes/bug');
 const proxyRouter = require('@routes/proxy');
 
-var bugApi = express();
+const bugApi = express();
 
 bugApi.set('json spaces', 2);
 bugApi.use(cors());

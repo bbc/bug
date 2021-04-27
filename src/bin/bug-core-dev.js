@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 const bugApi = require('./bug-core-api');
-const scoket = require('@sockets/socket');
+const bugSocket = require('./bug-core-socket');
 const http = require('http');
-const socket = require('../sockets/socket');
 
 const port = process.env.PORT_DEV_API || '3101';
 bugApi.set('port', port);
@@ -14,7 +13,7 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 //Give the server to sockets as well
-socket(server);
+bugSocket(server);
 
 function onError(error) {
     if (error.syscall !== 'listen') {
