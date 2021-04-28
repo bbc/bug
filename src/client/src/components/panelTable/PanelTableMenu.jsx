@@ -14,7 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import AxiosCommand from '@utils/AxiosCommand';
 import AxiosDelete from '@utils/AxiosDelete';
-import { useSnackbar } from 'notistack';
+import { useAlert } from "@utils/Snackbar";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelTableMenu(props) {
     const classes = useStyles();
-    const { enqueueSnackbar } = useSnackbar();
+    const sendAlert = useAlert();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -43,7 +43,7 @@ export default function PanelTableMenu(props) {
     const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
 
     const handleStart = () => {
-        enqueueSnackbar(`Starting panel - please wait ...`, { variant: 'info'});
+        sendAlert(`Starting ${props.panel.title} - please wait ...`, { broadcast:true, variant: 'info'});
         AxiosCommand(`/api/panel/start/${props.panel.id}`);
         setAnchorEl(null);
     };
@@ -55,6 +55,7 @@ export default function PanelTableMenu(props) {
 
     const handleRestart = () => {
         AxiosCommand(`/api/panel/restart/${props.panel.id}`);
+        sendAlert(`Restarting ${props.panel.title} - please wait ...`, { broadcast:true, variant: 'info'});
         setAnchorEl(null);
     };
 

@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const logger = require('@utils/logger');
 
 const panelHandler = require('@sockets/panel');
-const snackbarHandler = require('@sockets/alert');
+const alertHandler = require('@sockets/alert');
 const bugHandler = require('@sockets/bug');
 
 const options = {

@@ -11,7 +11,7 @@ import useAsyncEffect from 'use-async-effect';
 import Loading from "@components/Loading";
 import LoadingOverlay from "@components/LoadingOverlay";
 
-import { useSnackbar } from "notistack";
+import { useAlert } from "@utils/Snackbar";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -44,7 +44,7 @@ export default function PageHome(props) {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [moduleList, setModuleList] = useState([]);
-    const { enqueueSnackbar } = useSnackbar();
+    const sendAlert = useAlert();
     const {
         register,
         handleSubmit,
@@ -62,10 +62,10 @@ export default function PageHome(props) {
         setLoading(true);
         const response = await AxiosPost(`/api/panel`,form);
         if (!response?.error) {
-            enqueueSnackbar(`${form?.title} has been added.`, { variant: "success" });
+            sendAlert(`${form?.title} has been added.`, { broadcast:true, variant: "success" });
             history.goBack();
         } else {
-            enqueueSnackbar(`${form?.title} could not be added.`, { variant: "warning" });
+            sendAlert(`${form?.title} could not be added.`, { variant: "warning" });
         }
         setLoading(false);
     };
