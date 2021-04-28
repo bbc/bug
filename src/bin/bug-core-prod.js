@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
+const register = require('module-alias/register')
 const express = require('express');
 const path = require('path');
 
 // import the API logic
-const bugApi = require('./bug-core-api');
+const bugApi = require('@bin/api');
 
 // get the port from the .env file
-const port = process.env.PORT_PROD || '3100';
+const port = process.env.BUG_CORE_PORT || '3100';
 
 // include react static client files
 bugApi.use(express.static(path.join(__dirname, '..','client', 'build')));

@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-const bugApi = require('./bug-core-api');
-const bugSocket = require('./bug-core-socket');
-const bugWorkers = require('./workers');
+const register = require('module-alias/register')
+const bugApi = require('@bin/api');
+const bugSocket = require('@bin/socket');
+const bugWorkers = require('@bin/workers');
 const http = require('http');
 
-const port = process.env.PORT_DEV_API || '3101';
+const port = process.env.BUG_CORE_PORT || '3101';
 bugApi.set('port', port);
 
 const server = http.createServer(bugApi);

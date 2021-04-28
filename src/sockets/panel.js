@@ -1,5 +1,5 @@
 const panelList = require('@services/panel-list');
-const { response } = require('../bin/bug-core-api');
+const { response } = require('@bin/api');
 
 let interval;
 let panels;

@@ -87,6 +87,8 @@
     "@routes/(.*)": "./routes/",
     "@models/(.*)": "./models/",
     "@utils/(.*)": "./utils/",
+    "@workers/(.*)": "./workers/",
+    "@sockets/(.*)": "./sockets/",
     "@services/(.*)": "./services/",
     "@middleware/(.*)": "./middleware/"
   }

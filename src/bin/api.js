@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const register = require('module-alias/register')
 const bodyParser = require('body-parser')
 const cors = require('cors');
 const favicon = require('serve-favicon');

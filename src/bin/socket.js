@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const logger = require('@utils/logger');
 
 const panelHandler = require('@sockets/panel');
-// const snackbarHandler = require('@sockets/snackbar');
+const snackbarHandler = require('@sockets/alert');
 const bugHandler = require('@sockets/bug');
 
 const options = {
@@ -12,17 +12,17 @@ const options = {
 };
 
 const bugSocket = (server) => {
-    
-    const io = new Server(server,options);
+
+    const io = new Server(server, options);
 
     const onConnection = (socket) => {
         logger.info(`Connection ${socket.id}`)
         panelHandler(io, socket);
-        // snackbarHandler(io, socket);
+        alertHandler(io, socket);
         bugHandler(io, socket);
     }
 
-    io.on('connection',onConnection);
+    io.on('connection', onConnection);
 
     return io;
 };

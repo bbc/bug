@@ -19,7 +19,6 @@ Dockerfile*
 !/src/Dockerfile
 
 # Global Environment Files
-.env
 .env.development
 .env.test
 .env.production
