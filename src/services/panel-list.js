@@ -6,11 +6,12 @@ const moduleConfigModel = require('@models/module-config');
 const dockerListContainerInfo = require('@services/docker-listcontainerinfo');
 const panelFilter = require('@filters/panel');
 const panelBuildStatusModel = require('@models/panel-buildstatus');
+const dockerContainerModel = require('@models/docker-container');
 
 module.exports = async () => {
     const panelConfig = await panelConfigModel.list();
     const moduleConfig = await moduleConfigModel.list();
-    const containerInfoList = await dockerListContainerInfo();
+    const containerInfoList = await dockerContainerModel.list();
     const panelBuildStatus = await panelBuildStatusModel.list();
 
     const filteredPanelList = [];
@@ -22,6 +23,12 @@ module.exports = async () => {
             // the build list returns a nested 'status' object, direct from the database - we need to pull it out
             const thisBuildStatus = (thisBuild === null) ? null : thisBuild['status'];
 
+            // remove unneeded fields from moduleConfig
+            delete thisModuleConfig.devmounts;
+            delete thisModuleConfig.license;
+            delete thisModuleConfig.author;
+
+            // combine them
             filteredPanelList.push(
                 panelFilter(panelConfig[i], thisModuleConfig, thisContainerInfo, thisBuildStatus)
             );

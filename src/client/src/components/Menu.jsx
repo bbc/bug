@@ -53,7 +53,7 @@ const Menu = (props) => {
             alignItems="flex-start"
             style={{ height: '100%'}}
             >
-            <Grid item>
+            <Grid item style={{ width: '100%'}}>
                 <List>
                     <ListItem button component={Link} to="/">
                         <ListItemIcon>

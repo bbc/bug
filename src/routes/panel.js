@@ -23,7 +23,7 @@ const panelConfigGet = require('@services/panel-configget');
 
 /**
  * @swagger
- * /panel/{panelid}:
+ * /panel/{panelId}:
  *   delete:
  *     description: Delete a panel from BUG
  *     tags: [panel]
@@ -31,7 +31,7 @@ const panelConfigGet = require('@services/panel-configget');
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -42,9 +42,9 @@ const panelConfigGet = require('@services/panel-configget');
  *         schema:
  *           type: object
  */
-router.delete('/:panelid', async function (req, res, next) {
+router.delete('/:panelId', async function (req, res, next) {
     try {
-        const result = await panelDelete(req.params.panelid);
+        const result = await panelDelete(req.params.panelId);
         res.json({
             status: (result ? "success" : "fail"),
             message: "Deleted panel",
@@ -146,7 +146,7 @@ router.post('/', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -180,7 +180,7 @@ router.get('/build/:moduleName', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/start/{panelid}:
+ * /panel/start/{panelId}:
  *   get:
  *     description: Start a BUG panel by it's ID
  *     tags: [panel]
@@ -188,7 +188,7 @@ router.get('/build/:moduleName', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -203,10 +203,10 @@ router.get('/build/:moduleName', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/start/:panelid', async function (req, res, next) {
+router.get('/start/:panelId', async function (req, res, next) {
     // starts and builds if necessary
     try {
-        const result = await panelStart(req.params.panelid);
+        const result = await panelStart(req.params.panelId);
         res.json({
             status: (result ? "success" : "fail"),
             message: "Started panel",
@@ -223,7 +223,7 @@ router.get('/start/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/restart/{panelid}:
+ * /panel/restart/{panelId}:
  *   get:
  *     description: Restart a BUG panel by it's ID
  *     tags: [panel]
@@ -231,7 +231,7 @@ router.get('/start/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -246,10 +246,10 @@ router.get('/start/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/restart/:panelid', async function (req, res, next) {
+router.get('/restart/:panelId', async function (req, res, next) {
     // stop and start (and rebuild if necessary)
     try {
-        const result = await panelRestart(req.params.panelid);
+        const result = await panelRestart(req.params.panelId);
         res.json({
             status: (result ? "success" : "fail"),
             message: "Restarted panel",
@@ -266,7 +266,7 @@ router.get('/restart/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/stop/{panelid}:
+ * /panel/stop/{panelId}:
  *   get:
  *     description: Stop a BUG panel by it's ID
  *     tags: [panel]
@@ -274,7 +274,7 @@ router.get('/restart/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -289,10 +289,10 @@ router.get('/restart/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/stop/:panelid', async function (req, res, next) {
+router.get('/stop/:panelId', async function (req, res, next) {
     // stops the image running (probably won't ever be run from the UI)
     try {
-        const result = await panelStop(req.params.panelid);
+        const result = await panelStop(req.params.panelId);
         res.json({
             status: (result ? "success" : "fail"),
             message: "Stopped panel",
@@ -309,7 +309,7 @@ router.get('/stop/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/enable/{panelid}:
+ * /panel/enable/{panelId}:
  *   get:
  *     description: Enable a BUG panel by it's ID
  *     tags: [panel]
@@ -317,7 +317,7 @@ router.get('/stop/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -332,9 +332,9 @@ router.get('/stop/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/enable/:panelid', async function (req, res, next) {
+router.get('/enable/:panelId', async function (req, res, next) {
     try {
-        const result = await panelEnable(req.params.panelid);
+        const result = await panelEnable(req.params.panelId);
         res.json({
             status: (result ? "success" : "fail"),
             message: "Enabled panel",
@@ -351,7 +351,7 @@ router.get('/enable/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/disable/{panelid}:
+ * /panel/disable/{panelId}:
  *   get:
  *     description: Enable a BUG panel by it's ID
  *     tags: [panel]
@@ -359,7 +359,7 @@ router.get('/enable/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -374,9 +374,9 @@ router.get('/enable/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/disable/:panelid', async function (req, res, next) {
+router.get('/disable/:panelId', async function (req, res, next) {
     try {
-        const result = await panelDisable(req.params.panelid);
+        const result = await panelDisable(req.params.panelId);
         res.json({
             status: (result ? "success" : "fail"),
             message: "Disabled panel",
@@ -393,7 +393,7 @@ router.get('/disable/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/config/{panelid}:
+ * /panel/config/{panelId}:
  *   put:
  *     description: Update the config of a BUG panel
  *     tags: [panel]
@@ -401,7 +401,7 @@ router.get('/disable/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -416,11 +416,11 @@ router.get('/disable/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
- router.put('/config/:panelid', async function (req, res, next) {
+ router.put('/config/:panelId', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelConfigSet({ ...{ 'id':req.params.panelid }, ...req.body})
+            data: await panelConfigSet({ ...{ 'id':req.params.panelId }, ...req.body})
         });
     } catch (error) {
         res.status(500);
@@ -433,7 +433,7 @@ router.get('/disable/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/config/push/{panelid}:
+ * /panel/config/push/{panelId}:
  *   get:
  *     description: Push a config to a BUG panel
  *     tags: [panel]
@@ -441,7 +441,7 @@ router.get('/disable/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -456,11 +456,11 @@ router.get('/disable/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/config/push/:panelid', async function (req, res, next) {
+router.get('/config/push/:panelId', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelPushConfig(req.params.panelid)
+            data: await panelPushConfig(req.params.panelId)
         });
     } catch (error) {
         res.status(500);
@@ -506,7 +506,7 @@ router.get('/config/all', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/config/{panelid}:
+ * /panel/config/{panelId}:
  *   get:
  *     description: Get the config of a single panel by it's ID.
  *     tags: [panel]
@@ -514,7 +514,7 @@ router.get('/config/all', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -529,11 +529,11 @@ router.get('/config/all', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/config/:panelid', async function (req, res, next) {
+router.get('/config/:panelId', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelConfigGet(req.params.panelid)
+            data: await panelConfigGet(req.params.panelId)
         });
     } catch (error) {
         res.status(500);
@@ -543,7 +543,7 @@ router.get('/config/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/{panelid}:
+ * /panel/{panelId}:
  *   get:
  *     description: Get the panel? Not sure what this route is doing.
  *     tags: [panel]
@@ -551,7 +551,7 @@ router.get('/config/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -566,11 +566,11 @@ router.get('/config/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/:panelid', async function (req, res, next) {
+router.get('/:panelId', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelGet(req.params.panelid)
+            data: await panelGet(req.params.panelId)
         });
     } catch (error) {
         res.status(500);
@@ -580,7 +580,7 @@ router.get('/:panelid', async function (req, res, next) {
 
 /**
  * @swagger
- * /panel/data/{panelid}:
+ * /panel/data/{panelId}:
  *   get:
  *     description: Get data about a panel by it's ID string
  *     tags: [panel]
@@ -588,7 +588,7 @@ router.get('/:panelid', async function (req, res, next) {
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: panelid
+ *         name: panelId
  *         schema:
  *           type: string
  *         required: true
@@ -603,11 +603,11 @@ router.get('/:panelid', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/data/:panelid', async function (req, res, next) {
+router.get('/data/:panelId', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelGetData(req.params.panelid)
+            data: await panelGetData(req.params.panelId)
         });
     } catch (error) {
         res.status(500);
