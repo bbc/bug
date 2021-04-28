@@ -11,7 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 // import AxiosCommand from '@utils/AxiosCommand';
-import { useSnackbar } from 'notistack';
+import { useAlert } from "@utils/Snackbar";
 import { Link } from "react-router-dom";
 import LockIcon from '@material-ui/icons/Lock';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
@@ -21,7 +21,7 @@ import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponen
 
 export default function InterfaceListMenu(props) {
     // const classes = useStyles();
-    const { enqueueSnackbar } = useSnackbar();
+    const sendAlert = useAlert();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);

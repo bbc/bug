@@ -8,7 +8,7 @@ import pageTitleSlice from "../redux/pageTitleSlice";
 import Loading from "@components/Loading";
 import LoadingOverlay from "@components/LoadingOverlay";
 
-import { useSnackbar } from "notistack";
+import { useAlert } from "@utils/Snackbar";
 
 import PanelForm from "@core/PanelForm";
 import Card from "@material-ui/core/Card";
@@ -41,7 +41,7 @@ export default function PanelConfig({ children, config, handleSubmit }) {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const { enqueueSnackbar } = useSnackbar();
+    const { sendAlert } = useAlert();
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -56,10 +56,10 @@ export default function PanelConfig({ children, config, handleSubmit }) {
         setLoading(true);
         const response = await AxiosPut(`/api/panel/config/${config?.id}`, form);
         if (!response?.error) {
-            enqueueSnackbar(`${config?.title} has been updated.`, { variant: "success" });
+            sendAlert(`${config?.title} has been updated.`, { broadcast:true, variant: "success" });
             history.goBack();
         } else {
-            enqueueSnackbar(`${config?.title} could not be updated.`, { variant: "warning" });
+            sendAlert(`${config?.title} could not be updated.`, { variant: "warning" });
         }
         setLoading(false);
     };
