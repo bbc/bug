@@ -20,6 +20,7 @@ services:
       - ./src/services:/home/node/bug-core/services
       - ./src/sockets:/home/node/bug-core/sockets
       - ./src/utils:/home/node/bug-core/utils
+      - ./src/workers:/home/node/bug-core/workers
       - ./src/client/src:/home/node/bug-core/client/src
       - ./src/client/public:/home/node/bug-core/client/public
     environment:

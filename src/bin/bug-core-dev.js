@@ -2,6 +2,7 @@
 
 const bugApi = require('./bug-core-api');
 const bugSocket = require('./bug-core-socket');
+const bugWorkers = require('./workers');
 const http = require('http');
 
 const port = process.env.PORT_DEV_API || '3101';
@@ -14,6 +15,9 @@ server.on('listening', onListening);
 
 //Give the server to sockets as well
 bugSocket(server);
+
+// and load the worker thread
+bugWorkers();
 
 function onError(error) {
     if (error.syscall !== 'listen') {

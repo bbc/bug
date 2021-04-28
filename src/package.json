@@ -68,6 +68,7 @@
     "@utils": "./utils/",
     "@services": "./services/",
     "@sockets": "./sockets/",
+    "@workers": "./workers/",
     "@middleware": "./middleware/"
   },
   "jest": {
