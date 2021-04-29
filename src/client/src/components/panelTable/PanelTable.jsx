@@ -50,7 +50,7 @@ export default function PanelTable() {
                             </TableHead>
 
                             <TableBody>               
-                                {panels.map(panel => <PanelTableRow { ...panel } />)}
+                                {panels.map(panel => <PanelTableRow key={panel.id} { ...panel } />)}
                             </TableBody>
                         </Table>
                     </TableContainer>
