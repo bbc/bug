@@ -34,13 +34,14 @@ export const useAlert = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const sendAlert = (message, options) => {
-        enqueueSnackbar(message, options);
         if (options?.broadcast) {
+            delete options.broadcast;
             socket.emit("alert", {
                 message: message,
                 options: options,
             });
         }
+        enqueueSnackbar(message, options);
     };
 
     return sendAlert;
