@@ -2,11 +2,16 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { useForm } from "react-hook-form";
-import ChipInput from 'material-ui-chip-input'
-
+import ChipInput from "material-ui-chip-input";
 import PanelConfig from "@core/PanelConfig";
+import Loading from "@components/Loading";
+import useAsyncEffect from 'use-async-effect';
+import { useParams } from "react-router-dom";
+import AxiosGet from "@utils/AxiosGet";
 
-export default function EditPanel(props) {
+export default function EditPanel() {
+    const params = useParams();
+    const [config, setConfig] = React.useState(null);
 
     const {
         register,
@@ -14,17 +19,25 @@ export default function EditPanel(props) {
         formState: { errors },
     } = useForm();
 
+    useAsyncEffect(async () => {
+        setConfig(await AxiosGet(`/api/panel/config/${params.panelId}`));
+    }, []);
+
+    if (!config) {
+        return <Loading />;
+    }
+
     return (
         <>
-            <PanelConfig { ...props } handleSubmit={ handleSubmit }>
+            <PanelConfig config={config} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <TextField
-                        inputProps={{ ...register("title",{ required: true }) }}
+                        inputProps={{ ...register("title", { required: true }) }}
                         variant="filled"
                         required
                         fullWidth
                         error={errors?.title ? true : false}
-                        defaultValue={props.config?.title}
+                        defaultValue={config?.title}
                         type="text"
                         label="Panel Title"
                     />
@@ -36,7 +49,7 @@ export default function EditPanel(props) {
                         variant="filled"
                         fullWidth
                         error={errors?.description ? true : false}
-                        defaultValue={props.config?.description}
+                        defaultValue={config?.description}
                         type="text"
                         label="Description"
                     />
@@ -45,11 +58,16 @@ export default function EditPanel(props) {
                 <Grid item xs={12}>
                     <TextField
                         //REGEX: Tests for IPv4 Addresses
-                        inputProps={{ ...register("address",{ required: true, pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/ }) }}
+                        inputProps={{
+                            ...register("address", {
+                                required: true,
+                                pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
+                            }),
+                        }}
                         variant="filled"
                         fullWidth
                         error={errors?.address ? true : false}
-                        defaultValue={props.config?.address}
+                        defaultValue={config?.address}
                         type="text"
                         label="IP Address"
                     />
@@ -57,11 +75,11 @@ export default function EditPanel(props) {
 
                 <Grid item xs={12}>
                     <TextField
-                        inputProps={{ ...register("username",{ required: true }) }}
+                        inputProps={{ ...register("username", { required: true }) }}
                         variant="filled"
                         fullWidth
                         error={errors?.username ? true : false}
-                        defaultValue={props.config?.username}
+                        defaultValue={config?.username}
                         type="text"
                         label="Username"
                     />
@@ -69,11 +87,11 @@ export default function EditPanel(props) {
 
                 <Grid item xs={12}>
                     <TextField
-                        inputProps={{ ...register("password",{ required: true }) }}
+                        inputProps={{ ...register("password", { required: true }) }}
                         variant="filled"
                         fullWidth
                         error={errors?.password ? true : false}
-                        defaultValue={props.config?.password}
+                        defaultValue={config?.password}
                         type="password"
                         label="Password"
                     />
@@ -81,28 +99,27 @@ export default function EditPanel(props) {
 
                 {/* TODO: Make Chip input feed array to the register function */}
 
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                     <ChipInput
                         // inputProps={{...register('protected_interfaces')}}
                         variant="filled"
-                        defaultValue={ props.config?.protected_interfaces }
+                        defaultValue={config?.protected_interfaces}
                         fullWidth
                         error={errors?.protected_interfaces ? true : false}
                         label="Protected Interfaces"
                     />
                 </Grid>
 
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                     <ChipInput
                         // inputProps={{...register('excluded_interfaces')}}
                         variant="filled"
-                        defaultValue={ props.config?.excluded_interfaces }
+                        defaultValue={config?.excluded_interfaces}
                         fullWidth
                         error={errors?.excluded_interfaces ? true : false}
-                        label="Excluded Interfaces"  
+                        label="Excluded Interfaces"
                     />
                 </Grid>
-
             </PanelConfig>
         </>
     );

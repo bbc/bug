@@ -4,31 +4,21 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import ApiPoller from "@utils/ApiPoller";
-import BugSwitch from "@components/BugSwitch";
 import Loading from "@components/Loading";
-import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
-import InterfaceListMenu from "./InterfaceListMenu";
-import { Sparklines, SparklinesLine } from "react-sparklines";
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { useDispatch } from "react-redux";
-// import pageTitleSlice from '@components/../redux/pageTitleSlice';
 import PanelTabbedForm from "@core/PanelTabbedForm";
 import { Redirect } from "react-router";
 import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({}));
 
-export default function Interface(props) {
+export default function Interface({ panelId, interfaceId }) {
     const classes = useStyles();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
     const params = useParams();
-    const panelId = params.panelid ?? "";
 
     const [iface, setIface] = useState({
         status: "idle",
@@ -72,9 +62,9 @@ export default function Interface(props) {
             return <Loading />;
         }
         if (iface.status === "success") {
-            // const dispatch = useDispatch()
-            // dispatch(pageTitleSlice.actions.set(iface.data.name));
-
+            if(!iface.data) {
+                return <>Interface not found</>
+            }
             return (
                 <>
                     <PanelTabbedForm
@@ -97,7 +87,7 @@ export default function Interface(props) {
     return (
         <>
             <ApiPoller
-                url={`http://localhost:3101/container/${props.panelid}/interface/${props.interfaceid}`}
+                url={`http://localhost:3101/container/${panelId}/interface/${interfaceId}`}
                 interval="2000"
                 onChanged={(result) => setIface(result)}
             />

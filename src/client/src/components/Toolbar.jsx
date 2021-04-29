@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Toolbar = (props) => {
     const classes = useStyles();
+    // we rely on PagePanel to fetch the panel object and put it in redux
     const panel = useSelector((state) => state.panel);
 
     const LazyToolbar = () => {

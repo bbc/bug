@@ -1,15 +1,13 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import InterfaceList from '../components/InterfaceList';
+import { useParams } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({}));
-
-export default function MainPanel(props) {
-    const classes = useStyles();
+export default function MainPanel() {
+    const params = useParams();
 
     return (
         <>
-            <InterfaceList panelid={props.panelid}/>
+            <InterfaceList panelId={params.panelId}/>
         </>
     );
 }

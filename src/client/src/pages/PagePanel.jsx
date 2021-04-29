@@ -11,43 +11,40 @@ import { useSelector } from "react-redux";
 export default function PagePanel(props) {
     const params = useParams();
     const panelId = params.panelid ?? "";
-    const [config, setConfig] = useState(null);
     const dispatch = useDispatch();
     const panel = useSelector((state) => state.panel);
 
+    // we load the panel here so we can get the module and panel title
+    // we cant use the redux panellist, otherwise it'd re-render every time the list changes (which is a lot)
     useAsyncEffect(
         async () => {
-            let panel = await AxiosGet(`/api/panel/${panelId}`);
-            dispatch(panelSlice.actions.set(panel));
-            dispatch(pageTitleSlice.actions.set(panel?.title));
-        },
-        async () => {
-            dispatch(panelSlice.actions.set(null));
+            let tempPanel = await AxiosGet(`/api/panel/${panelId}`);
+
+            // we store it in redux so that the toolbar can use it too
+            dispatch(panelSlice.actions.set(tempPanel));
+
+            // update the page title
+            if(tempPanel !== null) {
+                dispatch(pageTitleSlice.actions.set(tempPanel?.title));
+            }
         },
         [panelId]
     );
 
-    useAsyncEffect(async () => {
-        setConfig(await AxiosGet(`/api/panel/config/${panelId}`));
-    }, [panelId]);
+    if (panel === null) {
+        return <Loading />;
+    }
 
+    // import the page contents from the module
+    const Module = React.lazy(() =>
+        import(`@modules/${panel.module}/client/Module`).catch(() => console.log("Error in importing"))
+    );
 
-    const renderPanel = () => {
-        if (panel === null) {
-            return <Loading />;
-        }
-        const Module = React.lazy(() =>
-            import(`@modules/${panel.module}/client/Module`).catch(() => console.log("Error in importing"))
-        );
-
-        return (
-            <>
-                <Suspense fallback={<Loading />}>
-                    <Module panelid={panelId} config={config} panel={panel} />
-                </Suspense>
-            </>
-        );
-    };
-
-    return <div key={panelId}>{renderPanel()}</div>;
+    return (
+        <>
+            <Suspense fallback={<Loading />}>
+                <Module panelId={panelId} />
+            </Suspense>
+        </>
+    );
 }
