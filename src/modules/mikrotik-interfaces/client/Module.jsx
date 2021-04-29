@@ -8,11 +8,11 @@ export default function Module(props) {
     return (
         <>
             <Switch>
-                <Route exact path="/panel/:panelid/edit">
-                    <EditPanel {...props}/>
-                </Route>
                 <Route exact path="/panel/:panelid/">
                     <MainPanel {...props}/>
+                </Route>
+                <Route exact path="/panel/:panelid/edit">
+                    <EditPanel {...props}/>
                 </Route>
                 <Route exact path="/panel/:panelid/interface/:interfaceid">
                     <InterfacePanel {...props}/>

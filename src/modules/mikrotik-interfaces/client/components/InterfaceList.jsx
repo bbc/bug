@@ -13,9 +13,14 @@ import Loading from "@components/Loading";
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import InterfaceListMenu from "./InterfaceListMenu";
 import { Sparklines, SparklinesLine } from 'react-sparklines';
+import { Redirect } from 'react-router';
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     content: {
+    },
+    interfaceRow: {
+        cursor: 'pointer'
     },
     iconRunning: {
         color: theme.palette.primary.main,
@@ -99,12 +104,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InterfaceList(props) {
     const classes = useStyles();
+    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const [menuIsOpen, setMenuIsOpen] = React.useState(false);
+    const params = useParams();
+    const panelId = params.panelid ?? "";
 
     const [interfaceList, setInterfaceList] = useState({
         status: 'idle', 
         data: [],
         error: null
     });
+
+    const handleRowClicked = (interfaceId) => {
+        if(!menuIsOpen) {
+            setRedirectUrl(`/panel/${panelId}/interface/${interfaceId}`);
+        }
+    }
+
+    const handleMenuOpenChanged = (state) => {
+        setMenuIsOpen(state);
+    }
 
     // const handleEnabledChanged = (checked, panelId) => {
     //     if(checked) {
@@ -146,7 +165,7 @@ export default function InterfaceList(props) {
 
     const renderRow = (iface) => {
         return (
-            <TableRow key={iface.id}>
+            <TableRow hover className={classes.interfaceRow} key={iface.id} onClick={() => handleRowClicked(iface.id)}>
                 <TableCell className={classes.colRunning}><PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon}/></TableCell>
                 <TableCell className={classes.colEnabled}>
                     <BugSwitch checked={!iface.disabled} onChange={(checked) => handleEnabledChanged(checked, iface.id)}/>
@@ -163,7 +182,7 @@ export default function InterfaceList(props) {
                 <TableCell className={classes.colTraffic}>
                     {renderTraffic(iface, 'rx')}
                 </TableCell>
-                <TableCell style={{ width: '4rem'}} className={classes.cellMenu}><InterfaceListMenu iface={iface} /></TableCell>
+                <TableCell style={{ width: '4rem'}} className={classes.cellMenu}><InterfaceListMenu iface={iface} onChanged={handleMenuOpenChanged}/></TableCell>
             </TableRow>
         );
     };
@@ -203,6 +222,12 @@ export default function InterfaceList(props) {
         } else {
             return <Loading />;
         }
+    }
+
+    if(redirectUrl) {
+        return (
+            <Redirect push to={{ pathname: redirectUrl }} />
+        )
     }
 
     return (

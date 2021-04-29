@@ -28,9 +28,12 @@ export default function InterfaceListMenu(props) {
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
+        props.onChanged(true);
+        event.stopPropagation();
     };
 
     const handleClose = () => {
+        props.onChanged(false);
         setAnchorEl(null);
     };
 
@@ -40,17 +43,17 @@ export default function InterfaceListMenu(props) {
 
     const handleProtect = () => {
         // AxiosCommand(`/api/panel/start/${props.panel.id}`);
-        setAnchorEl(null);
+        handleClose();
     };
 
     const handleStop = () => {
         // AxiosCommand(`/api/panel/stop/${props.panel.id}`);
-        setAnchorEl(null);
+        handleClose();
     };
 
     const handleRestart = () => {
         // AxiosCommand(`/api/panel/restart/${props.panel.id}`);
-        setAnchorEl(null);
+        handleClose();
     };
 
     return (
