@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -15,14 +16,16 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary.main,
         "& .MuiCardHeader-title": {
             fontSize: "0.875rem",
+            fontWeight: 400,
             textTransform: "uppercase",
         },
+        padding: 15
     },
     card: {
         minWidth: 300,
         textAlign: "left",
         color: theme.palette.text.secondary,
-        position: 'relative'
+        position: "relative",
     },
     actions: {
         justifyContent: "flex-end",
@@ -31,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         borderTopStyle: "solid",
         backgroundColor: theme.palette.appbar.default,
         "& .MuiCardHeader-title": {
-            fontSize: "0.875rem",
+            fontSize: "1rem",
             textTransform: "uppercase",
         },
         padding: "16px",
@@ -39,17 +42,32 @@ const useStyles = makeStyles((theme) => ({
     closeButton: {
         position: "absolute",
         right: 0,
+        top: -2,
+        color: theme.palette.grey[500],
+        padding: 15,
+    },
+    backButton: {
+        position: "absolute",
+        left: 0,
         top: 0,
         color: theme.palette.grey[500],
-    }
+        padding: 15,
+        "& .MuiSvgIcon-root": {
+            marginLeft: 4,
+            marginRight: -4,
+        },
+    },
 }));
+
 const PanelForm = (props) => {
     const classes = useStyles();
     return (
         <Card className={classes.card}>
-            <IconButton aria-label="close" className={classes.closeButton} onClick={props.onCancel}>
-                <CloseIcon />
-            </IconButton>
+            {props.onClose && (
+                <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
+                    <CloseIcon />
+                </IconButton>
+            )}
 
             {props.children}
         </Card>

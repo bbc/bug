@@ -4,12 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import AxiosPut from "@utils/AxiosPut";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
-
 import Loading from "@components/Loading";
 import LoadingOverlay from "@components/LoadingOverlay";
-
 import { useAlert } from "@utils/Snackbar";
-
 import PanelForm from "@core/PanelForm";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -75,9 +72,9 @@ export default function PanelConfig({ children, config, handleSubmit }) {
         if (config) {
             panel = (
                 <>
-                    <PanelForm onCancel={onCancel}>
+                    <PanelForm onClose={onCancel}>
                         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-                            <PanelForm.Header>Configuration</PanelForm.Header>
+                            <PanelForm.Header onClose={onCancel}>Configuration</PanelForm.Header>
                             <PanelForm.Body>
                                 <Grid container spacing={4}>
                                     {children}

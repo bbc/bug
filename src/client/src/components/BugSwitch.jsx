@@ -39,6 +39,7 @@ class BugSwitch extends React.Component {
                 disabled={!this.enabled}
                 color="primary"
                 onChange={(e) => this.handleChanged(e)}
+                onClick={(e) => {e.stopPropagation()}}
             />
         )
     }
