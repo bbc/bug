@@ -95,7 +95,9 @@ const useStyles = makeStyles((theme) => ({
     },
     sparkText: {
         position: 'absolute',
-        top: '0.5rem',
+        top: '1.375rem',
+        zIndex: '1',
+        textShadow: '0px 0px 5px #000'
     }
     // cellMenu: {
     //     width: '2rem'

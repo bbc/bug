@@ -16,13 +16,19 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { useDispatch } from 'react-redux';
-import pageTitleSlice from '@components/../redux/pageTitleSlice';
+import { useDispatch } from "react-redux";
+// import pageTitleSlice from '@components/../redux/pageTitleSlice';
+import PanelTabbedForm from "@core/PanelTabbedForm";
+import { Redirect } from "react-router";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({}));
 
 export default function Interface(props) {
     const classes = useStyles();
+    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const params = useParams();
+    const panelId = params.panelid ?? "";
 
     const [iface, setIface] = useState({
         status: "idle",
@@ -30,62 +36,63 @@ export default function Interface(props) {
         error: null,
     });
 
+    const handleBackClicked = () => {
+        setRedirectUrl(`/panel/${panelId}`);
+    };
+
+    const TabDetails = () => (
+        <Grid item xs={12}>
+            <TableContainer component={Paper} square>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableBody>
+                        <TableRow>
+                            <TableCell variant="head">Name</TableCell>
+                            <TableCell>{iface.data.name}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell variant="head">Type</TableCell>
+                            <TableCell>{iface.data.type}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell variant="head">MAC Address</TableCell>
+                            <TableCell>{iface.data["mac-address"]}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell variant="head">Last link up time</TableCell>
+                            <TableCell>{iface.data["last-link-up-time"]}</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Grid>
+    );
+
     const renderContent = () => {
         if (iface.status === "loading") {
             return <Loading />;
         }
         if (iface.status === "success") {
-            const dispatch = useDispatch()
-            dispatch(pageTitleSlice.actions.set(iface.data.name));
+            // const dispatch = useDispatch()
+            // dispatch(pageTitleSlice.actions.set(iface.data.name));
 
             return (
                 <>
-                    <Grid item xs={12}>
-                        <TableContainer component={Paper} square>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell variant='head'>
-                                            Name
-                                        </TableCell>
-                                        <TableCell>
-                                            {iface.data.name}
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell variant='head'>
-                                            Type
-                                        </TableCell>
-                                        <TableCell>
-                                            {iface.data.type}
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell variant='head'>
-                                            MAC Address
-                                        </TableCell>
-                                        <TableCell>
-                                            {iface.data['mac-address']}
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell variant='head'>
-                                            Last link up time
-                                        </TableCell>
-                                        <TableCell>
-                                            {iface.data['last-link-up-time']}
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Grid>
+                    <PanelTabbedForm
+                        onClose={handleBackClicked}
+                        header={iface.data.name}
+                        labels={["Details", "Statistics", "Hardware"]}
+                        content={[ <TabDetails /> ]}
+                    ></PanelTabbedForm>
                 </>
             );
         } else {
             return <Loading />;
         }
     };
+
+    if (redirectUrl) {
+        return <Redirect push to={{ pathname: redirectUrl }} />;
+    }
 
     return (
         <>
