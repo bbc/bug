@@ -4,24 +4,24 @@ import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import EditIcon from '@material-ui/icons/Edit';
-import StopIcon from '@material-ui/icons/Stop';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import ReplayIcon from '@material-ui/icons/Replay';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import AxiosCommand from '@utils/AxiosCommand';
-import AxiosDelete from '@utils/AxiosDelete';
+import EditIcon from "@material-ui/icons/Edit";
+import StopIcon from "@material-ui/icons/Stop";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import ReplayIcon from "@material-ui/icons/Replay";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import AxiosCommand from "@utils/AxiosCommand";
+import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     link: {
-      textDecoration: 'none',
+        textDecoration: "none",
     },
-  }));
+}));
 
 export default function PanelTableMenu(props) {
     const classes = useStyles();
@@ -43,19 +43,20 @@ export default function PanelTableMenu(props) {
     const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
 
     const handleStart = () => {
-        sendAlert(`Starting ${props.panel.title} - please wait ...`, { broadcast:true, variant: 'info'});
+        sendAlert(`Starting ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
         AxiosCommand(`/api/panel/start/${props.panel.id}`);
         setAnchorEl(null);
     };
 
     const handleStop = () => {
+        sendAlert(`Stopping ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
         AxiosCommand(`/api/panel/stop/${props.panel.id}`);
         setAnchorEl(null);
     };
 
     const handleRestart = () => {
         AxiosCommand(`/api/panel/restart/${props.panel.id}`);
-        sendAlert(`Restarting ${props.panel.title} - please wait ...`, { broadcast:true, variant: 'info'});
+        sendAlert(`Restarting ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
         setAnchorEl(null);
     };
 
@@ -71,13 +72,13 @@ export default function PanelTableMenu(props) {
             </IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
                 <MenuItem disabled={disableStart} onClick={handleStart}>
-                    <ListItemIcon disabled={disableStart} >
+                    <ListItemIcon disabled={disableStart}>
                         <PlayArrowIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Start" />
                 </MenuItem>
                 <MenuItem disabled={disableStop} onClick={handleStop}>
-                    <ListItemIcon disabled={disableStop} >
+                    <ListItemIcon disabled={disableStop}>
                         <StopIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Stop" />
@@ -89,7 +90,7 @@ export default function PanelTableMenu(props) {
                     <ListItemText primary="Restart" />
                 </MenuItem>
                 <Divider />
-                <Link to={`/panel/${props.panel.id}/edit`} className={classes.link} >
+                <Link to={`/panel/${props.panel.id}/edit`} className={classes.link}>
                     <MenuItem>
                         <ListItemIcon>
                             <EditIcon fontSize="small" />

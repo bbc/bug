@@ -28,7 +28,6 @@ export default function PagePanels() {
 
     return (
         <>
-            {/* <PanelList /> */}
             <PanelTable />
 
             <Link to={ '/panel/add' } color="inherit" className={classes.link}>
