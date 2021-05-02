@@ -182,7 +182,7 @@ router.get('/build/:moduleName', async function (req, res, next) {
  * @swagger
  * /panel/start/{panelId}:
  *   get:
- *     description: Start a BUG panel by it's ID
+ *     description: Start a BUG panel by its ID
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -225,7 +225,7 @@ router.get('/start/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/restart/{panelId}:
  *   get:
- *     description: Restart a BUG panel by it's ID
+ *     description: Restart a BUG panel by its ID
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -268,7 +268,7 @@ router.get('/restart/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/stop/{panelId}:
  *   get:
- *     description: Stop a BUG panel by it's ID
+ *     description: Stop a BUG panel by its ID
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -311,7 +311,7 @@ router.get('/stop/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/enable/{panelId}:
  *   get:
- *     description: Enable a BUG panel by it's ID
+ *     description: Enable a BUG panel by its ID
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -353,7 +353,7 @@ router.get('/enable/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/disable/{panelId}:
  *   get:
- *     description: Enable a BUG panel by it's ID
+ *     description: Enable a BUG panel by its ID
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -508,7 +508,7 @@ router.get('/config/all', async function (req, res, next) {
  * @swagger
  * /panel/config/{panelId}:
  *   get:
- *     description: Get the config of a single panel by it's ID.
+ *     description: Get the config of a single panel by its ID
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -582,7 +582,7 @@ router.get('/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/data/{panelId}:
  *   get:
- *     description: Get data about a panel by it's ID string
+ *     description: Get data about a panel by its ID string
  *     tags: [panel]
  *     produces:
  *       - application/json

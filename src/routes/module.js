@@ -46,7 +46,7 @@ router.get('/', async function (req, res, next) {
  * @swagger
  * /module/{modulename}:
  *   get:
- *     description: Gets the modules information about a specifc module by it's name.
+ *     description: Gets the modules information about a specifc module by its name.
  *     tags: [module]
  *     produces:
  *       - application/json
