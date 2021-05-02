@@ -14,7 +14,12 @@ module.exports = async (panelId) => {
         const url = `http://${panelId}:${modulePort}/api/config`;
         const response = await axios.put(url,panelConfig);
 
-        return (response?.status === 200);
+        if(response?.status === 200 && response?.data?.status === 'success') {
+            logger.info(`panel-pushconfig: successfully pushed config to ${url}`);
+            return true;
+        }
+
+        throw `failed to push config to ${url}`;
 
     } catch (error) {
         logger.warn(`panel-pushconfig: ${error.stack | error.trace || error || error.message}`);

@@ -418,9 +418,13 @@ router.get('/disable/:panelId', async function (req, res, next) {
  */
  router.put('/config/:panelId', async function (req, res, next) {
     try {
+        const result = await panelConfigSet({ ...{ 'id':req.params.panelId }, ...req.body});
+        if(!result) {
+            throw 'failed';
+        }
         res.json({
             status: "success",
-            data: await panelConfigSet({ ...{ 'id':req.params.panelId }, ...req.body})
+            data: null
         });
     } catch (error) {
         res.status(500);
@@ -435,7 +439,7 @@ router.get('/disable/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/config/push/{panelId}:
  *   get:
- *     description: Push a config to a BUG panel
+ *     description: Push a config to a running BUG module container
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -448,11 +452,11 @@ router.get('/disable/:panelId', async function (req, res, next) {
  *         description: The panel ID string
  *     responses:
  *       200:
- *         description: Successfully pushed config to the panel.
+ *         description: Successfully pushed config to the module.
  *         schema:
  *           type: object
  *       500:
- *         description: Error, could not push config to the panel.
+ *         description: Error, could not push config to the module.
  *         schema:
  *           type: object
  */
@@ -460,7 +464,7 @@ router.get('/config/push/:panelId', async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await panelPushConfig(req.params.panelId)
+            data: await panelConfigPush(req.params.panelId)
         });
     } catch (error) {
         res.status(500);
@@ -475,7 +479,7 @@ router.get('/config/push/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/config/all:
  *   get:
- *     description: Get a list of all panel's configs
+ *     description: Returns a list of all panels
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -508,7 +512,7 @@ router.get('/config/all', async function (req, res, next) {
  * @swagger
  * /panel/config/{panelId}:
  *   get:
- *     description: Get the config of a single panel by its ID
+ *     description: Returns the config of a single panel
  *     tags: [panel]
  *     produces:
  *       - application/json
@@ -545,7 +549,7 @@ router.get('/config/:panelId', async function (req, res, next) {
  * @swagger
  * /panel/{panelId}:
  *   get:
- *     description: Get the panel? Not sure what this route is doing.
+ *     description: Fetches information about a single panel
  *     tags: [panel]
  *     produces:
  *       - application/json

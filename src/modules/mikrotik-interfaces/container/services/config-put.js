@@ -7,10 +7,12 @@ module.exports = async (config) => {
     //TODO decide if container needs a restart
     try {
         const filename = path.join(__dirname, '..', 'config', 'panel.json');
-        return await writeJson(filename, config);
+        await writeJson(filename, config);
+        console.log(`config-put: saved config file to ${filename}`);
+        return true;
     } catch (error) {
         console.log(`config-put: ${error.trace || error || error.message}`);
     }
 
-    return null;
+    return false;
 }

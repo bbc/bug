@@ -23,7 +23,7 @@ export default function ModuleWrapper({ panelId, children }) {
         };
     }, [panel, dispatch]);
 
-    if (panel === null) {
+    if (!panel) {
         return <Loading />;
     }
 
