@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import ApiPoller from "@utils/ApiPoller";
-import BugSwitch from "@components/BugSwitch";
+import ApiSwitch from "@core/ApiSwitch";
 import Loading from "@components/Loading";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import InterfaceListMenu from "./InterfaceListMenu";
@@ -167,7 +167,7 @@ export default function InterfaceList({ panelId }) {
                     <PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon} />
                 </TableCell>
                 <TableCell className={classes.colEnabled}>
-                    <BugSwitch
+                    <ApiSwitch
                         checked={!iface.disabled}
                         onChange={(checked) => handleEnabledChanged(checked, iface.id)}
                     />

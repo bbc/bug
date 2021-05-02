@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-import BugSwitch from "@components/BugSwitch";
+import ApiSwitch from "@core/ApiSwitch";
 import PanelTableMenu from "@components/panelTable/PanelTableMenu";
 import AxiosCommand from "@utils/AxiosCommand";
 import ProgressCounter from "@components/ProgressCounter";
@@ -77,7 +77,7 @@ export default function PanelTableRow(props) {
     return (
         <TableRow key={props.id}>
             <TableCell>
-                <BugSwitch
+                <ApiSwitch
                     panelId={props.id}
                     checked={props.enabled}
                     onChange={(checked) => handleEnabledChanged(checked, props.id)}

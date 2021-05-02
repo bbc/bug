@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const BugDesktopNav = (props) => {
+const NavDesktop = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -121,4 +121,4 @@ const BugDesktopNav = (props) => {
     );
 };
 
-export default BugDesktopNav;
+export default NavDesktop;

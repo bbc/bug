@@ -1,7 +1,7 @@
 import React from "react";
 import Switch from "@material-ui/core/Switch";
 
-class BugSwitch extends React.Component {
+class ApiSwitch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -45,4 +45,4 @@ class BugSwitch extends React.Component {
     }
 }
 
-export default BugSwitch;
+export default ApiSwitch;

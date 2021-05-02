@@ -21,7 +21,7 @@ export default function ModuleWrapper({ panelId, children }) {
         return () => {
             dispatch(pageTitleSlice.actions.set(null));
         };
-    }, [panelId]);
+    }, [panel, dispatch]);
 
     if (panel === null) {
         return <Loading />;

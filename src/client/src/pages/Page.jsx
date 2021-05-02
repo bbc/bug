@@ -6,8 +6,8 @@ import PagePanelAdd from "./PagePanelAdd";
 import PageSystem from "./PageSystem";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import BugDesktopNav from '@components/BugDesktopNav';
-import BugMobileNav from '@components/BugMobileNav';
+import NavDesktop from '@components/NavDesktop';
+import NavMobile from '@components/NavMobile';
 import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles((theme) => ({
@@ -76,14 +76,14 @@ const Page = (props) => {
         <Router>
             <div className={classes.root}>
                 <Hidden xsDown>
-                    <BugDesktopNav>
+                    <NavDesktop>
                         <Content />
-                    </BugDesktopNav>
+                    </NavDesktop>
                 </Hidden>
                 <Hidden smUp>
-                    <BugMobileNav>
+                    <NavMobile>
                         <Content />
-                    </BugMobileNav>
+                    </NavMobile>
                 </Hidden>
             </div>
         </Router>

@@ -25,7 +25,7 @@ export default function PanelList(props) {
         return async () => {
             socket.disconnect();
         }
-    },[]);
+    },[dispatch]);
 
     return (
         <>

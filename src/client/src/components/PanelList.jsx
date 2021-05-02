@@ -9,17 +9,17 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import PanelTableMenu from "@components/panelTable/PanelTableMenu";
 import Loading from "./Loading";
-import ProgressCounter from '@components/ProgressCounter';
-import AxiosCommand from '@utils/AxiosCommand';
-import BugSwitch from '@components/BugSwitch';
-import { useSelector } from 'react-redux'
+import ProgressCounter from "@components/ProgressCounter";
+import AxiosCommand from "@utils/AxiosCommand";
+import ApiSwitch from "@core/ApiSwitch";
+import { useSelector } from "react-redux";
 
 const state = {
     textTransform: "uppercase",
     opacity: 0.8,
     fontSize: "0.8rem",
     paddingTop: "4px",
-    fontWeight: 500
+    fontWeight: 500,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -27,45 +27,43 @@ const useStyles = makeStyles((theme) => ({
         margin: "1rem",
     },
     cellMenu: {
-        width: '2rem'
+        width: "2rem",
     },
     dragIcon: {
-        opacity: 0.2
+        opacity: 0.2,
     },
     stateRunning: {
-         ...state,
+        ...state,
         color: theme.palette.success.main,
     },
     stateIdle: {
-         ...state,
+        ...state,
         color: theme.palette.primary.main,
     },
     stateUninitialised: {
-         ...state,
-        opacity: 0.3
+        ...state,
+        opacity: 0.3,
     },
     stateBuilding: {
-         ...state,
+        ...state,
         color: theme.palette.primary.main,
     },
     stateError: {
-         ...state,
+        ...state,
         color: theme.palette.error.main,
-    }
+    },
 }));
 
 export default function PanelList() {
     const classes = useStyles();
-    const panelList = useSelector(state => state.panelList);
+    const panelList = useSelector((state) => state.panelList);
 
     const handleEnabledChanged = (checked, panelId) => {
-        if(checked) {
+        if (checked) {
             AxiosCommand(`/api/panel/enable/${panelId}`);
-        }
-        else {
+        } else {
             AxiosCommand(`/api/panel/disable/${panelId}`);
         }
-
     };
 
     const renderRow = (panel) => {
@@ -73,7 +71,11 @@ export default function PanelList() {
             <TableRow key={panel.id}>
                 {/* <TableCell><DragIndicatorIcon className={classes.dragIcon}/></TableCell> */}
                 <TableCell>
-                    <BugSwitch panelId={panel.id} checked={panel.enabled} onChange={(checked) => handleEnabledChanged(checked, panel.id)}/>
+                    <ApiSwitch
+                        panelId={panel.id}
+                        checked={panel.enabled}
+                        onChange={(checked) => handleEnabledChanged(checked, panel.id)}
+                    />
                 </TableCell>
                 <TableCell>
                     <div className={classes.title}>{panel.title}</div>
@@ -81,20 +83,26 @@ export default function PanelList() {
                 </TableCell>
                 <TableCell>{panel.description}</TableCell>
                 <TableCell>{panel._module.longname}</TableCell>
-                <TableCell className={classes.cellMenu}><PanelTableMenu panel={panel}/></TableCell>
+                <TableCell className={classes.cellMenu}>
+                    <PanelTableMenu panel={panel} />
+                </TableCell>
             </TableRow>
         );
     };
 
     const renderState = (panel) => {
-        if(panel._isrunning) {
+        if (panel._isrunning) {
             return <div className={classes.stateRunning}>Running - {panel._container.status}</div>;
         }
-        if(panel._isbuilding) {
-            return <div className={classes.stateBuilding}>{panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete</div>;
+        if (panel._isbuilding) {
+            return (
+                <div className={classes.stateBuilding}>
+                    {panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete
+                </div>
+            );
         }
-        if(panel._isbuilt) {
-            if(panel._buildstatus.error) {
+        if (panel._isbuilt) {
+            if (panel._buildstatus.error) {
                 return <div className={classes.stateError}>ERROR - {panel._buildstatus.text}</div>;
             }
             return <div className={classes.stateBuilding}>Built - IDLE</div>;

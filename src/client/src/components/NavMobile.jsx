@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const BugMobileNav = (props) => {
+const NavMobile = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -60,4 +60,4 @@ const BugMobileNav = (props) => {
     );
 };
 
-export default BugMobileNav;
+export default NavMobile;
