@@ -23,6 +23,6 @@ module.exports = async () => {
 
     } catch (error) {
         logger.error(`docker-listimages: ${error.stack || error.trace || error || error.message}`);
-        return null;
+        throw new Error(`Failed to list images`);
     }
 }

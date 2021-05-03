@@ -2,11 +2,9 @@
 
 const logger = require('@utils/logger');
 const docker = require('@utils/docker');
-const dockerListImages = require('@services/docker-listimages');
 const dockerStopContainer = require('@services/docker-stopcontainer');
 const dockerDeleteContainer = require('@services/docker-deletecontainer');
 const dockerDeleteImage = require('@services/docker-deleteimage');
-const { Logger } = require('mongodb');
 
 module.exports = async (moduleName) => {
     try {
@@ -37,15 +35,13 @@ module.exports = async (moduleName) => {
                     // stop it
                     if(!await dockerStopContainer(container)) {
                         // it didn't stop - no point carrying on
-                        logger.info(`docker-deletemodule: failed to stop container for panel id ${panelId}, for module ${moduleName}`);
-                        return false;
+                        throw new Error(`Failed to stop container for panel id ${panelId}, for module ${moduleName}`);
                     }
                     logger.info(`docker-deletemodule: stopped container for panel id ${panelId}`);
                     // delete it
                     if(!await dockerDeleteContainer(container)) {
                         // it didn't delete - no point carrying on
-                        logger.info(`docker-deletemodule: failed to delete container for panel id ${panelId}, for module ${moduleName}`);
-                        return false;
+                        throw new Error(`Failed to delete container for panel id ${panelId}, for module ${moduleName}`);
                     }
                     logger.info(`docker-deletemodule: stopped container for panel id ${panelId}`);
                 }
@@ -55,15 +51,14 @@ module.exports = async (moduleName) => {
         // now we can delete the image itself
         for(let eachImageId of imagesToDelete) {
             if(!await dockerDeleteImage(eachImageId, true)) {
-                logger.info(`docker-deletemodule: failed to delete image id ${eachImageId}, for module ${moduleName}`);
-                return false;
+                throw new Error(`Failed to delete image id ${eachImageId}, for module ${moduleName}`);
             }
         }
 
         return true;
 
     } catch (error) {
-        logger.error(`docker-deleteimage: ${error.stack || error.trace || error || error.message}`);
-        return null;
+        logger.error(`docker-deletemodule: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to delete module ${moduleName}`);
     }
 }

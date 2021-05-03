@@ -1,31 +1,27 @@
-'use strict';
+"use strict";
 
-const path = require('path');
-const logger = require('@utils/logger');
-const tarFolder = require('@utils/tar-folder');
-const readDir = require('@utils/read-dir');
-const moment = require('moment');
+const path = require("path");
+const logger = require("@utils/logger");
+const tarFolder = require("@utils/tar-folder");
+const readDir = require("@utils/read-dir");
+const moment = require("moment");
 
 module.exports = async () => {
-
-    let response = {
-        config_folder: path.join(__dirname,'..','config'),
-        data_folder: path.join(__dirname,'..','data'),
-    }
-
     try {
+        let response = {
+            config_folder: path.join(__dirname, "..", "config"),
+            data_folder: path.join(__dirname, "..", "data"),
+        };
 
-        response.panels = await readDir(response.config_folder)
-        response.filename = 'backup-'+moment().format('DD-MM-YYYY-HH-mm-ss')+'.tgz';
-        response.filepath = path.join(response.data_folder,'backup.tgz')
+        response.panels = await readDir(response.config_folder);
+        response.filename = "backup-" + moment().format("DD-MM-YYYY-HH-mm-ss") + ".tgz";
+        response.filepath = path.join(response.data_folder, "backup.tgz");
 
-        await tarFolder(response.config_folder,response.filepath)
-       
+        await tarFolder(response.config_folder, response.filepath);
     } catch (error) {
-        response.error = error
-        logger.warn(__filename +': '+error);
+        logger.warn(`system-backup: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to complete system backup`);
     }
 
-    return response
-
-}
+    return response;
+};

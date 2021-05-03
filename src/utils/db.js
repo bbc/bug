@@ -1,4 +1,5 @@
 'use strict';
+//TODO error handling with throw
 
 const MongoClient = require('mongodb').MongoClient;
 const Logger = require('@utils/logger');

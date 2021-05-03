@@ -14,6 +14,7 @@ module.exports = async (panelId) => {
             })
 
         } catch (error) {
+            // this isn't really an error - we just didn't find it
             resolve(null);
         }
     });

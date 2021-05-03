@@ -32,8 +32,8 @@ module.exports = async (filepath) => {
             await writeFile(filename, newFile);
         }
     } catch (error) {
-        logger.warn(`dockerfile-write: ${error.trace || error || error.message}`);
-        return false;
+        logger.error(`dockerfile-write: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to write dockerfile ${filename}`);
     }
     return true;
 }

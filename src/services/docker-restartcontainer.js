@@ -20,6 +20,6 @@ module.exports = async (container) => {
         });
     } catch (error) {
         logger.error(`docker-restartcontainer: ${error.stack || error.trace || error || error.message}`);
-        return false;
+        throw new Error(`Failed to restart container id ${container.id}`);
     }
 }

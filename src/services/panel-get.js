@@ -17,9 +17,9 @@ module.exports = async (panelId) => {
         return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus);
 
     } catch (error) {
-        logger.warn(`panel-get: ${error.stack | error.trace || error || error.message}`);
+        logger.warn(`panel-get: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to get panel id ${panelId}`);
     }
-    return null;
 }
 
 

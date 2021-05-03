@@ -7,10 +7,9 @@ module.exports = async (panelId) => {
 
     try {
 
-        var panelConfig = await panelConfigModel.get(panelId);
+        var panelConfig = await panelConfigModel.get(panelId + "aaaa");
         if(!panelConfig) {
-            logger.warn(`panel-enable: panel ${panelId} not found`);
-            return false
+            throw new Error(`Panel ${panelId} not found`);
         }
 
         panelConfig.enabled = true;
@@ -19,7 +18,7 @@ module.exports = async (panelId) => {
         return true;
 
     } catch (error) {
-        logger.error(`panel-enable: ${error.stack || error.trace || error || error.message}`);
-        return false;
+        logger.warn(`panel-enable: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to enable panel id ${panelId}`);
     }
 }

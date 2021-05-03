@@ -19,17 +19,15 @@ module.exports = async () => {
                     eachModule.image = eachImage
                 }
             }
+            delete eachModule.defaultconfig;
+            delete eachModule.devmounts;
             response.push(eachModule)
         }
 
     } catch (error) {
-        response.error = error
         logger.warn(`module-list: ${error.trace || error || error.message}`);
+        throw new Error(`Failed to get module list`);
     }
 
     return response
 }
-
-        // modules.sort(function (a, b) {
-        //     return (a.longname < b.longname) ? -1 : 1;
-        // });

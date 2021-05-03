@@ -1,14 +1,13 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const router = express.Router();
-const logger = require('@utils/logger');
-const axios = require('axios')
+const router = require("express").Router();
+const asyncHandler = require("express-async-handler");
+const axios = require("axios");
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
 
-const modulePort = process.env.MODULE_PORT || 3000 ;
+const modulePort = process.env.MODULE_PORT || 3000;
 
 /**
  * @swagger
@@ -17,7 +16,7 @@ const modulePort = process.env.MODULE_PORT || 3000 ;
  *      description: Proxies a request from the main BUG service to the API of a Panel's container. The result is returned in the response.
  *      tags: [container]
  *      produces:
- *        - application/json 
+ *        - application/json
  *      parameters:
  *        - in: path
  *          name: panel_id
@@ -32,29 +31,31 @@ const modulePort = process.env.MODULE_PORT || 3000 ;
  *        '200':
  *          description: Success
  */
-router.use('/:panelid', async function(req, res) {
+router.use(
+    "/:panelid",
+    asyncHandler(async (req, res) => {
+        const url = `http://${req.params.panelid}:${modulePort}/api${req.url}`;
+        try {
+            const axiosConfig = {
+                method: req.method,
+                url: url,
+                responseType: "stream",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
 
-    const url = `http://${req.params.panelid}:${modulePort}/api${req.url}`;
-    try {
-        const axiosConfig = {
-            method: req.method,
-            url: url,
-            responseType: "stream",
-            headers: {
-                'Content-Type': 'application/json'
+            if (req.body) {
+                axiosConfig["data"] = req.body;
             }
-        };
 
-        if(req.body) {
-            axiosConfig['data'] = req.body;
+            const axiosResponse = await axios(axiosConfig);
+            res.status(axiosResponse.status);
+            axiosResponse.data.pipe(res);
+        } catch (error) {
+            res.json(error);
         }
-
-        const axiosResponse = await axios(axiosConfig);
-        res.status(axiosResponse.status);
-        axiosResponse.data.pipe(res);
-    } catch (error) {
-        res.json(error);
-    }
-});
+    })
+);
 
 module.exports = router;

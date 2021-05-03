@@ -1,5 +1,7 @@
 "use strict";
 
+//TODO error handling with throw
+
 const logger = require("@utils/logger");
 const Db = require("@utils/db");
 const collectionName = "dockercontainers";

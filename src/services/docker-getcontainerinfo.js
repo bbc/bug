@@ -28,10 +28,7 @@ module.exports = async (panelId) => {
         }
 
     } catch (error) {
-        logger.warn(`docker-getcontainerinfo: ${error.trace || error || error.message}`);
-        throw (error);
+        logger.error(`docker-getcontainerinfo: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to get container info for panel id ${panelId}`);
     }
-
-    return null;
-
 }

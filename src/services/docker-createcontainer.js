@@ -54,6 +54,6 @@ module.exports = async (configObject) => {
 
     } catch (error) {
         logger.error(`docker-createcontainer: ${error.stack || error.trace || error || error.message}`);
-        return null;
+        throw new Error(`Failed to create docker container for panel id ${container.id}`);
     }
 }

@@ -13,7 +13,7 @@ module.exports = async function() {
     try {
         var files = await readdir('config');
     } catch (error) {
-        logger.warn(`panel-config: ${error.trace || error || error.message}`);
+        throw new Error(`Failed to read files in folder 'config'`);
     }
 
     var response = [];
@@ -25,7 +25,8 @@ module.exports = async function() {
                 response.push(panelFile);
             }
         } catch (error) {
-            logger.warn(`panel-config: ${error.trace || error || error.message}`);
+            logger.warn(`panel-configlist: ${error.stack || error.trace || error || error.message}`);
+            throw new Error(`Failed to list panel config`);
         }
     }
     return response;

@@ -1,5 +1,7 @@
 'use strict';
 
+//TODO error handling with throw
+
 const Docker = require('dockerode');
 const logger = require('@utils/logger');
 const path = require('path');

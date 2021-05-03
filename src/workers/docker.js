@@ -1,5 +1,7 @@
 "use strict";
 
+//TODO needs some error handling
+
 const { Worker, isMainThread, parentPort } = require("worker_threads");
 const register = require("module-alias/register");
 const logger = require("@utils/logger");

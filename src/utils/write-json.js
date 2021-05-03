@@ -3,6 +3,8 @@
 const fs = require('fs').promises
 const Logger = require('@utils/logger');
 
+//TODO error handling with throw
+
 module.exports = async (filepath,contents) => {
     try{
         const jsonString = await JSON.stringify(contents, null, 2);

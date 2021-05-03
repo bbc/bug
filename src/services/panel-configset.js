@@ -13,14 +13,14 @@ module.exports = async (newConfig) => {
         const status = await panelConfigModel.set({ ...config, ...newConfig});
 
         if(!status) {
-            throw 'failed to merge panel configs';
+            throw new Error(`Failed to merge panel configs`);
         }
 
         // push config to any running module and return result bool
         return await panelConfigPush(newConfig?.id);
 
     } catch (error) {
-        logger.warn(`panel-setconfig: ${error.stack | error.trace || error || error.message}`);
+        logger.warn(`panel-setconfig: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to set panel config to ${url}`);
     }
-    return false;
 }

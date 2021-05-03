@@ -30,8 +30,8 @@ module.exports = async () => {
         }
 
     } catch (error) {
-        logger.warn(`docker-listcontainerinfo: ${error.trace || error || error.message}`);
-        throw (error);
+        logger.error(`docker-listcontainerinfo: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to list container info`);
     }
 
     return response

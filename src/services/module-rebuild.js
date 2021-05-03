@@ -10,6 +10,7 @@ const dockerFileWrite = require('@services/dockerfile-write');
 // update is optional - if used, then docker-buildmodule will call it to update progress
 module.exports = async (moduleName) => {
 
+    try {
         // fetch list of available modules
         const moduleList = await moduleConfig.list();
 
@@ -18,29 +19,25 @@ module.exports = async (moduleName) => {
         });
 
         if(!matchedModule) {
-            logger.warn(`module-rebuild: module config '${moduleName}' not found`);
-            return false;
+            throw new Error(`Module config '${moduleName}' not found`);
         }
 
         // list images 
         if(!await dockerDeleteModule(moduleName)) {
-            logger.warn(`module-rebuild: failed to delete module '${moduleName}'`);
-            return false;
+            throw new Error(`Failed to delete module '${moduleName}'`);
         }
 
         // Write a dockerfile for the module (in case it's changed)
         const modulePath = path.join(__dirname, '..', 'modules', moduleName, 'container');
         if(!await dockerFileWrite(modulePath)) {
-            logger.warn(`module-build: failed to write dockerfile to  '${modulePath}'`);
-            return false;
+            throw new Error(`Failed to write dockerfile to  '${modulePath}'`);
         }
 
         // and build the module
         return await dockerBuildModule(moduleName);
 
-    // } catch (error) {
-    //     logger.warn(`module-build: ${error.trace || error || error.message}`);
-    //     return false;
-    // }
-
+    } catch (error) {
+        logger.warn(`module-rebuild: ${error.trace || error || error.message}`);
+        throw new Error(`Failed to rebuild module ${moduleName}`);
+    }
 }

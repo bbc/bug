@@ -9,6 +9,9 @@ const helmet = require('helmet');
 // import environment variables from .env file
 require('dotenv').config();
 
+// get environment
+const nodeEnv = process.env.NODE_ENV || 'production';
+
 // load routes
 const documentation = require('@middleware/documentation');
 const systemRouter = require('@routes/system');
@@ -64,10 +67,11 @@ bugApi.use(express.static(path.join(__dirname, '..','client', 'public')));
 // });
 
 // error handler
-bugApi.use(function (err, req, res, next) {
-    res.status(err.status || 500).json({
-        errorcode: err.status,
-        error: err.message
+bugApi.use(function (error, req, res, next) {
+    res.status(error.status || 500).json({
+        status: error.status,
+        message: error.message,
+        stack: (nodeEnv !== 'production' ? error?.stack?.split('\n') : undefined)
     });
 });
 

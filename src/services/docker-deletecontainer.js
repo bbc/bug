@@ -20,6 +20,6 @@ module.exports = async (container) => {
         });
     } catch (error) {
         logger.error(`docker-deletecontainer: ${error.stack || error.trace || error || error.message}`);
-        return false;
+        throw new Error(`Failed to delete docker container for panel id ${container.id}`);
     }
 }

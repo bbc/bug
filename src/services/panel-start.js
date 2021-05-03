@@ -27,8 +27,7 @@ module.exports = async (panelId) => {
     try {
         let config = await panelConfig.get(panelId);
         if (!config) {
-            logger.warn(`panel-start: panel ${panelId} not found`);
-            return false
+            throw new Error(`Panel ${panelId} not found`);
         }
 
         panelBuildStatusModel.set(panelId, "Building image", 5);
@@ -36,8 +35,7 @@ module.exports = async (panelId) => {
         // build the image for the module, if it's already been done this will be quick
         if (!await moduleBuild(config.module, updateProgress)) {
             panelBuildStatusModel.setError(panelId, "Failed to build image");
-            logger.warn("panel-start: failed to build module (image)");
-            return false;
+            throw new Error(`Failed to build module (image)`);
         }
 
         // attempt to get the container from docker
@@ -52,8 +50,7 @@ module.exports = async (panelId) => {
             if (!container) {
                 // it still doesn't exist - give up
                 panelBuildStatusModel.setError(panelId, "Failed to build container");
-                logger.info(`panel-start: failed to create container for panel id ${panelId}`);
-                return false;
+                throw new Error(`Failed to create container for panel id ${panelId}`);
             }
             logger.info(`panel-start: successfully created container id ${container.id}`);
         }
@@ -68,7 +65,7 @@ module.exports = async (panelId) => {
 
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");
-        logger.error(`panel-start: ${error.stack || error.trace || error || error.message}`);
-        return false;
+        logger.warn(`panel-start: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to start panel id ${panelId}`);
     }
 }

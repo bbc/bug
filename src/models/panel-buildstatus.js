@@ -3,6 +3,8 @@
 const logger = require('@utils/logger');
 const Db = require('@utils/db');
 
+//TODO error handling with throw
+
 const connect = async () => {
     var dbClass = new Db();
     var db = await dbClass.connect();

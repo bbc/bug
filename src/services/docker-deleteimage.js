@@ -22,6 +22,6 @@ module.exports = async (imageId, force = false) => {
         });
     } catch (error) {
         logger.error(`docker-deleteimage: ${error.stack || error.trace || error || error.message}`);
-        return false;
+        throw new Error(`Failed to delete docker image id ${imageId}`);
     }
 }

@@ -1,5 +1,7 @@
 'use strict';
 
+//TODO error handling with throw
+
 const fs = require('fs')
 const util = require('util');
 const readfile = util.promisify(fs.readFile);

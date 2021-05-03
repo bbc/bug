@@ -1,6 +1,5 @@
 'use strict';
 
-const path = require('path');
 const id = require('@utils/id');
 const setConfig = require('@services/panel-configset');
 const moduleGet = require('@services/module-get');
@@ -23,6 +22,6 @@ module.exports = async (panelConfig) => {
 
     } catch (error) {
         logger.warn(`panel-add: ${error.stack | error.trace || error || error.message}`);
+        throw new Error(`Failed to add panel`);
     }
-    return false;
 }

@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const router = express.Router();
-const logger = require('@utils/logger');
-const systemBackup = require('@services/system-backup');
+const router = require("express").Router();
+const asyncHandler = require("express-async-handler");
+const logger = require("@utils/logger");
+const systemBackup = require("@services/system-backup");
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
@@ -20,8 +20,8 @@ const systemBackup = require('@services/system-backup');
  *        '200':
  *          description: Success
  */
-router.get('/hello', function (req, res, next) {
-    const message = 'Good morning sunshine, the earth says hello.';
+router.get("/hello", function (req, res, next) {
+    const message = "Good morning sunshine, the earth says hello.";
     res.json(message);
     logger.info(message);
 });
@@ -38,14 +38,13 @@ router.get('/hello', function (req, res, next) {
  *        '200':
  *          description: Success
  */
-router.get('/backup', async function (req, res, next) {
-    const result = await systemBackup();
-    try {
-        res.download(result.filepath,result.filename);
-    } catch (error) {
-        res.json({ error: "Failed to run system backup" });
-    }
-});
+router.get(
+    "/backup",
+    asyncHandler(async (req, res) => {
+        const result = await systemBackup();
+        res.download(result.filepath, result.filename);
+    })
+);
 
 /**
  * @swagger
@@ -59,7 +58,7 @@ router.get('/backup', async function (req, res, next) {
  *        '200':
  *          description: Success
  */
-router.get('/restore', function (req, res, next) {
+router.get("/restore", function (req, res, next) {
     res.json("Hello");
 });
 

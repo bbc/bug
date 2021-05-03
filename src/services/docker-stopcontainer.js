@@ -26,6 +26,6 @@ module.exports = async (container) => {
         });
     } catch (error) {
         logger.error(`docker-stopcontainer: ${error.stack || error.trace || error || error.message}`);
-        return false;
+        throw new Error(`Failed to stop container id ${container.id}`);
     }
 }

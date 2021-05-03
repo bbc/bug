@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const router = express.Router();
-const logger = require('@utils/logger');
-const moduleList = require('@services/module-list');
-const moduleGet = require('@services/module-get');
-const moduleBuild = require('@services/module-build')
-const moduleRebuild = require('@services/module-rebuild')
+const router = require("express").Router();
+const asyncHandler = require("express-async-handler");
+const moduleList = require("@services/module-list");
+const moduleGet = require("@services/module-get");
+const moduleBuild = require("@services/module-build");
+const moduleRebuild = require("@services/module-rebuild");
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -30,17 +29,15 @@ const moduleRebuild = require('@services/module-rebuild')
  *         schema:
  *           type: object
  */
-router.get('/', async function (req, res, next) {
-    try {
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await moduleList()
+            data: await moduleList(),
         });
-    } catch (error) {
-        res.status(500);
-        res.json({ error: "Failed to fetch module list" });
-    }
-});
+    })
+);
 
 /**
  * @swagger
@@ -67,17 +64,15 @@ router.get('/', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/:modulename', async function (req, res, next) {
-    try {
+router.get(
+    "/:modulename",
+    asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await moduleGet(req.params.modulename)
+            data: await moduleGet(req.params.modulename),
         });
-    } catch (error) {
-        res.status(500);
-        res.json({ error: "Failed to fetch module" });
-    }
-});
+    })
+);
 
 /**
  * @swagger
@@ -104,18 +99,16 @@ router.get('/:modulename', async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.get('/build/:modulename', async function (req, res, next) {
-    const result = await moduleBuild(req.params.modulename);
-    try {
+router.get(
+    "/build/:modulename",
+    asyncHandler(async (req, res) => {
+        const result = await moduleBuild(req.params.modulename);
         res.json({
-            status: (result ? "success" : "fail"),
-            data: null
+            status: result ? "success" : "fail",
+            data: null,
         });
-    } catch (error) {
-        res.status(500);
-        res.json({ error: "Failed to build module" });
-    }
-});
+    })
+);
 
 /**
  * @swagger
@@ -142,16 +135,15 @@ router.get('/build/:modulename', async function (req, res, next) {
  *         schema:
  *           type: object
  */
- router.get('/rebuild/:modulename', async function (req, res, next) {
-    const result = await moduleRebuild(req.params.modulename);
-    try {
+router.get(
+    "/rebuild/:modulename",
+    asyncHandler(async (req, res) => {
+        const result = await moduleRebuild(req.params.modulename);
         res.json({
-            status: (result ? "success" : "fail"),
-            data: null
+            status: result ? "success" : "fail",
+            data: null,
         });
-    } catch (error) {
-        res.json({ error: "Failed to rebuild module" });
-    }
-});
+    })
+);
 
 module.exports = router;

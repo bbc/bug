@@ -11,14 +11,12 @@ module.exports = async (panelId) => {
 
         var config = await panelConfig.get(panelId);
         if (!config) {
-            logger.warn(`panel-restart: panel ${panelId} not found`);
-            return false
+            throw new Error(`Panel ${panelId} not found`);
         }
 
         let container = await dockerGetContainer(panelId);
         if (!container) {
-            logger.warn(`panel-restart: panel ${panelId} has no associated container - try starting first`);
-            return false
+            throw new Error(`Panel ${panelId} has no associated container - try starting first`);
         }
 
         // restart the container
@@ -26,8 +24,8 @@ module.exports = async (panelId) => {
         return dockerRestartContainer(container);
 
     } catch (error) {
-        logger.error(`panel-restart: ${error.stack || error.trace || error || error.message}`);
-        return false;
+        logger.warn(`panel-restart: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to restart panel id ${panelId}`);
     }
 
 }

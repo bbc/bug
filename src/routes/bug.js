@@ -1,12 +1,8 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const router = express.Router();
-const bugQuote = require('@services/bug-quote');
-
-// const authUser = require('@middleware/auth-user');
-// const authGuest = require('@middleware/auth-guest');
-// const authAdmin = require('@middleware/auth-admin');
+const router = require("express").Router();
+const asyncHandler = require("express-async-handler");
+const bugQuote = require("@services/bug-quote");
 
 /**
  * @swagger
@@ -20,15 +16,14 @@ const bugQuote = require('@services/bug-quote');
  *        '200':
  *          description: Success
  */
-router.get('/quote', async function (req, res, next) {
-    try {
+router.get(
+    "/quote",
+    asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await bugQuote()
+            data: await bugQuote(),
         });
-    } catch (error) {
-        res.json({ error: "Failed to fetch quote" });
-    }
-});
+    })
+);
 
 module.exports = router;

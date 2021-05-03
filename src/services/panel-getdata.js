@@ -8,7 +8,8 @@ module.exports = async (panelId) => {
     try {
         return await readJson(path.join(__dirname, '..', 'dummydata', panelId + '.json'));
     } catch (error) {
-        logger.warn(`panel-getdata: ${error.trace || error || error.message}`);
+        logger.warn(`panel-getdata: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to get data for panel id ${panelId}`);
     }
 
 }

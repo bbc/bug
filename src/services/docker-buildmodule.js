@@ -76,10 +76,10 @@ module.exports = async (moduleName, updateProgressCallback) => {
             }
         });
 
-
         return progressResult;
+
     } catch (error) {
-        logger.warn(`docker-buildmodule: ${moduleName} ${output}`);
-        return false;
+        logger.warn(`docker-buildmodule: ${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to build docker module ${moduleName}`);
     }
 }
