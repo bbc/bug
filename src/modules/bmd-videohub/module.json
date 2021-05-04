@@ -7,7 +7,7 @@
     "icon": "BlurOn",
     "author": "Geoff House",
     "license": "ISC",
-    "needscontainer": true,
+    "needsContainer": true,
     "devmounts": ["api", "utils", "services"],
     "defaultconfig": {
         "id": "",

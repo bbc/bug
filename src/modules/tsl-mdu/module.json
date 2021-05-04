@@ -7,7 +7,7 @@
     "icon": "PowerSettingsNew",
     "author": "Ryan McCartney",
     "license": "MIT",
-    "needscontainer": true,
+    "needsContainer": true,
     "devmounts": ["api", "utils", "services"],
     "defaultconfig": {
         "id": "",

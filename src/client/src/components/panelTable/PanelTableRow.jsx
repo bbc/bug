@@ -60,7 +60,7 @@ export default function PanelTableRow(props) {
     };
 
     const renderState = (panel) => {
-        if(panel?._module?.needscontainer === false) {
+        if(panel?._module?.needsContainer === false) {
             if(panel.enabled) {
                 return <div className={classes.stateEnabled}>ENABLED</div>;
             }

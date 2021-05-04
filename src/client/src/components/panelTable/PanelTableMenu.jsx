@@ -31,7 +31,7 @@ export default function PanelTableMenu(props) {
         setAnchorEl(null);
     };
 
-    const needsContainer = props?.panel?._module.needscontainer ?? true;
+    const needsContainer = props?.panel?._module.needsContainer ?? true;
 
     const hideRestart = !needsContainer;
     const disableEnable = props.panel.enabled || props.panel._isbuilding;
