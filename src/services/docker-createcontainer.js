@@ -19,7 +19,7 @@ module.exports = async (configObject) => {
             Hostname: configObject.id,
             name: configObject.id,
             Labels: {
-                "co.uk.bbc.bug.module": configObject.module,
+                "co.uk.bbc.bug.module.name": configObject.module,
                 "com.docker.compose.project": "bbcnews-bug-core",
                 "com.docker.compose.service": configObject.id
             },
