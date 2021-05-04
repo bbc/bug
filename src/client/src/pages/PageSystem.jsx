@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import pageTitleSlice from '../redux/pageTitleSlice';
@@ -32,7 +32,6 @@ export default function PageSystem() {
     const theme = useTheme();
     const classes = useStyles();
     const dispatch = useDispatch()
-    dispatch(pageTitleSlice.actions.set("System"));
 
     const [value, setValue] = useState(0);
   
@@ -43,6 +42,10 @@ export default function PageSystem() {
     const handleChangeIndex = (index) => {
       setValue(index);
     };
+
+    useEffect(() => {
+        dispatch(pageTitleSlice.actions.set("System"));
+    }, [dispatch]);
 
     return (
         <>

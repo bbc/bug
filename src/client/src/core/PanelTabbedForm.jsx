@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHotkeys } from 'react-hotkeys-hook';
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Tabs from "@material-ui/core/Tabs";
@@ -63,6 +64,8 @@ export default function PanelTabbedForm(props) {
             </Card>
         );
     };
+
+    useHotkeys('esc', props.onClose);
 
     return (
         <>

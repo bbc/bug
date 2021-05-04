@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import HomeTiles from "@components//HomeTiles";
 import BugQuote from '@components/BugQuote';
@@ -27,7 +27,10 @@ export default function PageHome() {
 
     const classes = useStyles();
     const dispatch = useDispatch()
-    dispatch(pageTitleSlice.actions.set("Home"));
+
+    useEffect(() => {
+        dispatch(pageTitleSlice.actions.set("Home"));
+    }, [dispatch]);
 
     return (
         <>
