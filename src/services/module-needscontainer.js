@@ -10,7 +10,7 @@ module.exports = async (moduleName) => {
 
     } catch (error) {
         logger.warn(`module-needscontainer: ${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to container requirement status for module ${moduleName}`);
+        throw new Error(`Failed to get container requirement status for module ${moduleName}`);
     }
 }
 

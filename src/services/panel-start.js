@@ -2,7 +2,6 @@
 
 const logger = require('@utils/logger');
 const panelConfig = require('@models/panel-config');
-const moduleConfig = require('@models/module-config');
 const moduleBuild = require('@services/module-build')
 const dockerGetContainer = require('@services/docker-getcontainer');
 const dockerStartContainer = require('@services/docker-startcontainer');
@@ -72,10 +71,7 @@ module.exports = async (panelId) => {
 
             return await dockerStartContainer(container);
         }
-        else {
-            return true;
-        }
-
+        return true;
 
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");

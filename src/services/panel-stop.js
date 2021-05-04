@@ -24,18 +24,8 @@ module.exports = async (panelId) => {
             throw new Error(`No container found for panel id ${panelId}`);
         }
 
-        const module = await moduleConfig.get(config.module)
-        if (module.needsContainer) {
-
-            const container = await dockerGetContainer(panelId);
-            if (!container) {
-                throw new Error(`No container found for panel id ${panelId}`);
-            }
-            return await dockerStopContainer(container);
-        }
-        else {
-            return true
-        }
+        logger.info(`panel-stop: stoppping container for panel id ${panelId}`);
+        return await dockerStopContainer(container);
 
     } catch (error) {
         logger.warn(`panel-stop: ${error.stack || error.trace || error || error.message}`);
