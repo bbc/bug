@@ -14,7 +14,7 @@ module.exports = async (moduleName) => {
         // fetch list of available modules
         const moduleList = await moduleConfig.list();
 
-        var matchedModule = moduleList.find(function(eachModule, index) {
+        const matchedModule = moduleList.find(function(eachModule, index) {
             return (eachModule.name == moduleName);
         });
 

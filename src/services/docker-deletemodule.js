@@ -5,23 +5,14 @@ const docker = require('@utils/docker');
 const dockerStopContainer = require('@services/docker-stopcontainer');
 const dockerDeleteContainer = require('@services/docker-deletecontainer');
 const dockerDeleteImage = require('@services/docker-deleteimage');
+const findModuleImages = require('@services/docker-findmoduleimages');
 
 module.exports = async (moduleName) => {
     try {
 
         // get a list of image IDs which use this module name
-        const images = await docker.listImages()
-        let imagesToDelete = [];
-        for(var eachImage of images) {
-            if(eachImage['RepoTags'] !== undefined) {
-                for(let eachTag of eachImage['RepoTags']) {
-                    let tagArray = eachTag.split(':');
-                    if(tagArray.length > 0 && tagArray[0] === moduleName) {
-                        imagesToDelete.push(eachImage['Id']);
-                    }
-                }
-            }
-        }
+        const imagesToDelete = findModuleImages(moduleName)
+        
         logger.info(`docker-deletemodule: module ${moduleName}, found ` + imagesToDelete.length + ` image(s) to delete`);
 
         // now for each image, stop any containers that are using it

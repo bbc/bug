@@ -5,6 +5,7 @@ const logger = require('@utils/logger');
 const dockerFileWrite = require('@services/dockerfile-write');
 const dockerBuildModule = require('@services/docker-buildmodule');
 const moduleConfig = require('@models/module-config');
+const findModuleImages = require('@services/docker-findmoduleimages');
 
 // update is optional - if used, then docker-buildmodule will call it to update progress
 module.exports = async (moduleName, updateProgressCallback) => {
@@ -14,22 +15,28 @@ module.exports = async (moduleName, updateProgressCallback) => {
         // fetch list of available modules
         const moduleList = await moduleConfig.list();
 
-        const matchedModule = moduleList.find(function(eachModule, index) {
+        const matchedModule = moduleList.find(function (eachModule, index) {
             return (eachModule.name == moduleName);
         });
 
-        if(!matchedModule) {
+        if (!matchedModule) {
             throw new Error(`Module config '${moduleName}' not found`);
+        }
+
+        if (await findModuleImages(moduleName)) {
+            logger.info(`module-build: The image for ${moduleName} already exists. Not building.`);
+            return true;
         }
 
         // Write a dockerfile for the module
         const modulePath = path.join(__dirname, '..', 'modules', moduleName, 'container');
-        if(!await dockerFileWrite(modulePath)) {
+        if (!await dockerFileWrite(modulePath)) {
             throw new Error(`Failed to write dockerfile to '${modulePath}'`);
         }
 
         // and build the module
         return await dockerBuildModule(moduleName, updateProgressCallback);
+
 
     } catch (error) {
         logger.warn(`module-build: ${error.stack || error.trace || error || error.message}`);
