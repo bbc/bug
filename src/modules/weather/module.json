@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "icon": "Cloud",
     "author": "Ryan McCartney",
-    "needscontainer":false,
+    "needscontainer": false,
     "license": "ISC",
     "defaultconfig": {
         "id": "",
@@ -14,11 +14,10 @@
         "module": "weather",
         "units": "metric",
         "openweather_key": "06f09531f033e4a3a1852f81641826ba",
-        "label" : "London", 
-        "longitude": -0.127758, 
+        "label": "London",
+        "longitude": -0.127758,
         "latitude": 51.507351,
         "description": "",
         "enabled": true
     }
 }
-  

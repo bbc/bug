@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "icon": "Schedule",
     "author": "Ryan McCartney",
-    "needscontainer":false,
+    "needscontainer": false,
     "license": "MIT",
     "defaultconfig": {
         "id": "",
@@ -17,4 +17,3 @@
         "enabled": true
     }
 }
-  
