@@ -62,16 +62,15 @@ module.exports = async (panelId) => {
                 throw new Error(`Failed to create container for panel id ${panelId}`);
             }
             logger.info(`panel-start: successfully created container id ${container.id}`);
-
-            // final status update (then we leave the rest to the containerinfo service)
-            panelBuildStatusModel.set(panelId, "Built", -1);
-
-            // start the container
-            logger.info(`panel-start: starting container for panel id ${panelId}`);
-
-            return await dockerStartContainer(container);
         }
-        return true;
+        
+        // final status update (then we leave the rest to the containerinfo service)
+        panelBuildStatusModel.set(panelId, "Built", -1);
+
+        // start the container
+        logger.info(`panel-start: starting container for panel id ${panelId}`);
+
+        return await dockerStartContainer(container);
 
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");
