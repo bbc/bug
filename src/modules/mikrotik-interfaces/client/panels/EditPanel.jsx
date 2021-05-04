@@ -98,7 +98,6 @@ export default function EditPanel() {
                     />
                 </Grid>
 
-
                 <Grid item xs={12}>
                     <ChipInput
                         id="protected_interfaces"
