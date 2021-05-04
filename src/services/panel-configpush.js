@@ -10,16 +10,20 @@ module.exports = async (panelId) => {
     const url = `http://${panelId}:${modulePort}/api/config`;
     try {
         const panel = await panelGet(panelId);
-        if (panel._isrunning) {
 
-            const panelConfig = await panelConfigModel.get(panelId);
-            const response = await axios.put(url, panelConfig);
-
-            if (response?.status === 200 && response?.data?.status === "success") {
-                logger.info(`panel-configpush: successfully pushed config to ${url}`);
-                return true;
-            }
+        if (!panel._isrunning) {
+            logger.info(`panel-configpush: panel container not running. Couldn't push config.`);
+            return true
         }
+
+        const panelConfig = await panelConfigModel.get(panelId);
+        const response = await axios.put(url, panelConfig);
+
+        if (response?.status === 200 && response?.data?.status === "success") {
+            logger.info(`panel-configpush: successfully pushed config to ${url}`);
+            return true;
+        }
+
     } catch (error) {
         logger.warn(`panel-configpush: ${error.stack || error.trace || error || error.message}`);
     }
