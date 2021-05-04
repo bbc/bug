@@ -15,6 +15,7 @@ const theme = createMuiTheme({
     },
     MuiListItemIcon: {
       root: {
+        minWidth: 44,
         color: props => (props.disabled ? "#888" : "#ffffff"),
       }
     },
@@ -36,6 +37,18 @@ const theme = createMuiTheme({
     MuiCard: {
       root: {
         borderRadius: 0
+      }
+    },
+    MuiList: {
+      padding: {
+        paddingTop: 4,
+        paddingBottom: 4,
+      }
+    },
+    MuiDivider: {
+      root: {
+        marginTop: 2,
+        marginBottom: 2,
       }
     },
   },

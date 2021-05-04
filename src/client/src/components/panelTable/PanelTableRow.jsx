@@ -42,6 +42,10 @@ const useStyles = makeStyles((theme) => ({
         ...state,
         color: theme.palette.error.main,
     },
+    stateEnabled: {
+        ...state,
+        color: theme.palette.success.main,
+    }
 }));
 
 export default function PanelTableRow(props) {
@@ -56,6 +60,14 @@ export default function PanelTableRow(props) {
     };
 
     const renderState = (panel) => {
+        if(panel?._module?.needscontainer === false) {
+            if(panel.enabled) {
+                return <div className={classes.stateEnabled}>ENABLED</div>;
+            }
+            else {
+                return <div className={classes.stateUninitialised}>IDLE</div>;
+            }
+        }
         if (panel._isrunning) {
             return <div className={classes.stateRunning}>Running - {panel._container.status}</div>;
         }
