@@ -5,10 +5,8 @@
     "version": "1.0.0",
     "icon": "Schedule",
     "author": "Ryan McCartney",
+    "needscontainer":false,
     "license": "MIT",
-    "devmounts": [
-        "api"
-    ],
     "defaultconfig": {
         "id": "",
         "order": 0,

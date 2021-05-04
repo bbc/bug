@@ -5,10 +5,8 @@
     "version": "1.0.0",
     "icon": "Cloud",
     "author": "Ryan McCartney",
+    "needscontainer":false,
     "license": "ISC",
-    "devmounts": [
-        "api"
-    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
