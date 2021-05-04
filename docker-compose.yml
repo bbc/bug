@@ -24,7 +24,7 @@ services:
       - ${DOCKER_NETWORK_NAME}
 
   mongo:
-    image: mongo
+    image: mongo:latest
     restart: unless-stopped
     container_name: bug-mongo
     networks:
