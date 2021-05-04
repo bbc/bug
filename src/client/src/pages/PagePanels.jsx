@@ -2,23 +2,21 @@ import React, { useEffect } from "react";
 import PanelTable from "@components/panelTable/PanelTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import { makeStyles } from '@material-ui/core/styles';
+import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     link: {
-      textDecoration: 'none',
-      margin: "1rem",
+        textDecoration: "none",
     },
     extendedIcon: {
-      marginRight: theme.spacing(1),
+        marginRight: theme.spacing(1),
     },
-  }));
-  
-export default function PagePanels() {
+}));
 
+export default function PagePanels() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -30,12 +28,18 @@ export default function PagePanels() {
         <>
             <PanelTable />
 
-            <Link to={ '/panel/add' } color="inherit" className={classes.link}>
-                <Button variant="contained" color="default" size='large' disableElevation>
-                    <AddIcon className={classes.extendedIcon} />
-                    Add Panel
-                </Button>
-            </Link>
+            <Button
+                component={Link}
+                to={"/panel/add"}
+                variant="contained"
+                color="default"
+                size="large"
+                disableElevation
+                style={{ marginTop: "1rem" }}
+            >
+                <AddIcon className={classes.extendedIcon} />
+                Add Panel
+            </Button>
         </>
     );
 }
