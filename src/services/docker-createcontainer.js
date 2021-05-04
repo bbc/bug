@@ -9,7 +9,6 @@ const moduleDevMounts = require('@services/module-getdevmounts');
 
 module.exports = async (configObject) => {
     try {
-
         logger.info(`docker-createcontainer: creating container for panel id ${configObject.id}`);
         const modulePort = process.env.MODULE_PORT || '3200';
         let containerOptions = {
@@ -19,23 +18,23 @@ module.exports = async (configObject) => {
             Hostname: configObject.id,
             name: configObject.id,
             Labels: {
-                "co.uk.bbc.bug.module.name": configObject.module,
+                "uk.co.bbc.bug.panel.id": configObject.id,
                 "com.docker.compose.project": "bbcnews-bug-core",
                 "com.docker.compose.service": configObject.id
             },
             HostConfig: {
                 Mounts: [],
-                RestartPolicy: {name:'unless-stopped'},
+                RestartPolicy: { name: 'unless-stopped' },
                 NetworkMode: 'bug'
             },
         };
-        if(nodeEnv === "development") {
+        if (nodeEnv === "development") {
             const modulesFolder = await dockerGetModulesFolder();
             const devMounts = await moduleDevMounts(configObject.module);
 
-            if(devMounts.length > 0) {
+            if (devMounts.length > 0) {
                 let mounts = [];
-                for(let eachMount of devMounts) {
+                for (let eachMount of devMounts) {
                     let localPath = path.join(modulesFolder, configObject.module, 'container', eachMount);
                     let remotePath = path.join(process.env.MODULE_HOME, eachMount);
                     mounts.push({

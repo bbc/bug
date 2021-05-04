@@ -17,11 +17,11 @@ module.exports = async (moduleName, updateProgressCallback) => {
             context: module_path,
             src: ['/']
         }, {
-            t: moduleName,
+            t: [moduleName, `${moduleName}:${module.version}`],
             labels: {
-                "co.uk.bbc.bug.module.version": `${module.version}`,
-                "co.uk.bbc.bug.module.name": `${module.name}`,
-                "co.uk.bbc.bug.module.author": `${module.author}`,
+                "uk.co.bbc.bug.module.version": `${module.version}`,
+                "uk.co.bbc.bug.module.name": `${module.name}`,
+                "uk.co.bbc.bug.module.author": `${module.author}`,
             },
         });
 
@@ -32,11 +32,11 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
             function onFinished(err, output) {
                 if (err) {
-                    logger.warn(`docker- buildmodule: error while building module $ { moduleName }: `, err);
+                    logger.warn(`docker- buildmodule: error while building module ${moduleName}: `, err);
                     resolve(false);
                 }
                 else {
-                    logger.info(`docker - buildmodule: module $ { moduleName } built OK`);
+                    logger.info(`docker - buildmodule: module ${moduleName} built.`);
                     resolve(true);
                 }
             }

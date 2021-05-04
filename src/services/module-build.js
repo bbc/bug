@@ -5,7 +5,7 @@ const logger = require('@utils/logger');
 const dockerFileWrite = require('@services/dockerfile-write');
 const dockerBuildModule = require('@services/docker-buildmodule');
 const moduleConfig = require('@models/module-config');
-const findModuleImages = require('@services/docker-findmoduleimages');
+const listModuleImages = require('@services/docker-listmoduleimages');
 
 // update is optional - if used, then docker-buildmodule will call it to update progress
 module.exports = async (moduleName, updateProgressCallback) => {
@@ -23,8 +23,9 @@ module.exports = async (moduleName, updateProgressCallback) => {
             throw new Error(`Module config '${moduleName}' not found`);
         }
 
-        if (await findModuleImages(moduleName)) {
-            logger.info(`module-build: The image for ${moduleName} already exists. Not building.`);
+        const images = await listModuleImages(matchedModule.name, matchedModule.version);
+        if (images.length > 0) {
+            logger.info(`module-build: The image for ${matchedModule.name} already exists. Not building.`);
             return true;
         }
 
