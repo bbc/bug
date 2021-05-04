@@ -6,14 +6,9 @@
     "version": "1.0.0",
     "icon": "SettingsInputComponent",
     "author": "Geoff House",
-    "needscontainer":true,
+    "needscontainer": true,
     "license": "ISC",
-    "devmounts": [
-        "api",
-        "utils",
-        "services",
-        "workers"
-    ],
+    "devmounts": ["api", "utils", "services", "workers"],
     "defaultconfig": {
         "id": "",
         "order": 0,
@@ -25,11 +20,6 @@
         "username": "bug",
         "password": "",
         "protected_interfaces": [],
-        "excluded_interfaces": [
-            "bridge",
-            "vlan",
-            "Loopback",
-            "eoip"
-        ]
+        "excluded_interfaces": ["bridge", "vlan", "Loopback", "eoip"]
     }
 }

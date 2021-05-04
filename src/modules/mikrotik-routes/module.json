@@ -7,6 +7,7 @@
     "icon": "SettingsInputComponent",
     "author": "Geoff House",
     "license": "ISC",
+    "needscontainer": true,
     "defaultconfig": {
         "id": "",
         "order": 0,
