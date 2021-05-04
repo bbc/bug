@@ -47,11 +47,20 @@ const logger = winston.createLogger(
                 maxSize: '200m',
                 maxFiles: '1d'
             }),
+            new winston.transports.DailyRotateFile({
+                level: 'http',
+                format: customLogFormat,
+                filename: path.join(logFolder, logName + '-HTTP-%DATE%.log'),
+                datePattern: 'YYYY-MM-DD',
+                zippedArchive: true,
+                maxSize: '200m',
+                maxFiles: '1d'
+            }),
         ],
     }
 );
 
-var consoleLogLevel = process.env.BUG_CORE_CONSOLE_LEVEL || 'info';
+let consoleLogLevel = process.env.BUG_CORE_CONSOLE_LEVEL || 'info';
 consoleLogLevel = consoleLogLevel.toLowerCase();
 
 if (process.env.NODE_ENV !== 'production') {

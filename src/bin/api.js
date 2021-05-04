@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const favicon = require('serve-favicon');
 const helmet = require('helmet');
+const httpLogger = require('@utils/http-logger');
 
 // import environment variables from .env file
 require('dotenv').config();
@@ -24,6 +25,7 @@ const proxyRouter = require('@routes/proxy');
 const bugApi = express();
 
 bugApi.set('json spaces', 2);
+bugApi.use(httpLogger);
 bugApi.use(cors());
 bugApi.use(helmet.contentSecurityPolicy({
     reportOnly:true,
