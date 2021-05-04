@@ -33,6 +33,7 @@ module.exports = async (panelId) => {
         panelBuildStatusModel.set(panelId, "Building image", 5);
 
         // build the image for the module, if it's already been done this will be quick
+        logger.info(`panel-start: building module ${config.module} for panel id ${panelId}`);
         if (!await moduleBuild(config.module, updateProgress)) {
             panelBuildStatusModel.setError(panelId, "Failed to build image");
             throw new Error(`Failed to build module (image)`);
@@ -42,10 +43,12 @@ module.exports = async (panelId) => {
         let container = await dockerGetContainer(panelId);
         if (!container) {
             // it doesn't exist - let's create it
+            logger.info(`panel-start: container for panel id ${panelId} doesn't exist ... creating`);
             panelBuildStatusModel.set(panelId, "Building container", 10);
             await dockerCreateContainer(config);
 
             // and fetch it again - to make sure it exists
+            logger.info(`panel-start: checking container for panel id ${panelId}`);
             container = await dockerGetContainer(panelId);
             if (!container) {
                 // it still doesn't exist - give up
