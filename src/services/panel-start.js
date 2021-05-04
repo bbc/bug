@@ -25,46 +25,49 @@ module.exports = async (panelId) => {
     }
 
     try {
-        let config = await panelConfig.get(panelId);
+        const config = await panelConfig.get(panelId);
         if (!config) {
             throw new Error(`Panel ${panelId} not found`);
         }
 
-        panelBuildStatusModel.set(panelId, "Building image", 5);
+        if (config?.needsContainer) {
+            panelBuildStatusModel.set(panelId, "Building image", 5);
 
-        // build the image for the module, if it's already been done this will be quick
-        logger.info(`panel-start: building module ${config.module} for panel id ${panelId}`);
-        if (!await moduleBuild(config.module, updateProgress)) {
-            panelBuildStatusModel.setError(panelId, "Failed to build image");
-            throw new Error(`Failed to build module (image)`);
-        }
-
-        // attempt to get the container from docker
-        let container = await dockerGetContainer(panelId);
-        if (!container) {
-            // it doesn't exist - let's create it
-            logger.info(`panel-start: container for panel id ${panelId} doesn't exist ... creating`);
-            panelBuildStatusModel.set(panelId, "Building container", 10);
-            await dockerCreateContainer(config);
-
-            // and fetch it again - to make sure it exists
-            logger.info(`panel-start: checking container for panel id ${panelId}`);
-            container = await dockerGetContainer(panelId);
-            if (!container) {
-                // it still doesn't exist - give up
-                panelBuildStatusModel.setError(panelId, "Failed to build container");
-                throw new Error(`Failed to create container for panel id ${panelId}`);
+            // build the image for the module, if it's already been done this will be quick
+            logger.info(`panel-start: building module ${config.module} for panel id ${panelId}`);
+            if (!moduleBuild(config.module, updateProgress)) {
+                panelBuildStatusModel.setError(panelId, "Failed to build image");
+                throw new Error(`Failed to build module (image)`);
             }
-            logger.info(`panel-start: successfully created container id ${container.id}`);
+
+            // attempt to get the container from docker
+            let container = await dockerGetContainer(panelId);
+            if (!container) {
+                // it doesn't exist - let's create it
+                logger.info(`panel-start: container for panel id ${panelId} doesn't exist ... creating`);
+                panelBuildStatusModel.set(panelId, "Building container", 10);
+                await dockerCreateContainer(config);
+
+                // and fetch it again - to make sure it exists
+                logger.info(`panel-start: checking container for panel id ${panelId}`);
+                container = await dockerGetContainer(panelId);
+                if (!container) {
+                    // it still doesn't exist - give up
+                    panelBuildStatusModel.setError(panelId, "Failed to build container");
+                    throw new Error(`Failed to create container for panel id ${panelId}`);
+                }
+                logger.info(`panel-start: successfully created container id ${container.id}`);
+
+                // final status update (then we leave the rest to the containerinfo service)
+                panelBuildStatusModel.set(panelId, "Built", -1);
+
+                // start the container
+                logger.info(`panel-start: starting container for panel id ${panelId}`);
+
+                return await dockerStartContainer(container);
+            }
         }
-
-        // final status update (then we leave the rest to the containerinfo service)
-        panelBuildStatusModel.set(panelId, "Built", -1);
-
-        // start the container
-        logger.info(`panel-start: starting container for panel id ${panelId}`);
-
-        return await dockerStartContainer(container);
+        return true;
 
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");

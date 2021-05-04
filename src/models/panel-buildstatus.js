@@ -6,8 +6,8 @@ const Db = require('@utils/db');
 //TODO error handling with throw
 
 const connect = async () => {
-    var dbClass = new Db();
-    var db = await dbClass.connect();
+    const dbClass = new Db();
+    const db = await dbClass.connect();
     if(!db) {
         logger.warn("panel-buildstatus: could not connect to database");
         return false;
@@ -17,12 +17,12 @@ const connect = async () => {
 
 exports.get = async function(panelId) {
     try {
-        let db = await connect();
+        const db = await connect();
         if(!db) {
             return null;
         }
 
-        var result = await db.collection('panelstatus').findOne({"panelid": panelId});
+        const result = await db.collection('panelstatus').findOne({"panelid": panelId});
         if(result) {
             return result['status'];
         }
@@ -35,7 +35,7 @@ exports.get = async function(panelId) {
 
 exports.set = async function(panelId, statusText, progress) {
     try {
-        let db = await connect();
+        const db = await connect();
         if(!db) {
             return false;
         }
@@ -95,7 +95,7 @@ exports.setError = async function(panelId, errorText) {
 
 exports.setProgress = async function(panelId, progress) {
     try {
-        let db = await connect();
+        const db = await connect();
         if(!db) {
             return false;
         }
@@ -120,13 +120,13 @@ exports.setProgress = async function(panelId, progress) {
 
 exports.list = async function() {
     try {
-        let db = await connect();
+        const db = await connect();
         if(!db) {
             return null;
         }
 
-        var response = [];
-        var result = await db.collection('panelstatus').find().toArray();
+        const response = [];
+        const result = await db.collection('panelstatus').find().toArray();
         for(var eachResult of result) {
             response.push({
                 'panelid': eachResult['panelid'],
