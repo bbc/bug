@@ -17,6 +17,7 @@ const documentation = require('@middleware/documentation');
 const systemRouter = require('@routes/system');
 const moduleRouter = require('@routes/module');
 const panelRouter = require('@routes/panel');
+const panelConfigRouter = require('@routes/panelconfig');
 const bugRouter = require('@routes/bug');
 const proxyRouter = require('@routes/proxy');
 
@@ -55,6 +56,7 @@ bugApi.use('/api/bug', bugRouter);
 bugApi.use('/api/system', systemRouter);
 bugApi.use('/api/module', moduleRouter);
 bugApi.use('/api/panel', panelRouter);
+bugApi.use('/api/panelconfig', panelConfigRouter);
 
 //Serve files in the public folder
 bugApi.use(express.static(path.join(__dirname, '..','client', 'public')));
