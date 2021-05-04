@@ -4,7 +4,7 @@ const logger = require('@utils/logger');
 const dockerGetContainer = require('@services/docker-getcontainer');
 const dockerStopContainer = require('@services/docker-stopcontainer');
 const panelConfig = require('@models/panel-config');
-const moduleConfig = require('@models/module-config');
+const moduleNeedsContainer = require('@services/module-needscontainer');
 
 module.exports = async (panelId) => {
 
@@ -14,6 +14,15 @@ module.exports = async (panelId) => {
             throw new Error(`Panel ${panelId} not found`);
         }
 
+        if(!await moduleNeedsContainer(config?.module)) {
+            logger.info(`panel-stop: no container required for panel id ${panelId}`);
+            return true;
+        }
+
+        let container = await dockerGetContainer(panelId);
+        if (!container) {
+            throw new Error(`No container found for panel id ${panelId}`);
+        }
 
         const module = await moduleConfig.get(config.module)
         if (module.needsContainer) {

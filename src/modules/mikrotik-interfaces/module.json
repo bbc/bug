@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "icon": "SettingsInputComponent",
     "author": "Geoff House",
-    "needscontainer": true,
+    "needsContainer": true,
     "license": "ISC",
     "devmounts": ["api", "utils", "services", "workers"],
     "defaultconfig": {
