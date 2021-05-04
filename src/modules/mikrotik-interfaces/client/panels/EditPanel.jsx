@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { useForm } from "react-hook-form";
-import ChipInput from "material-ui-chip-input";
+import ChipInput from '@core/ChipInput';
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import useAsyncEffect from 'use-async-effect';
@@ -16,6 +16,7 @@ export default function EditPanel() {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors },
     } = useForm();
 
@@ -97,27 +98,28 @@ export default function EditPanel() {
                     />
                 </Grid>
 
-                {/* TODO: Make Chip input feed array to the register function */}
 
                 <Grid item xs={12}>
                     <ChipInput
-                        // inputProps={{...register('protected_interfaces')}}
-                        variant="filled"
-                        defaultValue={config?.protected_interfaces}
-                        fullWidth
-                        error={errors?.protected_interfaces ? true : false}
+                        id="protected_interfaces"
+                        name="protected_interfaces"
                         label="Protected Interfaces"
+                        control={control}
+                        defaultValue={config?.protected_interfaces}
+                        variant="filled"
+                        error={errors.protected_interfaces ? true : false}
                     />
                 </Grid>
 
                 <Grid item xs={12}>
                     <ChipInput
-                        // inputProps={{...register('excluded_interfaces')}}
-                        variant="filled"
-                        defaultValue={config?.excluded_interfaces}
-                        fullWidth
-                        error={errors?.excluded_interfaces ? true : false}
+                        id="excluded_interfaces"
+                        name="excluded_interfaces"
                         label="Excluded Interfaces"
+                        control={control}
+                        defaultValue={config?.excluded_interfaces}
+                        variant="filled"
+                        error={errors.excluded_interfaces ? true : false}
                     />
                 </Grid>
             </PanelConfig>
