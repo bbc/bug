@@ -10,6 +10,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import clsx from "clsx";
+
 const state = {
     textTransform: "uppercase",
     opacity: 0.8,
@@ -22,30 +24,40 @@ const useStyles = makeStyles((theme) => ({
     cellMenu: {
         width: "2rem",
     },
-    stateRunning: {
+    state_running: {
         ...state,
         color: theme.palette.success.main,
     },
-    stateIdle: {
+    state_idle: {
         ...state,
         color: theme.palette.primary.main,
     },
-    stateUninitialised: {
+    state_empty: {
         ...state,
-        opacity: 0.3,
     },
-    stateBuilding: {
+    state_stopping: {
         ...state,
         color: theme.palette.primary.main,
     },
-    stateError: {
+    state_starting: {
+        ...state,
+        color: theme.palette.primary.main,
+    },
+    state_building: {
+        ...state,
+        color: theme.palette.primary.main,
+    },
+    state_error: {
         ...state,
         color: theme.palette.error.main,
     },
-    stateEnabled: {
+    state_active: {
         ...state,
         color: theme.palette.success.main,
-    }
+    },
+    disabledText: {
+        opacity: 0.5,
+    },
 }));
 
 export default function PanelTableRow(props) {
@@ -60,35 +72,26 @@ export default function PanelTableRow(props) {
     };
 
     const renderState = (panel) => {
-        if(panel?._module?.needsContainer === false) {
-            if(panel.enabled) {
-                return <div className={classes.stateEnabled}>ENABLED</div>;
-            }
-            else {
-                return <div className={classes.stateUninitialised}>IDLE</div>;
-            }
+        if (panel._isPending) {
+            return <div className={classes.stateEmpty}>...</div>;
         }
-        if (panel._isrunning) {
-            return <div className={classes.stateRunning}>Running - {panel._container.status}</div>;
-        }
-        if (panel._isbuilding) {
-            return (
-                <div className={classes.stateBuilding}>
-                    {panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete
-                </div>
-            );
-        }
-        if (panel._isbuilt) {
-            if (panel._buildstatus.error) {
+
+        switch (panel._status) {
+            case "building":
+                return (
+                    <div className={classes.stateBuilding}>
+                        {panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete
+                    </div>
+                );
+            case "error":
                 return <div className={classes.stateError}>ERROR - {panel._buildstatus.text}</div>;
-            }
-            return <div className={classes.stateBuilding}>Built - IDLE</div>;
+            default:
+                return <div className={`${classes['state_' + panel._status]}`}>{panel._status}</div>;
         }
-        return <div className={classes.stateUninitialised}>IDLE</div>;
     };
 
     const renderSwitch = (panel) => {
-        if (panel._isbuilding) {
+        if (panel._status === "building" || panel._status === "stopping" || panel._status === "starting") {
             return <CircularProgress />;
         }
         return (
@@ -102,15 +105,31 @@ export default function PanelTableRow(props) {
 
     return (
         <TableRow key={props.id}>
-            <TableCell style={{ textAlign: 'center' }} >
-                {renderSwitch(props)}
-            </TableCell>
+            <TableCell style={{ textAlign: "center" }}>{renderSwitch(props)}</TableCell>
             <TableCell>
-                <div className={classes.title}>{props.title}</div>
+                <div
+                    className={clsx(classes.title, {
+                        [classes.disabledText]: !props.enabled || props._isPending,
+                    })}
+                >
+                    {props.title}
+                </div>
                 {renderState(props)}
             </TableCell>
-            <TableCell>{props.description}</TableCell>
-            <TableCell>{props._module.longname}</TableCell>
+            <TableCell
+                className={clsx({
+                    [classes.disabledText]: !props.enabled || props._isPending,
+                })}
+            >
+                {props.description}
+            </TableCell>
+            <TableCell
+                className={clsx({
+                    [classes.disabledText]: !props.enabled || props._isPending,
+                })}
+            >
+                {props._module.longname}
+            </TableCell>
             <TableCell className={classes.cellMenu}>
                 <PanelTableMenu panel={props} />
             </TableCell>
