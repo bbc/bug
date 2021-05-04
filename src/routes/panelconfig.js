@@ -1,0 +1,148 @@
+"use strict";
+
+const router = require("express").Router();
+const asyncHandler = require("express-async-handler");
+const panelConfigPush = require("@services/panel-configpush");
+const panelConfigSet = require("@services/panel-configset");
+const panelConfigList = require("@services/panel-configlist");
+const panelConfigGet = require("@services/panel-configget");
+
+// const authUser = require('@middleware/auth-user');
+// const authGuest = require('@middleware/auth-guest');
+// const authAdmin = require('@middleware/auth-admin');
+
+/**
+ * @swagger
+ * /panelconfig/{panelId}:
+ *   put:
+ *     description: Update the config of a BUG panel
+ *     tags: [panel]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: panelId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The panel ID string
+ *     responses:
+ *       200:
+ *         description: Successfully set the config of the panel.
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error, could not set the config of the panel.
+ *         schema:
+ *           type: object
+ */
+router.put(
+    "/:panelId",
+    asyncHandler(async (req, res) => {
+        const result = await panelConfigSet({ ...{ id: req.params.panelId }, ...req.body });
+        res.json({
+            status: result ? "success" : "fail",
+            data: null,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /panelconfig/push/{panelId}:
+ *   get:
+ *     description: Push a config to a running BUG module container
+ *     tags: [panel]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: panelId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The panel ID string
+ *     responses:
+ *       200:
+ *         description: Successfully pushed config to the module.
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error, could not push config to the module.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/push/:panelId",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await panelConfigPush(req.params.panelId),
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /panelconfig/:
+ *   get:
+ *     description: Returns a list of all panels
+ *     tags: [panel]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved panel config list.
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error, could not retieve panel config list.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await panelConfigList(),
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /panelconfig/{panelId}:
+ *   get:
+ *     description: Returns the config of a single panel
+ *     tags: [panel]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: panelId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The panel ID string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the panel config.
+ *         schema:
+ *           type: object
+ *       500:
+ *         description: Error, could not retrieved the panel config.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/:panelId",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await panelConfigGet(req.params.panelId),
+        });
+    })
+);
+
+module.exports = router;

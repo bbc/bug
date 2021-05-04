@@ -15,7 +15,7 @@ export default function PanelConfig({ panelId, children, config, handleSubmit })
     };
 
     const onSubmit = async (form) => {
-        const response = await AxiosPut(`/api/panel/config/${config?.id}`, form);
+        const response = await AxiosPut(`/api/panelconfig/${config?.id}`, form);
         if (!response?.error) {
             sendAlert(`${config?.title} has been updated.`, { broadcast: true, variant: "success" });
             history.goBack();

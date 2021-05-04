@@ -20,7 +20,7 @@ export default function EditPanel() {
     } = useForm();
 
     useAsyncEffect(async () => {
-        setConfig(await AxiosGet(`/api/panel/config/${params.panelId}`));
+        setConfig(await AxiosGet(`/api/panelconfig/${params.panelId}`));
     }, []);
 
     if (!config) {
