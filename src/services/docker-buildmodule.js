@@ -16,11 +16,12 @@ module.exports = async (moduleName, updateProgressCallback) => {
             context: module_path,
             src: ['/']
         }, {
-            t: moduleName
+            t: moduleName,
+            labels: { 'bug-module': moduleName },
         });
 
         // watch the stream for progress
-        var progressResult = await new Promise((resolve, reject) => {
+        let progressResult = await new Promise((resolve, reject) => {
 
             docker.modem.followProgress(stream, onFinished, onProgress);
 
@@ -36,38 +37,38 @@ module.exports = async (moduleName, updateProgressCallback) => {
             }
 
             function parseProgress(output) {
-                if(output.indexOf("Step ") !== 0) {
+                if (output.indexOf("Step ") !== 0) {
                     return null;
                 }
 
                 let outputSpaceArray = output.split(" ");
-                if(outputSpaceArray.length < 2) {
+                if (outputSpaceArray.length < 2) {
                     return null;
                 }
-                if(outputSpaceArray[1].indexOf("/") === -1) {
+                if (outputSpaceArray[1].indexOf("/") === -1) {
                     return null;
                 }
 
                 let outputSlashArray = outputSpaceArray[1].split("/");
-                if(outputSlashArray.length != 2) {
+                if (outputSlashArray.length != 2) {
                     return null;
                 }
 
-                if(isNaN(outputSlashArray[0]) || isNaN(outputSlashArray[1])) {
+                if (isNaN(outputSlashArray[0]) || isNaN(outputSlashArray[1])) {
                     return null;
                 }
                 return (100 / parseInt(outputSlashArray[1])) * parseInt(outputSlashArray[0]);
             }
 
             function onProgress(event) {
-                if(event && event.stream) {
+                if (event && event.stream) {
                     // remove newlines etc
                     const output = event.stream.replace(/(\r\n|\n|\r)/gm, "");
 
                     // if this line has 'Step 1/5' etc, then we'll call the calback
-                    if(updateProgressCallback) {
+                    if (updateProgressCallback) {
                         let progress = parseProgress(output);
-                        if(progress) {
+                        if (progress) {
                             updateProgressCallback(progress);
                         }
                     }

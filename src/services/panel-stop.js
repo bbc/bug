@@ -9,7 +9,7 @@ const moduleNeedsContainer = require('@services/module-needscontainer');
 module.exports = async (panelId) => {
 
     try {
-        var config = await panelConfig.get(panelId);
+        const config = await panelConfig.get(panelId);
         if (!config) {
             throw new Error(`Panel ${panelId} not found`);
         }

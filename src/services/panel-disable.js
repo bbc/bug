@@ -22,7 +22,6 @@ module.exports = async (panelId) => {
         }
 
         // then we stop the container in docker
-        logger.info(`panel-disable: stoppping container for panel id ${panelId}`);
         return await panelStop(panelId);
 
     } catch (error) {
