@@ -36,7 +36,7 @@ export default function PanelTableMenu(props) {
     const hideRestart = !needsContainer;
     const disableEnable = props.panel.enabled || props.panel._isbuilding;
     const disableDisable = !props.panel.enabled || props.panel._isbuilding;
-    const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding || !needsContainer;
+    const disableRestart = !props.panel.enabled || !needsContainer;
     const disableEdit = props.panel._isbuilding;
     const disableDelete = props.panel._isbuilding;
 
@@ -55,14 +55,18 @@ export default function PanelTableMenu(props) {
     const handleRestart = () => {
         AxiosCommand(`/api/panel/restart/${props.panel.id}`);
         sendAlert(`Restarting ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
+        setAnchorEl(null);
     };
 
     const handleDelete = () => {
         AxiosDelete(`/api/panel/${props.panel.id}`);
+        sendAlert(`Deleting ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
+        setAnchorEl(null);
     };
 
     const handleEdit = () => {
         setRedirectUrl(`/panel/${props.panel.id}/edit`);
+        setAnchorEl(null);
     };
 
     const PanelMenuItem = React.forwardRef(({ text, onClick, hidden, disabled, children }, ref) => {
