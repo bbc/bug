@@ -15,7 +15,7 @@
         "title": "Clock",
         "module": "clock",
         "type": "digital",
-        "description": "A Clock",
+        "description": "Tick Tock",
         "enabled": true
     }
 }

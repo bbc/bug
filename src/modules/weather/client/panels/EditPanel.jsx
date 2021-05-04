@@ -1,24 +1,41 @@
 import React from "react";
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import { useForm } from "react-hook-form";
+import PanelConfig from "@core/PanelConfig";
+import Loading from "@components/Loading";
+import useAsyncEffect from 'use-async-effect';
+import { useParams } from "react-router-dom";
+import AxiosGet from "@utils/AxiosGet";
 
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+export default function EditPanel() {
+    const params = useParams();
+    const [config, setConfig] = React.useState(null);
 
-export default function ConfigPanel({ register, errors, config }) {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
 
-    return(
+    useAsyncEffect(async () => {
+        setConfig(await AxiosGet(`/api/panelconfig/${params.panelId}`));
+    }, []);
 
-        <React.Fragment>
+    if (!config) {
+        return <Loading />;
+    }
+
+    return (
+
+        <PanelConfig config={config} handleSubmit={handleSubmit}>
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('title', { required: true } )}}
-                    variant="outlined"
+                    inputProps={{ ...register('title', { required: true }) }}
+                    variant="filled"
                     fullWidth
                     error={errors?.title ? true : false}
-                    defaultValue={ config?.title }
+                    defaultValue={config?.title}
                     type='text'
                     label="Panel Title"
                 />
@@ -26,11 +43,11 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('description')}}
+                    inputProps={{ ...register('description') }}
                     variant="outlined"
                     fullWidth
                     error={errors?.description ? true : false}
-                    defaultValue={ config?.description }
+                    defaultValue={config?.description}
                     type='text'
                     label="Description"
                 />
@@ -38,11 +55,11 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={12} >
                 <TextField
-                    inputProps={{...register('openweather_key', { required: true } )}}
+                    inputProps={{ ...register('openweather_key', { required: true }) }}
                     variant="outlined"
                     fullWidth
                     error={errors?.openweather_key ? true : false}
-                    defaultValue={ config?.openweather_key }
+                    defaultValue={config?.openweather_key}
                     type='text'
                     label="OpenWeather API Key"
                 />
@@ -50,11 +67,11 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={12} >
                 <TextField
-                    inputProps={ {...register('label', { required: true } )}}
-                    variant="outlined"
+                    inputProps={{ ...register('label', { required: true }) }}
+                    variant="filled"
                     fullWidth
                     error={errors?.label ? true : false}
-                    defaultValue={ config?.label }
+                    defaultValue={config?.label}
                     type='text'
                     label='Location Name'
                 />
@@ -62,11 +79,11 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={6} >
                 <TextField
-                    inputProps={{...register('longitude', { required: true } ), step: 'any' }}
-                    variant="outlined"
+                    inputProps={{ ...register('longitude', { required: true }), step: 'any' }}
+                    variant="filled"
                     fullWidth
                     error={errors?.longitude ? true : false}
-                    defaultValue={ config?.longitude }
+                    defaultValue={config?.longitude}
                     type='number'
                     label='Location Longitude'
                     step='any'
@@ -75,25 +92,25 @@ export default function ConfigPanel({ register, errors, config }) {
 
             <Grid item xs={6} >
                 <TextField
-                    inputProps={ {...register('latitude', { required: true } ), step: 'any' }}
-                    variant="outlined"
+                    inputProps={{ ...register('latitude', { required: true }), step: 'any' }}
+                    variant="filled"
                     fullWidth
                     error={errors?.latitude ? true : false}
-                    defaultValue={ config?.latitude }
+                    defaultValue={config?.latitude}
                     type='number'
                     label='Location Latitude'
                 />
             </Grid>
 
             <Grid item xs={6} >
-                <FormControl variant="outlined" fullWidth>
-                    <InputLabel htmlFor="outlined-age-native-simple">Forecast Length</InputLabel>
+                <FormControl variant="filled" fullWidth>
+                    <InputLabel>Forecast Length</InputLabel>
                     <Select
                         native
-                        defaultValue={ config?.length }
+                        defaultValue={config?.length}
                         label="Forecast Length"
                         error={errors?.length ? true : false}
-                        inputProps={{...register('length', { required: true } )}}
+                        inputProps={{ ...register('length', { required: true }) }}
                     >
                         <option value={'today'}>Today Only</option>
                         <option value={'week'}>5 Day Forecast</option>
@@ -102,14 +119,14 @@ export default function ConfigPanel({ register, errors, config }) {
             </Grid>
 
             <Grid item xs={6} >
-                <FormControl variant="outlined" fullWidth>
-                    <InputLabel htmlFor="outlined-age-native-simple">Units</InputLabel>
+                <FormControl variant="filled" fullWidth>
+                    <InputLabel>Units</InputLabel>
                     <Select
                         native
-                        defaultValue={ config?.units }
+                        defaultValue={config?.units}
                         label="Units"
                         error={errors?.units ? true : false}
-                        inputProps={{...register('units', { required: true } )}}
+                        inputProps={{ ...register('units', { required: true }) }}
                     >
                         <option value={'metric'}>Metric</option>
                         <option value={'standard'}>Standard</option>
@@ -118,13 +135,7 @@ export default function ConfigPanel({ register, errors, config }) {
                 </FormControl>
             </Grid>
 
-            <Grid item xs={12} >
-                <Button type='submit' variant="contained" color="default" size='large' disableElevation>
-                    Save
-                </Button>
-            </Grid>
-
-    </React.Fragment>
-    ); 
+        </PanelConfig>
+    );
 
 }
