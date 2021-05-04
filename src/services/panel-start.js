@@ -40,7 +40,7 @@ module.exports = async (panelId) => {
 
         // build the image for the module, if it's already been done this will be quick
         logger.info(`panel-start: building module ${config.module} for panel id ${panelId}`);
-        if (!moduleBuild(config.module, updateProgress)) {
+        if (!await moduleBuild(config.module, updateProgress)) {
             panelBuildStatusModel.setError(panelId, "Failed to build image");
             throw new Error(`Failed to build module (image)`);
         }

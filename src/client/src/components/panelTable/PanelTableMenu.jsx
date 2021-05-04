@@ -36,7 +36,7 @@ export default function PanelTableMenu(props) {
     const hideRestart = !needsContainer;
     const disableEnable = props.panel.enabled || props.panel._isbuilding;
     const disableDisable = !props.panel.enabled || props.panel._isbuilding;
-    const disableRestart = !props.panel.enabled || !needsContainer;
+    const disableRestart = !needsContainer;
     const disableEdit = props.panel._isbuilding;
     const disableDelete = props.panel._isbuilding;
 
