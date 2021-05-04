@@ -8,7 +8,7 @@ module.exports = async (panelId) => {
 
     try {
 
-        var panelConfig = await panelConfigModel.get(panelId);
+        const panelConfig = await panelConfigModel.get(panelId);
         if(!panelConfig) {
             throw new Error(`Panel ${panelId} not found`);
         }
@@ -21,8 +21,7 @@ module.exports = async (panelId) => {
             throw new Error(`Failed to set config of panel id ${panelId} to enabled`);
         }
 
-        // then we stop the container in docker
-        logger.info(`panel-enable: starting container for panel id ${panelId}`);
+        // then we start the container in docker
         return await panelStart(panelId);
 
     } catch (error) {

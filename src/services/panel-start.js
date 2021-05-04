@@ -2,6 +2,7 @@
 
 const logger = require('@utils/logger');
 const panelConfig = require('@models/panel-config');
+const moduleConfig = require('@models/module-config');
 const moduleBuild = require('@services/module-build')
 const dockerGetContainer = require('@services/docker-getcontainer');
 const dockerStartContainer = require('@services/docker-startcontainer');
@@ -30,7 +31,8 @@ module.exports = async (panelId) => {
             throw new Error(`Panel ${panelId} not found`);
         }
 
-        if (config?.needsContainer) {
+        const module = await moduleConfig.get(config.module)
+        if (module.needsContainer) {
             panelBuildStatusModel.set(panelId, "Building image", 5);
 
             // build the image for the module, if it's already been done this will be quick
@@ -67,7 +69,10 @@ module.exports = async (panelId) => {
                 return await dockerStartContainer(container);
             }
         }
-        return true;
+        else {
+            return true;
+        }
+
 
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");
