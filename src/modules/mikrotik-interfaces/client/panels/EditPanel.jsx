@@ -65,7 +65,7 @@ export default function EditPanel({ config }) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} lg={6}>
                     <TextField
                         inputProps={{ ...register("username", { required: true }) }}
                         variant="filled"
@@ -77,7 +77,7 @@ export default function EditPanel({ config }) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} lg={6}>
                     <TextField
                         inputProps={{ ...register("password", { required: true }) }}
                         variant="filled"
@@ -91,25 +91,25 @@ export default function EditPanel({ config }) {
 
                 <Grid item xs={12}>
                     <ChipInput
-                        id="protected_interfaces"
                         name="protected_interfaces"
                         label="Protected Interfaces"
                         control={control}
                         defaultValue={config?.protected_interfaces}
                         variant="filled"
                         error={errors.protected_interfaces ? true : false}
+                        fullWidth
                     />
                 </Grid>
 
                 <Grid item xs={12}>
                     <ChipInput
-                        id="excluded_interfaces"
                         name="excluded_interfaces"
                         label="Excluded Interfaces"
                         control={control}
                         defaultValue={config?.excluded_interfaces}
                         variant="filled"
                         error={errors.excluded_interfaces ? true : false}
+                        fullWidth
                     />
                 </Grid>
             </PanelConfig>
