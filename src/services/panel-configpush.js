@@ -16,14 +16,12 @@ module.exports = async (panelId) => {
             const response = await axios.put(url, panelConfig);
 
             if (response?.status === 200 && response?.data?.status === "success") {
-                logger.info(`panel-pushconfig: successfully pushed config to ${url}`);
+                logger.info(`panel-configpush: successfully pushed config to ${url}`);
                 return true;
             }
-
         }
     } catch (error) {
-        logger.warn(`panel-pushconfig: ${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to push panel config to ${url}`);
+        logger.warn(`panel-configpush: ${error.stack || error.trace || error || error.message}`);
     }
-    return false;
+    throw new Error(`Failed to push panel config to ${url}`);
 };
