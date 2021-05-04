@@ -15,7 +15,8 @@ export default function MainPanel(props) {
         radius = radius * 0.9;
 
         drawClock();
-        setInterval(drawClock,500);
+        const interval = setInterval(drawClock, 500);
+        return () => { clearInterval(interval); }
     },[]);
 
     const drawClock = () => {
@@ -91,8 +92,8 @@ export default function MainPanel(props) {
     }
 
     return (
-      <React.Fragment>
+      <>
         <canvas width={window.innerHeight*0.76} height={window.innerHeight*0.76} ref={canvasRef} />
-      </React.Fragment> 
+      </> 
     );
 }

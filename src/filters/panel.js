@@ -15,6 +15,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus) =>
         title: panelConfig['title'],
         enabled: panelConfig['enabled'],
         module: panelConfig['module'],
+        config: panelConfig,
         _module: moduleConfig,
         _container: containerInfo,
         _buildstatus: panelBuildStatus,

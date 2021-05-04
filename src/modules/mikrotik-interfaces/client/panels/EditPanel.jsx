@@ -5,13 +5,8 @@ import { useForm } from "react-hook-form";
 import ChipInput from '@core/ChipInput';
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
-import useAsyncEffect from 'use-async-effect';
-import { useParams } from "react-router-dom";
-import AxiosGet from "@utils/AxiosGet";
 
-export default function EditPanel() {
-    const params = useParams();
-    const [config, setConfig] = React.useState(null);
+export default function EditPanel({ config }) {
 
     const {
         register,
@@ -19,10 +14,6 @@ export default function EditPanel() {
         control,
         formState: { errors },
     } = useForm();
-
-    useAsyncEffect(async () => {
-        setConfig(await AxiosGet(`/api/panelconfig/${params.panelId}`));
-    }, []);
 
     if (!config) {
         return <Loading />;

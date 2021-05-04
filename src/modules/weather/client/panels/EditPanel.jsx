@@ -4,23 +4,17 @@ import TextField from "@material-ui/core/TextField";
 import { useForm } from "react-hook-form";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
-import useAsyncEffect from 'use-async-effect';
-import { useParams } from "react-router-dom";
-import AxiosGet from "@utils/AxiosGet";
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
-export default function EditPanel() {
-    const params = useParams();
-    const [config, setConfig] = React.useState(null);
-
+export default function EditPanel({config}) {
+    
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-
-    useAsyncEffect(async () => {
-        setConfig(await AxiosGet(`/api/panelconfig/${params.panelId}`));
-    }, []);
 
     if (!config) {
         return <Loading />;

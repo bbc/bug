@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MainPanel(props) {
+export default function MainPanel({ config }) {
   const classes = useStyles();
 
   const renderClock = () => {
-    let clock =  (<DigitalClock/>);
-    if( props?.config?.type === 'analogue' ){
-      clock = (<AnalogueClock/>);
+    let clock = (<DigitalClock />);
+    if (config?.type === 'analogue') {
+      clock = (<AnalogueClock />);
     }
     return clock
   }
@@ -35,24 +35,24 @@ export default function MainPanel(props) {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <Grid 
-          container spacing={4} 
+        <Grid
+          container spacing={4}
           direction="column"
           justify="center"
           alignItems="center"
         >
           <Grid item lg={6} sm={12} xs={12} >
-            
-              <Card className={classes.card} >
-                <CardContent>
-                   { renderClock() }
-                </CardContent>
-                <DateString/>
-              </Card>
-  
+
+            <Card className={classes.card} >
+              <CardContent>
+                {renderClock()}
+              </CardContent>
+              <DateString />
+            </Card>
+
           </Grid>
         </Grid>
       </div>
-    </React.Fragment> 
+    </React.Fragment>
   );
 }

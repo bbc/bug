@@ -11,24 +11,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MainPanel(props) {
+export default function MainPanel({ config }) {
 
   const classes = useStyles();
 
   return (
-    <React.Fragment>
+    <>
       <div className={classes.root}>
-        <Grid 
-          container spacing={4} 
+        <Grid
+          container spacing={4}
           direction="row"
           justify="center"
           alignItems="center"
         >
           <Grid item lg={12} sm={12} xs={12} >
-            <Weather { ...props?.config } />
+            <Weather {...config} />
           </Grid>
         </Grid>
       </div>
-    </React.Fragment> 
+    </>
   );
 }

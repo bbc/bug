@@ -9,7 +9,8 @@ export default function DateString(props) {
     
     useEffect(() => {
         getTime();
-        setInterval(getTime,500);
+        const interval = setInterval(getTime, 500);
+        return () => { clearInterval(interval); }
     },[]);
 
     const getTime = () => {

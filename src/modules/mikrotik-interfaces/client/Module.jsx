@@ -4,8 +4,14 @@ import EditPanel from "./panels/EditPanel";
 import InterfacePanel from "./panels/InterfacePanel";
 import { Switch, Route } from "react-router-dom";
 import ModuleWrapper from "@core/ModuleWrapper";
+import { useSelector } from "react-redux";
 
 export default function Module({ panelId }) {
+
+    const panel = useSelector((state) => {
+        let panelFilter = state.panelList.data.filter((item) => item.id === panelId);
+        return panelFilter[0];
+    });
 
     return (
         <ModuleWrapper panelId={panelId}>
@@ -14,7 +20,7 @@ export default function Module({ panelId }) {
                     <MainPanel />
                 </Route>
                 <Route exact path="/panel/:panelId/edit">
-                    <EditPanel />
+                    <EditPanel config={panel.config} />
                 </Route>
                 <Route exact path="/panel/:panelId/interface/:interfaceId">
                     <InterfacePanel />

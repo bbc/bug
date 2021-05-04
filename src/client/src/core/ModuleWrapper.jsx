@@ -27,12 +27,14 @@ export default function ModuleWrapper({ panelId, children }) {
         return <Loading />;
     }
 
-    if (panel._isbuilding) {
-        return <PanelBuilding panel={panel} />;
-    }
+    if (panel.module.needsContainer) {
+        if (panel._isbuilding) {
+            return <PanelBuilding panel={panel} />;
+        }
 
-    if (!panel._isrunning) {
-        return <PanelStopped panel={panel} />;
+        if (!panel._isrunning) {
+            return <PanelStopped panel={panel} />;
+        }
     }
 
     return children;
