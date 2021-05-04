@@ -24,9 +24,12 @@ export default function PagePanel(props) {
             dispatch(panelSlice.actions.set(tempPanel));
 
             // update the page title
-            if(tempPanel !== null) {
+            if (tempPanel !== null) {
                 dispatch(pageTitleSlice.actions.set(tempPanel?.title));
             }
+        },
+        () => {
+            dispatch(panelSlice.actions.set(null));
         },
         [panelId]
     );
