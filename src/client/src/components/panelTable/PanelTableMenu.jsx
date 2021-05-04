@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
     link: {
         textDecoration: "none",
     },
+    disabledLink: {
+        textDecoration: "none",
+        pointerEvents: "none",
+    },
 }));
 
 export default function PanelTableMenu(props) {
@@ -41,6 +45,8 @@ export default function PanelTableMenu(props) {
     const disableStart = !props.panel.enabled || props.panel._isrunning || props.panel._isbuilding;
     const disableStop = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
     const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
+    const disableEdit = props.panel._isbuilding;
+    const disableDelete = props.panel._isbuilding;
 
     const handleStart = () => {
         sendAlert(`Starting ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
@@ -90,16 +96,19 @@ export default function PanelTableMenu(props) {
                     <ListItemText primary="Restart" />
                 </MenuItem>
                 <Divider />
-                <Link to={`/panel/${props.panel.id}/edit`} className={classes.link}>
-                    <MenuItem>
-                        <ListItemIcon>
+                <Link
+                    to={`/panel/${props.panel.id}/edit`}
+                    className={disableEdit ? classes.disabledLink : classes.link}
+                >
+                    <MenuItem disabled={disableEdit}>
+                        <ListItemIcon disabled={disableEdit}>
                             <EditIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Edit" />
                     </MenuItem>
                 </Link>
-                <MenuItem onClick={handleDelete}>
-                    <ListItemIcon>
+                <MenuItem onClick={handleDelete} disabled={disableDelete}>
+                    <ListItemIcon disabled={disableDelete}>
                         <DeleteIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Delete" />

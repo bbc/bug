@@ -8,6 +8,7 @@ import ProgressCounter from "@components/ProgressCounter";
 
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const state = {
     textTransform: "uppercase",
@@ -74,14 +75,23 @@ export default function PanelTableRow(props) {
         return <div className={classes.stateUninitialised}>IDLE</div>;
     };
 
+    const renderSwitch = (panel) => {
+        if (panel._isbuilding) {
+            return <CircularProgress />;
+        }
+        return (
+            <ApiSwitch
+                panelId={panel.id}
+                checked={panel.enabled}
+                onChange={(checked) => handleEnabledChanged(checked, panel.id)}
+            />
+        );
+    };
+
     return (
         <TableRow key={props.id}>
-            <TableCell>
-                <ApiSwitch
-                    panelId={props.id}
-                    checked={props.enabled}
-                    onChange={(checked) => handleEnabledChanged(checked, props.id)}
-                />
+            <TableCell style={{ textAlign: 'center' }} >
+                {renderSwitch(props)}
             </TableCell>
             <TableCell>
                 <div className={classes.title}>{props.title}</div>
