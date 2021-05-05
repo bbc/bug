@@ -24,12 +24,12 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     colMessage: {
-        "@media (max-width:512px)": {
+        "@media (max-width:200px)": {
             display: "none",
         },
     },
     tableHead: {
-        "@media (max-width:512px)": {
+        "@media (max-width:200px)": {
             display: "none",
         },
     }
