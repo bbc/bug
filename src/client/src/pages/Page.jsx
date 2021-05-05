@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     homePageContent: {
-        padding: theme.spacing(2),
+        padding: 12,
         "@media (max-width:1200px)": {
             padding: 8,
         },

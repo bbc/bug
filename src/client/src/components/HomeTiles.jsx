@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 500,
     },
     gridItem: {
+        padding: 12,
         "@media (max-width:1200px)": {
             padding: 8,
         },
