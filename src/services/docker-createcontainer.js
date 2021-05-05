@@ -14,7 +14,7 @@ module.exports = async (configObject) => {
         let containerOptions = {
             Image: configObject.module + ":latest",
             Cmd: ['npm', 'run', nodeEnv],
-            Env: [`PORT=${modulePort}`],
+            Env: [`PORT=${modulePort}`,`PANEL_ID=${configObject.id}`],
             Hostname: configObject.id,
             name: configObject.id,
             Labels: {
