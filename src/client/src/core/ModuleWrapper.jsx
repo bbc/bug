@@ -5,6 +5,8 @@ import PanelStopped from "@components/PanelStopped";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
 import { useSelector } from 'react-redux'
+import { Switch } from "react-router-dom";
+import PanelContext from '@core/PanelContext';
 
 export default function ModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
@@ -36,6 +38,11 @@ export default function ModuleWrapper({ panelId, children }) {
             return <PanelStopped panel={panel} />;
         }
     }
-
-    return children;
+    return (
+        <PanelContext.Provider value={panel.config} >
+            <Switch>
+                {children}
+            </Switch>
+        </PanelContext.Provider>
+    );
 }

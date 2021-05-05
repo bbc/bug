@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AxiosGet from "@utils/AxiosGet";
 import Grid from '@material-ui/core/Grid';
+import PanelContext from '@core/PanelContext';
+
 import OutputCard from '../components/OutputCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -11,7 +13,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MainPanel({ config }) {
+export default function MainPanel() {
+
+  const config = useContext(PanelContext);
 
   const classes = useStyles();
   const [outputs, setOutputs] = useState([]);

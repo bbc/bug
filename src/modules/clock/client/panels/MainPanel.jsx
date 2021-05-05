@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Card from '@material-ui/core/Card';
@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import DigitalClock from '../components/DigitalClock';
 import AnalogueClock from '../components/AnalogueClock';
 import DateString from '../components/DateString';
+import PanelContext from '@core/PanelContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,8 +22,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MainPanel({ config }) {
+export default function MainPanel() {
+
   const classes = useStyles();
+  const config = useContext(PanelContext);
 
   const renderClock = () => {
     let clock = (<DigitalClock />);
