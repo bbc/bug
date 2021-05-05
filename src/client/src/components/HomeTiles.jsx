@@ -35,7 +35,19 @@ const useStyles = makeStyles((theme) => ({
     tileTitle: {
         fontSize: '1.3rem',
         fontWeight: 500,
-    }
+    },
+    gridItem: {
+        "@media (max-width:1200px)": {
+            padding: 8,
+        },
+        "@media (max-width:1024px)": {
+            padding: 4,
+        },
+        "@media (max-width:600px)": {
+            padding: 0,
+            paddingBottom: 1
+        },
+    },
 }));
 
 const HomeTiles = (props) => {
@@ -47,7 +59,7 @@ const HomeTiles = (props) => {
             return null;
         }
         return (
-            <Grid item lg={4} sm={6} xs={12} key={item.id}>
+            <Grid item lg={4} sm={6} xs={12} key={item.id} className={classes.gridItem}>
                 <Link className={classes.tileLink} key={item.id} to={`/panel/${item.id}`}>
                     <Box className={classes.tile}>
                         <DynamicIcon className={classes.tileIcon} iconName={item._module.icon} />
@@ -63,7 +75,7 @@ const HomeTiles = (props) => {
             return <Loading />;
         }
         return (
-            <Grid container spacing={2}>
+            <Grid container className={classes.gridContainer}>
                 {panelList.data.map((panel) => renderTile(panel))}
             </Grid>
         );

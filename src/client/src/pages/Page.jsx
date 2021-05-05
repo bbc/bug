@@ -6,9 +6,9 @@ import PagePanelsAdd from "./PagePanelsAdd";
 import PageSystem from "./PageSystem";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import NavDesktop from '@components/NavDesktop';
-import NavMobile from '@components/NavMobile';
-import Hidden from '@material-ui/core/Hidden';
+import NavDesktop from "@components/NavDesktop";
+import NavMobile from "@components/NavMobile";
+import Hidden from "@material-ui/core/Hidden";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +38,18 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(0),
         },
     },
+    homePageContent: {
+        padding: theme.spacing(2),
+        "@media (max-width:1200px)": {
+            padding: 8,
+        },
+        "@media (max-width:1024px)": {
+            padding: 4,
+        },
+        "@media (max-width:600px)": {
+            padding: 0,
+        },
+    },
     bugLogo: {
         color: theme.palette.secondary.main,
         padding: "0.8rem",
@@ -50,27 +62,35 @@ const Page = (props) => {
     const Content = () => (
         <>
             <div className={classes.toolbar} />
-            <div className={classes.pagecontent}>
-                <Switch>
-                    <Route exact path="/">
+            <Switch>
+                <Route exact path="/">
+                    <div className={classes.homePageContent}>
                         <PageHome />
-                    </Route>
-                    <Route exact path="/panels">
+                    </div>
+                </Route>
+                <Route exact path="/panels">
+                    <div className={classes.pagecontent}>
                         <PagePanels />
-                    </Route>
-                    <Route exact path="/panels/add">
+                    </div>
+                </Route>
+                <Route exact path="/panels/add">
+                    <div className={classes.pagecontent}>
                         <PagePanelsAdd />
-                    </Route>
-                    <Route path="/panel/:panelid">
+                    </div>
+                </Route>
+                <Route path="/panel/:panelid">
+                    <div className={classes.pagecontent}>
                         <PagePanel />
-                    </Route>
-                    <Route exact path="/system">
+                    </div>
+                </Route>
+                <Route exact path="/system">
+                    <div className={classes.pagecontent}>
                         <PageSystem />
-                    </Route>
-                </Switch>
-            </div>
+                    </div>
+                </Route>
+            </Switch>
         </>
-    )
+    );
 
     return (
         <Router>

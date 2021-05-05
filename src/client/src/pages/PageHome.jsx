@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',     
     },
     quote:{
-        marginTop: theme.spacing(1),
+        margin: theme.spacing(1),
         color: theme.palette.primary.main,
         fontSize: '1.1rem'
     }
@@ -36,7 +36,7 @@ export default function PageHome() {
         <>
             <HomeTiles />
             
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={12}>
                     <Box className={classes.tile}>
                         <Typography variant="body2" component="p" className={classes.quote}>
