@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux'
 
 const Menu = (props) => {
     const panelList = useSelector(state => state.panelList);
+    const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
 
     const renderMenuItem = (item) => {
         if (!item.enabled) {
@@ -64,7 +65,7 @@ const Menu = (props) => {
                 </List>
                 <Divider />
                 {renderMenuItems(props)}
-                <Divider />
+                {enabledPanelList.length > 0 ? <Divider /> : null}
                 <List>
                     <ListItem button component={Link} to="/system">
                         <ListItemIcon>
