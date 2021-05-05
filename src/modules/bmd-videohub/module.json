@@ -16,7 +16,7 @@
         "module": "bmd-videohub",
         "description": "",
         "notes": "",
-        "enabled": true,
+        "enabled": false,
         "ip_address": "",
         "show_number": true,
         "use_take": true,

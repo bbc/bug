@@ -14,6 +14,6 @@
         "module": "clock",
         "type": "digital",
         "description": "Tick Tock",
-        "enabled": true
+        "enabled": false
     }
 }
