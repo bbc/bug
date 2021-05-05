@@ -1,15 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
 import ApiSwitch from "@core/ApiSwitch";
 import PanelTableMenu from "@components/panelTable/PanelTableMenu";
 import AxiosCommand from "@utils/AxiosCommand";
 import ProgressCounter from "@components/ProgressCounter";
-
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
 import clsx from "clsx";
 
 const state = {
@@ -57,6 +54,16 @@ const useStyles = makeStyles((theme) => ({
     },
     disabledText: {
         opacity: 0.5,
+    },
+    colDescription: {
+        "@media (max-width:1024px)": {
+            display: "none",
+        },
+    },
+    colModule: {
+        "@media (max-width:512px)": {
+            display: "none",
+        },
     },
 }));
 
@@ -117,14 +124,14 @@ export default function PanelTableRow(props) {
                 {renderState(props)}
             </TableCell>
             <TableCell
-                className={clsx({
+                className={clsx(classes.colDescription, {
                     [classes.disabledText]: !props.enabled || props._isPending,
                 })}
             >
                 {props.description}
             </TableCell>
             <TableCell
-                className={clsx({
+                className={clsx(classes.colModule, {
                     [classes.disabledText]: !props.enabled || props._isPending,
                 })}
             >

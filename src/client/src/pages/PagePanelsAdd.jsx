@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PageHome(props) {
+export default function PagePanelsAdd(props) {
     const classes = useStyles();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
