@@ -29,12 +29,19 @@ router.get("/hello", function (req, res, next) {
 
 /**
  * @swagger
- * /system/logs:
- *    get:
- *      description: Test route, BUG greets you in response.
- *      tags: [system]
- *      produces:
- *        - application/json
+ * /system/logs/{level}:
+ *   get:
+ *     description: Returns the logs of a particular level
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: level
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The log level to return, options includ (info,http,action,warning,error)
  *      responses:
  *        '200':
  *          description: Success
