@@ -12,7 +12,7 @@
     "defaultconfig": {
         "id": "",
         "order": 0,
-        "needsConfigure":true,
+        "needsConfigured":true,
         "title": "",
         "module": "bmd-videohub",
         "description": "",

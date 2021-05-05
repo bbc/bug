@@ -15,7 +15,7 @@
     ],
     "defaultconfig": {
         "id": "",
-        "needsConfigure":true,
+        "needsConfigured":true,
         "order": 0,
         "title": "",
         "module": "tsl-mdu",

@@ -12,6 +12,9 @@ module.exports = async (newConfig) => {
 
         // merge existing with config from UI
         const combinedConfig = { ...config, ...newConfig};
+        
+        //Module has been configured, so set the flag
+        combinedConfig.needsConfigured = false;
 
         // and save it to a file
         if(!await panelConfigModel.set(combinedConfig)) {
