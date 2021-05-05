@@ -25,8 +25,7 @@ module.exports = async (panelId) => {
         } else {
             logger.warn(`panel-delete: no container found for panel id ${panelId}`);
         }
-        await panelConfigModel.delete(panelId);
-        return true;
+        return await panelConfigModel.delete(panelId);
     } catch (error) {
         logger.warn(`panel-delete: ${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to delete panel id ${panelId}`);

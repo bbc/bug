@@ -2,11 +2,14 @@
 
 //TODO error handling with throw
 
-const fs = require('fs')
-const util = require('util');
-const deleteFile = util.promisify(fs.unlinkSync);
+const fs = require('fs').promises;
 
 module.exports = async (filename) => {
-    const state = await deleteFile(filename);
-    return state;
+    try {
+        await fs.unlink(filename);
+    } catch (error) {
+        logger.warn(`delete-file: ${error.stack || error.trace || error || error.message}`);
+        return false;
+    }
+    return true;
 }
