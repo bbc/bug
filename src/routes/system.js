@@ -39,8 +39,8 @@ router.get("/hello", function (req, res, next) {
  *        '200':
  *          description: Success
  */
- router.get("/logs/:level", function (req, res, next) {
-    const logs = systemLogs(req.params.level);
+ router.get("/logs/:level", async function (req, res, next) {
+    const logs = await systemLogs(req.params.level);
     res.json(logs);
 });
 
