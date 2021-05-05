@@ -1,9 +1,9 @@
 const express = require('express');
-const config = express.Router();
+const router = express.Router();
 const configGet = require('../../services/config-get');
 const configPut = require('../../services/config-put');
 
-config.get('/', async function (req, res) {
+router.get('/', async function (req, res, next) {
     try {
         res.json({
             status: "success",
@@ -17,7 +17,7 @@ config.get('/', async function (req, res) {
     }
 });
 
-config.put('/', async function (req, res) {
+router.put('/', async function (req, res, next) {
     try {
         res.json({
             status: "success",
@@ -31,4 +31,4 @@ config.put('/', async function (req, res) {
     }
 });
 
-module.exports = config;
+module.exports = router;

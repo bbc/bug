@@ -9,14 +9,12 @@
     "author": "Ryan McCartney",
     "license": "ISC",
     "dependencies": {
-        "bitrate": "^1.0.4",
         "delay": "^5.0.0",
         "express": "^4.17.1",
         "http-errors": "^1.8.0",
         "jssoup": "0.0.12",
         "module-alias": "^2.2.2",
         "morgan": "^1.10.0",
-        "package.json": "^2.0.1",
         "path": "^0.12.7",
         "axios": "^0.21.1"
     },
@@ -38,8 +36,14 @@
         "@root": ".",
         "@routes": "./api/routes/",
         "@api": "./api/",
-        "@services": "./ßservices/",
+        "@services": "./services/",
         "@data": "./data/",
         "@utils": "./utils/"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "./data/*",
+            "./config/*"
+        ]
     }
 }

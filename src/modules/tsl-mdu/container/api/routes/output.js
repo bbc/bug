@@ -13,11 +13,9 @@ const setOutput = require('@services/output-set');
 output.get('/all', function(req, res){
 
   let response = {
-    status:{
-      request_url: req.protocol + '://' + req.get('host') + req.originalUrl,
-      request_method: req.method,
-      request_params: req.query
-    }
+    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+    request_method: req.method,
+    request_params: req.query
   }
 
   response.output = getOutputs();
@@ -29,11 +27,9 @@ output.get('/all', function(req, res){
 output.get('/:output_number', function(req, res){
 
   let response = {
-    status:{
-      request_url: req.protocol + '://' + req.get('host') + req.originalUrl,
-      request_method: req.method,
-      request_params: req.query
-    }
+    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+    request_method: req.method,
+    request_params: req.query
   }
 
   response.output = getOutput(req?.params?.output_number);
@@ -45,11 +41,9 @@ output.get('/:output_number', function(req, res){
 output.post('/:output_number', function(req, res){
 
   let response = {
-    status:{
-      request_url: req.protocol + '://' + req.get('host') + req.originalUrl,
-      request_method: req.method,
-      request_params: req.query
-    }
+    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+    request_method: req.method,
+    request_params: req.query
   }
 
   response.output = setOutput(req?.params?.output_number);

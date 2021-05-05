@@ -7,17 +7,15 @@ const mduStatus = require('@services/mdu-status');
 const express = require('express'),
 status = express.Router();
 
-status.get('/', function(req, res){
-  const completeURL = req.protocol + '://' + req.get('host') + req.originalUrl;
+status.get('/', async function(req, res){
+  
   let response = {
-    status: {
-    request_url: completeURL,
+    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
     request_method: req.method,
     request_params: req.query
-    }
   }
 
-  response.mdu = mduStatus();
+  response.mdu = await mduStatus();
 
   res.header("Content-Type",'application/json');
   res.json(response);
