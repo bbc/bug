@@ -4,12 +4,13 @@ const mongoCollection = require('../utils/mongo-collection');
 const mikrotikFetchTraffic = require('../services/mikrotik-fetchtraffic');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
-const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
+const configGet = require("../services/config-get");
 const mongoDb = require('../utils/mongo-db');
 const trafficAddHistory = require('../services/traffic-addhistory');
 const delayMs = 2000;
 const errorDelayMs = 10000;
 let trafficCollection;
+let config;
 
 process.on('uncaughtException', function(err) {
     console.log("fetch-traffic: device poller failed ... restarting");
@@ -19,9 +20,9 @@ process.on('uncaughtException', function(err) {
 const pollDevice = async () => {
 
     const conn = new RosApi({
-        host: '172.26.108.126',
-        user: 'bug',
-        password: 'sfsafawffasfasr33r',
+        host: config.address,
+        user: config.username,
+        password: config.password,
         timeout: 5
     });
 
@@ -70,8 +71,19 @@ const pollDevice = async () => {
 const main = async () => {
 
     try {
+        config = await configGet();
+        if(!config) {
+            throw new Error();
+        }
+        console.log("fetch-traffic: got config OK");
+    } catch (error) {
+        console.log(`fetch-traffic: failed to fetch config`);
+        return;
+    }
+
+    try {
         console.log(`fetch-traffic: connecting to database`);
-        await mongoDb.connect(myPanelId);
+        await mongoDb.connect(config.id);
 
     } catch (error) {
         console.log("fetch-traffic: error connecting to database");

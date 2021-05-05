@@ -1,15 +1,15 @@
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
 const mongoCollection = require('../utils/mongo-collection');
-const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const mikrotikFetchLinkStats = require('../services/mikrotik-fetchlinkstats');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
-const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
 const mongoDb = require('../utils/mongo-db');
+const configGet = require("../services/config-get");
 const delayMs = 5000;
 const errorDelayMs = 10000;
 let linkStatsCollection;
+let config;
 
 process.on('uncaughtException', function(err) {
     console.log("fetch-linkstats: device poller failed ... restarting");
@@ -19,10 +19,10 @@ process.on('uncaughtException', function(err) {
 const pollDevice = async () => {
 
     const conn = new RosApi({
-        host: '172.26.108.126',
-        user: 'bug',
-        password: 'sfsafawffasfasr33r',
-        timeout: 10
+        host: config.address,
+        user: config.username,
+        password: config.password,
+        timeout: 5
     });
 
     console.log('fetch-linkstats: starting ...');
@@ -68,8 +68,19 @@ const pollDevice = async () => {
 const main = async () => {
 
     try {
+        config = await configGet();
+        if(!config) {
+            throw new Error();
+        }
+        console.log("fetch-linkstats: got config OK");
+    } catch (error) {
+        console.log(`fetch-linkstats: failed to fetch config`);
+        return;
+    }
+
+    try {
         console.log(`fetch-linkstats: connecting to database`);
-        await mongoDb.connect(myPanelId);
+        await mongoDb.connect(config.id);
 
     } catch (error) {
         console.log("fetch-linkstats: error connecting to database");
