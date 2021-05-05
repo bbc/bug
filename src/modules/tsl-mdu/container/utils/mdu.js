@@ -1,13 +1,16 @@
 'use strict';
 
-const configGet = require('../services/config-get');
+const configGet = require('@services/config-get');
+const path = require('path');
 
-module.exports = async (index) => {
+let mdu;
+
+async function init() {
     try{
         //const config = await configGet();
-        //const mdu = require(path.join(__dirname,config?.model)).tsl_mdu;
+        //const MDU = require(path.join(__dirname,config?.model)).tsl_mdu;
 
-        config = {
+        const config = {
             title: "Test TSL Module",
             description: "Making cables less spicy",
             module: "tsl-mdu",
@@ -20,12 +23,16 @@ module.exports = async (index) => {
             model: "tsl-mdu-3es"
         };
 
-        const MDU = path.join(__dirname,'tsl-mdu-3es');
-
-        const mdu = new MDU(config);
+        const MDU = require(path.join(__dirname,'tsl-mdu-3es'));
+        mdu = await new MDU(config);
         return mdu;
         
     } catch (error) {
-        return null;
+        console.log(error)
     }
 }
+
+module.exports = {
+    init: init,
+    mdu: mdu
+};

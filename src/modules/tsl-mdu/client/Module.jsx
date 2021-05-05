@@ -1,19 +1,27 @@
 import React from "react";
 import MainPanel from "./panels/MainPanel";
-import ConfigPanel from "./panels/ConfigPanel";
+import EditPanel from "./panels/EditPanel";
 import { Switch, Route } from "react-router-dom";
+import ModuleWrapper from "@core/ModuleWrapper";
+import { useSelector } from "react-redux";
 
-export default function Module(props) {
+export default function Module({ panelId }) {
+
+    const panel = useSelector((state) => {
+        let panelFilter = state.panelList.data.filter((item) => item.id === panelId);
+        return panelFilter[0];
+    });
+
     return (
-        <>
+        <ModuleWrapper panelId={panelId}>
             <Switch>
-                <Route path="/">
-                    <MainPanel {...props}/>
+                <Route exact path="/panel/:panelId/">
+                    <MainPanel config={panel?.config}/>
                 </Route>
-                <Route path="/config">
-                    <ConfigPanel {...props}/>
+                <Route exact path="/panel/:panelId/edit">
+                    <EditPanel config={panel?.config} />
                 </Route>
             </Switch>
-        </>
+        </ModuleWrapper>
     );
 }
