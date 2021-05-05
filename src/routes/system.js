@@ -42,11 +42,11 @@ router.get("/hello", function (req, res, next) {
  *           type: string
  *         required: true
  *         description: The log level to return, options includ (info,http,action,warning,error)
- *      responses:
- *        '200':
- *          description: Success
+ *     responses:
+ *       '200':
+ *         description: Success
  */
- router.get("/logs/:level", async function (req, res, next) {
+router.get("/logs/:level", async function (req, res, next) {
     const logs = await systemLogs(req.params.level);
     res.json(logs);
 });
