@@ -1,9 +1,10 @@
 import React from "react";
+import LogTable from "@components/logTable/LogTable";
 
 export default function TabPanelLogs(props) {
     return (
         <>
-           Logs Panel
+           <LogTable level={'info'}/>
         </>
     );
 }

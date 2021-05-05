@@ -20,11 +20,8 @@ exports.get = async function (level) {
         if (!db) {
             return null;
         }
-
-        const result = await db.logs.find().toArray();
-        if (result) {
-            return result;
-        }
+        const result = await db.collection(collectionName).find({level:level}).toArray();
+        return result
     } catch (error) {
         logger.warn(`${error.trace || error || error.message}`);
     }
