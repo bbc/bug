@@ -9,7 +9,7 @@
     "license": "MIT",
     "defaultconfig": {
         "id": "",
-        "needsConfigure":true,
+        "needsConfigured":true,
         "order": 0,
         "title": "Clock",
         "module": "clock",
