@@ -13,9 +13,8 @@ export default function App() {
         <>
             <ThemeProvider theme={theme}>
                 <SnackbarProvider
-                    hideIconVariant
                     dense
-                    autoHideDuration="3000"
+                    autoHideDuration={3000}
                     preventDuplicate
                     anchorOrigin={{
                         vertical: "bottom",
