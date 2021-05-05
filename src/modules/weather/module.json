@@ -12,6 +12,7 @@
         "order": 0,
         "title": "Weather",
         "module": "weather",
+        "needsConfigure":true,
         "units": "metric",
         "openweather_key": "06f09531f033e4a3a1852f81641826ba",
         "label": "London",
