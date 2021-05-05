@@ -8,6 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
+import { useAlert } from "@utils/Snackbar";
 
 const state = {
     textTransform: "uppercase",
@@ -69,12 +70,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelTableRow(props) {
     const classes = useStyles();
+    const sendAlert = useAlert();
 
-    const handleEnabledChanged = (checked, panelId) => {
-        if (checked) {
-            AxiosCommand(`/api/panel/enable/${panelId}`);
-        } else {
-            AxiosCommand(`/api/panel/disable/${panelId}`);
+    const handleEnabledChanged = async (checked, panelId) => {
+        const command = (checked ? 'enable' : 'disable');
+        const commandText = (checked ? 'Enabled' : 'Disabled');
+        if(await AxiosCommand(`/api/panel/${command}/${panelId}`)) {
+            sendAlert(`${commandText} panel: ${props.title}`, { broadcast: true, variant: "success" });
+        }
+        else {
+            sendAlert(`Failed to ${command} panel: ${props.title}`, { variant: "error" });
         }
     };
 
