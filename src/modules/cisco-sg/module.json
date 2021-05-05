@@ -7,9 +7,11 @@
     "notes": "",
     "author": "Geoff House",
     "license": "ISC",
+    "needsContainer": true,
     "defaultconfig": {
         "id": "",
         "order": 0,
+        "needsConfigure":true,
         "title": "",
         "module": "mikrotik-interfaces",
         "description": "",
