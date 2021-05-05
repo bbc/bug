@@ -10,7 +10,7 @@
     "needsContainer": true,
     "defaultconfig": {
         "id": "",
-        "needsConfigure":true,
+        "needsConfigured":true,
         "order": 0,
         "title": "",
         "module": "mikrotik-routes",
