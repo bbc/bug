@@ -1,15 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
 import ApiSwitch from "@core/ApiSwitch";
 import PanelTableMenu from "@components/panelTable/PanelTableMenu";
 import AxiosCommand from "@utils/AxiosCommand";
 import ProgressCounter from "@components/ProgressCounter";
-
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
 import clsx from "clsx";
 
 const state = {
@@ -30,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
     state_idle: {
         ...state,
-        color: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
     },
     state_empty: {
         ...state,
@@ -56,7 +53,17 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.success.main,
     },
     disabledText: {
-        opacity: 0.5,
+        opacity: 0.3,
+    },
+    colDescription: {
+        "@media (max-width:1024px)": {
+            display: "none",
+        },
+    },
+    colModule: {
+        "@media (max-width:512px)": {
+            display: "none",
+        },
     },
 }));
 
@@ -79,12 +86,12 @@ export default function PanelTableRow(props) {
         switch (panel._status) {
             case "building":
                 return (
-                    <div className={classes.stateBuilding}>
+                    <div className={classes.state_bilding}>
                         {panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete
                     </div>
                 );
             case "error":
-                return <div className={classes.stateError}>ERROR - {panel._buildstatus.text}</div>;
+                return <div className={classes.state_error}>ERROR - {panel._buildstatus.text}</div>;
             default:
                 return <div className={`${classes['state_' + panel._status]}`}>{panel._status}</div>;
         }
@@ -117,14 +124,14 @@ export default function PanelTableRow(props) {
                 {renderState(props)}
             </TableCell>
             <TableCell
-                className={clsx({
+                className={clsx(classes.colDescription, {
                     [classes.disabledText]: !props.enabled || props._isPending,
                 })}
             >
                 {props.description}
             </TableCell>
             <TableCell
-                className={clsx({
+                className={clsx(classes.colModule, {
                     [classes.disabledText]: !props.enabled || props._isPending,
                 })}
             >

@@ -9,23 +9,24 @@ module.exports = async (newConfig) => {
     try {
         // fetch existing config
         const config = await panelConfigModel.get(newConfig?.id);
-        const combinedConfig = { ...config, ...newConfig};
 
         // merge existing with config from UI
-        const status = await panelConfigModel.set(combinedConfig);
+        const combinedConfig = { ...config, ...newConfig};
 
-        if(!status) {
+        // and save it to a file
+        if(!await panelConfigModel.set(combinedConfig)) {
             throw new Error(`Failed to merge panel configs`);
         }
 
+        // get the module (so we can check if it needs a container)
         const module = await moduleGet(combinedConfig.module);
 
-        // push config to any running module and return result bool
-        if(module.needsContainer){
-            return await panelConfigPush(newConfig?.id);
+        if(!module.needsContainer){
+            return true;
         }
 
-        return status
+        // push config to any running module and return result bool
+        return await panelConfigPush(newConfig?.id);
 
     } catch (error) {
         logger.warn(`panel-configset: ${error.stack || error.trace || error || error.message}`);

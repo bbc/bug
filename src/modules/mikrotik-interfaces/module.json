@@ -16,7 +16,7 @@
         "title": "",
         "module": "mikrotik-interfaces",
         "description": "",
-        "enabled": true,
+        "enabled": false,
         "address": "",
         "username": "bug",
         "password": "",

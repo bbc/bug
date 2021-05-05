@@ -22,7 +22,7 @@
         "model": "tsl-mdu-3es",
         "description": "",
         "outputs": 12,
-        "enabled": true,
+        "enabled": false,
         "address": "",
         "username": "root",
         "password": "telsys"
