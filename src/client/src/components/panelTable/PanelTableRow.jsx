@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
     state_idle: {
         ...state,
-        color: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
     },
     state_empty: {
         ...state,
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.success.main,
     },
     disabledText: {
-        opacity: 0.5,
+        opacity: 0.3,
     },
     colDescription: {
         "@media (max-width:1024px)": {
@@ -86,12 +86,12 @@ export default function PanelTableRow(props) {
         switch (panel._status) {
             case "building":
                 return (
-                    <div className={classes.stateBuilding}>
+                    <div className={classes.state_bilding}>
                         {panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete
                     </div>
                 );
             case "error":
-                return <div className={classes.stateError}>ERROR - {panel._buildstatus.text}</div>;
+                return <div className={classes.state_error}>ERROR - {panel._buildstatus.text}</div>;
             default:
                 return <div className={`${classes['state_' + panel._status]}`}>{panel._status}</div>;
         }
