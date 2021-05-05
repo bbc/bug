@@ -4,6 +4,7 @@ const register = require('module-alias/register')
 const bugApi = require('@bin/api');
 const bugSocket = require('@bin/socket');
 const bugWorkers = require('@bin/workers');
+const logger = require('@utils/logger');
 const http = require('http');
 
 const port = process.env.BUG_CORE_PORT || '3101';
@@ -32,11 +33,11 @@ function onError(error) {
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
-            console.error(bind + ' requires elevated privileges');
+            logger.error(bind + ' requires elevated privileges');
             process.exit(1);
             break;
         case 'EADDRINUSE':
-            console.error(bind + ' is already in use');
+            logger.error(bind + ' is already in use');
             process.exit(1);
             break;
         default:
@@ -49,5 +50,5 @@ function onListening() {
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    console.log(`Listening on ${bind}`);
+    logger.info(`Listening on ${bind}`);
 }

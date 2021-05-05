@@ -3,6 +3,7 @@
 const register = require('module-alias/register')
 const express = require('express');
 const path = require('path');
+const logger = require('@utils/logger');
 
 // import the API logic
 const bugApi = require('@bin/api');
@@ -19,4 +20,4 @@ bugApi.get('*', function(req, res) {
 });
 
 // and start it up
-bugApi.listen(port, () => console.log(`Listening on port ${port}`));
+bugApi.listen(port, () => logger.info(`Listening on port ${port}`));
