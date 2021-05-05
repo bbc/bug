@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const panelConfig = require('@models/panel-config');
 const dockerRestartContainer = require('@services/docker-restartcontainer');
 const dockerGetContainer = require('@services/docker-getcontainer');
@@ -20,11 +20,11 @@ module.exports = async (panelId) => {
         }
 
         // restart the container
-        logger.info(`panel-restart: restarting container for panel id ${panelId}`);
+        logger.info(`restarting container for panel id ${panelId}`);
         return dockerRestartContainer(container);
 
     } catch (error) {
-        logger.warn(`panel-restart: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to restart panel id ${panelId}`);
     }
 

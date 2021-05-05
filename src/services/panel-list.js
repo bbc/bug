@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const panelConfigModel = require('@models/panel-config');
 const moduleConfigModel = require('@models/module-config');
 const panelFilter = require('@filters/panel');
@@ -41,7 +41,7 @@ module.exports = async () => {
         });
         return filteredPanelList;
     } catch (error) {
-        logger.warn(`panel-list: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to get panel list`);
     }
 

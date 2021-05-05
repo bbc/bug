@@ -3,7 +3,7 @@
 const id = require('@utils/id');
 const panelConfigModel = require('@models/panel-config');
 const moduleGet = require('@services/module-get');
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 
 module.exports = async (panelConfig) => {
     try {
@@ -23,7 +23,7 @@ module.exports = async (panelConfig) => {
         return await panelConfigModel.set(panelConfig);
         
     } catch (error) {
-        logger.warn(`panel-add: ${error.stack | error.trace || error || error.message}`);
+        logger.warn(`${error.stack | error.trace || error || error.message}`);
         throw new Error(`Failed to add panel`);
     }
 }

@@ -4,7 +4,7 @@ const register = require('module-alias/register')
 const bugApi = require('@bin/api');
 const bugSocket = require('@bin/socket');
 const bugWorkers = require('@bin/workers');
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const http = require('http');
 
 const port = process.env.BUG_CORE_PORT || '3101';
@@ -50,5 +50,5 @@ function onListening() {
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    logger.info(`Listening on ${bind}`);
+    logger.info(`bug listening on ${bind}`);
 }

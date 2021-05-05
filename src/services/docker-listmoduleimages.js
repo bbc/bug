@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const docker = require('@utils/docker');
 
 module.exports = async (moduleName, moduleVersion) => {
@@ -19,7 +19,7 @@ module.exports = async (moduleName, moduleVersion) => {
         return images;
 
     } catch (error) {
-        logger.warn(`docker-findmoduleimage: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to get list of any image for module ${moduleName}`);
     }
 }

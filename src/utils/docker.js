@@ -3,7 +3,7 @@
 //TODO error handling with throw
 
 const Docker = require('dockerode');
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const path = require('path');
 const socketPath =  process.env.DOCKER_SOCKET_PATH || '/var/run/docker.sock'
 

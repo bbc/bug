@@ -10,7 +10,7 @@ const connect = async () => {
     var dbClass = new Db();
     var db = await dbClass.connect();
     if (!db) {
-        logger.warn("container-list: could not connect to database");
+        logger.warn("could not connect to database");
         return false;
     }
     return db;
@@ -28,7 +28,7 @@ exports.get = async function (containerId) {
             return result;
         }
     } catch (error) {
-        logger.warn(`docker-container: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
     }
     return null;
 };
@@ -51,7 +51,7 @@ exports.set = async function (containerId, containerInfo) {
         );
         return true;
     } catch (error) {
-        logger.warn(`docker-container: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         return false;
     }
 };
@@ -86,7 +86,7 @@ exports.setMultiple = async function (containerInfoArray) {
 
         return true;
     } catch (error) {
-        logger.warn(`docker-container: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         return false;
     }
 };
@@ -103,7 +103,7 @@ exports.list = async function (containerId) {
             return result;
         }
     } catch (error) {
-        logger.warn(`docker-container: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
     }
     return null;
 };

@@ -2,7 +2,7 @@
 //TODO error handling with throw
 
 const MongoClient = require('mongodb').MongoClient;
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 
 module.exports = class Db {
     static dbObject;
@@ -38,15 +38,15 @@ module.exports = class Db {
     async disconnect() {
         if (Db.dbObject !== undefined) {
             try {
-                logger.debug('db->disconnect: disconnecting database');
+                logger.debug('disconnecting database');
                 await Db.dbObject.close();
-                logger.debug('db->disconnect: done');
+                logger.debug('done');
             } catch (err) {
                 logger.error(error.trace);
             }
         }
         else {
-            logger.warn(`db->disconnect: nothing to disconnect!`);
+            logger.warn(`nothing to disconnect!`);
         }
     }
 }

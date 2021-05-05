@@ -19,7 +19,7 @@ module.exports = async () => {
 
         await tarFolder(response.config_folder, response.filepath);
     } catch (error) {
-        logger.warn(`system-backup: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to complete system backup`);
     }
 

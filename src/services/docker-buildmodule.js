@@ -1,13 +1,13 @@
 'use strict';
 
 const path = require('path');
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const docker = require('@utils/docker');
 const moduleGet = require('@services/module-get');
 
 module.exports = async (moduleName, updateProgressCallback) => {
     try {
-        logger.info(`docker-buildmodule: building module ${moduleName}`);
+        logger.info(`building module ${moduleName}`);
 
         // Get full path in container
         const module_path = path.join(__dirname, '..', 'modules', moduleName, 'container');
@@ -32,11 +32,11 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
             function onFinished(err, output) {
                 if (err) {
-                    logger.warn(`docker- buildmodule: error while building module ${moduleName}: `, err);
+                    logger.warn(`error while building module ${moduleName}: `, err);
                     resolve(false);
                 }
                 else {
-                    logger.info(`docker - buildmodule: module ${moduleName} built.`);
+                    logger.info(`,odule ${moduleName} built.`);
                     resolve(true);
                 }
             }
@@ -77,7 +77,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
                             updateProgressCallback(progress);
                         }
                     }
-                    logger.debug(`docker - buildmodule: ${moduleName} ${output} `);
+                    logger.debug(`${moduleName} ${output}`);
                 }
             }
         });
@@ -85,7 +85,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
         return progressResult;
 
     } catch (error) {
-        logger.warn(`docker - buildmodule: ${error.stack || error.trace || error || error.message} `);
+        logger.warn(`${error.stack || error.trace || error || error.message} `);
         throw new Error(`Failed to build docker module $ { moduleName } `);
     }
 }

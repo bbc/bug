@@ -6,7 +6,7 @@ const util = require('util');
 const writeFile = util.promisify(fs.writeFile);
 const nodeEnv = process.env.NODE_ENV || 'production';
 const readfile = util.promisify(fs.readFile);
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 
 module.exports = async (filepath) => {
 
@@ -28,11 +28,11 @@ module.exports = async (filepath) => {
         } catch (error) {}
 
         if(existingFile != newFile) {
-            logger.info(`dockerfile-write: writing dockerfile ${filename}`);
+            logger.info(`writing dockerfile ${filename}`);
             await writeFile(filename, newFile);
         }
     } catch (error) {
-        logger.error(`dockerfile-write: ${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to write dockerfile ${filename}`);
     }
     return true;

@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const dockerDeleteModule = require('@services/docker-deletemodule');
 const dockerBuildModule = require('@services/docker-buildmodule');
 const moduleConfig = require('@models/module-config');
@@ -37,7 +37,7 @@ module.exports = async (moduleName) => {
         return await dockerBuildModule(moduleName);
 
     } catch (error) {
-        logger.warn(`module-rebuild: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         throw new Error(`Failed to rebuild module ${moduleName}`);
     }
 }

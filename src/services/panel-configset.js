@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const panelConfigModel = require('@models/panel-config');
 const panelConfigPush = require('@services/panel-configpush');
 const moduleGet = require('@services/module-get');
@@ -32,7 +32,7 @@ module.exports = async (newConfig) => {
         return await panelConfigPush(newConfig?.id);
 
     } catch (error) {
-        logger.warn(`panel-configset: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to set panel config to ${url}`);
     }
 }

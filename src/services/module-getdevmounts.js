@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const moduleGet = require('@services/module-get');
 
 module.exports = async (moduleName) => {
@@ -13,7 +13,7 @@ module.exports = async (moduleName) => {
         return [];
 
     } catch (error) {
-        logger.warn(`module-getdevmounts: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         throw new Error(`Failed to get devmounts for module ${moduleName}`);
     }
 }

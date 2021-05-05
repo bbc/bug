@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const docker = require('@utils/docker');
 
 module.exports = async (panelId) => {
@@ -28,7 +28,7 @@ module.exports = async (panelId) => {
         }
 
     } catch (error) {
-        logger.error(`docker-getcontainerinfo: ${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to get container info for panel id ${panelId}`);
     }
 }

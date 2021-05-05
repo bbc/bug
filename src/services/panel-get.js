@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const panelConfigModel = require('@models/panel-config');
 const moduleConfigModel = require('@models/module-config');
 const panelBuildStatusModel = require('@models/panel-buildstatus');
@@ -17,7 +17,7 @@ module.exports = async (panelId) => {
         return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus);
 
     } catch (error) {
-        logger.warn(`panel-get: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to get panel id ${panelId}`);
     }
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const docker = require('@utils/docker');
 
 module.exports = async () => {
@@ -30,7 +30,7 @@ module.exports = async () => {
         }
 
     } catch (error) {
-        logger.error(`docker-listcontainerinfo: ${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to list container info`);
     }
 

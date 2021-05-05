@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const docker = require('@utils/docker');
 const dockerStopContainer = require('@services/docker-stopcontainer');
 const dockerDeleteContainer = require('@services/docker-deletecontainer');
@@ -13,7 +13,7 @@ module.exports = async (moduleName) => {
         // get a list of image IDs which use this module name
         const imagesToDelete = listModuleImages(moduleName)
 
-        logger.info(`docker-deletemodule: module ${moduleName}, found ` + imagesToDelete.length + ` image(s) to delete`);
+        logger.info(`module ${moduleName}, found ` + imagesToDelete.length + ` image(s) to delete`);
 
         // now for each image, stop any containers that are using it
         const containers = await docker.listContainers()
@@ -28,13 +28,13 @@ module.exports = async (moduleName) => {
                         // it didn't stop - no point carrying on
                         throw new Error(`Failed to stop container for panel id ${panelId}, for module ${moduleName}`);
                     }
-                    logger.info(`docker-deletemodule: stopped container for panel id ${panelId}`);
+                    logger.info(`stopped container for panel id ${panelId}`);
                     // delete it
                     if (!await dockerDeleteContainer(container)) {
                         // it didn't delete - no point carrying on
                         throw new Error(`Failed to delete container for panel id ${panelId}, for module ${moduleName}`);
                     }
-                    logger.info(`docker-deletemodule: stopped container for panel id ${panelId}`);
+                    logger.info(`stopped container for panel id ${panelId}`);
                 }
             }
         }
@@ -49,7 +49,7 @@ module.exports = async (moduleName) => {
         return true;
 
     } catch (error) {
-        logger.error(`docker-deletemodule: ${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to delete module ${moduleName}`);
     }
 }

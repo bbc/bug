@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs').promises
-const Logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 
 //TODO error handling with throw
 
@@ -12,7 +12,7 @@ module.exports = async (filepath,contents) => {
         return true;
     }
     catch(error){
-        logger.error(`write-json: ${error.stack | error.trace || error || error.message}`);
+        logger.error(`${error.stack | error.trace || error || error.message}`);
         return false;
     }
 }

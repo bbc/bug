@@ -3,7 +3,7 @@
 const fs = require('fs')
 const util = require('util');
 const readdir = util.promisify(fs.readdir);
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const readJson = require('@utils/read-json');
 const path = require('path');
 
@@ -25,7 +25,7 @@ module.exports = async function() {
                 response.push(panelFile);
             }
         } catch (error) {
-            logger.warn(`panel-configlist: ${error.stack || error.trace || error || error.message}`);
+            logger.warn(`${error.stack || error.trace || error || error.message}`);
             throw new Error(`Failed to list panel config`);
         }
     }

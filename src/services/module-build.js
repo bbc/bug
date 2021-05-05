@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const dockerFileWrite = require('@services/dockerfile-write');
 const dockerBuildModule = require('@services/docker-buildmodule');
 const moduleConfig = require('@models/module-config');
@@ -25,7 +25,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
         const images = await listModuleImages(matchedModule.name, matchedModule.version);
         if (images.length > 0) {
-            logger.info(`module-build: The image for ${matchedModule.name} already exists. Not building.`);
+            logger.info(`the image for ${matchedModule.name} already exists. Not building.`);
             return true;
         }
 
@@ -40,7 +40,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
 
     } catch (error) {
-        logger.warn(`module-build: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to build module ${moduleName}`);
     }
 

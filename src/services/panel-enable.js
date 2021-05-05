@@ -1,12 +1,13 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const panelConfigModel = require('@models/panel-config');
 const panelStart = require('@services/panel-start');
 
 module.exports = async (panelId) => {
 
     try {
+        logger.action(`Enabling panel - ${panelId}`);
 
         const panelConfig = await panelConfigModel.get(panelId);
         if(!panelConfig) {
@@ -25,7 +26,7 @@ module.exports = async (panelId) => {
         return await panelStart(panelId);
 
     } catch (error) {
-        logger.warn(`panel-enable: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to enable panel id ${panelId}`);
     }
 }

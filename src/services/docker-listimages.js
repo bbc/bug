@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const docker = require('@utils/docker');
 
 module.exports = async () => {
@@ -22,7 +22,7 @@ module.exports = async () => {
         return response;
 
     } catch (error) {
-        logger.error(`docker-listimages: ${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to list images`);
     }
 }

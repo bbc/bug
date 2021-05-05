@@ -1,6 +1,6 @@
 
 const morgan = require('morgan');
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 
 logger.stream = {
   write: message => logger.http(message.substring(0, message.lastIndexOf('\n')))

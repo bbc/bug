@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const moduleConfig = require('@models/module-config');
 const dockerListImages = require('@services/docker-listimages');
 
@@ -25,7 +25,7 @@ module.exports = async () => {
         }
 
     } catch (error) {
-        logger.warn(`module-list: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         throw new Error(`Failed to get module list`);
     }
 

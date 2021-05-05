@@ -12,7 +12,7 @@ module.exports = async (panelId) => {
         const panel = await panelGet(panelId);
 
         if (!panel._isrunning) {
-            logger.info(`panel-configpush: panel container not running. Couldn't push config.`);
+            logger.info(`panel container not running. Couldn't push config.`);
             return true
         }
 
@@ -20,12 +20,12 @@ module.exports = async (panelId) => {
         const response = await axios.put(url, panelConfig);
 
         if (response?.status === 200 && response?.data?.status === "success") {
-            logger.info(`panel-configpush: successfully pushed config to ${url}`);
+            logger.info(`successfully pushed config to ${url}`);
             return true;
         }
 
     } catch (error) {
-        logger.warn(`panel-configpush: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
     }
     throw new Error(`Failed to push panel config to ${url}`);
 };

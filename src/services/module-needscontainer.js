@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const moduleConfigModel = require('@models/module-config');
 
 module.exports = async (moduleName) => {
@@ -9,7 +9,7 @@ module.exports = async (moduleName) => {
         return moduleConfig?.needsContainer === true;
 
     } catch (error) {
-        logger.warn(`module-needscontainer: ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to get container requirement status for module ${moduleName}`);
     }
 }

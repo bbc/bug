@@ -3,7 +3,7 @@
 // const fs = require('fs')
 // const util = require('util');
 // const readfile = util.promisify(fs.readFile);
-// const logger = require('@utils/logger');
+// const logger = require('@utils/logger')(module);
 // const readJson = require('@utils/read-json');
 
 // exports.get = async function() {
@@ -11,7 +11,7 @@
 //     try {
 //         return await readJson("config/global.json");
 //     } catch (error) {
-//         logger.warn(`globalconfig: ${error.trace || error || error.message}`);
+//         logger.warn(`${error.trace || error || error.message}`);
 //     }
 // }
 
@@ -20,6 +20,6 @@
 //         var result = await exports.get();
 //         console.log(result);
 //     } catch (error) {
-//         logger.warn(`globalconfig: ${error.trace || error || error.message}`);
+//         logger.warn(`${error.trace || error || error.message}`);
 //     }
 // }

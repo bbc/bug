@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const Db = require('@utils/db');
 
 //TODO error handling with throw
@@ -9,7 +9,7 @@ const connect = async () => {
     const dbClass = new Db();
     const db = await dbClass.connect();
     if(!db) {
-        logger.warn("panel-buildstatus: could not connect to database");
+        logger.warn("could not connect to database");
         return false;
     }
     return db;
@@ -28,7 +28,7 @@ exports.get = async function(panelId) {
         }
 
     } catch (error) {
-        logger.warn(`panel-buildstatus: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
     }
     return null;
 }
@@ -58,7 +58,7 @@ exports.set = async function(panelId, statusText, progress) {
         );
         return true;
     } catch (error) {
-        logger.warn(`panel-buildstatus: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         return false;
     }
 }
@@ -88,7 +88,7 @@ exports.setError = async function(panelId, errorText) {
         );
         return true;
     } catch (error) {
-        logger.warn(`panel-buildstatus: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         return false;
     }
 }
@@ -113,7 +113,7 @@ exports.setProgress = async function(panelId, progress) {
         );
         return true;
     } catch (error) {
-        logger.warn(`panel-buildstatus: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
         return false;
     }
 }
@@ -136,7 +136,7 @@ exports.list = async function() {
         return response;
 
     } catch (error) {
-        logger.warn(`panel-buildstatus: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
     }
     return null;
 

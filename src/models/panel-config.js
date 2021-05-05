@@ -5,7 +5,7 @@
 const fs = require('fs')
 const util = require('util');
 const readdir = util.promisify(fs.readdir);
-const logger = require('@utils/logger');
+const logger = require('@utils/logger')(module);
 const path = require('path');
 const readJson = require('@utils/read-json');
 const writeJson = require('@utils/write-json');
@@ -15,7 +15,7 @@ exports.get = async function(panelId) {
     try {
         return await readJson(`config/${panelId}.json`);
     } catch (error) {
-        logger.warn(`panel-config: panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
     }
 }
 
@@ -26,7 +26,7 @@ exports.set = async function(panelConfig) {
         return await writeJson(filename, panelConfig);
     } 
     catch (error) {
-        logger.warn(`panel-config: panel id ${panelConfig.id} - ${error.trace || error || error.message}`);
+        logger.warn(`panel id ${panelConfig.id} - ${error.trace || error || error.message}`);
         return false;
     }
 }
@@ -35,11 +35,11 @@ exports.delete = async function(panelId) {
 
     try {
         const filename = path.join(__dirname, '..', 'config',`${panelId}.json`);
-        logger.debug(`panel-config: deleting file ${filename}`);
+        logger.debug(`deleting file ${filename}`);
         return await deleteFile(filename);
     } 
     catch (error) {
-        logger.warn(`panel-config: panel id ${panelConfig.id} - ${error.stack || error.trace || error || error.message}`);
+        logger.warn(`panel id ${panelConfig.id} - ${error.stack || error.trace || error || error.message}`);
         return false;
     }
 }
@@ -50,7 +50,7 @@ exports.list = async function(panelId) {
     try {
         var files = await readdir('config');
     } catch (error) {
-        logger.warn(`panel-config: ${error.trace || error || error.message}`);
+        logger.warn(`${error.trace || error || error.message}`);
     }
 
     var panelArray = [];
@@ -64,7 +64,7 @@ exports.list = async function(panelId) {
                 }
             }
         } catch (error) {
-            logger.warn(`panel-config: filename ${filename} - ${error.stack || error.trace || error || error.message}`);
+            logger.warn(`filename ${filename} - ${error.stack || error.trace || error || error.message}`);
         }
     }
     return panelArray;
