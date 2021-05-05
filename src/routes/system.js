@@ -29,17 +29,24 @@ router.get("/hello", function (req, res, next) {
 
 /**
  * @swagger
- * /system/logs:
- *    get:
- *      description: Test route, BUG greets you in response.
- *      tags: [system]
- *      produces:
- *        - application/json
- *      responses:
- *        '200':
- *          description: Success
+ * /system/logs/{level}:
+ *   get:
+ *     description: Returns the logs of a particular level
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: level
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The log level to return, options includ (info,http,action,warning,error)
+ *     responses:
+ *       '200':
+ *         description: Success
  */
- router.get("/logs/:level", async function (req, res, next) {
+router.get("/logs/:level", async function (req, res, next) {
     const logs = await systemLogs(req.params.level);
     res.json(logs);
 });
