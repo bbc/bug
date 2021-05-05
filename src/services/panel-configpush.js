@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger");
+const logger = require("@utils/logger")(module);
 const panelConfigModel = require("@models/panel-config");
 const panelGet = require('@services/panel-get');
 const axios = require("axios");

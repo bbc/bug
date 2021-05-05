@@ -44,7 +44,7 @@ const logger = (module) => {
         winston.format.timestamp(),
         winston.format.align(),
         winston.format.printf(
-            log => `${log.timestamp} ${log.level}:\t${filename}\t${log.message}`,
+            log => `${log.timestamp} ${log.level}:\t${filename} ${log.message}`,
         )
     );
 

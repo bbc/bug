@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger");
+const logger = require("@utils/logger")(module);
 const panelConfig = require("@models/panel-config");
 const moduleBuild = require("@services/module-build");
 const dockerGetContainer = require("@services/docker-getcontainer");
@@ -39,6 +39,7 @@ module.exports = async (panelId) => {
         }
 
         panelBuildStatusModel.set(panelId, "Building image", 5);
+        logger.action('Starting the panel container.');
 
         // build the image for the module, if it's already been done this will be quick
         logger.info(`building module ${config.module} for panel id ${panelId}`);

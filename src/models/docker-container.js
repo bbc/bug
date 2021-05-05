@@ -7,8 +7,8 @@ const Db = require("@utils/db");
 const collectionName = "dockercontainers";
 
 const connect = async () => {
-    var dbClass = new Db();
-    var db = await dbClass.connect();
+    const dbClass = new Db();
+    const db = await dbClass.connect();
     if (!db) {
         logger.warn("could not connect to database");
         return false;
@@ -23,7 +23,7 @@ exports.get = async function (containerId) {
             return null;
         }
 
-        var result = await db.collection(collectionName).findOne({ containerid: containerId });
+        const result = await db.collection(collectionName).findOne({ containerid: containerId });
         if (result) {
             return result;
         }
@@ -98,7 +98,7 @@ exports.list = async function (containerId) {
             return null;
         }
 
-        var result = await db.collection(collectionName).find().toArray();
+        const result = await db.collection(collectionName).find().toArray();
         if (result) {
             return result;
         }
