@@ -1,8 +1,8 @@
 const { MongoClient } = require("mongodb");
-const url = "mongodb://bug-mongo:27017";
+const url = `mongodb://bug-mongo:27017`;
 
 class Mongo {
-    constructor() {
+    constructor(dbName) {
         this.client = new MongoClient(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true,

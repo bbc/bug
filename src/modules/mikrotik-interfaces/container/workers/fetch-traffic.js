@@ -1,24 +1,27 @@
+const { parentPort, workerData, threadId } = require('worker_threads');
+
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
-const mongoCollection = require('../utils/mongo-collection');
+
 const mikrotikFetchTraffic = require('../services/mikrotik-fetchtraffic');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
 const configGet = require("../services/config-get");
-const mongoDb = require('../utils/mongo-db');
 const trafficAddHistory = require('../services/traffic-addhistory');
+
 const delayMs = 2000;
 const errorDelayMs = 10000;
-let trafficCollection;
-let config;
+const config = workerData.config;
 
-process.on('uncaughtException', function(err) {
-    console.log("fetch-traffic: device poller failed ... restarting");
-    main();
+//Tell the manager the things you care about
+parentPort.postMessage({
+    index: workerData.index,
+    restartOn: ['address', 'username', 'password']
 });
 
 const pollDevice = async () => {
 
+    const trafficCollection = await workerData.db.collection('traffic')
     const conn = new RosApi({
         host: config.address,
         user: config.username,
@@ -49,8 +52,8 @@ const pollDevice = async () => {
 
             // fetch traffic stats for each interface
             let trafficArray = [];
-            if(interfaces) {
-                for(eachInterface of interfaces) {
+            if (interfaces) {
+                for (eachInterface of interfaces) {
                     trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface['name']));
                 }
             }
@@ -68,46 +71,11 @@ const pollDevice = async () => {
     await conn.close();
 }
 
-const main = async () => {
-
+while (true) {
     try {
-        config = await configGet();
-        if(!config) {
-            throw new Error();
-        }
-        console.log("fetch-traffic: got config OK");
+        pollDevice();
     } catch (error) {
-        console.log(`fetch-traffic: failed to fetch config`);
-        return;
+        console.log('fetch-traffic: ', error);
     }
-
-    try {
-        console.log(`fetch-traffic: connecting to database`);
-        await mongoDb.connect(config.id);
-
-    } catch (error) {
-        console.log("fetch-traffic: error connecting to database");
-        return;
-    }
-
-    trafficCollection = await mongoCollection('traffic');
-
-    if (!trafficCollection) {
-        console.log("fetch-traffic: error fetching database collection");
-        await conn.close();
-        return;
-    }
-    
-    console.log("fetch-traffic: database connected OK");
-
-    while(true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log('fetch-traffic: ', error);
-        }
-        await delay(errorDelayMs);
-    }
-};
-
-main();
+    delay(errorDelayMs);
+}

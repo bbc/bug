@@ -1,21 +1,24 @@
+const { parentPort, workerData, threadId } = require('worker_threads');
+
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
-const mongoCollection = require('../utils/mongo-collection');
+
 const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const arraySave = require('../services/array-save');
-const mongoDb = require('../utils/mongo-db');
-const configGet = require("../services/config-get");
+
 const delayMs = 2000;
 const errorDelayMs = 10000;
-let interfacesCollection;
-let config;
+const config = workerData.config;
 
-process.on('uncaughtException', function(err) {
-    console.log("fetch-interfaces: device poller failed ... restarting");
-    main();
+//Tell the manager the things you care about
+parentPort.postMessage({
+    index: workerData.index,
+    restartOn: ['address', 'username', 'password']
 });
 
 const pollDevice = async () => {
+
+    const interfacesCollection = await workerData.db.collection('interfaces');
 
     const conn = new RosApi({
         host: config.address,
@@ -25,7 +28,7 @@ const pollDevice = async () => {
     });
 
     console.log("fetch-interfaces: starting ...");
-    
+
     try {
         console.log("fetch-interfaces: connecting to device " + JSON.stringify(conn));
         await conn.connect();
@@ -50,46 +53,12 @@ const pollDevice = async () => {
     await conn.close();
 }
 
-const main = async () => {
-
+//Kick things off
+while (true) {
     try {
-        config = await configGet();
-        if(!config) {
-            throw new Error();
-        }
-        console.log("fetch-interfaces: got config OK");
+        pollDevice();
     } catch (error) {
-        console.log(`fetch-interfaces: failed to fetch config`);
-        return;
+        console.log('fetch-interfaces: ', error);
     }
-
-    try {
-        console.log(`fetch-interfaces: connecting to database`);
-        await mongoDb.connect(config.id);
-
-    } catch (error) {
-        console.log("fetch-interfaces: error connecting to database");
-        return;
-    }
-
-    interfacesCollection = await mongoCollection('interfaces');
-
-    if (!interfacesCollection) {
-        console.log("fetch-interfaces: error fetching database collection");
-        await conn.close();
-        return;
-    }
-    
-    console.log("fetch-interfaces: database connected OK");
-
-    while(true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log('fetch-interfaces: ', error);
-        }
-        await delay(errorDelayMs);
-    }
-};
-
-main();
+    delay(errorDelayMs);
+}

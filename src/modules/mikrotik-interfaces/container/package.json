@@ -2,9 +2,8 @@
     "name": "mikrotik-interfaces",
     "main": "index.js",
     "scripts": {
-        "production": "concurrently \"node ./api/server\" \"cd workers && node fetch-interfaces.js\" \"cd workers && node fetch-linkstats.js\" \"cd workers && node fetch-traffic.js\"",
-        "development": "concurrently \"nodemon ./api/server.js\" \"cd workers && nodemon fetch-interfaces.js\"  \"cd workers && nodemon fetch-linkstats.js\" \"cd workers && nodemon fetch-traffic.js\"",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "production": "node ./api/server ",
+        "development": "nodemon ./api/server.js"
     },
     "nodemonConfig": {
         "ignore": [

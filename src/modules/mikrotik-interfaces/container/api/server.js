@@ -5,6 +5,7 @@
 
 //server.js
 const mongoDb = require('../utils/mongo-db');
+const workerManager = require('./workers');
 const app = require("./app");
 const randomWords = require('random-words');
 
@@ -15,6 +16,7 @@ const boot = async () => {
 
     try {
         await mongoDb.connect(myPanelId);
+
         app.listen(port, () => {
             console.log("mirotik-interfaces api listening on port "+port.toString());
         });

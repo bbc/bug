@@ -1,22 +1,25 @@
+const { parentPort, workerData, threadId } = require('worker_threads');
+
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
-const mongoCollection = require('../utils/mongo-collection');
+
 const mikrotikFetchLinkStats = require('../services/mikrotik-fetchlinkstats');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
-const mongoDb = require('../utils/mongo-db');
-const configGet = require("../services/config-get");
+
 const delayMs = 5000;
 const errorDelayMs = 10000;
-let linkStatsCollection;
-let config;
+const config = workerData.config
 
-process.on('uncaughtException', function(err) {
-    console.log("fetch-linkstats: device poller failed ... restarting", err);
-    main();
+//Tell the manager the things you care about
+parentPort.postMessage({
+    index: workerData.index,
+    restartOn: ['address', 'username', 'password']
 });
 
 const pollDevice = async () => {
+
+    const linkStatsCollection = await workerData.db.collection('linkstats');
 
     const conn = new RosApi({
         host: config.address,
@@ -65,46 +68,11 @@ const pollDevice = async () => {
     await conn.close();
 }
 
-const main = async () => {
-
+while (true) {
     try {
-        config = await configGet();
-        if(!config) {
-            throw new Error();
-        }
-        console.log("fetch-linkstats: got config OK");
+        pollDevice();
     } catch (error) {
-        console.log(`fetch-linkstats: failed to fetch config`);
-        return;
+        console.log('fetch-linkstats: ', error);
     }
-
-    try {
-        console.log(`fetch-linkstats: connecting to database`);
-        await mongoDb.connect(config.id);
-
-    } catch (error) {
-        console.log("fetch-linkstats: error connecting to database");
-        return;
-    }
-
-    linkStatsCollection = await mongoCollection('linkstats');
-
-    if (!linkStatsCollection) {
-        console.log("fetch-linkstats: error fetching database collection");
-        await conn.close();
-        return;
-    }
-    
-    console.log("fetch-linkstats: database connected OK");
-
-    while(true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log('fetch-linkstats: ', error);
-        }
-        await delay(errorDelayMs);
-    }
-};
-
-main();
+    delay(errorDelayMs);
+}

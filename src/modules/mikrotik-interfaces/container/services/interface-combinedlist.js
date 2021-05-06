@@ -5,44 +5,46 @@ const configGet = require("./config-get");
 module.exports = async () => {
 
     const config = await configGet();
-    if(!config) {
+    if (!config) {
         return null;
     }
 
     const dbInterfaces = await mongoCollection('interfaces');
     let interfaces = await dbInterfaces.find().toArray();
-    if(!interfaces) {
+    if (!interfaces) {
         return null;
     }
 
     const dbLinkStats = await mongoCollection('linkstats');
     let linkStats = await dbLinkStats.find().toArray();
     const linkStatsByName = [];
-    for(let eachLinksStat of linkStats) {
+    for (let eachLinksStat of linkStats) {
         linkStatsByName[eachLinksStat['name']] = eachLinksStat;
     }
 
     const dbTraffic = await mongoCollection('traffic');
     let traffic = await dbTraffic.find().toArray();
     const trafficByName = [];
-    for(let eachInterface of traffic) {
+    for (let eachInterface of traffic) {
         trafficByName[eachInterface['name']] = eachInterface;
     }
 
     // remove excluded interfaces
-    for(let eachFilter of config.excludedInterfaces) {
-        const regex = wildcard.wildcardRegExp(eachFilter);
+    if (config.excludedInterfaces) {
+        for (let eachFilter of config.excludedInterfaces) {
+            const regex = wildcard.wildcardRegExp(eachFilter);
 
-        interfaces = interfaces.filter(
-            iface => {
-                return !regex.test(iface['name']);
-            }
-        );
+            interfaces = interfaces.filter(
+                iface => {
+                    return !regex.test(iface['name']);
+                }
+            );
+        }
     }
 
     const matchAnyRegex = (regexes, value) => {
-        for(let eachRegex of regexes) {
-            if(eachRegex.test(value)) {
+        for (let eachRegex of regexes) {
+            if (eachRegex.test(value)) {
                 return true;
             }
         }
@@ -51,20 +53,22 @@ module.exports = async () => {
 
     // cache the regexes - once
     let protectedRegexArray = [];
-    for(let eachFilter of config.protectedInterfaces) {
-        protectedRegexArray.push(wildcard.wildcardRegExp(eachFilter));
+    if (config.protectedInterfaces) {
+        for (let eachFilter of config.protectedInterfaces) {
+            protectedRegexArray.push(wildcard.wildcardRegExp(eachFilter));
+        }
     }
 
     // loop through and set protected interface for each
-    for(let eachInterface of interfaces) {
+    for (let eachInterface of interfaces) {
         eachInterface['_protected'] = matchAnyRegex(protectedRegexArray, eachInterface.name);
     }
 
     interfaces.sort((a, b) => (a.name > b.name) ? 1 : -1)
 
-    for(eachInterface of interfaces) {
+    for (eachInterface of interfaces) {
         // add link stats
-        if(eachInterface['name'] in linkStatsByName) {
+        if (eachInterface['name'] in linkStatsByName) {
             eachInterface['linkstats'] = linkStatsByName[eachInterface['name']];
         }
         else {
@@ -72,7 +76,7 @@ module.exports = async () => {
         }
 
         // add traffic
-        if(eachInterface['name'] in trafficByName) {
+        if (eachInterface['name'] in trafficByName) {
             eachInterface['traffic'] = trafficByName[eachInterface['name']];
         }
         else {
