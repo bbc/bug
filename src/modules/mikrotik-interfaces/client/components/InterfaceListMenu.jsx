@@ -4,36 +4,34 @@ import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import EditIcon from '@material-ui/icons/Edit';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import ReplayIcon from '@material-ui/icons/Replay';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-// import AxiosCommand from '@utils/AxiosCommand';
+import EditIcon from "@material-ui/icons/Edit";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
 import { useAlert } from "@utils/Snackbar";
-import { Link } from "react-router-dom";
-import LockIcon from '@material-ui/icons/Lock';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
-import SettingsInputComponentIcon from '@material-ui/icons/SettingsInputComponent';
+import LockIcon from "@material-ui/icons/Lock";
+import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
+import CheckIcon from "@material-ui/icons/Check";
+import AxiosCommand from "@utils/AxiosCommand";
+import { Redirect } from "react-router";
 
 // const useStyles = makeStyles((theme) => ({}));
 
-export default function InterfaceListMenu(props) {
+export default function InterfaceListMenu({ iface, panelId, onChanged }) {
     // const classes = useStyles();
     const sendAlert = useAlert();
-
+    const [redirectUrl, setRedirectUrl] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
-        props.onChanged(true);
+        onChanged(true);
         event.stopPropagation();
     };
 
     const handleClose = () => {
-        props.onChanged(false);
+        onChanged(false);
         setAnchorEl(null);
     };
 
@@ -41,20 +39,31 @@ export default function InterfaceListMenu(props) {
     // const disableStop = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
     // const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
 
-    const handleProtect = () => {
-        // AxiosCommand(`/api/panel/start/${props.panel.id}`);
+    const handleProtect = async () => {
         handleClose();
+        const command = iface._protected ? "unprotect" : "protect";
+        const commandAction = iface._protected ? "Unprotected" : "Protected";
+        //TODO - use proxy for container route
+        if (await AxiosCommand(`http://localhost:3101/container/${panelId}/interface/${command}/${iface.name}`)) {
+            sendAlert(`${commandAction} interface: ${iface.name}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to ${command} interface: ${iface.name}`, { variant: "error" });
+        }
     };
 
-    const handleStop = () => {
+    const handleRename = () => {
         // AxiosCommand(`/api/panel/stop/${props.panel.id}`);
         handleClose();
     };
 
-    const handleRestart = () => {
-        // AxiosCommand(`/api/panel/restart/${props.panel.id}`);
+    const handleDetails = () => {
+        setRedirectUrl(`/panel/${panelId}/interface/${iface.name}`);
         handleClose();
     };
+
+    if (redirectUrl) {
+        return <Redirect push to={{ pathname: redirectUrl }} />;
+    }
 
     return (
         <div>
@@ -62,23 +71,22 @@ export default function InterfaceListMenu(props) {
                 <MoreVertIcon />
             </IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                <MenuItem>
+                <MenuItem onClick={handleDetails}>
                     <ListItemIcon>
                         <SettingsInputComponentIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="View Details" />
                 </MenuItem>
-                <MenuItem onClick={handleProtect}>
-                    <ListItemIcon>
-                        <LockIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Protect" />
-                </MenuItem>
-                <MenuItem onClick={handleStop}>
+                <MenuItem onClick={handleRename}>
                     <ListItemIcon>
                         <EditIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleProtect}>
+                    <ListItemIcon>{iface._protected ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
+                    <ListItemText primary="Protect" />
                 </MenuItem>
             </Menu>
         </div>

@@ -30,9 +30,9 @@ router.get(
 );
 
 router.get(
-    "/enable/:interfaceId",
+    "/enable/:interfaceName",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikInterfaceEnable(req.params.interfaceId);
+        const result = await mikrotikInterfaceEnable(req.params.interfaceName);
         res.json({
             status: result ? "success" : "fail",
             data: null,
@@ -41,9 +41,9 @@ router.get(
 );
 
 router.get(
-    "/disable/:interfaceId",
+    "/disable/:interfaceName",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikInterfaceDisable(req.params.interfaceId);
+        const result = await mikrotikInterfaceDisable(req.params.interfaceName);
         res.json({
             status: result ? "success" : "fail",
             data: null,
@@ -52,9 +52,9 @@ router.get(
 );
 
 router.get(
-    "/protect/:interfaceId",
+    "/protect/:interfaceName",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikInterfaceProtect(req.params.interfaceId);
+        const result = await mikrotikInterfaceProtect(req.params.interfaceName);
         res.json({
             status: result ? "success" : "fail",
             data: null,
@@ -63,9 +63,9 @@ router.get(
 );
 
 router.get(
-    "/unprotect/:interfaceId",
+    "/unprotect/:interfaceName",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikInterfaceUnprotect(req.params.interfaceId);
+        const result = await mikrotikInterfaceUnprotect(req.params.interfaceName);
         res.json({
             status: result ? "success" : "fail",
             data: null,
