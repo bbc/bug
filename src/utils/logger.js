@@ -10,16 +10,16 @@ const customLevels = {
     levels: {
         error: 0,
         warning: 1,
-        info: 2,
-        action: 3,
+        action: 2,
+        info: 3,
         http: 4,
         debug: 5,
     },
     colors: {
         error: 'red',
         warning: 'yellow',
-        info: 'green',
-        action: 'blue',
+        action: 'green',
+        info: 'blue',
         http: 'magenta',
         debug: 'gray',
     }
@@ -100,7 +100,7 @@ const logger = (module) => {
                     maxFiles: '1d'
                 }),
                 new winston.transports.MongoDB({
-                    level: 'action',
+                    level: 'info',
                     db: 'mongodb://bug-mongo:27017/bug-core',
                     options: { poolSize: 2, useUnifiedTopology: true, useNewUrlParser: true },
                     collection: 'logs',

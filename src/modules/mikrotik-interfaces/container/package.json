@@ -28,6 +28,7 @@
         "node-routeros": "^1.6.9",
         "package.json": "^2.0.1",
         "path": "^0.12.7",
+        "random-words": "^1.1.1",
         "routeros-client": "^1.1.2"
     },
     "devDependencies": {

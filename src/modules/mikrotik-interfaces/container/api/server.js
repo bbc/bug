@@ -6,8 +6,10 @@
 //server.js
 const mongoDb = require('../utils/mongo-db');
 const app = require("./app");
+const randomWords = require('random-words');
+
 const port = process.env.PORT || 3200;
-const myPanelId = 'bug-containers'; // 'thisisapanelidhonest'; //TODO
+const myPanelId = process.env.PANEL_ID || `mikrotik-interfaces-${randomWords()}`;
 
 const boot = async () => {
 

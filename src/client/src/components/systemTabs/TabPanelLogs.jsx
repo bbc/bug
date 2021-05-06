@@ -4,7 +4,7 @@ import LogTable from "@components/logTable/LogTable";
 export default function TabPanelLogs(props) {
     return (
         <>
-           <LogTable level={'info'}/>
+           <LogTable level={'action'}/>
         </>
     );
 }
