@@ -14,6 +14,8 @@ import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import InterfaceListMenu from "./InterfaceListMenu";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { Redirect } from "react-router";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -106,6 +108,7 @@ export default function InterfaceList({ panelId }) {
     const classes = useStyles();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
+    const sendAlert = useAlert();
 
     const [interfaceList, setInterfaceList] = useState({
         status: "idle",
@@ -123,23 +126,14 @@ export default function InterfaceList({ panelId }) {
         setMenuIsOpen(state);
     };
 
-    // const handleEnabledChanged = (checked, panelId) => {
-    //     if(checked) {
-    //         AxiosCommand(`/api/panel/enable/${panelId}`);
-    //     }
-    //     else {
-    //         AxiosCommand(`/api/panel/disable/${panelId}`);
-    //     }
-
-    // };
-
-    const handleEnabledChanged = (checked, interfaceId) => {
-        // if(checked) {
-        //     AxiosCommand(`/api/panel/enable/${panelId}`);
-        // }
-        // else {
-        //     AxiosCommand(`/api/panel/disable/${panelId}`);
-        // }
+    const handleEnabledChanged = async (checked, interfaceId, interfaceName) => {
+        const command = checked ? "enable" : "disable";
+        const commandText = checked ? "Enabled" : "Disabled";
+        if (await AxiosCommand(`http://localhost:3101/container/${panelId}/interface/${command}/${interfaceId}`)) {
+            sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
+        }
     };
 
     const renderTraffic = (iface, type) => {
@@ -169,7 +163,7 @@ export default function InterfaceList({ panelId }) {
                 <TableCell className={classes.colEnabled}>
                     <ApiSwitch
                         checked={!iface.disabled}
-                        onChange={(checked) => handleEnabledChanged(checked, iface.id)}
+                        onChange={(checked) => handleEnabledChanged(checked, iface.id, iface.name)}
                     />
                 </TableCell>
                 <TableCell className={classes.colName}>
