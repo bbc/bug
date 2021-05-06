@@ -12,7 +12,7 @@
     "defaultconfig": {
         "id": "",
         "order": 0,
-        "needsConfigured":true,
+        "needsConfigured": true,
         "title": "",
         "module": "mikrotik-interfaces",
         "description": "",
@@ -20,7 +20,7 @@
         "address": "",
         "username": "bug",
         "password": "",
-        "protected_interfaces": [],
-        "excluded_interfaces": ["bridge", "vlan", "Loopback", "eoip"]
+        "protectedInterfaces": [],
+        "excludedInterfaces": ["bridge", "vlan", "Loopback", "eoip"]
     }
 }
