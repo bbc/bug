@@ -2,6 +2,7 @@
 
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
+const logger = require('@utils/logger')(module);
 const axios = require("axios");
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -48,8 +49,16 @@ router.use(
             if (req.body) {
                 axiosConfig["data"] = req.body;
             }
+            if (req.body?.action) {
+                logger.action(req.body?.action);
+            }
 
             const axiosResponse = await axios(axiosConfig);
+
+            if (axiosResponse?.data?.action) {
+                logger.action(req.body?.action);
+            }
+
             res.status(axiosResponse.status);
             axiosResponse.data.pipe(res);
         } catch (error) {
