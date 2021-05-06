@@ -1,41 +1,51 @@
-//NAME: interface.js
-//AUTH: Geoff House <geoff.house@bbc.co.uk>
-//DATE: 23/03/2021
-//DESC: System status
+const express = require("express");
+const router = express.Router();
+const interfaceCombinedList = require("../../services/interface-combinedlist");
+const interfaceCombined = require("../../services/interface-combined");
+const mikrotikInterfaceEnable = require("../../services/mikrotik-interfaceenable");
+const mikrotikInterfaceDisable = require("../../services/mikrotik-interfacedisable");
+const asyncHandler = require("express-async-handler");
 
-const express = require('express');
-const status = express.Router();
-const interfaceCombinedList = require('../../services/interface-combinedlist');
-const interfaceCombined = require('../../services/interface-combined');
-
-status.get('/', async function (req, res) {
-    try {
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await interfaceCombinedList()
+            data: await interfaceCombinedList(),
         });
-    } catch (error) {
-        res.json({ 
-            status: "error",
-            message: "Failed to list interfaces" 
-        });
-    }
+    })
+);
 
-})
-
-status.get('/:interfaceid', async function (req, res) {
-    try {
+router.get(
+    "/:interfaceid",
+    asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await interfaceCombined(req.params.interfaceid)
+            data: await interfaceCombined(req.params.interfaceid),
         });
-    } catch (error) {
-        res.json({ 
-            status: "error",
-            message: "Failed to display interface id" 
+    })
+);
+
+router.get(
+    "/enable/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await mikrotikInterfaceEnable(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "fail",
+            data: null,
         });
-    }
+    })
+);
 
-})
+router.get(
+    "/disable/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await mikrotikInterfaceDisable(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "fail",
+            data: null,
+        });
+    })
+);
 
-module.exports = status;
+module.exports = router;

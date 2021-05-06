@@ -91,7 +91,7 @@ export default function PanelTableRow(props) {
         switch (panel._status) {
             case "building":
                 return (
-                    <div className={classes.state_bilding}>
+                    <div className={classes.state_building}>
                         {panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete
                     </div>
                 );

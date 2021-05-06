@@ -13,7 +13,7 @@ module.exports = async (moduleName) => {
         return [];
 
     } catch (error) {
-        logger.warn(`${error.trace || error || error.message}`);
+        logger.warning(`${error.trace || error || error.message}`);
         throw new Error(`Failed to get devmounts for module ${moduleName}`);
     }
 }

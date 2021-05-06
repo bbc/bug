@@ -8,7 +8,7 @@ module.exports = async (filename) => {
     try {
         await fs.unlink(filename);
     } catch (error) {
-        logger.warn(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         return false;
     }
     return true;

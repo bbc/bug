@@ -19,7 +19,7 @@ module.exports = async (moduleName, moduleVersion) => {
         return images;
 
     } catch (error) {
-        logger.warn(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to get list of any image for module ${moduleName}`);
     }
 }

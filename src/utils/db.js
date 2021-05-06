@@ -46,7 +46,7 @@ module.exports = class Db {
             }
         }
         else {
-            logger.warn(`nothing to disconnect!`);
+            logger.warning(`nothing to disconnect!`);
         }
     }
 }

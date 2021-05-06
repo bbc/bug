@@ -32,7 +32,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
             function onFinished(err, output) {
                 if (err) {
-                    logger.warn(`error while building module ${moduleName}: `, err);
+                    logger.warning(`error while building module ${moduleName}: `, err);
                     resolve(false);
                 }
                 else {
@@ -85,7 +85,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
         return progressResult;
 
     } catch (error) {
-        logger.warn(`${error.stack || error.trace || error || error.message} `);
+        logger.warning(`${error.stack || error.trace || error || error.message} `);
         throw new Error(`Failed to build docker module $ { moduleName } `);
     }
 }

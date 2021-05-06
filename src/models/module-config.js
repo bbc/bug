@@ -17,7 +17,7 @@ exports.list = async function() {
     try {
         var files = await readdir(modulesFolder);
     } catch (error) {
-        logger.warn(`${error.trace || error || error.message}`);
+        logger.warning(`${error.trace || error || error.message}`);
     }
 
     var moduleArray = [];
@@ -26,12 +26,12 @@ exports.list = async function() {
             let filename = path.join(modulesFolder, files[i], 'module.json');
             var packageFile = await readJson(filename);
             if(!packageFile) {
-                logger.warn(`file '${filename}' not found`);
+                logger.warning(`file '${filename}' not found`);
                 return null
             }
             moduleArray.push(packageFile);
         } catch (error) {
-            logger.warn(`${error.trace || error || error.message}`);
+            logger.warning(`${error.trace || error || error.message}`);
         }
     }
     return moduleArray;
@@ -48,7 +48,7 @@ exports.get = async function(moduleName) {
         }
 
     } catch (error) {
-        logger.warn(`${error.trace || error || error.message}`);
+        logger.warning(`${error.trace || error || error.message}`);
     }
 
     return null;

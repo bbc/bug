@@ -29,7 +29,7 @@ export default function ModuleWrapper({ panelId, children }) {
         return <Loading />;
     }
 
-    if (panel.module.needsContainer) {
+    if (panel._module.needsContainer) {
         if (panel._isbuilding) {
             return <PanelBuilding panel={panel} />;
         }

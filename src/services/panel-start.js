@@ -20,7 +20,7 @@ module.exports = async (panelId) => {
             // update the database
             return panelBuildStatusModel.setProgress(panelId, progress);
         } catch (error) {
-            logger.warn(
+            logger.warning(
                 `failed to update progress: ${error.stack || error.trace || error || error.message}`
             );
             return false;
@@ -94,7 +94,7 @@ module.exports = async (panelId) => {
         return false;
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");
-        logger.warn(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to start panel id ${panelId}`);
     }
 };

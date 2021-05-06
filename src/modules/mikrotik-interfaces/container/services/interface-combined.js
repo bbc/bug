@@ -4,7 +4,7 @@ module.exports = async (interfaceId) => {
 
     const dbInterfaces = await mongoCollection('interfaces');
     let interface = await dbInterfaces.findOne({'id': interfaceId});
-    console.log(interface);
+
     if(!interface) {
         return null;
     }
