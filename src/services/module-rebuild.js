@@ -37,7 +37,7 @@ module.exports = async (moduleName) => {
         return await dockerBuildModule(moduleName);
 
     } catch (error) {
-        logger.warn(`${error.trace || error || error.message}`);
+        logger.warning(`${error.trace || error || error.message}`);
         throw new Error(`Failed to rebuild module ${moduleName}`);
     }
 }

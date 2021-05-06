@@ -11,7 +11,7 @@ module.exports = async (imageId, force = false) => {
             const opts = force ? { force: true } : {};
             docker.getImage(imageId).remove(opts, function (error, data) {
                 if (error) {
-                    logger.warn(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error.trace || error || error.message}`);
                     resolve(false);
                 }
                 else {

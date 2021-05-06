@@ -15,7 +15,7 @@ module.exports = async (level) => {
 
         return response;
     } catch (error) {
-        logger.warn(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed retrieve logs.`);
     }
 };

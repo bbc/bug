@@ -8,7 +8,7 @@ const connect = async () => {
     const dbClass = new Db();
     const db = await dbClass.connect();
     if (!db) {
-        logger.warn("could not connect to database");
+        logger.warning("could not connect to database");
         return false;
     }
     return db;
@@ -23,7 +23,7 @@ exports.get = async function (level) {
         const result = await db.collection(collectionName).find({level:level}).toArray();
         return result
     } catch (error) {
-        logger.warn(`${error.trace || error || error.message}`);
+        logger.warning(`${error.trace || error || error.message}`);
     }
     return null;
 };

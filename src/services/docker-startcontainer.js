@@ -14,7 +14,7 @@ module.exports = async (container) => {
                         resolve(true);
                     }
                     else {
-                        logger.warn(`${error.stack || error.trace || error || error.message}`);
+                        logger.warning(`${error.stack || error.trace || error || error.message}`);
                         resolve(false);
                     }
                 }

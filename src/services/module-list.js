@@ -25,7 +25,7 @@ module.exports = async () => {
         }
 
     } catch (error) {
-        logger.warn(`${error.trace || error || error.message}`);
+        logger.warning(`${error.trace || error || error.message}`);
         throw new Error(`Failed to get module list`);
     }
 

@@ -11,7 +11,7 @@
 //     try {
 //         return await readJson("config/global.json");
 //     } catch (error) {
-//         logger.warn(`${error.trace || error || error.message}`);
+//         logger.warning(`${error.trace || error || error.message}`);
 //     }
 // }
 
@@ -20,6 +20,6 @@
 //         var result = await exports.get();
 //         console.log(result);
 //     } catch (error) {
-//         logger.warn(`${error.trace || error || error.message}`);
+//         logger.warning(`${error.trace || error || error.message}`);
 //     }
 // }
