@@ -83,14 +83,14 @@ export default function PanelTabbedForm(props) {
                     textColor="primary"
                     onChange={handleChange}
                 >
-                    {props.labels.map((label) => (
-                        <Tab label={label} />
+                    {props.labels.map((label, index) => (
+                        <Tab label={label} key={index} />
                     ))}
                 </Tabs>
             </AppBar>
             <Card className={classes.card}>
                 {props.content.map((content, index) => (
-                    <TabPanel value={tabIndex} index={index}>
+                    <TabPanel key={index} value={tabIndex} index={index}>
                         {content}
                     </TabPanel>
                 ))}
