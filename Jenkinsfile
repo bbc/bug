@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:14-alpine' 
+            image 'node:14' 
         }
     }
     environment {
@@ -16,12 +16,10 @@ pipeline {
         stage('Install') { 
             steps {
                 dir('src') {
-                    sh 'npm install --also=dev'
-                    sh 'npm list'
+                    sh 'npm install'
                 }
                 dir('src/client') {
-                    sh 'npm install --also=dev'
-                    sh 'npm list'
+                    sh 'npm install'
                 }
             }
         }
