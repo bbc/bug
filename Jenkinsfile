@@ -17,9 +17,11 @@ pipeline {
             steps {
                 dir('src') {
                     sh 'npm install'
+                    sh 'npm list'
                 }
                 dir('src/client') {
                     sh 'npm install'
+                    sh 'npm list'
                 }
             }
         }
