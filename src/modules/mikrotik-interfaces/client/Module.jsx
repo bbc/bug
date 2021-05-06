@@ -15,7 +15,7 @@ export default function Module({ panelId }) {
             <ModuleRoute exact path="/panel/:panelId/edit">
                 <EditPanel />
             </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/interface/:interfaceId">
+            <ModuleRoute exact path="/panel/:panelId/interface/:interfaceName">
                 <InterfacePanel />
             </ModuleRoute>
         </ModuleWrapper>

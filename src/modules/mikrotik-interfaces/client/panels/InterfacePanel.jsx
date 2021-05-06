@@ -7,7 +7,7 @@ export default function InterfacePanel() {
 
     return (
         <>
-            <Interface panelId={params.panelId} interfaceId={params.interfaceId}/>
+            <Interface panelId={params.panelId} interfaceName={params.interfaceName}/>
         </>
     );
 }

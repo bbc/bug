@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({}));
 
-export default function Interface({ panelId, interfaceId }) {
+export default function Interface({ panelId, interfaceName }) {
     const classes = useStyles();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
     const params = useParams();
@@ -87,7 +87,7 @@ export default function Interface({ panelId, interfaceId }) {
     return (
         <>
             <ApiPoller
-                url={`http://localhost:3101/container/${panelId}/interface/${interfaceId}`}
+                url={`http://localhost:3101/container/${panelId}/interface/${interfaceName}`}
                 interval="2000"
                 onChanged={(result) => setIface(result)}
             />

@@ -13,6 +13,9 @@ class ApiSwitch extends React.Component {
     }
 
     handleChanged(event) {
+        if(this.props.disabled) {
+            return;
+        }
         this.enabled = false;
         clearTimeout(this.timer);
         this.setState({
@@ -36,7 +39,7 @@ class ApiSwitch extends React.Component {
         return (
             <Switch
                 checked={checked}
-                disabled={!this.enabled}
+                disabled={!this.enabled || this.props.disabled}
                 color="primary"
                 onChange={(e) => this.handleChanged(e)}
                 onClick={(e) => {e.stopPropagation()}}

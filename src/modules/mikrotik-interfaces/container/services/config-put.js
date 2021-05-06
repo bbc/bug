@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = async (config) => {
     //TODO decide if container needs a restart
     try {
+        console.log(`config-put: received config update`);
         const filename = path.join(__dirname, '..', 'config', 'panel.json');
         await writeJson(filename, config);
         console.log(`config-put: saved config file to ${filename}`);
