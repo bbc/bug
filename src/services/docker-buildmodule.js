@@ -36,7 +36,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
                     resolve(false);
                 }
                 else {
-                    logger.info(`,odule ${moduleName} built.`);
+                    logger.info(`module ${moduleName} built OK`);
                     resolve(true);
                 }
             }

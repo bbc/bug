@@ -116,9 +116,9 @@ export default function InterfaceList({ panelId }) {
         error: null,
     });
 
-    const handleRowClicked = (interfaceId) => {
+    const handleRowClicked = (interfaceName) => {
         if (!menuIsOpen) {
-            setRedirectUrl(`/panel/${panelId}/interface/${interfaceId}`);
+            setRedirectUrl(`/panel/${panelId}/interface/${interfaceName}`);
         }
     };
 
@@ -156,7 +156,7 @@ export default function InterfaceList({ panelId }) {
 
     const renderRow = (iface) => {
         return (
-            <TableRow hover className={classes.interfaceRow} key={iface.id} onClick={() => handleRowClicked(iface.id)}>
+            <TableRow hover className={classes.interfaceRow} key={iface.id} onClick={() => handleRowClicked(iface['name'])}>
                 <TableCell className={classes.colRunning}>
                     <PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon} />
                 </TableCell>
@@ -164,6 +164,7 @@ export default function InterfaceList({ panelId }) {
                     <ApiSwitch
                         checked={!iface.disabled}
                         onChange={(checked) => handleEnabledChanged(checked, iface.id, iface.name)}
+                        disabled={iface._protected}
                     />
                 </TableCell>
                 <TableCell className={classes.colName}>

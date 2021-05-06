@@ -1,14 +1,16 @@
 const mongoCollection = require('../utils/mongo-collection');
 
-module.exports = async (interfaceId) => {
+module.exports = async (interfaceName) => {
 
     const dbInterfaces = await mongoCollection('interfaces');
-    let interface = await dbInterfaces.findOne({'id': interfaceId});
+    let interface = await dbInterfaces.findOne({'name': interfaceName});
 
     if(!interface) {
         return null;
     }
 
+    const interfaceId = interface.id;
+    
     const dbLinkStats = await mongoCollection('linkstats');
     const linkStats = await dbLinkStats.findOne({'id': interfaceId});
 

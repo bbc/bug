@@ -1,6 +1,13 @@
 const mongoCollection = require('../utils/mongo-collection');
+const wildcard = require('wildcard-regex');
+const configGet = require("./config-get");
 
 module.exports = async () => {
+
+    const config = await configGet();
+    if(!config) {
+        return null;
+    }
 
     const dbInterfaces = await mongoCollection('interfaces');
     let interfaces = await dbInterfaces.find().toArray();
@@ -22,7 +29,39 @@ module.exports = async () => {
         trafficByName[eachInterface['name']] = eachInterface;
     }
 
+    // remove excluded interfaces
+    for(let eachFilter of config.excludedInterfaces) {
+        const regex = wildcard.wildcardRegExp(eachFilter);
+
+        interfaces = interfaces.filter(
+            iface => {
+                return !regex.test(iface['name']);
+            }
+        );
+    }
+
+    const matchAnyRegex = (regexes, value) => {
+        for(let eachRegex of regexes) {
+            if(eachRegex.test(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // cache the regexes - once
+    let protectedRegexArray = [];
+    for(let eachFilter of config.protectedInterfaces) {
+        protectedRegexArray.push(wildcard.wildcardRegExp(eachFilter));
+    }
+
+    // loop through and set protected interface for each
+    for(let eachInterface of interfaces) {
+        eachInterface['_protected'] = matchAnyRegex(protectedRegexArray, eachInterface.name);
+    }
+
     interfaces.sort((a, b) => (a.name > b.name) ? 1 : -1)
+
     for(eachInterface of interfaces) {
         // add link stats
         if(eachInterface['name'] in linkStatsByName) {

@@ -17,6 +17,8 @@ router.get('/', async function (req, res, next) {
     }
 });
 
+// this is the endpoint used to update the config in the container 
+// it shouldn't be used by the module client itself
 router.put('/', async function (req, res, next) {
     try {
         res.json({

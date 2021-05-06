@@ -94,24 +94,24 @@ export default function EditPanel() {
 
                 <Grid item xs={12}>
                     <ChipInput
-                        name="protected_interfaces"
+                        name="protectedInterfaces"
                         label="Protected Interfaces"
                         control={control}
-                        defaultValue={config?.protected_interfaces}
+                        defaultValue={config?.protectedInterfaces}
                         variant="filled"
-                        error={errors.protected_interfaces ? true : false}
+                        error={errors.protectedInterfaces ? true : false}
                         fullWidth
                     />
                 </Grid>
 
                 <Grid item xs={12}>
                     <ChipInput
-                        name="excluded_interfaces"
+                        name="excludedInterfaces"
                         label="Excluded Interfaces"
                         control={control}
-                        defaultValue={config?.excluded_interfaces}
+                        defaultValue={config?.excludedInterfaces}
                         variant="filled"
-                        error={errors.excluded_interfaces ? true : false}
+                        error={errors.excludedInterfaces ? true : false}
                         fullWidth
                     />
                 </Grid>
