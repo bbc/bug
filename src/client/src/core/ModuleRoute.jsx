@@ -7,7 +7,7 @@ export default function ModuleRoute({ children, path }) {
     const config = useContext(PanelContext);
 
     const getConfiguration = () => {
-        if (config.needsConfigured && (children.type.name !== 'EditPanel')) {
+        if (config?.needsConfigured && (children.type.name !== 'EditPanel')) {
             return (
                 <Redirect to={`/panel/${config.id}/edit`} />
             );

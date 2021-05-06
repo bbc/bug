@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Loading from "@components/Loading";
 import PanelBuilding from "@components/PanelBuilding";
 import PanelStopped from "@components/PanelStopped";
@@ -7,9 +7,11 @@ import pageTitleSlice from "../redux/pageTitleSlice";
 import { useSelector } from 'react-redux'
 import { Switch } from "react-router-dom";
 import PanelContext from '@core/PanelContext';
+import ApiPoller from "@utils/ApiPoller";
 
 export default function ModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
+    const [config, setConfig] = useState(null);
 
     const panel = useSelector((state) => {
         let panelFilter = state.panelList.data.filter((item) => item.id === panelId);
@@ -25,24 +27,39 @@ export default function ModuleWrapper({ panelId, children }) {
         };
     }, [panel, dispatch]);
 
-    if (!panel) {
-        return <Loading />;
-    }
 
-    if (panel._module.needsContainer) {
-        if (panel._isbuilding) {
-            return <PanelBuilding panel={panel} />;
+    const getPanelContents = () => {
+        if (!panel || !config) {
+            return <Loading />;
         }
 
-        if (!panel._isrunning) {
-            return <PanelStopped panel={panel} />;
+        if (panel._module.needsContainer) {
+            if (panel._isbuilding) {
+                return <PanelBuilding panel={panel} />;
+            }
+
+            if (!panel._isrunning) {
+                return <PanelStopped panel={panel} />;
+            }
         }
+
+        return (
+            <PanelContext.Provider value={config} >
+                <Switch>
+                    {children}
+                </Switch>
+            </PanelContext.Provider>
+        );
     }
+
     return (
-        <PanelContext.Provider value={panel.config} >
-            <Switch>
-                {children}
-            </Switch>
-        </PanelContext.Provider>
+        <>
+            { getPanelContents()}
+            <ApiPoller
+                url={`/api/panelconfig/${panelId}`}
+                interval={1000}
+                onChanged={(result) => setConfig(result?.data)}
+            />
+        </>
     );
 }
