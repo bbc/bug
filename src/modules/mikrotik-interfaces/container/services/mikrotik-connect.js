@@ -1,12 +1,11 @@
-const RosApi = require('node-routeros').RouterOSAPI;
+const RosApi = require("node-routeros").RouterOSAPI;
 const configGet = require("../services/config-get");
 
 module.exports = async () => {
-
     let config;
     try {
         config = await configGet();
-        if(!config) {
+        if (!config) {
             throw new Error();
         }
     } catch (error) {
@@ -18,7 +17,7 @@ module.exports = async () => {
         host: config.address,
         user: config.username,
         password: config.password,
-        timeout: 5
+        timeout: 5,
     });
 
     try {
@@ -30,4 +29,4 @@ module.exports = async () => {
     }
     console.log("mikrotik-connect: device connected ok");
     return conn;
-}
+};
