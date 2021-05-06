@@ -129,7 +129,7 @@ export default function InterfaceList({ panelId }) {
     const handleEnabledChanged = async (checked, interfaceId, interfaceName) => {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
-        if (await AxiosCommand(`http://localhost:3101/container/${panelId}/interface/${command}/${interfaceId}`)) {
+        if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceId}`)) {
             sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
         } else {
             sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
@@ -140,10 +140,15 @@ export default function InterfaceList({ panelId }) {
         if (!iface["traffic"] || !iface["traffic"][type + "-bps-text"]) {
             return null;
         }
-        return (
+
+        const isAllZero = iface["traffic"][type + "-history"].every(item => item === 0);
+        if(isAllZero) {
+            return null;
+        }
+        return ( 
             <>
                 <div className={classes.sparkText}>
-                    {iface["traffic"][type + "-bps-text"] !== "0" ? iface["traffic"][type + "-bps-text"] : ""}
+                    {iface["traffic"][type + "-bps-text"] !== "0" ? iface["traffic"][type + "-bps-text"] : "0 b/s"}
                 </div>
                 <div className={classes.spark}>
                     <Sparklines data={iface["traffic"][type + "-history"]} height={40}>
@@ -176,7 +181,7 @@ export default function InterfaceList({ panelId }) {
                 <TableCell className={classes.colTraffic}>{renderTraffic(iface, "tx")}</TableCell>
                 <TableCell className={classes.colTraffic}>{renderTraffic(iface, "rx")}</TableCell>
                 <TableCell style={{ width: "4rem" }} className={classes.cellMenu}>
-                    <InterfaceListMenu iface={iface} onChanged={handleMenuOpenChanged} />
+                    <InterfaceListMenu iface={iface} panelId={panelId} onChanged={handleMenuOpenChanged} />
                 </TableCell>
             </TableRow>
         );
