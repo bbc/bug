@@ -12,7 +12,7 @@ let linkStatsCollection;
 let config;
 
 process.on('uncaughtException', function(err) {
-    console.log("fetch-linkstats: device poller failed ... restarting");
+    console.log("fetch-linkstats: device poller failed ... restarting", err);
     main();
 });
 
@@ -22,7 +22,7 @@ const pollDevice = async () => {
         host: config.address,
         user: config.username,
         password: config.password,
-        timeout: 5
+        timeout: 10
     });
 
     console.log('fetch-linkstats: starting ...');
