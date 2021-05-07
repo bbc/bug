@@ -17,7 +17,7 @@ parentPort.postMessage({
 });
 
 const pollDevice = async () => {
-    
+
     const interfacesCollection = await workerData.db.collection('interfaces');
 
     const conn = new RosApi({

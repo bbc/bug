@@ -1,7 +1,6 @@
 'use strict';
 
 const { Worker, isMainThread, workerData } = require('worker_threads');
-const mongodb = require('../utils/mongo-db');
 const path = require('path');
 const fs = require('fs');
 
@@ -17,13 +16,9 @@ module.exports = class WorkerManager {
         this.workerFiles = this.getWorkerFiles(folder);
         this.workers = []
 
-        this.getDB();
-    }
-
-    async getDB() {
         if (this.config) {
-            await mongodb.connect(this.config.id);
-            this.workers = await this.createWorkers(this.workerFiles);
+            this.dburl = `mongodb://bug-mongo:27017/${this.config.id}`
+            this.workers = this.createWorkers(this.workerFiles);
         }
     }
 
@@ -43,15 +38,16 @@ module.exports = class WorkerManager {
     }
 
     async createWorkers(filenames) {
+        const workers = [];
         if (isMainThread) {
             for (let i = 0; i < filenames.length; i++) {
-                await this.createWorker(filenames[i], i);
+                workers[i] = await this.createWorker(filenames[i], i);
             }
         }
         else {
             console.log(`WorkerManager: You're trying to launch workers in a worker.`)
         }
-        return this.workers;
+        return workers;
     }
 
     terminateWorkers() {
@@ -64,10 +60,11 @@ module.exports = class WorkerManager {
     }
 
     async createWorker(filename, i) {
-        this.workers[i] = await new Worker(filename, { workerData: { index: i, config: this.config, db: mongodb.db } });
-        this.workers[i].once('message', this.handleMessage);
-        this.workers[i].on('error', this.handleError);
-        this.workers[i].on('exit', this.handleExit);
+        const worker = await new Worker(filename, { workerData: { index: i, config: this.config } });
+        worker.once('message', this.handleMessage);
+        worker.on('error', this.handleError);
+        worker.on('exit', this.handleExit);
+        return worker;
     }
 
     handleMessage(event) {
@@ -97,7 +94,7 @@ module.exports = class WorkerManager {
         for (let i = 0; i < this.workers.length; i++) {
             if (this.needsUpdated(this.config, newConfig, restartKeys[i])) {
                 const state = await this.workers[i].terminate();
-                await this.createWorker(filenames[i], i);
+                this.workers[i] = await this.createWorker(this.workerFiles[i], i);
             }
         }
         this.config = newConfig;
