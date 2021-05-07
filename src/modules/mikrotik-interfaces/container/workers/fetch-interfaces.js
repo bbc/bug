@@ -17,7 +17,7 @@ parentPort.postMessage({
 });
 
 const pollDevice = async () => {
-
+    
     const interfacesCollection = await workerData.db.collection('interfaces');
 
     const conn = new RosApi({
@@ -26,8 +26,6 @@ const pollDevice = async () => {
         password: config.password,
         timeout: 5
     });
-
-    console.log("fetch-interfaces: starting ...");
 
     try {
         console.log("fetch-interfaces: connecting to device " + JSON.stringify(conn));

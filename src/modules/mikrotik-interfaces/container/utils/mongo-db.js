@@ -6,6 +6,7 @@ class Mongo {
         this.client = new MongoClient(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            serializeFunctions: true,
         });
     }
 

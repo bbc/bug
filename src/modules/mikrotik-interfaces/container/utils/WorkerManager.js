@@ -22,7 +22,7 @@ module.exports = class WorkerManager {
 
     async getDB() {
         if (this.config) {
-            this.db = await mongodb.connect(this.config.id);
+            await mongodb.connect(this.config.id);
             this.workers = await this.createWorkers(this.workerFiles);
         }
     }
@@ -44,8 +44,8 @@ module.exports = class WorkerManager {
 
     async createWorkers(filenames) {
         if (isMainThread) {
-            for (let i = 0; i < filenames.length; i++) {  
-                await this.createWorker(filenames[i],i);
+            for (let i = 0; i < filenames.length; i++) {
+                await this.createWorker(filenames[i], i);
             }
         }
         else {
@@ -63,8 +63,8 @@ module.exports = class WorkerManager {
         }
     }
 
-    async createWorker(filename,i){
-        this.workers[i] = await new Worker(filename, { workerData: { index: i, config: this.config, db: this.db } });
+    async createWorker(filename, i) {
+        this.workers[i] = await new Worker(filename, { workerData: { index: i, config: this.config, db: mongodb.db } });
         this.workers[i].once('message', this.handleMessage);
         this.workers[i].on('error', this.handleError);
         this.workers[i].on('exit', this.handleExit);
@@ -84,7 +84,6 @@ module.exports = class WorkerManager {
         console.log(event)
     }
 
-
     needsUpdated(object, newObject, keys) {
         for (let key of keys) {
             if (object[key] !== newObject[key]) {
@@ -95,16 +94,12 @@ module.exports = class WorkerManager {
     }
 
     async pushConfig(newConfig) {
-
         for (let i = 0; i < this.workers.length; i++) {
-
-            if( this.needsUpdated(this.config,newConfig,restartKeys[i])){
+            if (this.needsUpdated(this.config, newConfig, restartKeys[i])) {
                 const state = await this.workers[i].terminate();
-                await this.createWorker(filenames[i],i);
+                await this.createWorker(filenames[i], i);
             }
-            
         }
-
         this.config = newConfig;
     }
 
