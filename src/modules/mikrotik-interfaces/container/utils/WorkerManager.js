@@ -14,10 +14,9 @@ module.exports = class WorkerManager {
         this.config = config;
 
         this.workerFiles = this.getWorkerFiles(folder);
-        this.workers = []
+        this.workers = [];
 
-        if (this.config) {
-            this.dburl = `mongodb://bug-mongo:27017/${this.config.id}`
+        if (this.config.id) {
             this.workers = this.createWorkers(this.workerFiles);
         }
     }
@@ -60,7 +59,7 @@ module.exports = class WorkerManager {
     }
 
     async createWorker(filename, i) {
-        const worker = await new Worker(filename, { workerData: { index: i, config: this.config } });
+        const worker = await new Worker(filename, { stdout: false, workerData: { index: i, config: this.config } });
         worker.once('message', this.handleMessage);
         worker.on('error', this.handleError);
         worker.on('exit', this.handleExit);
@@ -82,6 +81,10 @@ module.exports = class WorkerManager {
     }
 
     needsUpdated(object, newObject, keys) {
+        if (!keys) {
+            return true;
+        }
+
         for (let key of keys) {
             if (object[key] !== newObject[key]) {
                 return true;
@@ -91,13 +94,19 @@ module.exports = class WorkerManager {
     }
 
     async pushConfig(newConfig) {
-        for (let i = 0; i < this.workers.length; i++) {
+
+        for (let i = 0; i < this.workerFiles.length; i++) {
+
             if (this.needsUpdated(this.config, newConfig, restartKeys[i])) {
-                const state = await this.workers[i].terminate();
+
+                if (this.workers[i]) {
+                    const state = await this.workers[i].terminate();
+                    console.log(state)
+                }
+                this.config = await newConfig;
                 this.workers[i] = await this.createWorker(this.workerFiles[i], i);
             }
         }
-        this.config = newConfig;
     }
 
 }

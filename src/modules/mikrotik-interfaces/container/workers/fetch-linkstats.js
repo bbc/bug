@@ -6,6 +6,7 @@ const delay = require('delay');
 const mikrotikFetchLinkStats = require('../services/mikrotik-fetchlinkstats');
 const arraySave = require('../services/array-save');
 const interfaceList = require('../services/interface-list');
+const mongoDb = require('../utils/mongo-db');
 
 const delayMs = 5000;
 const errorDelayMs = 10000;
@@ -17,9 +18,12 @@ parentPort.postMessage({
     restartOn: ['address', 'username', 'password']
 });
 
+//Connect to the db
+mongoDb.connect(config.id);
+
 const pollDevice = async () => {
 
-    const linkStatsCollection = await workerData.db.collection('linkstats');
+    const linkStatsCollection = await mongoDb.db.collection('linkstats');
 
     const conn = new RosApi({
         host: config.address,

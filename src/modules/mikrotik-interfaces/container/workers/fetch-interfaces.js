@@ -3,6 +3,8 @@ const { parentPort, workerData, threadId } = require('worker_threads');
 const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
 
+const mongoDb = require('../utils/mongo-db');
+
 const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
 const arraySave = require('../services/array-save');
 
@@ -16,9 +18,12 @@ parentPort.postMessage({
     restartOn: ['address', 'username', 'password']
 });
 
+//Connect to the db
+mongoDb.connect(config.id);
+
 const pollDevice = async () => {
 
-    const interfacesCollection = await workerData.db.collection('interfaces');
+    const interfacesCollection = await mongoDb.db.collection('interfaces');
 
     const conn = new RosApi({
         host: config.address,
@@ -52,7 +57,7 @@ const pollDevice = async () => {
 }
 
 //Kick things off
-while (true) {
+while (true){
     try {
         pollDevice();
     } catch (error) {

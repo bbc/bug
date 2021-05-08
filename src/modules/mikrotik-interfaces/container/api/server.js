@@ -12,7 +12,7 @@ const randomWords = require('random-words');
 const port = process.env.PORT || 3200;
 const myPanelId = process.env.PANEL_ID || `mikrotik-interfaces-${randomWords()}`;
 
-const boot = async () => {
+const serve = async () => {
 
     try {
         await mongoDb.connect(myPanelId);
@@ -25,5 +25,5 @@ const boot = async () => {
     }
 };
 
-boot();
+serve();
 
