@@ -50,7 +50,7 @@ module.exports = class WorkerManager {
     async createWorkers(filenames) {
         if (isMainThread) {
             for (let i = 0; i < filenames.length; i++) {
-                this.workers[i] = await this.createWorker(filenames[i], i);
+                this.workers[i] = await this.createWorker(filenames[i], i, this.config);
             }
         }
         else {
@@ -67,9 +67,9 @@ module.exports = class WorkerManager {
         }
     }
 
-    async createWorker(filename, i) {
+    async createWorker(filename, i, config) {
         console.log(`WorkerManager->createWorker: Creating a worker from ${filename}.`)
-        const worker = await new Worker(filename, { workerData: { index: i, config: this.config } });
+        const worker = await new Worker(filename, { workerData: { index: i, config: config } });
         await worker.on('message', this.handleMessage);
         await worker.on('error', this.handleError);
         await worker.on('exit', this.handleExit);
@@ -103,18 +103,23 @@ module.exports = class WorkerManager {
 
     async pushConfig(newConfig) {
 
+        const mergedConfig = { ...this.config, ...newConfig };
+
         for (let i = 0; i < this.workerFiles.length; i++) {
 
-            if (this.needsUpdated(this.config, newConfig, restartKeys[i])) {
+            if (this.needsUpdated(this.config, mergedConfig, restartKeys[i])) {
 
                 if (this.workers[i]) {
                     const state = await this.workers[i].terminate();
-                    console.log(`WorkerManager->pushConfig: ${this.workerFiles} terminated with code ${state}`);
+                    console.log(`WorkerManager->pushConfig: ${this.workerFiles[i]} terminated with code ${state}`);
                 }
-                this.config = await newConfig;
-                this.workers[i] = await this.createWorker(this.workerFiles[i], i);
+                this.workers[i] = await this.createWorker(this.workerFiles[i], i, mergedConfig);
+            }
+            else {
+                console.log(`WorkerManager->pushConfig: ${this.workerFiles[i]} doesn't need restarted.`)
             }
         }
+        this.config = mergedConfig;
     }
 
 }
