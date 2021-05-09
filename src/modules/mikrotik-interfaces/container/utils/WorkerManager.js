@@ -1,6 +1,7 @@
 'use strict';
 
 const { Worker, isMainThread, workerData } = require('worker_threads');
+const configGet = require("../services/config-get");
 const path = require('path');
 const fs = require('fs');
 
@@ -8,16 +9,26 @@ let restartKeys = [];
 
 module.exports = class WorkerManager {
 
-    constructor({ folder = path.join(__dirname, '..', 'workers'), config = null } = { folder: 'Folder to look for workers', config: 'The config to pass to works on start' }) {
+    constructor(folder, config) {
 
         this.fileExtension = 'js'
-        this.config = config;
+        this.folder = folder || path.join(__dirname, '..', 'workers');
 
-        this.workerFiles = this.getWorkerFiles(folder);
+        this.workerFiles = this.getWorkerFiles(this.folder);
         this.workers = [];
 
+        this.setConfig(config);
+    }
+
+    async setConfig(config) {
+        if (config) {
+            this.config = config;
+        }
+        else {
+            this.config = await configGet();
+        }
         if (this.config.id) {
-            this.workers = this.createWorkers(this.workerFiles);
+            this.createWorkers(this.workerFiles);
         }
     }
 
@@ -37,32 +48,31 @@ module.exports = class WorkerManager {
     }
 
     async createWorkers(filenames) {
-        const workers = [];
         if (isMainThread) {
             for (let i = 0; i < filenames.length; i++) {
-                workers[i] = await this.createWorker(filenames[i], i);
+                this.workers[i] = await this.createWorker(filenames[i], i);
             }
         }
         else {
-            console.log(`WorkerManager: You're trying to launch workers in a worker.`)
+            console.log(`WorkerManager->createWorkers: You're trying to launch workers in a worker.`);
         }
-        return workers;
     }
 
     terminateWorkers() {
         for (let i = 0; i < this.workers.length; i++) {
-            const state = this.workers[i].worker.terminate();
+            const state = this.workers[i].terminate();
             if (state) {
-                this.worker.pop(i);
+                this.workers.pop(i);
             }
         }
     }
 
     async createWorker(filename, i) {
-        const worker = await new Worker(filename, { stdout: false, workerData: { index: i, config: this.config } });
-        worker.once('message', this.handleMessage);
-        worker.on('error', this.handleError);
-        worker.on('exit', this.handleExit);
+        console.log(`WorkerManager->createWorker: Creating a worker from ${filename}.`)
+        const worker = await new Worker(filename, { workerData: { index: i, config: this.config } });
+        await worker.on('message', this.handleMessage);
+        await worker.on('error', this.handleError);
+        await worker.on('exit', this.handleExit);
         return worker;
     }
 
@@ -71,13 +81,11 @@ module.exports = class WorkerManager {
     }
 
     handleError(event) {
-        console.log('ERROR')
-        console.log(event)
+        console.log(`WorkerManager->handleError: ${event}`);
     }
 
     handleExit(event) {
-        console.log('EXIT')
-        console.log(event)
+        console.log(`WorkerManager->handleExit: ${event}`);
     }
 
     needsUpdated(object, newObject, keys) {
@@ -101,7 +109,7 @@ module.exports = class WorkerManager {
 
                 if (this.workers[i]) {
                     const state = await this.workers[i].terminate();
-                    console.log(state)
+                    console.log(`WorkerManager->pushConfig: ${this.workerFiles} terminated with code ${state}`);
                 }
                 this.config = await newConfig;
                 this.workers[i] = await this.createWorker(this.workerFiles[i], i);

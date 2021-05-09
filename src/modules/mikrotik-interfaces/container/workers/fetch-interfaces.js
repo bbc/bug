@@ -18,9 +18,6 @@ parentPort.postMessage({
     restartOn: ['address', 'username', 'password']
 });
 
-//Connect to the db
-mongoDb.connect(config.id);
-
 const pollDevice = async () => {
 
     const interfacesCollection = await mongoDb.db.collection('interfaces');
@@ -56,12 +53,20 @@ const pollDevice = async () => {
     await conn.close();
 }
 
-//Kick things off
-while (true){
-    try {
-        pollDevice();
-    } catch (error) {
-        console.log('fetch-interfaces: ', error);
+const main = async () => {
+
+    //Connect to the db
+    await mongoDb.connect(config.id);
+
+    //Kick things off
+    while (true) {
+        try {
+            pollDevice();
+        } catch (error) {
+            console.log('fetch-interfaces: ', error);
+        }
+        await delay(errorDelayMs);
     }
-    delay(errorDelayMs);
 }
+
+main();

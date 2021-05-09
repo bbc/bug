@@ -19,9 +19,6 @@ parentPort.postMessage({
     restartOn: ['address', 'username', 'password']
 });
 
-//Connect to the db
-mongoDb.connect(config.id);
-
 const pollDevice = async () => {
 
     const trafficCollection = await mongoDb.db.collection('traffic')
@@ -74,11 +71,20 @@ const pollDevice = async () => {
     await conn.close();
 }
 
-while (true) {
-    try {
-        pollDevice();
-    } catch (error) {
-        console.log('fetch-traffic: ', error);
+const main = async () => {
+
+    //Connect to the db
+    await mongoDb.connect(config.id);
+
+    //Kick things off
+    while (true) {
+        try {
+            pollDevice();
+        } catch (error) {
+            console.log('fetch-traffic: ', error);
+        }
+        await delay(errorDelayMs);
     }
-    delay(errorDelayMs);
 }
+
+main();

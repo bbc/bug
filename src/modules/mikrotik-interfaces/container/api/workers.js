@@ -1,11 +1,11 @@
 const WorkerManager = require('../utils/WorkerManager');
-const configGet = require("../services/config-get");
 
-const instantiate = async () => {
-    const config = await configGet();
-    return new WorkerManager({ config: config });
+let manager;
+
+const instantiate = () => {
+    manager = new WorkerManager();   
 }
 
-const manager = instantiate();
+instantiate();
 
 module.exports = manager;
