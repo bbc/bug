@@ -3,7 +3,7 @@
 # DATE: 04/03/2021
 # DESC: Defines Docker services for Bug
 
-version: '3.8'
+version: "3.8"
 
 networks:
   bug:
@@ -27,5 +27,17 @@ services:
     image: mongo:latest
     restart: unless-stopped
     container_name: bug-mongo
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+
+  influx:
+    image: influxdb:latest
+    restart: unless-stopped
+    container_name: bug-influx
+    environment:
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_USERNAME}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: bug
+      DOCKER_INFLUXDB_INIT_BUCKET: bug
     networks:
       - ${DOCKER_NETWORK_NAME}

@@ -47,3 +47,7 @@ services:
       - ${DOCKER_NETWORK_NAME}
     depends_on: 
       - mongo
+
+  influx:
+    ports:
+      - ${INFLUX_PORT}:${INFLUX_PORT}

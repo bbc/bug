@@ -20,6 +20,7 @@
         "express": "^4.17.1",
         "express-async-handler": "^1.1.4",
         "http-errors": "^1.8.0",
+        "influx": "^5.9.0",
         "io-videohub": "^2.0.0",
         "lokijs": "^1.5.12",
         "module-alias": "^2.2.2",
