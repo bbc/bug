@@ -43,7 +43,7 @@ const pollDevice = async () => {
     }
     console.log("fetch-linkstats: device connected ok");
 
-    var noErrors = true;
+    let noErrors = true;
     console.log('fetch-linkstats: starting device poll....');
     while (noErrors) {
         try {
@@ -62,7 +62,7 @@ const pollDevice = async () => {
             await arraySave(linkStatsCollection, linkStatsArray, 'name');
         } catch (error) {
             console.log('fetch-linkstats: ', error);
-            noErrors = true;
+            noErrors = false;
         }
         await delay(delayMs);
     }

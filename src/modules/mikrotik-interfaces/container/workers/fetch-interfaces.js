@@ -38,7 +38,7 @@ const pollDevice = async () => {
     }
     console.log("fetch-interfaces: device connected ok");
 
-    var noErrors = true;
+    let noErrors = true;
     console.log("fetch-interfaces: starting device poll....");
     while (noErrors) {
         try {
@@ -46,7 +46,7 @@ const pollDevice = async () => {
             await arraySave(interfacesCollection, interfaces, 'id');
         } catch (error) {
             console.log('fetch-interfaces: ', error);
-            noErrors = true;
+            noErrors = false;
         }
         await delay(delayMs);
     }
