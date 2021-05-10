@@ -9,6 +9,8 @@ import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 import { useAlert } from "@utils/Snackbar";
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const state = {
     textTransform: "uppercase",
@@ -72,10 +74,23 @@ export default function PanelTableRow(props) {
     const classes = useStyles();
     const sendAlert = useAlert();
 
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id: props.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
     const handleEnabledChanged = async (checked, panelId) => {
         const command = (checked ? 'enable' : 'disable');
         const commandText = (checked ? 'Enabled' : 'Disabled');
-        if(await AxiosCommand(`/api/panel/${command}/${panelId}`)) {
+        if (await AxiosCommand(`/api/panel/${command}/${panelId}`)) {
             sendAlert(`${commandText} panel: ${props.title}`, { broadcast: true, variant: "success" });
         }
         else {
@@ -116,7 +131,7 @@ export default function PanelTableRow(props) {
     };
 
     return (
-        <TableRow key={props.id}>
+        <TableRow key={props.id} ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <TableCell style={{ textAlign: "center" }}>{renderSwitch(props)}</TableCell>
             <TableCell>
                 <div
