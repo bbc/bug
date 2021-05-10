@@ -12,8 +12,8 @@ import Divider from "@material-ui/core/Divider";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ToggleOnIcon from "@material-ui/icons/ToggleOn";
-import EditIcon from "@material-ui/icons/Edit";
 import { Hidden } from "@material-ui/core";
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const useStyles = makeStyles((theme) => ({
     dropdownMenu: {
@@ -47,8 +47,8 @@ export default function PanelToolbar(props) {
     return (
         <>
             <Hidden xsDown>
-                <Button component={Link} to={`/panel/${props.panel.id}/edit`} variant="outlined" color="primary" startIcon={<EditIcon />}>
-                    Edit
+                <Button component={Link} to={`/panel/${props.panel.id}/edit`} variant="outlined" color="primary" startIcon={<SettingsIcon />}>
+                    Edit Panel
                 </Button>
                 {props.buttons}
             </Hidden>
@@ -64,7 +64,7 @@ export default function PanelToolbar(props) {
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
                 <MenuItem component={Link} to={`/panel/${props.panel.id}/edit`}>
                     <ListItemIcon>
-                        <EditIcon fontSize="small" />
+                        <SettingsIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Edit Panel" />
                 </MenuItem>
