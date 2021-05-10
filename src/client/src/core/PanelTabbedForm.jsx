@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHotkeys } from 'react-hotkeys-hook';
+import { useHotkeys } from "react-hotkeys-hook";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Tabs from "@material-ui/core/Tabs";
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         right: 0,
         top: 0,
-        color: 'rgba(255, 255, 255, 0.7)',
+        color: "rgba(255, 255, 255, 0.7)",
         padding: 16,
         zIndex: 1,
     },
@@ -64,37 +64,41 @@ export default function PanelTabbedForm(props) {
         );
     };
 
-    useHotkeys('esc', props.onClose);
+    useHotkeys("esc", props.onClose);
 
     return (
         <>
-            <TabContainer>
-                {props.onClose && (
-                    <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
-                        <CloseIcon />
-                    </IconButton>
-                )}
+            <div style={{ position: "relative" }}>
+                <TabContainer>
+                    {props.onClose && (
+                        <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
+                            <CloseIcon />
+                        </IconButton>
+                    )}
 
-                <Tabs
-                    className={classes.tabs}
-                    value={tabIndex}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChange}
-                    variant="scrollable"
-                    scrollButtons="on"
-                >
-                    {props.labels.map((label, index) => (
-                        <Tab label={label} key={index} />
-                    ))}
-                </Tabs>
-            </TabContainer>
+                    <Tabs
+                        className={classes.tabs}
+                        value={tabIndex}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        onChange={handleChange}
+                        variant="scrollable"
+                        scrollButtons="on"
+                    >
+                        {props.labels.map((label, index) => (
+                            <Tab label={label} key={index} />
+                        ))}
+                    </Tabs>
+                </TabContainer>
+            </div>
             <Card className={classes.card}>
-                {props.content ? props.content.map((content, index) => (
-                    <TabPanel key={index} value={tabIndex} index={index}>
-                        {content}
-                    </TabPanel>
-                )) : null}
+                {props.content
+                    ? props.content.map((content, index) => (
+                          <TabPanel key={index} value={tabIndex} index={index}>
+                              {content}
+                          </TabPanel>
+                      ))
+                    : null}
             </Card>
         </>
     );
