@@ -8,7 +8,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Menu from "@components/Menu";
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -36,7 +35,7 @@ const NavMobile = (props) => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="fixed" className={classes.appBar}>
+            <AppBar position="fixed" className={classes.appBar} elevation={1}>
                 <MuiToolbar>
                     <IconButton
                         color="inherit"

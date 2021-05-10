@@ -19,6 +19,16 @@ const theme = createMuiTheme({
         color: props => (props.disabled ? "#888" : "#ffffff"),
       }
     },
+    MuiTabs: {
+      root: {
+        minHeight: 56
+      }
+    },
+    MuiTab: {
+      root: {
+        padding: '16px 12px'
+      }
+    },
     MuiToolbar: {
       gutters: {
         [defaultTheme.breakpoints.up('sm')]: {

@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import AppBar from "@material-ui/core/AppBar";
+import TabContainer from "@core/TabContainer.jsx";
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -16,9 +16,6 @@ const useStyles = makeStyles((theme) => ({
             fontSize: "1rem",
             textTransform: "uppercase",
         },
-    },
-    appBar: {
-        position: "relative",
     },
     card: {
         minWidth: 300,
@@ -42,11 +39,13 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         right: 0,
         top: 0,
-        color: theme.palette.grey[500],
-        padding: 15,
+        color: 'rgba(255, 255, 255, 0.7)',
+        padding: 16,
         zIndex: 1,
     },
-    tabs: {},
+    tabs: {
+        marginRight: 48,
+    },
 }));
 
 export default function PanelTabbedForm(props) {
@@ -69,7 +68,7 @@ export default function PanelTabbedForm(props) {
 
     return (
         <>
-            <AppBar className={classes.appBar} color="default">
+            <TabContainer>
                 {props.onClose && (
                     <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
                         <CloseIcon />
@@ -82,18 +81,20 @@ export default function PanelTabbedForm(props) {
                     indicatorColor="primary"
                     textColor="primary"
                     onChange={handleChange}
+                    variant="scrollable"
+                    scrollButtons="on"
                 >
                     {props.labels.map((label, index) => (
                         <Tab label={label} key={index} />
                     ))}
                 </Tabs>
-            </AppBar>
+            </TabContainer>
             <Card className={classes.card}>
-                {props.content.map((content, index) => (
+                {props.content ? props.content.map((content, index) => (
                     <TabPanel key={index} value={tabIndex} index={index}>
                         {content}
                     </TabPanel>
-                ))}
+                )) : null}
             </Card>
         </>
     );

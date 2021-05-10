@@ -83,7 +83,7 @@ const Header = (props) => {
         <CardHeader
             component={Paper}
             square
-            elevation={4}
+            elevation={1}
             className={classes.header}
             title={props.children}
         ></CardHeader>

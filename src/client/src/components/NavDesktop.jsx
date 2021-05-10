@@ -83,6 +83,7 @@ const NavDesktop = (props) => {
             <AppBar
                 position="fixed"
                 className={classes.appBar}
+                elevation={1}
             >
                 <MuiToolbar>
                     <IconButton
