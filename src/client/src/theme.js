@@ -11,6 +11,7 @@ const theme = createMuiTheme({
         textTransform: 'uppercase',
         color: 'rgba(255, 255, 255, 0.7)',
         fontSize: '0.875rem',
+        padding: '12px 12px',
       }
     },
     MuiTableHead: {
