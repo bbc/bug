@@ -43,7 +43,7 @@ const pollDevice = async () => {
     }
     console.log("fetch-traffic: device connected ok");
 
-    var noErrors = true;
+    let noErrors = true;
     console.log('fetch-traffic: starting device poll....');
     while (noErrors) {
         try {
@@ -64,7 +64,7 @@ const pollDevice = async () => {
             await arraySave(trafficCollection, trafficArray, 'name');
         } catch (error) {
             console.log('fetch-traffic: ', error);
-            noErrors = true;
+            noErrors = false;
         }
         await delay(delayMs);
     }
