@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Icons from '@material-ui/icons/';
+import * as MDIIcons from 'mdi-material-ui';
 
 function upperFirst(string) {
     return string.slice(0, 1).toUpperCase() + string.slice(1, string.length)
@@ -17,8 +18,31 @@ function fixIconNames(string) {
     return name;
 }
 
-export default class DynamicIcon extends React.Component {
-    render() {
-        return React.createElement(Icons[fixIconNames(this.props.iconName)], {className: this.props.className});
+export default function DynamicIcon(props) {
+
+    const isMDI = (name) => {
+        if(name.split('-')[0] === 'mdi'){
+            return true;
+        }
+        return false;
     }
+
+    const getIcon = () => {
+        let Icon;
+        if(isMDI(props.iconName)){
+            const iconName = fixIconNames(props.iconName.replace('mdi-',''));
+            Icon = MDIIcons[iconName];   
+        }
+        else{
+            const iconName = fixIconNames(props.iconName);
+            Icon = Icons[iconName];   
+        }    
+        return (<Icon className={props.className}/>);
+    };
+
+    return (
+        <>
+        {getIcon()}
+        </>
+    );
 }

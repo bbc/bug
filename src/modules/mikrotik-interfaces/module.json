@@ -4,7 +4,7 @@
     "description": "Monitoring and control of mikrotik interfaces",
     "notes": "",
     "version": "1.0.0",
-    "icon": "SettingsInputComponent",
+    "icon": "mdi-router",
     "author": "Geoff House",
     "needsContainer": true,
     "license": "ISC",

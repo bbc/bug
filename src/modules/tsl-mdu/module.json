@@ -4,7 +4,7 @@
     "description": "Monitoring and control of TSL MDUs",
     "notes": "",
     "version": "1.1.0",
-    "icon": "PowerSettingsNew",
+    "icon": "mdi-power-plug-outline",
     "author": "Ryan McCartney",
     "license": "MIT",
     "needsContainer": true,
