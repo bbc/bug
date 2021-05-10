@@ -71,7 +71,6 @@ export default function PanelTable() {
                 return arrayMove(panels, oldIndex, newIndex);
             });
         }
-        console.log(panels)
     }
 
     const findWithAttr = (array, attr, value) => {
