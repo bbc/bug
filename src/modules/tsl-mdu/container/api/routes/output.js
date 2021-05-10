@@ -9,11 +9,12 @@ const output = express.Router();
 const getOutputs = require('@services/outputs-get');
 const getOutput = require('@services/output-get');
 const setOutput = require('@services/output-set');
+const setStateOutput = require('@services/output-state-set');
 
 output.get('/all', function(req, res){
 
-  let response = {
-    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+  const response = {
+    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
     request_method: req.method,
     request_params: req.query
   }
@@ -26,8 +27,8 @@ output.get('/all', function(req, res){
 
 output.get('/:output_number', function(req, res){
 
-  let response = {
-    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+  const response = {
+    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
     request_method: req.method,
     request_params: req.query
   }
@@ -38,10 +39,24 @@ output.get('/:output_number', function(req, res){
   res.json(response);
 })
 
+
+output.post('/:output_number/state', function(req, res){
+  
+  const response = {
+    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
+    request_method: req.method,
+    request_body: req.body
+  }
+  response.output = setStateOutput(req?.params?.output_number,req.body.state);
+
+  res.header("Content-Type",'application/json');
+  res.json(response);
+})
+
 output.post('/:output_number', function(req, res){
 
-  let response = {
-    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+  const response = {
+    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
     request_method: req.method,
     request_params: req.query
   }

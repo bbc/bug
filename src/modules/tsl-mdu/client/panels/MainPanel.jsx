@@ -23,8 +23,6 @@ export default function MainPanel() {
     const getStatus = async () => {
         const response = await axios.get(`/container/${config?.id}/status`);
         setStatus(response?.data?.mdu?.status);
-
-        console.log(response)
         setOutputs(response?.data?.mdu?.outputs);
     };
 
@@ -37,7 +35,7 @@ export default function MainPanel() {
     const renderOutputs = () => {
         const ouputCards = [];
         for (let output of outputs) {
-            ouputCards.push(<OutputCard {...output} />);
+            ouputCards.push(<OutputCard key={config.number} {...output} config={config} />);
         }
         return ouputCards;
     };

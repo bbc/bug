@@ -9,8 +9,8 @@ status = express.Router();
 
 status.get('/', async function(req, res){
   
-  let response = {
-    request_url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+  const response = {
+    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
     request_method: req.method,
     request_params: req.query
   }

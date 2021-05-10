@@ -7,7 +7,6 @@ const panelStop = require('@services/panel-stop');
 module.exports = async (panelId) => {
 
     try {
-        logger.action(`Disbaling panel - ${panelId}`);
         const panelConfig = await panelConfigModel.get(panelId);
         if (!panelConfig) {
             throw new Error(`Panel ${panelId} not found`);

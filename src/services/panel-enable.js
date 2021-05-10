@@ -7,8 +7,6 @@ const panelStart = require('@services/panel-start');
 module.exports = async (panelId) => {
 
     try {
-        logger.action(`Enabling panel - ${panelId}`);
-
         const panelConfig = await panelConfigModel.get(panelId);
         if(!panelConfig) {
             throw new Error(`Panel ${panelId} not found`);

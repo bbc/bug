@@ -21,8 +21,6 @@ module.exports = async (newConfig) => {
             throw new Error(`Failed to merge panel configs`);
         }
 
-        logger.action(`Edited ${combinedConfig.title}.`);
-
         // get the module (so we can check if it needs a container)
         const module = await moduleGet(combinedConfig.module);
 

@@ -97,6 +97,7 @@ class TSL_MDU {
                     let output = {
                         name: items[1].nextElement.attrs.value,
                         fuses: items[2].getText().toLowerCase(),
+                        number: index+1,
                     }
       
                     if (items[3]?.nextElement?.attrs?.checked === 'checked') {
@@ -148,8 +149,7 @@ class TSL_MDU {
 
         const dataString = this.buildRequest(this.names, this.states, this.delays, this.locks);
         const url = `http://${this.host}/op_config:${this.port}`;
-
-        const response = await axios.post(url, auth = { username: this.username, password: this.password }, dataString);
+        const response = await axios.post(url, auth = { username: this.username, password: this.password },dataString);
         this.status = response.status;
 
         return this.status
