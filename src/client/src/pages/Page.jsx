@@ -3,6 +3,7 @@ import PageHome from "./PageHome";
 import PagePanel from "./PagePanel";
 import PagePanels from "./PagePanels";
 import PagePanelsAdd from "./PagePanelsAdd";
+import PagePanelsEdit from "./PagePanelsEdit";
 import PageSystem from "./PageSystem";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -76,6 +77,11 @@ const Page = (props) => {
                 <Route exact path="/panels/add">
                     <div className={classes.pagecontent}>
                         <PagePanelsAdd />
+                    </div>
+                </Route>
+                <Route exact path="/panels/edit">
+                    <div className={classes.pagecontent}>
+                        <PagePanelsEdit />
                     </div>
                 </Route>
                 <Route path="/panel/:panelid">
