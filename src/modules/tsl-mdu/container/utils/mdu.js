@@ -5,11 +5,10 @@ const path = require('path');
 
 let mdu;
 
-async function init() {
+function init() {
     try{
         //const config = await configGet();
         //const MDU = require(path.join(__dirname,config?.model)).tsl_mdu;
-
         const config = {
             title: "Test TSL Module",
             description: "Making cables less spicy",
@@ -23,16 +22,14 @@ async function init() {
             model: "tsl-mdu-3es"
         };
 
-        const MDU = require(path.join(__dirname,'tsl-mdu-3es'));
-        mdu = await new MDU(config);
-        return mdu;
+        const MDU = require(path.join(__dirname,'tsl-mdu-12-pm'));
+        mdu = new MDU(config);
         
     } catch (error) {
         console.log(error)
     }
 }
 
-module.exports = {
-    init: init,
-    mdu: mdu
-};
+init();
+
+module.exports = mdu;

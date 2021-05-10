@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AxiosGet from "@utils/AxiosGet";
+import axios from 'axios';
 import Grid from "@material-ui/core/Grid";
 import PanelContext from "@core/PanelContext";
 
@@ -21,9 +21,11 @@ export default function MainPanel() {
     const [status, setStatus] = useState(null);
 
     const getStatus = async () => {
-        const response = await AxiosGet(`/container/${config?.id}/status`);
-        setStatus(response?.mdu?.status);
-        setOutputs(response?.mdu?.outputs);
+        const response = await axios.get(`/container/${config?.id}/status`);
+        setStatus(response?.data?.mdu?.status);
+
+        console.log(response)
+        setOutputs(response?.data?.mdu?.outputs);
     };
 
     useEffect(() => {
@@ -33,16 +35,16 @@ export default function MainPanel() {
     }, []);
 
     const renderOutputs = () => {
-        const ouputs = [];
+        const ouputCards = [];
         for (let output of outputs) {
-            ouputs.push(<OutputCard {...output} />);
+            ouputCards.push(<OutputCard {...output} />);
         }
-        return outputs;
+        return ouputCards;
     };
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={4} direction="column" justify="center" alignItems="center">
+            <Grid container spacing={4} justify="center" alignItems="center">
                 {renderOutputs()}
             </Grid>
         </div>

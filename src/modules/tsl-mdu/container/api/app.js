@@ -5,9 +5,7 @@
 
 const createError = require('http-errors');
 const express = require('express');
-const MDU = require('@utils/mdu');
-
-const mdu = MDU.init();
+const mdu = require('@utils/mdu');
 
 // Define the Express application
 let app = express();

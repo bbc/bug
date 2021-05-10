@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
 export default function OutputCard(props) {
     const classes = useStyles();
 
+    const handleClick = async (output) => {
+        const response = await axios.put(`/container/${config?.id}/output/${output.number}`);
+        console.log(response.data)
+    };
+
     return (
         <Grid item lg={3} sm={6} xs={12} >
       

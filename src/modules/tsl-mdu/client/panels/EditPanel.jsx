@@ -8,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import PanelContext from '@core/PanelContext';
+import axios from 'axios';
 
 export default function EditPanel() {
 

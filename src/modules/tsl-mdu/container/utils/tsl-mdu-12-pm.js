@@ -7,18 +7,19 @@ const JSSoup = require('jssoup').default;
 const axios = require('axios');
 
 class TSL_MDU {
-    constructor({ ip_address, outputs, port, username, password, frequency }) {
+    constructor(config) {
+
 
         this.poller = null;
         this.model = "TSL-MDU12-3ES";
-        this.username = username || 'root';
-        this.password = password || 'telsys';
-        this.host = ip_address;
-        this.port = port || 80;
+        this.username = config.username || 'root';
+        this.password = config.password || 'telsys';
+        this.host = config.ip_address;
+        this.port = config.port || 80;
         this.status = null;
-        this.outputsCount = outputs || 12;
+        this.outputsCount = config.outputs || 12;
         this.outputs = [];
-        this.frequency = frequency || 5000;
+        this.frequency = config.frequency || 5000;
 
         //Get Initial State
         this.refreshState();
@@ -61,9 +62,9 @@ class TSL_MDU {
     }
 
     async refreshState() {
-        const outputsPageAddress = `http://${this.host}/Output.htm`;
+        const outputsPageAddress = `http://${this.host}/Output.htm`;    
         let response;
-
+        
         try {
             response = await axios.get(outputsPageAddress, {
                 auth: {
@@ -81,38 +82,38 @@ class TSL_MDU {
         if (this.status === 200) {
             const soup = await new JSSoup(response?.data);
             const table = await soup.find('table','boxTable');
+            
             let first = true;
 
             for (let row of table.findAll('tr')) {
-
+                
                 if (first) {
                     first = false;
                 }
                 else {
                     const items = row.findAll('td');
-                    console.log(items)
-                    const index = parseInt(items[0].text) - 1;
-
+                    const index = parseInt(items[0].getText()) - 1;
+                    
                     let output = {
-                        name: items[0].input?.value,
-                        fuses: items[1].text.replace('\xa0', ''),
+                        name: items[1].nextElement.attrs.value,
+                        fuses: items[2].getText().toLowerCase(),
                     }
-
-                    if ('checked' in items[2].findAll('input')[0]) {
+      
+                    if (items[3]?.nextElement?.attrs?.checked === 'checked') {
                         output.state = 1;
                     }
                     else {
                         output.state = 0;
                     }
 
-                    if ('checked' in str(items[3])) {
+                    if (items[4].nextElement.attrs.checked === 'checked') {
                         output.lock = 1;
                     }
                     else {
                         output.lock = 0;
                     }
 
-                    output.delay = parseInt(items[4]?.input?.value)
+                    output.delay = parseInt(items[5].nextElement.attrs.value)
                     this.outputs[index] = { ...this.outputs[index], ...output };
                 }
             }
