@@ -70,9 +70,9 @@ module.exports = class WorkerManager {
     async createWorker(filename, i, config) {
         console.log(`WorkerManager->createWorker: Creating a worker from ${filename}.`)
         const worker = await new Worker(filename, { workerData: { index: i, config: config } });
-        await worker.on('message', this.handleMessage);
-        await worker.on('error', this.handleError);
-        await worker.on('exit', this.handleExit);
+        worker.on('message', this.handleMessage);
+        worker.on('error', this.handleError);
+        worker.on('exit', this.handleExit);
         return worker;
     }
 
