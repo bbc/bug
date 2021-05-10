@@ -1,14 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import ApiSwitch from "@core/ApiSwitch";
-import PanelTableMenu from "@components/panelTable/PanelTableMenu";
-import AxiosCommand from "@utils/AxiosCommand";
 import ProgressCounter from "@components/ProgressCounter";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 import { useAlert } from "@utils/Snackbar";
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 
 const state = {
     textTransform: "uppercase",
@@ -72,15 +71,17 @@ export default function PanelTableRow(props) {
     const classes = useStyles();
     const sendAlert = useAlert();
 
-    const handleEnabledChanged = async (checked, panelId) => {
-        const command = (checked ? 'enable' : 'disable');
-        const commandText = (checked ? 'Enabled' : 'Disabled');
-        if (await AxiosCommand(`/api/panel/${command}/${panelId}`)) {
-            sendAlert(`${commandText} panel: ${props.title}`, { broadcast: true, variant: "success" });
-        }
-        else {
-            sendAlert(`Failed to ${command} panel: ${props.title}`, { variant: "error" });
-        }
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id: props.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
     };
 
     const renderState = (panel) => {
@@ -102,22 +103,11 @@ export default function PanelTableRow(props) {
         }
     };
 
-    const renderSwitch = (panel) => {
-        if (panel._status === "building" || panel._status === "stopping" || panel._status === "starting") {
-            return <CircularProgress />;
-        }
-        return (
-            <ApiSwitch
-                panelId={panel.id}
-                checked={panel.enabled}
-                onChange={(checked) => handleEnabledChanged(checked, panel.id)}
-            />
-        );
-    };
-
     return (
-        <TableRow key={props.id}>
-            <TableCell style={{ textAlign: "center" }}>{renderSwitch(props)}</TableCell>
+        <TableRow key={props.id} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <TableCell>
+                <DragIndicatorIcon/>
+            </TableCell>
             <TableCell>
                 <div
                     className={clsx(classes.title, {
@@ -141,9 +131,6 @@ export default function PanelTableRow(props) {
                 })}
             >
                 {props._module.longname}
-            </TableCell>
-            <TableCell className={classes.cellMenu}>
-                <PanelTableMenu panel={props} />
             </TableCell>
         </TableRow>
     );
