@@ -35,16 +35,12 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
         setAnchorEl(null);
     };
 
-    // const disableStart = !props.panel.enabled || props.panel._isrunning || props.panel._isbuilding;
-    // const disableStop = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
-    // const disableRestart = !props.panel.enabled || !props.panel._isrunning || props.panel._isbuilding;
-
     const handleProtect = async () => {
         handleClose();
         const command = iface._protected ? "unprotect" : "protect";
         const commandAction = iface._protected ? "Unprotected" : "Protected";
-        //TODO - use proxy for container route
-        if (await AxiosCommand(`http://localhost:3101/container/${panelId}/interface/${command}/${iface.name}`)) {
+
+        if (await AxiosCommand(`/container/${panelId}/interface/${command}/${iface.name}`)) {
             sendAlert(`${commandAction} interface: ${iface.name}`, { variant: "success" });
         } else {
             sendAlert(`Failed to ${command} interface: ${iface.name}`, { variant: "error" });
