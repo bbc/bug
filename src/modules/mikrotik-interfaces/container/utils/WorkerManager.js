@@ -77,7 +77,9 @@ module.exports = class WorkerManager {
     }
 
     handleMessage(event) {
-        restartKeys[event.index] = event.restartOn;
+        if (event?.restartOn) {
+            restartKeys[event.index] = event.restartOn;
+        }
     }
 
     handleError(event) {
