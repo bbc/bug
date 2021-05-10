@@ -1,7 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-let port = process.env.PORT_DEV_API || "3101";
-
+const port = process.env.PORT_DEV_API || "3101";
 const options = {
     ws: true, // proxy websockets
     target: "http://localhost:" + port,
@@ -20,7 +19,7 @@ module.exports = function (app) {
         bugClientProxy
     );
     app.use(
-        "/",
+        "/socket.io",
         bugClientProxy
     );
 };
