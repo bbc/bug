@@ -84,8 +84,8 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
                     <ListItemText primary="Rename" />
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleProtect}>
-                    <ListItemIcon>{iface._protected ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
+                <MenuItem onClick={handleProtect} disabled={iface._protected && !iface._allowunprotect}>
+                    <ListItemIcon disabled={iface._protected && !iface._allowunprotect}>{iface._protected ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
                     <ListItemText primary="Protect" />
                 </MenuItem>
             </Menu>
