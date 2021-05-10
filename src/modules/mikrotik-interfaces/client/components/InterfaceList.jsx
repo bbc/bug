@@ -126,10 +126,10 @@ export default function InterfaceList({ panelId }) {
         setMenuIsOpen(state);
     };
 
-    const handleEnabledChanged = async (checked, interfaceId, interfaceName) => {
+    const handleEnabledChanged = async (checked, interfaceName) => {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
-        if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceId}`)) {
+        if (await AxiosCommand(`http://localhost:3101/container/${panelId}/interface/${command}/${interfaceName}`)) {
             sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
         } else {
             sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
@@ -168,7 +168,7 @@ export default function InterfaceList({ panelId }) {
                 <TableCell className={classes.colEnabled}>
                     <ApiSwitch
                         checked={!iface.disabled}
-                        onChange={(checked) => handleEnabledChanged(checked, iface.id, iface.name)}
+                        onChange={(checked) => handleEnabledChanged(checked, iface.name)}
                         disabled={iface._protected}
                     />
                 </TableCell>

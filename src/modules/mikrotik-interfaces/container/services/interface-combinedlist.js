@@ -62,6 +62,13 @@ module.exports = async () => {
     // loop through and set protected interface for each
     for (let eachInterface of interfaces) {
         eachInterface['_protected'] = matchAnyRegex(protectedRegexArray, eachInterface.name);
+
+        // this boolean helps the UI know whether the interface can be directly removed from the protected interfaces
+        // if it's false, then the protection is provided by a wildcard
+        eachInterface['_allowunprotect'] = (config.protectedInterfaces.find((loopInterface, index) => {
+            return (loopInterface == eachInterface.name);
+        }) !== undefined);
+
     }
 
     interfaces.sort((a, b) => (a.name > b.name) ? 1 : -1)
