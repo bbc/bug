@@ -14,7 +14,7 @@ import red from '@material-ui/core/colors/red';
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        minWidth: 150,
+        minWidth: 100,
         padding: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.secondary,
@@ -56,11 +56,12 @@ export default function OutputCard(props) {
     }
 
     return (
-        <Grid item lg={3} sm={6} xs={12} >
+        <Grid item lg={3} sm={3} xs={12} >
 
             <Card className={classes.card} >
                 <CardHeader
                     title={props?.name}
+                    titleTypographyProps={{variant:'h6'}}
                 />
                 <CardContent>
                     <ButtonGroup onClick={handleClick} disableElevation variant="outlined" className={getColor()}>

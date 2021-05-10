@@ -4,7 +4,7 @@
     "description": "Control and monitor Blackmagic videohub devices",
     "notes": "",
     "version": "1.0.0",
-    "icon": "BlurOn",
+    "icon": "mdi-matrix",
     "author": "Geoff House",
     "license": "ISC",
     "needsContainer": true,

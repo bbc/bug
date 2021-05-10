@@ -42,7 +42,7 @@ export default function MainPanel() {
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={4} justify="center" alignItems="center">
+            <Grid container spacing={1} justify="center" alignItems="center">
                 {renderOutputs()}
             </Grid>
         </div>
