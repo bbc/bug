@@ -129,7 +129,7 @@ export default function InterfaceList({ panelId }) {
     const handleEnabledChanged = async (checked, interfaceName) => {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
-        if (await AxiosCommand(`http://localhost:3101/container/${panelId}/interface/${command}/${interfaceName}`)) {
+        if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceName}`)) {
             sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
         } else {
             sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
@@ -231,7 +231,7 @@ export default function InterfaceList({ panelId }) {
     return (
         <>
             <ApiPoller
-                url={`http://localhost:3101/container/${panelId}/interface`}
+                url={`/container/${panelId}/interface`}
                 interval="2000"
                 onChanged={(result) => setInterfaceList(result)}
             />

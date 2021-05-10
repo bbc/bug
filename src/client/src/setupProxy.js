@@ -1,12 +1,21 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
-let port = process.env.PORT_DEV_API || '3101';
+let port = process.env.PORT_DEV_API || "3101";
 
-module.exports = function(app) {
-  app.use('/api',
-    createProxyMiddleware({
-      target: 'http://localhost:'+port,
-      changeOrigin: true,
-    })
-  );
+module.exports = function (app) {
+    app.use(
+        "/api",
+        createProxyMiddleware({
+            target: "http://localhost:" + port,
+            changeOrigin: true,
+        })
+    );
+
+    app.use(
+        "/container",
+        createProxyMiddleware({
+            target: "http://localhost:" + port,
+            changeOrigin: true,
+        })
+    );
 };

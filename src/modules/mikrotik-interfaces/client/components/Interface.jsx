@@ -87,7 +87,7 @@ export default function Interface({ panelId, interfaceName }) {
     return (
         <>
             <ApiPoller
-                url={`http://localhost:3101/container/${panelId}/interface/${interfaceName}`}
+                url={`/container/${panelId}/interface/${interfaceName}`}
                 interval="2000"
                 onChanged={(result) => setIface(result)}
             />
