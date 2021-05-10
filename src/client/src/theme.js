@@ -7,6 +7,18 @@ const theme = createMuiTheme({
         padding: '8px 12px',
         borderBottom: '1px solid #181818'
       },
+      head: {
+        textTransform: 'uppercase',
+        color: 'rgba(255, 255, 255, 0.7)',
+        fontSize: '0.875rem',
+      }
+    },
+    MuiTableHead: {
+      root: {
+        "& .MuiTableCell-head": {
+          backgroundColor: '#212121'
+        }
+      }
     },
     MuiMenuItem: {
       root: {
@@ -61,6 +73,12 @@ const theme = createMuiTheme({
         marginBottom: 2,
       }
     },
+    MuiChip: {
+      root: {
+        borderRadius: 5,
+        fontSize: 'inherit'
+      }
+    }
   },
   typography: {
     fontFamily: [
