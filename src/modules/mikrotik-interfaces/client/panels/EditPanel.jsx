@@ -99,6 +99,7 @@ export default function EditPanel() {
                         control={control}
                         defaultValue={config?.protectedInterfaces}
                         variant="filled"
+                        sort={true}
                         error={errors.protectedInterfaces ? true : false}
                         fullWidth
                     />
@@ -111,6 +112,7 @@ export default function EditPanel() {
                         control={control}
                         defaultValue={config?.excludedInterfaces}
                         variant="filled"
+                        sort={true}
                         error={errors.excludedInterfaces ? true : false}
                         fullWidth
                     />
