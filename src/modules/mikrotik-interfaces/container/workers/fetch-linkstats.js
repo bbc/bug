@@ -77,7 +77,7 @@ const main = async () => {
     //Kick things off
     while (true) {
         try {
-            pollDevice();
+            await pollDevice();
         } catch (error) {
             console.log('fetch-linkstats: ', error);
         }
