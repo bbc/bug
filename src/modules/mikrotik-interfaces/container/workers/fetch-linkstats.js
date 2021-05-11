@@ -4,7 +4,7 @@ const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
 
 const mikrotikFetchLinkStats = require('../services/mikrotik-fetchlinkstats');
-const arraySave = require('../services/array-save');
+const arraySaveMongo = require('../services/array-savemongo');
 const interfaceList = require('../services/interface-list');
 const mongoDb = require('../utils/mongo-db');
 
@@ -59,7 +59,7 @@ const pollDevice = async () => {
                     }
                 }
             }
-            await arraySave(linkStatsCollection, linkStatsArray, 'name');
+            await arraySaveMongo(linkStatsCollection, linkStatsArray, 'name');
         } catch (error) {
             console.log('fetch-linkstats: ', error);
             noErrors = false;
