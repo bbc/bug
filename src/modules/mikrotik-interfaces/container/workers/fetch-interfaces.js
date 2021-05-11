@@ -6,7 +6,7 @@ const delay = require('delay');
 const mongoDb = require('../utils/mongo-db');
 
 const mikrotikFetchInterfaces = require('../services/mikrotik-fetchinterfaces');
-const arraySave = require('../services/array-save');
+const arraySaveMongo = require('../services/array-savemongo');
 
 const delayMs = 2000;
 const errorDelayMs = 10000;
@@ -43,7 +43,7 @@ const pollDevice = async () => {
     while (noErrors) {
         try {
             const interfaces = await mikrotikFetchInterfaces(conn);
-            await arraySave(interfacesCollection, interfaces, 'id');
+            await arraySaveMongo(interfacesCollection, interfaces, 'id');
         } catch (error) {
             console.log('fetch-interfaces: ', error);
             noErrors = false;

@@ -14,6 +14,7 @@
     "author": "Geoff House",
     "license": "ISC",
     "dependencies": {
+        "@influxdata/influxdb-client": "^1.13.0",
         "axios": "^0.21.1",
         "concurrently": "^6.0.0",
         "delay": "^5.0.0",

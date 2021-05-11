@@ -4,7 +4,8 @@ const RosApi = require('node-routeros').RouterOSAPI;
 const delay = require('delay');
 
 const mikrotikFetchTraffic = require('../services/mikrotik-fetchtraffic');
-const arraySave = require('../services/array-save');
+const arraySaveMongo = require('../services/array-savemongo');
+const trafficSaveInflux = require('../services/traffic-saveinflux');
 const interfaceList = require('../services/interface-list');
 const trafficAddHistory = require('../services/traffic-addhistory');
 const mongoDb = require('../utils/mongo-db');
@@ -19,6 +20,7 @@ parentPort.postMessage({
     restartOn: ['address', 'username', 'password']
 });
 
+// return;
 const pollDevice = async () => {
 
     const trafficCollection = await mongoDb.db.collection('traffic')
@@ -58,10 +60,15 @@ const pollDevice = async () => {
                 }
             }
 
+            // save to influx
+            await trafficSaveInflux(trafficArray);
+
             // add historical data (for sparklines)
             trafficArray = await trafficAddHistory(trafficCollection, trafficArray);
 
-            await arraySave(trafficCollection, trafficArray, 'name');
+            // save to mongo
+            await arraySaveMongo(trafficCollection, trafficArray, 'name');
+
         } catch (error) {
             console.log('fetch-traffic: ', error);
             noErrors = false;
