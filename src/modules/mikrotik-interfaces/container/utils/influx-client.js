@@ -13,6 +13,10 @@ class InfluxDb {
     getWriteApi() {
         return this.client.getWriteApi(org, bucket);
     }
+
+    getQueryApi() {
+        return this.client.getQueryApi(org);
+    }
 }
 
 module.exports = new InfluxDb();

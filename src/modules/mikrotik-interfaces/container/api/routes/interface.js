@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const interfaceCombinedList = require("../../services/interface-combinedlist");
 const interfaceCombined = require("../../services/interface-combined");
+const interfaceStats = require("../../services/interface-stats");
 const mikrotikInterfaceEnable = require("../../services/mikrotik-interfaceenable");
 const mikrotikInterfaceDisable = require("../../services/mikrotik-interfacedisable");
 const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
@@ -24,7 +25,18 @@ router.get(
         const result = await interfaceCombined(req.params.interfaceName);
         res.json({
             status: result ? "success" : "fail",
-            data: result
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/stats/:interfaceName",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceStats(req.params.interfaceName);
+        res.json({
+            status: result ? "success" : "fail",
+            data: result,
         });
     })
 );
