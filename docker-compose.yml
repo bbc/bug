@@ -5,6 +5,9 @@
 
 version: "3.8"
 
+volumes:
+  influx:
+
 networks:
   bug:
     name: ${DOCKER_NETWORK_NAME}
@@ -34,6 +37,8 @@ services:
     image: influxdb:latest
     restart: unless-stopped
     container_name: bug-influx
+    volumes:
+      - influx:/var/lib/influxdb
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUX_USERNAME}
