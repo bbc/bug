@@ -15,3 +15,5 @@ services:
       - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
 
   mongo:
+
+  influx:

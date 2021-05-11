@@ -50,4 +50,4 @@ services:
 
   influx:
     ports:
-      - ${INFLUX_PORT}:${INFLUX_PORT}
+      - ${INFLUX_PORT}:8086
