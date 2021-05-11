@@ -1,32 +1,38 @@
-const influxGet = require("@utils/influx-get");
+// const influxGet = require("@utils/influx-get");
+const mongoCollection = require("../utils/mongo-collection");
 
-module.exports = async (interfaceName, statisticField) => {
+module.exports = async (interfaceName, startTime = null, endTime = null) => {
     try {
-        const influxRows = await influxGet({
-            _measurement: "traffic",
-            interface: interfaceName,
-            _field: ["rx-bits-per-second", "tx-bits-per-second"],
-        });
-
-        if (!influxRows) {
-            return false;
+        if (endTime === null) {
+            endTime = Date.now();
         }
+
+        if (startTime === null) {
+            startTime = endTime - (60 * 10 * 1000); // 10 mins
+        }
+
+        const historyCollection = await mongoCollection("history");
+
+        let history = await historyCollection.find({ timestamp: { $gte: startTime, $lte: endTime } }).toArray();
 
         let interfaceStatsArray = {
             tx: [],
             rx: [],
         };
 
-        for (let eachRow of influxRows) {
-            var rowDate = new Date(eachRow["_time"]);
-
-            var type = eachRow._field === "rx-bits-per-second" ? "rx" : "tx";
-            interfaceStatsArray[type].push({
-                x: rowDate.getTime(),
-                y: eachRow["_value"],
-            });
+        for(let eachItem of history) {
+            if(eachItem['interfaces'][interfaceName]) {
+                interfaceStatsArray['tx'].push({
+                    x: eachItem['timestamp'],
+                    y: eachItem['interfaces'][interfaceName]['tx']
+                });
+                interfaceStatsArray['rx'].push({
+                    x: eachItem['timestamp'],
+                    y: eachItem['interfaces'][interfaceName]['rx']
+                });
+            }
         }
-
         return interfaceStatsArray;
+
     } catch (error) {}
 };

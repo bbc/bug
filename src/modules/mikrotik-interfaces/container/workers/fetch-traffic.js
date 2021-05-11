@@ -1,14 +1,15 @@
-const { parentPort, workerData, threadId } = require('worker_threads');
+const { parentPort, workerData, threadId } = require("worker_threads");
 
-const RosApi = require('node-routeros').RouterOSAPI;
-const delay = require('delay');
+const RosApi = require("node-routeros").RouterOSAPI;
+const delay = require("delay");
 
-const mikrotikFetchTraffic = require('../services/mikrotik-fetchtraffic');
-const arraySaveMongo = require('../services/array-savemongo');
-const trafficSaveInflux = require('../services/traffic-saveinflux');
-const interfaceList = require('../services/interface-list');
-const trafficAddHistory = require('../services/traffic-addhistory');
-const mongoDb = require('../utils/mongo-db');
+const mikrotikFetchTraffic = require("../services/mikrotik-fetchtraffic");
+const arraySaveMongo = require("../services/array-savemongo");
+const trafficSaveHistory = require("../services/traffic-savehistory");
+const interfaceList = require("../services/interface-list");
+const trafficAddHistory = require("../services/traffic-addhistory");
+const mongoDb = require("../utils/mongo-db");
+const mongoCollection = require("../utils/mongo-collection");
 
 const delayMs = 2000;
 const errorDelayMs = 10000;
@@ -17,21 +18,22 @@ const config = workerData.config;
 //Tell the manager the things you care about
 parentPort.postMessage({
     index: workerData.index,
-    restartOn: ['address', 'username', 'password']
+    restartOn: ["address", "username", "password"],
 });
 
-// return;
-const pollDevice = async () => {
 
-    const trafficCollection = await mongoDb.db.collection('traffic')
+const pollDevice = async () => {
+    const trafficCollection = await mongoCollection("traffic");
+    const historyCollection = await mongoCollection("history", { capped: true, max: 86400, size: 52428800 });
+
     const conn = new RosApi({
         host: config.address,
         user: config.username,
         password: config.password,
-        timeout: 5
+        timeout: 5,
     });
 
-    console.log('fetch-traffic: starting ...');
+    console.log("fetch-traffic: starting ...");
 
     // initial delay (to stagger device polls)
     await delay(2000);
@@ -46,7 +48,7 @@ const pollDevice = async () => {
     console.log("fetch-traffic: device connected ok");
 
     let noErrors = true;
-    console.log('fetch-traffic: starting device poll....');
+    console.log("fetch-traffic: starting device poll....");
     while (noErrors) {
         try {
             // fetch interface list from db (empty if not yet fetched)
@@ -56,30 +58,28 @@ const pollDevice = async () => {
             let trafficArray = [];
             if (interfaces) {
                 for (eachInterface of interfaces) {
-                    trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface['name']));
+                    trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface["name"]));
                 }
             }
 
             // save to influx
-            await trafficSaveInflux(trafficArray);
+            await trafficSaveHistory(historyCollection, trafficArray);
 
             // add historical data (for sparklines)
             trafficArray = await trafficAddHistory(trafficCollection, trafficArray);
 
             // save to mongo
-            await arraySaveMongo(trafficCollection, trafficArray, 'name');
-
+            await arraySaveMongo(trafficCollection, trafficArray, "name");
         } catch (error) {
-            console.log('fetch-traffic: ', error);
+            console.log("fetch-traffic: ", error);
             noErrors = false;
         }
         await delay(delayMs);
     }
     await conn.close();
-}
+};
 
 const main = async () => {
-
     //Connect to the db
     await mongoDb.connect(config.id);
 
@@ -88,10 +88,10 @@ const main = async () => {
         try {
             await pollDevice();
         } catch (error) {
-            console.log('fetch-traffic: ', error);
+            console.log("fetch-traffic: ", error);
         }
         await delay(errorDelayMs);
     }
-}
+};
 
 main();
