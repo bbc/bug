@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "@material-ui/core/Table";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import LogTableRow from "@components/logTable/LogTableRow";
 import Loading from "@components/Loading";
-import ApiPoller from "@utils/ApiPoller";
+import { useApiPoller } from "@utils/ApiPoller";
 
 const useStyles = makeStyles((theme) => ({
     colTimestamp: {
@@ -32,64 +32,55 @@ const useStyles = makeStyles((theme) => ({
         "@media (max-width:200px)": {
             display: "none",
         },
-    }
+    },
 }));
 
 export default function LogTable({ level, interval }) {
     const classes = useStyles();
-    const [logs, setLogs] = useState(null);
+    const [logs, setLogs] = useState({
+        status: "idle",
+        data: [],
+        error: null,
+    });
 
-    const getTable = () => {
-        if (logs?.status === 'loading') {
-            return <Loading />;
-        }
-        if (logs?.status === 'success') {
-            console.log(logs);
-            return (
-                <>
-                    <TableContainer component={Paper} square>
-                        <Table>
-                            <TableHead className={classes.tableHead}>
-                                <TableRow>
-                                    <TableCell className={classes.colTimestamp}>Timestamp</TableCell>
-                                    <TableCell className={classes.colLevel}>Level</TableCell>
-                                    <TableCell className={classes.colMessage}>Message</TableCell>
-                                </TableRow>
-                            </TableHead>
+    useApiPoller({
+        url: `api/system/logs/${level}`,
+        interval: interval,
+        onChanged: setLogs,
+    });
 
-                            <TableBody>
-                                {logs?.data?.map((log) => (
-                                    <LogTableRow key={log._id} {...log} />
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </>
-            );
-        }
-        else {
-            return null
-        }
+    if (logs.status === "loading" || logs.status === "idle") {
+        return <Loading />;
     }
-
     return (
         <>
-            { getTable()}
-            <ApiPoller
-                url={`api/system/logs/${level}`}
-                interval={interval}
-                onChanged={(result) => setLogs(result)}
-            />
+            <TableContainer component={Paper} square>
+                <Table>
+                    <TableHead className={classes.tableHead}>
+                        <TableRow>
+                            <TableCell className={classes.colTimestamp}>Timestamp</TableCell>
+                            <TableCell className={classes.colLevel}>Level</TableCell>
+                            <TableCell className={classes.colMessage}>Message</TableCell>
+                        </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                        {logs?.data?.map((log) => (
+                            <LogTableRow key={log._id} {...log} />
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </>
-    )
+    );
 }
 
 LogTable.defaultProps = {
-    level: 'info',
+    level: "info",
     interval: 1000,
-}
+};
 
 LogTable.propTypes = {
     level: PropTypes.string,
     interval: PropTypes.number,
-}
+};

@@ -7,7 +7,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import ApiPoller from "@utils/ApiPoller";
 import ApiSwitch from "@core/ApiSwitch";
 import Loading from "@components/Loading";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
@@ -16,6 +15,7 @@ import { Sparklines, SparklinesLine } from "react-sparklines";
 import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import { useApiPoller } from "@utils/ApiPoller";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -116,6 +116,12 @@ export default function InterfaceList({ panelId }) {
         error: null,
     });
 
+    useApiPoller({
+        url: `/container/${panelId}/interface`,
+        interval: 2000,
+        onChanged: setInterfaceList,
+    });
+
     const handleRowClicked = (interfaceName) => {
         if (!menuIsOpen) {
             setRedirectUrl(`/panel/${panelId}/interface/${interfaceName}`);
@@ -141,17 +147,21 @@ export default function InterfaceList({ panelId }) {
             return null;
         }
 
-        const isAllZero = iface["traffic"][type + "-history"].every(item => item === 0);
+        const isAllZero = iface["traffic"][type + "-history"].every(item => item.value === 0);
         if(isAllZero) {
             return null;
         }
+
+        // pull values from array of objects
+        let values = iface["traffic"][type + "-history"].map(a => a.value);
+
         return ( 
             <>
                 <div className={classes.sparkText}>
                     {iface["traffic"][type + "-bps-text"] !== "0" ? iface["traffic"][type + "-bps-text"] : "0 b/s"}
                 </div>
                 <div className={classes.spark}>
-                    <Sparklines data={iface["traffic"][type + "-history"]} height={40}>
+                    <Sparklines data={values} height={40}>
                         <SparklinesLine color="#337ab7" />
                     </Sparklines>
                 </div>
@@ -191,51 +201,35 @@ export default function InterfaceList({ panelId }) {
         return rows === undefined ? null : rows.map((iface) => renderRow(iface));
     };
 
-    const renderContent = () => {
-        if (interfaceList.status === "loading") {
-            return <Loading />;
-        }
-        if (interfaceList.status === "success") {
-            return (
-                <>
-                    <div className={classes.content}>
-                        <TableContainer component={Paper} square>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead className={classes.tableHead}>
-                                    <TableRow>
-                                        <TableCell className={classes.colRunning}></TableCell>
-                                        <TableCell className={classes.colEnabled}>Enabled</TableCell>
-                                        <TableCell className={classes.colName}>Name</TableCell>
-                                        <TableCell className={classes.colSpeed}>Speed</TableCell>
-                                        <TableCell className={classes.colMacAddress}>MAC Address</TableCell>
-                                        <TableCell className={classes.colTraffic}>TX</TableCell>
-                                        <TableCell className={classes.colTraffic}>RX</TableCell>
-                                        <TableCell></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>{renderRows(interfaceList.data)}</TableBody>
-                            </Table>
-                        </TableContainer>
-                    </div>
-                </>
-            );
-        } else {
-            return <Loading />;
-        }
-    };
-
     if (redirectUrl) {
         return <Redirect push to={{ pathname: redirectUrl }} />;
     }
 
+    if (interfaceList.status === "loading" || interfaceList.status === "idle") {
+        return <Loading />;
+    }
+
     return (
         <>
-            <ApiPoller
-                url={`/container/${panelId}/interface`}
-                interval="2000"
-                onChanged={(result) => setInterfaceList(result)}
-            />
-            {renderContent()}
+            <div className={classes.content}>
+                <TableContainer component={Paper} square>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead className={classes.tableHead}>
+                            <TableRow>
+                                <TableCell className={classes.colRunning}></TableCell>
+                                <TableCell className={classes.colEnabled}>Enabled</TableCell>
+                                <TableCell className={classes.colName}>Name</TableCell>
+                                <TableCell className={classes.colSpeed}>Speed</TableCell>
+                                <TableCell className={classes.colMacAddress}>MAC Address</TableCell>
+                                <TableCell className={classes.colTraffic}>TX</TableCell>
+                                <TableCell className={classes.colTraffic}>RX</TableCell>
+                                <TableCell></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>{renderRows(interfaceList.data)}</TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
         </>
     );
 }

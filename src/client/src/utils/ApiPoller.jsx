@@ -1,94 +1,79 @@
-import React from "react";
+import { useRef } from "react";
+import useAsyncEffect from "use-async-effect";
 import axios from "axios";
-import { withSnackbar } from "notistack";
 
-class ApiPoller extends React.Component {
-    constructor(props) {
-        super(props);
-        this.timer = null;
-        this.source = null;
-        this.status = "idle";
-        this.data = null;
-        this.error = null;
-        this.hasLoaded = false;
-        this.interval = props.interval ?? 10000;
-        this.debug = (props.debug === true);
-    }
+export function useApiPoller({ url, interval, onChanged }) {
+    const timer = useRef();
+    const cancelToken = useRef(axios.CancelToken.source());
 
-    componentDidMount() {
-        this.fetch();
-    }
+    useAsyncEffect(
+        async () => {
+            let previousState = null;
 
-    componentWillUnmount() {
-        if (this.timer) {
-            clearTimeout(this.timer);
-        }
-        this.source.cancel();
-    }
+            const triggerUpdate = (newState) => {
+                // this method checks if the data has changed
+                if (JSON.stringify(previousState) !== JSON.stringify(newState)) {
+                    // it has - trigger the onChanged event
+                    onChanged(newState);
 
-    handleUpdated() {
-        if(this.debug) {
-            console.log("sending onChanged", this.status, this.data, this.error);
-        }
-        this.props.onChanged({
-            status: this.status,
-            data: this.data,
-            error: this.error,
-        });
-    }
+                    // and update the stored state
+                    previousState = newState;
+                }
+            };
 
-    async fetch() {
-        clearTimeout(this.timer);
+            const fetch = async () => {
+                // clear any pending refresh
+                clearTimeout(timer.current);
 
-        if (!this.hasLoaded) {
-            this.status = "loading";
-        }
-        this.handleUpdated();
+                try {
+                    // fetch the data from the API
+                    const response = await axios.get(url, {
+                        cancelToken: cancelToken.current.token,
+                    });
 
-        // create cancel token
-        const CancelToken = axios.CancelToken;
-        this.source = CancelToken.source();
+                    // if we get an error from the API, throw it as an exception
+                    if (response.data.status === "error") {
+                        throw response.data.message;
+                    }
 
-        try {
-            if(this.debug) {
-                console.log(`ApiPoller: fetching from ${this.props.url}`);
-            }
-            const response = await axios.get(this.props.url, {
-                cancelToken: this.source.token,
-            });
-            if(this.debug) {
-                console.log(`ApiPoller: got data from ${this.props.url}:`, response.data);
-            }
-            if (response.data.status === "error") {
-                throw response.data.message;
-            }
-            this.status = "success";
-            this.data = response.data.data;
-            this.hasLoaded = true;
-            this.handleUpdated();
-            const _fetch = () => this.fetch();
-            this.timer = setTimeout(_fetch, this.interval);
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                return;
-            }
-            
-            this.props.enqueueSnackbar("Failed to fetch panel list", {
-                variant: "error",
-            });
+                    triggerUpdate({
+                        status: "success",
+                        data: response.data.data,
+                        error: null,
+                    });
 
-            this.status = "failed";
-            this.data = [];
-            this.handleUpdated();
-            const _fetch = () => this.fetch();
-            this.timer = setTimeout(_fetch, this.interval * 4);
-            console.error(error);
-        }
-    }
+                    // now we're done, set a timeout for the next poll
+                    timer.current = setTimeout(fetch, interval);
+                } catch (error) {
+                    // if we've cancelled the axios request (by unloading this component) just quit - no problem!
+                    if (axios.isCancel(error)) {
+                        return;
+                    }
 
-    render() {
-        return null;
-    }
+                    // send an update with the failed state
+                    triggerUpdate({
+                        status: "failed",
+                        data: null,
+                        error: null,
+                    });
+
+                    // log the error for good measure
+                    console.error(error);
+
+                    // and start it all again!
+                    timer.current = setTimeout(fetch, interval);
+                }
+            };
+            fetch();
+        },
+        () => {
+            // this is run when the component is unloaded
+            // first of all - clear any pending requests
+            clearTimeout(timer.current);
+
+            // cancel any in-flight axios requests
+            cancelToken.current.cancel();
+        },
+        [url, interval]
+    );
 }
-
-export default withSnackbar(ApiPoller);
