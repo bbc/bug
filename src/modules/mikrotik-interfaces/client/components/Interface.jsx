@@ -3,7 +3,7 @@ import PanelTabbedForm from "@core/PanelTabbedForm";
 import { Redirect } from "react-router";
 import InterfaceTabDetails from "./InterfaceTabDetails";
 import InterfaceTabEthernet from "./InterfaceTabEthernet";
-// import InterfaceTabStatistics from "./InterfaceTabStatistics";
+import InterfaceTabStatistics from "./InterfaceTabStatistics";
 
 export default function Interface({ panelId, interfaceName }) {
     const [redirectUrl, setRedirectUrl] = React.useState(null);
@@ -24,9 +24,9 @@ export default function Interface({ panelId, interfaceName }) {
                 onClose={handleBackClicked}
                 labels={["Details", "Ethernet", "Statistics", "Hardware"]}
                 content={[
+                    <InterfaceTabStatistics panelId={panelId} interfaceName={interfaceName} />,
                     <InterfaceTabDetails panelId={panelId} interfaceName={interfaceName} />,
                     <InterfaceTabEthernet panelId={panelId} interfaceName={interfaceName} />,
-                    // <InterfaceTabStatistics panelId={panelId} interfaceName={interfaceName} />,
                 ]}
             ></PanelTabbedForm>
         </>

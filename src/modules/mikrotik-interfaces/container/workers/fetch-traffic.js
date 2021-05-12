@@ -62,7 +62,7 @@ const pollDevice = async () => {
                 }
             }
 
-            // save to influx
+            // save history
             await trafficSaveHistory(historyCollection, trafficArray);
 
             // add historical data (for sparklines)
