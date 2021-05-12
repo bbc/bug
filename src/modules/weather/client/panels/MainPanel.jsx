@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelContext from '@core/PanelContext';
+import PanelConfigContext from '@core/PanelConfigContext';
 import Grid from '@material-ui/core/Grid';
 
 import Weather from '../components/Weather';
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainPanel() {
 
-  const config = useContext(PanelContext);
+  const config = useContext(PanelConfigContext);
   const classes = useStyles();
 
   return (

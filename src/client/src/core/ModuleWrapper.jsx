@@ -4,21 +4,15 @@ import PanelBuilding from "@components/PanelBuilding";
 import PanelStopped from "@components/PanelStopped";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
-import { useSelector } from "react-redux";
 import { Switch } from "react-router-dom";
-import PanelContext from "@core/PanelContext";
+import PanelConfigContext from "@core/PanelConfigContext";
 import { useApiPoller } from "@utils/ApiPoller";
 
-export default function ModuleWrapper({ panelId, children }) {
+export default function ModuleWrapper({ panel, children }) {
     const dispatch = useDispatch();
 
-    const panel = useSelector((state) => {
-        let panelFilter = state.panelList.data.filter((item) => item.id === panelId);
-        return panelFilter[0];
-    });
-
     const config = useApiPoller({
-        url: `/api/panelconfig/${panelId}`,
+        url: `/api/panelconfig/${panel.id}`,
         interval: 6000,
     });
 
@@ -46,8 +40,8 @@ export default function ModuleWrapper({ panelId, children }) {
     }
 
     return (
-        <PanelContext.Provider value={config}>
+        <PanelConfigContext.Provider value={config.data}>
             <Switch>{children}</Switch>
-        </PanelContext.Provider>
+        </PanelConfigContext.Provider>
     );
 }

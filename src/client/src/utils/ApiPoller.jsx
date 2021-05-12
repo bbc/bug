@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import useAsyncEffect from "use-async-effect";
 import axios from "axios";
 
-export function useApiPoller({ url, interval, onChanged }) {
+export function useApiPoller({ url, interval }) {
     const timer = useRef();
     const [pollResult, setPollResult] = useState({
         status: "idle",

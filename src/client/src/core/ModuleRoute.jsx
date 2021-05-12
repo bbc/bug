@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
-import PanelContext from '@core/PanelContext';
+import PanelConfigContext from '@core/PanelConfigContext';
 
 export default function ModuleRoute({ children, path }) {
 
-    const config = useContext(PanelContext);
+    const config = useContext(PanelConfigContext);
 
     const getConfiguration = () => {
         if (config?.needsConfigured && (children.type.name !== 'EditPanel')) {

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import panelListSlice from '../redux/panelListSlice';
 import Socket from "@utils/Socket";
 
-export const PanelContext = React.createContext();
+export const PanelConfigContext = React.createContext();
 
 const socket = Socket();
 

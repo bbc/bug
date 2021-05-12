@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import DigitalClock from '../components/DigitalClock';
 import AnalogueClock from '../components/AnalogueClock';
 import DateString from '../components/DateString';
-import PanelContext from '@core/PanelContext';
+import PanelConfigContext from '@core/PanelConfigContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MainPanel() {
 
   const classes = useStyles();
-  const config = useContext(PanelContext);
+  const config = useContext(PanelConfigContext);
 
   const renderClock = () => {
     let clock = (<DigitalClock />);

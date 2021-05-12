@@ -46,7 +46,7 @@ export default function PagePanel(props) {
     return (
         <>
             <Suspense fallback={<Loading />}>
-                <Module panelId={panelId} />
+                <Module panel={panel} />
             </Suspense>
         </>
     );

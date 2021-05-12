@@ -1,15 +1,14 @@
-import React, {useContext}from "react";
+import React, { useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { useForm } from "react-hook-form";
-import ChipInput from '@core/ChipInput';
+import ChipInput from "@core/ChipInput";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
-import PanelContext from '@core/PanelContext';
+import PanelConfigContext from "@core/PanelConfigContext";
 
 export default function EditPanel() {
-
-    const config = useContext(PanelContext);
+    const config = useContext(PanelConfigContext);
 
     const {
         register,

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import axios from 'axios';
 import Grid from "@material-ui/core/Grid";
-import PanelContext from "@core/PanelContext";
+import PanelConfigContext from "@core/PanelConfigContext";
 
 import OutputCard from "../components/OutputCard";
 
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MainPanel() {
-    const config = useContext(PanelContext);
+    const config = useContext(PanelConfigContext);
 
     const classes = useStyles();
     const [outputs, setOutputs] = useState([]);
