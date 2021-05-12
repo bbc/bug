@@ -2,9 +2,10 @@
 
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
-const logger = require("@utils/logger")(module);
 const systemBackup = require("@services/system-backup");
 const systemLogs = require("@services/system-logs");
+const hashResponse = require("@utils/hash-response");
+
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
@@ -22,9 +23,8 @@ const systemLogs = require("@services/system-logs");
  *          description: Success
  */
 router.get("/hello", function (req, res, next) {
-    const message = "Good morning sunshine, the earth says hello.";
-    res.json(message);
-    logger.info(message);
+    const message = {data:"Good morning sunshine, the earth says hello."};
+    hashResponse(res,req,message);
 });
 
 /**
@@ -48,7 +48,7 @@ router.get("/hello", function (req, res, next) {
  */
 router.get("/logs/:level", async function (req, res, next) {
     const logs = await systemLogs(req.params.level);
-    res.json(logs);
+    hashResponse(res,req,logs);
 });
 
 /**
@@ -84,7 +84,7 @@ router.get(
  *          description: Success
  */
 router.get("/restore", function (req, res, next) {
-    res.json("Hello");
+    hashResponse(res,req,"Hello");
 });
 
 module.exports = router;

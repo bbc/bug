@@ -12,6 +12,7 @@ const panelAdd = require("@services/panel-add");
 const panelDelete = require("@services/panel-delete");
 const panelEnable = require("@services/panel-enable");
 const panelDisable = require("@services/panel-disable");
+const hashResponse = require("@utils/hash-response");
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -42,7 +43,7 @@ router.delete(
     "/:panelId",
     asyncHandler(async (req, res) => {
         const result = await panelDelete(req.params.panelId);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Deleted panel",
             data: null,
@@ -67,7 +68,7 @@ router.delete(
 router.get(
     "/",
     asyncHandler(async (req, res) => {
-        res.json({
+        hashResponse(res,req,{
             status: "success",
             data: await panelList(),
         });
@@ -111,7 +112,7 @@ router.post(
     "/",
     asyncHandler(async (req, res) => {
         const result = await panelAdd(req.body);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Added panel",
             data: null,
@@ -148,7 +149,7 @@ router.get(
     "/build/:moduleName",
     asyncHandler(async (req, res) => {
         const result = await panelStart(req.params.moduleName);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Successfully built module",
             data: null,
@@ -186,7 +187,7 @@ router.get(
     asyncHandler(async (req, res) => {
         // starts and builds if necessary
         const result = await panelStart(req.params.panelId);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Started panel",
             data: null,
@@ -224,7 +225,7 @@ router.get(
     asyncHandler(async (req, res) => {
         // stop and start (and rebuild if necessary)
         const result = await panelRestart(req.params.panelId);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Restarted panel",
             data: null,
@@ -262,7 +263,7 @@ router.get(
     asyncHandler(async (req, res) => {
         // stops the image running (probably won't ever be run from the UI)
         const result = await panelStop(req.params.panelId);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Stopped panel",
             data: null,
@@ -299,7 +300,7 @@ router.get(
     "/enable/:panelId",
     asyncHandler(async (req, res) => {
         const result = await panelEnable(req.params.panelId);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Enabled panel",
             data: null,
@@ -336,7 +337,7 @@ router.get(
     "/disable/:panelId",
     asyncHandler(async (req, res) => {
         const result = await panelDisable(req.params.panelId);
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             message: "Disabled panel",
             data: null,
@@ -372,7 +373,7 @@ router.get(
 router.get(
     "/:panelId",
     asyncHandler(async (req, res) => {
-        res.json({
+        hashResponse(res,req,{
             status: "success",
             data: await panelGet(req.params.panelId),
         });
@@ -407,7 +408,7 @@ router.get(
 router.get(
     "/data/:panelId",
     asyncHandler(async (req, res) => {
-        res.json({
+        hashResponse(res,req,{
             status: "success",
             data: await panelGetData(req.params.panelId),
         });

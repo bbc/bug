@@ -6,6 +6,7 @@ const panelConfigPush = require("@services/panel-configpush");
 const panelConfigSet = require("@services/panel-configset");
 const panelConfigList = require("@services/panel-configlist");
 const panelConfigGet = require("@services/panel-configget");
+const hashResponse = require("@utils/hash-response");
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -40,7 +41,7 @@ router.put(
     "/:panelId",
     asyncHandler(async (req, res) => {
         const result = await panelConfigSet({ ...{ id: req.params.panelId }, ...req.body });
-        res.json({
+        hashResponse(res,req,{
             status: result ? "success" : "fail",
             data: null,
         });
@@ -75,7 +76,7 @@ router.put(
 router.get(
     "/push/:panelId",
     asyncHandler(async (req, res) => {
-        res.json({
+        hashResponse(res,req,{
             status: "success",
             data: await panelConfigPush(req.params.panelId),
         });
@@ -103,7 +104,7 @@ router.get(
 router.get(
     "/",
     asyncHandler(async (req, res) => {
-        res.json({
+        hashResponse(res,req,{
             status: "success",
             data: await panelConfigList(),
         });
@@ -138,7 +139,7 @@ router.get(
 router.get(
     "/:panelId",
     asyncHandler(async (req, res) => {
-        res.json({
+        hashResponse(res,req,{
             status: "success",
             data: await panelConfigGet(req.params.panelId),
         });
