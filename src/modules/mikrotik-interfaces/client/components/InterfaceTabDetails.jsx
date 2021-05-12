@@ -22,16 +22,9 @@ const useStyles = makeStyles((theme) => ({
 export default function InterfaceTabDetails({ panelId, interfaceName }) {
     const classes = useStyles();
 
-    const [iface, setIface] = useState({
-        status: "idle",
-        data: {},
-        error: null,
-    });
-
-    useApiPoller({
+    const iface = useApiPoller({
         url: `/container/${panelId}/interface/${interfaceName}`,
         interval: 2000,
-        onChanged: setIface,
     });
 
     if (iface.status === "idle" || iface.status === "loading") {

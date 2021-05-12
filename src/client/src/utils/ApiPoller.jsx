@@ -1,23 +1,27 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useAsyncEffect from "use-async-effect";
 import axios from "axios";
 
 export function useApiPoller({ url, interval, onChanged }) {
     const timer = useRef();
+    const [pollResult, setPollResult] = useState({
+        status: "idle",
+        data: null,
+        error: null,
+    });
+    const localResult = useRef(pollResult);
     const cancelToken = useRef(axios.CancelToken.source());
 
     useAsyncEffect(
         async () => {
-            let previousState = null;
-
             const triggerUpdate = (newState) => {
                 // this method checks if the data has changed
-                if (JSON.stringify(previousState) !== JSON.stringify(newState)) {
-                    // it has - trigger the onChanged event
-                    onChanged(newState);
+                if (JSON.stringify(localResult.current) !== JSON.stringify(newState)) {
+                    // it has - store the local value
+                    localResult.current = newState;
 
-                    // and update the stored state
-                    previousState = newState;
+                    // and update the state (to trigger a render in the parent component)
+                    setPollResult(newState);
                 }
             };
 
@@ -51,7 +55,7 @@ export function useApiPoller({ url, interval, onChanged }) {
                     }
 
                     // send an update with the failed state
-                    triggerUpdate({
+                    setPollResult({
                         status: "failed",
                         data: null,
                         error: null,
@@ -76,4 +80,5 @@ export function useApiPoller({ url, interval, onChanged }) {
         },
         [url, interval]
     );
+    return pollResult;
 }

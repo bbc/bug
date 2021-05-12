@@ -110,16 +110,9 @@ export default function InterfaceList({ panelId }) {
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
     const sendAlert = useAlert();
 
-    const [interfaceList, setInterfaceList] = useState({
-        status: "idle",
-        data: [],
-        error: null,
-    });
-
-    useApiPoller({
+    const interfaceList = useApiPoller({
         url: `/container/${panelId}/interface`,
         interval: 2000,
-        onChanged: setInterfaceList,
     });
 
     const handleRowClicked = (interfaceName) => {

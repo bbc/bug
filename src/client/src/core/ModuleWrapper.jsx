@@ -11,17 +11,15 @@ import { useApiPoller } from "@utils/ApiPoller";
 
 export default function ModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
-    const [config, setConfig] = useState(null);
 
     const panel = useSelector((state) => {
         let panelFilter = state.panelList.data.filter((item) => item.id === panelId);
         return panelFilter[0];
     });
 
-    useApiPoller({
+    const config = useApiPoller({
         url: `/api/panelconfig/${panelId}`,
         interval: 6000,
-        onChanged: (result) => setConfig(result?.data),
     });
 
     useEffect(() => {

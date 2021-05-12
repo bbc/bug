@@ -37,16 +37,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LogTable({ level, interval }) {
     const classes = useStyles();
-    const [logs, setLogs] = useState({
-        status: "idle",
-        data: [],
-        error: null,
-    });
 
-    useApiPoller({
+    const logs = useApiPoller({
         url: `api/system/logs/${level}`,
-        interval: interval,
-        onChanged: setLogs,
+        interval: interval
     });
 
     if (logs.status === "loading" || logs.status === "idle") {
