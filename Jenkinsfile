@@ -21,7 +21,6 @@ pipeline {
                 }
                 dir('src/client') {
                     sh 'npm install'
-                    sh 'npm list'
                 }
             }
         }
