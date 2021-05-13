@@ -12,19 +12,19 @@ describe("Sample Test", () => {
   });
 });
 
-// describe("Test the '/api/system' routes", () => {
-//   test("Test the '/hello' method", async () => {
-//     const response = await request(system).get("api/system/hello");
-//     expect(response.statusCode).toBe(200);
-//   });
+describe("Test the '/api/system' routes", () => {
+  test("Test the '/hello' method", async () => {
+    const response = await request(system).get("api/system/hello");
+    expect(response.statusCode).toBe(200);
+  });
 
-//   test("Test the '/hello' method", async () => {
-//     const response = await request(system).get("api/system/backup");
-//     expect(response.statusCode).toBe(200);
-//   });
+  test("Test the '/hello' method", async () => {
+    const response = await request(system).get("api/system/backup");
+    expect(response.statusCode).toBe(200);
+  });
 
-//   test("Test the '/hello' method", async () => {
-//     const response = await request(system).get("api/system/restore");
-//     expect(response.statusCode).toBe(200);
-//   });
-// });
+  test("Test the '/hello' method", async () => {
+    const response = await request(system).get("api/system/restore");
+    expect(response.statusCode).toBe(200);
+  });
+});
