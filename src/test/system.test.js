@@ -4,7 +4,7 @@
 //DESC: Boilerplate module test code
 
 const request = require("supertest");
-// const system = require("@bin/bug-core-api");
+const system = require("@bin/bug-core-api");
 
 describe("Sample Test", () => {
   test("Sample Test 1", async () => {
