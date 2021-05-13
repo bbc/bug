@@ -73,7 +73,7 @@
       "@data/(.*)": "<rootDir>/data/$1",
       "@pages/(.*)": "<rootDir>/pages/$1",
       "@redux/(.*)": "<rootDir>/redux/$1",
-      "@utils/(.*)": "<rootDir>/utils/$1",
+      "@utils/(.*)": "<rootDir>/utils/$1"
     }
   },
   "browserslist": {
