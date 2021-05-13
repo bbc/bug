@@ -6,8 +6,12 @@ import TrafficChart from "@core/TrafficChart";
 const useStyles = makeStyles((theme) => ({
     chart: {
         padding: '2rem 1rem 1rem 1rem',
-        // height: 400
+        minHeight: 400,
+        "@media (max-height:650px)": {
+            padding: "1rem",
+        },
     },
+
 }));
 
 export default function InterfaceTabStatistics({ panelId, interfaceName }) {

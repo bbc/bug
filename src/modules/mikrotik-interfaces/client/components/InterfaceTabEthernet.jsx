@@ -22,20 +22,13 @@ const useStyles = makeStyles((theme) => ({
 export default function InterfaceTabEthernet({ panelId, interfaceName }) {
     const classes = useStyles();
 
-    const [iface, setIface] = useState({
-        status: "idle",
-        data: {},
-        error: null,
-    });
-
-    useApiPoller({
-        url: `/container/${panelId}/interface/${interfaceName}`, 
-        interval: 2000, 
-        onChanged: setIface
+    const iface = useApiPoller({
+        url: `/container/${panelId}/interface/${interfaceName}`,
+        interval: 2000,
     });
 
     if (iface.status === "idle" || iface.status === "loading") {
-        return <Loading />;
+        return <Loading height="30vh"/>;
     }
     if (iface.status === "success" && !iface.data) {
         return <>Interface not found</>;

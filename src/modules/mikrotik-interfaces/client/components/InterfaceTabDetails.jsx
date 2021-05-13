@@ -28,7 +28,7 @@ export default function InterfaceTabDetails({ panelId, interfaceName }) {
     });
 
     if (iface.status === "idle" || iface.status === "loading") {
-        return <Loading />;
+        return <Loading height="30vh"/>;
     }
     if (iface.status === "success" && !iface.data) {
         return <>Interface not found</>;
