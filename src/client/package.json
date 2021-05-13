@@ -50,7 +50,7 @@
   },
   "peerDependencies": {
     "react-dom": "^16.3.0",
-    "react": "^15.3.0 || ^16.3.0",
+    "react": "^16.0.0 || ^16.3.0",
     "@material-ui/core": "^3.1.0"
   },
   "scripts": {
@@ -64,6 +64,17 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "@modules/(.*)": "./../modules/",
+      "@components/(.*)": "./src/components/",
+      "@core/(.*)": "./src/core/",
+      "@data/(.*)": "./src/data/",
+      "@pages/(.*)": "./src/pages/",
+      "@redux/(.*)": "./src/redux/",
+      "@utils/(.*)": "./src/utils/"
+    }
   },
   "browserslist": {
     "production": [
