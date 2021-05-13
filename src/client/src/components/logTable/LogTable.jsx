@@ -40,7 +40,7 @@ export default function LogTable({ level, interval }) {
 
     const logs = useApiPoller({
         url: `api/system/logs/${level}`,
-        interval: interval
+        interval: interval,
     });
 
     if (logs.status === "loading" || logs.status === "idle") {

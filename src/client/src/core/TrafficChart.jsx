@@ -1,67 +1,189 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import formatBps from "@core/format-bps";
-import "../../node_modules/react-vis/dist/style.css";
 import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import Button from "@material-ui/core/Button";
+import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import AxiosGet from "@utils/AxiosGet";
+import useAsyncEffect from "use-async-effect";
+import { TimePicker } from "@material-ui/pickers";
 
-import {
-    FlexibleWidthXYPlot,
-    XAxis,
-    YAxis,
-    VerticalBarSeries,
-    DiscreteColorLegend,
-} from "react-vis";
+const useStyles = makeStyles((theme) => ({
+    chart: {
+        padding: "2rem 1rem 1rem 1rem",
+        height: 400,
+    },
+    button: {
+        margin: theme.spacing(1),
+    },
+    timePicker: {
+        margin: theme.spacing(1),
+    },
+    toolbar: {
+        textAlign: "center",
+    },
+    tooltip: {
+        padding: '0.5rem',
+        backgroundColor: theme.palette.background.default,
+        color: 'rgba(255, 255, 255, 0.5)'
+    },
+    tooltipName: {
+        fontWeight: 500,
+        color: 'rgba(255, 255, 255, 0.7)'
+    },
+}));
 
-// const useStyles = makeStyles((theme) => ({
-//     xAxis: {
+export default function TrafficChart({ url }) {
+    const classes = useStyles();
+    const rangeSpan = 10;
+    const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
+    const timer = useRef();
 
-//     },
-//     yAxis: {
-//     }
-// }));
+    const [enableAutoRefresh, setEnableAutoRefresh] = useState(true);
+    const [range, setRange] = useState(initialRange);
+    const [stats, setStats] = useState(null);
 
+    const doAutoRefresh = () => {
+        console.log("ping auto refresh");
+        setRange([Date.now() - rangeSpan * 60000, Date.now()]);
+        timer.current = setTimeout(doAutoRefresh, 2000);
+    };
 
-export default function TrafficChart({ data }) {
-    // const classes = useStyles();
+    useAsyncEffect(async () => {
+        console.log(`fetching ${url}/${range[0]}/${range[1]}`);
+        setStats(await AxiosGet(`${url}/${range[0]}/${range[1]}`));
+    }, [url, range]);
 
-    if (!data) {
+    useEffect(() => {
+        if (enableAutoRefresh) {
+            console.log("starting auto refresh");
+            doAutoRefresh();
+        } else {
+            console.log("stopping auto");
+            clearTimeout(timer.current);
+        }
+        return () => {
+            console.log("unloading - stopping auto");
+            clearTimeout(timer.current);
+        };
+    }, [enableAutoRefresh]);
+
+    if (!stats) {
         return null;
     }
+
+    const handleBack = (mins) => {
+        setEnableAutoRefresh(false);
+        setRange([range[0] - mins * 60000, range[1] - mins * 60000]);
+    };
+
+    const handleForward = (mins) => {
+        let newEnd = range[1] + mins * 60000;
+        if (newEnd > Date.now()) {
+            setEnableAutoRefresh(true);
+            newEnd = Date.now();
+        } else {
+            setEnableAutoRefresh(false);
+        }
+        setRange([newEnd - rangeSpan * 60000, newEnd]);
+    };
+
+    const handleLatest = () => {
+        setEnableAutoRefresh(true);
+    };
+
+    const handleTimePickerChange = (value) => {
+        setEnableAutoRefresh(false);
+        let newEnd = value.getTime();
+        if (newEnd > Date.now()) {
+            newEnd = Date.now();
+        }
+        setRange([newEnd - rangeSpan * 60000, newEnd]);
+    };
+
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            let timestamp = payload[0].payload.timestamp;
+            let tx = payload[0].payload.tx;
+            let rx = payload[0].payload.rx;
+            return (
+                <div className={classes.tooltip}>
+                    <div><span className={classes.tooltipName}>TIME:</span> {format(timestamp, "kk:mm:ss")}</div>
+                    <div><span className={classes.tooltipName}>TX BITRATE:</span>  {formatBps(tx)}</div>
+                    <div><span className={classes.tooltipName}>RX BITRATE:</span>  {formatBps(rx)}</div>
+                </div>
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
-            <FlexibleWidthXYPlot margin={{ left: 80 }} height={350}>
-                <XAxis
-                    style={{
-                        ticks: {stroke: '#fff'},
-                        line: { 
-                            stroke: '#eee', 
-                            strokeWidth: 1
-                        }
-                    }}
-                    title="Time"
-                    tickTotal={4}
-                    tickFormat={(value, index, scale, tickTotal) => {
-                        return format(value, "kk:mm");
-                    }}
+            <ResponsiveContainer width="100%" height={350}>
+                <BarChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                    <Bar isAnimationActive={false} dataKey="tx" fill="#0000ff" />
+                    <Bar isAnimationActive={false} dataKey="rx" fill="#ff0000" />
+                    <XAxis
+                        dataKey="timestamp"
+                        type="number"
+                        domain={range}
+                        tickCount={1}
+                        tickFormatter={(value) => {
+                            return format(value, "kk:mm");
+                        }}
+                    />
+                    <YAxis 
+                        tickFormatter={(value) => {
+                            return formatBps(value);
+                        }}
+                        width={80}
+                    />
+                    <Tooltip content={<CustomTooltip />} />
+                </BarChart>
+            </ResponsiveContainer>
+            <div className={classes.toolbar}>
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleBack(5)}
+                    startIcon={<ArrowLeftIcon />}
+                >
+                    5 min
+                </Button>
+
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    color={enableAutoRefresh ? "primary" : "secondary"}
+                    onClick={handleLatest}
+                    startIcon={<AccessTimeIcon />}
+                >
+                    Latest
+                </Button>
+
+                <TimePicker
+                    ampm={false}
+                    className={classes.timePicker}
+                    value={range[1]}
+                    onChange={handleTimePickerChange}
                 />
-                <YAxis
-                    style={{
-                        ticks: {stroke: '#ff0000'},
-                        line: { 
-                            stroke: '#ffff00', 
-                            strokeWidth: '1px'
-                        }
-                    }}
-                    title="Bitrate"
-                    tickTotal={3}
-                    tickFormat={(value, index, scale, tickTotal) => {
-                        return formatBps(value);
-                    }}
-                />
-                <VerticalBarSeries data={data["tx"]} color="#0000ff" barWidth={0.8} />
-                <VerticalBarSeries data={data["rx"]} color="#ff0000" barWidth={0.8} />
-            </FlexibleWidthXYPlot>
-            <DiscreteColorLegend height={200} width={300} items={["TX", "RX"]} />;
+
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    disabled={enableAutoRefresh}
+                    color="secondary"
+                    onClick={() => handleForward(5)}
+                    endIcon={<ArrowRightIcon />}
+                >
+                    5 min
+                </Button>
+            </div>
         </>
     );
 }

@@ -8,31 +8,25 @@ module.exports = async (interfaceName, startTime = null, endTime = null) => {
         }
 
         if (startTime === null) {
-            startTime = endTime - (60 * 10 * 1000); // 10 mins
+            startTime = endTime - (60 * 5 * 1000); // 5 mins
         }
 
         const historyCollection = await mongoCollection("history");
 
         let history = await historyCollection.find({ timestamp: { $gte: startTime, $lte: endTime } }).toArray();
 
-        let interfaceStatsArray = {
-            tx: [],
-            rx: [],
-        };
+        let dataPoints = [];
 
         for(let eachItem of history) {
             if(eachItem['interfaces'][interfaceName]) {
-                interfaceStatsArray['tx'].push({
-                    x: eachItem['timestamp'],
-                    y: eachItem['interfaces'][interfaceName]['tx']
-                });
-                interfaceStatsArray['rx'].push({
-                    x: eachItem['timestamp'],
-                    y: eachItem['interfaces'][interfaceName]['rx']
-                });
+                let dataPoint = eachItem['interfaces'][interfaceName];
+                dataPoint.timestamp = eachItem.timestamp;
+                dataPoints.push(dataPoint);
             }
         }
-        return interfaceStatsArray;
+        return dataPoints;
 
-    } catch (error) {}
+    } catch (error) {
+        console.log(`interface-history: ${error.stack || error.trace || error || error.message}`);
+    }
 };
