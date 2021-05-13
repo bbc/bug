@@ -4,7 +4,7 @@
 //DESC: Boilerplate module test code
 
 const request = require("supertest");
-const system = require("@bin/api");
+const system = require("./../bin/api");
 
 describe("Sample Test", () => {
   test("Sample Test 1", async () => {
@@ -12,19 +12,24 @@ describe("Sample Test", () => {
   });
 });
 
-describe("Test the '/api/system' routes", () => {
+describe("Test the '/api/system/hello' route", () => {
   test("Test the '/hello' method", async () => {
     const response = await request(system).get("api/system/hello");
     expect(response.statusCode).toBe(200);
   });
 
   test("Test the '/hello' method", async () => {
-    const response = await request(system).get("api/system/backup");
+    const response = await request(system).get("api/system/hello");
+    expect(response.contents.meta.hash).toBe('3449c9e5e332f1dbb81505cd739fbf3f');
+  });
+
+});
+
+describe("Test the '/api/bug/quote' route", () => {
+
+  test("Test the '/api/bug/quote' method", async () => {
+    const response = await request(system).get("api/bug/quote");
     expect(response.statusCode).toBe(200);
   });
 
-  test("Test the '/hello' method", async () => {
-    const response = await request(system).get("api/system/restore");
-    expect(response.statusCode).toBe(200);
-  });
 });
