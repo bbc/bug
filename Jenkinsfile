@@ -38,7 +38,9 @@ pipeline {
         stage('Build') { 
             steps {
                 dir('src') {
-                    sh 'docker image build --compress --tag rmccartney856/bug-core:latest ./'
+                    node {
+                        def customImage = docker.build("my-image:${env.BUILD_ID}")
+                    }
                 }
                 slackSend (color: '#30fc03', message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
