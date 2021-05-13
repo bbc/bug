@@ -48,7 +48,11 @@ const useStyles = makeStyles((theme) => ({
             padding: 0,
             paddingBottom: 1
         },
-    },
+        "@media (max-height:400px)": {
+            padding: 4,
+            paddingBottom: 1
+        },
+    }
 }));
 
 const HomeTiles = (props) => {
