@@ -85,15 +85,15 @@
     ]
   },
   "moduleNameMapper": {
-    "@root/(.*)": "./",
-    "@bin/(.*)": "./bin/",
-    "@filters/(.*)": "./filters/",
-    "@routes/(.*)": "./routes/",
-    "@models/(.*)": "./models/",
-    "@utils/(.*)": "./utils/",
-    "@workers/(.*)": "./workers/",
-    "@sockets/(.*)": "./sockets/",
-    "@services/(.*)": "./services/",
-    "@middleware/(.*)": "./middleware/"
+    "@root/(.*)": "<rootDir>/$1",
+    "@bin/(.*)": "<rootDir>/bin/$1",
+    "@filters/(.*)": "<rootDir>/filters/$1",
+    "@routes/(.*)": "<rootDir>/routes/$1",
+    "@models/(.*)": "<rootDir>/models/$1",
+    "@utils/(.*)": "<rootDir>/utils/$1",
+    "@workers/(.*)": "<rootDir>/workers/$1",
+    "@sockets/(.*)": "<rootDir>/sockets/$1",
+    "@services/(.*)": "<rootDir>/services/$1",
+    "@middleware/(.*)": "<rootDir>/middleware/$1"
   }
 }

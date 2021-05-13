@@ -4,7 +4,6 @@
 //DESC: Boilerplate module test code
 
 const request = require("supertest");
-const register = require('module-alias/register')
 // const system = require("@bin/bug-core-api");
 
 describe("Sample Test", () => {
