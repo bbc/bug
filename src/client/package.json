@@ -67,13 +67,13 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "@modules/(.*)": "<rootDir>/modules/$1",
-      "@components/(.*)": "<rootDir>/components/$1",
-      "@core/(.*)": "<rootDir>/core/$1",
-      "@data/(.*)": "<rootDir>/data/$1",
-      "@pages/(.*)": "<rootDir>/pages/$1",
-      "@redux/(.*)": "<rootDir>/redux/$1",
-      "@utils/(.*)": "<rootDir>/utils/$1"
+      "@modules/(.*)": "<rootDir>/modules",
+      "@components/(.*)": "<rootDir>/components",
+      "@core/(.*)": "<rootDir>/core",
+      "@data/(.*)": "<rootDir>/data",
+      "@pages/(.*)": "<rootDir>/pages",
+      "@redux/(.*)": "<rootDir>/redux",
+      "@utils/(.*)": "<rootDir>/utils"
     }
   },
   "browserslist": {
