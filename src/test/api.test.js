@@ -13,13 +13,9 @@ describe("Sample Test", () => {
 });
 
 describe("Test the '/api/system/hello' route", () => {
-  test("Test the '/hello' method", async () => {
-    const response = await request(system).get("api/system/hello");
+  test("Test the '/hello' response status", async () => {
+    const response = await request(system).get("/api/system/hello");
     expect(response.statusCode).toBe(200);
-  });
-
-  test("Test the '/hello' method", async () => {
-    const response = await request(system).get("api/system/hello");
     expect(response.contents.meta.hash).toBe('3449c9e5e332f1dbb81505cd739fbf3f');
   });
 
@@ -28,7 +24,7 @@ describe("Test the '/api/system/hello' route", () => {
 describe("Test the '/api/bug/quote' route", () => {
 
   test("Test the '/api/bug/quote' method", async () => {
-    const response = await request(system).get("api/bug/quote");
+    const response = await request(system).get("/api/bug/quote");
     expect(response.statusCode).toBe(200);
   });
 
