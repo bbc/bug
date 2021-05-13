@@ -24,9 +24,9 @@ export default function Interface({ panelId, interfaceName }) {
                 onClose={handleBackClicked}
                 labels={["Details", "Ethernet", "Statistics", "Hardware"]}
                 content={[
-                    <InterfaceTabStatistics panelId={panelId} interfaceName={interfaceName} />,
                     <InterfaceTabDetails panelId={panelId} interfaceName={interfaceName} />,
                     <InterfaceTabEthernet panelId={panelId} interfaceName={interfaceName} />,
+                    <InterfaceTabStatistics panelId={panelId} interfaceName={interfaceName} />,
                 ]}
             ></PanelTabbedForm>
         </>
