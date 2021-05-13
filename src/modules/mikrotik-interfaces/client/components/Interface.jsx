@@ -16,8 +16,6 @@ export default function Interface({ panelId, interfaceName }) {
         return <Redirect push to={{ pathname: redirectUrl }} />;
     }
 
-    console.log("Interface.jsx", panelId, interfaceName);
-
     return (
         <>
             <PanelTabbedForm

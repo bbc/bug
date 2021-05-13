@@ -10,12 +10,9 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
 import { TimePicker } from "@material-ui/pickers";
+import { useWindowSize } from "@utils/WindowSize";
 
 const useStyles = makeStyles((theme) => ({
-    chart: {
-        padding: "2rem 1rem 1rem 1rem",
-        height: 400,
-    },
     button: {
         margin: theme.spacing(1),
     },
@@ -26,13 +23,13 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
     },
     tooltip: {
-        padding: '0.5rem',
+        padding: "0.5rem",
         backgroundColor: theme.palette.background.default,
-        color: 'rgba(255, 255, 255, 0.5)'
+        color: "rgba(255, 255, 255, 0.5)",
     },
     tooltipName: {
         fontWeight: 500,
-        color: 'rgba(255, 255, 255, 0.7)'
+        color: "rgba(255, 255, 255, 0.7)",
     },
 }));
 
@@ -41,32 +38,28 @@ export default function TrafficChart({ url }) {
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
+    const windowSize = useWindowSize();
 
     const [enableAutoRefresh, setEnableAutoRefresh] = useState(true);
     const [range, setRange] = useState(initialRange);
     const [stats, setStats] = useState(null);
 
     const doAutoRefresh = () => {
-        console.log("ping auto refresh");
         setRange([Date.now() - rangeSpan * 60000, Date.now()]);
         timer.current = setTimeout(doAutoRefresh, 2000);
     };
 
     useAsyncEffect(async () => {
-        console.log(`fetching ${url}/${range[0]}/${range[1]}`);
         setStats(await AxiosGet(`${url}/${range[0]}/${range[1]}`));
     }, [url, range]);
 
     useEffect(() => {
         if (enableAutoRefresh) {
-            console.log("starting auto refresh");
             doAutoRefresh();
         } else {
-            console.log("stopping auto");
             clearTimeout(timer.current);
         }
         return () => {
-            console.log("unloading - stopping auto");
             clearTimeout(timer.current);
         };
     }, [enableAutoRefresh]);
@@ -111,9 +104,15 @@ export default function TrafficChart({ url }) {
             let rx = payload[0].payload.rx;
             return (
                 <div className={classes.tooltip}>
-                    <div><span className={classes.tooltipName}>TIME:</span> {format(timestamp, "kk:mm:ss")}</div>
-                    <div><span className={classes.tooltipName}>TX BITRATE:</span>  {formatBps(tx)}</div>
-                    <div><span className={classes.tooltipName}>RX BITRATE:</span>  {formatBps(rx)}</div>
+                    <div>
+                        <span className={classes.tooltipName}>TIME:</span> {format(timestamp, "kk:mm:ss")}
+                    </div>
+                    <div>
+                        <span className={classes.tooltipName}>TX BITRATE:</span> {formatBps(tx)}
+                    </div>
+                    <div>
+                        <span className={classes.tooltipName}>RX BITRATE:</span> {formatBps(rx)}
+                    </div>
                 </div>
             );
         }
@@ -121,9 +120,11 @@ export default function TrafficChart({ url }) {
         return null;
     };
 
+    const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
+
     return (
         <>
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer width="100%" height={chartHeight}>
                 <BarChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                     <Bar isAnimationActive={false} dataKey="tx" fill="#0000ff" />
                     <Bar isAnimationActive={false} dataKey="rx" fill="#ff0000" />
@@ -136,7 +137,7 @@ export default function TrafficChart({ url }) {
                             return format(value, "kk:mm");
                         }}
                     />
-                    <YAxis 
+                    <YAxis
                         tickFormatter={(value) => {
                             return formatBps(value);
                         }}

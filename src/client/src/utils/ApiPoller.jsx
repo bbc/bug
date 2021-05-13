@@ -15,7 +15,6 @@ export function useApiPoller({ url, interval }) {
         const source = axios.CancelToken.source();
         const cancelToken = source.token;
 
-        console.log("mount", url);
         const triggerUpdate = (newState) => {
             // this method checks if the data has changed
             if (JSON.stringify(localResult.current) !== JSON.stringify(newState)) {
@@ -28,7 +27,6 @@ export function useApiPoller({ url, interval }) {
         };
 
         const fetch = async () => {
-            console.log("fetch", url);
             // clear any pending refresh
             clearTimeout(timer.current);
 
@@ -73,11 +71,9 @@ export function useApiPoller({ url, interval }) {
         };
         fetch();
         return () => {
-            console.log("cancel");
             // this is run when the component is unloaded
             // first of all - clear any pending requests
             clearTimeout(timer.current);
-            console.log(cancelToken);
 
             // cancel any in-flight axios requests
             source.cancel();
