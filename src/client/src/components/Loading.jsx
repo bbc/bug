@@ -2,7 +2,7 @@ import React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 
-export default function Loading(props) {
+export default function Loading ({ height = "100vh" }) {
     return (
         <>
             <Grid
@@ -11,7 +11,7 @@ export default function Loading(props) {
                 direction="column"
                 alignItems="center"
                 justify="center"
-                style={{ minHeight: "100vh" }}
+                style={{ minHeight: height }}
             >
                 <Grid item xs={3}>
                     <CircularProgress />
@@ -19,4 +19,5 @@ export default function Loading(props) {
             </Grid>
         </>
     );
-}
+};
+
