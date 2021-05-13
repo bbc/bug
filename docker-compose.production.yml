@@ -13,5 +13,3 @@ services:
         NODE_ENV: 'production'
     ports:
       - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
-
-  mongo:
