@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:14' 
+            image 'node:14'
         }
     }
     environment {
@@ -13,7 +13,7 @@ pipeline {
                 sh 'node --version'
             }
         }
-        stage('Install') { 
+        stage('Install') {
             steps {
                 dir('src') {
                     sh 'npm install'
@@ -24,7 +24,7 @@ pipeline {
                 }
             }
         }
-        stage('Test') { 
+        stage('Test') {
             steps {
                 dir('src') {
                     sh 'npm run test'
@@ -34,14 +34,14 @@ pipeline {
                 }
             }
         }
-        stage('Build') { 
+        stage('Build') {
             steps {
                 dir('src') {
                     sh 'docker build --compress --tag rmccartney856/bug:latest .'
                 }
             }
         }
-        stage('Publish') { 
+        stage('Publish') {
             steps {
                 dir('src') {
                     sh 'docker push rmccartney856/bug:latest'
@@ -49,15 +49,24 @@ pipeline {
             }
         }
     }
-     post {
+    post {
         success {
-            slackSend (color: '#30fc03', message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+            slackSend
+                channel: '#ci-bug',
+                color: '#30fc03',
+                message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})"
         }
         failure {
-            slackSend (color: '#ff6347', message: "*BUG:* Failed, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+            slackSend
+                channel: '#ci-bug',
+                color: '#ff6347',
+                message: "*BUG:* Failed, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})"
         }
         unstable {
-            slackSend (color: '#ff7f50', message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+            slackSend
+                channel: '#ci-bug',
+                color: '#ff7f50',
+                message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})"
         }
     }
 }
