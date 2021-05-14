@@ -37,36 +37,16 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src') {
-                    sh 'docker build --compress --tag rmccartney856/bug:latest .'
+                    sh 'docker image build --compress --tag rmccartney856/bug-core:latest ./'
                 }
             }
         }
         stage('Publish') {
             steps {
                 dir('src') {
-                    sh 'docker push rmccartney856/bug:latest'
+                    sh 'docker push rmccartney856/bug-core:latest'
                 }
             }
-        }
-    }
-    post {
-        success {
-            slackSend
-                channel: '#ci-bug',
-                color: '#30fc03',
-                message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})"
-        }
-        failure {
-            slackSend
-                channel: '#ci-bug',
-                color: '#ff6347',
-                message: "*BUG:* Failed, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})"
-        }
-        unstable {
-            slackSend
-                channel: '#ci-bug',
-                color: '#ff7f50',
-                message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})"
         }
     }
 }
