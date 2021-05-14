@@ -37,9 +37,7 @@ pipeline {
         stage('Build') { 
             steps {
                 dir('src') {
-                    node {
-                        sh 'docker build --compress --tag rmccartney856/bug:latest .'
-                    }
+                    sh 'docker build --compress --tag rmccartney856/bug:latest .'
                 }
             }
         }
