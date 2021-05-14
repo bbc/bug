@@ -32,26 +32,34 @@ pipeline {
                 dir('src/client') {
                     sh 'npm run test'
                 }
-                slackSend (color: '#30fc03', message: "*Test:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
         stage('Build') { 
             steps {
                 dir('src') {
                     node {
-                        def customImage = docker.build("my-image:${env.BUILD_ID}")
+                        sh 'docker build --compress --tag rmccartney856/bug:latest .'
                     }
                 }
-                slackSend (color: '#30fc03', message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
         stage('Publish') { 
             steps {
                 dir('src') {
-                    sh 'docker push rmccartney856/bug-core:latest'
+                    sh 'docker push rmccartney856/bug:latest'
                 }
-                slackSend (color: '#30fc03', message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
+        }
+    }
+     post {
+        success {
+            slackSend (color: '#30fc03', message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+        }
+        failure {
+            slackSend (color: '#ff6347', message: "*BUG:* Failed, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+        }
+        unstable {
+            slackSend (color: '#ff7f50', message: "*BUG:* Completed succesfully, '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
         }
     }
 }
