@@ -1,11 +1,11 @@
 pipeline {
     environment {
         CI = 'true'
-        imageName = 'rmccartney856/bug'
+        imageName = '172.26.108.110/bug'
     }
     agent any
     stages {
-        stage('Setup Environment') {
+        stage('Setup') {
             steps {
                 sh 'node --version'
             }
@@ -45,7 +45,7 @@ pipeline {
                 sh "docker push ${imageName}:latest ."
             }
         }
-        stage('Remove Unused docker image') {
+        stage('Cleanup') {
             steps{
                 sh "docker rmi ${imageName}:${env.BUILD_NUMBER}"
                 sh "docker rmi ${imageName}:latest"
