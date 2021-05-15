@@ -36,8 +36,10 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                dir('src') {
-                    sh 'docker image build --compress --tag rmccartney856/bug-core:latest ./'
+                dir('src') {  
+                    script {
+                        dockerImage = docker.build bug:latest
+                    }
                 }
             }
         }
