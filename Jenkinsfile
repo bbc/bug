@@ -1,7 +1,7 @@
 pipeline {
     environment {
         CI = 'true'
-        imageName = "rmccartney856/bug"'
+        imageName = 'rmccartney856/bug'
     }
     agent any
     stages {
@@ -34,16 +34,21 @@ pipeline {
         stage('Build') { 
             steps {
                 dir('src') {
-                    sh 'docker build --compress --tag rmccartney856/bug:${env.BUILD_NUMBER} .'
-                    sh 'docker build --compress --tag rmccartney856/bug:latest .'
+                    sh "docker build --compress --tag ${imageName}:${env.BUILD_NUMBER} ."
+                    sh "docker build --compress --tag ${imageName}:latest ."
                 }
             }
         }
         stage('Publish') { 
             steps {
-                dir('src') {
-                    sh 'docker push rmccartney856/bug:latest'
-                }
+                sh "docker push ${imageName}:${env.BUILD_NUMBER} ."
+                sh "docker push ${imageName}:latest ."
+            }
+        }
+        stage('Remove Unused docker image') {
+            steps{
+                sh "docker rmi ${imageName}:${env.BUILD_NUMBER}"
+                sh "docker rmi ${imageName}:latest"
             }
         }
     }
