@@ -1,14 +1,9 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:14' 
-        }
-    }
     environment {
         CI = 'true'
-        imageName = "rmccartney856/bug"
-        image = ''
+        imageName = "rmccartney856/bug"'
     }
+    agent any
     stages {
         stage('Setup Environment') {
             steps {
@@ -39,16 +34,15 @@ pipeline {
         stage('Build') { 
             steps {
                 dir('src') {
-                    script {
-                        image = docker.build imageName
-                    }
+                    sh 'docker build --compress --tag rmccartney856/bug:${env.BUILD_NUMBER} .'
+                    sh 'docker build --compress --tag rmccartney856/bug:latest .'
                 }
             }
         }
         stage('Publish') { 
             steps {
                 dir('src') {
-                    sh 'docker push rmccartney856/bug-core:latest'
+                    sh 'docker push rmccartney856/bug:latest'
                 }
             }
         }
