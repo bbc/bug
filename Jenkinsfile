@@ -6,6 +6,8 @@ pipeline {
     }
     environment {
         CI = 'true'
+        imageName = "rmccartney856/bug"
+        image = ''
     }
     stages {
         stage('Setup Environment') {
@@ -36,9 +38,9 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                dir('src') {  
+                dir('src') {
                     script {
-                        dockerImage = docker.build bug:latest
+                        image = docker.build imageName
                     }
                 }
             }
