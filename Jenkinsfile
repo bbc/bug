@@ -41,8 +41,8 @@ pipeline {
         }
         stage('Publish') { 
             steps {
-                sh "docker push ${imageName}:${env.BUILD_NUMBER} ."
-                sh "docker push ${imageName}:latest ."
+                sh "docker push ${imageName}:${env.BUILD_NUMBER}"
+                sh "docker push ${imageName}:latest"
             }
         }
         stage('Cleanup') {
