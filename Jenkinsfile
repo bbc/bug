@@ -32,7 +32,6 @@ pipeline {
                 dir('src/client') {
                     sh 'npm run test'
                 }
-                slackSend (color: '#30fc03', message: "*Test:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
         stage('Build') { 
@@ -40,7 +39,6 @@ pipeline {
                 dir('src') {
                     sh 'docker image build --compress --tag rmccartney856/bug-core:latest ./'
                 }
-                slackSend (color: '#30fc03', message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
         }
         stage('Publish') { 
@@ -48,8 +46,18 @@ pipeline {
                 dir('src') {
                     sh 'docker push rmccartney856/bug-core:latest'
                 }
-                slackSend (color: '#30fc03', message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
             }
+        }
+    }
+    post {
+        success {
+            slackSend(color: '#30fc03', channel: "#ci-bug", message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+        }
+        failure {
+            slackSend(color: '#ff6347', channel: "#ci-bug", message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+        }
+        unstable {
+            slackSend(color: '#ffbf00', channel: "#ci-bug", message: "*Image:* Pipeline Job '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
         }
     }
 }
