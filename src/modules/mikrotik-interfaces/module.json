@@ -8,7 +8,7 @@
     "author": "Geoff House",
     "needsContainer": true,
     "license": "ISC",
-    "devmounts": ["api", "core", "utils", "services", "workers"],
+    "devmounts": ["api", "services", "workers"],
     "defaultconfig": {
         "id": "",
         "order": 0,
