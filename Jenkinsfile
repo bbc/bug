@@ -34,7 +34,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src') {
-                    sh "docker build --compress --tag ${imageName}:latest ."
+                    sh "docker build --compress --label uk.co.bbc.bug.build.number="${env.BUILD_NUMBER}" uk.co.bbc.bug.build.branch="${env.BRANCH_NAME}" uk.co.bbc.bug.build.commit="${env.GIT_COMMIT}" --tag ${imageName}:latest ."
                 }
             }
         }
