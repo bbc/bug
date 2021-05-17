@@ -8,27 +8,35 @@ This is the all new version 3.
 
 It's definitely in pre-alpha, so please don't use it yet...
 
-## Development: Getting Started
+## Development: Docker
 
 For development on your local machine with docker (recommended)
 
-* Install docker
+* Install the latest version of `docker`, `docker-compose`, `node.js` and `npm`.
+* Clone this repository
+* Change directories to the `./src` folder of the repository
+* Run `npm install`.
+* Change directories to the `./src/client` folder of the repository
+* Run `npm install`.
+* Spin up your development instnace with `docker compose up -d`
+
+You can change many of the port parameters, logging locations by setting environment variables in a `.env` file in the root directory.
+
+When developing in docker changes will automatically be relfected in docker using volume mounts and nodemon to reload. Please make sure to `npm install` on your local machine before spinning up the compose project.
+
+## Development: Local Machine
+
 * Clone the repository
-* Change directories to the `bbcnews-bug-core` folder
-* Spin it up with `docker compose -f docker-compose.yml -f docker-compose.development.yml up -d`
-
-You can change many of the port parameters, logging locations by setting values in a `.env` file in the root directory.
-
-When developing in docker changes will automatically be relfected in docker using volume mounts and nodemon to reload. However, adding additionally packages will mean you need to rebuild the image using `docker-compose build` before running `docker compose -f docker-compose.yml -f docker-compose.development.yml up` to run your newly updated image.
-
-For development on a your local machine
-
-* Clone the repository
-* Change directories to the `bbcnews-bug-core/src` folder
-* Install dependenices with `npm install`
+* Change directories to the `./src` folder of the repository
+* Run `npm install`.
+* Change directories to the `./src/client` folder of the repository
+* Run `npm install`.
+* Change directories to the `./src` folder of the repository
 * Use `npm run development` to run on your local machine.
 
-## Production: Spinning up BUG Core
+Note that this method still requires you to have docker on your machine to test functionality like adding and removing panels. You'll also need a locally running MongoDB aswell.
+
+## Production: Linux, Windows and Mac
 
 * Install docker on your system if it's not already there.
 * If docker-compose is not on your system install it as well.
@@ -74,7 +82,7 @@ services:
       - ${DOCKER_NETWORK_NAME}
 ```
 
-## Production: On Raspberry Pi 3/4 (Arm CPU Architecture)
+## Production: Raspberry Pi 3/4 (Arm CPU Architecture)
 
 * Install Raspbian on an SD Card.
 * Install Docker.
