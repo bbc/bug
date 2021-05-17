@@ -45,14 +45,13 @@ pipeline {
                 sh "docker push ${imageName}:latest"
             }
         }
-        stage('Cleanup') {
-            steps{
-                sh "docker rmi ${imageName}:${env.BUILD_NUMBER}"
-                sh "docker rmi ${imageName}:latest"
-            }
-        }
     }
     post {
+        always {
+            cleanWs()
+            sh "docker rmi ${imageName}:${env.BUILD_NUMBER}"
+            sh "docker rmi ${imageName}:latest"
+        }
         success {
             slackSend(color: "#30fc03", channel: "#ci-bug", message: "*Success:* Built, tested and deployed '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
         }
