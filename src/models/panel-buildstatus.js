@@ -7,8 +7,8 @@ const mongoCollection = require("@core/mongo-collection");
 
 exports.get = async function(panelId) {
     try {
-        const panelStatusCollection = await mongoCollection("panelstatus");
-        const result = await panelStatusCollection.findOne({"panelid": panelId});
+        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
+        const result = await panelBuildStatusCollection.findOne({"panelid": panelId});
         if(result) {
             return result['status'];
         }
@@ -21,8 +21,8 @@ exports.get = async function(panelId) {
 
 exports.set = async function(panelId, statusText, progress) {
     try {
-        const panelStatusCollection = await mongoCollection("panelstatus");
-        await panelStatusCollection.updateOne(
+        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
+        await panelBuildStatusCollection.updateOne(
             {
                 "panelid": panelId
             },{
@@ -47,8 +47,8 @@ exports.set = async function(panelId, statusText, progress) {
 
 exports.setError = async function(panelId, errorText) {
     try {
-        const panelStatusCollection = await mongoCollection("panelstatus");
-        await panelStatusCollection.updateOne(
+        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
+        await panelBuildStatusCollection.updateOne(
             {
                 "panelid": panelId
             },{
@@ -73,8 +73,8 @@ exports.setError = async function(panelId, errorText) {
 
 exports.setProgress = async function(panelId, progress) {
     try {
-        const panelStatusCollection = await mongoCollection("panelstatus");
-        await panelStatusCollection.updateOne(
+        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
+        await panelBuildStatusCollection.updateOne(
             {
                 "panelid": panelId
             },{
@@ -94,9 +94,9 @@ exports.setProgress = async function(panelId, progress) {
 
 exports.list = async function() {
     try {
-        const panelStatusCollection = await mongoCollection("panelstatus");
+        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
         const response = [];
-        const result = await panelStatusCollection.find().toArray();
+        const result = await panelBuildStatusCollection.find().toArray();
         for(var eachResult of result) {
             response.push({
                 'panelid': eachResult['panelid'],
