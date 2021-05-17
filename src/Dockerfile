@@ -7,7 +7,7 @@ RUN npm install
 WORKDIR /home/node/bug-core/client
 RUN npm install
 
-#RUN npm run build
+RUN npm run build
 
 WORKDIR /home/node/bug-core
 CMD [ "sh", "-c", "npm run $NODE_ENV" ]
