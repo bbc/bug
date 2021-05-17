@@ -22,7 +22,7 @@ exports.get = async function(panelId) {
 exports.set = async function(panelConfig) {
 
     try {
-        const filename = path.join(__dirname, '..', 'config', panelConfig.id);
+        const filename = path.join(__dirname, '..', 'config', `${panelConfig.id}.json`);
         return await writeJson(filename, panelConfig);
     } 
     catch (error) {
