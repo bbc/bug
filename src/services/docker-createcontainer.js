@@ -8,57 +8,75 @@ const dockerGetModulesFolder = require("@services/docker-getmodulesfolder");
 const moduleDevMounts = require("@services/module-getdevmounts");
 
 module.exports = async (configObject) => {
-    try {
-        logger.info(`creating container for panel id ${configObject.id}`);
-        const modulePort = process.env.MODULE_PORT || "3200";
-        const bugCorePort = process.env.BUG_CORE_PORT || "3101";
-        const bugCoreHost = process.env.DOCKER_CORE_NAME || "bug-core";
-        let containerOptions = {
-            Image: configObject.module + ":latest",
-            Cmd: ["npm", "run", nodeEnv],
-            Env: [
-                `PORT=${modulePort}`,
-                `PANEL_ID=${configObject.id}`,
-                `CORE_PORT=${bugCorePort}`,
-                `CORE_HOST=${bugCoreHost}`,
-            ],
-            Hostname: configObject.id,
-            name: configObject.id,
-            Labels: {
-                "uk.co.bbc.bug.panel.id": configObject.id,
-                "com.docker.compose.project": "bbcnews-bug-core",
-                "com.docker.compose.service": configObject.id,
-            },
-            HostConfig: {
-                Mounts: [],
-                RestartPolicy: { name: "unless-stopped" },
-                NetworkMode: "bug",
-            },
-        };
-        if (nodeEnv === "development") {
-            const modulesFolder = await dockerGetModulesFolder();
-            const devMounts = await moduleDevMounts(configObject.module);
+  try {
+    logger.info(`creating container for panel id ${configObject.id}`);
 
-            if (devMounts.length > 0) {
-                let mounts = [];
-                for (let eachMount of devMounts) {
-                    let localPath = path.join(modulesFolder, configObject.module, "container", eachMount);
-                    let remotePath = path.join(process.env.MODULE_HOME, eachMount);
-                    mounts.push({
-                        Target: remotePath,
-                        Source: localPath,
-                        Type: "bind",
-                    });
-                }
-                containerOptions["HostConfig"]["Mounts"] = mounts;
-            }
+    const modulePort = process.env.MODULE_PORT || "3200";
+    const bugCorePort = process.env.BUG_CORE_PORT || "3101";
+    const bugCoreHost = process.env.DOCKER_CORE_NAME || "bug-core";
+    const networkName = process.env.DOCKER_NETWORK_NAME || "bug";
+    const moduleHome = process.env.MODULE_HOME || "/home/node/module";
+
+    let containerOptions = {
+      Image: configObject.module + ":latest",
+      Cmd: ["npm", "run", nodeEnv],
+      Env: [
+        `PORT=${modulePort}`,
+        `PANEL_ID=${configObject.id}`,
+        `CORE_PORT=${bugCorePort}`,
+        `CORE_HOST=${bugCoreHost}`,
+      ],
+      Hostname: configObject.id,
+      name: configObject.id,
+      Labels: {
+        "uk.co.bbc.bug.panel.id": configObject.id,
+        "com.docker.compose.project": "bbcnews-bug-core",
+        "com.docker.compose.service": configObject.id,
+      },
+      HostConfig: {
+        Mounts: [],
+        RestartPolicy: { name: "unless-stopped" },
+        NetworkMode: networkName,
+      },
+    };
+    if (nodeEnv === "development") {
+      const modulesFolder = await dockerGetModulesFolder();
+      const devMounts = await moduleDevMounts(configObject.module);
+
+      const mounts = [
+        {
+          Target: path.join(moduleHome, "core"),
+          Source: path.join(__dirname, "..", "core"),
+          Type: "bind",
+        },
+      ];
+
+      if (devMounts.length > 0) {
+        for (let eachMount of devMounts) {
+          const localPath = path.join(
+            modulesFolder,
+            configObject.module,
+            "container",
+            eachMount
+          );
+          const remotePath = path.join(moduleHome, eachMount);
+          mounts.push({
+            Target: remotePath,
+            Source: localPath,
+            Type: "bind",
+          });
         }
-        let container = await docker.createContainer(containerOptions);
-
-        logger.info(`container id ${container.id} created OK`);
-        return container;
-    } catch (error) {
-        logger.error(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to create docker container for panel id ${container.id}`);
+      }
+      containerOptions["HostConfig"]["Mounts"] = mounts;
     }
+    let container = await docker.createContainer(containerOptions);
+
+    logger.info(`container id ${container.id} created OK`);
+    return container;
+  } catch (error) {
+    logger.error(`${error.stack || error.trace || error || error.message}`);
+    throw new Error(
+      `Failed to create docker container for panel id ${container.id}`
+    );
+  }
 };
