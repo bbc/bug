@@ -2,45 +2,27 @@
 
 //TODO error handling with throw
 
-const logger = require("@utils/logger");
-const Db = require("@utils/db");
-const collectionName = "dockercontainers";
-
-const connect = async () => {
-    const dbClass = new Db();
-    const db = await dbClass.connect();
-    if (!db) {
-        logger.warning("could not connect to database");
-        return false;
-    }
-    return db;
-};
+const logger = require('@utils/logger')(module);
+const mongoCollection = require("@core/mongo-collection");
 
 exports.get = async function (containerId) {
     try {
-        let db = await connect();
-        if (!db) {
-            return null;
-        }
-
-        const result = await db.collection(collectionName).findOne({ containerid: containerId });
+        const containerCollection = await mongoCollection("dockercontainers");
+        const result = await containerCollection.findOne({ containerid: containerId });
         if (result) {
             return result;
         }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
     }
     return null;
 };
 
 exports.set = async function (containerId, containerInfo) {
     try {
-        let db = await connect();
-        if (!db) {
-            return false;
-        }
+        const containerCollection = await mongoCollection("dockercontainers");
 
-        await db.collection(collectionName).replaceOne(
+        await containerCollection.replaceOne(
             {
                 containerid: containerId,
             },
@@ -51,22 +33,19 @@ exports.set = async function (containerId, containerInfo) {
         );
         return true;
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         return false;
     }
 };
 
 exports.setMultiple = async function (containerInfoArray) {
     try {
-        let db = await connect();
-        if (!db) {
-            return false;
-        }
+        const containerCollection = await mongoCollection("dockercontainers");
 
         let idArray = [];
         for(let eachContainer of containerInfoArray) {
             idArray.push(eachContainer['containerid']);
-            let result = await db.collection(collectionName).replaceOne(
+            let result = await containerCollection.replaceOne(
                 {
                     containerid: eachContainer['containerid'],
                 },
@@ -78,7 +57,7 @@ exports.setMultiple = async function (containerInfoArray) {
         }
 
         // remove any unused
-        let result = await db.collection(collectionName).deleteMany({
+        let result = await containerCollection.deleteMany({
             containerid: {
                 '$nin': idArray
             }
@@ -86,24 +65,21 @@ exports.setMultiple = async function (containerInfoArray) {
 
         return true;
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         return false;
     }
 };
 
 exports.list = async function (containerId) {
     try {
-        let db = await connect();
-        if (!db) {
-            return null;
-        }
+        const containerCollection = await mongoCollection("dockercontainers");
 
-        const result = await db.collection(collectionName).find().toArray();
+        const result = await containerCollection.find().toArray();
         if (result) {
             return result;
         }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
     }
     return null;
 };

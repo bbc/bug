@@ -1,26 +1,12 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const Db = require("@utils/db");
-const collectionName = "logs";
-
-const connect = async () => {
-    const dbClass = new Db();
-    const db = await dbClass.connect();
-    if (!db) {
-        logger.warning("could not connect to database");
-        return false;
-    }
-    return db;
-};
+const mongoCollection = require("@core/mongo-collection");
 
 exports.get = async function (level) {
     try {
-        let db = await connect();
-        if (!db) {
-            return null;
-        }
-        const result = await db.collection(collectionName).find({level:level}).toArray();
+        const logsCollection = await mongoCollection("logs");
+        const result = await logsCollection.find({level:level}).toArray();
         return result
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);
