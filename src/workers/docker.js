@@ -10,16 +10,19 @@ const delay = require("delay");
 
 const fetch = async () => {
     try {
-        const containerInfoList = await dockerListContainerInfo();
-        for (let eachContainer of containerInfoList) {
-            eachContainer["containerid"] = eachContainer["id"];
-            delete eachContainer.id;
-        }
-        await dockerContainer.setMultiple(containerInfoList);
+        while (true) {
+            const containerInfoList = await dockerListContainerInfo();
+            for (let eachContainer of containerInfoList) {
+                eachContainer["containerid"] = eachContainer["id"];
+                delete eachContainer.id;
+            }
+            await dockerContainer.setMultiple(containerInfoList);
 
-        await delay(1000);
+            await delay(1000);
+        }
     } catch (error) {
         logger.warning(`workers/docker: ${error.stack || error.trace || error || error.message}`);
+        return;
     }
 };
 
