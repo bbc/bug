@@ -1,5 +1,5 @@
 'use strict';
-const formatBps = require('../utils/format-bps');
+const formatBps = require('@core/format-bps');
 
 module.exports = async (traffic) => {
 

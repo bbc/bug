@@ -1,4 +1,6 @@
-const mongoCollection = require('../utils/mongo-collection');
+'use strict';
+
+const mongoCollection = require('@core/mongo-collection');
 
 module.exports = async () => {
 

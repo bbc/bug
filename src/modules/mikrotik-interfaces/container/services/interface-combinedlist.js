@@ -1,6 +1,8 @@
-const mongoCollection = require('../utils/mongo-collection');
+'use strict';
+
+const mongoCollection = require('@core/mongo-collection');
 const wildcard = require('wildcard-regex');
-const configGet = require("./config-get");
+const configGet = require("@core/config-get");
 
 module.exports = async () => {
 
@@ -73,7 +75,7 @@ module.exports = async () => {
 
     interfaces.sort((a, b) => (a.name > b.name) ? 1 : -1)
 
-    for (eachInterface of interfaces) {
+    for (let eachInterface of interfaces) {
         // add link stats
         if (eachInterface['name'] in linkStatsByName) {
             eachInterface['linkstats'] = linkStatsByName[eachInterface['name']];

@@ -1,3 +1,11 @@
+'use strict';
+
+/**
+ * core/mongo-db.js
+ * Provides a single, reusable connection to the Mongo database
+ * 0.0.1 17/05/2021 - Created first version (GH)
+ */
+
 const { MongoClient } = require("mongodb");
 const url = `mongodb://bug-mongo:27017`;
 

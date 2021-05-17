@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const configGet = require('../../services/config-get');
-const configPut = require('../../services/config-put');
+const configGet = require('@core/config-get');
+const configPut = require('@core/config-put');
 
 router.get('/', async function (req, res, next) {
     try {

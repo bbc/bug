@@ -1,26 +1,27 @@
+"use strict";
+
 const { parentPort, workerData, threadId } = require("worker_threads");
 
 const RosApi = require("node-routeros").RouterOSAPI;
 const delay = require("delay");
-
+const register = require("module-alias/register");
 const mikrotikFetchTraffic = require("../services/mikrotik-fetchtraffic");
 const arraySaveMongo = require("../services/array-savemongo");
 const trafficSaveHistory = require("../services/traffic-savehistory");
 const interfaceList = require("../services/interface-list");
 const trafficAddHistory = require("../services/traffic-addhistory");
-const mongoDb = require("../utils/mongo-db");
-const mongoCollection = require("../utils/mongo-collection");
+const mongoDb = require("@core/mongo-db");
+const mongoCollection = require("@core/mongo-collection");
 
 const delayMs = 2000;
 const errorDelayMs = 10000;
 const config = workerData.config;
 
-//Tell the manager the things you care about
+// Tell the manager the things you care about
 parentPort.postMessage({
     index: workerData.index,
     restartOn: ["address", "username", "password"],
 });
-
 
 const pollDevice = async () => {
     const trafficCollection = await mongoCollection("traffic");
@@ -57,7 +58,7 @@ const pollDevice = async () => {
             // fetch traffic stats for each interface
             let trafficArray = [];
             if (interfaces) {
-                for (eachInterface of interfaces) {
+                for (let eachInterface of interfaces) {
                     trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface["name"]));
                 }
             }
@@ -80,10 +81,10 @@ const pollDevice = async () => {
 };
 
 const main = async () => {
-    //Connect to the db
+    // Connect to the db
     await mongoDb.connect(config.id);
 
-    //Kick things off
+    // Kick things off
     while (true) {
         try {
             await pollDevice();

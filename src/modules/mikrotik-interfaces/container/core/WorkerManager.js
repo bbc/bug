@@ -1,7 +1,13 @@
 'use strict';
 
+/**
+ * core/WorkerManager.js
+ * Class providing management of and access to all workers registered
+ * 0.0.1 17/05/2021 - Created first version (GH)
+ */
+
 const { Worker, isMainThread, workerData } = require('worker_threads');
-const configGet = require("../services/config-get");
+const configGet = require("@core/config-get");
 const path = require('path');
 const fs = require('fs');
 

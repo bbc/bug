@@ -1,6 +1,13 @@
 'use strict';
 
-const MongoDb = require('../utils/mongo-db');
+/**
+ * core/mongo-collection.js
+ * Returns a Mongo collection object, given the provided name
+ * Also allows for creation of capped collections etc (if they don't already exist)
+ * 0.0.1 17/05/2021 - Created first version (GH)
+ */
+
+const MongoDb = require('@core/mongo-db');
 
 module.exports = async (collectionName, createOptions = null) => {
 
