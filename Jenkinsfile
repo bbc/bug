@@ -41,6 +41,7 @@ pipeline {
         }
         stage('Publish') {
             steps {
+                sh "docker login ${repositoryName} --insecure-registry"
                 sh "docker push ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
                 sh "docker push ${repositoryName}/${imageName}:latest"
             }
