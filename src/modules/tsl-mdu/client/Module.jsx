@@ -4,10 +4,10 @@ import EditPanel from "./panels/EditPanel";
 import ModuleWrapper from "@core/ModuleWrapper";
 import ModuleRoute from "@core/ModuleRoute";
 
-export default function Module({ panelId }) {
+export default function Module(props) {
 
     return (
-        <ModuleWrapper panelId={panelId}>
+        <ModuleWrapper {...props}>
                 <ModuleRoute exact path="/panel/:panelId">
                     <MainPanel />
                 </ModuleRoute>
