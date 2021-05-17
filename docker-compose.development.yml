@@ -10,6 +10,7 @@ services:
     volumes:
       - ./src/bin:/home/node/bug-core/bin
       - ./src/config:/home/node/bug-core/config
+      - ./src/core:/home/node/bug-core/core
       - ./src/data:/home/node/bug-core/data
       - ./src/filters:/home/node/bug-core/filters
       - ./src/logs:/home/node/bug-core/logs

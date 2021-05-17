@@ -1,8 +1,12 @@
-'use strict';
+"use strict";
 
-//TODO error handling with throw
+/**
+ * core/delete-file.js
+ * Deletes the specified file
+ * 0.0.1 17/05/2021 - Created first version (GH)
+ */
 
-const fs = require('fs').promises;
+const fs = require("fs").promises;
 
 module.exports = async (filename) => {
     try {
@@ -12,4 +16,4 @@ module.exports = async (filename) => {
         return false;
     }
     return true;
-}
+};

@@ -4,7 +4,7 @@ const fs = require('fs')
 const util = require('util');
 const readdir = util.promisify(fs.readdir);
 const logger = require('@utils/logger')(module);
-const readJson = require('@utils/read-json');
+const readJson = require('@core/read-json');
 const path = require('path');
 
 module.exports = async function() {

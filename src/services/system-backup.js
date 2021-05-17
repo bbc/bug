@@ -3,7 +3,7 @@
 const path = require("path");
 const logger = require("@utils/logger")(module);
 const tarFolder = require("@utils/tar-folder");
-const readDir = require("@utils/read-dir");
+const readDir = require("@core/read-dir");
 const moment = require("moment");
 
 module.exports = async () => {

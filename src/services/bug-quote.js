@@ -1,7 +1,6 @@
 'use strict';
 
 const logger = require('@utils/logger')(module);
-const globalConfig = require('@models/global-config');
 
 module.exports = async () => {
 

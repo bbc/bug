@@ -7,9 +7,9 @@ const util = require('util');
 const readdir = util.promisify(fs.readdir);
 const logger = require('@utils/logger')(module);
 const path = require('path');
-const readJson = require('@utils/read-json');
-const writeJson = require('@utils/write-json');
-const deleteFile = require('@utils/delete-file');
+const readJson = require('@core/read-json');
+const writeJson = require('@core/write-json');
+const deleteFile = require('@core/delete-file');
 
 exports.get = async function(panelId) {
     try {
