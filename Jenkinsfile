@@ -51,6 +51,7 @@ pipeline {
     post {
         always {
             cleanWs()
+            sh "docker buildx rm bugBuilder"
             sh "docker rmi ${imageName}:latest"
             sh "docker rmi ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
             sh "docker rmi ${repositoryName}/${imageName}:latest"
