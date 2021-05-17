@@ -2,7 +2,7 @@
 
 const path = require('path');
 const logger = require('@utils/logger')(module);
-const readJson = require('@utils/read-json');
+const readJson = require('@core/read-json');
 
 module.exports = async (panelId) => {
     try {
