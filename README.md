@@ -8,7 +8,7 @@ This is the all new version 3.
 
 It's definitely in pre-alpha, so please don't use it yet...
 
-## Development Getting Started
+## Development: Getting Started
 
 For development on your local machine with docker (recommended)
 
@@ -30,10 +30,96 @@ For development on a your local machine
 
 ## Production: Spinning up BUG Core
 
-* Download and unzip the latest release
-* Install docker on your system if it's not already there
-* Change directories to your unziped release and run - `docker compose -f docker-compose.yml -f docker-compose.production.yml up -d`
+* Install docker on your system if it's not already there.
+* If docker-compose is not on your system install it as well.
+* Copy the below YAML into a file called `docker-compose up -d`.
+* Add the environment variables to a file called `.env`. See sample environment file below.
+* Run BUG using `docker-compose up -d`.
 * After a few minutes bug will be avalible at `http://localhost:80`
+
+```
+# BUG for Windows, Mac or Linux
+
+version: "3.8"
+
+networks:
+  bug:
+    name: ${DOCKER_NETWORK_NAME}
+    driver: bridge
+
+services:
+  core:
+    image: 172.26.108.110:5000/bug:latest
+    container_name: ${DOCKER_CORE_NAME}
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/home/node/bug-core/logs
+      - ./config:/home/node/bug-core/config
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: 'production'
+    hostname: ${DOCKER_CORE_NAME}
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+    ports:
+      - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
+
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    container_name: bug-mongo
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+```
+
+## Production: On Raspberry Pi 3/4 (Arm CPU Architecture)
+
+* Install Raspbian on an SD Card.
+* Install Docker.
+* Install Docker Compose.
+* Copy the below YAML into a file called `docker-compose up -d`.
+* Add the environment variables to a file called `.env`. See sample environment file below.
+* Run `docker-compose up -d`.
+* Find BUG on `localhost:80`
+
+```
+# BUG for Raspberry Pi 3 and 4
+
+version: "3.8"
+
+networks:
+  bug:
+    name: ${DOCKER_NETWORK_NAME}
+    driver: bridge
+
+services:
+  core:
+    image: 172.26.108.110:5000/bug:latest
+    container_name: ${DOCKER_CORE_NAME}
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/home/node/bug-core/logs
+      - ./config:/home/node/bug-core/config
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: 'production'
+    hostname: ${DOCKER_CORE_NAME}
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+    ports:
+      - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
+
+  mongo:
+    image: arm7/mongo:latest
+    restart: unless-stopped
+    container_name: bug-mongo
+    networks:
+      - ${DOCKER_NETWORK_NAME}
+```
 
 ## Sample Environment (`.env`) File
 
