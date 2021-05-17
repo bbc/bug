@@ -1,7 +1,7 @@
 pipeline {
     environment {
-        CI = 'true'
-        imageName = '172.26.108.110/bug'
+        repositoryName = '172.26.108.110:5000'
+        imageName = 'bug'
     }
     agent any
     stages {
@@ -10,7 +10,7 @@ pipeline {
                 sh 'node --version'
             }
         }
-        stage('Install') { 
+        stage('Install') {
             steps {
                 dir('src') {
                     sh 'npm install'
@@ -21,7 +21,7 @@ pipeline {
                 }
             }
         }
-        stage('Test') { 
+        stage('Test') {
             steps {
                 dir('src') {
                     sh 'npm run test'
@@ -31,26 +31,26 @@ pipeline {
                 }
             }
         }
-        stage('Build') { 
+        stage('Build') {
             steps {
                 dir('src') {
-                    sh "docker build --compress --tag ${imageName}:${env.BUILD_NUMBER} ."
-                    sh "docker build --compress --tag ${imageName}:latest ."
+                    sh "docker build --compress --tag ${repositoryName}/${imageName}:${env.BUILD_NUMBER} ."
+                    sh "docker build --compress --tag ${repositoryName}/${imageName}:latest ."
                 }
             }
         }
-        stage('Publish') { 
+        stage('Publish') {
             steps {
-                sh "docker push ${imageName}:${env.BUILD_NUMBER}"
-                sh "docker push ${imageName}:latest"
+                sh "docker push ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
+                sh "docker push ${repositoryName}/${imageName}:latest"
             }
         }
     }
     post {
         always {
             cleanWs()
-            sh "docker rmi ${imageName}:${env.BUILD_NUMBER}"
-            sh "docker rmi ${imageName}:latest"
+            sh "docker rmi ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
+            sh "docker rmi ${repositoryName}/${imageName}:latest"
         }
         success {
             slackSend(color: "#30fc03", channel: "#ci-bug", message: "*Success:* Built, tested and deployed '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
