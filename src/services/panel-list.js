@@ -5,6 +5,7 @@ const panelConfigModel = require('@models/panel-config');
 const moduleConfigModel = require('@models/module-config');
 const panelFilter = require('@filters/panel');
 const panelBuildStatusModel = require('@models/panel-buildstatus');
+const panelStatusModel = require('@models/panel-status');
 const dockerContainerModel = require('@models/docker-container');
 
 module.exports = async () => {
@@ -14,11 +15,13 @@ module.exports = async () => {
         const moduleConfig = await moduleConfigModel.list();
         const containerInfoList = await dockerContainerModel.list();
         const panelBuildStatus = await panelBuildStatusModel.list();
-
+        const panelStatus = await panelStatusModel.list();
+console.log(panelStatus);
         const filteredPanelList = [];
         for (const i in panelConfig) {
             const thisModuleConfig = moduleConfig.find(o => o.name === panelConfig[i]['module']) ?? null;
             if(thisModuleConfig) {
+                const thisStatus = panelStatus.find(o => o.panelId === panelConfig[i]['id']) ?? null;
                 const thisContainerInfo = containerInfoList.find(o => o.name === panelConfig[i]['id']) ?? null;
                 const thisBuild = panelBuildStatus.find(o => o.panelid === panelConfig[i]['id']) ?? null;
                 // the build list returns a nested 'status' object, direct from the database - we need to pull it out
@@ -31,7 +34,7 @@ module.exports = async () => {
 
                 // combine them
                 filteredPanelList.push(
-                    panelFilter(panelConfig[i], thisModuleConfig, thisContainerInfo, thisBuildStatus)
+                    panelFilter(panelConfig[i], thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus)
                 );
             }
         }

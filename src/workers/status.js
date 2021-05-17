@@ -36,10 +36,14 @@ const fetch = async () => {
 
                 if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
                     const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
-                    let response = await axios.get(url);
-                    if (response.data.status === "success") {
-                        panelStatus.statusItems = panelStatus.statusItems.concat(response.data.data);
-                    } else {
+                    try {
+                        let response = await axios.get(url);
+                        if (response.data.status === "success") {
+                            panelStatus.statusItems = panelStatus.statusItems.concat(response.data.data);
+                        } else {
+                            throw new Error();
+                        }
+                    } catch (error) {
                         panelStatus.statusItems.push(
                             new StatusItem({
                                 key: "panelnotreachable",
