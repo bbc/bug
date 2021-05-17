@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus) => {
+module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, thisStatus) => {
     // we don't need the defaultconfig bit in the panelModule - we we'll just remove it - every byte counts!
     delete moduleConfig.defaultconfig;
 
@@ -18,8 +18,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus) =>
     } else if (isBuilt) {
         if (panelBuildStatus.error) {
             status = "error";
-        }
-        else if(panelConfig["enabled"]) {
+        } else if (panelConfig["enabled"]) {
             status = "starting";
         }
     }
@@ -34,9 +33,10 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus) =>
         _module: moduleConfig,
         _container: containerInfo,
         _buildstatus: panelBuildStatus,
+        _tempstatus: thisStatus["statusItems"],
         _isrunning: isRunning,
         _isbuilding: isBuilding,
         _isbuilt: isBuilt,
-        _status: status
+        _status: status,
     };
 };
