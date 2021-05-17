@@ -16,7 +16,7 @@ module.exports = async (panelId) => {
         panelConfig.enabled = true;
 
         // and save
-        if(!await panelConfigModel.set(panelConfig)) {
+        if(await panelConfigModel.set(panelConfig)) {
             throw new Error(`Failed to set config of panel id ${panelId} to enabled`);
         }
 

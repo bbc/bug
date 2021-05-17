@@ -13,7 +13,8 @@ const deleteFile = require('@core/delete-file');
 
 exports.get = async function(panelId) {
     try {
-        return await readJson(`config/${panelId}.json`);
+        const filename = path.join(__dirname, '..', 'config', `${panelId}.json`);
+        return await readJson(filename);
     } catch (error) {
         logger.warning(`panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
     }
