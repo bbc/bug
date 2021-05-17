@@ -3,10 +3,10 @@
 const register = require("module-alias/register");
 const bugApi = require("@bin/api");
 const bugSocket = require("@bin/socket");
-const bugWorkers = require("@bin/workers");
 const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
+const workerStore = require("@core/worker-store");
 
 const port = process.env.BUG_CORE_PORT || "3101";
 
@@ -24,9 +24,6 @@ const serve = async () => {
 
         // Give the server to sockets as well
         bugSocket(server);
-
-        // // and load the worker thread
-        bugWorkers();
     } catch (error) {
         throw error;
     }
