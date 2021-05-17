@@ -11,10 +11,11 @@ const logger = require('@utils/logger')(module);
 module.exports = async (filepath) => {
 
     try {
-            
+        const moduleHome = process.env.MODULE_HOME || '/home/node/module';
+
         const filename = path.join(filepath,'Dockerfile');
         const fileArray = ['FROM node:14',
-                            'WORKDIR ' + process.env.MODULE_HOME,
+                            'WORKDIR ' + moduleHome,
                             'COPY . .',
                             'RUN npm install',
                             'CMD ["npm","run","' + nodeEnv + '"]']
