@@ -34,7 +34,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src') {
-                    sh "docker build --compress --label maintainer='${env.GIT_AUTHOR_NAME}' uk.co.bbc.bug.author.email='${env.GIT_AUTHOR_EMAIL}' uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest ."
+                    sh "docker build --compress --label maintainer='${env.GIT_AUTHOR_NAME}',uk.co.bbc.bug.author.email='${env.GIT_AUTHOR_EMAIL}',uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}',uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}',uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest ."
                 }
             }
         }
