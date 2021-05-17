@@ -1,7 +1,9 @@
 "use strict";
 
+const logger = require("@utils/logger")(module);
 const dockerGetContainer = require("@services/docker-getcontainer");
-const coreName = process.env.CORE_NAME || "bug-core";
+const coreName = process.env.DOCKER_CORE_NAME || "bug-core";
+const path = require("path");
 
 module.exports = async () => {
     try {
@@ -11,7 +13,7 @@ module.exports = async () => {
 
         if ("Mounts" in moduleInspect) {
             for (let eachMount of moduleInspect.Mounts) {
-                if (eachMount["Destination"].indexOf("modules") > -1) {
+                if (eachMount["Destination"].indexOf(coreName) > -1) {
                     return eachMount["Source"];
                 }
             }

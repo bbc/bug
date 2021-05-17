@@ -4,7 +4,7 @@ const logger = require("@utils/logger")(module);
 const nodeEnv = process.env.NODE_ENV || "production";
 const docker = require("@utils/docker");
 const path = require("path");
-const dockerGetModulesFolder = require("@services/docker-getmodulesfolder");
+const dockerGetSourceFolder = require("@services/docker-getsourcefolder");
 const moduleDevMounts = require("@services/module-getdevmounts");
 
 module.exports = async (configObject) => {
@@ -40,13 +40,12 @@ module.exports = async (configObject) => {
       },
     };
     if (nodeEnv === "development") {
-      const modulesFolder = await dockerGetModulesFolder();
+      const sourceFolder = await dockerGetSourceFolder();
       const devMounts = await moduleDevMounts(configObject.module);
-
       const mounts = [
         {
-          Target: path.join(moduleHome, "core"),
-          Source: path.join(__dirname, "..", "core"),
+          Target: path.join(moduleHome,"core"),
+          Source: path.join(sourceFolder,"core"),
           Type: "bind",
         },
       ];
@@ -54,7 +53,8 @@ module.exports = async (configObject) => {
       if (devMounts.length > 0) {
         for (let eachMount of devMounts) {
           const localPath = path.join(
-            modulesFolder,
+            sourceFolder,
+            "modules",
             configObject.module,
             "container",
             eachMount
