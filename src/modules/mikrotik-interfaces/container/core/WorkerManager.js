@@ -4,6 +4,7 @@
  * core/WorkerManager.js
  * Class providing management of and access to all workers registered
  * 0.0.1 17/05/2021 - Created first version (GH)
+ * 0.0.2 17/05/2021 - Adapted for use in bug-core (GH)
  */
 
 const { Worker, isMainThread, workerData } = require("worker_threads");
@@ -30,9 +31,7 @@ module.exports = class WorkerManager {
         } else {
             this.config = await configGet();
         }
-        if (this.config.id) {
-            this.createWorkers(this.workerFiles);
-        }
+        this.createWorkers(this.workerFiles);
     }
 
     getWorkerFiles(folder) {
