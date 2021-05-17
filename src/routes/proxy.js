@@ -2,7 +2,7 @@
 
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
-const logger = require('@utils/logger')(module);
+const logger = require("@utils/logger")(module);
 const axios = require("axios");
 const hashResponse = require("@utils/hash-response");
 
@@ -64,7 +64,7 @@ router.use(
             res.status(axiosResponse.status);
             axiosResponse.data.pipe(res);
         } catch (error) {
-            hashResponse(res,req,error);
+            hashResponse(res, req, error);
         }
     })
 );

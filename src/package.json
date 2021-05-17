@@ -67,6 +67,7 @@
   "_moduleAliases": {
     "@root": ".",
     "@bin": "./bin/",
+    "@core": "./core/",
     "@filters": "./filters/",
     "@routes": "./routes/",
     "@models": "./models/",
@@ -87,6 +88,7 @@
     "moduleNameMapper": {
       "@root/(.*)": "<rootDir>/$1",
       "@bin/(.*)": "<rootDir>/bin/$1",
+      "@core/(.*)": "<rootDir>/core/$1",
       "@filters/(.*)": "<rootDir>/filters/$1",
       "@routes/(.*)": "<rootDir>/routes/$1",
       "@models/(.*)": "<rootDir>/models/$1",
