@@ -47,6 +47,7 @@
     "mongodb": "^3.6.5",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.22",
+    "node-cache": "^5.1.2",
     "openapi-types": "^8.0.0",
     "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
