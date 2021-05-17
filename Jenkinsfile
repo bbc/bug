@@ -34,7 +34,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src') {
-                    sh "docker buildx create --use --name bugBuilder -platform linux/amd64,linux/arm/v7"
+                    sh "docker buildx create --use --name bugBuilder --platform linux/amd64,linux/arm/v7"
                     sh "docker buildx build --builder bugBuilder --compress --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest ."
                 }
             }
