@@ -34,14 +34,15 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src') {
-                    sh "docker build --compress --tag ${repositoryName}/${imageName}:${env.BUILD_NUMBER} ."
-                    sh "docker build --compress --tag ${repositoryName}/${imageName}:latest ."
+                    sh "docker build --compress --tag ${imageName}:latest ."
                 }
             }
         }
         stage('Publish') {
             steps {
+                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
                 sh "docker push ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
+                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:latest"
                 sh "docker push ${repositoryName}/${imageName}:latest"
             }
         }
@@ -49,6 +50,7 @@ pipeline {
     post {
         always {
             cleanWs()
+            sh "docker rmi ${imageName}:latest"
             sh "docker rmi ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
             sh "docker rmi ${repositoryName}/${imageName}:latest"
         }
