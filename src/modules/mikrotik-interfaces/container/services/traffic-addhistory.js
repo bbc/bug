@@ -1,7 +1,8 @@
 "use strict";
-const maxLength = 20;
 
 module.exports = async (trafficCollection, trafficArray) => {
+    const maxLength = 20;
+
     let existingTrafficArray = await trafficCollection.find().toArray();
     if (!existingTrafficArray) {
         existingTrafficArray = [];

@@ -1,11 +1,11 @@
-const { parentPort, workerData, threadId } = require("worker_threads");
+"use strict";
 
+const { parentPort, workerData, threadId } = require("worker_threads");
 const RosApi = require("node-routeros").RouterOSAPI;
 const delay = require("delay");
-
-const mongoDb = require("../utils/mongo-db");
-const mongoCollection = require("../utils/mongo-collection");
-
+const register = require("module-alias/register");
+const mongoDb = require("@core/mongo-db");
+const mongoCollection = require("@core/mongo-collection");
 const mikrotikFetchInterfaces = require("../services/mikrotik-fetchinterfaces");
 const arraySaveMongo = require("../services/array-savemongo");
 
@@ -13,7 +13,7 @@ const delayMs = 2000;
 const errorDelayMs = 10000;
 const config = workerData.config;
 
-//Tell the manager the things you care about
+// Tell the manager the things you care about
 parentPort.postMessage({
     index: workerData.index,
     restartOn: ["address", "username", "password"],
@@ -54,10 +54,10 @@ const pollDevice = async () => {
 };
 
 const main = async () => {
-    //Connect to the db
+    // Connect to the db
     await mongoDb.connect(config.id);
 
-    //Kick things off
+    // Kick things off
     while (true) {
         try {
             await pollDevice();

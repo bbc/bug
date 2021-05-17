@@ -1,13 +1,12 @@
 const express = require('express');
 const createError = require('http-errors');
-const register = require('module-alias/register')
 const bodyParser = require('body-parser')
 
 // load routes
-const statusRouter = require('./routes/status');
-const configRouter = require('./routes/config');
-const interfaceRouter = require('./routes/interface');
-const defaultRouter = require('./routes/default');
+const statusRouter = require('@routes/status');
+const configRouter = require('@routes/config');
+const interfaceRouter = require('@routes/interface');
+const defaultRouter = require('@routes/default');
 
 let app = express();
 

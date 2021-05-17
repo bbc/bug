@@ -1,7 +1,13 @@
 'use strict';
 
-const writeJson = require('../utils/write-json');
-const workerManager = require('../api/workers');
+/**
+ * core/config-put.js
+ * Encodes config object to JSON and writes to container file - also updates workers
+ * 0.0.1 17/05/2021 - Created first version (GH)
+ */
+
+const writeJson = require('@core/write-json');
+const workerStore = require('@core/worker-store');
 const path = require('path');
 
 module.exports = async (config) => {
@@ -12,7 +18,7 @@ module.exports = async (config) => {
         console.log(`config-put: saved config file to ${filename}`);
 
         //Tell the worker manager that a new config is avalible
-        await workerManager.pushConfig(config);
+        await workerStore.pushConfig(config);
 
         return true;
     } catch (error) {

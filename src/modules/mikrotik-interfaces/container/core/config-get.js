@@ -1,8 +1,13 @@
 'use strict';
 
-const readJson = require('../utils/read-json');
-const path = require('path');
+/**
+ * core/config-get.js
+ * Fetches config from container file and returns decoded JSON
+ * 0.0.1 17/05/2021 - Created first version (GH)
+ */
 
+const readJson = require('@core/read-json');
+const path = require('path');
 module.exports = async () => {
 
     try {

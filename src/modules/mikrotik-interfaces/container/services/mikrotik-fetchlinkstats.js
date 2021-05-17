@@ -1,6 +1,6 @@
 'use strict';
 
-const mikrotikParseLinkStats = require('../services/mikrotik-parselinkstats');
+const mikrotikParseLinkStats = require('./mikrotik-parselinkstats');
 
 module.exports = async (conn, interfaceName) => {
 

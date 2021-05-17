@@ -3,9 +3,9 @@
 //DATE: 23/03/2021
 //DESC: Mikrotik Interfaces module
 
-//server.js
-const mongoDb = require('../utils/mongo-db');
-const workerManager = require('./workers');
+const register = require('module-alias/register')
+const mongoDb = require('@core/mongo-db');
+const workerStore = require('@core/worker-store');
 const app = require("./app");
 const randomWords = require('random-words');
 

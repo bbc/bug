@@ -1,7 +1,7 @@
 "use strict";
 
-const configGet = require("./config-get");
-const configPutViaCore = require("../utils/config-putviacore");
+const configGet = require("@core/config-get");
+const configPutViaCore = require("@core/config-putviacore");
 
 module.exports = async (interfaceName) => {
 

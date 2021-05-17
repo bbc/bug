@@ -1,5 +1,6 @@
-// const influxGet = require("@utils/influx-get");
-const mongoCollection = require("../utils/mongo-collection");
+'use strict';
+
+const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (interfaceName, startTime = null, endTime = null) => {
     try {

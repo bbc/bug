@@ -7,7 +7,6 @@
     },
     "nodemonConfig": {
         "ignore": [
-            "./data/*",
             "./config/*"
         ]
     },
@@ -50,9 +49,10 @@
     },
     "_moduleAliases": {
         "@root": ".",
+        "@core": "./core/",
         "@routes": "./api/routes/",
         "@api": "./api/",
-        "@data": "./data/",
+        "@services": "./services/",
         "@utils": "./utils/"
     }
 }
