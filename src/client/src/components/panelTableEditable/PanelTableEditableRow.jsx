@@ -4,7 +4,6 @@ import ProgressCounter from "@components/ProgressCounter";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import clsx from "clsx";
-import { useAlert } from "@utils/Snackbar";
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
@@ -69,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelTableRow(props) {
     const classes = useStyles();
-    const sendAlert = useAlert();
 
     const {
         attributes,

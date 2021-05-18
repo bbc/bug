@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = (bits, decimals) => {
     if (bits === 0) return '0';
     if (decimals === undefined) {

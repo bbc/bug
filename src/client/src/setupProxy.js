@@ -9,6 +9,6 @@ const options = {
 };
 
 module.exports = function (app) {
-  app.use("/api", createProxyMiddleware(["API Development Proxy"], options));
-  app.use("/container", createProxyMiddleware(["Container Development Proxy"], options));
+  app.use("/api", createProxyMiddleware(options));
+  app.use("/container", createProxyMiddleware(options));
 };
