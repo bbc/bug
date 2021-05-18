@@ -9,6 +9,11 @@
 const fs = require("fs").promises;
 
 module.exports = async (filepath, contents) => {
+  try {
     const jsonString = await JSON.stringify(contents, null, 2);
     await fs.writeFile(filepath, jsonString);
+    return true;
+  } catch {
+    return false;
+  }
 };

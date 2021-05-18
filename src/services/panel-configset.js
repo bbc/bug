@@ -9,7 +9,6 @@ module.exports = async (newConfig) => {
     try {
         // fetch existing config
         const config = await panelConfigModel.get(newConfig?.id);
-
         // merge existing with config from UI
         const combinedConfig = { ...config, ...newConfig};
         
@@ -27,7 +26,6 @@ module.exports = async (newConfig) => {
         if(!module.needsContainer){
             return true;
         }
-
         // push config to any running module and return result bool
         return await panelConfigPush(newConfig?.id);
 
