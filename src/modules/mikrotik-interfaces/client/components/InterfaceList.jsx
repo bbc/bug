@@ -191,7 +191,7 @@ export default function InterfaceList({ panelId }) {
     };
 
     const renderRows = (rows) => {
-        return rows === undefined ? null : rows.map((iface) => renderRow(iface));
+        return rows?.map((iface) => renderRow(iface));
     };
 
     if (redirectUrl) {
