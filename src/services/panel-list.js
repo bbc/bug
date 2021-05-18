@@ -16,7 +16,7 @@ module.exports = async () => {
         const containerInfoList = await dockerContainerModel.list();
         const panelBuildStatus = await panelBuildStatusModel.list();
         const panelStatus = await panelStatusModel.list();
-console.log(panelStatus);
+
         const filteredPanelList = [];
         for (const i in panelConfig) {
             const thisModuleConfig = moduleConfig.find(o => o.name === panelConfig[i]['module']) ?? null;

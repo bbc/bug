@@ -3,7 +3,6 @@ const bugQuote = require('@services/bug-quote');
 const bugHandler = (io, socket) => {
     socket.on('quote', async (data) => {
         const quote = await bugQuote();
-        console.log(`${quote}`)
         socket.emit('quote',quote);
     });
 }
