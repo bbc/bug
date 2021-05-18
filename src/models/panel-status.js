@@ -8,7 +8,7 @@ const mongoCollection = require("@core/mongo-collection");
 exports.get = async function(panelId) {
     try {
         const panelStatusCollection = await mongoCollection("panelstatus");
-        const result = await panelStatusCollection.findOne({"panelid": panelId});
+        const result = await panelStatusCollection.findOne({"panelId": panelId});
         if(result) {
             return result;
         }
