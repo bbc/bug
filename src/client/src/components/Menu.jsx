@@ -12,8 +12,8 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import DynamicIcon from "@utils/DynamicIcon";
 import Loading from "@components/Loading";
 import BugMenuIcon from "@components/BugMenuIcon";
+import BadgeWrapper from "@components/BadgeWrapper";
 import { useSelector } from "react-redux";
-import Badge from "@material-ui/core/Badge";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,56 +27,26 @@ const Menu = (props) => {
     const panelList = useSelector((state) => state.panelList);
     const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
 
-    const BadgeMenuIcon = ({ item, hideBadge }) => {
-        let errorCount = item._status.filter((x) => x.type === "error").length;
-        let warningCount = item._status.filter((x) => x.type === "warning").length;
-        let infoCount = item._status.filter((x) => x.type === "info").length;
-
-        if (errorCount > 0 && !hideBadge) {
-            return (
-                <Badge badgeContent={errorCount} color="error">
-                    <DynamicIcon iconName={item._module.icon} />
-                </Badge>
-            );
-        }
-
-        if (warningCount > 0 && !hideBadge) {
-            return (
-                <Badge badgeContent={warningCount} color="warning">
-                    <DynamicIcon iconName={item._module.icon} />
-                </Badge>
-            );
-        }
-
-        if (infoCount > 0 && !hideBadge) {
-            return (
-                <Badge badgeContent={infoCount} color="info">
-                    <DynamicIcon iconName={item._module.icon} />
-                </Badge>
-            );
-        }
-
-        return <DynamicIcon iconName={item._module.icon} />;
-    };
-
-    const renderMenuItem = (item) => {
-        if (!item.enabled) {
+    const renderMenuItem = (panel) => {
+        if (!panel.enabled) {
             return null;
         }
-        let hasCritical = item._status.filter((x) => x.type === "critical").length > 0;
+        let hasCritical = panel._status.filter((x) => x.type === "critical").length > 0;
 
         return (
             <ListItem
                 className={hasCritical ? classes.critical : ""}
                 button
                 component={Link}
-                to={`/panel/${item.id}`}
-                key={item.id}
+                to={`/panel/${panel.id}`}
+                key={panel.id}
             >
                 <ListItemIcon>
-                    <BadgeMenuIcon item={item} hideBadge={hasCritical}/>
+                    <BadgeWrapper panel={panel}>
+                        <DynamicIcon iconName={panel._module.icon} />
+                    </BadgeWrapper>
                 </ListItemIcon>
-                <ListItemText primary={item.title} />
+                <ListItemText primary={panel.title} />
             </ListItem>
         );
     };

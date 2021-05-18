@@ -13,7 +13,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import { Hidden } from "@material-ui/core";
-import SettingsIcon from '@material-ui/icons/Settings';
+import EmailIcon from "@material-ui/icons/Email";
+import BadgeWrapper from "@components/BadgeWrapper";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 const useStyles = makeStyles((theme) => ({
     dropdownMenu: {
@@ -47,7 +49,30 @@ export default function PanelToolbar(props) {
     return (
         <>
             <Hidden xsDown>
-                <Button component={Link} to={`/panel/${props.panel.id}/edit`} variant="outlined" color="primary" startIcon={<SettingsIcon />}>
+                <Button
+                    component={Link}
+                    to={`/panel/${props.panel.id}/edit`}
+                    color="default"
+                    startIcon={
+                        <BadgeWrapper
+                            panel={props.panel}
+                            position={{
+                                vertical: "top",
+                                horizontal: "left",
+                            }}
+                        >
+                            <EmailIcon />
+                        </BadgeWrapper>
+                    }
+                >
+                </Button>
+                <Button
+                    component={Link}
+                    to={`/panel/${props.panel.id}/edit`}
+                    variant="outlined"
+                    color="default"
+                    startIcon={<SettingsIcon />}
+                >
                     Edit Panel
                 </Button>
                 {props.buttons}
