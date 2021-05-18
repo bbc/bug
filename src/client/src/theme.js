@@ -1,127 +1,132 @@
-import { createMuiTheme }  from '@material-ui/core/styles'
+import { createMuiTheme } from "@material-ui/core/styles";
 const defaultTheme = createMuiTheme();
 const theme = createMuiTheme({
-  overrides: {
-    MuiTableCell: {
-      root: {
-        padding: '8px 12px',
-        borderBottom: '1px solid #181818'
-      },
-      head: {
-        textTransform: 'uppercase',
-        color: 'rgba(255, 255, 255, 0.7)',
-        fontSize: '0.875rem',
-        padding: '12px 12px',
-      }
-    },
-    MuiTableHead: {
-      root: {
-        "& .MuiTableCell-head": {
-          backgroundColor: '#212121'
-        }
-      }
-    },
-    MuiMenuItem: {
-      root: {
-        color: props => (props.disabled ? "#888" : "#ffffff")
-      }
-    },
-    MuiListItemIcon: {
-      root: {
-        minWidth: 44,
-        color: props => (props.disabled ? "#888" : "#ffffff"),
-      }
-    },
-    MuiTabs: {
-      root: {
-        minHeight: 56
-      }
-    },
-    MuiTab: {
-      root: {
-        padding: '16px 12px'
-      }
-    },
-    MuiToolbar: {
-      gutters: {
-        [defaultTheme.breakpoints.up('sm')]: {
-          paddingLeft: 0,
-          paddingRight: 0,
+    overrides: {
+        MuiTableCell: {
+            root: {
+                padding: "8px 12px",
+                borderBottom: "1px solid #181818",
+            },
+            head: {
+                textTransform: "uppercase",
+                color: "rgba(255, 255, 255, 0.7)",
+                fontSize: "0.875rem",
+                padding: "12px 12px",
+            },
         },
-      },
-      root: {
-        "& .MuiButton-outlinedPrimary": {
-          color: 'rgba(255, 255, 255, 0.8)',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          marginRight: '0.5rem'
-        }
-      }
+        MuiTableHead: {
+            root: {
+                "& .MuiTableCell-head": {
+                    backgroundColor: "#212121",
+                },
+            },
+        },
+        MuiMenuItem: {
+            root: {
+                color: (props) => (props.disabled ? "#888" : "#ffffff"),
+            },
+        },
+        MuiListItemIcon: {
+            root: {
+                minWidth: 44,
+                color: (props) => (props.disabled ? "#888" : "#ffffff"),
+            },
+        },
+        MuiTabs: {
+            root: {
+                minHeight: 56,
+            },
+        },
+        MuiTab: {
+            root: {
+                padding: "16px 12px",
+            },
+        },
+        MuiToolbar: {
+            gutters: {
+                [defaultTheme.breakpoints.up("sm")]: {
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                },
+            },
+            root: {
+                "& .MuiButton-outlinedPrimary": {
+                    color: "rgba(255, 255, 255, 0.8)",
+                    border: "1px solid rgba(255, 255, 255, 0.3)",
+                    marginRight: "0.5rem",
+                },
+            },
+        },
+        MuiCard: {
+            root: {
+                borderRadius: 0,
+            },
+        },
+        MuiList: {
+            padding: {
+                paddingTop: 4,
+                paddingBottom: 4,
+            },
+        },
+        MuiDivider: {
+            root: {
+                marginTop: 2,
+                marginBottom: 2,
+            },
+        },
+        MuiChip: {
+            root: {
+                borderRadius: 5,
+                fontSize: "inherit",
+            },
+        },
     },
-    MuiCard: {
-      root: {
-        borderRadius: 0
-      }
+    typography: {
+        fontFamily: ["ReithSans"],
+        serviceState: {
+            opacity: 0.5,
+        },
     },
-    MuiList: {
-      padding: {
-        paddingTop: 4,
-        paddingBottom: 4,
-      }
-    },
-    MuiDivider: {
-      root: {
-        marginTop: 2,
-        marginBottom: 2,
-      }
-    },
-    MuiChip: {
-      root: {
-        borderRadius: 5,
-        fontSize: 'inherit'
-      }
-    }
-  },
-  typography: {
-    fontFamily: [
-      'ReithSans'
-    ],
-    serviceState: {
-      opacity: 0.5
-    }
-  },
-  palette: {
-    type: 'dark',
+    palette: {
+        type: "dark",
 
-    background: { 
-      default: '#181818',
-      paper: '#262626'
-    },
+        background: {
+            default: "#181818",
+            paper: "#262626",
+        },
 
-    appbar: {
-      default: '#212121'
-    },
+        appbar: {
+            default: "#212121",
+        },
 
-    // --- colors ---
-    menu: { 
-      main: '#163550' 
-    },
+        // --- colors ---
+        menu: {
+            main: "#163550",
+        },
 
-    primary: { 
-      main: '#337ab7' 
-    },
+        primary: {
+            main: "#337ab7",
+        },
 
-    secondary: { 
-      main: '#888888' 
-    },
+        secondary: {
+            main: "#888888",
+        },
 
-    success: {
-      main: '#05990c'
-    },
+        success: {
+            main: "#05990c",
+        },
 
-    error: {
-      main: '#f11d1d'
-    },
+        error: {
+            main: "#f11d1d",
+        },
 
-  },
-})
-export default theme
+        warning: {
+            main: "#f1881d",
+        },
+
+        info: {
+            main: "#5069c5",
+        },
+    },
+});
+export default theme;

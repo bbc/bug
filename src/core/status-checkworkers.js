@@ -29,7 +29,7 @@ module.exports = async () => {
             new StatusItem({
                 key: "workersnotrunning",
                 message: "One or more worker processes are not running",
-                type: "critical",
+                type: "error",
             }),
         ];
     }
