@@ -30,11 +30,11 @@ export default function ModuleWrapper({ panel, children }) {
     }
 
     if (panel._module.needsContainer) {
-        if (panel._isbuilding) {
+        if (panel._dockerContainer._isBuilding) {
             return <PanelBuilding panel={panel} />;
         }
 
-        if (!panel._isrunning) {
+        if (!panel._dockerContainer._isRunning) {
             return <PanelStopped panel={panel} />;
         }
     }

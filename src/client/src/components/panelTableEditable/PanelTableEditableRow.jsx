@@ -89,17 +89,17 @@ export default function PanelTableRow(props) {
             return <div className={classes.stateEmpty}>...</div>;
         }
 
-        switch (panel._status) {
+        switch (panel._dockerContainer._status) {
             case "building":
                 return (
                     <div className={classes.state_building}>
-                        {panel._buildstatus.text} - <ProgressCounter value={panel._buildstatus.progress} />% complete
+                        {panel._buildStatus.text} - <ProgressCounter value={panel._buildStatus.progress} />% complete
                     </div>
                 );
             case "error":
-                return <div className={classes.state_error}>ERROR - {panel._buildstatus.text}</div>;
+                return <div className={classes.state_error}>ERROR - {panel._buildStatus.text}</div>;
             default:
-                return <div className={`${classes['state_' + panel._status]}`}>{panel._status}</div>;
+                return <div className={`${classes['state_' + panel._dockerContainer._status]}`}>{panel._dockerContainer._status}</div>;
         }
     };
 

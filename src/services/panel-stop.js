@@ -21,7 +21,7 @@ module.exports = async (panelId) => {
 
         let container = await dockerGetContainer(panelId);
         if (!container) {
-            throw new Error(`No container found for panel id ${panelId}`);
+            logger.info(`No container found for panel id ${panelId}`);
         }
 
         logger.info(`stoppping container for panel id ${panelId}`);
@@ -31,4 +31,4 @@ module.exports = async (panelId) => {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to stop panel id ${panelId}`);
     }
-}
+} 

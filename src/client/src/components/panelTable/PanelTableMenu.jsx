@@ -41,11 +41,11 @@ export default function PanelTableMenu(props) {
     const needsContainer = props?.panel?._module.needsContainer ?? true;
 
     const hideRestart = !needsContainer;
-    const disableEnable = props.panel.enabled || props.panel._isbuilding;
-    const disableDisable = !props.panel.enabled || props.panel._isbuilding;
+    const disableEnable = props.panel.enabled || props.panel._dockerContainer._isBuilding;
+    const disableDisable = !props.panel.enabled || props.panel._dockerContainer._isBuilding;
     const disableRestart = !needsContainer;
-    const disableEdit = props.panel._isbuilding;
-    const disableDelete = props.panel._isbuilding;
+    const disableEdit = props.panel._dockerContainer._isBuilding;
+    const disableDelete = props.panel._dockerContainer._isBuilding;
 
     const handleEnable = async () => {
         setAnchorEl(null);

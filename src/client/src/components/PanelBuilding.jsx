@@ -62,7 +62,7 @@ export default function PanelBuilding(props) {
             <Grid container spacing={0} direction="column" alignItems="center" justify="center">
                 <h3>Panel is starting ...</h3>
                 <Grid item xs={3}>
-                    <CircularProgressWithLabel value={props.panel?._buildstatus?.progress} />
+                    <CircularProgressWithLabel value={props.panel?._buildStatus?.progress} />
                 </Grid>
             </Grid>
         </>
