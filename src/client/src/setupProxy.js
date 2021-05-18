@@ -1,25 +1,14 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const port = process.env.PORT_DEV_API || "3101";
+
 const options = {
-    ws: true, // proxy websockets
-    target: "http://localhost:" + port,
-    changeOrigin: true,
+  target: "http://localhost:" + port,
+  changeOrigin: true,
+  ws: true,
 };
 
-const bugClientProxy = createProxyMiddleware(options);
-
 module.exports = function (app) {
-    app.use(
-        "/api",
-        bugClientProxy
-    );
-    app.use(
-        "/container",
-        bugClientProxy
-    );
-    app.use(
-        "/socket.io",
-        bugClientProxy
-    );
+  app.use("/api", createProxyMiddleware(["API Development Proxy"], options));
+  app.use("/container", createProxyMiddleware(["Container Development Proxy"], options));
 };
