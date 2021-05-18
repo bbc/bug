@@ -8,6 +8,9 @@
 
 module.exports = class StatusItem {
     constructor({ key, message, type }) {
+        if(!['unavailable', 'critical', 'warning', 'info'].includes(type)) {
+            throw new Error(`StatusItem key '${key}' is invalid`);
+        }
         this.key = key;
         this.message = message;
         this.type = type;
