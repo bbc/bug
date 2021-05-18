@@ -3,25 +3,21 @@
 const path = require("path");
 const logger = require("@utils/logger")(module);
 const tarFolder = require("@utils/tar-folder");
-const readDir = require("@core/read-dir");
 const moment = require("moment");
 
 module.exports = async () => {
-    try {
-        let response = {
-            config_folder: path.join(__dirname, "..", "config"),
-            data_folder: path.join(__dirname, "..", "data"),
-        };
+  try {
+    const configFolder = path.join(__dirname, "..", "config");
+    const filename = "backup-" + moment().format("DD-MM-YYYY-HH-mm-ss") + ".tgz";
+    const stream = await tarFolder(configFolder);
 
-        response.panels = await readDir(response.config_folder);
-        response.filename = "backup-" + moment().format("DD-MM-YYYY-HH-mm-ss") + ".tgz";
-        response.filepath = path.join(response.data_folder, "backup.tgz");
+    return {
+      stream: stream,
+      filename: filename,
+    };
 
-        await tarFolder(response.config_folder, response.filepath);
-    } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to complete system backup`);
-    }
-
-    return response;
+  } catch (error) {
+    logger.warning(`${error.stack || error.trace || error || error.message}`);
+    throw new Error(`Failed to complete system backup`);
+  }
 };

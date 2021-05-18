@@ -6,11 +6,11 @@
  * 0.0.1 17/05/2021 - Created first version (GH)
  */
 
-const fs = require("fs").promises;
+const fs = require("fs");
 
 module.exports = async (directory) => {
-    let contents = {};
-    contents.files = await fs.readDir(directory);
+    const contents = {};
+    contents.files = await fs.promises.readdir(directory)
     contents.count = contents.files.length;
     return contents;
 };
