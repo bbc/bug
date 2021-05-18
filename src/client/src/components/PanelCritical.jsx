@@ -6,29 +6,25 @@ import { Alert, AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     alert: {
-        minWidth: '30rem',
-        marginBottom: 8
+        minWidth: "30rem",
+        marginBottom: 8,
     },
     title: {
-        color: '#ffffff'
-    }
+        color: "#ffffff",
+    },
 }));
 
-export default function PanelUnavailable({ panel }) {
+export default function PanelCritical({ panel }) {
     const classes = useStyles();
-
-    const renderAlerts = () => {
-        const isUnavailable = panel._status.filter((x) => x.type === "unavailable").length > 0;
-    };
 
     return (
         <>
             <Grid container spacing={0} direction="column" alignItems="center" justify="center">
                 {panel._status
-                    .filter((x) => x.type === "unavailable")
+                    .filter((x) => x.type === "critical")
                     .map((eachItem) => (
                         <Alert severity="error" className={classes.alert} key={eachItem.key}>
-                            <AlertTitle className={classes.title}>Panel Unavailable</AlertTitle>
+                            <AlertTitle className={classes.title}>Critical Error</AlertTitle>
                             {eachItem.message}
                         </Alert>
                     ))}

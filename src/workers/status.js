@@ -48,7 +48,7 @@ const fetch = async () => {
                             new StatusItem({
                                 key: "panelnotreachable",
                                 message: "Panel container is not reachable",
-                                type: "unavailable",
+                                type: "critical",
                             })
                         );
                     }

@@ -23,7 +23,7 @@ module.exports = async (collectionName, collectionDescription, timeoutSeconds = 
                 new StatusItem({
                     key: `stale${collectionName}data`,
                     message: `There is no recent ${collectionDescription} data for this device`,
-                    type: `unavailable`,
+                    type: `critical`,
                 }),
             ];
         }

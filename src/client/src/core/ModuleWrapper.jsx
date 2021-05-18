@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Loading from "@components/Loading";
 import PanelBuilding from "@components/PanelBuilding";
 import PanelStopped from "@components/PanelStopped";
-import PanelUnavailable from "@components/PanelUnavailable";
+import PanelCritical from "@components/PanelCritical";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
 import { Switch } from "react-router-dom";
@@ -30,10 +30,10 @@ export default function ModuleWrapper({ panel, children }) {
         return <Loading />;
     }
 
-    const isUnavailable = panel._status.filter((x) => x.type === "unavailable").length > 0;
+    const hasCritical = panel._status.filter((x) => x.type === "critical").length > 0;
 
-    if (isUnavailable) {
-        return <PanelUnavailable panel={panel} />;
+    if (hasCritical) {
+        return <PanelCritical panel={panel} />;
     }
 
     if (panel._module.needsContainer) {

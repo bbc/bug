@@ -17,9 +17,9 @@ import Badge from "@material-ui/core/Badge";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-    unavailable: {
-        opacity: 0.5
-    }
+    critical: {
+        opacity: 0.5,
+    },
 }));
 
 const Menu = (props) => {
@@ -27,12 +27,12 @@ const Menu = (props) => {
     const panelList = useSelector((state) => state.panelList);
     const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
 
-    const renderMenuIcon = (item) => {
+    const BadgeMenuIcon = ({ item, hideBadge }) => {
         let errorCount = item._status.filter((x) => x.type === "error").length;
         let warningCount = item._status.filter((x) => x.type === "warning").length;
         let infoCount = item._status.filter((x) => x.type === "info").length;
 
-        if (errorCount > 0) {
+        if (errorCount > 0 && !hideBadge) {
             return (
                 <Badge badgeContent={errorCount} color="error">
                     <DynamicIcon iconName={item._module.icon} />
@@ -40,7 +40,7 @@ const Menu = (props) => {
             );
         }
 
-        if (warningCount > 0) {
+        if (warningCount > 0 && !hideBadge) {
             return (
                 <Badge badgeContent={warningCount} color="warning">
                     <DynamicIcon iconName={item._module.icon} />
@@ -48,7 +48,7 @@ const Menu = (props) => {
             );
         }
 
-        if (infoCount > 0) {
+        if (infoCount > 0 && !hideBadge) {
             return (
                 <Badge badgeContent={infoCount} color="info">
                     <DynamicIcon iconName={item._module.icon} />
@@ -63,17 +63,19 @@ const Menu = (props) => {
         if (!item.enabled) {
             return null;
         }
-        let isUnavailable = item._status.filter((x) => x.type === "unavailable").length > 0;
+        let hasCritical = item._status.filter((x) => x.type === "critical").length > 0;
 
         return (
             <ListItem
-                className={isUnavailable ? classes.unavailable : ""}
+                className={hasCritical ? classes.critical : ""}
                 button
                 component={Link}
                 to={`/panel/${item.id}`}
                 key={item.id}
             >
-                <ListItemIcon>{renderMenuIcon(item)}</ListItemIcon>
+                <ListItemIcon>
+                    <BadgeMenuIcon item={item} hideBadge={hasCritical}/>
+                </ListItemIcon>
                 <ListItemText primary={item.title} />
             </ListItem>
         );
