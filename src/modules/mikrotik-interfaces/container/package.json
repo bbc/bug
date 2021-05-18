@@ -26,6 +26,7 @@
         "module-alias": "^2.2.2",
         "mongodb": "^3.6.6",
         "morgan": "^1.10.0",
+        "node-cache": "^5.1.2",
         "node-routeros": "^1.6.9",
         "package.json": "^2.0.1",
         "path": "^0.12.7",

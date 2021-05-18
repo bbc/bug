@@ -4,6 +4,11 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     // we don't need the defaultconfig bit in the panelModule - we we'll just remove it - every byte counts!
     delete moduleConfig.defaultconfig;
 
+    // if containerInfo is null, we'll make it an empty object so we can add calculated fields
+    if(!containerInfo) {
+        containerInfo = {};
+    }
+
     let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
     let isBuilding = (!isRunning && panelBuildStatus !== null && panelBuildStatus.progress > -1) ?? false;
     let isBuilt = panelBuildStatus !== null ?? false;
@@ -23,6 +28,11 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         }
     }
 
+    containerInfo._isRunning = isRunning;
+    containerInfo._isBuilding = isBuilding;
+    containerInfo._isBuilt = isBuilt;
+    containerInfo._status = status;
+
     return {
         id: panelConfig["id"],
         order: panelConfig["order"],
@@ -31,12 +41,8 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         enabled: panelConfig["enabled"],
         module: panelConfig["module"],
         _module: moduleConfig,
-        _container: containerInfo,
-        _buildstatus: panelBuildStatus,
-        _tempstatus: thisStatus["statusItems"],
-        _isrunning: isRunning,
-        _isbuilding: isBuilding,
-        _isbuilt: isBuilt,
-        _status: status,
+        _dockerContainer: containerInfo,
+        _buildStatus: panelBuildStatus,
+        _status: thisStatus?.statusItems,
     };
 };

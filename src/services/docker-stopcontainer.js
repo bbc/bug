@@ -4,7 +4,7 @@ const logger = require('@utils/logger')(module);
 
 module.exports = async (container) => {
     try {
-        logger.info(`stopping container id ${container.id}`);
+        logger.info(`stopping container id ${container?.id}`);
 
         return await new Promise((resolve, reject) => {
             container.stop(function (error, data) {
@@ -26,6 +26,6 @@ module.exports = async (container) => {
         });
     } catch (error) {
         logger.error(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to stop container id ${container.id}`);
+        throw new Error(`Failed to stop container id ${container?.id}`);
     }
 }

@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 export default function InterfaceTabEthernet({ iface, panelId, interfaceName }) {
     const classes = useStyles();
 
-    console.log(iface);
     return (
         <>
             <Grid item xs={12}>
