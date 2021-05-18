@@ -17,7 +17,7 @@ const hashResponse = require("@utils/hash-response");
  * /panelconfig/{panelId}:
  *   put:
  *     description: Update the config of a BUG panel
- *     tags: [panel]
+ *     tags: [panelconfig]
  *     produces:
  *       - application/json
  *     parameters:
@@ -53,7 +53,7 @@ router.put(
  * /panelconfig/push/{panelId}:
  *   get:
  *     description: Push a config to a running BUG module container
- *     tags: [panel]
+ *     tags: [panelconfig]
  *     produces:
  *       - application/json
  *     parameters:
@@ -88,7 +88,7 @@ router.get(
  * /panelconfig/:
  *   get:
  *     description: Returns a list of all panels
- *     tags: [panel]
+ *     tags: [panelconfig]
  *     produces:
  *       - application/json
  *     responses:
@@ -116,7 +116,7 @@ router.get(
  * /panelconfig/{panelId}:
  *   get:
  *     description: Returns the config of a single panel
- *     tags: [panel]
+ *     tags: [panelconfig]
  *     produces:
  *       - application/json
  *     parameters:
