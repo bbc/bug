@@ -9,10 +9,11 @@
     "license": "ISC",
     "needsContainer": true,
     "devmounts": ["api", "utils", "services"],
+    "protectedRoutes": ["edit"],
     "defaultconfig": {
         "id": "",
         "order": 0,
-        "needsConfigured":true,
+        "needsConfigured": true,
         "title": "",
         "module": "bmd-videohub",
         "description": "",

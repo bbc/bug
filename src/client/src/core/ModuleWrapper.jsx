@@ -8,6 +8,7 @@ import pageTitleSlice from "../redux/pageTitleSlice";
 import { Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { usePanel } from "@data/Panel";
+import { Redirect } from "react-router";
 
 export default function ModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
@@ -25,6 +26,10 @@ export default function ModuleWrapper({ panelId, children }) {
         };
     }, [panelConfig, dispatch]);
 
+    if (!panelConfig.data.enabled) {
+        return <Redirect push to={{ pathname: "/" }} />;
+    }
+
     if (panel.status === "loading") {
         return <Loading />;
     }
@@ -37,7 +42,6 @@ export default function ModuleWrapper({ panelId, children }) {
                 isProtected = true;
             }
         }
-        console.log("isProtected", isProtected);
     }
 
     if (panel.status === "success") {

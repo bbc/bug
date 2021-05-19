@@ -8,14 +8,11 @@
     "author": "Ryan McCartney",
     "license": "MIT",
     "needsContainer": true,
-    "devmounts": [
-        "api", 
-        "utils", 
-        "services"
-    ],
+    "devmounts": ["api", "utils", "services"],
+    "protectedRoutes": ["edit"],
     "defaultconfig": {
         "id": "",
-        "needsConfigured":true,
+        "needsConfigured": true,
         "order": 0,
         "title": "",
         "module": "tsl-mdu",
