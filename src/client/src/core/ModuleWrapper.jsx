@@ -17,7 +17,7 @@ export default function ModuleWrapper({ panelId, children }) {
     usePanel({ panelId });
 
     useEffect(() => {
-        if (panel) {
+        if (panelConfig) {
             dispatch(pageTitleSlice.actions.set(panelConfig.data.title));
         }
         return () => {

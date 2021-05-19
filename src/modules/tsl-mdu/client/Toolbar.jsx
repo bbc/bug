@@ -1,11 +1,10 @@
 import React from "react";
-import PanelToolbar from "@core/PanelToolbar";
+import ToolbarWrapper from "@core/ToolbarWrapper";
 
 export default function Toolbar(props) {
+    let toolbarProps = { ...props };
 
-    let toolbarProps = {...props};
+    toolbarProps["onClick"] = null;
 
-    toolbarProps['onClick'] = null;
-
-    return <PanelToolbar {...toolbarProps} isClosed={false}/>;
+    return <ToolbarWrapper {...toolbarProps} isClosed={false} />;
 }

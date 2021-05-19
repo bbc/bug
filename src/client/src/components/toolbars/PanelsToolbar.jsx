@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
  * - menuitems - which can take menuitems which will be shown in the list
  */
 
-export default function PanelToolbar(props) {
+export default function PanelsToolbar(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -43,7 +43,13 @@ export default function PanelToolbar(props) {
                 <Button component={Link} to={`/panels/add`} variant="outlined" color="primary" startIcon={<AddIcon />}>
                     Add
                 </Button>
-                <Button component={Link} to={`/panels/edit`} variant="outlined" color="primary" startIcon={<EditIcon />}>
+                <Button
+                    component={Link}
+                    to={`/panels/edit`}
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<EditIcon />}
+                >
                     Edit
                 </Button>
             </Hidden>
