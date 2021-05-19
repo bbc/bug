@@ -7,15 +7,24 @@ const panelFilter = require('@filters/panel');
 const panelBuildStatusModel = require('@models/panel-buildstatus');
 const panelStatusModel = require('@models/panel-status');
 const dockerContainerModel = require('@models/docker-container');
+const cacheStore = require("@core/cache-store");
 
 module.exports = async () => {
     try {
         
+        const cacheKey = "panelList";
+
+        // check the cache first
+        const cachedValue = cacheStore.get(cacheKey);
+        if(cachedValue) {
+            return cachedValue
+        }
+    
         const panelConfig = await panelConfigModel.list();
         const moduleConfig = await moduleConfigModel.list();
         const containerInfoList = await dockerContainerModel.list();
         const panelBuildStatus = await panelBuildStatusModel.list();
-        const panelStatus = await panelStatusModel.list();
+        const panelStatus = await panelStatusModel.list({ noTimestamps: true });
 
         const filteredPanelList = [];
         for (const i in panelConfig) {
@@ -42,6 +51,9 @@ module.exports = async () => {
         filteredPanelList.sort(function (a, b) {
             return (a.order < b.order) ? -1 : 1;
         });
+
+        cacheStore.set(cacheKey, filteredPanelList, 1);
+
         return filteredPanelList;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);

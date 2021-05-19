@@ -41,6 +41,7 @@
     "fstream": "^1.0.12",
     "helmet": "^4.4.1",
     "http-errors": "^1.8.0",
+    "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",

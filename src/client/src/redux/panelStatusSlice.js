@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export default createSlice({
-    name: 'panel',
+    name: 'panelStatus',
     initialState,
     reducers: {
         idle: (state) => {

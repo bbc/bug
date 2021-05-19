@@ -1,35 +1,36 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelConfigContext from '@core/PanelConfigContext';
-import Grid from '@material-ui/core/Grid';
-
-import Weather from '../components/Weather';
+import Grid from "@material-ui/core/Grid";
+import Weather from "../components/Weather";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  }
+    root: {
+        flexGrow: 1,
+    },
 }));
 
 export default function MainPanel() {
+    const panelConfig = useSelector((state) => state.panelConfig);
+    const classes = useStyles();
 
-  const config = useContext(PanelConfigContext);
-  const classes = useStyles();
+    if (panelConfig.status === "loading") {
+        return <Loading />;
+    }
 
-  return (
-    <>
-      <div className={classes.root}>
-        <Grid
-          container spacing={4}
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <Grid item lg={12} sm={12} xs={12} >
-            <Weather {...config} />
-          </Grid>
-        </Grid>
-      </div>
-    </>
-  );
+    if (panelConfig.status !== "success") {
+        return null;
+    }
+
+    return (
+        <>
+            <div className={classes.root}>
+                <Grid container spacing={4} direction="row" justify="center" alignItems="center">
+                    <Grid item lg={12} sm={12} xs={12}>
+                        <Weather config={panelConfig} />
+                    </Grid>
+                </Grid>
+            </div>
+        </>
+    );
 }

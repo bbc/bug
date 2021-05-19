@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import ChipInput from "@core/ChipInput";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
-import PanelConfigContext from "@core/PanelConfigContext";
+import { useSelector } from "react-redux";
 
 export default function EditPanel() {
-    const config = useContext(PanelConfigContext);
+    const panelConfig = useSelector((state) => state.panelConfig);
 
     const {
         register,
@@ -17,13 +17,17 @@ export default function EditPanel() {
         formState: { errors },
     } = useForm();
 
-    if (!config) {
+    if (panelConfig.status === "loading") {
         return <Loading />;
+    }
+
+    if (panelConfig.status !== "success") {
+        return null;
     }
 
     return (
         <>
-            <PanelConfig config={config} handleSubmit={handleSubmit}>
+            <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("title", { required: true }) }}
@@ -31,7 +35,7 @@ export default function EditPanel() {
                         required
                         fullWidth
                         error={errors?.title ? true : false}
-                        defaultValue={config?.title}
+                        defaultValue={panelConfig.data.title}
                         type="text"
                         label="Panel Title"
                     />
@@ -43,7 +47,7 @@ export default function EditPanel() {
                         variant="filled"
                         fullWidth
                         error={errors?.description ? true : false}
-                        defaultValue={config?.description}
+                        defaultValue={panelConfig.data.description}
                         type="text"
                         label="Description"
                     />
@@ -61,7 +65,7 @@ export default function EditPanel() {
                         variant="filled"
                         fullWidth
                         error={errors?.address ? true : false}
-                        defaultValue={config?.address}
+                        defaultValue={panelConfig.data.address}
                         type="text"
                         label="IP Address"
                     />
@@ -73,7 +77,7 @@ export default function EditPanel() {
                         variant="filled"
                         fullWidth
                         error={errors?.username ? true : false}
-                        defaultValue={config?.username}
+                        defaultValue={panelConfig.data.username}
                         type="text"
                         label="Username"
                     />
@@ -85,7 +89,7 @@ export default function EditPanel() {
                         variant="filled"
                         fullWidth
                         error={errors?.password ? true : false}
-                        defaultValue={config?.password}
+                        defaultValue={panelConfig.data.password}
                         type="password"
                         label="Password"
                     />
@@ -96,7 +100,7 @@ export default function EditPanel() {
                         name="protectedInterfaces"
                         label="Protected Interfaces"
                         control={control}
-                        defaultValue={config?.protectedInterfaces}
+                        defaultValue={panelConfig.data.protectedInterfaces}
                         variant="filled"
                         sort={true}
                         error={errors.protectedInterfaces ? true : false}
@@ -109,7 +113,7 @@ export default function EditPanel() {
                         name="excludedInterfaces"
                         label="Excluded Interfaces"
                         control={control}
-                        defaultValue={config?.excludedInterfaces}
+                        defaultValue={panelConfig.data.excludedInterfaces}
                         variant="filled"
                         sort={true}
                         error={errors.excludedInterfaces ? true : false}

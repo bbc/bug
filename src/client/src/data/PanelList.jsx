@@ -1,33 +1,24 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import panelListSlice from '../redux/panelListSlice';
-import Socket from "@utils/Socket";
-
-export const PanelConfigContext = React.createContext();
-
-const socket = Socket();
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import panelListSlice from "../redux/panelListSlice";
+import socket from "@utils/Socket";
 
 export default function PanelList(props) {
-
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     useEffect(() => {
         socket.on("connect", () => {
-            socket.emit('panel');
+            socket.emit("panelList");
         });
 
-        socket.on("panel", (result) => {
-            dispatch(panelListSlice.actions[result['status']](result));
+        socket.on("panelList", (result) => {
+            dispatch(panelListSlice.actions[result["status"]](result));
         });
 
         return async () => {
             socket.disconnect();
-        }
-    },[dispatch]);
+        };
+    }, [dispatch]);
 
-    return (
-        <>
-            {props.children}
-        </>
-    )
+    return <>{props.children}</>;
 }

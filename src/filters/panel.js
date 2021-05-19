@@ -9,6 +9,12 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         containerInfo = {};
     }
 
+    // remove timestamps from statusItems
+    let statusItems = (thisStatus) ? thisStatus.statusItems : [];
+    for(let eachStatusItem of statusItems) {
+        delete eachStatusItem.timestamp;
+    }
+
     let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
     let isBuilding = (!isRunning && panelBuildStatus !== null && panelBuildStatus.progress > -1) ?? false;
     let isBuilt = panelBuildStatus !== null ?? false;

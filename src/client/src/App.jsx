@@ -14,31 +14,31 @@ import { Provider } from "react-redux";
 import reduxStore from "./redux/store";
 
 export default function App() {
-  return (
-    <>
-      <Provider store={reduxStore}>
-        <ThemeProvider theme={theme}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <SnackbarProvider
-              dense
-              autoHideDuration={3000}
-              preventDuplicate
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              TransitionComponent={Fade}
-              maxSnack={3}
-            >
-              <SnackbarConfigurator />
-              <CssBaseline />
-              <PanelList>
-                <Page></Page>
-              </PanelList>
-            </SnackbarProvider>
-          </MuiPickersUtilsProvider>
-        </ThemeProvider>
-      </Provider>
-    </>
-  );
+    return (
+        <>
+            <Provider store={reduxStore}>
+                <ThemeProvider theme={theme}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <SnackbarProvider
+                            dense
+                            autoHideDuration={3000}
+                            preventDuplicate
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "right",
+                            }}
+                            TransitionComponent={Fade}
+                            maxSnack={3}
+                        >
+                            <SnackbarConfigurator />
+                            <CssBaseline />
+                            <PanelList>
+                                <Page></Page>
+                            </PanelList>
+                        </SnackbarProvider>
+                    </MuiPickersUtilsProvider>
+                </ThemeProvider>
+            </Provider>
+        </>
+    );
 }

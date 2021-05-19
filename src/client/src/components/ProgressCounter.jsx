@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 
-const usePreviousValue = value => {
+const usePreviousValue = (value) => {
     const ref = useRef();
     useEffect(() => {
         ref.current = value;
@@ -9,15 +9,14 @@ const usePreviousValue = value => {
     return ref.current;
 };
 
-export default function ProgressCounter(props) { 
+export default function ProgressCounter(props) {
+    let prevValue = usePreviousValue(props.value);
 
-    let prevValue = usePreviousValue(props.value)
-
-    if(props.value === -1) {
+    if (props.value === -1) {
         return null;
     }
-    if(prevValue === undefined) {
+    if (prevValue === undefined) {
         prevValue = 0;
     }
-    return <CountUp start={prevValue} end={props.value} />
+    return <CountUp start={prevValue} end={props.value} />;
 }

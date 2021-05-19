@@ -16,51 +16,49 @@ const Toolbar = (props) => {
     const classes = useStyles();
     const location = useLocation();
 
-    // we rely on PagePanel to fetch the panel object and put it in redux
-    const panel = useSelector((state) => state.panel);
+    const panelConfig = useSelector((state) => state.panelConfig);
+    if (panelConfig.status === "loading") {
+        return null;
+    }
 
     const LazyToolbar = () => {
+        if (panelConfig.status !== "success") {
+            return null;
+        }
+
         const Toolbar = React.lazy(() =>
-            import(`@modules/${panel.module}/client/Toolbar`).catch(() =>
-                console.log(`Error importing '@modules/${panel.module}/client/Toolbar.jsx`)
+            import(`@modules/${panelConfig.data.module}/client/Toolbar`).catch(() =>
+                console.log(`Error importing '@modules/${panelConfig.data.module}/client/Toolbar.jsx`)
             )
         );
 
         return (
             <Suspense fallback={<></>}>
-                <Toolbar panel={panel} />
+                <Toolbar panelId={panelConfig.data.id} />
             </Suspense>
         );
     };
 
-    if (!panel) {
-        switch (location.pathname) {
-            case "/panels":
-                return (
-                    <>
-                        <div className={classes.title}>
-                            <PageTitle />
-                        </div>
-                        <PanelsToolbar />
-                    </>
-                );
-            default:
-                return (
+    switch (location.pathname) {
+        case "/panels":
+            return (
+                <>
                     <div className={classes.title}>
                         <PageTitle />
                     </div>
-                );
-        }
+                    <PanelsToolbar />
+                </>
+            );
+        default:
+            return (
+                <>
+                    <div className={classes.title}>
+                        <PageTitle />
+                    </div>
+                    <LazyToolbar />
+                </>
+            );
     }
-
-    return (
-        <>
-            <div className={classes.title}>
-                <PageTitle />
-            </div>
-            <LazyToolbar />
-        </>
-    );
 };
 
 export default Toolbar;
