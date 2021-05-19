@@ -45,7 +45,7 @@ const BadgeWrapper = ({
 
     if (warningCount > 0 && !hasCritical) {
         return (
-            <Badge className={classes.error} badgeContent={warningCount} anchorOrigin={position}>
+            <Badge className={classes.warning} badgeContent={warningCount} anchorOrigin={position}>
                 {children}
             </Badge>
         );
