@@ -6,6 +6,7 @@ import ChipInput from "@core/ChipInput";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
+import PasswordTextField from "@core/PasswordTextField";
 
 export default function EditPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -84,7 +85,7 @@ export default function EditPanel() {
                 </Grid>
 
                 <Grid item xs={12} lg={6}>
-                    <TextField
+                    <PasswordTextField
                         inputProps={{ ...register("password", { required: true }) }}
                         variant="filled"
                         fullWidth

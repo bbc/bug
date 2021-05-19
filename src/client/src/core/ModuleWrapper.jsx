@@ -28,23 +28,36 @@ export default function ModuleWrapper({ panelId, children }) {
     if (panel.status === "loading") {
         return <Loading />;
     }
+
+    // check protected routes
+    let isProtected = false;
+    if (panel?.data?._module?.protectedRoutes) {
+        for (let eachRoute of panel.data._module.protectedRoutes) {
+            if (window.location.pathname.endsWith(eachRoute)) {
+                isProtected = true;
+            }
+        }
+        console.log("isProtected", isProtected);
+    }
+
     if (panel.status === "success") {
         const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
-        if (hasCritical) {
-            return <PanelCritical panel={panel.data} />;
-        }
-
-        if (panel.data._module.needsContainer) {
-            if (panel.data._dockerContainer._isBuilding) {
-                return <PanelBuilding panel={panel.data} />;
+        if (!isProtected) {
+            if (hasCritical) {
+                return <PanelCritical panel={panel.data} />;
             }
 
-            if (!panel.data._dockerContainer._isRunning) {
-                return <PanelStopped panel={panel.data} />;
+            if (panel.data._module.needsContainer) {
+                if (panel.data._dockerContainer._isBuilding) {
+                    return <PanelBuilding panel={panel.data} />;
+                }
+
+                if (!panel.data._dockerContainer._isRunning) {
+                    return <PanelStopped panel={panel.data} />;
+                }
             }
         }
-
         return <Switch>{children}</Switch>;
     }
     return null;
