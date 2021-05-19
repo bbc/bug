@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     },
     spark: {
         position: "absolute",
-        bottom: "0.5rem",
+        bottom: 0,
         width: "100%",
         paddingRight: "0.5rem",
     },
@@ -140,15 +140,15 @@ export default function InterfaceList({ panelId }) {
             return null;
         }
 
-        const isAllZero = iface["traffic"][type + "-history"].every(item => item.value === 0);
-        if(isAllZero) {
+        const isAllZero = iface["traffic"][type + "-history"].every((item) => item.value === 0);
+        if (isAllZero) {
             return null;
         }
 
         // pull values from array of objects
-        let values = iface["traffic"][type + "-history"].map(a => a.value);
+        let values = iface["traffic"][type + "-history"].map((a) => a.value);
 
-        return ( 
+        return (
             <>
                 <div className={classes.sparkText}>
                     {iface["traffic"][type + "-bps-text"] !== "0" ? iface["traffic"][type + "-bps-text"] : "0 b/s"}
@@ -164,7 +164,12 @@ export default function InterfaceList({ panelId }) {
 
     const renderRow = (iface) => {
         return (
-            <TableRow hover className={classes.interfaceRow} key={iface.id} onClick={() => handleRowClicked(iface['name'])}>
+            <TableRow
+                hover
+                className={classes.interfaceRow}
+                key={iface.id}
+                onClick={() => handleRowClicked(iface["name"])}
+            >
                 <TableCell className={classes.colRunning}>
                     <PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon} />
                 </TableCell>
