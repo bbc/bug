@@ -49,6 +49,20 @@ module.exports = (namespace, socket) => {
         }
     };
 
+    namespace.adapter.on("join-room", (room, id) => {
+        const roomElements = room.split(":");
+        if (roomElements[0] === "panelId") {
+            logger.debug(`socket id ${id} joined room ${roomElements[1]}`);
+        }
+    });
+
+    namespace.adapter.on("leave-room", (room, id) => {
+        const roomElements = room.split(":");
+        if (roomElements[0] === "panelId") {
+            logger.debug(`socket id ${id} left room ${roomElements[1]}`);
+        }
+    });
+
     namespace.adapter.on("create-room", (room) => {
         const elements = room.split(":");
         if (elements.length !== 2) {
@@ -59,13 +73,17 @@ module.exports = (namespace, socket) => {
             return;
         }
 
-        logger.debug(`socket id ${socket.id} started polling ${elements[1]}`);
+        if (!enablePanelPoll[elements[1]]) {
+            logger.debug(
+                `socket id ${socket.id} started polling ${elements[1]}`
+            );
 
-        // toggle the enabled flag
-        enablePanelPoll[elements[1]] = true;
+            // toggle the enabled flag
+            enablePanelPoll[elements[1]] = true;
 
-        // start the regular timer to poll panel
-        poll(elements[1]);
+            // start the regular timer to poll panel
+            poll(elements[1]);
+        }
     });
 
     namespace.adapter.on("delete-room", (room) => {
@@ -79,11 +97,16 @@ module.exports = (namespace, socket) => {
             return;
         }
 
-        enablePanelPoll[elements[1]] = false;
+        if (enablePanelPoll[elements[1]]) {
+            logger.debug(
+                `socket id ${socket.id} stopped polling ${elements[1]}`
+            );
+            enablePanelPoll[elements[1]] = false;
 
-        // if the timer is valid (it was probably)
-        if (panelTimers[elements[1]]) {
-            clearTimeout(panelTimers[elements[1]]);
+            // if the timer is valid (it was probably)
+            if (panelTimers[elements[1]]) {
+                clearTimeout(panelTimers[elements[1]]);
+            }
         }
     });
 
@@ -101,7 +124,7 @@ module.exports = (namespace, socket) => {
 
             // send a new update to the room (cos this client is waiting for it)
             panels[panelId] = await wrapPanel(panelId);
-            socket.emit("panel", panels[panelId]);
+            socket.emit("event", panels[panelId]);
         }
     });
 
@@ -111,7 +134,7 @@ module.exports = (namespace, socket) => {
             logger.debug(
                 `socket id ${socket.id} unsubscribed from panelId ${panelId}`
             );
-            socket.leave(`panelId:${lastPanelId}`);
+            socket.leave(`panelId:${panelId}`);
         }
     });
 
