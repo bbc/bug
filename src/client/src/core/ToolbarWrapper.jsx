@@ -14,13 +14,21 @@ import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import { Hidden } from "@material-ui/core";
 import BadgeWrapper from "@components/BadgeWrapper";
+import PanelStatus from "@components/PanelStatus";
 import SettingsIcon from "@material-ui/icons/Settings";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useSelector } from "react-redux";
+import Popover from "@material-ui/core/Popover";
 
 const useStyles = makeStyles((theme) => ({
     dropdownMenu: {
         marginLeft: "-0.5rem",
+    },
+    notificationButton: {
+        "& .MuiButton-startIcon": {
+            margin: 0,
+        },
+        marginRight: theme.spacing(1),
     },
 }));
 
@@ -35,6 +43,9 @@ export default function PanelToolbar(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const panel = useSelector((state) => state.panel);
+    const [statusEl, setStatusEl] = React.useState(null);
+    const statusOpen = Boolean(statusEl);
+    const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -44,6 +55,14 @@ export default function PanelToolbar(props) {
         setAnchorEl(null);
     };
 
+    const handleStatusClick = (event) => {
+        setStatusEl(event.currentTarget);
+    };
+
+    const handleStatusClose = () => {
+        setStatusEl(null);
+    };
+
     if (panel.status === "loading") {
         return null;
     }
@@ -51,22 +70,41 @@ export default function PanelToolbar(props) {
         return (
             <>
                 <Hidden xsDown>
-                    <Button
-                        component={Link}
-                        to={`/panel/${panel.data.id}/edit`}
-                        color="default"
-                        startIcon={
-                            <BadgeWrapper
-                                panel={panel.data}
-                                position={{
+                    {hasCritical || panel.data._status.length === 0 ? null : (
+                        <>
+                            <Popover
+                                open={statusOpen}
+                                anchorEl={statusEl}
+                                onClose={handleStatusClose}
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "center",
+                                }}
+                                transformOrigin={{
                                     vertical: "top",
-                                    horizontal: "left",
+                                    horizontal: "center",
                                 }}
                             >
-                                <NotificationsIcon />
-                            </BadgeWrapper>
-                        }
-                    ></Button>
+                                <PanelStatus statusItems={panel.data._status} />
+                            </Popover>
+                            <Button
+                                className={classes.notificationButton}
+                                color="default"
+                                onClick={handleStatusClick}
+                                startIcon={
+                                    <BadgeWrapper
+                                        panel={panel.data}
+                                        position={{
+                                            vertical: "top",
+                                            horizontal: "left",
+                                        }}
+                                    >
+                                        <NotificationsIcon />
+                                    </BadgeWrapper>
+                                }
+                            ></Button>
+                        </>
+                    )}
                     <Button
                         component={Link}
                         to={`/panel/${panel.data.id}/edit`}

@@ -80,6 +80,36 @@ const theme = createMuiTheme({
                 fontSize: "inherit",
             },
         },
+        MuiAlertTitle: {
+            root: {
+                color: "#fff",
+                textTransform: "uppercase",
+                fontSize: "0.875rem",
+            },
+        },
+        MuiAlert: {
+            standardError: {
+                color: "#ded3d3",
+                backgroundColor: "#b52424",
+                "& .MuiAlert-icon": {
+                    color: "#fff",
+                },
+            },
+            standardWarning: {
+                color: "#f7e7d6",
+                backgroundColor: "#d07111",
+                "& .MuiAlert-icon": {
+                    color: "#fff",
+                },
+            },
+            standardInfo: {
+                color: "#dee4f7",
+                backgroundColor: "#337ab7",
+                "& .MuiAlert-icon": {
+                    color: "#fff",
+                },
+            },
+        },
     },
     typography: {
         fontFamily: ["ReithSans"],
@@ -121,16 +151,17 @@ const theme = createMuiTheme({
         },
 
         error: {
-            main: "#f11d1d",
+            main: "#b52424",
         },
 
         warning: {
-            main: "#f1881d",
+            main: "#d07111",
         },
 
         info: {
-            main: "#5069c5",
+            main: "#337ab7",
         },
     },
 });
+console.log(theme.palette.error.main);
 export default theme;
