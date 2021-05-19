@@ -9,11 +9,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import { useAlert } from "@utils/Snackbar";
-import LockIcon from "@material-ui/icons/Lock";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import CheckIcon from "@material-ui/icons/Check";
 import AxiosCommand from "@utils/AxiosCommand";
 import { Redirect } from "react-router";
+import RenameDialog from "./RenameDialog";
 
 // const useStyles = makeStyles((theme) => ({}));
 
@@ -23,6 +23,7 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
     const [redirectUrl, setRedirectUrl] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const [renameDialogOpen, setRenameDialogOpen] = React.useState(false);
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -47,9 +48,10 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
         }
     };
 
-    const handleRename = () => {
-        // AxiosCommand(`/api/panel/stop/${props.panel.id}`);
+    const handleRename = (event) => {
         handleClose();
+        setRenameDialogOpen(true);
+        event.stopPropagation();
     };
 
     const handleDetails = () => {
@@ -81,10 +83,21 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleProtect} disabled={iface._protected && !iface._allowunprotect}>
-                    <ListItemIcon disabled={iface._protected && !iface._allowunprotect}>{iface._protected ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
+                    <ListItemIcon disabled={iface._protected && !iface._allowunprotect}>
+                        {iface._protected ? <CheckIcon fontSize="small" /> : null}
+                    </ListItemIcon>
                     <ListItemText primary="Protect" />
                 </MenuItem>
             </Menu>
+            {renameDialogOpen ? (
+                <RenameDialog
+                    panelId={panelId}
+                    interfaceId={iface.id}
+                    interfaceName={iface.name}
+                    defaultName={iface["default-name"]}
+                    onClose={() => setRenameDialogOpen(false)}
+                />
+            ) : null}
         </div>
     );
 }
