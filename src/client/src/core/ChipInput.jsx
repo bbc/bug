@@ -4,17 +4,28 @@ import { Controller } from "react-hook-form";
 
 import ChipInput from "material-ui-chip-input";
 
-const ChipInputControl = ({ name, label, control, sort, defaultValue, children, rules, error, chipsError, variant, ...props }) => {
-
-    if(sort) {
+const ChipInputControl = ({
+    name,
+    label,
+    control,
+    sort,
+    defaultValue,
+    children,
+    rules,
+    error,
+    chipsError,
+    variant,
+    ...props
+}) => {
+    if (sort) {
         // sort the contents (case insensitive)
-        defaultValue = defaultValue.sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
+        defaultValue = defaultValue.slice().sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
     }
 
     return (
         <FormControl {...props}>
             <Controller
-                render={({field: { onChange, onBlur, value }}) =>
+                render={({ field: { onChange, onBlur, value } }) => (
                     <ChipInput
                         variant={variant}
                         onBlur={onBlur}
@@ -24,7 +35,7 @@ const ChipInputControl = ({ name, label, control, sort, defaultValue, children, 
                         helperText={chipsError}
                         error={error}
                     />
-                }
+                )}
                 name={name}
                 control={control}
                 defaultValue={defaultValue}

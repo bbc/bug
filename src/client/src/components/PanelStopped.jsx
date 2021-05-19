@@ -27,8 +27,7 @@ export default function PanelStopped(props) {
                             display="flex"
                             alignItems="center"
                             justifyContent="center"
-                        >
-                        </Box>
+                        ></Box>
                     </Box>
                 </Grid>
             </Grid>

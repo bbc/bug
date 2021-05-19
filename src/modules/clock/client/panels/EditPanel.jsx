@@ -4,14 +4,13 @@ import TextField from "@material-ui/core/TextField";
 import { useForm } from "react-hook-form";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import PanelConfigContext from '@core/PanelConfigContext';
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import { useSelector } from "react-redux";
 
 export default function EditPanel() {
-
-    const config = useContext(PanelConfigContext);
+    const panelConfig = useSelector((state) => state.panelConfig);
 
     const {
         register,
@@ -19,13 +18,17 @@ export default function EditPanel() {
         formState: { errors },
     } = useForm();
 
-    if (!config) {
+    if (panelConfig.status === "loading") {
         return <Loading />;
+    }
+
+    if (panelConfig.status !== "success") {
+        return null;
     }
 
     return (
         <>
-            <PanelConfig config={config} handleSubmit={handleSubmit}>
+            <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("title", { required: true }) }}
@@ -33,7 +36,7 @@ export default function EditPanel() {
                         required
                         fullWidth
                         error={errors?.title ? true : false}
-                        defaultValue={config?.title}
+                        defaultValue={panelConfig.data.title}
                         type="text"
                         label="Panel Title"
                     />
@@ -45,28 +48,27 @@ export default function EditPanel() {
                         variant="filled"
                         fullWidth
                         error={errors?.description ? true : false}
-                        defaultValue={config?.description}
+                        defaultValue={panelConfig.data.description}
                         type="text"
                         label="Description"
                     />
                 </Grid>
 
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                     <FormControl variant="filled" fullWidth>
                         <InputLabel>Type</InputLabel>
                         <Select
                             native
-                            defaultValue={config?.type}
+                            defaultValue={panelConfig.data.type}
                             label="Type"
                             error={errors?.type ? true : false}
-                            inputProps={{ ...register('type', { required: true }) }}
+                            inputProps={{ ...register("type", { required: true }) }}
                         >
-                            <option value={'analogue'}>Analogue</option>
-                            <option value={'digital'}>Digital</option>
+                            <option value={"analogue"}>Analogue</option>
+                            <option value={"digital"}>Digital</option>
                         </Select>
                     </FormControl>
                 </Grid>
-
             </PanelConfig>
         </>
     );

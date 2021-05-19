@@ -1,28 +1,29 @@
 const { Server } = require("socket.io");
-const logger = require('@utils/logger')(module);
+const logger = require("@utils/logger")(module);
 
-const panelHandler = require('@sockets/panel');
-const alertHandler = require('@sockets/alert');
-const bugHandler = require('@sockets/bug');
+const panelListHandler = require("@sockets/panel-list");
+const panelConfigHandler = require("@sockets/panel-config");
+const panelHandler = require("@sockets/panel");
+const alertHandler = require("@sockets/alert");
+const bugHandler = require("@sockets/bug");
 
 const options = {
     cors: {
-        origin: '*',
-    }
+        origin: "*",
+    },
 };
 
 const bugSocket = (server) => {
-
     const io = new Server(server, options);
 
-    const onConnection = (socket) => {
-        logger.info(`socket connection ${socket.id}`)
+    io.on("connection", (socket) => {
+        logger.info(`socket connection ${socket.id}`);
+        panelListHandler(io, socket);
+        panelConfigHandler(io, socket);
         panelHandler(io, socket);
         alertHandler(io, socket);
         bugHandler(io, socket);
-    }
-
-    io.on('connection', onConnection);
+    });
 
     return io;
 };

@@ -1,24 +1,26 @@
-const panelGet = require("@services/panel-get");
+const getPanelConfig = require("@services/panel-configget");
 
-let panels = {};
+let panelConfigs = {};
 let enablePanelPoll = {};
 let panelTimers = {};
 
 module.exports = (io, socket) => {
     let lastPanelId;
 
-    const wrapPanel = async (panelId) => {
+    const wrapPanelConfig = async (panelId) => {
+        let response;
         try {
-            return {
+            response = {
                 status: "success",
-                data: await panelGet(panelId),
+                data: await getPanelConfig(panelId),
             };
         } catch (error) {
-            return {
+            response = {
                 status: "error",
-                message: `Failed to get panel ${panelId}`,
+                message: `Failed to get ${panelId} config`,
             };
         }
+        return response;
     };
 
     const poll = async (panelId) => {
@@ -26,16 +28,16 @@ module.exports = (io, socket) => {
         clearTimeout(panelTimers[panelId]);
 
         if (panelId) {
-            // fetch the panel
-            const newPanel = await wrapPanel(panelId);
-
+            // fetch the config
+            const newPanelConfig = await wrapPanelConfig(panelId);
+            console.log("ping", panelId);
             // see if it's changed
-            if (JSON.stringify(panels[panelId]) !== JSON.stringify(newPanel)) {
+            if (JSON.stringify(panelConfigs[panelId]) !== JSON.stringify(newPanelConfig)) {
                 // save for next time
-                panels[panelId] = newPanel;
+                panelConfigs[panelId] = newPanelConfig;
 
                 // send it out
-                io.to(`panel:${panelId}`).emit("panel", newPanel);
+                io.to(`panelConfig:${panelId}`).emit("panelConfig", newPanelConfig);
             }
         }
 
@@ -48,20 +50,28 @@ module.exports = (io, socket) => {
         }
     };
 
+    io.of("/").adapter.on("join-room", (room, id) => {
+        console.log(`socket ${id} has joined room ${room}`);
+    });
+
+    io.of("/").adapter.on("leave-room", (room, id) => {
+        console.log(`socket ${id} has left room ${room}`);
+    });
+
     io.of("/").adapter.on("create-room", (room) => {
         const elements = room.split(":");
         if (elements.length !== 2) {
             return;
         }
 
-        if (elements[0] !== "panel") {
+        if (elements[0] !== "panelConfig") {
             return;
         }
 
         // toggle the enabled flag
         enablePanelPoll[elements[1]] = true;
 
-        // start the regular timer to poll panel
+        // start the regular timer to poll config
         poll(elements[1]);
     });
 
@@ -72,7 +82,7 @@ module.exports = (io, socket) => {
             return;
         }
 
-        if (elements[0] !== "panel") {
+        if (elements[0] !== "panelConfig") {
             return;
         }
 
@@ -84,27 +94,28 @@ module.exports = (io, socket) => {
         }
     });
 
-    socket.on("panel:join", async (panelId) => {
+    socket.on("panelConfig:join", async (panelId) => {
         if (panelId) {
             // we store this in case the client gets disconnected - it's the last panel id they were looking at
             lastPanelId = panelId;
 
-            console.log(`joining room panel:${panelId}`);
+            console.log(`joining room panelConfig:${panelId}`);
 
             // join the room
-            socket.join(`panel:${panelId}`);
+            socket.join(`panelConfig:${panelId}`);
 
             // send a new update to the room (cos this client is waiting for it)
-            panels[panelId] = await wrapPanel(panelId);
-            io.to(`panel:${panelId}`).emit("panel", panels[panelId]);
+            const newConfig = await wrapPanelConfig(panelId);
+            io.to(`panelConfig:${panelId}`).emit("panelConfig", newConfig);
         }
     });
 
-    socket.on("panel:leave", async (panelId) => {
+    socket.on("panelConfig:leave", async (panelId) => {
+        console.log("received panelconfig:leave for panel id ", panelId);
         if (panelId) {
             // leave the room
             console.log(`leaving ${panelId}`);
-            socket.leave(`panel:${panelId}`);
+            socket.leave(`panelConfig:${panelId}`);
         }
     });
 
@@ -112,7 +123,7 @@ module.exports = (io, socket) => {
         if (lastPanelId) {
             // clear socket id from list and check if timer needs stopping
             console.log(`leaving ${lastPanelId}`);
-            socket.leave(`panel:${lastPanelId}`);
+            socket.leave(`panelConfig:${lastPanelId}`);
         }
     });
 };

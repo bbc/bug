@@ -6,49 +6,46 @@ import PanelCritical from "@components/PanelCritical";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
 import { Switch } from "react-router-dom";
-import PanelConfigContext from "@core/PanelConfigContext";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useSelector } from "react-redux";
+import { usePanel } from "@data/Panel";
 
-export default function ModuleWrapper({ panel, children }) {
+export default function ModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
+    const panelConfig = useSelector((state) => state.panelConfig);
+    const panel = useSelector((state) => state.panel);
 
-    const config = useApiPoller({
-        url: `/api/panelconfig/${panel.id}`,
-        interval: 6000,
-    });
+    usePanel({ panelId });
 
     useEffect(() => {
         if (panel) {
-            dispatch(pageTitleSlice.actions.set(panel.title));
+            dispatch(pageTitleSlice.actions.set(panelConfig.data.title));
         }
         return () => {
             dispatch(pageTitleSlice.actions.set(null));
         };
-    }, [panel, dispatch]);
+    }, [panelConfig, dispatch]);
 
-    if (!panel || !config) {
+    if (panel.status === "loading") {
         return <Loading />;
     }
+    if (panel.status === "success") {
+        const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
-    const hasCritical = panel._status.filter((x) => x.type === "critical").length > 0;
-
-    if (hasCritical) {
-        return <PanelCritical panel={panel} />;
-    }
-
-    if (panel._module.needsContainer) {
-        if (panel._dockerContainer._isBuilding) {
-            return <PanelBuilding panel={panel} />;
+        if (hasCritical) {
+            return <PanelCritical panel={panel.data} />;
         }
 
-        if (!panel._dockerContainer._isRunning) {
-            return <PanelStopped panel={panel} />;
-        }
-    }
+        if (panel.data._module.needsContainer) {
+            if (panel.data._dockerContainer._isBuilding) {
+                return <PanelBuilding panel={panel.data} />;
+            }
 
-    return (
-        <PanelConfigContext.Provider value={config.data}>
-            <Switch>{children}</Switch>
-        </PanelConfigContext.Provider>
-    );
+            if (!panel.data._dockerContainer._isRunning) {
+                return <PanelStopped panel={panel.data} />;
+            }
+        }
+
+        return <Switch>{children}</Switch>;
+    }
+    return null;
 }

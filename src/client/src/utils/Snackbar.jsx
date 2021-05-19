@@ -1,8 +1,6 @@
 import { useSnackbar } from "notistack";
 import React, { useEffect } from "react";
-import Socket from "@utils/Socket";
-
-const socket = Socket();
+import socket from "@utils/Socket";
 
 const InnerSnackbarConfigurator = (props) => {
     props.setUseSnackbarRef(useSnackbar());

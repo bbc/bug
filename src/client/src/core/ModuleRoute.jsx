@@ -1,16 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import PanelConfigContext from '@core/PanelConfigContext';
+import { useSelector } from "react-redux";
 
 export default function ModuleRoute({ children, path }) {
-
-    const config = useContext(PanelConfigContext);
+    const panelConfig = useSelector((state) => state.panelConfig);
 
     const getConfiguration = () => {
-        if (config?.needsConfigured && (children.type.name !== 'EditPanel')) {
-            return (
-                <Redirect to={`/panel/${config.id}/edit`} />
-            );
+        if (panelConfig.data.needsConfigured && children.type.name !== "EditPanel") {
+            return <Redirect to={`/panel/${panelConfig.data.id}/edit`} />;
         }
     };
 
