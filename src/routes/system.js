@@ -66,8 +66,9 @@ router.get("/logs/:level", async function (req, res, next) {
 router.get(
     "/backup",
     asyncHandler(async (req, res) => {
-        const result = await systemBackup();
-        res.download(result.filepath, result.filename);
+        const backup = await systemBackup();
+        res.header('Content-Disposition',`attachment; filename="${backup.filename}"`);
+        backup.stream.pipe(res)
     })
 );
 
