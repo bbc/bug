@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Weather from "../components/Weather";
@@ -25,13 +25,7 @@ export default function MainPanel() {
     return (
         <>
             <div className={classes.root}>
-                <Grid
-                    container
-                    spacing={4}
-                    direction="row"
-                    justify="center"
-                    alignItems="center"
-                >
+                <Grid container spacing={4} direction="row" justify="center" alignItems="center">
                     <Grid item lg={12} sm={12} xs={12}>
                         <Weather {...panelConfig?.data} />
                     </Grid>
