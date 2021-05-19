@@ -22,6 +22,7 @@ import Popover from "@material-ui/core/Popover";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import PanelDeleteDialog from "@components/PanelDeleteDialog";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const useStyles = makeStyles((theme) => ({
     dropdownMenu: {
@@ -74,6 +75,16 @@ export default function PanelToolbar(props) {
             sendAlert(`Disabled panel: ${panel.data.title}`, { broadcast: true, variant: "success" });
         } else {
             sendAlert(`Failed to disable panel: ${panel.data.title}`, { variant: "error" });
+        }
+    };
+
+    const handleRestart = async () => {
+        sendAlert(`Restarting panel: ${panel.data.title} - please wait ...`, { broadcast: true, variant: "info" });
+        setAnchorEl(null);
+        if (await AxiosCommand(`/api/panel/restart/${panel.data.id}`)) {
+            sendAlert(`Restarted panel: ${panel.data.title}`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to restart panel: ${panel.data.title}`, { variant: "error" });
         }
     };
 
@@ -164,6 +175,12 @@ export default function PanelToolbar(props) {
                             <ToggleOffIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Disable Panel" />
+                    </MenuItem>
+                    <MenuItem onClick={handleRestart}>
+                        <ListItemIcon>
+                            <ReplayIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Restart Panel" />
                     </MenuItem>
                     <MenuItem onClick={handleDelete}>
                         <ListItemIcon>
