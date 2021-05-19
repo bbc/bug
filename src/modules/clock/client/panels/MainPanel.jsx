@@ -45,7 +45,13 @@ export default function MainPanel() {
     return (
         <React.Fragment>
             <div className={classes.root}>
-                <Grid container spacing={4} direction="column" justify="center" alignItems="center">
+                <Grid
+                    container
+                    spacing={4}
+                    direction="column"
+                    justify="center"
+                    alignItems="center"
+                >
                     <Grid item lg={6} sm={12} xs={12}>
                         <Card className={classes.card}>
                             <CardContent>{renderClock()}</CardContent>

@@ -25,9 +25,15 @@ export default function MainPanel() {
     return (
         <>
             <div className={classes.root}>
-                <Grid container spacing={4} direction="row" justify="center" alignItems="center">
+                <Grid
+                    container
+                    spacing={4}
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                >
                     <Grid item lg={12} sm={12} xs={12}>
-                        <Weather config={panelConfig} />
+                        <Weather {...panelConfig?.data} />
                     </Grid>
                 </Grid>
             </div>
