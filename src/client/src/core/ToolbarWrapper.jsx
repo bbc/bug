@@ -19,6 +19,9 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useSelector } from "react-redux";
 import Popover from "@material-ui/core/Popover";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import PanelDeleteDialog from "@components/PanelDeleteDialog";
 
 const useStyles = makeStyles((theme) => ({
     dropdownMenu: {
@@ -44,8 +47,10 @@ export default function PanelToolbar(props) {
     const open = Boolean(anchorEl);
     const panel = useSelector((state) => state.panel);
     const [statusEl, setStatusEl] = React.useState(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const statusOpen = Boolean(statusEl);
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
+    const sendAlert = useAlert();
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -61,6 +66,20 @@ export default function PanelToolbar(props) {
 
     const handleStatusClose = () => {
         setStatusEl(null);
+    };
+
+    const handleDisable = async () => {
+        setStatusEl(null);
+        if (await AxiosCommand(`/api/panel/disable/${panel.data.id}`)) {
+            sendAlert(`Disabled panel: ${panel.data.title}`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to disable panel: ${panel.data.title}`, { variant: "error" });
+        }
+    };
+
+    const handleDelete = () => {
+        setAnchorEl(null);
+        setDeleteDialogOpen(true);
     };
 
     if (panel.status === "loading") {
@@ -140,19 +159,26 @@ export default function PanelToolbar(props) {
                         </ListItemIcon>
                         <ListItemText primary="Enable Panel" />
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={handleDisable}>
                         <ListItemIcon>
                             <ToggleOffIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Disable Panel" />
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={handleDelete}>
                         <ListItemIcon>
                             <DeleteIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Delete Panel" />
                     </MenuItem>
                 </Menu>
+                {deleteDialogOpen ? (
+                    <PanelDeleteDialog
+                        panelId={panel.data.id}
+                        panelTitle={panel.data.title}
+                        onClose={() => setDeleteDialogOpen(false)}
+                    />
+                ) : null}
             </>
         );
     }
