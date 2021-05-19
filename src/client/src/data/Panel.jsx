@@ -7,9 +7,10 @@ const panel = io("/panel");
 
 export function usePanel({ panelId }) {
     const dispatch = useDispatch();
+
     useEffect(() => {
-        console.log(`${panel.id}: panelConfig - subscribed from ${panelId}`);
         panel.emit("subscribe", panelId);
+        console.log(`${panel.id}: panel - subscribed from ${panelId}`);
 
         panel.on("event", function (result) {
             console.log(`${panel.id}: panelConfig - event ${result}`);
@@ -18,9 +19,7 @@ export function usePanel({ panelId }) {
 
         return async () => {
             panel.emit("unsubscribe", panelId);
-            console.log(
-                `${panel.id}: panelConfig - unsubscribed from ${panelId}`
-            );
+            console.log(`${panel.id}: panel - unsubscribed from ${panelId}`);
             dispatch(panelSlice.actions["idle"]());
         };
     }, [panelId, dispatch]);
