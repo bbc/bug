@@ -26,6 +26,9 @@ const Toolbar = (props) => {
             return null;
         }
 
+        if (!panelConfig.data) {
+            return null;
+        }
         const Toolbar = React.lazy(() =>
             import(`@modules/${panelConfig.data.module}/client/Toolbar`).catch(() =>
                 console.log(`Error importing '@modules/${panelConfig.data.module}/client/Toolbar.jsx`)
