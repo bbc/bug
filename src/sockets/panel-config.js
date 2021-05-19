@@ -32,17 +32,12 @@ module.exports = (namespace, socket) => {
             // fetch the config
             const newPanelConfig = await wrapPanelConfig(panelId);
             // see if it's changed
-            if (
-                JSON.stringify(panelConfigs[panelId]) !==
-                JSON.stringify(newPanelConfig)
-            ) {
+            if (JSON.stringify(panelConfigs[panelId]) !== JSON.stringify(newPanelConfig)) {
                 // save for next time
                 panelConfigs[panelId] = newPanelConfig;
 
                 // send it out
-                namespace
-                    .to(`panelId:${panelId}`)
-                    .emit("event", newPanelConfig);
+                namespace.to(`panelId:${panelId}`).emit("event", newPanelConfig);
             }
         }
 
@@ -55,21 +50,21 @@ module.exports = (namespace, socket) => {
         }
     };
 
-    namespace.adapter.on("join-room", (room, id) => {
+    namespace.adapter.once("join-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
             logger.debug(`socket id ${id} joined room ${roomElements[1]}`);
         }
     });
 
-    namespace.adapter.on("leave-room", (room, id) => {
+    namespace.adapter.once("leave-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
             logger.debug(`socket id ${id} left room ${roomElements[1]}`);
         }
     });
 
-    namespace.adapter.on("create-room", (room) => {
+    namespace.adapter.once("create-room", (room) => {
         const elements = room.split(":");
         if (elements.length !== 2) {
             return;
@@ -80,9 +75,7 @@ module.exports = (namespace, socket) => {
         }
 
         if (!enablePanelPoll[elements[1]]) {
-            logger.debug(
-                `socket id ${socket.id} started polling ${elements[1]}`
-            );
+            logger.debug(`socket id ${socket.id} started polling ${elements[1]}`);
 
             // toggle the enabled flag
             enablePanelPoll[elements[1]] = true;
@@ -92,7 +85,7 @@ module.exports = (namespace, socket) => {
         }
     });
 
-    namespace.adapter.on("delete-room", (room) => {
+    namespace.adapter.once("delete-room", (room) => {
         // this may be a panel or the default room for each socket
         const elements = room.split(":");
         if (elements.length !== 2) {
@@ -104,9 +97,7 @@ module.exports = (namespace, socket) => {
         }
 
         if (enablePanelPoll[elements[1]]) {
-            logger.debug(
-                `socket id ${socket.id} stopped polling ${elements[1]}`
-            );
+            logger.debug(`socket id ${socket.id} stopped polling ${elements[1]}`);
             enablePanelPoll[elements[1]] = false;
             // if the timer is valid (it was probably
             if (panelTimers[elements[1]]) {
@@ -119,9 +110,7 @@ module.exports = (namespace, socket) => {
         if (panelId) {
             // we store this in case the client gets disconnected - it's the last panel id they were looking at
             lastPanelId = panelId;
-            logger.debug(
-                `socket id ${socket.id} subscribed to paneId ${panelId}`
-            );
+            logger.debug(`socket id ${socket.id} subscribed to paneId ${panelId}`);
 
             // join the room
             socket.join(`panelId:${panelId}`);
@@ -135,9 +124,7 @@ module.exports = (namespace, socket) => {
     socket.on("unsubscribe", async (panelId) => {
         if (panelId) {
             // leave the room
-            logger.debug(
-                `socket id ${socket.id} unsubscribed from panelId ${panelId}`
-            );
+            logger.debug(`socket id ${socket.id} unsubscribed from panelId ${panelId}`);
             socket.leave(`panelId:${panelId}`);
         }
     });
@@ -145,9 +132,7 @@ module.exports = (namespace, socket) => {
     socket.on("disconnect", () => {
         if (lastPanelId) {
             // clear socket id from list and check if timer needs stopping
-            logger.debug(
-                `socket id ${socket.id} unsubscribed from panelId ${lastPanelId}`
-            );
+            logger.debug(`socket id ${socket.id} unsubscribed from panelId ${lastPanelId}`);
             socket.leave(`panelId:${lastPanelId}`);
         }
     });

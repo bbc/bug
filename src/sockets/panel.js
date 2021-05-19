@@ -49,21 +49,21 @@ module.exports = (namespace, socket) => {
         }
     };
 
-    namespace.adapter.on("join-room", (room, id) => {
+    namespace.adapter.once("join-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
             logger.debug(`socket id ${id} joined room ${roomElements[1]}`);
         }
     });
 
-    namespace.adapter.on("leave-room", (room, id) => {
+    namespace.adapter.once("leave-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
             logger.debug(`socket id ${id} left room ${roomElements[1]}`);
         }
     });
 
-    namespace.adapter.on("create-room", (room) => {
+    namespace.adapter.once("create-room", (room) => {
         const elements = room.split(":");
         if (elements.length !== 2) {
             return;
@@ -74,9 +74,7 @@ module.exports = (namespace, socket) => {
         }
 
         if (!enablePanelPoll[elements[1]]) {
-            logger.debug(
-                `socket id ${socket.id} started polling ${elements[1]}`
-            );
+            logger.debug(`socket id ${socket.id} started polling ${elements[1]}`);
 
             // toggle the enabled flag
             enablePanelPoll[elements[1]] = true;
@@ -86,7 +84,7 @@ module.exports = (namespace, socket) => {
         }
     });
 
-    namespace.adapter.on("delete-room", (room) => {
+    namespace.adapter.once("delete-room", (room) => {
         // this may be a panel or the default room for each socket
         const elements = room.split(":");
         if (elements.length !== 2) {
@@ -98,9 +96,7 @@ module.exports = (namespace, socket) => {
         }
 
         if (enablePanelPoll[elements[1]]) {
-            logger.debug(
-                `socket id ${socket.id} stopped polling ${elements[1]}`
-            );
+            logger.debug(`socket id ${socket.id} stopped polling ${elements[1]}`);
             enablePanelPoll[elements[1]] = false;
 
             // if the timer is valid (it was probably)
@@ -115,9 +111,7 @@ module.exports = (namespace, socket) => {
             // we store this in case the client gets disconnected - it's the last panel id they were looking at
             lastPanelId = panelId;
 
-            logger.debug(
-                `socket id ${socket.id} subscribed to panelId ${panelId}`
-            );
+            logger.debug(`socket id ${socket.id} subscribed to panelId ${panelId}`);
 
             // join the room
             socket.join(`panelId:${lastPanelId}`);
@@ -131,9 +125,7 @@ module.exports = (namespace, socket) => {
     socket.on("unsubscribe", async (panelId) => {
         if (panelId) {
             // leave the room
-            logger.debug(
-                `socket id ${socket.id} unsubscribed from panelId ${panelId}`
-            );
+            logger.debug(`socket id ${socket.id} unsubscribed from panelId ${panelId}`);
             socket.leave(`panelId:${panelId}`);
         }
     });
@@ -141,9 +133,7 @@ module.exports = (namespace, socket) => {
     socket.on("disconnect", () => {
         if (lastPanelId) {
             // clear socket id from list and check if timer needs stopping
-            logger.debug(
-                `socket id ${socket.id} unsubscribed from paneId ${lastPanelId}`
-            );
+            logger.debug(`socket id ${socket.id} unsubscribed from paneId ${lastPanelId}`);
             socket.leave(`panelId:${lastPanelId}`);
         }
     });
