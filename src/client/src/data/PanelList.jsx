@@ -1,22 +1,26 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import panelListSlice from "../redux/panelListSlice";
-import socket from "@utils/Socket";
+import io from "@utils/io";
+
+const panelList = io("/panelList");
 
 export default function PanelList(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        socket.on("connect", () => {
-            socket.emit("panelList");
+        panelList.on("connect", () => {
+            console.log(`${panelList.id}: panelList - subscribed`);
         });
 
-        socket.on("panelList", (result) => {
+        panelList.on("event", (result) => {
+            console.log(`${panelList.id}: panelList - event ${result}`);
             dispatch(panelListSlice.actions[result["status"]](result));
         });
 
         return async () => {
-            socket.disconnect();
+            console.log(`${panelList.id}: panelList - unsubscribed`);
+            panelList.disconnect();
         };
     }, [dispatch]);
 

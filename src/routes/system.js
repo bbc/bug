@@ -84,8 +84,34 @@ router.get(
  *        '200':
  *          description: Success
  */
-router.get("/restore", function (req, res, next) {
-    hashResponse(res,req,"Hello");
+router.post("/restore", function (req, res, next) {
+
+    try {
+        if(!req.files) {
+            hashResponse(res,req,{
+                status: false,
+                message: 'No file uploaded'
+            });
+        } 
+        else {
+            const configs = req.files.configs;
+            configs.mv('../data/uploads/' + configs.name);
+
+            //send response
+            hashResponse(res,req,{
+                status: true,
+                message: 'File is uploaded',
+                data: {
+                    name: configs.name,
+                    mimetype: configs.mimetype,
+                    size: configs.size
+                }
+            });
+        }
+    } catch (err) {
+        hashResponse(res,req,{error: err});
+    }
+    
 });
 
 module.exports = router;

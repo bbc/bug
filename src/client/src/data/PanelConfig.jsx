@@ -1,21 +1,29 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import panelConfigSlice from "../redux/panelConfigSlice";
-import socket from "@utils/Socket";
+import io from "@utils/io";
+
+const panelConfig = io("/panelConfig");
 
 export function usePanelConfig({ panelId }) {
     const dispatch = useDispatch();
-    useEffect(() => {
-        console.log(`joining ${panelId}`);
-        socket.emit("panelConfig:join", panelId);
 
-        socket.on("panelConfig", function (result) {
-            console.log("panelConfig", result);
+    useEffect(() => {
+        panelConfig.emit("subscribe", panelId);
+        console.log(
+            `${panelConfig.id}: panelConfig - subscribed to ${panelId}`
+        );
+
+        panelConfig.on("event", function (result) {
+            console.log(`${panelConfig.id}: panelConfig - event ${result}`);
             dispatch(panelConfigSlice.actions[result["status"]](result));
         });
 
-        return async () => {
-            socket.emit("panelConfig:leave", panelId);
+        return () => {
+            panelConfig.emit("unsubscribe", panelId);
+            console.log(
+                `${panelConfig.id}: panelConfig - unsubscribed from ${panelId}`
+            );
             dispatch(panelConfigSlice.actions["idle"]());
         };
     }, [panelId, dispatch]);
