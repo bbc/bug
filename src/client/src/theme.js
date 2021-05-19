@@ -163,5 +163,5 @@ const theme = createMuiTheme({
         },
     },
 });
-console.log(theme.palette.error.main);
+
 export default theme;
