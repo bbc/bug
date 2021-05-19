@@ -37,7 +37,6 @@ export default function ModuleWrapper({ panelId, children }) {
                 isProtected = true;
             }
         }
-        console.log("isProtected", isProtected);
     }
 
     if (panel.status === "success") {

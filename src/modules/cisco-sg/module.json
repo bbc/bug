@@ -8,10 +8,11 @@
     "author": "Geoff House",
     "license": "ISC",
     "needsContainer": true,
+    "protectedRoutes": ["edit"],
     "defaultconfig": {
         "id": "",
         "order": 0,
-        "needsConfigured":true,
+        "needsConfigured": true,
         "title": "",
         "module": "mikrotik-interfaces",
         "description": "",
