@@ -1,20 +1,26 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import panelSlice from "../redux/panelSlice";
-import socket from "@utils/Socket";
+import io from "@utils/io";
+
+const panel = io("/panel");
 
 export function usePanel({ panelId }) {
     const dispatch = useDispatch();
     useEffect(() => {
-        socket.emit("panel:join", panelId);
+        console.log(`${panel.id}: panelConfig - subscribed from ${panelId}`);
+        panel.emit("subscribe", panelId);
 
-        socket.on("panel", function (result) {
-            console.log("panel", result);
+        panel.on("event", function (result) {
+            console.log(`${panel.id}: panelConfig - event ${result}`);
             dispatch(panelSlice.actions[result["status"]](result));
         });
 
         return async () => {
-            socket.emit("panel:leave", panelId);
+            panel.emit("unsubscribe", panelId);
+            console.log(
+                `${panel.id}: panelConfig - unsubscribed from ${panelId}`
+            );
             dispatch(panelSlice.actions["idle"]());
         };
     }, [panelId, dispatch]);

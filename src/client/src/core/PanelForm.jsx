@@ -67,7 +67,11 @@ const PanelForm = (props) => {
     return (
         <Card className={classes.card}>
             {props.onClose && (
-                <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
+                <IconButton
+                    aria-label="close"
+                    className={classes.closeButton}
+                    onClick={props.onClose}
+                >
                     <CloseIcon />
                 </IconButton>
             )}
@@ -96,7 +100,9 @@ const Body = (props) => {
 
 const Actions = (props) => {
     const classes = useStyles();
-    return <CardActions className={classes.actions}>{props.children}</CardActions>;
+    return (
+        <CardActions className={classes.actions}>{props.children}</CardActions>
+    );
 };
 
 PanelForm.Header = Header;

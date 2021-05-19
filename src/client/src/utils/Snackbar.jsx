@@ -1,6 +1,8 @@
 import { useSnackbar } from "notistack";
 import React, { useEffect } from "react";
-import socket from "@utils/Socket";
+import io from "@utils/io";
+
+const alert = io("/alert");
 
 const InnerSnackbarConfigurator = (props) => {
     props.setUseSnackbarRef(useSnackbar());
@@ -16,7 +18,7 @@ export function SnackbarConfigurator() {
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        socket.on("alert", (payload) => {
+        alert.on("event", (payload) => {
             enqueueSnackbar(payload?.message, payload?.options);
         });
     });
@@ -34,7 +36,7 @@ export const useAlert = () => {
     const sendAlert = (message, options) => {
         if (options?.broadcast) {
             delete options.broadcast;
-            socket.emit("alert", {
+            alert.emit("event", {
                 message: message,
                 options: options,
             });

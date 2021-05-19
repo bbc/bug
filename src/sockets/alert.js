@@ -1,12 +1,10 @@
-const logger = require('@utils/logger')(module);
+const logger = require("@utils/logger")(module);
 
-const alertHandler = (io, socket) => {
-
-    socket.on('alert', (data) => {
-        socket.broadcast.emit('alert', data);
+const alertHandler = (namespace, socket) => {
+    socket.on("event", (data) => {
+        socket.broadcast.emit("event", data);
         logger.action(data.message);
     });
-
-}
+};
 
 module.exports = alertHandler;
