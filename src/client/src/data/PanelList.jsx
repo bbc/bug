@@ -10,16 +10,16 @@ export default function PanelList(props) {
 
     useEffect(() => {
         panelList.on("connect", () => {
-            console.log(`${panelList.id}: panelList - subscribed`);
+            // console.log(`${panelList.id}: panelList - subscribed`);
         });
 
         panelList.on("event", (result) => {
-            console.log(`${panelList.id}: panelList - event ${result}`);
+            console.log(`${panelList.id}: panelList - event`, result);
             dispatch(panelListSlice.actions[result["status"]](result));
         });
 
         return async () => {
-            console.log(`${panelList.id}: panelList - unsubscribed`);
+            // console.log(`${panelList.id}: panelList - unsubscribed`);
             panelList.disconnect();
         };
     }, [dispatch]);

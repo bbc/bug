@@ -9,17 +9,20 @@ export function usePanel({ panelId }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (!panelId) {
+            return;
+        }
         panel.emit("subscribe", panelId);
-        console.log(`${panel.id}: panel - subscribed from ${panelId}`);
+        // console.log(`${panelId}: panel - subscribed`);
 
         panel.on("event", function (result) {
-            console.log(`${panel.id}: panelConfig - event ${result}`);
+            console.log(`${panelId}: panelConfig - event`, result);
             dispatch(panelSlice.actions[result["status"]](result));
         });
 
         return async () => {
             panel.emit("unsubscribe", panelId);
-            console.log(`${panel.id}: panel - unsubscribed from ${panelId}`);
+            // console.log(`${panelId}: panel unsubscribed`);
             dispatch(panelSlice.actions["idle"]());
         };
     }, [panelId, dispatch]);

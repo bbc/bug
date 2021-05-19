@@ -9,21 +9,20 @@ export function usePanelConfig({ panelId }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (!panelId) {
+            return;
+        }
         panelConfig.emit("subscribe", panelId);
-        console.log(
-            `${panelConfig.id}: panelConfig - subscribed to ${panelId}`
-        );
+        // console.log(`${panelId}: panelConfig - subscribed`);
 
         panelConfig.on("event", function (result) {
-            console.log(`${panelConfig.id}: panelConfig - event ${result}`);
+            console.log(`${panelId}: panelConfig - event`, result);
             dispatch(panelConfigSlice.actions[result["status"]](result));
         });
 
         return () => {
             panelConfig.emit("unsubscribe", panelId);
-            console.log(
-                `${panelConfig.id}: panelConfig - unsubscribed from ${panelId}`
-            );
+            // console.log(`${panelId}: panelConfig - unsubscribed`);
             dispatch(panelConfigSlice.actions["idle"]());
         };
     }, [panelId, dispatch]);
