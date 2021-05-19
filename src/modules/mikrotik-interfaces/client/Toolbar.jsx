@@ -1,5 +1,5 @@
 import React from "react";
-import PanelToolbar from "@core/PanelToolbar";
+import ToolbarWrapper from "@core/ToolbarWrapper";
 // import Button from "@material-ui/core/Button";
 // import MenuItem from "@material-ui/core/MenuItem";
 // import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -15,5 +15,5 @@ export default function Toolbar(props) {
     toolbarProps["buttons"] = buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
-    return <PanelToolbar {...toolbarProps} isClosed={false} />;
+    return <ToolbarWrapper {...toolbarProps} isClosed={false} />;
 }
