@@ -18,6 +18,7 @@ import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
 import RenameDialog from "./RenameDialog";
 import CommentDialog from "./CommentDialog";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -51,6 +52,8 @@ const useStyles = makeStyles((theme) => ({
     },
     colName: {
         minWidth: "8rem",
+        maxWidth: "10rem",
+        overflow: "hidden",
     },
     colSpeed: {
         width: "5rem",
@@ -78,16 +81,26 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
         textOverflow: "ellipsis",
         overflow: "hidden",
-        minWidth: "100%",
-        maxWidth: 0,
+        color: "#ffffff",
+        fontFamily: theme.typography.fontFamily,
+        fontSize: "0.875rem",
+        lineHeight: 1.43,
+        display: "block",
+        maxWidth: "100%",
+        textAlign: "left",
     },
     interfaceComment: {
+        color: "#ffffff",
         opacity: 0.3,
         whiteSpace: "nowrap",
         textOverflow: "ellipsis",
         overflow: "hidden",
-        minWidth: "100%",
-        maxWidth: 0,
+        fontFamily: theme.typography.fontFamily,
+        fontSize: "0.875rem",
+        lineHeight: 1.43,
+        display: "block",
+        maxWidth: "100%",
+        textAlign: "left",
     },
     spark: {
         position: "absolute",
@@ -151,6 +164,18 @@ export default function InterfaceList({ panelId }) {
         }
     };
 
+    const handleInterfaceNameClicked = (event, dialogProps) => {
+        setRenameDialogProps(dialogProps);
+        setRenameDialogOpen(true);
+        event.stopPropagation();
+    };
+
+    const handleInterfaceCommentClicked = (event, dialogProps) => {
+        setCommentDialogProps(dialogProps);
+        setCommentDialogOpen(true);
+        event.stopPropagation();
+    };
+
     const renderTraffic = (iface, type) => {
         if (!iface["traffic"] || !iface["traffic"][type + "-bps-text"]) {
             return null;
@@ -197,8 +222,34 @@ export default function InterfaceList({ panelId }) {
                     />
                 </TableCell>
                 <TableCell className={classes.colName}>
-                    <div className={classes.interfaceName}>{iface.name}</div>
-                    <div className={classes.interfaceComment}>{iface.comment}</div>
+                    <Link
+                        component="button"
+                        className={classes.interfaceName}
+                        onClick={(event) =>
+                            handleInterfaceNameClicked(event, {
+                                panelId,
+                                interfaceId: iface.id,
+                                interfaceName: iface.name,
+                                defaultName: iface["default-name"],
+                            })
+                        }
+                    >
+                        {iface.name}
+                    </Link>
+                    <Link
+                        component="button"
+                        className={classes.interfaceComment}
+                        onClick={(event) =>
+                            handleInterfaceCommentClicked(event, {
+                                panelId,
+                                interfaceId: iface.id,
+                                interfaceName: iface.name,
+                                comment: iface.comment,
+                            })
+                        }
+                    >
+                        {iface.comment ? iface.comment : ""}
+                    </Link>
                 </TableCell>
                 <TableCell className={classes.colSpeed}>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
                 <TableCell className={classes.colMacAddress}>{iface["mac-address"]}</TableCell>
