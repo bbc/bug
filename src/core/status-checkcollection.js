@@ -15,7 +15,7 @@ module.exports = async (collectionName, collectionDescription, timeoutSeconds = 
 
     const connection = await mongoCollection(collectionName);
 
-    let latestDocument = await connection.find().sort({ timestamp: 1 }).limit(1).toArray();
+    let latestDocument = await connection.find().sort({ timestamp: -1 }).limit(1).toArray();
 
     if (latestDocument && latestDocument.length === 1) {
         if (latestDocument[0]["timestamp"] < Date.now() - timeout) {
