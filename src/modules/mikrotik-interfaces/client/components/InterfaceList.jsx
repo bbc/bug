@@ -19,6 +19,7 @@ import { useApiPoller } from "@utils/ApiPoller";
 import RenameDialog from "./RenameDialog";
 import CommentDialog from "./CommentDialog";
 import Link from "@material-ui/core/Link";
+import SparkCell from "@core/SparkCell";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -102,21 +103,6 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: "100%",
         textAlign: "left",
     },
-    spark: {
-        position: "absolute",
-        bottom: 0,
-        width: "100%",
-        paddingRight: "0.5rem",
-    },
-    sparkText: {
-        position: "absolute",
-        top: "1.375rem",
-        zIndex: "1",
-        textShadow: "0px 0px 5px #000",
-    },
-    // cellMenu: {
-    //     width: '2rem'
-    // },
 }));
 
 export default function InterfaceList({ panelId }) {
@@ -176,33 +162,6 @@ export default function InterfaceList({ panelId }) {
         event.stopPropagation();
     };
 
-    const renderTraffic = (iface, type) => {
-        if (!iface["traffic"] || !iface["traffic"][type + "-bps-text"]) {
-            return null;
-        }
-
-        const isAllZero = iface["traffic"][type + "-history"].every((item) => item.value === 0);
-        if (isAllZero) {
-            return null;
-        }
-
-        // pull values from array of objects
-        let values = iface["traffic"][type + "-history"].map((a) => a.value);
-
-        return (
-            <>
-                <div className={classes.sparkText}>
-                    {iface["traffic"][type + "-bps-text"] !== "0" ? iface["traffic"][type + "-bps-text"] : "0 b/s"}
-                </div>
-                <div className={classes.spark}>
-                    <Sparklines data={values} height={40}>
-                        <SparklinesLine color="#337ab7" />
-                    </Sparklines>
-                </div>
-            </>
-        );
-    };
-
     const renderRow = (iface) => {
         return (
             <TableRow
@@ -253,8 +212,12 @@ export default function InterfaceList({ panelId }) {
                 </TableCell>
                 <TableCell className={classes.colSpeed}>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
                 <TableCell className={classes.colMacAddress}>{iface["mac-address"]}</TableCell>
-                <TableCell className={classes.colTraffic}>{renderTraffic(iface, "tx")}</TableCell>
-                <TableCell className={classes.colTraffic}>{renderTraffic(iface, "rx")}</TableCell>
+                <TableCell className={classes.colTraffic}>
+                    <SparkCell value={iface["traffic"]["tx-bps-text"]} history={iface["traffic"]["tx-history"]} />
+                </TableCell>
+                <TableCell className={classes.colTraffic}>
+                    <SparkCell value={iface["traffic"]["rx-bps-text"]} history={iface["traffic"]["rx-history"]} />
+                </TableCell>
                 <TableCell style={{ width: "4rem" }} className={classes.cellMenu}>
                     <InterfaceListMenu
                         iface={iface}
