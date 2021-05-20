@@ -16,10 +16,37 @@ import BadgeWrapper from "@components/BadgeWrapper";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
     critical: {
         opacity: 0.5,
+    },
+    groupPanel: {
+        padding: 0,
+        display: "block",
+    },
+    group: {
+        "&.MuiAccordion-root:before": {
+            height: 0,
+        },
+        // boxShadow: "none",
+        "&.Mui-expanded": {
+            margin: 0,
+        },
+    },
+    groupHeader: {
+        fontSize: "0.875rem",
+        fontWeight: 500,
+        textTransform: "uppercase",
+        height: 48,
+        "&.Mui-expanded": {
+            minHeight: 48,
+            height: 48,
+        },
     },
 }));
 
@@ -29,6 +56,7 @@ const Menu = (props) => {
     const panel = useSelector((state) => state.panel);
     const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
     const location = useLocation();
+    const [expanded, setExpanded] = React.useState(false);
 
     const renderMenuItem = (menuPanel) => {
         if (!menuPanel.enabled) {
@@ -56,16 +84,78 @@ const Menu = (props) => {
         );
     };
 
-    const renderMenuItems = (props) => {
+    // const Group = (props) => (
+
+    const handleAccordionChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
+    const GroupedMenuItems = ({ groupedItems }) => {
+        return (
+            <>
+                {Object.entries(groupedItems).map(([eachGroup, index]) => {
+                    console.log(eachGroup, groupedItems);
+                    return (
+                        <>
+                            <Accordion
+                                elevation={0}
+                                className={classes.group}
+                                expanded={expanded === eachGroup}
+                                onChange={handleAccordionChange(eachGroup)}
+                            >
+                                <AccordionSummary className={classes.groupHeader} expandIcon={<ExpandMoreIcon />}>
+                                    {eachGroup}
+                                </AccordionSummary>
+                                <AccordionDetails className={classes.groupPanel}>
+                                    <List aria-label="list of enabled modules">
+                                        {groupedItems[eachGroup].map((eachPanel) => renderMenuItem(eachPanel))}
+                                    </List>
+                                </AccordionDetails>
+                            </Accordion>
+                        </>
+                    );
+                })}
+            </>
+        );
+
+        // return (
+        // {for (const [groupName, items] of Object.entries(groupedItems)) {
+
+        // {}}
+        // )
+        // for(let eachGroup of groupedItems) {
+
+        // }
+        // return (
+        //     <List aria-label="list of enabled modules">
+        //         {items.map((eachPanel) => renderMenuItem(eachPanel))}
+        //     </List>
+        // );
+    };
+
+    const MenuItems = ({ items }) => {
+        return <List aria-label="list of enabled modules">{items.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
+    };
+
+    const renderPanelMenuItems = (props) => {
         if (panelList.status === "loading") {
             return <Loading />;
         }
         if (panelList.status === "success") {
-            return (
-                <List aria-label="list of enabled modules">
-                    {panelList.data.map((eachPanel) => renderMenuItem(eachPanel))}
-                </List>
-            );
+            // sort the panels into groups
+            let panelsByGroup = {};
+            for (let eachPanel of panelList.data) {
+                const group = eachPanel.group ? eachPanel.group : "default";
+                if (!panelsByGroup[group]) {
+                    panelsByGroup[group] = [];
+                }
+                panelsByGroup[group].push(eachPanel);
+            }
+            if (panelsByGroup.length === 1) {
+                return <MenuItems items={panelList.data} />;
+            } else {
+                return <GroupedMenuItems groupedItems={panelsByGroup} />;
+            }
         } else {
             return null;
         }
@@ -82,7 +172,7 @@ const Menu = (props) => {
             >
                 <Grid item style={{ width: "100%" }}>
                     <List>
-                        <ListItem button component={Link} to="/" selected={location.pathname == "/"}>
+                        <ListItem button component={Link} to="/" selected={location.pathname === "/"}>
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
@@ -90,7 +180,7 @@ const Menu = (props) => {
                         </ListItem>
                     </List>
                     <Divider />
-                    {renderMenuItems(props)}
+                    {renderPanelMenuItems(props)}
                     {enabledPanelList.length > 0 ? <Divider /> : null}
                     <List>
                         <ListItem
