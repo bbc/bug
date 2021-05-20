@@ -11,19 +11,21 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import CancelIcon from "@material-ui/icons/Cancel";
 import IconButton from "@material-ui/core/IconButton";
 
-export default function RenameDialog({ interfaceId, interfaceName, defaultName, onClose, panelId }) {
+export default function CommentDialog({ interfaceId, interfaceName, comment, onClose, panelId }) {
     const sendAlert = useAlert();
-    const [value, setValue] = React.useState(interfaceName);
+    const [value, setValue] = React.useState(comment ? comment : "");
     const inputRef = React.useRef();
 
-    const handleRenameConfirm = async (event) => {
+    const handleSetCommentConfirm = async (event) => {
         event.stopPropagation();
         onClose(event);
-        const saveValue = value ? value : defaultName;
-        if (await AxiosCommand(`/container/${panelId}/interface/rename/${interfaceId}/${saveValue}`)) {
-            sendAlert(`Renamed interface to ${saveValue}`, { broadcast: true, variant: "success" });
+        if (await AxiosCommand(`/container/${panelId}/interface/comment/${interfaceId}/${value}`)) {
+            sendAlert(`Set comment on interface ${interfaceName} to '${value}'`, {
+                broadcast: true,
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to rename interface to ${saveValue}`, { variant: "error" });
+            sendAlert(`Failed to set comment on interface ${interfaceName}`, { variant: "error" });
         }
     };
 
@@ -31,7 +33,7 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
         setValue(event.target.value);
     };
 
-    const handleRenameDialogClose = (event) => {
+    const handleCommentDialogClose = (event) => {
         event.stopPropagation();
         onClose(event);
     };
@@ -42,8 +44,8 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
     };
 
     return (
-        <Dialog open onClose={handleRenameDialogClose} disableBackdropClick>
-            <DialogTitle id="alert-dialog-title">Rename interface</DialogTitle>
+        <Dialog open onClose={handleCommentDialogClose} disableBackdropClick>
+            <DialogTitle id="alert-dialog-title">Change interface comment</DialogTitle>
             <DialogContent>
                 <TextField
                     inputRef={inputRef}
@@ -51,10 +53,9 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
                     value={value}
                     onChange={handleTextChanged}
                     variant="filled"
-                    placeholder={defaultName}
                     fullWidth
                     type="text"
-                    label="Interface name"
+                    label="Comment"
                     onClick={(event) => {
                         event.stopPropagation();
                     }}
@@ -71,11 +72,11 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
                 ></TextField>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleRenameDialogClose} color="primary">
+                <Button onClick={handleCommentDialogClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={handleRenameConfirm} color="primary">
-                    Rename
+                <Button onClick={handleSetCommentConfirm} color="primary">
+                    Change
                 </Button>
             </DialogActions>
         </Dialog>

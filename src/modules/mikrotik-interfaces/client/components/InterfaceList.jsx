@@ -16,6 +16,8 @@ import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
+import RenameDialog from "./RenameDialog";
+import CommentDialog from "./CommentDialog";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -109,11 +111,25 @@ export default function InterfaceList({ panelId }) {
     const [redirectUrl, setRedirectUrl] = React.useState(null);
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
     const sendAlert = useAlert();
+    const [renameDialogOpen, setRenameDialogOpen] = React.useState(false);
+    const [renameDialogProps, setRenameDialogProps] = React.useState({});
+    const [commentDialogOpen, setCommentDialogOpen] = React.useState(false);
+    const [commentDialogProps, setCommentDialogProps] = React.useState({});
 
     const interfaceList = useApiPoller({
         url: `/container/${panelId}/interface`,
         interval: 2000,
     });
+
+    const handleRenameClicked = (dialogProps) => {
+        setRenameDialogProps(dialogProps);
+        setRenameDialogOpen(true);
+    };
+
+    const handleCommentClicked = (dialogProps) => {
+        setCommentDialogProps(dialogProps);
+        setCommentDialogOpen(true);
+    };
 
     const handleRowClicked = (interfaceName) => {
         if (!menuIsOpen) {
@@ -189,7 +205,13 @@ export default function InterfaceList({ panelId }) {
                 <TableCell className={classes.colTraffic}>{renderTraffic(iface, "tx")}</TableCell>
                 <TableCell className={classes.colTraffic}>{renderTraffic(iface, "rx")}</TableCell>
                 <TableCell style={{ width: "4rem" }} className={classes.cellMenu}>
-                    <InterfaceListMenu iface={iface} panelId={panelId} onChanged={handleMenuOpenChanged} />
+                    <InterfaceListMenu
+                        iface={iface}
+                        panelId={panelId}
+                        onChanged={handleMenuOpenChanged}
+                        onRename={handleRenameClicked}
+                        onComment={handleCommentClicked}
+                    />
                 </TableCell>
             </TableRow>
         );
@@ -228,6 +250,12 @@ export default function InterfaceList({ panelId }) {
                     </Table>
                 </TableContainer>
             </div>
+            {renameDialogOpen ? (
+                <RenameDialog {...renameDialogProps} onClose={() => setRenameDialogOpen(false)} />
+            ) : null}
+            {commentDialogOpen ? (
+                <CommentDialog {...commentDialogProps} onClose={() => setCommentDialogOpen(false)} />
+            ) : null}
         </>
     );
 }

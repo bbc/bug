@@ -8,6 +8,7 @@ const mikrotikInterfaceDisable = require("../../services/mikrotik-interfacedisab
 const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
 const mikrotikInterfaceUnprotect = require("../../services/mikrotik-interfaceunprotect");
 const mikrotikInterfaceRename = require("../../services/mikrotik-interfacerename");
+const mikrotikInterfaceComment = require("../../services/mikrotik-interfacecomment");
 const asyncHandler = require("express-async-handler");
 
 router.get(
@@ -46,6 +47,28 @@ router.get(
     "/rename/:interfaceId/:interfaceName",
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceRename(req.params.interfaceId, req.params.interfaceName);
+        res.json({
+            status: result ? "success" : "fail",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/comment/:interfaceId/:interfaceComment",
+    asyncHandler(async (req, res) => {
+        const result = await mikrotikInterfaceComment(req.params.interfaceId, req.params.interfaceComment);
+        res.json({
+            status: result ? "success" : "fail",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/comment/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await mikrotikInterfaceComment(req.params.interfaceId, "");
         res.json({
             status: result ? "success" : "fail",
             data: result,

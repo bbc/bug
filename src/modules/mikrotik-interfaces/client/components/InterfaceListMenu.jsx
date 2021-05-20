@@ -13,17 +13,16 @@ import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponen
 import CheckIcon from "@material-ui/icons/Check";
 import AxiosCommand from "@utils/AxiosCommand";
 import { Redirect } from "react-router";
-import RenameDialog from "./RenameDialog";
+import CommentIcon from "@material-ui/icons/Comment";
 
 // const useStyles = makeStyles((theme) => ({}));
 
-export default function InterfaceListMenu({ iface, panelId, onChanged }) {
+export default function InterfaceListMenu({ iface, panelId, onChanged, onRename, onComment }) {
     // const classes = useStyles();
     const sendAlert = useAlert();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const [renameDialogOpen, setRenameDialogOpen] = React.useState(false);
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -50,7 +49,23 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
 
     const handleRename = (event) => {
         handleClose();
-        setRenameDialogOpen(true);
+        onRename({
+            panelId,
+            interfaceId: iface.id,
+            interfaceName: iface.name,
+            defaultName: iface["default-name"],
+        });
+        event.stopPropagation();
+    };
+
+    const handleComment = (event) => {
+        handleClose();
+        onComment({
+            panelId,
+            interfaceId: iface.id,
+            interfaceName: iface.name,
+            comment: iface.comment,
+        });
         event.stopPropagation();
     };
 
@@ -81,6 +96,12 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
                 </MenuItem>
+                <MenuItem onClick={handleComment}>
+                    <ListItemIcon>
+                        <CommentIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Comment" />
+                </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleProtect} disabled={iface._protected && !iface._allowunprotect}>
                     <ListItemIcon disabled={iface._protected && !iface._allowunprotect}>
@@ -89,15 +110,6 @@ export default function InterfaceListMenu({ iface, panelId, onChanged }) {
                     <ListItemText primary="Protect" />
                 </MenuItem>
             </Menu>
-            {renameDialogOpen ? (
-                <RenameDialog
-                    panelId={panelId}
-                    interfaceId={iface.id}
-                    interfaceName={iface.name}
-                    defaultName={iface["default-name"]}
-                    onClose={() => setRenameDialogOpen(false)}
-                />
-            ) : null}
         </div>
     );
 }
