@@ -15,6 +15,7 @@ import BugMenuIcon from "@components/BugMenuIcon";
 import BadgeWrapper from "@components/BadgeWrapper";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     critical: {
@@ -25,28 +26,32 @@ const useStyles = makeStyles((theme) => ({
 const Menu = (props) => {
     const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
+    const panel = useSelector((state) => state.panel);
     const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
+    const location = useLocation();
 
-    const renderMenuItem = (panel) => {
-        if (!panel.enabled) {
+    const renderMenuItem = (menuPanel) => {
+        if (!menuPanel.enabled) {
             return null;
         }
-        let hasCritical = panel._status.filter((x) => x.type === "critical").length > 0;
+        let hasCritical = menuPanel._status.filter((x) => x.type === "critical").length > 0;
 
+        const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
             <ListItem
                 className={hasCritical ? classes.critical : ""}
                 button
                 component={Link}
-                to={`/panel/${panel.id}`}
-                key={panel.id}
+                to={`/panel/${menuPanel.id}`}
+                key={menuPanel.id}
+                selected={isSelected}
             >
                 <ListItemIcon>
-                    <BadgeWrapper panel={panel}>
-                        <DynamicIcon iconName={panel._module.icon} />
+                    <BadgeWrapper panel={menuPanel}>
+                        <DynamicIcon iconName={menuPanel._module.icon} />
                     </BadgeWrapper>
                 </ListItemIcon>
-                <ListItemText primary={panel.title} />
+                <ListItemText primary={menuPanel.title} />
             </ListItem>
         );
     };
@@ -57,7 +62,9 @@ const Menu = (props) => {
         }
         if (panelList.status === "success") {
             return (
-                <List aria-label="list of enabled modules">{panelList.data.map((panel) => renderMenuItem(panel))}</List>
+                <List aria-label="list of enabled modules">
+                    {panelList.data.map((eachPanel) => renderMenuItem(eachPanel))}
+                </List>
             );
         } else {
             return null;
@@ -75,7 +82,7 @@ const Menu = (props) => {
             >
                 <Grid item style={{ width: "100%" }}>
                     <List>
-                        <ListItem button component={Link} to="/">
+                        <ListItem button component={Link} to="/" selected={location.pathname == "/"}>
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
@@ -86,13 +93,23 @@ const Menu = (props) => {
                     {renderMenuItems(props)}
                     {enabledPanelList.length > 0 ? <Divider /> : null}
                     <List>
-                        <ListItem button component={Link} to="/system">
+                        <ListItem
+                            button
+                            component={Link}
+                            to="/system"
+                            selected={location.pathname.startsWith("/system")}
+                        >
                             <ListItemIcon>
                                 <SettingsIcon />
                             </ListItemIcon>
                             <ListItemText primary="System" />
                         </ListItem>
-                        <ListItem button component={Link} to="/panels">
+                        <ListItem
+                            button
+                            component={Link}
+                            to="/panels"
+                            selected={location.pathname.startsWith("/panels")}
+                        >
                             <ListItemIcon>
                                 <DashboardIcon />
                             </ListItemIcon>
