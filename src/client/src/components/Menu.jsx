@@ -95,31 +95,29 @@ const Menu = ({ showGroups = true }) => {
         return (
             <>
                 {Object.entries(groupedItems).map(([eachGroup, index]) => {
-                    console.log(eachGroup, groupedItems);
                     return (
-                        <>
-                            <Accordion
-                                elevation={0}
-                                className={classes.group}
-                                expanded={expanded === eachGroup}
-                                onChange={handleAccordionChange(eachGroup)}
+                        <Accordion
+                            key={index}
+                            elevation={0}
+                            className={classes.group}
+                            expanded={expanded === eachGroup}
+                            onChange={handleAccordionChange(eachGroup)}
+                        >
+                            <AccordionSummary
+                                className={classes.groupHeader}
+                                expandIcon={<ExpandMoreIcon />}
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                }}
                             >
-                                <AccordionSummary
-                                    className={classes.groupHeader}
-                                    expandIcon={<ExpandMoreIcon />}
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                    }}
-                                >
-                                    {eachGroup}
-                                </AccordionSummary>
-                                <AccordionDetails className={classes.groupPanel}>
-                                    <List aria-label="list of enabled modules">
-                                        {groupedItems[eachGroup].map((eachPanel) => renderMenuItem(eachPanel))}
-                                    </List>
-                                </AccordionDetails>
-                            </Accordion>
-                        </>
+                                {eachGroup}
+                            </AccordionSummary>
+                            <AccordionDetails className={classes.groupPanel}>
+                                <List aria-label="list of enabled modules">
+                                    {groupedItems[eachGroup].map((eachPanel) => renderMenuItem(eachPanel))}
+                                </List>
+                            </AccordionDetails>
+                        </Accordion>
                     );
                 })}
             </>
