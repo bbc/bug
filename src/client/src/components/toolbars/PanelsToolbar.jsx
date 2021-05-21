@@ -18,12 +18,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-/*
- * this has optional properties:
- * - buttons - which can take buttons with links to show on the toolbar
- * - menuitems - which can take menuitems which will be shown in the list
- */
-
 export default function PanelsToolbar(props) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -73,7 +67,7 @@ export default function PanelsToolbar(props) {
                     <ListItemIcon>
                         <EditIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText primary="Edit Panel" />
+                    <ListItemText primary="Edit Config" />
                 </MenuItem>
             </Menu>
         </>

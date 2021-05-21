@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import React, { Suspense } from "react";
 import { useLocation } from "react-router-dom";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
+import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -50,6 +51,15 @@ const Toolbar = (props) => {
                         <PageTitle />
                     </div>
                     <PanelsToolbar />
+                </>
+            );
+        case "/panels/edit":
+            return (
+                <>
+                    <div className={classes.title}>
+                        <PageTitle />
+                    </div>
+                    <PanelsEditToolbar />
                 </>
             );
         default:

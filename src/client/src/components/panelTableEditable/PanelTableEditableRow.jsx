@@ -4,9 +4,9 @@ import ProgressCounter from "@components/ProgressCounter";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import clsx from "clsx";
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 const state = {
     textTransform: "uppercase",
@@ -19,6 +19,9 @@ const state = {
 const useStyles = makeStyles((theme) => ({
     cellMenu: {
         width: "2rem",
+    },
+    row: {
+        height: "65px",
     },
     state_running: {
         ...state,
@@ -69,13 +72,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PanelTableRow(props) {
     const classes = useStyles();
 
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-    } = useSortable({ id: props.id });
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -97,14 +94,18 @@ export default function PanelTableRow(props) {
             case "error":
                 return <div className={classes.state_error}>ERROR - {panel._buildStatus.text}</div>;
             default:
-                return <div className={`${classes['state_' + panel._dockerContainer._status]}`}>{panel._dockerContainer._status}</div>;
+                return (
+                    <div className={`${classes["state_" + panel._dockerContainer._status]}`}>
+                        {panel._dockerContainer._status}
+                    </div>
+                );
         }
     };
 
     return (
-        <TableRow key={props.id} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <TableRow className={classes.row} key={props.id} ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <TableCell>
-                <DragIndicatorIcon/>
+                <DragIndicatorIcon />
             </TableCell>
             <TableCell>
                 <div

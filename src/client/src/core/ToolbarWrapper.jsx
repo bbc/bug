@@ -142,7 +142,7 @@ export default function PanelToolbar(props) {
                         color="default"
                         startIcon={<SettingsIcon />}
                     >
-                        Edit Panel
+                        Edit Config
                     </Button>
                     {props.buttons}
                 </Hidden>
@@ -160,7 +160,7 @@ export default function PanelToolbar(props) {
                         <ListItemIcon>
                             <SettingsIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Edit Panel" />
+                        <ListItemText primary="Edit Config" />
                     </MenuItem>
                     {props.menuItems}
                     <Divider />
