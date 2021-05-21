@@ -16,7 +16,7 @@ const fullMenuWidth = 1024;
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
-        width: '100%'
+        width: "100%",
     },
     appBar: {
         backgroundColor: theme.palette.menu.main,
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: 20,
-        marginLeft: 4
+        marginLeft: 4,
     },
     drawer: {
         width: drawerWidth,
@@ -72,7 +72,7 @@ const NavDesktop = (props) => {
     };
 
     useEffect(() => {
-        if(window.innerWidth > fullMenuWidth) {
+        if (window.innerWidth > fullMenuWidth) {
             // window is wide - open the menu by default
             setOpen(true);
         }
@@ -80,11 +80,7 @@ const NavDesktop = (props) => {
 
     return (
         <div className={classes.root}>
-            <AppBar
-                position="fixed"
-                className={classes.appBar}
-                elevation={1}
-            >
+            <AppBar position="fixed" className={classes.appBar} elevation={1}>
                 <MuiToolbar>
                     <IconButton
                         color="inherit"
@@ -112,12 +108,9 @@ const NavDesktop = (props) => {
                 }}
             >
                 <div className={classes.toolbar}></div>
-                <Menu />
+                <Menu showGroups={open} />
             </Drawer>
-            <div className={classes.content}>
-                {props.children}
-            </div>
-
+            <div className={classes.content}>{props.children}</div>
         </div>
     );
 };

@@ -39,18 +39,21 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     groupHeader: {
+        borderTop: "1px solid rgba(255, 255, 255, 0.12)",
         fontSize: "0.875rem",
         fontWeight: 500,
         textTransform: "uppercase",
         height: 48,
         "&.Mui-expanded": {
+            borderTop: "1px solid rgba(255, 255, 255, 0.12)",
             minHeight: 48,
             height: 48,
         },
+        color: theme.palette.primary.main,
     },
 }));
 
-const Menu = (props) => {
+const Menu = ({ showGroups = true }) => {
     const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
@@ -84,8 +87,6 @@ const Menu = (props) => {
         );
     };
 
-    // const Group = (props) => (
-
     const handleAccordionChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
@@ -103,7 +104,13 @@ const Menu = (props) => {
                                 expanded={expanded === eachGroup}
                                 onChange={handleAccordionChange(eachGroup)}
                             >
-                                <AccordionSummary className={classes.groupHeader} expandIcon={<ExpandMoreIcon />}>
+                                <AccordionSummary
+                                    className={classes.groupHeader}
+                                    expandIcon={<ExpandMoreIcon />}
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                    }}
+                                >
                                     {eachGroup}
                                 </AccordionSummary>
                                 <AccordionDetails className={classes.groupPanel}>
@@ -117,27 +124,13 @@ const Menu = (props) => {
                 })}
             </>
         );
-
-        // return (
-        // {for (const [groupName, items] of Object.entries(groupedItems)) {
-
-        // {}}
-        // )
-        // for(let eachGroup of groupedItems) {
-
-        // }
-        // return (
-        //     <List aria-label="list of enabled modules">
-        //         {items.map((eachPanel) => renderMenuItem(eachPanel))}
-        //     </List>
-        // );
     };
 
     const MenuItems = ({ items }) => {
         return <List aria-label="list of enabled modules">{items.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
     };
 
-    const renderPanelMenuItems = (props) => {
+    const renderPanelMenuItems = () => {
         if (panelList.status === "loading") {
             return <Loading />;
         }
@@ -145,13 +138,13 @@ const Menu = (props) => {
             // sort the panels into groups
             let panelsByGroup = {};
             for (let eachPanel of panelList.data) {
-                const group = eachPanel.group ? eachPanel.group : "default";
+                const group = eachPanel.group ? eachPanel.group : "other";
                 if (!panelsByGroup[group]) {
                     panelsByGroup[group] = [];
                 }
                 panelsByGroup[group].push(eachPanel);
             }
-            if (panelsByGroup.length === 1) {
+            if (panelsByGroup.length === 1 || !showGroups) {
                 return <MenuItems items={panelList.data} />;
             } else {
                 return <GroupedMenuItems groupedItems={panelsByGroup} />;
@@ -179,8 +172,8 @@ const Menu = (props) => {
                             <ListItemText primary="Home" />
                         </ListItem>
                     </List>
-                    <Divider />
-                    {renderPanelMenuItems(props)}
+                    {/* <Divider /> */}
+                    {renderPanelMenuItems()}
                     {enabledPanelList.length > 0 ? <Divider /> : null}
                     <List>
                         <ListItem
