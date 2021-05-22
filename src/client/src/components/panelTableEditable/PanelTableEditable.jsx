@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import PanelTableRow from "@components/panelTableEditable/PanelTableEditableRow";
 import Loading from "@components/Loading";
+import AxiosPut from "@utils/AxiosPut";
 import { useSelector } from "react-redux";
 
 import {
@@ -18,14 +19,14 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 
 import {
     arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+} from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
     colDescription: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         "@media (max-width:512px)": {
             display: "none",
         },
-    }
+    },
 }));
 
 export default function PanelTable() {
@@ -61,42 +62,60 @@ export default function PanelTable() {
         setPanels(panelList.data);
     }, [panelList]);
 
+    useEffect(() => {
+        updateOrder(panels);
+    }, [panels]);
+
+    const updateOrder = async (panels) => {
+        for (let i = 0; i < panels.length; i++) {
+            const response = await AxiosPut(
+                `/api/panelconfig/${panels[i].id}`,
+                {
+                    order: i,
+                    group: "default",
+                }
+            );
+        }
+    };
+
     const handleDragEnd = (event) => {
         const { active, over } = event;
-
         if (active.id !== over.id) {
             setPanels((panels) => {
-                const oldIndex = findWithAttr(panels,'id',active.id);
-                const newIndex = findWithAttr(panels,'id',over.id);
+                const oldIndex = findWithAttr(panels, "id", active.id);
+                const newIndex = findWithAttr(panels, "id", over.id);
                 return arrayMove(panels, oldIndex, newIndex);
             });
         }
-    }
+    };
 
     const findWithAttr = (array, attr, value) => {
-        for(let i = 0; i < array.length; i += 1) {
-            if(array[i][attr] === value) {
+        for (let i = 0; i < array.length; i += 1) {
+            if (array[i][attr] === value) {
                 return i;
             }
         }
         return -1;
-    }
-    
+    };
+
     if (panelList.status === "loading") {
         return <Loading />;
     }
     if (panelList.status === "success") {
         return (
             <>
-
                 <TableContainer component={Paper} square>
                     <Table aria-label="simple table">
                         <TableHead className={classes.tableHead}>
                             <TableRow>
                                 <TableCell width="10"></TableCell>
                                 <TableCell>Title</TableCell>
-                                <TableCell className={classes.colDescription}>Description</TableCell>
-                                <TableCell className={classes.colModule}>Module</TableCell>
+                                <TableCell className={classes.colDescription}>
+                                    Description
+                                </TableCell>
+                                <TableCell className={classes.colModule}>
+                                    Module
+                                </TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -111,14 +130,17 @@ export default function PanelTable() {
                                     strategy={verticalListSortingStrategy}
                                 >
                                     {panels.map((panel) => (
-                                        <PanelTableRow key={panel.id} id={panel.id} {...panel} />
+                                        <PanelTableRow
+                                            key={panel.id}
+                                            id={panel.id}
+                                            {...panel}
+                                        />
                                     ))}
                                 </SortableContext>
                             </DndContext>
                         </TableBody>
                     </Table>
                 </TableContainer>
-
             </>
         );
     } else {
