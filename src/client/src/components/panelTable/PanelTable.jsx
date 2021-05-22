@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PanelTableRow from "@components/panelTable/PanelTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
+import PanelTableGroupRow from "./PanelTableGroupRow";
 
 const useStyles = makeStyles((theme) => ({
     colDescription: {
@@ -26,10 +27,10 @@ const useStyles = makeStyles((theme) => ({
         "@media (max-width:512px)": {
             display: "none",
         },
-    }
+    },
 }));
 
-export default function PanelTable() {
+export default function PanelTable({ showGroups = true }) {
     const panelList = useSelector((state) => state.panelList);
     const classes = useStyles();
     const [panels, setPanels] = useState(panelList.data);
@@ -37,6 +38,42 @@ export default function PanelTable() {
     useEffect(() => {
         setPanels(panelList.data);
     }, [panelList]);
+
+    const renderRows = () => {
+        // sort the panels into groups
+        let panelsByGroup = {};
+        for (let eachPanel of panelList.data) {
+            const group = eachPanel.group ? eachPanel.group : "other";
+            if (!panelsByGroup[group]) {
+                panelsByGroup[group] = [];
+            }
+            panelsByGroup[group].push(eachPanel);
+        }
+        if (panelsByGroup.length === 1 || !showGroups) {
+            return <PanelRows panels={panelList.data} showGroups={false} />;
+        } else {
+            return <PanelGroupRows groupedPanels={panelsByGroup} />;
+        }
+    };
+
+    const PanelRows = ({ panels, showGroups }) => {
+        return panels.map((panel) => <PanelTableRow key={panel.id} showGroups={showGroups} {...panel} />);
+    };
+
+    const PanelGroupRows = ({ groupedPanels }) => {
+        return (
+            <>
+                {Object.entries(groupedPanels).map(([eachGroup, index]) => {
+                    return (
+                        <>
+                            <PanelTableGroupRow title={eachGroup} />
+                            <PanelRows panels={groupedPanels[eachGroup]} showGroups={true} />
+                        </>
+                    );
+                })}
+            </>
+        );
+    };
 
     if (panelList.status === "loading") {
         return <Loading />;
@@ -48,6 +85,7 @@ export default function PanelTable() {
                     <Table aria-label="simple table">
                         <TableHead className={classes.tableHead}>
                             <TableRow>
+                                {showGroups ? <TableCell className={classes.colIndent} /> : null}
                                 <TableCell width="10"></TableCell>
                                 <TableCell>Title</TableCell>
                                 <TableCell className={classes.colDescription}>Description</TableCell>
@@ -56,14 +94,9 @@ export default function PanelTable() {
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>
-                            {panels.map((panel) => (
-                                <PanelTableRow key={panel.id} {...panel} />
-                            ))}
-                        </TableBody>
+                        <TableBody>{renderRows()}</TableBody>
                     </Table>
                 </TableContainer>
-
             </>
         );
     } else {

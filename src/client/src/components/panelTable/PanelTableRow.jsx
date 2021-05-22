@@ -66,6 +66,12 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colIndent: {
+        width: "0rem",
+    },
+    colEnabled: {
+        width: "4rem",
+    },
 }));
 
 export default function PanelTableRow(props) {
@@ -73,12 +79,11 @@ export default function PanelTableRow(props) {
     const sendAlert = useAlert();
 
     const handleEnabledChanged = async (checked, panelId) => {
-        const command = (checked ? 'enable' : 'disable');
-        const commandText = (checked ? 'Enabled' : 'Disabled');
+        const command = checked ? "enable" : "disable";
+        const commandText = checked ? "Enabled" : "Disabled";
         if (await AxiosCommand(`/api/panel/${command}/${panelId}`)) {
             sendAlert(`${commandText} panel: ${props.title}`, { broadcast: true, variant: "success" });
-        }
-        else {
+        } else {
             sendAlert(`Failed to ${command} panel: ${props.title}`, { variant: "error" });
         }
     };
@@ -98,12 +103,20 @@ export default function PanelTableRow(props) {
             case "error":
                 return <div className={classes.state_error}>ERROR - {panel._buildStatus.text}</div>;
             default:
-                return <div className={`${classes['state_' + panel._dockerContainer._status]}`}>{panel._dockerContainer._status}</div>;
+                return (
+                    <div className={`${classes["state_" + panel._dockerContainer._status]}`}>
+                        {panel._dockerContainer._status}
+                    </div>
+                );
         }
     };
 
     const renderSwitch = (panel) => {
-        if (panel._status === "building" || panel._dockerContainer._status === "stopping" || panel._dockerContainer._status === "starting") {
+        if (
+            panel._status === "building" ||
+            panel._dockerContainer._status === "stopping" ||
+            panel._dockerContainer._status === "starting"
+        ) {
             return <CircularProgress />;
         }
         return (
@@ -117,7 +130,10 @@ export default function PanelTableRow(props) {
 
     return (
         <TableRow key={props.id}>
-            <TableCell style={{ textAlign: "center" }}>{renderSwitch(props)}</TableCell>
+            {props.showGroups ? <TableCell className={classes.colIndent} /> : null}
+            <TableCell className={classes.colEnabled} style={{ textAlign: "center" }}>
+                {renderSwitch(props)}
+            </TableCell>
             <TableCell>
                 <div
                     className={clsx(classes.title, {
