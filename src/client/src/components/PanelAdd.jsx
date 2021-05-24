@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import AxiosPost from "@utils/AxiosPost";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";

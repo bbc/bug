@@ -7,6 +7,8 @@ import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import PasswordTextField from "@core/PasswordTextField";
+import ValidatedTextField from "@core/ValidatedTextField";
+import PanelGroupFormControl from "@core/PanelGroupFormControl";
 
 export default function EditPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -16,6 +18,7 @@ export default function EditPanel() {
         handleSubmit,
         control,
         formState: { errors },
+        setError,
     } = useForm();
 
     if (panelConfig.status === "loading") {
@@ -25,6 +28,7 @@ export default function EditPanel() {
     if (panelConfig.status !== "success") {
         return null;
     }
+    console.log(errors);
 
     return (
         <>
@@ -54,6 +58,10 @@ export default function EditPanel() {
                     />
                 </Grid>
 
+                <Grid item xs={12} md={6}>
+                    <PanelGroupFormControl name="group" control={control} defaultValue={panelConfig.data.group} />
+                </Grid>
+
                 <Grid item xs={12}>
                     <TextField
                         //REGEX: Tests for IPv4 Addresses
@@ -66,7 +74,9 @@ export default function EditPanel() {
                         variant="filled"
                         fullWidth
                         error={errors?.address ? true : false}
+                        helperText={errors?.address ? "Invalid address" : ""}
                         defaultValue={panelConfig.data.address}
+                        // validationField="address"
                         type="text"
                         label="IP Address"
                     />
