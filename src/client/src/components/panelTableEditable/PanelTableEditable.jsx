@@ -51,63 +51,45 @@ export default function PanelTable() {
         setPanels(panelList.data);
     }, [panelList]);
 
-    // useEffect(() => {
-    //     updateOrder(panels);
-    // }, [panels]);
+    useEffect(() => {
+        updateOrder(panels);
+    }, [panels]);
 
     const handleDragStart = (event) => {
-        // setActiveId(event.active.id);
+        setActiveId(event.active.id);
     };
 
-    // const handleDragEnd = (event) => {
-    //     // setActiveId(null);
-    // };
+    const updateOrder = async (panels) => {
+        console.log(panels);
+        for (let i = 0; i < panels.length; i++) {
+            const response = await AxiosPut(
+                `/api/panelconfig/${panels[i].id}`,
+                {
+                    order: i,
+                }
+            );
+        }
+    };
 
-    function handleDragEnd(event) {
+    const handleDragEnd = (event) => {
         const { active, over } = event;
-
         if (active.id !== over.id) {
-            setPanels((items) => {
-                const oldIndex = items.indexOf(active.id);
-                const newIndex = items.indexOf(over.id);
-
-                return arrayMove(items, oldIndex, newIndex);
+            setPanels((panels) => {
+                const oldIndex = findWithAttr(panels, "id", active.id);
+                const newIndex = findWithAttr(panels, "id", over.id);
+                return arrayMove(panels, oldIndex, newIndex);
             });
         }
-    }
+    };
 
-    // const updateOrder = async (panels) => {
-    //     console.log(panels);
-    //     // for (let i = 0; i < panels.length; i++) {
-    //     //     const response = await AxiosPut(
-    //     //         `/api/panelconfig/${panels[i].id}`,
-    //     //         {
-    //     //             order: i,
-    //     //             group: "default",
-    //     //         }
-    //     //     );
-    //     // }
-    // };
-
-    // const handleDragEnd = (event) => {
-    //     const { active, over } = event;
-    //     if (active.id !== over.id) {
-    //         setPanels((panels) => {
-    //             const oldIndex = findWithAttr(panels, "id", active.id);
-    //             const newIndex = findWithAttr(panels, "id", over.id);
-    //             return arrayMove(panels, oldIndex, newIndex);
-    //         });
-    //     }
-    // };
-
-    // const findWithAttr = (array, attr, value) => {
-    //     for (let i = 0; i < array.length; i += 1) {
-    //         if (array[i][attr] === value) {
-    //             return i;
-    //         }
-    //     }
-    //     return -1;
-    // };
+    const findWithAttr = (array, attr, value) => {
+        for (let i = 0; i < array.length; i += 1) {
+            if (array[i][attr] === value) {
+                return i;
+            }
+        }
+        return -1;
+    };
 
     if (panelList.status === "loading") {
         return <Loading />;
@@ -123,16 +105,18 @@ export default function PanelTable() {
                             onDragStart={handleDragStart}
                             onDragEnd={handleDragEnd}
                         >
-                            <SortableContext items={panels} strategy={verticalListSortingStrategy}>
+                            <SortableContext
+                                items={panels.map((panel) => panel.id)}
+                                strategy={verticalListSortingStrategy}
+                            >
                                 {panels.map((panel) => (
-                                    <PanelTableEditableRow key={panel.id} panelId={panel.id} panel={panel} />
+                                    <PanelTableEditableRow
+                                        key={panel.id}
+                                        panelId={panel.id}
+                                        panel={panel}
+                                    />
                                 ))}
                             </SortableContext>
-                            {/* <DragOverlay>
-                                <TableRow>
-                                    <div className={classes.cell}>Hello - selected id it {activeId}</div>
-                                </TableRow>
-                            </DragOverlay> */}
                         </DndContext>
                     </div>
                 </div>
