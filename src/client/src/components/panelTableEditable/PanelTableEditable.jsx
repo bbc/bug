@@ -19,11 +19,11 @@ import {
     closestCenter,
     KeyboardSensor,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
     DragOverlay,
 } from "@dnd-kit/core";
-
 import {
     arrayMove,
     SortableContext,
@@ -43,7 +43,8 @@ export default function PanelTable() {
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
-        })
+        }),
+        useSensor(TouchSensor)
     );
 
     useEffect(() => {
