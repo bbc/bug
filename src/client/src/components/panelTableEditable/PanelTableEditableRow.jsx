@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 const state = {
@@ -16,6 +15,7 @@ const state = {
 const useStyles = makeStyles((theme) => ({
     row: {
         display: "flex",
+        touchAction: "none",
         backgroundColor: theme.palette.control.default,
         height: 65,
         alignItems: "center",
@@ -60,11 +60,10 @@ export default function PanelTableRow({ panel, panelId }) {
         useSortable({ id: panelId });
 
     const style = {
-        transform: CSS.Transform.toString(transform),
+        transform: `translateY(${Math.round(transform?.y)}px)`,
         transition,
     };
 
-    console.log(attributes);
     return (
         <div
             ref={setNodeRef}
