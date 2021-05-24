@@ -109,7 +109,7 @@ const Menu = ({ showGroups = true }) => {
                 {Object.entries(groupedItems).map(([eachGroup, index]) => {
                     return (
                         <Accordion
-                            key={index}
+                            key={eachGroup}
                             elevation={0}
                             className={classes.group}
                             expanded={expanded === eachGroup}
