@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import PanelTableEditable from "@components/panelTableEditable/PanelTableEditable";
+import PanelSort from "@components/panelSort/PanelSort";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
 
@@ -12,7 +12,7 @@ export default function PagePanels() {
 
     return (
         <>
-            <PanelTableEditable />
+            <PanelSort />
         </>
     );
 }

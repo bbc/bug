@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelTableEditableRow from "@components/panelTableEditable/PanelTableEditableRow";
+import PanelSortGroup from "@components/panelSort/PanelSortGroup";
 import Loading from "@components/Loading";
 import AxiosPut from "@utils/AxiosPut";
 import { useSelector } from "react-redux";
@@ -22,13 +22,23 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
+const getGroups = (panels) => {
+    const groups = [];
+    for (let panel of panels.data) {
+        if (!groups.includes(panel?.group)) {
+            groups.push(panel.group);
+        }
+    }
+    return groups;
+};
+
 const useStyles = makeStyles((theme) => ({}));
 
-export default function PanelTable() {
+export default function PanelSort() {
     const panelList = useSelector((state) => state.panelList);
     const classes = useStyles();
-    const [panels, setPanels] = useState(panelList.data);
-    // const [activeId, setActiveId] = useState(null);
+    const [groups, setGroups] = useState(getGroups(panelList));
+    const [panels, setPanels] = useState(panelList);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -40,15 +50,12 @@ export default function PanelTable() {
 
     useEffect(() => {
         setPanels(panelList.data);
+        setGroups(getGroups(panelList));
     }, [panelList]);
 
     useEffect(() => {
         updateOrder(panels);
     }, [panels]);
-
-    const handleDragStart = (event) => {
-        // setActiveId(event.active.id);
-    };
 
     const updateOrder = async (panels) => {
         for (let i = 0; i < panels.length; i++) {
@@ -61,11 +68,19 @@ export default function PanelTable() {
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (active.id !== over.id) {
-            setPanels((panels) => {
-                const oldIndex = findWithAttr(panels, "id", active.id);
-                const newIndex = findWithAttr(panels, "id", over.id);
-                return arrayMove(panels, oldIndex, newIndex);
-            });
+            if (groups.includes(active.id)) {
+                setGroups((groups) => {
+                    const oldIndex = groups.indexOf(active.id);
+                    const newIndex = groups.indexOf(over.id);
+                    return arrayMove(panels, oldIndex, newIndex);
+                });
+            } else {
+                setPanels((panels) => {
+                    const oldIndex = findWithAttr(panels, "id", active.id);
+                    const newIndex = findWithAttr(panels, "id", over.id);
+                    return arrayMove(panels, oldIndex, newIndex);
+                });
+            }
         }
     };
 
@@ -89,15 +104,14 @@ export default function PanelTable() {
                         <DndContext
                             sensors={sensors}
                             collisionDetection={closestCenter}
-                            onDragStart={handleDragStart}
                             onDragEnd={handleDragEnd}
                         >
                             <SortableContext
-                                items={panels.map((panel) => panel.id)}
+                                items={groups}
                                 strategy={verticalListSortingStrategy}
                             >
-                                {panels.map((panel) => (
-                                    <PanelTableEditableRow key={panel.id} panelId={panel.id} panel={panel} />
+                                {groups.map((group) => (
+                                    <PanelSortGroup key={group} group={group} />
                                 ))}
                             </SortableContext>
                         </DndContext>
