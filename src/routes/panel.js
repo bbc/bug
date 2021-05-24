@@ -100,6 +100,11 @@ router.get(
  *         description: Panel Title
  *         required: true
  *       - in: formData
+ *         name: group
+ *         type: string
+ *         description: Panel Group
+ *         required: false
+ *       - in: formData
  *         name: description
  *         type: string
  *         description: Panel Description

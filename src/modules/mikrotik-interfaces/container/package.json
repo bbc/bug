@@ -30,6 +30,7 @@
         "node-routeros": "^1.6.9",
         "package.json": "^2.0.1",
         "path": "^0.12.7",
+        "ping": "^0.4.1",
         "random-words": "^1.1.1",
         "routeros-client": "^1.1.2",
         "wildcard-regex": "^3.0.2"

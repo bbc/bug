@@ -1,25 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import { useForm } from "react-hook-form";
 import ChipInput from "@core/ChipInput";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import PasswordTextField from "@core/PasswordTextField";
-import ValidatedTextField from "@core/ValidatedTextField";
 import PanelGroupFormControl from "@core/PanelGroupFormControl";
+import { useConfigFormHandler } from "@core/ConfigFormHandler";
 
 export default function EditPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
-
-    const {
-        register,
-        handleSubmit,
-        control,
-        formState: { errors },
-        setError,
-    } = useForm();
 
     if (panelConfig.status === "loading") {
         return <Loading />;
@@ -28,7 +19,10 @@ export default function EditPanel() {
     if (panelConfig.status !== "success") {
         return null;
     }
-    console.log(errors);
+
+    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+        panelId: panelConfig.data.id,
+    });
 
     return (
         <>
@@ -39,7 +33,7 @@ export default function EditPanel() {
                         variant="filled"
                         required
                         fullWidth
-                        error={errors?.title ? true : false}
+                        error={errors.title}
                         defaultValue={panelConfig.data.title}
                         type="text"
                         label="Panel Title"
@@ -51,7 +45,7 @@ export default function EditPanel() {
                         inputProps={{ ...register("description") }}
                         variant="filled"
                         fullWidth
-                        error={errors?.description ? true : false}
+                        error={errors.description}
                         defaultValue={panelConfig.data.description}
                         type="text"
                         label="Description"
@@ -73,10 +67,10 @@ export default function EditPanel() {
                         }}
                         variant="filled"
                         fullWidth
-                        error={errors?.address ? true : false}
-                        helperText={errors?.address ? "Invalid address" : ""}
+                        error={errors.address}
+                        helperText={messages.address}
                         defaultValue={panelConfig.data.address}
-                        // validationField="address"
+                        onChange={(event) => validateServer(event, "address")}
                         type="text"
                         label="IP Address"
                     />
@@ -87,8 +81,10 @@ export default function EditPanel() {
                         inputProps={{ ...register("username", { required: true }) }}
                         variant="filled"
                         fullWidth
-                        error={errors?.username ? true : false}
+                        error={errors.username}
+                        helperText={messages.username}
                         defaultValue={panelConfig.data.username}
+                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
                         type="text"
                         label="Username"
                     />
@@ -99,8 +95,10 @@ export default function EditPanel() {
                         inputProps={{ ...register("password", { required: true }) }}
                         variant="filled"
                         fullWidth
-                        error={errors?.password ? true : false}
+                        error={errors.password}
+                        helperText={messages.password}
                         defaultValue={panelConfig.data.password}
+                        onChange={(event) => validateServer(event, "username", ["address", "username"])}
                         type="password"
                         label="Password"
                     />
@@ -114,7 +112,7 @@ export default function EditPanel() {
                         defaultValue={panelConfig.data.protectedInterfaces}
                         variant="filled"
                         sort={true}
-                        error={errors.protectedInterfaces ? true : false}
+                        error={errors.protectedInterfaces}
                         fullWidth
                     />
                 </Grid>
@@ -127,7 +125,7 @@ export default function EditPanel() {
                         defaultValue={panelConfig.data.excludedInterfaces}
                         variant="filled"
                         sort={true}
-                        error={errors.excludedInterfaces ? true : false}
+                        error={errors.excludedInterfaces}
                         fullWidth
                     />
                 </Grid>

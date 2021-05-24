@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,7 +11,6 @@ import ApiSwitch from "@core/ApiSwitch";
 import Loading from "@components/Loading";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import InterfaceListMenu from "./InterfaceListMenu";
-import { Sparklines, SparklinesLine } from "react-sparklines";
 import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";

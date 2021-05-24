@@ -5,8 +5,18 @@ import { useAlert } from "@utils/Snackbar";
 import PanelForm from "@core/PanelForm";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    form: {
+        "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
+            color: theme.palette.success.main,
+        },
+    },
+}));
 
 export default function PanelConfig({ panelId, children, config, handleSubmit }) {
+    const classes = useStyles();
     const history = useHistory();
     const sendAlert = useAlert();
 
@@ -30,7 +40,7 @@ export default function PanelConfig({ panelId, children, config, handleSubmit })
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <PanelForm.Header onClose={onCancel}>Configuration</PanelForm.Header>
                     <PanelForm.Body>
-                        <Grid container spacing={4}>
+                        <Grid container spacing={4} className={classes.form}>
                             {children}
                         </Grid>
                     </PanelForm.Body>
