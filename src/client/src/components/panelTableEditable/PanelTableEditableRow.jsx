@@ -1,8 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import ProgressCounter from "@components/ProgressCounter";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
 import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -59,32 +56,39 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelTableRow({ panel, panelId }) {
     const classes = useStyles();
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: panelId });
+    const { attributes, listeners, setNodeRef, transform, transition } =
+        useSortable({ id: panelId });
 
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
     };
 
+    console.log(transform);
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={classes.row}>
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            className={classes.row}
+        >
             <div className={clsx(classes.cell, classes.colDragIcon)}>
-                <DragIndicatorIcon className={classes.dragIcon} />
+                <DragIndicatorIcon
+                    {...listeners}
+                    className={classes.dragIcon}
+                />
             </div>
-            <div className={clsx(classes.cell, classes.colTitle)}>{panel.title}</div>
-            <div className={clsx(classes.cell, classes.colDescription)}>{panel.description}</div>
-            <div className={clsx(classes.cell, classes.colModule)}>{panel._module.longname}</div>
+            <div className={clsx(classes.cell, classes.colTitle)}>
+                {panel.title}
+            </div>
+            <div className={clsx(classes.cell, classes.colDescription)}>
+                {panel.description}
+            </div>
+            <div className={clsx(classes.cell, classes.colModule)}>
+                {panel._module.longname}
+            </div>
         </div>
     );
-
-    // const classes = useStyles();
-
-    // const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
-
-    // const style = {
-    //     transform: CSS.Transform.toString(transform),
-    //     transition,
-    // };
 
     // const renderState = (panel) => {
     //     if (panel._isPending) {
