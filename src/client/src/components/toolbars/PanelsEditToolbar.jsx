@@ -6,7 +6,14 @@ import DoneIcon from "@material-ui/icons/Done";
 export default function PanelsToolbar(props) {
     return (
         <>
-            <Button component={Link} to={`/panels`} variant="outlined" color="primary" startIcon={<DoneIcon />}>
+            <Button
+                component={Link}
+                to={`/panels`}
+                variant="outlined"
+                color="primary"
+                startIcon={<DoneIcon />}
+                style={{ marginRight: 16 }}
+            >
                 Done
             </Button>
         </>
