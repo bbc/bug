@@ -125,6 +125,11 @@ const theme = createMuiTheme({
             paper: "#262626",
         },
 
+        control: {
+            default: "rgb(38,38,38)",
+            hover: "rgb(55,55,55)",
+        },
+
         appbar: {
             default: "#212121",
         },
