@@ -64,7 +64,7 @@ export default function PanelTableRow({ panel, panelId }) {
         transition,
     };
 
-    console.log(transform);
+    console.log(attributes);
     return (
         <div
             ref={setNodeRef}

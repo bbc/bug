@@ -99,7 +99,6 @@ export default function PanelTable() {
         return <Loading />;
     }
     if (panelList.status === "success") {
-        console.log(panels.map((panel) => panel.id));
         return (
             <>
                 <div component={Paper} className={classes.tableContainer}>
