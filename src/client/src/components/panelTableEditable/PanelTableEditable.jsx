@@ -7,7 +7,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelTableRow from "@components/panelTableEditable/PanelTableEditableRow";
+import PanelTableEditableRow from "@components/panelTableEditable/PanelTableEditableRow";
 import Loading from "@components/Loading";
 import AxiosPut from "@utils/AxiosPut";
 import { useSelector } from "react-redux";
@@ -17,10 +17,10 @@ import {
     closestCenter,
     KeyboardSensor,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-
 import {
     arrayMove,
     SortableContext,
@@ -55,7 +55,8 @@ export default function PanelTable() {
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
-        })
+        }),
+        useSensor(TouchSensor)
     );
 
     useEffect(() => {
@@ -68,13 +69,10 @@ export default function PanelTable() {
 
     const updateOrder = async (panels) => {
         for (let i = 0; i < panels.length; i++) {
-            const response = await AxiosPut(
-                `/api/panelconfig/${panels[i].id}`,
-                {
-                    order: i,
-                    group: "default",
-                }
-            );
+            await AxiosPut(`/api/panelconfig/${panels[i].id}`, {
+                order: i,
+                group: "default",
+            });
         }
     };
 
@@ -103,45 +101,44 @@ export default function PanelTable() {
     }
     if (panelList.status === "success") {
         return (
-            <>
-                <TableContainer component={Paper} square>
-                    <Table aria-label="simple table">
-                        <TableHead className={classes.tableHead}>
-                            <TableRow>
-                                <TableCell width="10"></TableCell>
-                                <TableCell>Title</TableCell>
-                                <TableCell className={classes.colDescription}>
-                                    Description
-                                </TableCell>
-                                <TableCell className={classes.colModule}>
-                                    Module
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <SortableContext
+                    items={panels}
+                    strategy={verticalListSortingStrategy}
+                >
+                    <TableContainer component={Paper} square>
+                        <Table>
+                            <TableHead className={classes.tableHead}>
+                                <TableRow>
+                                    <TableCell width="10"></TableCell>
+                                    <TableCell>Title</TableCell>
+                                    <TableCell
+                                        className={classes.colDescription}
+                                    >
+                                        Description
+                                    </TableCell>
+                                    <TableCell className={classes.colModule}>
+                                        Module
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                        <TableBody>
-                            <DndContext
-                                sensors={sensors}
-                                collisionDetection={closestCenter}
-                                onDragEnd={handleDragEnd}
-                            >
-                                <SortableContext
-                                    items={panels}
-                                    strategy={verticalListSortingStrategy}
-                                >
-                                    {panels.map((panel) => (
-                                        <PanelTableRow
-                                            key={panel.id}
-                                            id={panel.id}
-                                            {...panel}
-                                        />
-                                    ))}
-                                </SortableContext>
-                            </DndContext>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </>
+                            <TableBody>
+                                {panels.map((panel) => (
+                                    <PanelTableEditableRow
+                                        key={panel.id}
+                                        {...panel}
+                                    />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </SortableContext>
+            </DndContext>
         );
     } else {
         return null;

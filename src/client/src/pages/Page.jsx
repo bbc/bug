@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flexGrow: 1,
-        // padding: theme.spacing(3),
+        padding: theme.spacing(3),
     },
     pagecontent: {
         padding: theme.spacing(3),
@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(0),
         },
         "@media (max-height:400px)": {
-            padding: 2
-        }
+            padding: 2,
+        },
     },
     homePageContent: {
         padding: 12,

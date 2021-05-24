@@ -72,7 +72,8 @@ const useStyles = makeStyles((theme) => ({
 export default function PanelTableRow(props) {
     const classes = useStyles();
 
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
+    const { attributes, listeners, setNodeRef, transform, transition } =
+        useSortable({ id: props.id });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -88,14 +89,24 @@ export default function PanelTableRow(props) {
             case "building":
                 return (
                     <div className={classes.state_building}>
-                        {panel._buildStatus.text} - <ProgressCounter value={panel._buildStatus.progress} />% complete
+                        {panel._buildStatus.text} -{" "}
+                        <ProgressCounter value={panel._buildStatus.progress} />%
+                        complete
                     </div>
                 );
             case "error":
-                return <div className={classes.state_error}>ERROR - {panel._buildStatus.text}</div>;
+                return (
+                    <div className={classes.state_error}>
+                        ERROR - {panel._buildStatus.text}
+                    </div>
+                );
             default:
                 return (
-                    <div className={`${classes["state_" + panel._dockerContainer._status]}`}>
+                    <div
+                        className={`${
+                            classes["state_" + panel._dockerContainer._status]
+                        }`}
+                    >
                         {panel._dockerContainer._status}
                     </div>
                 );
@@ -103,14 +114,22 @@ export default function PanelTableRow(props) {
     };
 
     return (
-        <TableRow className={classes.row} key={props.id} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <TableRow
+            hover={true}
+            ref={setNodeRef}
+            style={style}
+            key={props.id}
+            {...attributes}
+            {...listeners}
+        >
             <TableCell>
                 <DragIndicatorIcon />
             </TableCell>
             <TableCell>
                 <div
                     className={clsx(classes.title, {
-                        [classes.disabledText]: !props.enabled || props._isPending,
+                        [classes.disabledText]:
+                            !props.enabled || props._isPending,
                     })}
                 >
                     {props.title}
