@@ -17,7 +17,7 @@ import CommentIcon from "@material-ui/icons/Comment";
 
 // const useStyles = makeStyles((theme) => ({}));
 
-export default function InterfaceListMenu({ iface, panelId, onChanged, onRename, onComment }) {
+export default function InterfaceListMenu({ iface, panelId, onChange, onRename, onComment }) {
     // const classes = useStyles();
     const sendAlert = useAlert();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
@@ -26,12 +26,12 @@ export default function InterfaceListMenu({ iface, panelId, onChanged, onRename,
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
-        onChanged(true);
+        onChange(true);
         event.stopPropagation();
     };
 
     const handleClose = () => {
-        onChanged(false);
+        onChange(false);
         setAnchorEl(null);
     };
 

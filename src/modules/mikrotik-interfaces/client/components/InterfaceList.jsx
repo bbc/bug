@@ -222,7 +222,7 @@ export default function InterfaceList({ panelId }) {
                     <InterfaceListMenu
                         iface={iface}
                         panelId={panelId}
-                        onChanged={handleMenuOpenChanged}
+                        onChange={handleMenuOpenChanged}
                         onRename={handleRenameClicked}
                         onComment={handleCommentClicked}
                     />
