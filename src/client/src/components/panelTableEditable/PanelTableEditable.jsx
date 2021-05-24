@@ -60,7 +60,6 @@ export default function PanelTable() {
     };
 
     const updateOrder = async (panels) => {
-        console.log(panels);
         for (let i = 0; i < panels.length; i++) {
             const response = await AxiosPut(
                 `/api/panelconfig/${panels[i].id}`,
