@@ -43,7 +43,7 @@ export default function EditPanel() {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("description") }}
-                    variant="outlined"
+                    variant="filled"
                     fullWidth
                     error={errors?.description ? true : false}
                     defaultValue={panelConfig.data.description}
@@ -55,7 +55,7 @@ export default function EditPanel() {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("openweather_key", { required: true }) }}
-                    variant="outlined"
+                    variant="filled"
                     fullWidth
                     error={errors?.openweather_key ? true : false}
                     defaultValue={panelConfig.data.openweather_key}
