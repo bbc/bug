@@ -7,10 +7,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelTableRow from "@components/panelTableEditable/PanelTableEditableRow";
+import PanelTableEditableRow from "@components/panelTableEditable/PanelTableEditableRow";
 import Loading from "@components/Loading";
 import AxiosPut from "@utils/AxiosPut";
 import { useSelector } from "react-redux";
+import clsx from "clsx";
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 import {
     DndContext,
@@ -19,6 +21,7 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
+    DragOverlay,
 } from "@dnd-kit/core";
 
 import {
@@ -28,28 +31,13 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-const useStyles = makeStyles((theme) => ({
-    colDescription: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
-    colModule: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-    tableHead: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-}));
+const useStyles = makeStyles((theme) => ({}));
 
 export default function PanelTable() {
     const panelList = useSelector((state) => state.panelList);
     const classes = useStyles();
     const [panels, setPanels] = useState(panelList.data);
+    const [activeId, setActiveId] = useState(null);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -62,41 +50,63 @@ export default function PanelTable() {
         setPanels(panelList.data);
     }, [panelList]);
 
-    useEffect(() => {
-        updateOrder(panels);
-    }, [panels]);
+    // useEffect(() => {
+    //     updateOrder(panels);
+    // }, [panels]);
 
-    const updateOrder = async (panels) => {
-        for (let i = 0; i < panels.length; i++) {
-            const response = await AxiosPut(
-                `/api/panelconfig/${panels[i].id}`,
-                {
-                    order: i,
-                    group: "default",
-                }
-            );
-        }
+    const handleDragStart = (event) => {
+        // setActiveId(event.active.id);
     };
 
-    const handleDragEnd = (event) => {
+    // const handleDragEnd = (event) => {
+    //     // setActiveId(null);
+    // };
+
+    function handleDragEnd(event) {
         const { active, over } = event;
+
         if (active.id !== over.id) {
-            setPanels((panels) => {
-                const oldIndex = findWithAttr(panels, "id", active.id);
-                const newIndex = findWithAttr(panels, "id", over.id);
-                return arrayMove(panels, oldIndex, newIndex);
+            setPanels((items) => {
+                const oldIndex = items.indexOf(active.id);
+                const newIndex = items.indexOf(over.id);
+
+                return arrayMove(items, oldIndex, newIndex);
             });
         }
-    };
+    }
 
-    const findWithAttr = (array, attr, value) => {
-        for (let i = 0; i < array.length; i += 1) {
-            if (array[i][attr] === value) {
-                return i;
-            }
-        }
-        return -1;
-    };
+    // const updateOrder = async (panels) => {
+    //     console.log(panels);
+    //     // for (let i = 0; i < panels.length; i++) {
+    //     //     const response = await AxiosPut(
+    //     //         `/api/panelconfig/${panels[i].id}`,
+    //     //         {
+    //     //             order: i,
+    //     //             group: "default",
+    //     //         }
+    //     //     );
+    //     // }
+    // };
+
+    // const handleDragEnd = (event) => {
+    //     const { active, over } = event;
+    //     if (active.id !== over.id) {
+    //         setPanels((panels) => {
+    //             const oldIndex = findWithAttr(panels, "id", active.id);
+    //             const newIndex = findWithAttr(panels, "id", over.id);
+    //             return arrayMove(panels, oldIndex, newIndex);
+    //         });
+    //     }
+    // };
+
+    // const findWithAttr = (array, attr, value) => {
+    //     for (let i = 0; i < array.length; i += 1) {
+    //         if (array[i][attr] === value) {
+    //             return i;
+    //         }
+    //     }
+    //     return -1;
+    // };
 
     if (panelList.status === "loading") {
         return <Loading />;
@@ -104,43 +114,27 @@ export default function PanelTable() {
     if (panelList.status === "success") {
         return (
             <>
-                <TableContainer component={Paper} square>
-                    <Table aria-label="simple table">
-                        <TableHead className={classes.tableHead}>
-                            <TableRow>
-                                <TableCell width="10"></TableCell>
-                                <TableCell>Title</TableCell>
-                                <TableCell className={classes.colDescription}>
-                                    Description
-                                </TableCell>
-                                <TableCell className={classes.colModule}>
-                                    Module
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-
-                        <TableBody>
-                            <DndContext
-                                sensors={sensors}
-                                collisionDetection={closestCenter}
-                                onDragEnd={handleDragEnd}
-                            >
-                                <SortableContext
-                                    items={panels}
-                                    strategy={verticalListSortingStrategy}
-                                >
-                                    {panels.map((panel) => (
-                                        <PanelTableRow
-                                            key={panel.id}
-                                            id={panel.id}
-                                            {...panel}
-                                        />
-                                    ))}
-                                </SortableContext>
-                            </DndContext>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <div component={Paper} className={classes.tableContainer}>
+                    <div className={classes.table}>
+                        <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragStart={handleDragStart}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <SortableContext items={panels} strategy={verticalListSortingStrategy}>
+                                {panels.map((panel) => (
+                                    <PanelTableEditableRow key={panel.id} panelId={panel.id} panel={panel} />
+                                ))}
+                            </SortableContext>
+                            {/* <DragOverlay>
+                                <TableRow>
+                                    <div className={classes.cell}>Hello - selected id it {activeId}</div>
+                                </TableRow>
+                            </DragOverlay> */}
+                        </DndContext>
+                    </div>
+                </div>
             </>
         );
     } else {
