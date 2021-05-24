@@ -51,17 +51,13 @@ export default function PanelTable() {
         setPanels(panelList.data);
     }, [panelList]);
 
-    // useEffect(() => {
-    //     updateOrder(panels);
-    // }, [panels]);
+    useEffect(() => {
+        updateOrder(panels);
+    }, [panels]);
 
     const handleDragStart = (event) => {
-        // setActiveId(event.active.id);
+        setActiveId(event.active.id);
     };
-
-    // const handleDragEnd = (event) => {
-    //     // setActiveId(null);
-    // };
 
     const updateOrder = async (panels) => {
         console.log(panels);
@@ -121,11 +117,6 @@ export default function PanelTable() {
                                     />
                                 ))}
                             </SortableContext>
-                            {/* <DragOverlay>
-                                <TableRow>
-                                    <div className={classes.cell}>Hello - selected id it {activeId}</div>
-                                </TableRow>
-                            </DragOverlay> */}
                         </DndContext>
                     </div>
                 </div>
