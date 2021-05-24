@@ -20,6 +20,8 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 const useStyles = makeStyles((theme) => ({
     critical: {
@@ -39,17 +41,27 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     groupHeader: {
-        borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+        // borderTop: "1px solid rgba(255, 255, 255, 0.12)",
         fontSize: "0.875rem",
         fontWeight: 500,
         textTransform: "uppercase",
         height: 48,
         "&.Mui-expanded": {
-            borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+            // borderTop: "1px solid rgba(255, 255, 255, 0.12)",
             minHeight: 48,
             height: 48,
         },
         color: theme.palette.primary.main,
+        "& .MuiAccordionSummary-content": {
+            order: 2,
+        },
+        "& .MuiButtonBase-root": {
+            paddingLeft: 0,
+            marginRight: 0,
+        },
+        "& .MuiAccordionSummary-expandIcon.Mui-expanded": {
+            transform: "none",
+        },
     },
 }));
 
@@ -105,7 +117,7 @@ const Menu = ({ showGroups = true }) => {
                         >
                             <AccordionSummary
                                 className={classes.groupHeader}
-                                expandIcon={<ExpandMoreIcon />}
+                                expandIcon={expanded === eachGroup ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                                 onClick={(event) => {
                                     event.stopPropagation();
                                 }}
@@ -170,7 +182,7 @@ const Menu = ({ showGroups = true }) => {
                             <ListItemText primary="Home" />
                         </ListItem>
                     </List>
-                    {/* <Divider /> */}
+                    <Divider />
                     {renderPanelMenuItems()}
                     {enabledPanelList.length > 0 ? <Divider /> : null}
                     <List>
@@ -179,6 +191,9 @@ const Menu = ({ showGroups = true }) => {
                             component={Link}
                             to="/system"
                             selected={location.pathname.startsWith("/system")}
+                            onClick={() => {
+                                setExpanded(false);
+                            }}
                         >
                             <ListItemIcon>
                                 <SettingsIcon />
@@ -190,6 +205,9 @@ const Menu = ({ showGroups = true }) => {
                             component={Link}
                             to="/panels"
                             selected={location.pathname.startsWith("/panels")}
+                            onClick={() => {
+                                setExpanded(false);
+                            }}
                         >
                             <ListItemIcon>
                                 <DashboardIcon />
