@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import PanelTableEditableRow from "@components/panelTableEditable/PanelTableEditableRow";
 import Loading from "@components/Loading";
 import AxiosPut from "@utils/AxiosPut";
 import { useSelector } from "react-redux";
-import clsx from "clsx";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 import {
     DndContext,
@@ -22,7 +14,6 @@ import {
     TouchSensor,
     useSensor,
     useSensors,
-    DragOverlay,
 } from "@dnd-kit/core";
 import {
     arrayMove,
@@ -37,7 +28,7 @@ export default function PanelTable() {
     const panelList = useSelector((state) => state.panelList);
     const classes = useStyles();
     const [panels, setPanels] = useState(panelList.data);
-    const [activeId, setActiveId] = useState(null);
+    // const [activeId, setActiveId] = useState(null);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -56,17 +47,14 @@ export default function PanelTable() {
     }, [panels]);
 
     const handleDragStart = (event) => {
-        setActiveId(event.active.id);
+        // setActiveId(event.active.id);
     };
 
     const updateOrder = async (panels) => {
         for (let i = 0; i < panels.length; i++) {
-            const response = await AxiosPut(
-                `/api/panelconfig/${panels[i].id}`,
-                {
-                    order: i,
-                }
-            );
+            await AxiosPut(`/api/panelconfig/${panels[i].id}`, {
+                order: i,
+            });
         }
     };
 
@@ -109,11 +97,7 @@ export default function PanelTable() {
                                 strategy={verticalListSortingStrategy}
                             >
                                 {panels.map((panel) => (
-                                    <PanelTableEditableRow
-                                        key={panel.id}
-                                        panelId={panel.id}
-                                        panel={panel}
-                                    />
+                                    <PanelTableEditableRow key={panel.id} panelId={panel.id} panel={panel} />
                                 ))}
                             </SortableContext>
                         </DndContext>

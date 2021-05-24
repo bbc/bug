@@ -4,14 +4,6 @@ import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
-const state = {
-    textTransform: "uppercase",
-    opacity: 0.8,
-    fontSize: "0.8rem",
-    paddingTop: "4px",
-    fontWeight: 500,
-};
-
 const useStyles = makeStyles((theme) => ({
     row: {
         display: "flex",
@@ -20,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
         height: 65,
         alignItems: "center",
         marginBottom: 1,
-        cursor: "move",
         cursor: "grab",
         userSelect: "none",
         "&:hover": {
@@ -56,8 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelTableRow({ panel, panelId }) {
     const classes = useStyles();
-    const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id: panelId });
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: panelId });
 
     let transformString = null;
 
@@ -71,27 +61,13 @@ export default function PanelTableRow({ panel, panelId }) {
     };
 
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            className={classes.row}
-        >
+        <div ref={setNodeRef} style={style} {...attributes} className={classes.row}>
             <div className={clsx(classes.cell, classes.colDragIcon)}>
-                <DragIndicatorIcon
-                    {...listeners}
-                    className={classes.dragIcon}
-                />
+                <DragIndicatorIcon {...listeners} className={classes.dragIcon} />
             </div>
-            <div className={clsx(classes.cell, classes.colTitle)}>
-                {panel.title}
-            </div>
-            <div className={clsx(classes.cell, classes.colDescription)}>
-                {panel.description}
-            </div>
-            <div className={clsx(classes.cell, classes.colModule)}>
-                {panel._module.longname}
-            </div>
+            <div className={clsx(classes.cell, classes.colTitle)}>{panel.title}</div>
+            <div className={clsx(classes.cell, classes.colDescription)}>{panel.description}</div>
+            <div className={clsx(classes.cell, classes.colModule)}>{panel._module.longname}</div>
         </div>
     );
 

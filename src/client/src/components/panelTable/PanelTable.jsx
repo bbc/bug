@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -33,11 +33,6 @@ const useStyles = makeStyles((theme) => ({
 export default function PanelTable({ showGroups = true }) {
     const panelList = useSelector((state) => state.panelList);
     const classes = useStyles();
-    const [panels, setPanels] = useState(panelList.data);
-
-    useEffect(() => {
-        setPanels(panelList.data);
-    }, [panelList]);
 
     const renderRows = (panelsByGroup) => {
         if (Object.keys(panelsByGroup).length === 1 || !showGroups) {

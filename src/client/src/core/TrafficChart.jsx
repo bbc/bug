@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import formatBps from "@core/format-bps";
 import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
@@ -44,10 +44,10 @@ export default function TrafficChart({ url }) {
     const [range, setRange] = useState(initialRange);
     const [stats, setStats] = useState(null);
 
-    const doAutoRefresh = () => {
+    const doAutoRefresh = useCallback(() => {
         setRange([Date.now() - rangeSpan * 60000, Date.now()]);
         timer.current = setTimeout(doAutoRefresh, 2000);
-    };
+    }, []);
 
     useAsyncEffect(async () => {
         setStats(await AxiosGet(`${url}/${range[0]}/${range[1]}`));
@@ -62,7 +62,7 @@ export default function TrafficChart({ url }) {
         return () => {
             clearTimeout(timer.current);
         };
-    }, [enableAutoRefresh]);
+    }, [enableAutoRefresh, doAutoRefresh]);
 
     if (!stats) {
         return null;
