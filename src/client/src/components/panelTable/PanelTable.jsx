@@ -56,7 +56,7 @@ export default function PanelTable({ showGroups = true }) {
             <>
                 {Object.entries(groupedPanels).map(([eachGroup, index]) => {
                     return (
-                        <React.Fragment key={index}>
+                        <React.Fragment key={eachGroup}>
                             <PanelTableGroupRow title={eachGroup} />
                             <PanelRows panels={groupedPanels[eachGroup]} showGroups={true} />
                         </React.Fragment>

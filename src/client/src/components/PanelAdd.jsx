@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import AxiosPost from "@utils/AxiosPost";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import PanelGroupFormControl from "@core/PanelGroupFormControl";
 
 export default function PanelsAdd(props) {
     const history = useHistory();
@@ -22,10 +23,11 @@ export default function PanelsAdd(props) {
     const [moduleList, setModuleList] = useState([]);
     const sendAlert = useAlert();
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({});
 
     const dispatch = useDispatch();
 
@@ -99,6 +101,10 @@ export default function PanelsAdd(props) {
                                     type="text"
                                     label="Description"
                                 />
+                            </Grid>
+
+                            <Grid item xs={12} md={6}>
+                                <PanelGroupFormControl name="group" control={control} defaultValue="" />
                             </Grid>
 
                             <Grid item xs={12} md={6}>
