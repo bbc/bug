@@ -59,8 +59,14 @@ export default function PanelTableRow({ panel, panelId }) {
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: panelId });
 
+    let transformString = null;
+
+    if (transform?.y) {
+        transformString = `translateY(${Math.round(transform?.y)}px)`;
+    }
+
     const style = {
-        transform: `translateY(${Math.round(transform?.y)}px)`,
+        transform: transformString,
         transition,
     };
 
