@@ -5,13 +5,13 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     delete moduleConfig.defaultconfig;
 
     // if containerInfo is null, we'll make it an empty object so we can add calculated fields
-    if(!containerInfo) {
+    if (!containerInfo) {
         containerInfo = {};
     }
 
     // remove timestamps from statusItems
-    let statusItems = (thisStatus) ? thisStatus.statusItems : [];
-    for(let eachStatusItem of statusItems) {
+    let statusItems = thisStatus ? thisStatus.statusItems : [];
+    for (let eachStatusItem of statusItems) {
         delete eachStatusItem.timestamp;
     }
 
@@ -43,6 +43,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         id: panelConfig["id"],
         order: panelConfig["order"],
         title: panelConfig["title"],
+        group: panelConfig["group"] ? panelConfig["group"] : "",
         description: panelConfig["description"],
         enabled: panelConfig["enabled"],
         module: panelConfig["module"],
