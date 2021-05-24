@@ -39,17 +39,8 @@ export default function PanelTable({ showGroups = true }) {
         setPanels(panelList.data);
     }, [panelList]);
 
-    const renderRows = () => {
-        // sort the panels into groups
-        let panelsByGroup = {};
-        for (let eachPanel of panelList.data) {
-            const group = eachPanel.group ? eachPanel.group : "other";
-            if (!panelsByGroup[group]) {
-                panelsByGroup[group] = [];
-            }
-            panelsByGroup[group].push(eachPanel);
-        }
-        if (panelsByGroup.length === 1 || !showGroups) {
+    const renderRows = (panelsByGroup) => {
+        if (Object.keys(panelsByGroup).length === 1 || !showGroups) {
             return <PanelRows panels={panelList.data} showGroups={false} />;
         } else {
             return <PanelGroupRows groupedPanels={panelsByGroup} />;
@@ -65,10 +56,10 @@ export default function PanelTable({ showGroups = true }) {
             <>
                 {Object.entries(groupedPanels).map(([eachGroup, index]) => {
                     return (
-                        <>
+                        <React.Fragment key={index}>
                             <PanelTableGroupRow title={eachGroup} />
                             <PanelRows panels={groupedPanels[eachGroup]} showGroups={true} />
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </>
@@ -79,13 +70,25 @@ export default function PanelTable({ showGroups = true }) {
         return <Loading />;
     }
     if (panelList.status === "success") {
+        // sort the panels into groups
+        let panelsByGroup = {};
+        for (let eachPanel of panelList.data) {
+            const group = eachPanel.group ? eachPanel.group : "other";
+            if (!panelsByGroup[group]) {
+                panelsByGroup[group] = [];
+            }
+            panelsByGroup[group].push(eachPanel);
+        }
+
         return (
             <>
                 <TableContainer component={Paper} square>
                     <Table aria-label="simple table">
                         <TableHead className={classes.tableHead}>
                             <TableRow>
-                                {showGroups ? <TableCell className={classes.colIndent} /> : null}
+                                {Object.keys(panelsByGroup).length > 1 || !showGroups ? (
+                                    <TableCell className={classes.colIndent} />
+                                ) : null}
                                 <TableCell width="10"></TableCell>
                                 <TableCell>Title</TableCell>
                                 <TableCell className={classes.colDescription}>Description</TableCell>
@@ -94,7 +97,7 @@ export default function PanelTable({ showGroups = true }) {
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>{renderRows()}</TableBody>
+                        <TableBody>{renderRows(panelsByGroup)}</TableBody>
                     </Table>
                 </TableContainer>
             </>

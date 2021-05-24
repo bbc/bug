@@ -154,7 +154,7 @@ const Menu = ({ showGroups = true }) => {
                 }
                 panelsByGroup[group].push(eachPanel);
             }
-            if (panelsByGroup.length === 1 || !showGroups) {
+            if (Object.keys(panelsByGroup).length === 1 || !showGroups) {
                 return <MenuItems items={panelList.data} />;
             } else {
                 return <GroupedMenuItems groupedItems={panelsByGroup} />;
