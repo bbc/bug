@@ -84,7 +84,7 @@ module.exports = class WorkerManager {
     }
 
     handleError(event) {
-        console.log(`WorkerManager->handleError: ${event}`);
+        console.log(`WorkerManager->handleError`, event);
     }
 
     handleExit(event) {
