@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    disabledText: {
+        opacity: 0.3,
+    },
 }));
 
 export default function PanelSortItem({ panel, id }) {
@@ -70,19 +73,31 @@ export default function PanelSortItem({ panel, id }) {
             {...attributes}
             className={classes.row}
         >
-            <div className={clsx(classes.cell, classes.colDragIcon)}>
+            <div className={clsx(classes.colDragIcon)}>
                 <DragIndicatorIcon
                     {...listeners}
                     className={classes.dragIcon}
                 />
             </div>
-            <div className={clsx(classes.cell, classes.colTitle)}>
+            <div
+                className={clsx(classes.colTitle, {
+                    [classes.disabledText]: !panel.enabled || panel._isPending,
+                })}
+            >
                 {panel.title}
             </div>
-            <div className={clsx(classes.cell, classes.colDescription)}>
+            <div
+                className={clsx(classes.colDescription, {
+                    [classes.disabledText]: !panel.enabled || panel._isPending,
+                })}
+            >
                 {panel.description}
             </div>
-            <div className={clsx(classes.cell, classes.colModule)}>
+            <div
+                className={clsx(classes.colModule, {
+                    [classes.disabledText]: !panel.enabled || panel._isPending,
+                })}
+            >
                 {panel._module.longname}
             </div>
         </div>

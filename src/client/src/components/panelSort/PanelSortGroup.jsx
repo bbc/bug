@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PanelSortItem from "@components/panelSort/PanelSortItem";
-import { useSelector } from "react-redux";
 import clsx from "clsx";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
@@ -43,8 +42,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PanelSortGroup(props) {
-    const panelList = useSelector((state) => state.panelList);
-    const [panels, setPanels] = useState(null);
     const classes = useStyles();
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: props.group });
@@ -60,14 +57,21 @@ export default function PanelSortGroup(props) {
         transition,
     };
 
-    useEffect(() => {
-        const filteredPanels = panelList.data.filter(
-            (panel) => panel.group === props.group
-        );
-        setPanels(filteredPanels);
-    }, [panelList]);
+    const makeGroups = (
+        <div className={classes.row}>
+            <div className={clsx(classes.cell, classes.colDragIcon)}>
+                <DragIndicatorIcon
+                    {...listeners}
+                    className={classes.dragIcon}
+                />
+            </div>
+            <div className={clsx(classes.cell, classes.colTitle)}>
+                {props.group}
+            </div>
+        </div>
+    );
 
-    if (panels) {
+    if (props.panels) {
         return (
             <>
                 <div
@@ -76,29 +80,17 @@ export default function PanelSortGroup(props) {
                     style={style}
                     {...attributes}
                 >
-                    <div className={classes.row}>
-                        <div
-                            className={clsx(classes.cell, classes.colDragIcon)}
-                        >
-                            <DragIndicatorIcon
-                                {...listeners}
-                                className={classes.dragIcon}
-                            />
-                        </div>
-                        <div className={clsx(classes.cell, classes.colTitle)}>
-                            {props.group}
-                        </div>
-                    </div>
+                    {makeGroups}
                     <SortableContext
-                        items={panels.map(
-                            (panel) => `${panel.group}/${panel.id}`
+                        items={props.panels.map(
+                            (panel) => `${props.group}:${panel.id}`
                         )}
                         strategy={verticalListSortingStrategy}
                     >
-                        {panels.map((panel) => (
+                        {props.panels.map((panel) => (
                             <PanelSortItem
                                 key={panel.id}
-                                id={`${panel.group}/${panel.id}`}
+                                id={`${props.group}:${panel.id}`}
                                 panel={panel}
                             />
                         ))}
