@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const RosApi = require("node-routeros").RouterOSAPI;
 const configGet = require("@core/config-get");

@@ -1,6 +1,6 @@
 "use strict";
 
-const mikrotikConnect = require("./mikrotik-connect");
+const mikrotikConnect = require("../utils/mikrotik-connect");
 
 module.exports = async (interfaceId, interfaceComment) => {
     const conn = await mikrotikConnect();
