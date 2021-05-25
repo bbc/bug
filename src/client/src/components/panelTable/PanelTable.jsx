@@ -69,7 +69,7 @@ export default function PanelTable({ showGroups = true }) {
         return <Loading />;
     }
     if (panelList.status === "success") {
-        const panelsByGroup = panelListGroups(panelList.data);
+        const panelsByGroup = panelListGroups(panelList.data, false);
 
         return (
             <>
