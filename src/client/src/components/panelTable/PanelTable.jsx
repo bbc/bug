@@ -12,6 +12,7 @@ import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import PanelTableGroupRow from "./PanelTableGroupRow";
 import _ from "lodash";
+import panelListGroups from "@utils/panelListGroups";
 
 const useStyles = makeStyles((theme) => ({
     colDescription: {
@@ -68,15 +69,7 @@ export default function PanelTable({ showGroups = true }) {
         return <Loading />;
     }
     if (panelList.status === "success") {
-        // sort the panels into groups
-        let panelsByGroup = {};
-        for (let eachPanel of panelList.data) {
-            const group = eachPanel.group ? eachPanel.group : "other";
-            if (!panelsByGroup[group]) {
-                panelsByGroup[group] = [];
-            }
-            panelsByGroup[group].push(eachPanel);
-        }
+        const panelsByGroup = panelListGroups(panelList.data);
 
         return (
             <>
