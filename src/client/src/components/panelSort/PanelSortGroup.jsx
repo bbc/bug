@@ -57,6 +57,20 @@ export default function PanelSortGroup(props) {
         transition,
     };
 
+    const makeGroups = (
+        <div className={classes.row}>
+            <div className={clsx(classes.cell, classes.colDragIcon)}>
+                <DragIndicatorIcon
+                    {...listeners}
+                    className={classes.dragIcon}
+                />
+            </div>
+            <div className={clsx(classes.cell, classes.colTitle)}>
+                {props.group}
+            </div>
+        </div>
+    );
+
     if (props.panels) {
         return (
             <>
@@ -66,19 +80,7 @@ export default function PanelSortGroup(props) {
                     style={style}
                     {...attributes}
                 >
-                    <div className={classes.row}>
-                        <div
-                            className={clsx(classes.cell, classes.colDragIcon)}
-                        >
-                            <DragIndicatorIcon
-                                {...listeners}
-                                className={classes.dragIcon}
-                            />
-                        </div>
-                        <div className={clsx(classes.cell, classes.colTitle)}>
-                            {props.group}
-                        </div>
-                    </div>
+                    {makeGroups}
                     <SortableContext
                         items={props.panels.map(
                             (panel) => `${props.group}:${panel.id}`

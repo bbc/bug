@@ -62,15 +62,6 @@ export default function PanelSort() {
         useSensor(TouchSensor)
     );
 
-    useEffect(() => {
-        setPanels(sortPanels(panelList));
-        setGroups(getGroups(panelList));
-    }, [panelList]);
-
-    useEffect(() => {
-        updateOrder(panels);
-    }, [panels]);
-
     const updateOrder = async (panels) => {
         for (let group of groups) {
             for (let index in panels[group]) {
@@ -102,11 +93,25 @@ export default function PanelSort() {
                 const activeData = active.id.split(":");
 
                 const newPanels = panels;
-                const panel = newPanels[activeData[0]].pop(active.id);
-                newPanels[overData[0]].splice(over.id, 0, panel);
 
-                console.log(newPanels);
+                const oldIndex = findWithAttr(
+                    newPanels[activeData[0]],
+                    "id",
+                    activeData[1]
+                );
+
+                const newIndex = findWithAttr(
+                    newPanels[overData[0]],
+                    "id",
+                    overData[1]
+                );
+
+                const panel = newPanels[activeData[0]][oldIndex];
+                newPanels[activeData[0]].splice(oldIndex, 1);
+                newPanels[overData[0]].splice(newIndex, 0, panel);
+
                 setPanels(newPanels);
+                updateOrder(newPanels);
             }
         }
     };
