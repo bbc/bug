@@ -1,12 +1,23 @@
-//NAME: app.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 19/03/2021
-//DESC: Blackmagic Design VideoHub Module
+"use strict";
 
-//server.js
+const register = require("module-alias/register");
+const mongoDb = require("@core/mongo-db");
+const workerStore = require("@core/worker-store");
 const app = require("./app");
-let port = process.env.PORT || 3200;
 
-app.listen(port, () => {
-  console.log("bmd-videohub api listening on port "+port.toString());
-});
+const port = process.env.PORT || 3200;
+const myPanelId = process.env.PANEL_ID;
+
+const serve = async () => {
+    try {
+        await mongoDb.connect(myPanelId);
+
+        app.listen(port, () => {
+            console.log("api listening on port " + port.toString());
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
+serve();
