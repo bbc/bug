@@ -3,12 +3,17 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import { useSelector } from "react-redux";
 import _ from "lodash";
+import Paper from "@material-ui/core/Paper";
 
 const filter = createFilterOptions();
 
 export default function PanelGroupDropdown({ value, onChange, fullWidth = false, variant = "filled" }) {
     const panelList = useSelector((state) => state.panelList);
     const [inputValue, setInputValue] = React.useState(value);
+
+    const CustomPaper = (props) => {
+        return <Paper elevation={8} {...props} />;
+    };
 
     if (panelList.status !== "success") {
         return null;
@@ -39,6 +44,7 @@ export default function PanelGroupDropdown({ value, onChange, fullWidth = false,
             selectOnFocus
             fullWidth={fullWidth}
             clearOnBlur
+            PaperComponent={CustomPaper}
             variant={variant}
             handleHomeEndKeys
             options={panelListGroups}
