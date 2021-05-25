@@ -1,20 +1,19 @@
-const express = require('express');
-const videohub = require('../utils/videohub')
+const express = require("express");
+const videohubRoute = require("@services/videohub-route");
 const route = express.Router();
 
-route.get('/:input/:output', async function (req, res, next) {
-    try {
-        videohub.route(req.params?.input, req.params?.output);
-        res.json({
-            status: "success",
-            data: await configGet()
-        });
-    } catch (error) {
-        res.json({ 
-            status: "error",
-            message: "Failed to fetch panel config" 
-        });
-    }
+route.get("/:destination/:source", async function (req, res, next) {
+    // try {
+    res.json({
+        status: "success",
+        data: await videohubRoute(req.params?.destination, req.params?.source),
+    });
+    // } catch (error) {
+    //     res.json({
+    //         status: "error",
+    //         message: "Failed to route",
+    //     });
+    // }
 });
 
 module.exports = route;

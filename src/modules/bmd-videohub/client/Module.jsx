@@ -1,19 +1,18 @@
 import React from "react";
 import MainPanel from "./panels/MainPanel";
-import ConfigPanel from "./panels/ConfigPanel";
-import { Switch, Route } from "react-router-dom";
+import EditPanel from "./panels/EditPanel";
+import ModuleWrapper from "@core/ModuleWrapper";
+import ModuleRoute from "@core/ModuleRoute";
 
 export default function Module(props) {
     return (
-        <>
-            <Switch>
-                <Route path="/">
-                    <MainPanel {...props}/>
-                </Route>
-                <Route path="/config">
-                    <ConfigPanel {...props}/>
-                </Route>
-            </Switch>
-        </>
+        <ModuleWrapper {...props}>
+            <ModuleRoute exact path="/panel/:panelId">
+                <MainPanel {...props} />
+            </ModuleRoute>
+            <ModuleRoute exact path="/panel/:panelId/edit">
+                <EditPanel {...props} />
+            </ModuleRoute>
+        </ModuleWrapper>
     );
 }
