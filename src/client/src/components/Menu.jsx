@@ -21,6 +21,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
     critical: {
@@ -102,30 +103,32 @@ const Menu = ({ showGroups = true }) => {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const GroupedMenuItems = ({ groupedItems }) => {
+    const GroupedMenuItems = ({ groupedPanels }) => {
+        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+
         return (
             <>
-                {Object.entries(groupedItems).map(([eachGroup, index]) => {
+                {sortedGroupKeys.map((groupKey) => {
                     return (
                         <Accordion
-                            key={eachGroup}
+                            key={groupKey}
                             elevation={0}
                             className={classes.group}
-                            expanded={expanded === eachGroup}
-                            onChange={handleAccordionChange(eachGroup)}
+                            expanded={expanded === groupKey}
+                            onChange={handleAccordionChange(groupKey)}
                         >
                             <AccordionSummary
                                 className={classes.groupHeader}
-                                expandIcon={expanded === eachGroup ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                                expandIcon={expanded === groupKey ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                                 onClick={(event) => {
                                     event.stopPropagation();
                                 }}
                             >
-                                {eachGroup}
+                                {groupKey}
                             </AccordionSummary>
                             <AccordionDetails className={classes.groupPanel}>
                                 <List aria-label="list of enabled modules">
-                                    {groupedItems[eachGroup].map((eachPanel) => renderMenuItem(eachPanel))}
+                                    {groupedPanels[groupKey].map((eachPanel) => renderMenuItem(eachPanel))}
                                 </List>
                             </AccordionDetails>
                         </Accordion>
@@ -156,7 +159,7 @@ const Menu = ({ showGroups = true }) => {
             if (Object.keys(panelsByGroup).length === 1 || !showGroups) {
                 return <MenuItems items={panelList.data} />;
             } else {
-                return <GroupedMenuItems groupedItems={panelsByGroup} />;
+                return <GroupedMenuItems groupedPanels={panelsByGroup} />;
             }
         } else {
             return null;

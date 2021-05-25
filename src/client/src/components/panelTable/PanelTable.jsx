@@ -11,6 +11,7 @@ import PanelTableRow from "@components/panelTable/PanelTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import PanelTableGroupRow from "./PanelTableGroupRow";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
     colDescription: {
@@ -47,9 +48,11 @@ export default function PanelTable({ showGroups = true }) {
     };
 
     const PanelGroupRows = ({ groupedPanels }) => {
+        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+
         return (
             <>
-                {Object.entries(groupedPanels).map(([eachGroup, index]) => {
+                {sortedGroupKeys.map((eachGroup) => {
                     return (
                         <React.Fragment key={eachGroup}>
                             <PanelTableGroupRow title={eachGroup} />
