@@ -32,13 +32,27 @@ const getGroups = (panels) => {
     return groups;
 };
 
+const sortPanels = (panels) => {
+    const sortedPanels = {};
+    const groups = getGroups(panels);
+
+    for (let group of groups) {
+        sortedPanels[group] = [];
+    }
+
+    for (let panel of panels.data) {
+        sortedPanels[panel.group].push(panel);
+    }
+    return sortedPanels;
+};
+
 const useStyles = makeStyles((theme) => ({}));
 
 export default function PanelSort() {
     const panelList = useSelector((state) => state.panelList);
-    const classes = useStyles();
     const [groups, setGroups] = useState(getGroups(panelList));
-    const [panels, setPanels] = useState(panelList);
+    const [panels, setPanels] = useState(sortPanels(panelList));
+    const classes = useStyles();
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -49,7 +63,7 @@ export default function PanelSort() {
     );
 
     useEffect(() => {
-        setPanels(panelList.data);
+        setPanels(sortPanels(panelList));
         setGroups(getGroups(panelList));
     }, [panelList]);
 
@@ -58,28 +72,41 @@ export default function PanelSort() {
     }, [panels]);
 
     const updateOrder = async (panels) => {
-        for (let i = 0; i < panels.length; i++) {
-            await AxiosPut(`/api/panelconfig/${panels[i].id}`, {
-                order: i,
-            });
+        for (let group of groups) {
+            for (let index in panels[group]) {
+                await AxiosPut(`/api/panelconfig/${panels[group][index].id}`, {
+                    order: index,
+                    group: group,
+                });
+            }
         }
     };
 
     const handleDragEnd = (event) => {
+        const panelIDs = panelList.data.map((panel) => panel.id);
         const { active, over } = event;
+
         if (active.id !== over.id) {
-            if (groups.includes(active.id)) {
+            if (groups.includes(active.id) && groups.includes(over.id)) {
                 setGroups((groups) => {
                     const oldIndex = groups.indexOf(active.id);
                     const newIndex = groups.indexOf(over.id);
-                    return arrayMove(panels, oldIndex, newIndex);
+                    return arrayMove(groups, oldIndex, newIndex);
                 });
-            } else {
-                setPanels((panels) => {
-                    const oldIndex = findWithAttr(panels, "id", active.id);
-                    const newIndex = findWithAttr(panels, "id", over.id);
-                    return arrayMove(panels, oldIndex, newIndex);
-                });
+            }
+            if (
+                panelIDs.includes(over.id.split(":")[1]) &&
+                panelIDs.includes(active.id.split(":")[1])
+            ) {
+                const overData = over.id.split(":");
+                const activeData = active.id.split(":");
+
+                const newPanels = panels;
+                const panel = newPanels[activeData[0]].pop(active.id);
+                newPanels[overData[0]].splice(over.id, 0, panel);
+
+                console.log(newPanels);
+                setPanels(newPanels);
             }
         }
     };
@@ -111,7 +138,11 @@ export default function PanelSort() {
                                 strategy={verticalListSortingStrategy}
                             >
                                 {groups.map((group) => (
-                                    <PanelSortGroup key={group} group={group} />
+                                    <PanelSortGroup
+                                        key={group}
+                                        group={group}
+                                        panels={panels[group]}
+                                    />
                                 ))}
                             </SortableContext>
                         </DndContext>
