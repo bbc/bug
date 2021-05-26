@@ -23,8 +23,6 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
         sources: [],
     };
 
-    // let existingData = await dataCollection.findOne({ title: newResult["title"] });
-
     // add groups first
     groupIndex = groupIndex < 0 ? null : groupIndex;
 
@@ -75,15 +73,10 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
             const isExcluded = excludedSources.includes(intIndex);
             const isSelected = selectedSourceIndex === intIndex;
             const isInGroup = groupIndex === null || validSources.includes(intIndex);
-            let indexText, order;
-
-            if (config["showNumber"] === true) {
-                indexText = (intIndex + 1).toString();
-            } else {
-                indexText = "";
-            }
+            const indexText = config["showNumber"] === false ? "" : intIndex + 1;
 
             // set new order field - if in group then use the validsources index, otherwise the normal one
+            let order;
             if (groupIndex !== null) {
                 order = validSources.indexOf(intIndex);
             } else {
@@ -98,7 +91,7 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
                     hidden: isExcluded,
                     indexText: indexText,
                     order: order,
-                    islocked: sourcesLocked,
+                    isLocked: sourcesLocked,
                 });
             }
         }
