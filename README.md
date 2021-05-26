@@ -12,13 +12,13 @@ It's definitely in pre-alpha, so please don't use it yet...
 
 For development on your local machine with docker (recommended)
 
-* Install the latest version of `docker`, `docker-compose`, `node.js` and `npm`.
-* Clone this repository
-* Change directories to the `./src` folder of the repository
-* Run `npm install`.
-* Change directories to the `./src/client` folder of the repository
-* Run `npm install`.
-* Spin up your development instnace with `docker compose up -d`
+-   Install the latest version of `docker`, `docker-compose`, `node.js` and `npm`.
+-   Clone this repository
+-   Change directories to the `./src` folder of the repository
+-   Run `npm install`.
+-   Change directories to the `./src/client` folder of the repository
+-   Run `npm install`.
+-   Spin up your development instnace with `docker compose up -d`
 
 You can change many of the port parameters, logging locations by setting environment variables in a `.env` file in the root directory.
 
@@ -26,24 +26,24 @@ When developing in docker changes will automatically be relfected in docker usin
 
 ## Development: Local Machine
 
-* Clone the repository
-* Change directories to the `./src` folder of the repository
-* Run `npm install`.
-* Change directories to the `./src/client` folder of the repository
-* Run `npm install`.
-* Change directories to the `./src` folder of the repository
-* Use `npm run development` to run on your local machine.
+-   Clone the repository
+-   Change directories to the `./src` folder of the repository
+-   Run `npm install`.
+-   Change directories to the `./src/client` folder of the repository
+-   Run `npm install`.
+-   Change directories to the `./src` folder of the repository
+-   Use `npm run development` to run on your local machine.
 
 Note that this method still requires you to have docker on your machine to test functionality like adding and removing panels. You'll also need a locally running MongoDB aswell.
 
 ## Production: Linux, Windows and Mac
 
-* Install docker on your system if it's not already there.
-* If docker-compose is not on your system install it as well.
-* Copy the below YAML into a file called `docker-compose up -d`.
-* Add the environment variables to a file called `.env`. See sample environment file below.
-* Run BUG using `docker-compose up -d`.
-* After a few minutes bug will be avalible at `http://localhost:80`
+-   Install docker on your system if it's not already there.
+-   If docker-compose is not on your system install it as well.
+-   Copy the below YAML into a file called `docker-compose up -d`.
+-   Add the environment variables to a file called `.env`. See sample environment file below.
+-   Run BUG using `docker-compose up -d`.
+-   After a few minutes bug will be avalible at `http://localhost:80`
 
 ```
 # BUG for Windows, Mac or Linux
@@ -84,13 +84,13 @@ services:
 
 ## Production: Raspberry Pi 3/4 (Arm CPU Architecture)
 
-* Install Raspbian on an SD Card.
-* Install Docker.
-* Install Docker Compose.
-* Copy the below YAML into a file called `docker-compose up -d`.
-* Add the environment variables to a file called `.env`. See sample environment file below.
-* Run `docker-compose up -d`.
-* Find BUG on `localhost:80`
+-   Install Raspbian on an SD Card.
+-   Install Docker.
+-   Install Docker Compose.
+-   Copy the below YAML into a file called `docker-compose up -d`.
+-   Add the environment variables to a file called `.env`. See sample environment file below.
+-   Run `docker-compose up -d`.
+-   Find BUG on `localhost:80`
 
 ```
 # BUG for Raspberry Pi 3 and 4
@@ -171,6 +171,6 @@ Where `bbcnews-bug-core_bug-core_1` is the name of the container that can be see
 
 ### Stop BUG
 
-To stop the main bug-core service use;
+To stop the bug, all it's services and containers use;
 
-`docker-compose down`
+`docker compose down --remove-orphans`
