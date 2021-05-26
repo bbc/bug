@@ -1,15 +1,10 @@
 "use strict";
 
-/**
- *  Expose the parser
- */
-
 module.exports = parser;
 
 var currentBlock = "";
 
 /**
- *  Teh parser
  *  Basically, we need to determine if we have a full block
  *  a full block starts with a line with only full caps letters
  *  a full block is a block that terminates with two new line characters
@@ -93,16 +88,3 @@ function selfContained(str) {
 function normalizeTitle(title) {
     return title.toLowerCase().replace(/\ /g, "_").replace(":", "");
 }
-
-parser.isNewBlock = function (str) {
-    return !!str.match(/([A-Z]|\ )+\:\n/g);
-};
-
-parser.getBlockHeader = function (str) {
-    str = str.split("\n");
-    return str[0].replace(/\ /g, "_").replace(/\:/g, "").toLowerCase();
-};
-
-parser.isPreamble = function (str) {
-    return ~str.indexOf("PROTOCOL PREAMBLE");
-};

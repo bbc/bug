@@ -24,7 +24,9 @@ Router.prototype.connect = function () {
         instance.socket = net.createConnection(instance.opts.port, instance.opts.host);
 
         instance.socket.on("data", function (data) {
-            instance.emit("update", parser(data.toString()));
+            try {
+                instance.emit("update", parser(data.toString()));
+            } catch (error) {}
         });
 
         instance.socket.on("connect", function () {
@@ -63,14 +65,13 @@ Router.prototype.connect = function () {
 //     });
 // };
 
-Router.prototype.route = function (output, input) {
+Router.prototype.send = function (field, command) {
     const instance = this;
-    return new Promise((resolve, reject) => {
-        let str = [`VIDEO OUTPUT ROUTING:`, `${output} ${input}`].join("\n");
-        str += "\n\n";
 
+    return new Promise((resolve, reject) => {
         try {
-            instance.socket.write(str, () => {
+            const message = `${field}:\n${command}\n\n`;
+            instance.socket.write(message, () => {
                 setTimeout(() => {
                     resolve();
                 }, 100);

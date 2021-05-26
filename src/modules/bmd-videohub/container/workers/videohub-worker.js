@@ -10,6 +10,7 @@ const videohub = require("@utils/videohub-promise");
 const delayMs = 2000;
 const errorDelayMs = 10000;
 const config = workerData.config;
+let dataCollection;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -17,19 +18,44 @@ parentPort.postMessage({
     restartOn: ["address", "port"],
 });
 
+const saveResult = async (newResult) => {
+    if (newResult && newResult["title"]) {
+        // console.log(newResult["title"]);
+        // fetch previous result
+        let existingData = await dataCollection.findOne({ title: newResult["title"] });
+        // console.log("existing", existingData);
+        if (!existingData) {
+            existingData = {
+                title: newResult["title"],
+                data: {},
+            };
+        }
+        // console.log("before", JSON.stringify(existingData));
+
+        // update values
+        for (const [index, value] of Object.entries(newResult["data"])) {
+            existingData["data"][index] = value;
+        }
+        console.log("after", JSON.stringify(existingData));
+        // add timestamp
+        existingData.timestamp = Date.now();
+
+        await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
+    }
+};
+
 const pollDevice = async () => {
-    // const Collection = await mongoCollection("interfaces");
+    dataCollection = await mongoCollection("data");
 
     try {
         console.log(`videohub-worker: connecting to device at ${config.address}:${config.port}`);
         const router = new videohub({ host: config.address, port: config.port });
-        router.on("update", (result) => {
-            console.log("result", result);
-        });
+        router.on("update", saveResult);
         await router.connect();
         console.log("videohub-worker: device connected ok");
 
         while (true) {
+            // poll occasionally
             console.log(".");
             await delay(20000);
         }
@@ -37,20 +63,6 @@ const pollDevice = async () => {
         console.log("videohub-worker: failed to connect to device");
         return;
     }
-
-    //     let noErrors = true;
-    //     console.log("fetch-interfaces: starting device poll....");
-    //     while (noErrors) {
-    //         try {
-    //             const interfaces = await mikrotikFetchInterfaces(conn);
-    //             await arraySaveMongo(interfacesCollection, interfaces, "id");
-    //         } catch (error) {
-    //             console.log("fetch-interfaces: ", error);
-    //             noErrors = false;
-    //         }
-    //         await delay(delayMs);
-    //     }
-    //     await conn.close();
 };
 
 const main = async () => {
