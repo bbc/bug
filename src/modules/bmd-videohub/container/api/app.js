@@ -8,6 +8,7 @@ const configRouter = require("./routes/config");
 const defaultRouter = require("@routes/default");
 const routeRouter = require("@routes/route");
 const labelRouter = require("@routes/label");
+const lockRouter = require("@routes/lock");
 
 let app = express();
 
@@ -19,7 +20,8 @@ app.use(bodyParser.json());
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/route", routeRouter);
-app.use("/api/label", labelRouter);
+app.use("/api", labelRouter);
+app.use("/api", lockRouter);
 app.use("*", defaultRouter);
 
 module.exports = app;

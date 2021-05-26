@@ -3,7 +3,7 @@ const videohubSetLabel = require("@services/videohub-setlabel");
 const videohubSetLabels = require("@services/videohub-setlabels");
 const route = express.Router();
 
-route.get("/set/:index/:type/:label?", async function (req, res, next) {
+route.get("/setlabel/:index/:type/:label?", async function (req, res, next) {
     try {
         res.json({
             status: "success",
@@ -18,7 +18,7 @@ route.get("/set/:index/:type/:label?", async function (req, res, next) {
     }
 });
 
-route.post("/setmultiple", async function (req, res, next) {
+route.post("/setmultiplelabels", async function (req, res, next) {
     try {
         res.json({
             status: "success",

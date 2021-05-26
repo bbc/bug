@@ -43,34 +43,13 @@ Router.prototype.connect = function () {
     });
 };
 
-// Router.prototype.disconnect = function () {
-//     return new Promise((resolve, reject) => {
-//         console.log("end");
-//         this.socket.end();
-
-//         this.socket.on("end", function () {
-//             console.log(`videohub-promise: ENDED`);
-//             resolve();
-//         });
-
-//         this.socket.on("timeout", function (e) {
-//             console.log(`videohub-promise: TIMEOUT`);
-//             reject(new Error("Connected timed out"));
-//         });
-
-//         this.socket.on("error", function (e) {
-//             console.log(`videohub-promise: ERROR`);
-//             reject(new Error(e));
-//         });
-//     });
-// };
-
 Router.prototype.send = function (field, command) {
     const instance = this;
 
     return new Promise((resolve, reject) => {
         try {
             const message = `${field}:\n${command}\n\n`;
+            console.log(message);
             instance.socket.write(message, () => {
                 setTimeout(() => {
                     resolve();
