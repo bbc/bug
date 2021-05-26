@@ -21,11 +21,11 @@
         "enabled": false,
         "address": "",
         "port": "9990",
-        "show_number": true,
-        "use_take": true,
-        "source_groups": [],
-        "destination_groups": [],
-        "exclude_sources": [],
-        "exclude_destinations": []
+        "showNumber": true,
+        "useTake": true,
+        "sourceGroups": [],
+        "destinationGroups": [],
+        "excludeSources": [],
+        "excludeDestinations": []
     }
 }

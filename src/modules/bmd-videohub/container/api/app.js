@@ -9,6 +9,8 @@ const defaultRouter = require("@routes/default");
 const routeRouter = require("@routes/route");
 const labelRouter = require("@routes/label");
 const lockRouter = require("@routes/lock");
+const sourcesRouter = require("@routes/sources");
+const destinationsRouter = require("@routes/destinations");
 
 let app = express();
 
@@ -22,6 +24,8 @@ app.use("/api/config", configRouter);
 app.use("/api/route", routeRouter);
 app.use("/api", labelRouter);
 app.use("/api", lockRouter);
+app.use("/api/sources", sourcesRouter);
+app.use("/api/destinations", destinationsRouter);
 app.use("*", defaultRouter);
 
 module.exports = app;
