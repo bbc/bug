@@ -49,6 +49,7 @@ pipeline {
         }
         stage('Publish') {
             steps {
+                sh "docker buildx imagetools inspect ${imageName}:latest"
                 sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:${VERSION}"
                 sh "docker push ${repositoryName}/${imageName}:${VERSION}"
                 sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:latest"
