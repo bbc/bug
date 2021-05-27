@@ -1,4 +1,3 @@
-def package = 'latest'
 pipeline {
     environment {
         repositoryName = '172.26.108.110:5000'
@@ -36,7 +35,7 @@ pipeline {
             steps {
                 dir('src') {
 
-                    package = readJSON file: 'package.json'
+                    def package = readJSON file: 'package.json'
                     echo package.version
 
                     sh "docker buildx create --use --name bugBuilder --platform linux/amd64,linux/arm/v7"
