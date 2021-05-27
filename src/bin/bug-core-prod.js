@@ -13,7 +13,7 @@ const port = process.env.BUG_CORE_PORT || "80";
 bugApi.set("port", port);
 
 // include react static client files
-bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
+bugApi.static(path.join(__dirname, "..", "client", "build"));
 
 // serve Bug react application
 bugApi.get("*", function (req, res) {
