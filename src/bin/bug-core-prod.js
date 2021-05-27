@@ -18,7 +18,7 @@ bugApi.set("port", port);
 bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
 
 // serve Bug react application
-bugApi.get("/", function (req, res) {
+bugApi.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
 
