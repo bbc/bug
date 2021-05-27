@@ -137,12 +137,12 @@ export default function PanelToolbar(props) {
                     )}
                     <Button
                         component={Link}
-                        to={`/panel/${panel.data.id}/edit`}
+                        to={`/panel/${panel.data.id}/config`}
                         variant="outlined"
                         color="default"
                         startIcon={<SettingsIcon />}
                     >
-                        Edit Config
+                        Config
                     </Button>
                     {props.buttons}
                 </Hidden>
@@ -156,11 +156,11 @@ export default function PanelToolbar(props) {
                     <MoreIcon />
                 </IconButton>
                 <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
-                    <MenuItem component={Link} to={`/panel/${panel.data.id}/edit`}>
+                    <MenuItem component={Link} to={`/panel/${panel.data.id}/config`}>
                         <ListItemIcon>
                             <SettingsIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Edit Config" />
+                        <ListItemText primary="Config" />
                     </MenuItem>
                     {props.menuItems}
                     <Divider />

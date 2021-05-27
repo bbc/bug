@@ -9,7 +9,7 @@ import PasswordTextField from "@core/PasswordTextField";
 import PanelGroupFormControl from "@core/PanelGroupFormControl";
 import { useConfigFormHandler } from "@core/ConfigFormHandler";
 
-export default function EditPanel() {
+export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     if (panelConfig.status === "loading") {

@@ -1,0 +1,15 @@
+{
+    "name": "cisco-sg",
+    "scripts": {
+      "start": "npm index",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Geoff House",
+    "license": "ISC",
+    "devDependencies": {
+      "nodemon": "^2.0.7"
+    },
+    "dependencies": {
+    }
+  }
+  

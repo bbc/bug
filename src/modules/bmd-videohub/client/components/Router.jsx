@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     content: {
         position: "relative",
         height: "100%",
+        "@media (max-width:600px)": {
+            position: "static",
+        },
     },
     section: {
         fontSize: "0.875rem",
@@ -28,11 +31,17 @@ const useStyles = makeStyles((theme) => ({
     },
     groupButtons: {
         padding: 8,
+        "@media (max-width:600px)": {
+            padding: "0px 2px",
+        },
     },
     buttons: {
         padding: "0px 8px",
         marginBottom: 8,
         overflow: "auto",
+        "@media (max-width:600px)": {
+            padding: "0px 2px",
+        },
     },
     sourcePanel: {
         position: "absolute",
@@ -40,15 +49,16 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         bottom: "50%",
-        marginBottom: theme.spacing(2),
+        marginBottom: 12,
         "@media (max-width:1200px)": {
-            marginBottom: theme.spacing(1),
+            marginBottom: 8,
         },
         "@media (max-width:1024px)": {
             marginBottom: 4,
         },
         "@media (max-width:600px)": {
-            marginBottom: theme.spacing(0),
+            marginBottom: 1,
+            position: "static",
         },
     },
     destinationPanel: {
@@ -57,15 +67,16 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         top: "50%",
-        marginTop: theme.spacing(2),
+        marginTop: 12,
         "@media (max-width:1200px)": {
-            marginTop: theme.spacing(1),
+            marginTop: 8,
         },
         "@media (max-width:1024px)": {
             marginTop: 4,
         },
         "@media (max-width:600px)": {
-            marginTop: theme.spacing(0),
+            marginTop: 1,
+            position: "static",
         },
     },
 }));

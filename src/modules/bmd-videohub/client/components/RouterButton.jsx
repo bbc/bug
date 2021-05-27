@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
             flexDirection: "column",
             height: "100%",
         },
+        "@media (max-width:600px)": {
+            height: 48,
+        },
     },
     buttonSelected: {
         backgroundColor: "#337ab7",
@@ -30,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         height: "65%",
+        "@media (max-width:600px)": {
+            display: "none",
+        },
     },
     buttonLower: {
         width: "100%",
@@ -40,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
         height: "35%",
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
+        "@media (max-width:600px)": {
+            backgroundColor: "inherit",
+        },
     },
     circle: {
         border: "2px solid #3a3a3a",

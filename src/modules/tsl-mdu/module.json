@@ -9,7 +9,7 @@
     "license": "MIT",
     "needsContainer": true,
     "devmounts": ["api", "utils", "services"],
-    "protectedRoutes": ["edit"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,

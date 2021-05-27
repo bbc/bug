@@ -3,7 +3,7 @@ import PanelSort from "@components/panelSort/PanelSort";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "../redux/pageTitleSlice";
 
-export default function PagePanels() {
+export default function PagePanelsEdit() {
     const dispatch = useDispatch();
 
     useEffect(() => {

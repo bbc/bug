@@ -9,7 +9,7 @@
     "needsContainer": true,
     "license": "ISC",
     "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["edit"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,
