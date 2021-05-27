@@ -87,15 +87,17 @@ export default function Router({ panelId }) {
     const [selectedDestination, setSelectedDestination] = React.useState(0);
     const [destinationGroup, setDestinationGroup] = React.useState(0);
     const [sourceGroup, setSourceGroup] = React.useState(0);
+    const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination}/${sourceGroup}`,
-        interval: 2000,
+        interval: 1000,
     });
 
     const destinationButtons = useApiPoller({
         url: `/container/${panelId}/destinations/${destinationGroup}`,
-        interval: 2000,
+        interval: 5000,
+        forceRefresh: destinationForceRefreshHash,
     });
 
     const handleGroupButtonClicked = (groupIndex) => {
@@ -118,10 +120,13 @@ export default function Router({ panelId }) {
         } else {
             sendAlert(failMessage, { variant: "error" });
         }
+
+        // force a refresh of the destinations
+        setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
     };
 
     const renderSources = () => {
-        if (sourceButtons.status === "loading" || sourceButtons.status === "idle" || sourceButtons.data === null) {
+        if (sourceButtons.status === "loading" || sourceButtons.status === "idle" || !sourceButtons.data) {
             return <Loading />;
         }
 
@@ -145,7 +150,7 @@ export default function Router({ panelId }) {
                             key={source.index}
                             selected={source.selected}
                             index={source.index}
-                            text={source.label}
+                            primaryText={source.label}
                             onClick={() => handleSourceButtonClicked(source.index)}
                         />
                     ))}
@@ -158,7 +163,7 @@ export default function Router({ panelId }) {
         if (
             destinationButtons.status === "loading" ||
             destinationButtons.status === "idle" ||
-            destinationButtons.data === null
+            !destinationButtons.data
         ) {
             return <Loading />;
         }
@@ -183,7 +188,8 @@ export default function Router({ panelId }) {
                             key={destination.index}
                             selected={selectedDestination === destination.index}
                             index={destination.index}
-                            text={destination.label}
+                            primaryText={destination.label}
+                            secondaryText={destination.sourceLabel}
                             onClick={() => setSelectedDestination(destination.index)}
                         />
                     ))}

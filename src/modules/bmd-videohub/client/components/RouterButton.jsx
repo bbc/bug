@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
         height: 128,
         padding: 0,
         textTransform: "none",
+        lineHeight: 1.4,
         "& .MuiButton-label": {
             flexDirection: "column",
             height: "100%",
@@ -37,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    secondaryText: {
+        fontWeight: 500,
+        fontSize: "0.7rem",
+        opacity: 0.6,
+    },
     buttonLower: {
         width: "100%",
         backgroundColor: "#333",
@@ -44,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         height: "35%",
+        flexDirection: "column",
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
         "@media (max-width:600px)": {
@@ -67,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     primaryText: {},
 }));
 
-export default function RouterButton({ selected = false, index, text, icon = null, onClick }) {
+export default function RouterButton({ selected = false, index, primaryText, secondaryText, icon = null, onClick }) {
     const classes = useStyles();
     const indexPlusOne = (index + 1).toString();
     return (
@@ -83,7 +90,8 @@ export default function RouterButton({ selected = false, index, text, icon = nul
                 </div>
             </div>
             <div className={classes.buttonLower}>
-                <div className={classes.primaryText}>{text}</div>
+                <div className={classes.secondaryText}>{secondaryText}</div>
+                <div className={classes.primaryText}>{primaryText}</div>
             </div>
         </Button>
     );

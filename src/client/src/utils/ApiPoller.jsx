@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 
-export function useApiPoller({ url, interval }) {
+export function useApiPoller({ url, interval, forceRefresh }) {
     const timer = useRef();
     const [pollResult, setPollResult] = useState({
         status: "idle",
@@ -9,9 +9,8 @@ export function useApiPoller({ url, interval }) {
         error: null,
     });
     const localResult = useRef(pollResult);
-
+    console.log("forceRefresh", forceRefresh);
     useEffect(() => {
-        
         const source = axios.CancelToken.source();
         const cancelToken = source.token;
 
@@ -78,6 +77,6 @@ export function useApiPoller({ url, interval }) {
             // cancel any in-flight axios requests
             source.cancel();
         };
-    }, [url, interval]);
+    }, [url, interval, forceRefresh]);
     return pollResult;
 }
