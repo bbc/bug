@@ -135,7 +135,7 @@ export default function PanelToolbar(props) {
                             ></Button>
                         </>
                     )}
-                    <Button
+                    {/* <Button
                         component={Link}
                         to={`/panel/${panel.data.id}/config`}
                         variant="outlined"
@@ -143,7 +143,7 @@ export default function PanelToolbar(props) {
                         startIcon={<SettingsIcon />}
                     >
                         Config
-                    </Button>
+                    </Button> */}
                     {props.buttons}
                 </Hidden>
                 <IconButton
