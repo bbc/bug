@@ -7,6 +7,7 @@ const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const workerStore = require("@core/worker-store");
+const path = require("path");
 
 const port = process.env.BUG_CORE_PORT || "80";
 
