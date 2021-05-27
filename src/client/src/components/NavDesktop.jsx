@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
         ...theme.mixins.toolbar,
     },
     content: {
+        position: "relative",
         flexGrow: 1,
     },
 }));

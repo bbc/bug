@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
     },
     content: {
+        position: "relative",
         flexGrow: 1,
     },
 }));

@@ -9,7 +9,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { useSelector } from "react-redux";
 
-export default function EditPanel() {
+export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     const {

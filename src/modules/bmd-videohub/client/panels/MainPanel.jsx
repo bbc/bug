@@ -1,10 +1,13 @@
 import React from "react";
+import Router from "../components/Router";
+import { useParams } from "react-router-dom";
 
-export default function MainPanel(props) {
+export default function MainPanel() {
+    const params = useParams();
 
-  return (
-    <>
-      Blackmagic Videohub Main Panel
-    </>
-  );
+    return (
+        <>
+            <Router panelId={params.panelId} />
+        </>
+    );
 }

@@ -53,7 +53,7 @@ const Toolbar = (props) => {
                     <PanelsToolbar />
                 </>
             );
-        case "/panels/edit":
+        case "/panels/config":
             return (
                 <>
                     <div className={classes.title}>

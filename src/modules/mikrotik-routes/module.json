@@ -8,7 +8,7 @@
     "author": "Geoff House",
     "license": "ISC",
     "needsContainer": true,
-    "protectedRoutes": ["edit"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,

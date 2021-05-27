@@ -11,6 +11,7 @@ const labelRouter = require("@routes/label");
 const lockRouter = require("@routes/lock");
 const sourcesRouter = require("@routes/sources");
 const destinationsRouter = require("@routes/destinations");
+const groupsRouter = require("@routes/groups");
 
 let app = express();
 
@@ -26,6 +27,8 @@ app.use("/api", labelRouter);
 app.use("/api", lockRouter);
 app.use("/api/sources", sourcesRouter);
 app.use("/api/destinations", destinationsRouter);
+app.use("/api/groups", groupsRouter);
+
 app.use("*", defaultRouter);
 
 module.exports = app;

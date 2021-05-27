@@ -5,11 +5,10 @@ import ChipInput from "@core/ChipInput";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import PasswordTextField from "@core/PasswordTextField";
 import PanelGroupFormControl from "@core/PanelGroupFormControl";
 import { useConfigFormHandler } from "@core/ConfigFormHandler";
 
-export default function EditPanel() {
+export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     if (panelConfig.status === "loading") {
@@ -52,11 +51,11 @@ export default function EditPanel() {
                     />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <PanelGroupFormControl name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         //REGEX: Tests for IPv4 Addresses
                         inputProps={{
@@ -70,63 +69,30 @@ export default function EditPanel() {
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
-                        onChange={(event) => validateServer(event, "address")}
+                        onChange={(event) => validateServer(event, "address", ["port"])}
                         type="text"
                         label="IP Address"
                     />
                 </Grid>
 
-                <Grid item xs={12} lg={6}>
+                <Grid item xs={12} md={6}>
                     <TextField
-                        inputProps={{ ...register("username", { required: true }) }}
+                        //REGEX: Tests for IPv4 Port
+                        inputProps={{
+                            ...register("port", {
+                                required: true,
+                                pattern:
+                                    /^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$/,
+                            }),
+                        }}
                         variant="filled"
                         fullWidth
-                        error={errors.username}
-                        helperText={messages.username}
-                        defaultValue={panelConfig.data.username}
-                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
+                        error={errors.port}
+                        helperText={messages.port}
+                        defaultValue={panelConfig.data.port}
+                        onChange={(event) => validateServer(event, "port", ["address"])}
                         type="text"
-                        label="Username"
-                    />
-                </Grid>
-
-                <Grid item xs={12} lg={6}>
-                    <PasswordTextField
-                        inputProps={{ ...register("password", { required: true }) }}
-                        variant="filled"
-                        fullWidth
-                        error={errors.password}
-                        helperText={messages.password}
-                        defaultValue={panelConfig.data.password}
-                        onChange={(event) => validateServer(event, "username", ["address", "username"])}
-                        type="password"
-                        label="Password"
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <ChipInput
-                        name="protectedInterfaces"
-                        label="Protected Interfaces"
-                        control={control}
-                        defaultValue={panelConfig.data.protectedInterfaces}
-                        variant="filled"
-                        sort={true}
-                        error={errors.protectedInterfaces}
-                        fullWidth
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <ChipInput
-                        name="excludedInterfaces"
-                        label="Excluded Interfaces"
-                        control={control}
-                        defaultValue={panelConfig.data.excludedInterfaces}
-                        variant="filled"
-                        sort={true}
-                        error={errors.excludedInterfaces}
-                        fullWidth
+                        label="Device Port"
                     />
                 </Grid>
             </PanelConfig>

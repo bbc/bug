@@ -6,8 +6,8 @@ export default function ModuleRoute({ children, path }) {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     const getConfiguration = () => {
-        if (panelConfig.data.needsConfigured && children.type.name !== "EditPanel") {
-            return <Redirect to={`/panel/${panelConfig.data.id}/edit`} />;
+        if (panelConfig.data.needsConfigured && children.type.name !== "ConfigPanel") {
+            return <Redirect to={`/panel/${panelConfig.data.id}/config`} />;
         }
     };
 

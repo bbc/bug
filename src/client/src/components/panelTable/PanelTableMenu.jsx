@@ -75,8 +75,8 @@ export default function PanelTableMenu(props) {
         setDeleteDialogOpen(true);
     };
 
-    const handleEdit = () => {
-        setRedirectUrl(`/panel/${props.panel.id}/edit`);
+    const handleConfig = () => {
+        setRedirectUrl(`/panel/${props.panel.id}/config`);
         setAnchorEl(null);
     };
 
@@ -116,7 +116,7 @@ export default function PanelTableMenu(props) {
 
                 <Divider />
 
-                <PanelMenuItem onClick={handleEdit} text="Edit Config">
+                <PanelMenuItem onClick={handleConfig} text="Config">
                     <SettingsIcon fontSize="small" />
                 </PanelMenuItem>
 
