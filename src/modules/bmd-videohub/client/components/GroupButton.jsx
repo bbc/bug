@@ -53,6 +53,7 @@ export default function GroupButton({
     primaryText,
     icon = null,
     onClick,
+    groupType,
     editMode = false,
 }) {
     const classes = useStyles();
@@ -77,7 +78,9 @@ export default function GroupButton({
             >
                 {primaryText}
             </div>
-            {editMode ? <GroupMenu panelId={panelId} groupName={primaryText} groupIndex={index} /> : null}
+            {editMode ? (
+                <GroupMenu panelId={panelId} groupType={groupType} groupName={primaryText} groupIndex={index} />
+            ) : null}
         </Button>
     );
 }

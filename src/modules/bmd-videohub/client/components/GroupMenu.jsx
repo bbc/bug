@@ -12,6 +12,7 @@ import { useAlert } from "@utils/Snackbar";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import CheckIcon from "@material-ui/icons/Check";
 import AxiosCommand from "@utils/AxiosCommand";
+import AxiosDelete from "@utils/AxiosDelete";
 import { Redirect } from "react-router";
 import CommentIcon from "@material-ui/icons/Comment";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function GroupMenu({ groupIndex, groupName, panelId }) {
+export default function GroupMenu({ groupType, groupIndex, groupName, panelId, onChange }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -51,19 +52,17 @@ export default function GroupMenu({ groupIndex, groupName, panelId }) {
     //     }
     // };
 
-    const handleRename = (event) => {
+    const handleDelete = async (event) => {
         handleClose();
-        //     onRename({
-        //         panelId,
-        //         interfaceId: iface.id,
-        //         interfaceName: iface.name,
-        //         defaultName: iface["default-name"],
-        //     });
-        //     event.stopPropagation();
+        if (await AxiosDelete(`/container/${panelId}/groups/${groupType}/${groupName}`)) {
+            sendAlert(`Deleted group: ${groupName}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to delete group: ${groupName}`, { variant: "error" });
+        }
         event.stopPropagation();
     };
 
-    const handleDelete = (event) => {
+    const handleRename = (event) => {
         handleClose();
         event.stopPropagation();
     };

@@ -172,6 +172,8 @@ export default function Router({ panelId, editMode = false }) {
                             onClick={() => handleSourceGroupButtonClicked(group.index)}
                             editMode={editMode}
                             panelId={panelId}
+                            groupType="source"
+                            onChange={() => handleGroupsChanged()}
                         />
                     ))}
                     {editMode && (
@@ -220,6 +222,8 @@ export default function Router({ panelId, editMode = false }) {
                             onClick={() => handleDestinationGroupButtonClicked(group.index)}
                             editMode={editMode}
                             panelId={panelId}
+                            groupType="destination"
+                            onChange={() => handleGroupsChanged()}
                         />
                     ))}
                     {editMode && (
