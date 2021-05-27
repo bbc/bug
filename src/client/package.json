@@ -1,6 +1,6 @@
 {
   "name": "bbcnews-bug-core-client",
-  "version": "0.1.0",
+  "version": "3.0.0-b",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.13.0",
