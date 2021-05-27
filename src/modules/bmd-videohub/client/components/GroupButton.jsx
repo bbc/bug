@@ -1,6 +1,8 @@
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import GroupMenu from "./GroupMenu";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -22,8 +24,11 @@ const useStyles = makeStyles((theme) => ({
     editButton: {
         borderRadius: 5,
         margin: 4,
+        padding: 0,
         width: 128,
         height: 48,
+        flexDirection: "row",
+        justifyContent: "space-between",
         "&:hover": {
             backgroundColor: "none",
         },
@@ -31,9 +36,25 @@ const useStyles = makeStyles((theme) => ({
     editButtonSelected: {
         borderColor: "#33b77a",
     },
+    primaryText: {
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+    },
+    primaryTextEdit: {
+        paddingLeft: 10,
+    },
 }));
 
-export default function GroupButton({ selected = false, index, text, icon = null, onClick, editMode = false }) {
+export default function GroupButton({
+    panelId,
+    selected = false,
+    index,
+    primaryText,
+    icon = null,
+    onClick,
+    editMode = false,
+}) {
     const classes = useStyles();
     return (
         <Button
@@ -49,7 +70,14 @@ export default function GroupButton({ selected = false, index, text, icon = null
             onClick={onClick}
             variant="outlined"
         >
-            {text}
+            <div
+                className={clsx(classes.primaryText, {
+                    [classes.primaryTextEdit]: editMode,
+                })}
+            >
+                {primaryText}
+            </div>
+            {editMode ? <GroupMenu panelId={panelId} groupName={primaryText} groupIndex={index} /> : null}
         </Button>
     );
 }

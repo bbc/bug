@@ -8,7 +8,8 @@ import { useApiPoller } from "@utils/ApiPoller";
 import GroupButton from "./GroupButton";
 import RouterButton from "./RouterButton";
 import AddGroupButton from "./AddGroupButton";
-import AddGroupDialog from "./AddGroupDialog";
+import RenameDialog from "./RenameDialog";
+import AxiosPost from "@utils/AxiosPost";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -91,10 +92,11 @@ export default function Router({ panelId, editMode = false }) {
     const [sourceGroup, setSourceGroup] = React.useState(0);
     const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
     const [addDialogType, setAddDialogType] = React.useState(null);
+    // const [renameDialogType, setAddDialogType] = React.useState(null);
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination}/${sourceGroup}`,
-        interval: editMode ? 1000 : 5000,
+        interval: editMode ? 5000 : 1000,
     });
 
     const destinationButtons = useApiPoller({
@@ -102,14 +104,6 @@ export default function Router({ panelId, editMode = false }) {
         interval: 5000,
         forceRefresh: destinationForceRefreshHash,
     });
-
-    const handleAddSourceGroupClicked = () => {
-        setAddDialogType("source");
-    };
-
-    const handleAddDestinationGroupClicked = () => {
-        setAddDialogType("destination");
-    };
 
     const handleSourceGroupButtonClicked = (groupIndex) => {
         setSourceGroup(groupIndex);
@@ -136,20 +130,28 @@ export default function Router({ panelId, editMode = false }) {
         let source = sourceButtons.data.sources.filter((x) => x.index === sourceIndex);
         let destination = destinationButtons.data.destinations.filter((x) => x.index === selectedDestination);
 
-        let successMessage = `Successfully routed source ${sourceIndex + 1} to destination ${selectedDestination + 1}`;
-        let failMessage = `Failed to route source ${sourceIndex + 1} to destination ${selectedDestination + 1}`;
         if (source.length === 1 && destination.length === 1) {
-            successMessage = `Successfully routed '${source[0].label}' to '${destination[0].label}'`;
-            failMessage = `Failed to route '${source[0].label}' to '${destination[0].label}'`;
+            if (await AxiosCommand(`/container/${panelId}/route/${selectedDestination}/${sourceIndex}`)) {
+                sendAlert(`Successfully routed '${source[0].label}' to '${destination[0].label}'`, {
+                    broadcast: true,
+                    variant: "success",
+                });
+                return;
+            }
         }
-        if (await AxiosCommand(`/container/${panelId}/route/${selectedDestination}/${sourceIndex}`)) {
-            sendAlert(successMessage, { broadcast: true, variant: "success" });
-        } else {
-            sendAlert(failMessage, { variant: "error" });
-        }
+        sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
 
         // force a refresh of the destinations
         setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
+    };
+
+    const handleAddGroup = async (value) => {
+        if (await AxiosPost(`/container/${panelId}/groups/${addDialogType}/${value}`)) {
+            setAddDialogType(null);
+            sendAlert(`Added group: ${value}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to add group: ${value}`, { variant: "error" });
+        }
     };
 
     const renderSources = () => {
@@ -166,12 +168,19 @@ export default function Router({ panelId, editMode = false }) {
                             key={group.index}
                             selected={group.selected}
                             index={group.index}
-                            text={group.label}
+                            primaryText={group.label}
                             onClick={() => handleSourceGroupButtonClicked(group.index)}
                             editMode={editMode}
+                            panelId={panelId}
                         />
                     ))}
-                    {editMode && <AddGroupButton onClick={handleAddSourceGroupClicked} />}
+                    {editMode && (
+                        <AddGroupButton
+                            onClick={() => {
+                                setAddDialogType("source");
+                            }}
+                        />
+                    )}
                 </div>
                 <div className={classes.buttons}>
                     {sourceButtons.data.sources.map((source) => (
@@ -207,12 +216,19 @@ export default function Router({ panelId, editMode = false }) {
                             key={group.index}
                             selected={destinationGroup === group.index}
                             index={group.index}
-                            text={group.label}
+                            primaryText={group.label}
                             onClick={() => handleDestinationGroupButtonClicked(group.index)}
                             editMode={editMode}
+                            panelId={panelId}
                         />
                     ))}
-                    {editMode && <AddGroupButton onClick={handleAddDestinationGroupClicked} />}
+                    {editMode && (
+                        <AddGroupButton
+                            onClick={() => {
+                                setAddDialogType("destination");
+                            }}
+                        />
+                    )}
                 </div>
                 <div className={classes.buttons}>
                     {destinationButtons.data.destinations.map((destination) => (
@@ -242,7 +258,15 @@ export default function Router({ panelId, editMode = false }) {
                 <div className={classes.destinationPanel}>{renderDestinations()}</div>
             </div>
             {addDialogType && (
-                <AddGroupDialog panelId={panelId} type={addDialogType} onClose={() => setAddDialogType(null)} />
+                <RenameDialog
+                    title="Add group"
+                    label="Group name"
+                    panelId={panelId}
+                    type={addDialogType}
+                    onCancel={() => setAddDialogType(null)}
+                    onSubmit={handleAddGroup}
+                    buttonText="Add"
+                />
             )}
         </>
     );

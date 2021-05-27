@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
     },
     primaryTextEdit: {
-        paddingLeft: "1rem",
+        paddingLeft: 10,
     },
 }));
 
@@ -112,6 +112,7 @@ export default function RouterButton({
     primaryText,
     secondaryText,
     icon = null,
+    onClick,
     editMode = false,
 }) {
     const classes = useStyles();
@@ -126,6 +127,7 @@ export default function RouterButton({
                       })
             }
             variant="outlined"
+            onClick={onClick}
         >
             <div className={classes.buttonUpper}>
                 <div className={classes.circle}>
