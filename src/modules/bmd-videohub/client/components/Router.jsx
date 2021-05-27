@@ -7,6 +7,8 @@ import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
 import GroupButton from "./GroupButton";
 import RouterButton from "./RouterButton";
+import AddGroupButton from "./AddGroupButton";
+import AddGroupDialog from "./AddGroupDialog";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -81,17 +83,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Router({ panelId }) {
+export default function Router({ panelId, editMode = false }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [selectedDestination, setSelectedDestination] = React.useState(0);
     const [destinationGroup, setDestinationGroup] = React.useState(0);
     const [sourceGroup, setSourceGroup] = React.useState(0);
     const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
+    const [addDialogType, setAddDialogType] = React.useState(null);
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination}/${sourceGroup}`,
-        interval: 1000,
+        interval: editMode ? 1000 : 5000,
     });
 
     const destinationButtons = useApiPoller({
@@ -100,12 +103,36 @@ export default function Router({ panelId }) {
         forceRefresh: destinationForceRefreshHash,
     });
 
-    const handleGroupButtonClicked = (groupIndex) => {
+    const handleAddSourceGroupClicked = () => {
+        setAddDialogType("source");
+    };
+
+    const handleAddDestinationGroupClicked = () => {
+        setAddDialogType("destination");
+    };
+
+    const handleSourceGroupButtonClicked = (groupIndex) => {
+        setSourceGroup(groupIndex);
+    };
+
+    const handleDestinationGroupButtonClicked = (groupIndex) => {
         setSelectedDestination(-1);
         setDestinationGroup(groupIndex);
     };
 
+    const handleDestinationButtonClicked = (destinationIndex) => {
+        if (editMode) {
+            return;
+        }
+
+        setSelectedDestination(destinationIndex);
+    };
+
     const handleSourceButtonClicked = async (sourceIndex) => {
+        if (editMode) {
+            return;
+        }
+
         let source = sourceButtons.data.sources.filter((x) => x.index === sourceIndex);
         let destination = destinationButtons.data.destinations.filter((x) => x.index === selectedDestination);
 
@@ -140,9 +167,11 @@ export default function Router({ panelId }) {
                             selected={group.selected}
                             index={group.index}
                             text={group.label}
-                            onClick={() => setSourceGroup(group.index)}
+                            onClick={() => handleSourceGroupButtonClicked(group.index)}
+                            editMode={editMode}
                         />
                     ))}
+                    {editMode && <AddGroupButton onClick={handleAddSourceGroupClicked} />}
                 </div>
                 <div className={classes.buttons}>
                     {sourceButtons.data.sources.map((source) => (
@@ -152,6 +181,7 @@ export default function Router({ panelId }) {
                             index={source.index}
                             primaryText={source.label}
                             onClick={() => handleSourceButtonClicked(source.index)}
+                            editMode={editMode}
                         />
                     ))}
                 </div>
@@ -178,9 +208,11 @@ export default function Router({ panelId }) {
                             selected={destinationGroup === group.index}
                             index={group.index}
                             text={group.label}
-                            onClick={() => handleGroupButtonClicked(group.index)}
+                            onClick={() => handleDestinationGroupButtonClicked(group.index)}
+                            editMode={editMode}
                         />
                     ))}
+                    {editMode && <AddGroupButton onClick={handleAddDestinationGroupClicked} />}
                 </div>
                 <div className={classes.buttons}>
                     {destinationButtons.data.destinations.map((destination) => (
@@ -190,7 +222,8 @@ export default function Router({ panelId }) {
                             index={destination.index}
                             primaryText={destination.label}
                             secondaryText={destination.sourceLabel}
-                            onClick={() => setSelectedDestination(destination.index)}
+                            onClick={() => handleDestinationButtonClicked(destination.index)}
+                            editMode={editMode}
                         />
                     ))}
                 </div>
@@ -208,6 +241,9 @@ export default function Router({ panelId }) {
                 <div className={classes.sourcePanel}>{renderSources()}</div>
                 <div className={classes.destinationPanel}>{renderDestinations()}</div>
             </div>
+            {addDialogType && (
+                <AddGroupDialog panelId={panelId} type={addDialogType} onClose={() => setAddDialogType(null)} />
+            )}
         </>
     );
 }

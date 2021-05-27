@@ -19,16 +19,35 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: "#1d945d",
         },
     },
+    editButton: {
+        borderRadius: 5,
+        margin: 4,
+        width: 128,
+        height: 48,
+        "&:hover": {
+            backgroundColor: "none",
+        },
+    },
+    editButtonSelected: {
+        borderColor: "#33b77a",
+    },
 }));
 
-export default function GroupButton({ selected = false, index, text, icon = null, onClick }) {
+export default function GroupButton({ selected = false, index, text, icon = null, onClick, editMode = false }) {
     const classes = useStyles();
     return (
         <Button
-            className={clsx(classes.button, {
-                [classes.buttonSelected]: selected,
-            })}
+            className={
+                editMode
+                    ? clsx(classes.editButton, {
+                          [classes.editButtonSelected]: selected,
+                      })
+                    : clsx(classes.button, {
+                          [classes.buttonSelected]: selected,
+                      })
+            }
             onClick={onClick}
+            variant="outlined"
         >
             {text}
         </Button>
