@@ -1,3 +1,5 @@
+def PACKAGE
+
 pipeline {
     environment {
         repositoryName = '172.26.108.110:5000'
@@ -35,18 +37,18 @@ pipeline {
             steps {
                 dir('src') {
 
-                    def package = readJSON file: 'package.json'
-                    echo package.version
+                    PACKAGE = readJSON file: 'package.json'
+                    echo PACKAGE.version
 
                     sh "docker buildx create --use --name bugBuilder --platform linux/amd64,linux/arm/v7"
-                    sh "docker buildx build --builder bugBuilder --load --compress --label version='${env.package.version}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest ."
+                    sh "docker buildx build --builder bugBuilder --load --compress --label version='${env.PACKAGE.version}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest ."
                 }
             }
         }
         stage('Publish') {
             steps {
-                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:${package.version}"
-                sh "docker push ${repositoryName}/${imageName}:${package.version}"
+                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:${PACKAGE.version}"
+                sh "docker push ${repositoryName}/${imageName}:${PACKAGE.version}"
                 sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:latest"
                 sh "docker push ${repositoryName}/${imageName}:latest"
             }
