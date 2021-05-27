@@ -43,41 +43,47 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
 
     return (
         <Dialog open onClose={handleRenameDialogClose} disableBackdropClick>
-            <DialogTitle id="alert-dialog-title">Rename interface</DialogTitle>
-            <DialogContent>
-                <TextField
-                    inputRef={inputRef}
-                    style={{ width: "26rem" }}
-                    value={value}
-                    onChange={handleTextChanged}
-                    variant="filled"
-                    placeholder={defaultName}
-                    fullWidth
-                    type="text"
-                    label="Interface name"
-                    onClick={(event) => {
-                        event.stopPropagation();
-                    }}
-                    autoFocus
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton aria-label="toggle password visibility" onClick={handleClear}>
-                                    <CancelIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                ></TextField>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleRenameDialogClose} color="primary">
-                    Cancel
-                </Button>
-                <Button onClick={handleRenameConfirm} color="primary">
-                    Rename
-                </Button>
-            </DialogActions>
+            <form
+                onSubmit={(event) => {
+                    event.preventDefault();
+                }}
+            >
+                <DialogTitle id="alert-dialog-title">Rename interface</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        inputRef={inputRef}
+                        style={{ width: "26rem" }}
+                        value={value}
+                        onChange={handleTextChanged}
+                        variant="filled"
+                        placeholder={defaultName}
+                        fullWidth
+                        type="text"
+                        label="Interface name"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                        }}
+                        autoFocus
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton aria-label="toggle password visibility" onClick={handleClear}>
+                                        <CancelIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    ></TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleRenameDialogClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button type="submit" onClick={handleRenameConfirm} color="primary">
+                        Rename
+                    </Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 }

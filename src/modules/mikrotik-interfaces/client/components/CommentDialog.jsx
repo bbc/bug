@@ -45,40 +45,46 @@ export default function CommentDialog({ interfaceId, interfaceName, comment, onC
 
     return (
         <Dialog open onClose={handleCommentDialogClose} disableBackdropClick>
-            <DialogTitle id="alert-dialog-title">Change interface comment</DialogTitle>
-            <DialogContent>
-                <TextField
-                    inputRef={inputRef}
-                    style={{ width: "26rem" }}
-                    value={value}
-                    onChange={handleTextChanged}
-                    variant="filled"
-                    fullWidth
-                    type="text"
-                    label="Comment"
-                    onClick={(event) => {
-                        event.stopPropagation();
-                    }}
-                    autoFocus
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton aria-label="toggle password visibility" onClick={handleClear}>
-                                    <CancelIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                ></TextField>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleCommentDialogClose} color="primary">
-                    Cancel
-                </Button>
-                <Button onClick={handleSetCommentConfirm} color="primary">
-                    Change
-                </Button>
-            </DialogActions>
+            <form
+                onSubmit={(event) => {
+                    event.preventDefault();
+                }}
+            >
+                <DialogTitle id="alert-dialog-title">Change interface comment</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        inputRef={inputRef}
+                        style={{ width: "26rem" }}
+                        value={value}
+                        onChange={handleTextChanged}
+                        variant="filled"
+                        fullWidth
+                        type="text"
+                        label="Comment"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                        }}
+                        autoFocus
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton aria-label="toggle password visibility" onClick={handleClear}>
+                                        <CancelIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    ></TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCommentDialogClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button type="submit" onClick={handleSetCommentConfirm} color="primary">
+                        Change
+                    </Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 }
