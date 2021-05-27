@@ -1,4 +1,4 @@
-def package
+def package = 'latest'
 pipeline {
     environment {
         repositoryName = '172.26.108.110:5000'
