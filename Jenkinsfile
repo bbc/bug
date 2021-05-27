@@ -61,7 +61,7 @@ pipeline {
             cleanWs()
             sh "docker buildx rm bugBuilder"
             sh "docker rmi ${imageName}:latest"
-            sh "docker rmi ${repositoryName}/${imageName}:${env.BUILD_NUMBER}"
+            sh "docker rmi ${repositoryName}/${imageName}:${VERSION}"
             sh "docker rmi ${repositoryName}/${imageName}:latest"
         }
         success {
