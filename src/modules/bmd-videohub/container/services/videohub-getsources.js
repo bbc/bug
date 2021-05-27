@@ -35,7 +35,7 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
     groups.forEach((eachGroup, eachIndex) => {
         outputArray["groups"].push({
             label: eachGroup["name"],
-            selected: eachIndex === groupIndex,
+            selected: eachIndex === parseInt(groupIndex),
             index: eachIndex,
         });
     });
@@ -47,8 +47,8 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
     const excludedSources = indexRangeExpand(config["excludeSources"] ?? null);
 
     // get get the existing data from the db
-    const dbOutputRouting = await dataCollection.findOne({ title: "output_routing" });
-    const dbOutputLocks = await dataCollection.findOne({ title: "output_locks" });
+    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
+    const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
 
     let sourcesLocked = false;
     let lockStatus;
@@ -58,7 +58,7 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
             selectedSourceIndex = parseInt(dbOutputRouting["data"][destinationIndex]);
         }
         if (dbOutputLocks && dbOutputLocks["data"][destinationIndex] !== null) {
-            lockStatus = dbOutputLocks["data"][$destinationIndex];
+            lockStatus = dbOutputLocks["data"][destinationIndex];
             sourcesLocked = lockStatus == "L" || lockStatus == "O";
         } else {
             lockStatus = "U";

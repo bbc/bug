@@ -14,20 +14,20 @@ import Hidden from "@material-ui/core/Hidden";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
+        height: "100%",
     },
-    toolbar: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
+    page: {
+        position: "absolute",
+        top: 64,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        "@media (max-width:600px)": {
+            top: 56,
+        },
     },
     pagecontent: {
+        height: "100%",
         padding: theme.spacing(3),
         "@media (max-width:1200px)": {
             padding: theme.spacing(2),
@@ -64,8 +64,7 @@ const Page = (props) => {
     const classes = useStyles();
 
     const Content = () => (
-        <>
-            <div className={classes.toolbar} />
+        <div className={classes.page}>
             <Switch>
                 <Route exact path="/">
                     <div className={classes.homePageContent}>
@@ -98,7 +97,7 @@ const Page = (props) => {
                     </div>
                 </Route>
             </Switch>
-        </>
+        </div>
     );
 
     return (

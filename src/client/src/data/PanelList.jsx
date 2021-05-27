@@ -14,7 +14,7 @@ export default function PanelList(props) {
         });
 
         panelList.on("event", (result) => {
-            console.log(`${panelList.id}: panelList - event`, result);
+            // console.log(`${panelList.id}: panelList - event`, result);
             dispatch(panelListSlice.actions[result["status"]](result));
         });
 
