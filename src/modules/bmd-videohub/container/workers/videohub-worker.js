@@ -56,8 +56,8 @@ const pollDevice = async () => {
 
         while (true) {
             // poll occasionally
-            console.log(".");
-            await delay(20000);
+            await delay(5000);
+            await router.send("PING");
         }
     } catch (error) {
         console.log("videohub-worker: failed to connect to device");

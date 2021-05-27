@@ -48,7 +48,12 @@ Router.prototype.send = function (field, command) {
 
     return new Promise((resolve, reject) => {
         try {
-            const message = `${field}:\n${command}\n\n`;
+            let message = `${field}:\n`;
+            if (command) {
+                message += `${command}\n\n`;
+            } else {
+                message += `\n`;
+            }
             console.log(message);
             instance.socket.write(message, () => {
                 setTimeout(() => {
