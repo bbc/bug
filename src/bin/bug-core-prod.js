@@ -8,13 +8,14 @@ const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const workerStore = require("@core/worker-store");
 const path = require("path");
+const express = require("express");
 
 const port = process.env.BUG_CORE_PORT || "80";
 
 bugApi.set("port", port);
 
 // include react static client files
-bugApi.static(path.join(__dirname, "..", "client", "build"));
+bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
 
 // serve Bug react application
 bugApi.get("*", function (req, res) {
