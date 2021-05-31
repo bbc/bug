@@ -35,27 +35,37 @@ module.exports = class WorkerManager {
     }
 
     getWorkerFiles(folder) {
-        const filenames = fs.readdirSync(folder);
-        const jsFiles = [];
+        try {
+            const filenames = fs.readdirSync(folder);
+            const jsFiles = [];
 
-        for (let filename of filenames) {
-            const extension = filename.split(".").pop();
+            for (let filename of filenames) {
+                const extension = filename.split(".").pop();
 
-            if (extension === this.fileExtension) {
-                jsFiles.push(path.join(folder, filename));
+                if (extension === this.fileExtension) {
+                    jsFiles.push(path.join(folder, filename));
+                }
             }
-        }
 
-        return jsFiles;
+            return jsFiles;
+        } catch {
+            return [];
+        }
     }
 
     async createWorkers(filenames) {
         if (isMainThread) {
             for (let i = 0; i < filenames.length; i++) {
-                this.workers[i] = await this.createWorker(filenames[i], i, this.config);
+                this.workers[i] = await this.createWorker(
+                    filenames[i],
+                    i,
+                    this.config
+                );
             }
         } else {
-            console.log(`WorkerManager->createWorkers: You're trying to launch workers in a worker.`);
+            console.log(
+                `WorkerManager->createWorkers: You're trying to launch workers in a worker.`
+            );
         }
     }
 
@@ -69,8 +79,12 @@ module.exports = class WorkerManager {
     }
 
     async createWorker(filename, i, config) {
-        console.log(`WorkerManager->createWorker: Creating a worker from ${filename}.`);
-        const worker = await new Worker(filename, { workerData: { index: i, config: config } });
+        console.log(
+            `WorkerManager->createWorker: Creating a worker from ${filename}.`
+        );
+        const worker = await new Worker(filename, {
+            workerData: { index: i, config: config },
+        });
         worker.on("message", this.handleMessage);
         worker.on("error", this.handleError);
         worker.on("exit", this.handleExit);
@@ -111,11 +125,19 @@ module.exports = class WorkerManager {
             if (this.needsUpdated(this.config, mergedConfig, restartKeys[i])) {
                 if (this.workers[i]) {
                     const state = await this.workers[i].terminate();
-                    console.log(`WorkerManager->pushConfig: ${this.workerFiles[i]} terminated with code ${state}`);
+                    console.log(
+                        `WorkerManager->pushConfig: ${this.workerFiles[i]} terminated with code ${state}`
+                    );
                 }
-                this.workers[i] = await this.createWorker(this.workerFiles[i], i, mergedConfig);
+                this.workers[i] = await this.createWorker(
+                    this.workerFiles[i],
+                    i,
+                    mergedConfig
+                );
             } else {
-                console.log(`WorkerManager->pushConfig: ${this.workerFiles[i]} doesn't need restarted.`);
+                console.log(
+                    `WorkerManager->pushConfig: ${this.workerFiles[i]} doesn't need restarted.`
+                );
             }
         }
         this.config = mergedConfig;
