@@ -132,14 +132,40 @@ class TSL_MDU {
         return this.outputs;
     }
 
-    getStatus() {
-        const status = [];
-        if (this.status === 400) {
-            status.push({
-                key: `connection`,
-                message: `Cannot connect to MDU.`,
-                type: `error`,
+    async getStatus() {
+        const systemPageAddress = `http://${this.host}/System.htm`;
+        const status = {};
+        let response;
+
+        try {
+            response = await axios.get(systemPageAddress, {
+                auth: {
+                    username: this.username,
+                    password: this.password,
+                },
             });
+            this.status = response.status;
+        } catch (error) {
+            console.log(
+                `tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`
+            );
+            this.status = 400;
+        }
+
+        if (this.status === 200) {
+            const soup = await new JSSoup(response?.data);
+            const table = await soup.find("table", "boxTable");
+
+            for (let row of table.findAll("td")) {
+                if (row.getText() === "Temperature:") {
+                    status.temperature = row.nextSibling
+                        .getText()
+                        .split(" ")[0];
+                }
+                if (row.getText() === "Version:") {
+                    status.version = row.nextSibling.getText();
+                }
+            }
         }
         return status;
     }
