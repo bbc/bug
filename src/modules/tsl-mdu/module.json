@@ -8,8 +8,15 @@
     "author": "Ryan McCartney",
     "license": "MIT",
     "needsContainer": true,
-    "devmounts": ["api", "utils", "services"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "utils",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,

@@ -3,7 +3,7 @@
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const bugQuote = require("@services/bug-quote");
-const hashResponse = require("@utils/hash-response");
+const hashResponse = require("@core/hash-response");
 /**
  * @swagger
  * /bug/quote:
@@ -19,7 +19,7 @@ const hashResponse = require("@utils/hash-response");
 router.get(
     "/quote",
     asyncHandler(async (req, res) => {
-        hashResponse(res,req,{
+        hashResponse(res, req, {
             status: "success",
             data: await bugQuote(),
         });

@@ -3,18 +3,15 @@
 //DATE:  16/11/2020
 //DESC:  TSL MDU Connection Class
 
-const JSSoup = require('jssoup').default;
-const axios = require('axios');
+const JSSoup = require("jssoup").default;
+const axios = require("axios");
+const formurlencoded = require("form-urlencoded");
 
 class TSL_MDU {
     constructor(config) {
-
-
-        this.poller = null;
-        this.model = "TSL-MDU12-3ES";
-        this.username = config.username || 'root';
-        this.password = config.password || 'telsys';
-        this.host = config.ip_address;
+        this.username = config.username || "root";
+        this.password = config.password || "telsys";
+        this.host = config.address;
         this.port = config.port || 80;
         this.status = null;
         this.outputsCount = config.outputs || 12;
@@ -22,123 +19,129 @@ class TSL_MDU {
         this.frequency = config.frequency || 5000;
 
         //Get Initial State
-        this.refreshState();
-
-        //Start periodic update
-        this.start();
-
-    }
-
-    async start() {
-        this.poller = await setInterval(this.refreshState, this.frequency);
-    }
-
-    async stop() {
-        await clearInterval(this.poller);
+        this.getOutputs();
     }
 
     async setDelay(output, delay) {
-        this.outputs[output - 1].delay = parseInt(delay);
+        await this.getOutputs();
+        const previousState = this.outputs[output - 1].delay;
+        this.outputs[output - 1].delay = delay;
         const status = await this.sendRequest();
-        return status
+
+        if (status !== 200) {
+            this.outputs[output - 1].delay = previousState;
+        }
+        return { status: status, output: this.outputs[output - 1] };
     }
 
     async setLock(output, lock) {
+        await this.getOutputs();
+        const previousLock = this.outputs[output - 1].lock;
         this.outputs[output - 1].lock = lock;
         const status = await this.sendRequest();
-        return status
+
+        if (status !== 200) {
+            this.outputs[output - 1].lock = previousLock;
+        }
+        return { status: status, output: this.outputs[output - 1] };
     }
 
     async setOutput(output, state) {
+        await this.getOutputs();
+        const previousState = this.outputs[output - 1].state;
         this.outputs[output - 1].state = state;
         const status = await this.sendRequest();
-        return status
+
+        if (status !== 200) {
+            this.outputs[output - 1].state = previousState;
+        }
+        return { status: status, output: this.outputs[output - 1] };
     }
 
     async setName(output, name) {
+        await this.getOutputs();
+        const previousName = this.outputs[output - 1].name;
         this.outputs[output - 1].name = name;
         const status = await this.sendRequest();
-        return status
+
+        if (status !== 200) {
+            this.outputs[output - 1].name = previousName;
+        }
+
+        return { status: status, output: this.outputs[output - 1] };
     }
 
-    async refreshState() {
-        const outputsPageAddress = `http://${this.host}/Output.htm`;    
+    async getOutputs() {
+        const outputsPageAddress = `http://${this.host}/Output.htm`;
         let response;
-        
+
         try {
             response = await axios.get(outputsPageAddress, {
                 auth: {
                     username: this.username,
-                    password: this.password
-                }
+                    password: this.password,
+                },
             });
             this.status = response.status;
-        }
-        catch (error) {
-            console.log(`INFO: Can't contact ${this.host} - connection timed out.`)
-            this.status = 400
+        } catch (error) {
+            console.log(
+                `tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`
+            );
+            this.status = 400;
         }
 
         if (this.status === 200) {
             const soup = await new JSSoup(response?.data);
-            const table = await soup.find('table','boxTable');
-            
+            const table = await soup.find("table", "boxTable");
+
             let first = true;
 
-            for (let row of table.findAll('tr')) {
-                
+            for (let row of table.findAll("tr")) {
                 if (first) {
                     first = false;
-                }
-                else {
-                    const items = row.findAll('td');
+                } else {
+                    const items = row.findAll("td");
                     const index = parseInt(items[0].getText()) - 1;
-                    
+
                     let output = {
                         name: items[1].nextElement.attrs.value,
-                        fuses: items[2].getText().toLowerCase(),
-                        number: index+1,
-                    }
-      
-                    if (items[3]?.nextElement?.attrs?.checked === 'checked') {
-                        output.state = 1;
-                    }
-                    else {
-                        output.state = 0;
+                        fuse: items[2].getText().toLowerCase(),
+                        number: index + 1,
+                    };
+
+                    if (items[3]?.nextElement?.attrs?.checked === "checked") {
+                        output.state = true;
+                    } else {
+                        output.state = false;
                     }
 
-                    if (items[4].nextElement.attrs.checked === 'checked') {
-                        output.lock = 1;
-                    }
-                    else {
-                        output.lock = 0;
+                    if (items[4].nextElement.attrs.checked === "checked") {
+                        output.lock = true;
+                    } else {
+                        output.lock = false;
                     }
 
-                    output.delay = parseInt(items[5].nextElement.attrs.value)
-                    this.outputs[index] = { ...this.outputs[index], ...output };
+                    output.delay = parseInt(items[5].nextElement.attrs.value);
+                    this.outputs[index] = {
+                        ...this.outputs[index],
+                        ...output,
+                    };
                 }
             }
         }
-        return this.status
+        return this.outputs;
     }
 
     getStatus() {
-        const state = {
-            address: this.host,
-            model: this.model,
-            count: this.outputsCount,
-            name: this.name,
-            location: this.location,
-            id: this.id,
-            status: this.status,
-            outputs: this.getOutputs()
-        };
-
-        return state;
-    }
-
-    getOutputs() {
-        return this.outputs;
+        const status = [];
+        if (this.status === 400) {
+            status.push({
+                key: `connection`,
+                message: `Cannot connect to MDU.`,
+                type: `error`,
+            });
+        }
+        return status;
     }
 
     getOutput(outputIndex) {
@@ -146,48 +149,58 @@ class TSL_MDU {
     }
 
     async sendRequest() {
+        const bodyData = await this.buildRequest(this.outputs);
+        const formData = await formurlencoded(bodyData);
 
-        const dataString = this.buildRequest(this.names, this.states, this.delays, this.locks);
-        const url = `http://${this.host}/op_config:${this.port}`;
-        const response = await axios.post(url, auth = { username: this.username, password: this.password },dataString);
-        this.status = response.status;
+        const url = `http://${this.host}/OutputUpdate`;
 
-        return this.status
+        try {
+            const response = await axios.post(url, formData, {
+                port: this.port,
+                auth: {
+                    username: this.username,
+                    password: this.password,
+                },
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
+
+            if (response.data === "Update finished") {
+                this.status = 200;
+            } else {
+                this.status = 500;
+            }
+        } catch (error) {
+            console.log(
+                `tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`
+            );
+            this.status = 400;
+        }
+
+        return this.status;
     }
 
-    buildRequest(names, states, delays, locks) {
-        let requestData = null
-        for (let i = 0; i < length.names; i++) {
+    buildRequest(outputs) {
+        const requestBody = {};
+        for (let output of outputs) {
+            requestBody[`gpName${output.number}`] = output.name;
 
-            const output = (i + 1).toString()
-
-            requestData += "output" + output + "="
-            requestData += names[i].replace(' ', '+')
-            requestData += "&swooop" + output + "="
-
-            if (states[i] === true) {
-                requestData += 'on'
+            let state = "off";
+            if (output.state) {
+                state = "on";
             }
-            else {
-                requestData += 'off'
-            }
+            requestBody[`gpSwitch${output.number}`] = state;
 
-            requestData += "&opdelay" + output + "="
-            requestData += delays[i].toString()
-            requestData += "&oplock" + output + "="
-
-            if (locks[i] === true) {
-                requestData += 'on'
+            let lock = "off";
+            if (output.lock) {
+                lock = "on";
             }
-            else {
-                requestData += 'off'
-            }
-
-            if (output !== this.outputs) {
-                requestData += "&"
-            }
+            requestBody[`snmpCheck${output.number}`] = lock;
+            requestBody[`gpDelay${output.number}`] = output.delay;
         }
-        return requestData
+
+        return requestBody;
     }
 }
 

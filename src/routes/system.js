@@ -4,7 +4,7 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const systemBackup = require("@services/system-backup");
 const systemLogs = require("@services/system-logs");
-const hashResponse = require("@utils/hash-response");
+const hashResponse = require("@core/hash-response");
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -23,8 +23,8 @@ const hashResponse = require("@utils/hash-response");
  *          description: Success
  */
 router.get("/hello", function (req, res, next) {
-    const message = {data:"Good morning sunshine, the earth says hello."};
-    hashResponse(res,req,message);
+    const message = { data: "Good morning sunshine, the earth says hello." };
+    hashResponse(res, req, message);
 });
 
 /**
@@ -48,7 +48,7 @@ router.get("/hello", function (req, res, next) {
  */
 router.get("/logs/:level", async function (req, res, next) {
     const logs = await systemLogs(req.params.level);
-    hashResponse(res,req,logs);
+    hashResponse(res, req, logs);
 });
 
 /**
@@ -67,8 +67,11 @@ router.get(
     "/backup",
     asyncHandler(async (req, res) => {
         const backup = await systemBackup();
-        res.header('Content-Disposition',`attachment; filename="${backup.filename}"`);
-        backup.stream.pipe(res)
+        res.header(
+            "Content-Disposition",
+            `attachment; filename="${backup.filename}"`
+        );
+        backup.stream.pipe(res);
     })
 );
 
@@ -85,33 +88,30 @@ router.get(
  *          description: Success
  */
 router.post("/restore", function (req, res, next) {
-
     try {
-        if(!req.files) {
-            hashResponse(res,req,{
+        if (!req.files) {
+            hashResponse(res, req, {
                 status: false,
-                message: 'No file uploaded'
+                message: "No file uploaded",
             });
-        } 
-        else {
+        } else {
             const configs = req.files.configs;
-            configs.mv('../data/uploads/' + configs.name);
+            configs.mv("../data/uploads/" + configs.name);
 
             //send response
-            hashResponse(res,req,{
+            hashResponse(res, req, {
                 status: true,
-                message: 'File is uploaded',
+                message: "File is uploaded",
                 data: {
                     name: configs.name,
                     mimetype: configs.mimetype,
-                    size: configs.size
-                }
+                    size: configs.size,
+                },
             });
         }
     } catch (err) {
-        hashResponse(res,req,{error: err});
+        hashResponse(res, req, { error: err });
     }
-    
 });
 
 module.exports = router;

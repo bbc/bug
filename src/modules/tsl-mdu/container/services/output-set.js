@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const mdu = require('@utils/mdu');
+const mdu = require("@utils/mdu");
 
 module.exports = async (index) => {
     try {
@@ -9,4 +9,4 @@ module.exports = async (index) => {
     } catch (error) {
         return null;
     }
-}
+};

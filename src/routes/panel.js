@@ -12,7 +12,7 @@ const panelAdd = require("@services/panel-add");
 const panelDelete = require("@services/panel-delete");
 const panelEnable = require("@services/panel-enable");
 const panelDisable = require("@services/panel-disable");
-const hashResponse = require("@utils/hash-response");
+const hashResponse = require("@core/hash-response");
 const panelSetGroup = require("@services/panel-setgroup");
 
 // const authUser = require('@middleware/auth-user');
@@ -311,7 +311,10 @@ router.get(
 router.get(
     "/group/:panelId/:group?",
     asyncHandler(async (req, res) => {
-        const result = await panelSetGroup(req.params.panelId, req.params.group ? req.params.group : "");
+        const result = await panelSetGroup(
+            req.params.panelId,
+            req.params.group ? req.params.group : ""
+        );
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Updated panel group",

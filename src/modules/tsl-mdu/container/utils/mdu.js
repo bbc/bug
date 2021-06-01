@@ -1,35 +1,16 @@
-'use strict';
+"use strict";
 
-const configGet = require('@services/config-get');
-const path = require('path');
+const configGet = require("@core/config-get");
+const path = require("path");
 
-let mdu;
-
-function init() {
-    try{
-        //const config = await configGet();
-        //const MDU = require(path.join(__dirname,config?.model)).tsl_mdu;
-        const config = {
-            title: "Test TSL Module",
-            description: "Making cables less spicy",
-            module: "tsl-mdu",
-            id: "9hZtVc8UHFQjFt_",
-            enabled: true,
-            ip_address: "172.26.182.100",
-            username: "root",
-            password: "telsys",
-            outputs: "12",
-            model: "tsl-mdu-3es"
-        };
-
-        const MDU = require(path.join(__dirname,'tsl-mdu-12-pm'));
-        mdu = new MDU(config);
-        
+async function init() {
+    try {
+        const config = await configGet();
+        const MDU = require(path.join(__dirname, config?.model));
+        return new MDU(config);
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 
-init();
-
-module.exports = mdu;
+module.exports = init;

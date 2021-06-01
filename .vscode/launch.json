@@ -12,7 +12,7 @@
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
-            "envFile": "${workspaceRoot}/.env",
+            "envFile": "${workspaceRoot}/.env"
         },
         {
             "command": "npm run production",
@@ -20,7 +20,7 @@
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
-            "envFile": "${workspaceRoot}/.env",
+            "envFile": "${workspaceRoot}/.env"
         },
         {
             "command": "npm install -also=dev",
@@ -28,7 +28,7 @@
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
-            "envFile": "${workspaceRoot}/.env",
+            "envFile": "${workspaceRoot}/.env"
         },
         {
             "command": "npm run build",
@@ -36,7 +36,7 @@
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src/client",
-            "envFile": "${workspaceRoot}/.env",
+            "envFile": "${workspaceRoot}/.env"
         },
         {
             "command": "npm install -also=dev",
@@ -44,7 +44,7 @@
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src/client",
-            "envFile": "${workspaceRoot}/.env",
-        },
+            "envFile": "${workspaceRoot}/.env"
+        }
     ]
 }

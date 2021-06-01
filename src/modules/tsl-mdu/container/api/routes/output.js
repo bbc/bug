@@ -3,68 +3,57 @@
 //DATE: 18/04/2021
 //DESC: System status
 
-const express = require('express');
+const express = require("express");
 const output = express.Router();
 
-const getOutputs = require('@services/outputs-get');
-const getOutput = require('@services/output-get');
-const setOutput = require('@services/output-set');
-const setStateOutput = require('@services/output-state-set');
+const hashResponse = require("@core/hash-response");
+const getOutputs = require("@services/outputs-get");
+const getOutput = require("@services/output-get");
+const setOutput = require("@services/output-set");
+const setOutputState = require("@services/output-state-set");
+const setOutputName = require("@services/output-name-set");
+const setOutputDelay = require("@services/output-delay-set");
 
-output.get('/all', function(req, res){
+output.get("/all", async function (req, res) {
+    hashResponse(res, req, {
+        data: await getOutputs(),
+    });
+});
 
-  const response = {
-    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
-    request_method: req.method,
-    request_params: req.query
-  }
+output.get("/:output_number", async function (req, res) {
+    hashResponse(res, req, await getOutput(req?.params?.output_number));
+});
 
-  response.output = getOutputs();
+output.post("/:output_number/state", async function (req, res) {
+    const response = await setOutputState(
+        req?.params?.output_number,
+        req.body.state
+    );
+    hashResponse(res, req, response);
+});
 
-  res.header("Content-Type",'application/json');
-  res.json(response);
-})
+output.post("/:output_number/name", async function (req, res) {
+    const response = await setOutputName(
+        req?.params?.output_number,
+        req.body.name
+    );
+    hashResponse(res, req, response);
+});
 
-output.get('/:output_number', function(req, res){
+output.post("/:output_number/delay", async function (req, res) {
+    const response = await setOutputDelay(
+        req?.params?.output_number,
+        req.body.delay
+    );
+    hashResponse(res, req, response);
+});
 
-  const response = {
-    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
-    request_method: req.method,
-    request_params: req.query
-  }
+output.post("/:output_number", async function (req, res) {
+    const status = await setOutput(req?.params?.output_number);
 
-  response.output = getOutput(req?.params?.output_number);
-
-  res.header("Content-Type",'application/json');
-  res.json(response);
-})
-
-
-output.post('/:output_number/state', function(req, res){
-  
-  const response = {
-    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
-    request_method: req.method,
-    request_body: req.body
-  }
-  response.output = setStateOutput(req?.params?.output_number,req.body.state);
-
-  res.header("Content-Type",'application/json');
-  res.json(response);
-})
-
-output.post('/:output_number', function(req, res){
-
-  const response = {
-    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
-    request_method: req.method,
-    request_params: req.query
-  }
-
-  response.output = setOutput(req?.params?.output_number);
-
-  res.header("Content-Type",'application/json');
-  res.json(response);
-})
+    hashResponse(res, req, {
+        output: status,
+    });
+});
 
 module.exports = output;

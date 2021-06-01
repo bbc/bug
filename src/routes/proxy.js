@@ -4,7 +4,7 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const logger = require("@utils/logger")(module);
 const axios = require("axios");
-const hashResponse = require("@utils/hash-response");
+const hashResponse = require("@core/hash-response");
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');

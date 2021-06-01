@@ -1,14 +1,14 @@
 //NAME: test.js
-//AUTH: Geoff House <geoff.house@bbc.co.uk>
+//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
 //DATE: 23/03/2021
-//DESC: Mikrotik Interfaces test code
+//DESC: TSL MDU Module
 
 const request = require("supertest");
 const app = require("./app");
 
 describe("Test the Status Path of the API", () => {
-  test("It should response the GET method", async () => {
-    const response = await request(app).get("/api/status");
-    expect(response.statusCode).toBe(200);
-  });
+    test("It should response the GET method", async () => {
+        const response = await request(app).get("/api/status");
+        expect(response.statusCode).toBe(200);
+    });
 });

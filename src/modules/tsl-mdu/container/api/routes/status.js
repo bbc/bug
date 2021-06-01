@@ -1,25 +1,17 @@
-//NAME: status.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 18/04/2021
-//DESC: System status
+const express = require("express");
+const router = express.Router();
+const statusGet = require("../../services/status-get");
+const asyncHandler = require("express-async-handler");
+const hashResponse = require("@core/hash-response");
 
-const mduStatus = require('@services/mdu-status');
-const express = require('express'),
-status = express.Router();
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, {
+            status: "success",
+            data: await statusGet(),
+        });
+    })
+);
 
-status.get('/', async function(req, res){
-  
-  const response = {
-    request_url: `${req.protocol}://${req.hostmame}${req.originalUrl}`,
-    request_method: req.method,
-    request_params: req.query
-  }
-
-  response.mdu = await mduStatus();
-
-  res.header("Content-Type",'application/json');
-  res.json(response);
-
-})
-
-module.exports = status;
+module.exports = router;

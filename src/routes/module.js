@@ -6,7 +6,7 @@ const moduleList = require("@services/module-list");
 const moduleGet = require("@services/module-get");
 const moduleBuild = require("@services/module-build");
 const moduleRebuild = require("@services/module-rebuild");
-const hashResponse = require("@utils/hash-response");
+const hashResponse = require("@core/hash-response");
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -33,7 +33,7 @@ const hashResponse = require("@utils/hash-response");
 router.get(
     "/",
     asyncHandler(async (req, res) => {
-        hashResponse(res,req,{
+        hashResponse(res, req, {
             status: "success",
             data: await moduleList(),
         });
@@ -68,7 +68,7 @@ router.get(
 router.get(
     "/:modulename",
     asyncHandler(async (req, res) => {
-        hashResponse(res,req,{
+        hashResponse(res, req, {
             status: "success",
             data: await moduleGet(req.params.modulename),
         });
@@ -104,7 +104,7 @@ router.get(
     "/build/:modulename",
     asyncHandler(async (req, res) => {
         const result = await moduleBuild(req.params.modulename);
-        hashResponse(res,req,{
+        hashResponse(res, req, {
             status: result ? "success" : "fail",
             data: null,
         });
@@ -140,7 +140,7 @@ router.get(
     "/rebuild/:modulename",
     asyncHandler(async (req, res) => {
         const result = await moduleRebuild(req.params.modulename);
-        hashResponse(res,req,{
+        hashResponse(res, req, {
             status: result ? "success" : "fail",
             data: null,
         });
