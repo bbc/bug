@@ -10,7 +10,7 @@ const arraySaveMongo = require("@core/array-savemongo");
 
 const config = workerData.config;
 const errorDelayMs = 60000;
-let delayMs = 120000;
+let delayMs = 10000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -20,9 +20,9 @@ parentPort.postMessage({
 
 const pollDevice = async () => {
     const tokenCollection = await mongoDb.db.collection("token");
-    const encoderCollection = await mongoDb.db.collection("encoders");
+    const devicesCollection = await mongoDb.db.collection("devices");
 
-    console.log(`encoders: teradek-core encoder worker starting...`);
+    console.log(`devices: teradek-core encoder worker starting...`);
 
     // initial delay (to stagger device polls)
     await delay(1000);
@@ -39,15 +39,13 @@ const pollDevice = async () => {
                     params: {
                         auth_token: token?.auth_token,
                         firmwareDetails: true,
-                        settings: "Session,Input,Network",
-                        type: "encoder",
                     },
                 }
             );
 
             if (response.data?.meta?.status === "ok") {
                 await arraySaveMongo(
-                    encoderCollection,
+                    devicesCollection,
                     response?.data?.response,
                     "sid"
                 );
@@ -55,7 +53,7 @@ const pollDevice = async () => {
                 throw response.data;
             }
         } catch (error) {
-            console.log("encoders: ", error);
+            console.log("devices: ", error);
             noErrors = false;
         }
         await delay(delayMs);
@@ -70,7 +68,7 @@ const main = async () => {
         try {
             await pollDevice();
         } catch (error) {
-            console.log("econders: ", error);
+            console.log("devices: ", error);
         }
         await delay(errorDelayMs);
     }

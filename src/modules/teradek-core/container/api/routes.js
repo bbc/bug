@@ -9,11 +9,13 @@ const router = express.Router();
 const status = require("./routes/status");
 const config = require("./routes/config");
 const system = require("./routes/system");
+const device = require("./routes/device");
 
 router
     .use("/status", status)
     .use("/config", config)
     .use("/system", system)
+    .use("/device", device)
     .use("*", (req, res) => {
         res.sendStatus(404);
     });
