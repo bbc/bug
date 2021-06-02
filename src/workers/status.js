@@ -32,14 +32,24 @@ const fetch = async () => {
                 };
 
                 // find the module config for this panel
-                const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
+                const thisModuleConfig =
+                    moduleConfig.find(
+                        (o) => o.name === eachPanelConfig["module"]
+                    ) ?? null;
 
-                if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
+                if (
+                    eachPanelConfig.enabled &&
+                    thisModuleConfig &&
+                    thisModuleConfig.needsContainer
+                ) {
                     const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
                     try {
                         let response = await axios.get(url);
                         if (response.data.status === "success") {
-                            panelStatus.statusItems = panelStatus.statusItems.concat(response.data.data);
+                            panelStatus.statusItems =
+                                panelStatus.statusItems.concat(
+                                    response.data.data
+                                );
                         } else {
                             throw new Error();
                         }
@@ -55,12 +65,20 @@ const fetch = async () => {
                 }
 
                 // update the database
-                await panelStatusCollection.replaceOne({ panelId: eachPanelConfig.id }, panelStatus, { upsert: true });
+                await panelStatusCollection.replaceOne(
+                    { panelId: eachPanelConfig.id },
+                    panelStatus,
+                    { upsert: true }
+                );
             }
             await delay(1000);
         }
     } catch (error) {
-        logger.warning(`workers/status: ${error.stack || error.trace || error || error.message}`);
+        logger.warning(
+            `workers/status: ${
+                error.stack || error.trace || error || error.message
+            }`
+        );
         return;
     }
 };
@@ -74,7 +92,11 @@ const main = async () => {
         try {
             await fetch();
         } catch (error) {
-            logger.warning(`workers/status: ${error.stack || error.trace || error || error.message}`);
+            logger.warning(
+                `workers/status: ${
+                    error.stack || error.trace || error || error.message
+                }`
+            );
         }
         await delay(10000);
     }
