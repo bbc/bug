@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PanelSortItem from "@components/panelSort/PanelSortItem";
 import clsx from "clsx";
