@@ -1,0 +1,33 @@
+{
+    "name": "teradek-core",
+    "longname": "Teradek Core",
+    "description": "Control devices in the Teradek Core from BUG",
+    "notes": "",
+    "version": "0.1.0",
+    "icon": "mdi-video",
+    "author": "Ryan McCartney",
+    "license": "MIT",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "utils",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "order": 0,
+        "title": "",
+        "module": "teradek-core",
+        "description": "",
+        "enabled": false,
+        "address": "",
+        "organisation": "bbcnews",
+        "username": "location.facs@bbc.co.uk",
+        "password": ""
+    }
+}
