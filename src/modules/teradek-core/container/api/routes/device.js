@@ -1,4 +1,4 @@
-//NAME: output.js
+//NAME: device.js
 //AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
 //DATE: 18/04/2021
 //DESC: System status

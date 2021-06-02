@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Card from "@material-ui/core/Card";
@@ -13,22 +13,34 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
         color: theme.palette.text.secondary,
     },
+    thumbnail: {
+        height: 200,
+        width: 300,
+    },
 }));
 
 export default function EncoderCard(props) {
     const classes = useStyles();
+    const [thumbnail, setThumbnail] = useState();
 
-    console.log(props);
+    props.socket.emit("room:enter", `device:${props.sid}:preview`);
+
+    props.socket.on(`device:${props.sid}:preview`, (data) => {
+        if (data.status === "ok") {
+            setThumbnail(data.img);
+        }
+    });
+
     return (
-        <Grid item lg={4} md={6} sm={12} xs={12}>
+        <Grid key={props?.sid} item lg={4} md={6} sm={12} xs={12}>
             <Card className={classes.card}>
                 <CardHeader
                     title={props?.name}
                     titleTypographyProps={{ variant: "h6" }}
                     subheader={props.status.toUpperCase()}
                 />
-
-                <CardContent></CardContent>
+                <img src={thumbnail} className={classes.thumbnail} />
+                <CardContent>{props.model}</CardContent>
             </Card>
         </Grid>
     );
