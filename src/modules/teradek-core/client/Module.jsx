@@ -15,7 +15,7 @@ export default function Module(props) {
             <ModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel />
             </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/encoders/:encoderId">
+            <ModuleRoute exact path="/panel/:panelId/encoder/:encoderId">
                 <EncoderPanel />
             </ModuleRoute>
             <ModuleRoute exact path="/panel/:panelId/decoder/:decoderId">

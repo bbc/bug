@@ -19,17 +19,12 @@ const useStyles = makeStyles((theme) => ({
 export default function EncoderCard(props) {
     const classes = useStyles();
 
-    return (
-        <Grid key={props?.sid} item lg={4} md={6} sm={12} xs={12}>
-            <Card className={classes.card}>
-                <CardHeader
-                    title={props?.name}
-                    titleTypographyProps={{ variant: "h6" }}
-                    subheader={props.status.toUpperCase()}
-                />
-                <CardContent>
+    const getSparklines = () => {
+        if (props.history_stats) {
+            return (
+                <>
                     <Sparklines
-                        data={props.history_status.map(
+                        data={props.history_stats.map(
                             (stats) => stats?.decoder_vdec_framerate
                         )}
                         min={0}
@@ -39,11 +34,25 @@ export default function EncoderCard(props) {
                     </Sparklines>
                     {`${
                         Math.round(
-                            props.history_status[
-                                props.history_status.length - 1
-                            ]?.decoder_vdec_framerate * 100
+                            props.history_stats[props.history_status.length - 1]
+                                ?.decoder_vdec_framerate * 100
                         ) / 100
                     }fps`}
+                </>
+            );
+        }
+        return null;
+    };
+    return (
+        <Grid key={props?.sid} item lg={4} md={6} sm={12} xs={12}>
+            <Card className={classes.card}>
+                <CardHeader
+                    title={props?.name}
+                    titleTypographyProps={{ variant: "h6" }}
+                    subheader={props.status.toUpperCase()}
+                />
+                <CardContent>
+                    {getSparklines()}
                     {props.model}
                 </CardContent>
             </Card>

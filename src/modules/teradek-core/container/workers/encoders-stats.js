@@ -58,6 +58,8 @@ const pollDevice = async () => {
                     `device:${encoder.sid}:audio-preview`
                 );
 
+                socket.emit("room:enter", `device:${encoder.sid}:stats`);
+
                 socket.on(`device:${encoder.sid}:preview`, async (event) => {
                     if (event.status === "ok") {
                         const entry = await devicesCollection.updateOne(
@@ -78,7 +80,7 @@ const pollDevice = async () => {
                             },
                             {
                                 $push: {
-                                    audio_preview: {
+                                    audioHistory: {
                                         $each: [
                                             { ...event, timestamp: Date.now() },
                                         ],
@@ -89,6 +91,22 @@ const pollDevice = async () => {
                         );
                     }
                 );
+
+                socket.on(`device:${encoder.sid}:stats`, async (event) => {
+                    const entry = await devicesCollection.updateOne(
+                        {
+                            sid: encoder.sid,
+                        },
+                        {
+                            $push: {
+                                videoHistory: {
+                                    $each: [{ ...event }],
+                                    $slice: 200,
+                                },
+                            },
+                        }
+                    );
+                });
             }
         }
     } catch (error) {

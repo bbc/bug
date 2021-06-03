@@ -1,23 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Loading from "@components/Loading";
 import EncoderCard from "./EncoderCard";
 import { useApiPoller } from "@utils/ApiPoller";
 import Grid from "@material-ui/core/Grid";
-import io from "socket.io-client-2";
-import { useSelector } from "react-redux";
-
-let socket;
 
 export default function Encoders({ panelId }) {
-    const panelConfig = useSelector((state) => state.panelConfig);
-
     const encoders = useApiPoller({
         url: `/container/${panelId}/device/all/encoders`,
-        interval: 2000,
+        interval: 1000,
     });
 
     const renderCard = (encoder) => {
-        return <EncoderCard key={encoder?.sid} {...encoder} />;
+        return (
+            <EncoderCard panelId={panelId} key={encoder?.sid} {...encoder} />
+        );
     };
 
     const renderCards = (encoders) => {

@@ -39,6 +39,7 @@ const pollDevice = async () => {
                     params: {
                         auth_token: token?.auth_token,
                         firmwareDetails: true,
+                        details: true,
                     },
                 }
             );
