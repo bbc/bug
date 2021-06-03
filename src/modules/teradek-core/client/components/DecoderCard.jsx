@@ -19,22 +19,6 @@ const useStyles = makeStyles((theme) => ({
 export default function EncoderCard(props) {
     const classes = useStyles();
 
-    const [decoderStats, setDecoderStats] = useState([]);
-
-    props.socket.emit("room:enter", `device:${props.sid}:decoder-stats`);
-    props.socket.emit("room:enter", `device:${props.sid}:decoder-status`);
-    props.socket.emit("room:enter", `device:${props.sid}:decoder-status`);
-
-    props.socket.on(`device:${props.sid}:decoder-stats`, (data) => {
-        const newStats = decoderStats;
-        if (newStats.length >= 20) {
-            newStats.shift();
-            newStats.push(data);
-        }
-        newStats.push(data);
-        setDecoderStats(newStats);
-    });
-
     return (
         <Grid key={props?.sid} item lg={4} md={6} sm={12} xs={12}>
             <Card className={classes.card}>
@@ -45,7 +29,7 @@ export default function EncoderCard(props) {
                 />
                 <CardContent>
                     <Sparklines
-                        data={decoderStats.map(
+                        data={props.history_status.map(
                             (stats) => stats?.decoder_vdec_framerate
                         )}
                         min={0}
@@ -55,8 +39,9 @@ export default function EncoderCard(props) {
                     </Sparklines>
                     {`${
                         Math.round(
-                            decoderStats[decoderStats.length - 1]
-                                ?.decoder_vdec_framerate * 100
+                            props.history_status[
+                                props.history_status.length - 1
+                            ]?.decoder_vdec_framerate * 100
                         ) / 100
                     }fps`}
                     {props.model}

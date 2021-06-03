@@ -20,15 +20,15 @@ export default function EncoderCard(props) {
 
     const [channelStats, setChannelStats] = useState([]);
 
-    props.socket.on(`device:${props.identifier}:vital-signs`, (data) => {
-        const newStats = channelStats;
-        if (newStats.length >= 20) {
-            newStats.shift();
-            newStats.push(data);
-        }
-        newStats.push(data);
-        setChannelStats(newStats);
-    });
+    // props.socket.on(`device:${props.identifier}:vital-signs`, (data) => {
+    //     const newStats = channelStats;
+    //     if (newStats.length >= 20) {
+    //         newStats.shift();
+    //         newStats.push(data);
+    //     }
+    //     newStats.push(data);
+    //     setChannelStats(newStats);
+    // });
 
     return (
         <Grid key={props?.sid} item lg={4} md={6} sm={12} xs={12}>

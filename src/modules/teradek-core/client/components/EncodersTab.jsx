@@ -16,36 +16,8 @@ export default function Encoders({ panelId }) {
         interval: 2000,
     });
 
-    const token = useApiPoller({
-        url: `/container/${panelId}/system/token`,
-        interval: 30000,
-    });
-
-    useEffect(() => {
-        socket = io("https://io-core.teradek.com", {
-            transports: ["websocket"],
-            query: {
-                cid: panelConfig?.data?.organisation,
-                auth_token: token?.data?.auth_token,
-            },
-        });
-
-        socket.on("connect_error", (event) => {
-            console.log(event);
-        });
-
-        socket.on("connect", () => {
-            console.log(`Conencted to Teradek Core ${socket.id}`);
-        });
-
-        return () => {
-            socket.off("connect");
-            socket.off("connect_error");
-        };
-    }, [token, panelConfig]);
-
     const renderCard = (encoder) => {
-        return <EncoderCard socket={socket} key={encoder?.sid} {...encoder} />;
+        return <EncoderCard key={encoder?.sid} {...encoder} />;
     };
 
     const renderCards = (encoders) => {
