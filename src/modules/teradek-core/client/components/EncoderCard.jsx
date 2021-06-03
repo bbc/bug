@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EncoderCard(props) {
     const classes = useStyles();
-    const [thumbnail, setThumbnail] = useState();
+    const [thumbnail, setThumbnail] = useState("/images/blank.png");
 
     props.socket.emit("room:enter", `device:${props.sid}:preview`);
 

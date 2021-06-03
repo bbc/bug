@@ -58,20 +58,28 @@ export default function PanelTabbedForm(props) {
 
     const TabPanel = ({ children, value, index }) => {
         return (
-            <Card className={classes.card} role="tabpanel" hidden={value !== index}>
+            <Card
+                className={classes.card}
+                role="tabpanel"
+                hidden={value !== index}
+            >
                 {value === index && <>{children}</>}
             </Card>
         );
     };
 
-    useHotkeys("esc", props.onClose);
+    useHotkeys("esc", props?.onClose);
 
     return (
         <>
             <div style={{ position: "relative" }}>
                 <TabContainer>
                     {props.onClose && (
-                        <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
+                        <IconButton
+                            aria-label="close"
+                            className={classes.closeButton}
+                            onClick={props.onClose}
+                        >
                             <CloseIcon />
                         </IconButton>
                     )}

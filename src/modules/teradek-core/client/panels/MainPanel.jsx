@@ -1,5 +1,7 @@
 import React from "react";
-import Encoders from "../components/Encoders";
+import EncodersTab from "../components/EncodersTab";
+import DecodersTab from "../components/DecodersTab";
+import PanelTabbedForm from "@core/PanelTabbedForm";
 import { useParams } from "react-router-dom";
 
 export default function MainPanel() {
@@ -7,7 +9,13 @@ export default function MainPanel() {
 
     return (
         <>
-            <Encoders panelId={params.panelId} />
+            <PanelTabbedForm
+                labels={["Encoders", "Decoders"]}
+                content={[
+                    <EncodersTab panelId={params.panelId} />,
+                    <DecodersTab panelId={params.panelId} />,
+                ]}
+            ></PanelTabbedForm>
         </>
     );
 }

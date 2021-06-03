@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Loading from "@components/Loading";
-import EncoderCard from "./EncoderCard";
+import DecoderCard from "./DecoderCard";
 import { useApiPoller } from "@utils/ApiPoller";
 import Grid from "@material-ui/core/Grid";
 import io from "socket.io-client-2";
@@ -8,11 +8,11 @@ import { useSelector } from "react-redux";
 
 let socket;
 
-export default function Encoders({ panelId }) {
+export default function Decoders({ panelId }) {
     const panelConfig = useSelector((state) => state.panelConfig);
 
-    const encoders = useApiPoller({
-        url: `/container/${panelId}/device/all/encoders`,
+    const decoders = useApiPoller({
+        url: `/container/${panelId}/device/all/decoders`,
         interval: 2000,
     });
 
@@ -22,7 +22,6 @@ export default function Encoders({ panelId }) {
     });
 
     useEffect(() => {
-        console.log("CONNECTION");
         socket = io("https://io-core.teradek.com", {
             transports: ["websocket"],
             query: {
@@ -40,24 +39,24 @@ export default function Encoders({ panelId }) {
         });
     }, [token, panelConfig]);
 
-    const renderCard = (encoder) => {
-        return <EncoderCard socket={socket} key={encoder?.sid} {...encoder} />;
+    const renderCard = (decoder) => {
+        return <DecoderCard socket={socket} key={decoder?.sid} {...decoder} />;
     };
 
-    const renderCards = (encoders) => {
-        if (encoders) {
-            return encoders.map((encoder) => renderCard(encoder));
+    const renderCards = (decoders) => {
+        if (decoders) {
+            return decoders.map((decoder) => renderCard(decoder));
         }
     };
 
-    if (encoders.status === "loading" || encoders.status === "idle") {
+    if (decoders.status === "loading" || decoders.status === "idle") {
         return <Loading />;
     }
 
     return (
         <>
-            <Grid container spacing={2}>
-                {renderCards(encoders.data)}
+            <Grid container spacing={3}>
+                {renderCards(decoders.data)}
             </Grid>
         </>
     );
