@@ -5,6 +5,7 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
+import { Sparklines, SparklinesLine } from "react-sparklines";
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -18,12 +19,20 @@ const useStyles = makeStyles((theme) => ({
 export default function EncoderCard(props) {
     const classes = useStyles();
 
-    props.socket.emit("room:enter", `device:${props.sid}:preview`);
+    const [decoderStats, setDecoderStats] = useState([]);
 
-    props.socket.on(`device:${props.sid}:preview`, (data) => {
-        if (data.status === "ok") {
-            console.log(data);
+    props.socket.emit("room:enter", `device:${props.sid}:decoder-stats`);
+    props.socket.emit("room:enter", `device:${props.sid}:decoder-status`);
+    props.socket.emit("room:enter", `device:${props.sid}:decoder-status`);
+
+    props.socket.on(`device:${props.sid}:decoder-stats`, (data) => {
+        const newStats = decoderStats;
+        if (newStats.length >= 20) {
+            newStats.shift();
+            newStats.push(data);
         }
+        newStats.push(data);
+        setDecoderStats(newStats);
     });
 
     return (
@@ -34,7 +43,24 @@ export default function EncoderCard(props) {
                     titleTypographyProps={{ variant: "h6" }}
                     subheader={props.status.toUpperCase()}
                 />
-                <CardContent>{props.model}</CardContent>
+                <CardContent>
+                    <Sparklines
+                        data={decoderStats.map(
+                            (stats) => stats?.decoder_vdec_framerate
+                        )}
+                        min={0}
+                        max={100}
+                    >
+                        <SparklinesLine color="#337ab7" />
+                    </Sparklines>
+                    {`${
+                        Math.round(
+                            decoderStats[decoderStats.length - 1]
+                                ?.decoder_vdec_framerate * 100
+                        ) / 100
+                    }fps`}
+                    {props.model}
+                </CardContent>
             </Card>
         </Grid>
     );

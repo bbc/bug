@@ -34,9 +34,14 @@ export default function Encoders({ panelId }) {
             console.log(event);
         });
 
-        socket.on("connect", (event) => {
-            console.log(event);
+        socket.on("connect", () => {
+            console.log(`Conencted to Teradek Core ${socket.id}`);
         });
+
+        return () => {
+            socket.off("connect");
+            socket.off("connect_error");
+        };
     }, [token, panelConfig]);
 
     const renderCard = (encoder) => {
