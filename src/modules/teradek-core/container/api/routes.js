@@ -10,12 +10,16 @@ const status = require("./routes/status");
 const config = require("./routes/config");
 const system = require("./routes/system");
 const device = require("./routes/device");
+const sputnik = require("./routes/sputnik");
+const channel = require("./routes/channel");
 
 router
     .use("/status", status)
     .use("/config", config)
     .use("/system", system)
     .use("/device", device)
+    .use("/sputnik", sputnik)
+    .use("/channel", channel)
     .use("*", (req, res) => {
         res.sendStatus(404);
     });

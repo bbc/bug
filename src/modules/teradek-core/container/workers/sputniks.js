@@ -38,6 +38,7 @@ const pollSputnik = async () => {
                 {
                     params: {
                         auth_token: token?.auth_token,
+                        deploymentType: "manual",
                     },
                 }
             );
