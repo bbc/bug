@@ -67,8 +67,18 @@ export default function EncoderStatistics({ encoder, panelId }) {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="tx" stroke="#55ca9d" />
-                <Line type="monotone" dataKey="rx" stroke="#82ca9d" />
+                <Line
+                    isAnimationActive={false}
+                    type="monotone"
+                    dataKey="tx"
+                    stroke="#55ca9d"
+                />
+                <Line
+                    isAnimationActive={false}
+                    type="monotone"
+                    dataKey="rx"
+                    stroke="#82ca9d"
+                />
             </LineChart>
         </ResponsiveContainer>
     );

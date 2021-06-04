@@ -45,11 +45,14 @@ const pollDevice = async () => {
             );
 
             if (response.data?.meta?.status === "ok") {
-                await arraySaveMongo(
-                    devicesCollection,
-                    response?.data?.response,
-                    "sid"
-                );
+                for (let device of response?.data?.response) {
+                    const query = { sid: device?.sid };
+                    const update = {
+                        $set: { ...device },
+                    };
+                    const options = { upsert: true };
+                    devicesCollection.updateOne(query, update, options);
+                }
             } else {
                 throw response.data;
             }
