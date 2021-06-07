@@ -1,17 +1,20 @@
-'use strict';
+"use strict";
 
-const logger = require('@utils/logger')(module);
-const docker = require('@utils/docker');
+const logger = require("@utils/logger")(module);
+const docker = require("@utils/docker");
 
 module.exports = async () => {
     try {
-
-        const images = await docker.listImages()
+        const images = await docker.listImages();
         let response = [];
-        for(var eachImage of images) {
+        for (var eachImage of images) {
+            let module = null;
+            if (eachImage.RepoTags && eachImage.RepoTags.length > 0) {
+                module = eachImage.RepoTags[0].split(":")[0];
+            }
             response.push({
                 id: eachImage["Id"],
-                module: eachImage.RepoTags[0].split(':')[0] ?? null,
+                module: module,
                 tag: eachImage.RepoTags[0],
                 created: eachImage["Created"],
                 parentId: eachImage["ParentId"],
@@ -20,9 +23,8 @@ module.exports = async () => {
             });
         }
         return response;
-
     } catch (error) {
         logger.error(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to list images`);
     }
-}
+};
