@@ -11,6 +11,7 @@ const { Worker, isMainThread, workerData } = require("worker_threads");
 const configGet = require("@core/config-get");
 const path = require("path");
 const fs = require("fs");
+const delay = require("delay");
 
 let restartKeys = [];
 
@@ -97,8 +98,23 @@ module.exports = class WorkerManager {
         }
     }
 
-    handleError(event) {
-        console.log(`WorkerManager->handleError`, event);
+    handleError(worker) {
+        let delayMs = 10000; //10 secs
+        if (worker?.delay) {
+            delay = Math.round(worker?.delay);
+        }
+        if (worker?.error) {
+            console.log(`WorkerManager->handleError`, worker.error);
+        }
+        if (worker?.index) {
+            delay(delayMs);
+            this.restartWorker(index, this.config);
+        } else {
+            console.log(
+                `WorkerManager->handleError unhandled exception can't restart`,
+                worker
+            );
+        }
     }
 
     handleExit(event) {
@@ -118,22 +134,26 @@ module.exports = class WorkerManager {
         return false;
     }
 
+    async restartWorker(index, config) {
+        if (this.workers[index]) {
+            const state = await this.workers[index].terminate();
+            console.log(
+                `WorkerManager->restartWorder: ${this.workerFiles[index]} terminated with code ${state}`
+            );
+        }
+        this.workers[index] = await this.createWorker(
+            this.workerFiles[index],
+            index,
+            config
+        );
+    }
+
     async pushConfig(newConfig) {
         const mergedConfig = { ...this.config, ...newConfig };
 
         for (let i = 0; i < this.workerFiles.length; i++) {
             if (this.needsUpdated(this.config, mergedConfig, restartKeys[i])) {
-                if (this.workers[i]) {
-                    const state = await this.workers[i].terminate();
-                    console.log(
-                        `WorkerManager->pushConfig: ${this.workerFiles[i]} terminated with code ${state}`
-                    );
-                }
-                this.workers[i] = await this.createWorker(
-                    this.workerFiles[i],
-                    i,
-                    mergedConfig
-                );
+                this.restartWorker(i, mergedConfig);
             } else {
                 console.log(
                     `WorkerManager->pushConfig: ${this.workerFiles[i]} doesn't need restarted.`
