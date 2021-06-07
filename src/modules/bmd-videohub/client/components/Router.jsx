@@ -92,7 +92,6 @@ export default function Router({ panelId, editMode = false }) {
     const [sourceGroup, setSourceGroup] = React.useState(0);
     const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
     const [addDialogType, setAddDialogType] = React.useState(null);
-    // const [renameDialogType, setAddDialogType] = React.useState(null);
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination}/${sourceGroup}`,

@@ -14,7 +14,6 @@ module.exports = async (type, groupName) => {
     }
 
     config[groupVar] = config[groupVar].filter((group) => {
-        console.log(group.name);
         return group.name !== groupName;
     });
 

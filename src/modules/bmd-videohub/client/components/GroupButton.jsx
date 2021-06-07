@@ -1,8 +1,11 @@
+import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import MoreIcon from "@material-ui/icons/MoreVert";
 import GroupMenu from "./GroupMenu";
+import RenameDialog from "./RenameDialog";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -56,31 +59,61 @@ export default function GroupButton({
     groupType,
     editMode = false,
 }) {
+    const sendAlert = useAlert();
     const classes = useStyles();
+    const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
+
+    const handleRenameGroup = async (newGroupName) => {
+        if (await AxiosCommand(`/container/${panelId}/groups/rename/${groupType}/${primaryText}/${newGroupName}`)) {
+            sendAlert(`Renamed group: ${primaryText} -> ${newGroupName}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to rename group: ${primaryText}`, { variant: "error" });
+        }
+    };
+
     return (
-        <Button
-            className={
-                editMode
-                    ? clsx(classes.editButton, {
-                          [classes.editButtonSelected]: selected,
-                      })
-                    : clsx(classes.button, {
-                          [classes.buttonSelected]: selected,
-                      })
-            }
-            onClick={onClick}
-            variant="outlined"
-        >
-            <div
-                className={clsx(classes.primaryText, {
-                    [classes.primaryTextEdit]: editMode,
-                })}
+        <>
+            <Button
+                className={
+                    editMode
+                        ? clsx(classes.editButton, {
+                              [classes.editButtonSelected]: selected,
+                          })
+                        : clsx(classes.button, {
+                              [classes.buttonSelected]: selected,
+                          })
+                }
+                onClick={onClick}
+                variant="outlined"
             >
-                {primaryText}
-            </div>
-            {editMode ? (
-                <GroupMenu panelId={panelId} groupType={groupType} groupName={primaryText} groupIndex={index} />
-            ) : null}
-        </Button>
+                <div
+                    className={clsx(classes.primaryText, {
+                        [classes.primaryTextEdit]: editMode,
+                    })}
+                >
+                    {primaryText}
+                </div>
+                {editMode ? (
+                    <GroupMenu
+                        panelId={panelId}
+                        groupType={groupType}
+                        groupName={primaryText}
+                        groupIndex={index}
+                        onRename={() => setRenameDialogVisible(true)}
+                    />
+                ) : null}
+            </Button>
+            {renameDialogVisible && (
+                <RenameDialog
+                    title="Rename group"
+                    label="Group name"
+                    panelId={panelId}
+                    defaultValue={primaryText}
+                    onCancel={() => setRenameDialogVisible(false)}
+                    onSubmit={handleRenameGroup}
+                    buttonText="Rename"
+                />
+            )}
+        </>
     );
 }

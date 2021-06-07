@@ -7,14 +7,8 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import EditIcon from "@material-ui/icons/Edit";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
 import { useAlert } from "@utils/Snackbar";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-import CheckIcon from "@material-ui/icons/Check";
-import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
-import { Redirect } from "react-router";
-import CommentIcon from "@material-ui/icons/Comment";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function GroupMenu({ groupType, groupIndex, groupName, panelId, onChange }) {
+export default function GroupMenu({ groupType, groupIndex, groupName, panelId, onChange, onRename }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -35,25 +29,14 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
         event.stopPropagation();
     };
 
-    const handleClose = () => {
+    const handleClose = (event) => {
         // onChange(false);
         setAnchorEl(null);
+        event.stopPropagation();
     };
 
-    // const handleProtect = async () => {
-    //     handleClose();
-    //     const command = iface._protected ? "unprotect" : "protect";
-    //     const commandAction = iface._protected ? "Unprotected" : "Protected";
-
-    //     if (await AxiosCommand(`/container/${panelId}/interface/${command}/${iface.name}`)) {
-    //         sendAlert(`${commandAction} interface: ${iface.name}`, { variant: "success" });
-    //     } else {
-    //         sendAlert(`Failed to ${command} interface: ${iface.name}`, { variant: "error" });
-    //     }
-    // };
-
     const handleDelete = async (event) => {
-        handleClose();
+        handleClose(event);
         if (await AxiosDelete(`/container/${panelId}/groups/${groupType}/${groupName}`)) {
             sendAlert(`Deleted group: ${groupName}`, { variant: "success" });
         } else {
@@ -63,29 +46,10 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
     };
 
     const handleRename = (event) => {
-        handleClose();
+        handleClose(event);
+        onRename();
         event.stopPropagation();
     };
-
-    // const handleComment = (event) => {
-    //     handleClose();
-    //     onComment({
-    //         panelId,
-    //         interfaceId: iface.id,
-    //         interfaceName: iface.name,
-    //         comment: iface.comment,
-    //     });
-    //     event.stopPropagation();
-    // };
-
-    // const handleDetails = () => {
-    //     setRedirectUrl(`/panel/${panelId}/interface/${iface.name}`);
-    //     handleClose();
-    // };
-
-    // if (redirectUrl) {
-    //     return <Redirect push to={{ pathname: redirectUrl }} />;
-    // }
 
     return (
         <div>

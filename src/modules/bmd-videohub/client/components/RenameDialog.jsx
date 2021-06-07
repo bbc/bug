@@ -7,9 +7,9 @@ import Button from "@material-ui/core/Button";
 import { useAlert } from "@utils/Snackbar";
 import TextField from "@material-ui/core/TextField";
 
-export default function AddGroupDialog({ panelId, type, onCancel, title, label, onSubmit, buttonText }) {
+export default function RenameDialog({ panelId, defaultValue = "", onCancel, title, label, onSubmit, buttonText }) {
     const sendAlert = useAlert();
-    const [value, setValue] = React.useState("");
+    const [value, setValue] = React.useState(defaultValue);
 
     return (
         <Dialog open onClose={onCancel}>
