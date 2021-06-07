@@ -27,6 +27,7 @@
     "material-ui-chip-input": "^1.1.0",
     "mdi-material-ui": "^6.22.1",
     "module-alias": "^2.2.2",
+    "moment": "^2.29.1",
     "notistack": "^1.0.5",
     "react": "^17.0.2",
     "react-app-rewired": "^2.1.8",
@@ -45,7 +46,6 @@
     "react-vis": "^1.11.7",
     "recharts": "^2.0.9",
     "socket.io-client": "^4.0.1",
-    "socket.io-client-2": "git://github.com/socketio/socket.io-client#2.3.1",
     "typescript": "^2.8.0",
     "use-async-effect": "^2.2.3",
     "web-vitals": "^1.0.1"

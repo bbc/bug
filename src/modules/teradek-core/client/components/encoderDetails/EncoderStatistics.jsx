@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTheme } from "@material-ui/core/styles";
 import {
     LineChart,
     Line,
@@ -10,9 +11,11 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { useWindowSize } from "@utils/WindowSize";
+import moment from "moment";
 
 export default function EncoderStatistics({ encoder, panelId }) {
     const windowSize = useWindowSize();
+    const theme = useTheme();
 
     const [graphData, setGraphData] = useState([]);
 
@@ -28,9 +31,9 @@ export default function EncoderStatistics({ encoder, panelId }) {
 
             newData = newData.map((item) => {
                 return {
-                    timestamp: item?.ts,
-                    tx: item?.bitrate_out,
-                    rx: item?.bitrate,
+                    Time: item?.ts,
+                    Bitrate: item?.bitrate_out,
+                    Wired: item?.bitrate,
                 };
             });
 
@@ -44,12 +47,13 @@ export default function EncoderStatistics({ encoder, panelId }) {
 
     const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
 
+    console.log(theme);
     return (
         <ResponsiveContainer width="100%" height={chartHeight}>
             <LineChart
                 data={graphData}
                 margin={{
-                    top: 5,
+                    top: 30,
                     right: 30,
                     left: 20,
                     bottom: 5,
@@ -57,27 +61,33 @@ export default function EncoderStatistics({ encoder, panelId }) {
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
+                    label="Time"
                     domain={[
                         graphData[0]?.timestamp,
                         graphData[graphData?.length - 1]?.timestamp,
                     ]}
-                    dataKey="timestamp"
+                    dataKey="Time"
+                    tickFormatter={(unixTime) =>
+                        moment(Math.round(unixTime / 1000)).format("HH:mm Do")
+                    }
                     type="number"
                 />
-                <YAxis />
+                <YAxis label="bps" />
                 <Tooltip />
                 <Legend />
                 <Line
                     isAnimationActive={false}
                     type="monotone"
-                    dataKey="tx"
-                    stroke="#55ca9d"
+                    dataKey="Wired"
+                    stroke={theme.palette.error.main}
+                    dot={false}
                 />
                 <Line
                     isAnimationActive={false}
                     type="monotone"
-                    dataKey="rx"
-                    stroke="#82ca9d"
+                    dataKey="Bitrate"
+                    stroke={theme.palette.success.main}
+                    dot={false}
                 />
             </LineChart>
         </ResponsiveContainer>
