@@ -73,13 +73,13 @@ export default function GroupButton({
 
     return (
         <>
-            <Button
+            <div
                 className={
                     editMode
-                        ? clsx(classes.editButton, {
+                        ? clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.editButton, {
                               [classes.editButtonSelected]: selected,
                           })
-                        : clsx(classes.button, {
+                        : clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.button, {
                               [classes.buttonSelected]: selected,
                           })
                 }
@@ -102,7 +102,7 @@ export default function GroupButton({
                         onRename={() => setRenameDialogVisible(true)}
                     />
                 ) : null}
-            </Button>
+            </div>
             {renameDialogVisible && (
                 <RenameDialog
                     title="Rename group"
