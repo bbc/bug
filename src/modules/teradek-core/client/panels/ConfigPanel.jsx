@@ -69,7 +69,7 @@ export default function ConfigPanel() {
                         error={errors?.username ? true : false}
                         defaultValue={panelConfig.data.username}
                         type="text"
-                        label="Web Interface Username"
+                        label="Email"
                     />
                 </Grid>
 
@@ -83,7 +83,7 @@ export default function ConfigPanel() {
                         error={errors?.password ? true : false}
                         defaultValue={panelConfig.data.password}
                         type="password"
-                        label="Web Interface Password"
+                        label="Password"
                     />
                 </Grid>
 
