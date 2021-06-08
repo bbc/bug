@@ -2,7 +2,23 @@ const express = require("express");
 const groupAdd = require("@services/group-add");
 const groupDelete = require("@services/group-delete");
 const groupRename = require("@services/group-rename");
+const groupReorder = require("@services/group-reorder");
 const route = express.Router();
+
+route.post("/reorder/:type/", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await groupReorder(req.params?.type, req.body?.groups),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to re-order groups",
+        });
+    }
+});
 
 route.post("/:type/:groupName", async function (req, res, next) {
     try {

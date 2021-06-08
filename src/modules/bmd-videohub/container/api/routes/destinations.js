@@ -2,11 +2,11 @@ const express = require("express");
 const videohubGetDestinations = require("@services/videohub-getdestinations");
 const route = express.Router();
 
-route.get("/:group", async function (req, res, next) {
+route.get("/:groupIndex", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await videohubGetDestinations(req.params?.group),
+            data: await videohubGetDestinations(req.params?.groupIndex),
         });
     } catch (error) {
         console.log(error);

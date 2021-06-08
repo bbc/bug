@@ -9,7 +9,6 @@ export function useApiPoller({ url, interval, forceRefresh }) {
         error: null,
     });
     const localResult = useRef(pollResult);
-    console.log("forceRefresh", forceRefresh);
     useEffect(() => {
         const source = axios.CancelToken.source();
         const cancelToken = source.token;

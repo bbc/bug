@@ -35,7 +35,7 @@ module.exports = async (groupIndex = null) => {
     groups.forEach((eachGroup, eachIndex) => {
         outputArray["groups"].push({
             label: eachGroup["name"],
-            selected: eachIndex === groupIndex,
+            selected: eachIndex === parseInt(groupIndex),
             index: eachIndex,
         });
     });

@@ -11,7 +11,13 @@ export default function Module(props) {
             <ModuleRoute exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </ModuleRoute>
+            <ModuleRoute exact path="/panel/:panelId/:sourceGroup/:destinationGroup">
+                <MainPanel {...props} />
+            </ModuleRoute>
             <ModuleRoute exact path="/panel/:panelId/edit">
+                <EditPanel {...props} />
+            </ModuleRoute>
+            <ModuleRoute exact path="/panel/:panelId/edit/:sourceGroup/:destinationGroup">
                 <EditPanel {...props} />
             </ModuleRoute>
             <ModuleRoute exact path="/panel/:panelId/config">

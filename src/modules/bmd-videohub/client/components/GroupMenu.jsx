@@ -25,12 +25,10 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
-        // onChange(true);
         event.stopPropagation();
     };
 
     const handleClose = (event) => {
-        // onChange(false);
         setAnchorEl(null);
         event.stopPropagation();
     };
@@ -42,6 +40,7 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
         } else {
             sendAlert(`Failed to delete group: ${groupName}`, { variant: "error" });
         }
+        onChange();
         event.stopPropagation();
     };
 

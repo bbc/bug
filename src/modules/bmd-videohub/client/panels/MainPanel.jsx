@@ -7,7 +7,11 @@ export default function MainPanel() {
 
     return (
         <>
-            <Router panelId={params.panelId} />
+            <Router
+                panelId={params.panelId}
+                sourceGroup={params.sourceGroup ?? 0}
+                destinationGroup={params.destinationGroup ?? 0}
+            />
         </>
     );
 }

@@ -7,7 +7,12 @@ export default function MainPanel() {
 
     return (
         <>
-            <Router panelId={params.panelId} editMode />
+            <Router
+                panelId={params.panelId}
+                sourceGroup={params.sourceGroup ?? 0}
+                destinationGroup={params.destinationGroup ?? 0}
+                editMode
+            />
         </>
     );
 }

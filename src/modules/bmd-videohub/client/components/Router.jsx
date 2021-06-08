@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Loading from "@components/Loading";
-// import { Redirect } from "react-router";
+import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
@@ -10,6 +10,23 @@ import RouterButton from "./RouterButton";
 import AddGroupButton from "./AddGroupButton";
 import RenameDialog from "./RenameDialog";
 import AxiosPost from "@utils/AxiosPost";
+import { useHistory } from "react-router-dom";
+
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -84,18 +101,27 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Router({ panelId, editMode = false }) {
+export default function Router({ panelId, editMode = false, sourceGroup = 0, destinationGroup = 0 }) {
     const classes = useStyles();
     const sendAlert = useAlert();
+    const history = useHistory();
     const [selectedDestination, setSelectedDestination] = React.useState(0);
-    const [destinationGroup, setDestinationGroup] = React.useState(0);
-    const [sourceGroup, setSourceGroup] = React.useState(0);
+    const [sourceForceRefreshHash, setSourceForceRefreshHash] = React.useState(0);
     const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
     const [addDialogType, setAddDialogType] = React.useState(null);
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        }),
+        useSensor(TouchSensor)
+    );
+
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination}/${sourceGroup}`,
-        interval: editMode ? 5000 : 1000,
+        interval: editMode ? 5000 : 500,
+        forceRefresh: sourceForceRefreshHash,
     });
 
     const destinationButtons = useApiPoller({
@@ -105,12 +131,14 @@ export default function Router({ panelId, editMode = false }) {
     });
 
     const handleSourceGroupButtonClicked = (groupIndex) => {
-        setSourceGroup(groupIndex);
+        const editText = editMode ? "/edit" : "";
+        history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationGroup}`);
     };
 
     const handleDestinationGroupButtonClicked = (groupIndex) => {
         setSelectedDestination(-1);
-        setDestinationGroup(groupIndex);
+        const editText = editMode ? "/edit" : "";
+        history.push(`/panel/${panelId}${editText}/${sourceGroup}/${groupIndex}`);
     };
 
     const handleDestinationButtonClicked = (destinationIndex) => {
@@ -146,10 +174,37 @@ export default function Router({ panelId, editMode = false }) {
 
     const handleAddGroup = async (value) => {
         if (await AxiosPost(`/container/${panelId}/groups/${addDialogType}/${value}`)) {
+            if (addDialogType === "source") {
+                setSourceForceRefreshHash(sourceForceRefreshHash + 1);
+            } else {
+                setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
+            }
             setAddDialogType(null);
             sendAlert(`Added group: ${value}`, { variant: "success" });
         } else {
             sendAlert(`Failed to add group: ${value}`, { variant: "error" });
+        }
+    };
+
+    const handleSourceDragEnd = async (event) => {
+        const { active, over } = event;
+
+        if (active.id !== over.id) {
+            const oldIndex = sourceButtons.data.groups.findIndex((group) => group.label === active.id);
+            const newIndex = sourceButtons.data.groups.findIndex((group) => group.label === over.id);
+
+            const newGroups = arrayMove(sourceButtons.data.groups, oldIndex, newIndex);
+
+            const groupNamesInOrder = newGroups.map((group) => group.label);
+            if (
+                !(await AxiosPost(`/container/${panelId}/groups/reorder/source`, {
+                    groups: groupNamesInOrder,
+                }))
+            ) {
+                sendAlert(`Failed to save new group ordering`, { variant: "error" });
+            }
+            const editText = editMode ? "/edit" : "";
+            history.push(`/panel/${panelId}${editText}/${newIndex}/${destinationGroup}`);
         }
     };
 
@@ -161,28 +216,37 @@ export default function Router({ panelId, editMode = false }) {
         return (
             <div className={classes.panel}>
                 <div className={classes.section}>Sources</div>
-                <div className={classes.groupButtons}>
-                    {sourceButtons.data.groups.map((group) => (
-                        <GroupButton
-                            key={group.index}
-                            selected={group.selected}
-                            index={group.index}
-                            primaryText={group.label}
-                            onClick={() => handleSourceGroupButtonClicked(group.index)}
-                            editMode={editMode}
-                            panelId={panelId}
-                            groupType="source"
-                            onChange={() => handleGroupsChanged()}
-                        />
-                    ))}
-                    {editMode && (
-                        <AddGroupButton
-                            onClick={() => {
-                                setAddDialogType("source");
-                            }}
-                        />
-                    )}
-                </div>
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleSourceDragEnd}>
+                    <SortableContext
+                        items={sourceButtons.data.groups.map((group) => group.label)}
+                        strategy={horizontalListSortingStrategy}
+                    >
+                        <div className={classes.groupButtons}>
+                            {sourceButtons.data.groups.map((group) => (
+                                <GroupButton
+                                    key={group.index}
+                                    selected={group.selected}
+                                    index={group.index}
+                                    primaryText={group.label}
+                                    onClick={() => handleSourceGroupButtonClicked(group.index)}
+                                    editMode={editMode}
+                                    panelId={panelId}
+                                    groupType="source"
+                                    onChange={() => {
+                                        setSourceForceRefreshHash(sourceForceRefreshHash + 1);
+                                    }}
+                                />
+                            ))}
+                            {editMode && (
+                                <AddGroupButton
+                                    onClick={() => {
+                                        setAddDialogType("source");
+                                    }}
+                                />
+                            )}
+                        </div>
+                    </SortableContext>
+                </DndContext>
                 <div className={classes.buttons}>
                     {sourceButtons.data.sources.map((source) => (
                         <RouterButton
@@ -215,14 +279,16 @@ export default function Router({ panelId, editMode = false }) {
                     {destinationButtons.data.groups.map((group) => (
                         <GroupButton
                             key={group.index}
-                            selected={destinationGroup === group.index}
+                            selected={group.selected}
                             index={group.index}
                             primaryText={group.label}
                             onClick={() => handleDestinationGroupButtonClicked(group.index)}
                             editMode={editMode}
                             panelId={panelId}
                             groupType="destination"
-                            onChange={() => handleGroupsChanged()}
+                            onChange={() => {
+                                setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
+                            }}
                         />
                     ))}
                     {editMode && (
@@ -249,10 +315,6 @@ export default function Router({ panelId, editMode = false }) {
             </div>
         );
     };
-
-    // if (redirectUrl) {
-    //     return <Redirect push to={{ pathname: redirectUrl }} />;
-    // }
 
     return (
         <>
