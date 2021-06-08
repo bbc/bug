@@ -18,18 +18,18 @@ parentPort.postMessage({
     restartOn: ["username", "password"],
 });
 
-const pollDevice = async () => {
-    const tokenCollection = await mongoDb.db.collection("token");
+try {
+    const main = async () => {
+        // Connect to the db
+        await mongoDb.connect(config?.id);
+        const tokenCollection = await mongoDb.db.collection("token");
 
-    console.log(`token: teradek-core token fetcher starting...`);
+        console.log(`token: teradek-core token fetcher starting...`);
 
-    // initial delay (to stagger device polls)
-    await delay(1000);
+        // initial delay (to stagger device polls)
+        await delay(1000);
 
-    let noErrors = true;
-
-    while (noErrors) {
-        try {
+        while (true) {
             const response = await axios({
                 method: "get",
                 url: "v1.1/auth/login",
@@ -48,28 +48,23 @@ const pollDevice = async () => {
                 delayMs = token.ttl * 1000 - 120000;
                 await arraySaveMongo(tokenCollection, [token], "auth_token");
             } else {
-                throw response.data;
+                throw {
+                    error: response.data,
+                    message: `Auth error for ${config?.username}`,
+                    delay: 60000,
+                };
             }
-        } catch (error) {
-            console.log("token: ", error);
-            noErrors = false;
         }
-        await delay(delayMs);
-    }
-};
+    };
 
-const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(config?.id);
-    // Kick things off
-    while (true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log("token: ", error);
-        }
-        await delay(errorDelayMs);
+    main();
+} catch (error) {
+    if (isObject()) {
+        throw {
+            error: error?.message,
+            index: workerData.index,
+            delay: error?.delay,
+        };
     }
-};
-
-main();
+    throw { error: error, index: workerData.index, delay: 60 };
+}
