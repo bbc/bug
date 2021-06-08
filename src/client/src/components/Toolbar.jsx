@@ -1,10 +1,11 @@
 import PageTitle from "@components/PageTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
-import React, { Suspense } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
 import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
+import * as Toolbars from "../../../modules/*/client/Toolbar.jsx";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -22,7 +23,7 @@ const Toolbar = (props) => {
         return null;
     }
 
-    const LazyToolbar = () => {
+    const PanelToolbar = () => {
         if (panelConfig.status !== "success") {
             return null;
         }
@@ -30,17 +31,13 @@ const Toolbar = (props) => {
         if (!panelConfig.data) {
             return null;
         }
-        const Toolbar = React.lazy(() =>
-            import(`@modules/${panelConfig.data.module}/client/Toolbar`).catch(() =>
-                console.log(`Error importing '@modules/${panelConfig.data.module}/client/Toolbar.jsx`)
-            )
-        );
 
-        return (
-            <Suspense fallback={<></>}>
-                <Toolbar panelId={panelConfig.data.id} />
-            </Suspense>
-        );
+        if (Toolbars["modules"][panelConfig.data.module]) {
+            const Toolbar = Toolbars["modules"][panelConfig.data.module]["client"]["Toolbar"];
+            return <Toolbar panelId={panelConfig.data.id} />;
+        }
+
+        return null;
     };
 
     switch (location.pathname) {
@@ -68,7 +65,7 @@ const Toolbar = (props) => {
                     <div className={classes.title}>
                         <PageTitle />
                     </div>
-                    <LazyToolbar />
+                    <PanelToolbar />
                 </>
             );
     }

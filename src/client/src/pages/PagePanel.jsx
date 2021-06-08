@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
-import React, { Suspense } from "react";
+import React from "react";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import { usePanelConfig } from "@data/PanelConfig";
 import { Redirect } from "react-router";
+
+import * as Modules from "../../../modules/*/client/Module.jsx";
 
 export default function PagePanel(props) {
     const params = useParams();
@@ -21,18 +23,11 @@ export default function PagePanel(props) {
             // the panel doesn't exist - we'll just dump back to the home page
             return <Redirect push to={{ pathname: "/" }} />;
         }
-
-        // import the page contents from the module
-        const Module = React.lazy(() =>
-            import(`@modules/${panelConfig.data.module}/client/Module`).catch(() => console.log("Error in importing"))
-        );
-        return (
-            <>
-                <Suspense fallback={<Loading />}>
-                    <Module panelId={panelId} />
-                </Suspense>
-            </>
-        );
+        if (Modules["modules"][panelConfig.data.module]) {
+            const Module = Modules["modules"][panelConfig.data.module]["client"]["Module"];
+            return <Module panelId={panelId} />;
+        }
+        return null;
     }
     return null;
 }

@@ -3,7 +3,6 @@
   "version": "3.0.0-b",
   "private": true,
   "dependencies": {
-    "@babel/core": "^7.13.0",
     "@date-io/date-fns": "^1.3.13",
     "@dnd-kit/core": "^2.1.2",
     "@dnd-kit/sortable": "^2.0.1",
@@ -91,6 +90,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-plugin-bulk-import": "^2.0.0",
     "customize-cra": "^1.0.0"
   }
 }
