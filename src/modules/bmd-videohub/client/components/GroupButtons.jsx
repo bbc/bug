@@ -130,7 +130,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                         onClick={() => handleGroupButtonClicked(group.index)}
                         editMode={editMode}
                         panelId={panelId}
-                        groupType="source"
+                        groupType={groupType}
                         onChange={onChange}
                     />
                 ))}

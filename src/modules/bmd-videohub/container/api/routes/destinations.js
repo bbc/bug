@@ -1,7 +1,23 @@
 const express = require("express");
 const videohubGetDestinations = require("@services/videohub-getdestinations");
+const videohubGetAllDestinations = require("@services/videohub-getalldestinations");
 const buttonRemove = require("@services/button-remove");
 const route = express.Router();
+
+route.get("/", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await videohubGetAllDestinations(),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to get destinations",
+        });
+    }
+});
 
 route.get("/:groupIndex", async function (req, res, next) {
     try {

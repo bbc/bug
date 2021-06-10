@@ -36,13 +36,7 @@ export default function RenameDialog({ defaultValue = "", onCancel, title, label
                     <Button onClick={onCancel} color="primary">
                         Cancel
                     </Button>
-                    <Button
-                        type="submit"
-                        onClick={() => onSubmit(value)}
-                        color="primary"
-                        autoFocus
-                        disabled={value === ""}
-                    >
+                    <Button type="submit" onClick={() => onSubmit(value)} color="primary" disabled={value === ""}>
                         {buttonText}
                     </Button>
                 </DialogActions>

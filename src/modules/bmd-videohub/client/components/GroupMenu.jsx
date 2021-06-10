@@ -10,6 +10,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { useAlert } from "@utils/Snackbar";
 import AxiosDelete from "@utils/AxiosDelete";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditButtonsDialog from "./EditButtonsDialog";
+import Divider from "@material-ui/core/Divider";
+import BallotIcon from "@material-ui/icons/Ballot";
 
 const useStyles = makeStyles((theme) => ({
     iconButton: {
@@ -22,6 +25,7 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const [editButtonsDialogVisible, setEditButtonsDialogVisible] = React.useState(false);
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -50,6 +54,14 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
         event.stopPropagation();
     };
 
+    const handleAddButtons = (buttonList) => {};
+
+    const handleEditButtonsClick = (event) => {
+        handleClose(event);
+        setEditButtonsDialogVisible(true);
+        event.stopPropagation();
+    };
+
     return (
         <div>
             <IconButton
@@ -62,6 +74,13 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
                 <MoreVertIcon />
             </IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                <MenuItem onClick={handleEditButtonsClick}>
+                    <ListItemIcon>
+                        <BallotIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary={`Edit ${groupType}s`} />
+                </MenuItem>
+                <Divider />
                 <MenuItem onClick={handleRename}>
                     <ListItemIcon>
                         <EditIcon fontSize="small" />
@@ -75,6 +94,15 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
                     <ListItemText primary="Delete" />
                 </MenuItem>
             </Menu>
+            {editButtonsDialogVisible && (
+                <EditButtonsDialog
+                    onCancel={() => setEditButtonsDialogVisible(false)}
+                    onSubmit={handleAddButtons}
+                    groupIndex={groupIndex}
+                    panelId={panelId}
+                    groupType={groupType}
+                />
+            )}
         </div>
     );
 }
