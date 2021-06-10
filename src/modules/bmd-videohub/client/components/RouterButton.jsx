@@ -119,6 +119,7 @@ export default function RouterButton({
     selected,
     editMode = false,
     onChange,
+    groups,
 }) {
     const classes = useStyles();
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -178,7 +179,13 @@ export default function RouterButton({
                         {button.label}
                     </div>
                     {editMode ? (
-                        <ButtonMenu panelId={panelId} buttonType={buttonType} button={button} onChange={onChange} />
+                        <ButtonMenu
+                            panelId={panelId}
+                            buttonType={buttonType}
+                            button={button}
+                            onChange={onChange}
+                            groups={groups}
+                        />
                     ) : null}
                 </div>
             </div>

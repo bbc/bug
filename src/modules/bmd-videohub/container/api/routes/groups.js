@@ -4,6 +4,7 @@ const groupDelete = require("@services/group-delete");
 const groupRename = require("@services/group-rename");
 const groupReorder = require("@services/group-reorder");
 const groupSet = require("@services/group-set");
+const groupAddButton = require("@services/group-addbutton");
 const route = express.Router();
 
 route.post("/reorder/:type/", async function (req, res, next) {
@@ -77,6 +78,21 @@ route.get("/rename/:type/:groupName/:newGroupName", async function (req, res, ne
         res.json({
             status: "error",
             message: "Failed to delete group",
+        });
+    }
+});
+
+route.get("/addbutton/:type/:groupName/:buttonIndex", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await groupAddButton(req.params?.type, req.params?.groupName, req.params?.buttonIndex),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to add button to group",
         });
     }
 });

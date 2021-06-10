@@ -4,11 +4,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import { useAlert } from "@utils/Snackbar";
 import TextField from "@material-ui/core/TextField";
 
-export default function RenameDialog({ panelId, defaultValue = "", onCancel, title, label, onSubmit, buttonText }) {
-    const sendAlert = useAlert();
+export default function RenameDialog({ defaultValue = "", onCancel, title, label, onSubmit, buttonText }) {
     const [value, setValue] = React.useState(defaultValue);
 
     return (

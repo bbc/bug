@@ -9,15 +9,13 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { useAlert } from "@utils/Snackbar";
 import AxiosDelete from "@utils/AxiosDelete";
-// import LockIcon from "@material-ui/icons/Lock";
-// import LockOpenIcon from "@material-ui/icons/LockOpen";
 import Divider from "@material-ui/core/Divider";
 import AddIcon from "@material-ui/icons/Add";
-import { useConfirm } from "material-ui-confirm";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import { useParams } from "react-router-dom";
 import AxiosCommand from "@utils/AxiosCommand";
 import RenameDialog from "./RenameDialog";
+import AddGroupDialog from "./AddGroupDialog";
 
 const useStyles = makeStyles((theme) => ({
     iconButton: {
@@ -25,16 +23,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ButtonMenu({ buttonType, button, panelId, onChange, onRename }) {
+export default function ButtonMenu({ buttonType, button, panelId, onChange, groups }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const confirm = useConfirm();
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
     const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
+    const [addGroupDialogVisible, setAddGroupDialogVisible] = React.useState(false);
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -68,7 +66,6 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onRe
 
     const handleRename = async (newName) => {
         setRenameDialogVisible(false);
-
         if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${newName}`)) {
             sendAlert(`Renamed ${buttonType}: ${button.label} -> ${newName}`, { variant: "success" });
         } else {
@@ -77,16 +74,24 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onRe
         onChange();
     };
 
-    // const handleLock = async (event) => {
-    //     if (await AxiosCommand(`/container/${panelId}/lock/${button.index}`)) {
-    //         sendAlert(`Locked destination '${button.label}'`, { variant: "success" });
-    //     } else {
-    //         sendAlert(`Failed to lock destination '${button.label}'`, { variant: "error" });
-    //     }
-    // };
+    const handleAddGroupClick = (event) => {
+        handleClose(event);
+        setAddGroupDialogVisible(true);
+        event.stopPropagation();
+    };
 
-    // const handleUnlock = (event) => {};
-    const handleAddToGroup = (event) => {};
+    const handleAddGroup = async (selectedGroup) => {
+        setAddGroupDialogVisible(false);
+        if (
+            await AxiosCommand(`/container/${panelId}/groups/addbutton/${buttonType}/${selectedGroup}/${button.index}`)
+        ) {
+            sendAlert(`Added button to group '${selectedGroup}'`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to add button to group`, { variant: "error" });
+        }
+        onChange();
+    };
+
     return (
         <div>
             <IconButton
@@ -112,27 +117,12 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onRe
                     <ListItemText primary="Remove" />
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleAddToGroup}>
+                <MenuItem onClick={handleAddGroupClick}>
                     <ListItemIcon>
                         <AddIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Add to Group" />
                 </MenuItem>
-                {/* {buttonType === "destination" && [
-                    <Divider key="1" />,
-                    <MenuItem key="2" disabled={button.isLocked} onClick={handleLock}>
-                        <ListItemIcon>
-                            <LockIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Lock" />
-                    </MenuItem>,
-                    <MenuItem key="3" disabled={!button.isLocked} onClick={handleUnlock}>
-                        <ListItemIcon>
-                            <LockOpenIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Unlock" />
-                    </MenuItem>,
-                ]} */}
             </Menu>
             {renameDialogVisible && (
                 <RenameDialog
@@ -143,6 +133,13 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onRe
                     onCancel={() => setRenameDialogVisible(false)}
                     onSubmit={handleRename}
                     buttonText="Rename"
+                />
+            )}
+            {addGroupDialogVisible && (
+                <AddGroupDialog
+                    onCancel={() => setAddGroupDialogVisible(false)}
+                    onSubmit={handleAddGroup}
+                    groups={groups}
                 />
             )}
         </div>

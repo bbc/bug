@@ -97,6 +97,7 @@ export default function Router({
                     onChange={onChange}
                     editMode={editMode}
                     buttonType={buttonType}
+                    groups={buttons.data.groups}
                 />
             ))}
         </>
