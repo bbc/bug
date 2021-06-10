@@ -2,6 +2,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import { useSortable } from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
     editButton: {
@@ -12,9 +13,13 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
         textTransform: "none",
         lineHeight: 1.4,
+        cursor: "move",
         "& .MuiButton-label": {
             flexDirection: "column",
             height: "100%",
+        },
+        "&:hover": {
+            backgroundColor: "inherit",
         },
         "@media (max-width:600px)": {
             height: 48,
@@ -107,48 +112,71 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RouterButton({
-    selected = false,
     index,
+    id,
     primaryText,
     secondaryText,
     icon = null,
     onClick,
+    selected,
     editMode = false,
 }) {
     const classes = useStyles();
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
     const indexPlusOne = (index + 1).toString();
+
+    let transformString = "";
+
+    if (transform?.x) {
+        transformString += `translateX(${Math.round(transform?.x)}px)`;
+    }
+    if (transform?.y) {
+        transformString += ` translateY(${Math.round(transform?.y)}px)`;
+    }
+
+    const style = {
+        transform: transformString,
+        transition,
+    };
+
     return (
-        <Button
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
             className={
                 editMode
-                    ? classes.editButton
-                    : clsx(classes.button, {
+                    ? clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.editButton)
+                    : clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.button, {
                           [classes.buttonSelected]: selected,
                       })
             }
             variant="outlined"
             onClick={onClick}
         >
-            <div className={classes.buttonUpper}>
-                <div className={classes.circle}>
-                    <div className={classes.index}>{indexPlusOne}</div>
+            <div className="MuiButton-label">
+                <div className={classes.buttonUpper}>
+                    <div className={classes.circle}>
+                        <div className={classes.index}>{indexPlusOne}</div>
+                    </div>
                 </div>
-            </div>
-            <div
-                className={clsx(classes.buttonLower, {
-                    [classes.buttonLowerEdit]: editMode,
-                })}
-            >
-                {editMode ? null : <div className={classes.secondaryText}>{secondaryText}</div>}
                 <div
-                    className={clsx(classes.primaryText, {
-                        [classes.primaryTextEdit]: editMode,
+                    className={clsx(classes.buttonLower, {
+                        [classes.buttonLowerEdit]: editMode,
                     })}
                 >
-                    {primaryText}
+                    {editMode ? null : <div className={classes.secondaryText}>{secondaryText}</div>}
+                    <div
+                        className={clsx(classes.primaryText, {
+                            [classes.primaryTextEdit]: editMode,
+                        })}
+                    >
+                        {primaryText}
+                    </div>
+                    {editMode ? <MoreIcon /> : null}
                 </div>
-                {editMode ? <MoreIcon /> : null}
             </div>
-        </Button>
+        </div>
     );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Loading from "@components/Loading";
 import { useAlert } from "@utils/Snackbar";
@@ -42,6 +42,11 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
+    const [localButtons, setLocalButtons] = React.useState(null);
+
+    useEffect(() => {
+        setLocalButtons(buttons.data.groups);
+    }, [buttons]);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -70,18 +75,17 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         }
     };
 
-    const handleSourceDragEnd = async (event) => {
+    const handleDragEnd = async (event) => {
         const { active, over } = event;
 
         if (active.id !== over.id) {
-            const oldIndex = buttons.data.groups.findIndex((group) => group.label === active.id);
-            const newIndex = buttons.data.groups.findIndex((group) => group.label === over.id);
-
-            const newGroups = arrayMove(buttons.data.groups, oldIndex, newIndex);
+            const oldIndex = localButtons.findIndex((group) => group.label === active.id);
+            const newIndex = localButtons.findIndex((group) => group.label === over.id);
+            const newGroups = arrayMove(localButtons, oldIndex, newIndex);
 
             const groupNamesInOrder = newGroups.map((group) => group.label);
             if (
-                !(await AxiosPost(`/container/${panelId}/groups/reorder/source`, {
+                !(await AxiosPost(`/container/${panelId}/groups/reorder/${groupType}`, {
                     groups: groupNamesInOrder,
                 }))
             ) {
@@ -93,15 +97,16 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
             } else {
                 history.push(`/panel/${panelId}${editText}/${sourceGroup}/${newIndex}`);
             }
+            setLocalButtons(newGroups);
         }
     };
 
     const Content = () => {
         if (editMode) {
             return (
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleSourceDragEnd}>
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                     <SortableContext
-                        items={buttons.data.groups.map((group) => group.label)}
+                        items={localButtons.map((group) => group.label)}
                         strategy={horizontalListSortingStrategy}
                     >
                         <GroupButtons />
@@ -116,7 +121,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
     const GroupButtons = () => {
         return (
             <div className={classes.groupButtons}>
-                {buttons.data.groups.map((group) => (
+                {localButtons.map((group) => (
                     <GroupButton
                         key={group.index}
                         selected={group.selected}
@@ -140,7 +145,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         );
     };
 
-    if (buttons.status === "loading" || buttons.status === "idle" || !buttons.data) {
+    if (!localButtons) {
         return <Loading />;
     }
 

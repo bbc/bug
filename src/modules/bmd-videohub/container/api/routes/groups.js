@@ -3,6 +3,7 @@ const groupAdd = require("@services/group-add");
 const groupDelete = require("@services/group-delete");
 const groupRename = require("@services/group-rename");
 const groupReorder = require("@services/group-reorder");
+const groupSet = require("@services/group-set");
 const route = express.Router();
 
 route.post("/reorder/:type/", async function (req, res, next) {
@@ -20,11 +21,26 @@ route.post("/reorder/:type/", async function (req, res, next) {
     }
 });
 
-route.post("/:type/:groupName", async function (req, res, next) {
+route.post("/set/:groupType/:groupIndex", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await groupAdd(req.params?.type, req.params?.groupName),
+            data: await groupSet(req.params?.groupType, req.params?.groupIndex, req.body.buttons),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set button order",
+        });
+    }
+});
+
+route.post("/:groupType/:groupName", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await groupAdd(req.params?.groupType, req.params?.groupName),
         });
     } catch (error) {
         console.log(error);

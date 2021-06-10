@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Router({ panelId, editMode = false, sourceGroup = 0, destinationGroup = 0 }) {
     const classes = useStyles();
     const sendAlert = useAlert();
-    const [selectedDestination, setSelectedDestination] = React.useState(0);
+    const [selectedDestination, setSelectedDestination] = React.useState(null);
     const [sourceForceRefreshHash, setSourceForceRefreshHash] = React.useState(0);
     const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
 
@@ -100,19 +100,20 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         let source = sourceButtons.data.sources.filter((x) => x.index === sourceIndex);
         let destination = destinationButtons.data.destinations.filter((x) => x.index === selectedDestination);
 
-        if (source.length === 1 && destination.length === 1) {
-            if (await AxiosCommand(`/container/${panelId}/route/${selectedDestination}/${sourceIndex}`)) {
-                sendAlert(`Successfully routed '${source[0].label}' to '${destination[0].label}'`, {
-                    broadcast: true,
-                    variant: "success",
-                });
-                return;
-            }
+        if (source.length !== 1 || destination.length !== 1) {
+            return;
+        }
+
+        if (await AxiosCommand(`/container/${panelId}/route/${selectedDestination}/${sourceIndex}`)) {
+            sendAlert(`Successfully routed '${source[0].label}' to '${destination[0].label}'`, {
+                broadcast: true,
+                variant: "success",
+            });
+            // force a refresh of the destinations
+            setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
+            return;
         }
         sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
-
-        // force a refresh of the destinations
-        setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
     };
 
     const renderSources = () => {

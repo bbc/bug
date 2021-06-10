@@ -10,8 +10,7 @@ module.exports = (configText) => {
         excludeArray.forEach((eachVal) => {
             eachVal = eachVal.trim();
             if (!isNaN(eachVal)) {
-                // adjust for zero-based indicies
-                returnArray.push(parseInt(eachVal) - 1);
+                returnArray.push(parseInt(eachVal));
             } else if (eachVal.indexOf("-") > -1) {
                 // it might be a range
                 const rangeArray = eachVal.split("-");
