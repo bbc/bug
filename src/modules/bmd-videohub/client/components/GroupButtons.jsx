@@ -40,6 +40,8 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
     const history = useHistory();
     const [addDialogType, setAddDialogType] = React.useState(null);
     const params = useParams();
+    const sourceGroup = params.sourceGroup ?? 0;
+    const destinationGroup = params.destinationGroup ?? 0;
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -50,8 +52,6 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
     );
 
     const handleGroupButtonClicked = (groupIndex) => {
-        const sourceGroup = params.sourceGroup ?? 0;
-        const destinationGroup = params.destinationGroup ?? 0;
         const editText = editMode ? "/edit" : "";
         if (groupType === "source") {
             history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationGroup}`);
@@ -96,47 +96,57 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         }
     };
 
-    const GroupButtons = () => {
-        if (buttons.status === "loading" || buttons.status === "idle" || !buttons.data) {
-            return <Loading />;
+    const Content = () => {
+        if (editMode) {
+            return (
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleSourceDragEnd}>
+                    <SortableContext
+                        items={buttons.data.groups.map((group) => group.label)}
+                        strategy={horizontalListSortingStrategy}
+                    >
+                        <GroupButtons />
+                    </SortableContext>
+                </DndContext>
+            );
         }
 
+        return <GroupButtons />;
+    };
+
+    const GroupButtons = () => {
         return (
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleSourceDragEnd}>
-                <SortableContext
-                    items={buttons.data.groups.map((group) => group.label)}
-                    strategy={horizontalListSortingStrategy}
-                >
-                    <div className={classes.groupButtons}>
-                        {buttons.data.groups.map((group) => (
-                            <GroupButton
-                                key={group.index}
-                                selected={group.selected}
-                                index={group.index}
-                                primaryText={group.label}
-                                onClick={() => handleGroupButtonClicked(group.index)}
-                                editMode={editMode}
-                                panelId={panelId}
-                                groupType="source"
-                                onChange={onChange}
-                            />
-                        ))}
-                        {editMode && (
-                            <AddGroupButton
-                                onClick={() => {
-                                    setAddDialogType(groupType);
-                                }}
-                            />
-                        )}
-                    </div>
-                </SortableContext>
-            </DndContext>
+            <div className={classes.groupButtons}>
+                {buttons.data.groups.map((group) => (
+                    <GroupButton
+                        key={group.index}
+                        selected={group.selected}
+                        index={group.index}
+                        primaryText={group.label}
+                        onClick={() => handleGroupButtonClicked(group.index)}
+                        editMode={editMode}
+                        panelId={panelId}
+                        groupType="source"
+                        onChange={onChange}
+                    />
+                ))}
+                {editMode && (
+                    <AddGroupButton
+                        onClick={() => {
+                            setAddDialogType(groupType);
+                        }}
+                    />
+                )}
+            </div>
         );
     };
 
+    if (buttons.status === "loading" || buttons.status === "idle" || !buttons.data) {
+        return <Loading />;
+    }
+
     return (
         <>
-            <GroupButtons />
+            <Content />
             {addDialogType && (
                 <RenameDialog
                     title="Add group"
