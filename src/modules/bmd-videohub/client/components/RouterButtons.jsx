@@ -28,7 +28,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Router({ panelId, editMode = false, buttonType, buttons, selectedDestination, onClick }) {
+export default function Router({
+    panelId,
+    editMode = false,
+    buttonType,
+    buttons,
+    selectedDestination,
+    onClick,
+    onChange,
+}) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const params = useParams();
@@ -81,14 +89,14 @@ export default function Router({ panelId, editMode = false, buttonType, buttons,
         <>
             {localButtons.map((button) => (
                 <RouterButton
+                    panelId={panelId}
                     key={button.index}
                     selected={buttonType === "source" ? button.selected : selectedDestination === button.index}
-                    index={button.index}
-                    id={`${buttonType}:${button.index}`}
-                    primaryText={button.label}
-                    secondaryText={buttonType === "source" ? "" : button.sourceLabel}
+                    button={button}
                     onClick={() => onClick(button.index)}
+                    onChange={onChange}
                     editMode={editMode}
+                    buttonType={buttonType}
                 />
             ))}
         </>

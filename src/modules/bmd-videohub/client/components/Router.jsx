@@ -139,6 +139,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     selectedDestination={selectedDestination}
                     buttons={sourceButtons}
                     onClick={handleSourceButtonClicked}
+                    onChange={() => setSourceForceRefreshHash(sourceForceRefreshHash + 1)}
                 />
             </div>
         );
@@ -170,6 +171,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     selectedDestination={selectedDestination}
                     buttons={destinationButtons}
                     onClick={handleDestinationButtonClicked}
+                    onChange={() => setDestinationForceRefreshHash(destinationForceRefreshHash + 1)}
                 />
             </div>
         );

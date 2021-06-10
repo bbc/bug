@@ -26,6 +26,11 @@ const theme = createMuiTheme({
                 color: (props) => (props.disabled ? "#888" : "#ffffff"),
             },
         },
+        MuiListItemText: {
+            primary: {
+                fontSize: "0.875rem",
+            },
+        },
         MuiListItemIcon: {
             root: {
                 minWidth: 44,

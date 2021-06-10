@@ -4,6 +4,14 @@ const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
 
 module.exports = async (index, type, label) => {
+    if (type === "source") {
+        type = "input";
+    }
+
+    if (type === "destination") {
+        type = "output";
+    }
+
     if (!["input", "output"].includes(type)) {
         console.log(`videohub-setlabel: invalid type '${type}'`);
         return false;

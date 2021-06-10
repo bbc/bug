@@ -1,7 +1,6 @@
-import Button from "@material-ui/core/Button";
+import ButtonMenu from "./ButtonMenu";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import MoreIcon from "@material-ui/icons/MoreVert";
 import { useSortable } from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
@@ -112,18 +111,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RouterButton({
-    index,
-    id,
-    primaryText,
-    secondaryText,
+    panelId,
+    buttonType,
+    button,
     icon = null,
     onClick,
     selected,
     editMode = false,
+    onChange,
 }) {
     const classes = useStyles();
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
-    const indexPlusOne = (index + 1).toString();
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: `${buttonType}:${button.index}`,
+    });
+    const indexPlusOne = (button.index + 1).toString();
 
     let transformString = "";
 
@@ -139,6 +140,8 @@ export default function RouterButton({
         transition,
     };
 
+    const secondaryText = buttonType === "source" ? "" : button.sourceLabel;
+    // console.log(button);
     return (
         <div
             ref={setNodeRef}
@@ -172,9 +175,11 @@ export default function RouterButton({
                             [classes.primaryTextEdit]: editMode,
                         })}
                     >
-                        {primaryText}
+                        {button.label}
                     </div>
-                    {editMode ? <MoreIcon /> : null}
+                    {editMode ? (
+                        <ButtonMenu panelId={panelId} buttonType={buttonType} button={button} onChange={onChange} />
+                    ) : null}
                 </div>
             </div>
         </div>
