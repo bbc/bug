@@ -10,7 +10,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { useAlert } from "@utils/Snackbar";
 import AxiosDelete from "@utils/AxiosDelete";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditButtonsDialog from "./EditButtonsDialog";
 import Divider from "@material-ui/core/Divider";
 import BallotIcon from "@material-ui/icons/Ballot";
 
@@ -20,12 +19,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function GroupMenu({ groupType, groupIndex, groupName, panelId, onChange, onRename }) {
+export default function GroupMenu({ groupType, groupIndex, groupName, panelId, onChange, onRename, onEditButtons }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const [editButtonsDialogVisible, setEditButtonsDialogVisible] = React.useState(false);
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -54,11 +52,9 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
         event.stopPropagation();
     };
 
-    const handleAddButtons = (buttonList) => {};
-
     const handleEditButtonsClick = (event) => {
         handleClose(event);
-        setEditButtonsDialogVisible(true);
+        onEditButtons(groupIndex);
         event.stopPropagation();
     };
 
@@ -94,15 +90,6 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
                     <ListItemText primary="Delete" />
                 </MenuItem>
             </Menu>
-            {editButtonsDialogVisible && (
-                <EditButtonsDialog
-                    onCancel={() => setEditButtonsDialogVisible(false)}
-                    onSubmit={handleAddButtons}
-                    groupIndex={groupIndex}
-                    panelId={panelId}
-                    groupType={groupType}
-                />
-            )}
         </div>
     );
 }

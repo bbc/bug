@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -13,7 +12,27 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { makeStyles } from "@material-ui/core/styles";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import EditButtonsDragItem from "./EditButtonsDragItem";
+import _ from "lodash";
+import { useAlert } from "@utils/Snackbar";
+import AxiosPost from "@utils/AxiosPost";
+
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
     dialog: {
@@ -28,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
     listWrapper: {
         backgroundColor: "#303030",
         borderRadius: 5,
+        margin: "0.5rem",
+    },
+    listScrollContainer: {
         minHeight: "18rem",
         maxHeight: "50vh",
         overflow: "auto",
@@ -40,34 +62,53 @@ const useStyles = makeStyles((theme) => ({
         display: "grid",
         gridAutoFlow: "column",
     },
-    controls: {
-        padding: "1rem",
-        height: "100%",
+    listHeader: {
+        backgroundColor: "#212121",
+        fontWeight: 500,
+        lineHeight: "1.5rem",
+        textTransform: "uppercase",
     },
-    dragIcon: {
-        opacity: 0.6,
-        color: theme.palette.primary.main,
+    availableHeader: {
+        padding: 4,
+        fontWeight: 500,
+    },
+    availableCheckbox: {
+        paddingLeft: 4,
+        paddingRight: 4,
+    },
+    listHeaderPadded: {
+        backgroundColor: "#212121",
+        padding: 13,
+        fontWeight: 500,
+        lineHeight: "1.5rem",
+        textTransform: "uppercase",
+    },
+    loading: {
+        minHeight: "50vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 608,
+    },
+    indexText: {
+        paddingRight: 8,
+        fontWeight: 900,
+        opacity: 0.3,
     },
 }));
-
-function not(a, b) {
-    return a.filter((value) => b.indexOf(value) === -1);
-}
-
-function intersection(a, b) {
-    return a.filter((value) => b.indexOf(value) !== -1);
-}
 
 export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubmit, groups, groupIndex }) {
     const [buttons, setButtons] = React.useState(null);
     const [selectedButtons, setSelectedButtons] = React.useState(null);
-
-    const [checked, setChecked] = React.useState([]);
-    const [left, setLeft] = React.useState([0, 1, 2, 3]);
-    const [right, setRight] = React.useState([4, 5, 6, 7]);
-    const leftChecked = intersection(checked, left);
-    const rightChecked = intersection(checked, right);
     const classes = useStyles();
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        }),
+        useSensor(TouchSensor)
+    );
+    const sendAlert = useAlert();
 
     // fetch list of all buttons
     useAsyncEffect(async () => {
@@ -79,187 +120,180 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
     useAsyncEffect(async () => {
         const url =
             groupType === "source"
-                ? `/container/${panelId}/sources/${groupIndex}`
+                ? `/container/${panelId}/sources/-1/${groupIndex}`
                 : `/container/${panelId}/destinations/${groupIndex}`;
-        setSelectedButtons(await AxiosGet(url));
+        const rawSelectedButtons = await AxiosGet(url);
+        const filteredSelectedButtons = [];
+        for (let eachButton of rawSelectedButtons[`${groupType}s`]) {
+            filteredSelectedButtons.push({
+                index: eachButton.index,
+                label: eachButton.label,
+            });
+        }
+        setSelectedButtons(filteredSelectedButtons);
     }, []);
 
-    // copy the labels of the selected buttons into a handy array
-    const selectedLabels = [];
-    if (selectedButtons) {
-        for (let eachButton of selectedButtons[`${groupType}s`]) {
-            selectedLabels.push(eachButton.label);
+    const handleDragEnd = async ({ active, over }) => {
+        if (active.id !== over.id) {
+            const overId = over.id.split(":")[1];
+            const activeId = active.id.split(":")[1];
+
+            const oldIndex = selectedButtons.findIndex((button) => button.index === parseInt(activeId));
+            const newIndex = selectedButtons.findIndex((button) => button.index === parseInt(overId));
+
+            const newButtons = arrayMove(selectedButtons, oldIndex, newIndex);
+
+            setSelectedButtons(newButtons);
         }
-    }
+    };
 
-    // const handleToggle = (value) => () => {
-    //     console.log(value);
-    //     const currentIndex = checked.indexOf(value);
-    //     const newChecked = [...checked];
+    const handleToggle = (event, buttonIndex, buttonLabel) => {
+        const selected = selectedButtons.filter((button) => button.index === buttonIndex).length > 0;
+        if (selected) {
+            // remove from array
+            setSelectedButtons(selectedButtons.filter((button) => button.index !== buttonIndex));
+        } else {
+            // push to end
+            const localButtons = _.clone(selectedButtons);
+            localButtons.push({
+                index: buttonIndex,
+                label: buttonLabel,
+            });
+            setSelectedButtons(localButtons);
+        }
+        // event.stopPropagation();
+    };
 
-    //     if (currentIndex === -1) {
-    //         newChecked.push(value);
-    //     } else {
-    //         newChecked.splice(currentIndex, 1);
-    //     }
+    const removeButton = (buttonIndex) => {
+        setSelectedButtons(selectedButtons.filter((button) => button.index !== buttonIndex));
+    };
 
-    //     setChecked(newChecked);
-    // };
+    const handleSubmit = async () => {
+        const buttonIndexArray = selectedButtons.map((button) => button.index);
+        const postData = {
+            buttons: buttonIndexArray.join(","),
+        };
+        const url = `/container/${panelId}/groups/set/${groupType}/${groupIndex}`;
 
-    // const handleAllRight = (event) => {
-    //     setRight(right.concat(left));
-    //     setLeft([]);
-    //     event.stopPropagation();
-    // };
+        if (await AxiosPost(url, postData)) {
+            onSubmit();
+        } else {
+            sendAlert(`Failed to save group`, { variant: "error" });
+        }
+    };
 
-    // const handleCheckedRight = (event) => {
-    //     setRight(right.concat(leftChecked));
-    //     setLeft(not(left, leftChecked));
-    //     setChecked(not(checked, leftChecked));
-    //     event.stopPropagation();
-    // };
-
-    // const handleCheckedLeft = (event) => {
-    //     setLeft(left.concat(rightChecked));
-    //     setRight(not(right, rightChecked));
-    //     setChecked(not(checked, rightChecked));
-    //     event.stopPropagation();
-    // };
-
-    // const handleAllLeft = (event) => {
-    //     setLeft(left.concat(right));
-    //     setRight([]);
-    //     event.stopPropagation();
-    // };
+    const handleSelectAll = (event) => {
+        if (selectedButtons.length === 0) {
+            // select all
+            const newSelectedButtons = buttons.map((button, index) => {
+                return {
+                    index: index,
+                    label: button,
+                };
+            });
+            setSelectedButtons(newSelectedButtons);
+        } else {
+            // remove all
+            setSelectedButtons([]);
+        }
+    };
 
     const availableButtonsList = () => {
-        console.log("buttons", buttons);
-        if (!buttons) {
-            return null;
-        }
         return (
             <div className={classes.listWrapper}>
-                <List
-                    className={classes.list}
-                    dense
-                    component="div"
-                    role="list"
-                    onClick={(event) => {
-                        event.stopPropagation();
-                    }}
-                >
-                    {buttons.map((button, index) => {
-                        return (
-                            <ListItem
-                                className={classes.listItem}
-                                key={button}
-                                role="listitem"
-                                button
-                                // onClick={handleToggle(value)}
-                            >
-                                <ListItemIcon>
-                                    <Checkbox
-                                        checked={selectedLabels.indexOf(button) !== -1}
-                                        tabIndex={-1}
-                                        disableRipple
-                                        onClick={(event) => {
-                                            // event.stopPropagation();
-                                        }}
-                                    />
-                                </ListItemIcon>
-                                <ListItemText primary={`${index + 1} : ${button}`} />
-                            </ListItem>
-                        );
-                    })}
-                    <ListItem />
-                </List>
+                <div className={classes.listHeader}>
+                    <ListItem role="listitem" button onClick={handleSelectAll} className={classes.availableHeader}>
+                        <ListItemIcon className={classes.availableCheckbox}>
+                            <Checkbox
+                                checked={selectedButtons.length === buttons.length}
+                                indeterminate={selectedButtons.length !== buttons.length && selectedButtons.length > 0}
+                                tabIndex={-1}
+                                disableRipple
+                            />
+                        </ListItemIcon>
+                        Available Buttons
+                    </ListItem>
+                </div>
+                <div className={classes.listScrollContainer}>
+                    <List
+                        className={classes.list}
+                        dense
+                        component="div"
+                        role="list"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                        }}
+                    >
+                        {buttons.map((button, index) => {
+                            return (
+                                <ListItem
+                                    className={classes.listItem}
+                                    key={button}
+                                    role="listitem"
+                                    button
+                                    onClick={(event) => handleToggle(event, index, button)}
+                                >
+                                    <ListItemIcon>
+                                        <Checkbox
+                                            checked={
+                                                selectedButtons.filter((button) => button.index === index).length > 0
+                                            }
+                                            tabIndex={-1}
+                                            disableRipple
+                                        />
+                                    </ListItemIcon>
+                                    <div className={classes.indexText}>{index + 1}</div>
+                                    <ListItemText primary={button} />
+                                </ListItem>
+                            );
+                        })}
+                    </List>
+                </div>
             </div>
         );
     };
 
     const selectedButtonsList = () => {
-        if (!selectedButtons) {
-            return null;
-        }
         return (
             <div className={classes.listWrapper}>
-                <List
-                    className={classes.list}
-                    dense
-                    component="div"
-                    role="list"
-                    onClick={(event) => {
-                        event.stopPropagation();
-                    }}
-                >
-                    {selectedLabels.map((label) => (
-                        <ListItem
-                            className={classes.listItem}
-                            key={label}
-                            role="listitem"
-                            button
-                            // onClick={handleToggle(value)}
-                        >
-                            <ListItemIcon>
-                                <DragIndicatorIcon className={classes.dragIcon} fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary={label} />
-                        </ListItem>
-                    ))}
-                    <ListItem />
-                </List>
+                <div className={classes.listHeaderPadded}>Selected Buttons</div>
+                <div className={classes.listScrollContainer}>
+                    <List
+                        className={classes.list}
+                        dense
+                        component="div"
+                        role="list"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                        }}
+                    >
+                        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                            <SortableContext
+                                items={selectedButtons.map((button) => `button:${button.index}`)}
+                                strategy={verticalListSortingStrategy}
+                            >
+                                {selectedButtons.map((button) => (
+                                    <EditButtonsDragItem button={button} onRemove={removeButton} key={button.index} />
+                                ))}
+                            </SortableContext>
+                        </DndContext>
+                    </List>
+                </div>
             </div>
         );
     };
 
     const content = () => {
+        if (!selectedButtons || !buttons) {
+            return (
+                <div className={classes.loading}>
+                    <CircularProgress />
+                </div>
+            );
+        }
         return (
             <div className={classes.root}>
                 {availableButtonsList()}
-                <div className={classes.controls}>
-                    <Grid container direction="column" alignItems="center">
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            className={classes.button}
-                            // onClick={handleAllRight}
-                            disabled={left.length === 0}
-                            aria-label="move all right"
-                        >
-                            ≫
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            className={classes.button}
-                            // onClick={handleCheckedRight}
-                            disabled={leftChecked.length === 0}
-                            aria-label="move selected right"
-                        >
-                            &gt;
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            className={classes.button}
-                            // onClick={handleCheckedLeft}
-                            disabled={rightChecked.length === 0}
-                            aria-label="move selected left"
-                        >
-                            &lt;
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            className={classes.button}
-                            // onClick={handleAllLeft}
-                            disabled={right.length === 0}
-                            aria-label="move all left"
-                        >
-                            ≪
-                        </Button>
-                    </Grid>
-                </div>
                 {selectedButtonsList()}
             </div>
         );
@@ -283,14 +317,8 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                     <Button onClick={onCancel} color="primary">
                         Cancel
                     </Button>
-                    <Button
-                        type="submit"
-                        onClick={() => onSubmit(right)}
-                        color="primary"
-                        autoFocus
-                        disabled={right.length > 0}
-                    >
-                        Add
+                    <Button type="submit" onClick={handleSubmit} color="primary" autoFocus>
+                        Save
                     </Button>
                 </DialogActions>
             </form>

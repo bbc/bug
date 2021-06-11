@@ -59,6 +59,7 @@ export default function GroupButton({
     groupType,
     editMode = false,
     onChange,
+    onEditButtons,
 }) {
     const sendAlert = useAlert();
     const classes = useStyles();
@@ -120,6 +121,7 @@ export default function GroupButton({
                         groupIndex={index}
                         onRename={() => setRenameDialogVisible(true)}
                         onChange={onChange}
+                        onEditButtons={onEditButtons}
                     />
                 ) : null}
             </div>

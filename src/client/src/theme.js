@@ -26,6 +26,12 @@ const theme = createMuiTheme({
                 color: (props) => (props.disabled ? "#888" : "#ffffff"),
             },
         },
+        MuiListItem: {
+            gutters: {
+                paddingLeft: 8,
+                paddingRight: 8,
+            },
+        },
         MuiListItemText: {
             primary: {
                 fontSize: "0.875rem",
@@ -113,6 +119,11 @@ const theme = createMuiTheme({
                 "& .MuiAlert-icon": {
                     color: "#fff",
                 },
+            },
+        },
+        MuiDialogContent: {
+            root: {
+                padding: 8,
             },
         },
     },
