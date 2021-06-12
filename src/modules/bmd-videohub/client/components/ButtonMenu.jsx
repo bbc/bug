@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import AxiosCommand from "@utils/AxiosCommand";
 import RenameDialog from "./RenameDialog";
 import AddGroupDialog from "./AddGroupDialog";
+import BackspaceIcon from "@material-ui/icons/Backspace";
 
 const useStyles = makeStyles((theme) => ({
     iconButton: {
@@ -92,6 +93,15 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, grou
         onChange();
     };
 
+    const handleClear = async () => {
+        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/-`)) {
+            sendAlert(`Cleared button label for ${buttonType} ${button.index + 1}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to clear label for ${buttonType} ${button.index + 1}`, { variant: "error" });
+        }
+        onChange();
+    };
+
     return (
         <div>
             <IconButton
@@ -115,6 +125,12 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, grou
                         <RemoveCircleIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Remove" />
+                </MenuItem>
+                <MenuItem onClick={handleClear}>
+                    <ListItemIcon>
+                        <BackspaceIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Clear Label" />
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleAddGroupClick}>
