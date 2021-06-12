@@ -57,6 +57,8 @@ const useStyles = makeStyles((theme) => ({
     listItem: {
         borderBottom: "1px solid #282828",
         height: 51,
+        paddingLeft: 8,
+        paddingRight: 8,
     },
     root: {
         display: "grid",
@@ -233,7 +235,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                                     button
                                     onClick={(event) => handleToggle(event, index, button)}
                                 >
-                                    <ListItemIcon>
+                                    <ListItemIcon className={classes.listItemIcon}>
                                         <Checkbox
                                             checked={
                                                 selectedButtons.filter((button) => button.index === index).length > 0

@@ -13,6 +13,8 @@ const useStyles = makeStyles((theme) => ({
         borderBottom: "1px solid #282828",
         height: 51,
         cursor: "move",
+        paddingLeft: 8,
+        paddingRight: 8,
     },
     dragIcon: {
         opacity: 0.6,
