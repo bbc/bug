@@ -49,8 +49,8 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                sh "docker ${imageName}:latest ${repositoryName}/${imageName}:latest"
-                sh "docker ${imageName}:latest ${repositoryName}/${imageName}:${VERSION}"
+                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:latest"
+                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:${VERSION}"
                 sh "docker push ${repositoryName}/${imageName}:latest"       
                 sh "docker push ${repositoryName}/${imageName}:${VERSION}"       
             }
@@ -60,6 +60,7 @@ pipeline {
         always {
             cleanWs()
             sh "docker tag rm bugBuilder"
+            sh "docker rmi ${imageName}:latest"
             sh "docker rmi ${repositoryName}/${imageName}:${VERSION}"
             sh "docker rmi ${repositoryName}/${imageName}:latest"
         }
