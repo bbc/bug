@@ -25,6 +25,10 @@
         "useTake": true,
         "sourceGroups": [],
         "destinationGroups": [],
+        "sourceIconColours": [],
+        "destinationIconColours": [],
+        "sourceIcons": [],
+        "destinationIcons": [],
         "excludeSources": [],
         "excludeDestinations": []
     }

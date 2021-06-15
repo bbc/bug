@@ -16,6 +16,9 @@ module.exports = async (groupIndex = null) => {
         return false;
     }
 
+    const icons = config.destinationIcons ? config.destinationIcons : [];
+    const iconColours = config.destinationIconColours ? config.destinationIconColours : [];
+
     const dataCollection = await mongoCollection("data");
 
     const outputArray = {
@@ -90,6 +93,8 @@ module.exports = async (groupIndex = null) => {
                         isLocked: isLocalLocked || isRemoteLocked,
                         isLocalLocked: isLocalLocked,
                         isRemoteLocked: isRemoteLocked,
+                        icon: icons[intIndex] ? icons[intIndex] : null,
+                        iconColour: iconColours[intIndex] ? iconColours[intIndex] : "#ffffff",
                     });
                 }
             }

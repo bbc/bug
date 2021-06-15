@@ -8,6 +8,7 @@ import RenameDialog from "./RenameDialog";
 import AxiosPost from "@utils/AxiosPost";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import EditButtonsDialog from "./EditButtonsDialog";
 
 import {
     DndContext,
@@ -39,6 +40,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
     const sendAlert = useAlert();
     const history = useHistory();
     const [addDialogType, setAddDialogType] = React.useState(null);
+    const [editButtonsDialogGroupIndex, setEditButtonsDialogGroupIndex] = React.useState(null);
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
@@ -101,6 +103,11 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         }
     };
 
+    const handleEditButtonsSubmitted = () => {
+        setEditButtonsDialogGroupIndex(null);
+        onChange();
+    };
+
     const Content = () => {
         if (editMode) {
             return (
@@ -132,6 +139,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                         panelId={panelId}
                         groupType={groupType}
                         onChange={onChange}
+                        onEditButtons={(groupIndex) => setEditButtonsDialogGroupIndex(groupIndex)}
                     />
                 ))}
                 {editMode && (
@@ -161,6 +169,15 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                     onCancel={() => setAddDialogType(null)}
                     onSubmit={handleAddGroup}
                     buttonText="Add"
+                />
+            )}
+            {editButtonsDialogGroupIndex !== null && (
+                <EditButtonsDialog
+                    onCancel={() => setEditButtonsDialogGroupIndex(null)}
+                    onSubmit={handleEditButtonsSubmitted}
+                    groupIndex={editButtonsDialogGroupIndex}
+                    panelId={panelId}
+                    groupType={groupType}
                 />
             )}
         </>

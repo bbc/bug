@@ -19,8 +19,6 @@ module.exports = async (type, groupIndex, index) => {
     }
 
     // find the group and update it
-    console.log(groupIndex);
-    console.log(config[groupVar][groupIndex]);
 
     const buttons = indexRangeExpand(config[groupVar][groupIndex]["value"]);
     const arrayIndex = buttons.indexOf(parseInt(index));

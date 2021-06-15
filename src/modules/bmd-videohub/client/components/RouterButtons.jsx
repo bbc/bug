@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import RouterButton from "./RouterButton";
 import { useParams } from "react-router-dom";
-import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
+import EditIconDialog from "@core/EditIconDialog";
+import AxiosPost from "@utils/AxiosPost";
 
 import {
     DndContext,
@@ -43,6 +44,7 @@ export default function Router({
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
     const [localButtons, setLocalButtons] = React.useState(null);
+    const [editIconDialogButton, setEditIconDialogButton] = React.useState(null);
 
     useEffect(() => {
         setLocalButtons(buttons.data[`${buttonType}s`]);
@@ -55,6 +57,26 @@ export default function Router({
         }),
         useSensor(TouchSensor)
     );
+
+    const handleEditIcon = (button) => {
+        setEditIconDialogButton(button);
+    };
+
+    const handleEditIconSubmitted = async (icon, colour, button) => {
+        setEditIconDialogButton(null);
+
+        const postData = {
+            colour: colour,
+            icon: icon,
+        };
+        const url = `/container/${panelId}/${buttonType}s/seticon/${button.index}`;
+
+        if (await AxiosPost(url, postData)) {
+            onChange();
+        } else {
+            sendAlert(`Failed to save icon`, { variant: "error" });
+        }
+    };
 
     const handleDragEnd = async (event) => {
         const { active, over } = event;
@@ -94,6 +116,7 @@ export default function Router({
                     selected={buttonType === "source" ? button.selected : selectedDestination === button.index}
                     button={button}
                     onClick={() => onClick(button.index)}
+                    onEditIcon={() => handleEditIcon(button)}
                     onChange={onChange}
                     editMode={editMode}
                     buttonType={buttonType}
@@ -118,13 +141,25 @@ export default function Router({
                         <Buttons />
                     </SortableContext>
                 </DndContext>
+                {editIconDialogButton !== null && (
+                    <EditIconDialog
+                        icon={editIconDialogButton.icon}
+                        color={editIconDialogButton.color}
+                        onCancel={() => setEditIconDialogButton(null)}
+                        onSubmit={(icon, colour) => handleEditIconSubmitted(icon, colour, editIconDialogButton)}
+                        panelId={panelId}
+                        buttonType={buttonType}
+                    />
+                )}
             </div>
         );
     }
 
     return (
-        <div className={classes.buttons}>
-            <Buttons />
-        </div>
+        <>
+            <div className={classes.buttons}>
+                <Buttons />
+            </div>
+        </>
     );
 }

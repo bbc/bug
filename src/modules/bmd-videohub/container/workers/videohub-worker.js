@@ -20,17 +20,14 @@ parentPort.postMessage({
 
 const saveResult = async (newResult) => {
     if (newResult && newResult["title"]) {
-        // console.log(newResult["title"]);
         // fetch previous result
         let existingData = await dataCollection.findOne({ title: newResult["title"] });
-        // console.log("existing", existingData);
         if (!existingData) {
             existingData = {
                 title: newResult["title"],
                 data: {},
             };
         }
-        // console.log("before", JSON.stringify(existingData));
 
         // update values
         for (const [index, value] of Object.entries(newResult["data"])) {

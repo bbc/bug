@@ -2,6 +2,7 @@ import ButtonMenu from "./ButtonMenu";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
+import DynamicIcon from "@core/DynamicIcon";
 
 const useStyles = makeStyles((theme) => ({
     editButton: {
@@ -24,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
             height: 48,
         },
     },
-
+    buttonIcon: {
+        fontSize: "2rem",
+    },
     button: {
         backgroundColor: "#444",
         borderRadius: 5,
@@ -114,11 +117,11 @@ export default function RouterButton({
     panelId,
     buttonType,
     button,
-    icon = null,
     onClick,
     selected,
     editMode = false,
     onChange,
+    onEditIcon,
     groups,
 }) {
     const classes = useStyles();
@@ -142,7 +145,6 @@ export default function RouterButton({
     };
 
     const secondaryText = buttonType === "source" ? "" : button.sourceLabel;
-    // console.log(button);
     return (
         <div
             ref={setNodeRef}
@@ -162,7 +164,15 @@ export default function RouterButton({
             <div className="MuiButton-label">
                 <div className={classes.buttonUpper}>
                     <div className={classes.circle}>
-                        <div className={classes.index}>{indexPlusOne}</div>
+                        {button.icon ? (
+                            <DynamicIcon
+                                color={button.iconColour}
+                                className={classes.buttonIcon}
+                                iconName={button.icon}
+                            />
+                        ) : (
+                            <div className={classes.index}>{indexPlusOne}</div>
+                        )}
                     </div>
                 </div>
                 <div
@@ -185,6 +195,7 @@ export default function RouterButton({
                             button={button}
                             onChange={onChange}
                             groups={groups}
+                            onEditIcon={onEditIcon}
                         />
                     ) : null}
                 </div>

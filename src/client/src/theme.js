@@ -115,6 +115,11 @@ const theme = createMuiTheme({
                 },
             },
         },
+        MuiDialogContent: {
+            root: {
+                padding: 8,
+            },
+        },
     },
     typography: {
         fontFamily: ["ReithSans"],

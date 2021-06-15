@@ -20,6 +20,7 @@ const moduleRouter = require("@routes/module");
 const panelRouter = require("@routes/panel");
 const panelConfigRouter = require("@routes/panelconfig");
 const bugRouter = require("@routes/bug");
+const iconsRouter = require("@routes/icons");
 const proxyRouter = require("@routes/proxy");
 
 const bugApi = express();
@@ -56,6 +57,7 @@ bugApi.use(express.static(path.join(__dirname, "public")));
 bugApi.use("/documentation", documentation);
 bugApi.use("/container", proxyRouter);
 bugApi.use("/api/bug", bugRouter);
+bugApi.use("/api/icons", iconsRouter);
 bugApi.use("/api/system", systemRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);

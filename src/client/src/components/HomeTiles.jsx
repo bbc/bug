@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Loading from "./Loading";
-import DynamicIcon from "@utils/DynamicIcon";
+import DynamicIcon from "@core/DynamicIcon";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
