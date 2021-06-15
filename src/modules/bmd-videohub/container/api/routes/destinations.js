@@ -2,6 +2,7 @@ const express = require("express");
 const videohubGetDestinations = require("@services/videohub-getdestinations");
 const videohubGetAllDestinations = require("@services/videohub-getalldestinations");
 const buttonRemove = require("@services/button-remove");
+const buttonSetIcon = require("@services/button-seticon");
 const route = express.Router();
 
 route.get("/", async function (req, res, next) {
@@ -15,6 +16,21 @@ route.get("/", async function (req, res, next) {
         res.json({
             status: "error",
             message: "Failed to get destinations",
+        });
+    }
+});
+
+route.post("/seticon/:index", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await buttonSetIcon("source", req.params?.index, req.body?.icon, req.body?.colour),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to get sources",
         });
     }
 });

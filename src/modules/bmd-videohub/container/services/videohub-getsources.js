@@ -16,6 +16,9 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
         return false;
     }
 
+    const icons = config.sourceIcons ? config.sourceIcons : [];
+    const iconColours = config.sourceIconColours ? config.sourceIconColours : [];
+
     const dataCollection = await mongoCollection("data");
 
     const outputArray = {
@@ -92,6 +95,8 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
                     indexText: indexText,
                     order: order,
                     isLocked: sourcesLocked,
+                    icon: icons[intIndex] ? icons[intIndex] : null,
+                    iconColour: iconColours[intIndex] ? iconColours[intIndex] : "#ffffff",
                 });
             }
         }

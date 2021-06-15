@@ -9,7 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import DynamicIcon from "@utils/DynamicIcon";
+import DynamicIcon from "@core/DynamicIcon";
 import Loading from "@components/Loading";
 import BugMenuIcon from "@components/BugMenuIcon";
 import BadgeWrapper from "@components/BadgeWrapper";

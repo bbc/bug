@@ -14,11 +14,13 @@ function fixIconNames(string) {
         return "FourK";
     } else if (name === "360") {
         return "ThreeSixty";
+    } else if (name === "AxisXyArrowLock") {
+        return "AxisXYArrowLock";
     }
     return name;
 }
 
-export default function DynamicIcon(props) {
+export default function DynamicIcon({ iconName, color, className }) {
     const isMDI = (name) => {
         if (name.split("-")[0] === "mdi") {
             return true;
@@ -26,29 +28,23 @@ export default function DynamicIcon(props) {
         return false;
     };
 
-    const getIcon = () => {
+    return React.useMemo(() => {
         let Icon;
-        if (isMDI(props.iconName)) {
-            const iconName = fixIconNames(props.iconName.replace("mdi-", ""));
-            Icon = MDIIcons[iconName];
+        if (isMDI(iconName)) {
+            const fixedIconName = fixIconNames(iconName.replace("mdi-", ""));
+            Icon = MDIIcons[fixedIconName];
             if (!Icon) {
-                console.error(`MDI Icon ${iconName} not found`);
+                console.error(`MDI Icon ${fixedIconName} not found`);
                 return null;
             }
         } else {
-            const iconName = fixIconNames(props.iconName);
-            Icon = Icons[iconName];
+            const fixedIconName = fixIconNames(iconName);
+            Icon = Icons[fixedIconName];
             if (!Icon) {
-                console.error(`Icon ${iconName} not found`);
+                console.error(`Icon ${fixedIconName} not found`);
                 return null;
             }
         }
-        if (props.color) {
-            return <Icon className={props.className} style={{ color: `rgba(${props.color})` }} />;
-        } else {
-            return <Icon className={props.className} />;
-        }
-    };
-
-    return <>{getIcon()}</>;
+        return <Icon className={className} style={color ? { color: color } : {}} />;
+    }, [color, iconName, className]);
 }

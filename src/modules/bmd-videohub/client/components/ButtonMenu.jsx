@@ -17,6 +17,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import RenameDialog from "./RenameDialog";
 import AddGroupDialog from "./AddGroupDialog";
 import BackspaceIcon from "@material-ui/icons/Backspace";
+import FilterTiltShiftIcon from "@material-ui/icons/FilterTiltShift";
 
 const useStyles = makeStyles((theme) => ({
     iconButton: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ButtonMenu({ buttonType, button, panelId, onChange, groups }) {
+export default function ButtonMenu({ buttonType, button, panelId, onChange, onEditIcon, groups }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -102,6 +103,12 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, grou
         onChange();
     };
 
+    const handleEditIcon = (event) => {
+        handleClose(event);
+        onEditIcon();
+        event.stopPropagation();
+    };
+
     return (
         <div>
             <IconButton
@@ -131,6 +138,12 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, grou
                         <BackspaceIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Clear Label" />
+                </MenuItem>
+                <MenuItem onClick={handleEditIcon}>
+                    <ListItemIcon>
+                        <FilterTiltShiftIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Edit Icon" />
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleAddGroupClick}>

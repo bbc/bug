@@ -38,7 +38,6 @@ export default function EditButtonsDragItem({ button, onRemove }) {
 
     let transformString = null;
 
-    // console.log(transform);
     if (transform?.y) {
         transformString = `translateY(${Math.round(transform?.y)}px)`;
     }
