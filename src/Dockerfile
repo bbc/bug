@@ -2,7 +2,7 @@ FROM node:14
 
 WORKDIR /home/node/bug-core
 COPY . .
-RUN npm install
+RUN npm install -D
 
 WORKDIR /home/node/bug-core/client
 RUN npm install

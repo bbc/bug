@@ -34,7 +34,7 @@ pipeline {
                 }
             }
         }
-        stage('Build & Publish') {
+        stage('Build') {
             steps {
                 dir('src') {
                     script {
@@ -43,9 +43,16 @@ pipeline {
                         echo VERSION
                     }
                     sh "docker buildx create --use --name bugBuilder --platform linux/amd64,linux/arm/v7"
-                    sh "docker buildx build --builder bugBuilder --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${repositoryName}/${imageName}:latest --push ."
-                    sh "docker buildx build --builder bugBuilder --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${repositoryName}/${imageName}:${VERSION} --push ."
+                    sh "docker buildx build --builder bugBuilder --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest --output type=image ."
                 }
+            }
+        }
+        stage('Publish') {
+            steps {
+                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:latest"
+                sh "docker tag ${imageName}:latest ${repositoryName}/${imageName}:${VERSION}"
+                sh "docker push ${repositoryName}/${imageName}:latest"       
+                sh "docker push ${repositoryName}/${imageName}:${VERSION}"       
             }
         }
     }
@@ -53,6 +60,7 @@ pipeline {
         always {
             cleanWs()
             sh "docker buildx rm bugBuilder"
+            sh "docker rmi ${imageName}:latest"
             sh "docker rmi ${repositoryName}/${imageName}:${VERSION}"
             sh "docker rmi ${repositoryName}/${imageName}:latest"
         }
