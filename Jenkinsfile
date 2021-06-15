@@ -59,7 +59,7 @@ pipeline {
     post {
         always {
             cleanWs()
-            sh "docker rm bugBuilder"
+            sh "docker buildx rm bugBuilder"
             sh "docker rmi ${imageName}:latest"
             sh "docker rmi ${repositoryName}/${imageName}:${VERSION}"
             sh "docker rmi ${repositoryName}/${imageName}:latest"
