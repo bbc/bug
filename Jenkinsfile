@@ -47,7 +47,7 @@ pipeline {
                 }
             }
         }
-        tag('Publish') {
+        stage('Publish') {
             steps {
                 sh "docker ${imageName}:latest ${repositoryName}/${imageName}:latest"
                 sh "docker ${imageName}:latest ${repositoryName}/${imageName}:${VERSION}"
