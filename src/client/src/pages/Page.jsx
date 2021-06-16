@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     pagecontent: {
-        // height: "100%",
+        height: "100%",
+        overflow: "scroll",
         padding: theme.spacing(3),
         "@media (max-width:1200px)": {
             padding: theme.spacing(2),
