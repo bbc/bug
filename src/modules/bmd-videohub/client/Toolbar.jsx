@@ -8,12 +8,19 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import DoneIcon from "@material-ui/icons/Done";
+import { usePanelStatus } from "@core/PanelStatusHook";
 
 export default function Toolbar(props) {
     const toolbarProps = { ...props };
     const location = useLocation();
+    const panelStatus = usePanelStatus();
+
+    if (!panelStatus) {
+        return null;
+    }
 
     const editMode = location.pathname.indexOf("/edit") > -1;
+
     const buttons = () => (
         <>
             {editMode ? (
@@ -42,7 +49,7 @@ export default function Toolbar(props) {
 
     const menuItems = () => null;
 
-    toolbarProps["buttons"] = buttons();
+    toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
     return <ToolbarWrapper {...toolbarProps} isClosed={false} />;
