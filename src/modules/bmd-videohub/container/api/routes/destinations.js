@@ -24,7 +24,7 @@ route.post("/seticon/:index", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await buttonSetIcon("source", req.params?.index, req.body?.icon, req.body?.colour),
+            data: await buttonSetIcon("destination", req.params?.index, req.body?.icon, req.body?.colour),
         });
     } catch (error) {
         console.log(error);
