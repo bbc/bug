@@ -43,7 +43,7 @@ pipeline {
                         echo VERSION
                     }
                     sh "docker buildx create --use --name bugBuilder --platform linux/amd64,linux/arm/v7"
-                    sh "docker buildx build --builder bugBuilder --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest --output type=image ."
+                    sh "docker buildx build --builder bugBuilder --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest --output type=docker ."
                 }
             }
         }
@@ -65,13 +65,13 @@ pipeline {
             sh "docker rmi ${repositoryName}/${imageName}:latest"
         }
         success {
-            slackSend(color: "#30fc03", channel: "#ci-bug", message: "*Success:* Built, tested and deployed '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+            slackSend(color: "#30fc03", channel: "#ci-bug", message: "*#${env.BUILD_NUMBER} Success:* Built, tested and deployed '${env.JOB_NAME}' ${env.VERSION} (${env.BUILD_URL})")
         }
         failure {
-            slackSend(color: "#ff6347", channel: "#ci-bug", message: "*Failed:* An error occurred '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+            slackSend(color: "#ff6347", channel: "#ci-bug", message: "*#${env.BUILD_NUMBER} Failed:* An error occurred '${env.JOB_NAME}' ${env.VERSION} (${env.BUILD_URL})")
         }
         unstable {
-            slackSend(color: "#ffbf00", channel: "#ci-bug", message: "*Unstable:* something went wrong '${env.JOB_NAME}' #${env.BUILD_NUMBER} (${env.BUILD_URL})")
+            slackSend(color: "#ffbf00", channel: "#ci-bug", message: "*#${env.BUILD_NUMBER} Unstable:* something went wrong '${env.JOB_NAME}' ${env.VERSION} (${env.BUILD_URL})")
         }
     }
 }

@@ -24,7 +24,8 @@ export default function PagePanel(props) {
             return <Redirect push to={{ pathname: "/" }} />;
         }
         if (Modules["modules"][panelConfig.data.module]) {
-            const Module = Modules["modules"][panelConfig.data.module]["client"]["Module"];
+            const Module =
+                Modules["modules"][panelConfig.data.module]["client"]["Module"];
             return <Module panelId={panelId} />;
         }
         return null;
