@@ -6,7 +6,7 @@ import DynamicIcon from "@core/DynamicIcon";
 
 const useStyles = makeStyles((theme) => ({
     editButton: {
-        borderRadius: 5,
+        borderRadius: 3,
         margin: 4,
         width: 128,
         height: 128,
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         backgroundColor: "#444",
-        borderRadius: 5,
+        borderRadius: 3,
         margin: 4,
         "&:hover": {
             backgroundColor: "#0069d9",

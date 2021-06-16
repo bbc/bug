@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     listWrapper: {
         backgroundColor: "#303030",
-        borderRadius: 5,
+        borderRadius: 3,
         margin: "0.5rem",
     },
     listScrollContainer: {

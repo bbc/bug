@@ -4,7 +4,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme) => ({
     button: {
-        borderRadius: 5,
+        borderRadius: 3,
         margin: 4,
         width: 128,
         height: 48,

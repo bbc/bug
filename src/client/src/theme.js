@@ -81,7 +81,7 @@ const theme = createMuiTheme({
         },
         MuiChip: {
             root: {
-                borderRadius: 5,
+                borderRadius: 3,
                 fontSize: "inherit",
             },
         },
