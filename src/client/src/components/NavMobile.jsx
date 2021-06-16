@@ -18,7 +18,10 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
     },
     drawer: {
-        whiteSpace: "nowrap",
+        "& .MuiDrawer-paper": {
+            maxWidth: "90%",
+            minWidth: "280px",
+        },
     },
     content: {
         position: "relative",
@@ -37,7 +40,7 @@ const NavMobile = (props) => {
     return (
         <div className={classes.root}>
             <AppBar position="fixed" className={classes.appBar} elevation={1}>
-                <MuiToolbar>
+                <MuiToolbar style={{ paddingRight: 0 }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -50,7 +53,7 @@ const NavMobile = (props) => {
                     <Toolbar></Toolbar>
                 </MuiToolbar>
             </AppBar>
-            <Drawer transitionDuration={100} open={open} onClose={handleDrawerToggle}>
+            <Drawer className={classes.drawer} transitionDuration={100} open={open} onClose={handleDrawerToggle}>
                 <div onClick={handleDrawerToggle}>
                     <Menu />
                 </div>

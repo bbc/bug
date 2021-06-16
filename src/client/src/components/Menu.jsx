@@ -36,19 +36,16 @@ const useStyles = makeStyles((theme) => ({
         "&.MuiAccordion-root:before": {
             height: 0,
         },
-        // boxShadow: "none",
         "&.Mui-expanded": {
             margin: 0,
         },
     },
     groupHeader: {
-        // borderTop: "1px solid rgba(255, 255, 255, 0.12)",
         fontSize: "0.875rem",
         fontWeight: 500,
         textTransform: "uppercase",
         height: 48,
         "&.Mui-expanded": {
-            // borderTop: "1px solid rgba(255, 255, 255, 0.12)",
             minHeight: 48,
             height: 48,
         },
