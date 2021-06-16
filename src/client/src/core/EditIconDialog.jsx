@@ -76,6 +76,9 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: "#3a3a3a !important",
         },
     },
+    dialogContent: {
+        padding: 4,
+    },
 }));
 
 const defaultCount = 500;
@@ -277,7 +280,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                 }}
             >
                 <DialogTitle id="alert-dialog-title">Select an Icon</DialogTitle>
-                <DialogContent>
+                <DialogContent className={classes.dialogContent}>
                     <div className={classes.content}>
                         {controls()}
                         {iconContainer()}
