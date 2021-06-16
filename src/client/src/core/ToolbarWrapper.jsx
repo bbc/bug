@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
@@ -25,9 +24,7 @@ import PanelDeleteDialog from "@components/PanelDeleteDialog";
 import ReplayIcon from "@material-ui/icons/Replay";
 
 const useStyles = makeStyles((theme) => ({
-    dropdownMenu: {
-        marginLeft: "-0.5rem",
-    },
+    dropdownMenu: {},
     notificationButton: {
         "& .MuiButton-startIcon": {
             margin: 0,
@@ -117,33 +114,24 @@ export default function PanelToolbar(props) {
                             >
                                 <PanelStatus statusItems={panel.data._status} />
                             </Popover>
-                            <Button
+
+                            <IconButton
                                 className={classes.notificationButton}
                                 color="default"
                                 onClick={handleStatusClick}
-                                startIcon={
-                                    <BadgeWrapper
-                                        panel={panel.data}
-                                        position={{
-                                            vertical: "top",
-                                            horizontal: "left",
-                                        }}
-                                    >
-                                        <NotificationsIcon />
-                                    </BadgeWrapper>
-                                }
-                            ></Button>
+                            >
+                                <BadgeWrapper
+                                    panel={panel.data}
+                                    position={{
+                                        vertical: "top",
+                                        horizontal: "left",
+                                    }}
+                                >
+                                    <NotificationsIcon />
+                                </BadgeWrapper>
+                            </IconButton>
                         </>
                     )}
-                    {/* <Button
-                        component={Link}
-                        to={`/panel/${panel.data.id}/config`}
-                        variant="outlined"
-                        color="default"
-                        startIcon={<SettingsIcon />}
-                    >
-                        Config
-                    </Button> */}
                     {props.buttons}
                 </Hidden>
                 <IconButton
