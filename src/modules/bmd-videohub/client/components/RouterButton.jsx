@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     },
     buttonIcon: {
         fontSize: "2rem",
+        "@media (max-width:800px)": {
+            fontSize: 20,
+        },
     },
     button: {
         backgroundColor: "#444",
@@ -44,14 +47,25 @@ const useStyles = makeStyles((theme) => ({
             flexDirection: "column",
             height: "100%",
         },
+        "@media (max-width:800px)": {
+            height: 80,
+            width: 92,
+        },
         "@media (max-width:600px)": {
             height: 48,
+            width: 92,
         },
     },
     buttonSelected: {
         backgroundColor: "#337ab7",
         "&:hover": {
             backgroundColor: "#0069d9",
+        },
+    },
+    buttonLabel: {
+        width: "100%",
+        "@media (max-width:600px)": {
+            padding: 4,
         },
     },
     buttonUpper: {
@@ -68,8 +82,13 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "0.7rem",
         opacity: 0.6,
         textOverflow: "ellipsis",
+        width: "100%",
         overflow: "hidden",
         whiteSpace: "nowrap",
+        textAlign: "center",
+        "@media (max-width:800px)": {
+            fontSize: 10,
+        },
     },
     buttonLower: {
         width: "100%",
@@ -81,8 +100,14 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
+        padding: "0 8px",
+        "@media (max-width:800px)": {
+            height: "50%",
+            padding: "0 4px",
+        },
         "@media (max-width:600px)": {
             backgroundColor: "inherit",
+            height: "100%",
         },
     },
     buttonLowerEdit: {
@@ -97,16 +122,28 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        "@media (max-width:800px)": {
+            height: 36,
+            width: 36,
+        },
     },
     index: {
         color: "#303030",
         fontSize: 28,
         fontWeight: 300,
+        "@media (max-width:800px)": {
+            fontSize: 20,
+        },
     },
     primaryText: {
         textOverflow: "ellipsis",
         overflow: "hidden",
         whiteSpace: "nowrap",
+        width: "100%",
+        textAlign: "center",
+        "@media (max-width:800px)": {
+            fontSize: 12,
+        },
     },
     primaryTextEdit: {
         paddingLeft: 10,
@@ -161,7 +198,7 @@ export default function RouterButton({
             variant="outlined"
             onClick={onClick}
         >
-            <div className="MuiButton-label">
+            <div className={clsx("MuiButton-label", classes.buttonLabel)}>
                 <div className={classes.buttonUpper}>
                     <div className={classes.circle}>
                         {button.icon ? (

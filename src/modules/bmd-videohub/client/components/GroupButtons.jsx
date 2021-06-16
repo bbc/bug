@@ -29,8 +29,13 @@ import {
 const useStyles = makeStyles((theme) => ({
     groupButtons: {
         padding: 8,
+        "@media (max-height:400px)": {
+            padding: "0px 2px",
+        },
         "@media (max-width:600px)": {
             padding: "0px 2px",
+            whiteSpace: "nowrap",
+            overflow: "scroll",
         },
     },
 }));
@@ -116,16 +121,16 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                         items={localButtons.map((group) => group.label)}
                         strategy={horizontalListSortingStrategy}
                     >
-                        <GroupButtons />
+                        {renderGroupButtons()}
                     </SortableContext>
                 </DndContext>
             );
         }
 
-        return <GroupButtons />;
+        return renderGroupButtons();
     };
 
-    const GroupButtons = () => {
+    const renderGroupButtons = () => {
         return (
             <div className={classes.groupButtons}>
                 {localButtons.map((group) => (

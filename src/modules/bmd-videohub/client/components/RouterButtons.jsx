@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
         padding: "0px 8px",
         marginBottom: 8,
         overflow: "auto",
+        "@media (max-height:400px)": {
+            padding: "0px 2px",
+            overflow: "visible",
+        },
         "@media (max-width:600px)": {
             padding: "0px 2px",
         },
@@ -107,7 +111,7 @@ export default function Router({
         }
     };
 
-    const Buttons = () => (
+    const renderButtons = () => (
         <>
             {localButtons.map((button) => (
                 <RouterButton
@@ -138,7 +142,7 @@ export default function Router({
                         items={localButtons.map((button) => `${buttonType}:${button.index}`)}
                         strategy={rectSortingStrategy}
                     >
-                        <Buttons />
+                        {renderButtons()}
                     </SortableContext>
                 </DndContext>
                 {editIconDialogButton !== null && (
@@ -157,9 +161,7 @@ export default function Router({
 
     return (
         <>
-            <div className={classes.buttons}>
-                <Buttons />
-            </div>
+            <div className={classes.buttons}>{renderButtons()}</div>
         </>
     );
 }

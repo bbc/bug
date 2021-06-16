@@ -17,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
         },
         width: 128,
         height: 48,
+        "@media (max-width:800px)": {
+            height: 36,
+            width: 92,
+        },
     },
     buttonSelected: {
         backgroundColor: "#33b77a",
@@ -43,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
         textOverflow: "ellipsis",
         overflow: "hidden",
         whiteSpace: "nowrap",
+        "@media (max-width:800px)": {
+            fontSize: 12,
+        },
     },
     primaryTextEdit: {
         paddingLeft: 10,

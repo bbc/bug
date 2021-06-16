@@ -21,12 +21,20 @@ const useStyles = makeStyles((theme) => ({
         textTransform: "uppercase",
         padding: 15,
         backgroundColor: "#212121",
+        "@media (max-width:800px)": {
+            fontSize: 12,
+            backgroundColor: "inherit",
+            padding: "6px 6px 2px 6px",
+        },
     },
     panel: {
         backgroundColor: "#262626",
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        "@media (max-height:400px)": {
+            overflow: "auto",
+        },
     },
     sourcePanel: {
         position: "absolute",
