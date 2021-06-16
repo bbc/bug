@@ -2,87 +2,49 @@
 
 module.exports = parser;
 
-var currentBlock = "";
-
-/**
- *  Basically, we need to determine if we have a full block
- *  a full block starts with a line with only full caps letters
- *  a full block is a block that terminates with two new line characters
- */
-
 function parser(str) {
-    if (!str) return {};
+    let returnBlocks = [];
 
-    var obj = {};
+    // split into lines
+    const strLines = str.split("\n");
 
-    var hasBeginning = str.match(/[A-Z]+:\n/g);
-    var hasStartBeginning = str.match(/^[A-Z][A-Z].|\ [A-Z]:\n/g);
-    var hasTerminator = str.match(/\n\n/g);
-    var hasEndingTerminator = str.match(/\n\n$/g);
-
-    if (hasBeginning && hasStartBeginning && hasTerminator && hasEndingTerminator) {
-        currentBlock = "";
-        return selfContained(str);
-    }
-
-    // we are done with the current block header
-    if (hasTerminator && hasEndingTerminator) {
-        currentBlock += str;
-        obj = selfContained(currentBlock);
-        currentBlock = "";
-        return obj;
-    }
-
-    currentBlock += str;
-
-    return;
-}
-
-/**
- *  Handle a self contained block
- */
-
-function selfContained(str) {
-    var arr = str.split(/\n/g).filter(function (key) {
-        return !!key;
-    });
-
-    var title = normalizeTitle(arr.shift());
-    var data = {};
-    var array = false;
-
-    var isDictionary = arr.every(function (val) {
-        return ~val.indexOf(":");
-    });
-
-    arr = arr.map(function (key) {
-        if (!key) return;
-
-        var temp;
-        var obj = {};
-
-        if (isDictionary) {
-            temp = key.split(":").map(function (val) {
-                return val.trim();
-            });
-
-            obj[temp[0]] = temp[1];
+    let blockTitle = null;
+    let blockData = {};
+    let previousLine = null;
+    for (let eachLine of strLines) {
+        if ((previousLine === null || previousLine.trim() === "") && blockTitle === null && eachLine.endsWith(":")) {
+            blockTitle = normalizeTitle(eachLine);
+        } else if (eachLine.trim() === "") {
+            if (blockTitle) {
+                // if it's empty then it's end of block
+                returnBlocks.push({
+                    title: blockTitle,
+                    data: blockData,
+                });
+                // reset in case there's more ...
+                blockTitle = null;
+                blockData = {};
+            }
         } else {
-            array = true;
-            temp = key.match(/(^\d+)\ (.+)/);
-            obj[temp[1]] = temp[2];
+            // probably content
+            // split by spaces, and see if the first value is numerical
+            const eachLineSpaceArray = eachLine.split(" ");
+            if (!isNaN(eachLineSpaceArray[0])) {
+                // it's a number/value type
+                blockData[parseInt(eachLineSpaceArray[0])] = eachLineSpaceArray[1];
+            } else {
+                const eachLineColonArray = eachLine.split(":");
+                if (eachLineColonArray.length === 2) {
+                    const lowerName = eachLineColonArray[0].toLowerCase().replace(/\ /g, "_").trim();
+                    blockData[lowerName] = eachLineColonArray[1].trim();
+                } else {
+                    blockData = eachLine;
+                }
+            }
         }
-
-        for (var key in obj) {
-            data[key] = obj[key];
-        }
-    });
-
-    return {
-        title: title,
-        data: data,
-        array: array,
-    };
+        previousLine = eachLine;
+    }
+    return returnBlocks;
 }
 
 function normalizeTitle(title) {

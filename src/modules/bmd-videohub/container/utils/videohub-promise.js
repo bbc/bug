@@ -38,7 +38,7 @@ Router.prototype.connect = function () {
         });
 
         instance.socket.on("error", function (error) {
-            reject(new Error(e));
+            reject(new Error(error));
         });
     });
 };
@@ -54,7 +54,6 @@ Router.prototype.send = function (field, command) {
             } else {
                 message += `\n`;
             }
-            console.log(message);
             instance.socket.write(message, () => {
                 setTimeout(() => {
                     resolve();
