@@ -1,8 +1,3 @@
-//NAME: documentation.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 13/04/2021
-//DESC: BUG API Docs service defined here
-
 const express = require("express");
 const documentation = express.Router();
 
@@ -29,9 +24,9 @@ const swagerOptions = {
                 url: "https://spdx.org/licenses/MIT.html",
             },
             contact: {
-                name: "Ryan McCartney",
+                name: "Bug Developers",
                 url: "https://bbc.co.uk",
-                email: "ryan.mccartney@bbc.co.uk",
+                email: "bug.developers@bbc.co.uk",
             },
         },
         servers: [
