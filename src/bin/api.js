@@ -67,11 +67,11 @@ bugApi.use("/api/panelconfig", panelConfigRouter);
 bugApi.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 // catch 404 and forward to error handler
-// bugApi.use(function (req, res, next) {
-//     const err = new Error('File Not Found');
-//     err.status = 404;
-//     next(err);
-// });
+bugApi.use(function (req, res, next) {
+    const err = new Error("File Not Found");
+    err.status = 404;
+    next(err);
+});
 
 // error handler
 bugApi.use(function (error, req, res, next) {
