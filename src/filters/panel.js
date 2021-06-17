@@ -1,12 +1,6 @@
 "use strict";
 
-module.exports = (
-    panelConfig,
-    moduleConfig,
-    containerInfo,
-    panelBuildStatus,
-    thisStatus
-) => {
+module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, thisStatus) => {
     // we don't need the defaultconfig bit in the panelModule - we we'll just remove it - every byte counts!
     delete moduleConfig.defaultconfig;
 
@@ -21,13 +15,8 @@ module.exports = (
         delete eachStatusItem.timestamp;
     }
 
-    let isRunning =
-        (containerInfo && containerInfo.state === "running") ?? false;
-    let isBuilding =
-        (!isRunning &&
-            panelBuildStatus !== null &&
-            panelBuildStatus.progress > -1) ??
-        false;
+    let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
+    let isBuilding = (!isRunning && panelBuildStatus !== null && panelBuildStatus.progress > -1) ?? false;
     let isBuilt = panelBuildStatus !== null ?? false;
 
     let status = "idle";
