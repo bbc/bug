@@ -14,10 +14,14 @@ module.exports = async () => {
         const filename = path.join(__dirname, "..", "config", "panel.json");
         return await readJson(filename);
     } catch (error) {
-        if(error.code === 'ENOENT' ){
+        if (error.code === "ENOENT") {
             return null;
         }
-        console.log(`config-get: ${error.stack || error.trace || error || error.message}`);
+        console.log(
+            `config-get: ${
+                error.stack || error.trace || error || error.message
+            }`
+        );
     }
     return null;
 };

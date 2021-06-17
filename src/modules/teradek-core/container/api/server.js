@@ -18,7 +18,7 @@ const serve = async () => {
         await mongoDb.connect(myPanelId);
 
         app.listen(port, () => {
-            console.log("tsl-mdu listening on " + port.toString());
+            console.log(`${myPanelId}: teradek-core listening on ${port}`);
         });
     } catch (error) {
         throw error;
