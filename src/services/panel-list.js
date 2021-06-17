@@ -27,25 +27,13 @@ module.exports = async () => {
 
         const filteredPanelList = [];
         for (const i in panelConfig) {
-            const thisModuleConfig =
-                moduleConfig.find((o) => o.name === panelConfig[i]["module"]) ??
-                null;
+            const thisModuleConfig = moduleConfig.find((o) => o.name === panelConfig[i]["module"]) ?? null;
             if (thisModuleConfig) {
-                const thisStatus =
-                    panelStatus.find(
-                        (o) => o.panelId === panelConfig[i]["id"]
-                    ) ?? null;
-                const thisContainerInfo =
-                    containerInfoList.find(
-                        (o) => o.name === panelConfig[i]["id"]
-                    ) ?? null;
-                const thisBuild =
-                    panelBuildStatus.find(
-                        (o) => o.panelid === panelConfig[i]["id"]
-                    ) ?? null;
+                const thisStatus = panelStatus.find((o) => o.panelId === panelConfig[i]["id"]) ?? null;
+                const thisContainerInfo = containerInfoList.find((o) => o.name === panelConfig[i]["id"]) ?? null;
+                const thisBuild = panelBuildStatus.find((o) => o.panelid === panelConfig[i]["id"]) ?? null;
                 // the build list returns a nested 'status' object, direct from the database - we need to pull it out
-                const thisBuildStatus =
-                    thisBuild === null ? null : thisBuild["status"];
+                const thisBuildStatus = thisBuild === null ? null : thisBuild["status"];
 
                 // remove unneeded fields from moduleConfig
                 delete thisModuleConfig.devmounts;
@@ -54,13 +42,7 @@ module.exports = async () => {
 
                 // combine them
                 filteredPanelList.push(
-                    panelFilter(
-                        panelConfig[i],
-                        thisModuleConfig,
-                        thisContainerInfo,
-                        thisBuildStatus,
-                        thisStatus
-                    )
+                    panelFilter(panelConfig[i], thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus)
                 );
             }
         }
@@ -73,9 +55,7 @@ module.exports = async () => {
 
         return filteredPanelList;
     } catch (error) {
-        logger.warning(
-            `${error.stack || error.trace || error || error.message}`
-        );
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to get panel list`);
     }
 };
