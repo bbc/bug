@@ -7,44 +7,52 @@ const path = require("path");
 const logger = require("@utils/logger")(module);
 const readJson = require("@core/read-json");
 const modulesFolder = "modules";
+const cacheStore = require("@core/cache-store");
 
 exports.list = async function () {
-    //TODO cache for life of application
+    const cacheKey = "moduleConfig";
 
-    try {
-        var files = await fs.readdir(modulesFolder);
-    } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
-    }
-
-    var moduleArray = [];
-    for (var i in files) {
+    // check the cache first
+    let moduleArray = cacheStore.get(cacheKey);
+    if (!moduleArray) {
+        let files;
         try {
-            let filename = path.join(modulesFolder, files[i], "module.json");
-            var packageFile = await readJson(filename);
-            if (!packageFile) {
-                logger.warning(`file '${filename}' not found`);
-                return null;
-            }
-            moduleArray.push(packageFile);
+            files = await fs.readdir(modulesFolder);
         } catch (error) {
             logger.warning(`${error.trace || error || error.message}`);
         }
+
+        moduleArray = [];
+        for (var i in files) {
+            try {
+                let filename = path.join(modulesFolder, files[i], "module.json");
+                let packageFile = await readJson(filename);
+                if (!packageFile) {
+                    logger.warning(`file '${filename}' not found`);
+                    return null;
+                }
+                moduleArray.push(packageFile);
+            } catch (error) {
+                logger.warning(`${error.stack || error.trace || error || error.message}`);
+            }
+        }
+
+        // cache the result
+        cacheStore.set(cacheKey, moduleArray);
     }
     return moduleArray;
 };
 
 exports.get = async function (moduleName) {
-    //TODO - just get the file!
     try {
-        var moduleList = await exports.list();
-        for (var i in moduleList) {
+        let moduleList = await exports.list();
+        for (let i in moduleList) {
             if (moduleList[i]["name"] === moduleName) {
                 return moduleList[i];
             }
         }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
     }
 
     return null;
