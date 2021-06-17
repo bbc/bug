@@ -12,7 +12,7 @@ const options = {
     customCssUrl: "/css/documentation.css",
 };
 
-const swagerOptions = {
+const swaggerOptions = {
     definition: {
         openapi: "3.0.0",
         info: {
@@ -38,7 +38,7 @@ const swagerOptions = {
     apis: ["./routes/*.js", "./modules/*.js"],
 };
 
-const swaggerDocs = swaggerJSDoc(swagerOptions);
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
 documentation.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs, options));
 
 module.exports = documentation;
