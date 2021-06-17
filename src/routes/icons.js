@@ -8,10 +8,10 @@ const iconsSettings = require("@services/icons-settings");
 
 /**
  * @swagger
- * /icons/{iconName}:
+ * /icons/variants/{iconName}:
  *   get:
  *     description: Returns a list of available variants for the icons
- *     tags: [module]
+ *     tags: [icon]
  *     produces:
  *       - application/json
  *     responses:
@@ -39,7 +39,7 @@ router.get(
  * /icons/{iconName}:
  *   get:
  *     description: Returns a list of available icons matching the supplied icon name
- *     tags: [module]
+ *     tags: [icon]
  *     produces:
  *       - application/json
  *     parameters:
@@ -69,13 +69,12 @@ router.get(
     })
 );
 
-//TODO - no idea how to do this documentation for a POST
 /**
  * @swagger
  * /icons/{iconName}:
  *   post:
  *     description: Returns a list of available icons matching the supplied icon name and variant
- *     tags: [module]
+ *     tags: [icon]
  *     produces:
  *       - application/json
  *     parameters:
@@ -85,6 +84,15 @@ router.get(
  *           type: string
  *         required: true
  *         description: The icon name
+ *       - in: formData
+ *         name: length
+ *         type: integar
+ *         description: length of something
+ *         required: true
+ *       - in: formData
+ *         name: variant
+ *         type: string
+ *         description: Icon variant options include mdi, fa and mui.
  *     responses:
  *       200:
  *         description: Successfully retrieved the icon list
@@ -100,7 +108,11 @@ router.post(
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
-            data: await iconsGet(req.params.iconName, req.body.variant, req.body.length),
+            data: await iconsGet(
+                req.params.iconName,
+                req.body.variant,
+                req.body.length
+            ),
         });
     })
 );
