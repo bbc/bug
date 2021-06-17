@@ -2,10 +2,10 @@
 
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
-const panelConfigPush = require("@services/panel-configpush");
-const panelConfigSet = require("@services/panel-configset");
-const panelConfigList = require("@services/panel-configlist");
-const panelConfigGet = require("@services/panel-configget");
+const panelConfigPush = require("@services/panelconfig-push");
+const panelConfigSet = require("@services/panelconfig-set");
+const panelConfigList = require("@services/panelconfig-list");
+const panelConfigGet = require("@services/panelconfig-get");
 const hashResponse = require("@core/hash-response");
 
 // const authUser = require('@middleware/auth-user');

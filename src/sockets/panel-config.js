@@ -1,4 +1,4 @@
-const getPanelConfig = require("@services/panel-configget");
+const getPanelConfig = require("@services/panelconfig-get");
 const logger = require("@utils/logger")(module);
 
 let panelConfigs = {};
