@@ -11,6 +11,9 @@ const MongoDb = require("@core/mongo-db");
 
 module.exports = async (collectionName, createOptions = null) => {
     try {
+        if (!MongoDb.db) {
+            return null;
+        }
         if (!createOptions) {
             // we can just try to return it. If it doesn't exist, it'll be created
             return await MongoDb.db.collection(collectionName);

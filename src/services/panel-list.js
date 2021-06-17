@@ -21,19 +21,30 @@ module.exports = async () => {
 
         const panelConfig = await panelConfigModel.list();
         const moduleConfig = await moduleConfigModel.list();
+
         const containerInfoList = await dockerContainerModel.list();
         const panelBuildStatus = await panelBuildStatusModel.list();
+
         const panelStatus = await panelStatusModel.list({ noTimestamps: true });
 
         const filteredPanelList = [];
-        for (const i in panelConfig) {
-            const thisModuleConfig = moduleConfig.find((o) => o.name === panelConfig[i]["module"]) ?? null;
+        for (const eachPanelConfig of panelConfig) {
+            const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
             if (thisModuleConfig) {
-                const thisStatus = panelStatus.find((o) => o.panelId === panelConfig[i]["id"]) ?? null;
-                const thisContainerInfo = containerInfoList.find((o) => o.name === panelConfig[i]["id"]) ?? null;
-                const thisBuild = panelBuildStatus.find((o) => o.panelid === panelConfig[i]["id"]) ?? null;
+                const thisStatus = panelStatus ? panelStatus.find((o) => o.panelId === eachPanelConfig["id"]) : null;
+                const thisContainerInfo =
+                    containerInfoList !== null ? containerInfoList.find((o) => o.name === eachPanelConfig["id"]) : null;
+
+                const thisBuild =
+                    panelBuildStatus !== null
+                        ? panelBuildStatus.find((o) => o.panelid === eachPanelConfig["id"])
+                        : null;
+
                 // the build list returns a nested 'status' object, direct from the database - we need to pull it out
-                const thisBuildStatus = thisBuild === null ? null : thisBuild["status"];
+                let thisBuildStatus = null;
+                if (thisBuild) {
+                    thisBuildStatus = thisBuild["status"];
+                }
 
                 // remove unneeded fields from moduleConfig
                 delete thisModuleConfig.devmounts;
@@ -42,7 +53,7 @@ module.exports = async () => {
 
                 // combine them
                 filteredPanelList.push(
-                    panelFilter(panelConfig[i], thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus)
+                    panelFilter(eachPanelConfig, thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus)
                 );
             }
         }

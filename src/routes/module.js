@@ -42,7 +42,7 @@ router.get(
 
 /**
  * @swagger
- * /module/{modulename}:
+ * /module/{moduleName}:
  *   get:
  *     description: Gets the modules information about a specifc module by its name.
  *     tags: [module]
@@ -50,7 +50,7 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: modulename
+ *         name: moduleName
  *         schema:
  *           type: string
  *         required: true
@@ -66,18 +66,18 @@ router.get(
  *           type: object
  */
 router.get(
-    "/:modulename",
+    "/:moduleName",
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
-            data: await moduleGet(req.params.modulename),
+            data: await moduleGet(req.params.moduleName),
         });
     })
 );
 
 /**
  * @swagger
- * /module/build/{modulename}:
+ * /module/build/{moduleName}:
  *   get:
  *     description: Builds the Docker image of a module by its name
  *     tags: [module]
@@ -85,7 +85,7 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: modulename
+ *         name: moduleName
  *         schema:
  *           type: string
  *         required: true
@@ -101,9 +101,9 @@ router.get(
  *           type: object
  */
 router.get(
-    "/build/:modulename",
+    "/build/:moduleName",
     asyncHandler(async (req, res) => {
-        const result = await moduleBuild(req.params.modulename);
+        const result = await moduleBuild(req.params.moduleName);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             data: null,
@@ -113,7 +113,7 @@ router.get(
 
 /**
  * @swagger
- * /rebuild/:MODULE_NAME:
+ * /module/rebuild/{moduleName}:
  *   get:
  *     description: Rebuilds the Docker image of a module by name - not for use in application - for dev/testing purposes only
  *     tags: [module]
@@ -121,7 +121,7 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: modulename
+ *         name: moduleName
  *         schema:
  *           type: string
  *         required: true
@@ -137,9 +137,9 @@ router.get(
  *           type: object
  */
 router.get(
-    "/rebuild/:modulename",
+    "/rebuild/:moduleName",
     asyncHandler(async (req, res) => {
-        const result = await moduleRebuild(req.params.modulename);
+        const result = await moduleRebuild(req.params.moduleName);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             data: null,

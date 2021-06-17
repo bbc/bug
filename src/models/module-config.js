@@ -6,11 +6,11 @@ const { promises: fs } = require("fs");
 const path = require("path");
 const logger = require("@utils/logger")(module);
 const readJson = require("@core/read-json");
-const modulesFolder = "modules";
 const cacheStore = require("@core/cache-store");
 
 exports.list = async function () {
     const cacheKey = "moduleConfig";
+    const modulesFolder = path.join(__dirname, "..", "modules");
 
     // check the cache first
     let moduleArray = cacheStore.get(cacheKey);

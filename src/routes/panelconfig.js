@@ -27,6 +27,16 @@ const hashResponse = require("@core/hash-response");
  *           type: string
  *         required: true
  *         description: The panel ID string
+ *       - in: body
+ *         name: (various)
+ *         schema:
+ *           type: object
+ *         required: true
+ *         example:
+ *           username: admin
+ *           password: password
+ *           address: 1.2.3.4
+ *         description: Properties to store in the panelconfig
  *     responses:
  *       200:
  *         description: Successfully set the config of the panel.

@@ -74,9 +74,11 @@ exports.list = async function (containerId) {
     try {
         const containerCollection = await mongoCollection("dockercontainers");
 
-        const result = await containerCollection.find().toArray();
-        if (result) {
-            return result;
+        if (containerCollection) {
+            const result = await containerCollection.find().toArray();
+            if (result) {
+                return result;
+            }
         }
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);

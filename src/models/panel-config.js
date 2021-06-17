@@ -49,6 +49,7 @@ exports.delete = async function (panelId) {
 
 exports.list = async function (panelId) {
     const cacheKey = "panelConfig";
+    const configFolder = path.join(__dirname, "..", "config");
 
     // check the cache first
     let panelArray = cacheStore.get(cacheKey);
@@ -57,14 +58,14 @@ exports.list = async function (panelId) {
 
         let files;
         try {
-            files = await fs.readdir("config");
+            files = await fs.readdir(configFolder);
         } catch (error) {
             logger.warning(`${error.trace || error || error.message}`);
         }
 
         for (let i in files) {
             try {
-                const filename = path.join("config", files[i]);
+                const filename = path.join(configFolder, files[i]);
                 if (filename.endsWith(".json")) {
                     const panelFile = await readJson(filename);
                     if (panelFile) {
