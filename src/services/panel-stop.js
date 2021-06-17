@@ -1,20 +1,19 @@
-'use strict';
+"use strict";
 
-const logger = require('@utils/logger')(module);
-const dockerGetContainer = require('@services/docker-getcontainer');
-const dockerStopContainer = require('@services/docker-stopcontainer');
-const panelConfig = require('@models/panel-config');
-const moduleNeedsContainer = require('@services/module-needscontainer');
+const logger = require("@utils/logger")(module);
+const dockerGetContainer = require("@services/docker-getcontainer");
+const dockerStopContainer = require("@services/docker-stopcontainer");
+const panelConfig = require("@models/panel-config");
+const moduleNeedsContainer = require("@services/module-needscontainer");
 
 module.exports = async (panelId) => {
-
     try {
         const config = await panelConfig.get(panelId);
         if (!config) {
             throw new Error(`Panel ${panelId} not found`);
         }
 
-        if(!await moduleNeedsContainer(config?.module)) {
+        if (!(await moduleNeedsContainer(config?.module))) {
             logger.info(`no container required for panel id ${panelId}`);
             return true;
         }
@@ -26,9 +25,8 @@ module.exports = async (panelId) => {
 
         logger.info(`stoppping container for panel id ${panelId}`);
         return await dockerStopContainer(container);
-
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to stop panel id ${panelId}`);
     }
-} 
+};

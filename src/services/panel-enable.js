@@ -16,17 +16,13 @@ module.exports = async (panelId) => {
 
         // and save
         if (!(await panelConfigModel.set(panelConfig))) {
-            throw new Error(
-                `Failed to set config of panel id ${panelId} to enabled`
-            );
+            throw new Error(`Failed to set config of panel id ${panelId} to enabled`);
         }
 
         // then we start the container in docker
         return await panelStart(panelId);
     } catch (error) {
-        logger.warning(
-            `${error.stack || error.trace || error || error.message}`
-        );
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to enable panel id ${panelId}`);
     }
 };
