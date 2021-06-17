@@ -2,9 +2,7 @@
 
 //TODO error handling with throw
 
-const fs = require("fs");
-const util = require("util");
-const readdir = util.promisify(fs.readdir);
+const { promises: fs } = require("fs");
 const logger = require("@utils/logger")(module);
 const path = require("path");
 const readJson = require("@core/read-json");
@@ -59,7 +57,7 @@ exports.list = async function (panelId) {
 
         let files;
         try {
-            files = await readdir("config");
+            files = await fs.readdir("config");
         } catch (error) {
             logger.warning(`${error.trace || error || error.message}`);
         }

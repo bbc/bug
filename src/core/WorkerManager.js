@@ -10,7 +10,7 @@
 const { Worker, isMainThread, workerData } = require("worker_threads");
 const configGet = require("@core/config-get");
 const path = require("path");
-const fs = require("fs");
+const { promises: fs } = require("fs");
 const delay = require("delay");
 
 let restartKeys = [];
@@ -57,16 +57,10 @@ module.exports = class WorkerManager {
     async createWorkers(filenames) {
         if (isMainThread) {
             for (let i = 0; i < filenames.length; i++) {
-                this.workers[i] = await this.createWorker(
-                    filenames[i],
-                    i,
-                    this.config
-                );
+                this.workers[i] = await this.createWorker(filenames[i], i, this.config);
             }
         } else {
-            console.log(
-                `WorkerManager->createWorkers: You're trying to launch workers in a worker.`
-            );
+            console.log(`WorkerManager->createWorkers: You're trying to launch workers in a worker.`);
         }
     }
 
@@ -80,9 +74,7 @@ module.exports = class WorkerManager {
     }
 
     async createWorker(filename, i, config) {
-        console.log(
-            `WorkerManager->createWorker: Creating a worker from ${filename}.`
-        );
+        console.log(`WorkerManager->createWorker: Creating a worker from ${filename}.`);
         const worker = await new Worker(filename, {
             workerData: { index: i, config: config },
         });
@@ -110,10 +102,7 @@ module.exports = class WorkerManager {
             delay(delayMs);
             this.restartWorker(index, this.config);
         } else {
-            console.log(
-                `WorkerManager->handleError unhandled exception can't restart`,
-                worker
-            );
+            console.log(`WorkerManager->handleError unhandled exception can't restart`, worker);
         }
     }
 
@@ -137,15 +126,9 @@ module.exports = class WorkerManager {
     async restartWorker(index, config) {
         if (this.workers[index]) {
             const state = await this.workers[index].terminate();
-            console.log(
-                `WorkerManager->restartWorder: ${this.workerFiles[index]} terminated with code ${state}`
-            );
+            console.log(`WorkerManager->restartWorder: ${this.workerFiles[index]} terminated with code ${state}`);
         }
-        this.workers[index] = await this.createWorker(
-            this.workerFiles[index],
-            index,
-            config
-        );
+        this.workers[index] = await this.createWorker(this.workerFiles[index], index, config);
     }
 
     async pushConfig(newConfig) {
@@ -155,9 +138,7 @@ module.exports = class WorkerManager {
             if (this.needsUpdated(this.config, mergedConfig, restartKeys[i])) {
                 this.restartWorker(i, mergedConfig);
             } else {
-                console.log(
-                    `WorkerManager->pushConfig: ${this.workerFiles[i]} doesn't need restarted.`
-                );
+                console.log(`WorkerManager->pushConfig: ${this.workerFiles[i]} doesn't need restarted.`);
             }
         }
         this.config = mergedConfig;
