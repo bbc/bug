@@ -2,7 +2,7 @@
 
 //TODO error handling with throw
 
-const logger = require('@utils/logger')(module);
+const logger = require("@utils/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
 
 exports.get = async function (containerId) {
@@ -43,11 +43,11 @@ exports.setMultiple = async function (containerInfoArray) {
         const containerCollection = await mongoCollection("dockercontainers");
 
         let idArray = [];
-        for(let eachContainer of containerInfoArray) {
-            idArray.push(eachContainer['containerid']);
-            let result = await containerCollection.replaceOne(
+        for (let eachContainer of containerInfoArray) {
+            idArray.push(eachContainer["containerid"]);
+            await containerCollection.replaceOne(
                 {
-                    containerid: eachContainer['containerid'],
+                    containerid: eachContainer["containerid"],
                 },
                 eachContainer,
                 {
@@ -57,10 +57,10 @@ exports.setMultiple = async function (containerInfoArray) {
         }
 
         // remove any unused
-        let result = await containerCollection.deleteMany({
+        await containerCollection.deleteMany({
             containerid: {
-                '$nin': idArray
-            }
+                $nin: idArray,
+            },
         });
 
         return true;
@@ -81,5 +81,5 @@ exports.list = async function (containerId) {
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
     }
-    return null;
+    return [];
 };
