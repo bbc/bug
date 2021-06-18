@@ -13,19 +13,24 @@ const trafficAddHistory = require("../services/traffic-addhistory");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 
-const delayMs = 2000;
-const errorDelayMs = 10000;
-const config = workerData.config;
+const updateDelay = 2000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    index: workerData.index,
+    restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
 
-const pollDevice = async () => {
+const main = async () => {
+    // Connect to the db
+    await mongoDb.connect(config.id);
+
     const trafficCollection = await mongoCollection("traffic");
-    const historyCollection = await mongoCollection("history", { capped: true, max: 86400, size: 52428800 });
+    const historyCollection = await mongoCollection("history", {
+        capped: true,
+        max: 86400,
+        size: 52428800,
+    });
 
     const conn = new RosApi({
         host: config.address,
@@ -40,7 +45,9 @@ const pollDevice = async () => {
     await delay(2000);
 
     try {
-        console.log("fetch-traffic: connecting to device " + JSON.stringify(conn));
+        console.log(
+            "fetch-traffic: connecting to device " + JSON.stringify(conn)
+        );
         await conn.connect();
     } catch (error) {
         console.log("fetch-traffic: failed to connect to device");
@@ -59,7 +66,9 @@ const pollDevice = async () => {
             let trafficArray = [];
             if (interfaces) {
                 for (let eachInterface of interfaces) {
-                    trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface["name"]));
+                    trafficArray.push(
+                        await mikrotikFetchTraffic(conn, eachInterface["name"])
+                    );
                 }
             }
 
@@ -67,7 +76,10 @@ const pollDevice = async () => {
             await trafficSaveHistory(historyCollection, trafficArray);
 
             // add historical data (for sparklines)
-            trafficArray = await trafficAddHistory(trafficCollection, trafficArray);
+            trafficArray = await trafficAddHistory(
+                trafficCollection,
+                trafficArray
+            );
 
             // save to mongo
             await arraySaveMongo(trafficCollection, trafficArray, "name");
@@ -75,24 +87,9 @@ const pollDevice = async () => {
             console.log("fetch-traffic: ", error);
             noErrors = false;
         }
-        await delay(delayMs);
+        await delay(updateDelay);
     }
     await conn.close();
-};
-
-const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(config.id);
-
-    // Kick things off
-    while (true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log("fetch-traffic: ", error);
-        }
-        await delay(errorDelayMs);
-    }
 };
 
 main();

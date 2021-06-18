@@ -10,17 +10,18 @@ const arraySaveMongo = require("../services/array-savemongo");
 const interfaceList = require("../services/interface-list");
 const mongoDb = require("@core/mongo-db");
 
-const delayMs = 5000;
-const errorDelayMs = 10000;
-const config = workerData.config;
+const updateDelay = 5000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    index: workerData.index,
+    restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
 
-const pollDevice = async () => {
+const main = async () => {
+    // Connect to the db
+    await mongoDb.connect(config.id);
+
     const linkStatsCollection = await mongoDb.db.collection("linkstats");
 
     const conn = new RosApi({
@@ -36,7 +37,9 @@ const pollDevice = async () => {
     await delay(1000);
 
     try {
-        console.log("fetch-linkstats: connecting to device " + JSON.stringify(conn));
+        console.log(
+            "fetch-linkstats: connecting to device " + JSON.stringify(conn)
+        );
         await conn.connect();
     } catch (error) {
         console.log("fetch-linkstats: failed to connect to device");
@@ -56,7 +59,12 @@ const pollDevice = async () => {
             if (interfaces) {
                 for (let eachInterface of interfaces) {
                     if (eachInterface["type"] === "ether") {
-                        linkStatsArray.push(await mikrotikFetchLinkStats(conn, eachInterface["name"]));
+                        linkStatsArray.push(
+                            await mikrotikFetchLinkStats(
+                                conn,
+                                eachInterface["name"]
+                            )
+                        );
                     }
                 }
             }
@@ -65,24 +73,9 @@ const pollDevice = async () => {
             console.log("fetch-linkstats: ", error);
             noErrors = false;
         }
-        await delay(delayMs);
+        await delay(updateDelay);
     }
     await conn.close();
-};
-
-const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(config.id);
-
-    // Kick things off
-    while (true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log("fetch-linkstats: ", error);
-        }
-        await delay(errorDelayMs);
-    }
 };
 
 main();

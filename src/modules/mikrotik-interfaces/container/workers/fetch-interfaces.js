@@ -9,32 +9,33 @@ const mongoCollection = require("@core/mongo-collection");
 const mikrotikFetchInterfaces = require("../services/mikrotik-fetchinterfaces");
 const arraySaveMongo = require("../services/array-savemongo");
 
-const delayMs = 2000;
-const errorDelayMs = 10000;
-const config = workerData.config;
+const updateDelay = 2000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    index: workerData.index,
+    restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
 
-const pollDevice = async () => {
+const main = async () => {
+    // Connect to the db
+    await mongoDb.connect(workerData.id);
     const interfacesCollection = await mongoCollection("interfaces");
 
     const conn = new RosApi({
-        host: config.address,
-        user: config.username,
-        password: config.password,
+        host: workerData.address,
+        user: workerData.username,
+        password: workerData.password,
         timeout: 5,
     });
 
     try {
-        console.log("fetch-interfaces: connecting to device " + JSON.stringify(conn));
+        console.log(
+            "fetch-interfaces: connecting to device " + JSON.stringify(conn)
+        );
         await conn.connect();
     } catch (error) {
-        console.log("fetch-interfaces: failed to connect to device");
-        return;
+        throw "fetch-interfaces: failed to connect to device";
     }
     console.log("fetch-interfaces: device connected ok");
 
@@ -48,24 +49,9 @@ const pollDevice = async () => {
             console.log("fetch-interfaces: ", error);
             noErrors = false;
         }
-        await delay(delayMs);
+        await delay(updateDelay);
     }
     await conn.close();
-};
-
-const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(config.id);
-
-    // Kick things off
-    while (true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log("fetch-interfaces: ", error);
-        }
-        await delay(errorDelayMs);
-    }
 };
 
 main();
