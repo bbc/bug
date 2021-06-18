@@ -29,19 +29,15 @@ module.exports = class WorkerManager {
     }
 
     async setup() {
-        config = await configGet();
-
-        if (!config) {
-            console.log(
-                `WorkerManager->setup: No panel config. Not starting workers`
-            );
-            return;
-        }
-
-        this.collection = await this.createCollection(config.id);
         workers = await this.getWorkerFiles(this.folder);
         await this.updateWorkers(workers);
-        await this.createWorkers();
+
+        config = await configGet();
+        if (config) {
+            this.collection = await this.createCollection(config.id);
+            await this.createWorkers();
+        }
+        console.log(`WorkerManager->setup: No panel config.`);
     }
 
     async createCollection(panelId) {
