@@ -21,22 +21,20 @@ afterAll(async () => {
 beforeAll(async () => {
     // remove any previous tests
     try {
+        console.log("deleting panel");
         await panelDelete(testPanel.id);
+        console.log("done");
     } catch (error) {}
 });
 
 const listFiles = async () => {
     console.log("-------------------- listFiles START -----------------------------");
     const configFolder = path.join(__dirname, "..", "config");
-    console.log("configFolder");
-    console.log(JSON.stringify(configFolder));
 
     // check the cache first
     const panelArray = [];
 
     files = await fs.readdir(configFolder);
-    console.log("files");
-    console.log(JSON.stringify(files));
 
     for (let i in files) {
         const filename = path.join(configFolder, files[i]);
@@ -61,9 +59,9 @@ describe("Test the '/api/panel/' endpoint", () => {
             .send(testPanel)
             .set("Content-Type", "application/json");
         console.log("test module create response:");
-        await listFiles();
         expect(response.statusCode).toBe(200);
-        console.log(response.body);
+        console.log(response);
+        await listFiles();
         done();
     });
 
