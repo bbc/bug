@@ -63,6 +63,9 @@ module.exports = class WorkerManager {
     }
 
     async updateWorkers() {
+        for (let index in workers) {
+            workers[index].timestamp = Date.now();
+        }
         arraySaveMongo(this.collection, workers, "filename");
     }
 

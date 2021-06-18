@@ -27,7 +27,7 @@ module.exports = async () => {
         await statusCheckCollection("interfaces", "interface"),
         await statusCheckCollection("traffic", "interface traffic"),
         await statusCheckCollection("linkstats", "link statistic"),
-        await statusCheckWorkers(),
+        await statusCheckCollection("workers", "worker status"),
         testStatus
     );
 };
