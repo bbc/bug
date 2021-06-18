@@ -116,7 +116,7 @@ module.exports = class WorkerManager {
         }
     }
 
-    async createWorker(filename, config) {
+    async createWorker(filename) {
         console.log(
             `WorkerManager->createWorker: Creating a worker from ${filename}.`
         );
@@ -160,9 +160,12 @@ module.exports = class WorkerManager {
         const handleExit = async (event, filename, self) => {
             const index = await self.getWorkerIndex(filename);
             workers[index].state = "stopped";
-            if (workers[index].restart) {
+            if (!workers[index].restarting) {
                 await delay(workers[index].restartDelay);
+            }
+            if (workers[index].restart) {
                 await self.createWorker(filename, config);
+                workers[index].restarting = true;
                 console.log(
                     `WorkerManager->handleExit: ${filename} restarted.`
                 );
@@ -199,12 +202,13 @@ module.exports = class WorkerManager {
         return false;
     }
 
-    async restartWorker(filename, config) {
+    async restartWorker(filename) {
         const index = await this.getWorkerIndex(filename);
         workers[index].restartCount++;
 
         if (workers[index]?.worker) {
             workers[index].restart = true;
+            workers[index].restarting = true;
             const state = await workers[index].worker.terminate();
             console.log(
                 `WorkerManager->restartWorder: ${filename} terminated with code ${state}`
@@ -213,12 +217,10 @@ module.exports = class WorkerManager {
     }
 
     async pushConfig(newConfig) {
-        const mergedConfig = { ...config, ...newConfig };
         for (let i in workers) {
-            if (
-                this.needsUpdated(config, mergedConfig, workers[i].restartKeys)
-            ) {
-                await this.restartWorker(workers[i].filename, mergedConfig);
+            if (this.needsUpdated(config, newConfig, workers[i].restartKeys)) {
+                config = newConfig;
+                await this.restartWorker(workers[i].filename);
             } else {
                 console.log(
                     `WorkerManager->pushConfig: ${workers[i]?.filename} doesn't need restarted.`
@@ -226,6 +228,5 @@ module.exports = class WorkerManager {
             }
         }
         await this.updateWorkers();
-        config = mergedConfig;
     }
 };
