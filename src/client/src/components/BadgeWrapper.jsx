@@ -30,14 +30,26 @@ const BadgeWrapper = ({
 }) => {
     const classes = useStyles();
 
-    let errorCount = panel._status.filter((x) => x.type === "error").length;
-    let warningCount = panel._status.filter((x) => x.type === "warning").length;
-    let infoCount = panel._status.filter((x) => x.type === "info").length;
-    let hasCritical = panel._status.filter((x) => x.type === "critical").length > 0;
+    let errorCount = 0;
+    let warningCount = 0;
+    let infoCount = 0;
+    let hasCritical = 0;
+
+    if (panel?._status) {
+        errorCount = panel._status.filter((x) => x.type === "error").length;
+        warningCount = panel._status.filter((x) => x.type === "warning").length;
+        infoCount = panel._status.filter((x) => x.type === "info").length;
+        hasCritical =
+            panel._status.filter((x) => x.type === "critical").length > 0;
+    }
 
     if (errorCount > 0 && !hasCritical) {
         return (
-            <Badge className={classes.error} badgeContent={errorCount} anchorOrigin={position}>
+            <Badge
+                className={classes.error}
+                badgeContent={errorCount}
+                anchorOrigin={position}
+            >
                 {children}
             </Badge>
         );
@@ -45,7 +57,11 @@ const BadgeWrapper = ({
 
     if (warningCount > 0 && !hasCritical) {
         return (
-            <Badge className={classes.warning} badgeContent={warningCount} anchorOrigin={position}>
+            <Badge
+                className={classes.warning}
+                badgeContent={warningCount}
+                anchorOrigin={position}
+            >
                 {children}
             </Badge>
         );
@@ -53,7 +69,11 @@ const BadgeWrapper = ({
 
     if (infoCount > 0 && !hasCritical) {
         return (
-            <Badge className={classes.info} badgeContent={infoCount} anchorOrigin={position}>
+            <Badge
+                className={classes.info}
+                badgeContent={infoCount}
+                anchorOrigin={position}
+            >
                 {children}
             </Badge>
         );

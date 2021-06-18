@@ -67,7 +67,9 @@ const Menu = ({ showGroups = true }) => {
     const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
-    const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
+    const enabledPanelList = panelList.data.filter(
+        (item) => item.enabled === true
+    );
     const location = useLocation();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -75,9 +77,15 @@ const Menu = ({ showGroups = true }) => {
         if (!menuPanel.enabled) {
             return null;
         }
-        let hasCritical = menuPanel._status.filter((x) => x.type === "critical").length > 0;
+        let hasCritical = false;
 
-        const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
+        if (menuPanel?._status) {
+            hasCritical =
+                menuPanel._status.filter((x) => x.type === "critical").length >
+                0;
+        }
+        const isSelected =
+            panel.status === "success" && menuPanel.id === panel.data.id;
         return (
             <ListItem
                 className={hasCritical ? classes.critical : ""}
@@ -102,7 +110,9 @@ const Menu = ({ showGroups = true }) => {
     };
 
     const GroupedMenuItems = ({ groupedPanels }) => {
-        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) =>
+            a.localeCompare(b, "en", { sensitivity: "base" })
+        );
 
         return (
             <>
@@ -117,7 +127,13 @@ const Menu = ({ showGroups = true }) => {
                         >
                             <AccordionSummary
                                 className={classes.groupHeader}
-                                expandIcon={expanded === groupKey ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                                expandIcon={
+                                    expanded === groupKey ? (
+                                        <ArrowDropDownIcon />
+                                    ) : (
+                                        <ArrowRightIcon />
+                                    )
+                                }
                                 onClick={(event) => {
                                     event.stopPropagation();
                                 }}
@@ -126,7 +142,9 @@ const Menu = ({ showGroups = true }) => {
                             </AccordionSummary>
                             <AccordionDetails className={classes.groupPanel}>
                                 <List aria-label="list of enabled modules">
-                                    {groupedPanels[groupKey].map((eachPanel) => renderMenuItem(eachPanel))}
+                                    {groupedPanels[groupKey].map((eachPanel) =>
+                                        renderMenuItem(eachPanel)
+                                    )}
                                 </List>
                             </AccordionDetails>
                         </Accordion>
@@ -137,7 +155,11 @@ const Menu = ({ showGroups = true }) => {
     };
 
     const MenuItems = ({ items }) => {
-        return <List aria-label="list of enabled modules">{items.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
+        return (
+            <List aria-label="list of enabled modules">
+                {items.map((eachPanel) => renderMenuItem(eachPanel))}
+            </List>
+        );
     };
 
     const renderPanelMenuItems = () => {
@@ -167,7 +189,12 @@ const Menu = ({ showGroups = true }) => {
             >
                 <Grid item style={{ width: "100%" }}>
                     <List>
-                        <ListItem button component={Link} to="/" selected={location.pathname === "/"}>
+                        <ListItem
+                            button
+                            component={Link}
+                            to="/"
+                            selected={location.pathname === "/"}
+                        >
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
