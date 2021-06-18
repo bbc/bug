@@ -50,30 +50,37 @@ const listFiles = async () => {
 };
 
 describe("Test the '/api/panel/' endpoint", () => {
+    console.log("--------- 0");
     test(`Test the '/' POST route to create an example ${testPanel.module} panel`, async (done) => {
+        console.log("--------- 1");
         await listFiles();
-        console.log("creating test module", testPanel);
+        console.log("creating test module");
+        console.log(testPanel);
         const response = await request(system)
             .post("/api/panel/")
             .send(testPanel)
             .set("Content-Type", "application/json");
-        console.log("test module create response:", response);
+        console.log("test module create response:");
         await listFiles();
         expect(response.statusCode).toBe(200);
+        console.log(response.body);
         done();
     });
 
     test("Test the '/' GET route", async (done) => {
+        console.log("--------- 2");
         await listFiles();
         const response = await request(system).get("/api/panel/");
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeArray();
         expect(response.body.data.length).toBeGreaterThan(0);
+        console.log(response.body);
         done();
     });
 
     test("Test the '/{panelId}' GET route with the test panel", async (done) => {
+        console.log("--------- 3");
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
@@ -92,75 +99,94 @@ describe("Test the '/api/panel/' endpoint", () => {
         expect(response.body.data._dockerContainer._isBuilt).toBeFalse();
         expect(response.body.data._dockerContainer._status).toEqual("idle");
         expect(response.body.data._buildStatus).toBeNil();
+        console.log(response.body);
         done();
     });
 
     test("Test the '/start/{panelId}' GET route with the test panel", async (done) => {
+        console.log("--------- 4");
         const response = await request(system).get(`/api/panel/start/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
+        console.log(response.body);
         done();
     });
 
     test("Test the '/stop/{panelId}' GET route with the test panel", async (done) => {
+        console.log("--------- 5");
         const response = await request(system).get(`/api/panel/stop/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
+        console.log(response.body);
         done();
     });
 
     test("Test the '/group/{panelId}' GET route to set the group with the test panel", async (done) => {
+        console.log("--------- 6");
         const response = await request(system).get(`/api/panel/group/${testPanel.id}/newTestGroup`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
+        console.log(response.body);
         done();
     });
 
     test("Check the panel for the new group", async (done) => {
+        console.log("--------- 7");
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeObject();
         expect(response.body.data.group).toEqual("newTestGroup");
+        console.log(response.body);
         done();
     });
 
     test("Test the '/disable/{panelId}' GET route with the test panel", async (done) => {
+        console.log("--------- 8");
         const response = await request(system).get(`/api/panel/disable/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
+        console.log(response.body);
         done();
     });
 
     test("Check the panel is disabled", async (done) => {
+        console.log("--------- 9");
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeObject();
         expect(response.body.data.enabled).toBeFalse();
+        console.log(response.body);
         done();
     });
 
     test("Test the '/enable/{panelId}' GET route with the test panel", async (done) => {
+        console.log("--------- 10");
         const response = await request(system).get(`/api/panel/enable/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
+        console.log(response.body);
         done();
     });
 
     test("Check the panel is enabled", async (done) => {
+        console.log("--------- 11");
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeObject();
         expect(response.body.data.enabled).toBeTrue();
+        console.log(response.body);
         done();
     });
 
     test("Test the '/{panelId}' DELETE route with the test panel", async (done) => {
+        console.log("--------- 12");
         const response = await request(system).delete(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
+        console.log(response.body);
         done();
     });
 });
