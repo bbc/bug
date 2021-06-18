@@ -29,6 +29,7 @@ src/client/.pnp
 
 # Testing
 src/client/coverage
+src/routes/logs
 
 # Client Production Build
 /src/client/build/*

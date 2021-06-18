@@ -3,7 +3,6 @@
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const panelGet = require("@services/panel-get");
-const panelGetData = require("@services/panel-getdata");
 const panelStart = require("@services/panel-start");
 const panelRestart = require("@services/panel-restart");
 const panelStop = require("@services/panel-stop");
@@ -311,10 +310,7 @@ router.get(
 router.get(
     "/group/:panelId/:group?",
     asyncHandler(async (req, res) => {
-        const result = await panelSetGroup(
-            req.params.panelId,
-            req.params.group ? req.params.group : ""
-        );
+        const result = await panelSetGroup(req.params.panelId, req.params.group ? req.params.group : "");
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Updated panel group",
@@ -428,41 +424,6 @@ router.get(
         hashResponse(res, req, {
             status: "success",
             data: await panelGet(req.params.panelId),
-        });
-    })
-);
-
-/**
- * @swagger
- * /panel/data/{panelId}:
- *   get:
- *     description: Get data about a panel by its ID string
- *     tags: [panel]
- *     produces:
- *       - application/json
- *     parameters:
- *       - in: path
- *         name: panelId
- *         schema:
- *           type: string
- *         required: true
- *         description: The panel ID string
- *     responses:
- *       200:
- *         description: Successfully retrieved the panel data.
- *         schema:
- *           type: object
- *       500:
- *         description: Error, could not get the panel ID data.
- *         schema:
- *           type: object
- */
-router.get(
-    "/data/:panelId",
-    asyncHandler(async (req, res) => {
-        hashResponse(res, req, {
-            status: "success",
-            data: await panelGetData(req.params.panelId),
         });
     })
 );

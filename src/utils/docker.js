@@ -1,12 +1,10 @@
-'use strict';
+"use strict";
 
 //TODO error handling with throw
 
-const Docker = require('dockerode');
-const logger = require('@utils/logger')(module);
-const path = require('path');
-const socketPath =  process.env.DOCKER_SOCKET_PATH || '/var/run/docker.sock'
+const Docker = require("dockerode");
+const socketPath = process.env.DOCKER_SOCKET_PATH || "/var/run/docker.sock";
 
-let docker = new Docker({socketPath: socketPath});
+let docker = new Docker({ socketPath: socketPath });
 
 module.exports = docker;

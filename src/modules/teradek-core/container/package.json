@@ -1,5 +1,5 @@
 {
-    "name": "tsl-mdu",
+    "name": "teradek-core",
     "main": "server.js",
     "scripts": {
         "production": "node ./api/server",

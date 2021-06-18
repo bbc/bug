@@ -1,55 +1,59 @@
-'use strict';
+"use strict";
 
 //TODO error handling with throw
 
-const fs = require('fs')
-const path = require('path');
-const util = require('util');
-const readdir = util.promisify(fs.readdir);
-const logger = require('@utils/logger')(module);
-const readJson = require('@core/read-json');
-const modulesFolder = "modules";
+const { promises: fs } = require("fs");
+const path = require("path");
+const logger = require("@utils/logger")(module);
+const readJson = require("@core/read-json");
+const cacheStore = require("@core/cache-store");
 
-exports.list = async function() {
+exports.list = async function () {
+    const cacheKey = "moduleConfig";
+    const modulesFolder = path.join(__dirname, "..", "modules");
 
-    //TODO cache for life of application
-
-    try {
-        var files = await readdir(modulesFolder);
-    } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
-    }
-
-    var moduleArray = [];
-    for(var i in files) {
+    // check the cache first
+    let moduleArray = cacheStore.get(cacheKey);
+    if (!moduleArray) {
+        let files;
         try {
-            let filename = path.join(modulesFolder, files[i], 'module.json');
-            var packageFile = await readJson(filename);
-            if(!packageFile) {
-                logger.warning(`file '${filename}' not found`);
-                return null
-            }
-            moduleArray.push(packageFile);
+            files = await fs.readdir(modulesFolder);
         } catch (error) {
             logger.warning(`${error.trace || error || error.message}`);
         }
-    }
-    return moduleArray;
-}
 
-exports.get = async function(moduleName) {
-    //TODO - just get the file!
-    try {
-        var moduleList = await exports.list();
-        for(var i in moduleList) {
-            if(moduleList[i]['name'] === moduleName) {
-                return moduleList[i];
+        moduleArray = [];
+        for (var i in files) {
+            try {
+                let filename = path.join(modulesFolder, files[i], "module.json");
+                let packageFile = await readJson(filename);
+                if (!packageFile) {
+                    logger.warning(`file '${filename}' not found`);
+                    return null;
+                }
+                moduleArray.push(packageFile);
+            } catch (error) {
+                logger.warning(`${error.stack || error.trace || error || error.message}`);
             }
         }
 
+        // cache the result
+        cacheStore.set(cacheKey, moduleArray);
+    }
+    return moduleArray;
+};
+
+exports.get = async function (moduleName) {
+    try {
+        let moduleList = await exports.list();
+        for (let i in moduleList) {
+            if (moduleList[i]["name"] === moduleName) {
+                return moduleList[i];
+            }
+        }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
     }
 
     return null;
-}
+};

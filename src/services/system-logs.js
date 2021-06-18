@@ -5,11 +5,10 @@ const systemLogsModel = require("@models/system-logs");
 
 module.exports = async (level) => {
     try {
-        
-        const response = {}
+        const response = {};
         response.data = await systemLogsModel.get(level);
 
-        response.data.sort(function(a, b) {
+        response.data.sort(function (a, b) {
             return b.timestamp - a.timestamp;
         });
 

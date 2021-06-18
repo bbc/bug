@@ -9,7 +9,7 @@ const dockerCreateContainer = require("@services/docker-createcontainer");
 const panelBuildStatusModel = require("@models/panel-buildstatus");
 const moduleNeedsContainer = require("@services/module-needscontainer");
 const delay = require("delay");
-const panelConfigPush = require("@services/panel-configpush");
+const panelConfigPush = require("@services/panelconfig-push");
 
 module.exports = async (panelId) => {
     const updateProgress = (progress) => {
@@ -20,9 +20,7 @@ module.exports = async (panelId) => {
             // update the database
             return panelBuildStatusModel.setProgress(panelId, progress);
         } catch (error) {
-            logger.warning(
-                `failed to update progress: ${error.stack || error.trace || error || error.message}`
-            );
+            logger.warning(`failed to update progress: ${error.stack || error.trace || error || error.message}`);
             return false;
         }
     };

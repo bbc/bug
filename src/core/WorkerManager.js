@@ -11,7 +11,7 @@
 const { Worker, isMainThread, workerData } = require("worker_threads");
 const configGet = require("@core/config-get");
 const path = require("path");
-const fs = require("fs");
+const { promises: fs } = require("fs");
 const delay = require("delay");
 
 const mongoDb = require("@core/mongo-db");
