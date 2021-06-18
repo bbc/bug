@@ -1,7 +1,6 @@
 const request = require("supertest");
 const system = require("@bin/api");
 const panelDelete = require("@services/panel-delete");
-const panelList = require("@services/panel-list");
 const testPanel = {
     module: "clock",
     id: "test",
@@ -24,17 +23,46 @@ beforeAll(async () => {
     } catch (error) {}
 });
 
+const listFiles = async () => {
+    console.log("-------------------- listFiles START -----------------------------");
+    const configFolder = path.join(__dirname, "..", "config");
+    console.log("configFolder", configFolder);
+
+    // check the cache first
+    const panelArray = [];
+
+    files = await fs.readdir(configFolder);
+    console.log("files", files);
+
+    for (let i in files) {
+        const filename = path.join(configFolder, files[i]);
+        if (filename.endsWith(".json")) {
+            const panelFile = await readJson(filename);
+            if (panelFile) {
+                panelArray.push(panelFile);
+            }
+        }
+    }
+    console.log("panelArray", panelArray);
+    console.log("-------------------- listFiles END -----------------------------");
+};
+
 describe("Test the '/api/panel/' endpoint", () => {
     test(`Test the '/' POST route to create an example ${testPanel.module} panel`, async (done) => {
+        await listFiles();
+        console.log("creating test module", testPanel);
         const response = await request(system)
             .post("/api/panel/")
             .send(testPanel)
             .set("Content-Type", "application/json");
+        console.log("test module create response:", response);
+        await listFiles();
         expect(response.statusCode).toBe(200);
         done();
     });
 
     test("Test the '/' GET route", async (done) => {
+        await listFiles();
         const response = await request(system).get("/api/panel/");
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
