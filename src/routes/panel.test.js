@@ -8,6 +8,8 @@ const testPanel = {
     group: "test-group",
     description: "test-description",
 };
+const path = require("path");
+const { promises: fs } = require("fs");
 
 afterAll(async () => {
     try {
@@ -39,10 +41,7 @@ const listFiles = async () => {
     for (let i in files) {
         const filename = path.join(configFolder, files[i]);
         if (filename.endsWith(".json")) {
-            const panelFile = await readJson(filename);
-            if (panelFile) {
-                panelArray.push(panelFile);
-            }
+            panelArray.push(filename);
         }
     }
     console.log("panelArray");
