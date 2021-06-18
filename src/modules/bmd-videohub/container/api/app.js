@@ -1,6 +1,7 @@
 const express = require("express");
 const createError = require("http-errors");
 const bodyParser = require("body-parser");
+const workerStore = require("@core/worker-store");
 
 // load routes
 const statusRouter = require("./routes/status");
@@ -14,6 +15,13 @@ const destinationsRouter = require("@routes/destinations");
 const groupsRouter = require("@routes/groups");
 
 let app = express();
+
+const workers = function (req, res, next) {
+    req.workers = workerStore;
+    next();
+};
+
+app.use(workers);
 
 app.set("json spaces", 2);
 app.use(express.json());

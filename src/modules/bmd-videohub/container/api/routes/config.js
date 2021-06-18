@@ -23,7 +23,7 @@ router.put("/", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await configPut(req.body),
+            data: await configPut(req.workers, req.body),
         });
     } catch (error) {
         res.json({
