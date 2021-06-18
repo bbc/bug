@@ -20,14 +20,14 @@ parentPort.postMessage({
 
 const main = async () => {
     // Connect to the db
-    await mongoDb.connect(config.id);
+    await mongoDb.connect(workerData.id);
 
     const linkStatsCollection = await mongoDb.db.collection("linkstats");
 
     const conn = new RosApi({
-        host: config.address,
-        user: config.username,
-        password: config.password,
+        host: workerData.address,
+        user: workerData.username,
+        password: workerData.password,
         timeout: 10,
     });
 
