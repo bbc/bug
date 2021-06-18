@@ -5,13 +5,14 @@
  * Class providing management of and access to all workers registered
  * 0.0.1 17/05/2021 - Created first version (GH)
  * 0.0.2 17/05/2021 - Adapted for use in bug-core (GH)
- * 0.0.2 18/06/2021 - Restart workers and access to collection (RM)
+ * 0.0.3 18/06/2021 - Change the use of context (RM)
+ * 0.0.3 18/06/2021 - Restart workers and access to collection (RM)
  */
 
 const { Worker, isMainThread, workerData } = require("worker_threads");
 const configGet = require("@core/config-get");
 const path = require("path");
-const { promises: fs } = require("fs");
+const fs = require("fs");
 const delay = require("delay");
 
 const mongoDb = require("@core/mongo-db");
@@ -65,9 +66,9 @@ module.exports = class WorkerManager {
         arraySaveMongo(this.collection, workers, "filename");
     }
 
-    getWorkerFiles(folder) {
+    async getWorkerFiles(folder) {
         try {
-            const filenames = fs.readdirSync(folder);
+            const filenames = await fs.readdirSync(folder);
             const jsFiles = [];
 
             for (let filename of filenames) {
@@ -82,7 +83,8 @@ module.exports = class WorkerManager {
                 }
             }
             return jsFiles;
-        } catch {
+        } catch (error) {
+            console.log(`WorkerManager->getWorkerFiles`, error);
             return [];
         }
     }
