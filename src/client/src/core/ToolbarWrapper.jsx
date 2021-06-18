@@ -47,7 +47,9 @@ export default function PanelToolbar(props) {
     const [statusEl, setStatusEl] = React.useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const statusOpen = Boolean(statusEl);
-    const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
+    const hasCritical =
+        panel.data._status &&
+        panel.data._status.filter((x) => x.type === "critical").length > 0;
     const sendAlert = useAlert();
 
     const handleOpenMenuClick = (event) => {
@@ -69,19 +71,32 @@ export default function PanelToolbar(props) {
     const handleDisable = async () => {
         setStatusEl(null);
         if (await AxiosCommand(`/api/panel/disable/${panel.data.id}`)) {
-            sendAlert(`Disabled panel: ${panel.data.title}`, { broadcast: true, variant: "success" });
+            sendAlert(`Disabled panel: ${panel.data.title}`, {
+                broadcast: true,
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to disable panel: ${panel.data.title}`, { variant: "error" });
+            sendAlert(`Failed to disable panel: ${panel.data.title}`, {
+                variant: "error",
+            });
         }
     };
 
     const handleRestart = async () => {
-        sendAlert(`Restarting panel: ${panel.data.title} - please wait ...`, { broadcast: true, variant: "info" });
+        sendAlert(`Restarting panel: ${panel.data.title} - please wait ...`, {
+            broadcast: true,
+            variant: "info",
+        });
         setAnchorEl(null);
         if (await AxiosCommand(`/api/panel/restart/${panel.data.id}`)) {
-            sendAlert(`Restarted panel: ${panel.data.title}`, { broadcast: true, variant: "success" });
+            sendAlert(`Restarted panel: ${panel.data.title}`, {
+                broadcast: true,
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to restart panel: ${panel.data.title}`, { variant: "error" });
+            sendAlert(`Failed to restart panel: ${panel.data.title}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -97,7 +112,7 @@ export default function PanelToolbar(props) {
         return (
             <>
                 <Hidden xsDown>
-                    {hasCritical || panel.data._status.length === 0 ? null : (
+                    {hasCritical || panel.data._status?.length === 0 ? null : (
                         <>
                             <Popover
                                 open={statusOpen}
@@ -143,8 +158,16 @@ export default function PanelToolbar(props) {
                 >
                     <MoreIcon />
                 </IconButton>
-                <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
-                    <MenuItem component={Link} to={`/panel/${panel.data.id}/config`}>
+                <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                >
+                    <MenuItem
+                        component={Link}
+                        to={`/panel/${panel.data.id}/config`}
+                    >
                         <ListItemIcon>
                             <SettingsIcon fontSize="small" />
                         </ListItemIcon>
