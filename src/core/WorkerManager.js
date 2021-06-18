@@ -80,6 +80,7 @@ module.exports = class WorkerManager {
                 if (extension === this.fileExtension) {
                     jsFiles.push({
                         restart: true,
+                        restarting: false,
                         restartCount: 0,
                         filename: path.join(folder, filename),
                     });
@@ -165,7 +166,7 @@ module.exports = class WorkerManager {
             }
             if (workers[index].restart) {
                 await self.createWorker(filename, config);
-                workers[index].restarting = true;
+                workers[index].restarting = false;
                 console.log(
                     `WorkerManager->handleExit: ${filename} restarted.`
                 );
@@ -217,13 +218,20 @@ module.exports = class WorkerManager {
     }
 
     async pushConfig(newConfig) {
-        for (let i in workers) {
-            if (this.needsUpdated(config, newConfig, workers[i].restartKeys)) {
-                config = newConfig;
-                await this.restartWorker(workers[i].filename);
+        const oldConfig = config;
+        config = newConfig;
+        for (let index in workers) {
+            if (
+                this.needsUpdated(
+                    oldConfig,
+                    newConfig,
+                    workers[index].restartKeys
+                )
+            ) {
+                await this.restartWorker(workers[index].filename);
             } else {
                 console.log(
-                    `WorkerManager->pushConfig: ${workers[i]?.filename} doesn't need restarted.`
+                    `WorkerManager->pushConfig: ${workers[index]?.filename} doesn't need restarted.`
                 );
             }
         }
