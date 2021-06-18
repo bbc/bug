@@ -11,7 +11,9 @@ const WorkerManager = require("@core/WorkerManager");
 let manager;
 
 const instantiate = () => {
-    manager = new WorkerManager();
+    if (!manager) {
+        manager = new WorkerManager();
+    }
 };
 
 instantiate();

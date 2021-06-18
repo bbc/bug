@@ -7,10 +7,9 @@
  */
 
 const writeJson = require("@core/write-json");
-const workerStore = require("@core/worker-store");
 const path = require("path");
 
-module.exports = async (config) => {
+module.exports = async (workers, config) => {
     try {
         console.log(`config-put: received config update`);
         const filename = path.join(__dirname, "..", "config", "panel.json");
@@ -18,7 +17,7 @@ module.exports = async (config) => {
         console.log(`config-put: saved config file to ${filename}`);
 
         //Tell the worker manager that a new config is avalible
-        await workerStore.pushConfig(config);
+        await workers.pushConfig(config);
 
         return true;
     } catch (error) {

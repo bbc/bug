@@ -8,73 +8,49 @@ const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
 const arraySaveMongo = require("@core/array-savemongo");
 
-const config = workerData.config;
-const errorDelayMs = 60000;
-let delayMs = 10000;
+const updateDelay = 10000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    index: workerData.index,
+    restartDelay: 60000,
     restartOn: ["username", "password", "organisation"],
 });
 
-const pollDevice = async () => {
+const main = async () => {
+    // Connect to the db
+    await mongoDb.connect(workerData?.id);
     const tokenCollection = await mongoDb.db.collection("token");
     const devicesCollection = await mongoDb.db.collection("devices");
 
     console.log(`devices: teradek-core encoder worker starting...`);
 
-    // initial delay (to stagger device polls)
-    await delay(1000);
-
-    let noErrors = true;
-
-    while (noErrors) {
-        try {
-            const token = await tokenCollection.findOne();
-
-            const response = await axios.get(
-                `v1.0/${config.organisation}/devices`,
-                {
-                    params: {
-                        auth_token: token?.auth_token,
-                        firmwareDetails: true,
-                        details: true,
-                    },
-                }
-            );
-
-            if (response.data?.meta?.status === "ok") {
-                for (let device of response?.data?.response) {
-                    const query = { sid: device?.sid };
-                    const update = {
-                        $set: { ...device },
-                    };
-                    const options = { upsert: true };
-                    devicesCollection.updateOne(query, update, options);
-                }
-            } else {
-                throw response.data;
-            }
-        } catch (error) {
-            console.log("devices: ", error);
-            noErrors = false;
-        }
-        await delay(delayMs);
-    }
-};
-
-const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(config?.id);
-    // Kick things off
     while (true) {
-        try {
-            await pollDevice();
-        } catch (error) {
-            console.log("devices: ", error);
+        const token = await tokenCollection.findOne();
+
+        const response = await axios.get(
+            `v1.0/${workerData.organisation}/devices`,
+            {
+                params: {
+                    auth_token: token?.auth_token,
+                    firmwareDetails: true,
+                    details: true,
+                },
+            }
+        );
+
+        if (response.data?.meta?.status === "ok") {
+            for (let device of response?.data?.response) {
+                const query = { sid: device?.sid };
+                const update = {
+                    $set: { ...device },
+                };
+                const options = { upsert: true };
+                devicesCollection.updateOne(query, update, options);
+            }
+        } else {
+            throw response.data;
         }
-        await delay(errorDelayMs);
+        await delay(updateDelay);
     }
 };
 

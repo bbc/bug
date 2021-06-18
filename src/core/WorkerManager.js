@@ -5,6 +5,7 @@
  * Class providing management of and access to all workers registered
  * 0.0.1 17/05/2021 - Created first version (GH)
  * 0.0.2 17/05/2021 - Adapted for use in bug-core (GH)
+ * 0.0.2 18/06/2021 - Restart workers and access to collection (RM)
  */
 
 const { Worker, isMainThread, workerData } = require("worker_threads");
@@ -13,26 +14,55 @@ const path = require("path");
 const fs = require("fs");
 const delay = require("delay");
 
-let restartKeys = [];
+const mongoDb = require("@core/mongo-db");
+const arraySaveMongo = require("@core/array-savemongo");
+
+let workers = [];
+let config;
 
 module.exports = class WorkerManager {
-    constructor(folder, config) {
+    constructor(folder) {
         this.fileExtension = "js";
         this.folder = folder || path.join(__dirname, "..", "workers");
-
-        this.workerFiles = this.getWorkerFiles(this.folder);
-        this.workers = [];
-
-        this.setConfig(config);
+        this.setup();
     }
 
-    async setConfig(config) {
-        if (config) {
-            this.config = config;
-        } else {
-            this.config = await configGet();
+    async setup() {
+        config = await configGet();
+
+        if (!config) {
+            console.log(
+                `WorkerManager->setup: No panel config. Not starting workers`
+            );
+            return;
         }
-        this.createWorkers(this.workerFiles);
+
+        this.collection = await this.createCollection(config.id);
+        workers = await this.getWorkerFiles(this.folder);
+        await this.updateWorkers(workers);
+        await this.createWorkers();
+    }
+
+    async createCollection(panelId) {
+        await mongoDb.connect(panelId);
+        return await mongoDb.db.collection("workers");
+    }
+
+    async getWorkers() {
+        return await this.collection.find().toArray();
+    }
+
+    async getWorkerIndex(filename) {
+        const index = await workers
+            .map(function (worker) {
+                return worker.filename;
+            })
+            .indexOf(filename);
+        return index;
+    }
+
+    async updateWorkers() {
+        arraySaveMongo(this.collection, workers, "filename");
     }
 
     getWorkerFiles(folder) {
@@ -44,25 +74,25 @@ module.exports = class WorkerManager {
                 const extension = filename.split(".").pop();
 
                 if (extension === this.fileExtension) {
-                    jsFiles.push(path.join(folder, filename));
+                    jsFiles.push({
+                        restart: true,
+                        restartCount: 0,
+                        filename: path.join(folder, filename),
+                    });
                 }
             }
-
             return jsFiles;
         } catch {
             return [];
         }
     }
 
-    async createWorkers(filenames) {
+    async createWorkers() {
         if (isMainThread) {
-            for (let i = 0; i < filenames.length; i++) {
-                this.workers[i] = await this.createWorker(
-                    filenames[i],
-                    i,
-                    this.config
-                );
+            for (let worker of workers) {
+                await this.createWorker(worker.filename, config);
             }
+            await this.updateWorkers();
         } else {
             console.log(
                 `WorkerManager->createWorkers: You're trying to launch workers in a worker.`
@@ -71,54 +101,84 @@ module.exports = class WorkerManager {
     }
 
     terminateWorkers() {
-        for (let i = 0; i < this.workers.length; i++) {
-            const state = this.workers[i].terminate();
+        for (let i in workers) {
+            workers[index].restart = false;
+            const state = workers[i].worker.terminate();
             if (state) {
-                this.workers.pop(i);
+                workers[i].state = "stopped";
+                delete workers[i].worker;
             }
         }
     }
 
-    async createWorker(filename, i, config) {
+    async createWorker(filename, config) {
         console.log(
             `WorkerManager->createWorker: Creating a worker from ${filename}.`
         );
+        const index = await this.getWorkerIndex(filename);
         const worker = await new Worker(filename, {
-            workerData: { index: i, config: config },
+            workerData: config,
         });
-        worker.on("message", this.handleMessage);
-        worker.on("error", this.handleError);
-        worker.on("exit", this.handleExit);
-        return worker;
-    }
 
-    handleMessage(event) {
-        if (event?.restartOn) {
-            restartKeys[event.index] = event.restartOn;
-        }
-    }
+        workers[index].state = "started";
 
-    handleError(worker) {
-        let delayMs = 10000; //10 secs
-        if (worker?.delay) {
-            delay = Math.round(worker?.delay);
-        }
-        if (worker?.error) {
-            console.log(`WorkerManager->handleError`, worker.error);
-        }
-        if (worker?.index) {
-            delay(delayMs);
-            this.restartWorker(index, this.config);
-        } else {
+        const handleMessage = async (event, filename, self) => {
+            if (event?.restartOn) {
+                workers[await self.getWorkerIndex(filename)].restartKeys =
+                    event.restartOn;
+            }
+            if (event?.restartDelay) {
+                workers[await self.getWorkerIndex(filename)].restartDelay =
+                    event.restartDelay;
+            } else {
+                workers[await self.getWorkerIndex(filename)].restartDelay = 0;
+            }
+            await self.updateWorkers();
+        };
+
+        const handleError = async (event, filename, self) => {
+            const index = await self.getWorkerIndex(filename);
             console.log(
-                `WorkerManager->handleError unhandled exception can't restart`,
-                worker
+                `WorkerManager->handleError ${workers[index].filename}`,
+                event
             );
-        }
-    }
+            workers[index].state = "error";
+            await self.updateWorkers();
+        };
 
-    handleExit(event) {
-        console.log(`WorkerManager->handleExit: ${event}`);
+        const handleOnline = async (event, filename, self) => {
+            const index = await self.getWorkerIndex(filename);
+            workers[index].state = "working";
+            await self.updateWorkers();
+        };
+
+        const handleExit = async (event, filename, self) => {
+            const index = await self.getWorkerIndex(filename);
+            workers[index].state = "stopped";
+            if (workers[index].restart) {
+                await delay(workers[index].restartDelay);
+                await self.createWorker(filename, config);
+                console.log(
+                    `WorkerManager->handleExit: ${filename} restarted.`
+                );
+            } else {
+                delete workers[index].worker;
+                console.log(`WorkerManager->handleExit: ${filename} stopped.`);
+            }
+            await self.updateWorkers();
+        };
+
+        await worker.on("message", (event) =>
+            handleMessage(event, filename, this)
+        );
+        await worker.on("error", (event) => handleError(event, filename, this));
+        await worker.on("exit", (event) => handleExit(event, filename, this));
+        await worker.on("online", (event) =>
+            handleOnline(event, filename, this)
+        );
+
+        workers[index].startTime = await Date.now();
+        workers[index].worker = worker;
     }
 
     needsUpdated(object, newObject, keys) {
@@ -134,32 +194,33 @@ module.exports = class WorkerManager {
         return false;
     }
 
-    async restartWorker(index, config) {
-        if (this.workers[index]) {
-            const state = await this.workers[index].terminate();
+    async restartWorker(filename, config) {
+        const index = await this.getWorkerIndex(filename);
+        workers[index].restartCount++;
+
+        if (workers[index]?.worker) {
+            workers[index].restart = true;
+            const state = await workers[index].worker.terminate();
             console.log(
-                `WorkerManager->restartWorder: ${this.workerFiles[index]} terminated with code ${state}`
+                `WorkerManager->restartWorder: ${filename} terminated with code ${state}`
             );
         }
-        this.workers[index] = await this.createWorker(
-            this.workerFiles[index],
-            index,
-            config
-        );
     }
 
     async pushConfig(newConfig) {
-        const mergedConfig = { ...this.config, ...newConfig };
-
-        for (let i = 0; i < this.workerFiles.length; i++) {
-            if (this.needsUpdated(this.config, mergedConfig, restartKeys[i])) {
-                this.restartWorker(i, mergedConfig);
+        const mergedConfig = { ...config, ...newConfig };
+        for (let i in workers) {
+            if (
+                this.needsUpdated(config, mergedConfig, workers[i].restartKeys)
+            ) {
+                await this.restartWorker(workers[i].filename, mergedConfig);
             } else {
                 console.log(
-                    `WorkerManager->pushConfig: ${this.workerFiles[i]} doesn't need restarted.`
+                    `WorkerManager->pushConfig: ${workers[i]?.filename} doesn't need restarted.`
                 );
             }
         }
-        this.config = mergedConfig;
+        await this.updateWorkers();
+        config = mergedConfig;
     }
 };

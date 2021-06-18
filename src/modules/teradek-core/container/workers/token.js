@@ -8,63 +8,48 @@ const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
 const arraySaveMongo = require("@core/array-savemongo");
 
-const config = workerData.config;
 const errorDelayMs = 60000;
 let delayMs = 120000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    index: workerData.index,
+    restartDelay: 60000,
     restartOn: ["username", "password"],
 });
 
-try {
-    const main = async () => {
-        // Connect to the db
-        await mongoDb.connect(config?.id);
-        const tokenCollection = await mongoDb.db.collection("token");
+const main = async () => {
+    // Connect to the db
+    await mongoDb.connect(workerData?.id);
+    const tokenCollection = await mongoDb.db.collection("token");
 
-        console.log(`token: teradek-core token fetcher starting...`);
+    console.log(`token: teradek-core token fetcher starting...`);
 
-        // initial delay (to stagger device polls)
-        await delay(1000);
+    // initial delay (to stagger device polls)
+    await delay(500);
 
-        while (true) {
-            const response = await axios({
-                method: "get",
-                url: "v1.1/auth/login",
-                baseURL: "https://api-id.teradek.com/api/",
-                params: {
-                    email: config?.username,
-                    password: config?.password,
-                },
-            });
+    while (true) {
+        const response = await axios({
+            method: "get",
+            url: "v1.1/auth/login",
+            baseURL: "https://api-id.teradek.com/api/",
+            params: {
+                email: workerData?.username,
+                password: workerData?.password,
+            },
+        });
 
-            if (response.data?.meta?.status === "ok") {
-                const token = {
-                    ...response?.data?.response,
-                    timestamp: Date.now(),
-                };
-                delayMs = token.ttl * 1000 - 120000;
-                await arraySaveMongo(tokenCollection, [token], "auth_token");
-            } else {
-                throw {
-                    error: response.data,
-                    message: `Auth error for ${config?.username}`,
-                    delay: 60000,
-                };
-            }
+        if (response.data?.meta?.status === "ok") {
+            const token = {
+                ...response?.data?.response,
+                timestamp: Date.now(),
+            };
+            delayMs = token.ttl * 1000 - 120000;
+            await arraySaveMongo(tokenCollection, [token], "auth_token");
+        } else {
+            throw `Auth error for ${workerData?.username}`;
         }
-    };
-
-    main();
-} catch (error) {
-    if (isObject()) {
-        throw {
-            error: error?.message,
-            index: workerData.index,
-            delay: error?.delay,
-        };
+        await delay(delayMs);
     }
-    throw { error: error, index: workerData.index, delay: 60 };
-}
+};
+
+main();
