@@ -24,7 +24,7 @@ router.put("/", async function (req, res, next) {
     try {
         hashResponse(res, req, {
             status: "success",
-            data: await configPut(req.body),
+            data: await configPut(req.workers, req.body),
         });
     } catch (error) {
         hashResponse(res, req, {

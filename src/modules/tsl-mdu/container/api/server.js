@@ -7,7 +7,6 @@
 
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const workerStore = require("@core/worker-store");
 const app = require("./app");
 
 const port = process.env.PORT || 3200;

@@ -5,7 +5,6 @@
 
 const createError = require("http-errors");
 const express = require("express");
-const path = require("path");
 const workerStore = require("@core/worker-store");
 
 // Define the Express application
