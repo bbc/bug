@@ -9,6 +9,6 @@
 const fs = require("fs").promises;
 
 module.exports = async (filename) => {
-    let fileJson = await fs.readFile(filename);
+    const fileJson = await fs.readFile(filename);
     return JSON.parse(fileJson);
 };
