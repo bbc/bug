@@ -30,11 +30,11 @@ module.exports = class WorkerManager {
 
     async setup() {
         workers = await this.getWorkerFiles(this.folder);
-        await this.updateWorkers(workers);
 
         config = await configGet();
         if (config) {
             this.collection = await this.createCollection(config.id);
+            await this.updateWorkers(workers);
             await this.createWorkers();
         }
         console.log(`WorkerManager->setup: No panel config.`);
