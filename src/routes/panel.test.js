@@ -26,13 +26,15 @@ beforeAll(async () => {
 const listFiles = async () => {
     console.log("-------------------- listFiles START -----------------------------");
     const configFolder = path.join(__dirname, "..", "config");
-    console.log("configFolder", configFolder);
+    console.log("configFolder");
+    console.log(JSON.stringify(configFolder));
 
     // check the cache first
     const panelArray = [];
 
     files = await fs.readdir(configFolder);
-    console.log("files", files);
+    console.log("files");
+    console.log(JSON.stringify(files));
 
     for (let i in files) {
         const filename = path.join(configFolder, files[i]);
@@ -43,7 +45,8 @@ const listFiles = async () => {
             }
         }
     }
-    console.log("panelArray", panelArray);
+    console.log("panelArray");
+    console.log(panelArray);
     console.log("-------------------- listFiles END -----------------------------");
 };
 

@@ -18,10 +18,14 @@ module.exports = async () => {
                 if (eachImage.RepoTags && eachImage.RepoTags.length > 0) {
                     module = eachImage.RepoTags[0].split(":")[0];
                 }
+                let tag = null;
+                if (eachImage.RepoTags && eachImage.RepoTags.length > 0) {
+                    tag = eachImage.RepoTags[0];
+                }
                 response.push({
                     id: eachImage["Id"],
                     module: module,
-                    tag: eachImage.RepoTags[0],
+                    tag: tag,
                     created: eachImage["Created"],
                     parentId: eachImage["ParentId"],
                     size: eachImage["Size"],
