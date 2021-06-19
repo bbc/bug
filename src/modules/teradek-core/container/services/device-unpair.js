@@ -37,7 +37,7 @@ module.exports = async (encoderSid, decoderSid) => {
             return {
                 error: `Could not link ${encoderSid} to ${decoderSid}.`,
                 status: "error",
-                data: response.data,
+                data: decoders,
             };
         }
     } catch (error) {

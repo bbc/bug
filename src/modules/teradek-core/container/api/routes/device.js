@@ -10,6 +10,17 @@ const hashResponse = require("@core/hash-response");
 const getEncoderDevices = require("@services/devices-encoder-get");
 const getDecoderDevices = require("@services/devices-decoder-get");
 const getDevice = require("@services/device-get");
+const renameDevice = require("@services/device-rename");
+const encoderStart = require("@services/encoder-start");
+const encoderStop = require("@services/encoder-stop");
+
+device.get("/stop/:sid", async function (req, res) {
+    hashResponse(res, req, await encoderStop(req?.params?.sid));
+});
+
+device.get("/start/:sid", async function (req, res) {
+    hashResponse(res, req, await encoderStart(req?.params?.sid));
+});
 
 device.get("/all/encoders", async function (req, res) {
     hashResponse(res, req, await getEncoderDevices());
@@ -17,6 +28,14 @@ device.get("/all/encoders", async function (req, res) {
 
 device.get("/all/decoders", async function (req, res) {
     hashResponse(res, req, await getDecoderDevices());
+});
+
+device.put("rename/:sid", async function (req, res) {
+    hashResponse(
+        res,
+        req,
+        await renameDevice(req?.params?.sid, req.body?.name)
+    );
 });
 
 device.get("/:sid", async function (req, res) {

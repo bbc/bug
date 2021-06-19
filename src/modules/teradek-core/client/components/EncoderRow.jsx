@@ -5,6 +5,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import { Redirect } from "react-router";
 import Chip from "@material-ui/core/Chip";
+import IconButton from "@material-ui/core/IconButton";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
+import AxiosGet from "@utils/AxiosGet";
 
 const height = 100;
 
@@ -43,6 +47,13 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0.5),
         minWidth: "2rem",
         maxWidth: "8rem",
+        ["@media (max-width:700px)"]: {
+            display: "none",
+        },
+    },
+    colState: {
+        minWidth: "2rem",
+        maxWidth: "3rem",
         ["@media (max-width:700px)"]: {
             display: "none",
         },
@@ -89,6 +100,54 @@ export default function EncoderRow({ panelId, encoder, decoders, links }) {
         console.log(sid);
     };
 
+    const handlePlay = async (sid) => {
+        const response = await AxiosGet(
+            `/container/${panelId}/device/start/${sid}`
+        );
+        console.log(response);
+    };
+
+    const handlePause = async (sid) => {
+        const response = await AxiosGet(
+            `/container/${panelId}/device/stop/${sid}`
+        );
+        console.log(response);
+    };
+
+    const getButton = () => {
+        if (encoder?.streamStatus === "streaming") {
+            return (
+                <IconButton
+                    onClick={(event) => {
+                        handlePause(encoder?.sid);
+                    }}
+                    aria-label="pause"
+                >
+                    <PauseIcon />
+                </IconButton>
+            );
+        }
+        if (
+            encoder?.streamStatus === "paused" ||
+            encoder?.streamStatus === "stopped"
+        ) {
+            return (
+                <IconButton
+                    onClick={(event) => {
+                        handlePlay(encoder?.sid);
+                    }}
+                    aria-label="play"
+                >
+                    <PlayArrowIcon />
+                </IconButton>
+            );
+        }
+        return (
+            <IconButton disabled aria-label="play">
+                <PlayArrowIcon />
+            </IconButton>
+        );
+    };
     const getDeviceName = (sid) => {
         if (!decoders) {
             return sid;
@@ -147,6 +206,7 @@ export default function EncoderRow({ panelId, encoder, decoders, links }) {
             <TableCell className={classes.colDecoders}>
                 {getLinkedDecoders(links?.linksToDecoders)}
             </TableCell>
+            <TableCell className={classes.colState}>{getButton()}</TableCell>
         </TableRow>
     );
 }

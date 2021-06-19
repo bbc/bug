@@ -56,6 +56,13 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colState: {
+        minWidth: "2rem",
+        maxWidth: "3rem",
+        ["@media (max-width:700px)"]: {
+            display: "none",
+        },
+    },
 }));
 
 export default function EncodersTab({ panelId }) {
@@ -135,6 +142,7 @@ export default function EncodersTab({ panelId }) {
                             <TableCell className={classes.colDecoders}>
                                 Decoders
                             </TableCell>
+                            <TableCell className={classes.colState}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>{renderRows(encoders.data)}</TableBody>
