@@ -10,8 +10,8 @@ export default function Sputniks({ panelId }) {
         interval: 1000,
     });
 
-    const renderCard = (decoder) => {
-        return <SputnikCard key={decoder?.sid} {...decoder} />;
+    const renderCard = (sputnik) => {
+        return <SputnikCard key={sputnik?._id} {...sputnik} />;
     };
 
     const renderCards = (sputniks) => {

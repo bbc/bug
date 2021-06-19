@@ -24,11 +24,12 @@ const main = async () => {
     console.log(`channels: teradek-core encoder worker starting...`);
 
     while (true) {
+        const token = await tokenCollection.findOne();
         const response = await axios.get(
             `v1.0/${workerData.organisation}/cdns`,
             {
                 params: {
-                    auth_token: workerData?.token,
+                    auth_token: token?.auth_token,
                 },
             }
         );

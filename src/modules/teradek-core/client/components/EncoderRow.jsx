@@ -8,6 +8,8 @@ import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
+import CloudIcon from "@material-ui/icons/Cloud";
+import VideocamIcon from "@material-ui/icons/Videocam";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
 
@@ -70,7 +72,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EncoderRow({ panelId, encoder, decoders, links }) {
+export default function EncoderRow({
+    panelId,
+    encoder,
+    decoders,
+    channels,
+    links,
+}) {
     const classes = useStyles();
     const [redirectUrl, setRedirectUrl] = useState(null);
 
@@ -153,6 +161,7 @@ export default function EncoderRow({ panelId, encoder, decoders, links }) {
             </IconButton>
         );
     };
+
     const getDeviceName = (sid) => {
         if (!decoders) {
             return sid;
@@ -165,13 +174,26 @@ export default function EncoderRow({ panelId, encoder, decoders, links }) {
         return decoders[index]?.name;
     };
 
+    const getChannelName = (id) => {
+        if (!channels) {
+            return id;
+        }
+        const index = channels
+            .map((channels) => {
+                return channels?.id;
+            })
+            .indexOf(id);
+        return channels[index]?.title;
+    };
+
     const getLinkedDecoders = (links) => {
         const chips = [];
-        if (links) {
-            for (let link of links) {
+        if (links?.linksToDecoders) {
+            for (let link of links?.linksToDecoders) {
                 if (link.status !== "failed") {
                     chips.push(
                         <Chip
+                            icon={<VideocamIcon />}
                             key={link?.sid}
                             size="small"
                             className={getColor(link?.status)}
@@ -179,6 +201,23 @@ export default function EncoderRow({ panelId, encoder, decoders, links }) {
                                 handleUnpair(link?.sid);
                             }}
                             label={getDeviceName(link?.sid)}
+                            variant="outlined"
+                        />
+                    );
+                }
+            }
+        }
+
+        if (links?.linksToCdns) {
+            for (let link of links?.linksToCdns) {
+                if (link.status !== "failed") {
+                    chips.push(
+                        <Chip
+                            icon={<CloudIcon />}
+                            key={link?.id}
+                            size="small"
+                            className={getColor(link?.status)}
+                            label={getChannelName(link?.id)}
                             variant="outlined"
                         />
                     );
@@ -209,7 +248,7 @@ export default function EncoderRow({ panelId, encoder, decoders, links }) {
             <TableCell className={classes.colName}>{encoder.name}</TableCell>
             <TableCell className={classes.colModel}>{encoder.model}</TableCell>
             <TableCell className={classes.colDecoders}>
-                {getLinkedDecoders(links?.linksToDecoders)}
+                {getLinkedDecoders(links)}
             </TableCell>
             <TableCell className={classes.colState}>{getButton()}</TableCell>
         </TableRow>

@@ -83,6 +83,11 @@ export default function EncodersTab({ panelId }) {
         interval: 5000,
     });
 
+    const channels = useApiPoller({
+        url: `/container/${panelId}/channel/all`,
+        interval: 5000,
+    });
+
     const getLink = (sid) => {
         if (!links.data) {
             return null;
@@ -104,6 +109,7 @@ export default function EncodersTab({ panelId }) {
                         panelId={panelId}
                         links={getLink(encoder?.sid)}
                         decoders={decoders?.data}
+                        channels={channels?.data}
                         key={encoder?.sid}
                         encoder={encoder}
                     />
