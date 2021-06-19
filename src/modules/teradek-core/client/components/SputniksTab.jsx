@@ -1,33 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Loading from "@components/Loading";
 import SputnikCard from "./SputnikCard";
 import { useApiPoller } from "@utils/ApiPoller";
 import Grid from "@material-ui/core/Grid";
-import { useSelector } from "react-redux";
-
-let socket;
 
 export default function Sputniks({ panelId }) {
-    const panelConfig = useSelector((state) => state.panelConfig);
-
     const sputniks = useApiPoller({
         url: `/container/${panelId}/sputnik/all`,
-        interval: 2000,
+        interval: 1000,
     });
 
-    const token = useApiPoller({
-        url: `/container/${panelId}/system/token`,
-        interval: 30000,
-    });
-
-    const renderCard = (sputnik) => {
-        return (
-            <SputnikCard
-                socket={socket}
-                key={sputnik?.identifier}
-                {...sputnik}
-            />
-        );
+    const renderCard = (decoder) => {
+        return <SputnikCard key={decoder?.sid} {...decoder} />;
     };
 
     const renderCards = (sputniks) => {

@@ -12,11 +12,15 @@ const system = require("./routes/system");
 const device = require("./routes/device");
 const sputnik = require("./routes/sputnik");
 const channel = require("./routes/channel");
+const link = require("./routes/link");
+const pair = require("./routes/pair");
 
 router
     .use("/status", status)
     .use("/config", config)
     .use("/system", system)
+    .use("/link", link)
+    .use("/pair", pair)
     .use("/device", device)
     .use("/sputnik", sputnik)
     .use("/channel", channel)

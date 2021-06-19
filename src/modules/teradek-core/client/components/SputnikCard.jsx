@@ -15,20 +15,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EncoderCard(props) {
+export default function SputnikCard(props) {
     const classes = useStyles();
-
-    const [sputnikStats, setSputnikStats] = useState([]);
-
-    props.socket.on(`device:${props.identifier}:vital-signs`, (data) => {
-        const newStats = sputnikStats;
-        if (newStats.length >= 20) {
-            newStats.shift();
-            newStats.push(data);
-        }
-        newStats.push(data);
-        setSputnikStats(newStats);
-    });
 
     return (
         <Grid key={props?.sid} item lg={4} md={6} sm={12} xs={12}>
@@ -38,7 +26,7 @@ export default function EncoderCard(props) {
                     titleTypographyProps={{ variant: "h6" }}
                     subheader={props.status.toUpperCase()}
                 />
-                <CardContent></CardContent>
+                <CardContent>{props.inventory.length}</CardContent>
             </Card>
         </Grid>
     );

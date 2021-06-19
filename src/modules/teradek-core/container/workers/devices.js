@@ -12,7 +12,7 @@ const updateDelay = 10000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    restartDelay: 60000,
+    restartDelay: 10000,
     restartOn: ["username", "password", "organisation"],
 });
 
@@ -33,7 +33,6 @@ const main = async () => {
                 params: {
                     auth_token: token?.auth_token,
                     firmwareDetails: true,
-                    details: true,
                 },
             }
         );
