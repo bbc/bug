@@ -13,6 +13,8 @@ const getDevice = require("@services/device-get");
 const renameDevice = require("@services/device-rename");
 const encoderStart = require("@services/encoder-start");
 const encoderStop = require("@services/encoder-stop");
+const pairDevice = require("@services/device-pair");
+const unpairDevice = require("@services/device-unpair");
 
 device.get("/stop/:sid", async function (req, res) {
     hashResponse(res, req, await encoderStop(req?.params?.sid));
@@ -20,6 +22,22 @@ device.get("/stop/:sid", async function (req, res) {
 
 device.get("/start/:sid", async function (req, res) {
     hashResponse(res, req, await encoderStart(req?.params?.sid));
+});
+
+device.put("/pair/:sid", async function (req, res) {
+    hashResponse(
+        res,
+        req,
+        await pairDevice(req?.params?.sid, req?.body?.decoderSid)
+    );
+});
+
+device.put("/unpair/:sid", async function (req, res) {
+    hashResponse(
+        res,
+        req,
+        await unpairDevice(req?.params?.sid, req?.body?.decoderSid)
+    );
 });
 
 device.get("/all/encoders", async function (req, res) {
@@ -30,7 +48,7 @@ device.get("/all/decoders", async function (req, res) {
     hashResponse(res, req, await getDecoderDevices());
 });
 
-device.put("rename/:sid", async function (req, res) {
+device.put("/rename/:sid", async function (req, res) {
     hashResponse(
         res,
         req,

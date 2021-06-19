@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import AxiosGet from "@utils/AxiosGet";
+import AxiosPut from "@utils/AxiosPut";
 
 const height = 100;
 
@@ -96,8 +97,12 @@ export default function EncoderRow({ panelId, encoder, decoders, links }) {
         return null;
     };
 
-    const handleUnpair = (sid) => {
-        console.log(sid);
+    const handleUnpair = async (sid) => {
+        const response = await AxiosPut(
+            `/container/${panelId}/device/unpair/${encoder?.sid}`,
+            { decoderSid: sid }
+        );
+        console.log(response);
     };
 
     const handlePlay = async (sid) => {

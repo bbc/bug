@@ -12,30 +12,23 @@ module.exports = async (encoderSid, decoderSid) => {
         const link = await linksCollection.findOne({ encoderSid: encoderSid });
         const config = await configGet();
 
-        const decoderSids = link?.linksToDecoders.map((link) => {
-            return link?.sid;
-        });
-
-        decoderSids.push(decoderSid);
-
-        const response = await axios.put(
-            `https://api-core.teradek.com/api/v1.0/${config?.organisation}/pairs/${link?.id}/decoders`,
+        const response = await axios.delete(
+            `https://api-core.teradek.com/api/v1.0/${config?.organisation}/pairs/${link?.id}/decoders?auth_token=${token?.auth_token}`,
             {
-                params: {
-                    auth_token: token?.auth_token,
+                data: {
+                    decoderSids: [`${decoderSid}`],
                 },
-                decoderSids: decoderSids,
             }
         );
 
         if (response.data?.meta?.status === "ok") {
             return {
                 status: "success",
-                data: `Paired ${encoderSid} to ${decoderSid}.`,
+                data: `Unpaired ${encoderSid} from ${decoderSid}.`,
             };
         } else {
             return {
-                error: `Could not link ${encoderSid} to ${decoderSid}.`,
+                error: `Could not unpair ${encoderSid} from ${decoderSid}.`,
                 status: "error",
                 data: decoders,
             };
