@@ -22,6 +22,7 @@ const panelConfigRouter = require("@routes/panelconfig");
 const bugRouter = require("@routes/bug");
 const iconsRouter = require("@routes/icons");
 const proxyRouter = require("@routes/proxy");
+const userRouter = require("@routes/user");
 
 const bugApi = express();
 
@@ -47,7 +48,9 @@ bugApi.use(
     })
 );
 
-bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "favicon.ico")));
+bugApi.use(
+    favicon(path.join(__dirname, "..", "client", "public", "favicon.ico"))
+);
 
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
@@ -61,6 +64,7 @@ bugApi.use("/api/icons", iconsRouter);
 bugApi.use("/api/system", systemRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
+bugApi.use("/api/user", userRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
 
 //Serve files in the public folder
