@@ -36,7 +36,7 @@ router.delete(
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Deleted user",
-            data: null,
+            data: result,
         });
     })
 );
@@ -62,7 +62,7 @@ router.get(
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Retrieved all users",
-            data: null,
+            data: result,
         });
     })
 );
@@ -95,7 +95,7 @@ router.get(
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Retrieved user",
-            data: null,
+            data: result,
         });
     })
 );
@@ -148,12 +148,11 @@ router.get(
 router.post(
     "/",
     asyncHandler(async (req, res) => {
-        console.log(req.body);
         const result = await userUpdate(req.body);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Added the user.",
-            data: null,
+            data: result,
         });
     })
 );
@@ -210,7 +209,7 @@ router.put(
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Updated the user",
-            data: null,
+            data: result,
         });
     })
 );

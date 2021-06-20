@@ -8,10 +8,6 @@ module.exports = async () => {
         const response = {};
         response.data = await userModel.list();
 
-        response.data.sort(function (a, b) {
-            return b.email - a.email;
-        });
-
         return response;
     } catch (error) {
         logger.warning(
