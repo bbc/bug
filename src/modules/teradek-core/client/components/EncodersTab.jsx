@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     colThumbnail: {
+        margin: "auto",
         minWidth: "2rem",
         maxWidth: "5rem",
         overflow: "hidden",
@@ -136,9 +137,9 @@ export default function EncodersTab({ panelId }) {
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            <TableCell
-                                className={classes.colThumbnail}
-                            ></TableCell>
+                            <TableCell className={classes.colThumbnail}>
+                                Thumbnail
+                            </TableCell>
                             <TableCell className={classes.colName}>
                                 Name
                             </TableCell>
@@ -146,7 +147,7 @@ export default function EncodersTab({ panelId }) {
                                 Model
                             </TableCell>
                             <TableCell className={classes.colDecoders}>
-                                Decoders
+                                Connections
                             </TableCell>
                             <TableCell className={classes.colState}></TableCell>
                         </TableRow>

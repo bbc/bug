@@ -9,6 +9,7 @@ const device = express.Router();
 const hashResponse = require("@core/hash-response");
 const getEncoderDevices = require("@services/devices-encoder-get");
 const getDecoderDevices = require("@services/devices-decoder-get");
+const getDevices = require("@services/devices-get");
 const getDevice = require("@services/device-get");
 const renameDevice = require("@services/device-rename");
 const encoderStart = require("@services/encoder-start");
@@ -46,6 +47,10 @@ device.get("/all/encoders", async function (req, res) {
 
 device.get("/all/decoders", async function (req, res) {
     hashResponse(res, req, await getDecoderDevices());
+});
+
+device.get("/all", async function (req, res) {
+    hashResponse(res, req, await getDevices());
 });
 
 device.put("/rename/:sid", async function (req, res) {
