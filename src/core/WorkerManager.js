@@ -15,9 +15,6 @@ const path = require("path");
 const fs = require("fs");
 const delay = require("delay");
 
-const mongoDb = require("@core/mongo-db");
-const arraySaveMongo = require("@core/array-savemongo");
-
 let workers = [];
 let config;
 
@@ -33,17 +30,13 @@ module.exports = class WorkerManager {
 
         config = await configGet();
 
+        if (!config) {
+            console.log(
+                `WorkerManager->setup: No panel config. Starting workers without one...`
+            );
+        }
         //Start workers whether there's a config or not
-        this.collection = await this.createCollection(config.id);
-        await this.updateWorkers(workers);
         await this.createWorkers();
-
-        console.log(`WorkerManager->setup: No panel config.`);
-    }
-
-    async createCollection(panelId) {
-        await mongoDb.connect(panelId);
-        return await mongoDb.db.collection("workers");
     }
 
     async getWorkers() {
@@ -57,13 +50,6 @@ module.exports = class WorkerManager {
             })
             .indexOf(filename);
         return index;
-    }
-
-    async updateWorkers() {
-        for (let index in workers) {
-            workers[index].timestamp = Date.now();
-        }
-        arraySaveMongo(this.collection, workers, "filename");
     }
 
     async getWorkerFiles(folder) {
@@ -95,7 +81,6 @@ module.exports = class WorkerManager {
             for (let worker of workers) {
                 await this.createWorker(worker.filename, config);
             }
-            await this.updateWorkers();
         } else {
             console.log(
                 `WorkerManager->createWorkers: You're trying to launch workers in a worker.`
@@ -136,7 +121,6 @@ module.exports = class WorkerManager {
             } else {
                 workers[await self.getWorkerIndex(filename)].restartDelay = 0;
             }
-            await self.updateWorkers();
         };
 
         const handleError = async (event, filename, self) => {
@@ -146,13 +130,11 @@ module.exports = class WorkerManager {
                 event
             );
             workers[index].state = "error";
-            await self.updateWorkers();
         };
 
         const handleOnline = async (event, filename, self) => {
             const index = await self.getWorkerIndex(filename);
             workers[index].state = "working";
-            await self.updateWorkers();
         };
 
         const handleExit = async (event, filename, self) => {
@@ -171,7 +153,6 @@ module.exports = class WorkerManager {
                 delete workers[index].worker;
                 console.log(`WorkerManager->handleExit: ${filename} stopped.`);
             }
-            await self.updateWorkers();
         };
 
         await worker.on("message", (event) =>
@@ -232,6 +213,5 @@ module.exports = class WorkerManager {
                 );
             }
         }
-        await this.updateWorkers();
     }
 };
