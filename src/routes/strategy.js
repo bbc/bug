@@ -134,8 +134,8 @@ router.get(
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result
-                ? `Succesfully enabled strategy called ${req.params.name}`
-                : "Failed to enable strategy",
+                ? `Succesfully disabled strategy called ${req.params.name}`
+                : "Failed to disable strategy",
             data: result,
         });
     })
