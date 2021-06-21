@@ -230,7 +230,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                             return (
                                 <ListItem
                                     className={classes.listItem}
-                                    key={button}
+                                    key={index}
                                     role="listitem"
                                     button
                                     onClick={(event) => handleToggle(event, index, button)}
