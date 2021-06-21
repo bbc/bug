@@ -32,11 +32,12 @@ module.exports = class WorkerManager {
         workers = await this.getWorkerFiles(this.folder);
 
         config = await configGet();
-        if (config) {
-            this.collection = await this.createCollection(config.id);
-            await this.updateWorkers(workers);
-            await this.createWorkers();
-        }
+
+        //Start workers whether there's a config or not
+        this.collection = await this.createCollection(config.id);
+        await this.updateWorkers(workers);
+        await this.createWorkers();
+
         console.log(`WorkerManager->setup: No panel config.`);
     }
 
