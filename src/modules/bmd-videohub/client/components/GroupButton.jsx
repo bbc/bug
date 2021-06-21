@@ -9,11 +9,11 @@ import { useSortable } from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
     button: {
-        backgroundColor: "#5c877c",
+        backgroundColor: "#444",
         borderRadius: 3,
         margin: 4,
         "&:hover": {
-            backgroundColor: "#1d945d",
+            backgroundColor: "#0069d9",
         },
         width: 128,
         height: 48,
@@ -23,9 +23,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     buttonSelected: {
-        backgroundColor: "#33b77a",
+        backgroundColor: "#337ab7",
         "&:hover": {
-            backgroundColor: "#1d945d",
+            backgroundColor: "#0069d9",
         },
     },
     editButton: {
