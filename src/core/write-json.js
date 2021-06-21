@@ -7,9 +7,16 @@
  */
 
 const { promises: fs } = require("fs");
+const path = require("path");
+
+async function ensureDirectoryExists(filepath) {
+    const dirname = path.dirname(filepath);
+    await fs.mkdir(dirname, { recursive: true });
+}
 
 module.exports = async (filepath, contents) => {
     try {
+        await ensureDirectoryExists(filepath);
         const jsonString = await JSON.stringify(contents, null, 2);
         await fs.writeFile(filepath, jsonString);
         return true;

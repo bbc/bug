@@ -17,39 +17,69 @@ function clearCache() {
 
 exports.get = async function (panelId) {
     try {
-        const filename = path.join(__dirname, "..", "config", `${panelId}.json`);
+        const filename = path.join(
+            __dirname,
+            "..",
+            "config",
+            "panels",
+            `${panelId}.json`
+        );
         return await readJson(filename);
     } catch (error) {
-        logger.warning(`panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
+        logger.warning(
+            `panel id ${panelId} - ${
+                error.stack || error.trace || error || error.message
+            }`
+        );
     }
 };
 
 exports.set = async function (panelConfig) {
     try {
-        const filename = path.join(__dirname, "..", "config", `${panelConfig.id}.json`);
+        const filename = path.join(
+            __dirname,
+            "..",
+            "config",
+            "panels",
+            `${panelConfig.id}.json`
+        );
         clearCache();
         return await writeJson(filename, panelConfig);
     } catch (error) {
-        logger.warning(`panel id ${panelConfig.id} - ${error.trace || error || error.message}`);
+        logger.warning(
+            `panel id ${panelConfig.id} - ${
+                error.trace || error || error.message
+            }`
+        );
         return false;
     }
 };
 
 exports.delete = async function (panelId) {
     try {
-        const filename = path.join(__dirname, "..", "config", `${panelId}.json`);
+        const filename = path.join(
+            __dirname,
+            "..",
+            "config",
+            "panels",
+            `${panelId}.json`
+        );
         clearCache();
         logger.debug(`deleting file ${filename}`);
         return await deleteFile(filename);
     } catch (error) {
-        logger.warning(`panel id ${panelConfig.id} - ${error.stack || error.trace || error || error.message}`);
+        logger.warning(
+            `panel id ${panelConfig.id} - ${
+                error.stack || error.trace || error || error.message
+            }`
+        );
         return false;
     }
 };
 
 exports.list = async function (panelId) {
     const cacheKey = "panelConfig";
-    const configFolder = path.join(__dirname, "..", "config");
+    const configFolder = path.join(__dirname, "..", "config", "panels");
 
     // check the cache first
     let panelArray = cacheStore.get(cacheKey);
@@ -73,7 +103,11 @@ exports.list = async function (panelId) {
                     }
                 }
             } catch (error) {
-                logger.warning(`filename ${filename} - ${error.stack || error.trace || error || error.message}`);
+                logger.warning(
+                    `filename ${filename} - ${
+                        error.stack || error.trace || error || error.message
+                    }`
+                );
             }
         }
         // cache the result for 1 minute
