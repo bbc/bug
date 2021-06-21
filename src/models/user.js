@@ -23,9 +23,9 @@ async function getUsers() {
     try {
         return await readJson(filename);
     } catch (error) {
-        const contents = { users: [] };
-        if (await writeJson(filename, contents)) {
-            return contents;
+        const users = [];
+        if (await writeJson(filename, users)) {
+            return users;
         }
         throw error;
     }
@@ -42,12 +42,12 @@ exports.list = async function () {
 
 exports.get = async function (email) {
     try {
-        const contents = await getUsers();
-        const index = await getUserIndex(contents?.users, email);
+        const users = await getUsers();
+        const index = await getUserIndex(users, email);
         if (index === -1) {
             return null;
         }
-        return contents?.users[index];
+        return users[index];
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);
     }
@@ -56,13 +56,13 @@ exports.get = async function (email) {
 
 exports.delete = async function (email) {
     try {
-        const contents = await getUsers();
-        const index = await getUserIndex(contents?.users, email);
+        const users = await getUsers();
+        const index = await getUserIndex(users, email);
         if (index === -1) {
             return null;
         }
-        contents?.users.splice(index, 1);
-        return await writeJson(filename, contents);
+        users.splice(index, 1);
+        return await writeJson(filename, users);
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);
     }
@@ -71,15 +71,15 @@ exports.delete = async function (email) {
 
 exports.set = async function (user) {
     try {
-        let contents = await getUsers();
-        const index = await getUserIndex(contents?.users, user?.email);
+        let users = await getUsers();
+        const index = await getUserIndex(users, user?.email);
         if (index !== -1) {
-            contents.users[index] = user;
+            users[index] = user;
         } else {
-            contents.users.push(user);
+            users.push(user);
         }
 
-        return await writeJson(filename, contents);
+        return await writeJson(filename, users);
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);
     }
@@ -88,15 +88,15 @@ exports.set = async function (user) {
 
 exports.update = async function (user) {
     try {
-        let contents = await getUsers();
-        const index = await getUserIndex(contents?.users, user?.email);
+        let users = await getUsers();
+        const index = await getUserIndex(users, user?.email);
         if (index !== -1) {
-            contents.users[index] = { ...contents.users[index], ...user };
+            users[index] = { ...users[index], ...user };
         } else {
             return null;
         }
 
-        return await writeJson(filename, contents);
+        return await writeJson(filename, users);
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);
     }

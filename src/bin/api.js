@@ -25,6 +25,7 @@ const bugRouter = require("@routes/bug");
 const iconsRouter = require("@routes/icons");
 const proxyRouter = require("@routes/proxy");
 const userRouter = require("@routes/user");
+const strategyRouter = require("@routes/strategy");
 
 const bugApi = express();
 
@@ -89,6 +90,7 @@ bugApi.use("/api/system", systemRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
+bugApi.use("/api/strategy", strategyRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
 
 //Serve files in the public folder
