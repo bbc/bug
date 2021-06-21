@@ -22,6 +22,8 @@ exports.proxy = new HeaderStrategy(
             auth = false;
             logger.info(`Login failed: ${header} is not on the user list.`);
         } else if (user.state === "active") {
+            delete user["password"];
+            delete user["pin"];
             auth = user;
             logger.debug(`Login sucess: ${user.email} logged on.`);
         } else {
@@ -46,5 +48,7 @@ exports.local = new LocalStrategy(async (username, password, done) => {
     if (user.password !== password) {
         return done(null, false);
     }
+    delete user["password"];
+    delete user["pin"];
     return done(null, user);
 });

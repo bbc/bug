@@ -37,6 +37,14 @@ passport.use("local", strategy.local);
 // passport.use("pin", strategy.pin);
 // passport.use("saml", strategy.saml);
 
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
+
 bugApi.set("json spaces", 2);
 bugApi.use(httpLogger);
 bugApi.use(cors());
@@ -68,6 +76,11 @@ bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
 bugApi.use(express.static(path.join(__dirname, "public")));
 
+// bugApi.use(
+//     "/documentation",
+//     passport.authenticate(["proxy", "local"]),
+//     documentation
+// );
 bugApi.use("/documentation", documentation);
 bugApi.use("/container", proxyRouter);
 bugApi.use("/api/bug", bugRouter);
