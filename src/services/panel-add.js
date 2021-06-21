@@ -4,6 +4,7 @@ const id = require("@utils/id");
 const panelConfigModel = require("@models/panel-config");
 const moduleGet = require("@services/module-get");
 const logger = require("@utils/logger")(module);
+const panelStart = require("@services/panel-start");
 
 module.exports = async (panelConfig) => {
     try {
@@ -19,8 +20,16 @@ module.exports = async (panelConfig) => {
         }
         panelConfig = { ...module?.defaultconfig, ...panelConfig };
 
+        // make sure it's enabled (we do this now - it's a thing)
+        panelConfig.enabled = true;
+
         // and save it to a file
-        return await panelConfigModel.set(panelConfig);
+        if (!(await panelConfigModel.set(panelConfig))) {
+            throw new Error(`Failed to save new config for id ${panelConfig.id}`);
+        }
+
+        // and now build it
+        return await panelStart(panelConfig.id);
     } catch (error) {
         logger.warning(`${error.stack | error.trace || error || error.message}`);
         throw new Error(`Failed to add panel`);

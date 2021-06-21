@@ -29,6 +29,7 @@ export default function PanelGroupDropdown({ value, onChange, fullWidth = false,
                 if (onChange) {
                     onChange(newValue ? newValue : "");
                 }
+                event.stopPropagation();
             }}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
@@ -36,6 +37,7 @@ export default function PanelGroupDropdown({ value, onChange, fullWidth = false,
                 if (onChange) {
                     onChange(newInputValue ? newInputValue : "");
                 }
+                event.stopPropagation();
             }}
             filterOptions={(options, params) => {
                 const filtered = filter(options, params);

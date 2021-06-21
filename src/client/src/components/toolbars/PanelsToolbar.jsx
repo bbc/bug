@@ -67,7 +67,7 @@ export default function PanelsToolbar(props) {
                     <ListItemIcon>
                         <EditIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText primary="Config" />
+                    <ListItemText primary="Edit" />
                 </MenuItem>
             </Menu>
         </>

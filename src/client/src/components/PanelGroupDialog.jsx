@@ -21,12 +21,13 @@ export default function PanelGroupDialog({ panelId, panelTitle, panelGroup, onCl
         }
     };
 
-    const handleGroupDialogClose = () => {
+    const handleGroupDialogClose = (event) => {
         onClose();
+        event.stopPropagation();
     };
 
     return (
-        <Dialog open onClose={handleGroupDialogClose}>
+        <Dialog open onClose={handleGroupDialogClose} fullWidth maxWidth="sm" disableBackdropClick>
             <DialogTitle id="alert-dialog-title">Change panel group</DialogTitle>
             <DialogContent>
                 <PanelGroupDropdown
