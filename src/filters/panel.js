@@ -50,6 +50,6 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         _module: moduleConfig,
         _dockerContainer: containerInfo,
         _buildStatus: panelBuildStatus,
-        _status: thisStatus?.statusItems,
+        _status: thisStatus ? thisStatus?.statusItems : [],
     };
 };
