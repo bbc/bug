@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 
 export default function RenameDialog({ defaultValue = "", onCancel, title, label, onSubmit, buttonText }) {
     const [value, setValue] = React.useState(defaultValue);
-    console.log(value);
+
     return (
         <Dialog open onClose={onCancel}>
             <form

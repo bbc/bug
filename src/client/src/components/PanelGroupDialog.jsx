@@ -26,7 +26,7 @@ export default function PanelGroupDialog({ panelId, panelTitle, panelGroup, onCl
     };
 
     return (
-        <Dialog open onClose={handleGroupDialogClose}>
+        <Dialog open onClose={handleGroupDialogClose} fullWidth maxWidth="sm">
             <DialogTitle id="alert-dialog-title">Change panel group</DialogTitle>
             <DialogContent>
                 <PanelGroupDropdown
