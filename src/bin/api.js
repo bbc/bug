@@ -6,6 +6,8 @@ const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
+const strategy = require("@utils/passport");
+const passport = require("passport");
 
 // import environment variables from .env file
 require("dotenv").config();
@@ -25,6 +27,23 @@ const proxyRouter = require("@routes/proxy");
 const userRouter = require("@routes/user");
 
 const bugApi = express();
+
+//Configure Passport
+bugApi.use(passport.initialize());
+// app.use(passport.session());
+
+passport.use("proxy", strategy.proxy);
+passport.use("local", strategy.local);
+// passport.use("pin", strategy.pin);
+// passport.use("saml", strategy.saml);
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
 
 bugApi.set("json spaces", 2);
 bugApi.use(httpLogger);
@@ -57,6 +76,11 @@ bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
 bugApi.use(express.static(path.join(__dirname, "public")));
 
+// bugApi.use(
+//     "/documentation",
+//     passport.authenticate(["proxy", "local"]),
+//     documentation
+// );
 bugApi.use("/documentation", documentation);
 bugApi.use("/container", proxyRouter);
 bugApi.use("/api/bug", bugRouter);
