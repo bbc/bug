@@ -100,10 +100,11 @@ export default function PanelTableRow(props) {
         }
     };
 
-    const handleRowClicked = (panelId) => {
+    const handleRowClicked = (e, panelId) => {
         if (props.enabled) {
             setRedirectUrl(`/panel/${panelId}/`);
         }
+        e.stopPropagation();
     };
 
     const renderState = (panel) => {
@@ -161,7 +162,7 @@ export default function PanelTableRow(props) {
             className={clsx({
                 [classes.panelRowCursor]: props.enabled,
             })}
-            onClick={() => handleRowClicked(props.id)}
+            onClick={(e) => handleRowClicked(e, props.id)}
         >
             {props.showGroups ? <TableCell className={classes.colIndent} /> : null}
             <TableCell className={classes.colPower}>{renderPowerIcon(props)}</TableCell>

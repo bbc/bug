@@ -29,10 +29,12 @@ export default function PanelTableMenu(props) {
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
+        event.stopPropagation();
     };
 
-    const handleClose = () => {
+    const handleClose = (event) => {
         setAnchorEl(null);
+        event.stopPropagation();
     };
 
     const needsContainer = props?.panel?._module.needsContainer ?? true;
