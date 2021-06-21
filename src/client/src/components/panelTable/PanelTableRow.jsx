@@ -9,6 +9,8 @@ import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 import { useAlert } from "@utils/Snackbar";
+import PowerIcon from "@core/PowerIcon";
+import { Redirect } from "react-router";
 
 const state = {
     textTransform: "uppercase",
@@ -56,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
     disabledText: {
         opacity: 0.3,
     },
+    colPower: {
+        textAlign: "center",
+    },
     colDescription: {
         "@media (max-width:1024px)": {
             display: "none",
@@ -72,11 +77,18 @@ const useStyles = makeStyles((theme) => ({
     colEnabled: {
         width: "4rem",
     },
+    panelRowCursor: {
+        cursor: "pointer",
+    },
 }));
 
 export default function PanelTableRow(props) {
     const classes = useStyles();
     const sendAlert = useAlert();
+    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const errorCount = props._status.filter((x) => x.type === "error").length;
+    const warningCount = props._status.filter((x) => x.type === "warning").length;
+    const criticalCount = props._status.filter((x) => x.type === "critical").length;
 
     const handleEnabledChanged = async (checked, panelId) => {
         const command = checked ? "enable" : "disable";
@@ -85,6 +97,12 @@ export default function PanelTableRow(props) {
             sendAlert(`${commandText} panel: ${props.title}`, { broadcast: true, variant: "success" });
         } else {
             sendAlert(`Failed to ${command} panel: ${props.title}`, { variant: "error" });
+        }
+    };
+
+    const handleRowClicked = (panelId) => {
+        if (props.enabled) {
+            setRedirectUrl(`/panel/${panelId}/`);
         }
     };
 
@@ -103,36 +121,56 @@ export default function PanelTableRow(props) {
             case "error":
                 return <div className={classes.state_error}>ERROR - {panel._buildStatus.text}</div>;
             default:
-                return (
-                    <div className={`${classes["state_" + panel._dockerContainer._status]}`}>
-                        {panel._dockerContainer._status}
-                    </div>
-                );
+            // do nothing
         }
+
+        if (criticalCount > 0) {
+            return <div className={classes.state_error}>RUNNING - WITH {criticalCount} CRITICAL ERROR(S)</div>;
+        } else if (errorCount > 0) {
+            return <div className={classes.state_error}>RUNNING - WITH {errorCount} ERROR(S)</div>;
+        } else if (errorCount > 0) {
+            return <div className={classes.state_warning}>RUNNING - WITH {warningCount} WARNINGS(S)</div>;
+        }
+        return (
+            <div className={`${classes["state_" + panel._dockerContainer._status]}`}>
+                {panel._dockerContainer._status}
+            </div>
+        );
     };
 
-    const renderSwitch = (panel) => {
+    const renderPowerIcon = (panel) => {
         if (
             panel._status === "building" ||
             panel._dockerContainer._status === "stopping" ||
             panel._dockerContainer._status === "starting"
         ) {
-            return <CircularProgress />;
+            return <CircularProgress size={30} />;
         }
-        return (
-            <ApiSwitch
-                panelId={panel.id}
-                checked={panel.enabled}
-                onChange={(checked) => handleEnabledChanged(checked, panel.id)}
-            />
-        );
+        const enabled = panel._dockerContainer._isRunning || (!panel._module.needsContainer && panel.enabled);
+        return <PowerIcon enabled={enabled} />;
     };
 
+    if (redirectUrl) {
+        return <Redirect push to={{ pathname: redirectUrl }} />;
+    }
+
     return (
-        <TableRow key={props.id}>
+        <TableRow
+            key={props.id}
+            hover={props.enabled}
+            className={clsx({
+                [classes.panelRowCursor]: props.enabled,
+            })}
+            onClick={() => handleRowClicked(props.id)}
+        >
             {props.showGroups ? <TableCell className={classes.colIndent} /> : null}
+            <TableCell className={classes.colPower}>{renderPowerIcon(props)}</TableCell>
             <TableCell className={classes.colEnabled} style={{ textAlign: "center" }}>
-                {renderSwitch(props)}
+                <ApiSwitch
+                    panelId={props.id}
+                    checked={props.enabled}
+                    onChange={(checked) => handleEnabledChanged(checked, props.id)}
+                />
             </TableCell>
             <TableCell>
                 <div

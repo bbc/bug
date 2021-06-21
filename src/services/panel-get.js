@@ -15,7 +15,6 @@ module.exports = async (panelId) => {
         const containerInfo = await dockerGetContainerInfo(panelId);
         const panelBuildStatus = await panelBuildStatusModel.get(panelId);
         const panelStatus = await panelStatusModel.get(panelId);
-
         return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus, panelStatus);
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
