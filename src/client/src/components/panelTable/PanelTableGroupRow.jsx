@@ -21,7 +21,7 @@ export default function PanelTableGroupRow({ title }) {
 
     return (
         <TableRow className={classes.groupHeaderRow}>
-            <TableCell className={classes.groupHeader} colSpan={6}>
+            <TableCell className={classes.groupHeader} colSpan={7}>
                 {title}
             </TableCell>
         </TableRow>
