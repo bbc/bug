@@ -6,7 +6,7 @@ const hashResponse = require("@core/hash-response");
 const userDelete = require("@services/user-delete");
 const userSet = require("@services/user-set");
 const userUpdate = require("@services/user-update");
-const usersGet = require("@services/users-get");
+const userList = require("@services/user-list");
 const userGet = require("@services/user-get");
 const userState = require("@services/user-state");
 
@@ -60,7 +60,7 @@ router.delete(
 router.get(
     "/",
     asyncHandler(async (req, res) => {
-        const result = await usersGet();
+        const result = await userList();
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Retrieved all users",

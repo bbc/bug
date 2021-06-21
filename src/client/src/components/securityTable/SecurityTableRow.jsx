@@ -12,44 +12,34 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-    colUsername: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
     colName: {
         "@media (max-width:512px)": {
             display: "none",
         },
     },
-    colEmail: {
-        "@media (max-width:200px)": {
-            display: "none",
-        },
-    },
 }));
 
-export default function UserTableRow(props) {
+export default function SecurityTableRow(props) {
     const classes = useStyles();
     const sendAlert = useAlert();
 
-    const handleSwitchChange = async (checked, email) => {
+    const handleSwitchChange = async (checked, name) => {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
         let status;
 
         if (checked) {
-            status = await AxiosCommand(`/api/user/${email}/enable`);
+            status = await AxiosCommand(`/api/strategy/${name}/enable`);
         } else {
-            status = await AxiosCommand(`/api/user/${email}/disable`);
+            status = await AxiosCommand(`/api/strategy/${name}/disable`);
         }
 
         if (status) {
-            sendAlert(`${commandText} ${email}`, {
+            sendAlert(`${commandText} ${name}`, {
                 variant: "success",
             });
         } else {
-            sendAlert(`Failed to ${command} ${email}`, {
+            sendAlert(`Failed to ${command} ${name}`, {
                 variant: "error",
             });
         }
@@ -70,16 +60,12 @@ export default function UserTableRow(props) {
                 <ApiSwitch
                     checked={getSwitchState(props?.state)}
                     onChange={(checked) =>
-                        handleSwitchChange(checked, props.email)
+                        handleSwitchChange(checked, props.name)
                     }
                 />
             </TableCell>
             <TableCell className={classes.colName}>
-                {`${props?.firstName} ${props?.lastName}`}
-            </TableCell>
-            <TableCell className={classes.colEmail}>{props.email}</TableCell>
-            <TableCell className={classes.colUsername}>
-                {props.username}
+                {props.name.toUpperCase()}
             </TableCell>
         </TableRow>
     );

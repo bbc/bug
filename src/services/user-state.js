@@ -13,6 +13,6 @@ module.exports = async (email, state) => {
         logger.warning(
             `${error.stack || error.trace || error || error.message}`
         );
-        throw new Error(`Failed update user.`);
+        throw new Error(`Failed change the user state.`);
     }
 };

@@ -8,6 +8,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
 
 const authHeader = "BBCEMAIL";
+const strategyModel = require("@models/strategy");
 const userModel = require("@models/user");
 const logger = require("@utils/logger")(module);
 
@@ -15,28 +16,34 @@ const logger = require("@utils/logger")(module);
 exports.proxy = new HeaderStrategy(
     { header: authHeader, passReqToCallback: true },
     async (request, header, done) => {
-        const user = await userModel.get(header.toLowerCase());
+        const strategy = strategyModel.get("proxy");
         let auth = false;
 
-        if (!user) {
-            auth = false;
-            logger.info(`Login failed: ${header} is not on the user list.`);
-        } else if (user.state === "active") {
-            delete user["password"];
-            delete user["pin"];
-            auth = user;
-            logger.debug(`Login sucess: ${user.email} logged on.`);
-        } else {
-            auth = false;
-            logger.info(`Login failed: ${header} is not enabled.`);
+        if (strategy.state === "active") {
+            const user = await userModel.get(header.toLowerCase());
+            if (!user) {
+                auth = false;
+                logger.info(`Login failed: ${header} is not on the user list.`);
+            } else if (user.state === "active") {
+                delete user["password"];
+                delete user["pin"];
+                auth = user;
+                logger.debug(`Login sucess: ${user.email} logged on.`);
+            } else {
+                auth = false;
+                logger.info(`Login failed: ${header} is not enabled.`);
+            }
         }
-
         return done(null, auth);
     }
 );
 
 //Setup Local authentication
 exports.local = new LocalStrategy(async (username, password, done) => {
+    const strategy = strategyModel.get("proxy");
+    if (strategy.state !== "active") {
+        return done(null, false);
+    }
     const user = await userModel.get(username.toLowerCase());
 
     if (err) {

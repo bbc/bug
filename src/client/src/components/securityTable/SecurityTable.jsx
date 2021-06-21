@@ -8,16 +8,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import UserTableRow from "@components/userTable/UserTableRow";
+import SecurityTableRow from "@components/securityTable/SecurityTableRow";
 import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 
 const useStyles = makeStyles((theme) => ({
-    colUsername: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
     colState: {
         "@media (max-width:512px)": {
             display: "none",
@@ -28,11 +23,6 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-    colEmail: {
-        "@media (max-width:200px)": {
-            display: "none",
-        },
-    },
     tableHead: {
         "@media (max-width:200px)": {
             display: "none",
@@ -40,15 +30,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function UserTable({ interval }) {
+export default function SecurityTable({ interval }) {
     const classes = useStyles();
 
-    const users = useApiPoller({
-        url: `api/user`,
+    const strategies = useApiPoller({
+        url: `api/strategy`,
         interval: interval,
     });
 
-    if (users.status === "loading" || users.status === "idle") {
+    if (strategies.status === "loading" || strategies.status === "idle") {
         return <Loading />;
     }
 
@@ -64,18 +54,15 @@ export default function UserTable({ interval }) {
                             <TableCell className={classes.colName}>
                                 Name
                             </TableCell>
-                            <TableCell className={classes.colEmail}>
-                                Email
-                            </TableCell>
-                            <TableCell className={classes.colUsername}>
-                                Username
-                            </TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {users?.data?.data?.map((user) => (
-                            <UserTableRow key={user.email} {...user} />
+                        {strategies?.data?.map((strategy) => (
+                            <SecurityTableRow
+                                key={strategy.name}
+                                {...strategy}
+                            />
                         ))}
                     </TableBody>
                 </Table>
@@ -84,10 +71,10 @@ export default function UserTable({ interval }) {
     );
 }
 
-UserTable.defaultProps = {
+SecurityTable.defaultProps = {
     interval: 1000,
 };
 
-UserTable.propTypes = {
+SecurityTable.propTypes = {
     interval: PropTypes.number,
 };
