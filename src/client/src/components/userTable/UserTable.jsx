@@ -18,6 +18,11 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colState: {
+        "@media (max-width:512px)": {
+            display: "none",
+        },
+    },
     colName: {
         "@media (max-width:512px)": {
             display: "none",
@@ -53,6 +58,9 @@ export default function LogTable({ interval }) {
                 <Table>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
+                            <TableCell className={classes.colState}>
+                                Enabled
+                            </TableCell>
                             <TableCell className={classes.colName}>
                                 Name
                             </TableCell>

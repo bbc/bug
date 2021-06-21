@@ -7,6 +7,7 @@ const userDelete = require("@services/user-delete");
 const userUpdate = require("@services/user-update");
 const usersGet = require("@services/users-get");
 const userGet = require("@services/user-get");
+const userState = require("@services/user-state");
 
 /**
  * @swagger
@@ -95,6 +96,72 @@ router.get(
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Retrieved user",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /user/{email}/enable:
+ *   get:
+ *     description: Enables a user by setting a flag in the BUG database
+ *     tags: [user]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user's fully qualified email address.
+ *     responses:
+ *       200:
+ *         description: Successfully enabled the user.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/:email/enable",
+    asyncHandler(async (req, res) => {
+        const result = await userState(req.params.email, "active");
+        hashResponse(res, req, {
+            status: result ? "success" : "fail",
+            message: "Enabled user",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /user/{email}/disable:
+ *   get:
+ *     description: Disables a user by setting a flag in the BUG database
+ *     tags: [user]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user's fully qualified email address.
+ *     responses:
+ *       200:
+ *         description: Successfully disabled the user.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/:email/disable",
+    asyncHandler(async (req, res) => {
+        const result = await userState(req.params.email, "disabled");
+        hashResponse(res, req, {
+            status: result ? "success" : "fail",
+            message: "User disabled",
             data: result,
         });
     })
