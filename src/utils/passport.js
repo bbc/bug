@@ -39,23 +39,27 @@ exports.proxy = new HeaderStrategy(
 );
 
 //Setup Local authentication
-exports.local = new LocalStrategy(async (username, password, done) => {
-    const strategy = strategyModel.get("proxy");
-    if (strategy.state !== "active") {
-        return done(null, false);
-    }
-    const user = await userModel.get(username.toLowerCase());
+exports.local = new LocalStrategy(
+    { usernameField: "email", passwordField: "password" },
+    async (username, password, done) => {
+        const strategy = await strategyModel.get("local");
+        if (strategy.state !== "active") {
+            logger.info(`Local login not enabled.`);
+            return done(null, false);
+        }
+        const user = await userModel.get(username.toLowerCase());
 
-    if (err) {
-        return done(err);
+        if (!user) {
+            logger.info(`Local login: User '${username}' does not exist.`);
+            return done(null, false);
+        }
+        if (user.password !== password) {
+            logger.info(`Local login: Wrong password for ${username}.`);
+            return done(null, false);
+        }
+        delete user["password"];
+        delete user["pin"];
+        logger.action(`Local login: ${username} logged in.`);
+        return done(null, user);
     }
-    if (!user) {
-        return done(null, false);
-    }
-    if (user.password !== password) {
-        return done(null, false);
-    }
-    delete user["password"];
-    delete user["pin"];
-    return done(null, user);
-});
+);

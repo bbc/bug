@@ -1,5 +1,6 @@
 import React from "react";
 import PageHome from "./PageHome";
+import PageLogin from "./PageLogin";
 import PagePanel from "./PagePanel";
 import PagePanels from "./PagePanels";
 import PagePanelsAdd from "./PagePanelsAdd";
@@ -55,6 +56,18 @@ const useStyles = makeStyles((theme) => ({
             padding: 0,
         },
     },
+    loginPageContent: {
+        padding: 12,
+        "@media (max-width:1200px)": {
+            padding: 8,
+        },
+        "@media (max-width:1024px)": {
+            padding: 4,
+        },
+        "@media (max-width:600px)": {
+            padding: 0,
+        },
+    },
     bugLogo: {
         color: theme.palette.secondary.main,
         padding: "0.8rem",
@@ -70,6 +83,11 @@ const Page = (props) => {
                 <Route exact path="/">
                     <div className={classes.homePageContent}>
                         <PageHome />
+                    </div>
+                </Route>
+                <Route exact path="/login">
+                    <div className={classes.loginPageContent}>
+                        <PageLogin />
                     </div>
                 </Route>
                 <Route exact path="/panels">

@@ -9,6 +9,7 @@ module.exports = (res, req, contents) => {
         request_url: `${req.protocol}://${req.hostname}${req.originalUrl}`,
         request_method: req.method,
         request_body: req.body,
+        user: req?.user,
     };
 
     response.meta = meta;

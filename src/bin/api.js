@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const session = require("express-session");
 const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
@@ -25,13 +26,11 @@ const bugRouter = require("@routes/bug");
 const iconsRouter = require("@routes/icons");
 const proxyRouter = require("@routes/proxy");
 const userRouter = require("@routes/user");
+const loginRouter = require("@routes/login");
+const logoutRouter = require("@routes/logout");
 const strategyRouter = require("@routes/strategy");
 
 const bugApi = express();
-
-//Configure Passport
-bugApi.use(passport.initialize());
-// app.use(passport.session());
 
 passport.use("proxy", strategy.proxy);
 passport.use("local", strategy.local);
@@ -45,6 +44,11 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
     done(null, user);
 });
+
+//Configure Passport
+bugApi.use(session({ secret: "cats" }));
+bugApi.use(passport.initialize());
+bugApi.use(passport.session());
 
 bugApi.set("json spaces", 2);
 bugApi.use(httpLogger);
@@ -90,6 +94,8 @@ bugApi.use("/api/system", systemRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
+bugApi.use("/api/login", loginRouter);
+bugApi.use("/api/logout", logoutRouter);
 bugApi.use("/api/strategy", strategyRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
 
