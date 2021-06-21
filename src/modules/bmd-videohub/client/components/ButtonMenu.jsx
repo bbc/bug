@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ButtonMenu({ buttonType, button, panelId, onChange, onEditIcon, groups }) {
+export default function ButtonMenu({ buttonType, button, panelId, onChange, onEditIcon, groups, onRename }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -62,18 +62,8 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
 
     const handleRenameClick = (event) => {
         handleClose(event);
-        setRenameDialogVisible(true);
+        onRename();
         event.stopPropagation();
-    };
-
-    const handleRename = async (newName) => {
-        setRenameDialogVisible(false);
-        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${newName}`)) {
-            sendAlert(`Renamed ${buttonType}: ${button.label} -> ${newName}`, { variant: "success" });
-        } else {
-            sendAlert(`Failed to rename ${buttonType}: ${newName}`, { variant: "error" });
-        }
-        onChange();
     };
 
     const handleAddGroupClick = (event) => {
@@ -127,23 +117,24 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
                     </ListItemIcon>
                     <ListItemText primary="Rename" />
                 </MenuItem>
-                <MenuItem onClick={handleRemove}>
-                    <ListItemIcon>
-                        <RemoveCircleIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Remove" />
-                </MenuItem>
                 <MenuItem onClick={handleClear}>
                     <ListItemIcon>
                         <BackspaceIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Clear Label" />
                 </MenuItem>
+                <Divider />
                 <MenuItem onClick={handleEditIcon}>
                     <ListItemIcon>
                         <FilterTiltShiftIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Edit Icon" />
+                </MenuItem>
+                <MenuItem onClick={handleRemove}>
+                    <ListItemIcon>
+                        <RemoveCircleIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Remove" />
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleAddGroupClick}>
@@ -153,17 +144,6 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
                     <ListItemText primary="Add to Group" />
                 </MenuItem>
             </Menu>
-            {renameDialogVisible && (
-                <RenameDialog
-                    title={`Rename ${buttonType}`}
-                    label="Name"
-                    panelId={panelId}
-                    defaultValue={button.label}
-                    onCancel={() => setRenameDialogVisible(false)}
-                    onSubmit={handleRename}
-                    buttonText="Rename"
-                />
-            )}
             {addGroupDialogVisible && (
                 <AddGroupDialog
                     onCancel={() => setAddGroupDialogVisible(false)}

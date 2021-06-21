@@ -1,8 +1,10 @@
+import React from "react";
 import ButtonMenu from "./ButtonMenu";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import DynamicIcon from "@core/DynamicIcon";
+import RenameDialog from "./RenameDialog";
 
 const useStyles = makeStyles((theme) => ({
     editButton: {
@@ -166,6 +168,7 @@ export default function RouterButton({
         id: `${buttonType}:${button.index}`,
     });
     const indexPlusOne = (button.index + 1).toString();
+    const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
 
     let transformString = "";
 
@@ -181,62 +184,86 @@ export default function RouterButton({
         transition,
     };
 
+    const handleRename = async (newName) => {
+        setRenameDialogVisible(false);
+        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${newName}`)) {
+            sendAlert(`Renamed ${buttonType}: ${button.label} -> ${newName}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to rename ${buttonType}: ${newName}`, { variant: "error" });
+        }
+        onChange();
+    };
+
     const secondaryText = buttonType === "source" ? "" : button.sourceLabel;
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            className={
-                editMode
-                    ? clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.editButton)
-                    : clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.button, {
-                          [classes.buttonSelected]: selected,
-                      })
-            }
-            variant="outlined"
-            onClick={onClick}
-        >
-            <div className={clsx("MuiButton-label", classes.buttonLabel)}>
-                <div className={classes.buttonUpper}>
-                    <div className={classes.circle}>
-                        {button.icon ? (
-                            <DynamicIcon
-                                color={button.iconColour}
-                                className={classes.buttonIcon}
-                                iconName={button.icon}
-                            />
-                        ) : (
-                            <div className={classes.index}>{indexPlusOne}</div>
-                        )}
+        <>
+            <div
+                ref={setNodeRef}
+                style={style}
+                {...attributes}
+                {...listeners}
+                className={
+                    editMode
+                        ? clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.editButton)
+                        : clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.button, {
+                              [classes.buttonSelected]: selected,
+                          })
+                }
+                variant="outlined"
+                onClick={onClick}
+            >
+                <div className={clsx("MuiButton-label", classes.buttonLabel)}>
+                    <div className={classes.buttonUpper}>
+                        <div className={classes.circle}>
+                            {button.icon ? (
+                                <DynamicIcon
+                                    color={button.iconColour}
+                                    className={classes.buttonIcon}
+                                    iconName={button.icon}
+                                />
+                            ) : (
+                                <div className={classes.index}>{indexPlusOne}</div>
+                            )}
+                        </div>
                     </div>
-                </div>
-                <div
-                    className={clsx(classes.buttonLower, {
-                        [classes.buttonLowerEdit]: editMode,
-                    })}
-                >
-                    {editMode ? null : <div className={classes.secondaryText}>{secondaryText}</div>}
                     <div
-                        className={clsx(classes.primaryText, {
-                            [classes.primaryTextEdit]: editMode,
+                        className={clsx(classes.buttonLower, {
+                            [classes.buttonLowerEdit]: editMode,
                         })}
                     >
-                        {button.label}
+                        {editMode ? null : <div className={classes.secondaryText}>{secondaryText}</div>}
+                        <div
+                            className={clsx(classes.primaryText, {
+                                [classes.primaryTextEdit]: editMode,
+                            })}
+                        >
+                            {button.label}
+                        </div>
+                        {editMode ? (
+                            <ButtonMenu
+                                panelId={panelId}
+                                buttonType={buttonType}
+                                button={button}
+                                onChange={onChange}
+                                groups={groups}
+                                onEditIcon={onEditIcon}
+                                onRename={() => setRenameDialogVisible(true)}
+                            />
+                        ) : null}
                     </div>
-                    {editMode ? (
-                        <ButtonMenu
-                            panelId={panelId}
-                            buttonType={buttonType}
-                            button={button}
-                            onChange={onChange}
-                            groups={groups}
-                            onEditIcon={onEditIcon}
-                        />
-                    ) : null}
                 </div>
             </div>
-        </div>
+            {renameDialogVisible && (
+                <RenameDialog
+                    title={`Rename ${buttonType}`}
+                    label="Name"
+                    panelId={panelId}
+                    defaultValue={button.label}
+                    onCancel={() => setRenameDialogVisible(false)}
+                    onSubmit={handleRename}
+                    buttonText="Rename"
+                />
+            )}
+        </>
     );
 }

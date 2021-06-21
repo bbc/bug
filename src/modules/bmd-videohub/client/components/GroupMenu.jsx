@@ -74,7 +74,7 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
                     <ListItemIcon>
                         <BallotIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText primary={`Edit ${groupType}s`} />
+                    <ListItemText primary={`Edit buttons`} />
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleRename}>
