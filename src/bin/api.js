@@ -34,7 +34,7 @@ const bugApi = express();
 
 passport.use("proxy", strategy.proxy);
 passport.use("local", strategy.local);
-// passport.use("pin", strategy.pin);
+passport.use("pin", strategy.pin);
 // passport.use("saml", strategy.saml);
 
 passport.serializeUser(function (user, done) {
@@ -46,7 +46,7 @@ passport.deserializeUser(function (user, done) {
 });
 
 //Configure Passport
-bugApi.use(session({ secret: "cats" }));
+bugApi.use(session({ secret: "buggy" }));
 bugApi.use(passport.initialize());
 bugApi.use(passport.session());
 
@@ -94,7 +94,7 @@ bugApi.use("/api/system", systemRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
-bugApi.use("/api/login", loginRouter);
+bugApi.use("/api/login", passport.authenticate(["local", "pin"]), loginRouter);
 bugApi.use("/api/logout", logoutRouter);
 bugApi.use("/api/strategy", strategyRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);

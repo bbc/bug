@@ -10,6 +10,7 @@ const SamlStrategy = require("passport-saml").Strategy;
 const authHeader = "BBCEMAIL";
 const strategyModel = require("@models/strategy");
 const userModel = require("@models/user");
+const userPin = require("@services/user-pin");
 const logger = require("@utils/logger")(module);
 
 //Setup Trusted Header authentication
@@ -60,6 +61,32 @@ exports.local = new LocalStrategy(
         delete user["password"];
         delete user["pin"];
         logger.action(`Local login: ${username} logged in.`);
+        return done(null, user);
+    }
+);
+
+//Setup Local authentication
+exports.pin = new LocalStrategy(
+    { usernameField: "pin", passwordField: "pin" },
+    async (username, password, done) => {
+        const strategy = await strategyModel.get("pin");
+        if (strategy.state !== "active") {
+            logger.info(`Pin login not enabled.`);
+            return done(null, false);
+        }
+        const user = await userPin(username);
+
+        if (!user) {
+            logger.info(`Pin login: User does not exist.`);
+            return done(null, false);
+        }
+        if (user.pin !== password) {
+            logger.info(`Pin login: Wrong pin for ${user?.email}.`);
+            return done(null, false);
+        }
+        delete user["password"];
+        delete user["pin"];
+        logger.action(`Pin login: ${user?.email} logged in.`);
         return done(null, user);
     }
 );

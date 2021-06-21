@@ -31,10 +31,10 @@ async function getStrategies() {
         return contents;
     } catch (error) {
         const contents = [
-            { name: "local", settings: {}, active: "disabled" },
-            { name: "saml", settings: {}, active: "disabled" },
-            { name: "pin", settings: {}, active: "disabled" },
-            { name: "proxy", settings: {}, active: "disabled" },
+            { name: "local", settings: {}, state: "disabled" },
+            { name: "saml", settings: {}, state: "disabled" },
+            { name: "pin", settings: {}, state: "disabled" },
+            { name: "proxy", settings: {}, state: "disabled" },
         ];
         if (await writeJson(filename, contents)) {
             return contents;
