@@ -43,26 +43,29 @@ export default function PanelTableMenu(props) {
     const disableDisable = !props.panel.enabled || props.panel._dockerContainer._isBuilding;
     const disableRestart = !needsContainer;
     const disableDelete = props.panel._dockerContainer._isBuilding;
+    const disableConfig = !props.panel.enabled || props.panel._dockerContainer._isBuilding;
 
-    const handleEnable = async () => {
+    const handleEnable = async (event) => {
         setAnchorEl(null);
         if (await AxiosCommand(`/api/panel/enable/${props.panel.id}`)) {
             sendAlert(`Enabled panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
         } else {
             sendAlert(`Failed to enable panel: ${props.panel.title}`, { variant: "error" });
         }
+        event.stopPropagation();
     };
 
-    const handleDisable = async () => {
+    const handleDisable = async (event) => {
         setAnchorEl(null);
         if (await AxiosCommand(`/api/panel/disable/${props.panel.id}`)) {
             sendAlert(`Disabled panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
         } else {
             sendAlert(`Failed to disable panel: ${props.panel.title}`, { variant: "error" });
         }
+        event.stopPropagation();
     };
 
-    const handleRestart = async () => {
+    const handleRestart = async (event) => {
         sendAlert(`Restarting panel: ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
         setAnchorEl(null);
         if (await AxiosCommand(`/api/panel/restart/${props.panel.id}`)) {
@@ -70,21 +73,25 @@ export default function PanelTableMenu(props) {
         } else {
             sendAlert(`Failed to restart panel: ${props.panel.title}`, { variant: "error" });
         }
+        event.stopPropagation();
     };
 
-    const handleDelete = () => {
+    const handleDelete = (event) => {
         setAnchorEl(null);
         setDeleteDialogOpen(true);
+        event.stopPropagation();
     };
 
-    const handleConfig = () => {
+    const handleConfig = (event) => {
         setRedirectUrl(`/panel/${props.panel.id}/config`);
         setAnchorEl(null);
+        event.stopPropagation();
     };
 
-    const handleEditGroup = () => {
+    const handleEditGroup = (event) => {
         setAnchorEl(null);
         setGroupDialogOpen(true);
+        event.stopPropagation();
     };
 
     const PanelMenuItem = React.forwardRef(({ text, onClick, hidden, disabled, children }, ref) => {
@@ -118,7 +125,7 @@ export default function PanelTableMenu(props) {
 
                 <Divider />
 
-                <PanelMenuItem onClick={handleConfig} text="Config">
+                <PanelMenuItem disabled={disableConfig} onClick={handleConfig} text="Config">
                     <SettingsIcon fontSize="small" />
                 </PanelMenuItem>
 
