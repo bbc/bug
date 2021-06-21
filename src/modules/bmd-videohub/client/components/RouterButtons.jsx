@@ -93,7 +93,7 @@ export default function Router({
             const newIndex = localButtons.findIndex((button) => button.index === parseInt(overId));
             const newButtons = arrayMove(localButtons, oldIndex, newIndex);
 
-            const buttonIndices = newButtons.map((group) => group.index).join(",");
+            const buttonIndices = newButtons.map((group) => group.index);
 
             const url =
                 buttonType === "source"

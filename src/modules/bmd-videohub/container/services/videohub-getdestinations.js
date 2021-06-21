@@ -2,7 +2,6 @@
 
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
-const indexRangeExpand = require("@utils/indexrange-expand");
 
 module.exports = async (groupIndex = null) => {
     let config;
@@ -34,6 +33,10 @@ module.exports = async (groupIndex = null) => {
         groupIndex = 0;
     }
 
+    if (groups.length === 0) {
+        groupIndex = null;
+    }
+
     // add groups to output array
     groups.forEach((eachGroup, eachIndex) => {
         outputArray["groups"].push({
@@ -44,10 +47,10 @@ module.exports = async (groupIndex = null) => {
     });
 
     // then calculate valid sources for this group
-    const validDestinations = groups[groupIndex] ? indexRangeExpand(groups[groupIndex]["value"]) : [];
+    const validDestinations = groups[groupIndex] ? groups[groupIndex]["value"] : [];
 
     // calculate excluded sources too
-    const excludedDestinations = indexRangeExpand(config["excludeSources"] ?? null);
+    const excludedDestinations = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
     const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });

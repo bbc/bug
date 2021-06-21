@@ -82,7 +82,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
     const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
 
     const sourceButtons = useApiPoller({
-        url: `/container/${panelId}/sources/${selectedDestination}/${sourceGroup}`,
+        url: `/container/${panelId}/sources/${selectedDestination === null ? -1 : selectedDestination}/${sourceGroup}`,
         interval: editMode ? 5000 : 500,
         forceRefresh: sourceForceRefreshHash,
     });

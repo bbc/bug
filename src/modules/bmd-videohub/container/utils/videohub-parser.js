@@ -31,7 +31,7 @@ function parser(str) {
             const eachLineSpaceArray = eachLine.split(" ");
             if (!isNaN(eachLineSpaceArray[0])) {
                 // it's a number/value type
-                blockData[parseInt(eachLineSpaceArray[0])] = eachLineSpaceArray[1];
+                blockData[parseInt(eachLineSpaceArray[0])] = eachLine.substring(eachLine.indexOf(" ") + 1);
             } else {
                 const eachLineColonArray = eachLine.split(":");
                 if (eachLineColonArray.length === 2) {

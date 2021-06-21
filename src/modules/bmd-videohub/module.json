@@ -21,7 +21,6 @@
         "enabled": false,
         "address": "",
         "port": "9990",
-        "showNumber": true,
         "useTake": true,
         "sourceGroups": [],
         "destinationGroups": [],
