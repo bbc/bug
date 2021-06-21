@@ -1,7 +1,6 @@
 "use strict";
 
 const router = require("express").Router();
-const passport = require("passport");
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 
@@ -42,7 +41,6 @@ const hashResponse = require("@core/hash-response");
  */
 router.post(
     "/",
-    passport.authenticate("local"),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: req.user ? "success" : "fail",
