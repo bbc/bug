@@ -2,7 +2,6 @@
 
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
-const indexRangeExpand = require("@utils/indexrange-expand");
 
 module.exports = async (destinationIndex = null, groupIndex = null) => {
     let config;
@@ -33,6 +32,9 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
     if (groups.length > 0 && groupIndex === null) {
         groupIndex = 0;
     }
+    if (groups.length === 0) {
+        groupIndex = null;
+    }
 
     // add groups to output array
     groups.forEach((eachGroup, eachIndex) => {
@@ -44,10 +46,10 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
     });
 
     // then calculate valid sources for this group
-    const validSources = groups[groupIndex] ? indexRangeExpand(groups[groupIndex]["value"]) : [];
+    const validSources = groups[groupIndex] ? groups[groupIndex]["value"] : [];
 
     // calculate excluded sources too
-    const excludedSources = indexRangeExpand(config["excludeSources"] ?? null);
+    const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
     const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
@@ -76,7 +78,6 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
             const isExcluded = excludedSources.includes(intIndex);
             const isSelected = selectedSourceIndex === intIndex;
             const isInGroup = groupIndex === null || validSources.includes(intIndex);
-            const indexText = config["showNumber"] === false ? "" : intIndex + 1;
 
             // set new order field - if in group then use the validsources index, otherwise the normal one
             let order;
@@ -92,7 +93,6 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
                     label: eachValue,
                     selected: isSelected,
                     hidden: isExcluded,
-                    indexText: indexText,
                     order: order,
                     isLocked: sourcesLocked,
                     icon: icons[intIndex] ? icons[intIndex] : null,

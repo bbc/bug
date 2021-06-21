@@ -36,31 +36,26 @@ const saveResult = async (newResults) => {
             for (const [index, value] of Object.entries(newResult["data"])) {
                 existingData["data"][index] = value;
             }
-            console.log("after", JSON.stringify(existingData));
+
             // add timestamp
             existingData.timestamp = Date.now();
 
-            await dataCollection.replaceOne(
-                { title: newResult["title"] },
-                existingData,
-                { upsert: true }
-            );
+            await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
         }
     }
 };
 
 const pollDevice = async () => {
-    console.log(
-        `videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`
-    );
+    console.log(`videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`);
     const router = new videohub({
         host: workerData.address,
         port: workerData.port,
     });
     router.on("update", saveResult);
-    await router.connect();
     console.log("videohub-worker: attempting connection ... ");
+    await router.connect();
 
+    console.log("videohub-worker: waiting for events ...");
     while (true) {
         // poll occasionally
         await delay(updateDelay);

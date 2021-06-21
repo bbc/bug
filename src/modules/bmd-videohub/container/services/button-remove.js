@@ -2,7 +2,6 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
-const indexRangeExpand = require("@utils/indexrange-expand");
 
 module.exports = async (type, groupIndex, index) => {
     const config = await configGet();
@@ -19,13 +18,9 @@ module.exports = async (type, groupIndex, index) => {
     }
 
     // find the group and update it
-
-    const buttons = indexRangeExpand(config[groupVar][groupIndex]["value"]);
-    const arrayIndex = buttons.indexOf(parseInt(index));
-
+    const arrayIndex = config[groupVar][groupIndex]["value"].indexOf(parseInt(index));
     if (arrayIndex !== -1) {
-        buttons.splice(arrayIndex, 1);
-        config[groupVar][groupIndex]["value"] = buttons.join(",");
+        config[groupVar][groupIndex]["value"].splice(arrayIndex, 1);
     }
 
     return await configPutViaCore(config);

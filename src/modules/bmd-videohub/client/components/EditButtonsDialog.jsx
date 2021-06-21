@@ -173,7 +173,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
     const handleSubmit = async () => {
         const buttonIndexArray = selectedButtons.map((button) => button.index);
         const postData = {
-            buttons: buttonIndexArray.join(","),
+            buttons: buttonIndexArray,
         };
         const url = `/container/${panelId}/groups/set/${groupType}/${groupIndex}`;
 

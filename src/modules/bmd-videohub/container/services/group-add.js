@@ -23,7 +23,7 @@ module.exports = async (type, groupName) => {
 
     config[groupVar].push({
         name: groupName,
-        value: "",
+        value: [],
     });
     return await configPutViaCore(config);
 };

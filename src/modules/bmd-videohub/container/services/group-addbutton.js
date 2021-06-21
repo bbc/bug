@@ -2,7 +2,6 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
-const indexRangeExpand = require("@utils/indexrange-expand");
 
 module.exports = async (type, groupName, buttonIndex) => {
     const config = await configGet();
@@ -17,10 +16,8 @@ module.exports = async (type, groupName, buttonIndex) => {
 
     for (let eachGroup of config[groupVar]) {
         if (eachGroup["name"] === groupName) {
-            const buttons = indexRangeExpand(eachGroup["value"]);
-            if (buttons.indexOf(parseInt(buttonIndex)) === -1) {
-                buttons.push(buttonIndex);
-                eachGroup["value"] = buttons.join(",");
+            if (eachGroup["value"].indexOf(parseInt(buttonIndex)) === -1) {
+                eachGroup["value"].push(parseInt(buttonIndex));
                 return await configPutViaCore(config);
             }
         }

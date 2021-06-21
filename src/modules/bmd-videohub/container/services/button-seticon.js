@@ -2,7 +2,6 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
-const indexRangeExpand = require("@utils/indexrange-expand");
 
 module.exports = async (type, buttonIndex, icon, colour) => {
     const config = await configGet();
