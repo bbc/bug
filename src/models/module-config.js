@@ -25,7 +25,11 @@ exports.list = async function () {
         moduleArray = [];
         for (var i in files) {
             try {
-                let filename = path.join(modulesFolder, files[i], "module.json");
+                let filename = path.join(
+                    modulesFolder,
+                    files[i],
+                    "module.json"
+                );
                 let packageFile = await readJson(filename);
                 if (!packageFile) {
                     logger.warning(`file '${filename}' not found`);
@@ -33,7 +37,9 @@ exports.list = async function () {
                 }
                 moduleArray.push(packageFile);
             } catch (error) {
-                logger.warning(`${error.stack || error.trace || error || error.message}`);
+                logger.warning(
+                    `${error.stack || error.trace || error || error.message}`
+                );
             }
         }
 
@@ -52,7 +58,9 @@ exports.get = async function (moduleName) {
             }
         }
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(
+            `${error.stack || error.trace || error || error.message}`
+        );
     }
 
     return null;

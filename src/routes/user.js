@@ -4,6 +4,7 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 const userDelete = require("@services/user-delete");
+const userSet = require("@services/user-set");
 const userUpdate = require("@services/user-update");
 const usersGet = require("@services/users-get");
 const userGet = require("@services/user-get");
@@ -215,7 +216,7 @@ router.get(
 router.post(
     "/",
     asyncHandler(async (req, res) => {
-        const result = await userUpdate(req.body);
+        const result = await userSet(req.body);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Added the user.",

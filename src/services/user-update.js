@@ -6,7 +6,7 @@ const userModel = require("@models/user");
 module.exports = async (user) => {
     try {
         const response = {};
-        response.data = await userModel.set(user);
+        response.data = await userModel.update(user);
 
         return response;
     } catch (error) {

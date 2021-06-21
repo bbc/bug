@@ -3,10 +3,10 @@
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
 
-module.exports = async (email, state) => {
+module.exports = async (user) => {
     try {
         const response = {};
-        response.data = await userModel.update({ email: email, state: state });
+        response.data = await userModel.set(user);
 
         return response;
     } catch (error) {
