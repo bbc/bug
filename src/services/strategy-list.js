@@ -5,11 +5,17 @@ const strategyModel = require("@models/strategy");
 
 module.exports = async () => {
     try {
-        return await strategyModel.list();
+        const strategies = await strategyModel.list();
+
+        //Remove the settings for the strategies. This list is for an insecure route!
+        for (let i in strategies) {
+            delete strategies[i].settings;
+        }
+        return strategies;
     } catch (error) {
         logger.warning(
             `${error.stack || error.trace || error || error.message}`
         );
-        throw new Error(`Failed retrieve user.`);
+        throw new Error(`Failed retrieve list of security strategies.`);
     }
 };

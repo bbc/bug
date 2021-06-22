@@ -3,13 +3,13 @@
 const logger = require("@utils/logger")(module);
 const strategyModel = require("@models/strategy");
 
-module.exports = async (name, state) => {
+module.exports = async (type, state) => {
     try {
-        return await strategyModel.update({ name: name, state: state });
+        return await strategyModel.update(type, { enabled: state });
     } catch (error) {
         logger.warning(
             `${error.stack || error.trace || error || error.message}`
         );
-        throw new Error(`Faile to change the state of the auth strategy.`);
+        throw new Error(`Failed to change the state of the security strategy.`);
     }
 };
