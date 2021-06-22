@@ -40,8 +40,8 @@ Note that this method still requires you to have docker on your machine to test 
 
 -   Install docker on your system if it's not already there.
 -   If docker-compose is not on your system install it as well.
--   Copy the below YAML into a file called `docker-compose up -d`.
--   Add the environment variables to a file called `.env`. See sample environment file below.
+-   Copy the below YAML into a file called `docker-compose.yml`.
+-   Add the environment variables to a file called `.env` in the same directory. See sample environment file below.
 -   Run BUG using `docker-compose up -d`.
 -   After a few minutes bug will be avalible at `http://localhost:80`
 
