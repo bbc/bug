@@ -13,6 +13,7 @@ const lockRouter = require("@routes/lock");
 const sourcesRouter = require("@routes/sources");
 const destinationsRouter = require("@routes/destinations");
 const groupsRouter = require("@routes/groups");
+const validationRouter = require("@routes/validate");
 
 let app = express();
 
@@ -36,6 +37,7 @@ app.use("/api", lockRouter);
 app.use("/api/sources", sourcesRouter);
 app.use("/api/destinations", destinationsRouter);
 app.use("/api/groups", groupsRouter);
+app.use("/api/validate", validationRouter);
 
 app.use("*", defaultRouter);
 
