@@ -54,9 +54,6 @@ pipeline {
         always {
             cleanWs()
             sh "docker buildx rm bugBuilder"
-            sh "docker rmi ${imageName}:latest"
-            sh "docker rmi ${repositoryName}/${imageName}:${VERSION}"
-            sh "docker rmi ${repositoryName}/${imageName}:latest"
         }
         success {
             slackSend(color: "#30fc03", channel: "#ci-bug", message: "*#${env.BUILD_NUMBER} Success:* Built, tested and deployed '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")

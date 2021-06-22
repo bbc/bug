@@ -1,0 +1,5 @@
+# registry configures a new Docker register used for cache import or output.
+[registry."docker.io"]
+  mirrors = ["172.26.108.110:5000"]
+  http = true
+  insecure = true
