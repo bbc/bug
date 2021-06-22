@@ -52,14 +52,14 @@ describe("Test the '/api/panel/' endpoint", () => {
         expect(response.body.data.title).toEqual(testPanel.title);
         expect(response.body.data.group).toEqual(testPanel.group);
         expect(response.body.data.description).toEqual(testPanel.description);
-        //TODO - when this changes expect(response.body.data.enabled).toBeTrue();
+        expect(response.body.data.enabled).toBeTrue();
         expect(response.body.data._module).toBeObject();
         expect(response.body.data._module.name).toEqual(testPanel.module);
         expect(response.body.data._dockerContainer).toBeObject();
         expect(response.body.data._dockerContainer._isRunning).toBeFalse();
         expect(response.body.data._dockerContainer._isBuilding).toBeFalse();
         expect(response.body.data._dockerContainer._isBuilt).toBeFalse();
-        expect(response.body.data._dockerContainer._status).toEqual("idle");
+        expect(response.body.data._dockerContainer._status).toEqual("active");
         expect(response.body.data._buildStatus).toBeNil();
         done();
     });
