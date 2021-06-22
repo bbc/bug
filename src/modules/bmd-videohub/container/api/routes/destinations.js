@@ -50,6 +50,21 @@ route.get("/:groupIndex", async function (req, res, next) {
     }
 });
 
+route.post("/:groupIndex", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await videohubGetDestinations(req.params?.groupIndex, req.body.showExcluded ? true : false),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to get destinations",
+        });
+    }
+});
+
 route.delete("/:groupIndex/:index", async function (req, res, next) {
     try {
         res.json({
