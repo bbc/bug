@@ -7,6 +7,7 @@ import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import { useSortable } from "@dnd-kit/sortable";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
     listItem: {
@@ -30,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 900,
         opacity: 0.3,
     },
+    disabledText: {
+        opacity: 0.3,
+    },
 }));
 
 export default function EditButtonsDragItem({ button, onRemove }) {
@@ -46,7 +50,7 @@ export default function EditButtonsDragItem({ button, onRemove }) {
         transform: transformString,
         transition,
     };
-
+    console.log(button);
     return (
         <ListItem
             className={classes.listItem}
@@ -62,7 +66,12 @@ export default function EditButtonsDragItem({ button, onRemove }) {
                 <DragIndicatorIcon fontSize="small" />
             </ListItemIcon>
             <div className={classes.indexText}>{button.index + 1}</div>
-            <ListItemText primary={button.label} />
+            <ListItemText
+                primary={button.label}
+                className={clsx({
+                    [classes.disabledText]: button.hidden,
+                })}
+            />
             <IconButton onClick={() => onRemove(button.index)} className={classes.removeButton}>
                 <CloseIcon />
             </IconButton>

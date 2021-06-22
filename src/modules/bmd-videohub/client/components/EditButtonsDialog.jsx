@@ -124,12 +124,13 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
             groupType === "source"
                 ? `/container/${panelId}/sources/-1/${groupIndex}`
                 : `/container/${panelId}/destinations/${groupIndex}`;
-        const rawSelectedButtons = await AxiosGet(url);
+        const rawSelectedButtons = await AxiosPost(url, { showExcluded: true });
         const filteredSelectedButtons = [];
         for (let eachButton of rawSelectedButtons[`${groupType}s`]) {
             filteredSelectedButtons.push({
                 index: eachButton.index,
                 label: eachButton.label,
+                hidden: eachButton.hidden,
             });
         }
         setSelectedButtons(filteredSelectedButtons);

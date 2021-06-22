@@ -3,7 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 
-module.exports = async (destinationIndex = null, groupIndex = null) => {
+module.exports = async (destinationIndex = null, groupIndex = null, showExcluded = false) => {
     let config;
     try {
         config = await configGet();
@@ -49,6 +49,7 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
     const validSources = groups[groupIndex] ? groups[groupIndex]["value"] : [];
 
     // calculate excluded sources too
+    // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
     const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
@@ -75,7 +76,7 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
         for (const [eachIndex, eachValue] of Object.entries(dbInputLabels["data"])) {
             const intIndex = parseInt(eachIndex);
             // check it's not excluded or if it's a selected source - in which case we'll show it anyway
-            const isExcluded = excludedSources.includes(intIndex);
+            const isExcluded = excludedSources.includes(intIndex.toString());
             const isSelected = selectedSourceIndex === intIndex;
             const isInGroup = groupIndex === null || validSources.includes(intIndex);
 
@@ -87,7 +88,7 @@ module.exports = async (destinationIndex = null, groupIndex = null) => {
                 order = intIndex;
             }
 
-            if (isInGroup && !isExcluded) {
+            if (isInGroup && (!isExcluded || showExcluded)) {
                 outputArray["sources"].push({
                     index: intIndex,
                     label: eachValue,
