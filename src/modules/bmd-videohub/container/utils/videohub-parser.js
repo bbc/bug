@@ -12,7 +12,17 @@ function parser(str) {
     let blockData = {};
     let previousLine = null;
     for (let eachLine of strLines) {
-        if ((previousLine === null || previousLine.trim() === "") && blockTitle === null && eachLine.endsWith(":")) {
+        if (eachLine.trim() === "ACK") {
+            // it's an acknowlegement - we'll just push out an ACK block
+            returnBlocks.push({
+                title: "ack",
+                data: [],
+            });
+        } else if (
+            (previousLine === null || previousLine.trim() === "") &&
+            blockTitle === null &&
+            eachLine.endsWith(":")
+        ) {
             blockTitle = normalizeTitle(eachLine);
         } else if (eachLine.trim() === "") {
             if (blockTitle) {
