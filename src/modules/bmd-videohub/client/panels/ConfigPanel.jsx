@@ -95,6 +95,32 @@ export default function ConfigPanel() {
                         label="Device Port"
                     />
                 </Grid>
+
+                <Grid item xs={12}>
+                    <ChipInput
+                        name="excludeSources"
+                        label="Excluded Sources (0-based)"
+                        control={control}
+                        defaultValue={panelConfig.data.excludeSources}
+                        variant="filled"
+                        sort={true}
+                        error={errors.excludeSources}
+                        fullWidth
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ChipInput
+                        name="excludeDestinations"
+                        label="Excluded Destinations (0-based)"
+                        control={control}
+                        defaultValue={panelConfig.data.excludeDestinations}
+                        variant="filled"
+                        sort={true}
+                        error={errors.excludeDestinations}
+                        fullWidth
+                    />
+                </Grid>
             </PanelConfig>
         </>
     );
