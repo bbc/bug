@@ -73,36 +73,42 @@ exports.local = new LocalStrategy(
 );
 
 //Setup Pin authentication
-exports.pin = new LocalStrategy(
-    { usernameField: "pin", passwordField: "pin" },
-    async (username, password, done) => {
-        const strategy = await strategyModel.get("pin");
-        if (strategy.state !== "active") {
-            logger.info(`Pin login not enabled.`);
-            return done(null, false);
-        }
-        const user = await userPin(username);
+exports.pin = (options) => {
+    return new LocalStrategy(
+        { usernameField: "pin", passwordField: "pin" },
+        async (username, password, done) => {
+            const strategy = await strategyModel.get("pin");
+            if (strategy.state !== "active") {
+                logger.info(`Pin login not enabled.`);
+                return done(null, false);
+            }
+            const user = await userPin(username);
 
-        if (!user) {
-            logger.info(`Pin login: User does not exist.`);
-            return done(null, false);
-        }
+            //TODO IP Whitelisting
 
-        if (!user.enabled) {
-            logger.info(`Pin login: User '${user?.email}' is not enabled.`);
-            return done(null, false);
-        }
+            if (!user) {
+                logger.info(`Pin login: User does not exist.`);
+                return done(null, false);
+            }
 
-        if (user.pin !== password) {
-            logger.info(`Pin login: Wrong pin for ${user?.email}.`);
-            return done(null, false);
+            if (!user.enabled) {
+                logger.info(`Pin login: User '${user?.email}' is not enabled.`);
+                return done(null, false);
+            }
+
+            //TODO Check if user roles array contains option.role return auth
+
+            if (user.pin !== password) {
+                logger.info(`Pin login: Wrong pin for ${user?.email}.`);
+                return done(null, false);
+            }
+            delete user["password"];
+            delete user["pin"];
+            logger.action(`Pin login: ${user?.email} logged in.`);
+            return done(null, user);
         }
-        delete user["password"];
-        delete user["pin"];
-        logger.action(`Pin login: ${user?.email} logged in.`);
-        return done(null, user);
-    }
-);
+    );
+};
 
 //Setup OAuth authentication
 exports.oauth = new OAuth2Strategy(

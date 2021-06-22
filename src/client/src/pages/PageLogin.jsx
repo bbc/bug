@@ -38,7 +38,7 @@ export default function PageLogin() {
                 direction="column"
                 alignItems="center"
             >
-                {/* <Grid item xs={12} md={6} lg={6}>
+                <Grid item xs={12} md={6} lg={6}>
                     <Card>
                         <CardHeader
                             className={classes.login}
@@ -48,16 +48,16 @@ export default function PageLogin() {
                             <LocalLogin />
                         </CardContent>
                     </Card>
-                </Grid> */}
+                </Grid>
 
-                <Grid item xs={12} md={6} lg={6}>
+                {/* <Grid item xs={12} md={6} lg={6}>
                     <Card className={classes.login}>
                         <CardHeader title="Pin Login"></CardHeader>
                         <CardContent>
                             <PinLogin />
                         </CardContent>
                     </Card>
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12}>
                     <Typography
