@@ -40,17 +40,41 @@ const saveResult = async (newResults) => {
             // add timestamp
             existingData.timestamp = Date.now();
 
-            await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
+            await dataCollection.replaceOne(
+                { title: newResult["title"] },
+                existingData,
+                { upsert: true }
+            );
         }
     }
 };
 
-const pollDevice = async () => {
-    console.log(`videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`);
-    const router = new videohub({
-        host: workerData.address,
-        port: workerData.port,
-    });
+const main = async () => {
+    // Connect to the db
+    await mongoDb.connect(workerData.id);
+
+    dataCollection = await mongoCollection("data");
+
+    // remove previous values
+    dataCollection.deleteMany({});
+
+    // Kick things off
+
+    console.log(
+        `videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`
+    );
+
+    let router;
+
+    try {
+        router = new videohub({
+            host: workerData.address,
+            port: workerData.port,
+        });
+    } catch (error) {
+        throw error;
+    }
+
     router.on("update", saveResult);
     console.log("videohub-worker: attempting connection ... ");
     await router.connect();
@@ -67,21 +91,6 @@ const pollDevice = async () => {
         if (Date.now() - lastSeen > 1000 * 10) {
             throw new Error("Device not seen in 10 seconds");
         }
-    }
-};
-
-const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
-
-    dataCollection = await mongoCollection("data");
-
-    // remove previous values
-    dataCollection.deleteMany({});
-
-    // Kick things off
-    while (true) {
-        await pollDevice();
     }
 };
 

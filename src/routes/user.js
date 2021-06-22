@@ -8,7 +8,7 @@ const userSet = require("@services/user-set");
 const userUpdate = require("@services/user-update");
 const userList = require("@services/user-list");
 const userGet = require("@services/user-get");
-const userState = require("@services/user-state");
+const userEnable = require("@services/user-enable");
 
 /**
  * @swagger
@@ -126,7 +126,7 @@ router.get(
 router.get(
     "/:email/enable",
     asyncHandler(async (req, res) => {
-        const result = await userState(req.params.email, "active");
+        const result = await userEnable(req.params.email, true);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "Enabled user",
@@ -159,7 +159,7 @@ router.get(
 router.get(
     "/:email/disable",
     asyncHandler(async (req, res) => {
-        const result = await userState(req.params.email, "disabled");
+        const result = await userEnable(req.params.email, false);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: "User disabled",

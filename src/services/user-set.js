@@ -5,10 +5,7 @@ const userModel = require("@models/user");
 
 module.exports = async (user) => {
     try {
-        const response = {};
-        response.data = await userModel.set(user);
-
-        return response;
+        return await userModel.set(user);
     } catch (error) {
         logger.warning(
             `${error.stack || error.trace || error || error.message}`

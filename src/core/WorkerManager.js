@@ -124,6 +124,7 @@ module.exports = class WorkerManager {
         };
 
         const handleError = async (event, filename, self) => {
+            console.log("HERE");
             const index = await self.getWorkerIndex(filename);
             console.log(
                 `WorkerManager->handleError ${workers[index].filename}`,
@@ -138,6 +139,7 @@ module.exports = class WorkerManager {
         };
 
         const handleExit = async (event, filename, self) => {
+            console.log(`WorkerManager->handleExit: ${filename} stopped.`);
             const index = await self.getWorkerIndex(filename);
             workers[index].state = "stopped";
             if (!workers[index].restarting) {
