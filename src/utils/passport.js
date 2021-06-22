@@ -3,6 +3,7 @@
 //DATE: 21/06/2021
 //DESC: BUG core auth strategies defined here
 
+const OAuth2Strategy = require("passport-oauth2").Strategy;
 const HeaderStrategy = require("passport-http-header-strategy").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
@@ -65,7 +66,7 @@ exports.local = new LocalStrategy(
     }
 );
 
-//Setup Local authentication
+//Setup Pin authentication
 exports.pin = new LocalStrategy(
     { usernameField: "pin", passwordField: "pin" },
     async (username, password, done) => {
@@ -87,6 +88,35 @@ exports.pin = new LocalStrategy(
         delete user["password"];
         delete user["pin"];
         logger.action(`Pin login: ${user?.email} logged in.`);
+        return done(null, user);
+    }
+);
+
+//Setup OAuth authentication
+exports.oauth = new OAuth2Strategy(
+    {
+        authorizationURL: "https://bbclogin.id.tools.bbc.co.uk",
+        tokenURL: "https://bbclogin.id.tools.bbc.co.uk/token",
+        clientID: "ID",
+        clientSecret: "SECRET",
+        callbackURL: "http://localhost:3000/auth/example/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+        const strategy = await strategyModel.get("pin");
+        if (strategy.state !== "active") {
+            logger.info(`OAuth2 login: Not enabled.`);
+            return done(null, false);
+        }
+        const user = await userModel(profile?.email);
+
+        if (!user) {
+            logger.info(`OAuth2 login: User does not exist.`);
+            return done(null, false);
+        }
+
+        delete user["password"];
+        delete user["pin"];
+        logger.action(`OAuth2 login: ${user?.email} logged in.`);
         return done(null, user);
     }
 );
