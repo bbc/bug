@@ -13,6 +13,7 @@ const strategyModel = require("@models/strategy");
 const userModel = require("@models/user");
 const userPin = require("@services/user-pin");
 const logger = require("@utils/logger")(module);
+const bcrypt = require("bcrypt");
 
 //Setup Trusted Header authentication
 exports.proxy = new HeaderStrategy(
@@ -61,10 +62,11 @@ exports.local = new LocalStrategy(
             return done(null, false);
         }
 
-        if (user.password !== password) {
+        if (!(await bcrypt.compare(password, user.password))) {
             logger.info(`Local login: Wrong password for ${user?.email}.`);
             return done(null, false);
         }
+
         delete user["password"];
         delete user["pin"];
         logger.action(`Local login: ${user?.email} logged in.`);
@@ -97,11 +99,11 @@ exports.pin = (options) => {
             }
 
             //TODO Check if user roles array contains option.role return auth
-
-            if (user.pin !== password) {
+            if (!(await bcrypt.compare(password, user.pin))) {
                 logger.info(`Pin login: Wrong pin for ${user?.email}.`);
                 return done(null, false);
             }
+
             delete user["password"];
             delete user["pin"];
             logger.action(`Pin login: ${user?.email} logged in.`);
