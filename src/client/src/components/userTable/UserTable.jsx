@@ -74,8 +74,8 @@ export default function UserTable({ interval }) {
                     </TableHead>
 
                     <TableBody>
-                        {users?.data?.data?.map((user) => (
-                            <UserTableRow key={user.email} {...user} />
+                        {users?.data?.map((user) => (
+                            <UserTableRow key={user.uuid} {...user} />
                         ))}
                     </TableBody>
                 </Table>

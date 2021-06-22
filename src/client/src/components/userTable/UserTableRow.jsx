@@ -33,44 +33,38 @@ export default function UserTableRow(props) {
     const classes = useStyles();
     const sendAlert = useAlert();
 
-    const handleSwitchChange = async (checked, email) => {
+    const handleSwitchChange = async (checked, uuid) => {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
         let status;
 
         if (checked) {
-            status = await AxiosCommand(`/api/user/${email}/enable`);
+            status = await AxiosCommand(`/api/user/${uuid}/enable`);
         } else {
-            status = await AxiosCommand(`/api/user/${email}/disable`);
+            status = await AxiosCommand(`/api/user/${uuid}/disable`);
         }
 
         if (status) {
-            sendAlert(`${commandText} ${email}`, {
+            sendAlert(`${commandText} ${props.firstName} ${props.lastName}`, {
                 variant: "success",
             });
         } else {
-            sendAlert(`Failed to ${command} ${email}`, {
-                variant: "error",
-            });
+            sendAlert(
+                `Failed to ${command} ${props.firstName} ${props.lastName}`,
+                {
+                    variant: "error",
+                }
+            );
         }
-    };
-
-    const getSwitchState = async (state) => {
-        let checked = false;
-        if (state === "active") {
-            checked = true;
-        }
-        console.log(checked);
-        return checked;
     };
 
     return (
-        <TableRow key={props.email}>
+        <TableRow key={props.uuid}>
             <TableCell className={classes.colName}>
                 <ApiSwitch
-                    checked={getSwitchState(props?.state)}
+                    checked={props?.enabled}
                     onChange={(checked) =>
-                        handleSwitchChange(checked, props.email)
+                        handleSwitchChange(checked, props.uuid)
                     }
                 />
             </TableCell>
