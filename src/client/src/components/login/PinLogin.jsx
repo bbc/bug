@@ -67,6 +67,7 @@ export default function PinLogin() {
                 });
             }
             setLoading(false);
+            setPin("");
         }
     };
 

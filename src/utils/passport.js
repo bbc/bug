@@ -13,6 +13,7 @@ const strategyModel = require("@models/strategy");
 const userModel = require("@models/user");
 const userPin = require("@services/user-pin");
 const logger = require("@utils/logger")(module);
+const bcrypt = require("bcrypt");
 
 //Setup Trusted Header authentication
 exports.proxy = new HeaderStrategy(
@@ -26,7 +27,7 @@ exports.proxy = new HeaderStrategy(
             if (!user) {
                 auth = false;
                 logger.info(`Login failed: ${header} is not on the user list.`);
-            } else if (user.state === "active") {
+            } else if (user.enabled) {
                 delete user["password"];
                 delete user["pin"];
                 auth = user;
@@ -55,42 +56,61 @@ exports.local = new LocalStrategy(
             logger.info(`Local login: User '${username}' does not exist.`);
             return done(null, false);
         }
-        if (user.password !== password) {
-            logger.info(`Local login: Wrong password for ${username}.`);
+
+        if (!user.enabled) {
+            logger.info(`Local login: User '${user?.email}' is not enabled.`);
             return done(null, false);
         }
+
+        if (!(await bcrypt.compare(password, user.password))) {
+            logger.info(`Local login: Wrong password for ${user?.email}.`);
+            return done(null, false);
+        }
+
         delete user["password"];
         delete user["pin"];
-        logger.action(`Local login: ${username} logged in.`);
+        logger.action(`Local login: ${user?.email} logged in.`);
         return done(null, user);
     }
 );
 
 //Setup Pin authentication
-exports.pin = new LocalStrategy(
-    { usernameField: "pin", passwordField: "pin" },
-    async (username, password, done) => {
-        const strategy = await strategyModel.get("pin");
-        if (strategy.state !== "active") {
-            logger.info(`Pin login not enabled.`);
-            return done(null, false);
-        }
-        const user = await userPin(username);
+exports.pin = (options) => {
+    return new LocalStrategy(
+        { usernameField: "pin", passwordField: "pin" },
+        async (username, password, done) => {
+            const strategy = await strategyModel.get("pin");
+            if (strategy.state !== "active") {
+                logger.info(`Pin login not enabled.`);
+                return done(null, false);
+            }
+            const user = await userPin(username);
 
-        if (!user) {
-            logger.info(`Pin login: User does not exist.`);
-            return done(null, false);
+            //TODO IP Whitelisting
+
+            if (!user) {
+                logger.info(`Pin login: User does not exist.`);
+                return done(null, false);
+            }
+
+            if (!user.enabled) {
+                logger.info(`Pin login: User '${user?.email}' is not enabled.`);
+                return done(null, false);
+            }
+
+            //TODO Check if user roles array contains option.role return auth
+            if (!(await bcrypt.compare(password, user.pin))) {
+                logger.info(`Pin login: Wrong pin for ${user?.email}.`);
+                return done(null, false);
+            }
+
+            delete user["password"];
+            delete user["pin"];
+            logger.action(`Pin login: ${user?.email} logged in.`);
+            return done(null, user);
         }
-        if (user.pin !== password) {
-            logger.info(`Pin login: Wrong pin for ${user?.email}.`);
-            return done(null, false);
-        }
-        delete user["password"];
-        delete user["pin"];
-        logger.action(`Pin login: ${user?.email} logged in.`);
-        return done(null, user);
-    }
-);
+    );
+};
 
 //Setup OAuth authentication
 exports.oauth = new OAuth2Strategy(
@@ -110,7 +130,14 @@ exports.oauth = new OAuth2Strategy(
         const user = await userModel(profile?.email);
 
         if (!user) {
-            logger.info(`OAuth2 login: User does not exist.`);
+            logger.info(
+                `OAuth2 login: User '${profile.email}' does not exist.`
+            );
+            return done(null, false);
+        }
+
+        if (!user.enabled) {
+            logger.info(`OAuth2 login: User '${user?.email}' is not enabled.`);
             return done(null, false);
         }
 

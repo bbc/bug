@@ -3,12 +3,9 @@
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
 
-module.exports = async (email) => {
+module.exports = async (uuid) => {
     try {
-        const response = {};
-        response.data = await userModel.delete(email);
-
-        return response;
+        return await userModel.delete(uuid);
     } catch (error) {
         logger.warning(
             `${error.stack || error.trace || error || error.message}`
