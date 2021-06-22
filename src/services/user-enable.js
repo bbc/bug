@@ -3,12 +3,9 @@
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
 
-module.exports = async (email, state) => {
+module.exports = async (uuid, state) => {
     try {
-        const response = {};
-        response.data = await userModel.update({ email: email, state: state });
-
-        return response;
+        return await userModel.update(uuid, { enabled: state });
     } catch (error) {
         logger.warning(
             `${error.stack || error.trace || error || error.message}`

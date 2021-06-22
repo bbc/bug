@@ -27,6 +27,6 @@ module.exports = async (pin) => {
         logger.warning(
             `${error.stack || error.trace || error || error.message}`
         );
-        throw new Error(`Failed retrieve users.`);
+        throw new Error(`Failed retrieve user.`);
     }
 };

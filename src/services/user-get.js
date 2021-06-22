@@ -3,10 +3,10 @@
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
 
-module.exports = async (email) => {
+module.exports = async (uuid) => {
     try {
         const response = {};
-        response.data = await userModel.get(email);
+        response.data = await userModel.get(uuid);
 
         return response;
     } catch (error) {

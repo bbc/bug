@@ -8,13 +8,13 @@ const { v4: uuidv4 } = require("uuid");
 
 const filename = path.join(__dirname, "..", "config", "global", "users.json");
 
-async function getUserIndex(users, email) {
-    if (users && email) {
+async function getUserIndex(users, uuid) {
+    if (users && uuid) {
         const index = await users
             .map(function (user) {
-                return user?.email;
+                return user?.uuid;
             })
-            .indexOf(email);
+            .indexOf(uuid);
         return index;
     }
     return -1;
@@ -41,10 +41,10 @@ exports.list = async function () {
     return null;
 };
 
-exports.get = async function (email) {
+exports.get = async function (uuid) {
     try {
         const users = await getUsers();
-        const index = await getUserIndex(users, email);
+        const index = await getUserIndex(users, uuid);
         if (index === -1) {
             return null;
         }
@@ -55,10 +55,10 @@ exports.get = async function (email) {
     return null;
 };
 
-exports.delete = async function (email) {
+exports.delete = async function (uuid) {
     try {
         const users = await getUsers();
-        const index = await getUserIndex(users, email);
+        const index = await getUserIndex(users, uuid);
         if (index === -1) {
             return null;
         }
@@ -72,13 +72,13 @@ exports.delete = async function (email) {
 
 exports.set = async function (user) {
     try {
-        let users = await getUsers();
-        const index = await getUserIndex(users, user?.email);
+        const users = await getUsers();
+        const index = await getUserIndex(users, user?.uuid);
         if (index !== -1) {
             //User already exists - do nothing.
             return false;
         } else {
-            //Create a new user with a UUID
+            //Create a new user with a sparkly new UUID
             user.uuid = await uuidv4();
             user.enabled = false;
             users.push(user);
@@ -90,14 +90,15 @@ exports.set = async function (user) {
     return null;
 };
 
-exports.update = async function (user) {
+exports.update = async function (uuid, user) {
     try {
-        let users = await getUsers();
-        const index = await getUserIndex(users, user?.email);
+        const users = await getUsers();
+        const index = await getUserIndex(users, uuid);
         if (index !== -1) {
             users[index] = { ...users[index], ...user };
         } else {
-            return null;
+            //User doesn't exist. Do nothing.
+            return false;
         }
 
         return await writeJson(filename, users);
