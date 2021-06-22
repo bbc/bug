@@ -3,7 +3,7 @@ def VERSION
 
 pipeline {
     environment {
-        repositoryName = '172.26.108.110'
+        repositoryName = '172.26.108.110:5000'
         imageName = 'bug'
     }
     agent any
