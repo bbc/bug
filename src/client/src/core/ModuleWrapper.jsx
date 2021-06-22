@@ -10,6 +10,13 @@ import { useSelector } from "react-redux";
 import { usePanel } from "@data/Panel";
 import { Redirect } from "react-router";
 
+function ModuleSwitch({ children, panelId }) {
+    // we memoize this to hide any panel.data changes from updating the page
+    return React.useMemo(() => {
+        return <Switch>{children}</Switch>;
+    }, [children]);
+}
+
 export default function ModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -44,25 +51,25 @@ export default function ModuleWrapper({ panelId, children }) {
         }
     }
 
-    if (panel.status === "success") {
-        const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
+    if (panel.status !== "success") {
+        return null;
+    }
+    const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
-        if (!isProtected) {
-            if (hasCritical) {
-                return <PanelCritical panel={panel.data} />;
+    if (!isProtected) {
+        if (hasCritical) {
+            return <PanelCritical panel={panel.data} />;
+        }
+
+        if (panel.data._module.needsContainer) {
+            if (panel.data._dockerContainer._isBuilding) {
+                return <PanelBuilding panel={panel.data} />;
             }
 
-            if (panel.data._module.needsContainer) {
-                if (panel.data._dockerContainer._isBuilding) {
-                    return <PanelBuilding panel={panel.data} />;
-                }
-
-                if (!panel.data._dockerContainer._isRunning) {
-                    return <PanelStopped panel={panel.data} />;
-                }
+            if (!panel.data._dockerContainer._isRunning) {
+                return <PanelStopped panel={panel.data} />;
             }
         }
-        return <Switch>{children}</Switch>;
     }
-    return null;
+    return <ModuleSwitch children={children} panelId={panelId} />;
 }

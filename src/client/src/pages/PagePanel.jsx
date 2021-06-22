@@ -4,31 +4,31 @@ import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import { usePanelConfig } from "@data/PanelConfig";
 import { Redirect } from "react-router";
-
 import * as Modules from "../../../modules/*/client/Module.jsx";
 
 export default function PagePanel(props) {
     const params = useParams();
     const panelId = params.panelid ?? "";
     const panelConfig = useSelector((state) => state.panelConfig);
+    const moduleName = panelConfig.data ? panelConfig.data.module : null;
 
     // use websockets to listen for updates to these endpoints
     usePanelConfig({ panelId });
 
-    if (panelConfig.status === "loading") {
-        return <Loading />;
-    }
-    if (panelConfig.status === "success") {
-        if (!panelConfig.data) {
+    // we memoize this as we don't care if the panelconfig has changed in here - just the status or id
+    return React.useMemo(() => {
+        if (panelConfig.status === "loading") {
+            return <Loading />;
+        }
+        if (panelConfig.status === "success") {
+            if (Modules["modules"][moduleName]) {
+                const Module = Modules["modules"][moduleName]["client"]["Module"];
+                return <Module panelId={panelId} />;
+            }
+
             // the panel doesn't exist - we'll just dump back to the home page
             return <Redirect push to={{ pathname: "/" }} />;
         }
-        if (Modules["modules"][panelConfig.data.module]) {
-            const Module =
-                Modules["modules"][panelConfig.data.module]["client"]["Module"];
-            return <Module panelId={panelId} />;
-        }
         return null;
-    }
-    return null;
+    }, [panelConfig.status, panelId, moduleName]);
 }
