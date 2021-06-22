@@ -42,7 +42,7 @@ pipeline {
                         VERSION = PACKAGE.version
                         echo VERSION
                     }
-                    sh "docker buildx create --use --append --buildkitd-flags '--172.26.108.110:5000-registry-http --172.26.108.110:5000-registry-insecure' --name bugBuilder --platform linux/amd64,linux/arm/v7"
+                    sh "docker buildx create --use --append --buildkitd-flags '--'docker.io'-registry-http --'docker.io'-registry-insecure' --name bugBuilder --platform linux/amd64,linux/arm/v7"
                     sh "docker buildx inspect --bootstrap"
                     sh "docker buildx build --builder bugBuilder --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${imageName}:latest --output type=docker ."
                     sh "docker image inspect ${imageName}:latest"
