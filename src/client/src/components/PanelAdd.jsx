@@ -53,11 +53,7 @@ export default function PanelsAdd(props) {
     };
 
     const getModuleOptions = () => {
-        const modules = [
-            <option key={`_select`} value={null}>
-                Select ...
-            </option>,
-        ];
+        const modules = [<option key={`_select`} value="" disabled></option>];
         for (let module of moduleList) {
             modules.push(
                 <option key={module.name} value={module?.name}>
@@ -83,7 +79,7 @@ export default function PanelsAdd(props) {
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <TextField
-                                    inputProps={{ ...register("title") }}
+                                    inputProps={{ ...register("title", { required: true }) }}
                                     variant="filled"
                                     fullWidth
                                     error={errors?.title ? true : false}
@@ -112,6 +108,7 @@ export default function PanelsAdd(props) {
                                     <InputLabel htmlFor="outlined-age-native-simple">Module</InputLabel>
                                     <Select
                                         native
+                                        defaultValue=""
                                         error={errors?.module ? true : false}
                                         inputProps={{ ...register("module", { required: true }) }}
                                     >
