@@ -50,7 +50,7 @@ export default function EditButtonsDragItem({ button, onRemove }) {
         transform: transformString,
         transition,
     };
-    console.log(button);
+
     return (
         <ListItem
             className={classes.listItem}

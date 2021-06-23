@@ -16,7 +16,7 @@ export function usePanelConfig({ panelId }) {
         // console.log(`${panelId}: panelConfig - subscribed`);
 
         panelConfig.on("event", function (result) {
-            console.log(`${panelId}: panelConfig - event`, result);
+            // console.log(`${panelId}: panelConfig - event`, result);
             dispatch(panelConfigSlice.actions[result["status"]](result));
         });
 

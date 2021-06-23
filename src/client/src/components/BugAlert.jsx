@@ -8,11 +8,9 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
-    alert: {
-        borderRadius: 0,
-    },
     multiMessage: {
         marginTop: 2,
         marginBottom: 2,
@@ -32,9 +30,12 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "right",
         whiteSpace: "nowrap",
     },
+    squareCorners: {
+        borderRadius: 0,
+    },
 }));
 
-export default function BugAlert({ type, message, flags = [], panel }) {
+export default function BugAlert({ type, message, flags = [], panel, square = false }) {
     const classes = useStyles();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
     const sendAlert = useAlert();
@@ -119,9 +120,13 @@ export default function BugAlert({ type, message, flags = [], panel }) {
     if (redirectUrl) {
         return <Redirect push to={{ pathname: redirectUrl }} />;
     }
-
     return (
-        <Alert severity={mappedSeverity[type]} className={classes.alert}>
+        <Alert
+            severity={mappedSeverity[type]}
+            className={clsx({
+                [classes.squareCorners]: square,
+            })}
+        >
             <AlertTitle className={classes.title}>{titles[type]}</AlertTitle>
             {renderMessage()}
             {renderControls()}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -47,10 +47,16 @@ export default function PanelToolbar(props) {
     const [statusEl, setStatusEl] = React.useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const statusOpen = Boolean(statusEl);
-    const hasCritical =
-        panel.data._status &&
-        panel.data._status.filter((x) => x.type === "critical").length > 0;
+    const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
+    const statusItemCount = panel.data._status ? panel.data._status.length : 0;
     const sendAlert = useAlert();
+
+    useEffect(() => {
+        // if the number if status items changes, and it's now 0, hide the popup
+        if (statusItemCount === 0) {
+            setStatusEl(null);
+        }
+    }, [statusItemCount]);
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -127,7 +133,7 @@ export default function PanelToolbar(props) {
                                     horizontal: "center",
                                 }}
                             >
-                                <PanelStatus statusItems={panel.data._status} />
+                                <PanelStatus statusItems={panel.data._status} panel={panel.data} />
                             </Popover>
 
                             <IconButton
@@ -158,16 +164,8 @@ export default function PanelToolbar(props) {
                 >
                     <MoreIcon />
                 </IconButton>
-                <Menu
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    onClick={handleClose}
-                >
-                    <MenuItem
-                        component={Link}
-                        to={`/panel/${panel.data.id}/config`}
-                    >
+                <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
+                    <MenuItem component={Link} to={`/panel/${panel.data.id}/config`}>
                         <ListItemIcon>
                             <SettingsIcon fontSize="small" />
                         </ListItemIcon>
