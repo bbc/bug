@@ -15,6 +15,7 @@ require("dotenv").config();
 
 // get environment
 const nodeEnv = process.env.NODE_ENV || "production";
+const sessionSecret = process.env.SESSION_SECRET || "buggy";
 
 // load routes
 const documentation = require("@middleware/documentation");
@@ -48,7 +49,7 @@ passport.deserializeUser(function (user, done) {
 
 //Configure Passport
 //TODO Secret should be ENV
-bugApi.use(session({ secret: "buggy" }));
+bugApi.use(session({ secret: sessionSecret }));
 bugApi.use(passport.initialize());
 bugApi.use(passport.session());
 

@@ -13,13 +13,13 @@ const filename = path.join(
     "strategies.json"
 );
 
-async function getStrategyIndex(strategies, name) {
-    if (strategies && name) {
+async function getStrategyIndex(strategies, type) {
+    if (strategies && type) {
         const index = await strategies
             .map(function (strategy) {
-                return strategy?.name;
+                return strategy?.type;
             })
-            .indexOf(name);
+            .indexOf(type);
         return index;
     }
     return -1;
@@ -31,10 +31,25 @@ async function getStrategies() {
         return contents;
     } catch (error) {
         const contents = [
-            { name: "local", settings: {}, state: "disabled" },
-            { name: "saml", settings: {}, state: "disabled" },
-            { name: "pin", settings: {}, state: "disabled" },
-            { name: "proxy", settings: {}, state: "disabled" },
+            {
+                type: "local",
+                name: "Username and Password",
+                settings: {},
+                enabled: false,
+            },
+            { type: "saml", name: "SAML SSO", settings: {}, enabled: false },
+            {
+                type: "pin",
+                name: "4-Digit Pin Code",
+                settings: {},
+                enabled: false,
+            },
+            {
+                type: "proxy",
+                name: "Reverse Proxy Header",
+                settings: {},
+                enabled: false,
+            },
         ];
         if (await writeJson(filename, contents)) {
             return contents;
@@ -52,10 +67,10 @@ exports.list = async function () {
     return null;
 };
 
-exports.get = async function (name) {
+exports.get = async function (type) {
     try {
         const strategies = await getStrategies();
-        const index = await getStrategyIndex(strategies, name);
+        const index = await getStrategyIndex(strategies, type);
         if (index === -1) {
             return null;
         }
@@ -66,10 +81,10 @@ exports.get = async function (name) {
     return null;
 };
 
-exports.delete = async function (name) {
+exports.delete = async function (type) {
     try {
         const strategies = await getStrategies();
-        const index = await getStrategyIndex(strategies, name);
+        const index = await getStrategyIndex(strategies, type);
         if (index === -1) {
             return null;
         }
@@ -84,7 +99,7 @@ exports.delete = async function (name) {
 exports.set = async function (strategy) {
     try {
         let strategies = await getStrategies();
-        const index = await getStrategyIndex(strategies, strategy?.name);
+        const index = await getStrategyIndex(strategies, strategy?.type);
         if (index !== -1) {
             strategies[index] = strategy;
         } else {
@@ -98,10 +113,10 @@ exports.set = async function (strategy) {
     return null;
 };
 
-exports.update = async function (strategy) {
+exports.update = async function (type, strategy) {
     try {
         let strategies = await getStrategies();
-        const index = await getStrategyIndex(strategies, strategy?.name);
+        const index = await getStrategyIndex(strategies, type);
         if (index !== -1) {
             strategies[index] = { ...strategies[index], ...strategy };
         } else {

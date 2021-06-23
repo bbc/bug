@@ -12,13 +12,13 @@ const strategyState = require("@services/strategy-state");
  * @swagger
  * /strategy:
  *   get:
- *     description: Gets all the strategys from the BUG
+ *     description: Gets all the security strategies for BUG
  *     tags: [strategy]
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: Successfully retrieved all strategys.
+ *         description: Successfully retrieved all strategies.
  *         schema:
  *           type: object
  */
@@ -38,7 +38,7 @@ router.get(
 
 /**
  * @swagger
- * /strategy/{name}:
+ * /strategy/{type}:
  *   get:
  *     description: Gets a strategys details from BUG
  *     tags: [strategy]
@@ -46,11 +46,11 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: name
+ *         type: type
  *         schema:
  *           type: string
  *         required: true
- *         description: The strategies name. One of [local,pin,saml,proxy]
+ *         description: The security strategies' type. One of [local,pin,saml,proxy]
  *     responses:
  *       200:
  *         description: Successfully retrieved the strategy.
@@ -58,13 +58,13 @@ router.get(
  *           type: object
  */
 router.get(
-    "/:name",
+    "/:type",
     asyncHandler(async (req, res) => {
-        const result = await strategyGet(req.params.name);
+        const result = await strategyGet(req.params.type);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result
-                ? `Succesfully got strategy called ${req.params.name}`
+                ? `Succesfully got strategy called ${req.params.type}`
                 : "Failed to retreive strategy",
             data: result,
         });
@@ -73,7 +73,7 @@ router.get(
 
 /**
  * @swagger
- * /strategy/{name}/enable:
+ * /strategy/{type}/enable:
  *   get:
  *     description: Enables a strategy by setting a flag in BUG
  *     tags: [strategy]
@@ -81,11 +81,11 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: name
+ *         type: type
  *         schema:
  *           type: string
  *         required: true
- *         description: The strategies name. One of [local,pin,saml,proxy]
+ *         description: The strategies type. One of [local,pin,saml,proxy]
  *     responses:
  *       200:
  *         description: Successfully enabled the strategy.
@@ -93,13 +93,13 @@ router.get(
  *           type: object
  */
 router.get(
-    "/:name/enable",
+    "/:type/enable",
     asyncHandler(async (req, res) => {
-        const result = await strategyState(req.params.name, "active");
+        const result = await strategyState(req.params.type, true);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result
-                ? `Succesfully enabled strategy called ${req.params.name}`
+                ? `Succesfully enabled strategy type ${req.params.type}`
                 : "Failed to enable strategy",
             data: result,
         });
@@ -108,7 +108,7 @@ router.get(
 
 /**
  * @swagger
- * /strategy/{name}/disable:
+ * /strategy/{type}/disable:
  *   get:
  *     description: Disables a strategy by setting a flag in the strategy file
  *     tags: [strategy]
@@ -116,11 +116,11 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: name
+ *         type: type
  *         schema:
  *           type: string
  *         required: true
- *         description: The strategies name. One of [local,pin,saml,proxy]
+ *         description: The strategies type. One of [local,pin,saml,proxy]
  *     responses:
  *       200:
  *         description: Successfully disabled the strategy.
@@ -128,13 +128,13 @@ router.get(
  *           type: object
  */
 router.get(
-    "/:name/disable",
+    "/:type/disable",
     asyncHandler(async (req, res) => {
-        const result = await strategyState(req.params.name, "disabled");
+        const result = await strategyState(req.params.type, false);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result
-                ? `Succesfully disabled strategy called ${req.params.name}`
+                ? `Succesfully disabled strategy type ${req.params.type}`
                 : "Failed to disable strategy",
             data: result,
         });
@@ -143,7 +143,7 @@ router.get(
 
 /**
  * @swagger
- * /strategy/{name}:
+ * /strategy/{type}:
  *   put:
  *     description: Adds a strategy to the BUG database
  *     tags: [strategy]
@@ -151,11 +151,11 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: name
+ *         type: type
  *         schema:
  *           type: string
  *         required: true
- *         description: The strategies name. One of [local,pin,saml,proxy]
+ *         description: The strategies type. One of [local,pin,saml,proxy]
  *       - in: formData
  *         name: settings
  *         type: object
@@ -168,10 +168,9 @@ router.get(
  *           type: object
  */
 router.put(
-    "/:name",
+    "/:type",
     asyncHandler(async (req, res) => {
-        const result = await strategyUpdate({
-            name: req.params.name,
+        const result = await strategyUpdate(req.params.type, {
             settings: req.body,
         });
         hashResponse(res, req, {

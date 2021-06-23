@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colType: {
+        "@media (max-width:512px)": {
+            display: "none",
+        },
+    },
     tableHead: {
         "@media (max-width:200px)": {
             display: "none",
@@ -54,13 +59,16 @@ export default function SecurityTable({ interval }) {
                             <TableCell className={classes.colName}>
                                 Name
                             </TableCell>
+                            <TableCell className={classes.colType}>
+                                Type
+                            </TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
                         {strategies?.data?.map((strategy) => (
                             <SecurityTableRow
-                                key={strategy.name}
+                                key={strategy.type}
                                 {...strategy}
                             />
                         ))}
