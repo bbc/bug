@@ -162,6 +162,7 @@ export default function RouterButton({
     onChange,
     onEditIcon,
     groups,
+    useDoubleClick = false,
 }) {
     const classes = useStyles();
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -210,7 +211,8 @@ export default function RouterButton({
                           })
                 }
                 variant="outlined"
-                onClick={onClick}
+                onClick={useDoubleClick ? undefined : onClick}
+                onDoubleClick={useDoubleClick ? onClick : undefined}
             >
                 <div className={clsx("MuiButton-label", classes.buttonLabel)}>
                     <div className={classes.buttonUpper}>

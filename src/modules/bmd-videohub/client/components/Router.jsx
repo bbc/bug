@@ -6,6 +6,7 @@ import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
 import GroupButtons from "./GroupButtons";
 import RouterButtons from "./RouterButtons";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -80,6 +81,9 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
     const [selectedDestination, setSelectedDestination] = React.useState(null);
     const [sourceForceRefreshHash, setSourceForceRefreshHash] = React.useState(0);
     const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
+    const panelConfig = useSelector((state) => state.panelConfig);
+
+    const useDoubleClick = panelConfig && panelConfig.data.useTake;
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination === null ? -1 : selectedDestination}/${sourceGroup}`,
@@ -147,6 +151,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     selectedDestination={selectedDestination}
                     buttons={sourceButtons}
                     onClick={handleSourceButtonClicked}
+                    useDoubleClick={useDoubleClick}
                     onChange={() => setSourceForceRefreshHash(sourceForceRefreshHash + 1)}
                 />
             </div>
