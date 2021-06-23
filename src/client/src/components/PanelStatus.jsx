@@ -4,7 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     panelStatus: {},
-    alert: {},
+    alert: {
+        borderRadius: 0,
+    },
 }));
 
 export default function PanelStatus({ statusItems }) {
