@@ -2,6 +2,7 @@
 
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
+const hashResponse = require("@core/hash-response");
 
 /**
  * @swagger
@@ -20,8 +21,16 @@ const asyncHandler = require("express-async-handler");
 router.post(
     "/",
     asyncHandler(async (req, res) => {
-        await req.logout();
-        res.redirect("/login");
+        const email = req?.user?.email;
+        const status = await req.logout();
+
+        hashResponse(res, req, {
+            status: status ? "fail" : "success",
+            message: status
+                ? "Logout failed"
+                : `Sucessfully logged out ${email}`,
+            data: status,
+        });
     })
 );
 

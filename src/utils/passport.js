@@ -10,10 +10,10 @@ const SamlStrategy = require("passport-saml").Strategy;
 
 const authHeader = "BBCEMAIL";
 const strategyModel = require("@models/strategy");
-const userModel = require("@models/user");
-const userPin = require("@services/user-pin");
+const userPin = require("@services/user-get-by-pin");
+const userEmail = require("@services/user-get-by-email");
 const logger = require("@utils/logger")(module);
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 //Setup Trusted Header authentication
 exports.proxy = new HeaderStrategy(
@@ -22,8 +22,8 @@ exports.proxy = new HeaderStrategy(
         const strategy = strategyModel.get("proxy");
         let auth = false;
 
-        if (strategy.state === "active") {
-            const user = await userModel.get(header.toLowerCase());
+        if (!strategy.enabled) {
+            const user = await userEmail(header.toLowerCase());
             if (!user) {
                 auth = false;
                 logger.info(`Login failed: ${header} is not on the user list.`);
@@ -46,11 +46,11 @@ exports.local = new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
     async (username, password, done) => {
         const strategy = await strategyModel.get("local");
-        if (strategy.state !== "active") {
+        if (!strategy.enabled) {
             logger.info(`Local login not enabled.`);
             return done(null, false);
         }
-        const user = await userModel.get(username.toLowerCase());
+        const user = await userEmail(username.toLowerCase());
 
         if (!user) {
             logger.info(`Local login: User '${username}' does not exist.`);
@@ -80,7 +80,7 @@ exports.pin = (options) => {
         { usernameField: "pin", passwordField: "pin" },
         async (username, password, done) => {
             const strategy = await strategyModel.get("pin");
-            if (strategy.state !== "active") {
+            if (!strategy.enabled) {
                 logger.info(`Pin login not enabled.`);
                 return done(null, false);
             }
@@ -123,11 +123,11 @@ exports.oauth = new OAuth2Strategy(
     },
     async (accessToken, refreshToken, profile, done) => {
         const strategy = await strategyModel.get("pin");
-        if (strategy.state !== "active") {
+        if (!strategy.enabled) {
             logger.info(`OAuth2 login: Not enabled.`);
             return done(null, false);
         }
-        const user = await userModel(profile?.email);
+        const user = await userEmail(profile?.email);
 
         if (!user) {
             logger.info(
