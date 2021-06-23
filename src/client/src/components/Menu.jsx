@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
@@ -22,7 +22,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import _ from "lodash";
-import panelListGroups from "@utils/panelListGroups";
+import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 
 const useStyles = makeStyles((theme) => ({
     critical: {
@@ -67,11 +67,32 @@ const Menu = ({ showGroups = true }) => {
     const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
-    const enabledPanelList = panelList.data.filter(
-        (item) => item.enabled === true
-    );
+    const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
     const location = useLocation();
     const [expanded, setExpanded] = React.useState(false);
+
+    const getSelectedGroup = () => {
+        // this is used to expand the groups when the page is loaded with a panel already open
+        let selectedGroup = null;
+        if (panelList.status === "success" && panelList.data && panel.status === "success" && panel.data) {
+            for (let eachPanel of panelList.data) {
+                if (eachPanel.id === panel.data.id) {
+                    selectedGroup = eachPanel.group ? eachPanel.group : defaultGroupText;
+                }
+            }
+        }
+        return selectedGroup;
+    };
+
+    // we fetch this here so we can use it as a dependency in the useEffect
+    const selectedGroup = getSelectedGroup();
+
+    useEffect(() => {
+        // only run this if the selectedGroup changes
+        if (selectedGroup) {
+            setExpanded(selectedGroup);
+        }
+    }, [selectedGroup]);
 
     const renderMenuItem = (menuPanel) => {
         if (!menuPanel.enabled) {
@@ -80,12 +101,9 @@ const Menu = ({ showGroups = true }) => {
         let hasCritical = false;
 
         if (menuPanel?._status) {
-            hasCritical =
-                menuPanel._status.filter((x) => x.type === "critical").length >
-                0;
+            hasCritical = menuPanel._status.filter((x) => x.type === "critical").length > 0;
         }
-        const isSelected =
-            panel.status === "success" && menuPanel.id === panel.data.id;
+        const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
             <ListItem
                 className={hasCritical ? classes.critical : ""}
@@ -109,10 +127,8 @@ const Menu = ({ showGroups = true }) => {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const GroupedMenuItems = ({ groupedPanels }) => {
-        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) =>
-            a.localeCompare(b, "en", { sensitivity: "base" })
-        );
+    const groupedMenuItems = (groupedPanels) => {
+        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
 
         return (
             <>
@@ -127,13 +143,7 @@ const Menu = ({ showGroups = true }) => {
                         >
                             <AccordionSummary
                                 className={classes.groupHeader}
-                                expandIcon={
-                                    expanded === groupKey ? (
-                                        <ArrowDropDownIcon />
-                                    ) : (
-                                        <ArrowRightIcon />
-                                    )
-                                }
+                                expandIcon={expanded === groupKey ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                                 onClick={(event) => {
                                     event.stopPropagation();
                                 }}
@@ -142,9 +152,7 @@ const Menu = ({ showGroups = true }) => {
                             </AccordionSummary>
                             <AccordionDetails className={classes.groupPanel}>
                                 <List aria-label="list of enabled modules">
-                                    {groupedPanels[groupKey].map((eachPanel) =>
-                                        renderMenuItem(eachPanel)
-                                    )}
+                                    {groupedPanels[groupKey].map((eachPanel) => renderMenuItem(eachPanel))}
                                 </List>
                             </AccordionDetails>
                         </Accordion>
@@ -154,12 +162,8 @@ const Menu = ({ showGroups = true }) => {
         );
     };
 
-    const MenuItems = ({ items }) => {
-        return (
-            <List aria-label="list of enabled modules">
-                {items.map((eachPanel) => renderMenuItem(eachPanel))}
-            </List>
-        );
+    const menuItems = (items) => {
+        return <List aria-label="list of enabled modules">{items.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
     };
 
     const renderPanelMenuItems = () => {
@@ -169,9 +173,9 @@ const Menu = ({ showGroups = true }) => {
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
             if (Object.keys(panelsByGroup).length === 1 || !showGroups) {
-                return <MenuItems items={panelList.data} />;
+                return menuItems(panelList.data);
             } else {
-                return <GroupedMenuItems groupedPanels={panelsByGroup} />;
+                return groupedMenuItems(panelsByGroup);
             }
         } else {
             return null;
@@ -189,12 +193,7 @@ const Menu = ({ showGroups = true }) => {
             >
                 <Grid item style={{ width: "100%" }}>
                     <List>
-                        <ListItem
-                            button
-                            component={Link}
-                            to="/"
-                            selected={location.pathname === "/"}
-                        >
+                        <ListItem button component={Link} to="/" selected={location.pathname === "/"}>
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
