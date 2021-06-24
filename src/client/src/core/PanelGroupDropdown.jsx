@@ -51,7 +51,7 @@ export default function PanelGroupDropdown({ value, onChange, fullWidth = false,
             handleHomeEndKeys
             options={panelListGroups}
             freeSolo
-            renderInput={(params) => <TextField {...params} label="Search or enter a new group" variant="filled" />}
+            renderInput={(params) => <TextField {...params} label="Search or enter a new group" />}
         />
     );
 }

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PanelForm = (props) => {
+const BugForm = (props) => {
     const classes = useStyles();
 
     useHotkeys("esc", props.onClose);
@@ -85,7 +85,7 @@ const Actions = (props) => {
     return <CardActions className={classes.actions}>{props.children}</CardActions>;
 };
 
-PanelForm.Header = Header;
-PanelForm.Body = Body;
-PanelForm.Actions = Actions;
-export default PanelForm;
+BugForm.Header = Header;
+BugForm.Body = Body;
+BugForm.Actions = Actions;
+export default BugForm;

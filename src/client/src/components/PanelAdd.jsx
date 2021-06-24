@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
-import PanelForm from "@core/PanelForm";
+import BugForm from "@core/BugForm";
 import LoadingOverlay from "@components/LoadingOverlay";
 import { useAlert } from "@utils/Snackbar";
 import Grid from "@material-ui/core/Grid";
@@ -72,10 +72,10 @@ export default function PanelsAdd(props) {
 
     const renderForm = () => (
         <>
-            <PanelForm onClose={handleCancel}>
+            <BugForm onClose={handleCancel}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <PanelForm.Header onClose={handleCancel}>Add a new panel</PanelForm.Header>
-                    <PanelForm.Body>
+                    <BugForm.Header onClose={handleCancel}>Add a new panel</BugForm.Header>
+                    <BugForm.Body>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <TextField
@@ -115,17 +115,17 @@ export default function PanelsAdd(props) {
                                 </FormControl>
                             </Grid>
                         </Grid>
-                    </PanelForm.Body>
-                    <PanelForm.Actions>
+                    </BugForm.Body>
+                    <BugForm.Actions>
                         <Button variant="contained" color="secondary" disableElevation onClick={handleCancel}>
                             Cancel
                         </Button>
                         <Button type="submit" variant="contained" color="primary" disableElevation>
                             Add Panel
                         </Button>
-                    </PanelForm.Actions>
+                    </BugForm.Actions>
                 </form>
-            </PanelForm>
+            </BugForm>
         </>
     );
 

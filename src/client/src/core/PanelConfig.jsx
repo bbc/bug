@@ -2,7 +2,7 @@ import { useHistory } from "react-router-dom";
 import React from "react";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import PanelForm from "@core/PanelForm";
+import BugForm from "@core/BugForm";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,24 +36,24 @@ export default function PanelConfig({ panelId, children, config, handleSubmit })
 
     return (
         <>
-            <PanelForm onClose={onCancel}>
+            <BugForm onClose={onCancel}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <PanelForm.Header onClose={onCancel}>Configuration</PanelForm.Header>
-                    <PanelForm.Body>
+                    <BugForm.Header onClose={onCancel}>Configuration</BugForm.Header>
+                    <BugForm.Body>
                         <Grid container spacing={4} className={classes.form}>
                             {children}
                         </Grid>
-                    </PanelForm.Body>
-                    <PanelForm.Actions>
+                    </BugForm.Body>
+                    <BugForm.Actions>
                         <Button variant="contained" color="secondary" disableElevation onClick={onCancel}>
                             Cancel
                         </Button>
                         <Button type="submit" variant="contained" color="primary" disableElevation>
                             Save Changes
                         </Button>
-                    </PanelForm.Actions>
+                    </BugForm.Actions>
                 </form>
-            </PanelForm>
+            </BugForm>
         </>
     );
 }
