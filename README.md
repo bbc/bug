@@ -93,7 +93,10 @@ services:
 -   Find BUG on `localhost:80`
 
 ```
-# BUG for Raspberry Pi 3 and 4
+# NAME: docker-compose.yml
+# AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
+# DATE: 04/03/2021
+# DESC: Defines Docker services for Bug
 
 version: "3.8"
 
@@ -122,7 +125,7 @@ services:
       - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
 
   mongo:
-    image: arm7/mongo:latest
+    image: andresvidal/rpi3-mongodb3:latest
     restart: unless-stopped
     container_name: bug-mongo
     networks:
