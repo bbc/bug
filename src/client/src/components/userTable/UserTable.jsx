@@ -13,18 +13,11 @@ import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 
 const useStyles = makeStyles((theme) => ({
-    colUsername: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
     colState: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
+        width: "1rem",
     },
     colName: {
-        "@media (max-width:512px)": {
+        "@media (max-width:1024px)": {
             display: "none",
         },
     },
@@ -37,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
         "@media (max-width:200px)": {
             display: "none",
         },
+    },
+    colNav: {
+        width: "1rem",
     },
 }));
 
@@ -58,16 +54,16 @@ export default function UserTable({ interval }) {
                 <Table>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            <TableCell className={classes.colState}>Enabled</TableCell>
-                            <TableCell className={classes.colName}>Name</TableCell>
-                            <TableCell className={classes.colEmail}>Email</TableCell>
+                            <TableCell className={classes.colState}></TableCell>
                             <TableCell className={classes.colUsername}>Username</TableCell>
+                            <TableCell className={classes.colEmail}>Email</TableCell>
+                            <TableCell className={classes.colNav}></TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
                         {users?.data?.map((user) => (
-                            <UserTableRow key={user.uuid} {...user} />
+                            <UserTableRow key={user.id} user={user} />
                         ))}
                     </TableBody>
                 </Table>

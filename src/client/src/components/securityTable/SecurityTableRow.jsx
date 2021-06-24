@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
     tableRow: {
         cursor: "pointer",
     },
-    colEnabled: {
-        width: "2rem",
+    colState: {
+        width: "1rem",
     },
     colType: {
         "@media (max-width:512px)": {
@@ -57,7 +57,7 @@ export default function SecurityTableRow({ strategy }) {
 
     return (
         <TableRow key={strategy.type} hover className={classes.tableRow}>
-            <TableCell className={classes.colEnabled}>
+            <TableCell className={classes.colState}>
                 <ApiSwitch
                     checked={strategy.enabled}
                     onChange={(checked) => handleSwitchChange(checked, strategy.type)}
