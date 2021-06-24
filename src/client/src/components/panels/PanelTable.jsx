@@ -7,7 +7,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelTableRow from "@components/panelTable/PanelTableRow";
+import PanelTableRow from "@components/panels/PanelTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import PanelTableGroupRow from "./PanelTableGroupRow";

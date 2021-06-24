@@ -14,13 +14,8 @@ const useStyles = makeStyles((theme) => ({
     colState: {
         width: "1rem",
     },
-    colName: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
     colEmail: {
-        "@media (max-width:200px)": {
+        "@media (max-width:800px)": {
             display: "none",
         },
     },

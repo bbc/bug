@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import SecurityTable from "@components/securityTable/SecurityTable";
+import SecurityTable from "@components/security/SecurityTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { makeStyles } from "@material-ui/core/styles";

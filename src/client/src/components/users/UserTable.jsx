@@ -8,23 +8,16 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import SecurityTableRow from "@components/securityTable/SecurityTableRow";
+import UserTableRow from "@components/users/UserTableRow";
 import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 
 const useStyles = makeStyles((theme) => ({
-    colType: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
+    colState: {
+        width: "1rem",
     },
-    colDescription: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
-    tableHead: {
-        "@media (max-width:200px)": {
+    colEmail: {
+        "@media (max-width:800px)": {
             display: "none",
         },
     },
@@ -33,15 +26,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SecurityTable({ interval }) {
+export default function UserTable({ interval }) {
     const classes = useStyles();
 
-    const strategies = useApiPoller({
-        url: `/api/strategy`,
+    const users = useApiPoller({
+        url: `/api/user`,
         interval: interval,
     });
 
-    if (strategies.status === "loading" || strategies.status === "idle") {
+    if (users.status === "loading" || users.status === "idle") {
         return <Loading />;
     }
 
@@ -52,16 +45,15 @@ export default function SecurityTable({ interval }) {
                     <TableHead className={classes.tableHead}>
                         <TableRow>
                             <TableCell className={classes.colState}></TableCell>
-                            <TableCell className={classes.colName}>Name</TableCell>
-                            <TableCell className={classes.colType}>Type</TableCell>
-                            <TableCell className={classes.colDescription}>Description</TableCell>
+                            <TableCell className={classes.colUsername}>Username</TableCell>
+                            <TableCell className={classes.colEmail}>Email</TableCell>
                             <TableCell className={classes.colNav}></TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {strategies?.data?.map((strategy) => (
-                            <SecurityTableRow key={strategy.type} strategy={strategy} />
+                        {users?.data?.map((user) => (
+                            <UserTableRow key={user.id} user={user} />
                         ))}
                     </TableBody>
                 </Table>
@@ -70,10 +62,10 @@ export default function SecurityTable({ interval }) {
     );
 }
 
-SecurityTable.defaultProps = {
+UserTable.defaultProps = {
     interval: 1000,
 };
 
-SecurityTable.propTypes = {
+UserTable.propTypes = {
     interval: PropTypes.number,
 };

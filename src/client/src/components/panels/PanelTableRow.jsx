@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ApiSwitch from "@core/ApiSwitch";
-import PanelTableMenu from "@components/panelTable/PanelTableMenu";
+import PanelTableMenu from "@components/panels/PanelTableMenu";
 import AxiosCommand from "@utils/AxiosCommand";
 import ProgressCounter from "@components/ProgressCounter";
 import TableCell from "@material-ui/core/TableCell";

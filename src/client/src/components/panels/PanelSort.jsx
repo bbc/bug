@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelSortGroup from "@components/panelSort/PanelSortGroup";
+import PanelSortGroup from "@components/panels/PanelSortGroup";
 import Loading from "@components/Loading";
 import AxiosPut from "@utils/AxiosPut";
 import { useSelector } from "react-redux";
@@ -85,26 +85,15 @@ export default function PanelSort() {
                     return arrayMove(groups, oldIndex, newIndex);
                 });
             }
-            if (
-                panelIDs.includes(over.id.split(":")[1]) &&
-                panelIDs.includes(active.id.split(":")[1])
-            ) {
+            if (panelIDs.includes(over.id.split(":")[1]) && panelIDs.includes(active.id.split(":")[1])) {
                 const overData = over.id.split(":");
                 const activeData = active.id.split(":");
 
                 const newPanels = panels;
 
-                const oldIndex = findWithAttr(
-                    newPanels[activeData[0]],
-                    "id",
-                    activeData[1]
-                );
+                const oldIndex = findWithAttr(newPanels[activeData[0]], "id", activeData[1]);
 
-                const newIndex = findWithAttr(
-                    newPanels[overData[0]],
-                    "id",
-                    overData[1]
-                );
+                const newIndex = findWithAttr(newPanels[overData[0]], "id", overData[1]);
 
                 const panel = newPanels[activeData[0]][oldIndex];
                 newPanels[activeData[0]].splice(oldIndex, 1);
@@ -133,21 +122,10 @@ export default function PanelSort() {
             <>
                 <div component={Paper} className={classes.tableContainer}>
                     <div className={classes.table}>
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={handleDragEnd}
-                        >
-                            <SortableContext
-                                items={groups}
-                                strategy={verticalListSortingStrategy}
-                            >
+                        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                            <SortableContext items={groups} strategy={verticalListSortingStrategy}>
                                 {groups.map((group) => (
-                                    <PanelSortGroup
-                                        key={group}
-                                        group={group}
-                                        panels={panels[group]}
-                                    />
+                                    <PanelSortGroup key={group} group={group} panels={panels[group]} />
                                 ))}
                             </SortableContext>
                         </DndContext>

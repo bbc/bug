@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import UserTable from "@components/userTable/UserTable";
+import LogTable from "@components/logs/LogTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,12 +11,12 @@ export default function PageConfigurationUsers() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("User Configuration"));
+        dispatch(pageTitleSlice.actions.set("Logs"));
     }, [dispatch]);
 
     return (
         <>
-            <UserTable />
+            <LogTable level={"action"} />
         </>
     );
 }

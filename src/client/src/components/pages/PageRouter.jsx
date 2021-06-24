@@ -11,12 +11,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavDesktop from "@components/NavDesktop";
 import NavMobile from "@components/NavMobile";
 import Hidden from "@material-ui/core/Hidden";
-import PageConfigurationGlobal from "@components/configurationPages/PageConfigurationGlobal";
-import PageConfigurationUsers from "@components/configurationPages/PageConfigurationUsers";
-import PageConfigurationSecurity from "@components/configurationPages/PageConfigurationSecurity";
-import PageConfigurationSoftware from "@components/configurationPages/PageConfigurationSoftware";
-import PageConfigurationSystem from "@components/configurationPages/PageConfigurationSystem";
-import PageConfigurationLogs from "@components/configurationPages/PageConfigurationLogs";
+import PageConfigurationGlobal from "@components/configuration/PageConfigurationGlobal";
+import PageConfigurationUsers from "@components/configuration/PageConfigurationUsers";
+import PageConfigurationUserEdit from "@components/configuration/PageConfigurationUserEdit";
+import PageConfigurationSecurity from "@components/configuration/PageConfigurationSecurity";
+import PageConfigurationSoftware from "@components/configuration/PageConfigurationSoftware";
+import PageConfigurationSystem from "@components/configuration/PageConfigurationSystem";
+import PageConfigurationLogs from "@components/configuration/PageConfigurationLogs";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -129,6 +130,16 @@ const PageRouter = (props) => {
                 <Route exact path="/configuration/users">
                     <div className={classes.pagecontent}>
                         <PageConfigurationUsers />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/user">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationUserEdit />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/user/:userId">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationUserEdit />
                     </div>
                 </Route>
                 <Route exact path="/configuration/security">

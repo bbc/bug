@@ -1,14 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import PanelSortItem from "@components/panelSort/PanelSortItem";
+import PanelSortItem from "@components/panels/PanelSortItem";
 import clsx from "clsx";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
-import {
-    useSortable,
-    SortableContext,
-    verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { useSortable, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
     row: {
@@ -43,8 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelSortGroup(props) {
     const classes = useStyles();
-    const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id: props.group });
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.group });
 
     let transformString = null;
 
@@ -60,39 +55,23 @@ export default function PanelSortGroup(props) {
     const makeGroups = (
         <div className={classes.row}>
             <div className={clsx(classes.cell, classes.colDragIcon)}>
-                <DragIndicatorIcon
-                    {...listeners}
-                    className={classes.dragIcon}
-                />
+                <DragIndicatorIcon {...listeners} className={classes.dragIcon} />
             </div>
-            <div className={clsx(classes.cell, classes.colTitle)}>
-                {props.group}
-            </div>
+            <div className={clsx(classes.cell, classes.colTitle)}>{props.group}</div>
         </div>
     );
 
     if (props.panels) {
         return (
             <>
-                <div
-                    className={classes.table}
-                    ref={setNodeRef}
-                    style={style}
-                    {...attributes}
-                >
+                <div className={classes.table} ref={setNodeRef} style={style} {...attributes}>
                     {makeGroups}
                     <SortableContext
-                        items={props.panels.map(
-                            (panel) => `${props.group}:${panel.id}`
-                        )}
+                        items={props.panels.map((panel) => `${props.group}:${panel.id}`)}
                         strategy={verticalListSortingStrategy}
                     >
                         {props.panels.map((panel) => (
-                            <PanelSortItem
-                                key={panel.id}
-                                id={`${props.group}:${panel.id}`}
-                                panel={panel}
-                            />
+                            <PanelSortItem key={panel.id} id={`${props.group}:${panel.id}`} panel={panel} />
                         ))}
                     </SortableContext>
                 </div>

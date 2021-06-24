@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import PanelTable from "@components/panelTable/PanelTable";
+import PanelTable from "@components/panels/PanelTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 
