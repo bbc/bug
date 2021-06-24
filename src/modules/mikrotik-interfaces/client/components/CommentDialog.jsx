@@ -57,7 +57,6 @@ export default function CommentDialog({ interfaceId, interfaceName, comment, onC
                         style={{ width: "26rem" }}
                         value={value}
                         onChange={handleTextChanged}
-                        variant="filled"
                         fullWidth
                         type="text"
                         label="Comment"

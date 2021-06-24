@@ -30,7 +30,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("title", { required: true }) }}
-                        variant="filled"
                         required
                         fullWidth
                         error={errors.title}
@@ -43,7 +42,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("description") }}
-                        variant="filled"
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
@@ -65,7 +63,6 @@ export default function ConfigPanel() {
                                 pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
                             }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors.address}
                         helperText={messages.address}
@@ -79,7 +76,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12} lg={6}>
                     <TextField
                         inputProps={{ ...register("username", { required: true }) }}
-                        variant="filled"
                         fullWidth
                         error={errors.username}
                         helperText={messages.username}
@@ -93,7 +89,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12} lg={6}>
                     <PasswordTextField
                         inputProps={{ ...register("password", { required: true }) }}
-                        variant="filled"
                         fullWidth
                         error={errors.password}
                         helperText={messages.password}
@@ -110,7 +105,6 @@ export default function ConfigPanel() {
                         label="Protected Interfaces"
                         control={control}
                         defaultValue={panelConfig.data.protectedInterfaces}
-                        variant="filled"
                         sort={true}
                         error={errors.protectedInterfaces}
                         fullWidth
@@ -123,7 +117,6 @@ export default function ConfigPanel() {
                         label="Excluded Interfaces"
                         control={control}
                         defaultValue={panelConfig.data.excludedInterfaces}
-                        variant="filled"
                         sort={true}
                         error={errors.excludedInterfaces}
                         fullWidth

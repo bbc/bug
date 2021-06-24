@@ -11,12 +11,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import CancelIcon from "@material-ui/icons/Cancel";
 import IconButton from "@material-ui/core/IconButton";
 
-export default function DelayDialog({
-    outputNumber,
-    outputDelay,
-    onClose,
-    panelId,
-}) {
+export default function DelayDialog({ outputNumber, outputDelay, onClose, panelId }) {
     const sendAlert = useAlert();
     const [value, setValue] = React.useState(outputDelay);
     const inputRef = React.useRef();
@@ -25,12 +20,7 @@ export default function DelayDialog({
         event.stopPropagation();
         onClose(event);
         const saveValue = value ? value : 0;
-        if (
-            await AxiosPost(
-                `/container/${panelId}/output/${outputNumber}/delay`,
-                { delay: saveValue }
-            )
-        ) {
+        if (await AxiosPost(`/container/${panelId}/output/${outputNumber}/delay`, { delay: saveValue })) {
             sendAlert(`Delayed output to ${saveValue}s`, {
                 broadcast: true,
                 variant: "success",
@@ -70,7 +60,6 @@ export default function DelayDialog({
                         style={{ width: "26rem" }}
                         value={value}
                         onChange={handleTextChanged}
-                        variant="filled"
                         placeholder={0}
                         fullWidth
                         type="number"
@@ -82,10 +71,7 @@ export default function DelayDialog({
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClear}
-                                    >
+                                    <IconButton aria-label="toggle password visibility" onClick={handleClear}>
                                         <CancelIcon />
                                     </IconButton>
                                 </InputAdornment>
@@ -97,11 +83,7 @@ export default function DelayDialog({
                     <Button onClick={handleDelayDialogClose} color="primary">
                         Cancel
                     </Button>
-                    <Button
-                        type="submit"
-                        onClick={handleDelayConfirm}
-                        color="primary"
-                    >
+                    <Button type="submit" onClick={handleDelayConfirm} color="primary">
                         Delay
                     </Button>
                 </DialogActions>

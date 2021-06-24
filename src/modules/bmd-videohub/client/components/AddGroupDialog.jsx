@@ -20,7 +20,7 @@ export default function AddGroupDialog({ onCancel, onSubmit, groups }) {
             >
                 <DialogTitle id="alert-dialog-title">Add to Group</DialogTitle>
                 <DialogContent>
-                    <FormControl variant="filled">
+                    <FormControl>
                         <Select
                             style={{ width: "20rem" }}
                             value={selectedGroup}

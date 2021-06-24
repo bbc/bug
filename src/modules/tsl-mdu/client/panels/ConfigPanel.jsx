@@ -22,14 +22,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const {
-        register,
-        handleSubmit,
-        control,
-        errors,
-        validateServer,
-        messages,
-    } = useConfigFormHandler({
+    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -41,7 +34,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("title", { required: true }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.title ? true : false}
                         defaultValue={panelConfig.data.title}
@@ -53,7 +45,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("description") }}
-                        variant="filled"
                         fullWidth
                         error={errors?.description ? true : false}
                         defaultValue={panelConfig.data.description}
@@ -68,11 +59,9 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("address", {
                                 required: true,
-                                pattern:
-                                    /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
+                                pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
                             }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.address ? true : false}
                         defaultValue={panelConfig.data.address}
@@ -86,7 +75,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("username", { required: true }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.username ? true : false}
                         defaultValue={panelConfig.data.username}
@@ -100,7 +88,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("password", { required: true }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.password ? true : false}
                         defaultValue={panelConfig.data.password}
@@ -115,7 +102,6 @@ export default function ConfigPanel() {
                             ...register("outputs", { required: true }),
                             step: "any",
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.outputs ? true : false}
                         defaultValue={panelConfig.data.outputs}
@@ -125,7 +111,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <FormControl variant="filled" fullWidth>
+                    <FormControl fullWidth>
                         <InputLabel>Model</InputLabel>
                         <Select
                             native
@@ -136,9 +122,7 @@ export default function ConfigPanel() {
                                 ...register("model", { required: true }),
                             }}
                         >
-                            <option value={"tsl-mdu-12-pm"}>
-                                TSL MDU 12 PM
-                            </option>
+                            <option value={"tsl-mdu-12-pm"}>TSL MDU 12 PM</option>
                             <option value={"tsl-mdu-3es"}>TSL MDU 3ES</option>
                             <option value={"tsl-mdu-3es"}>TSL MDU 3ES</option>
                         </Select>

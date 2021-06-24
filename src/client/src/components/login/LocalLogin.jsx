@@ -20,12 +20,9 @@ export default function LocalLogin() {
         setLoading(true);
         const response = await AxiosPost(`/api/login`, form);
         if (!response?.error) {
-            sendAlert(
-                `${response?.firstName} ${response?.lastName} has been logged in.`,
-                {
-                    variant: "success",
-                }
-            );
+            sendAlert(`${response?.firstName} ${response?.lastName} has been logged in.`, {
+                variant: "success",
+            });
         } else {
             sendAlert("Could not login user.", {
                 variant: "warning",
@@ -44,7 +41,6 @@ export default function LocalLogin() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("email") }}
-                        variant="filled"
                         fullWidth
                         error={errors?.email ? true : false}
                         type="email"
@@ -54,7 +50,6 @@ export default function LocalLogin() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("password") }}
-                        variant="filled"
                         fullWidth
                         error={errors?.password ? true : false}
                         type="password"
@@ -62,12 +57,7 @@ export default function LocalLogin() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        disableElevation
-                    >
+                    <Button type="submit" variant="contained" color="primary" disableElevation>
                         Login
                     </Button>
                 </Grid>

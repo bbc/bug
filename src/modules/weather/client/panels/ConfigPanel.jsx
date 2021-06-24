@@ -31,7 +31,6 @@ export default function ConfigPanel() {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("title", { required: true }) }}
-                    variant="filled"
                     fullWidth
                     error={errors?.title ? true : false}
                     defaultValue={panelConfig.data.title}
@@ -43,7 +42,6 @@ export default function ConfigPanel() {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("description") }}
-                    variant="filled"
                     fullWidth
                     error={errors?.description ? true : false}
                     defaultValue={panelConfig.data.description}
@@ -55,7 +53,6 @@ export default function ConfigPanel() {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("openweather_key", { required: true }) }}
-                    variant="filled"
                     fullWidth
                     error={errors?.openweather_key ? true : false}
                     defaultValue={panelConfig.data.openweather_key}
@@ -67,7 +64,6 @@ export default function ConfigPanel() {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("label", { required: true }) }}
-                    variant="filled"
                     fullWidth
                     error={errors?.label ? true : false}
                     defaultValue={panelConfig.data.label}
@@ -79,7 +75,6 @@ export default function ConfigPanel() {
             <Grid item xs={6}>
                 <TextField
                     inputProps={{ ...register("longitude", { required: true }), step: "any" }}
-                    variant="filled"
                     fullWidth
                     error={errors?.longitude ? true : false}
                     defaultValue={panelConfig.data.longitude}
@@ -92,7 +87,6 @@ export default function ConfigPanel() {
             <Grid item xs={6}>
                 <TextField
                     inputProps={{ ...register("latitude", { required: true }), step: "any" }}
-                    variant="filled"
                     fullWidth
                     error={errors?.latitude ? true : false}
                     defaultValue={panelConfig.data.latitude}
@@ -102,7 +96,7 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={6}>
-                <FormControl variant="filled" fullWidth>
+                <FormControl fullWidth>
                     <InputLabel>Forecast Length</InputLabel>
                     <Select
                         native
@@ -118,7 +112,7 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={6}>
-                <FormControl variant="filled" fullWidth>
+                <FormControl fullWidth>
                     <InputLabel>Units</InputLabel>
                     <Select
                         native

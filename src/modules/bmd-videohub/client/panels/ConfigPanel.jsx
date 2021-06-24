@@ -29,7 +29,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("title", { required: true }) }}
-                        variant="filled"
                         required
                         fullWidth
                         error={errors.title}
@@ -42,7 +41,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("description") }}
-                        variant="filled"
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
@@ -64,7 +62,6 @@ export default function ConfigPanel() {
                                 pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
                             }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors.address}
                         helperText={messages.address}
@@ -85,7 +82,6 @@ export default function ConfigPanel() {
                                     /^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$/,
                             }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors.port}
                         helperText={messages.port}
@@ -102,7 +98,6 @@ export default function ConfigPanel() {
                         label="Excluded Sources (0-based)"
                         control={control}
                         defaultValue={panelConfig.data.excludeSources}
-                        variant="filled"
                         sort={true}
                         error={errors.excludeSources}
                         fullWidth
@@ -115,7 +110,6 @@ export default function ConfigPanel() {
                         label="Excluded Destinations (0-based)"
                         control={control}
                         defaultValue={panelConfig.data.excludeDestinations}
-                        variant="filled"
                         sort={true}
                         error={errors.excludeDestinations}
                         fullWidth

@@ -9,7 +9,6 @@ export default function ConfigPanel({ register, errors, config }) {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("title", { required: true }) }}
-                    variant="filled"
                     fullWidth
                     error={errors?.title ? true : false}
                     defaultValue={config?.title}
@@ -21,7 +20,6 @@ export default function ConfigPanel({ register, errors, config }) {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("description") }}
-                    variant="filled"
                     fullWidth
                     error={errors?.description ? true : false}
                     defaultValue={config?.description}
@@ -33,7 +31,6 @@ export default function ConfigPanel({ register, errors, config }) {
             <Grid item xs={12}>
                 <TextField
                     inputProps={{ ...register("ip_address", { required: true }) }}
-                    variant="filled"
                     fullWidth
                     error={errors?.ip_address ? true : false}
                     defaultValue={config?.ip_address}
@@ -45,7 +42,6 @@ export default function ConfigPanel({ register, errors, config }) {
             <Grid item xs={6}>
                 <TextField
                     inputProps={{ ...register("username", { required: true }) }}
-                    variant="filled"
                     fullWidth
                     error={errors?.username ? true : false}
                     defaultValue={config?.username}
@@ -57,7 +53,6 @@ export default function ConfigPanel({ register, errors, config }) {
             <Grid item xs={6}>
                 <TextField
                     inputProps={{ ...register("password", { required: true }) }}
-                    variant="filled"
                     fullWidth
                     error={errors?.password ? true : false}
                     defaultValue={config?.password}

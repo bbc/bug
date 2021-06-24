@@ -55,7 +55,6 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
                         style={{ width: "26rem" }}
                         value={value}
                         onChange={handleTextChanged}
-                        variant="filled"
                         placeholder={defaultName}
                         fullWidth
                         type="text"

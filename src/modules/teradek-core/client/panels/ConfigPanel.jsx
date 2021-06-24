@@ -19,14 +19,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const {
-        register,
-        handleSubmit,
-        control,
-        errors,
-        validateServer,
-        messages,
-    } = useConfigFormHandler({
+    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -38,7 +31,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("title", { required: true }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.title ? true : false}
                         defaultValue={panelConfig.data.title}
@@ -50,7 +42,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("description") }}
-                        variant="filled"
                         fullWidth
                         error={errors?.description ? true : false}
                         defaultValue={panelConfig.data.description}
@@ -64,7 +55,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("username", { required: true }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.username ? true : false}
                         defaultValue={panelConfig.data.username}
@@ -78,7 +68,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("password", { required: true }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.password ? true : false}
                         defaultValue={panelConfig.data.password}
@@ -92,7 +81,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("organisation", { required: true }),
                         }}
-                        variant="filled"
                         fullWidth
                         error={errors?.organisation ? true : false}
                         defaultValue={panelConfig.data.organisation}
@@ -102,11 +90,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <PanelGroupFormControl
-                        name="group"
-                        control={control}
-                        defaultValue={panelConfig.data.group}
-                    />
+                    <PanelGroupFormControl name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
             </PanelConfig>
         </>

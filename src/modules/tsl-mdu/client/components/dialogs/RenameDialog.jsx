@@ -11,12 +11,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import CancelIcon from "@material-ui/icons/Cancel";
 import IconButton from "@material-ui/core/IconButton";
 
-export default function RenameDialog({
-    outputNumber,
-    outputName,
-    onClose,
-    panelId,
-}) {
+export default function RenameDialog({ outputNumber, outputName, onClose, panelId }) {
     const sendAlert = useAlert();
     const [value, setValue] = React.useState(outputName);
     const inputRef = React.useRef();
@@ -26,12 +21,7 @@ export default function RenameDialog({
         event.stopPropagation();
         onClose(event);
         const saveValue = value ? value : defaultName;
-        if (
-            await AxiosPost(
-                `/container/${panelId}/output/${outputNumber}/name`,
-                { name: saveValue }
-            )
-        ) {
+        if (await AxiosPost(`/container/${panelId}/output/${outputNumber}/name`, { name: saveValue })) {
             sendAlert(`Renamed output to ${saveValue}`, {
                 broadcast: true,
                 variant: "success",
@@ -71,7 +61,6 @@ export default function RenameDialog({
                         style={{ width: "26rem" }}
                         value={value}
                         onChange={handleTextChanged}
-                        variant="filled"
                         placeholder={defaultName}
                         fullWidth
                         type="text"
@@ -83,10 +72,7 @@ export default function RenameDialog({
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClear}
-                                    >
+                                    <IconButton aria-label="toggle password visibility" onClick={handleClear}>
                                         <CancelIcon />
                                     </IconButton>
                                 </InputAdornment>
@@ -98,11 +84,7 @@ export default function RenameDialog({
                     <Button onClick={handleRenameDialogClose} color="primary">
                         Cancel
                     </Button>
-                    <Button
-                        type="submit"
-                        onClick={handleRenameConfirm}
-                        color="primary"
-                    >
+                    <Button type="submit" onClick={handleRenameConfirm} color="primary">
                         Rename
                     </Button>
                 </DialogActions>

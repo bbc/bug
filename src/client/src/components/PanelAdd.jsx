@@ -80,7 +80,6 @@ export default function PanelsAdd(props) {
                             <Grid item xs={12}>
                                 <TextField
                                     inputProps={{ ...register("title", { required: true }) }}
-                                    variant="filled"
                                     fullWidth
                                     error={errors?.title ? true : false}
                                     type="text"
@@ -91,7 +90,6 @@ export default function PanelsAdd(props) {
                             <Grid item xs={12}>
                                 <TextField
                                     inputProps={{ ...register("description") }}
-                                    variant="filled"
                                     fullWidth
                                     error={errors?.description ? true : false}
                                     type="text"
@@ -104,7 +102,7 @@ export default function PanelsAdd(props) {
                             </Grid>
 
                             <Grid item xs={12} md={6}>
-                                <FormControl variant="filled" fullWidth>
+                                <FormControl fullWidth>
                                     <InputLabel htmlFor="outlined-age-native-simple">Module</InputLabel>
                                     <Select
                                         native

@@ -234,7 +234,6 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                 <TextField
                     label="Filter icons ..."
                     fullWidth
-                    variant="filled"
                     autoFocus
                     value={iconFilter}
                     onChange={(e) => handleFilterChanged(e.target.value)}
@@ -247,7 +246,6 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                     label="Variant"
                     value={selectedVariant ? selectedVariant : ""}
                     onChange={(e) => handleVariantChanged(e.target.value)}
-                    variant="filled"
                 >
                     <MenuItem value={""}>- none -</MenuItem>
                     {variants.map((variant) => (

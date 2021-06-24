@@ -20,14 +20,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const {
-        register,
-        handleSubmit,
-        control,
-        errors,
-        validateServer,
-        messages,
-    } = useConfigFormHandler({
+    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -39,7 +32,6 @@ export default function ConfigPanel() {
                         inputProps={{
                             ...register("title", { required: true }),
                         }}
-                        variant="filled"
                         required
                         fullWidth
                         error={errors.title}
@@ -52,7 +44,6 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{ ...register("description") }}
-                        variant="filled"
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
@@ -62,15 +53,11 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <PanelGroupFormControl
-                        name="group"
-                        control={control}
-                        defaultValue={panelConfig.data.group}
-                    />
+                    <PanelGroupFormControl name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <FormControl variant="filled" fullWidth>
+                    <FormControl fullWidth>
                         <InputLabel>Type</InputLabel>
                         <Select
                             native

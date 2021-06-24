@@ -24,7 +24,6 @@ export default function RenameDialog({ defaultValue = "", onCancel, title, label
                         onChange={(event) => {
                             setValue(event.target.value);
                         }}
-                        variant="filled"
                         fullWidth
                         type="text"
                         label={label}
