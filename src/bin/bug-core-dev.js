@@ -7,15 +7,9 @@ const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const workerStore = require("@core/worker-store");
-const path = require("path");
-const express = require("express");
 
 const port = process.env.BUG_CORE_PORT || "3101";
-
 bugApi.set("port", port);
-
-// Serve files in the public folder
-bugApi.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 const server = http.createServer(bugApi);
 
@@ -58,7 +52,8 @@ const onError = (error) => {
 
 const onListening = () => {
     const addr = server.address();
-    const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    const bind =
+        typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     logger.info(`bug listening on ${bind}`);
 };
 
