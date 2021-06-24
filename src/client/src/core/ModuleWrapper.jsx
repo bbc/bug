@@ -4,7 +4,7 @@ import PanelBuilding from "@components/PanelBuilding";
 import PanelStopped from "@components/PanelStopped";
 import PanelCritical from "@components/PanelCritical";
 import { useDispatch } from "react-redux";
-import pageTitleSlice from "../redux/pageTitleSlice";
+import pageTitleSlice from "@redux/pageTitleSlice";
 import { Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { usePanel } from "@data/Panel";

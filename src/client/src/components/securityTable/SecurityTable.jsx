@@ -39,7 +39,7 @@ export default function SecurityTable({ interval }) {
     const classes = useStyles();
 
     const strategies = useApiPoller({
-        url: `api/strategy`,
+        url: `/api/strategy`,
         interval: interval,
     });
 
@@ -53,24 +53,15 @@ export default function SecurityTable({ interval }) {
                 <Table>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            <TableCell className={classes.colState}>
-                                Enabled
-                            </TableCell>
-                            <TableCell className={classes.colName}>
-                                Name
-                            </TableCell>
-                            <TableCell className={classes.colType}>
-                                Type
-                            </TableCell>
+                            <TableCell className={classes.colState}>Enabled</TableCell>
+                            <TableCell className={classes.colName}>Name</TableCell>
+                            <TableCell className={classes.colType}>Type</TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
                         {strategies?.data?.map((strategy) => (
-                            <SecurityTableRow
-                                key={strategy.type}
-                                {...strategy}
-                            />
+                            <SecurityTableRow key={strategy.type} {...strategy} />
                         ))}
                     </TableBody>
                 </Table>

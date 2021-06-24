@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import AxiosPost from "@utils/AxiosPost";
 import { useDispatch } from "react-redux";
-import pageTitleSlice from "../redux/pageTitleSlice";
+import pageTitleSlice from "@redux/pageTitleSlice";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
 import PanelForm from "@core/PanelForm";

@@ -5,7 +5,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
 import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
-import * as Toolbars from "../../../modules/*/client/Toolbar.jsx";
+import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Toolbar = (props) => {
+const ToolbarRouter = (props) => {
     const classes = useStyles();
     const location = useLocation();
 
@@ -71,4 +71,4 @@ const Toolbar = (props) => {
     }
 };
 
-export default Toolbar;
+export default ToolbarRouter;

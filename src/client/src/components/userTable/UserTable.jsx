@@ -44,7 +44,7 @@ export default function UserTable({ interval }) {
     const classes = useStyles();
 
     const users = useApiPoller({
-        url: `api/user`,
+        url: `/api/user`,
         interval: interval,
     });
 
@@ -58,18 +58,10 @@ export default function UserTable({ interval }) {
                 <Table>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            <TableCell className={classes.colState}>
-                                Enabled
-                            </TableCell>
-                            <TableCell className={classes.colName}>
-                                Name
-                            </TableCell>
-                            <TableCell className={classes.colEmail}>
-                                Email
-                            </TableCell>
-                            <TableCell className={classes.colUsername}>
-                                Username
-                            </TableCell>
+                            <TableCell className={classes.colState}>Enabled</TableCell>
+                            <TableCell className={classes.colName}>Name</TableCell>
+                            <TableCell className={classes.colEmail}>Email</TableCell>
+                            <TableCell className={classes.colUsername}>Username</TableCell>
                         </TableRow>
                     </TableHead>
 

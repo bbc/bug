@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useDispatch } from "react-redux";
-import pageTitleSlice from "../redux/pageTitleSlice";
+import pageTitleSlice from "@redux/pageTitleSlice";
 
 const useStyles = makeStyles((theme) => ({
     login: {
@@ -32,18 +32,10 @@ export default function PageLogin() {
 
     return (
         <>
-            <Grid
-                container
-                justify="center"
-                direction="column"
-                alignItems="center"
-            >
+            <Grid container justify="center" direction="column" alignItems="center">
                 <Grid item xs={12} md={6} lg={6}>
                     <Card>
-                        <CardHeader
-                            className={classes.login}
-                            title="Local Login"
-                        ></CardHeader>
+                        <CardHeader className={classes.login} title="Local Login"></CardHeader>
                         <CardContent>
                             <LocalLogin />
                         </CardContent>
@@ -60,11 +52,7 @@ export default function PageLogin() {
                 </Grid> */}
 
                 <Grid item xs={12}>
-                    <Typography
-                        variant="body2"
-                        component="p"
-                        className={classes.quote}
-                    >
+                    <Typography variant="body2" component="p" className={classes.quote}>
                         <BugQuote />
                     </Typography>
                 </Grid>

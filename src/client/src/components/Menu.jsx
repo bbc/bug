@@ -215,8 +215,8 @@ const Menu = ({ showGroups = true }) => {
                         <ListItem
                             button
                             component={Link}
-                            to="/system"
-                            selected={location.pathname.startsWith("/system")}
+                            to="/configuration"
+                            selected={location.pathname.startsWith("/configuration")}
                             onClick={() => {
                                 setExpanded(false);
                             }}
@@ -224,7 +224,7 @@ const Menu = ({ showGroups = true }) => {
                             <ListItemIcon>
                                 <SettingsIcon />
                             </ListItemIcon>
-                            <ListItemText primary="System" />
+                            <ListItemText primary="Configuration" />
                         </ListItem>
                         <ListItem
                             button

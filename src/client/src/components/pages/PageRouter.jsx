@@ -5,12 +5,18 @@ import PagePanel from "./PagePanel";
 import PagePanels from "./PagePanels";
 import PagePanelsAdd from "./PagePanelsAdd";
 import PagePanelsEdit from "./PagePanelsEdit";
-import PageSystem from "./PageSystem";
+import PageConfiguration from "./PageConfiguration";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import NavDesktop from "@components/NavDesktop";
 import NavMobile from "@components/NavMobile";
 import Hidden from "@material-ui/core/Hidden";
+import PageConfigurationGlobal from "@components/configurationPages/PageConfigurationGlobal";
+import PageConfigurationUsers from "@components/configurationPages/PageConfigurationUsers";
+import PageConfigurationSecurity from "@components/configurationPages/PageConfigurationSecurity";
+import PageConfigurationSoftware from "@components/configurationPages/PageConfigurationSoftware";
+import PageConfigurationSystem from "@components/configurationPages/PageConfigurationSystem";
+import PageConfigurationLogs from "@components/configurationPages/PageConfigurationLogs";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Page = (props) => {
+const PageRouter = (props) => {
     const classes = useStyles();
 
     const Content = () => (
@@ -110,9 +116,39 @@ const Page = (props) => {
                         <PagePanel />
                     </div>
                 </Route>
-                <Route exact path="/system">
+                <Route exact path="/configuration">
                     <div className={classes.pagecontent}>
-                        <PageSystem />
+                        <PageConfiguration />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/global">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationGlobal />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/users">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationUsers />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/security">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationSecurity />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/software">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationSoftware />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/system">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationSystem />
+                    </div>
+                </Route>
+                <Route exact path="/configuration/logs">
+                    <div className={classes.pagecontent}>
+                        <PageConfigurationLogs />
                     </div>
                 </Route>
             </Switch>
@@ -137,4 +173,4 @@ const Page = (props) => {
     );
 };
 
-export default Page;
+export default PageRouter;

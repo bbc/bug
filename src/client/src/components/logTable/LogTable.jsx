@@ -39,7 +39,7 @@ export default function LogTable({ level, interval }) {
     const classes = useStyles();
 
     const logs = useApiPoller({
-        url: `api/system/logs/${level}`,
+        url: `/api/system/logs/${level}`,
         interval: interval,
     });
 

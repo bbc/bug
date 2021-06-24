@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import panelSlice from "../redux/panelSlice";
+import panelSlice from "@redux/panelSlice";
 import io from "@utils/io";
 
 const panel = io("/panel");

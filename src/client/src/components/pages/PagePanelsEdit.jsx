@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import PanelTable from "@components/panelTable/PanelTable";
+import PanelSort from "@components/panelSort/PanelSort";
 import { useDispatch } from "react-redux";
-import pageTitleSlice from "../redux/pageTitleSlice";
+import pageTitleSlice from "@redux/pageTitleSlice";
 
-export default function PagePanels() {
+export default function PagePanelsEdit() {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -12,7 +12,7 @@ export default function PagePanels() {
 
     return (
         <>
-            <PanelTable />
+            <PanelSort />
         </>
     );
 }

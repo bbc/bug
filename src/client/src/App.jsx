@@ -1,6 +1,6 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Page from "@pages/Page";
+import PageRouter from "@components/pages/PageRouter";
 import theme from "./theme";
 import PanelList from "@data/PanelList";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -11,7 +11,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
 import { Provider } from "react-redux";
-import reduxStore from "./redux/store";
+import reduxStore from "@redux/store";
 
 export default function App() {
     return (
@@ -33,7 +33,7 @@ export default function App() {
                             <SnackbarConfigurator />
                             <CssBaseline />
                             <PanelList>
-                                <Page></Page>
+                                <PageRouter></PageRouter>
                             </PanelList>
                         </SnackbarProvider>
                     </MuiPickersUtilsProvider>

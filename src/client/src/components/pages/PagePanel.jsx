@@ -4,7 +4,7 @@ import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import { usePanelConfig } from "@data/PanelConfig";
 import { Redirect } from "react-router";
-import * as Modules from "../../../modules/*/client/Module.jsx";
+import * as Modules from "../../../../modules/*/client/Module.jsx";
 
 export default function PagePanel(props) {
     const params = useParams();
