@@ -5,26 +5,31 @@ import TableRow from "@material-ui/core/TableRow";
 import AxiosCommand from "@utils/AxiosCommand";
 import ApiSwitch from "@core/ApiSwitch";
 import { useAlert } from "@utils/Snackbar";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 const useStyles = makeStyles((theme) => ({
-    colState: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
+    tableRow: {
+        cursor: "pointer",
     },
-    colName: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
+    colEnabled: {
+        width: "2rem",
     },
     colType: {
         "@media (max-width:512px)": {
             display: "none",
         },
     },
+    colDescription: {
+        "@media (max-width:1024px)": {
+            display: "none",
+        },
+    },
+    colNav: {
+        width: "1rem",
+    },
 }));
 
-export default function SecurityTableRow(props) {
+export default function SecurityTableRow({ strategy }) {
     const classes = useStyles();
     const sendAlert = useAlert();
 
@@ -40,30 +45,29 @@ export default function SecurityTableRow(props) {
         }
 
         if (status) {
-            sendAlert(`${commandText} ${props.name}`, {
+            sendAlert(`${commandText} ${strategy.name}`, {
                 variant: "success",
             });
         } else {
-            sendAlert(`Failed to ${command} ${props.name}`, {
+            sendAlert(`Failed to ${command} ${strategy.name}`, {
                 variant: "error",
             });
         }
     };
 
     return (
-        <TableRow key={props.type}>
-            <TableCell className={classes.colName}>
+        <TableRow key={strategy.type} hover className={classes.tableRow}>
+            <TableCell className={classes.colEnabled}>
                 <ApiSwitch
-                    checked={props?.enabled}
-                    onChange={(checked) =>
-                        handleSwitchChange(checked, props.type)
-                    }
+                    checked={strategy.enabled}
+                    onChange={(checked) => handleSwitchChange(checked, strategy.type)}
                 />
             </TableCell>
-            <TableCell className={classes.colName}>{props.name}</TableCell>
-
-            <TableCell className={classes.colType}>
-                {props.type.toUpperCase()}
+            <TableCell className={classes.colName}>{strategy.name}</TableCell>
+            <TableCell className={classes.colType}>{strategy.type.toUpperCase()}</TableCell>
+            <TableCell className={classes.colDescription}>{strategy.description}</TableCell>
+            <TableCell className={classes.colNav}>
+                <ChevronRightIcon />
             </TableCell>
         </TableRow>
     );

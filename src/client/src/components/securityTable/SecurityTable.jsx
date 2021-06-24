@@ -13,18 +13,13 @@ import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 
 const useStyles = makeStyles((theme) => ({
-    colState: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-    colName: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
     colType: {
         "@media (max-width:512px)": {
+            display: "none",
+        },
+    },
+    colDescription: {
+        "@media (max-width:1024px)": {
             display: "none",
         },
     },
@@ -32,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
         "@media (max-width:200px)": {
             display: "none",
         },
+    },
+    colNav: {
+        width: "1rem",
     },
 }));
 
@@ -53,15 +51,17 @@ export default function SecurityTable({ interval }) {
                 <Table>
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            <TableCell className={classes.colState}>Enabled</TableCell>
+                            <TableCell className={classes.colState}></TableCell>
                             <TableCell className={classes.colName}>Name</TableCell>
                             <TableCell className={classes.colType}>Type</TableCell>
+                            <TableCell className={classes.colDescription}>Description</TableCell>
+                            <TableCell className={classes.colNav}></TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
                         {strategies?.data?.map((strategy) => (
-                            <SecurityTableRow key={strategy.type} {...strategy} />
+                            <SecurityTableRow key={strategy.type} strategy={strategy} />
                         ))}
                     </TableBody>
                 </Table>
