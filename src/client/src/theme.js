@@ -37,6 +37,22 @@ const theme = createMuiTheme({
                 color: (props) => (props.disabled ? "#888" : "#ffffff"),
             },
         },
+        MuiCardHeader: {
+            root: {
+                justifyContent: "flex-end",
+                borderTopWidth: 1,
+                borderTopColor: "#181818",
+                borderTopStyle: "solid",
+                padding: "16px",
+                backgroundColor: "#212121",
+            },
+            title: {
+                fontSize: "0.875rem",
+                color: "rgba(255, 255, 255, 0.7)",
+                fontWeight: 500,
+                textTransform: "uppercase",
+            },
+        },
         MuiTabs: {
             root: {
                 minHeight: 56,

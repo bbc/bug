@@ -10,11 +10,8 @@ import TabContainer from "@core/TabContainer.jsx";
 
 const useStyles = makeStyles((theme) => ({
     header: {
-        backgroundColor: theme.palette.appbar.default,
-        color: theme.palette.primary.main,
         "& .MuiCardHeader-title": {
             fontSize: "1rem",
-            textTransform: "uppercase",
         },
     },
     card: {
@@ -25,13 +22,8 @@ const useStyles = makeStyles((theme) => ({
     },
     actions: {
         justifyContent: "flex-end",
-        borderTopWidth: 1,
-        borderTopColor: theme.palette.background.default,
-        borderTopStyle: "solid",
-        backgroundColor: theme.palette.appbar.default,
         "& .MuiCardHeader-title": {
             fontSize: "1rem",
-            textTransform: "uppercase",
         },
         padding: "16px",
     },
@@ -58,11 +50,7 @@ export default function PanelTabbedForm(props) {
 
     const TabPanel = ({ children, value, index }) => {
         return (
-            <Card
-                className={classes.card}
-                role="tabpanel"
-                hidden={value !== index}
-            >
+            <Card className={classes.card} role="tabpanel" hidden={value !== index}>
                 {value === index && <>{children}</>}
             </Card>
         );
@@ -75,11 +63,7 @@ export default function PanelTabbedForm(props) {
             <div style={{ position: "relative" }}>
                 <TabContainer>
                     {props.onClose && (
-                        <IconButton
-                            aria-label="close"
-                            className={classes.closeButton}
-                            onClick={props.onClose}
-                        >
+                        <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
                             <CloseIcon />
                         </IconButton>
                     )}

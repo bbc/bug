@@ -11,13 +11,6 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 const useStyles = makeStyles((theme) => ({
     header: {
-        backgroundColor: theme.palette.appbar.default,
-        color: theme.palette.primary.main,
-        "& .MuiCardHeader-title": {
-            fontSize: "0.875rem",
-            fontWeight: 400,
-            textTransform: "uppercase",
-        },
         padding: 15,
     },
     card: {
@@ -28,16 +21,9 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: "70rem",
     },
     actions: {
-        justifyContent: "flex-end",
-        borderTopWidth: 1,
-        borderTopColor: theme.palette.background.default,
-        borderTopStyle: "solid",
-        backgroundColor: theme.palette.appbar.default,
         "& .MuiCardHeader-title": {
             fontSize: "1rem",
-            textTransform: "uppercase",
         },
-        padding: "16px",
     },
     closeButton: {
         position: "absolute",
@@ -67,11 +53,7 @@ const PanelForm = (props) => {
     return (
         <Card className={classes.card}>
             {props.onClose && (
-                <IconButton
-                    aria-label="close"
-                    className={classes.closeButton}
-                    onClick={props.onClose}
-                >
+                <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
                     <CloseIcon />
                 </IconButton>
             )}
@@ -100,9 +82,7 @@ const Body = (props) => {
 
 const Actions = (props) => {
     const classes = useStyles();
-    return (
-        <CardActions className={classes.actions}>{props.children}</CardActions>
-    );
+    return <CardActions className={classes.actions}>{props.children}</CardActions>;
 };
 
 PanelForm.Header = Header;
