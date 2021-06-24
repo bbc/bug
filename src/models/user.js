@@ -8,13 +8,13 @@ const { v4: uuidv4 } = require("uuid");
 
 const filename = path.join(__dirname, "..", "config", "global", "users.json");
 
-async function getUserIndex(users, uuid) {
-    if (users && uuid) {
+async function getUserIndex(users, id) {
+    if (users && id) {
         const index = await users
             .map(function (user) {
-                return user?.uuid;
+                return user?.id;
             })
-            .indexOf(uuid);
+            .indexOf(id);
         return index;
     }
     return -1;
@@ -41,10 +41,10 @@ exports.list = async function () {
     return null;
 };
 
-exports.get = async function (uuid) {
+exports.get = async function (id) {
     try {
         const users = await getUsers();
-        const index = await getUserIndex(users, uuid);
+        const index = await getUserIndex(users, id);
         if (index === -1) {
             return null;
         }
@@ -55,10 +55,10 @@ exports.get = async function (uuid) {
     return null;
 };
 
-exports.delete = async function (uuid) {
+exports.delete = async function (id) {
     try {
         const users = await getUsers();
-        const index = await getUserIndex(users, uuid);
+        const index = await getUserIndex(users, id);
         if (index === -1) {
             return null;
         }
@@ -73,13 +73,13 @@ exports.delete = async function (uuid) {
 exports.set = async function (user) {
     try {
         const users = await getUsers();
-        const index = await getUserIndex(users, user?.uuid);
+        const index = await getUserIndex(users, user?.id);
         if (index !== -1) {
             //User already exists - do nothing.
             return false;
         } else {
             //Create a new user with a sparkly new UUID
-            user.uuid = await uuidv4();
+            user.id = await uuidv4();
             user.enabled = false;
             users.push(user);
             return await writeJson(filename, users);
@@ -90,10 +90,10 @@ exports.set = async function (user) {
     return null;
 };
 
-exports.update = async function (uuid, user) {
+exports.update = async function (id, user) {
     try {
         const users = await getUsers();
-        const index = await getUserIndex(users, uuid);
+        const index = await getUserIndex(users, id);
         if (index !== -1) {
             users[index] = { ...users[index], ...user };
         } else {

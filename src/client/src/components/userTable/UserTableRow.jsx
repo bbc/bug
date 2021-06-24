@@ -5,17 +5,14 @@ import TableRow from "@material-ui/core/TableRow";
 import AxiosCommand from "@utils/AxiosCommand";
 import ApiSwitch from "@core/ApiSwitch";
 import { useAlert } from "@utils/Snackbar";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 const useStyles = makeStyles((theme) => ({
-    colState: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
+    tableRow: {
+        cursor: "pointer",
     },
-    colUsername: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
+    colState: {
+        width: "1rem",
     },
     colName: {
         "@media (max-width:512px)": {
@@ -27,9 +24,12 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colNav: {
+        width: "1rem",
+    },
 }));
 
-export default function UserTableRow(props) {
+export default function UserTableRow({ user }) {
     const classes = useStyles();
     const sendAlert = useAlert();
 
@@ -45,35 +45,25 @@ export default function UserTableRow(props) {
         }
 
         if (status) {
-            sendAlert(`${commandText} ${props.firstName} ${props.lastName}`, {
+            sendAlert(`${commandText} ${user.username}`, {
                 variant: "success",
             });
         } else {
-            sendAlert(
-                `Failed to ${command} ${props.firstName} ${props.lastName}`,
-                {
-                    variant: "error",
-                }
-            );
+            sendAlert(`Failed to ${command} ${user.username}`, {
+                variant: "error",
+            });
         }
     };
 
     return (
-        <TableRow key={props.uuid}>
+        <TableRow key={user.id} hover className={classes.tableRow}>
             <TableCell className={classes.colName}>
-                <ApiSwitch
-                    checked={props?.enabled}
-                    onChange={(checked) =>
-                        handleSwitchChange(checked, props.uuid)
-                    }
-                />
+                <ApiSwitch checked={user.enabled} onChange={(checked) => handleSwitchChange(checked, user.id)} />
             </TableCell>
-            <TableCell className={classes.colName}>
-                {`${props?.firstName} ${props?.lastName}`}
-            </TableCell>
-            <TableCell className={classes.colEmail}>{props.email}</TableCell>
-            <TableCell className={classes.colUsername}>
-                {props.username}
+            <TableCell className={classes.colUsername}>{user.username}</TableCell>
+            <TableCell className={classes.colEmail}>{user.email}</TableCell>
+            <TableCell className={classes.colNav}>
+                <ChevronRightIcon />
             </TableCell>
         </TableRow>
     );
