@@ -193,7 +193,15 @@ const Menu = ({ showGroups = true }) => {
             >
                 <Grid item style={{ width: "100%" }}>
                     <List>
-                        <ListItem button component={Link} to="/" selected={location.pathname === "/"}>
+                        <ListItem
+                            button
+                            component={Link}
+                            to="/"
+                            selected={location.pathname === "/"}
+                            onClick={() => {
+                                setExpanded(false);
+                            }}
+                        >
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
