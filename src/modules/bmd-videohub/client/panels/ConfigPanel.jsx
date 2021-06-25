@@ -2,6 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import ChipInput from "@core/ChipInput";
+import ConfigFormSwitch from "@core/ConfigFormSwitch";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
@@ -89,6 +90,16 @@ export default function ConfigPanel() {
                         onChange={(event) => validateServer(event, "port", ["address"])}
                         type="text"
                         label="Device Port"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ConfigFormSwitch
+                        name="useTake"
+                        label="Require double-click to take"
+                        control={control}
+                        defaultValue={panelConfig.data.useTake}
+                        fullWidth
                     />
                 </Grid>
 
