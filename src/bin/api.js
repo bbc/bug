@@ -75,7 +75,9 @@ bugApi.use(
     })
 );
 
-bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "favicon.ico")));
+bugApi.use(
+    favicon(path.join(__dirname, "..", "client", "public", "favicon.ico"))
+);
 
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
@@ -94,10 +96,29 @@ bugApi.use("/api/system", systemRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
-bugApi.use("/api/login", passport.authenticate(["local", "pinUser"]), loginRouter);
+bugApi.use(
+    "/api/login",
+    passport.authenticate(["local", "pinUser"]),
+    loginRouter
+);
 bugApi.use("/api/logout", logoutRouter);
 bugApi.use("/api/strategy", strategyRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
+
+if (nodeEnv === "production") {
+    // production: nclude react build static client files
+    bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
+
+    // production: serve react frontend for bug on the default route
+    bugApi.get("*", function (req, res) {
+        res.sendFile(
+            path.join(__dirname, "..", "client", "build", "index.html")
+        );
+    });
+} else {
+    // development: serve files in the public folder
+    bugApi.use(express.static(path.join(__dirname, "..", "client", "public")));
+}
 
 // catch 404 and forward to error handler
 bugApi.use(function (req, res, next) {

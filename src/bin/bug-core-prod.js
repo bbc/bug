@@ -7,20 +7,9 @@ const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const workerStore = require("@core/worker-store");
-const path = require("path");
-const express = require("express");
 
 const port = process.env.BUG_CORE_PORT || "80";
-
 bugApi.set("port", port);
-
-// include react static client files
-bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
-
-// serve Bug react application
-bugApi.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
-});
 
 const server = http.createServer(bugApi);
 
