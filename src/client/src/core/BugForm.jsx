@@ -18,12 +18,15 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "left",
         color: theme.palette.text.secondary,
         position: "relative",
-        maxWidth: "70rem",
+        maxWidth: 550,
+        margin: "auto",
     },
     actions: {
         "& .MuiCardHeader-title": {
             fontSize: "1rem",
         },
+        padding: 16,
+        justifyContent: "flex-end",
     },
     closeButton: {
         position: "absolute",

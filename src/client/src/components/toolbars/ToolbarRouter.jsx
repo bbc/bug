@@ -5,6 +5,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
 import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
+import UsersToolbar from "@components/toolbars/UsersToolbar";
 import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +58,15 @@ const ToolbarRouter = (props) => {
                         <PageTitle />
                     </div>
                     <PanelsEditToolbar />
+                </>
+            );
+        case "/configuration/users":
+            return (
+                <>
+                    <div className={classes.title}>
+                        <PageTitle />
+                    </div>
+                    <UsersToolbar />
                 </>
             );
         default:

@@ -47,8 +47,12 @@ const fetch = async () => {
                         panelStatus.statusItems.push(
                             new StatusItem({
                                 key: "panelnotreachable",
-                                message: "Panel container is not reachable",
+                                message: [
+                                    "Panel container is not reachable.",
+                                    "There may be more information in the container logs",
+                                ],
                                 type: "critical",
+                                flags: ["restartPanel", "viewPanelLogs"],
                             })
                         );
                     }

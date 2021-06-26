@@ -6,6 +6,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import ApiSwitch from "@core/ApiSwitch";
 import { useAlert } from "@utils/Snackbar";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     tableRow: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export default function UserTableRow({ user }) {
     const classes = useStyles();
     const sendAlert = useAlert();
+    const [redirectUrl, setRedirectUrl] = React.useState(null);
 
     const handleSwitchChange = async (checked, uuid) => {
         const command = checked ? "enable" : "disable";
@@ -50,8 +52,17 @@ export default function UserTableRow({ user }) {
         }
     };
 
+    if (redirectUrl) {
+        return <Redirect push to={{ pathname: redirectUrl }} />;
+    }
+
     return (
-        <TableRow key={user.id} hover className={classes.tableRow}>
+        <TableRow
+            key={user.id}
+            hover
+            className={classes.tableRow}
+            onClick={() => setRedirectUrl(`/configuration/user/${user.id}`)}
+        >
             <TableCell className={classes.colName}>
                 <ApiSwitch checked={user.enabled} onChange={(checked) => handleSwitchChange(checked, user.id)} />
             </TableCell>
