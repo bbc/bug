@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAlert } from "@utils/Snackbar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PageLogin() {
     const dispatch = useDispatch();
     const classes = useStyles();
+    const history = useHistory();
     const sendAlert = useAlert();
     const [loading, setLoading] = useState(false);
 
@@ -44,6 +46,7 @@ export default function PageLogin() {
             sendAlert(`${response?.data?.data?.name} has been logged in.`, {
                 variant: "success",
             });
+            history.push("/");
         } else {
             sendAlert("Could not login user.", {
                 variant: "warning",
@@ -81,7 +84,7 @@ export default function PageLogin() {
                     <Card className={classes.login}>
                         <CardHeader title="Pin Login"></CardHeader>
                         <CardContent>
-                            <PinLogin />
+                            <PinLogin handleLogin={handleLogin}/>
                         </CardContent>
                     </Card>
                 </Grid> */}

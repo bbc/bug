@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
@@ -30,7 +30,7 @@ const BugMenuIcon = (props) => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [redirectUrl, setRedirectUrl] = useState(null);
+    const history = useHistory();
     const open = Boolean(anchorEl);
 
     const handleOpenMenuClick = (event) => {
@@ -38,7 +38,7 @@ const BugMenuIcon = (props) => {
         if (user?.status === "success") {
             setAnchorEl(event.currentTarget);
         } else {
-            setRedirectUrl("/login");
+            history.push("/login");
         }
         event.stopPropagation();
     };
@@ -48,7 +48,7 @@ const BugMenuIcon = (props) => {
     };
 
     const handleEdit = (event) => {
-        setRedirectUrl(`configuration/user/${user?.data?.id}`);
+        history.push(`configuration/user/${user?.data?.id}`);
         handleClose();
         event.stopPropagation();
     };
@@ -62,6 +62,7 @@ const BugMenuIcon = (props) => {
     const logout = async () => {
         const response = await AxiosPost("/api/logout");
         dispatch(userSlice.actions["failed"]({ error: "User logged out" }));
+        history.push(`/login`);
     };
 
     const getInitials = (name) => {

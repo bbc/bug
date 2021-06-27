@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { useAlert } from "@utils/Snackbar";
 import LoadingOverlay from "@components/LoadingOverlay";
-import AxiosPost from "@utils/AxiosPost";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PinLogin() {
+export default function PinLogin({ handleLogin }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [loading, setLoading] = useState(false);
@@ -50,23 +49,7 @@ export default function PinLogin() {
         }
 
         if (event.target.value.length === 4) {
-            setLoading(true);
-            const response = await AxiosPost(`/api/login`, {
-                pin: event.target.value,
-            });
-            if (!response?.error) {
-                sendAlert(
-                    `${response?.firstName} ${response?.lastName} has been logged in.`,
-                    {
-                        variant: "success",
-                    }
-                );
-            } else {
-                sendAlert("Pin not valid.", {
-                    variant: "warning",
-                });
-            }
-            setLoading(false);
+            handleLogin({ pin: event.target.value });
             setPin("");
         }
     };
