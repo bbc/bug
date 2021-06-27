@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import AxiosPut from "@utils/AxiosPut";
 import AxiosPost from "@utils/AxiosPost";
 import AxiosGet from "@utils/AxiosGet";
 import BugForm from "@core/BugForm";
@@ -12,13 +13,13 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import PanelGroupFormControl from "@core/PanelGroupFormControl";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
     const sendAlert = useAlert();
-    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const history = useHistory();
     const [user, setUser] = React.useState(null);
     const blankPassword = "****************";
     const {
@@ -29,7 +30,6 @@ export default function UserEdit({ userId = null }) {
     } = useForm({});
 
     useAsyncEffect(async () => {
-        console.log(userId);
         if (!userId) {
             // we're creating a new user
             setUser({
@@ -45,22 +45,32 @@ export default function UserEdit({ userId = null }) {
         } else {
             sendAlert(`Failed to load user`, { variant: "warning" });
             setTimeout(() => {
-                setRedirectUrl(`/configuration/users`);
+                history.push(`/configuration/users`);
             }, 1000);
         }
     }, [userId]);
 
     const onSubmit = async (form) => {
         setLoading(true);
-        const response = await AxiosPost(`/api/user`, form);
+        let response;
+        let verb = "";
+
+        if (userId) {
+            response = await AxiosPut(`/api/user/${userId}`, form);
+            verb = "edit";
+        } else {
+            response = await AxiosPost(`/api/user`, form);
+            verb = "add";
+        }
+
         if (!response?.error) {
-            sendAlert(`User ${form.name} has been added.`, {
+            sendAlert(`User ${form.name} has been ${verb}ed.`, {
                 broadcast: true,
                 variant: "success",
             });
-            setRedirectUrl(`/configuration/users`);
+            history.push(`/configuration/users`);
         } else {
-            sendAlert(`User ${form.name} could not be added.`, {
+            sendAlert(`User ${form.name} could not be ${verb}ed.`, {
                 variant: "warning",
             });
         }
@@ -68,12 +78,8 @@ export default function UserEdit({ userId = null }) {
     };
 
     const handleCancel = () => {
-        setRedirectUrl(`/configuration/users`);
+        history.push(`/configuration/users`);
     };
-
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
 
     return (
         <>
