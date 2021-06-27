@@ -63,6 +63,7 @@
         "socket.io": "^4.0.1",
         "swagger-jsdoc": "^6.0.2",
         "swagger-ui-express": "^4.1.6",
+        "systeminformation": "^5.7.7",
         "tar": "^6.1.0",
         "uuid": "^8.3.2",
         "winston": "^3.3.3",

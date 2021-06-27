@@ -4,11 +4,8 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const systemBackup = require("@services/system-backup");
 const systemLogs = require("@services/system-logs");
+const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
-
-// const authUser = require('@middleware/auth-user');
-// const authGuest = require('@middleware/auth-guest');
-// const authAdmin = require('@middleware/auth-admin');
 
 /**
  * @swagger
@@ -48,6 +45,23 @@ router.get("/user", function (req, res, next) {
         response.error = "Not signed in";
     }
     hashResponse(res, req, response);
+});
+
+/**
+ * @swagger
+ * /system/stats:
+ *   get:
+ *     description: Returns the underlying system statistics
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Success
+ */
+router.get("/stats", async function (req, res, next) {
+    const stats = await systemStats();
+    hashResponse(res, req, stats);
 });
 
 /**
