@@ -9,6 +9,7 @@ import Fade from "@material-ui/core/Fade";
 import { SnackbarConfigurator } from "@utils/Snackbar";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import User from "@data/User";
 
 import { Provider } from "react-redux";
 import reduxStore from "@redux/store";
@@ -32,9 +33,11 @@ export default function App() {
                         >
                             <SnackbarConfigurator />
                             <CssBaseline />
-                            <PanelList>
-                                <PageRouter></PageRouter>
-                            </PanelList>
+                            <User>
+                                <PanelList>
+                                    <PageRouter></PageRouter>
+                                </PanelList>
+                            </User>
                         </SnackbarProvider>
                     </MuiPickersUtilsProvider>
                 </ThemeProvider>

@@ -1,39 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useForm } from "react-hook-form";
-import { useAlert } from "@utils/Snackbar";
-import LoadingOverlay from "@components/LoadingOverlay";
-import AxiosPost from "@utils/AxiosPost";
 import Grid from "@material-ui/core/Grid";
 
-export default function LocalLogin() {
+export default function LocalLogin({ handleLogin }) {
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm({});
-    const sendAlert = useAlert();
-    const [loading, setLoading] = useState(false);
 
     const onSubmit = async (form) => {
-        setLoading(true);
-        const response = await AxiosPost(`/api/login`, form);
-        if (!response?.error) {
-            sendAlert(`${response?.firstName} ${response?.lastName} has been logged in.`, {
-                variant: "success",
-            });
-        } else {
-            sendAlert("Could not login user.", {
-                variant: "warning",
-            });
-        }
-        setLoading(false);
+        handleLogin(form);
     };
-
-    if (loading) {
-        return <LoadingOverlay />;
-    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -57,7 +37,12 @@ export default function LocalLogin() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="primary" disableElevation>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disableElevation
+                    >
                         Login
                     </Button>
                 </Grid>

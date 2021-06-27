@@ -1,15 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useAlert } from "@utils/Snackbar";
 import { makeStyles } from "@material-ui/core/styles";
 import BugQuote from "@components/BugQuote";
-import LocalLogin from "@components/login/LocalLogin";
-import PinLogin from "@components/login/PinLogin";
+import axios from "axios";
+import LoadingOverlay from "@components/LoadingOverlay";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
+import userSlice from "@redux/userSlice";
+
+import LocalLogin from "@components/login/LocalLogin";
+import PinLogin from "@components/login/PinLogin";
 
 const useStyles = makeStyles((theme) => ({
     login: {
@@ -23,21 +28,51 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PageLogin() {
-    const classes = useStyles();
     const dispatch = useDispatch();
+    const classes = useStyles();
+    const sendAlert = useAlert();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         dispatch(pageTitleSlice.actions.set("Login"));
     }, [dispatch]);
 
+    const handleLogin = async (form) => {
+        setLoading(true);
+        const response = await axios.post(`/api/login`, form);
+        if (response?.data?.status === "success") {
+            sendAlert(`${response?.data?.data?.name} has been logged in.`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert("Could not login user.", {
+                variant: "warning",
+            });
+        }
+        dispatch(userSlice.actions[response.data.status](response.data));
+        setLoading(false);
+    };
+
+    if (loading) {
+        return <LoadingOverlay />;
+    }
+
     return (
         <>
-            <Grid container justify="center" direction="column" alignItems="center">
+            <Grid
+                container
+                justify="center"
+                direction="column"
+                alignItems="center"
+            >
                 <Grid item xs={12} md={6} lg={6}>
                     <Card>
-                        <CardHeader className={classes.login} title="Local Login"></CardHeader>
+                        <CardHeader
+                            className={classes.login}
+                            title="Local Login"
+                        ></CardHeader>
                         <CardContent>
-                            <LocalLogin />
+                            <LocalLogin handleLogin={handleLogin} />
                         </CardContent>
                     </Card>
                 </Grid>
@@ -52,7 +87,11 @@ export default function PageLogin() {
                 </Grid> */}
 
                 <Grid item xs={12}>
-                    <Typography variant="body2" component="p" className={classes.quote}>
+                    <Typography
+                        variant="body2"
+                        component="p"
+                        className={classes.quote}
+                    >
                         <BugQuote />
                     </Typography>
                 </Grid>

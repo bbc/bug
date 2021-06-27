@@ -52,15 +52,19 @@ export default function UserEdit({ userId = null }) {
 
     const onSubmit = async (form) => {
         setLoading(true);
-        console.log(form);
-        // const response = await AxiosPost(`/api/user`, form);
-        // if (!response?.error) {
-        //     sendAlert(`User ${form.username} has been added.`, { broadcast: true, variant: "success" });
-        //     //TODO redirect
-        // } else {
-        //     sendAlert(`User ${form.username} could not be added.`, { variant: "warning" });
-        // }
-        setRedirectUrl(`/configuration/users`);
+        const response = await AxiosPost(`/api/user`, form);
+        if (!response?.error) {
+            sendAlert(`User ${form.name} has been added.`, {
+                broadcast: true,
+                variant: "success",
+            });
+            setRedirectUrl(`/configuration/users`);
+        } else {
+            sendAlert(`User ${form.name} could not be added.`, {
+                variant: "warning",
+            });
+        }
+        setLoading(false);
     };
 
     const handleCancel = () => {
@@ -83,7 +87,26 @@ export default function UserEdit({ userId = null }) {
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <TextField
-                                        inputProps={{ ...register("username", { required: true }) }}
+                                        inputProps={{
+                                            ...register("name", {
+                                                required: true,
+                                            }),
+                                        }}
+                                        fullWidth
+                                        defaultValue={user.name}
+                                        error={errors?.name ? true : false}
+                                        type="text"
+                                        label="Name"
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <TextField
+                                        inputProps={{
+                                            ...register("username", {
+                                                required: true,
+                                            }),
+                                        }}
                                         fullWidth
                                         defaultValue={user.username}
                                         error={errors?.username ? true : false}
@@ -116,10 +139,20 @@ export default function UserEdit({ userId = null }) {
                             </Grid>
                         </BugForm.Body>
                         <BugForm.Actions>
-                            <Button variant="contained" color="secondary" disableElevation onClick={handleCancel}>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                disableElevation
+                                onClick={handleCancel}
+                            >
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained" color="primary" disableElevation>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disableElevation
+                            >
                                 {userId ? `Save changes` : `Add user`}
                             </Button>
                         </BugForm.Actions>

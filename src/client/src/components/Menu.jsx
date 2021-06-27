@@ -12,6 +12,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import DynamicIcon from "@core/DynamicIcon";
 import Loading from "@components/Loading";
 import BugMenuIcon from "@components/BugMenuIcon";
+import UserMenuItem from "@components/UserMenuItem";
 import BadgeWrapper from "@components/BadgeWrapper";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -67,17 +68,27 @@ const Menu = ({ showGroups = true }) => {
     const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
-    const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
+    const user = useSelector((state) => state.user);
+    const enabledPanelList = panelList.data.filter(
+        (item) => item.enabled === true
+    );
     const location = useLocation();
     const [expanded, setExpanded] = React.useState(false);
 
     const getSelectedGroup = () => {
         // this is used to expand the groups when the page is loaded with a panel already open
         let selectedGroup = null;
-        if (panelList.status === "success" && panelList.data && panel.status === "success" && panel.data) {
+        if (
+            panelList.status === "success" &&
+            panelList.data &&
+            panel.status === "success" &&
+            panel.data
+        ) {
             for (let eachPanel of panelList.data) {
                 if (eachPanel.id === panel.data.id) {
-                    selectedGroup = eachPanel.group ? eachPanel.group : defaultGroupText;
+                    selectedGroup = eachPanel.group
+                        ? eachPanel.group
+                        : defaultGroupText;
                 }
             }
         }
@@ -101,9 +112,12 @@ const Menu = ({ showGroups = true }) => {
         let hasCritical = false;
 
         if (menuPanel?._status) {
-            hasCritical = menuPanel._status.filter((x) => x.type === "critical").length > 0;
+            hasCritical =
+                menuPanel._status.filter((x) => x.type === "critical").length >
+                0;
         }
-        const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
+        const isSelected =
+            panel.status === "success" && menuPanel.id === panel.data.id;
         return (
             <ListItem
                 className={hasCritical ? classes.critical : ""}
@@ -128,7 +142,9 @@ const Menu = ({ showGroups = true }) => {
     };
 
     const groupedMenuItems = (groupedPanels) => {
-        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) =>
+            a.localeCompare(b, "en", { sensitivity: "base" })
+        );
 
         return (
             <>
@@ -143,7 +159,13 @@ const Menu = ({ showGroups = true }) => {
                         >
                             <AccordionSummary
                                 className={classes.groupHeader}
-                                expandIcon={expanded === groupKey ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                                expandIcon={
+                                    expanded === groupKey ? (
+                                        <ArrowDropDownIcon />
+                                    ) : (
+                                        <ArrowRightIcon />
+                                    )
+                                }
                                 onClick={(event) => {
                                     event.stopPropagation();
                                 }}
@@ -152,7 +174,9 @@ const Menu = ({ showGroups = true }) => {
                             </AccordionSummary>
                             <AccordionDetails className={classes.groupPanel}>
                                 <List aria-label="list of enabled modules">
-                                    {groupedPanels[groupKey].map((eachPanel) => renderMenuItem(eachPanel))}
+                                    {groupedPanels[groupKey].map((eachPanel) =>
+                                        renderMenuItem(eachPanel)
+                                    )}
                                 </List>
                             </AccordionDetails>
                         </Accordion>
@@ -163,7 +187,11 @@ const Menu = ({ showGroups = true }) => {
     };
 
     const menuItems = (items) => {
-        return <List aria-label="list of enabled modules">{items.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
+        return (
+            <List aria-label="list of enabled modules">
+                {items.map((eachPanel) => renderMenuItem(eachPanel))}
+            </List>
+        );
     };
 
     const renderPanelMenuItems = () => {
@@ -182,16 +210,10 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
-    return (
-        <>
-            <Grid
-                container
-                direction="column"
-                justify="space-between"
-                alignItems="flex-start"
-                style={{ height: "100%" }}
-            >
-                <Grid item style={{ width: "100%" }}>
+    const getPanelMenuItems = () => {
+        if (user?.data) {
+            return (
+                <>
                     <List>
                         <ListItem
                             button
@@ -216,7 +238,9 @@ const Menu = ({ showGroups = true }) => {
                             button
                             component={Link}
                             to="/configuration"
-                            selected={location.pathname.startsWith("/configuration")}
+                            selected={location.pathname.startsWith(
+                                "/configuration"
+                            )}
                             onClick={() => {
                                 setExpanded(false);
                             }}
@@ -241,9 +265,29 @@ const Menu = ({ showGroups = true }) => {
                             <ListItemText primary="Panels" />
                         </ListItem>
                     </List>
+                </>
+            );
+        }
+        return null;
+    };
+
+    return (
+        <>
+            <Grid
+                container
+                direction="column"
+                justify="space-between"
+                alignItems="flex-start"
+                style={{ height: "100%" }}
+            >
+                <Grid item style={{ width: "100%" }}>
+                    {getPanelMenuItems()}
                 </Grid>
-                <Grid item>
-                    <BugMenuIcon />
+                <Grid item style={{ width: "100%" }}>
+                    <List>
+                        <BugMenuIcon />
+                        <UserMenuItem />
+                    </List>
                 </Grid>
             </Grid>
         </>

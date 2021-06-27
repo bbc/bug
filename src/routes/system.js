@@ -29,6 +29,29 @@ router.get("/hello", function (req, res, next) {
 
 /**
  * @swagger
+ * /system/user:
+ *    get:
+ *      description: Get's the current user - if one's logged in.
+ *      tags: [system]
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
+router.get("/user", function (req, res, next) {
+    const response = { data: req.user };
+    if (req.user) {
+        response.status = "success";
+    } else {
+        response.status = "failed";
+        response.error = "Not signed in";
+    }
+    hashResponse(res, req, response);
+});
+
+/**
+ * @swagger
  * /system/logs/{level}:
  *   get:
  *     description: Returns the logs of a particular level

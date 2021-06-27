@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import PageHome from "./PageHome";
 import PageLogin from "./PageLogin";
 import PagePanel from "./PagePanel";
@@ -81,87 +82,102 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const ProtectedRoutes = () => {
+    const classes = useStyles();
+    const user = useSelector((state) => state.user);
+
+    if (user?.status !== "success") {
+        return null;
+    }
+
+    return (
+        <>
+            <Route exact path="/">
+                <div className={classes.homePageContent}>
+                    <PageHome />
+                </div>
+            </Route>
+            <Route exact path="/panels">
+                <div className={classes.pagecontent}>
+                    <PagePanels />
+                </div>
+            </Route>
+            <Route exact path="/panels/add">
+                <div className={classes.pagecontent}>
+                    <PagePanelsAdd />
+                </div>
+            </Route>
+            <Route exact path="/panels/edit">
+                <div className={classes.pagecontent}>
+                    <PagePanelsEdit />
+                </div>
+            </Route>
+            <Route path="/panel/:panelid">
+                <div className={classes.pagecontent}>
+                    <PagePanel />
+                </div>
+            </Route>
+            <Route exact path="/configuration">
+                <div className={classes.pagecontent}>
+                    <PageConfiguration />
+                </div>
+            </Route>
+            <Route exact path="/configuration/global">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationGlobal />
+                </div>
+            </Route>
+            <Route exact path="/configuration/users">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationUsers />
+                </div>
+            </Route>
+            <Route exact path="/configuration/user">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationUserEdit />
+                </div>
+            </Route>
+            <Route exact path="/configuration/user/:userId">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationUserEdit />
+                </div>
+            </Route>
+            <Route exact path="/configuration/security">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationSecurity />
+                </div>
+            </Route>
+            <Route exact path="/configuration/software">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationSoftware />
+                </div>
+            </Route>
+            <Route exact path="/configuration/system">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationSystem />
+                </div>
+            </Route>
+            <Route exact path="/configuration/logs">
+                <div className={classes.pagecontent}>
+                    <PageConfigurationLogs />
+                </div>
+            </Route>
+        </>
+    );
+};
+
 const PageRouter = (props) => {
     const classes = useStyles();
 
     const Content = () => (
         <div className={classes.page}>
             <Switch>
-                <Route exact path="/">
-                    <div className={classes.homePageContent}>
-                        <PageHome />
-                    </div>
-                </Route>
                 <Route exact path="/login">
                     <div className={classes.loginPageContent}>
                         <PageLogin />
                     </div>
                 </Route>
-                <Route exact path="/panels">
-                    <div className={classes.pagecontent}>
-                        <PagePanels />
-                    </div>
-                </Route>
-                <Route exact path="/panels/add">
-                    <div className={classes.pagecontent}>
-                        <PagePanelsAdd />
-                    </div>
-                </Route>
-                <Route exact path="/panels/edit">
-                    <div className={classes.pagecontent}>
-                        <PagePanelsEdit />
-                    </div>
-                </Route>
-                <Route path="/panel/:panelid">
-                    <div className={classes.pagecontent}>
-                        <PagePanel />
-                    </div>
-                </Route>
-                <Route exact path="/configuration">
-                    <div className={classes.pagecontent}>
-                        <PageConfiguration />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/global">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationGlobal />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/users">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationUsers />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/user">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationUserEdit />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/user/:userId">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationUserEdit />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/security">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationSecurity />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/software">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationSoftware />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/system">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationSystem />
-                    </div>
-                </Route>
-                <Route exact path="/configuration/logs">
-                    <div className={classes.pagecontent}>
-                        <PageConfigurationLogs />
-                    </div>
-                </Route>
+                <ProtectedRoutes />
             </Switch>
         </div>
     );
