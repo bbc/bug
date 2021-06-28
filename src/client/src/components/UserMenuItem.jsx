@@ -48,7 +48,7 @@ const BugMenuIcon = (props) => {
     };
 
     const handleEdit = (event) => {
-        history.push(`/configuration/user/${user?.data?.id}`);
+        history.push(`/system/user/${user?.data?.id}`);
         handleClose();
         event.stopPropagation();
     };

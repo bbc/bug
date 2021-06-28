@@ -60,7 +60,7 @@ const ToolbarRouter = (props) => {
                     <PanelsEditToolbar />
                 </>
             );
-        case "/configuration/users":
+        case "/system/users":
             return (
                 <>
                     <div className={classes.title}>

@@ -33,13 +33,7 @@ export default function UsersToolbar(props) {
     return (
         <>
             <Hidden xsDown>
-                <Button
-                    component={Link}
-                    to={`/configuration/user`}
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<AddIcon />}
-                >
+                <Button component={Link} to={`/system/user`} variant="outlined" color="primary" startIcon={<AddIcon />}>
                     Add
                 </Button>
             </Hidden>
@@ -53,7 +47,7 @@ export default function UsersToolbar(props) {
                 <MoreIcon />
             </IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
-                <MenuItem component={Link} to={`/configuration/user`}>
+                <MenuItem component={Link} to={`/system/user`}>
                     <ListItemIcon>
                         <AddIcon fontSize="small" />
                     </ListItemIcon>
