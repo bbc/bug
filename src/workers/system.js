@@ -8,26 +8,51 @@ const delay = require("delay");
 const mongoCollection = require("@core/mongo-collection");
 const si = require("systeminformation");
 
+const filterCPU = async () => {
+    const cpu = await si.cpu();
+    return {
+        cores: cpu?.cores,
+        virtualization: cpu?.virtualization,
+        cache: cpu?.cache,
+    };
+};
+
+const filterContainers = async () => {
+    const containers = await si.dockerContainerStats();
+    return containers.map((container) => {
+        delete container?.precpuStats;
+        delete container?.memoryStats?.stats;
+        delete container?.networks;
+        return container;
+    });
+};
+
+const getUptime = async () => {
+    const general = await si.time();
+    return general?.uptime;
+};
+
 const fetch = async () => {
     try {
-        const systemCollection = await mongoCollection("system");
+        const systemCollection = await mongoCollection("system", {
+            capped: true,
+            max: 17280,
+        });
 
         while (true) {
             const document = {
                 timestamp: Date.now(),
-                cpu: await si.cpu(),
+                uptime: await getUptime(),
+                cpu: await filterCPU(),
                 memory: await si.mem(),
-                containers: await si.dockerContainerStats(),
+                containers: await filterContainers(),
+                disk: await si.fsSize(),
             };
             await systemCollection.insertOne(document);
             await delay(5000);
         }
     } catch (error) {
-        logger.warning(
-            `workers/status: ${
-                error.stack || error.trace || error || error.message
-            }`
-        );
+        logger.warning(`workers/status: ${error.stack || error.trace || error || error.message}`);
         return;
     }
 };
@@ -41,11 +66,7 @@ const main = async () => {
         try {
             await fetch();
         } catch (error) {
-            logger.warning(
-                `workers/status: ${
-                    error.stack || error.trace || error || error.message
-                }`
-            );
+            logger.warning(`workers/status: ${error.stack || error.trace || error || error.message}`);
         }
         await delay(10000);
     }
