@@ -31,23 +31,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PageConfiguration() {
+export default function PageSystem() {
     const theme = useTheme();
     const classes = useStyles();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("Configuration"));
+        dispatch(pageTitleSlice.actions.set("System"));
     }, [dispatch]);
 
     return (
         <>
             <List className={classes.list}>
-                <ListItem button component={Link} to={`/configuration/global`}>
+                <ListItem button component={Link} to={`/system/configuration`}>
                     <ListItemIcon>
                         <SettingsIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Global Settings" secondary="Configure global settings and options" />
+                    <ListItemText primary="Global Configuration" secondary="Configure global settings and options" />
                     <ListItemIcon className={classes.navIcon}>
                         <ChevronRightIcon />
                     </ListItemIcon>
@@ -63,7 +63,7 @@ export default function PageConfiguration() {
                 </ListItem>
             </List>
             <List className={classes.list}>
-                <ListItem button component={Link} to={`/configuration/users`}>
+                <ListItem button component={Link} to={`/system/users`}>
                     <ListItemIcon>
                         <PeopleIcon />
                     </ListItemIcon>
@@ -75,7 +75,7 @@ export default function PageConfiguration() {
                         <ChevronRightIcon />
                     </ListItemIcon>
                 </ListItem>
-                <ListItem button component={Link} to={`/configuration/security`}>
+                <ListItem button component={Link} to={`/system/security`}>
                     <ListItemIcon>
                         <SecurityIcon />
                     </ListItemIcon>
@@ -86,7 +86,7 @@ export default function PageConfiguration() {
                 </ListItem>
             </List>
             <List className={classes.list}>
-                <ListItem button component={Link} to={`/configuration/software`}>
+                <ListItem button component={Link} to={`/system/software`}>
                     <ListItemIcon>
                         <SystemUpdateAltIcon />
                     </ListItemIcon>
@@ -95,7 +95,7 @@ export default function PageConfiguration() {
                         <ChevronRightIcon />
                     </ListItemIcon>
                 </ListItem>
-                <ListItem button component={Link} to={`/configuration/system`}>
+                <ListItem button component={Link} to={`/system/system`}>
                     <ListItemIcon>
                         <InfoIcon />
                     </ListItemIcon>
@@ -104,7 +104,7 @@ export default function PageConfiguration() {
                         <ChevronRightIcon />
                     </ListItemIcon>
                 </ListItem>
-                <ListItem button component={Link} to={`/configuration/logs`}>
+                <ListItem button component={Link} to={`/system/logs`}>
                     <ListItemIcon>
                         <ReceiptIcon />
                     </ListItemIcon>
@@ -114,28 +114,6 @@ export default function PageConfiguration() {
                     </ListItemIcon>
                 </ListItem>
             </List>
-
-            {/* <SwipeableViews
-                    axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-                    index={value}
-                    onChangeIndex={handleChangeIndex}
-                >
-                    <TabPanel value={value} index={0} dir={theme.direction}>
-                        <TabPanelSettings />
-                    </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction}>
-                        <TabPanelUsers />
-                    </TabPanel>
-                    <TabPanel value={value} index={2} dir={theme.direction}>
-                        <TabPanelSecurity />
-                    </TabPanel>
-                    <TabPanel value={value} index={3} dir={theme.direction}>
-                        <TabPanelSoftware />
-                    </TabPanel>
-                    <TabPanel value={value} index={4} dir={theme.direction}>
-                        <TabPanelLogs />
-                    </TabPanel>
-                </SwipeableViews> */}
         </>
     );
 }

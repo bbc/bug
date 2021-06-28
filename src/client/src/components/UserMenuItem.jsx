@@ -115,10 +115,7 @@ const BugMenuIcon = (props) => {
         <>
             <ListItem button onClick={handleOpenMenuClick}>
                 <ListItemIcon className={classes.icon}>
-                    <Avatar
-                        src={getGravatarImage(user?.data?.email)}
-                        className={classes.small}
-                    >
+                    <Avatar src={getGravatarImage(user?.data?.email)} className={classes.small}>
                         {getInitials(user?.data?.name)}
                     </Avatar>
                 </ListItemIcon>
