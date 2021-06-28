@@ -13,7 +13,6 @@ const authHeader = "BBCEMAIL";
 const strategyModel = require("@models/strategy");
 const userPin = require("@services/user-get-by-pin");
 const userEmail = require("@services/user-get-by-email");
-const checkUserRoles = require("@services/user-roles-check");
 const logger = require("@utils/logger")(module);
 const bcrypt = require("bcryptjs");
 
@@ -64,13 +63,6 @@ const localStrategy = new LocalStrategy(
             return done(null, false);
         }
 
-        // if (!(await checkUserRoles(options?.role, user?.roles))) {
-        //     logger.info(
-        //         `Local login: User '${user?.email}' does not have correct roles. Not a member of "${options?.role}".`
-        //     );
-        //     return done(null, false);
-        // }
-
         if (!(await bcrypt.compare(password, user.password))) {
             logger.info(`Local login: Wrong password for ${user?.email}.`);
             return done(null, false);
@@ -107,14 +99,6 @@ const pinStrategy = new LocalStrategy(
             return done(null, false);
         }
 
-        // if (!(await checkUserRoles(options?.role, user?.roles))) {
-        //     logger.info(
-        //         `Pin login: User '${user?.email}' does not have correct roles. Not a member of "${options?.role}".`
-        //     );
-        //     return done(null, false);
-        // }
-
-        //TODO Check if user roles array contains option.role return auth
         if (!(await bcrypt.compare(password, user.pin))) {
             logger.info(`Pin login: Wrong pin for ${user?.email}.`);
             return done(null, false);

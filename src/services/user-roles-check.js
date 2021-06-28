@@ -1,9 +1,8 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const userModel = require("@models/user");
 
-module.exports = async (strategyRole, userRoles) => {
+module.exports = (strategyRole, userRoles) => {
     console.log(userRoles);
     try {
         if (!strategyRole) {
