@@ -16,7 +16,7 @@ module.exports = async (filepath) => {
             `COPY . .`,
             `COPY ./core ./core`,
             `RUN npm install`,
-            `CMD ["npm","run","' + nodeEnv + '"]`,
+            `CMD ["npm","run","${nodeEnv}"]`,
         ];
 
         const newFile = fileArray.join("\n");
