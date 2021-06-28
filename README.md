@@ -154,7 +154,7 @@ MONGO_EXPRESS_PASSWORD=testing321
 PORT=3000
 ```
 
-## Upgrding BUG
+## Upgrading BUG
 
 Currently BUG can only be upgraded from the command line
 
