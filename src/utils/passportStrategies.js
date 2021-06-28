@@ -12,7 +12,7 @@ const SamlStrategy = require("passport-saml").Strategy;
 const authHeader = "BBCEMAIL";
 const strategyModel = require("@models/strategy");
 const userPin = require("@services/user-get-by-pin");
-const userEmail = require("@services/user-get-by-email");
+const userGetByName = require("@services/user-get-by-name");
 const logger = require("@utils/logger")(module);
 const bcrypt = require("bcryptjs");
 
@@ -44,14 +44,15 @@ const proxyStrategy = new HeaderStrategy(
 
 //Setup Local authentication
 const localStrategy = new LocalStrategy(
-    { usernameField: "email", passwordField: "password" },
+    { usernameField: "name", passwordField: "password" },
     async (username, password, done) => {
+        console.log(username);
         const strategy = await strategyModel.get("local");
         if (!strategy.enabled) {
             logger.info(`Local login not enabled.`);
             return done(null, false);
         }
-        const user = await userEmail(username.toLowerCase());
+        const user = await userGetByName(username.toLowerCase());
 
         if (!user) {
             logger.info(`Local login: User '${username}' does not exist.`);
@@ -59,18 +60,18 @@ const localStrategy = new LocalStrategy(
         }
 
         if (!user.enabled) {
-            logger.info(`Local login: User '${user?.email}' is not enabled.`);
+            logger.info(`Local login: User '${user?.name}' is not enabled.`);
             return done(null, false);
         }
 
         if (!(await bcrypt.compare(password, user.password))) {
-            logger.info(`Local login: Wrong password for ${user?.email}.`);
+            logger.info(`Local login: Wrong password for ${user?.name}.`);
             return done(null, false);
         }
 
         delete user["password"];
         delete user["pin"];
-        logger.action(`Local login: ${user?.email} logged in.`);
+        logger.action(`Local login: ${user?.name} logged in.`);
         return done(null, user);
     }
 );
@@ -79,6 +80,7 @@ const localStrategy = new LocalStrategy(
 const pinStrategy = new LocalStrategy(
     { usernameField: "pin", passwordField: "pin" },
     async (username, password, done) => {
+        console.log("PIN");
         const strategy = await strategyModel.get("pin");
 
         if (!strategy.enabled) {

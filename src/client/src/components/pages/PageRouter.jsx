@@ -82,117 +82,104 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProtectedRoutes = () => {
+const PageRouter = (props) => {
     const classes = useStyles();
     const user = useSelector((state) => state.user);
 
-    if (user?.status !== "success") {
-        return null;
-    }
-
-    return (
+    const PageContent = () => (
         <>
-            <Route exact path="/">
-                <div className={classes.homePageContent}>
-                    <PageHome />
-                </div>
-            </Route>
-            <Route exact path="/panels">
-                <div className={classes.pagecontent}>
-                    <PagePanels />
-                </div>
-            </Route>
-            <Route exact path="/panels/add">
-                <div className={classes.pagecontent}>
-                    <PagePanelsAdd />
-                </div>
-            </Route>
-            <Route exact path="/panels/edit">
-                <div className={classes.pagecontent}>
-                    <PagePanelsEdit />
-                </div>
-            </Route>
-            <Route path="/panel/:panelid">
-                <div className={classes.pagecontent}>
-                    <PagePanel />
-                </div>
-            </Route>
-            <Route exact path="/system">
-                <div className={classes.pagecontent}>
-                    <PageSystem />
-                </div>
-            </Route>
-            <Route exact path="/system/configuration">
-                <div className={classes.pagecontent}>
-                    <PageSystemConfiguration />
-                </div>
-            </Route>
-            <Route exact path="/system/users">
-                <div className={classes.pagecontent}>
-                    <PageSystemUsers />
-                </div>
-            </Route>
-            <Route exact path="/system/user">
-                <div className={classes.pagecontent}>
-                    <PageSystemUserEdit />
-                </div>
-            </Route>
-            <Route exact path="/system/user/:userId">
-                <div className={classes.pagecontent}>
-                    <PageSystemUserEdit />
-                </div>
-            </Route>
-            <Route exact path="/system/security">
-                <div className={classes.pagecontent}>
-                    <PageSystemSecurity />
-                </div>
-            </Route>
-            <Route exact path="/system/software">
-                <div className={classes.pagecontent}>
-                    <PageSystemSoftware />
-                </div>
-            </Route>
-            <Route exact path="/system/system">
-                <div className={classes.pagecontent}>
-                    <PageSystemInfo />
-                </div>
-            </Route>
-            <Route exact path="/system/logs">
-                <div className={classes.pagecontent}>
-                    <PageSystemLogs />
-                </div>
-            </Route>
+            <div className={classes.page}>
+                <Switch>
+                    <Route exact path="/">
+                        <div className={classes.homePageContent}>
+                            <PageHome />
+                        </div>
+                    </Route>
+                    <Route exact path="/panels">
+                        <div className={classes.pagecontent}>
+                            <PagePanels />
+                        </div>
+                    </Route>
+                    <Route exact path="/panels/add">
+                        <div className={classes.pagecontent}>
+                            <PagePanelsAdd />
+                        </div>
+                    </Route>
+                    <Route exact path="/panels/edit">
+                        <div className={classes.pagecontent}>
+                            <PagePanelsEdit />
+                        </div>
+                    </Route>
+                    <Route path="/panel/:panelid">
+                        <div className={classes.pagecontent}>
+                            <PagePanel />
+                        </div>
+                    </Route>
+                    <Route exact path="/system">
+                        <div className={classes.pagecontent}>
+                            <PageSystem />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/configuration">
+                        <div className={classes.pagecontent}>
+                            <PageSystemConfiguration />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/users">
+                        <div className={classes.pagecontent}>
+                            <PageSystemUsers />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/user">
+                        <div className={classes.pagecontent}>
+                            <PageSystemUserEdit />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/user/:userId">
+                        <div className={classes.pagecontent}>
+                            <PageSystemUserEdit />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/security">
+                        <div className={classes.pagecontent}>
+                            <PageSystemSecurity />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/software">
+                        <div className={classes.pagecontent}>
+                            <PageSystemSoftware />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/system">
+                        <div className={classes.pagecontent}>
+                            <PageSystemInfo />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/logs">
+                        <div className={classes.pagecontent}>
+                            <PageSystemLogs />
+                        </div>
+                    </Route>
+                </Switch>
+            </div>
         </>
     );
-};
 
-const PageRouter = (props) => {
-    const classes = useStyles();
-
-    const Content = () => (
-        <div className={classes.page}>
-            <Switch>
-                <Route exact path="/login">
-                    <div className={classes.loginPageContent}>
-                        <PageLogin />
-                    </div>
-                </Route>
-                <ProtectedRoutes />
-            </Switch>
-        </div>
-    );
+    if (user?.status !== "success") {
+        return <PageLogin />;
+    }
 
     return (
         <Router>
             <div className={classes.root}>
                 <Hidden xsDown>
                     <NavDesktop>
-                        <Content />
+                        <PageContent />
                     </NavDesktop>
                 </Hidden>
                 <Hidden smUp>
                     <NavMobile>
-                        <Content />
+                        <PageContent />
                     </NavMobile>
                 </Hidden>
             </div>

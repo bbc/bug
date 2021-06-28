@@ -143,7 +143,7 @@ export default function UserEdit({ userId = null }) {
                                     <TextField
                                         inputProps={{ ...register("password") }}
                                         fullWidth
-                                        defaultValue="**************"
+                                        defaultValue={user.password}
                                         error={errors?.password ? true : false}
                                         type="text"
                                         label="Password"

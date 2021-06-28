@@ -41,7 +41,7 @@ const passport = require("passport");
  *           type: object
  */
 router.post("/", (req, res, next) => {
-    passport.authenticate(["local", "pinUser"], (err, user, info) => {
+    passport.authenticate(["local", "pin"], (err, user, info) => {
         if (err) return next(err);
 
         return hashResponse(res, req, {

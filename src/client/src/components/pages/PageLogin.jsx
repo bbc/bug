@@ -1,30 +1,146 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useAlert } from "@utils/Snackbar";
 import { makeStyles } from "@material-ui/core/styles";
 import BugQuote from "@components/BugQuote";
-import axios from "axios";
 import LoadingOverlay from "@components/LoadingOverlay";
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import pageTitleSlice from "@redux/pageTitleSlice";
 import userSlice from "@redux/userSlice";
-
-import LocalLogin from "@components/login/LocalLogin";
-import PinLogin from "@components/login/PinLogin";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBug } from "@fortawesome/free-solid-svg-icons";
+import useAsyncEffect from "use-async-effect";
+import AxiosPost from "@utils/AxiosPost";
+import AxiosGet from "@utils/AxiosGet";
+import * as LoginMethods from "../login/*";
+import { Alert } from "@material-ui/lab";
+import Fade from "@material-ui/core/Fade";
 
 const useStyles = makeStyles((theme) => ({
+    page: {
+        height: "100%",
+        width: "100%",
+        overflow: "auto",
+    },
+    root: {
+        margin: "auto",
+        marginTop: "4rem",
+        maxWidth: 620,
+        minHeight: 800,
+        "@media (max-width:800px)": {
+            minHeight: 680,
+        },
+        "@media (max-width:624px)": {
+            marginTop: 0,
+            minHeight: "inherit",
+        },
+        "@media (max-height:400px) and (max-width:800px)": {
+            maxWidth: "inherit",
+            marginTop: 0,
+            backgroundColor: "inherit",
+            minHeight: "inherit",
+        },
+    },
     login: {
         margin: theme.spacing(1),
     },
     quote: {
-        margin: theme.spacing(1),
+        margin: "auto",
+        maxWidth: 620,
+        padding: 16,
         color: theme.palette.primary.main,
-        fontSize: "1.1rem",
+        fontSize: "1rem",
+        "@media (max-height:400px) and (max-width:800px)": {
+            maxWidth: "inherit",
+            padding: 14,
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textAlign: "center",
+            fontSize: 15,
+        },
+    },
+    icon: {
+        color: theme.palette.primary.main,
+        fontSize: 120,
+        padding: 16,
+        "@media (max-width:800px)": {
+            fontSize: 100,
+            padding: 10,
+        },
+        "@media (max-width:600px)": {
+            fontSize: 80,
+            padding: 8,
+        },
+    },
+    cardContent: {
+        textAlign: "center",
+        marginLeft: 16,
+        marginRight: 16,
+        "@media (max-height:400px) and (max-width:800px)": {
+            margin: 0,
+            padding: 0,
+            "&:last-child": {
+                paddingBottom: 0,
+            },
+        },
+        "@media (max-width:480px)": {
+            padding: 8,
+            margin: 8,
+        },
+    },
+    title: {
+        fontSize: 50,
+        padding: 16,
+        fontWeight: 500,
+        "@media (max-width:800px)": {
+            fontSize: 44,
+        },
+        "@media (max-width:600px)": {
+            fontSize: 32,
+            paddingTop: 8,
+        },
+        "@media (max-height:400px) and (max-width:800px)": {
+            fontSize: 26,
+            paddingTop: 4,
+        },
+    },
+    tabs: {
+        backgroundColor: theme.palette.appbar.default,
+    },
+    tabContainer: {
+        position: "static",
+    },
+    tabPanel: {
+        paddingTop: 0,
+        "@media (max-height:400px) and (max-width:800px)": {
+            height: 292,
+        },
+    },
+    gridContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        "@media (max-height:400px) and (max-width:800px)": {
+            flexWrap: "nowrap",
+            flexDirection: "row",
+        },
+    },
+    logoWrapper: {
+        "@media (max-height:400px) and (max-width:800px)": {
+            margin: 16,
+            width: 300,
+        },
+    },
+    tabWrapper: {
+        width: "100%",
+        "@media (max-height:400px) and (max-width:800px)": {
+            backgroundColor: theme.palette.background.paper,
+        },
     },
 }));
 
@@ -32,27 +148,46 @@ export default function PageLogin() {
     const dispatch = useDispatch();
     const classes = useStyles();
     const history = useHistory();
-    const sendAlert = useAlert();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [tabIndex, setTabIndex] = React.useState(0);
+    const [enabledStrategies, setEnabledStrategies] = React.useState([]);
+    const [alert, setAlert] = React.useState("");
 
-    useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("Login"));
-    }, [dispatch]);
+    useAsyncEffect(async () => {
+        const url = `/api/strategy`;
+        const allStrategies = await AxiosGet(url);
+        setEnabledStrategies(allStrategies.filter((eachStrategy) => eachStrategy.enabled));
+        setLoading(false);
+    }, []);
+
+    const handleChange = (event, newIndex) => {
+        setTabIndex(newIndex);
+    };
+
+    const TabPanel = ({ children, value, index }) => {
+        return (
+            <div className={classes.tabPanel} role="tabpanel" hidden={value !== index}>
+                {value === index && <>{children}</>}
+            </div>
+        );
+    };
+
+    const setAlertWithTimeout = (alert, timeout = 4000) => {
+        setAlert(alert);
+        setTimeout(() => {
+            setAlert(null);
+        }, timeout);
+    };
 
     const handleLogin = async (form) => {
         setLoading(true);
-        const response = await axios.post(`/api/login`, form);
-        if (response?.data?.status === "success") {
-            sendAlert(`${response?.data?.data?.name} has been logged in.`, {
-                variant: "success",
-            });
+        const response = await AxiosPost(`/api/login`, form);
+        if (response) {
+            dispatch(userSlice.actions[response.data.status](response.data));
             history.push("/");
         } else {
-            sendAlert("Could not login user.", {
-                variant: "warning",
-            });
+            setAlertWithTimeout("Failed to log in");
         }
-        dispatch(userSlice.actions[response.data.status](response.data));
         setLoading(false);
     };
 
@@ -60,45 +195,63 @@ export default function PageLogin() {
         return <LoadingOverlay />;
     }
 
+    const renderLoginMethod = ({ clientComponent, handleLogin, index }) => {
+        const Component = LoginMethods["login"][clientComponent];
+        if (Component) {
+            return <Component handleLogin={handleLogin} key={index} />;
+        }
+        return null;
+    };
+
     return (
         <>
-            <Grid
-                container
-                justify="center"
-                direction="column"
-                alignItems="center"
-            >
-                <Grid item xs={12} md={6} lg={6}>
-                    <Card>
-                        <CardHeader
-                            className={classes.login}
-                            title="Local Login"
-                        ></CardHeader>
-                        <CardContent>
-                            <LocalLogin handleLogin={handleLogin} />
-                        </CardContent>
-                    </Card>
-                </Grid>
+            <div className={classes.page}>
+                <Card className={classes.root}>
+                    <CardContent className={classes.cardContent}>
+                        <Grid container className={classes.gridContainer}>
+                            <Grid item className={classes.logoWrapper}>
+                                <FontAwesomeIcon size="lg" icon={faBug} className={classes.icon} />
+                                <div className={classes.title}>Geoff's BUG</div>
+                            </Grid>
+                            <Grid item className={classes.tabWrapper}>
+                                <Tabs
+                                    className={classes.tabs}
+                                    value={tabIndex}
+                                    indicatorColor="primary"
+                                    textColor="primary"
+                                    onChange={handleChange}
+                                    variant={enabledStrategies.length < 3 ? `fullWidth` : `scrollable`}
+                                    scrollButtons="on"
+                                >
+                                    {enabledStrategies.map((eachStrategy, index) => (
+                                        <Tab label={eachStrategy.name} key={index} />
+                                    ))}
+                                </Tabs>
 
-                {/* <Grid item xs={12} md={6} lg={6}>
-                    <Card className={classes.login}>
-                        <CardHeader title="Pin Login"></CardHeader>
-                        <CardContent>
-                            <PinLogin handleLogin={handleLogin}/>
-                        </CardContent>
-                    </Card>
-                </Grid> */}
+                                {enabledStrategies.map((eachStrategy, index) => (
+                                    <TabPanel key={index} value={tabIndex} index={index}>
+                                        {renderLoginMethod({
+                                            clientComponent: eachStrategy.clientComponent,
+                                            handleLogin: handleLogin,
+                                        })}
+                                    </TabPanel>
+                                ))}
+                                {alert && (
+                                    <Fade in={alert !== null}>
+                                        <Grid item xs={12}>
+                                            <Alert severity="error">{alert}</Alert>
+                                        </Grid>
+                                    </Fade>
+                                )}
+                            </Grid>
+                        </Grid>
+                    </CardContent>
+                </Card>
 
-                <Grid item xs={12}>
-                    <Typography
-                        variant="body2"
-                        component="p"
-                        className={classes.quote}
-                    >
-                        <BugQuote />
-                    </Typography>
-                </Grid>
-            </Grid>
+                <Typography variant="body2" component="p" className={classes.quote}>
+                    <BugQuote />
+                </Typography>
+            </div>
         </>
     );
 }

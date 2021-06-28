@@ -2,7 +2,6 @@ import axios from "axios";
 
 export default async function AxiosPost(url, data) {
     let response = await axios.post(url, data);
-
     switch (response.data.status) {
         case "success":
             response = response.data.data;

@@ -3,22 +3,22 @@
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
 
-async function getUserIndex(users, email) {
-    if (users && email) {
+async function getUserIndex(users, name) {
+    if (users && name) {
         const index = await users
             .map(function (user) {
-                return user?.email;
+                return user?.name;
             })
-            .indexOf(email);
+            .indexOf(name);
         return index;
     }
     return -1;
 }
 
-module.exports = async (email) => {
+module.exports = async (name) => {
     try {
         const users = await userModel.list();
-        const index = await getUserIndex(users, email);
+        const index = await getUserIndex(users, name);
         if (index !== -1) {
             return users[index];
         }
