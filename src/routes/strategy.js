@@ -28,9 +28,7 @@ router.get(
         const result = await strategyList();
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully retrieved all strategies`
-                : "Failed to retreive strategy list",
+            message: result ? `Succesfully retrieved all strategies` : "Failed to retreive strategy list",
             data: result,
         });
     })
@@ -63,9 +61,7 @@ router.get(
         const result = await strategyGet(req.params.type);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully got strategy called ${req.params.type}`
-                : "Failed to retreive strategy",
+            message: result ? `Succesfully got strategy called ${req.params.type}` : "Failed to retreive strategy",
             data: result,
         });
     })
@@ -98,9 +94,7 @@ router.get(
         const result = await strategyState(req.params.type, true);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully enabled strategy type ${req.params.type}`
-                : "Failed to enable strategy",
+            message: result ? `Succesfully enabled strategy type ${req.params.type}` : "Failed to enable strategy",
             data: result,
         });
     })
@@ -133,9 +127,7 @@ router.get(
         const result = await strategyState(req.params.type, false);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully disabled strategy type ${req.params.type}`
-                : "Failed to disable strategy",
+            message: result ? `Succesfully disabled strategy type ${req.params.type}` : "Failed to disable strategy",
             data: result,
         });
     })
@@ -175,9 +167,7 @@ router.put(
         });
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully updated ${req.params.name} settings`
-                : "Failed to update settings",
+            message: result ? `Succesfully updated ${req.params.name} settings` : "Failed to update settings",
             data: result,
         });
     })

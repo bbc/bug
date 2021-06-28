@@ -33,11 +33,12 @@ const strategyRouter = require("@routes/strategy");
 
 const bugApi = express();
 
-passport.use("proxy", strategy.proxy);
-passport.use("local", strategy.local);
+// passport.use("saml", strategy.saml);
+// passport.use("proxy", strategy.proxy);
+passport.use("localAdmin", strategy.local({ role: "admin" }));
+passport.use("localUser", strategy.local({ role: "user" }));
 passport.use("pinAdmin", strategy.pin({ role: "admin" }));
 passport.use("pinUser", strategy.pin({ role: "user" }));
-// passport.use("saml", strategy.saml);
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -81,16 +82,9 @@ bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
 
-// bugApi.use(
-//     "/documentation",
-//     passport.authenticate(["proxy", "local"]),
-//     documentation
-// );
 bugApi.use("/documentation", documentation);
 bugApi.use("/container", proxyRouter);
-bugApi.use("/api/bug", bugRouter);
 bugApi.use("/api/icons", iconsRouter);
-bugApi.use("/api/system", systemRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
@@ -98,6 +92,10 @@ bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/logout", logoutRouter);
 bugApi.use("/api/strategy", strategyRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
+bugApi.use("/api/system", systemRouter); // Auth on a per route basis
+bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
+bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
+bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 
 if (nodeEnv === "production") {
     // production: nclude react build static client files

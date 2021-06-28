@@ -23,6 +23,9 @@ module.exports = class WorkerManager {
         this.fileExtension = "js";
         this.folder = folder || path.join(__dirname, "..", "workers");
         this.setup();
+        this.options = {
+            execArgv: [...process.execArgv, "--unhandled-rejections=strict"],
+        };
     }
 
     async setup() {
@@ -31,9 +34,7 @@ module.exports = class WorkerManager {
         config = await configGet();
 
         if (!config) {
-            console.log(
-                `WorkerManager->setup: No panel config. Starting workers without one...`
-            );
+            console.log(`WorkerManager->setup: No panel config. Starting workers without one...`);
         }
         //Start workers whether there's a config or not
         await this.createWorkers();
@@ -82,9 +83,7 @@ module.exports = class WorkerManager {
                 await this.createWorker(worker.filename, config);
             }
         } else {
-            console.log(
-                `WorkerManager->createWorkers: You're trying to launch workers in a worker.`
-            );
+            console.log(`WorkerManager->createWorkers: You're trying to launch workers in a worker.`);
         }
     }
 
@@ -100,36 +99,31 @@ module.exports = class WorkerManager {
     }
 
     async createWorker(filename) {
-        console.log(
-            `WorkerManager->createWorker: Creating a worker from ${filename}.`
-        );
+        console.log(`WorkerManager->createWorker: Creating a worker from ${filename}.`);
         const index = await this.getWorkerIndex(filename);
         const worker = await new Worker(filename, {
-            workerData: config,
+            ...this.options,
+            ...{
+                workerData: config,
+            },
         });
 
         workers[index].state = "started";
 
         const handleMessage = async (event, filename, self) => {
             if (event?.restartOn) {
-                workers[await self.getWorkerIndex(filename)].restartKeys =
-                    event.restartOn;
+                workers[await self.getWorkerIndex(filename)].restartKeys = event.restartOn;
             }
             if (event?.restartDelay) {
-                workers[await self.getWorkerIndex(filename)].restartDelay =
-                    event.restartDelay;
+                workers[await self.getWorkerIndex(filename)].restartDelay = event.restartDelay;
             } else {
                 workers[await self.getWorkerIndex(filename)].restartDelay = 0;
             }
         };
 
         const handleError = async (event, filename, self) => {
-            console.log("HERE");
             const index = await self.getWorkerIndex(filename);
-            console.log(
-                `WorkerManager->handleError ${workers[index].filename}`,
-                event
-            );
+            console.log(`WorkerManager->handleError ${workers[index].filename}`, event);
             workers[index].state = "error";
         };
 
@@ -143,28 +137,27 @@ module.exports = class WorkerManager {
             const index = await self.getWorkerIndex(filename);
             workers[index].state = "stopped";
             if (!workers[index].restarting) {
+                console.log(
+                    `WorkerManager->handleExit: Restarting ${filename} in ${Math.round(
+                        workers[index].restartDelay / 1000
+                    )} seconds.`
+                );
                 await delay(workers[index].restartDelay);
             }
             if (workers[index].restart) {
                 await self.createWorker(filename, config);
                 workers[index].restarting = false;
-                console.log(
-                    `WorkerManager->handleExit: ${filename} restarted.`
-                );
+                console.log(`WorkerManager->handleExit: ${filename} restarted.`);
             } else {
                 delete workers[index].worker;
                 console.log(`WorkerManager->handleExit: ${filename} stopped.`);
             }
         };
 
-        await worker.on("message", (event) =>
-            handleMessage(event, filename, this)
-        );
+        await worker.on("message", (event) => handleMessage(event, filename, this));
         await worker.on("error", (event) => handleError(event, filename, this));
         await worker.on("exit", (event) => handleExit(event, filename, this));
-        await worker.on("online", (event) =>
-            handleOnline(event, filename, this)
-        );
+        await worker.on("online", (event) => handleOnline(event, filename, this));
 
         workers[index].startTime = await Date.now();
         workers[index].worker = worker;
@@ -191,9 +184,7 @@ module.exports = class WorkerManager {
             workers[index].restart = true;
             workers[index].restarting = true;
             const state = await workers[index].worker.terminate();
-            console.log(
-                `WorkerManager->restartWorder: ${filename} terminated with code ${state}`
-            );
+            console.log(`WorkerManager->restartWorder: ${filename} terminated with code ${state}`);
         }
     }
 
@@ -201,18 +192,10 @@ module.exports = class WorkerManager {
         const oldConfig = config;
         config = newConfig;
         for (let index in workers) {
-            if (
-                this.needsUpdated(
-                    oldConfig,
-                    newConfig,
-                    workers[index].restartKeys
-                )
-            ) {
+            if (this.needsUpdated(oldConfig, newConfig, workers[index].restartKeys)) {
                 await this.restartWorker(workers[index].filename);
             } else {
-                console.log(
-                    `WorkerManager->pushConfig: ${workers[index]?.filename} doesn't need restarted.`
-                );
+                console.log(`WorkerManager->pushConfig: ${workers[index]?.filename} doesn't need restarted.`);
             }
         }
     }

@@ -104,10 +104,7 @@ router.get(
     "/backup",
     asyncHandler(async (req, res) => {
         const backup = await systemBackup();
-        res.header(
-            "Content-Disposition",
-            `attachment; filename="${backup.filename}"`
-        );
+        res.header("Content-Disposition", `attachment; filename="${backup.filename}"`);
         backup.stream.pipe(res);
     })
 );
