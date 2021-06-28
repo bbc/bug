@@ -41,7 +41,7 @@ module.exports = class WorkerManager {
     }
 
     async getWorkers() {
-        return await this.collection.find().toArray();
+        return workers;
     }
 
     async getWorkerIndex(filename) {
