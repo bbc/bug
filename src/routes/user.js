@@ -37,9 +37,7 @@ router.delete(
         const result = await userDelete(req.params.uuid);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Deleted the user.`
-                : "Failed to delete the user by the given UUID.",
+            message: result ? `Deleted the user.` : "Failed to delete the user by the given UUID.",
             data: result,
         });
     })
@@ -62,12 +60,10 @@ router.delete(
 router.get(
     "/",
     asyncHandler(async (req, res) => {
-        const result = await userList();
+        const result = await userList(true);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Retrieved all users.`
-                : "Failed to a list of users.",
+            message: result ? `Retrieved all users.` : "Failed to a list of users.",
             data: result,
         });
     })
@@ -100,9 +96,7 @@ router.get(
         const result = await userGet(req.params.uuid);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Retrieved the user.`
-                : "Failed to retrive a user by the given UUID.",
+            message: result ? `Retrieved the user.` : "Failed to retrive a user by the given UUID.",
             data: result,
         });
     })
@@ -135,9 +129,7 @@ router.get(
         const result = await userEnable(req.params.uuid, true);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Enabled the user.`
-                : "Failed to enable the user.",
+            message: result ? `Enabled the user.` : "Failed to enable the user.",
             data: result,
         });
     })
@@ -170,9 +162,7 @@ router.get(
         const result = await userEnable(req.params.uuid, false);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Disabled the user.`
-                : "Failed to disable the user.",
+            message: result ? `Disabled the user.` : "Failed to disable the user.",
             data: result,
         });
     })
@@ -229,9 +219,7 @@ router.post(
         const result = await userSet(req.body);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully added the user.`
-                : "Failed to add the user.",
+            message: result ? `Succesfully added the user.` : "Failed to add the user.",
             data: result,
         });
     })
@@ -294,9 +282,7 @@ router.put(
         const result = await userUpdate(req.params.uuid, req.body);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully updated the user.`
-                : "Failed to update the user.",
+            message: result ? `Succesfully updated the user.` : "Failed to update the user.",
             data: result,
         });
     })

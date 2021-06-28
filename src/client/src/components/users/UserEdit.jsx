@@ -18,7 +18,7 @@ export default function UserEdit({ userId = null }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const [user, setUser] = React.useState(null);
-    const blankPassword = "****************";
+
     const {
         control,
         register,
