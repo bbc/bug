@@ -257,8 +257,8 @@ const Menu = ({ showGroups = true }) => {
                 </Grid>
                 <Grid item style={{ width: "100%" }}>
                     <List>
-                        <BugMenuIcon />
                         <UserMenuItem />
+                        <BugMenuIcon />
                     </List>
                 </Grid>
             </Grid>
