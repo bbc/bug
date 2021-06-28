@@ -82,23 +82,14 @@ bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
 
-// bugApi.use(
-//     "/documentation",
-//     passport.authenticate(["proxy", "local"]),
-//     documentation
-// );
-bugApi.use("/documentation", documentation);
-bugApi.use("/container", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), proxyRouter);
-bugApi.use("/api/icons", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), iconsRouter);
-bugApi.use("/api/module", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), moduleRouter);
-bugApi.use("/api/panel", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), panelRouter);
-bugApi.use("/api/user", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), userRouter);
 bugApi.use("/api/login", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), loginRouter);
-bugApi.use(
-    "/api/panelconfig",
-    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
-    panelConfigRouter
-);
+bugApi.use("/documentation", documentation);
+bugApi.use("/container", proxyRouter);
+bugApi.use("/api/icons", iconsRouter);
+bugApi.use("/api/module", moduleRouter);
+bugApi.use("/api/panel", panelRouter);
+bugApi.use("/api/user", userRouter);
+bugApi.use("/api/panelconfig", panelConfigRouter);
 bugApi.use("/api/system", systemRouter); // Auth on a per route basis
 bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
 bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
