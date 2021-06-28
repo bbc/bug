@@ -40,11 +40,7 @@ const saveResult = async (newResults) => {
             // add timestamp
             existingData.timestamp = Date.now();
 
-            await dataCollection.replaceOne(
-                { title: newResult["title"] },
-                existingData,
-                { upsert: true }
-            );
+            await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
         }
     }
 };
@@ -60,9 +56,7 @@ const main = async () => {
 
     // Kick things off
 
-    console.log(
-        `videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`
-    );
+    console.log(`videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`);
 
     let router;
 
@@ -77,8 +71,8 @@ const main = async () => {
 
     router.on("update", saveResult);
     console.log("videohub-worker: attempting connection ... ");
-    await router.connect();
 
+    await router.connect();
     console.log("videohub-worker: waiting for events ...");
     while (true) {
         // poll occasionally
