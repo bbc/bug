@@ -7,7 +7,7 @@ const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
-const strategy = require("@utils/passport");
+const passportStrategies = require("@utils/passportStrategies");
 const passport = require("passport");
 
 // import environment variables from .env file
@@ -33,12 +33,9 @@ const strategyRouter = require("@routes/strategy");
 
 const bugApi = express();
 
-// passport.use("saml", strategy.saml);
-// passport.use("proxy", strategy.proxy);
-passport.use("localAdmin", strategy.local({ role: "admin" }));
-passport.use("localUser", strategy.local({ role: "user" }));
-passport.use("pinAdmin", strategy.pin({ role: "admin" }));
-passport.use("pinUser", strategy.pin({ role: "user" }));
+for (let eachStrategy of passportStrategies) {
+    passport.use(eachStrategy.name, eachStrategy.strategy);
+}
 
 passport.serializeUser(function (user, done) {
     done(null, user);
