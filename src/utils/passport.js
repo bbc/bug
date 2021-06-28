@@ -12,104 +12,116 @@ const authHeader = "BBCEMAIL";
 const strategyModel = require("@models/strategy");
 const userPin = require("@services/user-get-by-pin");
 const userEmail = require("@services/user-get-by-email");
+const checkUserRoles = require("@services/user-roles-check");
 const logger = require("@utils/logger")(module);
 const bcrypt = require("bcryptjs");
 
 //Setup Trusted Header authentication
-exports.proxy = new HeaderStrategy(
-    { header: authHeader, passReqToCallback: true },
-    async (request, header, done) => {
-        const strategy = strategyModel.get("proxy");
-        let auth = false;
+exports.proxy = new HeaderStrategy({ header: authHeader, passReqToCallback: true }, async (request, header, done) => {
+    const strategy = strategyModel.get("proxy");
+    let auth = false;
 
-        if (!strategy.enabled) {
-            const user = await userEmail(header.toLowerCase());
-            if (!user) {
-                auth = false;
-                logger.info(`Login failed: ${header} is not on the user list.`);
-            } else if (user.enabled) {
-                delete user["password"];
-                delete user["pin"];
-                auth = user;
-                logger.debug(`Login sucess: ${user.email} logged on.`);
-            } else {
-                auth = false;
-                logger.info(`Login failed: ${header} is not enabled.`);
-            }
+    if (!strategy.enabled) {
+        const user = await userEmail(header.toLowerCase());
+        if (!user) {
+            auth = false;
+            logger.info(`Login failed: ${header} is not on the user list.`);
+        } else if (user.enabled) {
+            delete user["password"];
+            delete user["pin"];
+            auth = user;
+            logger.debug(`Login sucess: ${user.email} logged on.`);
+        } else {
+            auth = false;
+            logger.info(`Login failed: ${header} is not enabled.`);
         }
-        return done(null, auth);
     }
-);
+    return done(null, auth);
+});
 
 //Setup Local authentication
-exports.local = new LocalStrategy(
-    { usernameField: "email", passwordField: "password" },
-    async (username, password, done) => {
-        const strategy = await strategyModel.get("local");
-        if (!strategy.enabled) {
-            logger.info(`Local login not enabled.`);
-            return done(null, false);
-        }
-        const user = await userEmail(username.toLowerCase());
-
-        if (!user) {
-            logger.info(`Local login: User '${username}' does not exist.`);
-            return done(null, false);
-        }
-
-        if (!user.enabled) {
-            logger.info(`Local login: User '${user?.email}' is not enabled.`);
-            return done(null, false);
-        }
-
-        if (!(await bcrypt.compare(password, user.password))) {
-            logger.info(`Local login: Wrong password for ${user?.email}.`);
-            return done(null, false);
-        }
-
-        delete user["password"];
-        delete user["pin"];
-        logger.action(`Local login: ${user?.email} logged in.`);
-        return done(null, user);
-    }
-);
-
-//Setup Pin authentication
-exports.pin = (options) => {
+exports.local = (options) => {
     return new LocalStrategy(
-        { usernameField: "pin", passwordField: "pin" },
+        { usernameField: "email", passwordField: "password" },
         async (username, password, done) => {
-            const strategy = await strategyModel.get("pin");
+            const strategy = await strategyModel.get("local");
             if (!strategy.enabled) {
-                logger.info(`Pin login not enabled.`);
+                logger.info(`Local login not enabled.`);
                 return done(null, false);
             }
-            const user = await userPin(username);
-
-            //TODO IP Whitelisting
+            const user = await userEmail(username.toLowerCase());
 
             if (!user) {
-                logger.info(`Pin login: User does not exist.`);
+                logger.info(`Local login: User '${username}' does not exist.`);
                 return done(null, false);
             }
 
             if (!user.enabled) {
-                logger.info(`Pin login: User '${user?.email}' is not enabled.`);
+                logger.info(`Local login: User '${user?.email}' is not enabled.`);
                 return done(null, false);
             }
 
-            //TODO Check if user roles array contains option.role return auth
-            if (!(await bcrypt.compare(password, user.pin))) {
-                logger.info(`Pin login: Wrong pin for ${user?.email}.`);
+            if (!(await checkUserRoles(options?.role, user?.roles))) {
+                logger.info(
+                    `Local login: User '${user?.email}' does not have correct roles. Not a member of "${options?.role}".`
+                );
+                return done(null, false);
+            }
+
+            if (!(await bcrypt.compare(password, user.password))) {
+                logger.info(`Local login: Wrong password for ${user?.email}.`);
                 return done(null, false);
             }
 
             delete user["password"];
             delete user["pin"];
-            logger.action(`Pin login: ${user?.email} logged in.`);
+            logger.action(`Local login: ${user?.email} logged in.`);
             return done(null, user);
         }
     );
+};
+
+//Setup Pin authentication
+exports.pin = (options) => {
+    return new LocalStrategy({ usernameField: "pin", passwordField: "pin" }, async (username, password, done) => {
+        const strategy = await strategyModel.get("pin");
+
+        if (!strategy.enabled) {
+            logger.info(`Pin login not enabled.`);
+            return done(null, false);
+        }
+        const user = await userPin(username);
+
+        //TODO IP Whitelisting
+
+        if (!user) {
+            logger.info(`Pin login: User does not exist.`);
+            return done(null, false);
+        }
+
+        if (!user.enabled) {
+            logger.info(`Pin login: User '${user?.email}' is not enabled.`);
+            return done(null, false);
+        }
+
+        if (!(await checkUserRoles(options?.role, user?.roles))) {
+            logger.info(
+                `Pin login: User '${user?.email}' does not have correct roles. Not a member of "${options?.role}".`
+            );
+            return done(null, false);
+        }
+
+        //TODO Check if user roles array contains option.role return auth
+        if (!(await bcrypt.compare(password, user.pin))) {
+            logger.info(`Pin login: Wrong pin for ${user?.email}.`);
+            return done(null, false);
+        }
+
+        delete user["password"];
+        delete user["pin"];
+        logger.action(`Pin login: ${user?.email} logged in.`);
+        return done(null, user);
+    });
 };
 
 //Setup OAuth authentication
@@ -130,9 +142,7 @@ exports.oauth = new OAuth2Strategy(
         const user = await userEmail(profile?.email);
 
         if (!user) {
-            logger.info(
-                `OAuth2 login: User '${profile.email}' does not exist.`
-            );
+            logger.info(`OAuth2 login: User '${profile.email}' does not exist.`);
             return done(null, false);
         }
 

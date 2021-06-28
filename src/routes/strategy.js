@@ -7,6 +7,7 @@ const strategyUpdate = require("@services/strategy-update");
 const strategyList = require("@services/strategy-list");
 const strategyGet = require("@services/strategy-get");
 const strategyState = require("@services/strategy-state");
+const passport = require("passport");
 
 /**
  * @swagger
@@ -28,9 +29,7 @@ router.get(
         const result = await strategyList();
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully retrieved all strategies`
-                : "Failed to retreive strategy list",
+            message: result ? `Succesfully retrieved all strategies` : "Failed to retreive strategy list",
             data: result,
         });
     })
@@ -59,13 +58,12 @@ router.get(
  */
 router.get(
     "/:type",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyGet(req.params.type);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully got strategy called ${req.params.type}`
-                : "Failed to retreive strategy",
+            message: result ? `Succesfully got strategy called ${req.params.type}` : "Failed to retreive strategy",
             data: result,
         });
     })
@@ -94,13 +92,12 @@ router.get(
  */
 router.get(
     "/:type/enable",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, true);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully enabled strategy type ${req.params.type}`
-                : "Failed to enable strategy",
+            message: result ? `Succesfully enabled strategy type ${req.params.type}` : "Failed to enable strategy",
             data: result,
         });
     })
@@ -129,13 +126,12 @@ router.get(
  */
 router.get(
     "/:type/disable",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, false);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully disabled strategy type ${req.params.type}`
-                : "Failed to disable strategy",
+            message: result ? `Succesfully disabled strategy type ${req.params.type}` : "Failed to disable strategy",
             data: result,
         });
     })
@@ -169,15 +165,14 @@ router.get(
  */
 router.put(
     "/:type",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyUpdate(req.params.type, {
             settings: req.body,
         });
         hashResponse(res, req, {
             status: result ? "success" : "fail",
-            message: result
-                ? `Succesfully updated ${req.params.name} settings`
-                : "Failed to update settings",
+            message: result ? `Succesfully updated ${req.params.name} settings` : "Failed to update settings",
             data: result,
         });
     })

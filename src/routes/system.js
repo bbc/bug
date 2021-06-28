@@ -6,6 +6,7 @@ const systemBackup = require("@services/system-backup");
 const systemLogs = require("@services/system-logs");
 const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
+const passport = require("passport");
 
 /**
  * @swagger
@@ -19,10 +20,14 @@ const hashResponse = require("@core/hash-response");
  *        '200':
  *          description: Success
  */
-router.get("/hello", function (req, res, next) {
-    const message = { data: "Good morning sunshine, the earth says hello." };
-    hashResponse(res, req, message);
-});
+router.get(
+    "/hello",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
+    function (req, res, next) {
+        const message = { data: "Good morning sunshine, the earth says hello." };
+        hashResponse(res, req, message);
+    }
+);
 
 /**
  * @swagger
@@ -59,10 +64,14 @@ router.get("/user", function (req, res, next) {
  *       '200':
  *         description: Success
  */
-router.get("/stats", async function (req, res, next) {
-    const stats = await systemStats();
-    hashResponse(res, req, stats);
-});
+router.get(
+    "/stats",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
+    async function (req, res, next) {
+        const stats = await systemStats();
+        hashResponse(res, req, stats);
+    }
+);
 
 /**
  * @swagger
@@ -83,10 +92,14 @@ router.get("/stats", async function (req, res, next) {
  *       '200':
  *         description: Success
  */
-router.get("/logs/:level", async function (req, res, next) {
-    const logs = await systemLogs(req.params.level);
-    hashResponse(res, req, logs);
-});
+router.get(
+    "/logs/:level",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
+    async function (req, res, next) {
+        const logs = await systemLogs(req.params.level);
+        hashResponse(res, req, logs);
+    }
+);
 
 /**
  * @swagger
@@ -102,12 +115,10 @@ router.get("/logs/:level", async function (req, res, next) {
  */
 router.get(
     "/backup",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
     asyncHandler(async (req, res) => {
         const backup = await systemBackup();
-        res.header(
-            "Content-Disposition",
-            `attachment; filename="${backup.filename}"`
-        );
+        res.header("Content-Disposition", `attachment; filename="${backup.filename}"`);
         backup.stream.pipe(res);
     })
 );
@@ -124,31 +135,35 @@ router.get(
  *        '200':
  *          description: Success
  */
-router.post("/restore", function (req, res, next) {
-    try {
-        if (!req.files) {
-            hashResponse(res, req, {
-                status: false,
-                message: "No file uploaded",
-            });
-        } else {
-            const configs = req.files.configs;
-            configs.mv("../data/uploads/" + configs.name);
+router.post(
+    "/restore",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
+    function (req, res, next) {
+        try {
+            if (!req.files) {
+                hashResponse(res, req, {
+                    status: false,
+                    message: "No file uploaded",
+                });
+            } else {
+                const configs = req.files.configs;
+                configs.mv("../data/uploads/" + configs.name);
 
-            //send response
-            hashResponse(res, req, {
-                status: true,
-                message: "File is uploaded",
-                data: {
-                    name: configs.name,
-                    mimetype: configs.mimetype,
-                    size: configs.size,
-                },
-            });
+                //send response
+                hashResponse(res, req, {
+                    status: true,
+                    message: "File is uploaded",
+                    data: {
+                        name: configs.name,
+                        mimetype: configs.mimetype,
+                        size: configs.size,
+                    },
+                });
+            }
+        } catch (err) {
+            hashResponse(res, req, { error: err });
         }
-    } catch (err) {
-        hashResponse(res, req, { error: err });
     }
-});
+);
 
 module.exports = router;

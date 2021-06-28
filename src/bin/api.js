@@ -33,11 +33,12 @@ const strategyRouter = require("@routes/strategy");
 
 const bugApi = express();
 
-passport.use("proxy", strategy.proxy);
-passport.use("local", strategy.local);
+// passport.use("saml", strategy.saml);
+// passport.use("proxy", strategy.proxy);
+passport.use("localAdmin", strategy.local({ role: "admin" }));
+passport.use("localUser", strategy.local({ role: "user" }));
 passport.use("pinAdmin", strategy.pin({ role: "admin" }));
 passport.use("pinUser", strategy.pin({ role: "user" }));
-// passport.use("saml", strategy.saml);
 
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -75,9 +76,7 @@ bugApi.use(
     })
 );
 
-bugApi.use(
-    favicon(path.join(__dirname, "..", "client", "public", "favicon.ico"))
-);
+bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "favicon.ico")));
 
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
@@ -89,21 +88,21 @@ bugApi.use(cookieParser());
 //     documentation
 // );
 bugApi.use("/documentation", documentation);
-bugApi.use("/container", proxyRouter);
-bugApi.use("/api/bug", bugRouter);
-bugApi.use("/api/icons", iconsRouter);
-bugApi.use("/api/system", systemRouter);
-bugApi.use("/api/module", moduleRouter);
-bugApi.use("/api/panel", panelRouter);
-bugApi.use("/api/user", userRouter);
+bugApi.use("/container", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), proxyRouter);
+bugApi.use("/api/icons", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), iconsRouter);
+bugApi.use("/api/module", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), moduleRouter);
+bugApi.use("/api/panel", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), panelRouter);
+bugApi.use("/api/user", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), userRouter);
+bugApi.use("/api/login", passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]), loginRouter);
 bugApi.use(
-    "/api/login",
-    passport.authenticate(["local", "pinUser"]),
-    loginRouter
+    "/api/panelconfig",
+    passport.authenticate(["localUser", "pinUser", "localAdmin", "pinAdmin"]),
+    panelConfigRouter
 );
-bugApi.use("/api/logout", logoutRouter);
-bugApi.use("/api/strategy", strategyRouter);
-bugApi.use("/api/panelconfig", panelConfigRouter);
+bugApi.use("/api/system", systemRouter); // Auth on a per route basis
+bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
+bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
+bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 
 if (nodeEnv === "production") {
     // production: nclude react build static client files
@@ -111,9 +110,7 @@ if (nodeEnv === "production") {
 
     // production: serve react frontend for bug on the default route
     bugApi.get("*", function (req, res) {
-        res.sendFile(
-            path.join(__dirname, "..", "client", "build", "index.html")
-        );
+        res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
     });
 } else {
     // development: serve files in the public folder
