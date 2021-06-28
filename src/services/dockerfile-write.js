@@ -12,10 +12,11 @@ module.exports = async (filepath) => {
         const filename = path.join(filepath, "Dockerfile");
         const fileArray = [
             "FROM node:14",
-            "WORKDIR " + moduleHome,
-            "COPY . .",
-            "RUN npm install",
-            'CMD ["npm","run","' + nodeEnv + '"]',
+            `WORKDIR ${moduleHome}`,
+            `COPY . .`,
+            `COPY ./core ./core`,
+            `RUN npm install`,
+            `CMD ["npm","run","' + nodeEnv + '"]`,
         ];
 
         const newFile = fileArray.join("\n");
