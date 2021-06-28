@@ -1,7 +1,7 @@
 "use strict";
 
 const statusCheckCollection = require("@core/status-checkcollection");
-// const statusCheckWorkers = require("@core/status-checkworkers");
+const statusCheckWorkers = require("@core/status-checkworkers");
 
 module.exports = async () => {
     // const seconds = new Date().getTime() / 1000;

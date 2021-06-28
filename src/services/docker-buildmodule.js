@@ -10,13 +10,15 @@ module.exports = async (moduleName, updateProgressCallback) => {
         logger.info(`building module ${moduleName}`);
 
         // Get full path in container
-        const module_path = path.join(__dirname, "..", "modules", moduleName, "container");
+        const corePath = path.join("..", "..", "..", "core");
+        const containerPath = path.join(__dirname, "..", "modules", moduleName, "container");
         const module = await moduleGet(moduleName);
+
         // Build the image with dockerode
         let stream = await docker.buildImage(
             {
-                context: module_path,
-                src: ["/"],
+                context: containerPath,
+                src: ["/", corePath],
             },
             {
                 t: [moduleName, `${moduleName}:${module.version}`],
@@ -86,6 +88,6 @@ module.exports = async (moduleName, updateProgressCallback) => {
         return progressResult;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message} `);
-        throw new Error(`Failed to build docker module $ { moduleName } `);
+        throw new Error(`Failed to build docker module ${moduleName}`);
     }
 };

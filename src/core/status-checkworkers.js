@@ -12,29 +12,31 @@ const StatusItem = require("@core/StatusItem");
 const cacheStore = require("@core/cache-store");
 
 module.exports = async () => {
+    const status = [];
     const cacheKey = "workersState";
 
-    // check the cache first
-    if (cacheStore.get(cacheKey)) {
-        return [];
+    // check the cache first, return contents if avalible
+    const cacheContents = cacheStore.get(cacheKey);
+    if (cacheContents) {
+        return cacheContents;
     }
 
-    try {
-        // loop through the workers and attempt to fetch info (throws an error if not running)
-        for (let eachWorker of workerStore.workers) {
-            await eachWorker.getHeapSnapshot();
+    // loop through the workers and attempt to fetch info (throws an error if not running)
+    const workers = await workerStore.getWorkers();
+
+    for (let worker of workers) {
+        if (worker?.state !== "running") {
+            status.push(
+                new StatusItem({
+                    key: "workersnotrunning",
+                    message: `${worker.filename} is not running`,
+                    type: "error",
+                })
+            );
         }
-    } catch (error) {
-        return [
-            new StatusItem({
-                key: "workersnotrunning",
-                message: "One or more worker processes are not running",
-                type: "error",
-            }),
-        ];
     }
 
     // cache the result for 10 seconds
-    cacheStore.set(cacheKey, true, 10);
-    return [];
+    cacheStore.set(cacheKey, status, 10);
+    return status;
 };
