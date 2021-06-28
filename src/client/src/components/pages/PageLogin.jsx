@@ -183,7 +183,7 @@ export default function PageLogin() {
         setLoading(true);
         const response = await AxiosPost(`/api/login`, form);
         if (response) {
-            dispatch(userSlice.actions[response.data.status](response.data));
+            dispatch(userSlice.actions["success"](response));
             history.push("/");
         } else {
             setAlertWithTimeout("Failed to log in");
