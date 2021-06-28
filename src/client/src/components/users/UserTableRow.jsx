@@ -61,12 +61,13 @@ export default function UserTableRow({ user }) {
             key={user.id}
             hover
             className={classes.tableRow}
-            onClick={() => setRedirectUrl(`/configuration/user/${user.id}`)}
+            onClick={() => setRedirectUrl(`/system/user/${user.id}`)}
         >
             <TableCell className={classes.colName}>
                 <ApiSwitch checked={user.enabled} onChange={(checked) => handleSwitchChange(checked, user.id)} />
             </TableCell>
             <TableCell className={classes.colUsername}>{user.username}</TableCell>
+            <TableCell className={classes.colName}>{user.name}</TableCell>
             <TableCell className={classes.colEmail}>{user.email}</TableCell>
             <TableCell className={classes.colNav}>
                 <ChevronRightIcon />

@@ -46,6 +46,7 @@ export default function UserTable({ interval }) {
                         <TableRow>
                             <TableCell className={classes.colState}></TableCell>
                             <TableCell className={classes.colUsername}>Username</TableCell>
+                            <TableCell className={classes.colName}>Name</TableCell>
                             <TableCell className={classes.colEmail}>Email</TableCell>
                             <TableCell className={classes.colNav}></TableCell>
                         </TableRow>
