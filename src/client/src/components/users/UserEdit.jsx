@@ -9,12 +9,9 @@ import { useAlert } from "@utils/Snackbar";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import PanelGroupFormControl from "@core/PanelGroupFormControl";
 import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
+import ConfigFormSwitch from "@core/ConfigFormSwitch";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
@@ -45,7 +42,7 @@ export default function UserEdit({ userId = null }) {
         } else {
             sendAlert(`Failed to load user`, { variant: "warning" });
             setTimeout(() => {
-                history.push(`/configuration/users`);
+                history.push(`/system/users`);
             }, 1000);
         }
     }, [userId]);
@@ -68,7 +65,7 @@ export default function UserEdit({ userId = null }) {
                 broadcast: true,
                 variant: "success",
             });
-            history.push(`/configuration/users`);
+            history.push(`/system/users`);
         } else {
             sendAlert(`User ${form.name} could not be ${verb}ed.`, {
                 variant: "warning",
@@ -78,7 +75,7 @@ export default function UserEdit({ userId = null }) {
     };
 
     const handleCancel = () => {
-        history.push(`/configuration/users`);
+        history.push(`/system/users`);
     };
 
     return (
@@ -122,6 +119,16 @@ export default function UserEdit({ userId = null }) {
                                 </Grid>
 
                                 <Grid item xs={12}>
+                                    <ConfigFormSwitch
+                                        name="enabled"
+                                        label="Enable user"
+                                        control={control}
+                                        defaultValue={user.enabled}
+                                        fullWidth
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
                                     <TextField
                                         inputProps={{ ...register("email") }}
                                         fullWidth
@@ -145,20 +152,10 @@ export default function UserEdit({ userId = null }) {
                             </Grid>
                         </BugForm.Body>
                         <BugForm.Actions>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                disableElevation
-                                onClick={handleCancel}
-                            >
+                            <Button variant="contained" color="secondary" disableElevation onClick={handleCancel}>
                                 Cancel
                             </Button>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                disableElevation
-                            >
+                            <Button type="submit" variant="contained" color="primary" disableElevation>
                                 {userId ? `Save changes` : `Add user`}
                             </Button>
                         </BugForm.Actions>
