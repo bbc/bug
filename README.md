@@ -154,6 +154,21 @@ MONGO_EXPRESS_PASSWORD=testing321
 PORT=3000
 ```
 
+## Upgrading BUG
+
+Currently BUG can only be upgraded from the command line
+
+The first stage is to get the latest version of the BUG image from the registry using this command
+
+`docker pull 172.26.108.110:5000/bug:latest`
+
+
+Next, run the following command and Docker will determine which containers to restart with minimal downtime of approximately 10 seconds.
+
+`docker-compose up -d`
+
+That's it - your BUG instance is up to date.
+
 ## Helpful Docker Tips
 
 ### Detaching from the Terminal

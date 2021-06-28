@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PageConfigurationGlobal() {
+export default function PageSystemConfiguration() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("Global Configuration"));
+        dispatch(pageTitleSlice.actions.set("System Configuration"));
     }, [dispatch]);
 
     return (

@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
-import LogTable from "@components/logs/LogTable";
+import UserTable from "@components/users/UserTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({}));
 
-export default function PageConfigurationUsers() {
+export default function PageSystemUsers() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("Logs"));
+        dispatch(pageTitleSlice.actions.set("User Configuration"));
     }, [dispatch]);
 
     return (
         <>
-            <LogTable level={"action"} />
+            <UserTable />
         </>
     );
 }

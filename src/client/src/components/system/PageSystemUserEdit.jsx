@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import UserEdit from "@components/users/UserEdit";
 
-export default function PageConfigurationUserEdit() {
+export default function PageSystemUserEdit() {
     const params = useParams();
     const userId = params.userId ?? null;
 

@@ -6,19 +6,19 @@ import PagePanel from "./PagePanel";
 import PagePanels from "./PagePanels";
 import PagePanelsAdd from "./PagePanelsAdd";
 import PagePanelsEdit from "./PagePanelsEdit";
-import PageConfiguration from "./PageConfiguration";
+import PageSystem from "./PageSystem";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import NavDesktop from "@components/NavDesktop";
 import NavMobile from "@components/NavMobile";
 import Hidden from "@material-ui/core/Hidden";
-import PageConfigurationGlobal from "@components/configuration/PageConfigurationGlobal";
-import PageConfigurationUsers from "@components/configuration/PageConfigurationUsers";
-import PageConfigurationUserEdit from "@components/configuration/PageConfigurationUserEdit";
-import PageConfigurationSecurity from "@components/configuration/PageConfigurationSecurity";
-import PageConfigurationSoftware from "@components/configuration/PageConfigurationSoftware";
-import PageConfigurationSystem from "@components/configuration/PageConfigurationSystem";
-import PageConfigurationLogs from "@components/configuration/PageConfigurationLogs";
+import PageSystemConfiguration from "@components/system/PageSystemConfiguration";
+import PageSystemUsers from "@components/system/PageSystemUsers";
+import PageSystemUserEdit from "@components/system/PageSystemUserEdit";
+import PageSystemSecurity from "@components/system/PageSystemSecurity";
+import PageSystemSoftware from "@components/system/PageSystemSoftware";
+import PageSystemInfo from "@components/system/PageSystemInfo";
+import PageSystemLogs from "@components/system/PageSystemLogs";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -117,49 +117,49 @@ const ProtectedRoutes = () => {
                     <PagePanel />
                 </div>
             </Route>
-            <Route exact path="/configuration">
+            <Route exact path="/system">
                 <div className={classes.pagecontent}>
-                    <PageConfiguration />
+                    <PageSystem />
                 </div>
             </Route>
-            <Route exact path="/configuration/global">
+            <Route exact path="/system/configuration">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationGlobal />
+                    <PageSystemConfiguration />
                 </div>
             </Route>
-            <Route exact path="/configuration/users">
+            <Route exact path="/system/users">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationUsers />
+                    <PageSystemUsers />
                 </div>
             </Route>
-            <Route exact path="/configuration/user">
+            <Route exact path="/system/user">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationUserEdit />
+                    <PageSystemUserEdit />
                 </div>
             </Route>
-            <Route exact path="/configuration/user/:userId">
+            <Route exact path="/system/user/:userId">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationUserEdit />
+                    <PageSystemUserEdit />
                 </div>
             </Route>
-            <Route exact path="/configuration/security">
+            <Route exact path="/system/security">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationSecurity />
+                    <PageSystemSecurity />
                 </div>
             </Route>
-            <Route exact path="/configuration/software">
+            <Route exact path="/system/software">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationSoftware />
+                    <PageSystemSoftware />
                 </div>
             </Route>
-            <Route exact path="/configuration/system">
+            <Route exact path="/system/system">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationSystem />
+                    <PageSystemInfo />
                 </div>
             </Route>
-            <Route exact path="/configuration/logs">
+            <Route exact path="/system/logs">
                 <div className={classes.pagecontent}>
-                    <PageConfigurationLogs />
+                    <PageSystemLogs />
                 </div>
             </Route>
         </>
