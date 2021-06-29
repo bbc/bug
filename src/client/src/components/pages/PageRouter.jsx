@@ -153,7 +153,7 @@ const PageRouter = (props) => {
                             <PageSystemSoftware />
                         </div>
                     </Route>
-                    <Route exact path="/system/system">
+                    <Route exact path="/system/info">
                         <div className={classes.pagecontent}>
                             <PageSystemInfo />
                         </div>

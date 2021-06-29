@@ -94,7 +94,7 @@ export default function PageSystem() {
                         <ChevronRightIcon />
                     </ListItemIcon>
                 </ListItem>
-                <ListItem button component={Link} to={`/system/system`}>
+                <ListItem button component={Link} to={`/system/info`}>
                     <ListItemIcon>
                         <InfoIcon />
                     </ListItemIcon>
