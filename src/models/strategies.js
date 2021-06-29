@@ -5,13 +5,9 @@ const readJson = require("@core/read-json");
 const writeJson = require("@core/write-json");
 const path = require("path");
 
-const filename = path.join(
-    __dirname,
-    "..",
-    "config",
-    "global",
-    "strategies.json"
-);
+const filename = path.join(__dirname, "..", "config", "global", "strategies.json");
+
+const defaultFilename = path.join(__dirname, "..", "config", "default", "strategies.json");
 
 async function getStrategyIndex(strategies, type) {
     if (strategies && type) {
@@ -30,27 +26,7 @@ async function getStrategies() {
         const contents = await readJson(filename);
         return contents;
     } catch (error) {
-        const contents = [
-            {
-                type: "local",
-                name: "Username and Password",
-                settings: {},
-                enabled: false,
-            },
-            { type: "saml", name: "SAML SSO", settings: {}, enabled: false },
-            {
-                type: "pin",
-                name: "4-Digit Pin Code",
-                settings: {},
-                enabled: false,
-            },
-            {
-                type: "proxy",
-                name: "Reverse Proxy Header",
-                settings: {},
-                enabled: false,
-            },
-        ];
+        const contents = await readJson(defaultFilename);
         if (await writeJson(filename, contents)) {
             return contents;
         }

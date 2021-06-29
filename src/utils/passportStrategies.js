@@ -9,7 +9,7 @@ const HeaderStrategy = require("passport-http-header-strategy").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
 
-const strategyModel = require("@models/strategy");
+const strategyModel = require("@models/strategies");
 const userGetByPin = require("@services/user-get-by-pin");
 const userGetByUsername = require("@services/user-get-by-username");
 const logger = require("@utils/logger")(module);

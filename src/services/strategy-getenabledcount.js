@@ -1,7 +1,7 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const strategyModel = require("@models/strategy");
+const strategyModel = require("@models/strategies");
 
 module.exports = async () => {
     try {

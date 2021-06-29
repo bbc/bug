@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Admin",
+    "email": "bug@bbc.co.uk",
+    "pin": "$2a$10$wEduGMqD4xlQoU1.7K1wxOrDj3uJA7b1CEU//yWh7uj18L76qpjYS",
+    "password": "$2a$10$DJZCNlEKvKvCnhBZb8nUQOlwnEQXGlJiZqYXgGluDDj7ktAbxtwSO",
+    "username": "admin",
+    "id": "7552f840-e4a5-42ec-9f6c-e2e6039ffcb7",
+    "enabled": true,
+    "passwordLength": 5,
+    "pinLength": 4
+  }
+]

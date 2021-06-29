@@ -1,7 +1,7 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const strategyModel = require("@models/strategy");
+const strategyModel = require("@models/strategies");
 
 module.exports = async () => {
     try {
@@ -13,9 +13,7 @@ module.exports = async () => {
         }
         return strategies;
     } catch (error) {
-        logger.warning(
-            `${error.stack || error.trace || error || error.message}`
-        );
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed retrieve list of security strategies.`);
     }
 };
