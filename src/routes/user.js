@@ -3,6 +3,7 @@
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
+const restrict = require("@middleware/restrict");
 const userDelete = require("@services/user-delete");
 const userSet = require("@services/user-set");
 const userUpdate = require("@services/user-update");
@@ -12,7 +13,7 @@ const userEnable = require("@services/user-enable");
 
 /**
  * @swagger
- * /user/{uuid}:
+ * /user/{id}:
  *   delete:
  *     description: Deletes a user from BUG database
  *     tags: [user]
@@ -20,7 +21,7 @@ const userEnable = require("@services/user-enable");
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: uuid
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
@@ -32,12 +33,36 @@ const userEnable = require("@services/user-enable");
  *           type: object
  */
 router.delete(
-    "/:uuid",
+    "/:id",
     asyncHandler(async (req, res) => {
-        const result = await userDelete(req.params.uuid);
+        const result = await userDelete(req.params.id);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result ? `Deleted the user.` : "Failed to delete the user by the given UUID.",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /user/current:
+ *    get:
+ *      description: Gets the current user - if one's logged in.
+ *      tags: [system]
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
+router.get(
+    "/current",
+    asyncHandler(async (req, res) => {
+        const result = await userGet(req?.user);
+        hashResponse(res, req, {
+            status: result ? "success" : "fail",
+            message: result ? `Retrieved the current user.` : "There is no current user.",
             data: result,
         });
     })
@@ -71,7 +96,7 @@ router.get(
 
 /**
  * @swagger
- * /user/{uuid}:
+ * /user/{id}:
  *   get:
  *     description: Gets a users details from the BUG database
  *     tags: [user]
@@ -79,11 +104,11 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: uuid
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The user's unique uuid.
+ *         description: The user's unique id.
  *     responses:
  *       200:
  *         description: Successfully retrieved the user.
@@ -91,9 +116,9 @@ router.get(
  *           type: object
  */
 router.get(
-    "/:uuid",
+    "/:id",
     asyncHandler(async (req, res) => {
-        const result = await userGet(req.params.uuid);
+        const result = await userGet(req.params.id);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result ? `Retrieved the user.` : "Failed to retrive a user by the given UUID.",
@@ -104,7 +129,7 @@ router.get(
 
 /**
  * @swagger
- * /user/{uuid}/enable:
+ * /user/{id}/enable:
  *   get:
  *     description: Enables a user by setting a flag in the BUG database
  *     tags: [user]
@@ -112,7 +137,7 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: uuid
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
@@ -124,9 +149,9 @@ router.get(
  *           type: object
  */
 router.get(
-    "/:uuid/enable",
+    "/:id/enable",
     asyncHandler(async (req, res) => {
-        const result = await userEnable(req.params.uuid, true);
+        const result = await userEnable(req.params.id, true);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result ? `Enabled the user.` : "Failed to enable the user.",
@@ -137,7 +162,7 @@ router.get(
 
 /**
  * @swagger
- * /user/{uuid}/disable:
+ * /user/{id}/disable:
  *   get:
  *     description: Disables a user by setting a flag in the BUG database
  *     tags: [user]
@@ -145,7 +170,7 @@ router.get(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: uuid
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
@@ -157,9 +182,9 @@ router.get(
  *           type: object
  */
 router.get(
-    "/:uuid/disable",
+    "/:id/disable",
     asyncHandler(async (req, res) => {
-        const result = await userEnable(req.params.uuid, false);
+        const result = await userEnable(req.params.id, false);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result ? `Disabled the user.` : "Failed to disable the user.",
@@ -227,7 +252,7 @@ router.post(
 
 /**
  * @swagger
- * /user/{uuid}:
+ * /user/{id}:
  *   put:
  *     description: Adds a user to the BUG database
  *     tags: [user]
@@ -235,7 +260,7 @@ router.post(
  *       - application/json
  *     parameters:
  *       - in: path
- *         name: uuid
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
@@ -277,9 +302,9 @@ router.post(
  *           type: object
  */
 router.put(
-    "/:uuid",
+    "/:id",
     asyncHandler(async (req, res) => {
-        const result = await userUpdate(req.params.uuid, req.body);
+        const result = await userUpdate(req.params.id, req.body);
         hashResponse(res, req, {
             status: result ? "success" : "fail",
             message: result ? `Succesfully updated the user.` : "Failed to update the user.",
