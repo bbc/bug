@@ -2,14 +2,17 @@
 
 const logger = require("@utils/logger")(module);
 
-module.exports = (strategyRole, userRoles) => {
-    console.log(userRoles);
+module.exports = (strategyRoles, userRoles) => {
     try {
-        if (!strategyRole) {
+        if (!strategyRoles) {
             return true;
         }
 
         if (!userRoles) {
+            return true;
+        }
+
+        if (!Array.isArray(strategyRoles)) {
             return false;
         }
 
@@ -17,9 +20,11 @@ module.exports = (strategyRole, userRoles) => {
             return false;
         }
 
-        for (let userRole of userRoles) {
-            if (strategyRole === userRole) {
-                return true;
+        for (let strategyRole of strategyRoles) {
+            for (let userRole of userRoles) {
+                if (strategyRole === userRole) {
+                    return true;
+                }
             }
         }
 
