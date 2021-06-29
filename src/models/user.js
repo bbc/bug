@@ -9,6 +9,8 @@ const hash = require("@utils/hash");
 
 const filename = path.join(__dirname, "..", "config", "global", "users.json");
 
+const defaultFilename = path.join(__dirname, "..", "config", "default", "users.json");
+
 async function getUserIndex(users, id) {
     if (users && id) {
         const index = await users
@@ -25,9 +27,9 @@ async function getUsers() {
     try {
         return await readJson(filename);
     } catch (error) {
-        const users = [];
-        if (await writeJson(filename, users)) {
-            return users;
+        const contents = await readJson(defaultFilename);
+        if (await writeJson(filename, contents)) {
+            return contents;
         }
         throw error;
     }
