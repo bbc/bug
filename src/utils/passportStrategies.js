@@ -58,19 +58,17 @@ const localStrategy = new LocalStrategy(
         }
 
         if (!user.enabled) {
-            logger.info(`Local login: User '${user?.name}' is not enabled.`);
+            logger.info(`Local login: User '${user?.username}' is not enabled.`);
             return done(null, false);
         }
 
         if (!(await bcrypt.compare(password, user.password))) {
-            logger.info(`Local login: Wrong password for ${user?.name}.`);
+            logger.info(`Local login: Wrong password for ${user?.username}.`);
             return done(null, false);
         }
 
-        delete user["password"];
-        delete user["pin"];
-        logger.action(`Local login: ${user?.name} logged in.`);
-        return done(null, user);
+        logger.action(`Local login: ${user?.username} logged in.`);
+        return done(null, user.id);
     }
 );
 
@@ -94,15 +92,12 @@ const pinStrategy = new LocalStrategy(
         }
 
         if (!user.enabled) {
-            logger.info(`Pin login: User '${user?.email}' is not enabled.`);
+            logger.info(`Pin login: User '${user?.username}' is not enabled.`);
             return done(null, false);
         }
 
-        delete user["password"];
-        delete user["pin"];
-
-        logger.action(`Pin login: ${user?.email} logged in.`);
-        return done(null, user);
+        logger.action(`Pin login: ${user?.username} logged in.`);
+        return done(null, user.id);
     }
 );
 
@@ -129,14 +124,12 @@ const oauthStrategy = new OAuth2Strategy(
         }
 
         if (!user.enabled) {
-            logger.info(`OAuth2 login: User '${user?.email}' is not enabled.`);
+            logger.info(`OAuth2 login: User '${user?.username}' is not enabled.`);
             return done(null, false);
         }
 
-        delete user["password"];
-        delete user["pin"];
-        logger.action(`OAuth2 login: ${user?.email} logged in.`);
-        return done(null, user);
+        logger.action(`OAuth2 login: ${user?.username} logged in.`);
+        return done(null, user.id);
     }
 );
 
