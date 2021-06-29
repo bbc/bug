@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textField: {
         paddingTop: 16,
+        paddingBottom: 16,
         textAlign: "center",
         "& .MuiOutlinedInput-root": {
             borderRadius: 0,

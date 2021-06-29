@@ -97,12 +97,15 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 50,
         padding: 16,
         fontWeight: 500,
+        marginBottom: 16,
         "@media (max-width:800px)": {
             fontSize: 44,
+            marginBottom: 10,
         },
         "@media (max-width:600px)": {
             fontSize: 32,
             paddingTop: 8,
+            marginBottom: 8,
         },
         "@media (max-height:400px) and (max-width:800px)": {
             fontSize: 26,
