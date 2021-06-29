@@ -2,13 +2,16 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const session = require("express-session");
 const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
+
+//Passporty Auth Stuff
 const passportStrategies = require("@utils/passportStrategies");
 const passport = require("passport");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 // import environment variables from .env file
 require("dotenv").config();
@@ -33,6 +36,23 @@ const strategyRouter = require("@routes/strategy");
 
 const bugApi = express();
 
+const store = new MongoDBStore({
+    uri: "mongodb://bug-mongo:27017/bug-core",
+    collection: "sessions",
+});
+
+bugApi.use(
+    require("express-session")({
+        secret: sessionSecret,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24, // 1 day
+        },
+        store: store,
+        resave: true,
+        saveUninitialized: true,
+    })
+);
+
 for (let eachStrategy of passportStrategies) {
     passport.use(eachStrategy.name, eachStrategy.strategy);
 }
@@ -46,8 +66,6 @@ passport.deserializeUser(function (user, done) {
 });
 
 //Configure Passport
-//TODO Secret should be ENV
-bugApi.use(session({ secret: sessionSecret }));
 bugApi.use(passport.initialize());
 bugApi.use(passport.session());
 
