@@ -19,6 +19,7 @@ import PageSystemSecurity from "@components/system/PageSystemSecurity";
 import PageSystemSoftware from "@components/system/PageSystemSoftware";
 import PageSystemInfo from "@components/system/PageSystemInfo";
 import PageSystemLogs from "@components/system/PageSystemLogs";
+import PageSystemAbout from "@components/system/PageSystemAbout";
 import Loading from "@components/Loading";
 import { Redirect } from "react-router";
 
@@ -161,6 +162,11 @@ const PageRouter = (props) => {
                     <Route exact path="/system/logs">
                         <div className={classes.pagecontent}>
                             <PageSystemLogs />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/about">
+                        <div className={classes.pagecontent}>
+                            <PageSystemAbout />
                         </div>
                     </Route>
                     <Route exact path="/login">

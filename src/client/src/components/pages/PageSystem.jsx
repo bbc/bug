@@ -15,6 +15,8 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import InfoIcon from "@material-ui/icons/Info";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBug } from "@fortawesome/free-solid-svg-icons";
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -41,6 +43,20 @@ export default function PageSystem() {
 
     return (
         <>
+            <List className={classes.list}>
+                <ListItem button component={Link} to={`/system/about`}>
+                    <ListItemIcon>
+                        <FontAwesomeIcon size="lg" icon={faBug} />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="About BUG"
+                        secondary="Links to documentation, help and more information about BUG"
+                    />
+                    <ListItemIcon className={classes.navIcon}>
+                        <ChevronRightIcon />
+                    </ListItemIcon>
+                </ListItem>
+            </List>
             <List className={classes.list}>
                 <ListItem button component={Link} to={`/system/configuration`}>
                     <ListItemIcon>
