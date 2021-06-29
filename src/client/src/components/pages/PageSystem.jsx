@@ -15,6 +15,9 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import InfoIcon from "@material-ui/icons/Info";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBug } from "@fortawesome/free-solid-svg-icons";
+import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -41,6 +44,20 @@ export default function PageSystem() {
 
     return (
         <>
+            <List className={classes.list}>
+                <ListItem button component={Link} to={`/system/about`}>
+                    <ListItemIcon>
+                        <FontAwesomeIcon size="lg" icon={faBug} />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="About BUG"
+                        secondary="Links to documentation, help and more information about BUG"
+                    />
+                    <ListItemIcon className={classes.navIcon}>
+                        <ChevronRightIcon />
+                    </ListItemIcon>
+                </ListItem>
+            </List>
             <List className={classes.list}>
                 <ListItem button component={Link} to={`/system/configuration`}>
                     <ListItemIcon>
@@ -85,6 +102,15 @@ export default function PageSystem() {
                 </ListItem>
             </List>
             <List className={classes.list}>
+                <ListItem button component={Link} to={`/system/backup`}>
+                    <ListItemIcon>
+                        <SettingsBackupRestoreIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="System Backup" secondary="Download a complete backup or restore from file" />
+                    <ListItemIcon className={classes.navIcon}>
+                        <ChevronRightIcon />
+                    </ListItemIcon>
+                </ListItem>
                 <ListItem button component={Link} to={`/system/software`}>
                     <ListItemIcon>
                         <SystemUpdateAltIcon />
@@ -94,7 +120,7 @@ export default function PageSystem() {
                         <ChevronRightIcon />
                     </ListItemIcon>
                 </ListItem>
-                <ListItem button component={Link} to={`/system/system`}>
+                <ListItem button component={Link} to={`/system/info`}>
                     <ListItemIcon>
                         <InfoIcon />
                     </ListItemIcon>

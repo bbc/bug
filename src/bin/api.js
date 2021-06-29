@@ -98,21 +98,20 @@ bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
 
-bugApi.use("/documentation", restrict.to(["admin", "user"]), documentation);
-bugApi.use("/container", restrict.to(["admin", "user"]), proxyRouter);
-bugApi.use("/api/icons", restrict.to(["admin", "user"]), iconsRouter);
-bugApi.use("/api/module", restrict.to(["admin", "user"]), moduleRouter);
-bugApi.use("/api/panel", restrict.to(["admin", "user"]), panelRouter);
-bugApi.use("/api/user", restrict.to(["admin", "user"]), userRouter);
-bugApi.use("/api/panelconfig", restrict.to(["admin", "user"]), panelConfigRouter);
-bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
+bugApi.use("/documentation", documentation);
+bugApi.use("/container", proxyRouter);
+bugApi.use("/api/icons", iconsRouter);
+bugApi.use("/api/module", moduleRouter);
+bugApi.use("/api/panel", panelRouter);
+bugApi.use("/api/user", userRouter);
+bugApi.use("/api/panelconfig", panelConfigRouter);
 bugApi.use("/api/system", systemRouter); // Auth on a per route basis
 bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
 bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
 
 if (nodeEnv === "production") {
-    // production: nclude react build static client files
+    // production: include react build static client files
     bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
 
     // production: serve react frontend for bug on the default route
