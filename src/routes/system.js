@@ -7,7 +7,8 @@ const systemLogs = require("@services/system-logs");
 const systemContainers = require("@services/system-containers");
 const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
-const strategyGetEnabledCount = require("@services/strategy-getenabledcount");
+const restrict = require("@middleware/restrict");
+
 /**
  * @swagger
  * /system/hello:
@@ -20,7 +21,7 @@ const strategyGetEnabledCount = require("@services/strategy-getenabledcount");
  *        '200':
  *          description: Success
  */
-router.get("/hello", function (req, res, next) {
+router.get("/hello", restrict.to(["admin", "users"]), function (req, res, next) {
     const message = { data: "Good morning sunshine, the earth says hello." };
     hashResponse(res, req, message);
 });
@@ -37,7 +38,7 @@ router.get("/hello", function (req, res, next) {
  *        '200':
  *          description: Success
  */
-router.get("/containers", async function (req, res, next) {
+router.get("/containers", restrict.to(["admin", "users"]), async function (req, res, next) {
     const containers = await systemContainers();
     hashResponse(res, req, containers);
 });
@@ -54,7 +55,7 @@ router.get("/containers", async function (req, res, next) {
  *       '200':
  *         description: Success
  */
-router.get("/stats", async function (req, res, next) {
+router.get("/stats", restrict.to(["admin", "users"]), async function (req, res, next) {
     const stats = await systemStats();
     hashResponse(res, req, stats);
 });
@@ -78,7 +79,7 @@ router.get("/stats", async function (req, res, next) {
  *       '200':
  *         description: Success
  */
-router.get("/logs/:level", async function (req, res, next) {
+router.get("/logs/:level", restrict.to(["admin", "users"]), async function (req, res, next) {
     const logs = await systemLogs(req.params.level);
     hashResponse(res, req, logs);
 });
@@ -97,6 +98,7 @@ router.get("/logs/:level", async function (req, res, next) {
  */
 router.get(
     "/backup",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const backup = await systemBackup();
         res.header("Content-Disposition", `attachment; filename="${backup.filename}"`);
@@ -116,7 +118,7 @@ router.get(
  *        '200':
  *          description: Success
  */
-router.post("/restore", function (req, res, next) {
+router.post("/restore", restrict.to(["admin", "users"]), function (req, res, next) {
     try {
         if (!req.files) {
             hashResponse(res, req, {

@@ -2,6 +2,7 @@
 
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
+const restrict = require("@middleware/restrict");
 const logger = require("@utils/logger")(module);
 const axios = require("axios");
 const hashResponse = require("@core/hash-response");
@@ -36,6 +37,7 @@ const modulePort = process.env.MODULE_PORT || 3000;
  */
 router.use(
     "/:panelid",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const url = `http://${req.params.panelid}:${modulePort}/api${req.url}`;
         try {

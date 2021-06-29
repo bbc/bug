@@ -3,6 +3,7 @@
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
+const restrict = require("@middleware/restrict");
 const strategyUpdate = require("@services/strategy-update");
 const strategyList = require("@services/strategy-list");
 const strategyGet = require("@services/strategy-get");
@@ -57,6 +58,7 @@ router.get(
  */
 router.get(
     "/:type",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const result = await strategyGet(req.params.type);
         hashResponse(res, req, {
@@ -90,6 +92,7 @@ router.get(
  */
 router.get(
     "/:type/enable",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, true);
         hashResponse(res, req, {
@@ -123,6 +126,7 @@ router.get(
  */
 router.get(
     "/:type/disable",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, false);
         hashResponse(res, req, {
@@ -161,6 +165,7 @@ router.get(
  */
 router.put(
     "/:type",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const result = await strategyUpdate(req.params.type, {
             settings: req.body,
