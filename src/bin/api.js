@@ -109,6 +109,7 @@ bugApi.use("/api/system", systemRouter); // Auth on a per route basis
 bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
 bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
+bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 
 if (nodeEnv === "production") {
     // production: include react build static client files
