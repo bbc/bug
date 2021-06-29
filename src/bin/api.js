@@ -6,6 +6,7 @@ const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
+const restrict = require("@middleware/restrict");
 
 //Passporty Auth Stuff
 const passportStrategies = require("@utils/passportStrategies");
@@ -48,8 +49,8 @@ bugApi.use(
             maxAge: 1000 * 60 * 60 * 24, // 1 day
         },
         store: store,
-        resave: true,
-        saveUninitialized: true,
+        resave: false,
+        saveUninitialized: false,
     })
 );
 
@@ -103,12 +104,11 @@ bugApi.use("/api/icons", iconsRouter);
 bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
-bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
 bugApi.use("/api/system", systemRouter); // Auth on a per route basis
 bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
+bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
-bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 
 if (nodeEnv === "production") {
     // production: include react build static client files
