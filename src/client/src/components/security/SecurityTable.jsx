@@ -60,8 +60,14 @@ export default function SecurityTable({ interval }) {
                     </TableHead>
 
                     <TableBody>
-                        {strategies?.data?.map((strategy) => (
-                            <SecurityTableRow key={strategy.type} strategy={strategy} />
+                        {strategies?.data?.map((strategy, index) => (
+                            <SecurityTableRow
+                                key={strategy.type}
+                                strategy={strategy}
+                                index={index}
+                                isFirst={index === 0}
+                                isLast={index === strategies.data.length - 1}
+                            />
                         ))}
                     </TableBody>
                 </Table>

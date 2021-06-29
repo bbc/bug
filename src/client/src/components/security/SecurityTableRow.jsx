@@ -6,6 +6,8 @@ import AxiosCommand from "@utils/AxiosCommand";
 import ApiSwitch from "@core/ApiSwitch";
 import { useAlert } from "@utils/Snackbar";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import SecurityMenu from "./SecurityMenu";
 
 const useStyles = makeStyles((theme) => ({
     tableRow: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SecurityTableRow({ strategy }) {
+export default function SecurityTableRow({ strategy, index, isFirst, isLast }) {
     const classes = useStyles();
     const sendAlert = useAlert();
 
@@ -67,7 +69,7 @@ export default function SecurityTableRow({ strategy }) {
             <TableCell className={classes.colType}>{strategy.type.toUpperCase()}</TableCell>
             <TableCell className={classes.colDescription}>{strategy.description}</TableCell>
             <TableCell className={classes.colNav}>
-                <ChevronRightIcon />
+                <SecurityMenu strategy={strategy} isFirst={isFirst} isLast={isLast} index={index} />
             </TableCell>
         </TableRow>
     );
