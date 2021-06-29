@@ -6,6 +6,7 @@ const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
+const restrict = require("@middleware/restrict");
 
 //Passporty Auth Stuff
 const passportStrategies = require("@utils/passportStrategies");
@@ -48,8 +49,8 @@ bugApi.use(
             maxAge: 1000 * 60 * 60 * 24, // 1 day
         },
         store: store,
-        resave: true,
-        saveUninitialized: true,
+        resave: false,
+        saveUninitialized: false,
     })
 );
 
@@ -97,20 +98,18 @@ bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
 
-bugApi.use("/documentation", documentation);
-bugApi.use("/container", proxyRouter);
-bugApi.use("/api/icons", iconsRouter);
-bugApi.use("/api/module", moduleRouter);
-bugApi.use("/api/panel", panelRouter);
-bugApi.use("/api/user", userRouter);
-bugApi.use("/api/login", loginRouter);
-bugApi.use("/api/logout", logoutRouter);
-bugApi.use("/api/strategy", strategyRouter);
-bugApi.use("/api/panelconfig", panelConfigRouter);
+bugApi.use("/documentation", restrict.to(["admin", "user"]), documentation);
+bugApi.use("/container", restrict.to(["admin", "user"]), proxyRouter);
+bugApi.use("/api/icons", restrict.to(["admin", "user"]), iconsRouter);
+bugApi.use("/api/module", restrict.to(["admin", "user"]), moduleRouter);
+bugApi.use("/api/panel", restrict.to(["admin", "user"]), panelRouter);
+bugApi.use("/api/user", restrict.to(["admin", "user"]), userRouter);
+bugApi.use("/api/panelconfig", restrict.to(["admin", "user"]), panelConfigRouter);
+bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 bugApi.use("/api/system", systemRouter); // Auth on a per route basis
 bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
+bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
-bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 
 if (nodeEnv === "production") {
     // production: nclude react build static client files
