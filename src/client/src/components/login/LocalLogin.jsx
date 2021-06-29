@@ -43,9 +43,9 @@ export default function LocalLogin({ handleLogin }) {
                 <Grid container spacing={4}>
                     <Grid item xs={12}>
                         <TextField
-                            inputProps={{ ...register("name") }}
+                            inputProps={{ ...register("username") }}
                             fullWidth
-                            error={errors?.name ? true : false}
+                            error={errors?.username ? true : false}
                             type="text"
                             label="Username"
                         />

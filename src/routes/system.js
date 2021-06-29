@@ -4,6 +4,7 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const systemBackup = require("@services/system-backup");
 const systemLogs = require("@services/system-logs");
+const systemContainers = require("@services/system-containers");
 const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
 
@@ -45,6 +46,23 @@ router.get("/user", function (req, res, next) {
         response.error = "Not signed in";
     }
     hashResponse(res, req, response);
+});
+
+/**
+ * @swagger
+ * /system/containers:
+ *    get:
+ *      description: Get a list of running containers.
+ *      tags: [system]
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
+router.get("/containers", async function (req, res, next) {
+    const containers = await systemContainers();
+    hashResponse(res, req, containers);
 });
 
 /**

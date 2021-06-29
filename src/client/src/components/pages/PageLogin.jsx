@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import BugQuote from "@components/BugQuote";
@@ -14,11 +13,11 @@ import Tab from "@material-ui/core/Tab";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import useAsyncEffect from "use-async-effect";
-import AxiosPost from "@utils/AxiosPost";
 import AxiosGet from "@utils/AxiosGet";
 import * as LoginMethods from "../login/*";
 import { Alert } from "@material-ui/lab";
 import Fade from "@material-ui/core/Fade";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     page: {
@@ -150,7 +149,6 @@ const useStyles = makeStyles((theme) => ({
 export default function PageLogin() {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const history = useHistory();
     const [loading, setLoading] = useState(true);
     const [tabIndex, setTabIndex] = React.useState(0);
     const [enabledStrategies, setEnabledStrategies] = React.useState([]);
@@ -184,10 +182,9 @@ export default function PageLogin() {
 
     const handleLogin = async (form) => {
         setLoading(true);
-        const response = await AxiosPost(`/api/login`, form);
-        if (response) {
+        const response = await axios.post(`/api/login`, form);
+        if (response.data.status === "success") {
             dispatch(userSlice.actions[response.data.status](response.data));
-            history.push("/");
         } else {
             setAlertWithTimeout("Failed to log in");
         }

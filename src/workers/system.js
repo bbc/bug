@@ -37,6 +37,7 @@ const fetch = async () => {
         const systemCollection = await mongoCollection("system", {
             capped: true,
             max: 17280,
+            size: 52428800,
         });
 
         while (true) {
@@ -46,7 +47,8 @@ const fetch = async () => {
                 cpu: await filterCPU(),
                 memory: await si.mem(),
                 containers: await filterContainers(),
-                disk: await si.fsSize(),
+                disks: await si.fsSize(),
+                network: await si.networkStats(),
             };
             await systemCollection.insertOne(document);
             await delay(5000);

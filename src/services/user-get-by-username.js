@@ -3,22 +3,22 @@
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
 
-async function getUserIndex(users, name) {
-    if (users && name) {
+async function getUserIndex(users, username) {
+    if (users && username) {
         const index = await users
             .map(function (user) {
-                return user?.name;
+                return user?.username;
             })
-            .indexOf(name);
+            .indexOf(username);
         return index;
     }
     return -1;
 }
 
-module.exports = async (name) => {
+module.exports = async (username) => {
     try {
         const users = await userModel.list();
-        const index = await getUserIndex(users, name);
+        const index = await getUserIndex(users, username);
         if (index !== -1) {
             return users[index];
         }
@@ -26,6 +26,6 @@ module.exports = async (name) => {
         return null;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to retrieve users`);
+        throw new Error(`Failed to retrieve user by username`);
     }
 };

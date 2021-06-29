@@ -9,16 +9,15 @@ const HeaderStrategy = require("passport-http-header-strategy").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
 
-const authHeader = "BBCEMAIL";
 const strategyModel = require("@models/strategy");
-const userPin = require("@services/user-get-by-pin");
-const userGetByName = require("@services/user-get-by-name");
+const userGetByPin = require("@services/user-get-by-pin");
+const userGetByUsername = require("@services/user-get-by-username");
 const logger = require("@utils/logger")(module);
 const bcrypt = require("bcryptjs");
 
 //Setup Trusted Header authentication
 const proxyStrategy = new HeaderStrategy(
-    { header: authHeader, passReqToCallback: true },
+    { header: "BBCEMAIL", passReqToCallback: true },
     async (request, header, done) => {
         const strategy = strategyModel.get("proxy");
         let auth = false;
@@ -44,15 +43,14 @@ const proxyStrategy = new HeaderStrategy(
 
 //Setup Local authentication
 const localStrategy = new LocalStrategy(
-    { usernameField: "name", passwordField: "password" },
+    { usernameField: "username", passwordField: "password" },
     async (username, password, done) => {
-        console.log(username);
         const strategy = await strategyModel.get("local");
         if (!strategy.enabled) {
             logger.info(`Local login not enabled.`);
             return done(null, false);
         }
-        const user = await userGetByName(username.toLowerCase());
+        const user = await userGetByUsername(username.toLowerCase());
 
         if (!user) {
             logger.info(`Local login: User '${username}' does not exist.`);
@@ -80,14 +78,13 @@ const localStrategy = new LocalStrategy(
 const pinStrategy = new LocalStrategy(
     { usernameField: "pin", passwordField: "pin" },
     async (username, password, done) => {
-        console.log("PIN");
         const strategy = await strategyModel.get("pin");
 
         if (!strategy.enabled) {
             logger.info(`Pin login not enabled.`);
             return done(null, false);
         }
-        const user = await userPin(username);
+        const user = await userGetByPin(username);
 
         //TODO IP Whitelisting
 
@@ -101,13 +98,9 @@ const pinStrategy = new LocalStrategy(
             return done(null, false);
         }
 
-        if (!(await bcrypt.compare(password, user.pin))) {
-            logger.info(`Pin login: Wrong pin for ${user?.email}.`);
-            return done(null, false);
-        }
-
         delete user["password"];
         delete user["pin"];
+
         logger.action(`Pin login: ${user?.email} logged in.`);
         return done(null, user);
     }

@@ -1,20 +1,20 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const systemStatsModel = require("@models/system-stats");
+const dockerContainerModel = require("@models/docker-container");
 
 module.exports = async () => {
     try {
         const response = {};
-        response.data = await systemStatsModel.get();
+        response.data = await dockerContainerModel.list();
 
         response.data.sort(function (a, b) {
-            return a.timestamp - b.timestamp;
+            return b.created - a.created;
         });
 
         return response;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed retrieve system statistics.`);
+        throw new Error(`Failed retrieve containers.`);
     }
 };
