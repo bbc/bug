@@ -61,7 +61,7 @@ const BugMenuIcon = (props) => {
 
     const logout = async () => {
         await AxiosPost("/api/logout");
-        dispatch(userSlice.actions["failed"]({ error: "User logged out" }));
+        dispatch(userSlice.actions["failure"]({ error: "User logged out" }));
         history.push(`/login`);
     };
 

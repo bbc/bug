@@ -105,7 +105,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await moduleBuild(req.params.moduleName);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: null,
         });
     })
@@ -141,7 +141,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await moduleRebuild(req.params.moduleName);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: null,
         });
     })

@@ -7,7 +7,7 @@ export default async function AxiosDelete(url) {
         switch (response.data.status) {
             case "success":
                 return true;
-            case "fail":
+            case "failure":
                 console.error("failed to fetch " + url);
                 return false;
             case "error":

@@ -44,7 +44,7 @@ router.delete(
     asyncHandler(async (req, res) => {
         const result = await panelDelete(req.params.panelId);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Deleted panel",
             data: null,
         });
@@ -118,7 +118,7 @@ router.post(
     asyncHandler(async (req, res) => {
         const result = await panelAdd(req.body);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Added panel",
             data: null,
         });
@@ -155,7 +155,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await panelStart(req.params.moduleName);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Successfully built module",
             data: null,
         });
@@ -193,7 +193,7 @@ router.get(
         // starts and builds if necessary
         const result = await panelStart(req.params.panelId);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Started panel",
             data: null,
         });
@@ -231,7 +231,7 @@ router.get(
         // stop and start (and rebuild if necessary)
         const result = await panelRestart(req.params.panelId);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Restarted panel",
             data: null,
         });
@@ -269,7 +269,7 @@ router.get(
         // stops the image running (probably won't ever be run from the UI)
         const result = await panelStop(req.params.panelId);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Stopped panel",
             data: null,
         });
@@ -312,7 +312,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await panelSetGroup(req.params.panelId, req.params.group ? req.params.group : "");
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Updated panel group",
             data: null,
         });
@@ -349,7 +349,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await panelEnable(req.params.panelId);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Enabled panel",
             data: null,
         });
@@ -386,7 +386,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await panelDisable(req.params.panelId);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: "Disabled panel",
             data: null,
         });

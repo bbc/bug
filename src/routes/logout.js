@@ -25,10 +25,8 @@ router.post(
         const status = await req.logout();
 
         hashResponse(res, req, {
-            status: status ? "fail" : "success",
-            message: status
-                ? "Logout failed"
-                : `Sucessfully logged out ${email}`,
+            status: status ? "failure" : "success",
+            message: status ? "Logout failed" : `Sucessfully logged out ${email}`,
             data: status,
         });
     })

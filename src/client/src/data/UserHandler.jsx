@@ -11,10 +11,11 @@ export default function UserHandler(props) {
 
     useEffect(() => {
         const getUser = async () => {
-            const response = await axios.get(`/api/system/user`);
+            const response = await axios.get(`/api/user/current`);
             console.log("response", response);
 
             if (response.status === 200) {
+                console.log("response?.data?.status", response?.data?.status);
                 dispatch(userSlice.actions[response?.data?.status](response?.data));
             }
         };

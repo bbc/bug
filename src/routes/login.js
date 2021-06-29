@@ -45,7 +45,7 @@ router.post("/", (req, res, next) => {
         if (err) return next(err);
 
         return hashResponse(res, req, {
-            status: user ? "success" : "fail",
+            status: user ? "success" : "failure",
             message: user ? `Sucessfully logged in ${user.name}` : "Login failed",
             data: user,
         });

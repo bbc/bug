@@ -37,7 +37,7 @@ router.delete(
     asyncHandler(async (req, res) => {
         const result = await userDelete(req.params.id);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Deleted the user.` : "Failed to delete the user by the given UUID.",
             data: result,
         });
@@ -61,7 +61,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await userGet(req?.user);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Retrieved the current user.` : "There is no current user.",
             data: result,
         });
@@ -87,7 +87,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await userList(true);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Retrieved all users.` : "Failed to a list of users.",
             data: result,
         });
@@ -120,7 +120,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await userGet(req.params.id);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Retrieved the user.` : "Failed to retrive a user by the given UUID.",
             data: result,
         });
@@ -153,7 +153,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await userEnable(req.params.id, true);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Enabled the user.` : "Failed to enable the user.",
             data: result,
         });
@@ -186,7 +186,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await userEnable(req.params.id, false);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Disabled the user.` : "Failed to disable the user.",
             data: result,
         });
@@ -243,7 +243,7 @@ router.post(
     asyncHandler(async (req, res) => {
         const result = await userSet(req.body);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Succesfully added the user.` : "Failed to add the user.",
             data: result,
         });
@@ -306,7 +306,7 @@ router.put(
     asyncHandler(async (req, res) => {
         const result = await userUpdate(req.params.id, req.body);
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             message: result ? `Succesfully updated the user.` : "Failed to update the user.",
             data: result,
         });

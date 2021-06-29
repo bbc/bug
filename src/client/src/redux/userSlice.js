@@ -24,8 +24,8 @@ export default createSlice({
             state.data = action.payload.data;
             state.error = null;
         },
-        failed: (state, action) => {
-            state.status = "failed";
+        failure: (state, action) => {
+            state.status = "failure";
             state.data = null;
             state.error = action.payload.error;
         },

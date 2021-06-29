@@ -6,7 +6,7 @@ export default async function AxiosPost(url, data) {
         case "success":
             response = response.data.data;
             break;
-        case "fail":
+        case "failure":
             console.error("failed to fetch " + url);
             response = null;
             break;

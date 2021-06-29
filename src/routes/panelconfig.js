@@ -55,7 +55,7 @@ router.put(
             ...req.body,
         });
         hashResponse(res, req, {
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: null,
         });
     })

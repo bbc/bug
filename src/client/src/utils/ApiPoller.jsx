@@ -55,7 +55,7 @@ export function useApiPoller({ url, interval, forceRefresh }) {
 
                 // send an update with the failed state
                 setPollResult({
-                    status: "failed",
+                    status: "failure",
                     data: null,
                     error: null,
                 });

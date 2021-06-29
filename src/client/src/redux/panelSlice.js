@@ -1,31 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     data: [],
-    status: 'idle',
-    error: null
+    status: "idle",
+    error: null,
 };
 
 export default createSlice({
-    name: 'panel',
+    name: "panel",
     initialState,
     reducers: {
         idle: (state) => {
-            state.status = 'idle';
+            state.status = "idle";
             state.data = {};
             state.error = null;
         },
         loading: (state) => {
-            state.status = 'loading';
+            state.status = "loading";
             state.error = null;
         },
         success: (state, action) => {
-            state.status = 'success';
+            state.status = "success";
             state.data = action.payload.data;
             state.error = null;
         },
-        failed: (state, action) => {
-            state.status = 'failed';
+        failure: (state, action) => {
+            state.status = "failure";
             state.data = {};
             state.error = action.payload.error;
         },

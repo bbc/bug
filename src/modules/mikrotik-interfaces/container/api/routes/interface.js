@@ -26,7 +26,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await interfaceCombined(req.params.interfaceName);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: result,
         });
     })
@@ -37,7 +37,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await interfaceHistory(req.params.interfaceName);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: result,
         });
     })
@@ -48,7 +48,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceRename(req.params.interfaceId, req.params.interfaceName);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: result,
         });
     })
@@ -59,7 +59,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceComment(req.params.interfaceId, req.params.interfaceComment);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: result,
         });
     })
@@ -70,7 +70,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceComment(req.params.interfaceId, "");
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: result,
         });
     })
@@ -85,7 +85,7 @@ router.get(
             parseInt(req.params.end)
         );
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: result,
         });
     })
@@ -96,7 +96,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceEnable(req.params.interfaceName);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: null,
         });
     })
@@ -107,7 +107,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceDisable(req.params.interfaceName);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: null,
         });
     })
@@ -118,7 +118,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceProtect(req.params.interfaceName);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: null,
         });
     })
@@ -129,7 +129,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const result = await mikrotikInterfaceUnprotect(req.params.interfaceName);
         res.json({
-            status: result ? "success" : "fail",
+            status: result ? "success" : "failure",
             data: null,
         });
     })

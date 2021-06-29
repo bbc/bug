@@ -72,13 +72,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EncoderRow({
-    panelId,
-    encoder,
-    decoders,
-    channels,
-    links,
-}) {
+export default function EncoderRow({ panelId, encoder, decoders, channels, links }) {
     const classes = useStyles();
     const [redirectUrl, setRedirectUrl] = useState(null);
 
@@ -106,24 +100,17 @@ export default function EncoderRow({
     };
 
     const handleUnpair = async (sid) => {
-        const response = await AxiosPut(
-            `/container/${panelId}/device/unpair/${encoder?.sid}`,
-            { decoderSid: sid }
-        );
+        const response = await AxiosPut(`/container/${panelId}/device/unpair/${encoder?.sid}`, { decoderSid: sid });
         console.log(response);
     };
 
     const handlePlay = async (sid) => {
-        const response = await AxiosGet(
-            `/container/${panelId}/device/start/${sid}`
-        );
+        const response = await AxiosGet(`/container/${panelId}/device/start/${sid}`);
         console.log(response);
     };
 
     const handlePause = async (sid) => {
-        const response = await AxiosGet(
-            `/container/${panelId}/device/stop/${sid}`
-        );
+        const response = await AxiosGet(`/container/${panelId}/device/stop/${sid}`);
         console.log(response);
     };
 
@@ -140,10 +127,7 @@ export default function EncoderRow({
                 </IconButton>
             );
         }
-        if (
-            encoder?.streamStatus === "paused" ||
-            encoder?.streamStatus === "stopped"
-        ) {
+        if (encoder?.streamStatus === "paused" || encoder?.streamStatus === "stopped") {
             return (
                 <IconButton
                     onClick={(event) => {
@@ -236,20 +220,11 @@ export default function EncoderRow({
     }
 
     return (
-        <TableRow
-            hover
-            className={classes.tableRow}
-            key={encoder._id}
-            onClick={() => handleRowClicked(encoder?.sid)}
-        >
-            <TableCell className={classes.colThumbnail}>
-                {getThumbnail()}
-            </TableCell>
+        <TableRow hover className={classes.tableRow} key={encoder._id} onClick={() => handleRowClicked(encoder?.sid)}>
+            <TableCell className={classes.colThumbnail}>{getThumbnail()}</TableCell>
             <TableCell className={classes.colName}>{encoder.name}</TableCell>
             <TableCell className={classes.colModel}>{encoder.model}</TableCell>
-            <TableCell className={classes.colDecoders}>
-                {getLinkedDecoders(links)}
-            </TableCell>
+            <TableCell className={classes.colDecoders}>{getLinkedDecoders(links)}</TableCell>
             <TableCell className={classes.colState}>{getButton()}</TableCell>
         </TableRow>
     );

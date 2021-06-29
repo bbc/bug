@@ -24,7 +24,7 @@ const restrictedTo = (roles) => {
             //Check if the user has the correct roles
             if (!checkUserRoles(roles, user?.roles)) {
                 return hashResponse(res, req, {
-                    status: "failed",
+                    status: "failure",
                     message: `Sorry to BUG but you don't have any of these roles - ${roles.toString()}.`,
                     data: req?.user,
                 });
@@ -34,7 +34,7 @@ const restrictedTo = (roles) => {
 
         //User must not pass. Give them the news
         return hashResponse(res, req, {
-            status: "failed",
+            status: "failure",
             message: `Sorry to BUG but you're not authorised, please log in.`,
             data: req?.user,
         });
