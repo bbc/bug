@@ -104,8 +104,6 @@ bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
 bugApi.use("/api/login", loginRouter);
-bugApi.use("/api/logout", logoutRouter);
-bugApi.use("/api/strategy", strategyRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
 bugApi.use("/api/system", systemRouter); // Auth on a per route basis
 bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
@@ -113,7 +111,7 @@ bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
 bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 
 if (nodeEnv === "production") {
-    // production: nclude react build static client files
+    // production: include react build static client files
     bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
 
     // production: serve react frontend for bug on the default route
