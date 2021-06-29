@@ -21,6 +21,14 @@ const restrictedTo = (roles) => {
             //Gets up to date info on the user
             const user = await userGet(req.user);
 
+            if (!user?.enabled) {
+                return hashResponse(res, req, {
+                    status: "failure",
+                    message: `Sorry to BUG but you're not authorised, please log in.`,
+                    data: req?.user,
+                });
+            }
+
             //Check if the user has the correct roles
             if (!checkUserRoles(roles, user?.roles)) {
                 return hashResponse(res, req, {
