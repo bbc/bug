@@ -4,6 +4,7 @@ import panelConfigSlice from "./panelConfigSlice";
 import pageTitleSlice from "./pageTitleSlice";
 import panelSlice from "./panelSlice";
 import userSlice from "./userSlice";
+import strategiesSlice from "./strategiesSlice";
 
 export default configureStore({
     reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
         panelConfig: panelConfigSlice.reducer,
         panel: panelSlice.reducer,
         user: userSlice.reducer,
+        strategies: strategiesSlice.reducer,
     },
 });

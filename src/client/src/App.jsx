@@ -2,14 +2,15 @@ import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import PageRouter from "@components/pages/PageRouter";
 import theme from "./theme";
-import PanelList from "@data/PanelList";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { SnackbarProvider } from "notistack";
 import Fade from "@material-ui/core/Fade";
 import { SnackbarConfigurator } from "@utils/Snackbar";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import User from "@data/User";
+import PanelListHandler from "@data/PanelListHandler";
+import UserHandler from "@data/UserHandler";
+import StrategiesHandler from "@data/StrategiesHandler";
 
 import { Provider } from "react-redux";
 import reduxStore from "@redux/store";
@@ -33,11 +34,11 @@ export default function App() {
                         >
                             <SnackbarConfigurator />
                             <CssBaseline />
-                            <User>
-                                <PanelList>
-                                    <PageRouter></PageRouter>
-                                </PanelList>
-                            </User>
+                            <UserHandler />
+                            <StrategiesHandler />
+                            <PanelListHandler />
+
+                            <PageRouter></PageRouter>
                         </SnackbarProvider>
                     </MuiPickersUtilsProvider>
                 </ThemeProvider>

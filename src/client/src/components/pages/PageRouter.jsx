@@ -19,6 +19,8 @@ import PageSystemSecurity from "@components/system/PageSystemSecurity";
 import PageSystemSoftware from "@components/system/PageSystemSoftware";
 import PageSystemInfo from "@components/system/PageSystemInfo";
 import PageSystemLogs from "@components/system/PageSystemLogs";
+import Loading from "@components/Loading";
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -85,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
 const PageRouter = (props) => {
     const classes = useStyles();
     const user = useSelector((state) => state.user);
+    const strategies = useSelector((state) => state.strategies);
 
     const PageContent = () => (
         <>
@@ -160,16 +163,15 @@ const PageRouter = (props) => {
                             <PageSystemLogs />
                         </div>
                     </Route>
+                    <Route exact path="/login">
+                        <Redirect to="/" />
+                    </Route>
                 </Switch>
             </div>
         </>
     );
 
-    if (user?.status !== "success") {
-        return <PageLogin />;
-    }
-
-    return (
+    const RouterContent = () => (
         <Router>
             <div className={classes.root}>
                 <Hidden xsDown>
@@ -185,6 +187,28 @@ const PageRouter = (props) => {
             </div>
         </Router>
     );
+
+    // strategies first. If they're not loaded then wait
+    if (strategies.status !== "success") {
+        return <Loading />;
+    }
+
+    // if they're loaded and none enabled, then we're done
+    const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
+    console.log("enabledStrategiesCount", enabledStrategiesCount);
+    if (enabledStrategiesCount === 0) {
+        return <RouterContent />;
+    }
+
+    // if we've got to here, then there must be a strategy enabled
+    switch (user.status) {
+        case "idle":
+            return <Loading />;
+        case "success":
+            return <RouterContent />;
+        default:
+            return <PageLogin />;
+    }
 };
 
 export default PageRouter;

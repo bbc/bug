@@ -60,7 +60,7 @@ const BugMenuIcon = (props) => {
     };
 
     const logout = async () => {
-        const response = await AxiosPost("/api/logout");
+        await AxiosPost("/api/logout");
         dispatch(userSlice.actions["failed"]({ error: "User logged out" }));
         history.push(`/login`);
     };
@@ -110,6 +110,14 @@ const BugMenuIcon = (props) => {
         }
         return null;
     };
+
+    if (user.status !== "success") {
+        return null;
+    }
+
+    if (!user.data || !user.data.id) {
+        return null;
+    }
 
     return (
         <>

@@ -128,6 +128,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         flexDirection: "column",
         "@media (max-height:400px) and (max-width:800px)": {
+            alignItems: "flex-start",
             flexWrap: "nowrap",
             flexDirection: "row",
         },
@@ -187,8 +188,8 @@ export default function PageLogin() {
             dispatch(userSlice.actions[response.data.status](response.data));
         } else {
             setAlertWithTimeout("Failed to log in");
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     if (loading) {

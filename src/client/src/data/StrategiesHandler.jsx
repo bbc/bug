@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import panelListSlice from "@redux/panelListSlice";
+import strategiesSlice from "@redux/strategiesSlice";
 import io from "@utils/io";
 
-const panelList = io("/panelList");
+const panelList = io("/strategies");
 
-export default function PanelList(props) {
+export default function StrategiesHandler(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function PanelList(props) {
 
         panelList.on("event", (result) => {
             // console.log(`${panelList.id}: panelList - event`, result);
-            dispatch(panelListSlice.actions[result["status"]](result));
+            dispatch(strategiesSlice.actions[result["status"]](result));
         });
 
         return async () => {
@@ -24,5 +24,5 @@ export default function PanelList(props) {
         };
     }, [dispatch]);
 
-    return <>{props.children}</>;
+    return null;
 }

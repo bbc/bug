@@ -7,6 +7,7 @@ const systemLogs = require("@services/system-logs");
 const systemContainers = require("@services/system-containers");
 const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
+const strategyGetEnabledCount = require("@services/strategy-getenabledcount");
 
 /**
  * @swagger
@@ -29,7 +30,7 @@ router.get("/hello", function (req, res, next) {
  * @swagger
  * /system/user:
  *    get:
- *      description: Get's the current user - if one's logged in.
+ *      description: Gets the current user - if one's logged in.
  *      tags: [system]
  *      produces:
  *        - application/json
@@ -37,13 +38,27 @@ router.get("/hello", function (req, res, next) {
  *        '200':
  *          description: Success
  */
-router.get("/user", function (req, res, next) {
+router.get("/user", async function (req, res, next) {
     const response = { data: req.user };
     if (req.user) {
         response.status = "success";
     } else {
-        response.status = "failed";
-        response.error = "Not signed in";
+        const count = await strategyGetEnabledCount();
+        if (count === 0) {
+            // return a dummy user - with access to EVERYTHING!!
+            response.status = "success";
+            response.data = {
+                email: null,
+                enabled: true,
+                id: null,
+                name: null,
+                roles: ["admin", "user"],
+                username: null,
+            };
+        } else {
+            response.status = "failed";
+            response.error = "Not signed in";
+        }
     }
     hashResponse(res, req, response);
 });

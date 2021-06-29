@@ -62,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
             transform: "none",
         },
     },
+    divider: {
+        margin: 0,
+    },
 }));
 
 const Menu = ({ showGroups = true }) => {
@@ -184,6 +187,7 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
+    console.log(user);
     const getPanelMenuItems = () => {
         if (user?.data) {
             return (
@@ -204,9 +208,9 @@ const Menu = ({ showGroups = true }) => {
                             <ListItemText primary="Home" />
                         </ListItem>
                     </List>
-                    <Divider />
+                    <Divider className={classes.divider} />
                     {renderPanelMenuItems()}
-                    {enabledPanelList.length > 0 ? <Divider /> : null}
+                    {enabledPanelList.length > 0 ? <Divider className={classes.divider} /> : null}
                     <List>
                         <ListItem
                             button

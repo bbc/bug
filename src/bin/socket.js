@@ -6,6 +6,7 @@ const panelConfigHandler = require("@sockets/panel-config");
 const panelHandler = require("@sockets/panel");
 const alertHandler = require("@sockets/alert");
 const bugHandler = require("@sockets/bug");
+const strategiesHandler = require("@sockets/strategies");
 
 const options = {
     cors: {
@@ -21,6 +22,7 @@ const bugSocket = (server) => {
     const panelNamespace = io.of("/panel");
     const alertNamespace = io.of("/alert");
     const bugNamespace = io.of("/bug");
+    const strategiesNamespace = io.of("/strategies");
 
     panelListNamespace.on("connection", (socket) => {
         panelListHandler(panelListNamespace, socket);
@@ -40,6 +42,10 @@ const bugSocket = (server) => {
 
     bugNamespace.on("connection", (socket) => {
         bugHandler(bugNamespace, socket);
+    });
+
+    strategiesNamespace.on("connection", (socket) => {
+        strategiesHandler(strategiesNamespace, socket);
     });
 
     return io;
