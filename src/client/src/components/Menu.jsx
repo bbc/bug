@@ -72,9 +72,11 @@ const Menu = ({ showGroups = true }) => {
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
     const user = useSelector((state) => state.user);
+    const strategies = useSelector((state) => state.strategies);
     const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
     const location = useLocation();
     const [expanded, setExpanded] = React.useState(false);
+    const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
 
     const getSelectedGroup = () => {
         // this is used to expand the groups when the page is loaded with a panel already open
@@ -187,9 +189,9 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
-    console.log(user);
     const getPanelMenuItems = () => {
-        if (user?.data) {
+        //TODO move enabledStrategiesCount into redux user slice
+        if (user?.data || enabledStrategiesCount === 0) {
             return (
                 <>
                     <List>

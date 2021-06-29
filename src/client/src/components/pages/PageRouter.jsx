@@ -207,7 +207,7 @@ const PageRouter = (props) => {
 
     // if they're loaded and none enabled, then we're done
     const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
-    console.log("enabledStrategiesCount", enabledStrategiesCount);
+
     if (enabledStrategiesCount === 0) {
         return <RouterContent />;
     }
