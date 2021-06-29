@@ -6,26 +6,30 @@
 const strategyGetEnabledCount = require("@services/strategy-getenabledcount");
 const checkUserRoles = require("@services/user-roles-check");
 const hashResponse = require("@core/hash-response");
+const userGet = require("@services/user-get");
 
 const restrictedTo = (roles) => {
     const checkCredentials = async (req, res, next) => {
-        //Check if user has been authenticated by passport
-        if (req.isAuthenticated()) {
-            return next();
-        }
-
         //Check if any stragetgies are enabled
         if ((await strategyGetEnabledCount()) === 0) {
+            req.logout();
             return next();
         }
 
-        //Check if the user has the correct roles
-        if (!checkUserRoles(roles, req?.user?.roles)) {
-            return hashResponse(res, req, {
-                status: "failed",
-                message: `Sorry to BUG but you don't have any of these roles - ${roles.toString()}.`,
-                data: req?.user,
-            });
+        //Check if user has been authenticated by passport
+        if (req.isAuthenticated()) {
+            //Gets up to date info on the user
+            const user = await userGet(req.user);
+
+            //Check if the user has the correct roles
+            if (!checkUserRoles(roles, user?.roles)) {
+                return hashResponse(res, req, {
+                    status: "failed",
+                    message: `Sorry to BUG but you don't have any of these roles - ${roles.toString()}.`,
+                    data: req?.user,
+                });
+            }
+            return next();
         }
 
         //User must not pass. Give them the news

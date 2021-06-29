@@ -8,7 +8,6 @@ const systemContainers = require("@services/system-containers");
 const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
 const strategyGetEnabledCount = require("@services/strategy-getenabledcount");
-
 /**
  * @swagger
  * /system/hello:
@@ -39,6 +38,7 @@ router.get("/hello", function (req, res, next) {
  *          description: Success
  */
 router.get("/user", async function (req, res, next) {
+    //AUTH TODO USE REQ.USER with ID to get up to date user data from model
     const response = { data: req.user };
     if (req.user) {
         response.status = "success";
