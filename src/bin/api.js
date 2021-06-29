@@ -6,7 +6,6 @@ const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
-const restrict = require("@middleware/restrict");
 
 //Passporty Auth Stuff
 const passportStrategies = require("@utils/passportStrategies");

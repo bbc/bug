@@ -4,7 +4,7 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 const passport = require("passport");
-
+const getUser = require("@services/user-get");
 /**
  * @swagger
  * /login:
@@ -40,16 +40,13 @@ const passport = require("passport");
  *         schema:
  *           type: object
  */
-router.post("/", (req, res, next) => {
-    passport.authenticate(["local", "pin"], (err, user, info) => {
-        if (err) return next(err);
-
-        return hashResponse(res, req, {
-            status: user ? "success" : "failure",
-            message: user ? `Sucessfully logged in ${user.name}` : "Login failed",
-            data: user,
-        });
-    })(req, res, next);
+router.post("/", passport.authenticate(["local", "pin"]), async (req, res) => {
+    const user = await getUser(req?.user);
+    hashResponse(res, req, {
+        status: user ? "success" : "failure",
+        message: user ? `Sucessfully logged in ${user.username}` : "Login failed",
+        data: user,
+    });
 });
 
 module.exports = router;

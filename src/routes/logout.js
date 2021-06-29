@@ -3,7 +3,7 @@
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
-
+const userGet = require("@services/user-get");
 /**
  * @swagger
  * /logout:
@@ -21,12 +21,12 @@ const hashResponse = require("@core/hash-response");
 router.post(
     "/",
     asyncHandler(async (req, res) => {
-        const email = req?.user?.email;
+        const user = await userGet(req?.user);
         const status = await req.logout();
 
         hashResponse(res, req, {
             status: status ? "failure" : "success",
-            message: status ? "Logout failed" : `Sucessfully logged out ${email}`,
+            message: status ? "Logout failed" : `Sucessfully logged out ${user?.username}`,
             data: status,
         });
     })

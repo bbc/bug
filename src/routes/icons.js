@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 const iconsGet = require("@services/icons-get");
 const hashResponse = require("@core/hash-response");
 const iconsSettings = require("@services/icons-settings");
+const restrict = require("@middleware/restrict");
 
 /**
  * @swagger
@@ -26,6 +27,7 @@ const iconsSettings = require("@services/icons-settings");
  */
 router.get(
     "/variants/",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
@@ -108,11 +110,7 @@ router.post(
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
-            data: await iconsGet(
-                req.params.iconName,
-                req.body.variant,
-                req.body.length
-            ),
+            data: await iconsGet(req.params.iconName, req.body.variant, req.body.length),
         });
     })
 );
