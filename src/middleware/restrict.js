@@ -22,6 +22,7 @@ const restrictedTo = (roles) => {
             const user = await userGet(req.user);
 
             if (!user?.enabled) {
+                req.logout();
                 return hashResponse(res, req, {
                     status: "failure",
                     message: `Sorry to BUG but you're not authorised, please log in.`,
