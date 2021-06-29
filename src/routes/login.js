@@ -40,13 +40,32 @@ const getUser = require("@services/user-get");
  *         schema:
  *           type: object
  */
-router.post("/", passport.authenticate(["local", "pin"]), async (req, res) => {
-    const user = await getUser(req?.user);
-    hashResponse(res, req, {
-        status: user ? "success" : "failure",
-        message: user ? `Sucessfully logged in ${user.username}` : "Login failed",
-        data: user,
-    });
+router.post("/", (req, res, next) => {
+    passport.authenticate(["local", "pin"], async (err, id, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!id) {
+            return hashResponse(res, req, {
+                status: user ? "success" : "failure",
+                message: user ? `Sucessfully logged in ${user.username}` : "Login failed",
+                data: user,
+            });
+        }
+
+        const user = await getUser(id);
+
+        req.logIn(id, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return hashResponse(res, req, {
+                status: user ? "success" : "failure",
+                message: user ? `Sucessfully logged in ${user.username}` : "Login failed",
+                data: user,
+            });
+        });
+    })(req, res, next);
 });
 
 module.exports = router;
