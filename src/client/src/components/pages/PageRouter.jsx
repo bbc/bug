@@ -213,14 +213,15 @@ const PageRouter = (props) => {
     }
 
     // if we've got to here, then there must be a strategy enabled
-    switch (user.status) {
-        case "idle":
-            return <Loading />;
-        case "success":
-            return <RouterContent />;
-        default:
-            return <PageLogin />;
+    if (user.status === "idle") {
+        return <Loading />;
     }
+
+    if (user.data && user.data.id !== null) {
+        return <RouterContent />;
+    }
+
+    return <PageLogin />;
 };
 
 export default PageRouter;
