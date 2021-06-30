@@ -8,14 +8,23 @@ const alertHandler = require("@sockets/alert");
 const bugHandler = require("@sockets/bug");
 const strategiesHandler = require("@sockets/strategies");
 
+const passport = require("passport");
+const session = require("@utils/session");
+
 const options = {
     cors: {
         origin: "*",
     },
 };
 
+const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
+
 const bugSocket = (server) => {
     const io = new Server(server, options);
+
+    io.use(wrap(session()));
+    io.use(wrap(passport.initialize()));
+    io.use(wrap(passport.session()));
 
     const panelListNamespace = io.of("/panelList");
     const panelConfigNamespace = io.of("/panelConfig");
