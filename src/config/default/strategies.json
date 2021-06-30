@@ -3,44 +3,32 @@
         "type": "local",
         "description": "Provides access via local usernames and passwords",
         "name": "Local",
-        "settings": {
-            "sessionLength": -1,
-            "enforceComplexity": true
-        },
-        "enabled": false,
-        "clientComponent": "LocalLogin"
+        "sessionLength": -1,
+        "enforceComplexity": true,
+        "enabled": false
     },
     {
         "type": "pin",
         "name": "PIN",
         "description": "Provides authentication with a simple 4-digit PIN",
-        "settings": {
-            "whitelist": [],
-            "sessionLength": -1
-        },
-        "enabled": false,
-        "clientComponent": "PinLogin"
+        "whitelist": [],
+        "sessionLength": -1,
+        "enabled": false
     },
     {
         "type": "saml",
         "description": "Provides user authentication via SAML",
         "name": "SAML SSO",
-        "settings": {
-            "sessionLength": -1
-        },
-        "enabled": false,
-        "clientComponent": null
+        "sessionLength": -1,
+        "enabled": false
     },
     {
         "type": "proxy",
         "name": "Reverse Proxy",
         "description": "Provides authentication via HTTP-header / proxy server",
-        "settings": {
-            "sessionLength": -1,
-            "headerField": "REMOTE_USER",
-            "headerFieldMatch": "email"
-        },
-        "enabled": false,
-        "clientComponent": null
+        "sessionLength": -1,
+        "headerField": "REMOTE_USER",
+        "headerFieldMatch": "email",
+        "enabled": false
     }
 ]

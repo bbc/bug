@@ -6,7 +6,9 @@ const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
 const strategyUpdate = require("@services/strategy-update");
 const strategyList = require("@services/strategy-list");
+const strategyListSafe = require("@services/strategy-listsafe");
 const strategyGet = require("@services/strategy-get");
+const strategyGetSafe = require("@services/strategy-getsafe");
 const strategyState = require("@services/strategy-state");
 
 /**
@@ -25,6 +27,7 @@ const strategyState = require("@services/strategy-state");
  */
 router.get(
     "/",
+    restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const result = await strategyList();
         hashResponse(res, req, {
@@ -37,9 +40,35 @@ router.get(
 
 /**
  * @swagger
+ * /strategy/safe:
+ *   get:
+ *     description: Gets all the security strategies for BUG, sanitised for non-authenticated users
+ *     tags: [strategy]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all strategies.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/safe/",
+    asyncHandler(async (req, res) => {
+        const result = await strategyListSafe();
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            message: result ? `Succesfully retrieved all strategies` : "Failed to retreive strategy list",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
  * /strategy/{type}:
  *   get:
- *     description: Gets a strategys details from BUG
+ *     description: Gets a strategy's details from BUG
  *     tags: [strategy]
  *     produces:
  *       - application/json
@@ -61,6 +90,39 @@ router.get(
     restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
         const result = await strategyGet(req.params.type);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            message: result ? `Succesfully got strategy called ${req.params.type}` : "Failed to retreive strategy",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /strategy/safe/{type}:
+ *   get:
+ *     description: Gets a strategy's details from BUG, sanitised for non-authenticated users
+ *     tags: [strategy]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         type: type
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The security strategies' type. One of [local,pin,saml,proxy]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the strategy.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/safe/:type",
+    asyncHandler(async (req, res) => {
+        const result = await strategyGetSafe(req.params.type);
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: result ? `Succesfully got strategy called ${req.params.type}` : "Failed to retreive strategy",

@@ -8,6 +8,6 @@ module.exports = async (type) => {
         return await strategyModel.get(type);
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed retrieve security strategy.`);
+        throw new Error(`Failed to retrieve security strategy.`);
     }
 };
