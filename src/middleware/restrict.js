@@ -18,9 +18,10 @@ const restrictedTo = (roles) => {
 
         //Check if user has been authenticated by passport
         if (req.isAuthenticated()) {
-            //Gets up to date info on the user
+            //Gets up to date info on the user from the model
             const user = await userGet(req.user);
 
+            //Check if the user is still enabled
             if (!user?.enabled) {
                 req.logout();
                 return hashResponse(res, req, {
@@ -38,6 +39,7 @@ const restrictedTo = (roles) => {
                     data: req?.user,
                 });
             }
+
             return next();
         }
 
