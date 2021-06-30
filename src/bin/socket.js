@@ -26,7 +26,14 @@ const bugSocket = (server) => {
     io.use(wrap(passport.initialize()));
     io.use(wrap(passport.session()));
 
-    //TODO AN IO MIDDLEWARE FUNCTION SIMILIAR TO RESTRICT TO
+    io.use((socket, next) => {
+        if (socket.request.user) {
+            console.log(socket.request.user);
+            next();
+        } else {
+            next(new Error("Unauthorized"));
+        }
+    });
 
     const panelListNamespace = io.of("/panelList");
     const panelConfigNamespace = io.of("/panelConfig");
