@@ -14,10 +14,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import useAsyncEffect from "use-async-effect";
 import AxiosGet from "@utils/AxiosGet";
-import * as LoginMethods from "../login/*";
 import { Alert } from "@material-ui/lab";
 import Fade from "@material-ui/core/Fade";
 import axios from "axios";
+import PinLogin from "@components/login/PinLogin";
+import LocalLogin from "@components/login/LocalLogin";
 
 const useStyles = makeStyles((theme) => ({
     page: {
@@ -156,7 +157,7 @@ export default function PageLogin() {
     const [alert, setAlert] = React.useState("");
 
     useAsyncEffect(async () => {
-        const url = `/api/strategy`;
+        const url = `/api/strategy/safe`;
         const allStrategies = await AxiosGet(url);
         setEnabledStrategies(allStrategies.filter((eachStrategy) => eachStrategy.enabled));
         setLoading(false);
@@ -196,12 +197,22 @@ export default function PageLogin() {
         return <LoadingOverlay />;
     }
 
-    const renderLoginMethod = ({ clientComponent, handleLogin, index }) => {
-        const Component = LoginMethods["login"][clientComponent];
-        if (Component) {
-            return <Component handleLogin={handleLogin} key={index} />;
+    const LoginMethod = ({ type, handleLogin, index }) => {
+        const props = { handleLogin, index };
+        switch (type) {
+            case "local":
+                return <LocalLogin {...props} />;
+            case "oidc":
+                return null;
+            case "pin":
+                return <PinLogin {...props} />;
+            case "proxy":
+                return null;
+            case "saml":
+                return null;
+            default:
+                return null;
         }
-        return null;
     };
 
     return (
@@ -231,10 +242,7 @@ export default function PageLogin() {
 
                                 {enabledStrategies.map((eachStrategy, index) => (
                                     <TabPanel key={index} value={tabIndex} index={index}>
-                                        {renderLoginMethod({
-                                            clientComponent: eachStrategy.clientComponent,
-                                            handleLogin: handleLogin,
-                                        })}
+                                        <LoginMethod type={eachStrategy.type} index={index} handleLogin={handleLogin} />
                                     </TabPanel>
                                 ))}
                                 {alert && (

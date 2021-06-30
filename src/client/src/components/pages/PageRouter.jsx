@@ -16,6 +16,7 @@ import PageSystemConfiguration from "@components/system/PageSystemConfiguration"
 import PageSystemUsers from "@components/system/PageSystemUsers";
 import PageSystemUserEdit from "@components/system/PageSystemUserEdit";
 import PageSystemSecurity from "@components/system/PageSystemSecurity";
+import PageSystemSecurityEdit from "@components/system/PageSystemSecurityEdit";
 import PageSystemSoftware from "@components/system/PageSystemSoftware";
 import PageSystemInfo from "@components/system/PageSystemInfo";
 import PageSystemLogs from "@components/system/PageSystemLogs";
@@ -148,6 +149,11 @@ const PageRouter = (props) => {
                     <Route exact path="/system/security">
                         <div className={classes.pagecontent}>
                             <PageSystemSecurity />
+                        </div>
+                    </Route>
+                    <Route exact path="/system/security/:type">
+                        <div className={classes.pagecontent}>
+                            <PageSystemSecurityEdit />
                         </div>
                     </Route>
                     <Route exact path="/system/software">
