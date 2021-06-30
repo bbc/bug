@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import SecurityTableRow from "@components/security/SecurityTableRow";
 import Loading from "@components/Loading";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     colType: {
@@ -33,13 +33,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SecurityTable({ interval }) {
+export default function SecurityTable() {
     const classes = useStyles();
-
-    const strategies = useApiPoller({
-        url: `/api/strategy`,
-        interval: interval,
-    });
+    const strategies = useSelector((state) => state.strategies);
 
     if (strategies.status === "loading" || strategies.status === "idle") {
         return <Loading />;
@@ -75,11 +71,3 @@ export default function SecurityTable({ interval }) {
         </>
     );
 }
-
-SecurityTable.defaultProps = {
-    interval: 1000,
-};
-
-SecurityTable.propTypes = {
-    interval: PropTypes.number,
-};
