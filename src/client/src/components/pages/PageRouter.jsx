@@ -183,7 +183,7 @@ const PageRouter = (props) => {
         </>
     );
 
-    const RouterContent = () => (
+    const routerContent = React.useMemo(() => (
         <Router>
             <div className={classes.root}>
                 <Hidden xsDown>
@@ -198,9 +198,10 @@ const PageRouter = (props) => {
                 </Hidden>
             </div>
         </Router>
-    );
+    ));
 
     // strategies first. If they're not loaded then wait
+
     if (strategies.status !== "success") {
         return <Loading />;
     }
@@ -209,7 +210,7 @@ const PageRouter = (props) => {
     const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
 
     if (enabledStrategiesCount === 0) {
-        return <RouterContent />;
+        return routerContent;
     }
 
     // if we've got to here, then there must be a strategy enabled
@@ -218,7 +219,7 @@ const PageRouter = (props) => {
     }
 
     if (user.data && user.data.id !== null) {
-        return <RouterContent />;
+        return routerContent;
     }
 
     return <PageLogin />;
