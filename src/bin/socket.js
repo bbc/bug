@@ -26,6 +26,8 @@ const bugSocket = (server) => {
     io.use(wrap(passport.initialize()));
     io.use(wrap(passport.session()));
 
+    //TODO AN IO MIDDLEWARE FUNCTION SIMILIAR TO RESTRICT TO
+
     const panelListNamespace = io.of("/panelList");
     const panelConfigNamespace = io.of("/panelConfig");
     const panelNamespace = io.of("/panel");
