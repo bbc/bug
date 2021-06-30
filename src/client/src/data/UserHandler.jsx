@@ -16,7 +16,7 @@ export default function UserHandler(props) {
         // if (user.status === "success") {
         dispatch(userSlice.actions[user.status](user));
         // }
-    }, ["user"]);
+    }, [user]);
 
     return null;
 }
