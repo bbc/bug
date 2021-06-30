@@ -1,6 +1,6 @@
 import React from "react";
 import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from 'use-async-effect';
+import useAsyncEffect from "use-async-effect";
 
 export default function BugQuote(props) {
     const [quote, setQuote] = React.useState(null);
@@ -9,9 +9,8 @@ export default function BugQuote(props) {
         setQuote(await AxiosGet(`/api/bug/quote`));
     }, []);
 
-    return (
-        <>
-            { quote }
-        </>
-    );
+    if (!quote) {
+        return null;
+    }
+    return <>{quote}</>;
 }
