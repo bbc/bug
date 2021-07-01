@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import ChipInput from "@core/ChipInput";
+import ConfigFormChipInput from "@core/ConfigFormChipInput";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
@@ -104,7 +104,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ChipInput
+                    <ConfigFormChipInput
                         name="excludeSources"
                         label="Excluded Sources (0-based)"
                         control={control}
@@ -116,7 +116,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ChipInput
+                    <ConfigFormChipInput
                         name="excludeDestinations"
                         label="Excluded Destinations (0-based)"
                         control={control}

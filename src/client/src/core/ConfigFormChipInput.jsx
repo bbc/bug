@@ -4,7 +4,7 @@ import { Controller } from "react-hook-form";
 
 import ChipInput from "material-ui-chip-input";
 
-const ChipInputControl = ({
+const ConfigFormChipInput = ({
     name,
     label,
     control,
@@ -44,4 +44,4 @@ const ChipInputControl = ({
         </FormControl>
     );
 };
-export default ChipInputControl;
+export default ConfigFormChipInput;

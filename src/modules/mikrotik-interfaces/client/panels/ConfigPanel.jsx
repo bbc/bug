@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import ChipInput from "@core/ChipInput";
+import ConfigFormChipInput from "@core/ConfigFormChipInput";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
@@ -100,7 +100,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ChipInput
+                    <ConfigFormChipInput
                         name="protectedInterfaces"
                         label="Protected Interfaces"
                         control={control}
@@ -112,7 +112,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ChipInput
+                    <ConfigFormChipInput
                         name="excludedInterfaces"
                         label="Excluded Interfaces"
                         control={control}
