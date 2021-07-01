@@ -13,11 +13,7 @@ import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
 import PasswordTextField from "@core/PasswordTextField";
-import Input from "@material-ui/core/Input";
 import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
@@ -58,7 +54,6 @@ export default function UserEdit({ userId = null }) {
     const onSubmit = async (form) => {
         setLoading(true);
         let response;
-        let verb = "";
 
         if (form.password === blankPassword) {
             // it hasn't been changed
@@ -67,20 +62,18 @@ export default function UserEdit({ userId = null }) {
 
         if (userId) {
             response = await AxiosPut(`/api/user/${userId}`, form);
-            verb = "edit";
         } else {
             response = await AxiosPost(`/api/user`, form);
-            verb = "add";
         }
 
-        if (!response?.error) {
-            sendAlert(`User ${form.name} has been ${verb}ed.`, {
+        if (response) {
+            sendAlert(`Successfully ${userId ? "updated" : "added"} user '${form.username}'`, {
                 broadcast: true,
                 variant: "success",
             });
             history.push(`/system/users`);
         } else {
-            sendAlert(`User ${form.name} could not be ${verb}ed.`, {
+            sendAlert(`Failed to ${userId ? "update" : "add"} user '${form.username}'`, {
                 variant: "warning",
             });
         }
@@ -160,15 +153,22 @@ export default function UserEdit({ userId = null }) {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <InputLabel shrink htmlFor="select-multiple-native">
-                                            Roles
-                                        </InputLabel>
-                                        <Select multiple fullWidth defaultValue={user.roles} input={<Input />}>
-                                            <MenuItem value="user">User</MenuItem>
-                                            <MenuItem value="admin">Admin</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                                    <TextField
+                                        inputProps={{
+                                            ...register("roles"),
+                                        }}
+                                        select
+                                        fullWidth
+                                        defaultValue={user.roles}
+                                        type="text"
+                                        label="Roles"
+                                        SelectProps={{
+                                            multiple: true,
+                                        }}
+                                    >
+                                        <MenuItem value="user">User</MenuItem>
+                                        <MenuItem value="admin">Admin</MenuItem>
+                                    </TextField>
                                 </Grid>
 
                                 <Grid item xs={12}>
