@@ -3,7 +3,8 @@
         "type": "local",
         "description": "Provides access via local usernames and passwords",
         "name": "Local",
-        "sessionLength": -1,
+        "sessionLength": "",
+        "sourceFilterList": [],
         "enforceComplexity": true,
         "enabled": false
     },
@@ -11,15 +12,15 @@
         "type": "pin",
         "name": "PIN",
         "description": "Provides authentication with a simple 4-digit PIN",
-        "whitelist": [],
-        "sessionLength": -1,
+        "sourceFilterList": [],
+        "sessionLength": "",
         "enabled": false
     },
     {
         "type": "saml",
         "description": "Provides user authentication via SAML",
         "name": "SAML SSO",
-        "sessionLength": -1,
+        "sessionLength": "",
         "entryPoint": "",
         "issuer": "",
         "identifierFormat": "",
@@ -29,7 +30,8 @@
         "type": "proxy",
         "name": "Reverse Proxy",
         "description": "Provides authentication via HTTP-header / proxy server",
-        "sessionLength": -1,
+        "sourceFilterList": [],
+        "sessionLength": "",
         "headerField": "REMOTE_USER",
         "headerFieldMatch": "email",
         "enabled": false

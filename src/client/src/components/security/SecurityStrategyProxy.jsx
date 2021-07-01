@@ -2,6 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
+import ConfigFormChipInput from "@core/ConfigFormChipInput";
 
 export default function SecurityStrategyProxy({ strategy, register, errors, control }) {
     return (
@@ -83,6 +84,19 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                         <option value="name">Name</option>
                         <option value="id">ID</option>
                     </TextField>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ConfigFormChipInput
+                        name="sourceFilterList"
+                        label="Source filter list"
+                        control={control}
+                        defaultValue={strategy.sourceFilterList}
+                        sort={true}
+                        error={errors.sourceFilterList}
+                        fullWidth
+                        helperText="Only allow this security type from these addresses"
+                    />
                 </Grid>
             </Grid>
         </>

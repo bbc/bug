@@ -79,14 +79,14 @@ export default function SecurityStrategyPin({ strategy, register, errors, contro
 
                 <Grid item xs={12}>
                     <ConfigFormChipInput
-                        name="whitelist"
-                        label="Whitelist"
+                        name="sourceFilterList"
+                        label="Source filter list"
                         control={control}
-                        defaultValue={strategy.whitelist}
+                        defaultValue={strategy.sourceFilterList}
                         sort={true}
-                        error={errors.whitelist}
+                        error={errors.sourceFilterList}
                         fullWidth
-                        helperText="Add IP addresseses (eg 192.168.0.0/24) or 'localhost'"
+                        helperText="Only allow this security type from these addresses"
                     />
                 </Grid>
             </Grid>
