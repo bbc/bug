@@ -87,7 +87,7 @@ exports.set = async function (user) {
 
             // add lengths and hash password/pin
             console.log(user);
-            user = await processPasswords(user);
+            user = await processPassword(user);
             console.log(user);
             users.push(user);
             return await writeJson(filename, users);
@@ -104,7 +104,7 @@ exports.update = async function (id, user) {
         const index = await getUserIndex(users, id);
 
         if (index !== -1) {
-            user = await processPasswords(user);
+            user = await processPassword(user);
 
             users[index] = { ...users[index], ...user };
         } else {
@@ -119,15 +119,10 @@ exports.update = async function (id, user) {
     return null;
 };
 
-async function processPasswords(user) {
+async function processPassword(user) {
     if (user.password !== null && user.password !== undefined) {
         user.passwordLength = user.password.length;
         user.password = await hash(user.password);
     }
-    if (user.pin !== null && user.pin !== undefined) {
-        user.pinLength = user.pin.length;
-        user.pin = await hash(user.pin);
-    }
-
     return user;
 }

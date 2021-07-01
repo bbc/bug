@@ -12,19 +12,26 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
+import PasswordTextField from "@core/PasswordTextField";
+import Input from "@material-ui/core/Input";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
     const sendAlert = useAlert();
     const history = useHistory();
     const [user, setUser] = React.useState(null);
-
     const {
         control,
         register,
         handleSubmit,
         formState: { errors },
     } = useForm({});
+    const inputRef = React.useRef();
+    const blankPassword = user !== null ? "*".repeat(user.passwordLength) : "";
 
     useAsyncEffect(async () => {
         if (!userId) {
@@ -51,6 +58,11 @@ export default function UserEdit({ userId = null }) {
         setLoading(true);
         let response;
         let verb = "";
+
+        if (form.password === blankPassword) {
+            // it hasn't been changed
+            delete form.password;
+        }
 
         if (userId) {
             response = await AxiosPut(`/api/user/${userId}`, form);
@@ -130,23 +142,60 @@ export default function UserEdit({ userId = null }) {
 
                                 <Grid item xs={12}>
                                     <TextField
-                                        inputProps={{ ...register("email") }}
+                                        inputProps={{
+                                            ...register("email", {
+                                                pattern: {
+                                                    value: /\S+@\S+\.\S+/,
+                                                    message: "invalid email address",
+                                                },
+                                            }),
+                                        }}
                                         fullWidth
                                         defaultValue={user.email}
                                         error={errors?.email ? true : false}
-                                        type="text"
+                                        type="email"
                                         label="Email address"
                                     />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth>
+                                        <InputLabel shrink htmlFor="select-multiple-native">
+                                            Roles
+                                        </InputLabel>
+                                        <Select multiple fullWidth defaultValue={user.roles} input={<Input />}>
+                                            <MenuItem value="user">User</MenuItem>
+                                            <MenuItem value="admin">Admin</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
 
                                 <Grid item xs={12}>
                                     <TextField
                                         inputProps={{ ...register("password") }}
                                         fullWidth
-                                        defaultValue={user.password}
-                                        error={errors?.password ? true : false}
-                                        type="text"
-                                        label="Password"
+                                        autoComplete="off"
+                                        defaultValue={blankPassword}
+                                        inputRef={inputRef}
+                                        type="password"
+                                        label="Password (optional)"
+                                        onFocus={() => {
+                                            if (inputRef.current.value === blankPassword) {
+                                                inputRef.current.value = "";
+                                            }
+                                        }}
+                                        helperText="Only used if the 'local' security type is enabled"
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <PasswordTextField
+                                        inputProps={{ ...register("pin") }}
+                                        fullWidth
+                                        defaultValue={user.pin}
+                                        error={errors?.pin ? true : false}
+                                        label="PIN (optional)"
+                                        helperText="Only used if the 'PIN' security type is enabled - be aware that it's relatively insecure"
                                     />
                                 </Grid>
                             </Grid>

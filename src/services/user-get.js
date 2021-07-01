@@ -8,7 +8,6 @@ module.exports = async (id) => {
         if (id) {
             const user = await userModel.get(id);
             delete user.password;
-            delete user.pin;
             return user;
         }
         return null;
