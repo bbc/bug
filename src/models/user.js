@@ -76,22 +76,31 @@ exports.delete = async function (id) {
 exports.set = async function (user) {
     try {
         const users = await getUsers();
+
+        if (
+            users.filter((filteredUser) => {
+                return filteredUser.username === user.username;
+            }).length === 1
+        ) {
+            throw new Error(`Cannot create user with username '${user.username}' as it already exists`);
+        }
+
         const index = await getUserIndex(users, user?.id);
         if (index !== -1) {
             // user already exists - do nothing.
-            return false;
-        } else {
-            // create a new user with a sparkly new UUID
-            user.id = await uuidv4();
-            user.enabled = false;
-
-            // add lengths and hash password/pin
-            console.log(user);
-            user = await processPassword(user);
-            console.log(user);
-            users.push(user);
-            return await writeJson(filename, users);
+            throw new Error(`Cannot create user with user id '${user.id}' as it already exists`);
         }
+
+        // create a new user with a sparkly new UUID
+        user.id = await uuidv4();
+        user.enabled = false;
+
+        // add lengths and hash password/pin
+
+        user = await processPassword(user);
+
+        users.push(user);
+        return await writeJson(filename, users);
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);
     }
