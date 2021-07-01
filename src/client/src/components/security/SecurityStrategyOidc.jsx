@@ -23,7 +23,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField fullWidth defaultValue={strategy.type} disabled type="text" label="Type" />
+                    <TextField fullWidth defaultValue={strategy.type.toUpperCase()} disabled type="text" label="Type" />
                 </Grid>
 
                 <Grid item xs={12}>
