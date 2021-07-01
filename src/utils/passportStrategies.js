@@ -101,37 +101,54 @@ const pinStrategy = new LocalStrategy(
     }
 );
 
+// setup SAML authentication
+// passport.use(new SamlStrategy(
+//     {
+//       path: '/login/callback',
+//       entryPoint: 'https://openidp.feide.no/simplesaml/saml2/idp/SSOService.php',
+//       issuer: 'passport-saml'
+//     },
+//     function(profile, done) {
+//       findByEmail(profile.email, function(err, user) {
+//         if (err) {
+//           return done(err);
+//         }
+//         return done(null, user);
+//       });
+//     })
+//   );
+
 //Setup OAuth authentication
-const oauthStrategy = new OAuth2Strategy(
-    {
-        authorizationURL: "https://bbclogin.id.tools.bbc.co.uk",
-        tokenURL: "https://bbclogin.id.tools.bbc.co.uk/token",
-        clientID: "ID",
-        clientSecret: "SECRET",
-        callbackURL: "http://localhost:3000/auth/example/callback",
-    },
-    async (accessToken, refreshToken, profile, done) => {
-        const strategy = await strategyModel.get("pin");
-        if (!strategy.enabled) {
-            logger.info(`OAuth2 login: Not enabled.`);
-            return done(null, false);
-        }
-        const user = await userEmail(profile?.email);
+// const oauthStrategy = new OAuth2Strategy(
+//     {
+//         authorizationURL: "https://bbclogin.id.tools.bbc.co.uk",
+//         tokenURL: "https://bbclogin.id.tools.bbc.co.uk/token",
+//         clientID: "ID",
+//         clientSecret: "SECRET",
+//         callbackURL: "http://localhost:3000/auth/example/callback",
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//         const strategy = await strategyModel.get("pin");
+//         if (!strategy.enabled) {
+//             logger.info(`OAuth2 login: Not enabled.`);
+//             return done(null, false);
+//         }
+//         const user = await userEmail(profile?.email);
 
-        if (!user) {
-            logger.info(`OAuth2 login: User '${profile.email}' does not exist.`);
-            return done(null, false);
-        }
+//         if (!user) {
+//             logger.info(`OAuth2 login: User '${profile.email}' does not exist.`);
+//             return done(null, false);
+//         }
 
-        if (!user.enabled) {
-            logger.info(`OAuth2 login: User '${user?.username}' is not enabled.`);
-            return done(null, false);
-        }
+//         if (!user.enabled) {
+//             logger.info(`OAuth2 login: User '${user?.username}' is not enabled.`);
+//             return done(null, false);
+//         }
 
-        logger.action(`OAuth2 login: ${user?.username} logged in.`);
-        return done(null, user.id);
-    }
-);
+//         logger.action(`OAuth2 login: ${user?.username} logged in.`);
+//         return done(null, user.id);
+//     }
+// );
 
 module.exports = [
     {
@@ -141,5 +158,9 @@ module.exports = [
     {
         name: "pin",
         strategy: pinStrategy,
+    },
+    {
+        name: "proxy",
+        strategy: proxyStrategy,
     },
 ];
