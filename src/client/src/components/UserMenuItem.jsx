@@ -34,7 +34,6 @@ const BugMenuIcon = (props) => {
     const open = Boolean(anchorEl);
 
     const handleOpenMenuClick = (event) => {
-        console.log(user);
         if (user?.status === "success") {
             setAnchorEl(event.currentTarget);
         } else {
