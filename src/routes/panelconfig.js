@@ -50,7 +50,7 @@ const hashResponse = require("@core/hash-response");
  */
 router.put(
     "/:panelId",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await panelConfigSet({
             ...{ id: req.params.panelId },
@@ -90,7 +90,7 @@ router.put(
  */
 router.get(
     "/push/:panelId",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
@@ -119,7 +119,7 @@ router.get(
  */
 router.get(
     "/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
@@ -155,7 +155,7 @@ router.get(
  */
 router.get(
     "/:panelId",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",

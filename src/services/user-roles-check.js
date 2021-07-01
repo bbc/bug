@@ -22,6 +22,7 @@ module.exports = (strategyRoles, userRoles) => {
 
         for (let strategyRole of strategyRoles) {
             for (let userRole of userRoles) {
+                console.log(strategyRole, userRole);
                 if (strategyRole === userRole) {
                     return true;
                 }

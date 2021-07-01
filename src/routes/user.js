@@ -34,7 +34,7 @@ const userEnable = require("@services/user-enable");
  */
 router.delete(
     "/:id",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await userDelete(req.params.id);
         hashResponse(res, req, {
@@ -85,7 +85,7 @@ router.get(
  */
 router.get(
     "/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await userList(true);
         hashResponse(res, req, {
@@ -119,7 +119,7 @@ router.get(
  */
 router.get(
     "/:id",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await userGet(req.params.id);
         hashResponse(res, req, {
@@ -153,7 +153,7 @@ router.get(
  */
 router.get(
     "/:id/enable",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await userEnable(req.params.id, true);
         hashResponse(res, req, {
@@ -187,7 +187,7 @@ router.get(
  */
 router.get(
     "/:id/disable",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await userEnable(req.params.id, false);
         hashResponse(res, req, {
@@ -245,7 +245,7 @@ router.get(
  */
 router.post(
     "/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await userSet(req.body);
         hashResponse(res, req, {
@@ -309,7 +309,7 @@ router.post(
  */
 router.put(
     "/:id",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await userUpdate(req.params.id, req.body);
         hashResponse(res, req, {

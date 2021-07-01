@@ -28,7 +28,7 @@ const strategyState = require("@services/strategy-state");
  */
 router.get(
     "/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await strategyList();
         hashResponse(res, req, {
@@ -120,7 +120,7 @@ router.post(
  */
 router.get(
     "/:type",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await strategyGet(req.params.type);
         hashResponse(res, req, {
@@ -187,7 +187,7 @@ router.get(
  */
 router.get(
     "/:type/enable",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, true);
         hashResponse(res, req, {
@@ -221,7 +221,7 @@ router.get(
  */
 router.get(
     "/:type/disable",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, false);
         hashResponse(res, req, {
@@ -260,7 +260,7 @@ router.get(
  */
 router.put(
     "/:type",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await strategyUpdate(req.params.type, req.body);
         hashResponse(res, req, {

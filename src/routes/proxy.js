@@ -37,7 +37,7 @@ const modulePort = process.env.MODULE_PORT || 3000;
  */
 router.use(
     "/:panelid",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const url = `http://${req.params.panelid}:${modulePort}/api${req.url}`;
         try {

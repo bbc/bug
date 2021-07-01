@@ -42,7 +42,7 @@ const restrict = require("@middleware/restrict");
  */
 router.delete(
     "/:panelId",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await panelDelete(req.params.panelId);
         hashResponse(res, req, {
@@ -69,7 +69,7 @@ router.delete(
  */
 router.get(
     "/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
@@ -118,7 +118,7 @@ router.get(
  */
 router.post(
     "/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await panelAdd(req.body);
         hashResponse(res, req, {
@@ -156,7 +156,7 @@ router.post(
  */
 router.get(
     "/build/:moduleName",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await panelStart(req.params.moduleName);
         hashResponse(res, req, {
@@ -194,7 +194,7 @@ router.get(
  */
 router.get(
     "/start/:panelId",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         // starts and builds if necessary
         const result = await panelStart(req.params.panelId);
@@ -233,7 +233,7 @@ router.get(
  */
 router.get(
     "/restart/:panelId",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         // stop and start (and rebuild if necessary)
         const result = await panelRestart(req.params.panelId);

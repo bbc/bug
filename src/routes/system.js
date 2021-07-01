@@ -21,7 +21,7 @@ const restrict = require("@middleware/restrict");
  *        '200':
  *          description: Success
  */
-router.get("/hello", restrict.to(["admin", "users"]), function (req, res, next) {
+router.get("/hello", restrict.to(["admin", "user"]), function (req, res, next) {
     const message = { data: "Good morning sunshine, the earth says hello." };
     hashResponse(res, req, message);
 });
@@ -38,7 +38,7 @@ router.get("/hello", restrict.to(["admin", "users"]), function (req, res, next) 
  *        '200':
  *          description: Success
  */
-router.get("/containers", restrict.to(["admin", "users"]), async function (req, res, next) {
+router.get("/containers", restrict.to(["admin", "user"]), async function (req, res, next) {
     const containers = await systemContainers();
     hashResponse(res, req, containers);
 });
@@ -55,7 +55,7 @@ router.get("/containers", restrict.to(["admin", "users"]), async function (req, 
  *       '200':
  *         description: Success
  */
-router.get("/stats", restrict.to(["admin", "users"]), async function (req, res, next) {
+router.get("/stats", restrict.to(["admin", "user"]), async function (req, res, next) {
     const stats = await systemStats();
     hashResponse(res, req, stats);
 });
@@ -79,7 +79,7 @@ router.get("/stats", restrict.to(["admin", "users"]), async function (req, res, 
  *       '200':
  *         description: Success
  */
-router.get("/logs/:level", restrict.to(["admin", "users"]), async function (req, res, next) {
+router.get("/logs/:level", restrict.to(["admin", "user"]), async function (req, res, next) {
     const logs = await systemLogs(req.params.level);
     hashResponse(res, req, logs);
 });
@@ -98,7 +98,7 @@ router.get("/logs/:level", restrict.to(["admin", "users"]), async function (req,
  */
 router.get(
     "/backup",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const backup = await systemBackup();
         res.header("Content-Disposition", `attachment; filename="${backup.filename}"`);
@@ -118,7 +118,7 @@ router.get(
  *        '200':
  *          description: Success
  */
-router.post("/restore", restrict.to(["admin", "users"]), function (req, res, next) {
+router.post("/restore", restrict.to(["admin", "user"]), function (req, res, next) {
     try {
         if (!req.files) {
             hashResponse(res, req, {

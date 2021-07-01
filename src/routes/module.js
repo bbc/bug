@@ -33,7 +33,7 @@ const restrict = require("@middleware/restrict");
  */
 router.get(
     "/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
@@ -69,7 +69,7 @@ router.get(
  */
 router.get(
     "/:moduleName",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
@@ -105,7 +105,7 @@ router.get(
  */
 router.get(
     "/build/:moduleName",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await moduleBuild(req.params.moduleName);
         hashResponse(res, req, {
@@ -142,7 +142,7 @@ router.get(
  */
 router.get(
     "/rebuild/:moduleName",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         const result = await moduleRebuild(req.params.moduleName);
         hashResponse(res, req, {

@@ -27,7 +27,7 @@ const restrict = require("@middleware/restrict");
  */
 router.get(
     "/variants/",
-    restrict.to(["admin", "users"]),
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
