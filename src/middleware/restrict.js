@@ -36,7 +36,7 @@ const restrictedTo = (roles) => {
                 return hashResponse(res, req, {
                     status: "failure",
                     message: `Sorry to BUG but you don't have any of these roles - ${roles.toString()}.`,
-                    data: req?.user,
+                    data: null,
                 });
             }
 
