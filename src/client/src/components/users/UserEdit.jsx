@@ -40,6 +40,7 @@ export default function UserEdit({ userId = null }) {
                 username: "",
                 pin: "",
                 password: "",
+                roles: ["user", "admin"],
             });
             return;
         }

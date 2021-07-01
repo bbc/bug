@@ -14,7 +14,7 @@ module.exports = async (sanitisePasswords = true) => {
                 eachUser.pin = "*".repeat(pinLength);
             }
         }
-        return userList;
+        return userList.sort((a, b) => (a.username > b.username ? 1 : -1));
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed retrieve users.`);
