@@ -7,6 +7,7 @@ const restrict = require("@middleware/restrict");
 const strategyUpdate = require("@services/strategy-update");
 const strategyList = require("@services/strategy-list");
 const strategyListSafe = require("@services/strategy-listsafe");
+const strategyReorder = require("@services/strategy-reorder");
 const strategyGet = require("@services/strategy-get");
 const strategyGetSafe = require("@services/strategy-getsafe");
 const strategyState = require("@services/strategy-state");
@@ -59,6 +60,38 @@ router.get(
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: result ? `Succesfully retrieved all strategies` : "Failed to retreive strategy list",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /strategy/reorder:
+ *   post:
+ *     description: Sets the order of stragies to the specified array
+ *     tags: [strategy]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: formData
+ *         name: strategies
+ *         type: array
+ *         description: List of strategy types - in order
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Successfully updated strategy order
+ *         schema:
+ *           type: object
+ */
+router.post(
+    "/reorder",
+    asyncHandler(async (req, res) => {
+        const result = await strategyReorder(req?.body?.strategies);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            message: result ? `Succesfully updated strategy order` : "Failed to update strategy order",
             data: result,
         });
     })
@@ -229,9 +262,7 @@ router.put(
     "/:type",
     restrict.to(["admin", "users"]),
     asyncHandler(async (req, res) => {
-        const result = await strategyUpdate(req.params.type, {
-            settings: req.body,
-        });
+        const result = await strategyUpdate(req.params.type, req.body);
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: result ? `Succesfully updated ${req.params.name} settings` : "Failed to update settings",

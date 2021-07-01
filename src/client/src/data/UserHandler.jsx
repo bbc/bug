@@ -13,10 +13,8 @@ export default function UserHandler(props) {
     });
 
     useEffect(() => {
-        // if (user.status === "success") {
         dispatch(userSlice.actions[user.status](user));
-        // }
-    }, [user]);
+    }, [user, dispatch]);
 
     return null;
 }

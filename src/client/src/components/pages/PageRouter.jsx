@@ -1,13 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import PageHome from "./PageHome";
-import PageLogin from "./PageLogin";
 import PagePanel from "./PagePanel";
 import PagePanels from "./PagePanels";
 import PagePanelsAdd from "./PagePanelsAdd";
 import PagePanelsEdit from "./PagePanelsEdit";
 import PageSystem from "./PageSystem";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import NavDesktop from "@components/NavDesktop";
 import NavMobile from "@components/NavMobile";
@@ -16,14 +14,14 @@ import PageSystemConfiguration from "@components/system/PageSystemConfiguration"
 import PageSystemUsers from "@components/system/PageSystemUsers";
 import PageSystemUserEdit from "@components/system/PageSystemUserEdit";
 import PageSystemSecurity from "@components/system/PageSystemSecurity";
-import PageSystemSecurityEdit from "@components/system/PageSystemSecurityEdit";
+import PageSystemSecurityStrategy from "@components/system/PageSystemSecurityStrategy";
 import PageSystemSoftware from "@components/system/PageSystemSoftware";
 import PageSystemInfo from "@components/system/PageSystemInfo";
 import PageSystemLogs from "@components/system/PageSystemLogs";
 import PageSystemAbout from "@components/system/PageSystemAbout";
 import PageSystemBackup from "@components/system/PageSystemBackup";
-import Loading from "@components/Loading";
 import { Redirect } from "react-router";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -89,8 +87,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PageRouter = (props) => {
     const classes = useStyles();
-    const user = useSelector((state) => state.user);
-    const strategies = useSelector((state) => state.strategies);
+    const location = useLocation();
 
     const PageContent = () => (
         <>
@@ -151,9 +148,14 @@ const PageRouter = (props) => {
                             <PageSystemSecurity />
                         </div>
                     </Route>
+                    <Route exact path="/system/security/edit">
+                        <div className={classes.pagecontent}>
+                            <PageSystemSecurity edit />
+                        </div>
+                    </Route>
                     <Route exact path="/system/security/:type">
                         <div className={classes.pagecontent}>
-                            <PageSystemSecurityEdit />
+                            <PageSystemSecurityStrategy />
                         </div>
                     </Route>
                     <Route exact path="/system/software">
@@ -189,8 +191,8 @@ const PageRouter = (props) => {
         </>
     );
 
-    const routerContent = React.useMemo(() => (
-        <Router>
+    const routerContent = React.useMemo(
+        () => (
             <div className={classes.root}>
                 <Hidden xsDown>
                     <NavDesktop>
@@ -203,32 +205,11 @@ const PageRouter = (props) => {
                     </NavMobile>
                 </Hidden>
             </div>
-        </Router>
-    ));
+        ),
+        [location]
+    );
 
-    // strategies first. If they're not loaded then wait
-
-    if (strategies.status !== "success") {
-        return <Loading />;
-    }
-
-    // if they're loaded and none enabled, then we're done
-    const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
-
-    if (enabledStrategiesCount === 0) {
-        return routerContent;
-    }
-
-    // if we've got to here, then there must be a strategy enabled
-    if (user.status === "idle") {
-        return <Loading />;
-    }
-
-    if (user.data && user.data.id !== null) {
-        return routerContent;
-    }
-
-    return <PageLogin />;
+    return routerContent;
 };
 
 export default PageRouter;

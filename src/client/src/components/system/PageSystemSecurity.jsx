@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SecurityTable from "@components/security/SecurityTable";
+import SecurityTableEdit from "@components/security/SecurityTableEdit";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,6 +15,13 @@ export default function PageSystemSecurity(props) {
         dispatch(pageTitleSlice.actions.set("System Security"));
     }, [dispatch]);
 
+    if (props.edit) {
+        return (
+            <>
+                <SecurityTableEdit />
+            </>
+        );
+    }
     return (
         <>
             <SecurityTable />

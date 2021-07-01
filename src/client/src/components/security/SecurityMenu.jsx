@@ -14,6 +14,8 @@ import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     iconButton: {
@@ -27,8 +29,7 @@ export default function SecurityMenu({ strategy, onChange, onRename, isFirst, is
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const params = useParams();
-    // const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
-    // const [addGroupDialogVisible, setAddGroupDialogVisible] = React.useState(false);
+    const history = useHistory();
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -40,9 +41,35 @@ export default function SecurityMenu({ strategy, onChange, onRename, isFirst, is
         event.stopPropagation();
     };
 
-    const handleEnable = () => {};
+    const handleEnable = async (event) => {
+        handleClose(event);
+        const status = await AxiosCommand(`/api/strategy/${strategy.type}/enable`);
 
-    const handleDisable = () => {};
+        if (status) {
+            sendAlert(`Enabled ${strategy.name}`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to enable ${strategy.name}`, {
+                variant: "error",
+            });
+        }
+    };
+
+    const handleDisable = async (event) => {
+        handleClose(event);
+        const status = await AxiosCommand(`/api/strategy/${strategy.type}/disable`);
+
+        if (status) {
+            sendAlert(`Disabled ${strategy.name}`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to disable ${strategy.name}`, {
+                variant: "error",
+            });
+        }
+    };
 
     const handleSettings = () => {};
 
@@ -102,8 +129,6 @@ export default function SecurityMenu({ strategy, onChange, onRename, isFirst, is
     //     onEditIcon();
     //     event.stopPropagation();
     // };
-
-    console.log(strategy);
 
     return (
         <div>

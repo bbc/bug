@@ -1,11 +1,13 @@
+import React from "react";
 import PageTitle from "@components/PageTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
-import React from "react";
 import { useLocation } from "react-router-dom";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
 import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
 import UsersToolbar from "@components/toolbars/UsersToolbar";
+import SecurityToolbar from "@components/toolbars/SecurityToolbar";
+import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
 import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,6 +71,25 @@ const ToolbarRouter = (props) => {
                     <UsersToolbar />
                 </>
             );
+        case "/system/security":
+            return (
+                <>
+                    <div className={classes.title}>
+                        <PageTitle />
+                    </div>
+                    <SecurityToolbar />
+                </>
+            );
+        case "/system/security/edit":
+            return (
+                <>
+                    <div className={classes.title}>
+                        <PageTitle />
+                    </div>
+                    <SecurityEditToolbar />
+                </>
+            );
+
         default:
             return (
                 <>

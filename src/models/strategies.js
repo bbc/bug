@@ -89,6 +89,15 @@ exports.set = async function (strategy) {
     return null;
 };
 
+exports.setAll = async function (strategies) {
+    try {
+        return await writeJson(filename, strategies);
+    } catch (error) {
+        logger.warning(`${error.trace || error || error.message}`);
+    }
+    return null;
+};
+
 exports.update = async function (type, strategy) {
     try {
         let strategies = await getStrategies();

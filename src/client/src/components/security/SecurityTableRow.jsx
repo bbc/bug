@@ -5,16 +5,15 @@ import TableRow from "@material-ui/core/TableRow";
 import AxiosCommand from "@utils/AxiosCommand";
 import ApiSwitch from "@core/ApiSwitch";
 import { useAlert } from "@utils/Snackbar";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SecurityMenu from "./SecurityMenu";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     tableRow: {
         cursor: "pointer",
     },
     colState: {
-        width: "1rem",
+        width: 82,
     },
     colType: {
         "@media (max-width:512px)": {
@@ -34,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SecurityTableRow({ strategy, index, isFirst, isLast }) {
     const classes = useStyles();
     const sendAlert = useAlert();
+    const history = useHistory();
 
     const handleSwitchChange = async (checked, type) => {
         const command = checked ? "enable" : "disable";
@@ -57,8 +57,12 @@ export default function SecurityTableRow({ strategy, index, isFirst, isLast }) {
         }
     };
 
+    const handleRowClick = (type) => {
+        history.push(`/system/security/${type}`);
+    };
+
     return (
-        <TableRow key={strategy.type} hover className={classes.tableRow}>
+        <TableRow key={strategy.type} hover className={classes.tableRow} onClick={() => handleRowClick(strategy.type)}>
             <TableCell className={classes.colState}>
                 <ApiSwitch
                     checked={strategy.enabled}

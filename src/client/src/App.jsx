@@ -1,6 +1,6 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import PageRouter from "@components/pages/PageRouter";
+import AuthRouter from "@components/AuthRouter";
 import theme from "./theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { SnackbarProvider } from "notistack";
@@ -37,8 +37,7 @@ export default function App() {
                             <UserHandler />
                             <StrategiesHandler />
                             <PanelListHandler />
-
-                            <PageRouter></PageRouter>
+                            <AuthRouter />
                         </SnackbarProvider>
                     </MuiPickersUtilsProvider>
                 </ThemeProvider>

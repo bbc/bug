@@ -20,6 +20,9 @@
         "description": "Provides user authentication via SAML",
         "name": "SAML SSO",
         "sessionLength": -1,
+        "entryPoint": "",
+        "issuer": "",
+        "identifierFormat": "",
         "enabled": false
     },
     {
