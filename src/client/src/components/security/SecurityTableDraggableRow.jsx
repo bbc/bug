@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SecurityTableRow({ strategy, index }) {
     const classes = useStyles();
-    console.log(strategy.type);
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: strategy.type });
 
     let transformString = null;

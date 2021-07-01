@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SecurityTableRow({ strategy, index, isFirst, isLast }) {
+export default function SecurityTableRow({ strategy }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const history = useHistory();
@@ -73,7 +73,7 @@ export default function SecurityTableRow({ strategy, index, isFirst, isLast }) {
             <TableCell className={classes.colType}>{strategy.type.toUpperCase()}</TableCell>
             <TableCell className={classes.colDescription}>{strategy.description}</TableCell>
             <TableCell className={classes.colNav}>
-                <SecurityMenu strategy={strategy} isFirst={isFirst} isLast={isLast} index={index} />
+                <SecurityMenu strategy={strategy} />
             </TableCell>
         </TableRow>
     );

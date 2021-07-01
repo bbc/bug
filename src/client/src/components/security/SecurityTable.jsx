@@ -56,13 +56,7 @@ export default function SecurityTable() {
 
                     <TableBody>
                         {strategies?.data?.map((strategy, index) => (
-                            <SecurityTableRow
-                                key={strategy.type}
-                                strategy={strategy}
-                                index={index}
-                                isFirst={index === 0}
-                                isLast={index === strategies.data.length - 1}
-                            />
+                            <SecurityTableRow key={strategy.type} strategy={strategy} index={index} />
                         ))}
                     </TableBody>
                 </Table>
