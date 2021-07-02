@@ -17,7 +17,7 @@ const restrictedTo = (roles) => {
         }
 
         //Check if user has been authenticated by passport
-        if (req.isAuthenticated()) {
+        if (await req.isAuthenticated()) {
             //Gets up to date info on the user from the model
             const user = await userGet(req.user);
 
@@ -39,7 +39,6 @@ const restrictedTo = (roles) => {
                     data: null,
                 });
             }
-
             return next();
         }
 

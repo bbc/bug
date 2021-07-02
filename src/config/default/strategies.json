@@ -3,7 +3,7 @@
         "type": "local",
         "description": "Provides access via local usernames and passwords",
         "name": "Local",
-        "sessionLength": "",
+        "sessionLength": "86400000",
         "sourceFilterList": [
             "172.0.0.0/8",
             "127.0.0.0/8"
@@ -19,14 +19,14 @@
             "172.0.0.0/8",
             "127.0.0.0/8"
         ],
-        "sessionLength": "",
+        "sessionLength": "1800000",
         "enabled": false
     },
     {
         "type": "saml",
         "description": "Provides user authentication via SAML",
         "name": "SAML SSO",
-        "sessionLength": "",
+        "sessionLength": "86400000",
         "entryPoint": "",
         "issuer": "",
         "identifierFormat": "",
@@ -40,7 +40,7 @@
             "172.0.0.0/8",
             "127.0.0.0/8"
         ],
-        "sessionLength": "",
+        "sessionLength": "86400000",
         "headerField": "REMOTE_USER",
         "headerFieldMatch": "email",
         "enabled": false

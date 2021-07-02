@@ -39,6 +39,9 @@ const proxyStrategy = (settings) => {
                 return done(null, false);
             }
 
+            //Set Session Length
+            req.session.cookie.maxAge = parseInt(settings?.sessionLength);
+
             logger.action(`Proxy login: ${user?.username} logged in.`);
 
             return done(null, user.id);
@@ -74,6 +77,9 @@ const localStrategy = (settings) => {
                 return done(null, false);
             }
 
+            //Set Session Length
+            req.session.cookie.maxAge = parseInt(settings?.sessionLength);
+
             logger.action(`Local login: ${user?.username} logged in.`);
             return done(null, user.id);
         }
@@ -102,6 +108,9 @@ const pinStrategy = (settings) => {
                 logger.info(`Pin login: User '${user?.username}' is not enabled.`);
                 return done(null, false);
             }
+
+            //Set Session Length
+            req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
             logger.action(`Pin login: ${user?.username} logged in.`);
             return done(null, user.id);
