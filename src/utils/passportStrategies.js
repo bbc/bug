@@ -9,79 +9,63 @@ const HeaderStrategy = require("passport-http-header-strategy").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
 
-const strategyModel = require("@models/strategies");
 const userGetByPin = require("@services/user-get-by-pin");
 const userGetByUsername = require("@services/user-get-by-username");
 const logger = require("@utils/logger")(module);
 const bcrypt = require("bcryptjs");
 
 //Setup Trusted Header authentication
-const proxyStrategy = new HeaderStrategy(
-    { header: "BBCEMAIL", passReqToCallback: true },
-    async (request, header, done) => {
-        const strategy = strategyModel.get("proxy");
-        let auth = false;
-
-        if (!strategy.enabled) {
-            const user = await userEmail(header.toLowerCase());
-            if (!user) {
-                auth = false;
-                logger.info(`Login failed: ${header} is not on the user list.`);
-            } else if (user.enabled) {
-                delete user["password"];
-                delete user["pin"];
-                auth = user;
-                logger.debug(`Login sucess: ${user.email} logged on.`);
-            } else {
-                auth = false;
-                logger.info(`Login failed: ${header} is not enabled.`);
-            }
-        }
-        return done(null, auth);
-    }
-);
-
-//Setup Local authentication
-const localStrategy = new LocalStrategy(
-    { usernameField: "username", passwordField: "password" },
-    async (username, password, done) => {
-        const strategy = await strategyModel.get("local");
-        if (!strategy.enabled) {
-            logger.info(`Local login not enabled.`);
-            return done(null, false);
-        }
-        const user = await userGetByUsername(username.toLowerCase());
+const proxyStrategy = (settings) => {
+    return new HeaderStrategy({ header: "BBCEMAIL", passReqToCallback: true }, async (request, header, done) => {
+        const user = await userEmail(header.toLowerCase());
 
         if (!user) {
-            logger.info(`Local login: User '${username}' does not exist.`);
+            logger.info(`Proxy login: User with email '${header.toLowerCase()}' does not exist.`);
             return done(null, false);
         }
 
         if (!user.enabled) {
-            logger.info(`Local login: User '${user?.username}' is not enabled.`);
+            logger.info(`Proxy login: User '${user?.username}' is not enabled.`);
             return done(null, false);
         }
 
-        if (!(await bcrypt.compare(password, user.password))) {
-            logger.info(`Local login: Wrong password for ${user?.username}.`);
-            return done(null, false);
-        }
+        logger.action(`Proxy login: ${user?.username} logged in.`);
 
-        logger.action(`Local login: ${user?.username} logged in.`);
         return done(null, user.id);
-    }
-);
+    });
+};
+
+//Setup Local authentication
+const localStrategy = (settings) => {
+    return new LocalStrategy(
+        { usernameField: "username", passwordField: "password" },
+        async (username, password, done) => {
+            const user = await userGetByUsername(username.toLowerCase());
+
+            if (!user) {
+                logger.info(`Local login: User '${username}' does not exist.`);
+                return done(null, false);
+            }
+
+            if (!user.enabled) {
+                logger.info(`Local login: User '${user?.username}' is not enabled.`);
+                return done(null, false);
+            }
+
+            if (!(await bcrypt.compare(password, user.password))) {
+                logger.info(`Local login: Wrong password for ${user?.username}.`);
+                return done(null, false);
+            }
+
+            logger.action(`Local login: ${user?.username} logged in.`);
+            return done(null, user.id);
+        }
+    );
+};
 
 //Setup Pin authentication
-const pinStrategy = new LocalStrategy(
-    { usernameField: "pin", passwordField: "pin" },
-    async (username, password, done) => {
-        const strategy = await strategyModel.get("pin");
-
-        if (!strategy.enabled) {
-            logger.info(`Pin login not enabled.`);
-            return done(null, false);
-        }
+const pinStrategy = (settings) => {
+    return new LocalStrategy({ usernameField: "pin", passwordField: "pin" }, async (username, password, done) => {
         const user = await userGetByPin(username);
 
         //TODO IP Whitelisting
@@ -98,8 +82,8 @@ const pinStrategy = new LocalStrategy(
 
         logger.action(`Pin login: ${user?.username} logged in.`);
         return done(null, user.id);
-    }
-);
+    });
+};
 
 // setup SAML authentication
 // passport.use(new SamlStrategy(
@@ -150,17 +134,8 @@ const pinStrategy = new LocalStrategy(
 //     }
 // );
 
-module.exports = [
-    {
-        name: "local",
-        strategy: localStrategy,
-    },
-    {
-        name: "pin",
-        strategy: pinStrategy,
-    },
-    {
-        name: "proxy",
-        strategy: proxyStrategy,
-    },
-];
+module.exports = {
+    local: localStrategy,
+    pin: pinStrategy,
+    proxy: proxyStrategy,
+};

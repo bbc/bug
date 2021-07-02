@@ -5,6 +5,9 @@ const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 const passport = require("passport");
 const getUser = require("@services/user-get");
+const strategyList = require("@services/strategy-list");
+const passportStrategies = require("@utils/passportStrategies");
+
 /**
  * @swagger
  * /login:
@@ -40,8 +43,18 @@ const getUser = require("@services/user-get");
  *         schema:
  *           type: object
  */
-router.post("/", (req, res, next) => {
-    passport.authenticate(["local", "pin"], async (err, id, info) => {
+router.post("/", async (req, res, next) => {
+    const strategies = await strategyList();
+    const configuredStrategies = [];
+
+    for (let strategy of strategies) {
+        if (strategy?.enabled) {
+            const configuredStrategy = await passportStrategies[strategy.type](strategy);
+            configuredStrategies.push(configuredStrategy);
+        }
+    }
+
+    passport.authenticate(configuredStrategies, async (err, id, info) => {
         if (err) {
             return next(err);
         }
