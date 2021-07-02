@@ -55,7 +55,7 @@ const localStrategy = (settings) => {
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
-                logger.info(`Pin login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
+                logger.info(`Local login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
                 return done(null, false);
             }
 

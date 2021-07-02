@@ -74,7 +74,6 @@ bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "favicon.ico")
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
-bugApi.set("trust proxy");
 
 bugApi.use("/documentation", documentation);
 bugApi.use("/container", proxyRouter);
