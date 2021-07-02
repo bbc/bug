@@ -125,6 +125,15 @@ export default function PanelTableRow(props) {
             // do nothing
         }
 
+        // if the container isn't running, we don't care about statusItems
+        if (panel._dockerContainer._status !== "running") {
+            return (
+                <div className={`${classes["state_" + panel._dockerContainer._status]}`}>
+                    {panel._dockerContainer._status}
+                </div>
+            );
+        }
+
         if (criticalCount > 0) {
             return <div className={classes.state_error}>RUNNING - WITH {criticalCount} CRITICAL ERROR(S)</div>;
         } else if (errorCount > 0) {
@@ -132,6 +141,8 @@ export default function PanelTableRow(props) {
         } else if (errorCount > 0) {
             return <div className={classes.state_warning}>RUNNING - WITH {warningCount} WARNINGS(S)</div>;
         }
+
+        // this'll only be 'running' but I just left the whole thing in here ...
         return (
             <div className={`${classes["state_" + panel._dockerContainer._status]}`}>
                 {panel._dockerContainer._status}
