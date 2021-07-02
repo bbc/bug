@@ -83,7 +83,6 @@ const pinStrategy = new LocalStrategy(
             return done(null, false);
         }
         const user = await userGetByPin(username);
-
         //TODO IP Whitelisting
 
         if (!user) {

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function UserTableRow({ user }) {
+export default function UserTableRow({ user, currentUserId }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
@@ -64,7 +64,7 @@ export default function UserTableRow({ user }) {
             onClick={() => setRedirectUrl(`/system/user/${user.id}`)}
         >
             <TableCell className={classes.colName}>
-                <ApiSwitch checked={user.enabled} onChange={(checked) => handleSwitchChange(checked, user.id)} />
+                <ApiSwitch checked={user.enabled} onChange={(checked) => handleSwitchChange(checked, user.id)} disabled={user.enabled && (user.id === currentUserId)}/>
             </TableCell>
             <TableCell className={classes.colUsername}>{user.username}</TableCell>
             <TableCell className={classes.colName}>{user.name}</TableCell>

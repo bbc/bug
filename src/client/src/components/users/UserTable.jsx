@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import UserTableRow from "@components/users/UserTableRow";
 import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     colState: {
@@ -28,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserTable({ interval }) {
     const classes = useStyles();
-
+    const user = useSelector((state) => state.user);
+    const currentUserId = user.status === "success" ? user.data?.id : null;
     const users = useApiPoller({
         url: `/api/user`,
         interval: interval,
@@ -54,7 +56,7 @@ export default function UserTable({ interval }) {
 
                     <TableBody>
                         {users?.data?.map((user) => (
-                            <UserTableRow key={user.id} user={user} />
+                            <UserTableRow key={user.id} user={user} currentUserId={currentUserId}/>
                         ))}
                     </TableBody>
                 </Table>
