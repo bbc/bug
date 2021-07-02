@@ -42,10 +42,10 @@ pipeline {
                         VERSION = PACKAGE.version
                         echo VERSION
                     }
-                    sh "docker buildx create --use --append --name builder.${env.BUILD_NUMBER} --platform linux/amd64,linux/arm64/v8"
+                    sh "docker buildx create --use --append --name builder.${env.BUILD_NUMBER} --platform linux/amd64,linux/arm64"
                     sh "docker buildx inspect --bootstrap"
-                    sh "docker buildx build --platform linux/amd64,linux/arm64/v8 --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${repositoryName}/${imageName}:${VERSION} --output=type=registry,registry.insecure=true ."
-                    sh "docker buildx build --platform linux/amd64,linux/arm64/v8 --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${repositoryName}/${imageName}:latest --output=type=registry,registry.insecure=true ."
+                    sh "docker buildx build --platform linux/amd64,linux/arm64 --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${repositoryName}/${imageName}:${VERSION} --output=type=registry,registry.insecure=true ."
+                    sh "docker buildx build --platform linux/amd64,linux/arm64 --compress --label version='${VERSION}' --label maintainer='${env.GIT_COMMITTER_NAME}' --label uk.co.bbc.bug.author.email='${env.GIT_COMMITTER_EMAIL}' --label uk.co.bbc.bug.build.number='${env.BUILD_NUMBER}' --label uk.co.bbc.bug.build.branch='${env.BRANCH_NAME}' --label uk.co.bbc.bug.build.commit='${env.GIT_COMMIT}' --tag ${repositoryName}/${imageName}:latest --output=type=registry,registry.insecure=true ."
                 }
             }
         }
