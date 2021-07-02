@@ -14,6 +14,7 @@ import useAsyncEffect from "use-async-effect";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
 import PasswordTextField from "@core/PasswordTextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import { useSelector } from "react-redux";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
@@ -28,6 +29,9 @@ export default function UserEdit({ userId = null }) {
     } = useForm({});
     const inputRef = React.useRef();
     const blankPassword = user !== null ? "*".repeat(user.passwordLength) : "";
+
+    const currentUser = useSelector((state) => state.user);
+    const currentUserId = currentUser.status === "success" ? currentUser.data?.id : null;
 
     useAsyncEffect(async () => {
         if (!userId) {
@@ -131,6 +135,11 @@ export default function UserEdit({ userId = null }) {
                                         control={control}
                                         defaultValue={user.enabled}
                                         fullWidth
+                                        helperText={
+                                            currentUserId === user.id
+                                                ? "CAUTION: disabling your own user may cause you to lose acccess"
+                                                : ""
+                                        }
                                     />
                                 </Grid>
 

@@ -52,16 +52,6 @@ export default function SecurityStrategyLocal({ strategy, register, errors, cont
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormSwitch
-                        name="enforceComplexity"
-                        label="Enforce password complexity"
-                        control={control}
-                        defaultValue={strategy.enforceComplexity}
-                        fullWidth
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
                     <TextField
                         select
                         inputProps={{
