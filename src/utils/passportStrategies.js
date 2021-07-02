@@ -13,6 +13,7 @@ const logger = require("@utils/logger")(module);
 const userGetByPin = require("@services/user-get-by-pin");
 const userGetByUsername = require("@services/user-get-by-username");
 const ipCompare = require("@utils/ip-compare");
+const ipClean = require("@utils/ip-clean");
 const bcrypt = require("bcryptjs");
 
 //Setup Trusted Header authentication
@@ -24,7 +25,7 @@ const proxyStrategy = (settings) => {
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
-                logger.info(`Pin login: IP Address ${req.ip} is not in the source list.`);
+                logger.info(`Pin login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
                 return done(null, false);
             }
 
@@ -54,7 +55,7 @@ const localStrategy = (settings) => {
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
-                logger.info(`Pin login: IP Address ${req.ip} is not in the source list.`);
+                logger.info(`Pin login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
                 return done(null, false);
             }
 
@@ -88,7 +89,7 @@ const pinStrategy = (settings) => {
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
-                logger.info(`Pin login: IP Address ${req.ip} is not in the source list.`);
+                logger.info(`Pin login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
                 return done(null, false);
             }
 
