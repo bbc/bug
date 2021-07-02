@@ -9,38 +9,54 @@ const HeaderStrategy = require("passport-http-header-strategy").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
 
+const logger = require("@utils/logger")(module);
 const userGetByPin = require("@services/user-get-by-pin");
 const userGetByUsername = require("@services/user-get-by-username");
-const logger = require("@utils/logger")(module);
+const ipCompare = require("@utils/ip-compare");
 const bcrypt = require("bcryptjs");
 
 //Setup Trusted Header authentication
 const proxyStrategy = (settings) => {
-    return new HeaderStrategy({ header: "BBCEMAIL", passReqToCallback: true }, async (request, header, done) => {
-        const user = await userEmail(header.toLowerCase());
+    return new HeaderStrategy(
+        { header: "BBCEMAIL", passReqToCallback: true, passReqToCallback: true },
+        async (req, header, done) => {
+            const user = await userEmail(header.toLowerCase());
 
-        if (!user) {
-            logger.info(`Proxy login: User with email '${header.toLowerCase()}' does not exist.`);
-            return done(null, false);
+            //Check Traffic Source Filter
+            if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
+                logger.info(`Pin login: IP Address ${req.ip} is not in the source list.`);
+                return done(null, false);
+            }
+
+            if (!user) {
+                logger.info(`Proxy login: User with email '${header.toLowerCase()}' does not exist.`);
+                return done(null, false);
+            }
+
+            if (!user.enabled) {
+                logger.info(`Proxy login: User '${user?.username}' is not enabled.`);
+                return done(null, false);
+            }
+
+            logger.action(`Proxy login: ${user?.username} logged in.`);
+
+            return done(null, user.id);
         }
-
-        if (!user.enabled) {
-            logger.info(`Proxy login: User '${user?.username}' is not enabled.`);
-            return done(null, false);
-        }
-
-        logger.action(`Proxy login: ${user?.username} logged in.`);
-
-        return done(null, user.id);
-    });
+    );
 };
 
 //Setup Local authentication
 const localStrategy = (settings) => {
     return new LocalStrategy(
-        { usernameField: "username", passwordField: "password" },
-        async (username, password, done) => {
+        { usernameField: "username", passwordField: "password", passReqToCallback: true },
+        async (req, username, password, done) => {
             const user = await userGetByUsername(username.toLowerCase());
+
+            //Check Traffic Source Filter
+            if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
+                logger.info(`Pin login: IP Address ${req.ip} is not in the source list.`);
+                return done(null, false);
+            }
 
             if (!user) {
                 logger.info(`Local login: User '${username}' does not exist.`);
@@ -65,24 +81,31 @@ const localStrategy = (settings) => {
 
 //Setup Pin authentication
 const pinStrategy = (settings) => {
-    return new LocalStrategy({ usernameField: "pin", passwordField: "pin" }, async (username, password, done) => {
-        const user = await userGetByPin(username);
+    return new LocalStrategy(
+        { usernameField: "pin", passwordField: "pin", passReqToCallback: true },
+        async (req, username, password, done) => {
+            const user = await userGetByPin(username);
 
-        //TODO IP Whitelisting
+            //Check Traffic Source Filter
+            if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
+                logger.info(`Pin login: IP Address ${req.ip} is not in the source list.`);
+                return done(null, false);
+            }
 
-        if (!user) {
-            logger.info(`Pin login: User does not exist.`);
-            return done(null, false);
+            if (!user) {
+                logger.info(`Pin login: User does not exist.`);
+                return done(null, false);
+            }
+
+            if (!user.enabled) {
+                logger.info(`Pin login: User '${user?.username}' is not enabled.`);
+                return done(null, false);
+            }
+
+            logger.action(`Pin login: ${user?.username} logged in.`);
+            return done(null, user.id);
         }
-
-        if (!user.enabled) {
-            logger.info(`Pin login: User '${user?.username}' is not enabled.`);
-            return done(null, false);
-        }
-
-        logger.action(`Pin login: ${user?.username} logged in.`);
-        return done(null, user.id);
-    });
+    );
 };
 
 // setup SAML authentication
