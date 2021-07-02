@@ -5,7 +5,6 @@
         "name": "Local",
         "sessionLength": "",
         "sourceFilterList": [],
-        "enforceComplexity": true,
         "enabled": false
     },
     {
