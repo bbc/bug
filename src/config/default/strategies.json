@@ -4,14 +4,15 @@
         "description": "Provides access via local usernames and passwords",
         "name": "Local",
         "sessionLength": "",
-        "sourceFilterList": [],
+        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
+        "enforceComplexity": true,
         "enabled": false
     },
     {
         "type": "pin",
         "name": "PIN",
         "description": "Provides authentication with a simple 4-digit PIN",
-        "sourceFilterList": [],
+        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
         "sessionLength": "",
         "enabled": false
     },
@@ -29,7 +30,7 @@
         "type": "proxy",
         "name": "Reverse Proxy",
         "description": "Provides authentication via HTTP-header / proxy server",
-        "sourceFilterList": [],
+        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
         "sessionLength": "",
         "headerField": "REMOTE_USER",
         "headerFieldMatch": "email",

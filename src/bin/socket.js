@@ -7,6 +7,7 @@ const panelHandler = require("@sockets/panel");
 const alertHandler = require("@sockets/alert");
 const bugHandler = require("@sockets/bug");
 const strategiesHandler = require("@sockets/strategies");
+const userHandler = require("@sockets/user");
 
 const passport = require("passport");
 const session = require("@utils/session");
@@ -41,6 +42,7 @@ const bugSocket = (server) => {
     const alertNamespace = io.of("/alert");
     const bugNamespace = io.of("/bug");
     const strategiesNamespace = io.of("/strategies");
+    const userNamespace = io.of("/user");
 
     panelListNamespace.on("connection", (socket) => {
         panelListHandler(panelListNamespace, socket);
@@ -64,6 +66,10 @@ const bugSocket = (server) => {
 
     strategiesNamespace.on("connection", (socket) => {
         strategiesHandler(strategiesNamespace, socket);
+    });
+
+    userNamespace.on("connection", (socket) => {
+        userHandler(userNamespace, socket);
     });
 
     return io;

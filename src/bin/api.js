@@ -8,7 +8,6 @@ const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
 
 //Passporty Auth Stuff
-const passportStrategies = require("@utils/passportStrategies");
 const passport = require("passport");
 const session = require("@utils/session");
 
@@ -35,10 +34,6 @@ const strategyRouter = require("@routes/strategy");
 const bugApi = express();
 
 bugApi.use(session());
-
-for (let eachStrategy of passportStrategies) {
-    passport.use(eachStrategy.name, eachStrategy.strategy);
-}
 
 passport.serializeUser(function (user, done) {
     done(null, user);
