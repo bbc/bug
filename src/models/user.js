@@ -96,7 +96,6 @@ exports.set = async function (user) {
         user.enabled = false;
 
         // add lengths and hash password/pin
-
         user = await processPassword(user);
 
         users.push(user);
