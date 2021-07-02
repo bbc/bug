@@ -9,7 +9,7 @@ module.exports = async (pin) => {
         const users = await userModel.list();
 
         for (let user of users) {
-            if (await bcrypt.compare(pin, user.pin)) {
+            if (pin === user.pin) {
                 return user;
             }
         }
