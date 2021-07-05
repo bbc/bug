@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 
-export function useApiPoller({ url, interval, forceRefresh }) {
+export function useApiPoller({ url, interval, forceRefresh, errorInterval = null }) {
     const timer = useRef();
     const [pollResult, setPollResult] = useState({
         status: "idle",
@@ -9,6 +9,10 @@ export function useApiPoller({ url, interval, forceRefresh }) {
         error: null,
     });
     const localResult = useRef(pollResult);
+    if (!errorInterval) {
+        errorInterval = interval;
+    }
+
     useEffect(() => {
         const source = axios.CancelToken.source();
         const cancelToken = source.token;
@@ -54,7 +58,7 @@ export function useApiPoller({ url, interval, forceRefresh }) {
                 }
 
                 // send an update with the failed state
-                setPollResult({
+                triggerUpdate({
                     status: "failure",
                     data: null,
                     error: null,
@@ -64,7 +68,7 @@ export function useApiPoller({ url, interval, forceRefresh }) {
                 console.error(error);
 
                 // and start it all again!
-                timer.current = setTimeout(fetch, interval);
+                timer.current = setTimeout(fetch, errorInterval);
             }
         };
         fetch();

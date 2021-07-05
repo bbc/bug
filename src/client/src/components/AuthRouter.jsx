@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PageLogin from "@components/pages/PageLogin";
 import PageRouter from "@components/pages/PageRouter";
+import PageReconnect from "@components/pages/PageReconnect";
 import Loading from "@components/Loading";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -10,7 +11,6 @@ const AuthRouter = (props) => {
     const strategies = useSelector((state) => state.strategies);
 
     // strategies first. If they're not loaded then wait
-
     if (strategies.status !== "success") {
         return <Loading />;
     }
@@ -24,6 +24,10 @@ const AuthRouter = (props) => {
                 <PageRouter />
             </Router>
         );
+    }
+
+    if (user.status === "failure") {
+        return <PageReconnect />;
     }
 
     // if we've got to here, then there must be a strategy enabled

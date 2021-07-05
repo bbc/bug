@@ -10,6 +10,7 @@ export default function UserHandler(props) {
     const user = useApiPoller({
         url: `/api/user/current`,
         interval: 5000,
+        errorInterval: 1000,
     });
 
     useEffect(() => {
