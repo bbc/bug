@@ -10,7 +10,7 @@ export function usePanel({ panelId }) {
 
     useEffect(() => {
         if (!panelId) {
-            return;
+            return null;
         }
         panel.emit("subscribe", panelId);
         // console.log(`${panelId}: panel - subscribed`);
@@ -26,4 +26,6 @@ export function usePanel({ panelId }) {
             dispatch(panelSlice.actions["idle"]());
         };
     }, [panelId, dispatch]);
+
+    return null;
 }

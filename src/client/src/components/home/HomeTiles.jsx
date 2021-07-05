@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Loading from "./Loading";
+import Loading from "@components/Loading";
 import DynamicIcon from "@core/DynamicIcon";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
@@ -8,19 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import { useSelector } from "react-redux";
 import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";
+import HomeTile from "@components/home/HomeTile";
 
 const useStyles = makeStyles((theme) => ({
-    tile: {
-        position: "relative",
-        display: "flex",
-        backgroundColor: "#262626",
-        margin: "auto",
-        flexDirection: "row",
-        alignItems: "center",
-        "&:hover": {
-            background: "#333",
-        },
-    },
     groupHeader: {
         fontSize: "0.875rem",
         fontWeight: 500,
@@ -36,23 +26,6 @@ const useStyles = makeStyles((theme) => ({
         "@media (max-width:600px)": {
             padding: 8,
         },
-    },
-    tileIcon: {
-        color: theme.palette.primary.main,
-        width: "3rem",
-        height: "3rem",
-        margin: "0.6rem 1.5rem",
-    },
-    tileLink: {
-        color: "#cccccc",
-        textDecoration: "none",
-        "&:hover": {
-            color: "#fff",
-        },
-    },
-    tileTitle: {
-        fontSize: "1.3rem",
-        fontWeight: 500,
     },
     gridItem: {
         padding: 12,
@@ -95,24 +68,8 @@ const HomeTiles = (props) => {
         return (
             <Grid container className={classes.gridContainer}>
                 {panels.map((panel) => (
-                    <Tile panel={panel} key={panel.id} />
+                    <HomeTile panel={panel} key={panel.id} />
                 ))}
-            </Grid>
-        );
-    };
-
-    const Tile = ({ panel }) => {
-        if (!panel.enabled) {
-            return null;
-        }
-        return (
-            <Grid item lg={4} sm={6} xs={12} key={panel.id} className={classes.gridItem}>
-                <Link className={classes.tileLink} key={panel.id} to={`/panel/${panel.id}`}>
-                    <Box className={classes.tile}>
-                        <DynamicIcon className={classes.tileIcon} iconName={panel._module.icon} />
-                        <div className={classes.tileTitle}>{panel.title}</div>
-                    </Box>
-                </Link>
             </Grid>
         );
     };

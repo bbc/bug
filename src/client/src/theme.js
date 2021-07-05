@@ -155,6 +155,7 @@ const theme = createMuiTheme({
         background: {
             default: "#181818",
             paper: "#262626",
+            hover: "#333",
         },
 
         control: {

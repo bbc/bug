@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import HomeTiles from "@components//HomeTiles";
+import HomeTiles from "@components/home/HomeTiles";
 import BugQuote from "@components/BugQuote";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
