@@ -15,13 +15,23 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         delete eachStatusItem.timestamp;
     }
 
+    // check container states
     let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
     let isBuilding = (!isRunning && panelBuildStatus !== null && panelBuildStatus.progress > -1) ?? false;
     let isBuilt = panelBuildStatus !== null ?? false;
+    let isStarting = recentlyStarted(containerInfo.status);
+    let isRestarting = (containerInfo && containerInfo.state === "restarting") ?? false;
+
+    // now we've used the 'status' field, we get rid of it, to prevent 1-second refreshes in the UI!
+    delete containerInfo.status;
 
     let status = "idle";
     if (!moduleConfig.needsContainer) {
         status = panelConfig["enabled"] ? "active" : "idle";
+    } else if (isRestarting) {
+        status = "restarting";
+    } else if (isStarting) {
+        status = "starting";
     } else if (isRunning) {
         status = panelConfig["enabled"] ? "running" : "stopping";
     } else if (isBuilding) {
@@ -29,14 +39,14 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     } else if (isBuilt) {
         if (panelBuildStatus.error) {
             status = "error";
-        } else if (panelConfig["enabled"]) {
-            status = "starting";
         }
     }
 
     containerInfo._isRunning = isRunning;
     containerInfo._isBuilding = isBuilding;
     containerInfo._isBuilt = isBuilt;
+    containerInfo._isRestarting = isRestarting;
+    containerInfo._isStarting = isStarting;
     containerInfo._status = status;
 
     return {
@@ -52,4 +62,24 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         _buildStatus: panelBuildStatus,
         _status: thisStatus ? thisStatus?.statusItems : [],
     };
+};
+
+const recentlyStarted = (status) => {
+    if (!status) {
+        return false;
+    }
+    if (status.indexOf("Less than a second") > -1) {
+        return true;
+    }
+    if (status.indexOf(" second") > -1) {
+        const statusArray = status.split(" ");
+        if (statusArray.length === 3) {
+            if (!isNaN(statusArray[1])) {
+                if (parseInt(statusArray[1]) < 5) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 };

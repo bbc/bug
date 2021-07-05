@@ -43,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
         ...state,
         color: theme.palette.primary.main,
     },
+    state_restarting: {
+        ...state,
+        color: theme.palette.primary.main,
+    },
     state_building: {
         ...state,
         color: theme.palette.primary.main,
@@ -59,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.3,
     },
     colPower: {
+        width: 56,
         textAlign: "center",
     },
     colDescription: {
@@ -154,7 +159,8 @@ export default function PanelTableRow(props) {
         if (
             panel._status === "building" ||
             panel._dockerContainer._status === "stopping" ||
-            panel._dockerContainer._status === "starting"
+            panel._dockerContainer._status === "starting" ||
+            panel._dockerContainer._status === "restarting"
         ) {
             return <CircularProgress size={30} />;
         }

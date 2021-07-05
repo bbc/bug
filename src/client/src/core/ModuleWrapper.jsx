@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Loading from "@components/Loading";
 import PanelBuilding from "@components/panels/PanelBuilding";
 import PanelStopped from "@components/panels/PanelStopped";
+import PanelRestarting from "@components/panels/PanelRestarting";
 import PanelCritical from "@components/panels/PanelCritical";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
@@ -64,6 +65,10 @@ export default function ModuleWrapper({ panelId, children }) {
         if (panel.data._module.needsContainer) {
             if (panel.data._dockerContainer._isBuilding) {
                 return <PanelBuilding panel={panel.data} />;
+            }
+
+            if (panel.data._dockerContainer._isRestarting) {
+                return <PanelRestarting panel={panel.data} />;
             }
 
             if (!panel.data._dockerContainer._isRunning) {
