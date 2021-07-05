@@ -18,7 +18,7 @@ import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ClearAllIcon from "@material-ui/icons/ClearAll";
 
-export default function PanelTableMenu(props) {
+export default function PanelDropdownMenu(props) {
     const sendAlert = useAlert();
 
     const [redirectUrl, setRedirectUrl] = React.useState(null);
@@ -30,11 +30,13 @@ export default function PanelTableMenu(props) {
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
         event.stopPropagation();
+        event.preventDefault();
     };
 
     const handleClose = (event) => {
         setAnchorEl(null);
         event.stopPropagation();
+        event.preventDefault();
     };
 
     const needsContainer = props?.panel?._module.needsContainer ?? true;

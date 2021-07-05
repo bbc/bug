@@ -5,10 +5,10 @@ import Button from "@material-ui/core/Button";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import ReplayIcon from "@material-ui/icons/Replay";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import clsx from "clsx";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     multiMessage: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BugAlert({ type, message, flags = [], panel, square = false }) {
     const classes = useStyles();
-    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const history = useHistory();
     const sendAlert = useAlert();
 
     const titles = {
@@ -105,7 +105,7 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
     };
 
     const handleConfig = (event) => {
-        setRedirectUrl(`/panel/${panel.id}/config`);
+        history.push(`/panel/${panel.id}/config`);
     };
 
     const handleRestart = async (event) => {
@@ -117,9 +117,6 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
         }
     };
 
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
     return (
         <Alert
             severity={mappedSeverity[type]}

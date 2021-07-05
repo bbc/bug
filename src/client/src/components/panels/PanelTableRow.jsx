@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ApiSwitch from "@core/ApiSwitch";
-import PanelTableMenu from "@components/panels/PanelTableMenu";
+import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import AxiosCommand from "@utils/AxiosCommand";
 import ProgressCounter from "@components/ProgressCounter";
 import TableCell from "@material-ui/core/TableCell";
@@ -209,7 +209,7 @@ export default function PanelTableRow(props) {
                 {props._module.longname}
             </TableCell>
             <TableCell className={classes.cellMenu}>
-                <PanelTableMenu panel={props} />
+                <PanelDropdownMenu panel={props} />
             </TableCell>
         </TableRow>
     );
