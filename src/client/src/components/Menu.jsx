@@ -105,21 +105,9 @@ const Menu = ({ showGroups = true }) => {
         if (!menuPanel.enabled) {
             return null;
         }
-        let hasCritical = false;
-
-        if (menuPanel?._status) {
-            hasCritical = menuPanel._status.filter((x) => x.type === "critical").length > 0;
-        }
         const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
-            <ListItem
-                className={hasCritical ? classes.critical : ""}
-                button
-                component={Link}
-                to={`/panel/${menuPanel.id}`}
-                key={menuPanel.id}
-                selected={isSelected}
-            >
+            <ListItem button component={Link} to={`/panel/${menuPanel.id}`} key={menuPanel.id} selected={isSelected}>
                 <ListItemIcon>
                     <BadgeWrapper panel={menuPanel}>
                         <DynamicIcon iconName={menuPanel._module.icon} />
