@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import Loading from "@components/Loading";
-import PanelBuilding from "@components/PanelBuilding";
-import PanelStopped from "@components/PanelStopped";
-import PanelCritical from "@components/PanelCritical";
+import PanelBuilding from "@components/panels/PanelBuilding";
+import PanelStopped from "@components/panels/PanelStopped";
+import PanelCritical from "@components/panels/PanelCritical";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { Switch } from "react-router-dom";

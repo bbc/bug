@@ -13,14 +13,14 @@ import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import { Hidden } from "@material-ui/core";
 import BadgeWrapper from "@components/BadgeWrapper";
-import PanelStatus from "@components/PanelStatus";
+import PanelStatus from "@components/panels/PanelStatus";
 import SettingsIcon from "@material-ui/icons/Settings";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useSelector } from "react-redux";
 import Popover from "@material-ui/core/Popover";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import PanelDeleteDialog from "@components/PanelDeleteDialog";
+import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import ReplayIcon from "@material-ui/icons/Replay";
 
 const useStyles = makeStyles((theme) => ({

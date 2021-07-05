@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const BugMenuIcon = (props) => {
+const UserMenuItem = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
@@ -133,4 +133,4 @@ const BugMenuIcon = (props) => {
     );
 };
 
-export default BugMenuIcon;
+export default UserMenuItem;

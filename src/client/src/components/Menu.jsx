@@ -12,7 +12,7 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import DynamicIcon from "@core/DynamicIcon";
 import Loading from "@components/Loading";
 import BugMenuIcon from "@components/BugMenuIcon";
-import UserMenuItem from "@components/UserMenuItem";
+import UserMenuItem from "@components/users/UserMenuItem";
 import BadgeWrapper from "@components/BadgeWrapper";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
