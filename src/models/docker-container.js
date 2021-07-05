@@ -5,10 +5,10 @@
 const logger = require("@utils/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
 
-exports.get = async function (containerId) {
+exports.get = async function (panelId) {
     try {
         const containerCollection = await mongoCollection("dockercontainers");
-        const result = await containerCollection.findOne({ containerid: containerId });
+        const result = await containerCollection.findOne({ name: panelId });
         if (result) {
             return result;
         }
