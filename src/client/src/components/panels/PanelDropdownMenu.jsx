@@ -12,16 +12,16 @@ import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import PanelGroupDialog from "@components/panels/PanelGroupDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import { Redirect } from "react-router";
 import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ClearAllIcon from "@material-ui/icons/ClearAll";
+import { useHistory } from "react-router-dom";
 
 export default function PanelDropdownMenu(props) {
     const sendAlert = useAlert();
+    const history = useHistory();
 
-    const [redirectUrl, setRedirectUrl] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const [groupDialogOpen, setGroupDialogOpen] = React.useState(false);
@@ -55,6 +55,7 @@ export default function PanelDropdownMenu(props) {
             sendAlert(`Failed to enable panel: ${props.panel.title}`, { variant: "error" });
         }
         event.stopPropagation();
+        event.preventDefault();
     };
 
     const handleDisable = async (event) => {
@@ -65,35 +66,39 @@ export default function PanelDropdownMenu(props) {
             sendAlert(`Failed to disable panel: ${props.panel.title}`, { variant: "error" });
         }
         event.stopPropagation();
+        event.preventDefault();
     };
 
     const handleRestart = async (event) => {
-        sendAlert(`Restarting panel: ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
         setAnchorEl(null);
+        event.stopPropagation();
+        event.preventDefault();
+        sendAlert(`Restarting panel: ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
         if (await AxiosCommand(`/api/panel/restart/${props.panel.id}`)) {
             sendAlert(`Restarted panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
         } else {
             sendAlert(`Failed to restart panel: ${props.panel.title}`, { variant: "error" });
         }
-        event.stopPropagation();
     };
 
     const handleDelete = (event) => {
         setAnchorEl(null);
         setDeleteDialogOpen(true);
         event.stopPropagation();
+        event.preventDefault();
     };
 
     const handleConfig = (event) => {
-        setRedirectUrl(`/panel/${props.panel.id}/config`);
-        setAnchorEl(null);
+        history.push(`/panel/${props.panel.id}/config`);
         event.stopPropagation();
+        event.preventDefault();
     };
 
     const handleEditGroup = (event) => {
         setAnchorEl(null);
         setGroupDialogOpen(true);
         event.stopPropagation();
+        event.preventDefault();
     };
 
     const PanelMenuItem = React.forwardRef(({ text, onClick, hidden, disabled, children }, ref) => {
@@ -107,10 +112,6 @@ export default function PanelDropdownMenu(props) {
             </MenuItem>
         );
     });
-
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
 
     return (
         <div>
