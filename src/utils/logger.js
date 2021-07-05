@@ -36,7 +36,8 @@ const actionFilter = winston.format((log, opts) => {
 const customLogFormat = winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.timestamp(),
-    winston.format.printf((log) => `${log.timestamp} ${log.level}: (n/a) ${log.message}`)
+    winston.format.splat(),
+    winston.format.printf((log) => `${log.timestamp} ${log.level}${log.message}`)
 );
 
 winston.addColors(customLevels.colors);
@@ -116,23 +117,22 @@ if (process.env.NODE_ENV !== "production") {
             level: consoleLogLevel,
             handleExceptions: true,
             colorize: true,
+            format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
         })
     );
 }
 
 const logger = (module) => {
     const filename = path.basename(module.filename);
-    console.log(filename);
-    for (let transport of loggerInstance.transports) {
-        transport.label = filename;
-        transport.format = winston.format.combine(
-            winston.format.splat(),
-            customLogFormat,
-            winston.format.printf((log) => `${log.timestamp} ${log.level}: (${filename}) ${log.message}`)
-        );
+    const loggers = {};
+
+    for (let level in customLevels?.levels) {
+        loggers[level] = (message) => {
+            loggerInstance[level](`: (${filename}) ${message}`);
+        };
     }
 
-    return loggerInstance;
+    return loggers;
 };
 
 module.exports = logger;
