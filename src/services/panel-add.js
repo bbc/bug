@@ -29,7 +29,8 @@ module.exports = async (panelConfig) => {
         }
 
         // and now build it
-        return await panelStart(panelConfig.id);
+        panelStart(panelConfig.id);
+        return true;
     } catch (error) {
         logger.warning(`${error.stack | error.trace || error || error.message}`);
         throw new Error(`Failed to add panel`);
