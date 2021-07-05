@@ -10,12 +10,12 @@ module.exports = async (index) => {
         if (outputs.length < 1) {
             return {
                 error: "Could not retieve output",
-                status: "error",
+                status: "failure",
                 data: outputs,
             };
         }
         return { status: "success", data: outputs };
     } catch (error) {
-        return null;
+        return { status: "failure", error: error };
     }
 };

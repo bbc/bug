@@ -10,12 +10,12 @@ module.exports = async (index, delay) => {
         if (response.status !== 200) {
             return {
                 error: "Could not set delay time",
-                status: "error",
+                status: "failure",
                 data: response.output,
             };
         }
         return { status: "success", data: response.output };
     } catch (error) {
-        return null;
+        return { status: "failure", error: error };
     }
 };

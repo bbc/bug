@@ -10,12 +10,12 @@ module.exports = async (index, name) => {
         if (response.status !== 200) {
             return {
                 error: "Could not set output name",
-                status: "error",
+                status: "failure",
                 data: response.output,
             };
         }
         return { status: "success", data: response.output };
     } catch (error) {
-        return null;
+        return { status: "failure", error: error };
     }
 };

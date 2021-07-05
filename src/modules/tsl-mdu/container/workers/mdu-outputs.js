@@ -22,13 +22,12 @@ const main = async () => {
 
     const outputsCollection = await mongoDb.db.collection("outputs");
 
-    const mdu = await MDU();
+    const mdu = await MDU(workerData);
     console.log(`mdu: ${workerData?.model} starting...`);
 
     while (true) {
         const outputs = await mdu.getOutputs();
         await arraySaveMongo(outputsCollection, outputs, "number");
-
         await delay(updateDelay);
     }
 };

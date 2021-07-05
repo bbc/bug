@@ -12,19 +12,13 @@ import { useAlert } from "@utils/Snackbar";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import CheckIcon from "@material-ui/icons/Check";
 import AxiosPut from "@utils/AxiosPut";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
 
-export default function OutputMenu({
-    output,
-    panelId,
-    onChange,
-    onRename,
-    onDelay,
-}) {
+export default function OutputMenu({ output, panelId, onChange, onRename, onDelay }) {
     // const classes = useStyles();
     const sendAlert = useAlert();
-    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
@@ -44,11 +38,7 @@ export default function OutputMenu({
         const command = output._protected ? "unprotect" : "protect";
         const commandAction = output._protected ? "Unprotected" : "Protected";
 
-        if (
-            await AxiosPut(
-                `/container/${panelId}/output/${command}/${output.name}`
-            )
-        ) {
+        if (await AxiosPut(`/container/${panelId}/output/${command}/${output.name}`)) {
             sendAlert(`${commandAction} ${output.name}`, {
                 variant: "success",
             });
@@ -81,22 +71,13 @@ export default function OutputMenu({
     };
 
     const handleDetails = () => {
-        setRedirectUrl(`/panel/${panelId}/interface/${output.name}`);
+        history.push(`/panel/${panelId}/output/${output?.number}`);
         handleClose();
     };
 
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
-
     return (
         <div>
-            <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleOpenMenuClick}
-            >
+            <IconButton aria-label="more" aria-controls="long-menu" aria-haspopup="true" onClick={handleOpenMenuClick}>
                 <MoreVertIcon />
             </IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -119,16 +100,9 @@ export default function OutputMenu({
                     <ListItemText primary="Set Delay" />
                 </MenuItem>
                 <Divider />
-                <MenuItem
-                    onClick={handleProtect}
-                    disabled={output._protected && !output._allowunprotect}
-                >
-                    <ListItemIcon
-                        disabled={output._protected && !output._allowunprotect}
-                    >
-                        {output._protected ? (
-                            <CheckIcon fontSize="small" />
-                        ) : null}
+                <MenuItem onClick={handleProtect} disabled={output._protected && !output._allowunprotect}>
+                    <ListItemIcon disabled={output._protected && !output._allowunprotect}>
+                        {output._protected ? <CheckIcon fontSize="small" /> : null}
                     </ListItemIcon>
                     <ListItemText primary="Protect" />
                 </MenuItem>

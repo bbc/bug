@@ -7,10 +7,15 @@ const express = require("express");
 const output = express.Router();
 
 const hashResponse = require("@core/hash-response");
-const getSystem = require("@services/system-get");
+const getSystemAll = require("@services/system-get-all");
+const getSystemLatest = require("@services/system-get-latest");
 
 output.get("/", async function (req, res) {
-    hashResponse(res, req, await getSystem());
+    hashResponse(res, req, await getSystemAll());
+});
+
+output.get("/latest", async function (req, res) {
+    hashResponse(res, req, await getSystemLatest());
 });
 
 module.exports = output;

@@ -11,11 +11,11 @@ module.exports = async (index, state) => {
             return {
                 error: "Could not set output state",
                 data: response.output,
-                status: "error",
+                status: "failure",
             };
         }
         return { status: "success", data: response.output };
     } catch (error) {
-        return null;
+        return { status: "failure", error: error };
     }
 };

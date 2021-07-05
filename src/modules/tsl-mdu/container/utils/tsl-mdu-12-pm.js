@@ -14,7 +14,7 @@ class TSL_MDU {
         this.host = config.address;
         this.port = config.port || 80;
         this.status = null;
-        this.outputsCount = config.outputs || 12;
+        this.outputsCount = 12;
         this.outputs = [];
         this.frequency = config.frequency || 5000;
 
@@ -84,9 +84,7 @@ class TSL_MDU {
             });
             this.status = response.status;
         } catch (error) {
-            console.log(
-                `tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`
-            );
+            console.log(`tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`);
             this.status = 400;
         }
 
@@ -146,9 +144,7 @@ class TSL_MDU {
             });
             this.status = response.status;
         } catch (error) {
-            console.log(
-                `tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`
-            );
+            console.log(`tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`);
             this.status = 400;
         }
 
@@ -158,9 +154,7 @@ class TSL_MDU {
 
             for (let row of table.findAll("td")) {
                 if (row.getText() === "Temperature:") {
-                    status.temperature = row.nextSibling
-                        .getText()
-                        .split(" ")[0];
+                    status.temperature = row.nextSibling.getText().split(" ")[0];
                 }
                 if (row.getText() === "Version:") {
                     status.version = row.nextSibling.getText();
@@ -198,9 +192,7 @@ class TSL_MDU {
                 this.status = 500;
             }
         } catch (error) {
-            console.log(
-                `tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`
-            );
+            console.log(`tsl-mdu-12-pm: Can't contact ${this.host} - connection timed out.`);
             this.status = 400;
         }
 
