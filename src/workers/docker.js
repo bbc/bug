@@ -15,6 +15,7 @@ const fetch = async () => {
             for (let eachContainer of containerInfoList) {
                 eachContainer["containerid"] = eachContainer["id"];
                 delete eachContainer.id;
+                delete eachContainer.status;
             }
             await dockerContainer.setMultiple(containerInfoList);
 

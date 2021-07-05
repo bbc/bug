@@ -74,13 +74,12 @@ const HomeTiles = (props) => {
         );
     };
 
-    const renderTiles = (props) => {
+    return React.useMemo(() => {
         if (panelList.status === "loading") {
             return <Loading />;
         }
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
-
             if (Object.keys(panelsByGroup).length === 1) {
                 return <Tiles panels={panelList.data} />;
             } else {
@@ -88,9 +87,7 @@ const HomeTiles = (props) => {
             }
         }
         return null;
-    };
-
-    return renderTiles(props);
+    }, [panelList]);
 };
 
 export default HomeTiles;
