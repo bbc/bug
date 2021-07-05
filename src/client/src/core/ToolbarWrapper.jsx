@@ -117,44 +117,38 @@ export default function PanelToolbar(props) {
     if (panel.status === "success") {
         return (
             <>
-                <Hidden xsDown>
-                    {hasCritical || panel.data._status?.length === 0 ? null : (
-                        <>
-                            <Popover
-                                open={statusOpen}
-                                anchorEl={statusEl}
-                                onClose={handleStatusClose}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "center",
-                                }}
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "center",
-                                }}
-                            >
-                                <PanelStatus statusItems={panel.data._status} panel={panel.data} />
-                            </Popover>
+                {hasCritical || panel.data._status?.length === 0 ? null : (
+                    <>
+                        <Popover
+                            open={statusOpen}
+                            anchorEl={statusEl}
+                            onClose={handleStatusClose}
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "center",
+                            }}
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "center",
+                            }}
+                        >
+                            <PanelStatus statusItems={panel.data._status} panel={panel.data} />
+                        </Popover>
 
-                            <IconButton
-                                className={classes.notificationButton}
-                                color="default"
-                                onClick={handleStatusClick}
+                        <IconButton className={classes.notificationButton} color="default" onClick={handleStatusClick}>
+                            <BadgeWrapper
+                                panel={panel.data}
+                                position={{
+                                    vertical: "top",
+                                    horizontal: "left",
+                                }}
                             >
-                                <BadgeWrapper
-                                    panel={panel.data}
-                                    position={{
-                                        vertical: "top",
-                                        horizontal: "left",
-                                    }}
-                                >
-                                    <NotificationsIcon />
-                                </BadgeWrapper>
-                            </IconButton>
-                        </>
-                    )}
-                    {props.buttons}
-                </Hidden>
+                                <NotificationsIcon />
+                            </BadgeWrapper>
+                        </IconButton>
+                    </>
+                )}
+                <Hidden xsDown>{props.buttons ? props.buttons : null}</Hidden>
                 <IconButton
                     className={classes.dropdownMenu}
                     aria-label="more"
