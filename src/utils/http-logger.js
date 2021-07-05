@@ -5,6 +5,6 @@ logger.stream = {
     write: (message) => logger.http(message.substring(0, message.lastIndexOf("\n"))),
 };
 
-module.exports = morgan(`:remote-addr :method :url :status :res[content-length] - :response-time ms`, {
+module.exports = morgan(`:remote-addr :method :url :status :res[content-length] :response-time ms`, {
     stream: logger.stream,
 });

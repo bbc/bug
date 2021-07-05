@@ -19,22 +19,22 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
-    const outputsCollection = await mongoDb.db.collection("system");
-    outputsCollection.createIndex(
-        { timestamp: 1 },
-        { expireAfterSeconds: 86400 }
-    );
+    const systemCollection = await mongoDb.db.collection("system");
+    systemCollection.createIndex({ timestamp: 1 }, { expireAfterSeconds: 86400 });
 
-    const mdu = await MDU();
+    const mdu = await MDU(workerData);
     console.log(`mdu: ${workerData?.model} starting...`);
 
     while (true) {
-        const outputs = await mdu.getStatus();
-        await outputsCollection.insertOne({
-            ...outputs,
-            timestamp: Date.now(),
-        });
+        const system = await mdu.getStatus();
 
+        console.log(system);
+        if (system) {
+            await systemCollection.insertOne({
+                ...system,
+                timestamp: Date.now(),
+            });
+        }
         await delay(updateDelay);
     }
 };

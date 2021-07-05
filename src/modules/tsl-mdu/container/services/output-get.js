@@ -14,12 +14,12 @@ module.exports = async (index) => {
         if (!output) {
             return {
                 error: "Could not retieve output",
-                status: "error",
+                status: "failure",
                 data: output,
             };
         }
         return { status: "success", data: output };
     } catch (error) {
-        return null;
+        return { status: "failure", error: error };
     }
 };

@@ -1,21 +1,24 @@
 "use strict";
 
-const mongoCollection = require("@core/mongo-collection");
+const statusCheckCollection = require("@core/status-checkcollection");
 
-module.exports = async (index) => {
-    try {
-        const systemCollection = await mongoCollection("system");
-        const system = await systemCollection.find().toArray();
-
-        if (system.length < 1) {
-            return {
-                error: "Could not retieve output",
-                status: "error",
-                data: outputs,
-            };
-        }
-        return { status: "success", data: system };
-    } catch (error) {
-        return null;
-    }
+module.exports = async () => {
+    return [].concat(
+        await statusCheckCollection({
+            collectionName: "system",
+            message: [
+                "There is no recent system data for this device.",
+                "Check your connection, model and authentication settings.",
+            ],
+            itemType: "critical",
+            timeoutSeconds: 120,
+            flags: ["restartPanel", "configurePanel"],
+        }),
+        await statusCheckCollection({
+            collectionName: "outputs",
+            message: "There is no recent output data for this device.",
+            itemType: "warning",
+            timeoutSeconds: 20,
+        })
+    );
 };

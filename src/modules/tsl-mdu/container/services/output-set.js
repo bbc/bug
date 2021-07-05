@@ -7,6 +7,6 @@ module.exports = async (index) => {
         const response = await mdu.setOutput(index);
         return response;
     } catch (error) {
-        return null;
+        return { status: "failure", error: error };
     }
 };

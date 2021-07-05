@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import ApiSwitch from "@core/ApiSwitch";
 import Loading from "@components/Loading";
 import OutputsMenu from "./OutputsMenu";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
 import RenameDialog from "./dialogs/RenameDialog";
@@ -19,6 +19,7 @@ import Link from "@material-ui/core/Link";
 import AxiosPost from "@utils/AxiosPost";
 import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
 import LockRoundedIcon from "@material-ui/icons/LockRounded";
+import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OutputsTable({ panelId }) {
     const classes = useStyles();
-    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const history = useHistory();
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
     const sendAlert = useAlert();
     const [renameDialogOpen, setRenameDialogOpen] = React.useState(false);
@@ -105,7 +106,7 @@ export default function OutputsTable({ panelId }) {
 
     const handleRowClicked = (outputNumber) => {
         if (!menuIsOpen) {
-            setRedirectUrl(`/panel/${panelId}/output/${outputNumber}`);
+            history.push(`/panel/${panelId}/output/${outputNumber}`);
         }
     };
 
@@ -116,12 +117,9 @@ export default function OutputsTable({ panelId }) {
     const handleEnabledChanged = async (checked, output) => {
         const verb = checked ? "Enable" : "Disable";
 
-        const response = await AxiosPost(
-            `/container/${panelId}/output/${output.number}/state`,
-            {
-                state: !output.state,
-            }
-        );
+        const response = await AxiosPost(`/container/${panelId}/output/${output.number}/state`, {
+            state: !output.state,
+        });
         if (response) {
             sendAlert(`${verb}d ${output.name}`, {
                 variant: "success",
@@ -154,12 +152,14 @@ export default function OutputsTable({ panelId }) {
                 key={output._id}
                 onClick={() => handleRowClicked(output?.number)}
             >
+                <TableCell className={classes.colRunning}>
+                    <PowerSettingsNew className={output.state ? classes.iconRunning : classes.icon} />
+                </TableCell>
+
                 <TableCell className={classes.colEnabled}>
                     <ApiSwitch
-                        checked={!output.state}
-                        onChange={(checked) =>
-                            handleEnabledChanged(checked, output)
-                        }
+                        checked={output.state}
+                        onChange={(checked) => handleEnabledChanged(checked, output)}
                         disabled={output?._protected}
                     />
                 </TableCell>
@@ -177,9 +177,7 @@ export default function OutputsTable({ panelId }) {
                         {output.name}
                     </Link>
                 </TableCell>
-                <TableCell className={classes.colFuse}>
-                    {output.fuse.toUpperCase()}
-                </TableCell>
+                <TableCell className={classes.colFuse}>{output.fuse.toUpperCase()}</TableCell>
                 <TableCell className={classes.colDelay}>
                     <Link
                         component="button"
@@ -195,17 +193,10 @@ export default function OutputsTable({ panelId }) {
                     </Link>
                 </TableCell>
                 <TableCell className={classes.colLock}>
-                    {output.lock ? (
-                        <LockRoundedIcon />
-                    ) : (
-                        <LockOpenRoundedIcon />
-                    )}
+                    {output.lock ? <LockRoundedIcon /> : <LockOpenRoundedIcon />}
                 </TableCell>
 
-                <TableCell
-                    style={{ width: "4rem" }}
-                    className={classes.cellMenu}
-                >
+                <TableCell style={{ width: "4rem" }} className={classes.cellMenu}>
                     <OutputsMenu
                         output={output}
                         panelId={panelId}
@@ -223,10 +214,6 @@ export default function OutputsTable({ panelId }) {
         return rows.map((output) => renderRow(output));
     };
 
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
-
     if (outputs.status === "loading" || outputs.status === "idle") {
         return <Loading />;
     }
@@ -238,21 +225,12 @@ export default function OutputsTable({ panelId }) {
                     <Table className={classes.table} aria-label="simple table">
                         <TableHead className={classes.tableHead}>
                             <TableRow>
-                                <TableCell className={classes.colState}>
-                                    Enabled
-                                </TableCell>
-                                <TableCell className={classes.colName}>
-                                    Name
-                                </TableCell>
-                                <TableCell className={classes.colFuse}>
-                                    Fuse
-                                </TableCell>
-                                <TableCell className={classes.colDelay}>
-                                    Delay
-                                </TableCell>
-                                <TableCell className={classes.colLock}>
-                                    SNMP
-                                </TableCell>
+                                <TableCell className={classes.colRunning}></TableCell>
+                                <TableCell className={classes.colState}>Enabled</TableCell>
+                                <TableCell className={classes.colName}>Name</TableCell>
+                                <TableCell className={classes.colFuse}>Fuse</TableCell>
+                                <TableCell className={classes.colDelay}>Delay</TableCell>
+                                <TableCell className={classes.colLock}>SNMP</TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
@@ -261,17 +239,9 @@ export default function OutputsTable({ panelId }) {
                 </TableContainer>
             </div>
             {renameDialogOpen ? (
-                <RenameDialog
-                    {...renameDialogProps}
-                    onClose={() => setRenameDialogOpen(false)}
-                />
+                <RenameDialog {...renameDialogProps} onClose={() => setRenameDialogOpen(false)} />
             ) : null}
-            {delayDialogOpen ? (
-                <DelayDialog
-                    {...delayDialogProps}
-                    onClose={() => setDelayDialogOpen(false)}
-                />
-            ) : null}
+            {delayDialogOpen ? <DelayDialog {...delayDialogProps} onClose={() => setDelayDialogOpen(false)} /> : null}
         </>
     );
 }

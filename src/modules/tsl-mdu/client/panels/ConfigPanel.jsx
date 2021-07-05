@@ -97,20 +97,6 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <TextField
-                        inputProps={{
-                            ...register("outputs", { required: true }),
-                            step: "any",
-                        }}
-                        fullWidth
-                        error={errors?.outputs ? true : false}
-                        defaultValue={panelConfig.data.outputs}
-                        type="number"
-                        label="Outputs"
-                    />
-                </Grid>
-
-                <Grid item xs={6}>
                     <FormControl fullWidth>
                         <InputLabel>Model</InputLabel>
                         <Select
