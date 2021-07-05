@@ -36,10 +36,7 @@ const actionFilter = winston.format((log, opts) => {
 const customLogFormat = winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.timestamp(),
-    winston.format.align(),
-    winston.format.printf(
-        (log) => `${log.timestamp} ${log.level}: (n/a) ${log.message}`
-    )
+    winston.format.printf((log) => `${log.timestamp} ${log.level}: (n/a) ${log.message}`)
 );
 
 winston.addColors(customLevels.colors);
@@ -52,7 +49,7 @@ const loggerInstance = winston.createLogger({
         new winston.transports.DailyRotateFile({
             level: "warning",
             format: customLogFormat,
-            filename: path.join(logFolder, logName + "-WARNING-%DATE%.log"),
+            filename: path.join(logFolder, logName + "-warning-%DATE%.log"),
             datePattern: "YYYY-MM-DD",
             zippedArchive: true,
             maxSize: "200m",
@@ -61,7 +58,7 @@ const loggerInstance = winston.createLogger({
         new winston.transports.DailyRotateFile({
             level: "info",
             format: customLogFormat,
-            filename: path.join(logFolder, logName + "-INFO-%DATE%.log"),
+            filename: path.join(logFolder, logName + "-info-%DATE%.log"),
             datePattern: "YYYY-MM-DD",
             zippedArchive: true,
             maxSize: "200m",
@@ -70,7 +67,7 @@ const loggerInstance = winston.createLogger({
         new winston.transports.DailyRotateFile({
             level: "debug",
             format: customLogFormat,
-            filename: path.join(logFolder, logName + "-DEBUG-%DATE%.log"),
+            filename: path.join(logFolder, logName + "-debug-%DATE%.log"),
             datePattern: "YYYY-MM-DD",
             zippedArchive: true,
             maxSize: "200m",
@@ -79,7 +76,7 @@ const loggerInstance = winston.createLogger({
         new winston.transports.DailyRotateFile({
             level: "http",
             format: customLogFormat,
-            filename: path.join(logFolder, logName + "-HTTP-%DATE%.log"),
+            filename: path.join(logFolder, logName + "-http-%DATE%.log"),
             datePattern: "YYYY-MM-DD",
             zippedArchive: true,
             maxSize: "200m",
@@ -88,7 +85,7 @@ const loggerInstance = winston.createLogger({
         new winston.transports.DailyRotateFile({
             level: "action",
             format: customLogFormat,
-            filename: path.join(logFolder, logName + "-ACTION-%DATE%.log"),
+            filename: path.join(logFolder, logName + "-action-%DATE%.log"),
             datePattern: "YYYY-MM-DD",
             zippedArchive: true,
             maxSize: "200m",
@@ -125,17 +122,13 @@ if (process.env.NODE_ENV !== "production") {
 
 const logger = (module) => {
     const filename = path.basename(module.filename);
-
+    console.log(filename);
     for (let transport of loggerInstance.transports) {
         transport.label = filename;
         transport.format = winston.format.combine(
             winston.format.splat(),
             customLogFormat,
-            winston.format.colorize({ all: true }),
-            winston.format.printf(
-                (log) =>
-                    `${log.timestamp} ${log.level}: (${filename}) ${log.message}`
-            )
+            winston.format.printf((log) => `${log.timestamp} ${log.level}: (${filename}) ${log.message}`)
         );
     }
 
