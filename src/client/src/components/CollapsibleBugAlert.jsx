@@ -64,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
         transform: "rotate(180deg)",
     },
+    multiMessages: {
+        minWidth: 0,
+    },
     columns: {
         display: "flex",
         flexDirection: "rows",
@@ -101,7 +104,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
     const AllMessages = () => {
         if (Array.isArray(message)) {
             return (
-                <div>
+                <div className={classes.multiMessages}>
                     {message.map((eachMessage, index) => (
                         <div key={index} className={classes.multiMessage}>
                             {eachMessage}
