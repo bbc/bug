@@ -67,14 +67,13 @@ export default function PanelTabbedForm(props) {
                             <CloseIcon />
                         </IconButton>
                     )}
-
                     <Tabs
                         className={classes.tabs}
                         value={tabIndex}
                         indicatorColor="primary"
                         textColor="primary"
                         onChange={handleChange}
-                        variant="scrollable"
+                        variant="fullWidth"
                         scrollButtons="on"
                     >
                         {props.labels.map((label, index) => (
