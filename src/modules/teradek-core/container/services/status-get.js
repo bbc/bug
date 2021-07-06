@@ -18,7 +18,7 @@ module.exports = async () => {
             collectionName: "devices",
             message: "There is no devices avalible.",
             itemType: "warning",
-            timeoutSeconds: 30,
+            timeoutSeconds: 60,
         })
     );
 };

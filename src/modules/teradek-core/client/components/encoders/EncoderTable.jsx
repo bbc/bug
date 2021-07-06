@@ -1,9 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
-import Loading from "@components/Loading";
-import SputnikRow from "./SputnikRow";
-import { useApiPoller } from "@utils/ApiPoller";
+import EncoderRow from "./EncoderRow";
+import { useSelector } from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,6 +9,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import Paper from "@material-ui/core/Paper";
+import Loading from "@components/Loading";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -30,72 +29,68 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-    colTitle: {
+    colThumbnail: {
+        margin: "auto",
+        minWidth: "2rem",
+        maxWidth: "5rem",
+        overflow: "hidden",
+    },
+    colName: {
         minWidth: "1rem",
         maxWidth: "4rem",
         ["@media (max-width:700px)"]: {
             display: "none",
         },
     },
-    colStatus: {
+    colModel: {
         minWidth: "1rem",
         maxWidth: "4rem",
         ["@media (max-width:700px)"]: {
             display: "none",
         },
     },
-    colHost: {
-        minWidth: "1rem",
-        maxWidth: "4rem",
+    colLinks: {
+        minWidth: "2rem",
+        maxWidth: "8rem",
         ["@media (max-width:700px)"]: {
             display: "none",
         },
     },
-    colConnections: {
-        minWidth: "1rem",
-        maxWidth: "4rem",
+    colState: {
+        minWidth: "2rem",
+        maxWidth: "3rem",
         ["@media (max-width:700px)"]: {
             display: "none",
         },
     },
 }));
 
-export default function SputniksTab({ panelId }) {
+export default function EncodersTable({ panelId, encoders, decoders, channels }) {
     const classes = useStyles();
+    const panelConfig = useSelector((state) => state.panelConfig);
 
-    const sputniks = useApiPoller({
-        url: `/container/${panelId}/sputnik/all`,
-        interval: 5000,
-    });
-
-    const devices = useApiPoller({
-        url: `/container/${panelId}/device/all`,
-        interval: 5000,
-    });
-
-    const renderRows = (sputniks) => {
+    const renderRows = (encoders) => {
         const rows = [];
-        if (sputniks) {
-            for (let sputnik of sputniks) {
-                rows.push(
-                    <SputnikRow
-                        panelId={panelId}
-                        sputnik={sputnik}
-                        devices={devices?.data}
-                        key={sputnik?.id}
-                    />
-                );
+        const encoderSids = panelConfig.data.encoders.map((encoder) => encoder?.sid);
+        if (encoders) {
+            for (let encoder of encoders) {
+                if (encoderSids.includes(encoder.sid)) {
+                    rows.push(
+                        <EncoderRow
+                            panelId={panelId}
+                            decoders={decoders}
+                            channels={channels}
+                            key={encoder?.sid}
+                            encoder={encoder}
+                        />
+                    );
+                }
             }
         }
         return rows;
     };
 
-    if (
-        sputniks.status === "loading" ||
-        sputniks.status === "idle" ||
-        devices.status === "loading" ||
-        devices.status === "idle"
-    ) {
+    if (panelConfig.status === "loading" || panelConfig.status === "idle") {
         return <Loading />;
     }
 
@@ -105,21 +100,14 @@ export default function SputniksTab({ panelId }) {
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead className={classes.tableHead}>
                         <TableRow>
-                            <TableCell className={classes.colTitle}>
-                                Name
-                            </TableCell>
-                            <TableCell className={classes.colStatus}>
-                                Status
-                            </TableCell>
-                            <TableCell className={classes.colHost}>
-                                Host
-                            </TableCell>
-                            <TableCell className={classes.colConnections}>
-                                Connections
-                            </TableCell>
+                            <TableCell className={classes.colThumbnail}>Thumbnail</TableCell>
+                            <TableCell className={classes.colName}>Name</TableCell>
+                            <TableCell className={classes.colModel}>Model</TableCell>
+                            <TableCell className={classes.colLinks}>Connections</TableCell>
+                            <TableCell className={classes.colState}></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>{renderRows(sputniks.data)}</TableBody>
+                    <TableBody>{renderRows(encoders)}</TableBody>
                 </Table>
             </TableContainer>
         </>

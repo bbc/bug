@@ -1,5 +1,5 @@
 import React from "react";
-import Encoder from "../components/Encoder.jsx";
+import Encoder from "../components/encoders/Encoder";
 import { useParams } from "react-router-dom";
 
 export default function EncoderPanel() {

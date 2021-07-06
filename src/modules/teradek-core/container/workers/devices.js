@@ -16,6 +16,21 @@ parentPort.postMessage({
     restartOn: ["username", "password", "organisation"],
 });
 
+const filterDevice = async (device) => {
+    delete device?.autoRecording;
+    delete device?.capabilities;
+    delete device?.firmwareDetails;
+    delete device?.recordErrorMessage;
+    delete device?.recordStartedDate;
+    delete device?.restrictions;
+    delete device?.secured;
+    delete device?.sputnikConnectionMode;
+    delete device?.stopReason;
+    delete device?.streamSources;
+    delete device?.createdAt;
+    return device;
+};
+
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData?.id);
@@ -27,18 +42,17 @@ const main = async () => {
     while (true) {
         const token = await tokenCollection.findOne();
 
-        const response = await axios.get(
-            `v1.0/${workerData.organisation}/devices`,
-            {
-                params: {
-                    auth_token: token?.auth_token,
-                    firmwareDetails: true,
-                },
-            }
-        );
+        const response = await axios.get(`v1.0/${workerData.organisation}/devices`, {
+            params: {
+                auth_token: token?.auth_token,
+                firmwareDetails: true,
+            },
+        });
 
         if (response.data?.meta?.status === "ok") {
             for (let device of response?.data?.response) {
+                device = await filterDevice(device);
+                device.timestamp = Date.now();
                 const query = { sid: device?.sid };
                 const update = {
                     $set: { ...device },

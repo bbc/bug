@@ -1,25 +1,24 @@
 import React from "react";
-import EncodersTab from "../components/EncodersTab";
-import DecodersTab from "../components/DecodersTab";
-import SputniksTab from "../components/SputniksTab";
-import ChannelsTab from "../components/ChannelsTab";
-import PanelTabbedForm from "@core/PanelTabbedForm";
+import Devices from "../components/Devices";
+import Loading from "@components/Loading";
 import { useParams } from "react-router-dom";
+import { useApiPoller } from "@utils/ApiPoller";
 
 export default function MainPanel() {
     const params = useParams();
 
+    const devices = useApiPoller({
+        url: `/container/${params?.panelId}/device/all`,
+        interval: 5000,
+    });
+
+    if (devices.status === "loading" || devices.status === "idle") {
+        return <Loading />;
+    }
+
     return (
         <>
-            <PanelTabbedForm
-                labels={["Encoders", "Decoders", "Sputniks", "Channels"]}
-                content={[
-                    <EncodersTab panelId={params.panelId} />,
-                    <DecodersTab panelId={params.panelId} />,
-                    <SputniksTab panelId={params.panelId} />,
-                    <ChannelsTab panelId={params.panelId} />,
-                ]}
-            ></PanelTabbedForm>
+            <Devices devices={devices.data} panelId={params.panelId} />
         </>
     );
 }

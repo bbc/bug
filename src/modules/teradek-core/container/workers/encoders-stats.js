@@ -11,8 +11,29 @@ const updateDelay = 60000;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 60000,
-    restartOn: ["username", "password", "organisation"],
+    restartOn: ["username", "password", "organisation", "encoders"],
 });
+
+const filterStats = async (stats) => {
+    delete stats?.num_conn;
+    delete stats?.cube_id;
+    delete stats?.sess_duration;
+    delete stats?.capabilities;
+    delete stats?.is_decryption_key_ok;
+    delete stats?.sid;
+    stats.timestamp = stats?.ts;
+    delete stats?.ts;
+    return stats;
+};
+
+const filterAudio = async (stats) => {
+    const filteredStats = {
+        timestamp: stats?.timestamp,
+        leftLevels: stats?.audioLevelsDb[0],
+        rightLevels: stats?.audioLevelsDb[1],
+    };
+    return filteredStats;
+};
 
 const main = async () => {
     // Connect to the db
@@ -24,13 +45,9 @@ const main = async () => {
         const token = await tokenCollection.findOne();
 
         const devicesCollection = await mongoDb.db.collection("devices");
-        const encoders = await devicesCollection
-            .find({ type: "encoder" })
-            .toArray();
+        const encoders = await devicesCollection.find({ type: "encoder" }).toArray();
 
-        console.log(
-            `encoders-stats: starting to collect device stats starting...`
-        );
+        console.log(`encoders-stats: starting to collect device stats starting...`);
 
         // initial delay (to stagger device polls)
         await delay(1000);
@@ -48,69 +65,58 @@ const main = async () => {
         });
 
         socket.on("connect", () => {
-            console.log(
-                `encoders-stats: conencted to teradek core ${socket.id}`
-            );
+            console.log(`encoders-stats: conencted to teradek core ${socket.id}`);
         });
 
-        for (let encoder of encoders) {
-            if (encoder?.type === "encoder") {
-                socket.emit("room:enter", `device:${encoder.sid}:preview`);
-                socket.emit(
-                    "room:enter",
-                    `device:${encoder.sid}:audio-preview`
-                );
+        for (let encoder of workerData.encoders) {
+            socket.emit("room:enter", `device:${encoder?.sid}:preview`);
+            socket.emit("room:enter", `device:${encoder?.sid}:audio-preview`);
+            socket.emit("room:enter", `device:${encoder?.sid}:stats`);
 
-                socket.emit("room:enter", `device:${encoder.sid}:stats`);
-
-                socket.on(`device:${encoder.sid}:preview`, async (event) => {
-                    if (event.status === "ok") {
-                        const entry = await devicesCollection.updateOne(
-                            {
-                                sid: encoder.sid,
-                            },
-                            { $set: { thumbnail: event.img } }
-                        );
-                    }
-                });
-
-                socket.on(
-                    `device:${encoder.sid}:audio-preview`,
-                    async (event) => {
-                        const entry = await devicesCollection.updateOne(
-                            {
-                                sid: encoder.sid,
-                            },
-                            {
-                                $push: {
-                                    audioHistory: {
-                                        $each: [
-                                            { ...event, timestamp: Date.now() },
-                                        ],
-                                        $slice: 20,
-                                    },
-                                },
-                            }
-                        );
-                    }
-                );
-
-                socket.on(`device:${encoder.sid}:stats`, async (event) => {
+            socket.on(`device:${encoder?.sid}:preview`, async (event) => {
+                if (event.status === "ok") {
                     const entry = await devicesCollection.updateOne(
                         {
-                            sid: encoder.sid,
+                            sid: encoder?.sid,
                         },
-                        {
-                            $push: {
-                                videoHistory: {
-                                    $each: [{ ...event }],
-                                    $slice: 200,
-                                },
-                            },
-                        }
+                        { $set: { thumbnail: event.img } }
                     );
-                });
-            }
+                }
+            });
+
+            socket.on(`device:${encoder?.sid}:audio-preview`, async (event) => {
+                const stats = await filterAudio(event);
+                const entry = await devicesCollection.updateOne(
+                    {
+                        sid: encoder?.sid,
+                    },
+                    {
+                        $push: {
+                            audioHistory: {
+                                $each: [{ ...stats, timestamp: Date.now() }],
+                                $slice: 20,
+                            },
+                        },
+                    }
+                );
+            });
+
+            socket.on(`device:${encoder?.sid}:stats`, async (event) => {
+                const stats = await filterStats(event);
+                const entry = await devicesCollection.updateOne(
+                    {
+                        sid: encoder?.sid,
+                    },
+                    {
+                        $push: {
+                            videoHistory: {
+                                $each: [{ ...stats }],
+                                $slice: 200,
+                            },
+                        },
+                    }
+                );
+            });
         }
         await delay(updateDelay);
     }

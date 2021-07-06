@@ -10,6 +10,7 @@ const hashResponse = require("@core/hash-response");
 const getEncoderDevices = require("@services/devices-encoder-get");
 const getDecoderDevices = require("@services/devices-decoder-get");
 const getDevices = require("@services/devices-get");
+const getInterestingDevices = require("@services/devices-get-interesting");
 const getDevice = require("@services/device-get");
 const renameDevice = require("@services/device-rename");
 const encoderStart = require("@services/encoder-start");
@@ -26,19 +27,11 @@ device.get("/start/:sid", async function (req, res) {
 });
 
 device.put("/pair/:sid", async function (req, res) {
-    hashResponse(
-        res,
-        req,
-        await pairDevice(req?.params?.sid, req?.body?.decoderSid)
-    );
+    hashResponse(res, req, await pairDevice(req?.params?.sid, req?.body?.decoderSid));
 });
 
 device.put("/unpair/:sid", async function (req, res) {
-    hashResponse(
-        res,
-        req,
-        await unpairDevice(req?.params?.sid, req?.body?.decoderSid)
-    );
+    hashResponse(res, req, await unpairDevice(req?.params?.sid, req?.body?.decoderSid));
 });
 
 device.get("/all/encoders", async function (req, res) {
@@ -53,12 +46,12 @@ device.get("/all", async function (req, res) {
     hashResponse(res, req, await getDevices());
 });
 
+device.get("/interesting", async function (req, res) {
+    hashResponse(res, req, await getInterestingDevices());
+});
+
 device.put("/rename/:sid", async function (req, res) {
-    hashResponse(
-        res,
-        req,
-        await renameDevice(req?.params?.sid, req.body?.name)
-    );
+    hashResponse(res, req, await renameDevice(req?.params?.sid, req.body?.name));
 });
 
 device.get("/:sid", async function (req, res) {

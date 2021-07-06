@@ -12,7 +12,7 @@ const updateDelay = 10000;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["username", "password", "organisation"],
+    restartOn: ["username", "password", "organisation", "encoders"],
 });
 
 const main = async () => {
@@ -20,31 +20,28 @@ const main = async () => {
     await mongoDb.connect(workerData?.id);
     const tokenCollection = await mongoDb.db.collection("token");
     const devicesCollection = await mongoDb.db.collection("devices");
-    const linksCollection = await mongoDb.db.collection("links");
 
-    console.log(`links: teradek-core encoder worker starting...`);
+    console.log(`links: teradek-core link worker starting...`);
 
     while (true) {
         const token = await tokenCollection.findOne();
-        const encoders = await devicesCollection
-            .find({ type: "encoder" })
-            .toArray();
 
-        for (let encoder of encoders) {
-            const response = await axios.get(
-                `v1.0/${workerData.organisation}/pairs`,
-                {
-                    params: {
-                        auth_token: token?.auth_token,
-                        encoderSid: encoder.sid,
-                    },
-                }
-            );
+        for (let encoder of workerData.encoders) {
+            const response = await axios.get(`v1.0/${workerData.organisation}/pairs`, {
+                params: {
+                    auth_token: token?.auth_token,
+                    encoderSid: encoder?.sid,
+                },
+            });
 
             if (response.data?.meta?.status === "ok") {
                 const data = response.data?.response[0];
-                const query = { encoderSid: data?.encoderSid };
-                await linksCollection.replaceOne(query, data, { upsert: true });
+                await devicesCollection.updateOne(
+                    {
+                        sid: data?.encoderSid,
+                    },
+                    { $set: { links: data } }
+                );
             } else {
                 throw response.data;
             }

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -72,9 +72,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EncoderRow({ panelId, encoder, decoders, channels, links }) {
+export default function EncoderRow({ panelId, encoder, decoders, channels }) {
     const classes = useStyles();
-    const [redirectUrl, setRedirectUrl] = useState(null);
+    const history = useHistory();
 
     const getThumbnail = () => {
         let src = "/images/blank.png";
@@ -212,19 +212,15 @@ export default function EncoderRow({ panelId, encoder, decoders, channels, links
     };
 
     const handleRowClicked = (sid) => {
-        setRedirectUrl(`/panel/${panelId}/encoder/${sid}`);
+        history.push(`/panel/${panelId}/encoder/${sid}`);
     };
-
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
 
     return (
         <TableRow hover className={classes.tableRow} key={encoder._id} onClick={() => handleRowClicked(encoder?.sid)}>
             <TableCell className={classes.colThumbnail}>{getThumbnail()}</TableCell>
             <TableCell className={classes.colName}>{encoder.name}</TableCell>
             <TableCell className={classes.colModel}>{encoder.model}</TableCell>
-            <TableCell className={classes.colDecoders}>{getLinkedDecoders(links)}</TableCell>
+            <TableCell className={classes.colDecoders}>{getLinkedDecoders(encoder?.links)}</TableCell>
             <TableCell className={classes.colState}>{getButton()}</TableCell>
         </TableRow>
     );
