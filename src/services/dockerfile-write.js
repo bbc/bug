@@ -14,7 +14,6 @@ module.exports = async (filepath) => {
             "FROM node:14",
             `WORKDIR ${moduleHome}`,
             `COPY . .`,
-            `COPY ./core ./core`,
             `RUN npm install`,
             `CMD ["npm","run","${nodeEnv}"]`,
         ];
