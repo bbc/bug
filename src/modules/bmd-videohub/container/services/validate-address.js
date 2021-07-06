@@ -1,5 +1,5 @@
 "use strict";
-const validationResult = require("@core/validationResult");
+const validationResult = require("@core/ValidationResult");
 const ping = require("ping");
 const videohubTest = require("@services/videohub-test");
 
