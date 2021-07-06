@@ -1,35 +1,17 @@
 import React from "react";
 import PanelTabbedForm from "@core/PanelTabbedForm";
-import { Redirect } from "react-router";
 import InterfaceTabDetails from "./InterfaceTabDetails";
 import InterfaceTabEthernet from "./InterfaceTabEthernet";
 import InterfaceTabStatistics from "./InterfaceTabStatistics";
 import InterfaceTabHardware from "./InterfaceTabHardware";
-import Loading from "@components/Loading";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useHistory } from "react-router-dom";
 
 export default function Interface({ panelId, interfaceName }) {
-    const [redirectUrl, setRedirectUrl] = React.useState(null);
+    const history = useHistory();
 
     const handleBackClicked = () => {
-        setRedirectUrl(`/panel/${panelId}`);
+        history.push(`/panel/${panelId}`);
     };
-
-    const iface = useApiPoller({
-        url: `/container/${panelId}/interface/${interfaceName}`,
-        interval: 2000,
-    });
-
-    if (iface.status === "idle" || iface.status === "loading") {
-        return <Loading height="30vh"/>;
-    }
-    if (iface.status === "success" && !iface.data) {
-        return <>Interface not found</>;
-    }
-
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
 
     return (
         <>
@@ -37,10 +19,10 @@ export default function Interface({ panelId, interfaceName }) {
                 onClose={handleBackClicked}
                 labels={["Details", "Ethernet", "Statistics", "Hardware"]}
                 content={[
-                    <InterfaceTabDetails iface={iface.data} panelId={panelId} interfaceName={interfaceName} />,
-                    <InterfaceTabEthernet iface={iface.data} panelId={panelId} interfaceName={interfaceName} />,
-                    <InterfaceTabStatistics iface={iface.data} panelId={panelId} interfaceName={interfaceName} />,
-                    <InterfaceTabHardware iface={iface.data} panelId={panelId} interfaceName={interfaceName} />,
+                    <InterfaceTabDetails panelId={panelId} interfaceName={interfaceName} />,
+                    <InterfaceTabEthernet panelId={panelId} interfaceName={interfaceName} />,
+                    <InterfaceTabStatistics panelId={panelId} interfaceName={interfaceName} />,
+                    <InterfaceTabHardware panelId={panelId} interfaceName={interfaceName} />,
                 ]}
             ></PanelTabbedForm>
         </>

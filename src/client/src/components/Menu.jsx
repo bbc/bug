@@ -26,8 +26,8 @@ import _ from "lodash";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 
 const useStyles = makeStyles((theme) => ({
-    critical: {
-        opacity: 0.5,
+    list: {
+        padding: 0,
     },
     groupPanel: {
         padding: 0,
@@ -146,7 +146,7 @@ const Menu = ({ showGroups = true }) => {
                                 {groupKey}
                             </AccordionSummary>
                             <AccordionDetails className={classes.groupPanel}>
-                                <List aria-label="list of enabled modules">
+                                <List className={classes.list}>
                                     {groupedPanels[groupKey].map((eachPanel) => renderMenuItem(eachPanel))}
                                 </List>
                             </AccordionDetails>
@@ -158,7 +158,11 @@ const Menu = ({ showGroups = true }) => {
     };
 
     const menuItems = (items) => {
-        return <List aria-label="list of enabled modules">{items.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
+        return (
+            <List className={classes.list} aria-label="list of enabled modules">
+                {items.map((eachPanel) => renderMenuItem(eachPanel))}
+            </List>
+        );
     };
 
     const renderPanelMenuItems = () => {
@@ -182,7 +186,7 @@ const Menu = ({ showGroups = true }) => {
         if (user?.data || enabledStrategiesCount === 0) {
             return (
                 <>
-                    <List>
+                    <List className={classes.list}>
                         <ListItem
                             button
                             component={Link}
@@ -201,7 +205,7 @@ const Menu = ({ showGroups = true }) => {
                     <Divider className={classes.divider} />
                     {renderPanelMenuItems()}
                     {enabledPanelList.length > 0 ? <Divider className={classes.divider} /> : null}
-                    <List>
+                    <List className={classes.list}>
                         <ListItem
                             button
                             component={Link}

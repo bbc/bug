@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import formatBps from "@core/format-bps";
 import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { ComposedChart, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Button from "@material-ui/core/Button";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
@@ -13,6 +13,11 @@ import { TimePicker } from "@material-ui/pickers";
 import { useWindowSize } from "@utils/WindowSize";
 
 const useStyles = makeStyles((theme) => ({
+    chart: {
+        "& .recharts-legend-item": {
+            marginLeft: 16,
+        },
+    },
     button: {
         margin: theme.spacing(1),
     },
@@ -46,11 +51,15 @@ export default function TrafficChart({ url }) {
 
     const doAutoRefresh = useCallback(() => {
         setRange([Date.now() - rangeSpan * 60000, Date.now()]);
-        timer.current = setTimeout(doAutoRefresh, 2000);
+        timer.current = setTimeout(doAutoRefresh, 5000);
     }, []);
 
     useAsyncEffect(async () => {
-        setStats(await AxiosGet(`${url}/${range[0]}/${range[1]}`));
+        const fetchedStats = await AxiosGet(`${url}/${range[0]}/${range[1]}`);
+        // for (let eachStat of fetchedStats) {
+        //     eachStat["rx"] = eachStat["rx"] * -1;
+        // }
+        setStats(fetchedStats);
     }, [url, range]);
 
     useEffect(() => {
@@ -125,26 +134,47 @@ export default function TrafficChart({ url }) {
     return (
         <>
             <ResponsiveContainer width="100%" height={chartHeight}>
-                <BarChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                    <Bar isAnimationActive={false} dataKey="tx" fill="#0000ff" />
-                    <Bar isAnimationActive={false} dataKey="rx" fill="#ff0000" />
+                <ComposedChart
+                    barGap={1}
+                    data={stats}
+                    margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+                    className={classes.chart}
+                >
+                    <Bar isAnimationActive={false} dataKey="tx" fill="#337ab7" />
+                    <Bar isAnimationActive={false} dataKey="rx" fill="#bb2828" />
+                    <Legend
+                        width={70}
+                        layout="vertical"
+                        wrapperStyle={{
+                            top: 20,
+                            right: 20,
+                            backgroundColor: "#333",
+                            border: "1px solid #333",
+                            borderRadius: 3,
+                            lineHeight: "40px",
+                            opacity: 0.8,
+                        }}
+                        formatter={(value) => {
+                            return value.toUpperCase();
+                        }}
+                    />
                     <XAxis
                         dataKey="timestamp"
                         type="number"
                         domain={range}
-                        tickCount={1}
+                        tickCount={5}
                         tickFormatter={(value) => {
                             return format(value, "kk:mm");
                         }}
                     />
                     <YAxis
                         tickFormatter={(value) => {
-                            return formatBps(value);
+                            return formatBps(value, 0);
                         }}
                         width={80}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                </BarChart>
+                </ComposedChart>
             </ResponsiveContainer>
             <div className={classes.toolbar}>
                 <Button

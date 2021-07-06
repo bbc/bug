@@ -7,6 +7,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import { useApiPoller } from "@utils/ApiPoller";
+import Loading from "@components/Loading";
 
 const useStyles = makeStyles((theme) => ({
     tableName: {
@@ -17,8 +19,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function InterfaceTabDetails({ iface, panelId, interfaceName }) {
+export default function InterfaceTabDetails({ panelId, interfaceName }) {
     const classes = useStyles();
+
+    const iface = useApiPoller({
+        url: `/container/${panelId}/interface/${interfaceName}`,
+        interval: 5000,
+    });
+
+    if (iface.status === "idle" || iface.status === "loading") {
+        return <Loading height="30vh" />;
+    }
+    if (iface.status === "success" && !iface.data) {
+        return <>Interface not found</>;
+    }
 
     return (
         <>
@@ -30,23 +44,23 @@ export default function InterfaceTabDetails({ iface, panelId, interfaceName }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     Name
                                 </TableCell>
-                                <TableCell>{iface.name}</TableCell>
+                                <TableCell>{iface.data.name}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head">Comment</TableCell>
-                                <TableCell>{iface.comment}</TableCell>
+                                <TableCell>{iface.data.comment}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head">Running</TableCell>
-                                <TableCell>{iface.running ? "yes" : "no"}</TableCell>
+                                <TableCell>{iface.data.running ? "yes" : "no"}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head">Disabled</TableCell>
-                                <TableCell>{iface.disabled ? "yes" : "no"}</TableCell>
+                                <TableCell>{iface.data.disabled ? "yes" : "no"}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head">Type</TableCell>
-                                <TableCell>{iface.type}</TableCell>
+                                <TableCell>{iface.data.type}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head">MAC Address</TableCell>
@@ -59,7 +73,7 @@ export default function InterfaceTabDetails({ iface, panelId, interfaceName }) {
                             <TableRow>
                                 <TableCell variant="head">MTU</TableCell>
                                 <TableCell>
-                                    {iface.mtu} / actual: {iface["actual-mtu"]}
+                                    {iface.data.mtu} / actual: {iface["actual-mtu"]}
                                 </TableCell>
                             </TableRow>
                         </TableBody>

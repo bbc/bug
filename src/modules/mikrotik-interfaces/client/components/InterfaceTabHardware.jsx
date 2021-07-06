@@ -7,6 +7,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
+import { useApiPoller } from "@utils/ApiPoller";
+import Loading from "@components/Loading";
 
 const useStyles = makeStyles((theme) => ({
     tableName: {
@@ -17,20 +19,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function InterfaceTabHardware({ iface, panelId, interfaceName }) {
+export default function InterfaceTabHardware({ panelId, interfaceName }) {
     const classes = useStyles();
+
+    const iface = useApiPoller({
+        url: `/container/${panelId}/interface/${interfaceName}`,
+        interval: 5000,
+    });
+
+    if (iface.status === "idle" || iface.status === "loading") {
+        return <Loading height="30vh" />;
+    }
+    if (iface.status === "success" && !iface.data) {
+        return <>Interface not found</>;
+    }
 
     const InterfaceText = ({ title, field }) => (
         <TableRow>
-            <TableCell variant="head" className={classes.tableName}>{title}</TableCell>
-            <TableCell className={classes.tableValue}>{iface.linkstats && iface.linkstats[field] ? iface.linkstats[field] : ""}</TableCell>
+            <TableCell variant="head" className={classes.tableName}>
+                {title}
+            </TableCell>
+            <TableCell className={classes.tableValue}>
+                {iface.data.linkstats && iface.data.linkstats[field] ? iface.data.linkstats[field] : ""}
+            </TableCell>
         </TableRow>
     );
 
     const InterfaceBoolean = ({ title, field }) => (
         <TableRow>
-            <TableCell variant="head" className={classes.tableName}>{title}</TableCell>
-            <TableCell className={classes.tableValue}>{iface.linkstats && iface.linkstats[field] !== null ? ( iface.linkstats[field] ? "yes" : "no" ) : "" }</TableCell>
+            <TableCell variant="head" className={classes.tableName}>
+                {title}
+            </TableCell>
+            <TableCell className={classes.tableValue}>
+                {iface.data.linkstats && iface.data.linkstats[field] !== null
+                    ? iface.data.linkstats[field]
+                        ? "yes"
+                        : "no"
+                    : ""}
+            </TableCell>
         </TableRow>
     );
 

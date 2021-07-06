@@ -1,5 +1,8 @@
 module.exports = (bits, decimals) => {
     if (bits === 0) return "0";
+    if (bits < 0) {
+        bits = bits * -1;
+    }
     if (decimals === undefined) {
         decimals = 2;
     }
