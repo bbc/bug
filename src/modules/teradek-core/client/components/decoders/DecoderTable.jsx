@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DecodersTable({ panelId, encoders, decoders, channels }) {
+export default function DecodersTable({ header, panelId, encoders, decoders, channels }) {
     const classes = useStyles();
     const panelConfig = useSelector((state) => state.panelConfig);
 
@@ -66,6 +66,21 @@ export default function DecodersTable({ panelId, encoders, decoders, channels })
         return rows;
     };
 
+    const getHeader = () => {
+        if (header) {
+            return (
+                <TableHead className={classes.tableHead}>
+                    <TableRow>
+                        <TableCell className={classes.colName}>Name</TableCell>
+                        <TableCell className={classes.colModel}>Model</TableCell>
+                        <TableCell className={classes.colState}>State</TableCell>
+                    </TableRow>
+                </TableHead>
+            );
+        }
+        return null;
+    };
+
     if (panelConfig.status === "loading" || panelConfig.status === "idle") {
         return <Loading />;
     }
@@ -74,13 +89,7 @@ export default function DecodersTable({ panelId, encoders, decoders, channels })
         <>
             <TableContainer component={Paper} square>
                 <Table className={classes.table} aria-label="simple table">
-                    <TableHead className={classes.tableHead}>
-                        <TableRow>
-                            <TableCell className={classes.colName}>Name</TableCell>
-                            <TableCell className={classes.colModel}>Model</TableCell>
-                            <TableCell className={classes.colState}>State</TableCell>
-                        </TableRow>
-                    </TableHead>
+                    {getHeader()}
                     <TableBody>{renderRows(decoders)}</TableBody>
                 </Table>
             </TableContainer>

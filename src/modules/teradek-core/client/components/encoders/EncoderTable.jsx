@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EncodersTable({ panelId, encoders, decoders, channels }) {
+export default function EncodersTable({ header, panelId, encoders, decoders, channels }) {
     const classes = useStyles();
     const panelConfig = useSelector((state) => state.panelConfig);
 
@@ -90,6 +90,22 @@ export default function EncodersTable({ panelId, encoders, decoders, channels })
         return rows;
     };
 
+    const getHeader = () => {
+        if (header) {
+            return (
+                <TableHead className={classes.tableHead}>
+                    <TableRow>
+                        <TableCell className={classes.colThumbnail}>Thumbnail</TableCell>
+                        <TableCell className={classes.colName}>Name</TableCell>
+                        <TableCell className={classes.colLinks}>Connections</TableCell>
+                        <TableCell className={classes.colState}></TableCell>
+                    </TableRow>
+                </TableHead>
+            );
+        }
+        return null;
+    };
+
     if (panelConfig.status === "loading" || panelConfig.status === "idle") {
         return <Loading />;
     }
@@ -98,15 +114,7 @@ export default function EncodersTable({ panelId, encoders, decoders, channels })
         <>
             <TableContainer component={Paper} square>
                 <Table className={classes.table} aria-label="simple table">
-                    <TableHead className={classes.tableHead}>
-                        <TableRow>
-                            <TableCell className={classes.colThumbnail}>Thumbnail</TableCell>
-                            <TableCell className={classes.colName}>Name</TableCell>
-                            <TableCell className={classes.colModel}>Model</TableCell>
-                            <TableCell className={classes.colLinks}>Connections</TableCell>
-                            <TableCell className={classes.colState}></TableCell>
-                        </TableRow>
-                    </TableHead>
+                    {getHeader()}
                     <TableBody>{renderRows(encoders)}</TableBody>
                 </Table>
             </TableContainer>

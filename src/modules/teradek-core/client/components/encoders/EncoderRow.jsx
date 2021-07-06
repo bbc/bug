@@ -170,7 +170,8 @@ export default function EncoderRow({ panelId, encoder, decoders, channels }) {
         return channels[index]?.title;
     };
 
-    const getLinkedDecoders = (links) => {
+    const getLinkedDevices = (links) => {
+        console.log(links);
         const chips = [];
         if (links?.linksToDecoders) {
             for (let link of links?.linksToDecoders) {
@@ -215,12 +216,23 @@ export default function EncoderRow({ panelId, encoder, decoders, channels }) {
         history.push(`/panel/${panelId}/encoder/${sid}`);
     };
 
+    const getStatus = () => {
+        if (encoder?.status === "offline") {
+            return false;
+        }
+        return true;
+    };
+
     return (
-        <TableRow hover className={classes.tableRow} key={encoder._id} onClick={() => handleRowClicked(encoder?.sid)}>
+        <TableRow
+            hover={getStatus()}
+            className={classes.tableRow}
+            key={encoder._id}
+            onClick={() => handleRowClicked(encoder?.sid)}
+        >
             <TableCell className={classes.colThumbnail}>{getThumbnail()}</TableCell>
             <TableCell className={classes.colName}>{encoder.name}</TableCell>
-            <TableCell className={classes.colModel}>{encoder.model}</TableCell>
-            <TableCell className={classes.colDecoders}>{getLinkedDecoders(encoder?.links)}</TableCell>
+            <TableCell className={classes.colDecoders}>{getLinkedDevices(encoder?.links)}</TableCell>
             <TableCell className={classes.colState}>{getButton()}</TableCell>
         </TableRow>
     );
