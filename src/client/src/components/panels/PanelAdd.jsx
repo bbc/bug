@@ -54,12 +54,14 @@ export default function PanelsAdd(props) {
 
     const getModuleOptions = () => {
         const modules = [<option key={`_select`} value="" disabled></option>];
-        for (let module of moduleList) {
-            modules.push(
-                <option key={module.name} value={module?.name}>
-                    {module?.longname}
-                </option>
-            );
+        if (moduleList && Array.isArray(moduleList)) {
+            for (let module of moduleList) {
+                modules.push(
+                    <option key={module.name} value={module?.name}>
+                        {module?.longname}
+                    </option>
+                );
+            }
         }
         return modules;
     };
