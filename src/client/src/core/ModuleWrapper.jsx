@@ -9,7 +9,7 @@ import pageTitleSlice from "@redux/pageTitleSlice";
 import { Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { usePanel } from "@data/Panel";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 
 function ModuleSwitch({ children, panelId }) {
     // we memoize this to hide any panel.data changes from updating the page
@@ -22,6 +22,7 @@ export default function ModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
+    const history = useHistory();
 
     usePanel({ panelId });
 
@@ -35,7 +36,7 @@ export default function ModuleWrapper({ panelId, children }) {
     }, [panelConfig, dispatch]);
 
     if (!panelConfig.data.enabled) {
-        return <Redirect push to={{ pathname: "/" }} />;
+        history.push(`/`);
     }
 
     if (panel.status === "loading") {

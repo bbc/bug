@@ -18,19 +18,17 @@ export default function PagePanel(props) {
 
     // we memoize this as we don't care if the panelconfig has changed in here - just the status or id
     return React.useMemo(() => {
-        if (panelConfig.status === "loading") {
+        if (panelConfig.status !== "success") {
             return <Loading />;
         }
-        if (panelConfig.status === "success") {
-            if (Modules["modules"][moduleName]) {
-                const Module = Modules["modules"][moduleName]["client"]["Module"];
-                // we only include pathname here to trigger a re-render if the URL changes
-                return <Module panelId={panelId} pathname={location.pathname} />;
-            }
 
-            // the panel doesn't exist - we'll just dump back to the home page
-            return <Redirect push to={{ pathname: "/" }} />;
+        if (Modules["modules"][moduleName]) {
+            const Module = Modules["modules"][moduleName]["client"]["Module"];
+            // we only include pathname here to trigger a re-render if the URL changes
+            return <Module panelId={panelId} pathname={location.pathname} />;
         }
-        return null;
+
+        // the panel doesn't exist - we'll just dump back to the home page
+        return <Redirect push to={{ pathname: "/" }} />;
     }, [panelConfig.status, panelId, moduleName, location.pathname]);
 }

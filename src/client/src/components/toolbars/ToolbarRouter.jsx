@@ -28,11 +28,7 @@ const ToolbarRouter = (props) => {
 
     const PanelToolbar = () => {
         if (panelConfig.status !== "success") {
-            return null;
-        }
-
-        if (!panelConfig.data) {
-            return null;
+            return <></>;
         }
 
         if (Toolbars["modules"][panelConfig.data.module]) {
@@ -40,7 +36,7 @@ const ToolbarRouter = (props) => {
             return <Toolbar panelId={panelConfig.data.id} />;
         }
 
-        return null;
+        return <></>;
     };
 
     switch (location.pathname) {

@@ -31,30 +31,46 @@ const fetch = async () => {
                     statusItems: [],
                 };
 
-                // find the module config for this panel
-                const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
+                // check needsConfigured first ...
+                if (eachPanelConfig.needsConfigured) {
+                    panelStatus.statusItems.push(
+                        new StatusItem({
+                            key: "panelnotconfigured",
+                            message: [
+                                "Panel has not yet been configured for use",
+                                "Please configure the panel with the required fields"
+                            ],
+                            type: "critical",
+                            flags: ["configurePanel"],
+                        })
+                    );
+                }
+                else {
+                    // find the module config for this panel
+                    const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
 
-                if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
-                    const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
-                    try {
-                        let response = await axios.get(url);
-                        if (response.data.status === "success") {
-                            panelStatus.statusItems = panelStatus.statusItems.concat(response.data.data);
-                        } else {
-                            throw new Error();
+                    if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
+                        const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
+                        try {
+                            let response = await axios.get(url);
+                            if (response.data.status === "success") {
+                                panelStatus.statusItems = panelStatus.statusItems.concat(response.data.data);
+                            } else {
+                                throw new Error();
+                            }
+                        } catch (error) {
+                            panelStatus.statusItems.push(
+                                new StatusItem({
+                                    key: "panelnotreachable",
+                                    message: [
+                                        "Panel container is not reachable.",
+                                        "There may be more information in the container logs",
+                                    ],
+                                    type: "critical",
+                                    flags: ["restartPanel", "viewPanelLogs"],
+                                })
+                            );
                         }
-                    } catch (error) {
-                        panelStatus.statusItems.push(
-                            new StatusItem({
-                                key: "panelnotreachable",
-                                message: [
-                                    "Panel container is not reachable.",
-                                    "There may be more information in the container logs",
-                                ],
-                                type: "critical",
-                                flags: ["restartPanel", "viewPanelLogs"],
-                            })
-                        );
                     }
                 }
 
