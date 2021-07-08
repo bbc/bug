@@ -5,6 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
+const mongoCreateIndex = require("@core/mongo-createindex");
 const videohub = require("@utils/videohub-promise");
 
 const updateDelay = 2000;
@@ -38,7 +39,7 @@ const saveResult = async (newResults) => {
             }
 
             // add timestamp
-            existingData.timestamp = Date.now();
+            existingData.timestamp = new Date();
 
             await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
         }
@@ -49,17 +50,19 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
+    // get the collection reference
     dataCollection = await mongoCollection("data");
+
+    // and now create the index with ttl
+    await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 60 });
 
     // remove previous values
     dataCollection.deleteMany({});
 
     // Kick things off
-
     console.log(`videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`);
 
     let router;
-
     try {
         router = new videohub({
             host: workerData.address,
@@ -74,10 +77,24 @@ const main = async () => {
 
     await router.connect();
     console.log("videohub-worker: waiting for events ...");
+
+    let statusDumpTime = Date.now();
+    let statusDumpFields = ["VIDEOHUB DEVICE", "INPUT LABELS", "OUTPUT LABELS", "OUTPUT_LOCKS", "VIDEO OUTPUT ROUTING"];
     while (true) {
         // poll occasionally
         await delay(updateDelay);
-        await router.send("PING");
+
+        // every 30 seconds we re-request all the blocks
+        if (statusDumpTime + 30 * 1000 < Date.now()) {
+            statusDumpTime = Date.now();
+            for (let eachField of statusDumpFields) {
+                await router.send(eachField);
+            }
+        } else {
+            // otherwise we just request an 'ack' to keep the database timestamp fresh
+            await router.send("PING");
+        }
+
         if (!lastSeen) {
             // it didn't work
             throw new Error("No response from device");
