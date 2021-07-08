@@ -31,7 +31,7 @@ const ToolbarRouter = (props) => {
             return <></>;
         }
 
-        if (Toolbars["modules"][panelConfig.data.module]) {
+        if (Toolbars["modules"][panelConfig?.data?.module]) {
             const Toolbar = Toolbars["modules"][panelConfig.data.module]["client"]["Toolbar"];
             return <Toolbar panelId={panelConfig.data.id} />;
         }
