@@ -1,8 +1,10 @@
 "use strict";
 
-const id = require("nanoid");
+const { customAlphabet } = require("nanoid");
 const idLength = process.env.ID_LENGTH || 15;
+const alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 module.exports = async () => {
-    return await id.nanoid(idLength);
+    const nanoid = customAlphabet(alphabet, idLength);
+    return await nanoid();
 };
