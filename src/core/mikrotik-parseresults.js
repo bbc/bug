@@ -31,39 +31,39 @@ module.exports = ({
     deleteFields = [],
     bitrateFields = [],
 }) => {
-    for (var i in timeFields) {
-        if (timeFields[i] in result) {
-            result[timeFields[i]] = parseTime(result[timeFields[i]]) ?? 0;
+    for (const eachField of timeFields) {
+        if (eachField in result) {
+            result[eachField] = parseTime(result[eachField]) ?? 0;
         }
     }
 
-    for (var i in booleanFields) {
-        if (booleanFields[i] in result) {
-            result[booleanFields[i]] = result[booleanFields[i]] === "true" || result[booleanFields[i]] === "yes";
+    for (const eachField of booleanFields) {
+        if (eachField in result) {
+            result[eachField] = result[eachField] === "true" || result[eachField] === "yes";
         }
     }
 
-    for (var i in integerFields) {
-        if (integerFields[i] in result) {
-            result[integerFields[i]] = parseInt(result[integerFields[i]]) ?? 0;
+    for (const eachField of integerFields) {
+        if (eachField in result) {
+            result[eachField] = parseInt(result[eachField]) ?? 0;
         }
     }
 
-    for (var i in arrayFields) {
-        if (arrayFields[i] in result) {
-            result[arrayFields[i]] = result[arrayFields[i]].split(",");
+    for (const eachField of arrayFields) {
+        if (eachField in result) {
+            result[eachField] = result[eachField].split(",");
         }
     }
 
-    for (var i in deleteFields) {
-        if (deleteFields[i] in result) {
-            delete result[deleteFields[i]];
+    for (const eachField of deleteFields) {
+        if (eachField in result) {
+            delete result[eachField];
         }
     }
 
-    for (var i in bitrateFields) {
-        if (bitrateFields[i] in result) {
-            result[`${i}-text`] = formatBps(bitrateFields[i]);
+    for (const eachField of bitrateFields) {
+        if (eachField in result) {
+            result[`${eachField}-text`] = formatBps(parseInt(result[eachField]));
         }
     }
 
@@ -74,6 +74,6 @@ module.exports = ({
     }
 
     // add timestamp
-    result["timestamp"] = Date.now();
+    result["timestamp"] = new Date();
     return result;
 };
