@@ -92,7 +92,7 @@ const main = async () => {
                     },
                     {
                         $push: {
-                            audioHistory: {
+                            encoderStatsAudio: {
                                 $each: [{ ...stats, timestamp: Date.now() }],
                                 $slice: 20,
                             },
@@ -109,7 +109,7 @@ const main = async () => {
                     },
                     {
                         $push: {
-                            videoHistory: {
+                            encoderStatsVideo: {
                                 $each: [{ ...stats }],
                                 $slice: 200,
                             },

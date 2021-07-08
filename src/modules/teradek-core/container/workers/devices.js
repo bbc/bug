@@ -13,7 +13,7 @@ const updateDelay = 10000;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["username", "password", "organisation"],
+    restartOn: ["username", "password", "organisation", "encoders", "decoders"],
 });
 
 const filterDevice = async (device) => {
@@ -28,6 +28,7 @@ const filterDevice = async (device) => {
     delete device?.stopReason;
     delete device?.streamSources;
     delete device?.createdAt;
+    device.timestamp = Date.now();
     return device;
 };
 
@@ -52,7 +53,6 @@ const main = async () => {
         if (response.data?.meta?.status === "ok") {
             for (let device of response?.data?.response) {
                 device = await filterDevice(device);
-                device.timestamp = Date.now();
                 const query = { sid: device?.sid };
                 const update = {
                     $set: { ...device },

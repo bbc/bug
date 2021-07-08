@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@material-ui/core/styles";
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { useWindowSize } from "@utils/WindowSize";
 import moment from "moment";
 
@@ -20,10 +11,9 @@ export default function EncoderStatistics({ encoder, panelId }) {
     const [graphData, setGraphData] = useState([]);
 
     useEffect(() => {
-        console.log(encoder);
-        if (encoder?.videoHistory) {
-            let newData = encoder?.videoHistory.filter((item) => {
-                if (item?.bitrate_out && item?.bitrate && item?.ts) {
+        if (encoder?.encoderStatsVideo) {
+            let newData = encoder?.encoderStatsVideo.filter((item) => {
+                if (item?.bitrate_out && item?.bitrate && item?.timestamp) {
                     return true;
                 }
                 return false;
@@ -31,7 +21,7 @@ export default function EncoderStatistics({ encoder, panelId }) {
 
             newData = newData.map((item) => {
                 return {
-                    Time: item?.ts,
+                    Time: item?.timestamp,
                     Bitrate: item?.bitrate_out,
                     Wired: item?.bitrate,
                 };
@@ -47,7 +37,6 @@ export default function EncoderStatistics({ encoder, panelId }) {
 
     const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
 
-    console.log(theme);
     return (
         <ResponsiveContainer width="100%" height={chartHeight}>
             <LineChart
@@ -62,14 +51,9 @@ export default function EncoderStatistics({ encoder, panelId }) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                     label="Time"
-                    domain={[
-                        graphData[0]?.timestamp,
-                        graphData[graphData?.length - 1]?.timestamp,
-                    ]}
+                    domain={[graphData[0]?.timestamp, graphData[graphData?.length - 1]?.timestamp]}
                     dataKey="Time"
-                    tickFormatter={(unixTime) =>
-                        moment(Math.round(unixTime / 1000)).format("HH:mm Do")
-                    }
+                    tickFormatter={(unixTime) => moment(Math.round(unixTime / 1000)).format("HH:mm Do")}
                     type="number"
                 />
                 <YAxis label="bps" />

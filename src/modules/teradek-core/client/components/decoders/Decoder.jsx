@@ -16,14 +16,14 @@ export default function Decoder() {
     };
 
     const device = useApiPoller({
-        url: `/container/${params.panelId}/device/${params.encoderId}`,
+        url: `/container/${params.panelId}/device/${params.decoderId}`,
         interval: 1000,
     });
 
     if (device.status === "idle" || device.status === "loading") {
         return <Loading />;
     }
-    if (device.status === "success" && !encoder.data) {
+    if (device.status === "success" && !device.data) {
         return <>Decoder not found</>;
     }
 

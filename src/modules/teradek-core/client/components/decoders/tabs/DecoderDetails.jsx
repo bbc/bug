@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EncoderDetails({ encoder, panelId }) {
+export default function DecoderDetails({ decoder, panelId }) {
     const classes = useStyles();
 
     return (
@@ -27,47 +27,40 @@ export default function EncoderDetails({ encoder, panelId }) {
                     <Table className={classes.table} aria-label="simple table">
                         <TableBody>
                             <TableRow>
-                                <TableCell
-                                    variant="head"
-                                    className={classes.tableName}
-                                >
+                                <TableCell variant="head" className={classes.tableName}>
                                     Name
                                 </TableCell>
-                                <TableCell>{encoder?.name}</TableCell>
+                                <TableCell>{decoder?.name}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head">Model</TableCell>
-                                <TableCell>{encoder?.model}</TableCell>
+                                <TableCell>{decoder?.model}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell variant="head">
-                                    Device Status
-                                </TableCell>
-                                <TableCell>{encoder?.status}</TableCell>
+                                <TableCell variant="head">SID</TableCell>
+                                <TableCell>{decoder?.sid}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell variant="head">Device Status</TableCell>
+                                <TableCell>{decoder?.status}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head">Recording</TableCell>
-                                <TableCell>{encoder?.recordStatus}</TableCell>
+                                <TableCell>{decoder?.recordStatus}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell variant="head">
-                                    Stream Status
-                                </TableCell>
-                                <TableCell>{encoder?.streamStatus}</TableCell>
+                                <TableCell variant="head">Stream Status</TableCell>
+                                <TableCell>{decoder?.streamStatus}</TableCell>
                             </TableRow>
 
                             <TableRow>
-                                <TableCell variant="head">
-                                    Firmware Version
-                                </TableCell>
-                                <TableCell>{encoder?.firmware}</TableCell>
+                                <TableCell variant="head">Firmware Version</TableCell>
+                                <TableCell>{decoder?.firmware}</TableCell>
                             </TableRow>
 
                             <TableRow>
-                                <TableCell variant="head">
-                                    Stream Source
-                                </TableCell>
-                                <TableCell>{`${encoder?.streamSource?.host}:${encoder?.streamSource?.port}`}</TableCell>
+                                <TableCell variant="head">Stream Source</TableCell>
+                                <TableCell>{`${decoder?.streamSource?.host}:${decoder?.streamSource?.port}`}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

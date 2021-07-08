@@ -16,9 +16,21 @@ module.exports = async () => {
         }),
         await statusCheckCollection({
             collectionName: "devices",
-            message: "There are no devices avalible.",
+            message: "Device information is out of date.",
             itemType: "warning",
             timeoutSeconds: 60,
+        }),
+        await statusCheckCollection({
+            collectionName: "sputniks",
+            message: "Sputnik information is out of date.",
+            itemType: "warning",
+            timeoutSeconds: 120,
+        }),
+        await statusCheckCollection({
+            collectionName: "channels",
+            message: "Channel information is out of date.",
+            itemType: "warning",
+            timeoutSeconds: 120,
         })
     );
 };
