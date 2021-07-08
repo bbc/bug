@@ -14,7 +14,7 @@ parentPort.postMessage({
     restartDelay: 60000,
 });
 
-const updateDelay = 5000;
+const updateDelay = 10000;
 
 const main = async () => {
     // Connect to the db
@@ -29,21 +29,17 @@ const main = async () => {
 
     while (true) {
         const token = await tokenCollection.findOne();
-        const response = await axios.get(
-            `v1.0/${workerData.organisation}/sputniks`,
-            {
-                params: {
-                    auth_token: token?.auth_token,
-                    deploymentType: "manual",
-                },
-            }
-        );
+        const response = await axios.get(`v1.0/${workerData.organisation}/sputniks`, {
+            params: {
+                auth_token: token?.auth_token,
+                deploymentType: "manual",
+            },
+        });
         if (response.data?.meta?.status === "ok") {
-            await arraySaveMongo(
-                sputniksCollection,
-                response?.data?.response,
-                "identifier"
-            );
+            const sputniks = response?.data?.response.map((sputnik) => {
+                return { ...sputnik, ...{ timestamp: Date.now() } };
+            });
+            await arraySaveMongo(sputniksCollection, sputniks, "identifier");
         } else {
             console.log(response.data.meta);
             throw response.data;

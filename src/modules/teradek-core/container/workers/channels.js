@@ -25,21 +25,17 @@ const main = async () => {
 
     while (true) {
         const token = await tokenCollection.findOne();
-        const response = await axios.get(
-            `v1.0/${workerData.organisation}/cdns`,
-            {
-                params: {
-                    auth_token: token?.auth_token,
-                },
-            }
-        );
+        const response = await axios.get(`v1.0/${workerData.organisation}/cdns`, {
+            params: {
+                auth_token: token?.auth_token,
+            },
+        });
 
         if (response.data?.meta?.status === "ok") {
-            await arraySaveMongo(
-                channelsCollection,
-                response?.data?.response,
-                "id"
-            );
+            const channels = response?.data?.response.map((channel) => {
+                return { ...channel, ...{ timestamp: Date.now() } };
+            });
+            await arraySaveMongo(channelsCollection, channels, "id");
         } else {
             throw response.data;
         }

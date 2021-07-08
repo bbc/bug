@@ -6,12 +6,12 @@ import TableRow from "@material-ui/core/TableRow";
 import { useHistory } from "react-router-dom";
 import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import PauseIcon from "@material-ui/icons/Pause";
 import CloudIcon from "@material-ui/icons/Cloud";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
+import ApiSwitch from "@core/ApiSwitch";
+import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 
 const height = 100;
 
@@ -26,6 +26,18 @@ const useStyles = makeStyles((theme) => ({
     tableRow: {
         cursor: "pointer",
         minWidth: "8rem",
+    },
+    colRunning: {
+        width: "40px",
+        ["@media (max-width:500px)"]: {
+            display: "none",
+        },
+    },
+    colEnabled: {
+        width: "5rem",
+        ["@media (max-width:600px)"]: {
+            display: "none",
+        },
     },
     colThumbnail: {
         minWidth: "2rem",
@@ -46,17 +58,10 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-    colDecoders: {
+    colLinks: {
         margin: theme.spacing(0.5),
         minWidth: "2rem",
         maxWidth: "8rem",
-        ["@media (max-width:700px)"]: {
-            display: "none",
-        },
-    },
-    colState: {
-        minWidth: "2rem",
-        maxWidth: "3rem",
         ["@media (max-width:700px)"]: {
             display: "none",
         },
@@ -104,46 +109,28 @@ export default function EncoderRow({ panelId, encoder, decoders, channels }) {
         console.log(response);
     };
 
-    const handlePlay = async (sid) => {
-        const response = await AxiosGet(`/container/${panelId}/device/start/${sid}`);
-        console.log(response);
+    const handleEnabledChanged = async (checked, sid) => {
+        const command = checked ? "start" : "stop";
+        const verb = checked ? "Started" : "stop";
+        if (await AxiosCommand(`/container/${panelId}/device/start/${sid}`)) {
+            sendAlert(`${verb} encoder: ${encoder.name}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to ${command} encoder: ${encoder.name}`, { variant: "error" });
+        }
     };
 
-    const handlePause = async (sid) => {
-        const response = await AxiosGet(`/container/${panelId}/device/stop/${sid}`);
-        console.log(response);
-    };
-
-    const getButton = () => {
+    const isEnabled = () => {
         if (encoder?.streamStatus === "streaming") {
-            return (
-                <IconButton
-                    onClick={(event) => {
-                        handlePause(encoder?.sid);
-                    }}
-                    aria-label="pause"
-                >
-                    <PauseIcon />
-                </IconButton>
-            );
+            return true;
         }
-        if (encoder?.streamStatus === "paused" || encoder?.streamStatus === "stopped") {
-            return (
-                <IconButton
-                    onClick={(event) => {
-                        handlePlay(encoder?.sid);
-                    }}
-                    aria-label="play"
-                >
-                    <PlayArrowIcon />
-                </IconButton>
-            );
+        return false;
+    };
+
+    const isOnline = () => {
+        if (encoder?.status === "online") {
+            return true;
         }
-        return (
-            <IconButton disabled aria-label="play">
-                <PlayArrowIcon />
-            </IconButton>
-        );
+        return false;
     };
 
     const getDeviceName = (sid) => {
@@ -230,10 +217,20 @@ export default function EncoderRow({ panelId, encoder, decoders, channels }) {
             key={encoder._id}
             onClick={() => handleRowClicked(encoder?.sid)}
         >
-            <TableCell className={classes.colThumbnail}>{getThumbnail()}</TableCell>
+            <TableCell className={classes.colRunning}>
+                <PowerSettingsNew className={isEnabled() ? classes.iconRunning : classes.icon} />
+            </TableCell>
+            <TableCell className={classes.colEnabled}>
+                <ApiSwitch
+                    checked={isEnabled()}
+                    disabled={!isOnline()}
+                    onChange={(checked) => handleEnabledChanged(checked, encoder.sid)}
+                />
+            </TableCell>
+
             <TableCell className={classes.colName}>{encoder.name}</TableCell>
-            <TableCell className={classes.colDecoders}>{getLinkedDevices(encoder?.links)}</TableCell>
-            <TableCell className={classes.colState}>{getButton()}</TableCell>
+            <TableCell className={classes.colLinks}>{getLinkedDevices(encoder?.links)}</TableCell>
+            <TableCell className={classes.colThumbnail}>{getThumbnail()}</TableCell>
         </TableRow>
     );
 }

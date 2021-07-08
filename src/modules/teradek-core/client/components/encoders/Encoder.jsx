@@ -32,11 +32,11 @@ export default function Encoder() {
         <>
             <PanelTabbedForm
                 onClose={handleBackClicked}
-                labels={["Preview", "Statistics", "Details"]}
+                labels={["Details", "Statistics", "Preview"]}
                 content={[
-                    <EncoderPreview encoder={device?.data} panelId={params.panelId} />,
-                    <EncoderStatistics encoder={device?.data} panelId={params.panelId} />,
                     <EncoderDetails encoder={device?.data} panelId={params.panelId} />,
+                    <EncoderStatistics encoder={device?.data} panelId={params.panelId} />,
+                    <EncoderPreview encoder={device?.data} panelId={params.panelId} />,
                 ]}
             ></PanelTabbedForm>
         </>

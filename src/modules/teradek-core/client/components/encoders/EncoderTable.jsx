@@ -29,6 +29,18 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colRunning: {
+        width: "40px",
+        ["@media (max-width:500px)"]: {
+            display: "none",
+        },
+    },
+    colEnabled: {
+        width: "5rem",
+        ["@media (max-width:600px)"]: {
+            display: "none",
+        },
+    },
     colThumbnail: {
         margin: "auto",
         minWidth: "2rem",
@@ -52,13 +64,6 @@ const useStyles = makeStyles((theme) => ({
     colLinks: {
         minWidth: "2rem",
         maxWidth: "8rem",
-        ["@media (max-width:700px)"]: {
-            display: "none",
-        },
-    },
-    colState: {
-        minWidth: "2rem",
-        maxWidth: "3rem",
         ["@media (max-width:700px)"]: {
             display: "none",
         },
@@ -95,10 +100,11 @@ export default function EncodersTable({ header, panelId, encoders, decoders, cha
             return (
                 <TableHead className={classes.tableHead}>
                     <TableRow>
-                        <TableCell className={classes.colThumbnail}>Thumbnail</TableCell>
+                        <TableCell className={classes.colRunning}></TableCell>
+                        <TableCell className={classes.colEnabled}>Enabled</TableCell>
                         <TableCell className={classes.colName}>Name</TableCell>
                         <TableCell className={classes.colLinks}>Connections</TableCell>
-                        <TableCell className={classes.colState}></TableCell>
+                        <TableCell className={classes.colThumbnail}>Thumbnail</TableCell>
                     </TableRow>
                 </TableHead>
             );

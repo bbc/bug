@@ -36,7 +36,7 @@ export default function EncoderPreview({ encoder, panelId }) {
             </Typography>
 
             <Typography variant="body2" align="center" component="p">
-                {encoder?.name}
+                {encoder?.status.toUpperCase()}
             </Typography>
         </>
     );
