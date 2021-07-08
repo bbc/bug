@@ -18,6 +18,18 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colRunning: {
+        width: "40px",
+        ["@media (max-width:500px)"]: {
+            display: "none",
+        },
+    },
+    colEnabled: {
+        width: "5rem",
+        ["@media (max-width:600px)"]: {
+            display: "none",
+        },
+    },
     colName: {
         minWidth: "1rem",
         maxWidth: "4rem",
@@ -32,10 +44,20 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-    colState: {
+    colLinks: {
         minWidth: "2rem",
-        maxWidth: "3rem",
+        maxWidth: "8rem",
         ["@media (max-width:700px)"]: {
+            display: "none",
+        },
+    },
+    colTraffic: {
+        minWidth: "6rem",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+        overflow: "hidden",
+        position: "relative",
+        ["@media (max-width:450px)"]: {
             display: "none",
         },
     },
@@ -71,9 +93,12 @@ export default function DecodersTable({ header, panelId, encoders, decoders, cha
             return (
                 <TableHead className={classes.tableHead}>
                     <TableRow>
+                        <TableCell className={classes.colRunning}></TableCell>
+                        <TableCell className={classes.colEnabled}>Enabled</TableCell>
                         <TableCell className={classes.colName}>Name</TableCell>
                         <TableCell className={classes.colModel}>Model</TableCell>
-                        <TableCell className={classes.colState}>State</TableCell>
+                        <TableCell className={classes.colLinks}>Connections</TableCell>
+                        <TableCell className={classes.colTraffic}>Framerate</TableCell>
                     </TableRow>
                 </TableHead>
             );
