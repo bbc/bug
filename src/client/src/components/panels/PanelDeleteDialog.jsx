@@ -11,7 +11,9 @@ import { useAlert } from "@utils/Snackbar";
 export default function PanelDeleteDialog({ panelId, panelTitle, onClose }) {
     const sendAlert = useAlert();
 
-    const handleDeleteConfirm = async () => {
+    const handleDeleteConfirm = async (event) => {
+        event.stopPropagation();
+        event.preventDefault();
         onClose();
         if (await AxiosDelete(`/api/panel/${panelId}`)) {
             sendAlert(`Deleted panel: ${panelTitle}`, { broadcast: true, variant: "success" });
@@ -20,16 +22,20 @@ export default function PanelDeleteDialog({ panelId, panelTitle, onClose }) {
         }
     };
 
-    const handleDeleteDialogClose = () => {
+    const handleDeleteDialogClose = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
         onClose();
     };
 
     return (
-        <Dialog open onClose={handleDeleteDialogClose}>
+        <Dialog open>
             <DialogTitle id="alert-dialog-title">Delete panel?</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    This will also stop and remove any associated containers. This action is irreversible.
+                    This will also stop and remove any associated containers.
+                    <br />
+                    This action is irreversible.
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
