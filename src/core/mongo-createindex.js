@@ -15,7 +15,7 @@ module.exports = async (collection, indexName, options = {}) => {
         indexDetails[indexName] = 1;
         options['name'] = indexName;
         await collection.createIndex(indexDetails, options);
-        console.log(options);
+
     } catch (err) {
         if (err.message.indexOf("with different options")) {
             console.log(
