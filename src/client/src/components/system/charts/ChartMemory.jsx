@@ -14,7 +14,7 @@ export default function ChartMemory({ stats }) {
 
     const data = stats.map((rawData) => {
         return {
-            timestamp: rawData?.timestamp,
+            timestamp: Date.parse(rawData?.timestamp),
             used: Math.round(rawData?.memory?.used * factor),
             free: Math.round(rawData?.memory?.free * factor),
         };

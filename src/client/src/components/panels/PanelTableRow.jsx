@@ -157,7 +157,7 @@ export default function PanelTableRow(props) {
 
     const renderPowerIcon = (panel) => {
         if (
-            panel._status === "building" ||
+            panel._dockerContainer._status === "building" ||
             panel._dockerContainer._status === "stopping" ||
             panel._dockerContainer._status === "starting" ||
             panel._dockerContainer._status === "restarting"

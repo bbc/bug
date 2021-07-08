@@ -212,10 +212,16 @@ export default function InterfaceList({ panelId }) {
                 <TableCell className={classes.colSpeed}>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
                 <TableCell className={classes.colMacAddress}>{iface["mac-address"]}</TableCell>
                 <TableCell className={classes.colTraffic}>
-                    <SparkCell value={iface["traffic"]["tx-bps-text"]} history={iface["traffic"]["tx-history"]} />
+                    <SparkCell
+                        value={iface["traffic"]["tx-bits-per-second-text"]}
+                        history={iface["traffic"]["tx-history"]}
+                    />
                 </TableCell>
                 <TableCell className={classes.colTraffic}>
-                    <SparkCell value={iface["traffic"]["rx-bps-text"]} history={iface["traffic"]["rx-history"]} />
+                    <SparkCell
+                        value={iface["traffic"]["rx-bits-per-second-text"]}
+                        history={iface["traffic"]["rx-history"]}
+                    />
                 </TableCell>
                 <TableCell style={{ width: "4rem" }} className={classes.cellMenu}>
                     <InterfaceListMenu

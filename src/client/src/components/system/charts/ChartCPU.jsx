@@ -11,10 +11,9 @@ import moment from "moment";
 export default function ChartCPU({ containers, stats }) {
     const windowSize = useWindowSize();
     const panelList = useSelector((state) => state.panelList);
-
     const data = stats.map((rawData) => {
         const datapoint = {
-            timestamp: rawData?.timestamp,
+            timestamp: Date.parse(rawData?.timestamp),
         };
 
         for (let container of rawData?.containers) {

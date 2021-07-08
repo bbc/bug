@@ -8,6 +8,7 @@ const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mikrotikFetchInterfaces = require("../services/mikrotik-fetchinterfaces");
 const arraySaveMongo = require("../services/array-savemongo");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 const updateDelay = 2000;
 
@@ -21,6 +22,9 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
     const interfacesCollection = await mongoCollection("interfaces");
+
+    // and now create the index with ttl
+    await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 60 });
 
     const conn = new RosApi({
         host: workerData.address,

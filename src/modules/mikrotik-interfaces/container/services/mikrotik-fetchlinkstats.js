@@ -1,6 +1,6 @@
 'use strict';
 
-const mikrotikParseLinkStats = require('./mikrotik-parselinkstats');
+const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
 module.exports = async (conn, interfaceName) => {
 
@@ -10,13 +10,28 @@ module.exports = async (conn, interfaceName) => {
             '=once='
         ]);
 
-        if(!data || data.length !== 1) {
+        if (!data || data.length !== 1) {
             // just use an empty result - so that we overwrite the database entry
             data = [{
                 name: interfaceName
             }];
         }
-        return await(mikrotikParseLinkStats(data[0]));
+        return mikrotikParseResults({
+            result: data[0],
+            integerFields: ['sfp-link-length-copper'],
+            booleanFields: ['full-duplex',
+                'tx-flow-control',
+                'rx-flow-control',
+                'sfp-module-present',
+                'sfp-rx-loss',
+                'sfp-tx-fault',
+            ],
+
+            timeFields: [],
+            arrayFields: ['advertising', 'link-partner-advertising'],
+            deleteFields: ['eeprom'],
+            bitrateFields: [],
+        })
 
     } catch (error) {
         console.log(`fetch-linkstats: error fetching interface ${interfaceName}`);
