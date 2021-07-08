@@ -3,7 +3,7 @@
 module.exports = async (collection, interfaceArray) => {
 
     let saveDocument = {
-        timestamp: Date.now(),
+        timestamp: new Date(),
         interfaces: {}
     };
 

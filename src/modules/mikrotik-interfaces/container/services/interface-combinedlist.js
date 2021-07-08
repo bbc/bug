@@ -19,14 +19,14 @@ module.exports = async () => {
 
     const dbLinkStats = await mongoCollection('linkstats');
     let linkStats = await dbLinkStats.find().toArray();
-    const linkStatsByName = [];
+    const linkStatsByName = {};
     for (let eachLinksStat of linkStats) {
         linkStatsByName[eachLinksStat['name']] = eachLinksStat;
     }
 
     const dbTraffic = await mongoCollection('traffic');
     let traffic = await dbTraffic.find().toArray();
-    const trafficByName = [];
+    const trafficByName = {};
     for (let eachInterface of traffic) {
         trafficByName[eachInterface['name']] = eachInterface;
     }

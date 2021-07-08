@@ -1,7 +1,6 @@
 "use strict";
 
 const { parentPort, workerData, threadId } = require("worker_threads");
-
 const RosApi = require("node-routeros").RouterOSAPI;
 const delay = require("delay");
 const register = require("module-alias/register");
@@ -12,6 +11,7 @@ const interfaceList = require("../services/interface-list");
 const trafficAddHistory = require("../services/traffic-addhistory");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 const updateDelay = 2000;
 
@@ -26,11 +26,11 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     const trafficCollection = await mongoCollection("traffic");
-    const historyCollection = await mongoCollection("history", {
-        capped: true,
-        max: 86400,
-        size: 52428800,
-    });
+    const historyCollection = await mongoCollection("history");
+
+    // and now create indexes with ttl
+    await mongoCreateIndex(trafficCollection, "timestamp", { expireAfterSeconds: 60 });
+    await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
 
     const conn = new RosApi({
         host: workerData.address,

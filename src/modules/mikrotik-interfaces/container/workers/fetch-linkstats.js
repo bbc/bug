@@ -1,7 +1,6 @@
 "use strict";
 
 const { parentPort, workerData, threadId } = require("worker_threads");
-
 const RosApi = require("node-routeros").RouterOSAPI;
 const delay = require("delay");
 const register = require("module-alias/register");
@@ -9,6 +8,7 @@ const mikrotikFetchLinkStats = require("../services/mikrotik-fetchlinkstats");
 const arraySaveMongo = require("../services/array-savemongo");
 const interfaceList = require("../services/interface-list");
 const mongoDb = require("@core/mongo-db");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 const updateDelay = 5000;
 
@@ -21,8 +21,10 @@ parentPort.postMessage({
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
-
     const linkStatsCollection = await mongoDb.db.collection("linkstats");
+
+    // and now create the index with ttl
+    await mongoCreateIndex(linkStatsCollection, "timestamp", { expireAfterSeconds: 60 });
 
     const conn = new RosApi({
         host: workerData.address,
