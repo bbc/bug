@@ -13,7 +13,7 @@ export default function ChartDisk({ stats }) {
 
     const data = stats.map((rawData) => {
         const datapoint = {
-            timestamp: rawData?.timestamp,
+            timestamp: Date.parse(rawData?.timestamp),
         };
 
         for (let disk of rawData?.disks) {

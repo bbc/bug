@@ -6,7 +6,9 @@ const logger = require("@utils/logger")(module);
 const mongoDb = require("@core/mongo-db");
 const delay = require("delay");
 const mongoCollection = require("@core/mongo-collection");
+const mongoCreateIndex = require("@core/mongo-createindex");
 const si = require("systeminformation");
+let systemCollection;
 
 const filterCPU = async () => {
     const cpu = await si.cpu();
@@ -34,15 +36,10 @@ const getUptime = async () => {
 
 const fetch = async () => {
     try {
-        const systemCollection = await mongoCollection("system", {
-            capped: true,
-            max: 4320, //6 Hours worth of system stat
-            size: 500000,
-        });
 
         while (true) {
             const document = {
-                timestamp: Date.now(),
+                timestamp: new Date(),
                 uptime: await getUptime(),
                 cpu: await filterCPU(),
                 memory: await si.mem(),
@@ -62,6 +59,11 @@ const fetch = async () => {
 const main = async () => {
     // Connect to the db
     await mongoDb.connect("bug-core");
+
+    systemCollection = await mongoCollection("system");
+
+    // and now create the index with ttl = 6 hours
+    await mongoCreateIndex(systemCollection, "timestamp", { expireAfterSeconds: 60 * 60 * 6 });
 
     // Kick things off
     while (true) {

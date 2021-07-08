@@ -12,7 +12,7 @@ export default function ChartNetworkRx({ type, stats }) {
 
     const data = stats.map((rawData) => {
         const datapoint = {
-            timestamp: rawData?.timestamp,
+            timestamp: Date.parse(rawData?.timestamp),
         };
 
         for (let iface of rawData?.network) {
