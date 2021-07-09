@@ -22,6 +22,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     dropdownMenu: {},
@@ -50,6 +51,7 @@ export default function PanelToolbar(props) {
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
     const statusItemCount = panel.data._status ? panel.data._status.length : 0;
     const sendAlert = useAlert();
+    const history = useHistory();
 
     useEffect(() => {
         // if the number if status items changes, and it's now 0, hide the popup
@@ -81,6 +83,7 @@ export default function PanelToolbar(props) {
                 broadcast: true,
                 variant: "success",
             });
+            history.push("/");
         } else {
             sendAlert(`Failed to disable panel: ${panel.data.title}`, {
                 variant: "error",
