@@ -5,7 +5,6 @@ import CardContent from "@material-ui/core/CardContent";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
-import { useSelector } from "react-redux";
 import moment from "moment";
 
 export default function ChartMemory({ stats }) {

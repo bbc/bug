@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { useApiPoller } from "@utils/ApiPoller";
 import ChartCPU from "@components/system/charts/ChartCPU";
@@ -10,10 +10,10 @@ import ChartDisk from "@components/system/charts/ChartDisk";
 import ChartNetwork from "@components/system/charts/ChartNetwork";
 import Loading from "@components/Loading";
 
-const useStyles = makeStyles((theme) => ({}));
+// const useStyles = makeStyles((theme) => ({}));
 
 export default function PageSystemInfo() {
-    const classes = useStyles();
+    // const classes = useStyles();
     const dispatch = useDispatch();
 
     const stats = useApiPoller({

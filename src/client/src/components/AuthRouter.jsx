@@ -4,7 +4,7 @@ import PageLogin from "@components/pages/PageLogin";
 import PageRouter from "@components/pages/PageRouter";
 import PageReconnect from "@components/pages/PageReconnect";
 import Loading from "@components/Loading";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const AuthRouter = (props) => {
     const user = useSelector((state) => state.user);

@@ -80,6 +80,6 @@ export function useApiPoller({ url, interval, forceRefresh, errorInterval = null
             // cancel any in-flight axios requests
             source.cancel();
         };
-    }, [url, interval, forceRefresh]);
+    }, [url, interval, forceRefresh, errorInterval]);
     return pollResult;
 }

@@ -21,7 +21,6 @@ import PageSystemLogs from "@components/system/PageSystemLogs";
 import PageSystemAbout from "@components/system/PageSystemAbout";
 import PageSystemBackup from "@components/system/PageSystemBackup";
 import { Redirect } from "react-router";
-import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -85,9 +84,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const PageRouter = (props) => {
+const PageRouter = () => {
     const classes = useStyles();
-    const location = useLocation();
 
     const PageContent = () => (
         <>
@@ -206,7 +204,7 @@ const PageRouter = (props) => {
                 </Hidden>
             </div>
         ),
-        [location]
+        [classes.root]
     );
 
     return routerContent;

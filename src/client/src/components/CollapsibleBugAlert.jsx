@@ -1,8 +1,6 @@
 import React from "react";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import { fade } from "@material-ui/core/styles/colorManipulator";
 import ReplayIcon from "@material-ui/icons/Replay";
 import SettingsIcon from "@material-ui/icons/Settings";
 import AxiosCommand from "@utils/AxiosCommand";
@@ -85,13 +83,6 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
         setOpen(!open);
         event.stopPropagation();
         event.preventDefault();
-    };
-
-    const titles = {
-        critical: "Critical Error",
-        warning: "Warning",
-        info: "Info",
-        error: "Error",
     };
 
     const mappedSeverity = {
