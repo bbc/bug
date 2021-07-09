@@ -6,7 +6,6 @@ const register = require("module-alias/register");
 const axios = require("../utils/axios");
 const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
-const arraySaveMongo = require("@core/array-savemongo");
 
 const updateDelay = 10000;
 
@@ -28,6 +27,15 @@ const filterDevice = async (device) => {
     delete device?.stopReason;
     delete device?.streamSources;
     delete device?.createdAt;
+    delete device?.Settings;
+    delete device?.VideoStreamer;
+    delete device?.terminationError;
+    delete device?.VideoOutput;
+    delete device?.settings;
+    delete device?.introspection;
+    delete device?.AudioInput;
+    delete device?.Bond;
+
     device.timestamp = Date.now();
     return device;
 };
@@ -46,7 +54,6 @@ const main = async () => {
         const response = await axios.get(`v1.0/${workerData.organisation}/devices`, {
             params: {
                 auth_token: token?.auth_token,
-                firmwareDetails: true,
             },
         });
 

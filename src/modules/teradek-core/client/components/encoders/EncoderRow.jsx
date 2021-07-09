@@ -104,7 +104,6 @@ export default function EncoderRow({ panelId, encoder, decoders, channels }) {
 
     const handleUnpair = async (sid) => {
         const response = await AxiosPut(`/container/${panelId}/device/unpair/${encoder?.sid}`, { decoderSid: sid });
-        console.log(response);
     };
 
     const handleEnabledChanged = async (checked, sid) => {
@@ -156,7 +155,6 @@ export default function EncoderRow({ panelId, encoder, decoders, channels }) {
     };
 
     const getLinkedDevices = (links) => {
-        console.log(links);
         const chips = [];
         if (links?.linksToDecoders) {
             for (let link of links?.linksToDecoders) {

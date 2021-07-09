@@ -7,6 +7,9 @@ import ApiSwitch from "@core/ApiSwitch";
 import SparkCellGeneric from "@core/SparkCellGeneric";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import { useHistory } from "react-router-dom";
+import Chip from "@material-ui/core/Chip";
+import CloudIcon from "@material-ui/icons/Cloud";
+import VideocamIcon from "@material-ui/icons/Videocam";
 
 const useStyles = makeStyles((theme) => ({
     tableRow: {
@@ -45,6 +48,15 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    streaming: {
+        color: theme.palette.success.main,
+    },
+    failed: {
+        color: theme.palette.error.main,
+    },
+    connecting: {
+        color: theme.palette.warning.main,
+    },
 }));
 
 export default function DecoderRow({ panelId, decoder, encoders, channels }) {
@@ -79,6 +91,65 @@ export default function DecoderRow({ panelId, decoder, encoders, channels }) {
         return false;
     };
 
+    const getColor = (status) => {
+        if (status === "connecting") {
+            return classes.connecting;
+        }
+        if (status === "streaming") {
+            return classes.streaming;
+        }
+        if (status === "failed") {
+            return classes.failed;
+        }
+        return null;
+    };
+
+    const getDeviceName = (sid) => {
+        if (!encoders) {
+            return sid;
+        }
+        const index = encoders
+            .map((encoder) => {
+                return encoder?.sid;
+            })
+            .indexOf(sid);
+
+        return encoders[index]?.name;
+    };
+
+    const getChannelName = (id) => {
+        if (!channels) {
+            return id;
+        }
+        const index = channels
+            .map((channels) => {
+                return channels?.id;
+            })
+            .indexOf(id);
+        return channels[index]?.title;
+    };
+
+    const getLinkedDevices = (links) => {
+        const chips = [];
+        if (links?.encoderSid) {
+            chips.push(
+                <Chip
+                    icon={<VideocamIcon />}
+                    key={links?.encoderSid}
+                    size="small"
+                    className={getColor(decoder?.status)}
+                    onDelete={(event) => {
+                        handleUnpair(decoder?.sid);
+                    }}
+                    label={getDeviceName(links?.encoderSid)}
+                    variant="outlined"
+                />
+            );
+        }
+
+        return chips;
+    };
+
     return (
         <TableRow hover className={classes.tableRow} key={decoder.sid} onClick={() => handleRowClicked(decoder?.sid)}>
             <TableCell className={classes.colRunning}>
@@ -93,7 +164,7 @@ export default function DecoderRow({ panelId, decoder, encoders, channels }) {
             </TableCell>
             <TableCell className={classes.colName}>{decoder.name}</TableCell>
             <TableCell className={classes.colModel}>{decoder.model}</TableCell>
-            <TableCell className={classes.colLinks}>Linked encoder chip goes here</TableCell>
+            <TableCell className={classes.colLinks}>{getLinkedDevices(decoder?.links)}</TableCell>
             <TableCell className={classes.colTraffic}>
                 <SparkCellGeneric units="fps" historyKey="decoder_vdec_framerate" history={decoder?.decoderStats} />
             </TableCell>
