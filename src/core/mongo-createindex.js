@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * core/mongo-updateindex.js
+ * core/mongo-createindex.js
  * Creates an index in a collection
  * If it already exists, updates with the provided options
  * 0.0.1 07/07/2021 - Created first version (GH)
