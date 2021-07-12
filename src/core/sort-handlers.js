@@ -17,7 +17,7 @@ const ipAddress = (a, b, sortField) => {
 };
 
 const number = (a, b, sortField) => {
-    return b[sortField] - a[sortField];
+    return a[sortField] - b[sortField];
 }
 
 const boolean = (a, b, sortField) => {

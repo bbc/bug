@@ -2,6 +2,7 @@ import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import FilterTextField from "@components/FilterTextField";
+import FilterDropdown from "@components/FilterDropdown";
 
 export default function BugApiTable({ onChange, columns, classes }) {
     const [filters, setFilters] = React.useState({});
@@ -27,7 +28,14 @@ export default function BugApiTable({ onChange, columns, classes }) {
                         onChange={(event) => handleFilterChanged(column.field, event.target.value)}
                     />
                 );
-                break;
+            case "dropdown":
+                return (
+                    <FilterDropdown
+                        value={value}
+                        onChange={(event) => handleFilterChanged(column.field, event.target.value)}
+                        options={column.filterOptions}
+                    />
+                );
             default:
                 return <>&nbsp;</>;
         }
