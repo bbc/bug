@@ -129,6 +129,7 @@ export default function LeaseList({ panelId }) {
                 columns={[
                     {
                         title: "",
+                        sortable: false,
                         width: 48,
                         content: (item) => {
                             return (
@@ -140,6 +141,7 @@ export default function LeaseList({ panelId }) {
                     },
                     {
                         title: "",
+                        sortable: false,
                         width: 82,
                         content: (item) => {
                             return (
@@ -155,6 +157,9 @@ export default function LeaseList({ panelId }) {
                         width: "20%",
                         minWidth: 100,
                         noWrap: true,
+                        sortable: true,
+                        sortField: "name",
+                        defaultSortDirection: "asc",
                         content: (item) => {
                             return (
                                 <>
@@ -183,6 +188,9 @@ export default function LeaseList({ panelId }) {
                     {
                         title: "Address",
                         width: 140,
+                        sortable: true,
+                        sortField: "address",
+                        defaultSortDirection: "asc",
                         content: (item) => {
                             return (
                                 <a
@@ -200,6 +208,9 @@ export default function LeaseList({ panelId }) {
                     },
                     {
                         title: "Manufacturer",
+                        sortable: true,
+                        sortField: "manufacturer",
+                        defaultSortDirection: "asc",
                         content: (item) => {
                             return item.manufacturer;
                         },
@@ -208,12 +219,18 @@ export default function LeaseList({ panelId }) {
                         title: "MAC Address",
                         width: 160,
                         hideWidth: 1800,
+                        sortable: true,
+                        sortField: "mac-address",
+                        defaultSortDirection: "asc",
                         content: (item) => {
                             return item["mac-address"];
                         },
                     },
                     {
                         title: "Expires",
+                        sortable: true,
+                        sortField: "expires-after",
+                        defaultSortDirection: "desc",
                         hideWidth: 1600,
                         content: (item) => {
                             return formatExpiresAfter(item["expires-after"]);
@@ -221,6 +238,9 @@ export default function LeaseList({ panelId }) {
                     },
                     {
                         title: "Last Seen",
+                        sortable: true,
+                        sortField: "last-seen",
+                        defaultSortDirection: "desc",
                         content: (item) => {
                             return formatLastSeen(item["last-seen"]);
                         },
@@ -229,6 +249,9 @@ export default function LeaseList({ panelId }) {
                         width: "10%",
                         minWidth: 100,
                         noWrap: true,
+                        sortable: true,
+                        sortField: "server",
+                        defaultSortDirection: "asc",
                         title: "Server",
                         content: (item) => {
                             return item.server;
@@ -252,6 +275,7 @@ export default function LeaseList({ panelId }) {
                         onClick: handleCommentClicked,
                     },
                 ]}
+                defaultSortIndex={2}
                 apiUrl={`/container/${panelId}/lease`}
                 panelId={panelId}
                 onRowClick={handleDetailsClicked}

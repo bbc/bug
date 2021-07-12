@@ -11,8 +11,9 @@ import Loading from "@components/Loading";
 import BugApiTableMenu from "./BugApiTableMenu";
 import { useApiPoller } from "@utils/ApiPoller";
 import clsx from "clsx";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     content: {},
     columns: ({ columns }) => columns,
     interfaceRowClickable: {
@@ -21,10 +22,26 @@ const useStyles = makeStyles(() => ({
     interfaceRowDisabled: {
         opacity: 0.4,
     },
+    sortLabel: {
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+    },
 }));
 
-export default function BugApiTable({ panelId, apiUrl, columns, onRowClick, menuItems }) {
+export default function BugApiTable({
+    panelId,
+    apiUrl,
+    columns,
+    onRowClick,
+    menuItems,
+    sortable,
+    defaultSortIndex = 0,
+    defaultSortDirection = "asc",
+}) {
     const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
+    const [sortDirection, setSortDirection] = React.useState("asc");
+    const [sortField, setSortField] = React.useState(null);
     const classes = useStyles(columnStyles);
 
     const processColumnStyles = () => {
@@ -53,14 +70,44 @@ export default function BugApiTable({ panelId, apiUrl, columns, onRowClick, menu
     };
 
     useEffect(() => {
+        if (columns[defaultSortIndex] !== undefined) {
+            if (columns[defaultSortIndex]["defaultSortDirection"] !== undefined) {
+                setSortDirection(columns[defaultSortIndex]["defaultSortDirection"]);
+            }
+            if (columns[defaultSortIndex]["sortField"] !== undefined) {
+                setSortField(columns[defaultSortIndex]["sortField"]);
+            }
+        }
+    }, [defaultSortIndex, columns]);
+
+    useEffect(() => {
         setColumnStyles(processColumnStyles());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [columns]);
 
+    console.log(sortField, sortDirection);
+
     const pollResult = useApiPoller({
+        postData: {
+            sortDirection: sortDirection,
+            sortField: sortField,
+        },
         url: apiUrl,
         interval: 2500,
     });
+
+    const handleSortClicked = (column) => {
+        if (!sortable || !column.sortable) {
+            return false;
+        }
+        if (column.sortField === sortField) {
+            // flip the direction
+            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+            setSortField(column.sortField);
+            setSortDirection(column.defaultSortDirection !== undefined ? column.defaultSortDirection : "asc");
+        }
+    };
 
     if (pollResult.status === "loading" || pollResult.status === "idle") {
         return <Loading />;
@@ -74,8 +121,27 @@ export default function BugApiTable({ panelId, apiUrl, columns, onRowClick, menu
                         <TableHead className={classes.tableHead}>
                             <TableRow className={classes.columns}>
                                 {columns.map((column, index) => (
-                                    <TableCell key={index} className={`col_${index}`}>
-                                        {column.title}
+                                    <TableCell
+                                        key={index}
+                                        className={`col_${index} ${column.sortable ? classes.colSortable : ""}`}
+                                        onClick={() => handleSortClicked(column)}
+                                    >
+                                        {column.sortable ? (
+                                            <TableSortLabel
+                                                className={classes.sortLabel}
+                                                active={sortField === column.sortField}
+                                                direction={
+                                                    sortField === column.sortField
+                                                        ? sortDirection
+                                                        : column.defaultSortDirection
+                                                }
+                                                onClick={() => handleSortClicked(column)}
+                                            >
+                                                {column.title}
+                                            </TableSortLabel>
+                                        ) : (
+                                            column.title
+                                        )}
                                     </TableCell>
                                 ))}
 
