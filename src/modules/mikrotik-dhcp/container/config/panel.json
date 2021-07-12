@@ -1,0 +1,12 @@
+{
+    "id": "",
+    "order": 0,
+    "title": "",
+    "module": "mikrotik-dhcp",
+    "description": "",
+    "notes": "",
+    "enabled": true,
+    "address": "",
+    "username": "bug",
+    "password": ""
+}
