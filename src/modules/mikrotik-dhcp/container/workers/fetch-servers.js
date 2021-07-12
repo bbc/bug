@@ -30,7 +30,7 @@ const main = async () => {
         host: workerData.address,
         user: workerData.username,
         password: workerData.password,
-        timeout: 5,
+        timeout: 15,
     });
 
     try {
