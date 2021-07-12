@@ -2,6 +2,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const oui = require("oui");
+const sortHandlers = require("@core/sort-handlers");
 
 module.exports = async (sortField = null, sortDirection = "asc", since = 0, server = null) => {
     const dbLeases = await mongoCollection("leases");
@@ -30,15 +31,35 @@ module.exports = async (sortField = null, sortDirection = "asc", since = 0, serv
         }
 
         // set sortable hostname field (or comment if not set)
-        eachLease["name"] = eachLease["host-name"] !== "" ? eachLease["host-name"] : eachLease["comment"];
+        eachLease["name"] = "-- no name --";
+        if (eachLease["host-name"]) {
+            eachLease["name"] = eachLease["host-name"]
+        }
+        else if (eachLease["comment"]) {
+            eachLease["name"] = eachLease["comment"]
+        }
+    }
+
+    const sortHandlerList = {
+        status: sortHandlers.string,
+        disabled: sortHandlers.boolean,
+        name: sortHandlers.string,
+        address: sortHandlers.ipAddress,
+        manufacturer: sortHandlers.string,
+        ['mac-address']: sortHandlers.string,
+        ['last-seen']: sortHandlers.number,
+        ['last-seen']: sortHandlers.number,
+        ['expires-after']: sortHandlers.number,
+        server: sortHandlers.string,
     }
 
     // sort
-    if (sortField) {
+    if (sortField && sortHandlerList[sortField]) {
         if (sortDirection === "asc") {
-            leases.sort((a, b) => a[sortField].localeCompare(b[sortField], "en", { sensitivity: "base" }));
-        } else {
-            leases.sort((a, b) => b[sortField].localeCompare(a[sortField], "en", { sensitivity: "base" }));
+            leases.sort((a, b) => sortHandlerList[sortField](a, b, sortField));
+        }
+        else {
+            leases.sort((a, b) => sortHandlerList[sortField](b, a, sortField));
         }
     }
 
