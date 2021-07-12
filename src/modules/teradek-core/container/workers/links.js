@@ -26,26 +26,36 @@ const main = async () => {
     while (true) {
         const token = await tokenCollection.findOne();
 
-        for (let encoder of workerData.encoders) {
-            const response = await axios.get(`v1.0/${workerData.organisation}/pairs`, {
-                params: {
-                    auth_token: token?.auth_token,
-                    encoderSid: encoder?.sid,
-                },
-            });
+        const response = await axios.get(`v1.0/${workerData.organisation}/pairs`, {
+            params: {
+                auth_token: token?.auth_token,
+            },
+        });
 
-            if (response.data?.meta?.status === "ok") {
-                const data = response.data?.response[0];
+        if (response.data?.meta?.status === "ok") {
+            for (let link of response.data?.response) {
                 await devicesCollection.updateOne(
                     {
-                        sid: data?.encoderSid,
+                        sid: link?.encoderSid,
+                        type: "encoder",
                     },
-                    { $set: { links: data } }
+                    { $set: { links: link } }
                 );
-            } else {
-                throw response.data;
+
+                for (let decoder of link.linksToDecoders) {
+                    await devicesCollection.updateOne(
+                        {
+                            sid: decoder?.sid,
+                            type: "decoder",
+                        },
+                        { $set: { links: link } }
+                    );
+                }
             }
+        } else {
+            throw response.data;
         }
+
         await delay(updateDelay);
     }
 };
