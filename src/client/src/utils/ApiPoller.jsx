@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 
-export function useApiPoller({ url, interval, forceRefresh, errorInterval = null }) {
+export function useApiPoller({ url, interval, forceRefresh, errorInterval = null, postData = null }) {
     const timer = useRef();
     const [pollResult, setPollResult] = useState({
         status: "idle",
@@ -34,10 +34,16 @@ export function useApiPoller({ url, interval, forceRefresh, errorInterval = null
 
             try {
                 // fetch the data from the API
-                const response = await axios.get(url, {
-                    cancelToken: cancelToken,
-                });
-
+                let response = null;
+                if (postData) {
+                    response = await axios.post(url, postData, {
+                        cancelToken: cancelToken,
+                    });
+                } else {
+                    response = await axios.get(url, {
+                        cancelToken: cancelToken,
+                    });
+                }
                 // if we get an error from the API, throw it as an exception
                 if (response.data.status === "error") {
                     throw response.data.message;
@@ -80,6 +86,6 @@ export function useApiPoller({ url, interval, forceRefresh, errorInterval = null
             // cancel any in-flight axios requests
             source.cancel();
         };
-    }, [url, interval, forceRefresh, errorInterval]);
+    }, [url, interval, forceRefresh, errorInterval, postData]);
     return pollResult;
 }
