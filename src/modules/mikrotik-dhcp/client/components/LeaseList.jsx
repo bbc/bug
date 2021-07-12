@@ -158,8 +158,9 @@ export default function LeaseList({ panelId }) {
                         minWidth: 100,
                         noWrap: true,
                         sortable: true,
-                        sortField: "name",
+                        field: "name",
                         defaultSortDirection: "asc",
+                        filterType: "text",
                         content: (item) => {
                             return (
                                 <>
@@ -189,7 +190,7 @@ export default function LeaseList({ panelId }) {
                         title: "Address",
                         width: 140,
                         sortable: true,
-                        sortField: "address",
+                        field: "address",
                         defaultSortDirection: "asc",
                         content: (item) => {
                             return (
@@ -209,7 +210,8 @@ export default function LeaseList({ panelId }) {
                     {
                         title: "Manufacturer",
                         sortable: true,
-                        sortField: "manufacturer",
+                        field: "manufacturer",
+                        filterType: "text",
                         defaultSortDirection: "asc",
                         content: (item) => {
                             return item.manufacturer;
@@ -220,7 +222,8 @@ export default function LeaseList({ panelId }) {
                         width: 160,
                         hideWidth: 1800,
                         sortable: true,
-                        sortField: "mac-address",
+                        filterType: "text",
+                        field: "mac-address",
                         defaultSortDirection: "asc",
                         content: (item) => {
                             return item["mac-address"];
@@ -229,7 +232,7 @@ export default function LeaseList({ panelId }) {
                     {
                         title: "Expires",
                         sortable: true,
-                        sortField: "expires-after",
+                        field: "expires-after",
                         defaultSortDirection: "desc",
                         hideWidth: 1600,
                         content: (item) => {
@@ -239,7 +242,7 @@ export default function LeaseList({ panelId }) {
                     {
                         title: "Last Seen",
                         sortable: true,
-                        sortField: "last-seen",
+                        field: "last-seen",
                         defaultSortDirection: "desc",
                         content: (item) => {
                             return formatLastSeen(item["last-seen"]);
@@ -250,8 +253,9 @@ export default function LeaseList({ panelId }) {
                         minWidth: 100,
                         noWrap: true,
                         sortable: true,
-                        sortField: "server",
+                        field: "server",
                         defaultSortDirection: "asc",
+                        filterType: "text",
                         title: "Server",
                         content: (item) => {
                             return item.server;
@@ -280,6 +284,7 @@ export default function LeaseList({ panelId }) {
                 panelId={panelId}
                 onRowClick={handleDetailsClicked}
                 sortable
+                filterable
             />
             {renameDialogOpen ? (
                 <RenameDialog {...renameDialogProps} onClose={() => setRenameDialogOpen(false)} />

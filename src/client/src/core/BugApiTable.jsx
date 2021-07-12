@@ -12,6 +12,7 @@ import BugApiTableMenu from "./BugApiTableMenu";
 import { useApiPoller } from "@utils/ApiPoller";
 import clsx from "clsx";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import BugApiTableFilters from "@components/BugApiTableFilters";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -36,10 +37,12 @@ export default function BugApiTable({
     onRowClick,
     menuItems,
     sortable,
+    filterable,
     defaultSortIndex = 0,
     defaultSortDirection = "asc",
 }) {
     const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
+    const [filters, setFilters] = React.useState({});
     const [sortDirection, setSortDirection] = React.useState("asc");
     const [sortField, setSortField] = React.useState(null);
     const classes = useStyles(columnStyles);
@@ -74,8 +77,8 @@ export default function BugApiTable({
             if (columns[defaultSortIndex]["defaultSortDirection"] !== undefined) {
                 setSortDirection(columns[defaultSortIndex]["defaultSortDirection"]);
             }
-            if (columns[defaultSortIndex]["sortField"] !== undefined) {
-                setSortField(columns[defaultSortIndex]["sortField"]);
+            if (columns[defaultSortIndex]["field"] !== undefined) {
+                setSortField(columns[defaultSortIndex]["field"]);
             }
         }
     }, [defaultSortIndex, columns]);
@@ -85,12 +88,11 @@ export default function BugApiTable({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [columns]);
 
-    console.log(sortField, sortDirection);
-
     const pollResult = useApiPoller({
         postData: {
             sortDirection: sortDirection,
             sortField: sortField,
+            filters: filters,
         },
         url: apiUrl,
         interval: 2500,
@@ -100,11 +102,11 @@ export default function BugApiTable({
         if (!sortable || !column.sortable) {
             return false;
         }
-        if (column.sortField === sortField) {
+        if (column.field === sortField) {
             // flip the direction
             setSortDirection(sortDirection === "asc" ? "desc" : "asc");
         } else {
-            setSortField(column.sortField);
+            setSortField(column.field);
             setSortDirection(column.defaultSortDirection !== undefined ? column.defaultSortDirection : "asc");
         }
     };
@@ -129,9 +131,9 @@ export default function BugApiTable({
                                         {column.sortable ? (
                                             <TableSortLabel
                                                 className={classes.sortLabel}
-                                                active={sortField === column.sortField}
+                                                active={sortField === column.field}
                                                 direction={
-                                                    sortField === column.sortField
+                                                    sortField === column.field
                                                         ? sortDirection
                                                         : column.defaultSortDirection
                                                 }
@@ -147,6 +149,13 @@ export default function BugApiTable({
 
                                 <TableCell></TableCell>
                             </TableRow>
+                            {filterable && (
+                                <BugApiTableFilters
+                                    classes={classes}
+                                    columns={columns}
+                                    onChange={(value) => setFilters(value)}
+                                />
+                            )}
                         </TableHead>
                         <TableBody>
                             {pollResult?.data?.map((item) => (

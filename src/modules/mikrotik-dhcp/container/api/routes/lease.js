@@ -18,8 +18,7 @@ router.post(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            //TODO data: await leaseList(req.body.sortField, req.body.sortDirection, req.body.since, req.body.server),
-            data: await leaseList(req.body.sortField, req.body.sortDirection),
+            data: await leaseList(req.body.sortField, req.body.sortDirection, req.body.filters),
         });
     })
 );

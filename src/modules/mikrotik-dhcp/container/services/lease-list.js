@@ -4,21 +4,27 @@ const mongoCollection = require("@core/mongo-collection");
 const oui = require("oui");
 const sortHandlers = require("@core/sort-handlers");
 
-module.exports = async (sortField = null, sortDirection = "asc", since = 0, server = null) => {
+module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     const dbLeases = await mongoCollection("leases");
     let leases = await dbLeases.find().toArray();
     if (!leases) {
         leases = [];
     }
 
-    // filter since
-    if (since > 0) {
-        leases = leases.filter((lease) => lease["last-seen"] < since);
+    if (filters['name']) {
+        leases = leases.filter((lease) => {
+            const hasName = lease['host-name'] && lease['host-name'].toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
+            const hasComment = lease.comment && lease.comment.toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
+            return hasName || hasComment;
+        });
     }
 
-    // filter server
-    if (server) {
-        leases = leases.filter((lease) => lease["server"] === server);
+    if (filters['last-seen']) {
+        leases = leases.filter((lease) => lease["last-seen"] < filters['last-seen']);
+    }
+
+    if (filters['server']) {
+        leases = leases.filter((lease) => lease["server"] === filters['server']);
     }
 
     for (const eachLease of leases) {
@@ -39,6 +45,14 @@ module.exports = async (sortField = null, sortDirection = "asc", since = 0, serv
             eachLease["name"] = eachLease["comment"]
         }
     }
+
+    if (filters['manufacturer']) {
+        leases = leases.filter((lease) => {
+            console.log(lease.manufacturer.toLowerCase(), filters.manufacturer.toLowerCase());
+            return lease['manufacturer'] && lease['manufacturer'].toLowerCase().indexOf(filters.manufacturer.toLowerCase()) > -1;
+        });
+    }
+
 
     const sortHandlerList = {
         status: sortHandlers.string,
