@@ -24,7 +24,7 @@ export default function PageSystemBackup() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("About BUG"));
+        dispatch(pageTitleSlice.actions.set("Backup & Restore"));
     }, [dispatch]);
 
     return (
