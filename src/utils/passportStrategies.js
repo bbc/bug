@@ -126,33 +126,35 @@ const samlStrategy = (settings) => {
             passReqToCallback: true,
         },
         async (req, profile, done) => {
+            console.log(`SAML login: ${profile}`);
+
             const user = await userGetByFeild(profile.toLowerCase(), "email");
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
-                logger.info(`Local login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
+                logger.info(`SAML login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
                 return done(null, false);
             }
 
             if (!user) {
-                logger.info(`Local login: User '${username}' does not exist.`);
+                logger.info(`SAML login: User '${username}' does not exist.`);
                 return done(null, false);
             }
 
             if (!user.enabled) {
-                logger.info(`Local login: User '${user?.username}' is not enabled.`);
+                logger.info(`SAML login: User '${user?.username}' is not enabled.`);
                 return done(null, false);
             }
 
             if (!(await bcrypt.compare(password, user.password))) {
-                logger.info(`Local login: Wrong password for ${user?.username}.`);
+                logger.info(`SAML login: Wrong password for ${user?.username}.`);
                 return done(null, false);
             }
 
             //Set Session Length
             req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
-            logger.action(`Local login: ${user?.username} logged in.`);
+            logger.action(`SAML login: ${user?.username} logged in.`);
             return done(null, user.id);
         }
     );
@@ -167,33 +169,35 @@ const oidcStrategy = (settings) => {
             passReqToCallback: true,
         },
         async (req, identifier, done) => {
+            console.log(`OIDC login: ${identifier}`);
+
             const user = await userGetByFeild(username.toLowerCase(), "username");
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
-                logger.info(`Local login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
+                logger.info(`OIDC login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
                 return done(null, false);
             }
 
             if (!user) {
-                logger.info(`Local login: User '${username}' does not exist.`);
+                logger.info(`OIDC login: User '${username}' does not exist.`);
                 return done(null, false);
             }
 
             if (!user.enabled) {
-                logger.info(`Local login: User '${user?.username}' is not enabled.`);
+                logger.info(`OIDC login: User '${user?.username}' is not enabled.`);
                 return done(null, false);
             }
 
             if (!(await bcrypt.compare(password, user.password))) {
-                logger.info(`Local login: Wrong password for ${user?.username}.`);
+                logger.info(`OIDC login: Wrong password for ${user?.username}.`);
                 return done(null, false);
             }
 
             //Set Session Length
             req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
-            logger.action(`Local login: ${user?.username} logged in.`);
+            logger.action(`OIDC login: ${user?.username} logged in.`);
             return done(null, user.id);
         }
     );
