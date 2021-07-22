@@ -8,6 +8,7 @@ const systemContainers = require("@services/system-containers");
 const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
+const systemInfo = require("@services/system-info");
 const systemSettingsGet = require("@services/system-settings-get");
 const systemSettingsUpdate = require("@services/system-settings-update");
 
@@ -60,6 +61,26 @@ router.get("/containers", restrict.to(["admin", "user"]), async function (req, r
 router.get("/stats", restrict.to(["admin", "user"]), async function (req, res, next) {
     const stats = await systemStats();
     hashResponse(res, req, stats);
+});
+
+/**
+ * @swagger
+ * /system/info:
+ *   get:
+ *     description: Returns the global system information
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Success
+ */
+router.get("/info", async function (req, res, next) {
+    const result = await systemInfo();
+    hashResponse(res, req, {
+        status: result ? "success" : "failure",
+        data: result?.data,
+    });
 });
 
 /**
