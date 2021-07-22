@@ -19,6 +19,7 @@ import Fade from "@material-ui/core/Fade";
 import axios from "axios";
 import PinLogin from "@components/login/PinLogin";
 import LocalLogin from "@components/login/LocalLogin";
+import ProxyLogin from "@components/login/ProxyLogin";
 
 const useStyles = makeStyles((theme) => ({
     page: {
@@ -207,7 +208,7 @@ export default function PageLogin() {
             case "pin":
                 return <PinLogin {...props} />;
             case "proxy":
-                return null;
+                return <ProxyLogin {...props} />;
             case "saml":
                 return null;
             default:

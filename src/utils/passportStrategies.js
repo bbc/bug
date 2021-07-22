@@ -10,8 +10,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
 
 const logger = require("@utils/logger")(module);
-const userGetByPin = require("@services/user-get-by-pin");
-const userGetByUsername = require("@services/user-get-by-username");
+const userGetByFeild = require("@services/user-get-by-feild");
 const ipCompare = require("@utils/ip-compare");
 const ipClean = require("@utils/ip-clean");
 const bcrypt = require("bcryptjs");
@@ -19,9 +18,9 @@ const bcrypt = require("bcryptjs");
 //Setup Trusted Header authentication
 const proxyStrategy = (settings) => {
     return new HeaderStrategy(
-        { header: "BBCEMAIL", passReqToCallback: true, passReqToCallback: true },
+        { header: settings?.headerField, passReqToCallback: true, passReqToCallback: true },
         async (req, header, done) => {
-            const user = await userEmail(header.toLowerCase());
+            const user = await userGetByFeild(header.toLowerCase(), settings?.headerFieldMatch);
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -54,7 +53,7 @@ const localStrategy = (settings) => {
     return new LocalStrategy(
         { usernameField: "username", passwordField: "password", passReqToCallback: true },
         async (req, username, password, done) => {
-            const user = await userGetByUsername(username.toLowerCase());
+            const user = await userGetByFeild(username.toLowerCase(), "username");
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -91,7 +90,7 @@ const pinStrategy = (settings) => {
     return new LocalStrategy(
         { usernameField: "pin", passwordField: "pin", passReqToCallback: true },
         async (req, username, password, done) => {
-            const user = await userGetByPin(username);
+            const user = await userGetByFeild(username, "pin");
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
