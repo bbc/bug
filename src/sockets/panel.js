@@ -49,21 +49,21 @@ module.exports = (namespace, socket) => {
         }
     };
 
-    namespace.adapter.once("join-room", (room, id) => {
+    namespace.adapter.on("join-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
             logger.debug(`socket id ${id} joined room ${roomElements[1]}`);
         }
     });
 
-    namespace.adapter.once("leave-room", (room, id) => {
+    namespace.adapter.on("leave-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
             logger.debug(`socket id ${id} left room ${roomElements[1]}`);
         }
     });
 
-    namespace.adapter.once("create-room", (room) => {
+    namespace.adapter.on("create-room", (room) => {
         const elements = room.split(":");
         if (elements.length !== 2) {
             return;
@@ -84,7 +84,7 @@ module.exports = (namespace, socket) => {
         }
     });
 
-    namespace.adapter.once("delete-room", (room) => {
+    namespace.adapter.on("delete-room", (room) => {
         // this may be a panel or the default room for each socket
         const elements = room.split(":");
         if (elements.length !== 2) {
