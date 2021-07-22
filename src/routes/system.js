@@ -8,6 +8,8 @@ const systemContainers = require("@services/system-containers");
 const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
+const systemSettingsGet = require("@services/system-settings-get");
+const systemSettingsUpdate = require("@services/system-settings-update");
 
 /**
  * @swagger
@@ -58,6 +60,58 @@ router.get("/containers", restrict.to(["admin", "user"]), async function (req, r
 router.get("/stats", restrict.to(["admin", "user"]), async function (req, res, next) {
     const stats = await systemStats();
     hashResponse(res, req, stats);
+});
+
+/**
+ * @swagger
+ * /system/settings:
+ *   get:
+ *     description: Returns the global settings
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Success
+ */
+router.get("/settings", restrict.to(["admin", "user"]), async function (req, res, next) {
+    const result = await systemSettingsGet();
+    hashResponse(res, req, {
+        status: result ? "success" : "failure",
+        data: result?.data,
+    });
+});
+
+/**
+ * @swagger
+ * /system/settings:
+ *   put:
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: (various)
+ *         schema:
+ *           type: object
+ *         required: true
+ *         example:
+ *           title: Your very own BUG
+ *           description: Some details about your BUG instance
+ *           theme: dark
+ *         description: Object with global BUG settings
+ *     responses:
+ *       200:
+ *         description: Successfully set the settings for BUG.
+ *         schema:
+ *           type: object
+ */
+router.put("/settings", restrict.to(["admin", "user"]), async function (req, res, next) {
+    const result = await systemSettingsUpdate(req.body);
+    hashResponse(res, req, {
+        status: result ? "success" : "failure",
+        data: result?.data,
+    });
 });
 
 /**
