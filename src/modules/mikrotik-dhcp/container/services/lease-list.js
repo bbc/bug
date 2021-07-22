@@ -20,20 +20,36 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
     }
 
     if (filters['last-seen']) {
-        leases = leases.filter((lease) => lease["last-seen"] < filters['last-seen']);
+        leases = leases.filter((lease) => lease["last-seen"] < parseInt(filters['last-seen']));
+    }
+
+    if (filters['expires']) {
+        leases = leases.filter((lease) => lease["expires"] > parseInt(filters['expires']));
     }
 
     if (filters['server']) {
         leases = leases.filter((lease) => lease["server"] === filters['server']);
     }
 
+    if (filters['status']) {
+        leases = leases.filter((lease) => lease["status"] === filters['status']);
+    }
+
+    if (filters['address']) {
+        leases = leases.filter((lease) => {
+            return lease['address'] && lease['address'].indexOf(filters.address) > -1;
+        });
+    }
+
     for (const eachLease of leases) {
         // set manufacturer
         eachLease["manufacturer"] = "";
-        const manufacturerResult = oui(eachLease["mac-address"]);
-        if (manufacturerResult) {
-            const resultArray = manufacturerResult.split("\n");
-            eachLease["manufacturer"] = resultArray[0];
+        if (eachLease["mac-address"]) {
+            const manufacturerResult = oui(eachLease["mac-address"]);
+            if (manufacturerResult) {
+                const resultArray = manufacturerResult.split("\n");
+                eachLease["manufacturer"] = resultArray[0];
+            }
         }
 
         // set sortable hostname field (or comment if not set)
@@ -48,11 +64,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
 
     if (filters['manufacturer']) {
         leases = leases.filter((lease) => {
-            console.log(lease.manufacturer.toLowerCase(), filters.manufacturer.toLowerCase());
             return lease['manufacturer'] && lease['manufacturer'].toLowerCase().indexOf(filters.manufacturer.toLowerCase()) > -1;
         });
     }
-
 
     const sortHandlerList = {
         status: sortHandlers.string,

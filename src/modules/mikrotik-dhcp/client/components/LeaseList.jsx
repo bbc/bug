@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import EditIcon from "@material-ui/icons/Edit";
 import CommentIcon from "@material-ui/icons/Comment";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -22,10 +23,12 @@ const useStyles = makeStyles((theme) => ({
     iconRunning: {
         color: theme.palette.primary.main,
         display: "block",
+        margin: "auto",
     },
     icon: {
         opacity: 0.1,
         display: "block",
+        margin: "auto",
     },
     tableHead: {
         ["@media (max-width:450px)"]: {
@@ -68,6 +71,8 @@ export default function LeaseList({ panelId }) {
     const [commentDialogOpen, setCommentDialogOpen] = React.useState(false);
     const [commentDialogProps, setCommentDialogProps] = React.useState({});
     const nowTimestamp = Date.now();
+    const panelData = useSelector((state) => state.panelData);
+    const filterEnabled = panelData && panelData.filter;
 
     const handleInterfaceNameClicked = (event, item) => {
         setRenameDialogProps({
@@ -119,7 +124,7 @@ export default function LeaseList({ panelId }) {
         if (!value) {
             return "";
         }
-        const dateExpiresAfter = new Date(nowTimestamp + value);
+        const dateExpiresAfter = new Date(nowTimestamp + value * 1000);
         return formatDistanceToNow(dateExpiresAfter, { includeSeconds: true, addSuffix: true });
     };
 
@@ -131,6 +136,13 @@ export default function LeaseList({ panelId }) {
                         title: "",
                         sortable: false,
                         width: 48,
+                        field: "status",
+                        filterType: "dropdown",
+                        filterOptions: [
+                            { name: "View all items", value: "" },
+                            { name: "Bound", value: "bound" },
+                            { name: "Waiting", value: "waiting" },
+                        ],
                         content: (item) => {
                             return (
                                 <PowerSettingsNew
@@ -192,6 +204,7 @@ export default function LeaseList({ panelId }) {
                         sortable: true,
                         field: "address",
                         defaultSortDirection: "asc",
+                        filterType: "text",
                         content: (item) => {
                             return (
                                 <a
@@ -234,6 +247,15 @@ export default function LeaseList({ panelId }) {
                         sortable: true,
                         field: "expires-after",
                         defaultSortDirection: "desc",
+                        filterType: "dropdown",
+                        filterOptions: [
+                            { name: "View all items", value: "" },
+                            { name: "Next 30 seconds", value: 30 },
+                            { name: "Next minute", value: 60 },
+                            { name: "Next 5 minutes", value: 300 },
+                            { name: "Next 15 minutes", value: 600 },
+                            { name: "Next 30 minutes", value: 900 },
+                        ],
                         hideWidth: 1600,
                         content: (item) => {
                             return formatExpiresAfter(item["expires-after"]);
@@ -244,6 +266,15 @@ export default function LeaseList({ panelId }) {
                         sortable: true,
                         field: "last-seen",
                         defaultSortDirection: "desc",
+                        filterType: "dropdown",
+                        filterOptions: [
+                            { name: "View all items", value: "" },
+                            { name: "Last 30 seconds", value: 30 },
+                            { name: "Last minute", value: 60 },
+                            { name: "Last 5 minutes", value: 300 },
+                            { name: "Last 15 minutes", value: 600 },
+                            { name: "Last 30 minutes", value: 900 },
+                        ],
                         content: (item) => {
                             return formatLastSeen(item["last-seen"]);
                         },
@@ -279,12 +310,12 @@ export default function LeaseList({ panelId }) {
                         onClick: handleCommentClicked,
                     },
                 ]}
-                defaultSortIndex={2}
+                defaultSortIndex={3}
                 apiUrl={`/container/${panelId}/lease`}
                 panelId={panelId}
                 onRowClick={handleDetailsClicked}
                 sortable
-                filterable
+                filterable={filterEnabled}
             />
             {renameDialogOpen ? (
                 <RenameDialog {...renameDialogProps} onClose={() => setRenameDialogOpen(false)} />
