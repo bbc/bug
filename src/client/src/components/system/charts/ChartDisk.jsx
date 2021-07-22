@@ -6,8 +6,9 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
 import moment from "moment";
+import PropTypes from "prop-types";
 
-export default function ChartDisk({ stats }) {
+export default function ChartDisk({ stats, showTitle }) {
     const windowSize = useWindowSize();
     const factor = 0.00000095367432;
 
@@ -38,12 +39,19 @@ export default function ChartDisk({ stats }) {
         return series;
     };
 
+    const getHeader = (title) => {
+        if (showTitle) {
+            return <CardHeader title={title}></CardHeader>;
+        }
+        return null;
+    };
+
     const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
 
     return (
         <>
             <Card>
-                <CardHeader title="Disk Space"></CardHeader>
+                {getHeader("Disk Space")}
                 <CardContent>
                     <ResponsiveContainer width="100%" height={chartHeight}>
                         <AreaChart
@@ -73,3 +81,11 @@ export default function ChartDisk({ stats }) {
         </>
     );
 }
+
+ChartDisk.defaultProps = {
+    showTitle: false,
+};
+
+ChartDisk.propTypes = {
+    showTitle: PropTypes.bool,
+};

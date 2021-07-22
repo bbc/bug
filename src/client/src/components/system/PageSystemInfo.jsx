@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
-// import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { useApiPoller } from "@utils/ApiPoller";
 import ChartCPU from "@components/system/charts/ChartCPU";
@@ -10,7 +9,7 @@ import ChartDisk from "@components/system/charts/ChartDisk";
 import ChartNetwork from "@components/system/charts/ChartNetwork";
 import Loading from "@components/Loading";
 
-// const useStyles = makeStyles((theme) => ({}));
+import PanelTabbedForm from "@core/PanelTabbedForm";
 
 export default function PageSystemInfo() {
     // const classes = useStyles();
@@ -36,23 +35,16 @@ export default function PageSystemInfo() {
 
     return (
         <>
-            <Grid container spacing={3}>
-                <Grid item lg={6} sm={12} xs={12}>
-                    <ChartCPU containers={containers} stats={stats.data} />
-                </Grid>
-                <Grid item lg={6} sm={12} xs={12}>
-                    <ChartMemory stats={stats.data} />
-                </Grid>
-                <Grid item lg={6} sm={12} xs={12}>
-                    <ChartDisk stats={stats.data} />
-                </Grid>
-                <Grid item lg={3} sm={6} xs={12}>
-                    <ChartNetwork type="rx" stats={stats.data} />
-                </Grid>
-                <Grid item lg={3} sm={6} xs={12}>
-                    <ChartNetwork type="tx" stats={stats.data} />
-                </Grid>
-            </Grid>
+            <PanelTabbedForm
+                labels={["CPU", "Memory", "Disk", "Network RX", "Network TX"]}
+                content={[
+                    <ChartCPU containers={containers} stats={stats.data} />,
+                    <ChartMemory stats={stats.data} />,
+                    <ChartDisk stats={stats.data} />,
+                    <ChartNetwork type="rx" stats={stats.data} />,
+                    <ChartNetwork type="tx" stats={stats.data} />,
+                ]}
+            ></PanelTabbedForm>
         </>
     );
 }

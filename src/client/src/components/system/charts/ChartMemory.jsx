@@ -6,8 +6,9 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
 import moment from "moment";
+import PropTypes from "prop-types";
 
-export default function ChartMemory({ stats }) {
+export default function ChartMemory({ stats, showTitle }) {
     const windowSize = useWindowSize();
     const factor = 0.00000095367432;
 
@@ -19,12 +20,19 @@ export default function ChartMemory({ stats }) {
         };
     });
 
+    const getHeader = (title) => {
+        if (showTitle) {
+            return <CardHeader title={title}></CardHeader>;
+        }
+        return null;
+    };
+
     const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
 
     return (
         <>
             <Card>
-                <CardHeader title="Memory Usage"></CardHeader>
+                {getHeader("Memory Usage")}
                 <CardContent>
                     <ResponsiveContainer width="100%" height={chartHeight}>
                         <AreaChart
@@ -69,3 +77,11 @@ export default function ChartMemory({ stats }) {
         </>
     );
 }
+
+ChartMemory.defaultProps = {
+    showTitle: false,
+};
+
+ChartMemory.propTypes = {
+    showTitle: PropTypes.bool,
+};

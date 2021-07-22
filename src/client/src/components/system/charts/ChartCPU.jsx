@@ -7,8 +7,9 @@ import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import PropTypes from "prop-types";
 
-export default function ChartCPU({ containers, stats }) {
+export default function ChartCPU({ containers, stats, showTitle }) {
     const windowSize = useWindowSize();
     const panelList = useSelector((state) => state.panelList);
     const data = stats.map((rawData) => {
@@ -64,12 +65,19 @@ export default function ChartCPU({ containers, stats }) {
         return series;
     };
 
+    const getHeader = (title) => {
+        if (showTitle) {
+            return <CardHeader title={title}></CardHeader>;
+        }
+        return null;
+    };
+
     const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
 
     return (
         <>
             <Card>
-                <CardHeader title="CPU Usage"></CardHeader>
+                {getHeader("CPU Usage")}
                 <CardContent>
                     <ResponsiveContainer width="100%" height={chartHeight}>
                         <AreaChart
@@ -99,3 +107,11 @@ export default function ChartCPU({ containers, stats }) {
         </>
     );
 }
+
+ChartCPU.defaultProps = {
+    showTitle: false,
+};
+
+ChartCPU.propTypes = {
+    showTitle: PropTypes.bool,
+};
