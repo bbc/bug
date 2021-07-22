@@ -63,6 +63,7 @@ module.exports = class WorkerManager {
                     jsFiles.push({
                         restart: true,
                         restarting: false,
+                        restartDelay: 0,
                         restartCount: 0,
                         filename: filename,
                         filepath: path.join(folder, filename),
@@ -113,7 +114,7 @@ module.exports = class WorkerManager {
             if (event?.restartOn) {
                 workers[index].restartKeys = event.restartOn;
             }
-            if (event?.restartDelay) {
+            if (!isNan(event?.restartDelay)) {
                 workers[index].restartDelay = event.restartDelay;
             } else {
                 workers[index].restartDelay = 0;
