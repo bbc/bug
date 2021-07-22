@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import LoadingOverlay from "@components/LoadingOverlay";
 import AxiosPut from "@utils/AxiosPut";
@@ -7,8 +8,7 @@ import pageTitleSlice from "@redux/pageTitleSlice";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import BugForm from "@core/BugForm";
 import Button from "@material-ui/core/Button";
 
 import { useForm } from "react-hook-form";
@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PageSystemBackup() {
     const classes = useStyles();
     const sendAlert = useAlert();
+    const history = useHistory();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
@@ -70,6 +71,10 @@ export default function PageSystemBackup() {
         return null;
     };
 
+    const handleCancel = () => {
+        history.goBack();
+    };
+
     if (settings.status === "loading" || settings.status === "idle") {
         return <Loading />;
     }
@@ -77,9 +82,10 @@ export default function PageSystemBackup() {
     return (
         <>
             {renderLoading()}
-            <Card className={classes.card}>
-                <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+            <BugForm onClose={handleCancel}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <BugForm.Header onClose={handleCancel}>Edit Settings</BugForm.Header>
+                    <BugForm.Body>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <TextField
@@ -126,15 +132,15 @@ export default function PageSystemBackup() {
                                     <option value={"light"}>Light</option>
                                 </TextField>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Button type="submit" variant="contained" color="primary" disableElevation>
-                                    Save changes
-                                </Button>
-                            </Grid>
                         </Grid>
-                    </form>
-                </CardContent>
-            </Card>
+                    </BugForm.Body>
+                    <BugForm.Actions>
+                        <Button type="submit" variant="contained" color="primary" disableElevation>
+                            Save changes
+                        </Button>
+                    </BugForm.Actions>
+                </form>
+            </BugForm>
         </>
     );
 }
