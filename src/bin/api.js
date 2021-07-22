@@ -88,6 +88,11 @@ bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
 bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
 
+// Redirect /api to /documentation
+bugApi.use("/api", function (req, res, next) {
+    res.redirect("/documentation");
+});
+
 if (nodeEnv === "production") {
     // production: include react build static client files
     bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
