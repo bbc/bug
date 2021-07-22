@@ -2,12 +2,11 @@
 //AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
 //DATE: 21/06/2021
 //DESC: BUG core auth strategies defined here
-//BROKEN
 
-const OAuth2Strategy = require("passport-oauth2").Strategy;
 const HeaderStrategy = require("passport-http-header-strategy").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const SamlStrategy = require("passport-saml").Strategy;
+const OpenIdStrategy = require("passport-openid").Strategy;
 
 const logger = require("@utils/logger")(module);
 const userGetByFeild = require("@services/user-get-by-feild");
@@ -117,57 +116,93 @@ const pinStrategy = (settings) => {
     );
 };
 
-// setup SAML authentication
-// passport.use(new SamlStrategy(
-//     {
-//       path: '/login/callback',
-//       entryPoint: 'https://openidp.feide.no/simplesaml/saml2/idp/SSOService.php',
-//       issuer: 'passport-saml'
-//     },
-//     function(profile, done) {
-//       findByEmail(profile.email, function(err, user) {
-//         if (err) {
-//           return done(err);
-//         }
-//         return done(null, user);
-//       });
-//     })
-//   );
+//Setup SAML authentication
+const samlStrategy = (settings) => {
+    return new SamlStrategy(
+        {
+            path: "/login/callback",
+            entryPoint: settings?.entryPoint,
+            issuer: settings?.issuer,
+            passReqToCallback: true,
+        },
+        async (req, profile, done) => {
+            const user = await userGetByFeild(profile.toLowerCase(), "email");
 
-//Setup OAuth authentication
-// const oauthStrategy = new OAuth2Strategy(
-//     {
-//         authorizationURL: "https://bbclogin.id.tools.bbc.co.uk",
-//         tokenURL: "https://bbclogin.id.tools.bbc.co.uk/token",
-//         clientID: "ID",
-//         clientSecret: "SECRET",
-//         callbackURL: "http://localhost:3000/auth/example/callback",
-//     },
-//     async (accessToken, refreshToken, profile, done) => {
-//         const strategy = await strategyModel.get("pin");
-//         if (!strategy.enabled) {
-//             logger.info(`OAuth2 login: Not enabled.`);
-//             return done(null, false);
-//         }
-//         const user = await userEmail(profile?.email);
+            //Check Traffic Source Filter
+            if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
+                logger.info(`Local login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
+                return done(null, false);
+            }
 
-//         if (!user) {
-//             logger.info(`OAuth2 login: User '${profile.email}' does not exist.`);
-//             return done(null, false);
-//         }
+            if (!user) {
+                logger.info(`Local login: User '${username}' does not exist.`);
+                return done(null, false);
+            }
 
-//         if (!user.enabled) {
-//             logger.info(`OAuth2 login: User '${user?.username}' is not enabled.`);
-//             return done(null, false);
-//         }
+            if (!user.enabled) {
+                logger.info(`Local login: User '${user?.username}' is not enabled.`);
+                return done(null, false);
+            }
 
-//         logger.action(`OAuth2 login: ${user?.username} logged in.`);
-//         return done(null, user.id);
-//     }
-// );
+            if (!(await bcrypt.compare(password, user.password))) {
+                logger.info(`Local login: Wrong password for ${user?.username}.`);
+                return done(null, false);
+            }
+
+            //Set Session Length
+            req.session.cookie.maxAge = parseInt(settings?.sessionLength);
+
+            logger.action(`Local login: ${user?.username} logged in.`);
+            return done(null, user.id);
+        }
+    );
+};
+
+//Setup OpenID (OIDC) authentication
+const oidcStrategy = (settings) => {
+    return new OpenIDStrategy(
+        {
+            returnURL: settings?.returnURL,
+            realm: settings?.realm,
+            passReqToCallback: true,
+        },
+        async (req, identifier, done) => {
+            const user = await userGetByFeild(username.toLowerCase(), "username");
+
+            //Check Traffic Source Filter
+            if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
+                logger.info(`Local login: IP Address ${await ipClean(req?.ip)} is not in the source list.`);
+                return done(null, false);
+            }
+
+            if (!user) {
+                logger.info(`Local login: User '${username}' does not exist.`);
+                return done(null, false);
+            }
+
+            if (!user.enabled) {
+                logger.info(`Local login: User '${user?.username}' is not enabled.`);
+                return done(null, false);
+            }
+
+            if (!(await bcrypt.compare(password, user.password))) {
+                logger.info(`Local login: Wrong password for ${user?.username}.`);
+                return done(null, false);
+            }
+
+            //Set Session Length
+            req.session.cookie.maxAge = parseInt(settings?.sessionLength);
+
+            logger.action(`Local login: ${user?.username} logged in.`);
+            return done(null, user.id);
+        }
+    );
+};
 
 module.exports = {
     local: localStrategy,
     pin: pinStrategy,
     proxy: proxyStrategy,
+    saml: samlStrategy,
+    oidc: oidcStrategy,
 };

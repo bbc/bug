@@ -26,10 +26,27 @@
         "type": "saml",
         "description": "Provides user authentication via SAML",
         "name": "SAML SSO",
+        "sourceFilterList": [
+            "172.0.0.0/8",
+            "127.0.0.0/8"
+        ],
         "sessionLength": "86400000",
         "entryPoint": "",
         "issuer": "",
         "identifierFormat": "",
+        "enabled": false
+    },
+    {
+        "type": "oidc",
+        "description": "Provides user authentication via Open ID",
+        "name": "Open ID SSO",
+        "sourceFilterList": [
+            "172.0.0.0/8",
+            "127.0.0.0/8"
+        ],
+        "sessionLength": "86400000",
+        "returnURL": "",
+        "realm": "",
         "enabled": false
     },
     {
