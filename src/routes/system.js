@@ -74,7 +74,7 @@ router.get("/stats", restrict.to(["admin", "user"]), async function (req, res, n
  *       '200':
  *         description: Success
  */
-router.get("/settings", restrict.to(["admin", "user"]), async function (req, res, next) {
+router.get("/settings", async function (req, res, next) {
     const result = await systemSettingsGet();
     hashResponse(res, req, {
         status: result ? "success" : "failure",

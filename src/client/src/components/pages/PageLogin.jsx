@@ -153,13 +153,15 @@ export default function PageLogin() {
     const dispatch = useDispatch();
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
-    const [tabIndex, setTabIndex] = React.useState(0);
+    const [tabIndex, setTabIndex] = useState(0);
+    const [settings, setSettings] = useState(0);
     const [enabledStrategies, setEnabledStrategies] = React.useState([]);
     const [alert, setAlert] = React.useState("");
 
     useAsyncEffect(async () => {
-        const url = `/api/strategy/safe`;
-        const allStrategies = await AxiosGet(url);
+        const allStrategies = await AxiosGet(`/api/strategy/safe`);
+        const globalSettings = await AxiosGet(`/api/system/settings`);
+        setSettings(globalSettings);
         setEnabledStrategies(allStrategies.filter((eachStrategy) => eachStrategy.enabled));
         setLoading(false);
     }, []);
@@ -224,7 +226,7 @@ export default function PageLogin() {
                         <Grid container className={classes.gridContainer}>
                             <Grid item className={classes.logoWrapper}>
                                 <FontAwesomeIcon size="lg" icon={faBug} className={classes.icon} />
-                                <div className={classes.title}>Geoff's BUG</div>
+                                <div className={classes.title}>{settings?.title}</div>
                             </Grid>
                             <Grid item className={classes.tabWrapper}>
                                 <Tabs
