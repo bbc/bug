@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 const BugMenuIcon = (props) => {
     const classes = useStyles();
     return (
-        <ListItem button component={Link} to={`/system`}>
+        <ListItem button component={Link} to={`/system/about`}>
             <ListItemIcon className={classes.icon}>
                 <FontAwesomeIcon size="lg" icon={faBug} />
             </ListItemIcon>
