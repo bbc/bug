@@ -33,6 +33,9 @@
         "sessionLength": "86400000",
         "entryPoint": "",
         "issuer": "",
+        "profileFeild": "mail",
+        "matchFeild": "email",
+        "loginPath": "",
         "identifierFormat": "",
         "enabled": false
     },
@@ -46,6 +49,8 @@
         ],
         "sessionLength": "86400000",
         "returnURL": "",
+        "profileFeild": "mail",
+        "matchFeild": "email",
         "realm": "",
         "enabled": false
     },

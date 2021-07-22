@@ -53,6 +53,18 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{
+                            ...register("loginPath"),
+                        }}
+                        fullWidth
+                        defaultValue={strategy.loginPath}
+                        type="text"
+                        label="SAML Login Page"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
+                        inputProps={{
                             ...register("entryPoint"),
                         }}
                         fullWidth
@@ -84,6 +96,41 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                         type="text"
                         label="SAML identifier format"
                     />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
+                        inputProps={{
+                            ...register("profileFeild"),
+                        }}
+                        fullWidth
+                        defaultValue={strategy.profileFeild}
+                        type="text"
+                        label="User field"
+                        helperText="The feild name in the returned profile to use"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
+                        select
+                        inputProps={{
+                            ...register("matchFeild"),
+                        }}
+                        fullWidth
+                        label="SAML match field"
+                        helperText="Which BUG user field to match against"
+                        defaultValue={strategy.matchFeild}
+                        SelectProps={{
+                            native: true,
+                        }}
+                    >
+                        <option value="">None</option>
+                        <option value="email">Email Address</option>
+                        <option value="username">User name</option>
+                        <option value="name">Name</option>
+                        <option value="id">ID</option>
+                    </TextField>
                 </Grid>
             </Grid>
         </>

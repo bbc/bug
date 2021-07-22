@@ -120,15 +120,13 @@ const pinStrategy = (settings) => {
 const samlStrategy = (settings) => {
     return new SamlStrategy(
         {
-            path: "/login/callback",
+            path: settings?.loginPath,
             entryPoint: settings?.entryPoint,
             issuer: settings?.issuer,
             passReqToCallback: true,
         },
         async (req, profile, done) => {
-            console.log(`SAML login: ${profile}`);
-
-            const user = await userGetByFeild(profile.toLowerCase(), "email");
+            const user = await userGetByFeild(profile[settings?.profileFeild].toLowerCase(), setings?.matchFeild);
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -137,7 +135,7 @@ const samlStrategy = (settings) => {
             }
 
             if (!user) {
-                logger.info(`SAML login: User '${username}' does not exist.`);
+                logger.info(`SAML login: User '${profile[settings?.profileFeild].toLowerCase()}' does not exist.`);
                 return done(null, false);
             }
 
@@ -169,9 +167,7 @@ const oidcStrategy = (settings) => {
             passReqToCallback: true,
         },
         async (req, identifier, done) => {
-            console.log(`OIDC login: ${identifier}`);
-
-            const user = await userGetByFeild(username.toLowerCase(), "username");
+            const user = await userGetByFeild(identifier[settings?.profileFeild].toLowerCase(), setings?.matchFeild);
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -180,7 +176,7 @@ const oidcStrategy = (settings) => {
             }
 
             if (!user) {
-                logger.info(`OIDC login: User '${username}' does not exist.`);
+                logger.info(`OIDC login: User '${identifier[settings?.profileFeild].toLowerCase()}' does not exist.`);
                 return done(null, false);
             }
 
