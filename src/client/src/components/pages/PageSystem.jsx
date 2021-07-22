@@ -106,7 +106,10 @@ export default function PageSystem() {
                     <ListItemIcon>
                         <SettingsBackupRestoreIcon />
                     </ListItemIcon>
-                    <ListItemText primary="System Backup" secondary="Download a complete backup or restore from file" />
+                    <ListItemText
+                        primary="Backup & Restore"
+                        secondary="Download a complete backup or restore from file"
+                    />
                     <ListItemIcon className={classes.navIcon}>
                         <ChevronRightIcon />
                     </ListItemIcon>

@@ -1,4 +1,5 @@
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -70,6 +71,12 @@ bugApi.use(
 );
 
 bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "favicon.ico")));
+bugApi.use(
+    fileUpload({
+        useTempFiles: true,
+        tempFileDir: "./data",
+    })
+);
 
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));

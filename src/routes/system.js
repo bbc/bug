@@ -3,6 +3,7 @@
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const systemBackup = require("@services/system-backup");
+const systemRestore = require("@services/system-restore");
 const systemLogs = require("@services/system-logs");
 const systemContainers = require("@services/system-containers");
 const systemStats = require("@services/system-stats");
@@ -193,31 +194,16 @@ router.get(
  *        '200':
  *          description: Success
  */
-router.post("/restore", restrict.to(["admin", "user"]), function (req, res, next) {
-    try {
-        if (!req.files) {
-            hashResponse(res, req, {
-                status: false,
-                message: "No file uploaded",
-            });
-        } else {
-            const configs = req.files.configs;
-            configs.mv("../data/uploads/" + configs.name);
-
-            //send response
-            hashResponse(res, req, {
-                status: true,
-                message: "File is uploaded",
-                data: {
-                    name: configs.name,
-                    mimetype: configs.mimetype,
-                    size: configs.size,
-                },
-            });
+router.post(
+    "/restore",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        if (!req.files || req.files.backup) {
+            hashResponse(res, req, { status: "failure", message: "No files uploaded" });
         }
-    } catch (err) {
-        hashResponse(res, req, { error: err });
-    }
-});
+        const result = await systemRestore(req.files.backup);
+        hashResponse(res, req, result);
+    })
+);
 
 module.exports = router;
