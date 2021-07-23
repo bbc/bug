@@ -28,12 +28,10 @@ module.exports = async (backup) => {
             });
         }
 
-        await delay(1000);
-
         return {
             status: status ? "failure" : "success",
             message: "Restored settings from file",
-            data: null,
+            data: "Restored settings from file",
         };
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);

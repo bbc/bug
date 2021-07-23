@@ -44,7 +44,7 @@ export default function PageSystemBackup() {
 
         setLoading(true);
         const response = await AxiosPost(`/api/system/restore`, formData);
-        if (!response?.status === "success") {
+        if (response) {
             sendAlert(`BUG configuration has been restored`, {
                 broadcast: true,
                 variant: "success",
@@ -101,32 +101,37 @@ export default function PageSystemBackup() {
                             Upload a backup file to restore a previous BUG configuration.
                             <div style={{ marginTop: 16 }}>
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <Button
-                                        color="primary"
-                                        disableElevation
-                                        underline="none"
-                                        error={errors?.file ? true : false}
-                                        variant="outlined"
-                                        component="label"
-                                    >
-                                        Select File
-                                        <input
-                                            {...register("file", { required: true })}
-                                            type="file"
-                                            name="file"
-                                            hidden
-                                        />
-                                    </Button>
-
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        disableElevation
-                                        underline="none"
-                                        variant="outlined"
-                                    >
-                                        Restore
-                                    </Button>
+                                    <Grid container spacing={4}>
+                                        <Grid item lg={6} xs={12}>
+                                            <TextField
+                                                color="primary"
+                                                disableElevation
+                                                underline="none"
+                                                error={errors?.file ? true : false}
+                                                variant="outlined"
+                                                component="label"
+                                                type="file"
+                                                name="file"
+                                                size="small"
+                                                inputProps={{
+                                                    ...{ accept: "application/gzip" },
+                                                    ...register("file", { required: true }),
+                                                }}
+                                                fullWidth
+                                            ></TextField>
+                                        </Grid>
+                                        <Grid item lg={6} xs={12}>
+                                            <Button
+                                                type="submit"
+                                                color="primary"
+                                                disableElevation
+                                                underline="none"
+                                                variant="outlined"
+                                            >
+                                                Restore
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
                                 </form>
                             </div>
                         </CardContent>
