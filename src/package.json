@@ -44,6 +44,7 @@
         "express-async-handler": "^1.1.4",
         "express-fileupload": "^1.2.1",
         "express-session": "^1.17.2",
+        "fs-extra": "^10.0.0",
         "fstream": "^1.0.12",
         "helmet": "^4.4.1",
         "http-errors": "^1.8.0",

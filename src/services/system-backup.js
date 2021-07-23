@@ -9,7 +9,7 @@ const moment = require("moment");
 module.exports = async () => {
     try {
         const systemSettings = await getSystemSettings();
-        let title = systemSettings.title;
+        let title = systemSettings.data?.title;
 
         if (title) {
             //Santize the title so it can be used as a filename

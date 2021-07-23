@@ -198,10 +198,12 @@ router.post(
     "/restore",
     restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
-        if (!req.files || req.files.backup) {
-            hashResponse(res, req, { status: "failure", message: "No files uploaded" });
+        let result = {};
+        if (!req.files || !req.files.backup) {
+            result = { status: "failure", message: "No files uploaded" };
+        } else {
+            result = await systemRestore(req.files.backup);
         }
-        const result = await systemRestore(req.files.backup);
         hashResponse(res, req, result);
     })
 );

@@ -7,7 +7,6 @@ module.exports = async (tarballPath, extractToPath) => {
     try {
         const status = await fs.createReadStream(tarballPath).pipe(
             tar.x({
-                strip: 1,
                 C: extractToPath,
             })
         );
