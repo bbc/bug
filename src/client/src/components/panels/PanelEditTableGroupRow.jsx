@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelTableGroupRow({ title, handleNewGroupName }) {
     const classes = useStyles();
-    const inputRef = React.useRef();
+    const inputRef = useRef();
     const [groupActive, setGroupActive] = useState(false);
     const [groupName, setGroupName] = useState(title);
 

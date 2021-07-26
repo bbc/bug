@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Label, ResponsiveContainer } from "recharts";
 import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
 import moment from "moment";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    label: {
+        color: theme.palette.secondary.main,
+        opacity: 0.5,
+    },
+}));
 
 export default function ChartDisk({ stats, showTitle }) {
+    const classes = useStyles();
     const windowSize = useWindowSize();
     const factor = 0.0000000095367432;
     const units = "GB";
@@ -78,19 +87,22 @@ export default function ChartDisk({ stats, showTitle }) {
                             margin={{
                                 top: 10,
                                 right: 30,
-                                left: 0,
-                                bottom: 0,
+                                left: 10,
+                                bottom: 10,
                             }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
-                                label="Time"
                                 domain={[data[data.length - 1]?.timestamp, data[data?.length - 1]?.timestamp]}
                                 dataKey="timestamp"
                                 tickFormatter={(unixTime) => moment(Math.round(unixTime / 1000)).format("HH:mm Do")}
                                 type="number"
-                            />
-                            <YAxis type="number" domain={[0, disksSize]} />
+                            >
+                                <Label className={classes.label} value="Time" position="bottom" offset={0} />
+                            </XAxis>
+                            <YAxis domain={[0, disksSize]}>
+                                <Label className={classes.label} value="Disk Usage (GB)" angle="-90" />
+                            </YAxis>
                             <Tooltip formatter={tooltipFormatter} />
                             {getSeries(data[0], "timestamp")}
                         </AreaChart>
