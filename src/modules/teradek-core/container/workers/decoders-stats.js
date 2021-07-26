@@ -14,7 +14,6 @@ parentPort.postMessage({
 });
 
 const filterStats = (stats) => {
-    delete stats?.ts;
     delete stats?.sid;
     delete stats?.decoder_video_frames_decoded;
     delete stats?.decoder_audio_frames_decoded;
@@ -22,7 +21,8 @@ const filterStats = (stats) => {
     delete stats?.decoder_video_frame_width;
     delete stats?.video_output_format;
     delete stats?.video_output_mode;
-    stats.timestamp = Date.now();
+    stats.timestamp = new Date();
+    delete stats?.ts;
     return stats;
 };
 

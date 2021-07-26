@@ -21,14 +21,14 @@ const filterStats = async (stats) => {
     delete stats?.capabilities;
     delete stats?.is_decryption_key_ok;
     delete stats?.sid;
-    stats.timestamp = stats?.ts;
+    stats.timestamp = new Date();
     delete stats?.ts;
     return stats;
 };
 
 const filterAudio = async (stats) => {
     const filteredStats = {
-        timestamp: stats?.timestamp,
+        timestamp: new Date(),
         leftLevels: stats?.audioLevelsDb[0],
         rightLevels: stats?.audioLevelsDb[1],
     };
@@ -93,7 +93,7 @@ const main = async () => {
                     {
                         $push: {
                             encoderStatsAudio: {
-                                $each: [{ ...stats, timestamp: Date.now() }],
+                                $each: [{ ...stats }],
                                 $slice: 20,
                             },
                         },

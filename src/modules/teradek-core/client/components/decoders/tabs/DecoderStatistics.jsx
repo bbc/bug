@@ -28,6 +28,7 @@ export default function DecoderStatistics({ decoder, panelId }) {
             if (item?.decoder_video_decode_errors === 0) {
                 delete item.decoder_video_decode_errors;
             }
+            item.timestamp = Date.parse(item?.timestamp) * 1000;
             return item;
         });
 

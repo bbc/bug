@@ -33,7 +33,7 @@ const main = async () => {
 
         if (response.data?.meta?.status === "ok") {
             const channels = response?.data?.response.map((channel) => {
-                return { ...channel, ...{ timestamp: Date.now() } };
+                return { ...channel, ...{ timestamp: new Date() } };
             });
             await arraySaveMongo(channelsCollection, channels, "id");
         } else {

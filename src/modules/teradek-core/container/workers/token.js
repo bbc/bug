@@ -41,7 +41,7 @@ const main = async () => {
         if (response.data?.meta?.status === "ok") {
             const token = {
                 ...response?.data?.response,
-                timestamp: Date.now(),
+                timestamp: new Date(),
             };
             delayMs = token.ttl * 1000 - 120000;
             await arraySaveMongo(tokenCollection, [token], "auth_token");

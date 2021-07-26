@@ -36,7 +36,7 @@ const filterDevice = async (device) => {
     delete device?.AudioInput;
     delete device?.Bond;
 
-    device.timestamp = Date.now();
+    device.timestamp = new Date();
     return device;
 };
 

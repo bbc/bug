@@ -37,7 +37,7 @@ const main = async () => {
         });
         if (response.data?.meta?.status === "ok") {
             const sputniks = response?.data?.response.map((sputnik) => {
-                return { ...sputnik, ...{ timestamp: Date.now() } };
+                return { ...sputnik, ...{ timestamp: new Date() } };
             });
             await arraySaveMongo(sputniksCollection, sputniks, "identifier");
         } else {

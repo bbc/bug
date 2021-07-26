@@ -21,7 +21,7 @@ export default function EncoderStatistics({ encoder, panelId }) {
 
             newData = newData.map((item) => {
                 return {
-                    Time: item?.timestamp,
+                    Time: Date.parse(item?.timestamp) * 1000,
                     Bitrate: item?.bitrate_out,
                     Wired: item?.bitrate,
                 };

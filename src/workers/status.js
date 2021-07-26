@@ -38,14 +38,13 @@ const fetch = async () => {
                             key: "panelnotconfigured",
                             message: [
                                 "Panel has not yet been configured for use",
-                                "Please configure the panel with the required fields"
+                                "Please configure the panel with the required fields",
                             ],
                             type: "critical",
                             flags: ["configurePanel"],
                         })
                     );
-                }
-                else {
+                } else {
                     // find the module config for this panel
                     const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
 
