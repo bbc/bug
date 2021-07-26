@@ -49,7 +49,7 @@ const ToolbarRouter = (props) => {
                     <PanelsToolbar />
                 </>
             );
-        case "/panels/config":
+        case "/panels/edit":
             return (
                 <>
                     <div className={classes.title}>

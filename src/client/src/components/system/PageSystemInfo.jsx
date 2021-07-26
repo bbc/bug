@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
-import Grid from "@material-ui/core/Grid";
 import { useApiPoller } from "@utils/ApiPoller";
 import ChartCPU from "@components/system/charts/ChartCPU";
 import ChartMemory from "@components/system/charts/ChartMemory";

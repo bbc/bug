@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
-import PanelSort from "@components/panels/PanelSort";
+import PanelEditTable from "@components/panels/PanelEditTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 
-export default function PagePanelsEdit() {
+export default function PagePanels() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("Panels"));
+        dispatch(pageTitleSlice.actions.set("Edit Panels"));
     });
 
     return (
         <>
-            <PanelSort />
+            <PanelEditTable />
         </>
     );
 }

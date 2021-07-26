@@ -92,7 +92,6 @@ export default function PanelSort() {
                 const newPanels = panels;
 
                 const oldIndex = findWithAttr(newPanels[activeData[0]], "id", activeData[1]);
-
                 const newIndex = findWithAttr(newPanels[overData[0]], "id", overData[1]);
 
                 const panel = newPanels[activeData[0]][oldIndex];

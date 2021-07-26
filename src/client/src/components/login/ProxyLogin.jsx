@@ -1,5 +1,4 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useForm } from "react-hook-form";
 import Grid from "@material-ui/core/Grid";
@@ -27,11 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LocalLogin({ handleLogin }) {
     const classes = useStyles();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({});
+    const { handleSubmit } = useForm({});
 
     const onSubmit = async (form) => {
         handleLogin(form);

@@ -5,7 +5,6 @@ import LoadingOverlay from "@components/LoadingOverlay";
 import AxiosPut from "@utils/AxiosPut";
 import { useApiPoller } from "@utils/ApiPoller";
 import pageTitleSlice from "@redux/pageTitleSlice";
-import { makeStyles } from "@material-ui/core/styles";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import BugForm from "@core/BugForm";
@@ -15,25 +14,13 @@ import { useForm } from "react-hook-form";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
-const useStyles = makeStyles((theme) => ({
-    card: {
-        minWidth: 300,
-        textAlign: "left",
-        color: theme.palette.text.secondary,
-        position: "relative",
-        maxWidth: "70rem",
-    },
-}));
-
 export default function PageSystemBackup() {
-    const classes = useStyles();
     const sendAlert = useAlert();
     const history = useHistory();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
     const {
-        control,
         register,
         handleSubmit,
         formState: { errors },

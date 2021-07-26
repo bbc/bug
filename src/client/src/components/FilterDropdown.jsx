@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme) => ({
 export default function FilterTextField({ value, onChange, options }) {
     const classes = useStyles();
 
-    const renderOptions = () => {
-        return Object.keys(options).map((optionName) => (
-            <MenuItem key={optionName} value={options[optionName]}>
-                {optionName}
-            </MenuItem>
-        ));
-    };
+    // const renderOptions = () => {
+    //     return Object.keys(options).map((optionName) => (
+    //         <MenuItem key={optionName} value={options[optionName]}>
+    //             {optionName}
+    //         </MenuItem>
+    //     ));
+    // };
 
     return (
         <TextField

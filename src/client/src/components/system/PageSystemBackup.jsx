@@ -32,7 +32,6 @@ export default function PageSystemBackup() {
     const [loading, setLoading] = useState(false);
 
     const {
-        control,
         register,
         handleSubmit,
         formState: { errors },

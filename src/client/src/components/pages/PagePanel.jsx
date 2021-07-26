@@ -20,7 +20,7 @@ export default function PagePanel(props) {
         // clear any panel data from the previous page
         dispatch(panelDataSlice.actions.clear());
         // the dependency on the panelId makes sure it only gets cleared when the panel changes
-    }, [panelId]);
+    }, [panelId, dispatch]);
 
     // use websockets to listen for updates to these endpoints
     usePanelConfig({ panelId });
