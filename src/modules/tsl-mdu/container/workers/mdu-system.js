@@ -32,7 +32,7 @@ const main = async () => {
         if (system) {
             await systemCollection.insertOne({
                 ...system,
-                timestamp: Date.now(),
+                timestamp: new Date(),
             });
         }
         await delay(updateDelay);

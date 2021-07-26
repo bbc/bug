@@ -26,7 +26,8 @@ const main = async () => {
     console.log(`mdu: ${workerData?.model} starting...`);
 
     while (true) {
-        const outputs = await mdu.getOutputs();
+        let outputs = await mdu.getOutputs();
+        outputs = outputs.map((output) => ({ ...output, timestamp: new Date() }));
         await arraySaveMongo(outputsCollection, outputs, "number");
         await delay(updateDelay);
     }
