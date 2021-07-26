@@ -14,11 +14,15 @@ export default function ChartMemory({ stats, showTitle }) {
 
     const data = stats.map((rawData) => {
         return {
-            timestamp: Date.parse(rawData?.timestamp),
+            timestamp: Date.parse(rawData?.timestamp) * 1000,
             used: Math.round(rawData?.memory?.used * factor),
             free: Math.round(rawData?.memory?.free * factor),
         };
     });
+
+    const tooltipFormatter = (value, name) => {
+        return Math.round(value * 10) / 10;
+    };
 
     const getHeader = (title) => {
         if (showTitle) {
@@ -53,7 +57,7 @@ export default function ChartMemory({ stats, showTitle }) {
                                 type="number"
                             />
                             <YAxis />
-                            <Tooltip />
+                            <Tooltip formatter={tooltipFormatter} />
                             <Area
                                 name={"Used Memory"}
                                 type="monotone"
@@ -61,6 +65,7 @@ export default function ChartMemory({ stats, showTitle }) {
                                 stackId="1"
                                 stroke={hslToHex(208, 57, 40)}
                                 fill={hslToHex(208, 57, 40)}
+                                unit="MB"
                             />
                             <Area
                                 name={"Free Memory"}
@@ -69,6 +74,7 @@ export default function ChartMemory({ stats, showTitle }) {
                                 stackId="1"
                                 stroke={hslToHex(208, 57, 20)}
                                 fill={hslToHex(208, 57, 20)}
+                                unit="Mb"
                             />
                         </AreaChart>
                     </ResponsiveContainer>

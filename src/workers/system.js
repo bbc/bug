@@ -36,7 +36,6 @@ const getUptime = async () => {
 
 const fetch = async () => {
     try {
-
         while (true) {
             const document = {
                 timestamp: new Date(),
@@ -48,7 +47,7 @@ const fetch = async () => {
                 network: await si.networkStats("*"),
             };
             await systemCollection.insertOne(document);
-            await delay(5000);
+            await delay(10000);
         }
     } catch (error) {
         logger.warning(`workers/status: ${error.stack || error.trace || error || error.message}`);
@@ -63,7 +62,7 @@ const main = async () => {
     systemCollection = await mongoCollection("system");
 
     // and now create the index with ttl = 6 hours
-    await mongoCreateIndex(systemCollection, "timestamp", { expireAfterSeconds: 60 * 60 * 6 });
+    await mongoCreateIndex(systemCollection, "timestamp", { expireAfterSeconds: 60 * 60 * 1 });
 
     // Kick things off
     while (true) {

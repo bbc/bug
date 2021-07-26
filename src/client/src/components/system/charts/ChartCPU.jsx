@@ -14,7 +14,7 @@ export default function ChartCPU({ containers, stats, showTitle }) {
     const panelList = useSelector((state) => state.panelList);
     const data = stats.map((rawData) => {
         const datapoint = {
-            timestamp: Date.parse(rawData?.timestamp),
+            timestamp: Date.parse(rawData?.timestamp) * 1000,
         };
 
         for (let container of rawData?.containers) {
@@ -41,6 +41,10 @@ export default function ChartCPU({ containers, stats, showTitle }) {
         return id;
     };
 
+    const tooltipFormatter = (value, name) => {
+        return Math.round(value * 10) / 10;
+    };
+
     const getSeries = (datapoint, xDataKey) => {
         const count = Object.keys(datapoint).length;
         let current = 1;
@@ -57,6 +61,7 @@ export default function ChartCPU({ containers, stats, showTitle }) {
                         stackId="1"
                         stroke={color}
                         fill={color}
+                        unit="%"
                     />
                 );
                 current++;
@@ -98,7 +103,7 @@ export default function ChartCPU({ containers, stats, showTitle }) {
                                 type="number"
                             />
                             <YAxis />
-                            <Tooltip />
+                            <Tooltip formatter={tooltipFormatter} />
                             {getSeries(data[0], "timestamp")}
                         </AreaChart>
                     </ResponsiveContainer>

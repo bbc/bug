@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,11 +10,17 @@ import PropTypes from "prop-types";
 
 export default function ChartDisk({ stats, showTitle }) {
     const windowSize = useWindowSize();
-    const factor = 0.00000095367432;
+    const factor = 0.0000000095367432;
+    const units = "GB";
+    let disksSize = 0;
+
+    for (let disk of stats[0].disks) {
+        disksSize = disksSize + Math.round(disk?.size * factor);
+    }
 
     const data = stats.map((rawData) => {
         const datapoint = {
-            timestamp: Date.parse(rawData?.timestamp),
+            timestamp: Date.parse(rawData?.timestamp) * 1000,
         };
 
         for (let disk of rawData?.disks) {
@@ -22,6 +28,10 @@ export default function ChartDisk({ stats, showTitle }) {
         }
         return datapoint;
     });
+
+    const tooltipFormatter = (value, name) => {
+        return Math.round(value * 10) / 10;
+    };
 
     const getSeries = (datapoint, xDataKey) => {
         const count = Object.keys(datapoint).length;
@@ -31,7 +41,16 @@ export default function ChartDisk({ stats, showTitle }) {
             if (key !== xDataKey) {
                 const color = hslToHex(208, 57, Math.round((current / count) * 100));
                 series.push(
-                    <Area name={key} key={key} type="monotone" dataKey={key} stackId="1" stroke={color} fill={color} />
+                    <Area
+                        unit={units}
+                        name={key}
+                        key={key}
+                        type="monotone"
+                        dataKey={key}
+                        stackId="1"
+                        stroke={color}
+                        fill={color}
+                    />
                 );
                 current++;
             }
@@ -71,8 +90,8 @@ export default function ChartDisk({ stats, showTitle }) {
                                 tickFormatter={(unixTime) => moment(Math.round(unixTime / 1000)).format("HH:mm Do")}
                                 type="number"
                             />
-                            <YAxis />
-                            <Tooltip />
+                            <YAxis type="number" domain={[0, disksSize]} />
+                            <Tooltip formatter={tooltipFormatter} />
                             {getSeries(data[0], "timestamp")}
                         </AreaChart>
                     </ResponsiveContainer>

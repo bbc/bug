@@ -13,13 +13,13 @@ export default function ChartNetwork({ type, stats, showTitle }) {
 
     const data = stats.map((rawData) => {
         const datapoint = {
-            timestamp: Date.parse(rawData?.timestamp),
+            timestamp: Date.parse(rawData?.timestamp) * 1000,
         };
 
         for (let iface of rawData?.network) {
-            datapoint[`${iface?.iface} (Total)`] = iface[`${type}_bytes`];
-            datapoint[`${iface?.iface} (Dropped)`] = iface[`${type}_dropped`];
-            datapoint[`${iface?.iface} (Errors)`] = iface[`${type}_errors`];
+            datapoint[`${iface?.iface} (Total)`] = iface[`${type}_bytes`] / 1000000;
+            datapoint[`${iface?.iface} (Dropped)`] = iface[`${type}_dropped`] / 1000000;
+            datapoint[`${iface?.iface} (Errors)`] = iface[`${type}_errors`] / 1000000;
         }
         return datapoint;
     });
@@ -32,12 +32,25 @@ export default function ChartNetwork({ type, stats, showTitle }) {
             if (key !== xDataKey) {
                 const color = hslToHex(208, 57, Math.round((current / count) * 100));
                 series.push(
-                    <Area name={key} key={key} type="monotone" dataKey={key} stackId="1" stroke={color} fill={color} />
+                    <Area
+                        unit="MB"
+                        name={key}
+                        key={key}
+                        type="monotone"
+                        dataKey={key}
+                        stackId="1"
+                        stroke={color}
+                        fill={color}
+                    />
                 );
                 current++;
             }
         }
         return series;
+    };
+
+    const tooltipFormatter = (value, name) => {
+        return Math.round(value * 10) / 10;
     };
 
     const getHeader = (title) => {
@@ -73,7 +86,7 @@ export default function ChartNetwork({ type, stats, showTitle }) {
                                 type="number"
                             />
                             <YAxis />
-                            <Tooltip />
+                            <Tooltip formatter={tooltipFormatter} />
                             {getSeries(data[0], "timestamp")}
                         </AreaChart>
                     </ResponsiveContainer>
