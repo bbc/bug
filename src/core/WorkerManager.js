@@ -114,7 +114,7 @@ module.exports = class WorkerManager {
             if (event?.restartOn) {
                 workers[index].restartKeys = event.restartOn;
             }
-            if (!isNan(event?.restartDelay)) {
+            if (typeof event?.restartDelay === "number" && event.restartDelay > 0) {
                 workers[index].restartDelay = event.restartDelay;
             } else {
                 workers[index].restartDelay = 0;
