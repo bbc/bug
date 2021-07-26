@@ -52,6 +52,32 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
 
                 <Grid item xs={12}>
                     <TextField
+                        select
+                        inputProps={{
+                            ...register("sessionLength"),
+                        }}
+                        fullWidth
+                        label="Session length"
+                        defaultValue={strategy.sessionLength}
+                        SelectProps={{
+                            native: true,
+                        }}
+                    >
+                        <option value={-1}>Unlimited</option>
+                        <option value={60000}>1 minute</option>
+                        <option value={1800000}>30 minutes</option>
+                        <option value={3600000}>1 hour</option>
+                        <option value={14400000}>4 hours</option>
+                        <option value={86400000}>1 day</option>
+                        <option value={172800000}>2 days</option>
+                        <option value={604800000}>1 week</option>
+                        <option value={1209600000}>2 weeks</option>
+                        <option value={31536000000}>1 year</option>
+                    </TextField>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
                         inputProps={{
                             ...register("loginPath"),
                         }}
