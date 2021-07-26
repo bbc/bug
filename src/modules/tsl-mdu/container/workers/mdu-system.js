@@ -27,8 +27,6 @@ const main = async () => {
 
     while (true) {
         const system = await mdu.getStatus();
-
-        console.log(system);
         if (system) {
             await systemCollection.insertOne({
                 ...system,
