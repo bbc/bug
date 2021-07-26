@@ -88,7 +88,12 @@ export default function PanelTable({ showGroups = true }) {
 
             groups.push(
                 <>
-                    <PanelEditTableGroupRow title={groupName} />
+                    <PanelEditTableGroupRow
+                        handleNewGroupName={(newGroupName) => {
+                            updateGroupName(groupName, newGroupName);
+                        }}
+                        title={groupName}
+                    />
                     <SortableContext items={items} strategy={verticalListSortingStrategy}>
                         {renderRows(panelsByGroup[groupName])}
                     </SortableContext>
@@ -107,6 +112,19 @@ export default function PanelTable({ showGroups = true }) {
         return rows;
     };
 
+    const updateGroupName = async (currentGroupName, newGroupName) => {
+        const newPanelsByGroup = panelsByGroup;
+        newPanelsByGroup[newGroupName] = newPanelsByGroup[currentGroupName];
+        delete newPanelsByGroup[currentGroupName];
+
+        for (let group in newPanelsByGroup) {
+            for (let index in newPanelsByGroup[group]) {
+                await AxiosPut(`/api/panelconfig/${panelsByGroup[group][index].id}`, {
+                    group: group,
+                });
+            }
+        }
+    };
     const updateOrder = async (panelsByGroup) => {
         for (let group in panelsByGroup) {
             for (let index in panelsByGroup[group]) {
