@@ -1,21 +1,21 @@
-// "use strict";
+"use strict";
 
-// const mikrotikConnect = require("../utils/mikrotik-connect");
+const mikrotikConnect = require("../utils/mikrotik-connect");
 
-// module.exports = async (interfaceId, interfaceComment) => {
-//     const conn = await mikrotikConnect();
-//     if (!conn) {
-//         return;
-//     }
+module.exports = async (leaseId, leaseComment) => {
+    const conn = await mikrotikConnect();
+    if (!conn) {
+        return;
+    }
 
-//     try {
-//         await conn.write(`/interface/set`, [`=numbers=${interfaceId}`, "=comment=" + interfaceComment]);
-//         console.log(`mikrotik-interfacecomment: set comment on interface ${interfaceId} to '${interfaceComment}'`);
-//         conn.close();
-//         return true;
-//     } catch (error) {
-//         console.log(`mikrotik-interfacecomment: ${error.stack || error.trace || error || error.message}`);
-//         conn.close();
-//         return false;
-//     }
-// };
+    try {
+        await conn.write(`/ip/dhcp-server/lease/set`, [`=numbers=${leaseId}`, "=comment=" + leaseComment]);
+        console.log(`mikrotik-leasecomment: set comment on lease ${leaseId} to '${leaseComment}'`);
+        conn.close();
+        return true;
+    } catch (error) {
+        console.log(`mikrotik-leasecomment: ${error.stack || error.trace || error || error.message}`);
+        conn.close();
+        return false;
+    }
+};

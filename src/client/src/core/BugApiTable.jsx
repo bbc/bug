@@ -68,6 +68,12 @@ export default function BugApiTable({
                 styleObj["columns"][`& .col_${index}`]["text-overflow"] = "none";
                 styleObj["columns"][`& .col_${index}`]["white-space"] = "nowrap";
             }
+            if (col.noPadding) {
+                styleObj["columns"][`& .col_${index}`]["padding"] = "0px";
+                if (index === 0) {
+                    styleObj["columns"][`& .col_${index}`]["paddingLeft"] = "8px";
+                }
+            }
         }
         return styleObj;
     };

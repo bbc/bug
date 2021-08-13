@@ -23,8 +23,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         leases = leases.filter((lease) => lease["last-seen"] < parseInt(filters['last-seen']));
     }
 
-    if (filters['expires']) {
-        leases = leases.filter((lease) => lease["expires"] > parseInt(filters['expires']));
+    if (filters['expires-after']) {
+        leases = leases.filter((lease) => lease["expires-after"] < parseInt(filters['expires-after']));
     }
 
     if (filters['server']) {

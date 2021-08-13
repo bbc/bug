@@ -11,7 +11,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import PanelListHandler from "@data/PanelListHandler";
 import UserHandler from "@data/UserHandler";
 import StrategiesHandler from "@data/StrategiesHandler";
-
+import { ModalProvider } from "react-modal-hook";
 import { Provider } from "react-redux";
 import reduxStore from "@redux/store";
 
@@ -37,7 +37,9 @@ export default function App() {
                             <UserHandler />
                             <StrategiesHandler />
                             <PanelListHandler />
-                            <AuthRouter />
+                            <ModalProvider>
+                                <AuthRouter />
+                            </ModalProvider>
                         </SnackbarProvider>
                     </MuiPickersUtilsProvider>
                 </ThemeProvider>

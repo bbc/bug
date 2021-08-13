@@ -27,7 +27,21 @@ export default function BugApiTableMenu({ item, menuItems }) {
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();
-        menuItem.onClick(event, item);
+        if (menuItem.disabled !== true && typeof menuItem.onClick === "function") {
+            menuItem.onClick(event, item);
+        }
+    };
+
+    const parseDisabled = (disabledValue) => {
+        if (disabledValue === undefined) {
+            return false;
+        }
+
+        if (typeof disabledValue === "function") {
+            return disabledValue(item);
+        }
+
+        return disabledValue;
     };
 
     return (
@@ -41,8 +55,12 @@ export default function BugApiTableMenu({ item, menuItems }) {
                         return <Divider key={index} />;
                     } else {
                         return (
-                            <MenuItem onClick={(event) => handleMenuItemClicked(event, menuItem)} key={index}>
-                                <ListItemIcon>{menuItem.icon}</ListItemIcon>
+                            <MenuItem
+                                onClick={(event) => handleMenuItemClicked(event, menuItem)}
+                                key={index}
+                                disabled={parseDisabled(menuItem.disabled)}
+                            >
+                                <ListItemIcon disabled={parseDisabled(menuItem.disabled)}>{menuItem.icon}</ListItemIcon>
                                 <ListItemText primary={menuItem.title} />
                             </MenuItem>
                         );

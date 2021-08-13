@@ -11,7 +11,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import CancelIcon from "@material-ui/icons/Cancel";
 import IconButton from "@material-ui/core/IconButton";
 
-export default function CommentDialog({ interfaceId, interfaceName, comment, onClose, panelId }) {
+export default function CommentDialog({ leaseId, comment, onClose, panelId }) {
     const sendAlert = useAlert();
     const [value, setValue] = React.useState(comment ? comment : "");
     const inputRef = React.useRef();
@@ -19,13 +19,12 @@ export default function CommentDialog({ interfaceId, interfaceName, comment, onC
     const handleSetCommentConfirm = async (event) => {
         event.stopPropagation();
         onClose(event);
-        if (await AxiosCommand(`/container/${panelId}/interface/comment/${interfaceId}/${value}`)) {
-            sendAlert(`Set comment on interface ${interfaceName} to '${value}'`, {
-                broadcast: true,
+        if (await AxiosCommand(`/container/${panelId}/lease/comment/${leaseId}/${value}`)) {
+            sendAlert(`Set comment on lease to '${value}'`, {
                 variant: "success",
             });
         } else {
-            sendAlert(`Failed to set comment on interface ${interfaceName}`, { variant: "error" });
+            sendAlert(`Failed to set comment on lease`, { variant: "error" });
         }
     };
 
@@ -50,7 +49,7 @@ export default function CommentDialog({ interfaceId, interfaceName, comment, onC
                     event.preventDefault();
                 }}
             >
-                <DialogTitle id="alert-dialog-title">Change interface comment</DialogTitle>
+                <DialogTitle id="alert-dialog-title">Change lease comment</DialogTitle>
                 <DialogContent>
                     <TextField
                         inputRef={inputRef}
@@ -67,7 +66,7 @@ export default function CommentDialog({ interfaceId, interfaceName, comment, onC
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton aria-label="toggle password visibility" onClick={handleClear}>
+                                    <IconButton aria-label="clear textbox" onClick={handleClear}>
                                         <CancelIcon />
                                     </IconButton>
                                 </InputAdornment>

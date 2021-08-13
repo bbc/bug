@@ -74,7 +74,11 @@ const theme = createMuiTheme({
                 "& .MuiButton-outlinedPrimary": {
                     color: "rgba(255, 255, 255, 0.8)",
                     border: "1px solid rgba(255, 255, 255, 0.3)",
-                    marginRight: "0.5rem",
+                    marginLeft: "0.5rem",
+                },
+                "& .MuiButton-containedPrimary": {
+                    color: "rgba(255, 255, 255, 0.8)",
+                    marginLeft: "0.5rem",
                 },
             },
         },

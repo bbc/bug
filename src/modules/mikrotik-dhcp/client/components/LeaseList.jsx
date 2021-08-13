@@ -4,16 +4,17 @@ import ApiSwitch from "@core/ApiSwitch";
 import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import RenameDialog from "./RenameDialog";
 import CommentDialog from "./CommentDialog";
 import Link from "@material-ui/core/Link";
 import { formatDistanceToNow } from "date-fns";
 import BugApiTable from "@core/BugApiTable";
 import { useHistory } from "react-router-dom";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-import EditIcon from "@material-ui/icons/Edit";
 import CommentIcon from "@material-ui/icons/Comment";
 import { useSelector } from "react-redux";
+import ToggleOffIcon from "@material-ui/icons/ToggleOff";
+import ToggleOnIcon from "@material-ui/icons/ToggleOn";
+import EditIcon from "@material-ui/icons/Edit";
+import { useModal } from "react-modal-hook";
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -24,11 +25,13 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary.main,
         display: "block",
         margin: "auto",
+        minWidth: 36,
     },
     icon: {
         opacity: 0.1,
         display: "block",
         margin: "auto",
+        minWidth: 36,
     },
     tableHead: {
         ["@media (max-width:450px)"]: {
@@ -66,34 +69,23 @@ export default function LeaseList({ panelId }) {
     const classes = useStyles();
     const history = useHistory();
     const sendAlert = useAlert();
-    const [renameDialogOpen, setRenameDialogOpen] = React.useState(false);
-    const [renameDialogProps, setRenameDialogProps] = React.useState({});
-    const [commentDialogOpen, setCommentDialogOpen] = React.useState(false);
     const [commentDialogProps, setCommentDialogProps] = React.useState({});
     const nowTimestamp = Date.now();
     const panelData = useSelector((state) => state.panelData);
     const filterEnabled = panelData && panelData.filter;
 
-    const handleInterfaceNameClicked = (event, item) => {
-        setRenameDialogProps({
-            panelId,
-            interfaceId: item.id,
-            interfaceName: item.name,
-            defaultName: item["default-name"],
-        });
-        setRenameDialogOpen(true);
-        event.stopPropagation();
-        event.preventDefault();
-    };
+    const [showCommentDialog, hideCommentDialog] = useModal(
+        () => <CommentDialog {...commentDialogProps} onClose={() => hideCommentDialog()} />,
+        [commentDialogProps]
+    );
 
     const handleCommentClicked = (event, item) => {
         setCommentDialogProps({
             panelId,
-            interfaceId: item.id,
-            interfaceName: item.name,
+            leaseId: item.id,
             comment: item.comment,
         });
-        setCommentDialogOpen(true);
+        showCommentDialog();
         event.stopPropagation();
         event.preventDefault();
     };
@@ -102,14 +94,22 @@ export default function LeaseList({ panelId }) {
         history.push(`/panel/${panelId}/interface/${item.name}`);
     };
 
-    const handleEnabledChanged = async (checked, interfaceName) => {
+    const handleEnabledChanged = async (checked, leaseId) => {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
-        if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceName}`)) {
-            sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
+        if (await AxiosCommand(`/container/${panelId}/lease/${command}/${leaseId}`)) {
+            sendAlert(`${commandText} lease`, { variant: "success" });
         } else {
-            sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
+            sendAlert(`Failed to ${command} lease`, { variant: "error" });
         }
+    };
+
+    const handleEnabledClicked = (event, item) => {
+        handleEnabledChanged(true, item.id);
+    };
+
+    const handleDisabledClicked = (event, item) => {
+        handleEnabledChanged(false, item.id);
     };
 
     const formatLastSeen = (value) => {
@@ -135,6 +135,7 @@ export default function LeaseList({ panelId }) {
                     {
                         title: "",
                         sortable: false,
+                        noPadding: true,
                         width: 48,
                         field: "status",
                         filterType: "dropdown",
@@ -154,19 +155,20 @@ export default function LeaseList({ panelId }) {
                     {
                         title: "",
                         sortable: false,
+                        noPadding: true,
                         width: 82,
                         content: (item) => {
                             return (
                                 <ApiSwitch
                                     checked={!item.disabled}
-                                    onChange={(checked) => handleEnabledChanged(checked, item.name)}
+                                    onChange={(checked) => handleEnabledChanged(checked, item.id)}
                                 />
                             );
                         },
                     },
                     {
-                        title: "Hostname",
-                        width: "20%",
+                        title: "Name",
+                        width: "50%",
                         minWidth: 100,
                         noWrap: true,
                         sortable: true,
@@ -176,15 +178,7 @@ export default function LeaseList({ panelId }) {
                         content: (item) => {
                             return (
                                 <>
-                                    {item.name && (
-                                        <Link
-                                            component="button"
-                                            className={classes.leaseName}
-                                            onClick={(event) => handleInterfaceNameClicked(event, item)}
-                                        >
-                                            {item.name}
-                                        </Link>
-                                    )}
+                                    {item["host-name"] && <div className={classes.leaseName}>{item["host-name"]}</div>}
                                     {item.comment && (
                                         <Link
                                             component="button"
@@ -222,6 +216,7 @@ export default function LeaseList({ panelId }) {
                     },
                     {
                         title: "Manufacturer",
+                        width: "20%",
                         sortable: true,
                         field: "manufacturer",
                         filterType: "text",
@@ -250,11 +245,10 @@ export default function LeaseList({ panelId }) {
                         filterType: "dropdown",
                         filterOptions: [
                             { name: "View all items", value: "" },
-                            { name: "Next 30 seconds", value: 30 },
-                            { name: "Next minute", value: 60 },
                             { name: "Next 5 minutes", value: 300 },
-                            { name: "Next 15 minutes", value: 600 },
-                            { name: "Next 30 minutes", value: 900 },
+                            { name: "Next 30 minutes", value: 1800 },
+                            { name: "Next hour", value: 3600 },
+                            { name: "Next 2 hours", value: 7200 },
                         ],
                         hideWidth: 1600,
                         content: (item) => {
@@ -266,6 +260,7 @@ export default function LeaseList({ panelId }) {
                         sortable: true,
                         field: "last-seen",
                         defaultSortDirection: "desc",
+                        hideWidth: 1500,
                         filterType: "dropdown",
                         filterOptions: [
                             { name: "View all items", value: "" },
@@ -295,19 +290,29 @@ export default function LeaseList({ panelId }) {
                 ]}
                 menuItems={[
                     {
-                        title: "View Details",
-                        icon: <SettingsInputComponentIcon fontSize="small" />,
-                        onClick: handleDetailsClicked,
-                    },
-                    {
-                        title: "Rename",
+                        title: "Edit Lease",
                         icon: <EditIcon fontSize="small" />,
-                        onClick: handleInterfaceNameClicked,
+                        onClick: handleDetailsClicked,
                     },
                     {
                         title: "Comment",
                         icon: <CommentIcon fontSize="small" />,
                         onClick: handleCommentClicked,
+                    },
+                    {
+                        title: "-",
+                    },
+                    {
+                        title: "Enable",
+                        disabled: (item) => !item.disabled,
+                        icon: <ToggleOnIcon fontSize="small" />,
+                        onClick: handleEnabledClicked,
+                    },
+                    {
+                        title: "Disable",
+                        disabled: (item) => item.disabled,
+                        icon: <ToggleOffIcon fontSize="small" />,
+                        onClick: handleDisabledClicked,
                     },
                 ]}
                 defaultSortIndex={3}
@@ -317,12 +322,6 @@ export default function LeaseList({ panelId }) {
                 sortable
                 filterable={filterEnabled}
             />
-            {renameDialogOpen ? (
-                <RenameDialog {...renameDialogProps} onClose={() => setRenameDialogOpen(false)} />
-            ) : null}
-            {commentDialogOpen ? (
-                <CommentDialog {...commentDialogProps} onClose={() => setCommentDialogOpen(false)} />
-            ) : null}
         </>
     );
 }
