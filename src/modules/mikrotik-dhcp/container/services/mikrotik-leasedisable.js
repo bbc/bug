@@ -10,7 +10,7 @@ module.exports = async (leaseId) => {
 
     try {
         await conn.write("/ip/dhcp-server/lease/disable", ["=numbers=" + leaseId]);
-        console.log(`mikrotik-leasedisable: disabled lease`);
+        console.log(`mikrotik-leasedisable: disabled lease id ${leaseId}`);
         conn.close();
         return true;
     } catch (error) {

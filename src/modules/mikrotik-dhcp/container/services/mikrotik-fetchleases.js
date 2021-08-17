@@ -13,6 +13,7 @@ module.exports = async (conn) => {
                 result: data[i],
                 booleanFields: ["radius", "dynamic", "blocked", "disabled"],
                 timeFields: ["expires-after", "last-seen"],
+                arrayFields: ["address-lists"]
             })
         );
     }

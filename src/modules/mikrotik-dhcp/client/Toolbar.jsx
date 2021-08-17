@@ -5,12 +5,14 @@ import { usePanelStatus } from "@core/PanelStatusHook";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import panelDataSlice from "@redux/panelDataSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 export default function Toolbar(props) {
     const toolbarProps = { ...props };
     const panelStatus = usePanelStatus();
     const panelData = useSelector((state) => state.panelData);
     const dispatch = useDispatch();
+    const location = useLocation();
 
     if (!panelStatus) {
         return null;
@@ -26,18 +28,24 @@ export default function Toolbar(props) {
         );
     };
 
-    const buttons = () => (
-        <>
-            <Button
-                variant={filterEnabled ? "contained" : "outlined"}
-                color="primary"
-                startIcon={<FilterListIcon />}
-                onClick={handleToggleFilter}
-            >
-                Filter
-            </Button>
-        </>
-    );
+    const buttons = () => {
+        if (location.pathname.indexOf("lease") > -1) {
+            return null;
+        }
+
+        return (
+            <>
+                <Button
+                    variant={filterEnabled ? "contained" : "outlined"}
+                    color="primary"
+                    startIcon={<FilterListIcon />}
+                    onClick={handleToggleFilter}
+                >
+                    Filter
+                </Button>
+            </>
+        );
+    };
 
     const menuItems = () => null;
 

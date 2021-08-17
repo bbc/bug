@@ -8,6 +8,7 @@ const statusRouter = require("@routes/status");
 const configRouter = require("@routes/config");
 const leaseRouter = require("@routes/lease");
 const serverRouter = require("@routes/server");
+const addressListRouter = require("@routes/addresslist");
 const defaultRouter = require("@routes/default");
 const validationRouter = require("@routes/validate");
 
@@ -29,6 +30,7 @@ app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/lease", leaseRouter);
 app.use("/api/server", serverRouter);
+app.use("/api/addresslist", addressListRouter);
 app.use("/api/validate", validationRouter);
 app.use("*", defaultRouter);
 

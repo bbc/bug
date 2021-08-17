@@ -4,9 +4,9 @@ const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
 module.exports = async (conn) => {
     var data = await conn.write("/ip/dhcp-server/getall");
+
     // process data
     var servers = [];
-    // console.log(data);
     for (var i in data) {
         servers.push(
             mikrotikParseResults({

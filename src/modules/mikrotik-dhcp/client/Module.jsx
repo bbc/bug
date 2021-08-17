@@ -1,7 +1,7 @@
 import React from "react";
 import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
-import InterfacePanel from "./panels/InterfacePanel";
+import LeasePanel from "./panels/LeasePanel";
 import ModuleWrapper from "@core/ModuleWrapper";
 import ModuleRoute from "@core/ModuleRoute";
 
@@ -14,9 +14,9 @@ export default function Module(props) {
             <ModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel />
             </ModuleRoute>
-            {/* <ModuleRoute exact path="/panel/:panelId/interface/:interfaceName">
-                <InterfacePanel />
-            </ModuleRoute> */}
+            <ModuleRoute exact path="/panel/:panelId/lease/:leaseId">
+                <LeasePanel />
+            </ModuleRoute>
         </ModuleWrapper>
     );
 }

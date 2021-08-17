@@ -8,6 +8,7 @@ import CommentDialog from "./CommentDialog";
 import Link from "@material-ui/core/Link";
 import { formatDistanceToNow } from "date-fns";
 import BugApiTable from "@core/BugApiTable";
+import BugChipDisplay from "@core/BugChipDisplay";
 import { useHistory } from "react-router-dom";
 import CommentIcon from "@material-ui/icons/Comment";
 import { useSelector } from "react-redux";
@@ -15,6 +16,10 @@ import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import EditIcon from "@material-ui/icons/Edit";
 import { useModal } from "react-modal-hook";
+import GpsFixedIcon from "@material-ui/icons/GpsFixed";
+import GpsNotFixedIcon from "@material-ui/icons/GpsNotFixed";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AxiosDelete from "@utils/AxiosDelete";
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -91,7 +96,7 @@ export default function LeaseList({ panelId }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/interface/${item.name}`);
+        history.push(`/panel/${panelId}/lease/${item.id}`);
     };
 
     const handleEnabledChanged = async (checked, leaseId) => {
@@ -110,6 +115,15 @@ export default function LeaseList({ panelId }) {
 
     const handleDisabledClicked = (event, item) => {
         handleEnabledChanged(false, item.id);
+    };
+
+    const handleDeleteClicked = async (event, item) => {
+        const response = await AxiosDelete(`/container/${panelId}/lease/${item.id}`);
+        if (response) {
+            sendAlert(`Lease has been deleted.`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Lease could not be deleted.`, { variant: "warning" });
+        }
     };
 
     const formatLastSeen = (value) => {
@@ -133,10 +147,11 @@ export default function LeaseList({ panelId }) {
             <BugApiTable
                 columns={[
                     {
-                        title: "",
+                        title: "Active",
                         sortable: false,
                         noPadding: true,
-                        width: 48,
+                        hideWidth: 440,
+                        width: 58,
                         field: "status",
                         filterType: "dropdown",
                         filterOptions: [
@@ -153,9 +168,10 @@ export default function LeaseList({ panelId }) {
                         },
                     },
                     {
-                        title: "",
+                        title: "Enabled",
                         sortable: false,
                         noPadding: true,
+                        hideWidth: 1200,
                         width: 82,
                         content: (item) => {
                             return (
@@ -163,6 +179,22 @@ export default function LeaseList({ panelId }) {
                                     checked={!item.disabled}
                                     onChange={(checked) => handleEnabledChanged(checked, item.id)}
                                 />
+                            );
+                        },
+                    },
+                    {
+                        title: "Fixed",
+                        sortable: false,
+                        noPadding: true,
+                        hideWidth: 500,
+                        width: 82,
+                        content: (item) => {
+                            return item.dynamic ? (
+                                <GpsNotFixedIcon
+                                    className={item.status === "bound" ? classes.iconRunning : classes.icon}
+                                />
+                            ) : (
+                                <GpsFixedIcon className={classes.iconRunning} />
                             );
                         },
                     },
@@ -220,10 +252,18 @@ export default function LeaseList({ panelId }) {
                         sortable: true,
                         field: "manufacturer",
                         filterType: "text",
+                        hideWidth: 720,
                         defaultSortDirection: "asc",
                         content: (item) => {
                             return item.manufacturer;
                         },
+                    },
+                    {
+                        title: "Address Lists",
+                        width: "20%",
+                        hideWidth: 1300,
+                        field: "address-lists",
+                        content: (item) => <BugChipDisplay options={item["address-lists"]} />,
                     },
                     {
                         title: "MAC Address",
@@ -250,7 +290,7 @@ export default function LeaseList({ panelId }) {
                             { name: "Next hour", value: 3600 },
                             { name: "Next 2 hours", value: 7200 },
                         ],
-                        hideWidth: 1600,
+                        hideWidth: 2000,
                         content: (item) => {
                             return formatExpiresAfter(item["expires-after"]);
                         },
@@ -260,7 +300,7 @@ export default function LeaseList({ panelId }) {
                         sortable: true,
                         field: "last-seen",
                         defaultSortDirection: "desc",
-                        hideWidth: 1500,
+                        hideWidth: 1800,
                         filterType: "dropdown",
                         filterOptions: [
                             { name: "View all items", value: "" },
@@ -280,6 +320,7 @@ export default function LeaseList({ panelId }) {
                         noWrap: true,
                         sortable: true,
                         field: "server",
+                        hideWidth: 1400,
                         defaultSortDirection: "asc",
                         filterType: "text",
                         title: "Server",
@@ -314,8 +355,16 @@ export default function LeaseList({ panelId }) {
                         icon: <ToggleOffIcon fontSize="small" />,
                         onClick: handleDisabledClicked,
                     },
+                    {
+                        title: "-",
+                    },
+                    {
+                        title: "Delete",
+                        icon: <DeleteIcon fontSize="small" />,
+                        onClick: handleDeleteClicked,
+                    },
                 ]}
-                defaultSortIndex={3}
+                defaultSortIndex={4}
                 apiUrl={`/container/${panelId}/lease`}
                 panelId={panelId}
                 onRowClick={handleDetailsClicked}
