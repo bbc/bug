@@ -194,6 +194,7 @@ const theme = createMuiTheme({
 
         error: {
             main: "#b52424",
+            hover: "#962222",
         },
 
         warning: {
