@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-export default async function AxiosPut(url,data) {
+export default async function AxiosPut(url, data) {
 
-    let response = await axios.put(url,data);
+    let response = await axios.put(url, data);
 
-    switch(response?.data?.status) {
+    switch (response?.data?.status) {
         case 'success':
             response = response?.data?.data;
             break;
-        case 'fail':
+        case 'failure':
             console.error('failed to fetch ' + url);
             response = null;
             break;
