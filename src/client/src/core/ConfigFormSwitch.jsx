@@ -9,13 +9,12 @@ const useStyles = makeStyles((theme) => ({
     control: {
         borderBottom: "1px solid rgba(255, 255, 255, 0.7)",
         "&:hover": {
-            borderBottom: "2px solid #fff",
+            borderBottom: "1px solid #fff",
         },
     },
     label: {
         "& .MuiTypography-root": {
-            color: "rgba(255, 255, 255, 0.7)",
-            opacity: "0.7",
+            color: "rgba(255, 255, 255, 1)",
             fontSize: "0.875rem",
             fontWeight: "400",
         },
