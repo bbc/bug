@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import PasswordTextField from "@core/PasswordTextField";
 import PanelGroupFormControl from "@core/PanelGroupFormControl";
 import { useConfigFormHandler } from "@core/ConfigFormHandler";
-import ConfigFormChipInputAutocomplete from "@core/ConfigFormChipInputAutocomplete";
+import BugFormAutocomplete from "@core/BugFormAutocomplete";
 import AxiosGet from "@utils/AxiosGet";
 
 export default function ConfigPanel() {
@@ -104,26 +104,28 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormChipInputAutocomplete
+                    <BugFormAutocomplete
                         name="encoders"
                         label="Encoders to Monitor"
                         control={control}
                         defaultValue={panelConfig.data.encoders}
-                        acData={devices.filter((device) => device?.type === "encoder")}
-                        acTextKey="name"
+                        options={devices.filter((device) => device?.type === "encoder")}
+                        //TODO - make options simple array
+                        // acTextKey="name"
                         error={errors.encoders}
                         fullWidth
                     />
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormChipInputAutocomplete
+                    <BugFormAutocomplete
                         name="decoders"
                         label="Decoders to Monitor"
                         control={control}
                         defaultValue={panelConfig.data.decoders}
-                        acData={devices.filter((device) => device?.type === "decoder")}
-                        acTextKey="name"
+                        options={devices.filter((device) => device?.type === "decoder")}
+                        //TODO - make options simple array
+                        // acTextKey="name"
                         error={errors.decoders}
                         fullWidth
                     />

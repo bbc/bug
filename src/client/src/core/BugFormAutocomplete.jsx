@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ConfigFormChipInput = ({
+const BugFormAutocomplete = ({
     name,
     label,
     control,
@@ -27,9 +27,9 @@ const ConfigFormChipInput = ({
     children,
     rules,
     error,
-    acData,
-    acTextKey,
+    options,
     variant,
+    freeSolo,
     helperText,
     ...props
 }) => {
@@ -49,13 +49,14 @@ const ConfigFormChipInput = ({
                             <Autocomplete
                                 multiple
                                 filterSelectedOptions
-                                options={acData}
-                                getOptionLabel={(option) => option[acTextKey]}
+                                options={options}
+                                freeSolo={freeSolo}
                                 onBlur={onBlur}
                                 onChange={(event, values) => {
                                     onChange(values);
                                 }}
                                 defaultValue={value}
+                                value={value || ""}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -78,4 +79,4 @@ const ConfigFormChipInput = ({
         </>
     );
 };
-export default ConfigFormChipInput;
+export default BugFormAutocomplete;
