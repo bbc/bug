@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
     },
+    cellMenu: {
+        paddingLeft: 0,
+        paddingRight: 4,
+    },
 }));
 
 export default function BugApiTable({
@@ -53,6 +57,7 @@ export default function BugApiTable({
         };
         for (const [index, col] of columns.entries()) {
             styleObj["columns"][`& .col_${index}`] = {};
+            styleObj["columns"][`& .col_${index}`]["paddingRight"] = 12;
             if (col.width !== undefined) {
                 styleObj["columns"][`& .col_${index}`]["width"] = col.width;
             }
@@ -180,7 +185,7 @@ export default function BugApiTable({
                                         </TableCell>
                                     ))}
                                     {menuItems && (
-                                        <TableCell style={{ width: "4rem" }} className={classes.cellMenu}>
+                                        <TableCell className={classes.cellMenu}>
                                             <BugApiTableMenu item={item} menuItems={menuItems} />
                                         </TableCell>
                                     )}
