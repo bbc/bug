@@ -51,7 +51,12 @@ module.exports = ({
 
     for (const eachField of arrayFields) {
         if (eachField in result) {
-            result[eachField] = result[eachField].split(",");
+            if (result[eachField]) {
+                result[eachField] = result[eachField].split(",");
+            }
+            else {
+                result[eachField] = [];
+            }
         }
     }
 
