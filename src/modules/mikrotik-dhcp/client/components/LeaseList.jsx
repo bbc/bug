@@ -20,6 +20,7 @@ import GpsFixedIcon from "@material-ui/icons/GpsFixed";
 import GpsNotFixedIcon from "@material-ui/icons/GpsNotFixed";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AxiosDelete from "@utils/AxiosDelete";
+import AxiosGet from "@utils/AxiosGet";
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -126,6 +127,15 @@ export default function LeaseList({ panelId }) {
         }
     };
 
+    const handleMakeStaticClicked = async (event, item) => {
+        const response = await AxiosGet(`/container/${panelId}/lease/makestatic/${item.id}`);
+        if (response) {
+            sendAlert(`Set lease to static.`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Lease could not be set to static.`, { variant: "warning" });
+        }
+    };
+
     const formatLastSeen = (value) => {
         if (!value) {
             return "";
@@ -183,7 +193,7 @@ export default function LeaseList({ panelId }) {
                         },
                     },
                     {
-                        title: "Fixed",
+                        title: "Static",
                         sortable: false,
                         noPadding: true,
                         hideWidth: 500,
@@ -339,6 +349,12 @@ export default function LeaseList({ panelId }) {
                         title: "Comment",
                         icon: <CommentIcon fontSize="small" />,
                         onClick: handleCommentClicked,
+                    },
+                    {
+                        title: "Make Static",
+                        disabled: (item) => !item.dynamic,
+                        icon: <GpsFixedIcon fontSize="small" />,
+                        onClick: handleMakeStaticClicked,
                     },
                     {
                         title: "-",

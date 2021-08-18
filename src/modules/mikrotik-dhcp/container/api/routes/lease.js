@@ -3,10 +3,11 @@ const router = express.Router();
 const leaseGet = require("../../services/lease-get");
 const leaseUpdate = require("../../services/lease-update");
 const leaseList = require("../../services/lease-list");
-const leaseSet = require("../../services/mikrotik-leaseset");
 const leaseDelete = require("../../services/lease-delete");
+const mikrotikLeaseSet = require("../../services/mikrotik-leaseset");
 const mikrotikLeaseEnable = require("../../services/mikrotik-leaseenable");
 const mikrotikLeaseDisable = require("../../services/mikrotik-leasedisable");
+const mikrotikLeaseMakeStatic = require("../../services/mikrotik-leasemakestatic");
 const asyncHandler = require("express-async-handler");
 
 router.get(
@@ -51,6 +52,17 @@ router.get(
     })
 );
 
+router.get(
+    "/makestatic/:leaseId",
+    asyncHandler(async (req, res) => {
+        const result = await mikrotikLeaseMakeStatic(req.params.leaseId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
 router.delete(
     "/:leaseId",
     asyncHandler(async (req, res) => {
@@ -65,7 +77,7 @@ router.delete(
 router.get(
     "/comment/:leaseId/:leaseComment?",
     asyncHandler(async (req, res) => {
-        const result = await leaseSet(req.params.leaseId, "comment", req.params.leaseComment ? req.params.leaseComment : "");
+        const result = await mikrotikLeaseSet(req.params.leaseId, "comment", req.params.leaseComment ? req.params.leaseComment : "");
         res.json({
             status: result ? "success" : "failure",
             data: result,
