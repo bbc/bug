@@ -4,6 +4,7 @@ const leaseGet = require("../../services/lease-get");
 const leaseUpdate = require("../../services/lease-update");
 const leaseList = require("../../services/lease-list");
 const leaseDelete = require("../../services/lease-delete");
+const leaseMagicPacket = require("../../services/lease-magicpacket");
 const mikrotikLeaseAdd = require("../../services/mikrotik-leaseadd");
 const mikrotikLeaseSet = require("../../services/mikrotik-leaseset");
 const mikrotikLeaseEnable = require("../../services/mikrotik-leaseenable");
@@ -56,6 +57,17 @@ router.get(
     "/:leaseId",
     asyncHandler(async (req, res) => {
         const result = await leaseGet(req.params.leaseId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/magicpacket/:leaseId",
+    asyncHandler(async (req, res) => {
+        const result = await leaseMagicPacket(req.params.leaseId);
         res.json({
             status: result ? "success" : "failure",
             data: result,

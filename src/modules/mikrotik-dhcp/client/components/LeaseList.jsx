@@ -136,6 +136,15 @@ export default function LeaseList({ panelId }) {
         }
     };
 
+    const handleWolClicked = async (event, item) => {
+        const response = await AxiosGet(`/container/${panelId}/lease/magicpacket/${item.id}`);
+        if (response) {
+            sendAlert(`Set wake request.`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to send wake request.`, { variant: "warning" });
+        }
+    };
+
     const formatLastSeen = (value) => {
         if (!value) {
             return "";
@@ -379,6 +388,15 @@ export default function LeaseList({ panelId }) {
                         title: "Delete",
                         icon: <DeleteIcon fontSize="small" />,
                         onClick: handleDeleteClicked,
+                    },
+                    {
+                        title: "-",
+                    },
+                    {
+                        title: "Wake Up (WOL)",
+                        disabled: (item) => item.status === "bound",
+                        icon: <PowerSettingsNew fontSize="small" />,
+                        onClick: handleWolClicked,
                     },
                 ]}
                 defaultSortIndex={4}
