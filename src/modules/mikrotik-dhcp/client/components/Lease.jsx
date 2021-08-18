@@ -7,7 +7,6 @@ import ReadonlyTextField from "@core/ReadonlyTextField";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import { useConfigFormHandler } from "@core/ConfigFormHandler";
 import TextField from "@material-ui/core/TextField";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosDelete from "@utils/AxiosDelete";
@@ -15,6 +14,7 @@ import Loading from "@components/Loading";
 import useAsyncEffect from "use-async-effect";
 import BugFormAutocomplete from "@core/BugFormAutocomplete";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
+import { useForm } from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -65,15 +65,25 @@ export default function Lease({ panelId, leaseId }) {
         history.goBack();
     };
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
-        panelId: panelId,
-    });
+    const { register, handleSubmit, control, formState, setError, getValues, clearErrors } = useForm();
+
+    const getErrors = () => {
+        const errors = {};
+
+        for (const [field] of Object.entries(formState.errors)) {
+            errors[field] = true;
+        }
+
+        return errors;
+    };
+
+    const errors = getErrors();
 
     const onSubmit = async (form) => {
         const response = await AxiosPut(`/container/${panelId}/lease/${leaseId}`, form);
         if (response) {
-            //     sendAlert(`Lease has been updated.`, { broadcast: true, variant: "success" });
-            //     history.goBack();
+            sendAlert(`Lease has been updated.`, { broadcast: true, variant: "success" });
+            history.goBack();
         } else {
             sendAlert(`Lease could not be updated.`, { variant: "warning" });
         }
