@@ -347,6 +347,7 @@ export default function LeaseList({ panelId }) {
                     },
                     {
                         title: "Comment",
+                        disabled: (item) => item.dynamic,
                         icon: <CommentIcon fontSize="small" />,
                         onClick: handleCommentClicked,
                     },
