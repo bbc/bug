@@ -116,14 +116,16 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
-                                <ReadonlyTextField
-                                    fullWidth
-                                    defaultValue={lease["host-name"]}
-                                    type="text"
-                                    label="Hostname"
-                                />
-                            </Grid>
+                            {lease["host-name"] && (
+                                <Grid item xs={12}>
+                                    <ReadonlyTextField
+                                        fullWidth
+                                        defaultValue={lease["host-name"]}
+                                        type="text"
+                                        label="Hostname"
+                                    />
+                                </Grid>
+                            )}
                             <Grid item xs={12}>
                                 <TextField
                                     inputProps={{ ...register("comment") }}
@@ -175,21 +177,6 @@ export default function Lease({ panelId, leaseId }) {
                                     defaultValue={!lease.disabled}
                                     fullWidth
                                     helperText="Disabling the lease will not have an effect until the device next requests it"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <ConfigFormSwitch
-                                    name="dynamic"
-                                    label="Reserved"
-                                    control={control}
-                                    defaultValue={!lease.dynamic}
-                                    fullWidth
-                                    disabled
-                                    helperText={
-                                        !lease.dynamic
-                                            ? `This setting cannot be changed. To disable, delete the lease`
-                                            : `Making changes to this page will enable this control`
-                                    }
                                 />
                             </Grid>
                             {addressLists && (
@@ -248,7 +235,7 @@ export default function Lease({ panelId, leaseId }) {
                             Cancel
                         </Button>
                         <Button type="submit" variant="contained" color="primary" disableElevation>
-                            Save Changes
+                            Save
                         </Button>
                     </BugForm.Actions>
                 </form>

@@ -8,6 +8,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
 export default function Toolbar(props) {
     const toolbarProps = { ...props };
@@ -62,7 +65,22 @@ export default function Toolbar(props) {
         );
     };
 
-    const menuItems = () => null;
+    const menuItems = () => {
+        return [
+            <MenuItem key="filter" onClick={handleToggleFilter}>
+                <ListItemIcon>
+                    <FilterListIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={filterEnabled ? "Hide Filter" : "Show Filter"} />
+            </MenuItem>,
+            <MenuItem key="add" component={Link} to={`/panel/${props.panelId}/lease`}>
+                <ListItemIcon>
+                    <AddIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Add Lease" />
+            </MenuItem>,
+        ];
+    };
 
     toolbarProps["buttons"] = buttons();
     toolbarProps["menuItems"] = menuItems();
