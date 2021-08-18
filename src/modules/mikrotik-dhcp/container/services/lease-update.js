@@ -4,6 +4,7 @@ const mongoCollection = require("@core/mongo-collection");
 const leaseSet = require("./mikrotik-leaseset");
 const leaseEnable = require("./mikrotik-leaseenable");
 const leaseDisable = require("./mikrotik-leasedisable");
+const mikrotikLeaseMakeStatic = require("./mikrotik-leasemakestatic");
 
 module.exports = async (leaseId, formData) => {
 
@@ -13,6 +14,13 @@ module.exports = async (leaseId, formData) => {
 
     if (!lease) {
         return false;
+    }
+
+    // if lease isn't static, make it static first ...
+    if (lease.dynamic) {
+        if (!await mikrotikLeaseMakeStatic(leaseId)) {
+            return false;
+        }
     }
 
     if (formData.address && formData.address !== lease.address) {

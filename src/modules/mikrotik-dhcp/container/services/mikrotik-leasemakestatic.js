@@ -10,7 +10,7 @@ module.exports = async (leaseId) => {
 
     try {
         await conn.write("/ip/dhcp-server/lease/make-static", ["=numbers=" + leaseId]);
-        console.log(`mikrotik-leasemakestatic: enabled lease id ${leaseId}`);
+        console.log(`mikrotik-leasemakestatic: made lease id ${leaseId} static`);
         conn.close();
         return true;
     } catch (error) {
