@@ -6,6 +6,8 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import panelDataSlice from "@redux/panelDataSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
+import AddIcon from "@material-ui/icons/Add";
+import { Link } from "react-router-dom";
 
 export default function Toolbar(props) {
     const toolbarProps = { ...props };
@@ -19,7 +21,7 @@ export default function Toolbar(props) {
     }
 
     const filterEnabled = panelData && panelData.filter;
-
+    console.log(panelData);
     const handleToggleFilter = () => {
         dispatch(
             panelDataSlice.actions.update({
@@ -33,6 +35,10 @@ export default function Toolbar(props) {
             return null;
         }
 
+        if (panelStatus.hasCritical) {
+            return null;
+        }
+
         return (
             <>
                 <Button
@@ -43,13 +49,22 @@ export default function Toolbar(props) {
                 >
                     Filter
                 </Button>
+                <Button
+                    component={Link}
+                    to={`/panel/${props.panelId}/lease`}
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                >
+                    Add
+                </Button>
             </>
         );
     };
 
     const menuItems = () => null;
 
-    toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
+    toolbarProps["buttons"] = buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
     return <ToolbarWrapper {...toolbarProps} isClosed={false} />;

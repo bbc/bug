@@ -4,6 +4,7 @@ const leaseGet = require("../../services/lease-get");
 const leaseUpdate = require("../../services/lease-update");
 const leaseList = require("../../services/lease-list");
 const leaseDelete = require("../../services/lease-delete");
+const mikrotikLeaseAdd = require("../../services/mikrotik-leaseadd");
 const mikrotikLeaseSet = require("../../services/mikrotik-leaseset");
 const mikrotikLeaseEnable = require("../../services/mikrotik-leaseenable");
 const mikrotikLeaseDisable = require("../../services/mikrotik-leasedisable");
@@ -26,6 +27,16 @@ router.post(
         res.json({
             status: "success",
             data: await leaseList(req.body.sortField, req.body.sortDirection, req.body.filters),
+        });
+    })
+);
+
+router.post(
+    "/add",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await mikrotikLeaseAdd(req.body),
         });
     })
 );
