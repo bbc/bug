@@ -32,16 +32,17 @@ module.exports = async (options) => {
     let latestDocument = await connection.find().sort({ timestamp: -1 }).limit(1).toArray();
 
     if (latestDocument && latestDocument.length === 1) {
-        if (latestDocument[0]["timestamp"] < Date.now() - timeout) {
-            return [
-                new StatusItem({
-                    key: `stale${options.collectionName}data`,
-                    message: options.message,
-                    type: options.itemType,
-                    flags: options.flags,
-                }),
-            ];
+        if (latestDocument[0]["timestamp"] > Date.now() - timeout) {
+            return [];
         }
     }
-    return [];
+
+    return [
+        new StatusItem({
+            key: `stale${options.collectionName}data`,
+            message: options.message,
+            type: options.itemType,
+            flags: options.flags,
+        }),
+    ];
 };
