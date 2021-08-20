@@ -7,9 +7,11 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { useAlert } from "@utils/Snackbar";
+import { useHistory } from "react-router-dom";
 
 export default function PanelDeleteDialog({ panelId, panelTitle, onClose }) {
     const sendAlert = useAlert();
+    const history = useHistory();
 
     const handleDeleteConfirm = async (event) => {
         event.stopPropagation();
@@ -17,6 +19,7 @@ export default function PanelDeleteDialog({ panelId, panelTitle, onClose }) {
         onClose();
         if (await AxiosDelete(`/api/panel/${panelId}`)) {
             sendAlert(`Deleted panel: ${panelTitle}`, { broadcast: true, variant: "success" });
+            history.push(`/`);
         } else {
             sendAlert(`Failed to delete panel: ${panelTitle}`, { variant: "error" });
         }
