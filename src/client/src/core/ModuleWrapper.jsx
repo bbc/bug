@@ -23,7 +23,6 @@ export default function ModuleWrapper({ panelId, children }) {
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
     const history = useHistory();
-
     usePanel({ panelId });
 
     useEffect(() => {
@@ -59,15 +58,17 @@ export default function ModuleWrapper({ panelId, children }) {
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
     if (!isProtected) {
+        if (panel.data._module.needsContainer) {
+            if (panel.data._dockerContainer._isBuilding) {
+                return <PanelBuilding panel={panel.data} />;
+            }
+        }
+
         if (hasCritical) {
             return <PanelCritical panel={panel.data} />;
         }
 
         if (panel.data._module.needsContainer) {
-            if (panel.data._dockerContainer._isBuilding) {
-                return <PanelBuilding panel={panel.data} />;
-            }
-
             if (panel.data._dockerContainer._isRestarting) {
                 return <PanelRestarting panel={panel.data} />;
             }
