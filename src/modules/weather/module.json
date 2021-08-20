@@ -6,6 +6,7 @@
     "icon": "Cloud",
     "author": "Ryan McCartney",
     "needsContainer": false,
+    "protectedRoutes": ["config"],
     "license": "ISC",
     "defaultconfig": {
         "id": "",

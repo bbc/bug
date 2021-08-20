@@ -6,10 +6,11 @@
     "icon": "Schedule",
     "author": "Ryan McCartney",
     "needsContainer": false,
+    "protectedRoutes": ["config"],
     "license": "MIT",
     "defaultconfig": {
         "id": "",
-        "needsConfigured":true,
+        "needsConfigured": true,
         "order": 0,
         "title": "Clock",
         "module": "clock",
