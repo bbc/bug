@@ -1,5 +1,5 @@
 "use strict";
-const validationResult = require("@core/validationResult");
+const validationResult = require("@core/ValidationResult");
 const RosApi = require("node-routeros").RouterOSAPI;
 
 module.exports = async (formData) => {
