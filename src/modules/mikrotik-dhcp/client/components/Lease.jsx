@@ -136,6 +136,22 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Comment"
                                 />
                             </Grid>
+                            {addressLists && (
+                                <Grid item xs={12}>
+                                    <BugFormAutocomplete
+                                        name="address-lists"
+                                        label="Address Lists"
+                                        control={control}
+                                        defaultValue={lease["address-lists"]}
+                                        error={errors["address-lists"]}
+                                        fullWidth
+                                        sort
+                                        options={addressLists}
+
+                                        // helperText="Only allow this security type from these addresses"
+                                    />
+                                </Grid>
+                            )}
                             <Grid item xs={12}>
                                 <TextField
                                     inputProps={{
@@ -196,8 +212,8 @@ export default function Lease({ panelId, leaseId }) {
                                 </Grid>
                             )}
 
-                            <Grid item xs={12}>
-                                {servers && lease && (
+                            {servers && lease && (
+                                <Grid item xs={12}>
                                     <TextField
                                         select
                                         inputProps={{
@@ -217,8 +233,8 @@ export default function Lease({ panelId, leaseId }) {
                                             </option>
                                         ))}
                                     </TextField>
-                                )}
-                            </Grid>
+                                </Grid>
+                            )}
                         </Grid>
                     </BugForm.Body>
                     <BugForm.Actions>
