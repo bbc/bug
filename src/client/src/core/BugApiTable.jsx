@@ -13,6 +13,9 @@ import { useApiPoller } from "@utils/ApiPoller";
 import clsx from "clsx";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import BugApiTableFilters from "@components/BugApiTableFilters";
+import { useCookies } from "react-cookie";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -32,10 +35,18 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: 0,
         paddingRight: 4,
     },
+    filterHeadCell: {
+        padding: 0,
+    },
+    filterIcon: {
+        opacity: 0.5,
+    },
+    filterIconActive: {
+        color: theme.palette.primary.main,
+    },
 }));
 
 export default function BugApiTable({
-    panelId,
     apiUrl,
     columns,
     onRowClick,
@@ -46,10 +57,55 @@ export default function BugApiTable({
     defaultSortDirection = "asc",
 }) {
     const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
-    const [filters, setFilters] = React.useState({});
-    const [sortDirection, setSortDirection] = React.useState("asc");
+    const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
     const [sortField, setSortField] = React.useState(null);
     const classes = useStyles(columnStyles);
+    const [cookies, setCookie] = useCookies(["BugApiTable"]);
+    const [showFilters, setShowFilters] = React.useState(true);
+    const [filters, setFilters] = React.useState({});
+
+    useEffect(() => {
+        if (columns[defaultSortIndex] !== undefined) {
+            if (columns[defaultSortIndex]["defaultSortDirection"] !== undefined) {
+                setSortDirection(columns[defaultSortIndex]["defaultSortDirection"]);
+            }
+            if (columns[defaultSortIndex]["field"] !== undefined) {
+                setSortField(columns[defaultSortIndex]["field"]);
+            }
+        }
+    }, [defaultSortIndex, columns]);
+
+    useEffect(() => {
+        setColumnStyles(processColumnStyles());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [columns]);
+
+    // run once
+    useEffect(() => {
+        if (cookies && cookies["filters"]) {
+            if (cookies["filters"] && Object.keys(cookies["filters"]).length > 0) {
+                setFilters(cookies["filters"]);
+                setShowFilters(true);
+                return;
+            }
+        }
+        setShowFilters(false);
+    }, [cookies]);
+
+    const handleFilterClicked = () => {
+        if (showFilters) {
+            // clear any text entered
+            handleFiltersChanged({});
+        }
+        // store the state
+        setShowFilters(!showFilters);
+    };
+
+    const handleFiltersChanged = (value) => {
+        // update cookies and reload data
+        setFilters(value);
+        setCookie("filters", value);
+    };
 
     const processColumnStyles = () => {
         let styleObj = {
@@ -82,22 +138,6 @@ export default function BugApiTable({
         }
         return styleObj;
     };
-
-    useEffect(() => {
-        if (columns[defaultSortIndex] !== undefined) {
-            if (columns[defaultSortIndex]["defaultSortDirection"] !== undefined) {
-                setSortDirection(columns[defaultSortIndex]["defaultSortDirection"]);
-            }
-            if (columns[defaultSortIndex]["field"] !== undefined) {
-                setSortField(columns[defaultSortIndex]["field"]);
-            }
-        }
-    }, [defaultSortIndex, columns]);
-
-    useEffect(() => {
-        setColumnStyles(processColumnStyles());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [columns]);
 
     const pollResult = useApiPoller({
         postData: {
@@ -158,13 +198,23 @@ export default function BugApiTable({
                                     </TableCell>
                                 ))}
 
-                                <TableCell></TableCell>
+                                <TableCell className={classes.filterHeadCell}>
+                                    {filterable && (
+                                        <IconButton aria-label="filter list" onClick={handleFilterClicked}>
+                                            <FilterListIcon
+                                                className={showFilters ? classes.filterIconActive : classes.filterIcon}
+                                            />
+                                        </IconButton>
+                                    )}
+                                </TableCell>
                             </TableRow>
-                            {filterable && (
+                            {showFilters && (
                                 <BugApiTableFilters
                                     classes={classes}
                                     columns={columns}
-                                    onChange={(value) => setFilters(value)}
+                                    filters={filters}
+                                    onChange={(value) => handleFiltersChanged(value)}
+                                    onClose={() => handleFilterClicked()}
                                 />
                             )}
                         </TableHead>
