@@ -11,7 +11,6 @@ import BugApiTable from "@core/BugApiTable";
 import BugChipDisplay from "@core/BugChipDisplay";
 import { useHistory } from "react-router-dom";
 import CommentIcon from "@material-ui/icons/Comment";
-import { useSelector } from "react-redux";
 import ToggleOffIcon from "@material-ui/icons/ToggleOff";
 import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import EditIcon from "@material-ui/icons/Edit";
@@ -77,8 +76,6 @@ export default function LeaseList({ panelId }) {
     const sendAlert = useAlert();
     const [commentDialogProps, setCommentDialogProps] = React.useState({});
     const nowTimestamp = Date.now();
-    const panelData = useSelector((state) => state.panelData);
-    const filterEnabled = panelData && panelData.filter;
 
     const [showCommentDialog, hideCommentDialog] = useModal(
         () => <CommentDialog {...commentDialogProps} onClose={() => hideCommentDialog()} />,
@@ -404,7 +401,7 @@ export default function LeaseList({ panelId }) {
                 panelId={panelId}
                 onRowClick={handleDetailsClicked}
                 sortable
-                filterable={filterEnabled}
+                filterable
             />
         </>
     );
