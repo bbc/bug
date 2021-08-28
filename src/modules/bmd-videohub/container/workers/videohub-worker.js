@@ -79,7 +79,7 @@ const main = async () => {
     console.log("videohub-worker: waiting for events ...");
 
     let statusDumpTime = Date.now();
-    let statusDumpFields = ["VIDEOHUB DEVICE", "INPUT LABELS", "OUTPUT LABELS", "OUTPUT_LOCKS", "VIDEO OUTPUT ROUTING"];
+    let statusDumpFields = ["VIDEOHUB DEVICE", "INPUT LABELS", "OUTPUT LABELS", "VIDEO OUTPUT LOCKS", "VIDEO OUTPUT ROUTING"];
     while (true) {
         // poll occasionally
         await delay(updateDelay);
