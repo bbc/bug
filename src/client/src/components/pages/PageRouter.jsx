@@ -40,19 +40,19 @@ const useStyles = makeStyles((theme) => ({
     pagecontent: {
         height: "100%",
         overflow: "scroll",
-        padding: theme.spacing(3),
-        "@media (max-width:1200px)": {
-            padding: theme.spacing(2),
-        },
-        "@media (max-width:1024px)": {
-            padding: theme.spacing(1),
-        },
-        "@media (max-width:600px)": {
-            padding: theme.spacing(0),
-        },
-        "@media (max-height:400px)": {
-            padding: 2,
-        },
+        padding: 4,
+        // "@media (max-width:1200px)": {
+        //     padding: theme.spacing(2),
+        // },
+        // "@media (max-width:1024px)": {
+        //     padding: theme.spacing(1),
+        // },
+        // "@media (max-width:600px)": {
+        //     padding: theme.spacing(0),
+        // },
+        // "@media (max-height:400px)": {
+        //     padding: 2,
+        // },
     },
     homePageContent: {
         padding: 12,

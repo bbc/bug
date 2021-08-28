@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     divider: {
+        backgroundColor: "#181818",
         margin: 0,
     },
 }));

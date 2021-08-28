@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "0.875rem",
         fontWeight: 500,
         textTransform: "uppercase",
-        padding: 15,
+        padding: 12,
         backgroundColor: "#212121",
         "@media (max-width:800px)": {
             fontSize: 12,
@@ -43,13 +43,13 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         bottom: "50%",
-        marginBottom: 12,
-        "@media (max-width:1200px)": {
-            marginBottom: 8,
-        },
-        "@media (max-width:1024px)": {
-            marginBottom: 4,
-        },
+        marginBottom: 2,
+        // "@media (max-width:1200px)": {
+        //     marginBottom: 8,
+        // },
+        // "@media (max-width:1024px)": {
+        //     marginBottom: 4,
+        // },
         "@media (max-width:600px)": {
             marginBottom: 1,
             position: "static",
@@ -61,15 +61,15 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         top: "50%",
-        marginTop: 12,
-        "@media (max-width:1200px)": {
-            marginTop: 8,
-        },
-        "@media (max-width:1024px)": {
-            marginTop: 4,
-        },
+        marginTop: 2,
+        // "@media (max-width:1200px)": {
+        //     marginTop: 8,
+        // },
+        // "@media (max-width:1024px)": {
+        //     marginTop: 4,
+        // },
         "@media (max-width:600px)": {
-            marginTop: 1,
+            // marginTop: 1,
             position: "static",
         },
     },

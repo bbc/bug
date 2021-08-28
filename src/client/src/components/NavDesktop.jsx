@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
         width: drawerWidth,
         flexShrink: 0,
         whiteSpace: "nowrap",
+        "& .MuiPaper-root": {
+            borderRightWidth: 0,
+        },
     },
     drawerOpen: {
         width: drawerWidth,
