@@ -192,6 +192,7 @@ export default function LeaseList({ panelId }) {
                         content: (item) => {
                             return (
                                 <ApiSwitch
+                                    disabled={item.dynamic}
                                     checked={!item.disabled}
                                     onChange={(checked) => handleEnabledChanged(checked, item.id)}
                                 />
