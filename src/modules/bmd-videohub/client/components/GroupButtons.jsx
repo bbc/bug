@@ -77,6 +77,9 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
             onChange();
             setAddDialogType(null);
             sendAlert(`Added group: ${value}`, { variant: "success" });
+
+            // and now edit buttons in this group...
+            setEditButtonsDialogGroupIndex(localButtons.length);
         } else {
             sendAlert(`Failed to add group: ${value}`, { variant: "error" });
         }
