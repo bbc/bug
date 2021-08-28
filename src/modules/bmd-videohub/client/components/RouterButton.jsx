@@ -5,6 +5,8 @@ import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import DynamicIcon from "@core/DynamicIcon";
 import RenameDialog from "./RenameDialog";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     editButton: {
@@ -170,6 +172,7 @@ export default function RouterButton({
     });
     const indexPlusOne = (button.index + 1).toString();
     const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
+    const sendAlert = useAlert();
 
     let transformString = "";
 
