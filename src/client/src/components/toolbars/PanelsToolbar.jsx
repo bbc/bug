@@ -14,7 +14,8 @@ import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme) => ({
     dropdownMenu: {
-        marginLeft: "-0.5rem",
+        marginLeft: "0.5rem",
+        marginRight: "0.5rem",
     },
 }));
 

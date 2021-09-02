@@ -7,14 +7,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 export default function PanelsToolbar(props) {
     return (
         <>
-            <Button
-                component={Link}
-                to={`/panels`}
-                variant="outlined"
-                color="primary"
-                startIcon={<DoneIcon />}
-                style={{ marginRight: 16 }}
-            >
+            <Button component={Link} to={`/panels`} variant="outlined" color="primary" startIcon={<DoneIcon />}>
                 Save
             </Button>
             <Button

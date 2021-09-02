@@ -25,7 +25,10 @@ import ReplayIcon from "@material-ui/icons/Replay";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-    dropdownMenu: {},
+    dropdownMenu: {
+        marginLeft: "0.5rem",
+        marginRight: "0.5rem",
+    },
     notificationButton: {
         "& .MuiButton-startIcon": {
             margin: 0,
