@@ -14,6 +14,7 @@ import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import PanelEditTableGroupRow from "./PanelEditTableGroupRow";
 import panelListGroups from "@utils/panelListGroups";
+import _ from "lodash";
 
 import {
     DndContext,
@@ -25,6 +26,7 @@ import {
     useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { useDroppable } from "@dnd-kit/core";
 
 const useStyles = makeStyles((theme) => ({
     colDescription: {
@@ -61,6 +63,27 @@ export default function PanelTable({ showGroups = true }) {
         setPanelsByGroup(panelsByGroup);
     }, [panelList]);
 
+    const handleDragOver = (event) => {
+        const { active, over } = event;
+        console.log(active, over);
+        if (active.id !== over.id) {
+            const overData = over.id.split(":");
+            const activeData = active.id.split(":");
+
+            let newPanelsByGroup = _.clone(panelsByGroup);
+
+            const oldIndex = findByFeild(newPanelsByGroup[activeData[0]], "id", activeData[1]);
+            const newIndex = findByFeild(newPanelsByGroup[overData[0]], "id", overData[1]);
+
+            const panel = newPanelsByGroup[activeData[0]][oldIndex];
+
+            newPanelsByGroup[activeData[0]].splice(oldIndex, 1);
+            newPanelsByGroup[overData[0]].splice(newIndex, 0, panel);
+
+            setPanelsByGroup(newPanelsByGroup);
+        }
+    };
+
     const handleDragEnd = (event) => {
         const { active, over } = event;
 
@@ -68,7 +91,7 @@ export default function PanelTable({ showGroups = true }) {
             const overData = over.id.split(":");
             const activeData = active.id.split(":");
 
-            let newPanelsByGroup = panelsByGroup;
+            let newPanelsByGroup = _.clone(panelsByGroup);
 
             const oldIndex = findByFeild(newPanelsByGroup[activeData[0]], "id", activeData[1]);
             const newIndex = findByFeild(newPanelsByGroup[overData[0]], "id", overData[1]);
@@ -84,26 +107,38 @@ export default function PanelTable({ showGroups = true }) {
     };
 
     const renderGroups = () => {
-        return Object.keys(panelsByGroup).map((group) => {
+        const sortedGroupKeys = _.keys(panelsByGroup).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+        const resultArray = [];
+
+        for (const group of sortedGroupKeys) {
             const items = panelsByGroup[group].map((panel) => {
                 return `${panel?.group}:${panel?.id}`;
             });
-            return (
-                <>
-                    {group && (
-                        <PanelEditTableGroupRow
-                            handleNewGroupName={(newGroupName) => {
-                                updateGroupName(group, newGroupName);
-                            }}
-                            title={group}
-                        />
-                    )}
+
+            const { setNodeRef: setGroupRef } = useDroppable({
+                id: group,
+            });
+
+            if (group) {
+                resultArray.push(
+                    <PanelEditTableGroupRow
+                        handleNewGroupName={(newGroupName) => {
+                            updateGroupName(group, newGroupName);
+                        }}
+                        title={group}
+                        key={group}
+                    />
+                );
+            }
+            resultArray.push(
+                <div ref={setGroupRef}>
                     <SortableContext items={items} strategy={verticalListSortingStrategy}>
                         {renderRows(panelsByGroup[group])}
                     </SortableContext>
-                </>
+                </div>
             );
-        });
+        }
+        return resultArray;
     };
 
     const renderRows = (panels) => {
@@ -169,7 +204,12 @@ export default function PanelTable({ showGroups = true }) {
                         </TableHead>
 
                         <TableBody>
-                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                            <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={handleDragEnd}
+                                onDragOver={handleDragOver}
+                            >
                                 {renderGroups()}
                             </DndContext>
                         </TableBody>

@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     panelRow: {
         height: 65,
         cursor: "move",
+        backgroundColor: "#262626",
     },
 }));
 

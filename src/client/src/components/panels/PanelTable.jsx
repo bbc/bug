@@ -37,14 +37,14 @@ export default function PanelTable() {
     const classes = useStyles();
 
     const GroupedPanelRow = (group, panels) => {
-        return (
-            <>
-                {group && <PanelTableGroupRow title={group} />}
-                {panels.map((panel) => (
-                    <PanelTableRow key={panel.id} panel={panel} />
-                ))}
-            </>
-        );
+        const resultArray = [];
+        if (group) {
+            resultArray.push(<PanelTableGroupRow key={group} title={group} />);
+        }
+        for (const eachPanel of panels) {
+            resultArray.push(<PanelTableRow key={eachPanel.id} panel={eachPanel} />);
+        }
+        return resultArray;
     };
 
     if (panelList.status === "loading") {

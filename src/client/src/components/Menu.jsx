@@ -148,7 +148,11 @@ const Menu = () => {
                 </Accordion>
             );
         } else {
-            return <List className={classes.list}>{panels.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
+            return (
+                <List key="none" className={classes.list}>
+                    {panels.map((eachPanel) => renderMenuItem(eachPanel))}
+                </List>
+            );
         }
     };
 
