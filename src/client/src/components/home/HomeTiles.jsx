@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";
 import HomeTile from "@components/home/HomeTile";
+import HomeAddPanel from "@components/home/HomeAddPanel";
 
 const useStyles = makeStyles((theme) => ({
     groupHeader: {
@@ -77,6 +78,9 @@ const HomeTiles = (props) => {
         }
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
+            if (panelList.data.length === 0) {
+                return <HomeAddPanel />;
+            }
             if (Object.keys(panelsByGroup).length === 1) {
                 return <Tiles panels={panelList.data} />;
             } else {
