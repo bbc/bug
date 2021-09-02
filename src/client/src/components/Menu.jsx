@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Menu = ({ showGroups = true }) => {
+const Menu = () => {
     const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
@@ -123,47 +123,33 @@ const Menu = ({ showGroups = true }) => {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const groupedMenuItems = (groupedPanels) => {
-        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
-
-        return (
-            <>
-                {sortedGroupKeys.map((groupKey) => {
-                    return (
-                        <Accordion
-                            key={groupKey}
-                            elevation={0}
-                            className={classes.group}
-                            expanded={expanded === groupKey}
-                            onChange={handleAccordionChange(groupKey)}
-                        >
-                            <AccordionSummary
-                                className={classes.groupHeader}
-                                expandIcon={expanded === groupKey ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                }}
-                            >
-                                {groupKey}
-                            </AccordionSummary>
-                            <AccordionDetails className={classes.groupPanel}>
-                                <List className={classes.list}>
-                                    {groupedPanels[groupKey].map((eachPanel) => renderMenuItem(eachPanel))}
-                                </List>
-                            </AccordionDetails>
-                        </Accordion>
-                    );
-                })}
-            </>
-        );
-    };
-
-    const menuItems = (items) => {
-        return (
-            <List className={classes.list} aria-label="list of enabled modules">
-                {items.map((eachPanel) => renderMenuItem(eachPanel))}
-            </List>
-        );
+    const groupedMenuItems = (group, panels) => {
+        if (group) {
+            return (
+                <Accordion
+                    key={group}
+                    elevation={0}
+                    className={classes.group}
+                    expanded={expanded === group}
+                    onChange={handleAccordionChange(group)}
+                >
+                    <AccordionSummary
+                        className={classes.groupHeader}
+                        expandIcon={expanded === group ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                        }}
+                    >
+                        {group}
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.groupPanel}>
+                        <List className={classes.list}>{panels.map((eachPanel) => renderMenuItem(eachPanel))}</List>
+                    </AccordionDetails>
+                </Accordion>
+            );
+        } else {
+            return <List className={classes.list}>{panels.map((eachPanel) => renderMenuItem(eachPanel))}</List>;
+        }
     };
 
     const renderPanelMenuItems = () => {
@@ -172,76 +158,21 @@ const Menu = ({ showGroups = true }) => {
         }
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
-            if (Object.keys(panelsByGroup).length === 1 || !showGroups) {
-                return menuItems(panelList.data);
-            } else {
-                return groupedMenuItems(panelsByGroup);
-            }
+            const sortedGroupKeys = _.keys(panelsByGroup).sort((a, b) =>
+                a.localeCompare(b, "en", { sensitivity: "base" })
+            );
+            return sortedGroupKeys.map((eachKey) => {
+                return groupedMenuItems(
+                    eachKey,
+                    panelList.data.filter((panel) => panel.group === eachKey)
+                );
+            });
         } else {
             return null;
         }
     };
 
-    const getPanelMenuItems = () => {
-        //TODO move enabledStrategiesCount into redux user slice
-        if (user?.data || enabledStrategiesCount === 0) {
-            return (
-                <>
-                    <List className={classes.list}>
-                        <ListItem
-                            button
-                            component={Link}
-                            to="/"
-                            selected={location.pathname === "/"}
-                            onClick={() => {
-                                setExpanded(false);
-                            }}
-                        >
-                            <ListItemIcon>
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Home" />
-                        </ListItem>
-                    </List>
-                    <Divider className={classes.divider} />
-                    {renderPanelMenuItems()}
-                    {enabledPanelList.length > 0 ? <Divider className={classes.divider} /> : null}
-                    <List className={classes.list}>
-                        <ListItem
-                            button
-                            component={Link}
-                            to="/system"
-                            selected={location.pathname.startsWith("/system")}
-                            onClick={() => {
-                                setExpanded(false);
-                            }}
-                        >
-                            <ListItemIcon>
-                                <SettingsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="System" />
-                        </ListItem>
-                        <ListItem
-                            button
-                            component={Link}
-                            to="/panels"
-                            selected={location.pathname.startsWith("/panels")}
-                            onClick={() => {
-                                setExpanded(false);
-                            }}
-                        >
-                            <ListItemIcon>
-                                <DashboardIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Panels" />
-                        </ListItem>
-                    </List>
-                </>
-            );
-        }
-        return null;
-    };
-
+    //TODO move enabledStrategiesCount into redux user slice
     return (
         <>
             <Grid
@@ -252,7 +183,59 @@ const Menu = ({ showGroups = true }) => {
                 style={{ height: "100%" }}
             >
                 <Grid item style={{ width: "100%" }}>
-                    {getPanelMenuItems()}
+                    {(user?.data || enabledStrategiesCount === 0) && (
+                        <>
+                            <List className={classes.list}>
+                                <ListItem
+                                    button
+                                    component={Link}
+                                    to="/"
+                                    selected={location.pathname === "/"}
+                                    onClick={() => {
+                                        setExpanded(false);
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <HomeIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Home" />
+                                </ListItem>
+                            </List>
+                            <Divider className={classes.divider} />
+                            {renderPanelMenuItems()}
+                            {enabledPanelList.length > 0 ? <Divider className={classes.divider} /> : null}
+                            <List className={classes.list}>
+                                <ListItem
+                                    button
+                                    component={Link}
+                                    to="/system"
+                                    selected={location.pathname.startsWith("/system")}
+                                    onClick={() => {
+                                        setExpanded(false);
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <SettingsIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="System" />
+                                </ListItem>
+                                <ListItem
+                                    button
+                                    component={Link}
+                                    to="/panels"
+                                    selected={location.pathname.startsWith("/panels")}
+                                    onClick={() => {
+                                        setExpanded(false);
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <DashboardIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Panels" />
+                                </ListItem>
+                            </List>
+                        </>
+                    )}
                 </Grid>
                 <Grid item style={{ width: "100%" }}>
                     <List>

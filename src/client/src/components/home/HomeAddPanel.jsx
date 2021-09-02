@@ -1,14 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import DynamicIcon from "@core/DynamicIcon";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import BadgeWrapper from "@components/BadgeWrapper";
-import CollapsibleBugAlert from "@components/CollapsibleBugAlert";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const useStyles = makeStyles((theme) => ({

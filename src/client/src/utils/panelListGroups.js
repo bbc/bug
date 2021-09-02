@@ -5,7 +5,7 @@ export default function panelListGroups(panelListData, hideDisabledGroups = true
     let panelsByGroup = {};
     for (let eachPanel of panelListData) {
         if (eachPanel.enabled || !hideDisabledGroups) {
-            const group = eachPanel.group ? eachPanel.group : defaultGroupText;
+            const group = eachPanel.group ? eachPanel.group : "";
             if (!panelsByGroup[group]) {
                 panelsByGroup[group] = [];
             }

@@ -32,35 +32,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelTable({ showGroups = true }) {
+export default function PanelTable() {
     const panelList = useSelector((state) => state.panelList);
     const classes = useStyles();
 
-    const renderRows = (panelsByGroup) => {
-        if (Object.keys(panelsByGroup).length === 1 || !showGroups) {
-            return <PanelRows panels={panelList.data} showGroups={false} />;
-        } else {
-            return <PanelGroupRows groupedPanels={panelsByGroup} />;
-        }
-    };
-
-    const PanelRows = ({ panels, showGroups }) => {
-        return panels.map((panel) => <PanelTableRow key={panel.id} showGroups={showGroups} {...panel} />);
-    };
-
-    const PanelGroupRows = ({ groupedPanels }) => {
-        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
-
+    const GroupedPanelRow = (group, panels) => {
         return (
             <>
-                {sortedGroupKeys.map((eachGroup) => {
-                    return (
-                        <React.Fragment key={eachGroup}>
-                            <PanelTableGroupRow title={eachGroup} />
-                            <PanelRows panels={groupedPanels[eachGroup]} showGroups={true} />
-                        </React.Fragment>
-                    );
-                })}
+                {group && <PanelTableGroupRow title={group} />}
+                {panels.map((panel) => (
+                    <PanelTableRow key={panel.id} panel={panel} />
+                ))}
             </>
         );
     };
@@ -70,6 +52,7 @@ export default function PanelTable({ showGroups = true }) {
     }
     if (panelList.status === "success") {
         const panelsByGroup = panelListGroups(panelList.data, false);
+        const sortedGroupKeys = _.keys(panelsByGroup).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
 
         return (
             <>
@@ -77,9 +60,6 @@ export default function PanelTable({ showGroups = true }) {
                     <Table aria-label="simple table">
                         <TableHead className={classes.tableHead}>
                             <TableRow>
-                                {Object.keys(panelsByGroup).length > 1 || !showGroups ? (
-                                    <TableCell className={classes.colIndent} />
-                                ) : null}
                                 <TableCell width="10"></TableCell>
                                 <TableCell width="10"></TableCell>
                                 <TableCell>Title</TableCell>
@@ -89,7 +69,14 @@ export default function PanelTable({ showGroups = true }) {
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>{renderRows(panelsByGroup)}</TableBody>
+                        <TableBody>
+                            {sortedGroupKeys.map((eachKey) => {
+                                return GroupedPanelRow(
+                                    eachKey,
+                                    panelList.data.filter((panel) => panel.group === eachKey)
+                                );
+                            })}
+                        </TableBody>
                     </Table>
                 </TableContainer>
             </>

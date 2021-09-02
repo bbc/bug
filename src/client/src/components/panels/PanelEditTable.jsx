@@ -56,6 +56,11 @@ export default function PanelTable({ showGroups = true }) {
         useSensor(TouchSensor)
     );
 
+    useAsyncEffect(async () => {
+        const panelsByGroup = await panelListGroups(panelList.data, false);
+        setPanelsByGroup(panelsByGroup);
+    }, [panelList]);
+
     const handleDragEnd = (event) => {
         const { active, over } = event;
 
@@ -79,28 +84,26 @@ export default function PanelTable({ showGroups = true }) {
     };
 
     const renderGroups = () => {
-        const groups = [];
-
-        for (let groupName in panelsByGroup) {
-            const items = panelsByGroup[groupName].map((panel) => {
+        return Object.keys(panelsByGroup).map((group) => {
+            const items = panelsByGroup[group].map((panel) => {
                 return `${panel?.group}:${panel?.id}`;
             });
-
-            groups.push(
+            return (
                 <>
-                    <PanelEditTableGroupRow
-                        handleNewGroupName={(newGroupName) => {
-                            updateGroupName(groupName, newGroupName);
-                        }}
-                        title={groupName}
-                    />
+                    {group && (
+                        <PanelEditTableGroupRow
+                            handleNewGroupName={(newGroupName) => {
+                                updateGroupName(group, newGroupName);
+                            }}
+                            title={group}
+                        />
+                    )}
                     <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                        {renderRows(panelsByGroup[groupName])}
+                        {renderRows(panelsByGroup[group])}
                     </SortableContext>
                 </>
             );
-        }
-        return groups;
+        });
     };
 
     const renderRows = (panels) => {
@@ -145,30 +148,22 @@ export default function PanelTable({ showGroups = true }) {
         return -1;
     };
 
-    useAsyncEffect(async () => {
-        const panelsByGroup = await panelListGroups(panelList.data, false);
-        setPanelsByGroup(panelsByGroup);
-    }, [panelList]);
-
     if (panelList.status === "loading") {
         return <Loading />;
     }
-    if (panelsByGroup) {
-        console.log("RERENDERED");
+    if (panelList.status === "success" && panelsByGroup) {
         return (
             <>
                 <TableContainer component={Paper} square>
                     <Table aria-label="simple table">
                         <TableHead className={classes.tableHead}>
                             <TableRow>
-                                {Object.keys(panelsByGroup).length > 1 || !showGroups ? (
-                                    <TableCell className={classes.colIndent} />
-                                ) : null}
                                 <TableCell width="10"></TableCell>
                                 <TableCell></TableCell>
                                 <TableCell>Title</TableCell>
                                 <TableCell className={classes.colDescription}>Description</TableCell>
                                 <TableCell className={classes.colModule}>Module</TableCell>
+                                <TableCell></TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
