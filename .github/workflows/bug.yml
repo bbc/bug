@@ -23,5 +23,6 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
+                  working-directory: ./src
             - run: npm ci
             - run: npm test
