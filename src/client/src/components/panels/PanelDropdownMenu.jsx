@@ -17,6 +17,7 @@ import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ClearAllIcon from "@material-ui/icons/ClearAll";
 import { useHistory } from "react-router-dom";
+import NewReleasesIcon from "@material-ui/icons/NewReleases";
 
 export default function PanelDropdownMenu(props) {
     const sendAlert = useAlert();
@@ -41,9 +42,11 @@ export default function PanelDropdownMenu(props) {
 
     const needsContainer = props?.panel?._module.needsContainer ?? true;
     const hideRestart = !needsContainer;
+    const hideUpgrade = !needsContainer;
     const disableEnable = props.panel.enabled || props.panel._dockerContainer._isBuilding;
     const disableDisable = !props.panel.enabled || props.panel._dockerContainer._isBuilding;
     const disableRestart = !needsContainer;
+    const disableUpgrade = !props?.panel?.upgradeable;
     const disableDelete = props.panel._dockerContainer._isBuilding;
     const disableConfig = !props.panel.enabled || props.panel._dockerContainer._isBuilding;
 
@@ -78,6 +81,25 @@ export default function PanelDropdownMenu(props) {
             sendAlert(`Restarted panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
         } else {
             sendAlert(`Failed to restart panel: ${props.panel.title}`, { variant: "error" });
+        }
+    };
+
+    const handleUpgrade = async (event) => {
+        setAnchorEl(null);
+        event.stopPropagation();
+        event.preventDefault();
+        sendAlert(
+            `Upgrading panel: ${props.panel.title} - from ${props.panel?._dockerContainer?.version} to ${props.panel?._module?.version}`,
+            {
+                broadcast: true,
+                variant: "info",
+            }
+        );
+
+        if (await AxiosCommand(`/api/module/rebuild/${props.panel?._module.name}`)) {
+            sendAlert(`Upgraded panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to upgrade panel: ${props.panel.title}`, { variant: "error" });
         }
     };
 
@@ -140,7 +162,11 @@ export default function PanelDropdownMenu(props) {
                     <DeleteIcon fontSize="small" />
                 </PanelMenuItem>
 
-                {hideRestart ? "" : <Divider />}
+                {hideRestart && hideUpgrade ? "" : <Divider />}
+
+                <PanelMenuItem disabled={disableUpgrade} onClick={handleUpgrade} text="Upgrade" hidden={hideUpgrade}>
+                    <NewReleasesIcon fontSize="small" />
+                </PanelMenuItem>
 
                 <PanelMenuItem disabled={disableRestart} onClick={handleRestart} text="Restart" hidden={hideRestart}>
                     <ReplayIcon fontSize="small" />

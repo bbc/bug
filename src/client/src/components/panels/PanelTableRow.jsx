@@ -75,9 +75,8 @@ export default function PanelTableRow({ panel, showGroups }) {
         return <Redirect push to={{ pathname: redirectUrl }} />;
     }
 
-    const renderVersion = (upgradable) => {
-        console.log(upgradable);
-        if (upgradable) {
+    const renderVersion = (upgradeable) => {
+        if (upgradeable) {
             return (
                 <>
                     <NewReleasesIcon />
@@ -136,7 +135,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                     [classes.disabledText]: !panel.enabled || panel._isPending,
                 })}
             >
-                {renderVersion(panel?.upgradable)}
+                {renderVersion(panel?.upgradeable)}
             </TableCell>
             <TableCell className={classes.cellMenu}>
                 <PanelDropdownMenu panel={panel} />

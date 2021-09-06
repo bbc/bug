@@ -49,9 +49,9 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     containerInfo._isStarting = isStarting;
     containerInfo._status = status;
 
-    let upgradable = false;
+    let upgradeable = false;
     if (moduleConfig?.version !== containerInfo?.version && containerInfo?.version !== undefined) {
-        upgradable = true;
+        upgradeable = true;
     }
 
     return {
@@ -66,7 +66,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         _dockerContainer: containerInfo,
         _buildStatus: panelBuildStatus,
         _status: thisStatus ? thisStatus?.statusItems : [],
-        upgradable: upgradable,
+        upgradeable: upgradeable,
     };
 };
 

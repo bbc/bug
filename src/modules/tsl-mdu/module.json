@@ -3,7 +3,7 @@
     "longname": "TSL MDU",
     "description": "Monitoring and control of TSL MDUs",
     "notes": "",
-    "version": "1.1.0",
+    "version": "2.0.0",
     "icon": "mdi-power-plug-outline",
     "author": "Ryan McCartney",
     "license": "MIT",
