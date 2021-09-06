@@ -100,25 +100,30 @@ export default function PanelTable({ showGroups = true }) {
                 return `${panel?.group}:${panel?.id}`;
             });
 
-            if (group) {
-                resultArray.push(
-                    <PanelEditTableGroupRow
-                        handleNewGroupName={(newGroupName) => {
-                            updateGroupName(group, newGroupName);
-                        }}
-                        title={group}
-                        key={group}
-                    />
-                );
-            }
+            // COMMENTED OUT SO IT COMPILES FOR ME - PLEASE REMOVE - GH
 
-            resultArray.push(
-                // <Droppable id={group}>
-                <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                    {renderRows(panelsByGroup[group])}
-                </SortableContext>
-                // </Droppable>
-            );
+            // const { setNodeRef: setGroupRef } = useDroppable({
+            //     id: group,
+            // });
+
+            // if (group) {
+            //     resultArray.push(
+            //         <PanelEditTableGroupRow
+            //             handleNewGroupName={(newGroupName) => {
+            //                 updateGroupName(group, newGroupName);
+            //             }}
+            //             title={group}
+            //             key={group}
+            //         />
+            //     );
+            // }
+            // resultArray.push(
+            //     <div ref={setGroupRef}>
+            //         <SortableContext items={items} strategy={verticalListSortingStrategy}>
+            //             {renderRows(panelsByGroup[group])}
+            //         </SortableContext>
+            //     </div>
+            // );
         }
         return resultArray;
     };
