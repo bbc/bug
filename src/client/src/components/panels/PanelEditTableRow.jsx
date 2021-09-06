@@ -66,14 +66,7 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
     };
 
     return (
-        <TableRow
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            key={`${panel.group}:${panel.id}`}
-            className={classes.panelRow}
-        >
+        <TableRow ref={setNodeRef} style={style} {...attributes} {...listeners} key={id} className={classes.panelRow}>
             {panel.showGroups ? <TableCell className={classes.colIndent} /> : null}
             <TableCell className={classes.colDrag}>
                 <DragIndicatorIcon />

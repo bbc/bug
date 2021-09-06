@@ -26,7 +26,6 @@ import {
     useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { useDroppable } from "@dnd-kit/core";
 
 const useStyles = makeStyles((theme) => ({
     colDescription: {
@@ -61,20 +60,24 @@ export default function PanelTable({ showGroups = true }) {
     useAsyncEffect(async () => {
         const panelsByGroup = await panelListGroups(panelList.data, false);
         setPanelsByGroup(panelsByGroup);
+        console.log("HERE");
     }, [panelList]);
 
     const handleDragOver = (event) => {
         const { active, over } = event;
-        console.log(active, over);
-        if (active.id !== over.id) {
+        if (active.id && over.id && active.id !== over.id) {
             const overData = over.id.split(":");
             const activeData = active.id.split(":");
 
             let newPanelsByGroup = _.clone(panelsByGroup);
 
+            console.log(newPanelsByGroup[activeData[0]]);
+            console.log(activeData[1]);
+
             const oldIndex = findByFeild(newPanelsByGroup[activeData[0]], "id", activeData[1]);
             const newIndex = findByFeild(newPanelsByGroup[overData[0]], "id", overData[1]);
 
+            console.log(oldIndex);
             const panel = newPanelsByGroup[activeData[0]][oldIndex];
 
             newPanelsByGroup[activeData[0]].splice(oldIndex, 1);
@@ -85,25 +88,7 @@ export default function PanelTable({ showGroups = true }) {
     };
 
     const handleDragEnd = (event) => {
-        const { active, over } = event;
-
-        if (active.id !== over.id) {
-            const overData = over.id.split(":");
-            const activeData = active.id.split(":");
-
-            let newPanelsByGroup = _.clone(panelsByGroup);
-
-            const oldIndex = findByFeild(newPanelsByGroup[activeData[0]], "id", activeData[1]);
-            const newIndex = findByFeild(newPanelsByGroup[overData[0]], "id", overData[1]);
-
-            const panel = newPanelsByGroup[activeData[0]][oldIndex];
-
-            newPanelsByGroup[activeData[0]].splice(oldIndex, 1);
-            newPanelsByGroup[overData[0]].splice(newIndex, 0, panel);
-
-            setPanelsByGroup(newPanelsByGroup);
-            updateOrder(newPanelsByGroup);
-        }
+        updateOrder(panelsByGroup);
     };
 
     const renderGroups = () => {
@@ -113,10 +98,6 @@ export default function PanelTable({ showGroups = true }) {
         for (const group of sortedGroupKeys) {
             const items = panelsByGroup[group].map((panel) => {
                 return `${panel?.group}:${panel?.id}`;
-            });
-
-            const { setNodeRef: setGroupRef } = useDroppable({
-                id: group,
             });
 
             if (group) {
@@ -130,12 +111,13 @@ export default function PanelTable({ showGroups = true }) {
                     />
                 );
             }
+
             resultArray.push(
-                <div ref={setGroupRef}>
-                    <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                        {renderRows(panelsByGroup[group])}
-                    </SortableContext>
-                </div>
+                // <Droppable id={group}>
+                <SortableContext items={items} strategy={verticalListSortingStrategy}>
+                    {renderRows(panelsByGroup[group])}
+                </SortableContext>
+                // </Droppable>
             );
         }
         return resultArray;
