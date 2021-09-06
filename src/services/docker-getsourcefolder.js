@@ -2,7 +2,7 @@
 
 const logger = require("@utils/logger")(module);
 const dockerGetContainer = require("@services/docker-getcontainer");
-const coreName = process.env.DOCKER_CORE_NAME || "bug-core";
+const coreName = process.env.BUG_CONTAINER || "bug";
 const cacheStore = require("@core/cache-store");
 
 module.exports = async () => {

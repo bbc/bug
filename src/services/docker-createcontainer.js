@@ -12,8 +12,8 @@ module.exports = async (configObject) => {
         logger.info(`creating container for panel id ${configObject.id}`);
 
         const modulePort = process.env.MODULE_PORT || "3200";
-        const bugCorePort = process.env.BUG_CORE_PORT || "3101";
-        const bugCoreHost = process.env.DOCKER_CORE_NAME || "bug-core";
+        const bugCorePort = process.env.BUG_PORT || "3101";
+        const bugCoreHost = process.env.BUG_CONTAINER || "bug";
         const networkName = process.env.DOCKER_NETWORK_NAME || "bug";
         const moduleHome = process.env.MODULE_HOME || "/home/node/module";
 
@@ -30,7 +30,7 @@ module.exports = async (configObject) => {
             name: configObject.id,
             Labels: {
                 "uk.co.bbc.bug.panel.id": configObject.id,
-                "com.docker.compose.project": "bbcnews-bug-core",
+                "com.docker.compose.project": "bbcnews-bug",
                 "com.docker.compose.service": configObject.id,
             },
             HostConfig: {

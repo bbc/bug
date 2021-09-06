@@ -4,7 +4,7 @@
  * core/WorkerManager.js
  * Class providing management of and access to all workers registered
  * 0.0.1 17/05/2021 - Created first version (GH)
- * 0.0.2 17/05/2021 - Adapted for use in bug-core (GH)
+ * 0.0.2 17/05/2021 - Adapted for use in bug core (GH)
  * 0.0.3 18/06/2021 - Change the use of context (RM)
  * 0.0.3 18/06/2021 - Restart workers and access to collection (RM)
  */

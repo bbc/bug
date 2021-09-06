@@ -6,47 +6,47 @@
 version: "3.8"
 
 networks:
-  bug:
-    name: ${DOCKER_NETWORK_NAME}
-    driver: bridge
+    bug:
+        name: ${DOCKER_NETWORK_NAME}
+        driver: bridge
 
 services:
-  core:
-    container_name: ${DOCKER_CORE_NAME}
-    build: "./src"
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./src:/home/node/bug-core
-    env_file:
-      - .env
-    hostname: ${DOCKER_CORE_NAME}
-    networks:
-      - ${DOCKER_NETWORK_NAME}
-    ports:
-      - ${PORT}:${PORT}
-      - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
+    app:
+        container_name: ${BUG_CONTAINER}
+        build: "./src"
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./src:/home/node/bug
+        env_file:
+            - .env
+        hostname: ${BUG_CONTAINER}
+        networks:
+            - ${DOCKER_NETWORK_NAME}
+        ports:
+            - ${PORT}:${PORT}
+            - ${BUG_PORT}:${BUG_PORT}
 
-  mongo:
-    image: mongo:latest
-    restart: unless-stopped
-    container_name: bug-mongo
-    networks:
-      - ${DOCKER_NETWORK_NAME}
-    ports:
-      - 27017:27017
+    mongo:
+        image: mongo:latest
+        restart: unless-stopped
+        container_name: bug-mongo
+        networks:
+            - ${DOCKER_NETWORK_NAME}
+        ports:
+            - 27017:27017
 
-  mongo-web:
-    image: mongo-express
-    container_name: bug-mongo-express
-    restart: unless-stopped
-    ports:
-      - ${MONGO_EXPRESS_PORT}:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_EXPRESS_USERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_EXPRESS_PASSWORD}
-    hostname: mongo-web
-    networks:
-      - ${DOCKER_NETWORK_NAME}
-    depends_on:
-      - mongo
+    mongo-web:
+        image: mongo-express
+        container_name: bug-mongo-express
+        restart: unless-stopped
+        ports:
+            - ${MONGO_EXPRESS_PORT}:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_EXPRESS_USERNAME}
+            ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_EXPRESS_PASSWORD}
+        hostname: mongo-web
+        networks:
+            - ${DOCKER_NETWORK_NAME}
+        depends_on:
+            - mongo

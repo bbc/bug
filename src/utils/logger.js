@@ -3,8 +3,9 @@ require("winston-daily-rotate-file");
 require("winston-mongodb");
 const path = require("path");
 
-const logFolder = process.env.BUG_CORE_LOG_FOLDER || "logs";
-const logName = process.env.BUG_CORE_LOG_NAME || "bug-core";
+const logFolder = process.env.BUG_LOG_FOLDER || "logs";
+const logName = process.env.BUG_LOG_NAME || "bug";
+const databaseName = process.env.BUG_CONTAINER || "bug";
 
 const customLevels = {
     levels: {
@@ -94,7 +95,7 @@ const loggerInstance = winston.createLogger({
         }),
         new winston.transports.MongoDB({
             level: "info",
-            db: "mongodb://bug-mongo:27017/bug-core",
+            db: `mongodb://bug-mongo:27017/${databaseName}`,
             options: {
                 poolSize: 2,
                 useUnifiedTopology: true,
@@ -108,7 +109,7 @@ const loggerInstance = winston.createLogger({
     ],
 });
 
-let consoleLogLevel = process.env.BUG_CORE_CONSOLE_LEVEL || "info";
+let consoleLogLevel = process.env.BUG_CONSOLE_LEVEL || "info";
 consoleLogLevel = consoleLogLevel.toLowerCase();
 
 if (process.env.NODE_ENV !== "production") {

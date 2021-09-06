@@ -8,7 +8,7 @@
     "configurations": [
         {
             "command": "npm run development",
-            "name": "bug-core: dev",
+            "name": "bug: dev",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
@@ -16,7 +16,7 @@
         },
         {
             "command": "npm run production",
-            "name": "bug-core: prod",
+            "name": "bug: prod",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",
@@ -24,7 +24,7 @@
         },
         {
             "command": "npm install -also=dev",
-            "name": "bug-core: install",
+            "name": "bug: install",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceFolder}/src",

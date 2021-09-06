@@ -2,7 +2,7 @@
 
 /**
  * core/configputviacore.js
- * Sends the provided config object back to the Bug-core API to be stored
+ * Sends the provided config object back to the BUG API to be stored
  * 0.0.1 17/05/2021 - Created first version (GH)
  */
 

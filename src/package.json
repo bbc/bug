@@ -1,5 +1,5 @@
 {
-    "name": "bug-core",
+    "name": "bug",
     "version": "3.0.0-b",
     "description": "Broadcast Universal Gateway",
     "main": "index.js",
@@ -7,8 +7,8 @@
         "doc": "docs"
     },
     "scripts": {
-        "production": "node bin/bug-core-prod",
-        "development": "concurrently \"nodemon ./bin/bug-core-dev.js\" \"cd client && npm run start\"",
+        "production": "node bin/bug-prod",
+        "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
         "test": "jest --forceExit --detectOpenHandles --maxWorkers=1"
     },
     "nodemonConfig": {
@@ -20,14 +20,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/bbc/bbcnews-bug-core.git"
+        "url": "git+https://github.com/bbc/bbcnews-bug.git"
     },
     "author": "Geoff House",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/bbc/bbcnews-bug-core/issues"
+        "url": "https://github.com/bbc/bbcnews-bug/issues"
     },
-    "homepage": "https://github.com/bbc/bbcnews-bug-core#readme",
+    "homepage": "https://github.com/bbc/bbcnews-bug#readme",
     "dependencies": {
         "axios": "^0.21.1",
         "bcryptjs": "^2.4.3",
