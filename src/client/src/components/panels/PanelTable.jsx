@@ -25,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    colVersion: {
+        "@media (max-width:250px)": {
+            display: "none",
+        },
+    },
     tableHead: {
         "@media (max-width:512px)": {
             display: "none",
@@ -65,6 +70,7 @@ export default function PanelTable() {
                                 <TableCell>Title</TableCell>
                                 <TableCell className={classes.colDescription}>Description</TableCell>
                                 <TableCell className={classes.colModule}>Module</TableCell>
+                                <TableCell className={classes.colVersion}>Version</TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>

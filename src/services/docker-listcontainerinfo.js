@@ -29,6 +29,9 @@ module.exports = async () => {
                             name: eachContainer["Names"][0].replace("/", ""),
                             image: eachContainer["Image"],
                             created: eachContainer["Created"],
+                            version: eachContainer?.Labels?.["uk.co.bbc.bug.module.version"] || "",
+                            author: eachContainer?.Labels?.["uk.co.bbc.bug.module.author"] || "",
+                            panelId: eachContainer?.Labels?.["uk.co.bbc.bug.panel.id"] || "",
                             state: eachContainer["State"],
                             status: eachContainer["Status"],
                         });
