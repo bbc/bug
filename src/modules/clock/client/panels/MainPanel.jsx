@@ -1,20 +1,18 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-
 import DigitalClock from "../components/DigitalClock";
 import AnalogueClock from "../components/AnalogueClock";
 import DateString from "../components/DateString";
 import { useSelector } from "react-redux";
+import Hidden from "@material-ui/core/Hidden";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    card: {
+    content: {
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-around",
         minWidth: 200,
         padding: theme.spacing(1),
         textAlign: "center",
@@ -26,12 +24,33 @@ export default function MainPanel() {
     const classes = useStyles();
     const panelConfig = useSelector((state) => state.panelConfig);
 
-    const renderClock = () => {
-        let clock = <DigitalClock />;
-        if (panelConfig.data.type === "analogue") {
-            clock = <AnalogueClock />;
+    const Clock = (props) => {
+        if (panelConfig.data.type === "digital") {
+            return <DigitalClock {...props} />;
         }
-        return clock;
+        return <AnalogueClock {...props} />;
+    };
+
+    const renderClock = () => {
+        return (
+            <>
+                <Hidden only={["sm", "md", "lg", "xl"]}>
+                    <Clock size="xs" />
+                </Hidden>
+                <Hidden only={["xs", "md", "lg", "xl"]}>
+                    <Clock size="sm" />
+                </Hidden>
+                <Hidden only={["xs", "sm", "lg", "xl"]}>
+                    <Clock size="md" />
+                </Hidden>
+                <Hidden only={["xs", "sm", "md", "xl"]}>
+                    <Clock size="lg" />
+                </Hidden>
+                <Hidden only={["xs", "sm", "md", "lg"]}>
+                    <Clock size="xl" />
+                </Hidden>
+            </>
+        );
     };
 
     if (panelConfig.status === "loading") {
@@ -43,17 +62,9 @@ export default function MainPanel() {
     }
 
     return (
-        <React.Fragment>
-            <div className={classes.root}>
-                <Grid container spacing={4} direction="column" justify="center" alignItems="center">
-                    <Grid item lg={6} sm={12} xs={12}>
-                        <Card className={classes.card}>
-                            <CardContent>{renderClock()}</CardContent>
-                            <DateString />
-                        </Card>
-                    </Grid>
-                </Grid>
-            </div>
-        </React.Fragment>
+        <div className={classes.content}>
+            {renderClock()}
+            <DateString />
+        </div>
     );
 }

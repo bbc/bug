@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Menu = () => {
+const Menu = ({ showGroups = true }) => {
     const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
@@ -124,7 +124,7 @@ const Menu = () => {
     };
 
     const groupedMenuItems = (group, panels) => {
-        if (group) {
+        if (group && showGroups) {
             return (
                 <Accordion
                     key={group}
@@ -149,7 +149,7 @@ const Menu = () => {
             );
         } else {
             return (
-                <List key="none" className={classes.list}>
+                <List key={`nogroup_${group}`} className={classes.list}>
                     {panels.map((eachPanel) => renderMenuItem(eachPanel))}
                 </List>
             );

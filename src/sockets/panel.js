@@ -6,7 +6,7 @@ let enablePanelPoll = {};
 let panelTimers = {};
 
 module.exports = (namespace, socket) => {
-    let lastPanelId;
+    // let lastPanelId;
 
     const wrapPanel = async (panelId) => {
         try {
@@ -36,7 +36,7 @@ module.exports = (namespace, socket) => {
                 panels[panelId] = newPanel;
 
                 // send it out
-                namespace.to(`panelId:${lastPanelId}`).emit("event", newPanel);
+                namespace.to(`panelId:${panelId}`).emit("event", newPanel);
             }
         }
 
@@ -109,12 +109,12 @@ module.exports = (namespace, socket) => {
     socket.on("subscribe", async (panelId) => {
         if (panelId) {
             // we store this in case the client gets disconnected - it's the last panel id they were looking at
-            lastPanelId = panelId;
+            socket.data.lastPanelId = panelId;
 
             logger.debug(`socket id ${socket.id} subscribed to panelId ${panelId}`);
 
             // join the room
-            socket.join(`panelId:${lastPanelId}`);
+            socket.join(`panelId:${panelId}`);
 
             // send a new update to the room (cos this client is waiting for it)
             panels[panelId] = await wrapPanel(panelId);
@@ -131,10 +131,10 @@ module.exports = (namespace, socket) => {
     });
 
     socket.on("disconnect", () => {
-        if (lastPanelId) {
+        if (socket.data.lastPanelId) {
             // clear socket id from list and check if timer needs stopping
-            logger.debug(`socket id ${socket.id} unsubscribed from paneId ${lastPanelId}`);
-            socket.leave(`panelId:${lastPanelId}`);
+            logger.debug(`socket id ${socket.id} unsubscribed from paneId ${socket.data.lastPanelId}`);
+            socket.leave(`panelId:${socket.data.lastPanelId}`);
         }
     });
 };

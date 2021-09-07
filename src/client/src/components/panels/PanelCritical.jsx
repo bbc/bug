@@ -5,7 +5,14 @@ import BugAlert from "@components/BugAlert";
 export default function PanelCritical({ panel }) {
     return (
         <>
-            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={{ marginTop: 16 }}
+            >
                 {panel._status
                     .filter((x) => x.type === "critical")
                     .map((eachItem) => (
