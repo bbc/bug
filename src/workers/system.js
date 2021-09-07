@@ -10,6 +10,8 @@ const mongoCreateIndex = require("@core/mongo-createindex");
 const si = require("systeminformation");
 let systemCollection;
 
+const databaseName = process.env.BUG_CONTAINER || "bug";
+
 const filterCPU = async () => {
     const cpu = await si.cpu();
     return {
@@ -57,7 +59,7 @@ const fetch = async () => {
 
 const main = async () => {
     // Connect to the db
-    await mongoDb.connect("bug-core");
+    await mongoDb.connect(databaseName);
 
     systemCollection = await mongoCollection("system");
 

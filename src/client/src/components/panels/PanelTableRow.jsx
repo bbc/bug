@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import clsx from "clsx";
 import { useAlert } from "@utils/Snackbar";
 import { Redirect } from "react-router";
+import NewReleasesIcon from "@material-ui/icons/NewReleases";
 
 const useStyles = makeStyles((theme) => ({
     cellMenu: {
@@ -29,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
     },
     colModule: {
         "@media (max-width:512px)": {
+            display: "none",
+        },
+    },
+    colVersion: {
+        "@media (max-width:250px)": {
             display: "none",
         },
     },
@@ -69,6 +75,17 @@ export default function PanelTableRow({ panel, showGroups }) {
         return <Redirect push to={{ pathname: redirectUrl }} />;
     }
 
+    const renderVersion = (upgradeable) => {
+        if (upgradeable) {
+            return (
+                <>
+                    <NewReleasesIcon />
+                    {panel._module.version}
+                </>
+            );
+        }
+        return panel._module.version;
+    };
     return (
         <TableRow
             key={panel.id}
@@ -112,6 +129,13 @@ export default function PanelTableRow({ panel, showGroups }) {
                 })}
             >
                 {panel._module.longname}
+            </TableCell>
+            <TableCell
+                className={clsx(classes.colVersion, {
+                    [classes.disabledText]: !panel.enabled || panel._isPending,
+                })}
+            >
+                {renderVersion(panel?.upgradeable)}
             </TableCell>
             <TableCell className={classes.cellMenu}>
                 <PanelDropdownMenu panel={panel} />

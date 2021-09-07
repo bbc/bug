@@ -10,6 +10,7 @@ const systemStats = require("@services/system-stats");
 const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
 const systemInfo = require("@services/system-info");
+const systemUpdate = require("@services/system-update");
 const systemSettingsGet = require("@services/system-settings-get");
 const systemSettingsUpdate = require("@services/system-settings-update");
 
@@ -98,6 +99,26 @@ router.get("/info", async function (req, res, next) {
  */
 router.get("/settings", async function (req, res, next) {
     const result = await systemSettingsGet();
+    hashResponse(res, req, {
+        status: result ? "success" : "failure",
+        data: result?.data,
+    });
+});
+
+/**
+ * @swagger
+ * /system/update:
+ *   get:
+ *     description: Check for BUG updates, downloads and applies them
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Success
+ */
+router.get("/update", async function (req, res, next) {
+    const result = await systemUpdate();
     hashResponse(res, req, {
         status: result ? "success" : "failure",
         data: result?.data,

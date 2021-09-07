@@ -1,6 +1,6 @@
 # BUG (Broadcast Universal Gateway)
 
-![BUG Logo](https://github.com/bbc/bbcnews-bug-core/blob/main/src/client/public/icons/bug-logo-256x256.png?raw=true)
+![BUG Logo](https://github.com/bbc/bbcnews-bug/blob/main/src/client/public/icons/bug-logo-256x256.png?raw=true)
 
 BUG provides management and control of network devices in broadcast environments.
 
@@ -58,21 +58,21 @@ networks:
 services:
   core:
     image: 172.26.108.110:5000/bug:latest
-    container_name: ${DOCKER_CORE_NAME}
+    container_name: ${BUG_CONTAINER}
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./logs:/home/node/bug-core/logs
-      - ./config:/home/node/bug-core/config
+      - ./logs:/home/node/bug/logs
+      - ./config:/home/node/bug/config
     env_file:
       - .env
     environment:
       NODE_ENV: 'production'
-    hostname: ${DOCKER_CORE_NAME}
+    hostname: ${BUG_CONTAINER}
     networks:
       - ${DOCKER_NETWORK_NAME}
     ports:
-      - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
+      - ${BUG_PORT}:${BUG_PORT}
 
   mongo:
     image: mongo:latest
@@ -108,21 +108,21 @@ networks:
 services:
   core:
     image: 172.26.108.110:5000/bug:latest
-    container_name: ${DOCKER_CORE_NAME}
+    container_name: ${BUG_CONTAINER}
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./logs:/home/node/bug-core/logs
-      - ./config:/home/node/bug-core/config
+      - ./logs:/home/node/bug/logs
+      - ./config:/home/node/bug/config
     env_file:
       - .env
     environment:
       NODE_ENV: 'production'
-    hostname: ${DOCKER_CORE_NAME}
+    hostname: ${BUG_CONTAINER}
     networks:
       - ${DOCKER_NETWORK_NAME}
     ports:
-      - ${BUG_CORE_PORT}:${BUG_CORE_PORT}
+      - ${BUG_PORT}:${BUG_PORT}
 
   mongo:
     image: andresvidal/rpi3-mongodb3:latest
@@ -138,14 +138,14 @@ services:
 MODULE_PORT=3200
 MODULE_HOME=/home/node/module
 
-DOCKER_CORE_NAME=bug-core
+BUG_CONTAINER=app
 DOCKER_NETWORK_NAME=bug
 
-BUG_CORE_PORT=3101
-BUG_CORE_HOST=http://localhost
-BUG_CORE_LOG_FOLDER=logs
-BUG_CORE_LOG_NAME=bug-core
-BUG_CORE_CONSOLE_LEVEL=debug
+BUG_PORT=3101
+BUG_HOST=http://localhost
+BUG_LOG_FOLDER=logs
+BUG_LOG_NAME=bug
+BUG_CONSOLE_LEVEL=debug
 
 MONGO_EXPRESS_PORT=3202
 MONGO_EXPRESS_USERNAME=admin
@@ -161,7 +161,6 @@ Currently BUG can only be upgraded from the command line
 The first stage is to get the latest version of the BUG image from the registry using this command
 
 `docker pull 172.26.108.110:5000/bug:latest`
-
 
 Next, run the following command and Docker will determine which containers to restart with minimal downtime of approximately 10 seconds.
 
@@ -183,9 +182,9 @@ Verify your containers are running using the `docker ps` command.
 
 To look at the logs (terminal) of the core container use;
 
-`docker logs bbcnews-bug-core_bug-core_1`
+`docker logs bbcnews-bug_bug_1`
 
-Where `bbcnews-bug-core_bug-core_1` is the name of the container that can be seen from `docker ps`.
+Where `bbcnews-bug_bug_1` is the name of the container that can be seen from `docker ps`.
 
 ### Stop BUG
 

@@ -8,6 +8,8 @@ const dockerContainer = require("@models/docker-container");
 const mongoDb = require("@core/mongo-db");
 const delay = require("delay");
 
+const databaseName = process.env.BUG_CONTAINER || "bug";
+
 const fetch = async () => {
     try {
         while (true) {
@@ -28,7 +30,7 @@ const fetch = async () => {
 
 const main = async () => {
     // Connect to the db
-    await mongoDb.connect("bug-core");
+    await mongoDb.connect(databaseName);
 
     // Kick things off
     while (true) {

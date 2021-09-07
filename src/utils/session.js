@@ -4,9 +4,10 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 
 const sessionSecret = process.env.SESSION_SECRET || "buggy";
+const databaseName = process.env.BUG_CONTAINER || "bug";
 
 const store = new MongoDBStore({
-    uri: "mongodb://bug-mongo:27017/bug-core",
+    uri: `mongodb://bug-mongo:27017/${databaseName}`,
     collection: "sessions",
 });
 

@@ -12,6 +12,7 @@ const StatusItem = require("@core/StatusItem");
 const mongoCollection = require("@core/mongo-collection");
 
 const modulePort = process.env.MODULE_PORT || 3000;
+const databaseName = process.env.BUG_CONTAINER || "bug";
 
 const fetch = async () => {
     try {
@@ -86,7 +87,7 @@ const fetch = async () => {
 
 const main = async () => {
     // Connect to the db
-    await mongoDb.connect("bug-core");
+    await mongoDb.connect(databaseName);
 
     // Kick things off
     while (true) {

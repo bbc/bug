@@ -7,15 +7,15 @@ const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const workerStore = require("@core/worker-store");
-
-const port = process.env.BUG_CORE_PORT || "80";
+const port = process.env.BUG_PORT || "3101";
 bugApi.set("port", port);
 
 const server = http.createServer(bugApi);
+const collectionName = process.env.BUG_CONTAINER || "bug";
 
 const serve = async () => {
     try {
-        await mongoDb.connect("bug-core");
+        await mongoDb.connect(collectionName);
 
         server.on("error", onError);
         server.on("listening", onListening);
@@ -52,8 +52,7 @@ const onError = (error) => {
 
 const onListening = () => {
     const addr = server.address();
-    const bind =
-        typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     logger.info(`bug listening on ${bind}`);
 };
 

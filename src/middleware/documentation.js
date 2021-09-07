@@ -4,8 +4,8 @@ const documentation = express.Router();
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 
-const host = process.env.BUG_CORE_HOST || "localhost";
-const port = process.env.BUG_CORE_PORT || "3101";
+const host = process.env.BUG_HOST || "localhost";
+const port = process.env.BUG_PORT || "3101";
 const url = `${host}:${port}/api/`;
 
 const options = {
