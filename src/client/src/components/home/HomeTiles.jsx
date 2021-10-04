@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import Loading from "@components/Loading";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
 import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";

@@ -1,19 +1,19 @@
 import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import EditIcon from "@material-ui/icons/Edit";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
+// import { makeStyles } from "@mui/styles";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditIcon from "@mui/icons-material/Edit";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
 import { useAlert } from "@utils/Snackbar";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-import CheckIcon from "@material-ui/icons/Check";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import CheckIcon from "@mui/icons-material/Check";
 import AxiosPut from "@utils/AxiosPut";
 import { useHistory } from "react-router-dom";
-import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 export default function OutputMenu({ output, panelId, onChange, onRename, onDelay }) {
     // const classes = useStyles();

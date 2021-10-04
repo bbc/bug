@@ -1,10 +1,11 @@
 import React from "react";
-import { Alert, AlertTitle } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import ReplayIcon from "@material-ui/icons/Replay";
-import SettingsIcon from "@material-ui/icons/Settings";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import { makeStyles } from "@mui/styles";
+import Button from "@mui/material/Button";
+import { alpha } from "@mui/material/styles";
+import ReplayIcon from "@mui/icons-material/Replay";
+import SettingsIcon from "@mui/icons-material/Settings";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import clsx from "clsx";
@@ -18,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderColor: "#ccc",
         color: "#ccc",
-        backgroundColor: fade("#000000", 0.2),
+        backgroundColor: alpha("#000000", 0.2),
         "&:hover": {
-            backgroundColor: fade("#000000", 0.3),
+            backgroundColor: alpha("#000000", 0.3),
         },
         marginRight: "1rem",
     },

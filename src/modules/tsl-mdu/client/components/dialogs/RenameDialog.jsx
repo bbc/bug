@@ -1,15 +1,15 @@
 import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Button from "@material-ui/core/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 import { useAlert } from "@utils/Snackbar";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import AxiosPost from "@utils/AxiosPost";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import CancelIcon from "@material-ui/icons/Cancel";
-import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import CancelIcon from "@mui/icons-material/Cancel";
+import IconButton from "@mui/material/IconButton";
 
 export default function RenameDialog({ outputNumber, outputName, onClose, panelId }) {
     const sendAlert = useAlert();

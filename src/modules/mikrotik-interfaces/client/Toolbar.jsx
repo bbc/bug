@@ -1,9 +1,9 @@
 import React from "react";
 import ToolbarWrapper from "@core/ToolbarWrapper";
-// import Button from "@material-ui/core/Button";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import ListItemIcon from "@material-ui/core/ListItemIcon";
-// import ListItemText from "@material-ui/core/ListItemText";
+// import Button from "@mui/material/Button";
+// import MenuItem from "@mui/material/MenuItem";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemText from "@mui/material/ListItemText";
 
 export default function Toolbar(props) {
     let toolbarProps = { ...props };

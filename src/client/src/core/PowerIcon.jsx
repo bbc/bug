@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
+import { makeStyles } from "@mui/styles";
+import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 
 const useStyles = makeStyles((theme) => ({
     iconEnabled: {

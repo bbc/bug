@@ -1,15 +1,15 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@mui/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import ApiSwitch from "@core/ApiSwitch";
 import Loading from "@components/Loading";
-import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
+import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import InterfaceListMenu from "./InterfaceListMenu";
 import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
@@ -17,7 +17,7 @@ import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
 import RenameDialog from "./RenameDialog";
 import CommentDialog from "./CommentDialog";
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import SparkCell from "@core/SparkCell";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,11 +1,11 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
+import { makeStyles } from "@mui/styles";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 import AxiosCommand from "@utils/AxiosCommand";
 import ApiSwitch from "@core/ApiSwitch";
 import { useAlert } from "@utils/Snackbar";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +64,11 @@ export default function UserTableRow({ user, currentUserId }) {
             onClick={() => setRedirectUrl(`/system/user/${user.id}`)}
         >
             <TableCell className={classes.colName}>
-                <ApiSwitch checked={user.enabled} onChange={(checked) => handleSwitchChange(checked, user.id)} disabled={user.enabled && (user.id === currentUserId)}/>
+                <ApiSwitch
+                    checked={user.enabled}
+                    onChange={(checked) => handleSwitchChange(checked, user.id)}
+                    disabled={user.enabled && user.id === currentUserId}
+                />
             </TableCell>
             <TableCell className={classes.colUsername}>{user.username}</TableCell>
             <TableCell className={classes.colName}>{user.name}</TableCell>

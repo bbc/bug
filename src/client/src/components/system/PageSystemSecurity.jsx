@@ -3,7 +3,7 @@ import SecurityTable from "@components/security/SecurityTable";
 import SecurityTableEdit from "@components/security/SecurityTableEdit";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
-// import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@mui/styles";
 
 // const useStyles = makeStyles((theme) => ({}));
 

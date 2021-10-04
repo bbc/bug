@@ -1,10 +1,10 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import DigitalClock from "../components/DigitalClock";
 import AnalogueClock from "../components/AnalogueClock";
 import DateString from "../components/DateString";
 import { useSelector } from "react-redux";
-import Hidden from "@material-ui/core/Hidden";
+import Hidden from "@mui/material/Hidden";
 
 const useStyles = makeStyles((theme) => ({
     content: {

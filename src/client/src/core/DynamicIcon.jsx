@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Icons from "@material-ui/icons/";
+import * as Icons from "@mui/icons-material/";
 import * as MDIIcons from "mdi-material-ui";
 
 function upperFirst(string) {

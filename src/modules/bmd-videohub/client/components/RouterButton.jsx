@@ -1,6 +1,6 @@
 import React from "react";
 import ButtonMenu from "./ButtonMenu";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import DynamicIcon from "@core/DynamicIcon";

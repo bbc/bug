@@ -1,8 +1,8 @@
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import Hidden from "@material-ui/core/Hidden";
+import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Hidden from "@mui/material/Hidden";
 
 export default function PanelRestarting(props) {
     return (

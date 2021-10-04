@@ -1,12 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@mui/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import ApiSwitch from "@core/ApiSwitch";
 import Loading from "@components/Loading";
 import OutputsMenu from "./OutputsMenu";
@@ -15,11 +15,11 @@ import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@utils/ApiPoller";
 import RenameDialog from "./dialogs/RenameDialog";
 import DelayDialog from "./dialogs/DelayDialog";
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import AxiosPost from "@utils/AxiosPost";
-import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
-import LockRoundedIcon from "@material-ui/icons/LockRounded";
-import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
+import LockOpenRoundedIcon from "@mui/icons-material/LockOpenRounded";
+import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 
 const useStyles = makeStyles((theme) => ({
     content: {},

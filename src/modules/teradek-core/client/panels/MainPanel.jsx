@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import EncoderTable from "../components/encoders/EncoderTable";
 import DecoderTable from "../components/decoders/DecoderTable";
 import PanelTabbedForm from "@core/PanelTabbedForm";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     form: {

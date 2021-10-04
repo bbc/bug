@@ -1,10 +1,10 @@
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import Hidden from "@material-ui/core/Hidden";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Hidden from "@mui/material/Hidden";
+import Button from "@mui/material/Button";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     page: {

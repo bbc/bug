@@ -5,7 +5,7 @@ import AxiosGet from "@utils/AxiosGet";
 import BugForm from "@core/BugForm";
 import LoadingOverlay from "@components/LoadingOverlay";
 import { useAlert } from "@utils/Snackbar";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 import SecurityStrategyLocal from "@components/security/SecurityStrategyLocal";

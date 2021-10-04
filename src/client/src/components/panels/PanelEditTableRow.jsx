@@ -1,10 +1,10 @@
 import React from "react";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
-import { makeStyles } from "@material-ui/core/styles";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { makeStyles } from "@mui/styles";
 import ApiSwitch from "@core/ApiSwitch";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 import { useSortable } from "@dnd-kit/sortable";
 import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";

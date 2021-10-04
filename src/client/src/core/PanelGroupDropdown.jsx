@@ -1,9 +1,9 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import { useSelector } from "react-redux";
 import _ from "lodash";
-import Paper from "@material-ui/core/Paper";
+import Paper from "@mui/material/Paper";
 
 const filter = createFilterOptions();
 

@@ -1,13 +1,13 @@
 import React from "react";
 import ToolbarWrapper from "@core/ToolbarWrapper";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { usePanelStatus } from "@core/PanelStatusHook";
 import { useLocation } from "react-router-dom";
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function Toolbar(props) {
     const toolbarProps = { ...props };

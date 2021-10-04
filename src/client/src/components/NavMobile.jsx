@@ -1,11 +1,11 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import MuiToolbar from "@material-ui/core/Toolbar";
+import { makeStyles } from "@mui/styles";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import MuiToolbar from "@mui/material/Toolbar";
 import Toolbar from "@components/toolbars/ToolbarRouter";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
 
 const useStyles = makeStyles((theme) => ({

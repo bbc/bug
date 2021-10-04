@@ -1,14 +1,14 @@
 import React from "react";
-import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
-import ReplayIcon from "@material-ui/icons/Replay";
-import SettingsIcon from "@material-ui/icons/Settings";
+import Alert from "@mui/material/Alert";
+import { makeStyles } from "@mui/styles";
+import ReplayIcon from "@mui/icons-material/Replay";
+import SettingsIcon from "@mui/icons-material/Settings";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import clsx from "clsx";
 import { useHistory } from "react-router-dom";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import IconButton from "@material-ui/core/IconButton";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import IconButton from "@mui/material/IconButton";
 
 const useStyles = makeStyles((theme) => ({
     multiMessage: {

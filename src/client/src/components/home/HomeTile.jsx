@@ -1,13 +1,13 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import DynamicIcon from "@core/DynamicIcon";
 import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import BadgeWrapper from "@components/BadgeWrapper";
 import CollapsibleBugAlert from "@components/CollapsibleBugAlert";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 
 const useStyles = makeStyles((theme) => ({

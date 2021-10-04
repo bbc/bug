@@ -1,23 +1,23 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import EditIcon from "@material-ui/icons/Edit";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@mui/styles";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditIcon from "@mui/icons-material/Edit";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import { useAlert } from "@utils/Snackbar";
 import AxiosDelete from "@utils/AxiosDelete";
-import Divider from "@material-ui/core/Divider";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
+import Divider from "@mui/material/Divider";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useParams } from "react-router-dom";
 import AxiosCommand from "@utils/AxiosCommand";
 import RenameDialog from "./RenameDialog";
 import AddGroupDialog from "./AddGroupDialog";
-import BackspaceIcon from "@material-ui/icons/Backspace";
-import FilterTiltShiftIcon from "@material-ui/icons/FilterTiltShift";
+import BackspaceIcon from "@mui/icons-material/Backspace";
+import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 
 const useStyles = makeStyles((theme) => ({
     iconButton: {

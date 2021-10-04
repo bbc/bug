@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
+import { makeStyles } from "@mui/styles";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 
 const useStyles = makeStyles((theme) => ({
     colTimestamp: {
@@ -26,15 +26,9 @@ export default function LogTableRow(props) {
 
     return (
         <TableRow key={props._id}>
-            <TableCell className={classes.colTimestamp}>
-                {props.timestamp}
-            </TableCell>
-            <TableCell className={classes.colLevel}>
-                {props.level.toUpperCase()}
-            </TableCell>
-            <TableCell className={classes.colMessage}>
-                {props.message}
-            </TableCell>
+            <TableCell className={classes.colTimestamp}>{props.timestamp}</TableCell>
+            <TableCell className={classes.colLevel}>{props.level.toUpperCase()}</TableCell>
+            <TableCell className={classes.colMessage}>{props.message}</TableCell>
         </TableRow>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 export default function DigitalClock({ size }) {
     const [time, setTime] = useState("hh:mm:ss");

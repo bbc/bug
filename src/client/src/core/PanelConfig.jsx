@@ -3,9 +3,9 @@ import React from "react";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import BugForm from "@core/BugForm";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     form: {

@@ -1,16 +1,16 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import ApiSwitch from "@core/ApiSwitch";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import PanelRowState from "@components/panels/PanelRowState";
 import AxiosCommand from "@utils/AxiosCommand";
 import PanelPowerIcon from "@components/panels/PanelPowerIcon";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 import clsx from "clsx";
 import { useAlert } from "@utils/Snackbar";
 import { Redirect } from "react-router";
-import NewReleasesIcon from "@material-ui/icons/NewReleases";
+import NewReleasesIcon from "@mui/icons-material/NewReleases";
 
 const useStyles = makeStyles((theme) => ({
     cellMenu: {

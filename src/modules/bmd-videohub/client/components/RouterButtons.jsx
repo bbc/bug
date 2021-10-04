@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import RouterButton from "./RouterButton";
 import { useParams } from "react-router-dom";
 import { useAlert } from "@utils/Snackbar";

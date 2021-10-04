@@ -1,6 +1,6 @@
 import React from "react";
 import PageTitle from "@components/PageTitle";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";

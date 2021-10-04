@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import { makeStyles } from "@mui/styles";
 import TrafficChart from "@core/TrafficChart";
 
 const useStyles = makeStyles((theme) => ({

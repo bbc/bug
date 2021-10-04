@@ -1,23 +1,23 @@
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ReplayIcon from "@material-ui/icons/Replay";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ReplayIcon from "@mui/icons-material/Replay";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
 import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import PanelGroupDialog from "@components/panels/PanelGroupDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import ToggleOffIcon from "@material-ui/icons/ToggleOff";
-import ToggleOnIcon from "@material-ui/icons/ToggleOn";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ClearAllIcon from "@material-ui/icons/ClearAll";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ClearAllIcon from "@mui/icons-material/ClearAll";
 import { useHistory } from "react-router-dom";
-import NewReleasesIcon from "@material-ui/icons/NewReleases";
+import NewReleasesIcon from "@mui/icons-material/NewReleases";
 
 export default function PanelDropdownMenu(props) {
     const sendAlert = useAlert();

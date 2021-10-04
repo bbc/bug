@@ -1,8 +1,8 @@
 import React from "react";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
+import Autocomplete from "@mui/material/Autocomplete";
+import { makeStyles } from "@mui/styles";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({

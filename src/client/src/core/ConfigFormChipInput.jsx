@@ -1,8 +1,8 @@
 import React from "react";
-import FormControl from "@material-ui/core/FormControl";
+import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
-import ChipInput from "material-ui-chip-input";
-import { makeStyles } from "@material-ui/core/styles";
+import ChipInput from "@components/ChipInput";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     helperText: {

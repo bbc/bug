@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
+import { makeStyles } from "@mui/styles";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 const useStyles = makeStyles((theme) => ({
     dragIcon: {

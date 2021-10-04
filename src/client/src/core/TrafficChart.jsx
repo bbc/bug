@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import formatBps from "@core/format-bps";
 import { format } from "date-fns";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { ComposedChart, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
-import Button from "@material-ui/core/Button";
-import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import Button from "@mui/material/Button";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
 import { TimePicker } from "@material-ui/pickers";

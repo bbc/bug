@@ -1,16 +1,16 @@
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Backdrop from '@material-ui/core/Backdrop';
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@material-ui/core/Backdrop";
+import Grid from "@mui/material/Grid";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
+        zIndex: theme.zIndex.drawer + 1,
+        color: "#fff",
     },
-  }));
-  
+}));
+
 export default function LoadingOverlay(props) {
     const classes = useStyles();
 
