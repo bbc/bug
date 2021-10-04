@@ -26,7 +26,7 @@ module.exports = async (panelId) => {
         logger.info(`stoppping container for panel id ${panelId}`);
         return await dockerStopContainer(container);
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error?.stack || error?.trace || error || error?.message}`);
         throw new Error(`Failed to stop panel id ${panelId}`);
     }
 };
