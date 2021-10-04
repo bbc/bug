@@ -7,6 +7,7 @@ import { SnackbarProvider } from "notistack";
 import Fade from "@material-ui/core/Fade";
 import { SnackbarConfigurator } from "@utils/Snackbar";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import PanelListHandler from "@data/PanelListHandler";
 import UserHandler from "@data/UserHandler";
@@ -20,28 +21,30 @@ export default function App() {
         <>
             <Provider store={reduxStore}>
                 <ThemeProvider theme={theme}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <SnackbarProvider
-                            dense
-                            autoHideDuration={3000}
-                            preventDuplicate
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "right",
-                            }}
-                            TransitionComponent={Fade}
-                            maxSnack={3}
-                        >
-                            <SnackbarConfigurator />
-                            <CssBaseline />
-                            <UserHandler />
-                            <StrategiesHandler />
-                            <PanelListHandler />
-                            <ModalProvider>
-                                <AuthRouter />
-                            </ModalProvider>
-                        </SnackbarProvider>
-                    </MuiPickersUtilsProvider>
+                    <BugConfirmDialogProvider>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <SnackbarProvider
+                                dense
+                                autoHideDuration={3000}
+                                preventDuplicate
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "right",
+                                }}
+                                TransitionComponent={Fade}
+                                maxSnack={3}
+                            >
+                                <SnackbarConfigurator />
+                                <CssBaseline />
+                                <UserHandler />
+                                <StrategiesHandler />
+                                <PanelListHandler />
+                                <ModalProvider>
+                                    <AuthRouter />
+                                </ModalProvider>
+                            </SnackbarProvider>
+                        </MuiPickersUtilsProvider>
+                    </BugConfirmDialogProvider>
                 </ThemeProvider>
             </Provider>
         </>
