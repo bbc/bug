@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
         },
         position: "absolute",
         bottom: 8,
-        width: "100%",
+        // width: "100%",
         paddingRight: "0.5rem",
         height: 48,
     },
