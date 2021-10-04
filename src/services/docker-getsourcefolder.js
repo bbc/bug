@@ -16,6 +16,10 @@ module.exports = async () => {
         }
 
         const container = await dockerGetContainer(coreName);
+        if (!container) {
+            return null;
+        }
+
         const moduleInspect = await container.inspect();
 
         if ("Mounts" in moduleInspect) {
