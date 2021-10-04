@@ -5,7 +5,7 @@ const RosApi = require("node-routeros").RouterOSAPI;
 const delay = require("delay");
 const register = require("module-alias/register");
 const mikrotikFetchLinkStats = require("../services/mikrotik-fetchlinkstats");
-const arraySaveMongo = require("../services/array-savemongo");
+const mongoSaveArray = require("../services/mongo-savearray");
 const interfaceList = require("../services/interface-list");
 const mongoDb = require("@core/mongo-db");
 const mongoCreateIndex = require("@core/mongo-createindex");
@@ -70,7 +70,7 @@ const main = async () => {
                     }
                 }
             }
-            await arraySaveMongo(linkStatsCollection, linkStatsArray, "name");
+            await mongoSaveArray(linkStatsCollection, linkStatsArray, "name");
         } catch (error) {
             console.log("fetch-linkstats: ", error);
             noErrors = false;

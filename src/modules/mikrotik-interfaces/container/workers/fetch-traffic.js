@@ -5,7 +5,7 @@ const RosApi = require("node-routeros").RouterOSAPI;
 const delay = require("delay");
 const register = require("module-alias/register");
 const mikrotikFetchTraffic = require("../services/mikrotik-fetchtraffic");
-const arraySaveMongo = require("../services/array-savemongo");
+const mongoSaveArray = require("../services/mongo-savearray");
 const trafficSaveHistory = require("../services/traffic-savehistory");
 const interfaceList = require("../services/interface-list");
 const trafficAddHistory = require("../services/traffic-addhistory");
@@ -82,7 +82,7 @@ const main = async () => {
             );
 
             // save to mongo
-            await arraySaveMongo(trafficCollection, trafficArray, "name");
+            await mongoSaveArray(trafficCollection, trafficArray, "name");
         } catch (error) {
             console.log("fetch-traffic: ", error);
             noErrors = false;

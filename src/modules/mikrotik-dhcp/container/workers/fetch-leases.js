@@ -7,7 +7,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mikrotikFetchLeases = require("../services/mikrotik-fetchleases");
-const arraySaveMongo = require("@core/array-savemongo");
+const mongoSaveArray = require("@core/mongo-savearray");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
 const updateDelay = 2000;
@@ -46,7 +46,7 @@ const main = async () => {
     while (noErrors) {
         try {
             const leases = await mikrotikFetchLeases(conn);
-            await arraySaveMongo(leasesCollection, leases, "id");
+            await mongoSaveArray(leasesCollection, leases, "id");
         } catch (error) {
             console.log("fetch-leases: ", error);
             noErrors = false;

@@ -7,7 +7,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mikrotikFetchAddressLists = require("../services/mikrotik-fetchaddresslists");
-const arraySaveMongo = require("@core/array-savemongo");
+const mongoSaveArray = require("@core/mongo-savearray");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
 const updateDelay = 10000;
@@ -52,7 +52,7 @@ const main = async () => {
                 data: addressLists
             }, { upsert: true });
 
-            // await arraySaveMongo(addressListsCollection, addressLists, "name");
+            // await mongoSaveArray(addressListsCollection, addressLists, "name");
         } catch (error) {
             console.log("fetch-addresslists: ", error);
             noErrors = false;
