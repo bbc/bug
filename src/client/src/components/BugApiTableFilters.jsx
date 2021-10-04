@@ -51,7 +51,7 @@ export default function BugApiTable({ onChange, columns, classes, filters, onClo
 
     return (
         <>
-            <TableRow className={classes.columns}>
+            <TableRow key="filters" className={classes.columns}>
                 {columns.map((column, index) => (
                     <TableCell key={index} className={`col_${index}`}>
                         {renderFilterCell(column)}

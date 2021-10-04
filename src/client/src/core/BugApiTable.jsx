@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
     },
     cellMenu: {
+        width: "2rem",
         paddingLeft: 0,
         paddingRight: 4,
     },
@@ -55,6 +56,7 @@ export default function BugApiTable({
     filterable,
     defaultSortIndex = 0,
     defaultSortDirection = "asc",
+    hideHeader = false,
 }) {
     const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
     const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
@@ -114,6 +116,7 @@ export default function BugApiTable({
         for (const [index, col] of columns.entries()) {
             styleObj["columns"][`& .col_${index}`] = {};
             styleObj["columns"][`& .col_${index}`]["paddingRight"] = 12;
+            styleObj["columns"][`& .col_${index}`]["position"] = "relative";
             if (col.width !== undefined) {
                 styleObj["columns"][`& .col_${index}`]["width"] = col.width;
             }
@@ -171,62 +174,66 @@ export default function BugApiTable({
             <div className={classes.content}>
                 <TableContainer component={Paper} square>
                     <Table className={classes.table} aria-label="simple table">
-                        <TableHead className={classes.tableHead}>
-                            <TableRow className={classes.columns}>
-                                {columns.map((column, index) => (
-                                    <TableCell
-                                        key={index}
-                                        className={`col_${index} ${column.sortable ? classes.colSortable : ""}`}
-                                        onClick={() => handleSortClicked(column)}
-                                    >
-                                        {column.sortable ? (
-                                            <TableSortLabel
-                                                className={classes.sortLabel}
-                                                active={sortField === column.field}
-                                                direction={
-                                                    sortField === column.field
-                                                        ? sortDirection
-                                                        : column.defaultSortDirection
-                                                }
-                                                onClick={() => handleSortClicked(column)}
-                                            >
-                                                {column.title}
-                                            </TableSortLabel>
-                                        ) : (
-                                            column.title
+                        {!hideHeader && (
+                            <TableHead className={classes.tableHead}>
+                                <TableRow key="1" className={classes.columns}>
+                                    {columns.map((column, index) => (
+                                        <TableCell
+                                            key={index}
+                                            className={`col_${index} ${column.sortable ? classes.colSortable : ""}`}
+                                            onClick={() => handleSortClicked(column)}
+                                        >
+                                            {column.sortable ? (
+                                                <TableSortLabel
+                                                    className={classes.sortLabel}
+                                                    active={sortField === column.field}
+                                                    direction={
+                                                        sortField === column.field
+                                                            ? sortDirection
+                                                            : column.defaultSortDirection
+                                                    }
+                                                    onClick={() => handleSortClicked(column)}
+                                                >
+                                                    {column.title}
+                                                </TableSortLabel>
+                                            ) : (
+                                                column.title
+                                            )}
+                                        </TableCell>
+                                    ))}
+
+                                    <TableCell key="filter" className={classes.filterHeadCell}>
+                                        {filterable && (
+                                            <IconButton aria-label="filter list" onClick={handleFilterClicked}>
+                                                <FilterListIcon
+                                                    className={
+                                                        showFilters ? classes.filterIconActive : classes.filterIcon
+                                                    }
+                                                />
+                                            </IconButton>
                                         )}
                                     </TableCell>
-                                ))}
-
-                                <TableCell className={classes.filterHeadCell}>
-                                    {filterable && (
-                                        <IconButton aria-label="filter list" onClick={handleFilterClicked}>
-                                            <FilterListIcon
-                                                className={showFilters ? classes.filterIconActive : classes.filterIcon}
-                                            />
-                                        </IconButton>
-                                    )}
-                                </TableCell>
-                            </TableRow>
-                            {showFilters && (
-                                <BugApiTableFilters
-                                    classes={classes}
-                                    columns={columns}
-                                    filters={filters}
-                                    onChange={(value) => handleFiltersChanged(value)}
-                                    onClose={() => handleFilterClicked()}
-                                />
-                            )}
-                        </TableHead>
+                                </TableRow>
+                                {showFilters && (
+                                    <BugApiTableFilters
+                                        classes={classes}
+                                        columns={columns}
+                                        filters={filters}
+                                        onChange={(value) => handleFiltersChanged(value)}
+                                        onClose={() => handleFilterClicked()}
+                                    />
+                                )}
+                            </TableHead>
+                        )}
                         <TableBody>
-                            {pollResult?.data?.map((item) => (
+                            {pollResult?.data?.map((item, index) => (
                                 <TableRow
                                     hover
                                     className={clsx(classes.interfaceRow, classes.columns, {
                                         [classes.interfaceRowDisabled]: item.disabled,
                                         [classes.interfaceRowClickable]: onRowClick !== undefined,
                                     })}
-                                    key={item.id}
+                                    key={index}
                                     onClick={(event) => onRowClick(event, item)}
                                 >
                                     {columns.map((column, index) => (
@@ -235,7 +242,7 @@ export default function BugApiTable({
                                         </TableCell>
                                     ))}
                                     {menuItems && (
-                                        <TableCell className={classes.cellMenu}>
+                                        <TableCell key="menu" className={classes.cellMenu}>
                                             <BugApiTableMenu item={item} menuItems={menuItems} />
                                         </TableCell>
                                     )}
