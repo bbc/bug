@@ -3,15 +3,15 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     tabContainer: {
-        width: '100%',
-        position: 'absolute',
-        backgroundColor: theme.palette.appbar.default
+        width: "100%",
+        position: "absolute",
+        backgroundColor: theme.palette.appbar.default,
     },
     tabSpacer: {
-        height: 56,
-        position: 'relative',
-        zIndex: -1
-    }
+        height: 57,
+        position: "relative",
+        zIndex: -1,
+    },
 }));
 
 export default function TabContainer(props) {
@@ -19,12 +19,8 @@ export default function TabContainer(props) {
 
     return (
         <>
-            <div className={classes.tabContainer}>
-                {props.children}
-            </div>
-            <div className={classes.tabSpacer}>
-
-            </div>
+            <div className={classes.tabContainer}>{props.children}</div>
+            <div className={`tabSpacer ${classes.tabSpacer}`}></div>
         </>
     );
 }
