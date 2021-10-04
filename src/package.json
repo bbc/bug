@@ -29,7 +29,7 @@
     },
     "homepage": "https://github.com/bbc/bbcnews-bug#readme",
     "dependencies": {
-        "axios": "^0.21.1",
+        "axios": "^0.21.2",
         "bcryptjs": "^2.4.3",
         "change-case": "^4.1.2",
         "cidr-regex": "^3.1.1",
