@@ -1,24 +1,70 @@
 import React from "react";
-import Devices from "../components/Devices";
-import Loading from "@components/Loading";
 import { useParams } from "react-router-dom";
-import { useApiPoller } from "@utils/ApiPoller";
+import EncoderTable from "../components/encoders/EncoderTable";
+import DecoderTable from "../components/decoders/DecoderTable";
+import PanelTabbedForm from "@core/PanelTabbedForm";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    form: {
+        "& .tabSpacer": {
+            height: 60,
+        },
+    },
+}));
 
 export default function MainPanel() {
+    const classes = useStyles();
     const params = useParams();
 
-    const devices = useApiPoller({
-        url: `/container/${params?.panelId}/device/all`,
-        interval: 5000,
-    });
+    // const channels = useApiPoller({
+    //     url: `/container/${panelId}/channel/all`,
+    //     interval: 5000,
+    // });
 
-    if (devices.status === "loading" || devices.status === "idle") {
-        return <Loading />;
-    }
+    // const decoders = devices.filter((device) => device?.type === "decoder");
+    // const encoders = devices.filter((device) => device?.type === "encoder");
 
     return (
         <>
-            <Devices devices={devices.data} panelId={params.panelId} />
+            <PanelTabbedForm
+                className={classes.form}
+                labels={["Encoders", "Decoders"]}
+                content={[
+                    <EncoderTable
+                        panelId={params.panelId}
+                        header={false}
+                        // encoders={encoders}
+                        // decoders={decoders}
+                        // channels={channels.data}
+                    />,
+                    <DecoderTable
+                        panelId={params.panelId}
+                        header={false}
+                        // encoders={encoders}
+                        // decoders={decoders}
+                        // channels={channels.data}
+                    />,
+                ]}
+            ></PanelTabbedForm>
         </>
     );
 }
+
+// export default function MainPanel() {
+
+//     // const devices = useApiPoller({
+//     //     url: `/container/${params?.panelId}/device/`,
+//     //     interval: 5000,
+//     // });
+
+//     if (devices.status === "loading" || devices.status === "idle") {
+//         return <Loading />;
+//     }
+
+//     return (
+//         <>
+//             <Devices devices={devices.data} panelId={params.panelId} />
+//         </>
+//     );
+// }

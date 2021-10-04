@@ -1,123 +1,342 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import DecoderRow from "./DecoderRow";
-import { useSelector } from "react-redux";
-import Table from "@material-ui/core/Table";
-import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import Paper from "@material-ui/core/Paper";
-import Loading from "@components/Loading";
+import ToggleOffIcon from "@material-ui/icons/ToggleOff";
+import ToggleOnIcon from "@material-ui/icons/ToggleOn";
+import { useApiPoller } from "@utils/ApiPoller";
+import BugApiTable from "@core/BugApiTable";
+import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
+import ApiSwitch from "@core/ApiSwitch";
+import Chip from "@material-ui/core/Chip";
+import CloudIcon from "@material-ui/icons/Cloud";
+import VideocamIcon from "@material-ui/icons/Videocam";
+import AxiosGet from "@utils/AxiosGet";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { useAlert } from "@utils/Snackbar";
+import { useHistory } from "react-router-dom";
+import SparkCellGeneric from "@core/SparkCellGeneric";
+
+const height = 100;
 
 const useStyles = makeStyles((theme) => ({
-    content: {},
-    tableHead: {
-        ["@media (max-width:450px)"]: {
-            display: "none",
-        },
+    thumbnail: {
+        display: "block",
+        margin: "auto",
+        height: height,
+        width: height * (16 / 9),
+        padding: 15,
     },
-    colRunning: {
-        width: "40px",
-        ["@media (max-width:500px)"]: {
-            display: "none",
-        },
+
+    iconRunning: {
+        color: theme.palette.primary.main,
+        display: "block",
+        margin: "auto",
+        minWidth: 36,
     },
-    colEnabled: {
-        width: "5rem",
-        ["@media (max-width:600px)"]: {
-            display: "none",
-        },
+    icon: {
+        opacity: 0.1,
+        display: "block",
+        margin: "auto",
+        minWidth: 36,
     },
-    colName: {
-        minWidth: "1rem",
-        maxWidth: "4rem",
-        ["@media (max-width:700px)"]: {
-            display: "none",
-        },
+    streaming: {
+        backgroundColor: theme.palette.primary.main,
+        color: "#ffffff",
     },
-    colModel: {
-        minWidth: "1rem",
-        maxWidth: "4rem",
-        ["@media (max-width:700px)"]: {
-            display: "none",
-        },
+    failed: {
+        backgroundColor: "#333",
+        color: theme.palette.error.main,
     },
-    colLinks: {
-        minWidth: "2rem",
-        maxWidth: "8rem",
-        ["@media (max-width:700px)"]: {
-            display: "none",
-        },
+    connecting: {
+        backgroundColor: "#333",
+        color: "#555",
     },
-    colTraffic: {
-        minWidth: "6rem",
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        position: "relative",
-        ["@media (max-width:450px)"]: {
-            display: "none",
-        },
+    chip: {
+        margin: 2,
+        border: "none",
+        borderRadius: 3,
+    },
+    channel: {
+        margin: 2,
+        border: "none",
+        backgroundColor: theme.palette.primary.main,
     },
 }));
 
-export default function DecodersTable({ header, panelId, encoders, decoders, channels }) {
+export default function DecodersTable({ panelId }) {
     const classes = useStyles();
-    const panelConfig = useSelector((state) => state.panelConfig);
+    const { confirmDialog } = useBugConfirmDialog();
+    const sendAlert = useAlert();
+    const history = useHistory();
 
-    const renderRows = (decoders) => {
-        const rows = [];
-        const decoderSids = panelConfig.data.decoders.map((decoder) => decoder?.sid);
-        if (decoders) {
-            for (let decoder of decoders) {
-                if (decoderSids.includes(decoder.sid)) {
-                    rows.push(
-                        <DecoderRow
-                            panelId={panelId}
-                            encoders={encoders}
-                            channels={channels}
-                            key={decoder?.sid}
-                            decoder={decoder}
-                        />
-                    );
-                }
-            }
-        }
-        return rows;
+    const encoders = useApiPoller({
+        url: `/container/${panelId}/encoder/`,
+        interval: 10000,
+    });
+
+    // const channels = useApiPoller({
+    //     url: `/container/${panelId}/channel/`,
+    //     interval: 11000,
+    // });
+
+    const handleRowClicked = (event, item) => {
+        history.push(`/panel/${panelId}/decoder/${item.sid}`);
     };
 
-    const getHeader = () => {
-        if (header) {
-            return (
-                <TableHead className={classes.tableHead}>
-                    <TableRow>
-                        <TableCell className={classes.colRunning}></TableCell>
-                        <TableCell className={classes.colEnabled}>Enabled</TableCell>
-                        <TableCell className={classes.colName}>Name</TableCell>
-                        <TableCell className={classes.colModel}>Model</TableCell>
-                        <TableCell className={classes.colLinks}>Connections</TableCell>
-                        <TableCell className={classes.colTraffic}>Framerate</TableCell>
-                    </TableRow>
-                </TableHead>
-            );
+    const getColor = (status) => {
+        if (status === "connecting") {
+            return classes.connecting;
+        }
+        if (status === "streaming") {
+            return classes.streaming;
+        }
+        if (status === "failed") {
+            return classes.failed;
         }
         return null;
     };
 
-    if (panelConfig.status === "loading" || panelConfig.status === "idle") {
-        return <Loading />;
-    }
+    const getDeviceName = (sid) => {
+        if (!encoders.data) {
+            return sid;
+        }
+        const selectedDevice = encoders.data.find((encoder) => encoder.id === sid);
+        if (!selectedDevice) {
+            return sid;
+        }
+
+        return selectedDevice.name;
+    };
+
+    const getChannelName = (id) => {
+        if (!channels.data) {
+            return id;
+        }
+        const selectedChannel = channels.data.find((channel) => channel.id === id);
+        if (!selectedChannel) {
+            return id;
+        }
+
+        return selectedChannel.name;
+    };
+
+    const getThumbnail = (item) => {
+        let src = "/images/blank.png";
+
+        if (item.thumbnail) {
+            src = item.thumbnail;
+        }
+
+        return <img src={src} className={classes.thumbnail} />;
+    };
+
+    const getLinkedDevices = (item) => {
+        console.log(item);
+        const chips = [];
+        if (item?.links) {
+            if (item.links.status !== "failed") {
+                chips.push(
+                    <Chip
+                        icon={<VideocamIcon />}
+                        key={item?.encoderSid}
+                        className={`${classes.chip} ${getColor(item?.status)}`}
+                        onDelete={(event) => {
+                            handleUnpair(event, item.links?.encoderSid, item?.sid);
+                        }}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            event.preventDefault();
+                        }}
+                        label={getDeviceName(item.links?.encoderSid)}
+                    />
+                );
+            }
+        }
+
+        return chips;
+    };
+
+    // const getLinkedDevices = (links) => {
+    //     const chips = [];
+    //     if (links?.encoderSid) {
+    //         chips.push(
+    //             <Chip
+    //                 icon={<VideocamIcon />}
+    //                 key={links?.encoderSid}
+    //                 size="small"
+    //                 className={getColor(decoder?.status)}
+    //                 onDelete={(event) => {
+    //                     handleUnpair(decoder?.sid);
+    //                 }}
+    //                 label={getDeviceName(links?.encoderSid)}
+    //                 variant="outlined"
+    //             />
+    //         );
+    //     }
+
+    //     return chips;
+    // };
+
+    const handleEnabledChanged = async (checked, decoder) => {
+        const command = checked ? "start" : "stop";
+        const verb = checked ? "Started" : "Stopped";
+        if (await AxiosCommand(`/container/${panelId}/device/start/${sid}`)) {
+            sendAlert(`${verb} decoder: ${decoder.name}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to ${command} encoder: ${decoder.name}`, { variant: "error" });
+        }
+    };
+
+    const handleUnpair = async (event, encoderId, decoderId) => {
+        // if (
+        //     await confirmDialog({
+        //         title: "Unlink decoder",
+        //         message: "Are you sure? This will unlink the specified endoder and decoder",
+        //         confirmButtonText: "Unlink",
+        //     })
+        // ) {
+        //     if (await AxiosGet(`/container/${panelId}/encoder/unpair/${encoderId}/${decoderId}`)) {
+        //         sendAlert(`Successfully unlinked decoder`, { variant: "success" });
+        //     } else {
+        //         sendAlert(`Failed to unlink decoder`, { variant: "error" });
+        //     }
+        // }
+        // event.stopPropagation();
+        // event.preventDefault();
+    };
+
+    const isEnabled = (decoder) => {
+        if (decoder?.streamStatus === "streaming") {
+            return true;
+        }
+        return false;
+    };
+
+    const isOnline = (decoder) => {
+        if (decoder?.status === "online") {
+            return true;
+        }
+        return false;
+    };
 
     return (
-        <>
-            <TableContainer component={Paper} square>
-                <Table className={classes.table} aria-label="simple table">
-                    {getHeader()}
-                    <TableBody>{renderRows(decoders)}</TableBody>
-                </Table>
-            </TableContainer>
-        </>
+        <BugApiTable
+            columns={[
+                {
+                    sortable: false,
+                    noPadding: true,
+                    // hideWidth: 440,
+                    width: 58,
+                    field: "status",
+                    content: (item) => {
+                        return <PowerSettingsNew className={isEnabled() ? classes.iconRunning : classes.icon} />;
+                    },
+                },
+                {
+                    sortable: false,
+                    noPadding: true,
+                    // hideWidth: 1200,
+                    width: 82,
+                    content: (item) => {
+                        return (
+                            <ApiSwitch
+                                checked={isEnabled(item)}
+                                disabled={!isOnline(item)}
+                                onChange={(checked) => handleEnabledChanged(checked, item)}
+                            />
+                        );
+                    },
+                },
+                {
+                    width: 300,
+                    minWidth: 200,
+                    noWrap: true,
+                    content: (item) => {
+                        return item.name;
+                    },
+                },
+                {
+                    content: (item) => {
+                        return <>{item.model}</>;
+                    },
+                },
+                {
+                    content: (item) => {
+                        return getLinkedDevices(item);
+                    },
+                },
+                {
+                    width: "12rem",
+                    content: (item) => {
+                        return (
+                            <SparkCellGeneric
+                                units="fps"
+                                historyKey="decoder_vdec_framerate"
+                                history={item?.decoderStats}
+                            />
+                        );
+                    },
+                },
+            ]}
+            menuItems={[
+                // {
+                //     title: "Edit Lease",
+                //     icon: <EditIcon fontSize="small" />,
+                //     onClick: handleDetailsClicked,
+                // },
+                // {
+                //     title: "Comment",
+                //     disabled: (item) => item.dynamic,
+                //     icon: <CommentIcon fontSize="small" />,
+                //     onClick: handleCommentClicked,
+                // },
+                // {
+                //     title: "Make Static",
+                //     disabled: (item) => !item.dynamic,
+                //     icon: <GpsFixedIcon fontSize="small" />,
+                //     onClick: handleMakeStaticClicked,
+                // },
+                // {
+                //     title: "-",
+                // },
+                {
+                    title: "Enable",
+                    disabled: (item) => !item.disabled,
+                    icon: <ToggleOnIcon fontSize="small" />,
+                    onClick: (item) => {
+                        handleEnabledChanged(true, item);
+                    },
+                },
+                {
+                    title: "Disable",
+                    disabled: (item) => item.disabled,
+                    icon: <ToggleOffIcon fontSize="small" />,
+                    onClick: (item) => {
+                        handleEnabledChanged(false, item);
+                    },
+                },
+                // {
+                //     title: "-",
+                // },
+                // {
+                //     title: "Delete",
+                //     icon: <DeleteIcon fontSize="small" />,
+                //     onClick: handleDeleteClicked,
+                // },
+                // {
+                //     title: "-",
+                // },
+                // {
+                //     title: "Wake Up (WOL)",
+                //     disabled: (item) => item.status === "bound",
+                //     icon: <PowerSettingsNew fontSize="small" />,
+                //     onClick: handleWolClicked,
+                // },
+            ]}
+            defaultSortIndex={4}
+            apiUrl={`/container/${panelId}/decoder/selected`}
+            panelId={panelId}
+            onRowClick={handleRowClicked}
+            hideHeader={true}
+        />
     );
 }

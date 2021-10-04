@@ -6,8 +6,11 @@ const register = require("module-alias/register");
 const axios = require("../utils/axios");
 const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
+const mongoCreateIndex = require("@core/mongo-createindex");
+const mongoCollection = require("@core/mongo-collection");
+const mongoSaveArray = require("@core/mongo-savearray");
 
-const updateDelay = 10000;
+const updateDelay = 60000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -18,10 +21,18 @@ parentPort.postMessage({
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData?.id);
-    const tokenCollection = await mongoDb.db.collection("token");
-    const devicesCollection = await mongoDb.db.collection("devices");
+
+    const tokenCollection = await mongoCollection("token");
+    const devicesCollection = await mongoCollection("devices");
+    const linksCollection = await mongoCollection("links");
+
+    // and now create the index with ttl
+    await mongoCreateIndex(linksCollection, "timestamp", { expireAfterSeconds: 120 });
 
     console.log(`links: teradek-core link worker starting...`);
+
+    // initial delay (to stagger device polls)
+    await delay(12000);
 
     while (true) {
         const token = await tokenCollection.findOne();
@@ -33,8 +44,10 @@ const main = async () => {
         });
 
         if (response.data?.meta?.status === "ok") {
+
+            // update devices first
             for (let link of response.data?.response) {
-                await devicesCollection.updateOne(
+                const result = await devicesCollection.updateOne(
                     {
                         sid: link?.encoderSid,
                         type: "encoder",
@@ -52,6 +65,10 @@ const main = async () => {
                     );
                 }
             }
+
+            // and add to the links collection
+            await mongoSaveArray(linksCollection, response.data?.response, "id");
+
         } else {
             throw response.data;
         }

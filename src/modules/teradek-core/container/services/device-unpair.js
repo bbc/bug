@@ -21,6 +21,7 @@ module.exports = async (encoderSid, decoderSid) => {
             }
         );
 
+        console.log(response);
         if (response.data?.meta?.status === "ok") {
             return {
                 status: "success",

@@ -6,7 +6,7 @@ const register = require("module-alias/register");
 const delay = require("delay");
 const MDU = require("@utils/mdu");
 const mongoDb = require("@core/mongo-db");
-const arraySaveMongo = require("@core/array-savemongo");
+const mongoSaveArray = require("@core/mongo-savearray");
 
 const updateDelay = 5000;
 
@@ -28,7 +28,7 @@ const main = async () => {
     while (true) {
         let outputs = await mdu.getOutputs();
         outputs = outputs.map((output) => ({ ...output, timestamp: new Date() }));
-        await arraySaveMongo(outputsCollection, outputs, "number");
+        await mongoSaveArray(outputsCollection, outputs, "number");
         await delay(updateDelay);
     }
 };

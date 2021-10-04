@@ -9,21 +9,10 @@ import PanelGroupFormControl from "@core/PanelGroupFormControl";
 import { useConfigFormHandler } from "@core/ConfigFormHandler";
 import BugFormAutocomplete from "@core/BugFormAutocomplete";
 import AxiosGet from "@utils/AxiosGet";
+import useAsyncEffect from "use-async-effect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
-    const [devices, setDevices] = useState([]);
-
-    useEffect(() => {
-        const filterDevices = async () => {
-            const devices = await AxiosGet(`/container/${panelConfig.data.id}/device/all`);
-            const filteredDevices = await devices.map((device) => {
-                return { sid: device?.sid, name: device?.name, type: device?.type };
-            });
-            setDevices(filteredDevices);
-        };
-        filterDevices();
-    }, [panelConfig?.data?.id]);
 
     if (panelConfig.status === "loading") {
         return <Loading />;
@@ -100,34 +89,6 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.organisation}
                         type="text"
                         label="Teradek Core Organisation Name"
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <BugFormAutocomplete
-                        name="encoders"
-                        label="Encoders to Monitor"
-                        control={control}
-                        defaultValue={panelConfig.data.encoders}
-                        options={devices.filter((device) => device?.type === "encoder")}
-                        //TODO - make options simple array
-                        // acTextKey="name"
-                        error={errors.encoders}
-                        fullWidth
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <BugFormAutocomplete
-                        name="decoders"
-                        label="Decoders to Monitor"
-                        control={control}
-                        defaultValue={panelConfig.data.decoders}
-                        options={devices.filter((device) => device?.type === "decoder")}
-                        //TODO - make options simple array
-                        // acTextKey="name"
-                        error={errors.decoders}
-                        fullWidth
                     />
                 </Grid>
 

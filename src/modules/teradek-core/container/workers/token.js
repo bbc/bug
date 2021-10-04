@@ -6,10 +6,10 @@ const register = require("module-alias/register");
 const axios = require("../utils/axios");
 const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
-const arraySaveMongo = require("@core/array-savemongo");
+const mongoSaveArray = require("@core/mongo-savearray");
 
 const errorDelayMs = 60000;
-let delayMs = 120000;
+let delayMs = 5000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -25,7 +25,9 @@ const main = async () => {
     console.log(`token: teradek-core token fetcher starting...`);
 
     // initial delay (to stagger device polls)
-    await delay(500);
+    await delay(5);
+
+    let runOnce = false;
 
     while (true) {
         const response = await axios({
@@ -39,12 +41,16 @@ const main = async () => {
         });
 
         if (response.data?.meta?.status === "ok") {
+            if (!runOnce) {
+                runOnce = true;
+                console.log(`token: successfully logged in`);
+            }
             const token = {
                 ...response?.data?.response,
                 timestamp: new Date(),
             };
             delayMs = token.ttl * 1000 - 120000;
-            await arraySaveMongo(tokenCollection, [token], "auth_token");
+            await mongoSaveArray(tokenCollection, [token], "auth_token");
         } else {
             throw `Auth error for ${workerData?.username}`;
         }

@@ -4,18 +4,39 @@
 //DESC: Channel endpoint
 
 const express = require("express");
-const channel = express.Router();
+const route = express.Router();
 
-const hashResponse = require("@core/hash-response");
-const getChannels = require("@services/channels-get");
+const getChannelList = require("@services/channel-list");
 const getChannel = require("@services/channel-get");
 
-channel.get("/all", async function (req, res) {
-    hashResponse(res, req, await getChannels());
+route.get("/", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await getChannelList()
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to fetch channel list",
+        });
+    }
 });
 
-channel.get("/:identifier", async function (req, res) {
-    hashResponse(res, req, await getChannel(req?.params?.identifier));
+route.all("/:id", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await getChannel(req?.params?.id),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to fetch selected channel",
+        });
+    }
 });
 
-module.exports = channel;
+module.exports = route;

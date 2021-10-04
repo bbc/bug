@@ -1,9 +1,7 @@
 "use strict";
 
 const { parentPort, workerData, threadId } = require("worker_threads");
-
 const register = require("module-alias/register");
-const delay = require("delay");
 const io = require("socket.io-client-2");
 const mongoDb = require("@core/mongo-db");
 
@@ -31,7 +29,6 @@ const main = async () => {
     await mongoDb.connect(workerData?.id);
     const tokenCollection = await mongoDb.db.collection("token");
     const devicesCollection = await mongoDb.db.collection("devices");
-    const decoders = await devicesCollection.find({ type: "decoder" }).toArray();
 
     console.log(`decoders-stats: starting to collect device stats starting...`);
 
@@ -50,19 +47,21 @@ const main = async () => {
     });
 
     socket.on("connect", () => {
-        console.log(`decoders-stats: conencted to teradek core ${socket.id}`);
+        console.log(`decoders-stats: connected to teradek core ${socket.id}`);
     });
 
-    for (let decoder of workerData?.decoders) {
-        socket.emit("room:enter", `device:${decoder.sid}:decoder-stats`);
-        socket.emit("room:enter", `device:${decoder.sid}:decoder-status`);
+    for (let decoderSid of workerData?.decoders) {
+        console.log(`decoders-stats: registering websocket listener for device sid ${decoderSid}`);
 
-        socket.on(`device:${decoder.sid}:decoder-stats`, async (event) => {
-            if (event?.sid === decoder.sid) {
+        socket.emit("room:enter", `device:${decoderSid}:decoder-stats`);
+        // socket.emit("room:enter", `device:${decoder}:decoder-status`);
+
+        socket.on(`device:${decoderSid}:decoder-stats`, async (event) => {
+            if (event?.sid === decoderSid) {
                 const stats = await filterStats(event);
                 const entry = await devicesCollection.updateOne(
                     {
-                        sid: decoder.sid,
+                        sid: decoderSid,
                     },
                     {
                         $push: {

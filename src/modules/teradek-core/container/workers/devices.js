@@ -1,17 +1,18 @@
 "use strict";
 
 const { parentPort, workerData, threadId } = require("worker_threads");
-
+const delay = require("delay");
 const register = require("module-alias/register");
 const axios = require("../utils/axios");
-const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
+const mongoCollection = require("@core/mongo-collection");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 const updateDelay = 10000;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    restartDelay: 10000,
+    restartDelay: 60000,
     restartOn: ["username", "password", "organisation", "encoders", "decoders"],
 });
 
@@ -43,14 +44,23 @@ const filterDevice = async (device) => {
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData?.id);
-    const tokenCollection = await mongoDb.db.collection("token");
-    const devicesCollection = await mongoDb.db.collection("devices");
 
-    console.log(`devices: teradek-core encoder worker starting...`);
+    const tokenCollection = await mongoCollection("token");
+    const devicesCollection = await mongoCollection("devices");
+
+    // and now create the index with ttl
+    await mongoCreateIndex(devicesCollection, "timestamp", { expireAfterSeconds: 120 });
+
+    // remove previous values
+    //TODO    devicesCollection.deleteMany({});
+
+    console.log(`devices: teradek-core device worker starting...`);
+
+    // initial delay (to stagger device polls)
+    await delay(2500);
 
     while (true) {
         const token = await tokenCollection.findOne();
-
         const response = await axios.get(`v1.0/${workerData.organisation}/devices`, {
             params: {
                 auth_token: token?.auth_token,
@@ -68,7 +78,7 @@ const main = async () => {
                 devicesCollection.updateOne(query, update, options);
             }
         } else {
-            throw response.data;
+            console.log(`channels: ${response.data?.meta?.error?.message}`);
         }
         await delay(updateDelay);
     }

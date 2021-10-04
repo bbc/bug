@@ -7,14 +7,19 @@ module.exports = async () => {
         const channelsCollection = await mongoCollection("channels");
         const channels = await channelsCollection.find().toArray();
 
-        if (!channels) {
-            return {
-                error: "Could not retieve channels",
-                status: "error",
-                data: channels,
-            };
+        const filteredList = [];
+
+        if (channels) {
+            for (const eachChannel of channels) {
+                filteredList.push({
+                    "id": eachChannel.id,
+                    "name": eachChannel.title
+                });
+            }
         }
-        return { status: "success", data: channels };
+
+        return filteredList;
+
     } catch (error) {
         return null;
     }

@@ -1,4 +1,8 @@
 "use strict";
+setTimeout(() => {
+    console.log("done");
+}, 99999999);
+return false;
 
 const { parentPort, workerData, threadId } = require("worker_threads");
 
@@ -6,7 +10,7 @@ const register = require("module-alias/register");
 const axios = require("../utils/axios");
 const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
-const arraySaveMongo = require("@core/array-savemongo");
+const mongoSaveArray = require("@core/mongo-savearray");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -25,7 +29,7 @@ const main = async () => {
     console.log(`sputniks: teradek-core sputnik worker starting...`);
 
     // initial delay (to stagger polls)
-    await delay(1000);
+    await delay(2500);
 
     while (true) {
         const token = await tokenCollection.findOne();
@@ -39,7 +43,7 @@ const main = async () => {
             const sputniks = response?.data?.response.map((sputnik) => {
                 return { ...sputnik, ...{ timestamp: new Date() } };
             });
-            await arraySaveMongo(sputniksCollection, sputniks, "identifier");
+            await mongoSaveArray(sputniksCollection, sputniks, "identifier");
         } else {
             console.log(response.data.meta);
             throw response.data;
