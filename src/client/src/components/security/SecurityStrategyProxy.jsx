@@ -15,6 +15,7 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                                 required: true,
                             }),
                         }}
+                        variant="standard"
                         fullWidth
                         defaultValue={strategy.name}
                         error={errors?.name ? true : false}
@@ -24,7 +25,14 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField fullWidth defaultValue={strategy.type.toUpperCase()} disabled type="text" label="Type" />
+                    <TextField
+                        variant="standard"
+                        fullWidth
+                        defaultValue={strategy.type.toUpperCase()}
+                        disabled
+                        type="text"
+                        label="Type"
+                    />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -33,6 +41,7 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                             ...register("description"),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.description}
                         error={errors?.description ? true : false}
                         type="text"
@@ -57,6 +66,7 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                         inputProps={{
                             ...register("sessionLength"),
                         }}
+                        variant="standard"
                         fullWidth
                         label="Session length"
                         defaultValue={strategy.sessionLength}
@@ -82,6 +92,7 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                         inputProps={{
                             ...register("headerField"),
                         }}
+                        variant="standard"
                         fullWidth
                         defaultValue={strategy.headerField}
                         type="text"
@@ -99,6 +110,7 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                         fullWidth
                         label="Proxy match field"
                         helperText="Which BUG user field to match against"
+                        variant="standard"
                         defaultValue={strategy.headerFieldMatch}
                         SelectProps={{
                             native: true,

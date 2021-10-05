@@ -14,5 +14,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ReadonlyTextField(props) {
     const classes = useStyles();
-    return <TextField InputProps={{ disableUnderline: true, readOnly: true }} className={classes.root} {...props} />;
+    return (
+        <TextField
+            variant="standard"
+            InputProps={{ disableUnderline: true, readOnly: true }}
+            className={classes.root}
+            {...props}
+        />
+    );
 }

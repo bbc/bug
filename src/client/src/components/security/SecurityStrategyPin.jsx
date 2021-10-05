@@ -16,6 +16,7 @@ export default function SecurityStrategyPin({ strategy, register, errors, contro
                             }),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.name}
                         error={errors?.name ? true : false}
                         type="text"
@@ -24,7 +25,14 @@ export default function SecurityStrategyPin({ strategy, register, errors, contro
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField fullWidth defaultValue={strategy.type.toUpperCase()} disabled type="text" label="Type" />
+                    <TextField
+                        variant="standard"
+                        fullWidth
+                        defaultValue={strategy.type.toUpperCase()}
+                        disabled
+                        type="text"
+                        label="Type"
+                    />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -33,6 +41,7 @@ export default function SecurityStrategyPin({ strategy, register, errors, contro
                             ...register("description"),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.description}
                         error={errors?.description ? true : false}
                         type="text"
@@ -57,6 +66,7 @@ export default function SecurityStrategyPin({ strategy, register, errors, contro
                         inputProps={{
                             ...register("sessionLength"),
                         }}
+                        variant="standard"
                         fullWidth
                         label="Session length"
                         defaultValue={strategy.sessionLength}

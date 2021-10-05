@@ -20,13 +20,9 @@ import axios from "axios";
 import PinLogin from "@components/login/PinLogin";
 import LocalLogin from "@components/login/LocalLogin";
 import ProxyLogin from "@components/login/ProxyLogin";
+import useClasses from "@utils/Classes";
 
-const useStyles = makeStyles((theme) => ({
-    page: {
-        height: "100%",
-        width: "100%",
-        overflow: "auto",
-    },
+const styles = (theme) => ({
     root: {
         margin: "auto",
         marginTop: "4rem",
@@ -46,23 +42,20 @@ const useStyles = makeStyles((theme) => ({
             minHeight: "inherit",
         },
     },
-    login: {
-        margin: theme.spacing(1),
-    },
     quote: {
         margin: "auto",
         maxWidth: 620,
-        padding: 16,
-        color: theme.palette.primary.main,
         fontSize: "1rem",
+        textAlign: "center",
         "@media (max-height:400px) and (max-width:800px)": {
             maxWidth: "inherit",
-            padding: 14,
             textOverflow: "ellipsis",
             overflow: "hidden",
             whiteSpace: "nowrap",
-            textAlign: "center",
             fontSize: 15,
+            "& .MuiBox-root": {
+                margin: 12,
+            },
         },
     },
     icon: {
@@ -125,33 +118,18 @@ const useStyles = makeStyles((theme) => ({
             height: 292,
         },
     },
-    gridContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        "@media (max-height:400px) and (max-width:800px)": {
-            alignItems: "flex-start",
-            flexWrap: "nowrap",
-            flexDirection: "row",
-        },
-    },
     logoWrapper: {
         "@media (max-height:400px) and (max-width:800px)": {
             margin: 16,
             width: 300,
         },
     },
-    tabWrapper: {
-        width: "100%",
-        "@media (max-height:400px) and (max-width:800px)": {
-            backgroundColor: theme.palette.background.paper,
-        },
-    },
-}));
+});
 
 export default function PageLogin() {
     const dispatch = useDispatch();
-    const classes = useStyles();
+    // const classes = useStyles();
+    const classes = useClasses(styles);
     const [loading, setLoading] = useState(true);
     const [tabIndex, setTabIndex] = useState(0);
     const [settings, setSettings] = useState(0);
@@ -220,15 +198,35 @@ export default function PageLogin() {
 
     return (
         <>
-            <div className={classes.page}>
+            <div style={{ height: "100%", width: "100%", overflow: "auto" }} sx={{ backgroundColor: "#ff0000" }}>
                 <Card className={classes.root}>
                     <CardContent className={classes.cardContent}>
-                        <Grid container className={classes.gridContainer}>
+                        <Grid
+                            container
+                            sx={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flexDirection: "column",
+                                "@media (max-height:400px) and (max-width:800px)": {
+                                    alignItems: "flex-start",
+                                    flexWrap: "nowrap",
+                                    flexDirection: "row",
+                                },
+                            }}
+                        >
                             <Grid item className={classes.logoWrapper}>
                                 <FontAwesomeIcon size="lg" icon={faBug} className={classes.icon} />
                                 <div className={classes.title}>{settings?.title}</div>
                             </Grid>
-                            <Grid item className={classes.tabWrapper}>
+                            <Grid
+                                item
+                                sx={{
+                                    width: "100%",
+                                    "@media (max-height:400px) and (max-width:800px)": {
+                                        backgroundColor: "background.paper",
+                                    },
+                                }}
+                            >
                                 <Tabs
                                     className={classes.tabs}
                                     value={tabIndex}

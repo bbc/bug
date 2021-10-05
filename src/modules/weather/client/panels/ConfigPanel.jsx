@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+import ConfigFormTextField from "@core/ConfigFormTextField";
 import { useForm } from "react-hook-form";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
@@ -29,7 +29,7 @@ export default function ConfigPanel() {
     return (
         <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
             <Grid item xs={12}>
-                <TextField
+                <ConfigFormTextField
                     inputProps={{ ...register("title", { required: true }) }}
                     fullWidth
                     error={errors?.title ? true : false}
@@ -40,7 +40,7 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={12}>
-                <TextField
+                <ConfigFormTextField
                     inputProps={{ ...register("description") }}
                     fullWidth
                     error={errors?.description ? true : false}
@@ -51,7 +51,7 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={12}>
-                <TextField
+                <ConfigFormTextField
                     inputProps={{ ...register("openweather_key", { required: true }) }}
                     fullWidth
                     error={errors?.openweather_key ? true : false}
@@ -62,7 +62,7 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={12}>
-                <TextField
+                <ConfigFormTextField
                     inputProps={{ ...register("label", { required: true }) }}
                     fullWidth
                     error={errors?.label ? true : false}
@@ -73,7 +73,7 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={6}>
-                <TextField
+                <ConfigFormTextField
                     inputProps={{ ...register("longitude", { required: true }), step: "any" }}
                     fullWidth
                     error={errors?.longitude ? true : false}
@@ -85,7 +85,7 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={6}>
-                <TextField
+                <ConfigFormTextField
                     inputProps={{ ...register("latitude", { required: true }), step: "any" }}
                     fullWidth
                     error={errors?.latitude ? true : false}

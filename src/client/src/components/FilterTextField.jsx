@@ -23,7 +23,7 @@ export default function FilterTextField({ value, onChange }) {
             className={classes.textField}
             onChange={onChange}
             size="small"
-            variant="filled"
+            variant="standard"
             fullWidth
             value={value}
             type="text"

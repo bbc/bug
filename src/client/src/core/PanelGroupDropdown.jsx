@@ -47,11 +47,11 @@ export default function PanelGroupDropdown({ value, onChange, fullWidth = false,
             fullWidth={fullWidth}
             clearOnBlur
             PaperComponent={CustomPaper}
-            variant={variant}
+            variant="standard"
             handleHomeEndKeys
             options={panelListGroups}
             freeSolo
-            renderInput={(params) => <TextField {...params} label="Panel group" />}
+            renderInput={(params) => <TextField variant="standard" {...params} label="Panel group" />}
         />
     );
 }

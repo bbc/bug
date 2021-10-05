@@ -8,6 +8,7 @@
     "author": "Geoff House",
     "license": "ISC",
     "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",

@@ -12,6 +12,7 @@ export default function PasswordTextField(props) {
         <TextField
             {...props}
             type={showPassword ? "text" : "password"}
+            variant="standard"
             autoComplete="off"
             InputProps={{
                 endAdornment: (

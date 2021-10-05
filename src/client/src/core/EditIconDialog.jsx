@@ -233,6 +233,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
             <FormControl className={classes.formControl} style={{ flexGrow: 1 }}>
                 <TextField
                     label="Filter icons ..."
+                    variant="standard"
                     fullWidth
                     autoFocus
                     value={iconFilter}
@@ -241,6 +242,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
             </FormControl>
             <FormControl className={classes.formControl} style={{ flexGrow: 1 }}>
                 <TextField
+                    variant="standard"
                     select
                     fullWidth
                     label="Variant"

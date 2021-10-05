@@ -5,6 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import MuiToolbar from "@mui/material/Toolbar";
 import Toolbar from "@components/toolbars/ToolbarRouter";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
@@ -14,14 +15,6 @@ const drawerWidth = 275;
 const fullMenuWidth = 1024;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: "flex",
-        width: "100%",
-    },
-    appBar: {
-        backgroundColor: theme.palette.menu.main,
-        zIndex: theme.zIndex.drawer + 1,
-    },
     menuButton: {
         marginRight: 20,
         marginLeft: 4,
@@ -39,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
     drawerClose: {
         overflowX: "hidden",
-        width: theme.spacing(7) + 1,
+        width: 56,
     },
     toolbar: {
         display: "flex",
@@ -58,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
 const NavDesktop = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-
     const handleDrawerToggle = () => {
         setOpen(!open);
     };
@@ -71,8 +63,24 @@ const NavDesktop = (props) => {
     }, []);
 
     return (
-        <div className={classes.root}>
-            <AppBar position="fixed" className={classes.appBar} elevation={1}>
+        <Box
+            sx={{
+                display: "flex",
+                width: "100%",
+                height: "100%",
+                "@media (max-width:600px)": {
+                    display: "none",
+                },
+            }}
+        >
+            <AppBar
+                position="fixed"
+                sx={{
+                    backgroundColor: "menu.main",
+                    zIndex: 1201,
+                }}
+                elevation={1}
+            >
                 <MuiToolbar>
                     <IconButton
                         color="inherit"
@@ -103,7 +111,7 @@ const NavDesktop = (props) => {
                 <Menu showGroups={open} />
             </Drawer>
             <div className={classes.content}>{props.children}</div>
-        </div>
+        </Box>
     );
 };
 

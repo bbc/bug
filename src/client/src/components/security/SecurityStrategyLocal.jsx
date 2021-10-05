@@ -16,6 +16,7 @@ export default function SecurityStrategyLocal({ strategy, register, errors, cont
                             }),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.name}
                         error={errors?.name ? true : false}
                         type="text"
@@ -24,7 +25,14 @@ export default function SecurityStrategyLocal({ strategy, register, errors, cont
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField fullWidth defaultValue={strategy.type.toUpperCase()} disabled type="text" label="Type" />
+                    <TextField
+                        fullWidth
+                        variant="standard"
+                        defaultValue={strategy.type.toUpperCase()}
+                        disabled
+                        type="text"
+                        label="Type"
+                    />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -32,6 +40,7 @@ export default function SecurityStrategyLocal({ strategy, register, errors, cont
                         inputProps={{
                             ...register("description"),
                         }}
+                        variant="standard"
                         fullWidth
                         defaultValue={strategy.description}
                         error={errors?.description ? true : false}
@@ -54,6 +63,7 @@ export default function SecurityStrategyLocal({ strategy, register, errors, cont
                 <Grid item xs={12}>
                     <TextField
                         select
+                        variant="standard"
                         inputProps={{
                             ...register("sessionLength"),
                         }}

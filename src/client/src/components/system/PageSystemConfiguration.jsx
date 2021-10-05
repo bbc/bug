@@ -27,7 +27,7 @@ export default function PageSystemBackup() {
     } = useForm({});
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("Backup & Restore"));
+        dispatch(pageTitleSlice.actions.set("System Configuration"));
     }, [dispatch]);
 
     const settings = useApiPoller({
@@ -84,6 +84,7 @@ export default function PageSystemBackup() {
                                     fullWidth
                                     defaultValue={settings?.data?.title}
                                     error={errors?.title ? true : false}
+                                    variant="standard"
                                     type="text"
                                     label="Title"
                                 />
@@ -95,6 +96,7 @@ export default function PageSystemBackup() {
                                         ...register("description"),
                                     }}
                                     fullWidth
+                                    variant="standard"
                                     defaultValue={settings?.data?.description}
                                     error={errors?.description ? true : false}
                                     type="text"
@@ -109,6 +111,7 @@ export default function PageSystemBackup() {
                                         ...register("theme"),
                                     }}
                                     fullWidth
+                                    variant="standard"
                                     label="Theme"
                                     defaultValue={settings?.data?.theme}
                                     SelectProps={{

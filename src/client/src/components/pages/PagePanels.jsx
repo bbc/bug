@@ -10,9 +10,5 @@ export default function PagePanels() {
         dispatch(pageTitleSlice.actions.set("Panels"));
     });
 
-    return (
-        <>
-            <PanelTable />
-        </>
-    );
+    return <PanelTable />;
 }

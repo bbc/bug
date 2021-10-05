@@ -10,9 +10,5 @@ export default function PagePanels() {
         dispatch(pageTitleSlice.actions.set("Add Panel"));
     });
 
-    return (
-        <>
-            <PanelAdd />
-        </>
-    );
+    return <PanelAdd />;
 }

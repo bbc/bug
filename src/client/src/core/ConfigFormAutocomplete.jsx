@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const BugFormAutocomplete = ({
+const ConfigFormAutocomplete = ({
     name,
     label,
     control,
@@ -60,7 +60,7 @@ const BugFormAutocomplete = ({
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        variant={variant}
+                                        variant="standard"
                                         label={label}
                                         helperText={helperText}
                                         error={error}
@@ -79,4 +79,4 @@ const BugFormAutocomplete = ({
         </>
     );
 };
-export default BugFormAutocomplete;
+export default ConfigFormAutocomplete;

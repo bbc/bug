@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+import ConfigFormTextField from "@core/ConfigFormTextField";
 import PanelConfig from "@core/PanelConfig";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
@@ -27,7 +27,7 @@ export default function ConfigPanel() {
         <>
             <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
-                    <TextField
+                    <ConfigFormTextField
                         inputProps={{ ...register("title", { required: true }) }}
                         required
                         fullWidth
@@ -39,7 +39,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
+                    <ConfigFormTextField
                         inputProps={{ ...register("description") }}
                         fullWidth
                         error={errors.description}
@@ -54,7 +54,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
+                    <ConfigFormTextField
                         //REGEX: Tests for IPv4 Addresses
                         inputProps={{
                             ...register("address", {
@@ -73,7 +73,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12} lg={6}>
-                    <TextField
+                    <ConfigFormTextField
                         inputProps={{ ...register("username", { required: true }) }}
                         fullWidth
                         error={errors.username}

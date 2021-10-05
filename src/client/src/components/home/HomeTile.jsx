@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import DynamicIcon from "@core/DynamicIcon";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -9,107 +8,103 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-    header: {
-        padding: "8px 0px",
-        "&:hover": {
-            background: "#333",
-        },
-        "& .MuiCardHeader-title": {
-            color: "rgba(255, 255, 255, 1)",
-            fontSize: "1.1rem",
-            fontWeight: "500",
-            textTransform: "none",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-        },
-        "& .MuiCardHeader-subheader": {
-            color: "rgba(255, 255, 255, 0.4)",
-            fontSize: "0.9rem",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-        },
-        "& .MuiCardHeader-action": {
-            margin: 0,
-            flexShrink: 0,
-        },
-        "& .MuiCardHeader-avatar": {
-            marginLeft: 16,
-            flexShrink: 0,
-        },
-        "& .MuiCardHeader-content": {
-            minWidth: 0,
-            flexShrink: 1,
-        },
+const StyledCardHeader = styled(CardHeader)({
+    padding: "8px 0px",
+    "&:hover": {
+        background: "#333",
     },
-    card: {
-        backgroundColor: "#262626",
-        "&:hover": {
-            background: "#333",
-        },
-        "& .MuiBadge-badge": {
-            "@media (min-width:601px)": {
-                display: "none",
-            },
-        },
+    "& .MuiCardHeader-title": {
+        color: "rgba(255, 255, 255, 1)",
+        fontSize: "1.1rem",
+        fontWeight: "500",
+        textTransform: "none",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
     },
-    tileIcon: {
-        color: theme.palette.primary.main,
-        // width: 36,
-        // height: 36,
-        marginTop: 4,
+    "& .MuiCardHeader-subheader": {
+        color: "rgba(255, 255, 255, 0.4)",
+        fontSize: "0.9rem",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
     },
-    tileLink: {
-        color: "#cccccc",
-        textDecoration: "none",
-        "&:hover": {
-            color: "#fff",
-        },
+    "& .MuiCardHeader-action": {
+        margin: 0,
+        flexShrink: 0,
     },
-    tileTitle: {
-        fontSize: "1.3rem",
-        fontWeight: 500,
+    "& .MuiCardHeader-avatar": {
+        marginLeft: 16,
+        flexShrink: 0,
     },
-    content: {
-        padding: 0,
-        "&:last-child": {
-            paddingBottom: 0,
-        },
-        "@media (max-width:599px)": {
+    "& .MuiCardHeader-content": {
+        minWidth: 0,
+        flexShrink: 1,
+    },
+});
+
+const StyledCard = styled(Card)({
+    backgroundColor: "#262626",
+    "&:hover": {
+        background: "#333",
+    },
+    "& .MuiBadge-badge": {
+        "@media (min-width:601px)": {
             display: "none",
         },
     },
-    gridItem: {
-        padding: 12,
-        "@media (max-width:1200px)": {
-            padding: 8,
-        },
-        "@media (max-width:1024px)": {
-            padding: 4,
-        },
-        "@media (max-width:600px)": {
-            padding: 0,
-            paddingBottom: 1,
-        },
-        "@media (max-height:400px)": {
-            padding: 4,
-            paddingBottom: 1,
-        },
-    },
+});
+
+const StyledDynamicIcon = styled(DynamicIcon)(({ theme }) => ({
+    color: theme.palette.primary.main,
 }));
 
+const StyledLink = styled(Link)({
+    color: "#cccccc",
+    textDecoration: "none",
+    "&:hover": {
+        color: "#fff",
+    },
+});
+
+const StyledCardContent = styled(CardContent)({
+    padding: 0,
+    "&:last-child": {
+        paddingBottom: 0,
+    },
+    "@media (max-width:599px)": {
+        display: "none",
+    },
+});
+
+const StyledGrid = styled(Grid)({
+    padding: 8,
+    "@media (max-width:1200px)": {
+        padding: 4,
+    },
+    "@media (max-width:1024px)": {
+        padding: 2,
+    },
+    "@media (max-width:600px)": {
+        padding: 0,
+        paddingBottom: 1,
+    },
+    "@media (max-height:400px)": {
+        padding: 4,
+        paddingBottom: 1,
+    },
+});
+
 const HomeTile = ({ panel }) => {
-    const classes = useStyles();
     if (!panel.enabled) {
         return null;
     }
 
     const StatusItems = () => {
         return panel._status.map((eachItem) => (
-            <CardContent className={classes.content} key={eachItem.key}>
+            <StyledCardContent key={eachItem.key}>
                 <CollapsibleBugAlert
                     type={eachItem.type}
                     message={eachItem.message}
@@ -117,15 +112,15 @@ const HomeTile = ({ panel }) => {
                     panel={panel}
                     square
                 />
-            </CardContent>
+            </StyledCardContent>
         ));
     };
 
     return (
-        <Grid item xl={3} lg={4} sm={6} xs={12} key={panel.id} className={classes.gridItem}>
-            <Link className={classes.tileLink} key={panel.id} to={`/panel/${panel.id}`}>
-                <Card className={classes.card}>
-                    <CardHeader
+        <StyledGrid item xl={3} lg={4} sm={6} xs={12} key={panel.id}>
+            <StyledLink key={panel.id} to={`/panel/${panel.id}`}>
+                <StyledCard>
+                    <StyledCardHeader
                         avatar={
                             <BadgeWrapper
                                 panel={panel}
@@ -134,18 +129,17 @@ const HomeTile = ({ panel }) => {
                                     horizontal: "right",
                                 }}
                             >
-                                <DynamicIcon className={classes.tileIcon} iconName={panel._module.icon} />
+                                <StyledDynamicIcon iconName={panel._module.icon} />
                             </BadgeWrapper>
                         }
                         action={<PanelDropdownMenu panel={panel} />}
                         title={panel.title}
                         subheader={panel.description}
-                        className={classes.header}
                     />
                     {panel !== null && <StatusItems />}
-                </Card>
-            </Link>
-        </Grid>
+                </StyledCard>
+            </StyledLink>
+        </StyledGrid>
     );
 };
 

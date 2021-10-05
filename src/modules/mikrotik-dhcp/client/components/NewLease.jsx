@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import useAsyncEffect from "use-async-effect";
-import BugFormAutocomplete from "@core/BugFormAutocomplete";
+import ConfigFormAutocomplete from "@core/ConfigFormAutocomplete";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
 import { useForm } from "react-hook-form";
 
@@ -155,7 +155,7 @@ export default function Lease({ panelId, leaseId }) {
                             </Grid>
                             {addressLists && (
                                 <Grid item xs={12}>
-                                    <BugFormAutocomplete
+                                    <ConfigFormAutocomplete
                                         name="address-lists"
                                         label="Address Lists"
                                         control={control}

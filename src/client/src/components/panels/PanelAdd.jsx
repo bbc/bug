@@ -10,12 +10,12 @@ import BugForm from "@core/BugForm";
 import LoadingOverlay from "@components/LoadingOverlay";
 import { useAlert } from "@utils/Snackbar";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import PanelGroupFormControl from "@core/PanelGroupFormControl";
+import ConfigFormTextField from "@core/ConfigFormTextField";
 
 export default function PanelsAdd(props) {
     const history = useHistory();
@@ -80,7 +80,7 @@ export default function PanelsAdd(props) {
                     <BugForm.Body>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
-                                <TextField
+                                <ConfigFormTextField
                                     inputProps={{ ...register("title", { required: true }) }}
                                     fullWidth
                                     error={errors?.title ? true : false}
@@ -90,7 +90,7 @@ export default function PanelsAdd(props) {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField
+                                <ConfigFormTextField
                                     inputProps={{ ...register("description") }}
                                     fullWidth
                                     error={errors?.description ? true : false}

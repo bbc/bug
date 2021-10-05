@@ -107,7 +107,6 @@ export default function PageSystemBackup() {
                                                 disableElevation
                                                 underline="none"
                                                 error={errors?.file ? true : false}
-                                                variant="outlined"
                                                 component="label"
                                                 type="file"
                                                 name="file"

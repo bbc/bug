@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+import ConfigFormTextField from "@core/ConfigFormTextField";
 import ConfigFormChipInput from "@core/ConfigFormChipInput";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
 import PanelConfig from "@core/PanelConfig";
@@ -28,7 +28,7 @@ export default function ConfigPanel() {
         <>
             <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
-                    <TextField
+                    <ConfigFormTextField
                         inputProps={{ ...register("title", { required: true }) }}
                         required
                         fullWidth
@@ -38,24 +38,22 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
-                    <TextField
+                    <ConfigFormTextField
                         inputProps={{ ...register("description") }}
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
+                        variant="standard"
                         type="text"
                         label="Description"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <PanelGroupFormControl name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
-
                 <Grid item xs={12} md={6}>
-                    <TextField
+                    <ConfigFormTextField
                         //REGEX: Tests for IPv4 Addresses
                         inputProps={{
                             ...register("address", {
@@ -72,9 +70,8 @@ export default function ConfigPanel() {
                         label="IP Address"
                     />
                 </Grid>
-
                 <Grid item xs={12} md={6}>
-                    <TextField
+                    <ConfigFormTextField
                         //REGEX: Tests for IPv4 Port
                         inputProps={{
                             ...register("port", {
@@ -92,7 +89,6 @@ export default function ConfigPanel() {
                         label="Device Port"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <ConfigFormSwitch
                         name="useTake"
@@ -102,7 +98,6 @@ export default function ConfigPanel() {
                         fullWidth
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <ConfigFormChipInput
                         name="excludeSources"
@@ -114,8 +109,7 @@ export default function ConfigPanel() {
                         fullWidth
                     />
                 </Grid>
-
-                <Grid item xs={12}>
+                {/*<Grid item xs={12}>
                     <ConfigFormChipInput
                         name="excludeDestinations"
                         label="Excluded Destinations (0-based)"
@@ -125,7 +119,7 @@ export default function ConfigPanel() {
                         error={errors.excludeDestinations}
                         fullWidth
                     />
-                </Grid>
+                </Grid> */}
             </PanelConfig>
         </>
     );

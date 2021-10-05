@@ -55,7 +55,7 @@ export default function PanelTableGroupRow({ title, handleNewGroupName }) {
                         event.stopPropagation();
                     }}
                     autoFocus
-                    variant="filled"
+                    variant="standard"
                     InputProps={{
                         className: classes.groupHeaderInputBase,
                         endAdornment: (

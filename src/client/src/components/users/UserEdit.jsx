@@ -106,6 +106,7 @@ export default function UserEdit({ userId = null }) {
                                             }),
                                         }}
                                         fullWidth
+                                        variant="standard"
                                         defaultValue={user.name}
                                         error={errors?.name ? true : false}
                                         type="text"
@@ -121,6 +122,7 @@ export default function UserEdit({ userId = null }) {
                                             }),
                                         }}
                                         fullWidth
+                                        variant="standard"
                                         defaultValue={user.username}
                                         error={errors?.username ? true : false}
                                         type="text"
@@ -153,6 +155,7 @@ export default function UserEdit({ userId = null }) {
                                                 },
                                             }),
                                         }}
+                                        variant="standard"
                                         fullWidth
                                         defaultValue={user.email}
                                         error={errors?.email ? true : false}
@@ -169,6 +172,7 @@ export default function UserEdit({ userId = null }) {
                                         select
                                         fullWidth
                                         defaultValue={user.roles}
+                                        variant="standard"
                                         type="text"
                                         label="Roles"
                                         SelectProps={{
@@ -186,6 +190,7 @@ export default function UserEdit({ userId = null }) {
                                         fullWidth
                                         autoComplete="off"
                                         defaultValue={blankPassword}
+                                        variant="standard"
                                         inputRef={inputRef}
                                         type="password"
                                         label="Password (optional)"

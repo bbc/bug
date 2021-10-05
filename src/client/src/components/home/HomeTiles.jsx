@@ -54,7 +54,7 @@ const HomeTiles = (props) => {
             <>
                 {sortedGroupKeys.map((groupKey) => (
                     <Grid key={groupKey} className={classes.group}>
-                        <div className={classes.groupHeader}>{groupKey}</div>
+                        {groupKey && <div className={classes.groupHeader}>{groupKey}</div>}
                         <Tiles panels={groupedPanels[groupKey]}></Tiles>
                     </Grid>
                 ))}

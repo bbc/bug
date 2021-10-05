@@ -15,6 +15,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                             }),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.name}
                         error={errors?.name ? true : false}
                         type="text"
@@ -23,7 +24,14 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField fullWidth defaultValue={strategy.type.toUpperCase()} disabled type="text" label="Type" />
+                    <TextField
+                        variant="standard"
+                        fullWidth
+                        defaultValue={strategy.type.toUpperCase()}
+                        disabled
+                        type="text"
+                        label="Type"
+                    />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -32,6 +40,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                             ...register("description"),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.description}
                         error={errors?.description ? true : false}
                         type="text"
@@ -57,6 +66,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                             ...register("sessionLength"),
                         }}
                         fullWidth
+                        variant="standard"
                         label="Session length"
                         defaultValue={strategy.sessionLength}
                         SelectProps={{
@@ -82,6 +92,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                             ...register("loginPath"),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.loginPath}
                         type="text"
                         label="SAML Login Page"
@@ -93,6 +104,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                         inputProps={{
                             ...register("entryPoint"),
                         }}
+                        variant="standard"
                         fullWidth
                         defaultValue={strategy.entryPoint}
                         type="text"
@@ -106,6 +118,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                             ...register("issuer"),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.issuer}
                         type="text"
                         label="SAML issuer"
@@ -119,6 +132,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                         }}
                         fullWidth
                         defaultValue={strategy.identifierFormat}
+                        variant="standard"
                         type="text"
                         label="SAML identifier format"
                     />
@@ -131,6 +145,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                         }}
                         fullWidth
                         defaultValue={strategy.profileFeild}
+                        variant="standard"
                         type="text"
                         label="User field"
                         helperText="The feild name in the returned profile to use"
@@ -146,6 +161,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                         fullWidth
                         label="SAML match field"
                         helperText="Which BUG user field to match against"
+                        variant="standard"
                         defaultValue={strategy.matchFeild}
                         SelectProps={{
                             native: true,

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Loading from "@components/Loading";
 import { useAlert } from "@utils/Snackbar";
 import GroupButton from "./GroupButton";
@@ -29,10 +29,10 @@ import {
 const useStyles = makeStyles((theme) => ({
     groupButtons: {
         padding: 8,
-        "@media (max-height:400px)": {
+        ["@media (max-height:400px)"]: {
             padding: "0px 2px",
         },
-        "@media (max-width:600px)": {
+        ["@media (max-width:600px)"]: {
             padding: "0px 2px",
             whiteSpace: "nowrap",
             overflow: "scroll",

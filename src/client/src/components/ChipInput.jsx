@@ -28,145 +28,145 @@ const styles = (theme) => {
 
     return {
         root: {},
-        inputRoot: {
-            display: "inline-flex",
-            flexWrap: "wrap",
-            flex: 1,
-            marginTop: 0,
-            minWidth: 70,
-            "&$outlined,&$filled": {
-                boxSizing: "border-box",
-            },
-            "&$outlined": {
-                paddingTop: 14,
-            },
-            "&$filled": {
-                paddingTop: 28,
-            },
-        },
-        input: {
-            display: "inline-block",
-            textOverflow: "ellipsis",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            appearance: "none", // Remove border in Safari, doesn't seem to break anything in other browsers
-            WebkitTapHighlightColor: "rgba(0,0,0,0)", // Remove mobile color flashing (deprecated style).
-            float: "left",
-            flex: 1,
-        },
-        chipContainer: {
-            display: "flex",
-            flexFlow: "row wrap",
-            cursor: "text",
-            marginBottom: -2,
-            minHeight: 40,
-            "&$labeled&$standard": {
-                marginTop: 18,
-            },
-        },
-        outlined: {
-            "& input": {
-                height: 16,
-                paddingTop: 4,
-                paddingBottom: 12,
-                marginTop: 4,
-                marginBottom: 4,
-            },
-        },
-        standard: {},
-        filled: {
-            "& input": {
-                height: 22,
-                marginBottom: 4,
-                marginTop: 4,
-                paddingTop: 0,
-            },
-            "$marginDense & input": {
-                height: 26,
-            },
-        },
-        labeled: {},
-        label: {
-            top: 4,
-            "&$outlined&:not($labelShrink)": {
-                top: 2,
-                "$marginDense &": {
-                    top: 5,
-                },
-            },
-            "&$filled&:not($labelShrink)": {
-                top: 15,
-                "$marginDense &": {
-                    top: 20,
-                },
-            },
-        },
-        labelShrink: {
-            top: 0,
-        },
-        helperText: {
-            marginBottom: -20,
-        },
-        focused: {},
-        disabled: {},
-        underline: {
-            "&:after": {
-                borderBottom: `2px solid ${theme.palette.primary[light ? "dark" : "light"]}`,
-                left: 0,
-                bottom: 0,
-                // Doing the other way around crash on IE 11 "''" https://github.com/cssinjs/jss/issues/242
-                content: '""',
-                position: "absolute",
-                right: 0,
-                transform: "scaleX(0)",
-                transition: theme.transitions.create("transform", {
-                    duration: theme.transitions.duration.shorter,
-                    easing: theme.transitions.easing.easeOut,
-                }),
-                pointerEvents: "none", // Transparent to the hover style.
-            },
-            "&$focused:after": {
-                transform: "scaleX(1)",
-            },
-            "&$error:after": {
-                borderBottomColor: theme.palette.error.main,
-                transform: "scaleX(1)", // error is always underlined in red
-            },
-            "&:before": {
-                borderBottom: `1px solid ${bottomLineColor}`,
-                left: 0,
-                bottom: 0,
-                // Doing the other way around crash on IE 11 "''" https://github.com/cssinjs/jss/issues/242
-                content: '"\\00a0"',
-                position: "absolute",
-                right: 0,
-                transition: theme.transitions.create("border-bottom-color", {
-                    duration: theme.transitions.duration.shorter,
-                }),
-                pointerEvents: "none", // Transparent to the hover style.
-            },
-            "&:hover:not($disabled):not($focused):not($error):before": {
-                borderBottom: `2px solid ${theme.palette.text.primary}`,
-                // Reset on touch devices, it doesn't add specificity
-                "@media (hover: none)": {
-                    borderBottom: `1px solid ${bottomLineColor}`,
-                },
-            },
-            "&$disabled:before": {
-                borderBottomStyle: "dotted",
-            },
-        },
-        error: {
-            "&:after": {
-                backgroundColor: theme.palette.error.main,
-                transform: "scaleX(1)", // error is always underlined in red
-            },
-        },
-        chip: {
-            margin: "0 8px 8px 0",
-            float: "left",
-        },
-        marginDense: {},
+        // inputRoot: {
+        //     display: "inline-flex",
+        //     flexWrap: "wrap",
+        //     flex: 1,
+        //     marginTop: 0,
+        //     minWidth: 70,
+        //     "&$outlined,&$filled": {
+        //         boxSizing: "border-box",
+        //     },
+        //     "&$outlined": {
+        //         paddingTop: 14,
+        //     },
+        //     "&$filled": {
+        //         paddingTop: 28,
+        //     },
+        // },
+        // input: {
+        //     display: "inline-block",
+        //     textOverflow: "ellipsis",
+        //     overflow: "hidden",
+        //     whiteSpace: "nowrap",
+        //     appearance: "none", // Remove border in Safari, doesn't seem to break anything in other browsers
+        //     WebkitTapHighlightColor: "rgba(0,0,0,0)", // Remove mobile color flashing (deprecated style).
+        //     float: "left",
+        //     flex: 1,
+        // },
+        // chipContainer: {
+        //     display: "flex",
+        //     flexFlow: "row wrap",
+        //     cursor: "text",
+        //     marginBottom: -2,
+        //     minHeight: 40,
+        //     "&$labeled&$standard": {
+        //         marginTop: 18,
+        //     },
+        // },
+        // outlined: {
+        //     "& input": {
+        //         height: 16,
+        //         paddingTop: 4,
+        //         paddingBottom: 12,
+        //         marginTop: 4,
+        //         marginBottom: 4,
+        //     },
+        // },
+        // standard: {},
+        // filled: {
+        //     "& input": {
+        //         height: 22,
+        //         marginBottom: 4,
+        //         marginTop: 4,
+        //         paddingTop: 0,
+        //     },
+        //     "$marginDense & input": {
+        //         height: 26,
+        //     },
+        // },
+        // labeled: {},
+        // label: {
+        //     top: 4,
+        //     "&$outlined&:not($labelShrink)": {
+        //         top: 2,
+        //         "$marginDense &": {
+        //             top: 5,
+        //         },
+        //     },
+        //     "&$filled&:not($labelShrink)": {
+        //         top: 15,
+        //         "$marginDense &": {
+        //             top: 20,
+        //         },
+        //     },
+        // },
+        // labelShrink: {
+        //     top: 0,
+        // },
+        // helperText: {
+        //     marginBottom: -20,
+        // },
+        // focused: {},
+        // disabled: {},
+        // underline: {
+        //     "&:after": {
+        //         borderBottom: `2px solid ${theme.palette.primary[light ? "dark" : "light"]}`,
+        //         left: 0,
+        //         bottom: 0,
+        //         // Doing the other way around crash on IE 11 "''" https://github.com/cssinjs/jss/issues/242
+        //         content: '""',
+        //         position: "absolute",
+        //         right: 0,
+        //         transform: "scaleX(0)",
+        //         transition: theme.transitions.create("transform", {
+        //             duration: theme.transitions.duration.shorter,
+        //             easing: theme.transitions.easing.easeOut,
+        //         }),
+        //         pointerEvents: "none", // Transparent to the hover style.
+        //     },
+        //     "&$focused:after": {
+        //         transform: "scaleX(1)",
+        //     },
+        //     "&$error:after": {
+        //         borderBottomColor: theme.palette.error.main,
+        //         transform: "scaleX(1)", // error is always underlined in red
+        //     },
+        //     "&:before": {
+        //         borderBottom: `1px solid ${bottomLineColor}`,
+        //         left: 0,
+        //         bottom: 0,
+        //         // Doing the other way around crash on IE 11 "''" https://github.com/cssinjs/jss/issues/242
+        //         content: '"\\00a0"',
+        //         position: "absolute",
+        //         right: 0,
+        //         transition: theme.transitions.create("border-bottom-color", {
+        //             duration: theme.transitions.duration.shorter,
+        //         }),
+        //         pointerEvents: "none", // Transparent to the hover style.
+        //     },
+        //     "&:hover:not($disabled):not($focused):not($error):before": {
+        //         borderBottom: `2px solid ${theme.palette.text.primary}`,
+        //         // Reset on touch devices, it doesn't add specificity
+        //         "@media (hover: none)": {
+        //             borderBottom: `1px solid ${bottomLineColor}`,
+        //         },
+        //     },
+        //     "&$disabled:before": {
+        //         borderBottomStyle: "dotted",
+        //     },
+        // },
+        // error: {
+        //     "&:after": {
+        //         backgroundColor: theme.palette.error.main,
+        //         transform: "scaleX(1)", // error is always underlined in red
+        //     },
+        // },
+        // chip: {
+        //     margin: "0 8px 8px 0",
+        //     float: "left",
+        // },
+        // marginDense: {},
     };
 };
 

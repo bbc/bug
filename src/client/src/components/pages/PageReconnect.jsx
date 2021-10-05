@@ -6,6 +6,8 @@ import Hidden from "@mui/material/Hidden";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 
+//TODO - make sure styles are ok after migration to MUI 5
+
 const useStyles = makeStyles((theme) => ({
     page: {
         "@media (max-height:400px) and (max-width:800px)": {

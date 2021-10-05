@@ -1,8 +1,24 @@
+// const ConfigFormChipInput = ({
+//     name,
+//     label,
+//     control,
+//     sort,
+//     defaultValue,
+//     children,
+//     rules,
+//     error,
+//     chipsError,
+//     variant,
+//     helperText,
+//     ...props
+// }) => {
+
 import React from "react";
+import Autocomplete from "@mui/material/Autocomplete";
+import { makeStyles } from "@mui/styles";
+import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
-import ChipInput from "@components/ChipInput";
-import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     helperText: {
@@ -26,8 +42,9 @@ const ConfigFormChipInput = ({
     children,
     rules,
     error,
-    chipsError,
+    options,
     variant,
+    freeSolo,
     helperText,
     ...props
 }) => {
@@ -42,17 +59,31 @@ const ConfigFormChipInput = ({
         <>
             <FormControl {...props}>
                 <Controller
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <ChipInput
-                            variant={variant}
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            defaultValue={value}
-                            label={label}
-                            helperText={chipsError}
-                            error={error}
-                        />
-                    )}
+                    render={({ field: { onChange, onBlur, value } }) => {
+                        return (
+                            <Autocomplete
+                                multiple
+                                filterSelectedOptions
+                                options={[]}
+                                freeSolo={true}
+                                onBlur={onBlur}
+                                onChange={(event, values) => {
+                                    onChange(values);
+                                }}
+                                defaultValue={value}
+                                value={value || ""}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label={label}
+                                        helperText={helperText}
+                                        error={error}
+                                    />
+                                )}
+                            />
+                        );
+                    }}
                     name={name}
                     control={control}
                     defaultValue={defaultValue}

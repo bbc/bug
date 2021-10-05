@@ -1,6 +1,7 @@
 import React from "react";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
+import Box from "@mui/material/Box";
 
 export default function BugQuote(props) {
     const [quote, setQuote] = React.useState(null);
@@ -12,5 +13,15 @@ export default function BugQuote(props) {
     if (!quote) {
         return null;
     }
-    return <>{quote}</>;
+    return (
+        <Box
+            sx={{
+                margin: 2,
+                color: "primary.main",
+                fontSize: "1.1rem",
+            }}
+        >
+            {quote}
+        </Box>
+    );
 }

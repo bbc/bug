@@ -16,6 +16,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                             }),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.name}
                         error={errors?.name ? true : false}
                         type="text"
@@ -24,7 +25,14 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField fullWidth defaultValue={strategy.type.toUpperCase()} disabled type="text" label="Type" />
+                    <TextField
+                        variant="standard"
+                        fullWidth
+                        defaultValue={strategy.type.toUpperCase()}
+                        disabled
+                        type="text"
+                        label="Type"
+                    />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -32,6 +40,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                         inputProps={{
                             ...register("description"),
                         }}
+                        variant="standard"
                         fullWidth
                         defaultValue={strategy.description}
                         error={errors?.description ? true : false}
@@ -95,6 +104,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                         inputProps={{
                             ...register("returnURL"),
                         }}
+                        variant="standard"
                         fullWidth
                         defaultValue={strategy.returnURL}
                         type="text"
@@ -107,6 +117,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                         inputProps={{
                             ...register("realm"),
                         }}
+                        variant="standard"
                         fullWidth
                         defaultValue={strategy.realm}
                         type="text"
@@ -120,6 +131,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                             ...register("profileFeild"),
                         }}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.profileFeild}
                         type="text"
                         label="User field"
@@ -133,6 +145,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                         inputProps={{
                             ...register("matchFeild"),
                         }}
+                        variant="standard"
                         fullWidth
                         label="OIDC match field"
                         helperText="Which BUG user field to match against"

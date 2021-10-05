@@ -7,16 +7,9 @@ import Toolbar from "@components/toolbars/ToolbarRouter";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
+import Box from "@mui/material/Box";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: "flex",
-        width: "100%",
-    },
-    appBar: {
-        backgroundColor: theme.palette.menu.main,
-        zIndex: theme.zIndex.drawer + 1,
-    },
     drawer: {
         "& .MuiDrawer-paper": {
             maxWidth: "90%",
@@ -38,8 +31,23 @@ const NavMobile = (props) => {
     };
 
     return (
-        <div className={classes.root}>
-            <AppBar position="fixed" className={classes.appBar} elevation={1}>
+        <Box
+            sx={{
+                display: "none",
+                width: "100%",
+                "@media (max-width:600px)": {
+                    display: "flex",
+                },
+            }}
+        >
+            <AppBar
+                position="fixed"
+                sx={{
+                    backgroundColor: "menu.main",
+                    zIndex: 1201,
+                }}
+                elevation={1}
+            >
                 <MuiToolbar style={{ paddingRight: 0 }}>
                     <IconButton
                         color="inherit"
@@ -59,7 +67,7 @@ const NavMobile = (props) => {
                 </div>
             </Drawer>
             <div className={classes.content}>{props.children}</div>
-        </div>
+        </Box>
     );
 };
 
