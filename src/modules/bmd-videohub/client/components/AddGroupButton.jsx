@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AddGroupButton({ onClick }) {
     const classes = useStyles();
     return (
-        <Button variant="outlined" className={classes.button} onClick={onClick}>
+        <Button variant="outlined" color="secondary" className={classes.button} onClick={onClick}>
             <AddIcon />
         </Button>
     );

@@ -1,60 +1,11 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
 import GroupMenu from "./GroupMenu";
 import RenameDialog from "./RenameDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import { useSortable } from "@dnd-kit/sortable";
-
-const useStyles = makeStyles((theme) => ({
-    button: {
-        backgroundColor: "#444",
-        borderRadius: 3,
-        margin: 4,
-        "&:hover": {
-            backgroundColor: "#0069d9",
-        },
-        width: 128,
-        height: 48,
-        "@media (max-width:800px)": {
-            height: 36,
-            width: 92,
-        },
-    },
-    buttonSelected: {
-        backgroundColor: "#337ab7",
-        "&:hover": {
-            backgroundColor: "#0069d9",
-        },
-    },
-    editButton: {
-        borderRadius: 3,
-        margin: 4,
-        padding: 0,
-        width: 128,
-        height: 48,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        "&:hover": {
-            backgroundColor: "none",
-        },
-    },
-    editButtonSelected: {
-        borderColor: "#33b77a",
-    },
-    primaryText: {
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        whiteSpace: "nowrap",
-        "@media (max-width:800px)": {
-            fontSize: 12,
-        },
-    },
-    primaryTextEdit: {
-        paddingLeft: 10,
-    },
-}));
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 export default function GroupButton({
     panelId,
@@ -69,7 +20,6 @@ export default function GroupButton({
     onEditButtons,
 }) {
     const sendAlert = useAlert();
-    const classes = useStyles();
     const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: primaryText });
 
@@ -94,32 +44,60 @@ export default function GroupButton({
         onChange();
     };
 
+    // bg color:
+    let backgroundColor = "#444";
+    if (editMode) {
+        backgroundColor = "none";
+    } else if (selected) {
+        backgroundColor = "#337ab7";
+    }
+
+    // border color
+    let borderColor = "rgba(136, 136, 136, 0.5)";
+    if (editMode && selected) {
+        borderColor = "#33b77a";
+    }
+
     return (
         <>
-            <div
+            <Button
                 ref={setNodeRef}
                 style={style}
                 {...attributes}
                 {...listeners}
-                className={
-                    editMode
-                        ? clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.editButton, {
-                              [classes.editButtonSelected]: selected,
-                          })
-                        : clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.button, {
-                              [classes.buttonSelected]: selected,
-                          })
-                }
+                sx={{
+                    backgroundColor: backgroundColor,
+                    margin: "4px",
+                    flexDirection: "row",
+                    justifyContent: editMode ? "space-between" : "center",
+                    width: 128,
+                    height: 48,
+                    "@media (max-width:800px)": {
+                        height: 36,
+                        width: 92,
+                    },
+                    padding: 0,
+                    borderColor: borderColor,
+                    textAlign: "center",
+                    color: "#fff",
+                }}
                 onClick={onClick}
                 variant="outlined"
+                color="secondary"
             >
-                <div
-                    className={clsx(classes.primaryText, {
-                        [classes.primaryTextEdit]: editMode,
-                    })}
+                <Box
+                    sx={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        "@media (max-width:800px)": {
+                            fontSize: 12,
+                        },
+                        paddingLeft: editMode ? "10px" : 0,
+                    }}
                 >
                     {primaryText}
-                </div>
+                </Box>
                 {editMode ? (
                     <GroupMenu
                         panelId={panelId}
@@ -131,7 +109,7 @@ export default function GroupButton({
                         onEditButtons={onEditButtons}
                     />
                 ) : null}
-            </div>
+            </Button>
             {renameDialogVisible && (
                 <RenameDialog
                     title="Rename group"

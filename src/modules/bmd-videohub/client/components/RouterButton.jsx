@@ -7,63 +7,13 @@ import DynamicIcon from "@core/DynamicIcon";
 import RenameDialog from "./RenameDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles((theme) => ({
-    editButton: {
-        borderRadius: 3,
-        margin: 4,
-        width: 128,
-        height: 128,
-        padding: 0,
-        textTransform: "none",
-        lineHeight: 1.4,
-        cursor: "move",
-        "& .MuiButton-label": {
-            flexDirection: "column",
-            height: "100%",
-        },
-        "&:hover": {
-            backgroundColor: "inherit",
-        },
-        "@media (max-width:600px)": {
-            height: 48,
-        },
-    },
     buttonIcon: {
         fontSize: "2rem",
         "@media (max-width:800px)": {
             fontSize: 20,
-        },
-    },
-    button: {
-        backgroundColor: "#444",
-        borderRadius: 3,
-        margin: 4,
-        "&:hover": {
-            backgroundColor: "#0069d9",
-        },
-        width: 128,
-        height: 128,
-        padding: 0,
-        textTransform: "none",
-        lineHeight: 1.4,
-        "& .MuiButton-label": {
-            flexDirection: "column",
-            height: "100%",
-        },
-        "@media (max-width:800px)": {
-            height: 80,
-            width: 92,
-        },
-        "@media (max-width:600px)": {
-            height: 48,
-            width: 92,
-        },
-    },
-    buttonSelected: {
-        backgroundColor: "#337ab7",
-        "&:hover": {
-            backgroundColor: "#0069d9",
         },
     },
     buttonLabel: {
@@ -198,22 +148,48 @@ export default function RouterButton({
         onChange();
     };
 
+    let backgroundColor = "#444";
+    if (editMode) {
+        backgroundColor = "none";
+    } else if (selected) {
+        backgroundColor = "#337ab7";
+    }
+
     const secondaryText = buttonType === "source" ? "" : button.sourceLabel;
     return (
         <>
-            <div
+            <Button
                 ref={setNodeRef}
                 style={style}
                 {...attributes}
                 {...listeners}
-                className={
-                    editMode
-                        ? clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.editButton)
-                        : clsx("MuiButtonBase-root", "MuiButton-root", "MuiButton-outlined", classes.button, {
-                              [classes.buttonSelected]: selected,
-                          })
-                }
+                sx={{
+                    backgroundColor: backgroundColor,
+                    margin: "4px",
+                    width: 128,
+                    height: 128,
+                    "@media (max-width:800px)": {
+                        height: 80,
+                        width: 92,
+                    },
+                    "@media (max-width:600px)": {
+                        height: 48,
+                        width: 92,
+                    },
+                    textTransform: "none",
+                    padding: 0,
+                    lineHeight: editMode ? 1.5 : 1.4,
+                    cursor: editMode ? "move" : "pointer",
+                    "& .MuiButton-label": {
+                        flexDirection: "column",
+                        height: "100%",
+                    },
+                    "&:hover": {
+                        backgroundColor: editMode ? "inherit" : "#0069d9",
+                    },
+                }}
                 variant="outlined"
+                color="secondary"
                 onClick={useDoubleClick ? undefined : onClick}
                 onDoubleClick={useDoubleClick ? onClick : undefined}
             >
@@ -257,7 +233,7 @@ export default function RouterButton({
                         ) : null}
                     </div>
                 </div>
-            </div>
+            </Button>
             {renameDialogVisible && (
                 <RenameDialog
                     title={`Rename ${buttonType}`}
