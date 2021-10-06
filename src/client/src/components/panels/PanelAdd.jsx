@@ -109,6 +109,7 @@ export default function PanelsAdd(props) {
                                     <Select
                                         native
                                         defaultValue=""
+                                        variant="standard"
                                         error={errors?.module ? true : false}
                                         inputProps={{ ...register("module", { required: true }) }}
                                     >
