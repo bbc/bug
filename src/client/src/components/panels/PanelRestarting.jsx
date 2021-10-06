@@ -7,7 +7,15 @@ import Hidden from "@mui/material/Hidden";
 export default function PanelRestarting(props) {
     return (
         <>
-            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+            <Grid
+                container
+                spacing={0}
+                sx={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
                 <h3>Panel is restarting ...</h3>
                 <Grid item xs={3}>
                     <Box position="relative" display="inline-flex">

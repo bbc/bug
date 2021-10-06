@@ -181,10 +181,12 @@ const Menu = ({ showGroups = true }) => {
         <>
             <Grid
                 container
-                direction="column"
-                justify="space-between"
-                alignItems="flex-start"
-                style={{ height: "100%" }}
+                sx={{
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    height: "100%",
+                }}
             >
                 <Grid item style={{ width: "100%" }}>
                     {(user?.data || enabledStrategiesCount === 0) && (

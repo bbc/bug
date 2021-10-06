@@ -8,10 +8,12 @@ export default function PanelCritical({ panel }) {
             <Grid
                 container
                 spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ marginTop: 16 }}
+                sx={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: "16px",
+                }}
             >
                 {panel._status
                     .filter((x) => x.type === "critical")

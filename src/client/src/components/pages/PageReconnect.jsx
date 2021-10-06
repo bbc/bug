@@ -4,36 +4,9 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Hidden from "@mui/material/Hidden";
 import Button from "@mui/material/Button";
-import { makeStyles } from "@mui/styles";
-
-//TODO - make sure styles are ok after migration to MUI 5
-
-const useStyles = makeStyles((theme) => ({
-    page: {
-        "@media (max-height:400px) and (max-width:800px)": {
-            padding: 24,
-        },
-    },
-    title: {
-        fontSize: 20,
-        textAlign: "center",
-        marginLeft: 16,
-        marginRight: 16,
-        "@media (max-width:600px)": {
-            fontSize: 16,
-        },
-    },
-    spinner: {
-        margin: 16,
-    },
-    button: {
-        margin: 16,
-    },
-}));
+import Typography from "@mui/material/Typography";
 
 export default function PageReconnect(props) {
-    const classes = useStyles();
-
     const handleReloadClicked = () => {
         window.location.reload();
     };
@@ -43,20 +16,39 @@ export default function PageReconnect(props) {
             <Grid
                 container
                 spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                className={classes.page}
+                sx={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
             >
-                <h3 className={classes.title}>Cannot connect to BUG server - please wait</h3>
-                <Grid item xs={3} className={classes.spinner}>
+                <Typography
+                    variant="h3"
+                    sx={{
+                        fontSize: 20,
+                        textAlign: "center",
+                        margin: 16,
+                        "@media (max-width:600px)": {
+                            fontSize: 16,
+                            margin: 8,
+                        },
+                        "@media (max-height:400px) and (max-width:800px)": {
+                            fontSize: 20,
+                            margin: 6,
+                        },
+                    }}
+                >
+                    Cannot connect to BUG server - please wait
+                </Typography>
+                <Grid
+                    item
+                    xs={3}
+                    sx={{
+                        margin: "16px",
+                    }}
+                >
                     <Box position="relative" display="inline-flex">
-                        <Hidden xsDown>
-                            <CircularProgress size={`8rem`} />
-                        </Hidden>
-                        <Hidden smUp>
-                            <CircularProgress size={`6rem`} />
-                        </Hidden>
+                        <CircularProgress size={`6rem`} />
 
                         <Box
                             top={0}
@@ -75,7 +67,15 @@ export default function PageReconnect(props) {
                     variant="contained"
                     color="primary"
                     disableElevation
-                    className={classes.button}
+                    sx={{
+                        margin: 16,
+                        "@media (max-width:600px)": {
+                            margin: 8,
+                        },
+                        "@media (max-height:400px) and (max-width:800px)": {
+                            margin: 4,
+                        },
+                    }}
                 >
                     Reload Page
                 </Button>

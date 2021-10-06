@@ -4,19 +4,19 @@ import Grid from "@mui/material/Grid";
 
 export default function Loading({ height = "100vh" }) {
     return (
-        <>
-            <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ minHeight: height }}
-            >
-                <Grid item xs={3}>
-                    <CircularProgress />
-                </Grid>
+        <Grid
+            container
+            spacing={0}
+            sx={{
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: height,
+            }}
+        >
+            <Grid item xs={3}>
+                <CircularProgress />
             </Grid>
-        </>
+        </Grid>
     );
 }

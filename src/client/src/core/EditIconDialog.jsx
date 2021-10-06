@@ -172,10 +172,12 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                         <Grid
                             container
                             spacing={0}
-                            direction="column"
-                            alignItems="center"
-                            justify="center"
-                            style={{ height: "100%" }}
+                            sx={{
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: "100%",
+                            }}
                         >
                             <Grid item xs={3}>
                                 <CircularProgress disableShrink />

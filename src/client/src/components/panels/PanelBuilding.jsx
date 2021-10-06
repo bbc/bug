@@ -59,7 +59,15 @@ export default function PanelBuilding(props) {
 
     return (
         <>
-            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+            <Grid
+                container
+                spacing={0}
+                sx={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
                 <h3>Panel is starting ...</h3>
                 <Grid item xs={3}>
                     <CircularProgressWithLabel value={props.panel?._buildStatus?.progress} />
