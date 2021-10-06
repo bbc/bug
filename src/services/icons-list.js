@@ -49,7 +49,7 @@ module.exports = async (variant = null) => {
     let icons = cacheStore.get(cacheKey);
     if (!icons) {
         const muiIcons = await fetchIcons(
-            path.join(__dirname, "..", "client", "node_modules", "@material-ui", "icons")
+            path.join(__dirname, "..", "client", "node_modules", "@mui", "icons-material")
         );
 
         const mdiIcons = await fetchIcons(
