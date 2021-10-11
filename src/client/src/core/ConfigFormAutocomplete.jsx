@@ -35,7 +35,31 @@ const ConfigFormAutocomplete = ({
 }) => {
     const classes = useStyles();
 
-    if (sort) {
+    // we use this bit of code to work out if we're dealing with an array of objects.
+    // autocomplete only allows simple arrays or object arrays with 'id' and 'label' keys
+    let isObjectArray = false;
+    if (Array.isArray(options) && options.length > 0 && options[0].id !== undefined && options[0].label !== undefined) {
+        isObjectArray = true;
+    }
+
+    console.log("options", options);
+    console.log("defaultValue", defaultValue);
+    const processValues = (value) => {
+        if (!isObjectArray) {
+            return value;
+        }
+
+        let returnArray = [];
+        for (let eachValue of value) {
+            const foundObject = options.find((object) => object.id === eachValue);
+            if (foundObject) {
+                returnArray.push(foundObject);
+            }
+        }
+        return returnArray;
+    };
+
+    if (sort && !isObjectArray) {
         // sort the contents (case insensitive)
         defaultValue = defaultValue.slice().sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
     }
@@ -45,6 +69,7 @@ const ConfigFormAutocomplete = ({
             <FormControl {...props}>
                 <Controller
                     render={({ field: { onChange, onBlur, value } }) => {
+                        console.log("incoming", value, isObjectArray);
                         return (
                             <Autocomplete
                                 multiple
@@ -53,14 +78,24 @@ const ConfigFormAutocomplete = ({
                                 freeSolo={freeSolo}
                                 onBlur={onBlur}
                                 onChange={(event, values) => {
-                                    onChange(values);
+                                    if (isObjectArray) {
+                                        const returnValues = [];
+                                        for (let eachValue of values) {
+                                            if (eachValue.id) {
+                                                returnValues.push(eachValue.id);
+                                            }
+                                        }
+                                        onChange(returnValues);
+                                    } else {
+                                        onChange(values);
+                                    }
                                 }}
-                                defaultValue={value}
-                                value={value || ""}
+                                defaultValue={processValues(value)}
+                                value={processValues(value)}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        variant="standard"
+                                        variant={variant}
                                         label={label}
                                         helperText={helperText}
                                         error={error}
