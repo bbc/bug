@@ -234,7 +234,7 @@ export default function PageLogin() {
                                     textColor="primary"
                                     onChange={handleChange}
                                     variant={enabledStrategies.length < 3 ? `fullWidth` : `scrollable`}
-                                    scrollButtons="on"
+                                    scrollButtons={true}
                                 >
                                     {enabledStrategies.map((eachStrategy, index) => (
                                         <Tab label={eachStrategy.name} key={index} />
