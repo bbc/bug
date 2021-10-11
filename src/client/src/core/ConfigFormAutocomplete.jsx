@@ -42,8 +42,6 @@ const ConfigFormAutocomplete = ({
         isObjectArray = true;
     }
 
-    console.log("options", options);
-    console.log("defaultValue", defaultValue);
     const processValues = (value) => {
         if (!isObjectArray) {
             return value;
@@ -69,7 +67,6 @@ const ConfigFormAutocomplete = ({
             <FormControl {...props}>
                 <Controller
                     render={({ field: { onChange, onBlur, value } }) => {
-                        console.log("incoming", value, isObjectArray);
                         return (
                             <Autocomplete
                                 multiple

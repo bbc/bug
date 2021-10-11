@@ -13,7 +13,7 @@ module.exports = async () => {
             for (const eachChannel of channels) {
                 filteredList.push({
                     "id": eachChannel.id,
-                    "name": eachChannel.title
+                    "label": eachChannel.title
                 });
             }
         }

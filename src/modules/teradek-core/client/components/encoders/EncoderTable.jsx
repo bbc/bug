@@ -106,12 +106,13 @@ export default function EncodersTable({ panelId }) {
         if (!decoders.data) {
             return sid;
         }
+
         const selectedDevice = decoders.data.find((decoder) => decoder.id === sid);
         if (!selectedDevice) {
             return sid;
         }
 
-        return selectedDevice.name;
+        return selectedDevice.label;
     };
 
     const getChannelName = (id) => {
@@ -123,7 +124,7 @@ export default function EncodersTable({ panelId }) {
             return id;
         }
 
-        return selectedChannel.name;
+        return selectedChannel.label;
     };
 
     const getThumbnail = (item) => {

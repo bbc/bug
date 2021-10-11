@@ -104,7 +104,7 @@ export default function DecodersTable({ panelId }) {
             return sid;
         }
 
-        return selectedDevice.name;
+        return selectedDevice.label;
     };
 
     const getChannelName = (id) => {
@@ -116,17 +116,7 @@ export default function DecodersTable({ panelId }) {
             return id;
         }
 
-        return selectedChannel.name;
-    };
-
-    const getThumbnail = (item) => {
-        let src = "/images/blank.png";
-
-        if (item.thumbnail) {
-            src = item.thumbnail;
-        }
-
-        return <img src={src} className={classes.thumbnail} />;
+        return selectedChannel.label;
     };
 
     const getLinkedDevices = (item) => {
