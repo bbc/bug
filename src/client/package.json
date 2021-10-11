@@ -18,7 +18,7 @@
         "@material-ui/pickers": "^3.3.10",
         "@mui/icons-material": "^5.0.1",
         "@mui/lab": "^5.0.0-alpha.49",
-        "@mui/material": "^5.0.2",
+        "@mui/material": "^5.0.3",
         "@mui/styles": "^5.0.1",
         "@reduxjs/toolkit": "^1.5.1",
         "@testing-library/jest-dom": "^5.11.4",
