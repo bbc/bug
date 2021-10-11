@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import ConfigFormTextField from "@core/ConfigFormTextField";
 import PanelConfig from "@core/PanelConfig";

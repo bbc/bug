@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PanelTabbedForm(props) {
     const classes = useStyles();
-    const [tabIndex, setTabIndex] = React.useState(0);
+    const [tabIndex, setTabIndex] = React.useState(false);
 
     const handleChange = (event, newIndex) => {
         setTabIndex(newIndex);
@@ -57,6 +57,10 @@ export default function PanelTabbedForm(props) {
     };
 
     useHotkeys("esc", props?.onClose);
+
+    React.useEffect(() => {
+        setTabIndex(0);
+    }, []);
 
     return (
         <>
