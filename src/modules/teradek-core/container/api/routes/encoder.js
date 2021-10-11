@@ -3,12 +3,30 @@ const route = express.Router();
 
 const deviceGet = require("@services/device-get");
 const devicePair = require("@services/device-pair");
+const deviceReboot = require("@services/device-reboot");
 const deviceRename = require("@services/device-rename");
 const deviceUnpair = require("@services/device-unpair");
 const encoderStart = require("@services/encoder-start");
+const encoderRestart = require("@services/encoder-restart");
 const encoderStop = require("@services/encoder-stop");
 const getEncoderList = require("@services/encoder-list");
 const getSelectedEncoders = require("@services/encoder-getselected");
+const deviceRemove = require("@services/device-remove");
+
+route.delete("/:sid", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await deviceRemove("encoders", req?.params?.sid),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to remove encoder",
+        });
+    }
+});
 
 route.get("/stop/:sid", async function (req, res) {
     try {
@@ -20,7 +38,7 @@ route.get("/stop/:sid", async function (req, res) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to fetch stop selected encoder",
+            message: "Failed to stop selected encoder",
         });
     }
 });
@@ -35,7 +53,37 @@ route.get("/start/:sid", async function (req, res) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to fetch start selected encoder",
+            message: "Failed to start selected encoder",
+        });
+    }
+});
+
+route.get("/restart/:sid", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await encoderRestart(req?.params?.sid),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to restart video on selected encoder",
+        });
+    }
+});
+
+route.get("/reboot/:sid", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await deviceReboot(req?.params?.sid),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to reboot device",
         });
     }
 });
@@ -50,7 +98,7 @@ route.get("/pair/:sid", async function (req, res) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to fetch pair selected encoder",
+            message: "Failed to pair selected encoder",
         });
     }
 });
@@ -65,7 +113,7 @@ route.get("/unpair/:encoderId/:decoderId", async function (req, res) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to fetch unpair selected encoder",
+            message: "Failed to unpair selected encoder",
         });
     }
 });

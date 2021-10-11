@@ -14,6 +14,10 @@ import AxiosGet from "@utils/AxiosGet";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useAlert } from "@utils/Snackbar";
 import { useHistory } from "react-router-dom";
+import LaunchIcon from "@mui/icons-material/Launch";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import AxiosDelete from "@utils/AxiosDelete";
 
 const height = 100;
 
@@ -178,14 +182,19 @@ export default function EncodersTable({ panelId }) {
         return chips;
     };
 
-    const handleRemoveClicked = async (item) => {
-        //TODO
+    const handleRemoveClicked = async (event, item) => {
+        if (await AxiosDelete(`/container/${panelId}/encoder/${item.sid}`)) {
+            sendAlert(`Removed encoder`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to remove encoder`, { variant: "error" });
+        }
     };
 
     const handleEnabledChanged = async (checked, encoder) => {
+        //TODO - test
         const command = checked ? "start" : "stop";
         const verb = checked ? "Started" : "Stopped";
-        if (await AxiosCommand(`/container/${panelId}/device/start/${encoder.sid}`)) {
+        if (await AxiosCommand(`/container/${panelId}/encoder/${command}/${encoder.sid}`)) {
             sendAlert(`${verb} encoder: ${encoder.name}`, { variant: "success" });
         } else {
             sendAlert(`Failed to ${command} encoder: ${encoder.name}`, { variant: "error" });
@@ -204,6 +213,50 @@ export default function EncodersTable({ panelId }) {
                 sendAlert(`Successfully unlinked decoder`, { variant: "success" });
             } else {
                 sendAlert(`Failed to unlink decoder`, { variant: "error" });
+            }
+        }
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
+    const handleCoreClicked = async (event, item) => {
+        const url = `https://corecloud.tv/app/sources/encoders/${item.sid}`;
+        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+        if (newWindow) newWindow.opener = null;
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
+    const handleRestartClicked = async (event, item) => {
+        if (
+            await confirmDialog({
+                title: "Restart video",
+                message: "All active streams will be interrupted. Are you sure?",
+                confirmButtonText: "Restart",
+            })
+        ) {
+            if (await AxiosGet(`/container/${panelId}/encoder/restart/${item.sid}`)) {
+                sendAlert(`Successfully restarted video`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to restart video`, { variant: "error" });
+            }
+        }
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
+    const handleRebootClicked = async (event, item) => {
+        if (
+            await confirmDialog({
+                title: "Reboot encoder",
+                message: "All active streams will be interrupted. Are you sure?",
+                confirmButtonText: "Reboot",
+            })
+        ) {
+            if (await AxiosGet(`/container/${panelId}/encoder/reboot/${item.sid}`)) {
+                sendAlert(`Successfully reboot encoder`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to reboot encoder`, { variant: "error" });
             }
         }
         event.stopPropagation();
@@ -281,7 +334,28 @@ export default function EncodersTable({ panelId }) {
                     title: "-",
                 },
                 {
-                    title: "Remove",
+                    title: "Restart Video",
+                    icon: <RestartAltIcon fontSize="small" />,
+                    onClick: handleRestartClicked,
+                },
+                {
+                    title: "Reboot Encoder",
+                    icon: <PowerSettingsNewIcon fontSize="small" />,
+                    onClick: handleRebootClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "View on Core",
+                    icon: <LaunchIcon fontSize="small" />,
+                    onClick: handleCoreClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Remove from Bug",
                     icon: <DeleteIcon fontSize="small" />,
                     onClick: handleRemoveClicked,
                 },
