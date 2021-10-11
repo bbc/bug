@@ -74,7 +74,7 @@ export default function PanelTabbedForm(props) {
                         textColor="primary"
                         onChange={handleChange}
                         variant="fullWidth"
-                        scrollButtons="on"
+                        scrollButtons={true}
                     >
                         {props.labels.map((label, index) => (
                             <Tab label={label} key={index} />
