@@ -8,11 +8,23 @@ import PasswordTextField from "@core/PasswordTextField";
 import PanelGroupFormControl from "@core/PanelGroupFormControl";
 import { useConfigFormHandler } from "@core/ConfigFormHandler";
 import ConfigFormAutocomplete from "@core/ConfigFormAutocomplete";
-import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
+import { useApiPoller } from "@utils/ApiPoller";
+import { useParams } from "react-router-dom";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
+    const params = useParams();
+    const panelId = params.panelId;
+
+    const decoders = useApiPoller({
+        url: `/container/${panelId}/decoder/`,
+        interval: 10000,
+    });
+
+    const encoders = useApiPoller({
+        url: `/container/${panelId}/encoder/`,
+        interval: 10000,
+    });
 
     if (panelConfig.status === "loading") {
         return <Loading />;
@@ -25,6 +37,16 @@ export default function ConfigPanel() {
     const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
+
+    let validatedEncoders = [];
+    if (encoders.status === "success" && encoders.data && encoders.data.length > 0) {
+        validatedEncoders = encoders.data;
+    }
+
+    let validatedDecoders = [];
+    if (decoders.status === "success" && decoders.data && decoders.data.length > 0) {
+        validatedDecoders = decoders.data;
+    }
 
     return (
         <>
@@ -63,6 +85,30 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.username}
                         type="text"
                         label="Email"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ConfigFormAutocomplete
+                        name="encoders"
+                        label="Encoders to Monitor"
+                        control={control}
+                        defaultValue={panelConfig.data.encoders}
+                        options={validatedEncoders}
+                        error={errors.encoders}
+                        fullWidth
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <ConfigFormAutocomplete
+                        name="decoders"
+                        label="Decoders to Monitor"
+                        control={control}
+                        defaultValue={panelConfig.data.decoders}
+                        options={validatedDecoders}
+                        error={errors.decoders}
+                        fullWidth
                     />
                 </Grid>
 
