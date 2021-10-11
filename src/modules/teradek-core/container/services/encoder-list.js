@@ -10,12 +10,31 @@ module.exports = async () => {
 
     const filteredList = [];
 
+    const ensureUniqueKey = (haystack, needle) => {
+        let indexSuffix = 0;
+        let suggestedKey = needle.label;
+        while (true) {
+            if (haystack.find((item) => item.label === suggestedKey)) {
+                // it's already taken
+                indexSuffix += 1;
+                suggestedKey = `${needle.label} (${indexSuffix})`;
+            } else {
+                break;
+            }
+        }
+        return {
+            id: needle.id,
+            label: suggestedKey,
+        };
+    };
+
     if (encoders) {
         for (const eachEncoder of encoders) {
-            filteredList.push({
+            const encoderItem = {
                 "id": eachEncoder.sid,
-                "name": eachEncoder.name
-            });
+                "label": eachEncoder.name
+            }
+            filteredList.push(ensureUniqueKey(filteredList, encoderItem));
         }
     }
 
