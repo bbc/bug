@@ -147,6 +147,16 @@ const theme = createTheme({
                 },
             }
         },
+        MuiButtonBase: {
+            styleOverrides: {
+                root: {
+                    "&.MuiMenuItem-root+.MuiDivider-root": {
+                        marginTop: 2,
+                        marginBottom: 2,
+                    }
+                }
+            }
+        },
         MuiChip: {
             styleOverrides: {
                 root: {
