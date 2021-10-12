@@ -7,7 +7,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mikrotikFetchInterfaces = require("../services/mikrotik-fetchinterfaces");
-const mongoSaveArray = require("../services/mongo-savearray");
+const mongoSaveArray = require("@core/mongo-savearray");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
 const updateDelay = 2000;
