@@ -63,6 +63,7 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
                             event.stopPropagation();
                         }}
                         autoFocus
+                        variant="standard"
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
