@@ -19,6 +19,7 @@ module.exports = async (sid) => {
             }
         );
 
+        console.log(response);
         if (response.data?.meta?.status === "ok") {
             return {
                 status: "success",

@@ -5,6 +5,7 @@ const register = require("module-alias/register");
 const delay = require("delay");
 const io = require("socket.io-client-2");
 const mongoDb = require("@core/mongo-db");
+const formatBps = require("@core/format-bps");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -19,8 +20,13 @@ const filterStats = async (stats) => {
     delete stats?.capabilities;
     delete stats?.is_decryption_key_ok;
     delete stats?.sid;
-    stats.timestamp = new Date();
+    delete stats?.qlen;
+    delete stats?.aqlen;
+    delete stats?.bitrate_out;
     delete stats?.ts;
+    stats.timestamp = new Date();
+    stats.value = stats.bitrate;
+    delete stats?.bitrate;
     return stats;
 };
 
@@ -59,6 +65,7 @@ const main = async () => {
         console.log(`encoders-stats: connected to teradek core ${socket.id}`);
     });
 
+    console.log(workerData.encoders);
     for (let encoderSid of workerData.encoders) {
         console.log(`encoders-stats: registering websocket listener for device sid ${encoderSid}`);
 
@@ -92,23 +99,80 @@ const main = async () => {
                     },
                 }
             );
-        });
 
-        socket.on(`device:${encoderSid}:stats`, async (event) => {
-            const stats = await filterStats(event);
-            const entry = await devicesCollection.updateOne(
+            // and also update the audio level fields in the main object (easier to do this now)
+            await devicesCollection.updateOne(
                 {
                     sid: encoderSid,
                 },
                 {
-                    $push: {
-                        encoderStatsVideo: {
-                            $each: [{ ...stats }],
-                            $slice: 200,
-                        },
+                    $set: {
+                        leftLevels: stats.leftLevels,
+                        rightLevels: stats.rightLevels,
                     },
                 }
             );
+
+        });
+
+        socket.on(`device:${encoderSid}:stats`, async (event) => {
+            /* There are two types of result from this websocket - which look like this:
+            {
+                ts: 1634044347,
+                num_conn: 1,
+                cube_id: 10701957,
+                bitrate: 412,
+                bitrate_out: 176,
+                qlen: 240,
+                aqlen: 256,
+                sess_duration: 14772,
+                capabilities: 'E',
+                is_decryption_key_ok: 1,
+                sid: '10701957'
+            }
+            {
+                ts: 1634044351,
+                num_conn: 1,
+                cube_id: 10701957,
+                bitrate: 11,
+                sess_duration: 437666,
+                capabilities: 'C',
+                is_decryption_key_ok: 1,
+                sid: '10701957'
+            }
+            */
+            // but the bitrates don't look right. So we only save when capabilities == "E"
+            if (event.capabilities && event.capabilities === "E") {
+                const stats = await filterStats(event);
+
+                // push the stats into the array
+                await devicesCollection.updateOne(
+                    {
+                        sid: encoderSid,
+                    },
+                    {
+                        $push: {
+                            encoderStatsVideo: {
+                                $each: [{ ...stats }],
+                                $slice: 200,
+                            },
+                        },
+                    }
+                );
+
+                // and also update the bitrate field in the main object (easier to do this now)
+                await devicesCollection.updateOne(
+                    {
+                        sid: encoderSid,
+                    },
+                    {
+                        $set: {
+                            bitrate: stats.value,
+                            "bitrate-text": formatBps(parseInt(stats.value) * 1024)
+                        },
+                    }
+                );
+            }
         });
     }
 };

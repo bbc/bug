@@ -11,24 +11,24 @@ import Chip from "@mui/material/Chip";
 import CloudIcon from "@mui/icons-material/Cloud";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import AxiosGet from "@utils/AxiosGet";
+import AxiosCommand from "@utils/AxiosCommand";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useAlert } from "@utils/Snackbar";
 import { useHistory } from "react-router-dom";
 import LaunchIcon from "@mui/icons-material/Launch";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import AxiosDelete from "@utils/AxiosDelete";
+import Typography from "@mui/material/Typography";
+import SparkCell from "@core/SparkCell";
+import BugVolumeBar from "@core/BugVolumeBar";
+import EditIcon from "@mui/icons-material/Edit";
+import Box from "@mui/material/Box";
 
 const height = 100;
 
 const useStyles = makeStyles((theme) => ({
-    thumbnail: {
-        display: "block",
-        margin: "auto",
-        height: 100,
-        width: 177,
-    },
-
     blankThumbnail: {
         display: "block",
         margin: "auto",
@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EncodersTable({ panelId }) {
     const classes = useStyles();
     const { confirmDialog } = useBugConfirmDialog();
+    const { renameDialog } = useBugRenameDialog();
     const sendAlert = useAlert();
     const history = useHistory();
 
@@ -91,6 +92,10 @@ export default function EncodersTable({ panelId }) {
 
     const handleRowClicked = (event, item) => {
         history.push(`/panel/${panelId}/encoder/${item.sid}`);
+    };
+
+    const itemIsActive = (item) => {
+        return item.streamStatus === "streaming";
     };
 
     const getColor = (status) => {
@@ -133,7 +138,25 @@ export default function EncodersTable({ panelId }) {
 
     const getThumbnail = (item) => {
         if (item.thumbnail) {
-            return <img src={item.thumbnail} className={classes.thumbnail} />;
+            return (
+                <Box
+                    sx={{
+                        display: "flex",
+                        margin: "auto",
+                    }}
+                >
+                    <BugVolumeBar min={-90} max={0} height={100} value={item.leftLevels} />
+                    <img
+                        src={item.thumbnail}
+                        style={{
+                            display: "block",
+                            height: 100,
+                            width: 177,
+                        }}
+                    />
+                    <BugVolumeBar min={-90} max={0} height={100} value={item.rightLevels} />
+                </Box>
+            );
         }
 
         return <div className={classes.blankThumbnail} />;
@@ -148,7 +171,6 @@ export default function EncodersTable({ panelId }) {
                         <Chip
                             icon={<VideocamIcon />}
                             key={link?.sid}
-                            // size="small"
                             className={`${classes.chip} ${getColor(link?.status)}`}
                             onDelete={(event) => {
                                 handleUnpair(event, item?.sid, link?.sid);
@@ -191,7 +213,6 @@ export default function EncodersTable({ panelId }) {
     };
 
     const handleEnabledChanged = async (checked, encoder) => {
-        //TODO - test
         const command = checked ? "start" : "stop";
         const verb = checked ? "Started" : "Stopped";
         if (await AxiosCommand(`/container/${panelId}/encoder/${command}/${encoder.sid}`)) {
@@ -199,6 +220,26 @@ export default function EncodersTable({ panelId }) {
         } else {
             sendAlert(`Failed to ${command} encoder: ${encoder.name}`, { variant: "error" });
         }
+    };
+
+    const handleRenameClicked = async (event, encoder) => {
+        const result = await renameDialog({
+            title: "Rename encoder",
+            defaultValue: encoder.customName,
+        });
+
+        if (result === false) {
+            return false;
+        }
+
+        if (await AxiosGet(`/container/${panelId}/encoder/rename/${encoder.sid}/${result}`)) {
+            sendAlert(`Successfully renamed encoder`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to rename encoder`, { variant: "error" });
+        }
+
+        event.stopPropagation();
+        event.preventDefault();
     };
 
     const handleUnpair = async (event, encoderId, decoderId) => {
@@ -288,7 +329,7 @@ export default function EncodersTable({ panelId }) {
                     content: (item) => {
                         return (
                             <ApiSwitch
-                                checked={!item.disabled}
+                                checked={itemIsActive(item)}
                                 onChange={(checked) => handleEnabledChanged(checked, item)}
                             />
                         );
@@ -298,14 +339,34 @@ export default function EncodersTable({ panelId }) {
                     width: 300,
                     minWidth: 200,
                     noWrap: true,
-                    content: (item) => {
-                        return item.name;
-                    },
+                    content: (item) => (
+                        <>
+                            <Typography>{item.customName}</Typography>
+                            <Typography sx={{ opacity: 0.5 }}>{item.model}</Typography>
+                        </>
+                    ),
                 },
                 {
-                    content: (item) => {
-                        return getLinkedDevices(item);
-                    },
+                    content: (item) => (
+                        <Box
+                            sx={{
+                                height: 100,
+                                overflow: "auto",
+                            }}
+                        >
+                            {getLinkedDevices(item)}
+                        </Box>
+                    ),
+                },
+                {
+                    width: 300,
+                    content: (item) => (
+                        <SparkCell
+                            height={80}
+                            value={item["bitrate-text"]}
+                            history={item.encoderStatsVideo?.slice(-60)}
+                        />
+                    ),
                 },
                 {
                     content: (item) => {
@@ -318,7 +379,7 @@ export default function EncodersTable({ panelId }) {
                     title: "Enable",
                     disabled: (item) => !item.disabled,
                     icon: <ToggleOnIcon fontSize="small" />,
-                    onClick: (item) => {
+                    onClick: (event, item) => {
                         handleEnabledChanged(true, item);
                     },
                 },
@@ -326,12 +387,17 @@ export default function EncodersTable({ panelId }) {
                     title: "Disable",
                     disabled: (item) => item.disabled,
                     icon: <ToggleOffIcon fontSize="small" />,
-                    onClick: (item) => {
-                        handleEnabledChanged(false, item.id);
+                    onClick: (event, item) => {
+                        handleEnabledChanged(false, item);
                     },
                 },
                 {
                     title: "-",
+                },
+                {
+                    title: "Rename Encoder",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleRenameClicked,
                 },
                 {
                     title: "Restart Video",
@@ -355,7 +421,7 @@ export default function EncodersTable({ panelId }) {
                     title: "-",
                 },
                 {
-                    title: "Remove from Bug",
+                    title: "Remove",
                     icon: <DeleteIcon fontSize="small" />,
                     onClick: handleRemoveClicked,
                 },

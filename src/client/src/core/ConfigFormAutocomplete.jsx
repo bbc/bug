@@ -92,7 +92,7 @@ const ConfigFormAutocomplete = ({
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        variant={variant}
+                                        variant="standard"
                                         label={label}
                                         helperText={helperText}
                                         error={error}

@@ -152,7 +152,7 @@ route.get("/rename/:sid/:name", async function (req, res) {
     try {
         res.json({
             status: "success",
-            data: await deviceRename(req?.params?.sid, req.body?.name)
+            data: await deviceRename(req?.params?.sid, req.params?.name)
         });
     } catch (error) {
         console.log(error);

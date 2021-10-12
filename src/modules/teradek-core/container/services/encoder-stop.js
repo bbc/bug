@@ -3,6 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const axios = require("axios");
 const configGet = require("@core/config-get");
+const deviceUpdateLocal = require("./device-updatelocal");
 
 module.exports = async (sid) => {
     try {
@@ -20,18 +21,13 @@ module.exports = async (sid) => {
         );
 
         if (response.data?.meta?.status === "ok") {
-            return {
-                status: "success",
-                data: `Stopped ${sid}.`,
-            };
+            return await deviceUpdateLocal(sid, "streamStatus", "paused");
         } else {
-            return {
-                error: `Could not stop ${sid}.`,
-                status: "error",
-                data: response.data,
-            };
+            console.log(response.data);
+            return false;
         }
     } catch (error) {
-        return null;
+        console.log(error);
+        return false;
     }
 };

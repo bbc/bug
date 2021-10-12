@@ -14,7 +14,6 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useParams } from "react-router-dom";
 import AxiosCommand from "@utils/AxiosCommand";
-import RenameDialog from "./RenameDialog";
 import AddGroupDialog from "./AddGroupDialog";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";

@@ -3,6 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const axios = require("axios");
 const configGet = require("@core/config-get");
+const deviceUpdateLocal = require("./device-updatelocal");
 
 module.exports = async (sid, name) => {
     try {
@@ -10,29 +11,16 @@ module.exports = async (sid, name) => {
         const token = await tokenCollection.findOne();
         const config = await configGet();
 
-        const response = await axios.put(
-            `https://api-core.teradek.com/api/v1.0/${config?.organisation}/devices/${sid}/customName`,
-            {
-                params: {
-                    auth_token: token?.auth_token,
-                },
-                name,
-            }
-        );
+        const url = `https://api-core.teradek.com/api/v1.0/${config.organisation}/devices/${sid}/customName?auth_token=${token?.auth_token}`;
+        const response = await axios.put(url, name, { headers: { 'Content-Type': 'application/json' } });
+
+        console.log(response.data);
 
         if (response.data?.meta?.status === "ok") {
-            return {
-                status: "success",
-                data: `Renamed ${sid} to '${name}'.`,
-            };
-        } else {
-            return {
-                error: `Could not rename ${sid} to '${name}'.`,
-                status: "error",
-                data: response.data,
-            };
+            return await deviceUpdateLocal(sid, "customName", name);
         }
     } catch (error) {
-        return null;
+        console.log(error);
     }
+    return false;
 };

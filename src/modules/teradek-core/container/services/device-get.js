@@ -9,7 +9,7 @@ module.exports = async (sid) => {
 
         if (!device) {
             return {
-                error: "Could not retieve device",
+                error: "Could not retrieve device",
                 status: "error",
                 data: device,
             };
