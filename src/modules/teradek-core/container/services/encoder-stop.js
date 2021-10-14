@@ -21,8 +21,10 @@ module.exports = async (sid) => {
         );
 
         if (response.data?.meta?.status === "ok") {
+            console.log(`stopped encoder ${sid}`);
             return await deviceUpdateLocal(sid, "streamStatus", "paused");
         } else {
+            console.log(`failed to stop encoder ${sid}`);
             console.log(response.data);
             return false;
         }

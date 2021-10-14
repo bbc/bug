@@ -7,6 +7,7 @@ const getDecoderList = require("@services/decoder-list");
 const getSelectedDecoders = require("@services/decoder-getselected");
 const deviceReboot = require("@services/device-reboot");
 const deviceRemove = require("@services/device-remove");
+const decoderPair = require("@services/decoder-pair");
 
 route.delete("/:sid", async function (req, res) {
     try {
@@ -79,6 +80,21 @@ route.get("/reboot/:sid", async function (req, res) {
         res.json({
             status: "error",
             message: "Failed to reboot device",
+        });
+    }
+});
+
+route.get("/pair/:encoderId/:decoderId", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await decoderPair(req?.params?.encoderId, req?.params?.decoderId)
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to pair selected devices",
         });
     }
 });

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.3,
     },
     colPower: {
-        width: 48,
+        width: 54,
         textAlign: "center",
     },
     colDescription: {

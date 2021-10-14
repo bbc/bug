@@ -21,18 +21,15 @@ module.exports = async (sid) => {
 
         console.log(response);
         if (response.data?.meta?.status === "ok") {
-            return {
-                status: "success",
-                data: `Restarted ${sid}.`,
-            };
+            console.log(`Restarted ${sid}.`);
+            return true;
         } else {
-            return {
-                error: `Could not restart ${sid}.`,
-                status: "error",
-                data: response.data,
-            };
+            console.log(`Could not restart ${sid}.`);
+            console.log(response.data);
+            return false;
         }
     } catch (error) {
-        return null;
+        console.log(error);
+        return false;
     }
 };

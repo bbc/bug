@@ -1,21 +1,38 @@
-//NAME: sputnik.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 18/04/2021
-//DESC: Sputnik endpoint
-
 const express = require("express");
-const sputnik = express.Router();
+const route = express.Router();
 
-const hashResponse = require("@core/hash-response");
-const getSputniks = require("@services/sputniks-get");
+const getSputnikList = require("@services/sputnik-list");
 const getSputnik = require("@services/sputnik-get");
 
-sputnik.get("/all", async function (req, res) {
-    hashResponse(res, req, await getSputniks());
+
+route.get("/", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await getSputnikList()
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to fetch sputnik list",
+        });
+    }
 });
 
-sputnik.get("/:identifier", async function (req, res) {
-    hashResponse(res, req, await getSputnik(req?.params?.identifier));
+route.get("/:identifier", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await getSputnik(req?.params?.identifier),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to fetch selected sputnik",
+        });
+    }
 });
 
-module.exports = sputnik;
+module.exports = route;

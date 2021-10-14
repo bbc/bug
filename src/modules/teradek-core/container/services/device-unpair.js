@@ -3,6 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const axios = require("axios");
 const configGet = require("@core/config-get");
+const deviceUpdateLocal = require("./device-updatelocal");
 
 module.exports = async (encoderSid, decoderSid) => {
     try {
@@ -23,18 +24,15 @@ module.exports = async (encoderSid, decoderSid) => {
 
         console.log(response);
         if (response.data?.meta?.status === "ok") {
-            return {
-                status: "success",
-                data: `Unpaired ${encoderSid} from ${decoderSid}.`,
-            };
+            console.log(`Unpaired ${encoderSid} from ${decoderSid}.`);
+            return await deviceUpdateLocal(decoderSid, "link", null);
         } else {
-            return {
-                error: `Could not unpair ${encoderSid} from ${decoderSid}.`,
-                status: "error",
-                data: decoders,
-            };
+            console.log(`Could not unpair ${encoderSid} from ${decoderSid}.`);
+            console.log(response.data);
+            return false;
         }
     } catch (error) {
-        return null;
+        console.log(error);
+        return false;
     }
 };

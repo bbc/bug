@@ -32,7 +32,7 @@ module.exports = async () => {
         for (const eachEncoder of encoders) {
             const encoderItem = {
                 "id": eachEncoder.sid,
-                "label": eachEncoder.name
+                "label": eachEncoder.customName
             }
             filteredList.push(ensureUniqueKey(filteredList, encoderItem));
         }

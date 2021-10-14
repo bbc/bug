@@ -2,7 +2,6 @@ const express = require("express");
 const route = express.Router();
 
 const deviceGet = require("@services/device-get");
-const devicePair = require("@services/device-pair");
 const deviceReboot = require("@services/device-reboot");
 const deviceRename = require("@services/device-rename");
 const deviceUnpair = require("@services/device-unpair");
@@ -84,21 +83,6 @@ route.get("/reboot/:sid", async function (req, res) {
         res.json({
             status: "error",
             message: "Failed to reboot device",
-        });
-    }
-});
-
-route.get("/pair/:sid", async function (req, res) {
-    try {
-        res.json({
-            status: "success",
-            data: await devicePair(req?.params?.sid, req?.body?.decoderSid)
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to pair selected encoder",
         });
     }
 });

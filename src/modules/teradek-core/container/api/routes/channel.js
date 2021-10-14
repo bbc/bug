@@ -1,8 +1,3 @@
-//NAME: channel.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 18/04/2021
-//DESC: Channel endpoint
-
 const express = require("express");
 const route = express.Router();
 

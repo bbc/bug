@@ -1,8 +1,8 @@
 import React from "react";
 import PanelTabbedForm from "@core/PanelTabbedForm";
 import { useHistory } from "react-router-dom";
-import DecoderDetails from "./tabs/DecoderDetails";
-import DecoderStatistics from "./tabs/DecoderStatistics";
+import DecoderDetails from "./DecoderDetails";
+import DecoderStatistics from "./DecoderStatistics";
 import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 import { useParams } from "react-router-dom";

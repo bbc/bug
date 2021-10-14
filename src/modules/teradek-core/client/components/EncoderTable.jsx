@@ -325,7 +325,7 @@ export default function EncodersTable({ panelId }) {
                     sortable: false,
                     noPadding: true,
                     // hideWidth: 1200,
-                    width: 82,
+                    width: 70,
                     content: (item) => {
                         return (
                             <ApiSwitch
@@ -336,13 +336,19 @@ export default function EncodersTable({ panelId }) {
                     },
                 },
                 {
+                    width: 214,
+                    content: (item) => {
+                        return getThumbnail(item);
+                    },
+                },
+                {
                     width: 300,
                     minWidth: 200,
                     noWrap: true,
                     content: (item) => (
                         <>
-                            <Typography>{item.customName}</Typography>
-                            <Typography sx={{ opacity: 0.5 }}>{item.model}</Typography>
+                            <Typography variant="body1">{item.customName}</Typography>
+                            <Typography variant="subtitle1">{item.model}</Typography>
                         </>
                     ),
                 },
@@ -350,7 +356,7 @@ export default function EncodersTable({ panelId }) {
                     content: (item) => (
                         <Box
                             sx={{
-                                height: 100,
+                                maxHeight: 100,
                                 overflow: "auto",
                             }}
                         >
@@ -367,11 +373,6 @@ export default function EncodersTable({ panelId }) {
                             history={item.encoderStatsVideo?.slice(-60)}
                         />
                     ),
-                },
-                {
-                    content: (item) => {
-                        return getThumbnail(item);
-                    },
                 },
             ]}
             menuItems={[

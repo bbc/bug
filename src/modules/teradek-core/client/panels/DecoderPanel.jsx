@@ -1,5 +1,5 @@
 import React from "react";
-import Decoder from "../components/decoders/Decoder";
+import Decoder from "../components/Decoder";
 import { useParams } from "react-router-dom";
 
 export default function DecoderPanel() {

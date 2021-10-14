@@ -55,13 +55,19 @@ const main = async () => {
                     { $set: { links: link } }
                 );
 
+                // make filtered copy of link
+                const filteredLink = {
+                    id: link.id,
+                    encoderSid: link.encoderSid,
+                }
+
                 for (let decoder of link.linksToDecoders) {
                     await devicesCollection.updateOne(
                         {
                             sid: decoder?.sid,
                             type: "decoder",
                         },
-                        { $set: { links: link } }
+                        { $set: { link: filteredLink } }
                     );
                 }
             }

@@ -18,20 +18,17 @@ module.exports = async (sid) => {
                 },
             }
         );
-        console.log(response);
+
         if (response.data?.meta?.status === "ok") {
-            return {
-                status: "success",
-                data: `Rebooted ${sid}.`,
-            };
+            console.log(`Rebooted ${sid}.`);
+            return true;
         } else {
-            return {
-                error: `Could not reboot ${sid}.`,
-                status: "error",
-                data: response.data,
-            };
+            console.log(`Could not reboot ${sid}.`);
+            console.log(response.data);
+            return false;
         }
     } catch (error) {
+        console.log(error);
         return null;
     }
 };

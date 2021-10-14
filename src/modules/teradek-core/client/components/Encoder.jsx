@@ -1,9 +1,9 @@
 import React from "react";
 import PanelTabbedForm from "@core/PanelTabbedForm";
 import { useHistory } from "react-router-dom";
-import EncoderPreview from "./tabs/EncoderPreview";
-import EncoderStatistics from "./tabs/EncoderStatistics";
-import EncoderDetails from "./tabs/EncoderDetails";
+import EncoderPreview from "./EncoderPreview";
+import EncoderStatistics from "./EncoderStatistics";
+import EncoderDetails from "./EncoderDetails";
 import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 import { useParams } from "react-router-dom";

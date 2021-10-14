@@ -212,6 +212,15 @@ const theme = createTheme({
         serviceState: {
             opacity: 0.5,
         },
+        body1: {
+            fontSize: 14,
+        },
+        subtitle1: {
+            fontSize: 13,
+            textTransform: "uppercase",
+            opacity: 0.5,
+            fontWeight: 500
+        },
     },
     palette: {
         mode: "dark",

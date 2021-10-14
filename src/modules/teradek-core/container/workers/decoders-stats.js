@@ -19,8 +19,13 @@ const filterStats = (stats) => {
     delete stats?.decoder_video_frame_width;
     delete stats?.video_output_format;
     delete stats?.video_output_mode;
-    stats.timestamp = new Date();
+    delete stats?.decoder_audio_decode_errors;
+    delete stats?.decoder_valid;
+    delete stats?.decoder_video_decode_errors;
     delete stats?.ts;
+    stats.timestamp = new Date();
+    stats.value = stats?.decoder_vdec_framerate;
+    delete stats?.decoder_vdec_framerate;
     return stats;
 };
 
@@ -67,8 +72,21 @@ const main = async () => {
                         $push: {
                             decoderStats: {
                                 $each: [{ ...stats }],
-                                $slice: 100,
+                                $slice: -30,
                             },
+                        },
+                    }
+                );
+
+                // and also update the framerate field in the main object (easier to do this now)
+                await devicesCollection.updateOne(
+                    {
+                        sid: decoderSid,
+                    },
+                    {
+                        $set: {
+                            framerate: stats.value,
+                            "framerate-text": `${stats.value.toFixed(2)} fps`
                         },
                     }
                 );

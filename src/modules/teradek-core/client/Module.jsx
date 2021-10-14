@@ -12,6 +12,15 @@ export default function Module(props) {
             <ModuleRoute exact path="/panel/:panelId">
                 <MainPanel />
             </ModuleRoute>
+            <ModuleRoute exact path="/panel/:panelId/encoders">
+                <MainPanel />
+            </ModuleRoute>
+            <ModuleRoute exact path="/panel/:panelId/decoders">
+                <MainPanel />
+            </ModuleRoute>
+            <ModuleRoute exact path="/panel/:panelId/sputniks">
+                <MainPanel />
+            </ModuleRoute>
             <ModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel />
             </ModuleRoute>

@@ -15,7 +15,6 @@ module.exports = async (sid, field, value) => {
     } catch (error) {
         console.log(error);
         return false;
-
     }
 }
 

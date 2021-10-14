@@ -1,16 +1,21 @@
-//NAME: output.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 18/04/2021
-//DESC: System status
-
 const express = require("express");
-const output = express.Router();
+const route = express.Router();
 
-const hashResponse = require("@core/hash-response");
-const getCoreToken = require("@services/core-token-get");
+const getCoreToken = require("@services/core-token");
 
-output.get("/token", async function (req, res) {
-    hashResponse(res, req, await getCoreToken());
+route.get("/token", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await getCoreToken()
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to fetch core token",
+        });
+    }
 });
 
-module.exports = output;
+module.exports = route;
