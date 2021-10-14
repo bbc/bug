@@ -17,7 +17,12 @@ export function usePanel({ panelId }) {
 
         panel.on("event", function (result) {
             // console.log(`${panelId}: panel - event`, result);
-            dispatch(panelSlice.actions[result["status"]](result));
+            const actionFunction = panelSlice.actions[result["status"]];
+            if (typeof actionFunction === "function") {
+                dispatch(actionFunction(result));
+            } else {
+                console.error(`no suitable action found for status ${result["status"]}`);
+            }
         });
 
         return async () => {
