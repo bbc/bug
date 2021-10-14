@@ -90,10 +90,6 @@ export default function EncodersTable({ panelId }) {
         interval: 11000,
     });
 
-    const handleRowClicked = (event, item) => {
-        history.push(`/panel/${panelId}/encoder/${item.sid}`);
-    };
-
     const itemIsActive = (item) => {
         return item.streamStatus === "streaming";
     };
@@ -430,7 +426,6 @@ export default function EncodersTable({ panelId }) {
             defaultSortIndex={4}
             apiUrl={`/container/${panelId}/encoder/selected`}
             panelId={panelId}
-            onRowClick={handleRowClicked}
             hideHeader={true}
         />
     );

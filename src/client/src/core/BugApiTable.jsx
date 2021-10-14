@@ -228,13 +228,17 @@ export default function BugApiTable({
                         <TableBody>
                             {pollResult?.data?.map((item, index) => (
                                 <TableRow
-                                    hover
+                                    hover={typeof onRowClick === "function"}
                                     className={clsx(classes.interfaceRow, classes.columns, {
                                         [classes.interfaceRowDisabled]: item.disabled,
                                         [classes.interfaceRowClickable]: onRowClick !== undefined,
                                     })}
                                     key={index}
-                                    onClick={(event) => onRowClick(event, item)}
+                                    onClick={(event) => {
+                                        if (typeof onRowClick === "function") {
+                                            onRowClick(event, item);
+                                        }
+                                    }}
                                 >
                                     {columns.map((column, index) => (
                                         <TableCell key={index} className={`col_${index}`}>

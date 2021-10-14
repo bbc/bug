@@ -23,10 +23,6 @@ export default function DecodersTable({ panelId }) {
         interval: 10000,
     });
 
-    const handleRowClicked = (event, item) => {
-        history.push(`/panel/${panelId}/decoder/${item.sid}`);
-    };
-
     const handlePair = async (encoderId, decoderId) => {
         if (await AxiosGet(`/container/${panelId}/decoder/pair/${encoderId}/${decoderId}`)) {
             sendAlert(`Successfully changed decoder source`, { variant: "success" });
@@ -255,7 +251,6 @@ export default function DecodersTable({ panelId }) {
             defaultSortIndex={4}
             apiUrl={`/container/${panelId}/decoder/selected`}
             panelId={panelId}
-            onRowClick={handleRowClicked}
             hideHeader={true}
         />
     );
