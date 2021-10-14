@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabContainer from "@core/TabContainer.jsx";
+import { useHistory, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -40,12 +41,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelTabbedForm(props) {
+export default function PanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0 }) {
     const classes = useStyles();
     const [tabIndex, setTabIndex] = React.useState(false);
+    const history = useHistory();
+    const location = useLocation();
 
     const handleChange = (event, newIndex) => {
         setTabIndex(newIndex);
+        if (locations && locations[newIndex] && locations[newIndex] !== location.pathname) {
+            history.push(locations[newIndex]);
+        }
     };
 
     const TabPanel = ({ children, value, index }) => {
@@ -56,18 +62,19 @@ export default function PanelTabbedForm(props) {
         );
     };
 
-    useHotkeys("esc", props?.onClose);
+    useHotkeys("esc", onClose);
 
     React.useEffect(() => {
-        setTabIndex(0);
-    }, []);
+        handleChange(null, defaultTab);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultTab]);
 
     return (
         <>
             <div style={{ position: "relative" }}>
                 <TabContainer>
-                    {props.onClose && (
-                        <IconButton aria-label="close" className={classes.closeButton} onClick={props.onClose}>
+                    {onClose && (
+                        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
                             <CloseIcon />
                         </IconButton>
                     )}
@@ -80,15 +87,15 @@ export default function PanelTabbedForm(props) {
                         variant="fullWidth"
                         scrollButtons={true}
                     >
-                        {props.labels.map((label, index) => (
+                        {labels.map((label, index) => (
                             <Tab label={label} key={index} />
                         ))}
                     </Tabs>
                 </TabContainer>
             </div>
             <Card className={classes.card}>
-                {props.content
-                    ? props.content.map((content, index) => (
+                {content
+                    ? content.map((content, index) => (
                           <TabPanel key={index} value={tabIndex} index={index}>
                               {content}
                           </TabPanel>
