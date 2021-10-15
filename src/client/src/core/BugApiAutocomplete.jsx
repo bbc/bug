@@ -23,7 +23,7 @@ export default function BugApiAutocomplete({ options, value, freeSolo = false, o
     return (
         <Autocomplete
             filterSelectedOptions
-            options={options}
+            options={options ? options : []}
             freeSolo={freeSolo}
             onChange={(event, value) => {
                 onChange(event, value);
