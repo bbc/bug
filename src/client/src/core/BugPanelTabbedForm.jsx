@@ -6,9 +6,9 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import TabContainer from "@core/TabContainer.jsx";
+// import TabContainer from "@core/TabContainer.jsx";
 import { useHistory, useLocation } from "react-router-dom";
-
+import Box from "@mui/material/Box";
 const useStyles = makeStyles((theme) => ({
     header: {
         "& .MuiCardHeader-title": {
@@ -38,10 +38,13 @@ const useStyles = makeStyles((theme) => ({
     },
     tabs: {
         marginRight: 48,
+        "& .MuiButtonBase-root": {
+            minHeight: 52,
+        },
     },
 }));
 
-export default function PanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0 }) {
+export default function BugPanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0 }) {
     const classes = useStyles();
     const [tabIndex, setTabIndex] = React.useState(false);
     const history = useHistory();
@@ -72,7 +75,13 @@ export default function PanelTabbedForm({ labels, content, locations, onClose, d
     return (
         <>
             <div style={{ position: "relative" }}>
-                <TabContainer>
+                <Box
+                    sx={{
+                        width: "100%",
+                        position: "absolute",
+                        backgroundColor: "appbar.default",
+                    }}
+                >
                     {onClose && (
                         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
                             <CloseIcon />
@@ -91,7 +100,15 @@ export default function PanelTabbedForm({ labels, content, locations, onClose, d
                             <Tab label={label} key={index} />
                         ))}
                     </Tabs>
-                </TabContainer>
+                </Box>
+                <Box
+                    sx={{
+                        height: 60,
+                        position: "relative",
+                        zIndex: -1,
+                    }}
+                    className={`tabSpacer`}
+                />
             </div>
             <Card className={classes.card}>
                 {content
