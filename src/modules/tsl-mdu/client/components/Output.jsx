@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
-import PanelTabbedForm from "@core/PanelTabbedForm";
+import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import OutputTabDetails from "./OutputTabDetails";
 import OutputTabHistory from "./OutputTabHistory";
 
@@ -34,14 +34,14 @@ export default function Output({ panelId, outputNumber }) {
 
     return (
         <>
-            <PanelTabbedForm
+            <BugPanelTabbedForm
                 onClose={handleBackClicked}
                 labels={["Details", "History"]}
                 content={[
                     <OutputTabDetails output={output.data} panelId={panelId} />,
                     <OutputTabHistory output={output.data} panelId={panelId} />,
                 ]}
-            ></PanelTabbedForm>
+            ></BugPanelTabbedForm>
         </>
     );
 }

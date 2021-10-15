@@ -1,5 +1,5 @@
 import React from "react";
-import PanelTabbedForm from "@core/PanelTabbedForm";
+import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import InterfaceTabDetails from "./InterfaceTabDetails";
 import InterfaceTabEthernet from "./InterfaceTabEthernet";
 import InterfaceTabStatistics from "./InterfaceTabStatistics";
@@ -15,7 +15,7 @@ export default function Interface({ panelId, interfaceName }) {
 
     return (
         <>
-            <PanelTabbedForm
+            <BugPanelTabbedForm
                 onClose={handleBackClicked}
                 labels={["Details", "Ethernet", "Statistics", "Hardware"]}
                 content={[
@@ -24,7 +24,7 @@ export default function Interface({ panelId, interfaceName }) {
                     <InterfaceTabStatistics panelId={panelId} interfaceName={interfaceName} />,
                     <InterfaceTabHardware panelId={panelId} interfaceName={interfaceName} />,
                 ]}
-            ></PanelTabbedForm>
+            ></BugPanelTabbedForm>
         </>
     );
 }

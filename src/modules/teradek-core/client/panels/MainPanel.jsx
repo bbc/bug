@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import EncoderTable from "../components/EncoderTable";
 import DecoderTable from "../components/DecoderTable";
 import SputniksTable from "../components/SputniksTable";
-import PanelTabbedForm from "@core/PanelTabbedForm";
+import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +20,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <PanelTabbedForm
+            <BugPanelTabbedForm
                 className={classes.form}
                 labels={["Encoders", "Decoders", "Sputniks"]}
                 content={[
@@ -34,7 +34,7 @@ export default function MainPanel() {
                     `/panel/${params.panelId}/sputniks`,
                 ]}
                 defaultTab={1}
-            ></PanelTabbedForm>
+            ></BugPanelTabbedForm>
         </>
     );
 }

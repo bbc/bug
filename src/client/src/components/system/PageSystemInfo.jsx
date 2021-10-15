@@ -8,7 +8,7 @@ import ChartDisk from "@components/system/charts/ChartDisk";
 import ChartNetwork from "@components/system/charts/ChartNetwork";
 import Loading from "@components/Loading";
 
-import PanelTabbedForm from "@core/PanelTabbedForm";
+import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 
 export default function PageSystemInfo() {
     // const classes = useStyles();
@@ -34,7 +34,7 @@ export default function PageSystemInfo() {
 
     return (
         <>
-            <PanelTabbedForm
+            <BugPanelTabbedForm
                 labels={["CPU", "Memory", "Disk", "Network RX", "Network TX"]}
                 content={[
                     <ChartCPU containers={containers} stats={stats.data} />,
@@ -43,7 +43,7 @@ export default function PageSystemInfo() {
                     <ChartNetwork type="rx" stats={stats.data} />,
                     <ChartNetwork type="tx" stats={stats.data} />,
                 ]}
-            ></PanelTabbedForm>
+            ></BugPanelTabbedForm>
         </>
     );
 }
