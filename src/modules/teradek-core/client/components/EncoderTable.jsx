@@ -291,7 +291,7 @@ export default function EncodersTable({ panelId }) {
             })
         ) {
             if (await AxiosGet(`/container/${panelId}/encoder/reboot/${item.sid}`)) {
-                sendAlert(`Successfully reboot encoder`, { variant: "success" });
+                sendAlert(`Successfully rebooted encoder`, { variant: "success" });
             } else {
                 sendAlert(`Failed to reboot encoder`, { variant: "error" });
             }
@@ -363,11 +363,7 @@ export default function EncodersTable({ panelId }) {
                 {
                     width: 300,
                     content: (item) => (
-                        <SparkCell
-                            height={80}
-                            value={item["bitrate-text"]}
-                            history={item.encoderStatsVideo?.slice(-60)}
-                        />
+                        <SparkCell height={80} value={item["bitrate-text"]} history={item?.encoderStatsVideo} />
                     ),
                 },
             ]}
