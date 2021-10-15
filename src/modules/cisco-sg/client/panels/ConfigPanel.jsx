@@ -1,13 +1,13 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import ConfigFormTextField from "@core/ConfigFormTextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import Button from "@mui/material/Button";
 
 export default function ConfigPanel({ register, errors, config }) {
     return (
         <React.Fragment>
             <Grid item xs={12}>
-                <ConfigFormTextField
+                <BugConfigFormTextField
                     inputProps={{ ...register("title", { required: true }) }}
                     fullWidth
                     variant="standard"
@@ -19,7 +19,7 @@ export default function ConfigPanel({ register, errors, config }) {
             </Grid>
 
             <Grid item xs={12}>
-                <ConfigFormTextField
+                <BugConfigFormTextField
                     inputProps={{ ...register("description") }}
                     fullWidth
                     variant="standard"
@@ -31,7 +31,7 @@ export default function ConfigPanel({ register, errors, config }) {
             </Grid>
 
             <Grid item xs={12}>
-                <ConfigFormTextField
+                <BugConfigFormTextField
                     inputProps={{ ...register("ip_address", { required: true }) }}
                     fullWidth
                     variant="standard"
@@ -43,7 +43,7 @@ export default function ConfigPanel({ register, errors, config }) {
             </Grid>
 
             <Grid item xs={6}>
-                <ConfigFormTextField
+                <BugConfigFormTextField
                     inputProps={{ ...register("username", { required: true }) }}
                     fullWidth
                     variant="standard"
@@ -55,7 +55,7 @@ export default function ConfigPanel({ register, errors, config }) {
             </Grid>
 
             <Grid item xs={6}>
-                <ConfigFormTextField
+                <BugConfigFormTextField
                     inputProps={{ ...register("password", { required: true }) }}
                     fullWidth
                     variant="standard"

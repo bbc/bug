@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ConfigFormSwitch = ({ name, label, control, sort, defaultValue, children, rules, helperText, ...props }) => {
+const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, children, rules, helperText, ...props }) => {
     const classes = useStyles();
 
     return (
@@ -55,4 +55,4 @@ const ConfigFormSwitch = ({ name, label, control, sort, defaultValue, children, 
         </>
     );
 };
-export default ConfigFormSwitch;
+export default BugConfigFormSwitch;

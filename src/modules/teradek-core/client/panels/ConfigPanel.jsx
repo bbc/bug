@@ -1,13 +1,13 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import ConfigFormTextField from "@core/ConfigFormTextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import BugPasswordTextField from "@core/BugPasswordTextField";
-import ConfigFormPanelGroup from "@core/ConfigFormPanelGroup";
-import { useConfigFormHandler } from "@core/ConfigFormHandler";
-import ConfigFormAutocomplete from "@core/ConfigFormAutocomplete";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
+import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import { useApiPoller } from "@utils/ApiPoller";
 import { useParams } from "react-router-dom";
 
@@ -52,7 +52,7 @@ export default function ConfigPanel() {
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{
                             ...register("title", { required: true }),
                         }}
@@ -65,7 +65,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{ ...register("description") }}
                         fullWidth
                         error={errors?.description ? true : false}
@@ -76,7 +76,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{
                             ...register("username", { required: true }),
                         }}
@@ -89,7 +89,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormAutocomplete
+                    <BugConfigFormAutocomplete
                         name="encoders"
                         label="Encoders to Monitor"
                         control={control}
@@ -101,7 +101,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormAutocomplete
+                    <BugConfigFormAutocomplete
                         name="decoders"
                         label="Decoders to Monitor"
                         control={control}
@@ -126,7 +126,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{
                             ...register("organisation", { required: true }),
                         }}
@@ -139,7 +139,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <ConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
+                    <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
             </BugConfigWrapper>
         </>

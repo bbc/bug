@@ -12,8 +12,8 @@ import AxiosGet from "@utils/AxiosGet";
 import AxiosDelete from "@utils/AxiosDelete";
 import Loading from "@components/Loading";
 import useAsyncEffect from "use-async-effect";
-import ConfigFormAutocomplete from "@core/ConfigFormAutocomplete";
-import ConfigFormSwitch from "@core/ConfigFormSwitch";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({
@@ -138,7 +138,7 @@ export default function Lease({ panelId, leaseId }) {
                             </Grid>
                             {addressLists && (
                                 <Grid item xs={12}>
-                                    <ConfigFormAutocomplete
+                                    <BugConfigFormAutocomplete
                                         name="address-lists"
                                         label="Address Lists"
                                         control={control}
@@ -186,7 +186,7 @@ export default function Lease({ panelId, leaseId }) {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <ConfigFormSwitch
+                                <BugConfigFormSwitch
                                     name="enabled"
                                     label="Enabled"
                                     control={control}
@@ -197,7 +197,7 @@ export default function Lease({ panelId, leaseId }) {
                             </Grid>
                             {addressLists && (
                                 <Grid item xs={12}>
-                                    <ConfigFormAutocomplete
+                                    <BugConfigFormAutocomplete
                                         name="address-lists"
                                         label="Address Lists"
                                         control={control}

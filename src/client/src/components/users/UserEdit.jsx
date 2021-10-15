@@ -11,7 +11,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
-import ConfigFormSwitch from "@core/ConfigFormSwitch";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugPasswordTextField from "@core/BugPasswordTextField";
 import MenuItem from "@mui/material/MenuItem";
 import { useSelector } from "react-redux";
@@ -131,7 +131,7 @@ export default function UserEdit({ userId = null }) {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <ConfigFormSwitch
+                                    <BugConfigFormSwitch
                                         name="enabled"
                                         label="Enable user"
                                         control={control}

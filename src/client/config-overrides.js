@@ -29,6 +29,7 @@ module.exports = function (config, env) {
                 "@pages": path.resolve("src/pages"),
                 "@redux": path.resolve("src/redux"),
                 "@utils": path.resolve("src/utils"),
+                "@hooks": path.resolve("src/hooks"),
             }),
             addBabelPlugin("babel-plugin-bulk-import")
         )(config, env)

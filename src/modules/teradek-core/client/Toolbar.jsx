@@ -1,10 +1,10 @@
 import React from "react";
-import ToolbarWrapper from "@core/ToolbarWrapper";
+import BugToolbarWrapper from "@core/BugToolbarWrapper";
 
 export default function Toolbar(props) {
     let toolbarProps = { ...props };
 
     toolbarProps["onClick"] = null;
 
-    return <ToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
 }

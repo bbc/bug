@@ -1,7 +1,7 @@
 import React from "react";
-import ToolbarWrapper from "@core/ToolbarWrapper";
+import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import Button from "@mui/material/Button";
-import { usePanelStatus } from "@core/PanelStatusHook";
+import { usePanelStatus } from "@hooks/PanelStatus";
 import { useLocation } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
@@ -56,5 +56,5 @@ export default function Toolbar(props) {
     toolbarProps["buttons"] = buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
-    return <ToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
 }

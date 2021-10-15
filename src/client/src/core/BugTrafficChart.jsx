@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import formatBps from "@core/format-bps";
+import formatBps from "@utils/format-bps";
 import { format } from "date-fns";
 import { makeStyles } from "@mui/styles";
 import { ComposedChart, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";

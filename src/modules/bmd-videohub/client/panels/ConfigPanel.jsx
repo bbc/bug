@@ -1,13 +1,13 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import ConfigFormTextField from "@core/ConfigFormTextField";
-import ConfigFormChipInput from "@core/ConfigFormChipInput";
-import ConfigFormSwitch from "@core/ConfigFormSwitch";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import ConfigFormPanelGroup from "@core/ConfigFormPanelGroup";
-import { useConfigFormHandler } from "@core/ConfigFormHandler";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
+import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -28,7 +28,7 @@ export default function ConfigPanel() {
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{ ...register("title", { required: true }) }}
                         required
                         fullWidth
@@ -39,7 +39,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{ ...register("description") }}
                         fullWidth
                         error={errors.description}
@@ -50,10 +50,10 @@ export default function ConfigPanel() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <ConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
+                    <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         //REGEX: Tests for IPv4 Addresses
                         inputProps={{
                             ...register("address", {
@@ -71,7 +71,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         //REGEX: Tests for IPv4 Port
                         inputProps={{
                             ...register("port", {
@@ -90,7 +90,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <ConfigFormSwitch
+                    <BugConfigFormSwitch
                         name="useTake"
                         label="Require double-click to take"
                         control={control}
@@ -99,7 +99,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <ConfigFormChipInput
+                    <BugConfigFormChipInput
                         name="excludeSources"
                         label="Excluded Sources (0-based)"
                         control={control}
@@ -110,7 +110,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
                 {/*<Grid item xs={12}>
-                    <ConfigFormChipInput
+                    <BugConfigFormChipInput
                         name="excludeDestinations"
                         label="Excluded Destinations (0-based)"
                         control={control}

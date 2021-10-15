@@ -1,5 +1,5 @@
 import React from "react";
-import ToolbarWrapper from "@core/ToolbarWrapper";
+import BugToolbarWrapper from "@core/BugToolbarWrapper";
 // import Button from "@mui/material/Button";
 // import MenuItem from "@mui/material/MenuItem";
 // import ListItemIcon from "@mui/material/ListItemIcon";
@@ -15,5 +15,5 @@ export default function Toolbar(props) {
     toolbarProps["buttons"] = buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
-    return <ToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
 }

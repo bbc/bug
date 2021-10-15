@@ -1,14 +1,11 @@
 import React from "react";
-import ToolbarWrapper from "@core/ToolbarWrapper";
+import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import DoneIcon from "@mui/icons-material/Done";
-import { usePanelStatus } from "@core/PanelStatusHook";
+import { usePanelStatus } from "@hooks/PanelStatus";
 
 export default function Toolbar(props) {
     const toolbarProps = { ...props };
@@ -52,5 +49,5 @@ export default function Toolbar(props) {
     toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
-    return <ToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
 }

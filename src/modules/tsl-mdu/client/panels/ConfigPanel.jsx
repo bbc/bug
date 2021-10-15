@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import ConfigFormTextField from "@core/ConfigFormTextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
@@ -8,8 +8,8 @@ import BugPasswordTextField from "@core/BugPasswordTextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import ConfigFormPanelGroup from "@core/ConfigFormPanelGroup";
-import { useConfigFormHandler } from "@core/ConfigFormHandler";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
+import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -30,7 +30,7 @@ export default function ConfigPanel() {
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{
                             ...register("title", { required: true }),
                         }}
@@ -43,7 +43,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{ ...register("description") }}
                         fullWidth
                         error={errors?.description ? true : false}
@@ -54,7 +54,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         //REGEX: Tests for IPv4 Addresses
                         inputProps={{
                             ...register("address", {
@@ -71,7 +71,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <ConfigFormTextField
+                    <BugConfigFormTextField
                         inputProps={{
                             ...register("username", { required: true }),
                         }}

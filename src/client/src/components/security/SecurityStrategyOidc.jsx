@@ -1,8 +1,8 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import ConfigFormSwitch from "@core/ConfigFormSwitch";
-import ConfigFormChipInput from "@core/ConfigFormChipInput";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 
 export default function SecurityStrategyOidc({ strategy, register, errors, control }) {
     return (
@@ -50,7 +50,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormSwitch
+                    <BugConfigFormSwitch
                         name="enabled"
                         label="Enable this security type"
                         control={control}
@@ -87,7 +87,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormChipInput
+                    <BugConfigFormChipInput
                         name="sourceFilterList"
                         label="Source filter list"
                         control={control}

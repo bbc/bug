@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import ConfigFormSwitch from "@core/ConfigFormSwitch";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 
 export default function SecurityStrategySaml({ strategy, register, errors, control }) {
     return (
@@ -49,7 +49,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <ConfigFormSwitch
+                    <BugConfigFormSwitch
                         name="enabled"
                         label="Enable this security type"
                         control={control}
