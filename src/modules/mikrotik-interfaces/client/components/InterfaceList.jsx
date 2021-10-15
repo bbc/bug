@@ -18,7 +18,7 @@ import { useApiPoller } from "@utils/ApiPoller";
 import RenameDialog from "./RenameDialog";
 import CommentDialog from "./CommentDialog";
 import Link from "@mui/material/Link";
-import SparkCell from "@core/SparkCell";
+import BugSparkCell from "@core/BugSparkCell";
 
 const useStyles = makeStyles((theme) => ({
     content: {},
@@ -212,13 +212,13 @@ export default function InterfaceList({ panelId }) {
                 <TableCell className={classes.colSpeed}>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
                 <TableCell className={classes.colMacAddress}>{iface["mac-address"]}</TableCell>
                 <TableCell className={classes.colTraffic}>
-                    <SparkCell
+                    <BugSparkCell
                         value={iface["traffic"]["tx-bits-per-second-text"]}
                         history={iface["traffic"]["tx-history"]}
                     />
                 </TableCell>
                 <TableCell className={classes.colTraffic}>
-                    <SparkCell
+                    <BugSparkCell
                         value={iface["traffic"]["rx-bits-per-second-text"]}
                         history={iface["traffic"]["rx-history"]}
                     />

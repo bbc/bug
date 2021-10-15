@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 
 const filter = createFilterOptions();
 
-export default function PanelGroupDropdown({ value, onChange, fullWidth = false, variant = "filled" }) {
+export default function BugPanelGroupDropdown({ value, onChange, fullWidth = false, variant = "filled" }) {
     const panelList = useSelector((state) => state.panelList);
     const [inputValue, setInputValue] = React.useState(value);
 

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function TrafficChart({ url }) {
+export default function BugTrafficChart({ url }) {
     const classes = useStyles();
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];

@@ -1,14 +1,14 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import ConfigFormTextField from "@core/ConfigFormTextField";
-import PanelConfig from "@core/PanelConfig";
+import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import PasswordTextField from "@core/PasswordTextField";
+import BugPasswordTextField from "@core/BugPasswordTextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import PanelGroupFormControl from "@core/PanelGroupFormControl";
+import ConfigFormPanelGroup from "@core/ConfigFormPanelGroup";
 import { useConfigFormHandler } from "@core/ConfigFormHandler";
 
 export default function ConfigPanel() {
@@ -28,7 +28,7 @@ export default function ConfigPanel() {
 
     return (
         <>
-            <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
+            <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <ConfigFormTextField
                         inputProps={{
@@ -84,7 +84,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <PasswordTextField
+                    <BugPasswordTextField
                         inputProps={{
                             ...register("password", { required: true }),
                         }}
@@ -114,7 +114,7 @@ export default function ConfigPanel() {
                         </Select>
                     </FormControl>
                 </Grid>
-            </PanelConfig>
+            </BugConfigWrapper>
         </>
     );
 }

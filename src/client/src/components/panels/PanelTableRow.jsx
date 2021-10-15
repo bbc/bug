@@ -4,7 +4,7 @@ import BugApiSwitch from "@core/BugApiSwitch";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import PanelRowState from "@components/panels/PanelRowState";
 import AxiosCommand from "@utils/AxiosCommand";
-import PanelPowerIcon from "@components/panels/PanelPowerIcon";
+import BugPowerIcon from "@components/panels/PanelPowerIcon";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import clsx from "clsx";
@@ -97,7 +97,7 @@ export default function PanelTableRow({ panel, showGroups }) {
         >
             {panel.showGroups ? <TableCell className={classes.colIndent} /> : null}
             <TableCell className={classes.colPower}>
-                <PanelPowerIcon panel={panel} />
+                <BugPowerIcon panel={panel} />
             </TableCell>
             <TableCell className={classes.colEnabled} style={{ textAlign: "center" }}>
                 <BugApiSwitch

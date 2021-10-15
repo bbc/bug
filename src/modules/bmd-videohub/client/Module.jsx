@@ -2,27 +2,27 @@ import React from "react";
 import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
 import EditPanel from "./panels/EditPanel";
-import ModuleWrapper from "@core/ModuleWrapper";
-import ModuleRoute from "@core/ModuleRoute";
+import BugModuleWrapper from "@core/BugModuleWrapper";
+import BugModuleRoute from "@core/BugModuleRoute";
 
 export default function Module(props) {
     return (
-        <ModuleWrapper {...props}>
-            <ModuleRoute exact path="/panel/:panelId">
+        <BugModuleWrapper {...props}>
+            <BugModuleRoute exact path="/panel/:panelId">
                 <MainPanel {...props} />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/:sourceGroup/:destinationGroup">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/:sourceGroup/:destinationGroup">
                 <MainPanel {...props} />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/edit">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/edit">
                 <EditPanel {...props} />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/edit/:sourceGroup/:destinationGroup">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/edit/:sourceGroup/:destinationGroup">
                 <EditPanel {...props} />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/config">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel {...props} />
-            </ModuleRoute>
-        </ModuleWrapper>
+            </BugModuleRoute>
+        </BugModuleWrapper>
     );
 }

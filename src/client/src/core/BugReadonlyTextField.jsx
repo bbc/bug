@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ReadonlyTextField(props) {
+export default function BugReadonlyTextField(props) {
     const classes = useStyles();
     return (
         <TextField

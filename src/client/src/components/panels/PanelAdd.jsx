@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import PanelGroupFormControl from "@core/PanelGroupFormControl";
+import ConfigFormPanelGroup from "@core/ConfigFormPanelGroup";
 import ConfigFormTextField from "@core/ConfigFormTextField";
 
 export default function PanelsAdd(props) {
@@ -100,7 +100,7 @@ export default function PanelsAdd(props) {
                             </Grid>
 
                             <Grid item xs={12} md={6}>
-                                <PanelGroupFormControl name="group" control={control} defaultValue="" />
+                                <ConfigFormPanelGroup name="group" control={control} defaultValue="" />
                             </Grid>
 
                             <Grid item xs={12} md={6}>

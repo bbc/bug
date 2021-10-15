@@ -5,7 +5,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 
-export default function PasswordTextField(props) {
+export default function BugPasswordTextField(props) {
     const [showPassword, setShowPassword] = useState(false);
 
     return (

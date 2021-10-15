@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useSortable } from "@dnd-kit/sortable";
-import PanelPowerIcon from "@components/panels/PanelPowerIcon";
+import BugPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
 
 const useStyles = makeStyles((theme) => ({
@@ -73,7 +73,7 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
             </TableCell>
 
             <TableCell className={classes.colPower}>
-                <PanelPowerIcon panel={panel} />
+                <BugPowerIcon panel={panel} />
             </TableCell>
             <TableCell className={classes.colEnabled} style={{ textAlign: "center" }}>
                 <BugApiSwitch panelId={panel.id} checked={panel.enabled} disabled />

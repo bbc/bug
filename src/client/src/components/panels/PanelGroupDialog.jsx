@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { useAlert } from "@utils/Snackbar";
-import PanelGroupDropdown from "@core/PanelGroupDropdown";
+import BugPanelGroupDropdown from "@core/BugPanelGroupDropdown";
 
 export default function PanelGroupDialog({ panelId, panelTitle, panelGroup, onClose }) {
     const [value, setValue] = React.useState(panelGroup);
@@ -39,7 +39,7 @@ export default function PanelGroupDialog({ panelId, panelTitle, panelGroup, onCl
         >
             <DialogTitle id="alert-dialog-title">Change panel group</DialogTitle>
             <DialogContent>
-                <PanelGroupDropdown
+                <BugPanelGroupDropdown
                     value={value}
                     onChange={(newValue) => {
                         setValue(newValue);

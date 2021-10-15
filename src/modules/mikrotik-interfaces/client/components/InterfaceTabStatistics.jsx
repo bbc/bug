@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
-import TrafficChart from "@core/TrafficChart";
+import BugTrafficChart from "@core/BugTrafficChart";
 
 const useStyles = makeStyles((theme) => ({
     chart: {
@@ -19,7 +19,7 @@ export default function InterfaceTabStatistics({ panelId, interfaceName }) {
     return (
         <>
             <Grid item xs={12} className={classes.chart}>
-                <TrafficChart url={`/container/${panelId}/interface/history/${interfaceName}`} />
+                <BugTrafficChart url={`/container/${panelId}/interface/history/${interfaceName}`} />
             </Grid>
         </>
     );

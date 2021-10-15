@@ -1,6 +1,6 @@
 import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import PowerIcon from "@core/PowerIcon";
+import BugPowerIcon from "@core/BugPowerIcon";
 
 export default function PanelPowerIcon({ panel }) {
     if (
@@ -12,5 +12,5 @@ export default function PanelPowerIcon({ panel }) {
         return <CircularProgress size={30} />;
     }
     const enabled = panel._dockerContainer._isRunning || (!panel._module.needsContainer && panel.enabled);
-    return <PowerIcon enabled={enabled} />;
+    return <BugPowerIcon enabled={enabled} />;
 }

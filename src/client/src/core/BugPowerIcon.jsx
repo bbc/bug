@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PowerIcon(props) {
+export default function BugPowerIcon(props) {
     const classes = useStyles();
     const enabled = props && props.enabled;
     return <PowerSettingsNew className={enabled ? classes.iconEnabled : classes.iconDisabled} />;

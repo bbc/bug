@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function TableRowDragIcon(props) {
+export default function BugDragIcon(props) {
     const classes = useStyles();
 
     return <DragIndicatorIcon {...props} className={classes.dragIcon} />;

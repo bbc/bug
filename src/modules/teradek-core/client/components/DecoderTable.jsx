@@ -3,13 +3,13 @@ import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useApiPoller } from "@utils/ApiPoller";
 import BugApiTable from "@core/BugApiTable";
-import PowerIcon from "@core/PowerIcon";
+import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiSwitch from "@core/BugApiSwitch";
 import AxiosGet from "@utils/AxiosGet";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useAlert } from "@utils/Snackbar";
-import SparkCell from "@core/SparkCell";
+import BugSparkCell from "@core/BugSparkCell";
 import Typography from "@mui/material/Typography";
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -158,7 +158,7 @@ export default function DecoderTable({ panelId }) {
                     // hideWidth: 440,
                     width: 58,
                     field: "status",
-                    content: (item) => <PowerIcon enabled={isEnabled()} />,
+                    content: (item) => <BugPowerIcon enabled={isEnabled()} />,
                 },
                 {
                     sortable: false,
@@ -198,7 +198,7 @@ export default function DecoderTable({ panelId }) {
                 {
                     width: "30%",
                     content: (item) => {
-                        return <SparkCell height={30} value={item["framerate-text"]} history={item?.decoderStats} />;
+                        return <BugSparkCell height={30} value={item["framerate-text"]} history={item?.decoderStats} />;
                     },
                 },
             ]}

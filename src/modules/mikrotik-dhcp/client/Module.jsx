@@ -3,24 +3,24 @@ import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
 import LeasePanel from "./panels/LeasePanel";
 import NewLeasePanel from "./panels/NewLeasePanel";
-import ModuleWrapper from "@core/ModuleWrapper";
-import ModuleRoute from "@core/ModuleRoute";
+import BugModuleWrapper from "@core/BugModuleWrapper";
+import BugModuleRoute from "@core/BugModuleRoute";
 
 export default function Module(props) {
     return (
-        <ModuleWrapper {...props}>
-            <ModuleRoute exact path="/panel/:panelId">
+        <BugModuleWrapper {...props}>
+            <BugModuleRoute exact path="/panel/:panelId">
                 <MainPanel />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/config">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/lease/:leaseId">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/lease/:leaseId">
                 <LeasePanel />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/lease/">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/lease/">
                 <NewLeasePanel />
-            </ModuleRoute>
-        </ModuleWrapper>
+            </BugModuleRoute>
+        </BugModuleWrapper>
     );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import TableRowDragIcon from "@core/TableRowDragIcon";
+import BugDragIcon from "@core/BugDragIcon";
 import { useSortable } from "@dnd-kit/sortable";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +55,7 @@ export default function SecurityTableRow({ strategy, index }) {
             {...listeners}
         >
             <TableCell className={classes.colDrag}>
-                <TableRowDragIcon />
+                <BugDragIcon />
             </TableCell>
             <TableCell className={classes.colName}>{strategy.name}</TableCell>
             <TableCell className={classes.colType}>{strategy.type.toUpperCase()}</TableCell>

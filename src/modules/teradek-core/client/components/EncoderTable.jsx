@@ -21,7 +21,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import AxiosDelete from "@utils/AxiosDelete";
 import Typography from "@mui/material/Typography";
-import SparkCell from "@core/SparkCell";
+import BugSparkCell from "@core/BugSparkCell";
 import BugVolumeBar from "@core/BugVolumeBar";
 import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
@@ -361,7 +361,7 @@ export default function EncodersTable({ panelId }) {
                 {
                     width: 300,
                     content: (item) => (
-                        <SparkCell height={80} value={item["bitrate-text"]} history={item?.encoderStatsVideo} />
+                        <BugSparkCell height={80} value={item["bitrate-text"]} history={item?.encoderStatsVideo} />
                     ),
                 },
             ]}

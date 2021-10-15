@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PanelConfig({ panelId, children, config, handleSubmit }) {
+export default function BugConfigWrapper({ panelId, children, config, handleSubmit }) {
     const classes = useStyles();
     const history = useHistory();
     const sendAlert = useAlert();

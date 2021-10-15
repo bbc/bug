@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import ConfigFormTextField from "@core/ConfigFormTextField";
 import { useForm } from "react-hook-form";
-import PanelConfig from "@core/PanelConfig";
+import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -27,7 +27,7 @@ export default function ConfigPanel() {
     }
 
     return (
-        <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
+        <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
             <Grid item xs={12}>
                 <ConfigFormTextField
                     inputProps={{ ...register("title", { required: true }) }}
@@ -127,6 +127,6 @@ export default function ConfigPanel() {
                     </Select>
                 </FormControl>
             </Grid>
-        </PanelConfig>
+        </BugConfigWrapper>
     );
 }

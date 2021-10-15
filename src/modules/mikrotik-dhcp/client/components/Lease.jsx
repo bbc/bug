@@ -3,7 +3,7 @@ import React from "react";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import BugForm from "@core/BugForm";
-import ReadonlyTextField from "@core/ReadonlyTextField";
+import BugReadonlyTextField from "@core/BugReadonlyTextField";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
@@ -118,7 +118,7 @@ export default function Lease({ panelId, leaseId }) {
                             </Grid>
                             {lease["host-name"] && (
                                 <Grid item xs={12}>
-                                    <ReadonlyTextField
+                                    <BugReadonlyTextField
                                         fullWidth
                                         defaultValue={lease["host-name"]}
                                         type="text"
@@ -169,7 +169,7 @@ export default function Lease({ panelId, leaseId }) {
                             </Grid>
                             {lease["manufacturer"] && (
                                 <Grid item xs={12}>
-                                    <ReadonlyTextField
+                                    <BugReadonlyTextField
                                         fullWidth
                                         defaultValue={lease["manufacturer"]}
                                         type="text"
@@ -178,7 +178,7 @@ export default function Lease({ panelId, leaseId }) {
                                 </Grid>
                             )}
                             <Grid item xs={12}>
-                                <ReadonlyTextField
+                                <BugReadonlyTextField
                                     fullWidth
                                     defaultValue={lease["status"]}
                                     type="text"

@@ -3,10 +3,10 @@ import Grid from "@mui/material/Grid";
 import ConfigFormTextField from "@core/ConfigFormTextField";
 import ConfigFormChipInput from "@core/ConfigFormChipInput";
 import ConfigFormSwitch from "@core/ConfigFormSwitch";
-import PanelConfig from "@core/PanelConfig";
+import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import PanelGroupFormControl from "@core/PanelGroupFormControl";
+import ConfigFormPanelGroup from "@core/ConfigFormPanelGroup";
 import { useConfigFormHandler } from "@core/ConfigFormHandler";
 
 export default function ConfigPanel() {
@@ -26,7 +26,7 @@ export default function ConfigPanel() {
 
     return (
         <>
-            <PanelConfig config={panelConfig.data} handleSubmit={handleSubmit}>
+            <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <ConfigFormTextField
                         inputProps={{ ...register("title", { required: true }) }}
@@ -50,7 +50,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <PanelGroupFormControl name="group" control={control} defaultValue={panelConfig.data.group} />
+                    <ConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <ConfigFormTextField
@@ -120,7 +120,7 @@ export default function ConfigPanel() {
                         fullWidth
                     />
                 </Grid> */}
-            </PanelConfig>
+            </BugConfigWrapper>
         </>
     );
 }

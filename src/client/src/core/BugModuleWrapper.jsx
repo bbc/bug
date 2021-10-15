@@ -18,7 +18,7 @@ function ModuleSwitch({ children, panelId }) {
     }, [children]);
 }
 
-export default function ModuleWrapper({ panelId, children }) {
+export default function BugModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);

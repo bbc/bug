@@ -2,21 +2,21 @@ import React from "react";
 import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
 import OutputPanel from "./panels/OutputPanel";
-import ModuleWrapper from "@core/ModuleWrapper";
-import ModuleRoute from "@core/ModuleRoute";
+import BugModuleWrapper from "@core/BugModuleWrapper";
+import BugModuleRoute from "@core/BugModuleRoute";
 
 export default function Module(props) {
     return (
-        <ModuleWrapper {...props}>
-            <ModuleRoute exact path="/panel/:panelId">
+        <BugModuleWrapper {...props}>
+            <BugModuleRoute exact path="/panel/:panelId">
                 <MainPanel />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/config">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel />
-            </ModuleRoute>
-            <ModuleRoute exact path="/panel/:panelId/output/:outputNumber">
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/output/:outputNumber">
                 <OutputPanel />
-            </ModuleRoute>
-        </ModuleWrapper>
+            </BugModuleRoute>
+        </BugModuleWrapper>
     );
 }
