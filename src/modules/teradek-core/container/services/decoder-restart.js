@@ -10,7 +10,7 @@ module.exports = async (sid) => {
     const config = await configGet();
 
     const response = await axios.get(
-        `https://api-core.teradek.com/api/v1.0/${config?.organisation}/devices/${sid}/restart-encoder`,
+        `https://api-core.teradek.com/api/v1.0/${config?.organisation}/devices/${sid}/restart-decoder`,
         {
             params: {
                 auth_token: token?.auth_token,

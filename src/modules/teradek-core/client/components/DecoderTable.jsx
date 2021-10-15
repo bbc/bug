@@ -7,16 +7,21 @@ import PowerIcon from "@core/PowerIcon";
 import ApiSwitch from "@core/ApiSwitch";
 import AxiosGet from "@utils/AxiosGet";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useAlert } from "@utils/Snackbar";
 import { useHistory } from "react-router-dom";
 import SparkCell from "@core/SparkCell";
 import Typography from "@mui/material/Typography";
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
+import EditIcon from "@mui/icons-material/Edit";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 
-export default function DecodersTable({ panelId }) {
+export default function DecoderTable({ panelId }) {
     const { confirmDialog } = useBugConfirmDialog();
     const sendAlert = useAlert();
     const history = useHistory();
+    const { renameDialog } = useBugRenameDialog();
 
     const encoders = useApiPoller({
         url: `/container/${panelId}/encoder/`,
@@ -47,68 +52,25 @@ export default function DecodersTable({ panelId }) {
         }
     };
 
-    // const getEncoderAutocompleteControl = (item) => {
-    //     // we need to get the label/id pair from the encoders array for the currently selected value
-    //     const selectedEncoderObject = encoders?.data?.find((object) => object.id === item?.link?.encoderSid);
+    const handleRenameClicked = async (event, decoder) => {
+        const result = await renameDialog({
+            title: "Rename decoder",
+            defaultValue: decoder.customName,
+        });
 
-    //     return (
-    //         <Autocomplete
-    //             filterSelectedOptions
-    //             options={encoders.data}
-    //             onChange={(event, value) => {
-    //                 if (value) {
-    //                     handlePair(value?.id, item.sid);
-    //                 } else {
-    //                     handleUnpair(item?.link?.encoderSid, item.sid);
-    //                 }
-    //                 event.stopPropagation();
-    //                 event.preventDefault();
-    //             }}
-    //             onClick={(event) => {
-    //                 event.stopPropagation();
-    //                 event.preventDefault();
-    //             }}
-    //             // defaultValue={processValues(value)}
-    //             value={selectedEncoderObject}
-    //             renderInput={(params) => (
-    //                 <TextField
-    //                     {...params}
-    //                     variant="outlined"
-    //                     onClick={(event) => {
-    //                         event.stopPropagation();
-    //                         event.preventDefault();
-    //                     }}
-    //                 />
-    //             )}
-    //         />
-    //     );
-    // };
+        if (result === false) {
+            return false;
+        }
 
-    // const getLinkedDevices = (item) => {
-    //     console.log(item);
-    //     const chips = [];
-    //     if (item?.links) {
-    //         if (item.links.status !== "failed") {
-    //             chips.push(
-    //                 <Chip
-    //                     icon={<VideocamIcon />}
-    //                     key={item?.links.encoderSid}
-    //                     className={`${classes.chip} ${getColor(item?.status)}`}
-    //                     onDelete={(event) => {
-    //                         handleUnpair(event, item.links?.encoderSid, item?.sid);
-    //                     }}
-    //                     onClick={(event) => {
-    //                         event.stopPropagation();
-    //                         event.preventDefault();
-    //                     }}
-    //                     label={getDeviceName(item.links?.encoderSid)}
-    //                 />
-    //             );
-    //         }
-    //     }
+        if (await AxiosGet(`/container/${panelId}/decoder/rename/${decoder.sid}/${result}`)) {
+            sendAlert(`Successfully renamed decoder`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to rename decoder`, { variant: "error" });
+        }
 
-    //     return chips;
-    // };
+        event.stopPropagation();
+        event.preventDefault();
+    };
 
     const handleEnabledChanged = async (checked, decoder) => {
         const command = checked ? "start" : "stop";
@@ -118,6 +80,42 @@ export default function DecodersTable({ panelId }) {
         } else {
             sendAlert(`Failed to ${command} encoder: ${decoder.name}`, { variant: "error" });
         }
+    };
+
+    const handleRestartClicked = async (event, item) => {
+        if (
+            await confirmDialog({
+                title: "Restart video",
+                message: "All active streams will be interrupted. Are you sure?",
+                confirmButtonText: "Restart",
+            })
+        ) {
+            if (await AxiosGet(`/container/${panelId}/decoder/restart/${item.sid}`)) {
+                sendAlert(`Successfully restarted video`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to restart video`, { variant: "error" });
+            }
+        }
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
+    const handleRebootClicked = async (event, item) => {
+        if (
+            await confirmDialog({
+                title: "Reboot decoder",
+                message: "All active streams will be interrupted. Are you sure?",
+                confirmButtonText: "Reboot",
+            })
+        ) {
+            if (await AxiosGet(`/container/${panelId}/decoder/reboot/${item.sid}`)) {
+                sendAlert(`Successfully rebooted decoder`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to reboot decoder`, { variant: "error" });
+            }
+        }
+        event.stopPropagation();
+        event.preventDefault();
     };
 
     const isEnabled = (decoder) => {
@@ -183,37 +181,11 @@ export default function DecodersTable({ panelId }) {
                 {
                     width: "30%",
                     content: (item) => {
-                        return (
-                            <SparkCell
-                                height={30}
-                                value={item["framerate-text"]}
-                                history={item.decoderStats?.slice(-60)}
-                            />
-                        );
+                        return <SparkCell height={30} value={item["framerate-text"]} history={item?.decoderStats} />;
                     },
                 },
             ]}
             menuItems={[
-                // {
-                //     title: "Edit Lease",
-                //     icon: <EditIcon fontSize="small" />,
-                //     onClick: handleDetailsClicked,
-                // },
-                // {
-                //     title: "Comment",
-                //     disabled: (item) => item.dynamic,
-                //     icon: <CommentIcon fontSize="small" />,
-                //     onClick: handleCommentClicked,
-                // },
-                // {
-                //     title: "Make Static",
-                //     disabled: (item) => !item.dynamic,
-                //     icon: <GpsFixedIcon fontSize="small" />,
-                //     onClick: handleMakeStaticClicked,
-                // },
-                // {
-                //     title: "-",
-                // },
                 {
                     title: "Enable",
                     disabled: (item) => !item.disabled,
@@ -230,6 +202,25 @@ export default function DecodersTable({ panelId }) {
                         handleEnabledChanged(false, item);
                     },
                 },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Rename Decoder",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleRenameClicked,
+                },
+                {
+                    title: "Restart Video",
+                    icon: <RestartAltIcon fontSize="small" />,
+                    onClick: handleRestartClicked,
+                },
+                {
+                    title: "Reboot Decoder",
+                    icon: <PowerSettingsNewIcon fontSize="small" />,
+                    onClick: handleRebootClicked,
+                },
+
                 // {
                 //     title: "-",
                 // },

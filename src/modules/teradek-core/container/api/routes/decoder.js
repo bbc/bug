@@ -8,6 +8,7 @@ const getSelectedDecoders = require("@services/decoder-getselected");
 const deviceReboot = require("@services/device-reboot");
 const deviceRemove = require("@services/device-remove");
 const decoderPair = require("@services/decoder-pair");
+const decoderRestart = require("@services/decoder-restart");
 
 route.delete("/:sid", async function (req, res) {
     try {
@@ -80,6 +81,21 @@ route.get("/reboot/:sid", async function (req, res) {
         res.json({
             status: "error",
             message: "Failed to reboot device",
+        });
+    }
+});
+
+route.get("/restart/:sid", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await decoderRestart(req?.params?.sid),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to restart video on selected decoder",
         });
     }
 });

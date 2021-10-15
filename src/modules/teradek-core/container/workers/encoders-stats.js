@@ -154,7 +154,7 @@ const main = async () => {
                         $push: {
                             encoderStatsVideo: {
                                 $each: [{ ...stats }],
-                                $slice: 200,
+                                $slice: -60,
                             },
                         },
                     }
