@@ -10,8 +10,6 @@ export default function SparkCell({ value, history, height = 48 }) {
     // pull values from array of objects
     let values = history.map((a) => a.value);
 
-    const textTop = height / 2 - 10;
-
     return (
         <Box
             sx={{
@@ -21,11 +19,13 @@ export default function SparkCell({ value, history, height = 48 }) {
             {value && (
                 <Box
                     sx={{
-                        // position: "absolute",
+                        position: "absolute",
                         zIndex: "1",
                         textShadow: "0px 0px 15px #000",
-                        top: textTop,
+                        margin: "0",
                         marginLeft: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
                     }}
                 >
                     {value !== "0" ? value : ""}
@@ -36,13 +36,10 @@ export default function SparkCell({ value, history, height = 48 }) {
                     "& svg": {
                         width: "100%",
                     },
-                    position: "absolute",
-                    bottom: 4,
                     width: "100%",
-                    paddingRight: "0.5rem",
                 }}
             >
-                <Sparklines height={height} data={values} style={{ opacity: 0.7 }} min={0}>
+                <Sparklines height={height} data={values} style={{ opacity: 0.7, height: "100%" }} min={0}>
                     <SparklinesLine color="#337ab7" />
                 </Sparklines>
             </Box>
