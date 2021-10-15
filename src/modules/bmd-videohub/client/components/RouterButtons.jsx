@@ -4,7 +4,7 @@ import RouterButton from "./RouterButton";
 import { useParams } from "react-router-dom";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
-import EditIconDialog from "@core/EditIconDialog";
+import BugEditIconDialog from "@core/BugEditIconDialog";
 import AxiosPost from "@utils/AxiosPost";
 
 import {
@@ -148,7 +148,7 @@ export default function Router({
                     </SortableContext>
                 </DndContext>
                 {editIconDialogButton !== null && (
-                    <EditIconDialog
+                    <BugEditIconDialog
                         icon={editIconDialogButton.icon}
                         color={editIconDialogButton.color}
                         onCancel={() => setEditIconDialogButton(null)}

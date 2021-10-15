@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import AxiosPost from "@utils/AxiosPost";
 import AxiosGet from "@utils/AxiosGet";
-import DynamicIcon from "@core/DynamicIcon";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -222,7 +222,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                             onClick={() => setSelectedIcon(icon)}
                             style={{ color: selectedColour }}
                         >
-                            <DynamicIcon title={icon} className={classes.icon} iconName={icon} />
+                            <BugDynamicIcon title={icon} className={classes.icon} iconName={icon} />
                         </Button>
                     </Tooltip>
                 </div>

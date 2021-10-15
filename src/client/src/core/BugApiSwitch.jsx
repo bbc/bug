@@ -1,7 +1,7 @@
 import React from "react";
 import Switch from "@mui/material/Switch";
 
-class ApiSwitch extends React.Component {
+class BugApiSwitch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -50,4 +50,4 @@ class ApiSwitch extends React.Component {
     }
 }
 
-export default ApiSwitch;
+export default BugApiSwitch;

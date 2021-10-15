@@ -20,7 +20,7 @@ function fixIconNames(string) {
     return name;
 }
 
-export default function DynamicIcon({ iconName, color, className }) {
+export default function BugDynamicIcon({ iconName, color, className }) {
     const isMDI = (name) => {
         if (name.split("-")[0] === "mdi") {
             return true;

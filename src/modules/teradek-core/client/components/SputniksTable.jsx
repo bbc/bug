@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useApiPoller } from "@utils/ApiPoller";
 import BugApiTable from "@core/BugApiTable";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import Chip from "@mui/material/Chip";
 import CloudIcon from "@mui/icons-material/Cloud";
 import VideocamIcon from "@mui/icons-material/Videocam";
@@ -55,7 +55,7 @@ export default function SputniksTable({ panelId }) {
                     width: 70,
                     content: (item) => {
                         return (
-                            <ApiSwitch
+                            <BugApiSwitch
                                 checked={itemIsActive(item)}
                                 onChange={(checked) => handleEnabledChanged(checked, item)}
                             />

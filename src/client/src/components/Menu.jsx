@@ -9,7 +9,7 @@ import Divider from "@mui/material/Divider";
 import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import DynamicIcon from "@core/DynamicIcon";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import Loading from "@components/Loading";
 import BugMenuIcon from "@components/BugMenuIcon";
 import UserMenuItem from "@components/users/UserMenuItem";
@@ -111,7 +111,7 @@ const Menu = ({ showGroups = true }) => {
             <ListItem button component={Link} to={`/panel/${menuPanel.id}`} key={menuPanel.id} selected={isSelected}>
                 <ListItemIcon>
                     <BadgeWrapper panel={menuPanel}>
-                        <DynamicIcon iconName={menuPanel._module.icon} />
+                        <BugDynamicIcon iconName={menuPanel._module.icon} />
                     </BadgeWrapper>
                 </ListItemIcon>
                 <ListItemText primary={menuPanel.title} />

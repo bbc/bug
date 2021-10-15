@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import AxiosCommand from "@utils/AxiosCommand";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import { useAlert } from "@utils/Snackbar";
 import SecurityMenu from "./SecurityMenu";
 import { useHistory } from "react-router-dom";
@@ -64,7 +64,7 @@ export default function SecurityTableRow({ strategy }) {
     return (
         <TableRow key={strategy.type} hover className={classes.tableRow} onClick={() => handleRowClick(strategy.type)}>
             <TableCell className={classes.colState}>
-                <ApiSwitch
+                <BugApiSwitch
                     checked={strategy.enabled}
                     onChange={(checked) => handleSwitchChange(checked, strategy.type)}
                 />

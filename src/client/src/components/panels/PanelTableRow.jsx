@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import PanelRowState from "@components/panels/PanelRowState";
 import AxiosCommand from "@utils/AxiosCommand";
@@ -100,7 +100,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                 <PanelPowerIcon panel={panel} />
             </TableCell>
             <TableCell className={classes.colEnabled} style={{ textAlign: "center" }}>
-                <ApiSwitch
+                <BugApiSwitch
                     panelId={panel.id}
                     checked={panel.enabled}
                     onChange={(checked) => handleEnabledChanged(checked, panel.id)}

@@ -1,5 +1,5 @@
 import React from "react";
-import DynamicIcon from "@core/DynamicIcon";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import BadgeWrapper from "@components/BadgeWrapper";
@@ -57,7 +57,7 @@ const StyledCard = styled(Card)({
     },
 });
 
-const StyledDynamicIcon = styled(DynamicIcon)(({ theme }) => ({
+const StyledBugDynamicIcon = styled(BugDynamicIcon)(({ theme }) => ({
     color: theme.palette.primary.main,
 }));
 
@@ -129,7 +129,7 @@ const HomeTile = ({ panel }) => {
                                     horizontal: "right",
                                 }}
                             >
-                                <StyledDynamicIcon iconName={panel._module.icon} />
+                                <StyledBugDynamicIcon iconName={panel._module.icon} />
                             </BadgeWrapper>
                         }
                         action={<PanelDropdownMenu panel={panel} />}

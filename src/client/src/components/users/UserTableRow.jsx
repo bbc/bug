@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import AxiosCommand from "@utils/AxiosCommand";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import { useAlert } from "@utils/Snackbar";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Redirect } from "react-router";
@@ -64,7 +64,7 @@ export default function UserTableRow({ user, currentUserId }) {
             onClick={() => setRedirectUrl(`/system/user/${user.id}`)}
         >
             <TableCell className={classes.colName}>
-                <ApiSwitch
+                <BugApiSwitch
                     checked={user.enabled}
                     onChange={(checked) => handleSwitchChange(checked, user.id)}
                     disabled={user.enabled && user.id === currentUserId}

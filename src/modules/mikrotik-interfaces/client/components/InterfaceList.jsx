@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import Loading from "@components/Loading";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import InterfaceListMenu from "./InterfaceListMenu";
@@ -173,7 +173,7 @@ export default function InterfaceList({ panelId }) {
                     <PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon} />
                 </TableCell>
                 <TableCell className={classes.colEnabled}>
-                    <ApiSwitch
+                    <BugApiSwitch
                         checked={!iface.disabled}
                         onChange={(checked) => handleEnabledChanged(checked, iface.name)}
                         disabled={iface._protected}

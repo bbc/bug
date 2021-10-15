@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import Loading from "@components/Loading";
 import OutputsMenu from "./OutputsMenu";
 import { useHistory } from "react-router-dom";
@@ -157,7 +157,7 @@ export default function OutputsTable({ panelId }) {
                 </TableCell>
 
                 <TableCell className={classes.colEnabled}>
-                    <ApiSwitch
+                    <BugApiSwitch
                         checked={output.state}
                         onChange={(checked) => handleEnabledChanged(checked, output)}
                         disabled={output?._protected}

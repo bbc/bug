@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
@@ -191,7 +191,7 @@ export default function LeaseList({ panelId }) {
                         width: 82,
                         content: (item) => {
                             return (
-                                <ApiSwitch
+                                <BugApiSwitch
                                     disabled={item.dynamic}
                                     checked={!item.disabled}
                                     onChange={(checked) => handleEnabledChanged(checked, item.id)}

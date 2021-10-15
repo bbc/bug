@@ -3,7 +3,7 @@ import ButtonMenu from "./ButtonMenu";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
-import DynamicIcon from "@core/DynamicIcon";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import RenameDialog from "./RenameDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
@@ -197,7 +197,7 @@ export default function RouterButton({
                     <div className={classes.buttonUpper}>
                         <div className={classes.circle}>
                             {button.icon ? (
-                                <DynamicIcon
+                                <BugDynamicIcon
                                     color={button.iconColour}
                                     className={classes.buttonIcon}
                                     iconName={button.icon}

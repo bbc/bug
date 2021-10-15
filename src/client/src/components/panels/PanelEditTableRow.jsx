@@ -1,7 +1,7 @@
 import React from "react";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { makeStyles } from "@mui/styles";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
@@ -76,7 +76,7 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
                 <PanelPowerIcon panel={panel} />
             </TableCell>
             <TableCell className={classes.colEnabled} style={{ textAlign: "center" }}>
-                <ApiSwitch panelId={panel.id} checked={panel.enabled} disabled />
+                <BugApiSwitch panelId={panel.id} checked={panel.enabled} disabled />
             </TableCell>
             <TableCell>
                 <div className={classes.drag_text}>{panel.title}</div>

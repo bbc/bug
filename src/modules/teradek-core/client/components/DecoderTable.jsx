@@ -4,7 +4,7 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useApiPoller } from "@utils/ApiPoller";
 import BugApiTable from "@core/BugApiTable";
 import PowerIcon from "@core/PowerIcon";
-import ApiSwitch from "@core/ApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 import AxiosGet from "@utils/AxiosGet";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
@@ -167,7 +167,7 @@ export default function DecoderTable({ panelId }) {
                     width: 82,
                     content: (item) => {
                         return (
-                            <ApiSwitch
+                            <BugApiSwitch
                                 checked={isEnabled(item)}
                                 disabled={!isOnline(item)}
                                 onChange={(checked) => handleEnabledChanged(checked, item)}
