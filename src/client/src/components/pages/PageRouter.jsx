@@ -6,15 +6,15 @@ import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const PageRouter = () => {
-    const ShowMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
-    const ShowDesktop = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+    const showMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+    const showDesktop = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
-    const NavSwitcher = (props) => {
-        if (ShowDesktop) {
-            return <NavDesktop>{props.children}</NavDesktop>;
+    const NavSwitcher = ({ showMobile, showDesktop, children }) => {
+        if (showDesktop) {
+            return <NavDesktop>{children}</NavDesktop>;
         }
-        if (ShowMobile) {
-            return <NavMobile>{props.children}</NavMobile>;
+        if (showMobile) {
+            return <NavMobile>{children}</NavMobile>;
         }
         return <>Nope</>;
     };
@@ -27,12 +27,12 @@ const PageRouter = () => {
                     height: "100%",
                 }}
             >
-                <NavSwitcher>
+                <NavSwitcher showMobile={showMobile} showDesktop={showDesktop}>
                     <PageContent />
                 </NavSwitcher>
             </Box>
         ),
-        [ShowMobile, ShowDesktop]
+        [showMobile, showDesktop]
     );
 };
 
