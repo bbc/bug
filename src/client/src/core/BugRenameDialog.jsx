@@ -23,7 +23,7 @@ const BugRenameDialog = ({
 
     React.useEffect(() => {
         setValue(defaultValue);
-    }, [defaultValue]);
+    }, [defaultValue, open]);
 
     const handleClear = () => {
         setValue("");
@@ -83,6 +83,7 @@ const BugRenameDialogProvider = ({ children }) => {
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [dialogConfig, setDialogConfig] = React.useState({});
 
+    console.log("dialogConfig", dialogConfig);
     const openDialog = ({ title, message, actionCallback, defaultValue, allowBlank = false }) => {
         setDialogOpen(true);
         setDialogConfig({ title, message, actionCallback, defaultValue, allowBlank });
