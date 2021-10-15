@@ -9,18 +9,19 @@ import AxiosGet from "@utils/AxiosGet";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useAlert } from "@utils/Snackbar";
-import { useHistory } from "react-router-dom";
 import SparkCell from "@core/SparkCell";
 import Typography from "@mui/material/Typography";
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
 import EditIcon from "@mui/icons-material/Edit";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import LaunchIcon from "@mui/icons-material/Launch";
+import AxiosDelete from "@utils/AxiosDelete";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function DecoderTable({ panelId }) {
     const { confirmDialog } = useBugConfirmDialog();
     const sendAlert = useAlert();
-    const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
 
     const encoders = useApiPoller({
@@ -116,6 +117,22 @@ export default function DecoderTable({ panelId }) {
         }
         event.stopPropagation();
         event.preventDefault();
+    };
+
+    const handleCoreClicked = async (event, item) => {
+        const url = `https://corecloud.tv/app/destinations/decoders/${item.sid}`;
+        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+        if (newWindow) newWindow.opener = null;
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
+    const handleRemoveClicked = async (event, item) => {
+        if (await AxiosDelete(`/container/${panelId}/decoder/${item.sid}`)) {
+            sendAlert(`Removed decoder`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to remove decoder`, { variant: "error" });
+        }
     };
 
     const isEnabled = (decoder) => {
@@ -220,24 +237,22 @@ export default function DecoderTable({ panelId }) {
                     icon: <PowerSettingsNewIcon fontSize="small" />,
                     onClick: handleRebootClicked,
                 },
-
-                // {
-                //     title: "-",
-                // },
-                // {
-                //     title: "Delete",
-                //     icon: <DeleteIcon fontSize="small" />,
-                //     onClick: handleDeleteClicked,
-                // },
-                // {
-                //     title: "-",
-                // },
-                // {
-                //     title: "Wake Up (WOL)",
-                //     disabled: (item) => item.status === "bound",
-                //     icon: <PowerSettingsNew fontSize="small" />,
-                //     onClick: handleWolClicked,
-                // },
+                {
+                    title: "-",
+                },
+                {
+                    title: "View on Core",
+                    icon: <LaunchIcon fontSize="small" />,
+                    onClick: handleCoreClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Remove",
+                    icon: <DeleteIcon fontSize="small" />,
+                    onClick: handleRemoveClicked,
+                },
             ]}
             defaultSortIndex={4}
             apiUrl={`/container/${panelId}/decoder/selected`}

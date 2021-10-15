@@ -10,13 +10,8 @@ module.exports = async (sid) => {
         const token = await tokenCollection.findOne();
         const config = await configGet();
 
-        const response = await axios.get(
-            `https://api-core.teradek.com/api/v1.0/${config?.organisation}/devices/${sid}/reboot`,
-            {
-                params: {
-                    auth_token: token?.auth_token,
-                },
-            }
+        const response = await axios.post(
+            `https://api-core.teradek.com/api/v1.0/${config?.organisation}/devices/${sid}/reboot?auth_token=${token?.auth_token}`,
         );
 
         if (response.data?.meta?.status === "ok") {

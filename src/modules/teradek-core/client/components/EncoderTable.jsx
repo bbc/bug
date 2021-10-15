@@ -26,8 +26,6 @@ import BugVolumeBar from "@core/BugVolumeBar";
 import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 
-const height = 100;
-
 const useStyles = makeStyles((theme) => ({
     blankThumbnail: {
         display: "block",
