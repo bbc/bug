@@ -33,7 +33,7 @@ export default function MainPanel() {
                     `/panel/${params.panelId}/decoders`,
                     `/panel/${params.panelId}/sputniks`,
                 ]}
-                defaultTab={1}
+                defaultTab={0}
             ></BugPanelTabbedForm>
         </>
     );
