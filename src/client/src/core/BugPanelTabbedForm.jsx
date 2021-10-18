@@ -68,7 +68,16 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
     useHotkeys("esc", onClose);
 
     React.useEffect(() => {
-        handleChange(null, defaultTab);
+        let tabIndexToUse = defaultTab;
+        // check the URL to see if we should load a specific tab index
+        if (locations) {
+            locations.forEach((eachLocation, eachIndex) => {
+                if (eachLocation === location.pathname) {
+                    tabIndexToUse = eachIndex;
+                }
+            });
+        }
+        handleChange(null, tabIndexToUse);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultTab]);
 
