@@ -1,6 +1,7 @@
 "use strict";
 
 const statusCheckCollection = require("@core/status-checkcollection");
+const statusCheckFirmware = require("./status-checkfirmware");
 
 module.exports = async () => {
     return [].concat(
@@ -31,6 +32,7 @@ module.exports = async () => {
             message: "Channel information is out of date.",
             itemType: "warning",
             timeoutSeconds: 120,
-        })
+        }),
+        await statusCheckFirmware()
     );
 };

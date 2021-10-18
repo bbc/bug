@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function BugAlert({ type, message, flags = [], panel, square = false }) {
+export default function BugAlert({ type, message, flags = [], panel, square = false, width = null }) {
     const classes = useStyles();
     const history = useHistory();
     const sendAlert = useAlert();
@@ -120,6 +120,9 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
 
     return (
         <Alert
+            sx={{
+                width: width === null ? "auto" : width,
+            }}
             severity={mappedSeverity[type]}
             className={clsx({
                 [classes.squareCorners]: square,

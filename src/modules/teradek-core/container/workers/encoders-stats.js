@@ -65,7 +65,6 @@ const main = async () => {
         console.log(`encoders-stats: connected to teradek core ${socket.id}`);
     });
 
-    console.log(workerData.encoders);
     for (let encoderSid of workerData.encoders) {
         console.log(`encoders-stats: registering websocket listener for device sid ${encoderSid}`);
 

@@ -25,6 +25,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import BugAudioThumbnail from "@core/BugAudioThumbnail";
 import BugPowerIcon from "@core/BugPowerIcon";
+import BugTableNoData from "@core/BugTableNoData";
 
 const useStyles = makeStyles((theme) => ({
     iconRunning: {
@@ -264,6 +265,29 @@ export default function EncodersTable({ panelId }) {
         event.preventDefault();
     };
 
+    const noEncoders = () => (
+        <Box
+            sx={{
+                margin: 1,
+                display: "flex",
+                justifyContent: "center",
+            }}
+        >
+            <BugAlert
+                key="KEY"
+                type="info"
+                message="No encoders configured"
+                flags={["configurePanel"]}
+                panel={{ id: panelId }}
+                square
+                width="40rem"
+                style={{
+                    margin: "auto",
+                }}
+            />
+        </Box>
+    );
+
     return (
         <BugApiTable
             columns={[
@@ -391,6 +415,14 @@ export default function EncodersTable({ panelId }) {
             apiUrl={`/container/${panelId}/encoder/selected`}
             panelId={panelId}
             hideHeader={false}
+            noData={
+                <BugTableNoData
+                    panelId={panelId}
+                    title="No encoders configured"
+                    message="Click to edit panel configuration and add encoders"
+                    showConfigButton={true}
+                />
+            }
         />
     );
 }

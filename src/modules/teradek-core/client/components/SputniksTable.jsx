@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
+import BugTableNoData from "@core/BugTableNoData";
 
 export default function SputniksTable({ panelId }) {
     const devices = useApiPoller({
@@ -78,7 +79,6 @@ export default function SputniksTable({ panelId }) {
                 },
                 {
                     title: "Devices",
-                    // width: "30%",
                     content: (item) => (
                         <Box
                             sx={{
@@ -101,6 +101,14 @@ export default function SputniksTable({ panelId }) {
             apiUrl={`/container/${panelId}/sputnik/`}
             panelId={panelId}
             hideHeader={false}
+            noData={
+                <BugTableNoData
+                    panelId={panelId}
+                    title="No sputniks found"
+                    message="This account contains no sputnik servers"
+                    showConfigButton={false}
+                />
+            }
         />
     );
 }

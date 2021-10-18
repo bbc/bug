@@ -57,6 +57,7 @@ export default function BugApiTable({
     defaultSortIndex = 0,
     defaultSortDirection = "asc",
     hideHeader = false,
+    noData,
 }) {
     const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
     const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
@@ -169,6 +170,12 @@ export default function BugApiTable({
         return <Loading />;
     }
 
+    if (pollResult?.data?.length === 0) {
+        if (noData) {
+            return noData;
+        }
+        return null;
+    }
     return (
         <>
             <div className={classes.content}>

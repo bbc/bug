@@ -36,7 +36,6 @@ const filterDevice = async (device) => {
     delete device?.introspection;
     delete device?.AudioInput;
     delete device?.Bond;
-
     device.timestamp = new Date();
     return device;
 };
@@ -52,7 +51,7 @@ const main = async () => {
     await mongoCreateIndex(devicesCollection, "timestamp", { expireAfterSeconds: 120 });
 
     // remove previous values
-    //TODO    devicesCollection.deleteMany({});
+    // await devicesCollection.deleteMany({});
 
     console.log(`devices: teradek-core device worker starting...`);
 

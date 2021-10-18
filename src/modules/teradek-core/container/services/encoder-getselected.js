@@ -11,7 +11,7 @@ module.exports = async (index) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`devices-encoder-getselected: failed to fetch config`);
+        console.log(`encoder-getselected: failed to fetch config`);
         return false;
     }
 
