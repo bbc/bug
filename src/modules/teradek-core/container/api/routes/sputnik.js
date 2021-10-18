@@ -5,7 +5,7 @@ const getSputnikList = require("@services/sputnik-list");
 const getSputnik = require("@services/sputnik-get");
 
 
-route.get("/", async function (req, res) {
+route.all("/", async function (req, res) {
     try {
         res.json({
             status: "success",

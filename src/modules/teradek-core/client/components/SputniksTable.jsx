@@ -1,35 +1,59 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useApiPoller } from "@utils/ApiPoller";
 import BugApiTable from "@core/BugApiTable";
-import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
-import BugApiSwitch from "@core/BugApiSwitch";
-import Chip from "@mui/material/Chip";
-import CloudIcon from "@mui/icons-material/Cloud";
-import VideocamIcon from "@mui/icons-material/Videocam";
-import AxiosGet from "@utils/AxiosGet";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import { useAlert } from "@utils/Snackbar";
-import { useHistory } from "react-router-dom";
-import LaunchIcon from "@mui/icons-material/Launch";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import AxiosDelete from "@utils/AxiosDelete";
+import BugPowerIcon from "@core/BugPowerIcon";
 import Typography from "@mui/material/Typography";
-import BugSparkCell from "@core/BugSparkCell";
-import BugVolumeBar from "@core/BugVolumeBar";
-import EditIcon from "@mui/icons-material/Edit";
+import LaunchIcon from "@mui/icons-material/Launch";
 import Box from "@mui/material/Box";
-
-const height = 100;
+import Chip from "@mui/material/Chip";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
 
 export default function SputniksTable({ panelId }) {
-    const classes = useStyles();
+    const devices = useApiPoller({
+        url: `/container/${panelId}/device/`,
+        interval: 10000,
+    });
+
+    const getLinkedDevices = (item) => {
+        if (item.status !== "online") {
+            return null;
+        }
+
+        const items = [];
+        if (item?.inventory) {
+            for (let sid of item?.inventory) {
+                const selectedDevice = devices.data.find((device) => device.id === sid);
+                if (selectedDevice) {
+                    items.push(selectedDevice);
+                }
+            }
+        }
+
+        // sort the array
+        items.sort((a, b) => a.label.localeCompare(b.label, "en", { sensitivity: "base" }));
+
+        return items.map((eachItem) => (
+            <Chip
+                sx={{
+                    margin: "2px",
+                    border: "none",
+                    borderRadius: "3px",
+                }}
+                icon={eachItem.type === "encoder" ? <VideocamIcon /> : <LiveTvIcon />}
+                key={eachItem.id}
+                label={eachItem.label}
+            />
+        ));
+    };
+
+    const handleCoreClicked = async (event, item) => {
+        const url = `https://corecloud.tv/app/servers/sputniks/${item.mac}`;
+        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+        if (newWindow) newWindow.opener = null;
+        event.stopPropagation();
+        event.preventDefault();
+    };
 
     return (
         <BugApiTable
@@ -37,55 +61,28 @@ export default function SputniksTable({ panelId }) {
                 {
                     sortable: false,
                     noPadding: true,
-                    // hideWidth: 440,
-                    width: 58,
+                    width: 44,
                     field: "status",
-                    content: (item) => {
-                        return (
-                            <PowerSettingsNew
-                                className={item.streamStatus === "streaming" ? classes.iconRunning : classes.icon}
-                            ></PowerSettingsNew>
-                        );
-                    },
+                    content: (item) => <BugPowerIcon enabled={item.status === "online"} />,
                 },
                 {
-                    sortable: false,
-                    noPadding: true,
-                    // hideWidth: 1200,
-                    width: 70,
-                    content: (item) => {
-                        return (
-                            <BugApiSwitch
-                                checked={itemIsActive(item)}
-                                onChange={(checked) => handleEnabledChanged(checked, item)}
-                            />
-                        );
-                    },
-                },
-                {
-                    width: 214,
-                    content: (item) => {
-                        return getThumbnail(item);
-                    },
-                },
-                {
-                    width: 300,
-                    minWidth: 200,
+                    title: "Name",
                     noWrap: true,
+                    width: "20%",
                     content: (item) => (
                         <>
-                            <Typography variant="body1">{item.customName}</Typography>
-                            <Typography variant="subtitle1" sx={{ opacity: 0.5 }}>
-                                {item.model}
-                            </Typography>
+                            <Typography variant="body1">{item.title}</Typography>
+                            <Typography variant="subtitle1">{item?.ip}</Typography>
                         </>
                     ),
                 },
                 {
+                    title: "Devices",
+                    // width: "30%",
                     content: (item) => (
                         <Box
                             sx={{
-                                maxHeight: 100,
+                                maxHeight: 200,
                                 overflow: "auto",
                             }}
                         >
@@ -93,74 +90,17 @@ export default function SputniksTable({ panelId }) {
                         </Box>
                     ),
                 },
-                {
-                    width: 300,
-                    content: (item) => (
-                        <BugSparkCell
-                            height={80}
-                            value={item["bitrate-text"]}
-                            history={item.encoderStatsVideo?.slice(-60)}
-                        />
-                    ),
-                },
             ]}
             menuItems={[
-                {
-                    title: "Enable",
-                    disabled: (item) => !item.disabled,
-                    icon: <ToggleOnIcon fontSize="small" />,
-                    onClick: (event, item) => {
-                        handleEnabledChanged(true, item);
-                    },
-                },
-                {
-                    title: "Disable",
-                    disabled: (item) => item.disabled,
-                    icon: <ToggleOffIcon fontSize="small" />,
-                    onClick: (event, item) => {
-                        handleEnabledChanged(false, item);
-                    },
-                },
-                {
-                    title: "-",
-                },
-                {
-                    title: "Rename Encoder",
-                    icon: <EditIcon fontSize="small" />,
-                    onClick: handleRenameClicked,
-                },
-                {
-                    title: "Restart Video",
-                    icon: <RestartAltIcon fontSize="small" />,
-                    onClick: handleRestartClicked,
-                },
-                {
-                    title: "Reboot Encoder",
-                    icon: <PowerSettingsNewIcon fontSize="small" />,
-                    onClick: handleRebootClicked,
-                },
-                {
-                    title: "-",
-                },
                 {
                     title: "View on Core",
                     icon: <LaunchIcon fontSize="small" />,
                     onClick: handleCoreClicked,
                 },
-                {
-                    title: "-",
-                },
-                {
-                    title: "Remove",
-                    icon: <DeleteIcon fontSize="small" />,
-                    onClick: handleRemoveClicked,
-                },
             ]}
-            defaultSortIndex={4}
-            apiUrl={`/container/${panelId}/encoder/selected`}
+            apiUrl={`/container/${panelId}/sputnik/`}
             panelId={panelId}
-            onRowClick={handleRowClicked}
-            hideHeader={true}
+            hideHeader={false}
         />
     );
 }

@@ -1,8 +1,4 @@
 "use strict";
-setTimeout(() => {
-    console.log("done");
-}, 99999999);
-return false;
 
 const { parentPort, workerData, threadId } = require("worker_threads");
 
