@@ -155,16 +155,15 @@ export default function DecoderTable({ panelId }) {
                 {
                     sortable: false,
                     noPadding: true,
-                    // hideWidth: 440,
-                    width: 58,
+                    width: 44,
                     field: "status",
                     content: (item) => <BugPowerIcon enabled={isEnabled()} />,
                 },
                 {
                     sortable: false,
                     noPadding: true,
-                    // hideWidth: 1200,
-                    width: 82,
+                    hideWidth: 500,
+                    width: 70,
                     content: (item) => {
                         return (
                             <BugApiSwitch
@@ -176,7 +175,7 @@ export default function DecoderTable({ panelId }) {
                     },
                 },
                 {
-                    width: "30%",
+                    title: "Name",
                     noWrap: true,
                     content: (item) => (
                         <>
@@ -186,7 +185,8 @@ export default function DecoderTable({ panelId }) {
                     ),
                 },
                 {
-                    width: "40%",
+                    title: "Encoder",
+                    width: "30%",
                     content: (item) => (
                         <BugApiAutocomplete
                             options={encoders?.data}
@@ -196,7 +196,9 @@ export default function DecoderTable({ panelId }) {
                     ),
                 },
                 {
-                    width: "30%",
+                    title: "Framerate",
+                    width: "25%",
+                    hideWidth: 799,
                     content: (item) => {
                         return <BugSparkCell height={30} value={item["framerate-text"]} history={item?.decoderStats} />;
                     },
@@ -254,10 +256,9 @@ export default function DecoderTable({ panelId }) {
                     onClick: handleRemoveClicked,
                 },
             ]}
-            defaultSortIndex={4}
             apiUrl={`/container/${panelId}/decoder/selected`}
             panelId={panelId}
-            hideHeader={true}
+            hideHeader={false}
         />
     );
 }

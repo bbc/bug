@@ -5,7 +5,6 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useApiPoller } from "@utils/ApiPoller";
 import BugApiTable from "@core/BugApiTable";
-import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 import BugApiSwitch from "@core/BugApiSwitch";
 import Chip from "@mui/material/Chip";
 import CloudIcon from "@mui/icons-material/Cloud";
@@ -22,19 +21,12 @@ import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import AxiosDelete from "@utils/AxiosDelete";
 import Typography from "@mui/material/Typography";
 import BugSparkCell from "@core/BugSparkCell";
-import BugVolumeBar from "@core/BugVolumeBar";
 import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
+import BugAudioThumbnail from "@core/BugAudioThumbnail";
+import BugPowerIcon from "@core/BugPowerIcon";
 
 const useStyles = makeStyles((theme) => ({
-    blankThumbnail: {
-        display: "block",
-        margin: "auto",
-        height: 100,
-        width: 177,
-        backgroundColor: "#1e1e1e",
-    },
-
     iconRunning: {
         color: theme.palette.primary.main,
         display: "block",
@@ -128,32 +120,6 @@ export default function EncodersTable({ panelId }) {
         }
 
         return selectedChannel.label;
-    };
-
-    const getThumbnail = (item) => {
-        if (item.thumbnail) {
-            return (
-                <Box
-                    sx={{
-                        display: "flex",
-                        margin: "auto",
-                    }}
-                >
-                    <BugVolumeBar min={-90} max={0} height={100} value={item.leftLevels} />
-                    <img
-                        src={item.thumbnail}
-                        style={{
-                            display: "block",
-                            height: 100,
-                            width: 177,
-                        }}
-                    />
-                    <BugVolumeBar min={-90} max={0} height={100} value={item.rightLevels} />
-                </Box>
-            );
-        }
-
-        return <div className={classes.blankThumbnail} />;
     };
 
     const getLinkedDevices = (item) => {
@@ -304,21 +270,14 @@ export default function EncodersTable({ panelId }) {
                 {
                     sortable: false,
                     noPadding: true,
-                    // hideWidth: 440,
-                    width: 58,
+                    width: 44,
                     field: "status",
-                    content: (item) => {
-                        return (
-                            <PowerSettingsNew
-                                className={item.streamStatus === "streaming" ? classes.iconRunning : classes.icon}
-                            ></PowerSettingsNew>
-                        );
-                    },
+                    content: (item) => <BugPowerIcon enabled={item.streamStatus === "streaming"} />,
                 },
                 {
                     sortable: false,
                     noPadding: true,
-                    // hideWidth: 1200,
+                    hideWidth: 799,
                     width: 70,
                     content: (item) => {
                         return (
@@ -330,15 +289,23 @@ export default function EncodersTable({ panelId }) {
                     },
                 },
                 {
-                    width: 214,
-                    content: (item) => {
-                        return getThumbnail(item);
-                    },
+                    width: 1,
+                    hideWidth: 440,
+                    content: (item) => (
+                        <BugAudioThumbnail
+                            min={-90}
+                            max={0}
+                            src={item.thumbnail}
+                            leftLevel={item.leftLevels}
+                            rightLevel={item.rightLevels}
+                        />
+                    ),
                 },
                 {
-                    width: 300,
-                    minWidth: 200,
+                    width: 280,
+                    minWidth: 140,
                     noWrap: true,
+                    title: "Name",
                     content: (item) => (
                         <>
                             <Typography variant="body1">{item.customName}</Typography>
@@ -347,6 +314,8 @@ export default function EncodersTable({ panelId }) {
                     ),
                 },
                 {
+                    title: "Destinations",
+                    hideWidth: 720,
                     content: (item) => (
                         <Box
                             sx={{
@@ -359,7 +328,9 @@ export default function EncodersTable({ panelId }) {
                     ),
                 },
                 {
+                    title: "Bitrate",
                     width: 300,
+                    hideWidth: 1000,
                     content: (item) => (
                         <BugSparkCell height={80} value={item["bitrate-text"]} history={item?.encoderStatsVideo} />
                     ),
@@ -417,10 +388,9 @@ export default function EncodersTable({ panelId }) {
                     onClick: handleRemoveClicked,
                 },
             ]}
-            defaultSortIndex={4}
             apiUrl={`/container/${panelId}/encoder/selected`}
             panelId={panelId}
-            hideHeader={true}
+            hideHeader={false}
         />
     );
 }
