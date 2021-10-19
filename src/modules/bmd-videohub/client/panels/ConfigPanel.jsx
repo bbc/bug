@@ -109,7 +109,7 @@ export default function ConfigPanel() {
                         fullWidth
                     />
                 </Grid>
-                {/*<Grid item xs={12}>
+                <Grid item xs={12}>
                     <BugConfigFormChipInput
                         name="excludeDestinations"
                         label="Excluded Destinations (0-based)"
@@ -119,7 +119,7 @@ export default function ConfigPanel() {
                         error={errors.excludeDestinations}
                         fullWidth
                     />
-                </Grid> */}
+                </Grid>
             </BugConfigWrapper>
         </>
     );
