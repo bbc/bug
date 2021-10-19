@@ -53,6 +53,7 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
     return (
         <div>
             <IconButton
+                component="span"
                 sx={{
                     padding: "4px",
                 }}

@@ -93,6 +93,7 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
     return (
         <div>
             <IconButton
+                component="span"
                 sx={{
                     padding: "4px",
                 }}
