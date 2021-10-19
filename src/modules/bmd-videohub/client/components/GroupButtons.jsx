@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Loading from "@components/Loading";
 import { useAlert } from "@utils/Snackbar";
 import GroupButton from "./GroupButton";
@@ -9,6 +8,7 @@ import AxiosPost from "@utils/AxiosPost";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import EditButtonsDialog from "./EditButtonsDialog";
+import Box from "@mui/material/Box";
 
 import {
     DndContext,
@@ -26,22 +26,7 @@ import {
     horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-const useStyles = makeStyles((theme) => ({
-    groupButtons: {
-        padding: 8,
-        ["@media (max-height:400px)"]: {
-            padding: "0px 2px",
-        },
-        ["@media (max-width:600px)"]: {
-            padding: "0px 2px",
-            whiteSpace: "nowrap",
-            overflow: "scroll",
-        },
-    },
-}));
-
 export default function GroupButtons({ panelId, editMode = false, groupType, selectedDestination, buttons, onChange }) {
-    const classes = useStyles();
     const sendAlert = useAlert();
     const history = useHistory();
     const [addDialogType, setAddDialogType] = React.useState(null);
@@ -135,7 +120,19 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
 
     const renderGroupButtons = () => {
         return (
-            <div className={classes.groupButtons}>
+            <Box
+                sx={{
+                    padding: "8px",
+                    ["@media (max-height:400px)"]: {
+                        padding: "0px 2px",
+                    },
+                    ["@media (max-width:600px)"]: {
+                        padding: "0px 2px",
+                        whiteSpace: "nowrap",
+                        overflow: "scroll",
+                    },
+                }}
+            >
                 {localButtons.map((group) => (
                     <GroupButton
                         key={group.index}
@@ -157,7 +154,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                         }}
                     />
                 )}
-            </div>
+            </Box>
         );
     };
 

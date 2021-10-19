@@ -12,7 +12,6 @@ export default function GroupButton({
     selected = false,
     index,
     primaryText,
-    icon = null,
     onClick,
     groupType,
     editMode = false,

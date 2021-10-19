@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -18,14 +17,7 @@ import AddGroupDialog from "./AddGroupDialog";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 
-const useStyles = makeStyles((theme) => ({
-    iconButton: {
-        padding: 4,
-    },
-}));
-
 export default function ButtonMenu({ buttonType, button, panelId, onChange, onEditIcon, groups, onRename }) {
-    const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -101,7 +93,9 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
     return (
         <div>
             <IconButton
-                className={classes.iconButton}
+                sx={{
+                    padding: "4px",
+                }}
                 aria-label="more"
                 aria-controls="long-menu"
                 aria-haspopup="true"

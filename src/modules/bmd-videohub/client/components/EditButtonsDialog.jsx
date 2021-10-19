@@ -9,7 +9,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
-import { makeStyles } from "@mui/styles";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -17,6 +16,7 @@ import EditButtonsDragItem from "./EditButtonsDragItem";
 import _ from "lodash";
 import { useAlert } from "@utils/Snackbar";
 import AxiosPost from "@utils/AxiosPost";
+import Box from "@mui/material/Box";
 
 import {
     DndContext,
@@ -34,75 +34,9 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-const useStyles = makeStyles((theme) => ({
-    dialog: {
-        "& .MuiDialog-paperScrollPaper": {
-            maxWidth: "none",
-        },
-    },
-    list: {
-        minWidth: "18rem",
-        backgroundColor: "#303030",
-    },
-    listWrapper: {
-        backgroundColor: "#303030",
-        borderRadius: 3,
-        margin: "0.5rem",
-    },
-    listScrollContainer: {
-        minHeight: "18rem",
-        maxHeight: "50vh",
-        overflow: "auto",
-    },
-    listItem: {
-        borderBottom: "1px solid #282828",
-        height: 51,
-        paddingLeft: 8,
-        paddingRight: 8,
-    },
-    root: {
-        display: "grid",
-        gridAutoFlow: "column",
-    },
-    listHeader: {
-        backgroundColor: "#212121",
-        fontWeight: 500,
-        lineHeight: "1.5rem",
-        textTransform: "uppercase",
-    },
-    availableHeader: {
-        padding: 4,
-        fontWeight: 500,
-    },
-    availableCheckbox: {
-        paddingLeft: 4,
-        paddingRight: 4,
-    },
-    listHeaderPadded: {
-        backgroundColor: "#212121",
-        padding: 13,
-        fontWeight: 500,
-        lineHeight: "1.5rem",
-        textTransform: "uppercase",
-    },
-    loading: {
-        minHeight: "50vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 608,
-    },
-    indexText: {
-        paddingRight: 8,
-        fontWeight: 900,
-        opacity: 0.3,
-    },
-}));
-
 export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubmit, groups, groupIndex }) {
     const [buttons, setButtons] = React.useState(null);
     const [selectedButtons, setSelectedButtons] = React.useState(null);
-    const classes = useStyles();
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -203,10 +137,36 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
 
     const availableButtonsList = () => {
         return (
-            <div className={classes.listWrapper}>
-                <div className={classes.listHeader}>
-                    <ListItem role="listitem" button onClick={handleSelectAll} className={classes.availableHeader}>
-                        <ListItemIcon className={classes.availableCheckbox}>
+            <Box
+                sx={{
+                    backgroundColor: "#303030",
+                    borderRadius: "3px",
+                    margin: "0.5rem",
+                }}
+            >
+                <Box
+                    sx={{
+                        backgroundColor: "#212121",
+                        fontWeight: 500,
+                        lineHeight: "1.5rem",
+                        textTransform: "uppercase",
+                    }}
+                >
+                    <ListItem
+                        role="listitem"
+                        button
+                        onClick={handleSelectAll}
+                        sx={{
+                            padding: "4px",
+                            fontWeight: 500,
+                        }}
+                    >
+                        <ListItemIcon
+                            sx={{
+                                paddingLeft: "4px",
+                                paddingRight: "4px",
+                            }}
+                        >
                             <Checkbox
                                 checked={selectedButtons.length === buttons.length}
                                 indeterminate={selectedButtons.length !== buttons.length && selectedButtons.length > 0}
@@ -216,10 +176,19 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                         </ListItemIcon>
                         Available Buttons
                     </ListItem>
-                </div>
-                <div className={classes.listScrollContainer}>
+                </Box>
+                <Box
+                    sx={{
+                        minHeight: "18rem",
+                        maxHeight: "50vh",
+                        overflow: "auto",
+                    }}
+                >
                     <List
-                        className={classes.list}
+                        sx={{
+                            minWidth: "18rem",
+                            backgroundColor: "#303030",
+                        }}
                         dense
                         component="div"
                         role="list"
@@ -230,13 +199,18 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                         {buttons.map((button, index) => {
                             return (
                                 <ListItem
-                                    className={classes.listItem}
+                                    sx={{
+                                        borderBottom: "1px solid #282828",
+                                        height: "51px",
+                                        paddingLeft: "8px",
+                                        paddingRight: "8px",
+                                    }}
                                     key={index}
                                     role="listitem"
                                     button
                                     onClick={(event) => handleToggle(event, index, button)}
                                 >
-                                    <ListItemIcon className={classes.listItemIcon}>
+                                    <ListItemIcon>
                                         <Checkbox
                                             checked={
                                                 selectedButtons.filter((button) => button.index === index).length > 0
@@ -245,24 +219,57 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                                             disableRipple
                                         />
                                     </ListItemIcon>
-                                    <div className={classes.indexText}>{index + 1}</div>
+                                    <Box
+                                        sx={{
+                                            paddingRight: "8px",
+                                            fontWeight: 900,
+                                            opacity: 0.3,
+                                        }}
+                                    >
+                                        {index + 1}
+                                    </Box>
                                     <ListItemText primary={button} />
                                 </ListItem>
                             );
                         })}
                     </List>
-                </div>
-            </div>
+                </Box>
+            </Box>
         );
     };
 
     const selectedButtonsList = () => {
         return (
-            <div className={classes.listWrapper}>
-                <div className={classes.listHeaderPadded}>Selected Buttons</div>
-                <div className={classes.listScrollContainer}>
+            <Box
+                sx={{
+                    backgroundColor: "#303030",
+                    borderRadius: "3px",
+                    margin: "0.5rem",
+                }}
+            >
+                <Box
+                    sx={{
+                        backgroundColor: "#212121",
+                        padding: "13px",
+                        fontWeight: 500,
+                        lineHeight: "1.5rem",
+                        textTransform: "uppercase",
+                    }}
+                >
+                    Selected Buttons
+                </Box>
+                <Box
+                    sx={{
+                        minHeight: "18rem",
+                        maxHeight: "50vh",
+                        overflow: "auto",
+                    }}
+                >
                     <List
-                        className={classes.list}
+                        sx={{
+                            minWidth: "18rem",
+                            backgroundColor: "#303030",
+                        }}
                         dense
                         component="div"
                         role="list"
@@ -281,24 +288,37 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                             </SortableContext>
                         </DndContext>
                     </List>
-                </div>
-            </div>
+                </Box>
+            </Box>
         );
     };
 
     const content = () => {
         if (!selectedButtons || !buttons) {
             return (
-                <div className={classes.loading}>
+                <Box
+                    sx={{
+                        minHeight: "50vh",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "608px",
+                    }}
+                >
                     <CircularProgress />
-                </div>
+                </Box>
             );
         }
         return (
-            <div className={classes.root}>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridAutoFlow: "column",
+                }}
+            >
                 {availableButtonsList()}
                 {selectedButtonsList()}
-            </div>
+            </Box>
         );
     };
 
@@ -307,7 +327,11 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
             open
             // onClose={onCancel}
             disableBackdropClick={true}
-            className={classes.dialog}
+            sx={{
+                "& .MuiDialog-paperScrollPaper": {
+                    maxWidth: "none",
+                },
+            }}
         >
             <form
                 onSubmit={(event) => {

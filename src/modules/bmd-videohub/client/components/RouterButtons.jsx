@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import RouterButton from "./RouterButton";
 import { useParams } from "react-router-dom";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import BugEditIconDialog from "@core/BugEditIconDialog";
 import AxiosPost from "@utils/AxiosPost";
+import Box from "@mui/material/Box";
 
 import {
     DndContext,
@@ -18,21 +18,6 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from "@dnd-kit/sortable";
 
-const useStyles = makeStyles((theme) => ({
-    buttons: {
-        padding: "0px 8px",
-        marginBottom: 8,
-        overflow: "auto",
-        "@media (max-height:400px)": {
-            padding: "0px 2px",
-            overflow: "visible",
-        },
-        "@media (max-width:600px)": {
-            padding: "0px 2px",
-        },
-    },
-}));
-
 export default function Router({
     panelId,
     editMode = false,
@@ -43,7 +28,6 @@ export default function Router({
     onChange,
     useDoubleClick = false,
 }) {
-    const classes = useStyles();
     const sendAlert = useAlert();
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
@@ -138,7 +122,20 @@ export default function Router({
 
     if (editMode) {
         return (
-            <div className={classes.buttons}>
+            <Box
+                sx={{
+                    padding: "0px 8px",
+                    marginBottom: "8px",
+                    overflow: "auto",
+                    "@media (max-height:400px)": {
+                        padding: "0px 2px",
+                        overflow: "visible",
+                    },
+                    "@media (max-width:600px)": {
+                        padding: "0px 2px",
+                    },
+                }}
+            >
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                     <SortableContext
                         items={localButtons.map((button) => `${buttonType}:${button.index}`)}
@@ -157,13 +154,28 @@ export default function Router({
                         buttonType={buttonType}
                     />
                 )}
-            </div>
+            </Box>
         );
     }
 
     return (
         <>
-            <div className={classes.buttons}>{renderButtons()}</div>
+            <Box
+                sx={{
+                    padding: "0px 8px",
+                    marginBottom: "8px",
+                    overflow: "auto",
+                    "@media (max-height:400px)": {
+                        padding: "0px 2px",
+                        overflow: "visible",
+                    },
+                    "@media (max-width:600px)": {
+                        padding: "0px 2px",
+                    },
+                }}
+            >
+                {renderButtons()}
+            </Box>
         </>
     );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,14 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import BallotIcon from "@mui/icons-material/Ballot";
 
-const useStyles = makeStyles((theme) => ({
-    iconButton: {
-        padding: 4,
-    },
-}));
-
 export default function GroupMenu({ groupType, groupIndex, groupName, panelId, onChange, onRename, onEditButtons }) {
-    const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -61,7 +53,9 @@ export default function GroupMenu({ groupType, groupIndex, groupName, panelId, o
     return (
         <div>
             <IconButton
-                className={classes.iconButton}
+                sx={{
+                    padding: "4px",
+                }}
                 aria-label="more"
                 aria-controls="long-menu"
                 aria-haspopup="true"

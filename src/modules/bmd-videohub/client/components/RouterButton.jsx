@@ -1,108 +1,20 @@
 import React from "react";
 import ButtonMenu from "./ButtonMenu";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import RenameDialog from "./RenameDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
-const useStyles = makeStyles((theme) => ({
-    buttonIcon: {
-        fontSize: "2rem",
-        "@media (max-width:800px)": {
-            fontSize: 20,
-        },
+const StyledBugDynamicIcon = styled(BugDynamicIcon)({
+    fontSize: "2rem",
+    "@media (max-width:800px)": {
+        fontSize: 20,
     },
-    buttonLabel: {
-        width: "100%",
-        "@media (max-width:600px)": {
-            padding: 4,
-        },
-    },
-    buttonUpper: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "65%",
-        "@media (max-width:600px)": {
-            display: "none",
-        },
-    },
-    secondaryText: {
-        fontWeight: 500,
-        fontSize: "0.7rem",
-        opacity: 0.6,
-        textOverflow: "ellipsis",
-        width: "100%",
-        overflow: "hidden",
-        whiteSpace: "nowrap",
-        textAlign: "center",
-        "@media (max-width:800px)": {
-            fontSize: 10,
-        },
-    },
-    buttonLower: {
-        width: "100%",
-        backgroundColor: "#333",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "35%",
-        flexDirection: "column",
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
-        padding: "0 8px",
-        "@media (max-width:800px)": {
-            height: "50%",
-            padding: "0 4px",
-        },
-        "@media (max-width:600px)": {
-            backgroundColor: "inherit",
-            height: "100%",
-        },
-    },
-    buttonLowerEdit: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    circle: {
-        border: "2px solid #3a3a3a",
-        borderRadius: "100%",
-        height: 64,
-        width: 64,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        "@media (max-width:800px)": {
-            height: 36,
-            width: 36,
-        },
-    },
-    index: {
-        color: "#303030",
-        fontSize: 28,
-        fontWeight: 300,
-        "@media (max-width:800px)": {
-            fontSize: 20,
-        },
-    },
-    primaryText: {
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        whiteSpace: "nowrap",
-        width: "100%",
-        textAlign: "center",
-        "@media (max-width:800px)": {
-            fontSize: 12,
-        },
-    },
-    primaryTextEdit: {
-        paddingLeft: 10,
-    },
-}));
+});
 
 export default function RouterButton({
     panelId,
@@ -116,7 +28,6 @@ export default function RouterButton({
     groups,
     useDoubleClick = false,
 }) {
-    const classes = useStyles();
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: `${buttonType}:${button.index}`,
     });
@@ -193,33 +104,115 @@ export default function RouterButton({
                 onClick={useDoubleClick ? undefined : onClick}
                 onDoubleClick={useDoubleClick ? onClick : undefined}
             >
-                <div className={clsx("MuiButton-label", classes.buttonLabel)}>
-                    <div className={classes.buttonUpper}>
-                        <div className={classes.circle}>
-                            {button.icon ? (
-                                <BugDynamicIcon
-                                    color={button.iconColour}
-                                    className={classes.buttonIcon}
-                                    iconName={button.icon}
-                                />
-                            ) : (
-                                <div className={classes.index}>{indexPlusOne}</div>
-                            )}
-                        </div>
-                    </div>
-                    <div
-                        className={clsx(classes.buttonLower, {
-                            [classes.buttonLowerEdit]: editMode,
-                        })}
+                <Box
+                    className="MuiButton-label"
+                    sx={{
+                        width: "100%",
+                        "@media (max-width:600px)": {
+                            padding: "4px",
+                        },
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "65%",
+                            "@media (max-width:600px)": {
+                                display: "none",
+                            },
+                        }}
                     >
-                        {editMode ? null : <div className={classes.secondaryText}>{secondaryText}</div>}
-                        <div
-                            className={clsx(classes.primaryText, {
-                                [classes.primaryTextEdit]: editMode,
-                            })}
+                        <Box
+                            sx={{
+                                border: "2px solid #3a3a3a",
+                                borderRadius: "100%",
+                                height: "64px",
+                                width: "64px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                "@media (max-width:800px)": {
+                                    height: "36px",
+                                    width: "36px",
+                                },
+                            }}
+                        >
+                            {button.icon ? (
+                                <StyledBugDynamicIcon color={button.iconColour} iconName={button.icon} />
+                            ) : (
+                                <Box
+                                    sx={{
+                                        color: "#303030",
+                                        fontSize: "28px",
+                                        fontWeight: 300,
+                                        "@media (max-width:800px)": {
+                                            fontSize: "20px",
+                                        },
+                                    }}
+                                >
+                                    {indexPlusOne}
+                                </Box>
+                            )}
+                        </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            backgroundColor: "#333",
+                            display: "flex",
+                            justifyContent: editMode ? "space-between" : "center",
+                            alignItems: "center",
+                            height: "35%",
+                            flexDirection: editMode ? "row" : "column",
+                            borderBottomLeftRadius: 5,
+                            borderBottomRightRadius: 5,
+                            padding: "0 8px",
+                            "@media (max-width:800px)": {
+                                height: "50%",
+                                padding: "0 4px",
+                            },
+                            "@media (max-width:600px)": {
+                                backgroundColor: "inherit",
+                                height: "100%",
+                            },
+                        }}
+                    >
+                        {editMode ? null : (
+                            <Box
+                                sx={{
+                                    fontWeight: 500,
+                                    fontSize: "0.7rem",
+                                    opacity: 0.6,
+                                    textOverflow: "ellipsis",
+                                    width: "100%",
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    textAlign: "center",
+                                    "@media (max-width:800px)": {
+                                        fontSize: 10,
+                                    },
+                                }}
+                            >
+                                {secondaryText}
+                            </Box>
+                        )}
+                        <Box
+                            sx={{
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                width: "100%",
+                                textAlign: "center",
+                                "@media (max-width:800px)": {
+                                    fontSize: "12px",
+                                },
+                                paddingLeft: editMode ? "10px" : "0px",
+                            }}
                         >
                             {button.label}
-                        </div>
+                        </Box>
                         {editMode ? (
                             <ButtonMenu
                                 panelId={panelId}
@@ -231,8 +224,8 @@ export default function RouterButton({
                                 onRename={() => setRenameDialogVisible(true)}
                             />
                         ) : null}
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </Button>
             {renameDialogVisible && (
                 <RenameDialog
