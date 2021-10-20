@@ -58,6 +58,7 @@ export default function BugApiTable({
     defaultSortDirection = "asc",
     hideHeader = false,
     noData,
+    rowHeight = null,
 }) {
     const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
     const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
@@ -240,6 +241,7 @@ export default function BugApiTable({
                                         [classes.interfaceRowDisabled]: item.disabled,
                                         [classes.interfaceRowClickable]: onRowClick !== undefined,
                                     })}
+                                    style={{ height: rowHeight ? rowHeight : "auto" }}
                                     key={index}
                                     onClick={(event) => {
                                         if (typeof onRowClick === "function") {
