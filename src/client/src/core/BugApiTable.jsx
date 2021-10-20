@@ -191,7 +191,7 @@ export default function BugApiTable({
                                             className={`col_${index} ${column.sortable ? classes.colSortable : ""}`}
                                             onClick={() => handleSortClicked(column)}
                                         >
-                                            {column.sortable ? (
+                                            {column.sortable && sortable ? (
                                                 <TableSortLabel
                                                     className={classes.sortLabel}
                                                     active={sortField === column.field}
