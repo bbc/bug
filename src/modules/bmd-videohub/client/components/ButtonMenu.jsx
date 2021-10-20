@@ -123,7 +123,7 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
                     </ListItemIcon>
                     <ListItemText primary="Edit Icon" />
                 </MenuItem>
-                <MenuItem onClick={handleRemove}>
+                <MenuItem disabled={groups.length === 0} onClick={handleRemove}>
                     <ListItemIcon>
                         <RemoveCircleIcon fontSize="small" />
                     </ListItemIcon>
