@@ -9,6 +9,7 @@ import { SnackbarConfigurator } from "@utils/Snackbar";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
 import { BugRenameDialogProvider } from "@core/BugRenameDialog";
+import { BugCustomDialogProvider } from "@core/BugCustomDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import PanelListHandler from "@data/PanelListHandler";
 import UserHandler from "@data/UserHandler";
@@ -25,28 +26,30 @@ export default function App() {
                     <ThemeProvider theme={theme}>
                         <BugConfirmDialogProvider>
                             <BugRenameDialogProvider>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <SnackbarProvider
-                                        dense
-                                        autoHideDuration={3000}
-                                        preventDuplicate
-                                        anchorOrigin={{
-                                            vertical: "bottom",
-                                            horizontal: "right",
-                                        }}
-                                        TransitionComponent={Fade}
-                                        maxSnack={3}
-                                    >
-                                        <SnackbarConfigurator />
-                                        <CssBaseline />
-                                        <UserHandler />
-                                        <StrategiesHandler />
-                                        <PanelListHandler />
-                                        <ModalProvider>
-                                            <AuthRouter />
-                                        </ModalProvider>
-                                    </SnackbarProvider>
-                                </MuiPickersUtilsProvider>
+                                <BugCustomDialogProvider>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <SnackbarProvider
+                                            dense
+                                            autoHideDuration={3000}
+                                            preventDuplicate
+                                            anchorOrigin={{
+                                                vertical: "bottom",
+                                                horizontal: "right",
+                                            }}
+                                            TransitionComponent={Fade}
+                                            maxSnack={3}
+                                        >
+                                            <SnackbarConfigurator />
+                                            <CssBaseline />
+                                            <UserHandler />
+                                            <StrategiesHandler />
+                                            <PanelListHandler />
+                                            <ModalProvider>
+                                                <AuthRouter />
+                                            </ModalProvider>
+                                        </SnackbarProvider>
+                                    </MuiPickersUtilsProvider>
+                                </BugCustomDialogProvider>
                             </BugRenameDialogProvider>
                         </BugConfirmDialogProvider>
                     </ThemeProvider>

@@ -24,7 +24,6 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
-    const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
     const [addGroupDialogVisible, setAddGroupDialogVisible] = React.useState(false);
 
     const handleOpenMenuClick = (event) => {

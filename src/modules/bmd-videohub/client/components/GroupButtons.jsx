@@ -76,8 +76,6 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         }
     };
 
-    const handleAddGroup = async (value) => {};
-
     const handleDragEnd = async (event) => {
         const { active, over } = event;
 

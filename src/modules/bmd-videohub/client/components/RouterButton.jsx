@@ -49,17 +49,6 @@ export default function RouterButton({
         transition,
     };
 
-    // {renameDialogVisible && (
-    //     <RenameDialog
-    //         label="Name"
-    //         panelId={panelId}
-    //         defaultValue={button.label}
-    //         onCancel={() => setRenameDialogVisible(false)}
-    //         onSubmit={handleRename}
-    //         buttonText="Rename"
-    //     />
-    // )}
-
     const handleRenameClicked = async () => {
         const result = await renameDialog({
             title: `Rename ${buttonType}`,
@@ -74,10 +63,6 @@ export default function RouterButton({
             onChange();
         }
     };
-
-    // const handleRename = async (newName) => {
-    //     setRenameDialogVisible(false);
-    // };
 
     let backgroundColor = "#444";
     if (editMode) {
