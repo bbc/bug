@@ -9,6 +9,18 @@ import InputAdornment from "@mui/material/InputAdornment";
 import CancelIcon from "@mui/icons-material/Cancel";
 import IconButton from "@mui/material/IconButton";
 
+/*
+USAGE:
+=================
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+const { renameDialog } = useBugRenameDialog();
+const result = await renameDialog({
+    title: "Add group",
+    defaultValue: "",
+    confirmText: "Add",
+});
+*/
+
 const BugRenameDialog = ({
     allowBlank = false,
     open,
@@ -18,6 +30,7 @@ const BugRenameDialog = ({
     onDismiss,
     defaultValue,
     confirmText = "Rename",
+    placeholder = null,
 }) => {
     const [value, setValue] = React.useState("");
     const inputRef = React.useRef();
@@ -48,6 +61,7 @@ const BugRenameDialog = ({
                         setValue(event.target.value);
                     }}
                     variant="standard"
+                    placeholder={placeholder}
                     fullWidth
                     type="text"
                     label={label}
@@ -84,9 +98,9 @@ const BugRenameDialogProvider = ({ children }) => {
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [dialogConfig, setDialogConfig] = React.useState({});
 
-    const openDialog = ({ title, message, actionCallback, defaultValue, confirmText, allowBlank = false }) => {
+    const openDialog = ({ title, message, actionCallback, defaultValue, confirmText, placeholder, allowBlank }) => {
         setDialogOpen(true);
-        setDialogConfig({ title, message, actionCallback, defaultValue, confirmText, allowBlank });
+        setDialogConfig({ title, message, actionCallback, defaultValue, confirmText, placeholder, allowBlank });
     };
 
     const onRename = (value) => {
@@ -109,6 +123,8 @@ const BugRenameDialogProvider = ({ children }) => {
                 open={dialogOpen}
                 title={dialogConfig?.title}
                 message={dialogConfig?.message}
+                placeholder={dialogConfig?.placeholder}
+                allowBlank={dialogConfig?.allowBlank}
                 onRename={onRename}
                 onDismiss={onDismiss}
                 confirmText={dialogConfig?.confirmText}
