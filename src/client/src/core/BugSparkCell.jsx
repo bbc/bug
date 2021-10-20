@@ -2,7 +2,7 @@ import React from "react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import Box from "@mui/material/Box";
 
-export default function SparkCell({ value, history, height = 48 }) {
+export default function SparkCell({ value, history, height = null }) {
     if (!history || history.every((item) => item.value === 0)) {
         return null;
     }
@@ -39,7 +39,7 @@ export default function SparkCell({ value, history, height = 48 }) {
                     width: "100%",
                 }}
             >
-                <Sparklines height={height} data={values} style={{ opacity: 0.7, height: "100%" }} min={0}>
+                <Sparklines data={values} style={{ opacity: 0.7, height: height ? height : "100%" }} min={0}>
                     <SparklinesLine color="#337ab7" />
                 </Sparklines>
             </Box>
