@@ -3,7 +3,6 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Button from "@mui/material/Button";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useAlert } from "@utils/Snackbar";
 import { useHistory } from "react-router-dom";
 import Box from "@mui/material/Box";
 

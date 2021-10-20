@@ -42,7 +42,7 @@ export default function RenameDialog({ interfaceId, interfaceName, defaultName, 
     };
 
     return (
-        <Dialog open onClose={handleRenameDialogClose} disableBackdropClick>
+        <Dialog open onClose={handleRenameDialogClose}>
             <form
                 onSubmit={(event) => {
                     event.preventDefault();

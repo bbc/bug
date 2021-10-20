@@ -35,7 +35,6 @@ export default function PanelGroupDialog({ panelId, panelTitle, panelGroup, onCl
             }}
             fullWidth
             maxWidth="sm"
-            disableBackdropClick
         >
             <DialogTitle id="alert-dialog-title">Change panel group</DialogTitle>
             <DialogContent>

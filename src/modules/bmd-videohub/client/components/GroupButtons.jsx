@@ -3,12 +3,12 @@ import Loading from "@components/Loading";
 import { useAlert } from "@utils/Snackbar";
 import GroupButton from "./GroupButton";
 import AddGroupButton from "./AddGroupButton";
-import RenameDialog from "./RenameDialog";
 import AxiosPost from "@utils/AxiosPost";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import EditButtonsDialog from "./EditButtonsDialog";
 import Box from "@mui/material/Box";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
 import {
     DndContext,
@@ -29,12 +29,12 @@ import {
 export default function GroupButtons({ panelId, editMode = false, groupType, selectedDestination, buttons, onChange }) {
     const sendAlert = useAlert();
     const history = useHistory();
-    const [addDialogType, setAddDialogType] = React.useState(null);
     const [editButtonsDialogGroupIndex, setEditButtonsDialogGroupIndex] = React.useState(null);
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
     const [localButtons, setLocalButtons] = React.useState(null);
+    const { renameDialog } = useBugRenameDialog();
 
     useEffect(() => {
         setLocalButtons(buttons.data.groups);
@@ -57,18 +57,26 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         }
     };
 
-    const handleAddGroup = async (value) => {
-        if (await AxiosPost(`/container/${panelId}/groups/${addDialogType}/${value}`)) {
-            onChange();
-            setAddDialogType(null);
-            sendAlert(`Added group: ${value}`, { variant: "success" });
+    const handleAddGroupClicked = async () => {
+        const result = await renameDialog({
+            title: "Add group",
+            defaultValue: "",
+            confirmText: "Add",
+        });
+        if (result !== false) {
+            if (await AxiosPost(`/container/${panelId}/groups/${groupType}/${result}`)) {
+                onChange();
+                sendAlert(`Added group: ${result}`, { variant: "success" });
 
-            // and now edit buttons in this group...
-            setEditButtonsDialogGroupIndex(localButtons.length);
-        } else {
-            sendAlert(`Failed to add group: ${value}`, { variant: "error" });
+                // and now edit buttons in this group...
+                setEditButtonsDialogGroupIndex(localButtons.length);
+            } else {
+                sendAlert(`Failed to add group: ${result}`, { variant: "error" });
+            }
         }
     };
+
+    const handleAddGroup = async (value) => {};
 
     const handleDragEnd = async (event) => {
         const { active, over } = event;
@@ -147,13 +155,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                         onEditButtons={(groupIndex) => setEditButtonsDialogGroupIndex(groupIndex)}
                     />
                 ))}
-                {editMode && (
-                    <AddGroupButton
-                        onClick={() => {
-                            setAddDialogType(groupType);
-                        }}
-                    />
-                )}
+                {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
             </Box>
         );
     };
@@ -165,17 +167,6 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
     return (
         <>
             <Content />
-            {addDialogType && (
-                <RenameDialog
-                    title="Add group"
-                    label="Group name"
-                    panelId={panelId}
-                    type={addDialogType}
-                    onCancel={() => setAddDialogType(null)}
-                    onSubmit={handleAddGroup}
-                    buttonText="Add"
-                />
-            )}
             {editButtonsDialogGroupIndex !== null && (
                 <EditButtonsDialog
                     onCancel={() => setEditButtonsDialogGroupIndex(null)}

@@ -1,11 +1,11 @@
 import React from "react";
 import GroupMenu from "./GroupMenu";
-import RenameDialog from "./RenameDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import { useSortable } from "@dnd-kit/sortable";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
 export default function GroupButton({
     panelId,
@@ -19,8 +19,8 @@ export default function GroupButton({
     onEditButtons,
 }) {
     const sendAlert = useAlert();
-    const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: primaryText });
+    const { renameDialog } = useBugRenameDialog();
 
     let transformString = null;
 
@@ -33,14 +33,19 @@ export default function GroupButton({
         transition,
     };
 
-    const handleRenameGroup = async (newGroupName) => {
-        setRenameDialogVisible(false);
-        if (await AxiosCommand(`/container/${panelId}/groups/rename/${groupType}/${primaryText}/${newGroupName}`)) {
-            sendAlert(`Renamed group: ${primaryText} -> ${newGroupName}`, { variant: "success" });
-        } else {
-            sendAlert(`Failed to rename group: ${primaryText}`, { variant: "error" });
+    const handleRenameClicked = async () => {
+        const result = await renameDialog({
+            title: "Rename group",
+            defaultValue: primaryText,
+        });
+        if (result !== false) {
+            if (await AxiosCommand(`/container/${panelId}/groups/rename/${groupType}/${primaryText}/${result}`)) {
+                sendAlert(`Renamed group: ${primaryText} -> ${result}`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to rename group: ${primaryText}`, { variant: "error" });
+            }
+            onChange();
         }
-        onChange();
     };
 
     // bg color:
@@ -103,23 +108,12 @@ export default function GroupButton({
                         groupType={groupType}
                         groupName={primaryText}
                         groupIndex={index}
-                        onRename={() => setRenameDialogVisible(true)}
+                        onRename={handleRenameClicked}
                         onChange={onChange}
                         onEditButtons={onEditButtons}
                     />
                 ) : null}
             </Button>
-            {renameDialogVisible && (
-                <RenameDialog
-                    title="Rename group"
-                    label="Group name"
-                    panelId={panelId}
-                    defaultValue={primaryText}
-                    onCancel={() => setRenameDialogVisible(false)}
-                    onSubmit={handleRenameGroup}
-                    buttonText="Rename"
-                />
-            )}
         </>
     );
 }

@@ -44,7 +44,7 @@ export default function CommentDialog({ interfaceId, interfaceName, comment, onC
     };
 
     return (
-        <Dialog open onClose={handleCommentDialogClose} disableBackdropClick>
+        <Dialog open onClose={handleCommentDialogClose}>
             <form
                 onSubmit={(event) => {
                     event.preventDefault();

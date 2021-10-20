@@ -17,6 +17,7 @@ const BugRenameDialog = ({
     onRename,
     onDismiss,
     defaultValue,
+    confirmText = "Rename",
 }) => {
     const [value, setValue] = React.useState("");
     const inputRef = React.useRef();
@@ -70,7 +71,7 @@ const BugRenameDialog = ({
                     Cancel
                 </Button>
                 <Button color="primary" disabled={!allowBlank && value === ""} onClick={() => onRename(value)}>
-                    Rename
+                    {confirmText}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -83,10 +84,9 @@ const BugRenameDialogProvider = ({ children }) => {
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [dialogConfig, setDialogConfig] = React.useState({});
 
-    console.log("dialogConfig", dialogConfig);
-    const openDialog = ({ title, message, actionCallback, defaultValue, allowBlank = false }) => {
+    const openDialog = ({ title, message, actionCallback, defaultValue, confirmText, allowBlank = false }) => {
         setDialogOpen(true);
-        setDialogConfig({ title, message, actionCallback, defaultValue, allowBlank });
+        setDialogConfig({ title, message, actionCallback, defaultValue, confirmText, allowBlank });
     };
 
     const onRename = (value) => {
@@ -111,6 +111,7 @@ const BugRenameDialogProvider = ({ children }) => {
                 message={dialogConfig?.message}
                 onRename={onRename}
                 onDismiss={onDismiss}
+                confirmText={dialogConfig?.confirmText}
                 defaultValue={dialogConfig.defaultValue}
             />
             {children}

@@ -2,12 +2,12 @@ import React from "react";
 import ButtonMenu from "./ButtonMenu";
 import { useSortable } from "@dnd-kit/sortable";
 import BugDynamicIcon from "@core/BugDynamicIcon";
-import RenameDialog from "./RenameDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
     fontSize: "2rem",
@@ -32,8 +32,8 @@ export default function RouterButton({
         id: `${buttonType}:${button.index}`,
     });
     const indexPlusOne = (button.index + 1).toString();
-    const [renameDialogVisible, setRenameDialogVisible] = React.useState(false);
     const sendAlert = useAlert();
+    const { renameDialog } = useBugRenameDialog();
 
     let transformString = "";
 
@@ -49,15 +49,35 @@ export default function RouterButton({
         transition,
     };
 
-    const handleRename = async (newName) => {
-        setRenameDialogVisible(false);
-        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${newName}`)) {
-            sendAlert(`Renamed ${buttonType}: ${button.label} -> ${newName}`, { variant: "success" });
-        } else {
-            sendAlert(`Failed to rename ${buttonType}: ${newName}`, { variant: "error" });
+    // {renameDialogVisible && (
+    //     <RenameDialog
+    //         label="Name"
+    //         panelId={panelId}
+    //         defaultValue={button.label}
+    //         onCancel={() => setRenameDialogVisible(false)}
+    //         onSubmit={handleRename}
+    //         buttonText="Rename"
+    //     />
+    // )}
+
+    const handleRenameClicked = async () => {
+        const result = await renameDialog({
+            title: `Rename ${buttonType}`,
+            defaultValue: button.label,
+        });
+        if (result !== false) {
+            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${result}`)) {
+                sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to rename ${buttonType}: ${result}`, { variant: "error" });
+            }
+            onChange();
         }
-        onChange();
     };
+
+    // const handleRename = async (newName) => {
+    //     setRenameDialogVisible(false);
+    // };
 
     let backgroundColor = "#444";
     if (editMode) {
@@ -221,23 +241,12 @@ export default function RouterButton({
                                 onChange={onChange}
                                 groups={groups}
                                 onEditIcon={onEditIcon}
-                                onRename={() => setRenameDialogVisible(true)}
+                                onRename={handleRenameClicked}
                             />
                         ) : null}
                     </Box>
                 </Box>
             </Button>
-            {renameDialogVisible && (
-                <RenameDialog
-                    title={`Rename ${buttonType}`}
-                    label="Name"
-                    panelId={panelId}
-                    defaultValue={button.label}
-                    onCancel={() => setRenameDialogVisible(false)}
-                    onSubmit={handleRename}
-                    buttonText="Rename"
-                />
-            )}
         </>
     );
 }

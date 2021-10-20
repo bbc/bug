@@ -43,7 +43,7 @@ export default function CommentDialog({ leaseId, comment, onClose, panelId }) {
     };
 
     return (
-        <Dialog open onClose={handleCommentDialogClose} disableBackdropClick>
+        <Dialog open onClose={handleCommentDialogClose}>
             <form
                 onSubmit={(event) => {
                     event.preventDefault();

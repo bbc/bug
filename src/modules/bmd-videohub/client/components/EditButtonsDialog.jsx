@@ -325,8 +325,6 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
     return (
         <Dialog
             open
-            // onClose={onCancel}
-            disableBackdropClick={true}
             sx={{
                 "& .MuiDialog-paperScrollPaper": {
                     maxWidth: "none",

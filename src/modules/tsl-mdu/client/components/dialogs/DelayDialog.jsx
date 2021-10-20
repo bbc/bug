@@ -47,7 +47,7 @@ export default function DelayDialog({ outputNumber, outputDelay, onClose, panelI
     };
 
     return (
-        <Dialog open onClose={handleDelayDialogClose} disableBackdropClick>
+        <Dialog open onClose={handleDelayDialogClose}>
             <form
                 onSubmit={(event) => {
                     event.preventDefault();

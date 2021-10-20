@@ -25,7 +25,7 @@ export default function BugAudioThumbnail({ src, leftLevel, rightLevel, min, max
             }}
         >
             <BugVolumeBar min={min} max={max} value={leftLevel} />
-            {src ? <img src={src} className="thumb-image" /> : <Box className="thumb-image" />}
+            {src ? <img alt="Device thumbnail" src={src} className="thumb-image" /> : <Box className="thumb-image" />}
             <BugVolumeBar min={min} max={max} value={rightLevel} />
         </Box>
     );
