@@ -44,6 +44,13 @@ export default function BugApiTableMenu({ item, menuItems }) {
         return disabledValue;
     };
 
+    const getIcon = (icon) => {
+        if (typeof icon === "function") {
+            return icon(item);
+        }
+        return icon;
+    };
+
     return (
         <div>
             <IconButton aria-label="more" aria-controls="long-menu" aria-haspopup="true" onClick={handleOpenMenuClick}>
@@ -60,7 +67,9 @@ export default function BugApiTableMenu({ item, menuItems }) {
                                 key={index}
                                 disabled={parseDisabled(menuItem.disabled)}
                             >
-                                <ListItemIcon disabled={parseDisabled(menuItem.disabled)}>{menuItem.icon}</ListItemIcon>
+                                <ListItemIcon disabled={parseDisabled(menuItem.disabled)}>
+                                    {getIcon(menuItem.icon)}
+                                </ListItemIcon>
                                 <ListItemText primary={menuItem.title} />
                             </MenuItem>
                         );
