@@ -130,7 +130,7 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
                     <ListItemText primary="Remove" />
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleAddGroupClick}>
+                <MenuItem disabled={groups.length === 0} onClick={handleAddGroupClick}>
                     <ListItemIcon>
                         <AddIcon fontSize="small" />
                     </ListItemIcon>
