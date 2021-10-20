@@ -21,6 +21,16 @@ router.get(
     })
 );
 
+router.post(
+    "/",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await interfaceCombinedList(req.body.sortField, req.body.sortDirection, req.body.filters),
+        });
+    })
+);
+
 router.get(
     "/:interfaceName",
     asyncHandler(async (req, res) => {

@@ -265,29 +265,6 @@ export default function EncodersTable({ panelId }) {
         event.preventDefault();
     };
 
-    const noEncoders = () => (
-        <Box
-            sx={{
-                margin: 1,
-                display: "flex",
-                justifyContent: "center",
-            }}
-        >
-            <BugAlert
-                key="KEY"
-                type="info"
-                message="No encoders configured"
-                flags={["configurePanel"]}
-                panel={{ id: panelId }}
-                square
-                width="40rem"
-                style={{
-                    margin: "auto",
-                }}
-            />
-        </Box>
-    );
-
     return (
         <BugApiTable
             columns={[

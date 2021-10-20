@@ -3,8 +3,9 @@
 const mongoCollection = require('@core/mongo-collection');
 const wildcard = require('wildcard-regex');
 const configGet = require("@core/config-get");
+const sortHandlers = require("@core/sort-handlers");
 
-module.exports = async () => {
+module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
 
     const config = await configGet();
     if (!config) {
@@ -73,7 +74,20 @@ module.exports = async () => {
 
     }
 
-    interfaces.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    const sortHandlerList = {
+        name: sortHandlers.string,
+        ['mac-address']: sortHandlers.boolean,
+    }
+
+    // sort
+    if (sortField && sortHandlerList[sortField]) {
+        if (sortDirection === "asc") {
+            interfaces.sort((a, b) => sortHandlerList[sortField](a, b, sortField));
+        }
+        else {
+            interfaces.sort((a, b) => sortHandlerList[sortField](b, a, sortField));
+        }
+    }
 
     for (let eachInterface of interfaces) {
         // add link stats

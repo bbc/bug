@@ -1,142 +1,68 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import BugApiSwitch from "@core/BugApiSwitch";
-import Loading from "@components/Loading";
-import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
-import InterfaceListMenu from "./InterfaceListMenu";
-import { Redirect } from "react-router";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import { useApiPoller } from "@utils/ApiPoller";
-import RenameDialog from "./RenameDialog";
-import CommentDialog from "./CommentDialog";
 import Link from "@mui/material/Link";
 import BugSparkCell from "@core/BugSparkCell";
-
-const useStyles = makeStyles((theme) => ({
-    content: {},
-    interfaceRow: {
-        cursor: "pointer",
-    },
-    iconRunning: {
-        color: theme.palette.primary.main,
-        display: "block",
-    },
-    icon: {
-        opacity: 0.1,
-        display: "block",
-    },
-    tableHead: {
-        ["@media (max-width:450px)"]: {
-            display: "none",
-        },
-    },
-    colRunning: {
-        width: "40px",
-        ["@media (max-width:500px)"]: {
-            display: "none",
-        },
-    },
-    colEnabled: {
-        width: "5rem",
-        ["@media (max-width:600px)"]: {
-            display: "none",
-        },
-    },
-    colName: {
-        minWidth: "8rem",
-        maxWidth: "10rem",
-        overflow: "hidden",
-    },
-    colSpeed: {
-        width: "5rem",
-        ["@media (max-width:700px)"]: {
-            display: "none",
-        },
-    },
-    colMacAddress: {
-        width: "10rem",
-        ["@media (max-width:1200px)"]: {
-            display: "none",
-        },
-    },
-    colTraffic: {
-        minWidth: "6rem",
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        position: "relative",
-        ["@media (max-width:450px)"]: {
-            display: "none",
-        },
-    },
-    interfaceName: {
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        color: "#ffffff",
-        fontFamily: theme.typography.fontFamily,
-        fontSize: "0.875rem",
-        lineHeight: 1.43,
-        display: "block",
-        maxWidth: "100%",
-        textAlign: "left",
-    },
-    interfaceComment: {
-        color: "#ffffff",
-        opacity: 0.3,
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        fontFamily: theme.typography.fontFamily,
-        fontSize: "0.875rem",
-        lineHeight: 1.43,
-        display: "block",
-        maxWidth: "100%",
-        textAlign: "left",
-    },
-}));
+import BugPowerIcon from "@core/BugPowerIcon";
+import BugApiTable from "@core/BugApiTable";
+import BugTableNoData from "@core/BugTableNoData";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import CommentIcon from "@mui/icons-material/Comment";
+import { useHistory } from "react-router-dom";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
 export default function InterfaceList({ panelId }) {
-    const classes = useStyles();
-    const [redirectUrl, setRedirectUrl] = React.useState(null);
-    const [menuIsOpen, setMenuIsOpen] = React.useState(false);
     const sendAlert = useAlert();
-    const [renameDialogOpen, setRenameDialogOpen] = React.useState(false);
-    const [renameDialogProps, setRenameDialogProps] = React.useState({});
-    const [commentDialogOpen, setCommentDialogOpen] = React.useState(false);
-    const [commentDialogProps, setCommentDialogProps] = React.useState({});
+    const history = useHistory();
+    const { renameDialog } = useBugRenameDialog();
 
-    const interfaceList = useApiPoller({
-        url: `/container/${panelId}/interface`,
-        interval: 2000,
-    });
+    const handleRenameClicked = async (event, item) => {
+        event.stopPropagation();
 
-    const handleRenameClicked = (dialogProps) => {
-        setRenameDialogProps(dialogProps);
-        setRenameDialogOpen(true);
-    };
-
-    const handleCommentClicked = (dialogProps) => {
-        setCommentDialogProps(dialogProps);
-        setCommentDialogOpen(true);
-    };
-
-    const handleRowClicked = (interfaceName) => {
-        if (!menuIsOpen) {
-            setRedirectUrl(`/panel/${panelId}/interface/${interfaceName}`);
+        let result = await renameDialog({
+            title: "Edit interface name",
+            defaultValue: item["name"],
+            placeholder: item["default-name"],
+            confirmText: "Rename",
+            allowBlank: true,
+        });
+        if (result === false) {
+            return;
+        }
+        if (result === "") {
+            result = item["default-name"];
+        }
+        if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.id}/${result}`)) {
+            sendAlert(`Renamed interface to ${result}`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to rename interface to ${result}`, { variant: "error" });
         }
     };
 
-    const handleMenuOpenChanged = (state) => {
-        setMenuIsOpen(state);
+    const handleCommentClicked = async (event, item) => {
+        event.stopPropagation();
+
+        let result = await renameDialog({
+            title: "Edit interface comment",
+            defaultValue: item["comment"],
+            confirmText: "Change",
+            allowBlank: true,
+        });
+        if (result === false) {
+            return;
+        }
+        if (await AxiosCommand(`/container/${panelId}/interface/comment/${item.id}/${result}`)) {
+            sendAlert(`Set comment on interface ${item.name} to '${result}'`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to set comment on interface ${item.name}`, { variant: "error" });
+        }
+    };
+
+    const handleDetailsClicked = (event, item) => {
+        history.push(`/panel/${panelId}/interface/${item.name}`);
     };
 
     const handleEnabledChanged = async (checked, interfaceName) => {
@@ -149,132 +75,162 @@ export default function InterfaceList({ panelId }) {
         }
     };
 
-    const handleInterfaceNameClicked = (event, dialogProps) => {
-        setRenameDialogProps(dialogProps);
-        setRenameDialogOpen(true);
-        event.stopPropagation();
+    const handleProtectClicked = async (event, item) => {
+        const command = item._protected ? "unprotect" : "protect";
+        const commandAction = item._protected ? "Unprotected" : "Protected";
+
+        if (await AxiosCommand(`/container/${panelId}/interface/${command}/${item.name}`)) {
+            sendAlert(`${commandAction} interface: ${item.name}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to ${command} interface: ${item.name}`, { variant: "error" });
+        }
     };
-
-    const handleInterfaceCommentClicked = (event, dialogProps) => {
-        setCommentDialogProps(dialogProps);
-        setCommentDialogOpen(true);
-        event.stopPropagation();
-    };
-
-    const renderRow = (iface) => {
-        return (
-            <TableRow
-                hover
-                className={classes.interfaceRow}
-                key={iface.id}
-                onClick={() => handleRowClicked(iface["name"])}
-            >
-                <TableCell className={classes.colRunning}>
-                    <PowerSettingsNew className={iface.running ? classes.iconRunning : classes.icon} />
-                </TableCell>
-                <TableCell className={classes.colEnabled}>
-                    <BugApiSwitch
-                        checked={!iface.disabled}
-                        onChange={(checked) => handleEnabledChanged(checked, iface.name)}
-                        disabled={iface._protected}
-                    />
-                </TableCell>
-                <TableCell className={classes.colName}>
-                    <Link
-                        component="button"
-                        className={classes.interfaceName}
-                        onClick={(event) =>
-                            handleInterfaceNameClicked(event, {
-                                panelId,
-                                interfaceId: iface.id,
-                                interfaceName: iface.name,
-                                defaultName: iface["default-name"],
-                            })
-                        }
-                    >
-                        {iface.name}
-                    </Link>
-                    <Link
-                        component="button"
-                        className={classes.interfaceComment}
-                        onClick={(event) =>
-                            handleInterfaceCommentClicked(event, {
-                                panelId,
-                                interfaceId: iface.id,
-                                interfaceName: iface.name,
-                                comment: iface.comment,
-                            })
-                        }
-                    >
-                        {iface.comment ? iface.comment : ""}
-                    </Link>
-                </TableCell>
-                <TableCell className={classes.colSpeed}>{iface.linkstats ? iface.linkstats.rate : ""}</TableCell>
-                <TableCell className={classes.colMacAddress}>{iface["mac-address"]}</TableCell>
-                <TableCell className={classes.colTraffic}>
-                    <BugSparkCell
-                        value={iface["traffic"]["tx-bits-per-second-text"]}
-                        history={iface["traffic"]["tx-history"]}
-                    />
-                </TableCell>
-                <TableCell className={classes.colTraffic}>
-                    <BugSparkCell
-                        value={iface["traffic"]["rx-bits-per-second-text"]}
-                        history={iface["traffic"]["rx-history"]}
-                    />
-                </TableCell>
-                <TableCell style={{ width: "4rem" }} className={classes.cellMenu}>
-                    <InterfaceListMenu
-                        iface={iface}
-                        panelId={panelId}
-                        onChange={handleMenuOpenChanged}
-                        onRename={handleRenameClicked}
-                        onComment={handleCommentClicked}
-                    />
-                </TableCell>
-            </TableRow>
-        );
-    };
-
-    const renderRows = (rows) => {
-        return rows?.map((iface) => renderRow(iface));
-    };
-
-    if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
-    }
-
-    if (interfaceList.status === "loading" || interfaceList.status === "idle") {
-        return <Loading />;
-    }
 
     return (
-        <>
-            <div className={classes.content}>
-                <TableContainer component={Paper} square>
-                    <Table className={classes.table} aria-label="simple table">
-                        <TableHead className={classes.tableHead}>
-                            <TableRow>
-                                <TableCell className={classes.colRunning}></TableCell>
-                                <TableCell className={classes.colEnabled}>Enabled</TableCell>
-                                <TableCell className={classes.colName}>Name</TableCell>
-                                <TableCell className={classes.colSpeed}>Speed</TableCell>
-                                <TableCell className={classes.colMacAddress}>MAC Address</TableCell>
-                                <TableCell className={classes.colTraffic}>TX</TableCell>
-                                <TableCell className={classes.colTraffic}>RX</TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>{renderRows(interfaceList.data)}</TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
-            {renameDialogOpen ? (
-                <RenameDialog {...renameDialogProps} onClose={() => setRenameDialogOpen(false)} />
-            ) : null}
-            {commentDialogOpen ? (
-                <CommentDialog {...commentDialogProps} onClose={() => setCommentDialogOpen(false)} />
-            ) : null}
-        </>
+        <BugApiTable
+            columns={[
+                {
+                    sortable: false,
+                    noPadding: true,
+                    width: 44,
+                    field: "running",
+                    content: (item) => <BugPowerIcon enabled={item.running} />,
+                },
+                {
+                    sortable: false,
+                    noPadding: true,
+                    hideWidth: 600,
+                    width: 70,
+                    content: (item) => {
+                        return (
+                            <BugApiSwitch
+                                checked={!item.disabled}
+                                onChange={(checked) => handleEnabledChanged(checked, item.name)}
+                                disabled={item._protected}
+                            />
+                        );
+                    },
+                },
+                {
+                    sortable: "true",
+                    minWidth: "15rem",
+                    noWrap: true,
+                    field: "name",
+                    title: "Name",
+                    content: (item) => (
+                        <>
+                            <Link
+                                sx={{
+                                    whiteSpace: "nowrap",
+                                    textOverflow: "ellipsis",
+                                    overflow: "hidden",
+                                    color: "#ffffff",
+                                    fontFamily: "fontFamily",
+                                    fontSize: "0.875rem",
+                                    lineHeight: 1.43,
+                                    display: "block",
+                                    maxWidth: "100%",
+                                    textAlign: "left",
+                                }}
+                                component="button"
+                                onClick={(event) => handleRenameClicked(event, item)}
+                            >
+                                {item.name}
+                            </Link>
+                            <Link
+                                sx={{
+                                    color: "#ffffff",
+                                    opacity: 0.3,
+                                    whiteSpace: "nowrap",
+                                    fontWeight: 500,
+                                    textOverflow: "ellipsis",
+                                    overflow: "hidden",
+                                    fontFamily: "fontFamily",
+                                    fontSize: "0.875rem",
+                                    lineHeight: 1.43,
+                                    display: "block",
+                                    maxWidth: "100%",
+                                    textAlign: "left",
+                                }}
+                                component="button"
+                                onClick={(event) => handleCommentClicked(event, item)}
+                            >
+                                {item.comment ? item.comment : ""}
+                            </Link>
+                        </>
+                    ),
+                },
+                {
+                    sortable: "true",
+                    title: "MAC Address",
+                    width: "10rem",
+                    field: "mac-address",
+                    hideWidth: 1200,
+                    content: (item) => item["mac-address"],
+                },
+                {
+                    title: "TX Rate",
+                    hideWidth: 580,
+                    content: (item) => (
+                        <BugSparkCell
+                            value={item?.traffic["tx-bits-per-second-text"]}
+                            history={item?.traffic["tx-history"]}
+                            height={40}
+                        />
+                    ),
+                },
+                {
+                    title: "RX Rate",
+                    hideWidth: 580,
+                    content: (item) => (
+                        <BugSparkCell
+                            value={item?.traffic["rx-bits-per-second-text"]}
+                            history={item?.traffic["rx-history"]}
+                            height={40}
+                        />
+                    ),
+                },
+            ]}
+            menuItems={[
+                {
+                    title: "View Details",
+                    icon: <SettingsInputComponentIcon fontSize="small" />,
+                    onClick: handleDetailsClicked,
+                },
+                {
+                    title: "Rename",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleRenameClicked,
+                },
+                {
+                    title: "Comment",
+                    icon: <CommentIcon fontSize="small" />,
+                    onClick: handleCommentClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Protect",
+                    disabled: (item) => item._protected && !item._allowunprotect,
+                    icon: (item) => (item._protected ? <CheckIcon fontSize="small" /> : null),
+                    onClick: handleProtectClicked,
+                },
+            ]}
+            apiUrl={`/container/${panelId}/interface`}
+            panelId={panelId}
+            hideHeader={false}
+            noData={
+                <BugTableNoData
+                    panelId={panelId}
+                    title="No interfaces found"
+                    message="Click to edit panel configuration"
+                    showConfigButton={true}
+                />
+            }
+            rowHeight="62px"
+            sortable
+            onRowClick={handleDetailsClicked}
+        />
     );
 }
