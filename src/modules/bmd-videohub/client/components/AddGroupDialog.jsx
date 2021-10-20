@@ -4,12 +4,19 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
-export default function AddGroupDialog({ onCancel, onSubmit, groups }) {
-    const [selectedGroup, setSelectedGroup] = React.useState("");
+export default function AddGroupDialog({ onCancel, onConfirm, groups }) {
+    const [selectedGroups, setSelectedGroups] = React.useState([]);
+
+    const modifiedGroups = groups.map((group) => {
+        return {
+            id: group.index,
+            label: group.label,
+        };
+    });
 
     return (
         <Dialog open onClose={onCancel}>
@@ -18,21 +25,24 @@ export default function AddGroupDialog({ onCancel, onSubmit, groups }) {
                     event.preventDefault();
                 }}
             >
-                <DialogTitle id="alert-dialog-title">Add to Group</DialogTitle>
+                <DialogTitle id="alert-dialog-title">Add to Groups</DialogTitle>
                 <DialogContent>
                     <FormControl>
-                        <Select
-                            style={{ width: "20rem" }}
-                            value={selectedGroup}
-                            onChange={(event) => setSelectedGroup(event.target.value)}
-                            label="Select group ..."
-                        >
-                            {groups.map((group) => (
-                                <MenuItem key={group.index} value={group.label}>
-                                    {group.label}
-                                </MenuItem>
-                            ))}
-                        </Select>
+                        <Autocomplete
+                            sx={{ width: "20rem" }}
+                            multiple
+                            filterSelectedOptions
+                            options={modifiedGroups}
+                            fullWidth
+                            freeSolo={false}
+                            onChange={(event, values) => {
+                                setSelectedGroups(values);
+                            }}
+                            value={selectedGroups}
+                            renderInput={(params) => (
+                                <TextField {...params} fullWidth variant="standard" label="Select groups ..." />
+                            )}
+                        />
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
@@ -41,10 +51,15 @@ export default function AddGroupDialog({ onCancel, onSubmit, groups }) {
                     </Button>
                     <Button
                         type="submit"
-                        onClick={() => onSubmit(selectedGroup)}
+                        onClick={(event) =>
+                            onConfirm(
+                                event,
+                                selectedGroups.map((group) => group.id)
+                            )
+                        }
                         color="primary"
                         autoFocus
-                        disabled={selectedGroup === ""}
+                        disabled={selectedGroups.length === 0}
                     >
                         Add
                     </Button>

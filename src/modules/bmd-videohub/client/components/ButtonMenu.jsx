@@ -16,6 +16,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import AddGroupDialog from "./AddGroupDialog";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
 
 export default function ButtonMenu({ buttonType, button, panelId, onChange, onEditIcon, groups, onRename }) {
     const sendAlert = useAlert();
@@ -24,7 +25,7 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
-    const [addGroupDialogVisible, setAddGroupDialogVisible] = React.useState(false);
+    const { customDialog } = useBugCustomDialog();
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -56,22 +57,24 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
         event.stopPropagation();
     };
 
-    const handleAddGroupClick = (event) => {
+    const handleAddGroupClick = async (event) => {
         handleClose(event);
-        setAddGroupDialogVisible(true);
-        event.stopPropagation();
-    };
-
-    const handleAddGroup = async (selectedGroup) => {
-        setAddGroupDialogVisible(false);
-        if (
-            await AxiosCommand(`/container/${panelId}/groups/addbutton/${buttonType}/${selectedGroup}/${button.index}`)
-        ) {
-            sendAlert(`Added button to group '${selectedGroup}'`, { variant: "success" });
-        } else {
-            sendAlert(`Failed to add button to group`, { variant: "error" });
+        const groupIndexes = await customDialog({
+            dialog: <AddGroupDialog groups={groups} />,
+        });
+        if (groupIndexes !== false) {
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/groups/addbutton/${buttonType}/${groupIndexes}/${button.index}`
+                )
+            ) {
+                sendAlert(`Added button to group(s) '${groupIndexes.join(",")}'`, { variant: "success" });
+                onChange();
+            } else {
+                sendAlert(`Failed to add button to group(s)`, { variant: "error" });
+            }
         }
-        onChange();
+        event.stopPropagation();
     };
 
     const handleClear = async () => {
@@ -137,13 +140,6 @@ export default function ButtonMenu({ buttonType, button, panelId, onChange, onEd
                     <ListItemText primary="Add to Group" />
                 </MenuItem>
             </Menu>
-            {addGroupDialogVisible && (
-                <AddGroupDialog
-                    onCancel={() => setAddGroupDialogVisible(false)}
-                    onSubmit={handleAddGroup}
-                    groups={groups}
-                />
-            )}
         </div>
     );
 }

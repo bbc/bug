@@ -82,11 +82,11 @@ route.get("/rename/:type/:groupName/:newGroupName", async function (req, res, ne
     }
 });
 
-route.get("/addbutton/:type/:groupName/:buttonIndex", async function (req, res, next) {
+route.get("/addbutton/:type/:groupIndexes/:buttonIndex", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await groupAddButton(req.params?.type, req.params?.groupName, req.params?.buttonIndex),
+            data: await groupAddButton(req.params?.type, req.params?.groupIndexes, req.params?.buttonIndex),
         });
     } catch (error) {
         console.log(error);

@@ -3,7 +3,8 @@ import React from "react";
 const BugCustomDialogContext = React.createContext({});
 
 // Create your own custom dialog and define it like this:
-//
+// import { useBugCustomDialog } from "@core/BugCustomDialog";
+// const {customDialog } = useBugCustomDialog();
 // const BugCustomDialog = ({ open, onConfirm, onDismiss }) => {
 //     return (
 //         <Dialog open={open} onClose={onDismiss}>

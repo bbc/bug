@@ -2,6 +2,8 @@ import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
+//TODO - more work needed here to update the UI if the backend changes after a certain amount of time (like API Switch)
+
 export default function BugApiAutocomplete({ options, value, freeSolo = false, onChange }) {
     // we use this bit of code to work out if we're dealing with an array of objects.
     // autocomplete only allows simple arrays or object arrays with 'id' and 'label' keys

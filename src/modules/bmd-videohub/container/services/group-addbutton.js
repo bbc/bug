@@ -3,7 +3,7 @@
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
 
-module.exports = async (type, groupName, buttonIndex) => {
+module.exports = async (type, groupIndexes, buttonIndex) => {
     const config = await configGet();
     if (!config) {
         return false;
@@ -14,14 +14,15 @@ module.exports = async (type, groupName, buttonIndex) => {
         config[groupVar] = [];
     }
 
-    for (let eachGroup of config[groupVar]) {
-        if (eachGroup["name"] === groupName) {
-            if (eachGroup["value"].indexOf(parseInt(buttonIndex)) === -1) {
-                eachGroup["value"].push(parseInt(buttonIndex));
-                return await configPutViaCore(config);
+    const groupIndexArray = groupIndexes.split(",");
+
+    for (const groupIndex of groupIndexArray) {
+        if (config[groupVar][groupIndex]) {
+            if (config[groupVar][groupIndex]["value"].indexOf(parseInt(buttonIndex)) === -1) {
+                config[groupVar][groupIndex]["value"].push(parseInt(buttonIndex));
             }
         }
     }
 
-    return false;
+    return await configPutViaCore(config);
 };
