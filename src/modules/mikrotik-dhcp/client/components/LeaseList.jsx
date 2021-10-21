@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import BugApiSwitch from "@core/BugApiSwitch";
-import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
+import BugPowerIcon from "@core/BugPowerIcon";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import CommentDialog from "./CommentDialog";
@@ -20,6 +20,7 @@ import GpsNotFixedIcon from "@mui/icons-material/GpsNotFixed";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -175,13 +176,7 @@ export default function LeaseList({ panelId }) {
                             { name: "Bound", value: "bound" },
                             { name: "Waiting", value: "waiting" },
                         ],
-                        content: (item) => {
-                            return (
-                                <PowerSettingsNew
-                                    className={item.status === "bound" ? classes.iconRunning : classes.icon}
-                                ></PowerSettingsNew>
-                            );
-                        },
+                        content: (item) => <BugPowerIcon enabled={item.status === "bound"} />,
                     },
                     {
                         title: "Enabled",
@@ -393,7 +388,7 @@ export default function LeaseList({ panelId }) {
                     {
                         title: "Wake Up (WOL)",
                         disabled: (item) => item.status === "bound",
-                        icon: <PowerSettingsNew fontSize="small" />,
+                        icon: <PowerSettingsNewIcon fontSize="small" />,
                         onClick: handleWolClicked,
                     },
                 ]}

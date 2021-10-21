@@ -61,6 +61,7 @@ export default function ConfigPanel() {
                         <InputLabel>Type</InputLabel>
                         <Select
                             native
+                            variant="standard"
                             defaultValue={panelConfig.data.type}
                             label="Type"
                             error={errors?.type ? true : false}
