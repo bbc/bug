@@ -147,6 +147,14 @@ const theme = createTheme({
                 },
             }
         },
+        MuiLink: {
+            styleOverrides: {
+                root: {
+                    fontFamily: "ReithSans",
+                    fontSize: "0.9rem"
+                },
+            }
+        },
         MuiButtonBase: {
             styleOverrides: {
                 root: {

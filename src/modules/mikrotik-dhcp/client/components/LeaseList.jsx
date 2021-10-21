@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import BugApiSwitch from "@core/BugApiSwitch";
 import BugPowerIcon from "@core/BugPowerIcon";
 import AxiosCommand from "@utils/AxiosCommand";
@@ -22,58 +21,10 @@ import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import BugTableNoData from "@core/BugTableNoData";
-
-const useStyles = makeStyles((theme) => ({
-    link: {
-        color: theme.palette.primary.main,
-        textDecoration: "none",
-    },
-    iconRunning: {
-        color: theme.palette.primary.main,
-        display: "block",
-        margin: "auto",
-        minWidth: 36,
-    },
-    icon: {
-        opacity: 0.1,
-        display: "block",
-        margin: "auto",
-        minWidth: 36,
-    },
-    tableHead: {
-        ["@media (max-width:450px)"]: {
-            display: "none",
-        },
-    },
-    leaseName: {
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        color: "#ffffff",
-        fontFamily: theme.typography.fontFamily,
-        fontSize: "0.875rem",
-        lineHeight: 1.43,
-        display: "block",
-        maxWidth: "100%",
-        textAlign: "left",
-    },
-    leaseComment: {
-        color: "#ffffff",
-        opacity: 0.3,
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-        overflow: "hidden",
-        fontFamily: theme.typography.fontFamily,
-        fontSize: "0.875rem",
-        lineHeight: 1.43,
-        display: "block",
-        maxWidth: "100%",
-        textAlign: "left",
-    },
-}));
+import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
 
 export default function LeaseList({ panelId }) {
-    const classes = useStyles();
     const history = useHistory();
     const sendAlert = useAlert();
     const [commentDialogProps, setCommentDialogProps] = React.useState({});
@@ -115,6 +66,14 @@ export default function LeaseList({ panelId }) {
 
     const handleDisabledClicked = (event, item) => {
         handleEnabledChanged(false, item.id);
+    };
+
+    const handleLinkClicked = (event, item) => {
+        const url = `http://${item.address}`;
+        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+        if (newWindow) newWindow.opener = null;
+        event.stopPropagation();
+        event.preventDefault();
     };
 
     const handleDeleteClicked = async (event, item) => {
@@ -203,11 +162,28 @@ export default function LeaseList({ panelId }) {
                         width: 82,
                         content: (item) => {
                             return item.dynamic ? (
-                                <GpsNotFixedIcon
-                                    className={item.status === "bound" ? classes.iconRunning : classes.icon}
-                                />
+                                <Tooltip title={item.status === "bound" ? "Dynamic - active" : "Dynamic - waiting"}>
+                                    <GpsNotFixedIcon
+                                        sx={{
+                                            color: item.status === "bound" ? "primary.main" : "inherit",
+                                            opacity: item.status === "bound" ? 1 : 0.1,
+                                            display: "block",
+                                            margin: "auto",
+                                            minWidth: 36,
+                                        }}
+                                    />
+                                </Tooltip>
                             ) : (
-                                <GpsFixedIcon className={classes.iconRunning} />
+                                <Tooltip title={item.status === "bound" ? "Reserved - active" : "Reserved - waiting"}>
+                                    <GpsFixedIcon
+                                        sx={{
+                                            color: "primary.main",
+                                            display: "block",
+                                            margin: "auto",
+                                            minWidth: 36,
+                                        }}
+                                    />
+                                </Tooltip>
                             );
                         },
                     },
@@ -223,12 +199,41 @@ export default function LeaseList({ panelId }) {
                         content: (item) => {
                             return (
                                 <>
-                                    {item["host-name"] && <div className={classes.leaseName}>{item["host-name"]}</div>}
+                                    {item["host-name"] && (
+                                        <Box
+                                            sx={{
+                                                whiteSpace: "nowrap",
+                                                textOverflow: "ellipsis",
+                                                overflow: "hidden",
+                                                color: "#ffffff",
+                                                fontFamily: "fontFamily",
+                                                fontSize: "0.875rem",
+                                                lineHeight: 1.43,
+                                                display: "block",
+                                                maxWidth: "100%",
+                                                textAlign: "left",
+                                            }}
+                                        >
+                                            {item["host-name"]}
+                                        </Box>
+                                    )}
                                     {item.comment && (
                                         <Link
                                             component="button"
-                                            className={classes.leaseComment}
                                             onClick={(event) => handleCommentClicked(event, item)}
+                                            sx={{
+                                                color: "#ffffff",
+                                                opacity: 0.3,
+                                                whiteSpace: "nowrap",
+                                                textOverflow: "ellipsis",
+                                                overflow: "hidden",
+                                                fontFamily: "fontFamily",
+                                                fontSize: "0.875rem",
+                                                lineHeight: 1.43,
+                                                display: "block",
+                                                maxWidth: "100%",
+                                                textAlign: "left",
+                                            }}
                                         >
                                             {item.comment}
                                         </Link>
@@ -246,16 +251,9 @@ export default function LeaseList({ panelId }) {
                         filterType: "text",
                         content: (item) => {
                             return (
-                                <a
-                                    className={classes.link}
-                                    target="_blank"
-                                    href={`http://${item.address}`}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                    }}
-                                >
+                                <Link component="button" onClick={(event) => handleLinkClicked(event, item)}>
                                     {item.address}
-                                </a>
+                                </Link>
                             );
                         },
                     },
