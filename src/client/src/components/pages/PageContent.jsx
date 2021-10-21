@@ -6,7 +6,6 @@ import PagePanelsAdd from "./PagePanelsAdd";
 import PagePanelsEdit from "./PagePanelsEdit";
 import PageSystem from "./PageSystem";
 import { Switch, Route } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
 import PageSystemConfiguration from "@components/system/PageSystemConfiguration";
 import PageSystemUsers from "@components/system/PageSystemUsers";
 import PageSystemUserEdit from "@components/system/PageSystemUserEdit";
@@ -18,159 +17,176 @@ import PageSystemLogs from "@components/system/PageSystemLogs";
 import PageSystemAbout from "@components/system/PageSystemAbout";
 import PageSystemBackup from "@components/system/PageSystemBackup";
 import { Redirect } from "react-router";
+import BugScrollbars from "@core/BugScrollbars";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: "flex",
-        height: "100%",
-    },
-    page: {
-        position: "absolute",
-        top: 64,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        "@media (max-width:600px)": {
-            top: 56,
-        },
-    },
-    pagecontent: {
-        height: "100%",
-        overflow: "scroll",
+const StyledPageContent = styled("div")({
+    height: "100%",
+    padding: 4,
+});
+
+const StyledHomePageContent = styled("div")({
+    height: "100%",
+    padding: 8,
+    "@media (max-width:1200px)": {
         padding: 4,
     },
-    homePageContent: {
-        padding: 8,
-        "@media (max-width:1200px)": {
-            padding: 4,
-        },
-        "@media (max-width:1024px)": {
-            padding: 2,
-        },
-        "@media (max-width:600px)": {
-            padding: 0,
-        },
+    "@media (max-width:1024px)": {
+        padding: 2,
     },
-    loginPageContent: {
-        padding: 12,
-        "@media (max-width:1200px)": {
-            padding: 8,
-        },
-        "@media (max-width:1024px)": {
-            padding: 4,
-        },
-        "@media (max-width:600px)": {
-            padding: 0,
-        },
+    "@media (max-width:600px)": {
+        padding: 0,
     },
-    bugLogo: {
-        color: theme.palette.secondary.main,
-        padding: "0.8rem",
-    },
-}));
+});
 
 const PageContent = () => {
-    const classes = useStyles();
-
     return (
         <>
-            <div className={classes.page}>
+            <Box
+                sx={{
+                    position: "absolute",
+                    top: "64px",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    "@media (max-width:600px)": {
+                        top: "56px",
+                    },
+                }}
+            >
                 <Switch>
                     <Route exact path="/">
-                        <div className={classes.homePageContent}>
-                            <PageHome />
-                        </div>
+                        <StyledHomePageContent>
+                            <BugScrollbars>
+                                <PageHome />
+                            </BugScrollbars>
+                        </StyledHomePageContent>
                     </Route>
                     <Route exact path="/panels">
-                        <div className={classes.pagecontent}>
-                            <PagePanels />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PagePanels />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/panels/add">
-                        <div className={classes.pagecontent}>
-                            <PagePanelsAdd />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PagePanelsAdd />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/panels/edit">
-                        <div className={classes.pagecontent}>
-                            <PagePanelsEdit />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PagePanelsEdit />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route path="/panel/:panelid">
-                        <div className={classes.pagecontent}>
-                            <PagePanel />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PagePanel />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system">
-                        <div className={classes.pagecontent}>
-                            <PageSystem />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystem />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/configuration">
-                        <div className={classes.pagecontent}>
-                            <PageSystemConfiguration />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemConfiguration />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/users">
-                        <div className={classes.pagecontent}>
-                            <PageSystemUsers />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemUsers />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/user">
-                        <div className={classes.pagecontent}>
-                            <PageSystemUserEdit />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemUserEdit />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/user/:userId">
-                        <div className={classes.pagecontent}>
-                            <PageSystemUserEdit />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemUserEdit />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/security">
-                        <div className={classes.pagecontent}>
-                            <PageSystemSecurity />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemSecurity />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/security/edit">
-                        <div className={classes.pagecontent}>
-                            <PageSystemSecurity edit />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemSecurity edit />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/security/:type">
-                        <div className={classes.pagecontent}>
-                            <PageSystemSecurityStrategy />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemSecurityStrategy />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/software">
-                        <div className={classes.pagecontent}>
-                            <PageSystemSoftware />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemSoftware />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/info">
-                        <div className={classes.pagecontent}>
-                            <PageSystemInfo />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemInfo />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/logs">
-                        <div className={classes.pagecontent}>
-                            <PageSystemLogs />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemLogs />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/about">
-                        <div className={classes.pagecontent}>
-                            <PageSystemAbout />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemAbout />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/system/backup">
-                        <div className={classes.pagecontent}>
-                            <PageSystemBackup />
-                        </div>
+                        <StyledPageContent>
+                            <BugScrollbars>
+                                <PageSystemBackup />
+                            </BugScrollbars>
+                        </StyledPageContent>
                     </Route>
                     <Route exact path="/login">
                         <Redirect to="/" />
                     </Route>
                 </Switch>
-            </div>
+            </Box>
         </>
     );
 };

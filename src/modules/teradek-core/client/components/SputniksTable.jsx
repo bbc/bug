@@ -9,6 +9,7 @@ import Chip from "@mui/material/Chip";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
 import BugTableNoData from "@core/BugTableNoData";
+import BugScrollbars from "@core/BugScrollbars";
 
 export default function SputniksTable({ panelId }) {
     const devices = useApiPoller({
@@ -82,11 +83,14 @@ export default function SputniksTable({ panelId }) {
                     content: (item) => (
                         <Box
                             sx={{
-                                maxHeight: 200,
-                                overflow: "auto",
+                                position: "absolute",
+                                top: 0,
+                                bottom: 0,
+                                padding: "8px",
+                                width: "100%",
                             }}
                         >
-                            {getLinkedDevices(item)}
+                            <BugScrollbars>{getLinkedDevices(item)}</BugScrollbars>
                         </Box>
                     ),
                 },
@@ -101,6 +105,7 @@ export default function SputniksTable({ panelId }) {
             apiUrl={`/container/${panelId}/sputnik/`}
             panelId={panelId}
             hideHeader={false}
+            rowHeight="126px"
             noData={
                 <BugTableNoData
                     panelId={panelId}

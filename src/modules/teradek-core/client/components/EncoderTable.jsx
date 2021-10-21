@@ -26,6 +26,7 @@ import Box from "@mui/material/Box";
 import BugAudioThumbnail from "@core/BugAudioThumbnail";
 import BugPowerIcon from "@core/BugPowerIcon";
 import BugTableNoData from "@core/BugTableNoData";
+import BugScrollbars from "@core/BugScrollbars";
 
 const useStyles = makeStyles((theme) => ({
     iconRunning: {
@@ -320,11 +321,14 @@ export default function EncodersTable({ panelId }) {
                     content: (item) => (
                         <Box
                             sx={{
-                                maxHeight: 100,
-                                overflow: "auto",
+                                position: "absolute",
+                                top: 0,
+                                bottom: 0,
+                                padding: "8px",
+                                width: "100%",
                             }}
                         >
-                            {getLinkedDevices(item)}
+                            <BugScrollbars>{getLinkedDevices(item)}</BugScrollbars>
                         </Box>
                     ),
                 },

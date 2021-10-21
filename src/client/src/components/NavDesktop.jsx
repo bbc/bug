@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Menu from "@components/Menu";
+import BugScrollbars from "@core/BugScrollbars";
 
 const drawerWidth = 275;
 const fullMenuWidth = 1024;
@@ -96,6 +97,10 @@ const NavDesktop = (props) => {
             </AppBar>
             <Drawer
                 variant="permanent"
+                sx={{
+                    "& .MuiDrawer-paper": { overflowY: "visible" },
+                    "& .MuiGrid-container": { flexWrap: "nowrap" },
+                }}
                 className={clsx(classes.drawer, {
                     [classes.drawerOpen]: open,
                     [classes.drawerClose]: !open,
@@ -108,7 +113,9 @@ const NavDesktop = (props) => {
                 }}
             >
                 <div className={classes.toolbar}></div>
-                <Menu showGroups={open} />
+                <BugScrollbars>
+                    <Menu showGroups={open} />
+                </BugScrollbars>
             </Drawer>
             <div className={classes.content}>{props.children}</div>
         </Box>

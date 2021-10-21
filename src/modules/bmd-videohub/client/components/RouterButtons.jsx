@@ -6,7 +6,7 @@ import Loading from "@components/Loading";
 import BugEditIconDialog from "@core/BugEditIconDialog";
 import AxiosPost from "@utils/AxiosPost";
 import Box from "@mui/material/Box";
-import { Scrollbars } from "react-custom-scrollbars";
+import BugScrollbars from "@core/BugScrollbars";
 
 import {
     DndContext,
@@ -124,7 +124,7 @@ export default function Router({
     if (editMode) {
         return (
             <>
-                <Scrollbars>
+                <BugScrollbars>
                     <Box
                         sx={{
                             padding: "0px 8px",
@@ -147,7 +147,7 @@ export default function Router({
                             </SortableContext>
                         </DndContext>
                     </Box>
-                </Scrollbars>
+                </BugScrollbars>
                 {editIconDialogButton !== null && (
                     <BugEditIconDialog
                         icon={editIconDialogButton.icon}
@@ -164,7 +164,7 @@ export default function Router({
 
     return (
         <>
-            <Scrollbars>
+            <BugScrollbars>
                 <Box
                     sx={{
                         padding: "0px 8px",
@@ -180,7 +180,7 @@ export default function Router({
                 >
                     {renderButtons()}
                 </Box>
-            </Scrollbars>
+            </BugScrollbars>
         </>
     );
 }

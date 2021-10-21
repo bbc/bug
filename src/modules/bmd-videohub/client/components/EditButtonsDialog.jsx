@@ -17,7 +17,7 @@ import _ from "lodash";
 import { useAlert } from "@utils/Snackbar";
 import AxiosPost from "@utils/AxiosPost";
 import Box from "@mui/material/Box";
-import { Scrollbars } from "react-custom-scrollbars";
+import BugScrollbars from "@core/BugScrollbars";
 
 import {
     DndContext,
@@ -181,7 +181,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                         Available Buttons
                     </ListItem>
                 </Box>
-                <Scrollbars>
+                <BugScrollbars>
                     <Box
                         sx={{
                             minHeight: "18rem",
@@ -238,7 +238,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                             })}
                         </List>
                     </Box>
-                </Scrollbars>
+                </BugScrollbars>
             </Box>
         );
     };
@@ -268,7 +268,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                 >
                     Selected Buttons
                 </Box>
-                <Scrollbars>
+                <BugScrollbars>
                     <Box>
                         <List
                             sx={{
@@ -297,7 +297,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                             </DndContext>
                         </List>
                     </Box>
-                </Scrollbars>
+                </BugScrollbars>
             </Box>
         );
     };
