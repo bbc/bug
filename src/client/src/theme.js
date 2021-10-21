@@ -165,6 +165,18 @@ const theme = createTheme({
                 }
             }
         },
+        MuiSwitch: {
+            styleOverrides: {
+                root: {
+                    "& .Mui-checked.Mui-disabled": {
+                        color: "#333",
+                        "&+.MuiSwitch-track": {
+                            backgroundColor: "#333"
+                        }
+                    },
+                }
+            },
+        },
         MuiChip: {
             styleOverrides: {
                 root: {
