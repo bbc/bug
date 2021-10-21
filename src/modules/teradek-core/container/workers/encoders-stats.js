@@ -85,19 +85,20 @@ const main = async () => {
 
         socket.on(`device:${encoderSid}:audio-preview`, async (event) => {
             const stats = await filterAudio(event);
-            const entry = await devicesCollection.updateOne(
-                {
-                    sid: encoderSid,
-                },
-                {
-                    $push: {
-                        encoderStatsAudio: {
-                            $each: [{ ...stats }],
-                            $slice: 20,
-                        },
-                    },
-                }
-            );
+            // <-- we don't use these historical stats at the moment - GH 21/10/2021
+            // const entry = await devicesCollection.updateOne(
+            //     {
+            //         sid: encoderSid,
+            //     },
+            //     {
+            //         $push: {
+            //             encoderStatsAudio: {
+            //                 $each: [{ ...stats }],
+            //                 $slice: -20,
+            //             },
+            //         },
+            //     }
+            // );
 
             // and also update the audio level fields in the main object (easier to do this now)
             await devicesCollection.updateOne(
