@@ -6,6 +6,7 @@ import Loading from "@components/Loading";
 import BugEditIconDialog from "@core/BugEditIconDialog";
 import AxiosPost from "@utils/AxiosPost";
 import Box from "@mui/material/Box";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import {
     DndContext,
@@ -122,28 +123,31 @@ export default function Router({
 
     if (editMode) {
         return (
-            <Box
-                sx={{
-                    padding: "0px 8px",
-                    marginBottom: "8px",
-                    overflow: "auto",
-                    "@media (max-height:400px)": {
-                        padding: "0px 2px",
-                        overflow: "visible",
-                    },
-                    "@media (max-width:600px)": {
-                        padding: "0px 2px",
-                    },
-                }}
-            >
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                    <SortableContext
-                        items={localButtons.map((button) => `${buttonType}:${button.index}`)}
-                        strategy={rectSortingStrategy}
+            <>
+                <Scrollbars>
+                    <Box
+                        sx={{
+                            padding: "0px 8px",
+                            marginBottom: "8px",
+                            "@media (max-height:400px)": {
+                                padding: "0px 2px",
+                                overflow: "visible",
+                            },
+                            "@media (max-width:600px)": {
+                                padding: "0px 2px",
+                            },
+                        }}
                     >
-                        {renderButtons()}
-                    </SortableContext>
-                </DndContext>
+                        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                            <SortableContext
+                                items={localButtons.map((button) => `${buttonType}:${button.index}`)}
+                                strategy={rectSortingStrategy}
+                            >
+                                {renderButtons()}
+                            </SortableContext>
+                        </DndContext>
+                    </Box>
+                </Scrollbars>
                 {editIconDialogButton !== null && (
                     <BugEditIconDialog
                         icon={editIconDialogButton.icon}
@@ -154,28 +158,29 @@ export default function Router({
                         buttonType={buttonType}
                     />
                 )}
-            </Box>
+            </>
         );
     }
 
     return (
         <>
-            <Box
-                sx={{
-                    padding: "0px 8px",
-                    marginBottom: "8px",
-                    overflow: "auto",
-                    "@media (max-height:400px)": {
-                        padding: "0px 2px",
-                        overflow: "visible",
-                    },
-                    "@media (max-width:600px)": {
-                        padding: "0px 2px",
-                    },
-                }}
-            >
-                {renderButtons()}
-            </Box>
+            <Scrollbars>
+                <Box
+                    sx={{
+                        padding: "0px 8px",
+                        marginBottom: "8px",
+                        "@media (max-height:400px)": {
+                            padding: "0px 2px",
+                            overflow: "visible",
+                        },
+                        "@media (max-width:600px)": {
+                            padding: "0px 2px",
+                        },
+                    }}
+                >
+                    {renderButtons()}
+                </Box>
+            </Scrollbars>
         </>
     );
 }

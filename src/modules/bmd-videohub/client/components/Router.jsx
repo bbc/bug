@@ -86,9 +86,9 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    "@media (max-height:400px)": {
-                        overflow: "auto",
-                    },
+                    // "@media (max-height:400px)": {
+                    //     overflow: "auto",
+                    // },
                 }}
             >
                 <SectionHeader>Sources</SectionHeader>
@@ -131,7 +131,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     display: "flex",
                     flexDirection: "column",
                     "@media (max-height:400px)": {
-                        overflow: "auto",
+                        // overflow: "auto",
                     },
                 }}
             >
@@ -163,7 +163,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     position: "relative",
                     height: "100%",
                     "@media (max-width:600px)": {
-                        position: "static",
+                        // position: "static",
                     },
                 }}
             >
@@ -176,8 +176,8 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         bottom: "50%",
                         marginBottom: 2,
                         "@media (max-width:600px)": {
-                            marginBottom: 1,
-                            position: "static",
+                            // marginBottom: 1,
+                            // position: "static",
                         },
                     }}
                 >
@@ -192,7 +192,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         top: "50%",
                         marginTop: 2,
                         "@media (max-width:600px)": {
-                            position: "static",
+                            // position: "static",
                         },
                     }}
                 >
