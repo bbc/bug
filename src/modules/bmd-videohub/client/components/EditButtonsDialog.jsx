@@ -17,6 +17,7 @@ import _ from "lodash";
 import { useAlert } from "@utils/Snackbar";
 import AxiosPost from "@utils/AxiosPost";
 import Box from "@mui/material/Box";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import {
     DndContext,
@@ -142,6 +143,9 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                     backgroundColor: "#303030",
                     borderRadius: "3px",
                     margin: "0.5rem",
+                    minWidth: "18rem",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
             >
                 <Box
@@ -177,63 +181,64 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                         Available Buttons
                     </ListItem>
                 </Box>
-                <Box
-                    sx={{
-                        minHeight: "18rem",
-                        maxHeight: "50vh",
-                        overflow: "auto",
-                    }}
-                >
-                    <List
+                <Scrollbars>
+                    <Box
                         sx={{
-                            minWidth: "18rem",
-                            backgroundColor: "#303030",
-                        }}
-                        dense
-                        component="div"
-                        role="list"
-                        onClick={(event) => {
-                            event.stopPropagation();
+                            minHeight: "18rem",
+                            maxHeight: "50vh",
                         }}
                     >
-                        {buttons.map((button, index) => {
-                            return (
-                                <ListItem
-                                    sx={{
-                                        borderBottom: "1px solid #282828",
-                                        height: "51px",
-                                        paddingLeft: "8px",
-                                        paddingRight: "8px",
-                                    }}
-                                    key={index}
-                                    role="listitem"
-                                    button
-                                    onClick={(event) => handleToggle(event, index, button)}
-                                >
-                                    <ListItemIcon>
-                                        <Checkbox
-                                            checked={
-                                                selectedButtons.filter((button) => button.index === index).length > 0
-                                            }
-                                            tabIndex={-1}
-                                            disableRipple
-                                        />
-                                    </ListItemIcon>
-                                    <Box
+                        <List
+                            sx={{
+                                backgroundColor: "#303030",
+                            }}
+                            dense
+                            component="div"
+                            role="list"
+                            onClick={(event) => {
+                                event.stopPropagation();
+                            }}
+                        >
+                            {buttons.map((button, index) => {
+                                return (
+                                    <ListItem
                                         sx={{
+                                            borderBottom: "1px solid #282828",
+                                            height: "51px",
+                                            paddingLeft: "8px",
                                             paddingRight: "8px",
-                                            fontWeight: 900,
-                                            opacity: 0.3,
                                         }}
+                                        key={index}
+                                        role="listitem"
+                                        button
+                                        onClick={(event) => handleToggle(event, index, button)}
                                     >
-                                        {index + 1}
-                                    </Box>
-                                    <ListItemText primary={button} />
-                                </ListItem>
-                            );
-                        })}
-                    </List>
-                </Box>
+                                        <ListItemIcon>
+                                            <Checkbox
+                                                checked={
+                                                    selectedButtons.filter((button) => button.index === index).length >
+                                                    0
+                                                }
+                                                tabIndex={-1}
+                                                disableRipple
+                                            />
+                                        </ListItemIcon>
+                                        <Box
+                                            sx={{
+                                                paddingRight: "8px",
+                                                fontWeight: 900,
+                                                opacity: 0.3,
+                                            }}
+                                        >
+                                            {index + 1}
+                                        </Box>
+                                        <ListItemText primary={button} />
+                                    </ListItem>
+                                );
+                            })}
+                        </List>
+                    </Box>
+                </Scrollbars>
             </Box>
         );
     };
@@ -242,9 +247,14 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
         return (
             <Box
                 sx={{
+                    minHeight: "18rem",
+                    maxHeight: "50vh",
                     backgroundColor: "#303030",
                     borderRadius: "3px",
                     margin: "0.5rem",
+                    minWidth: "18rem",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
             >
                 <Box
@@ -258,37 +268,36 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                 >
                     Selected Buttons
                 </Box>
-                <Box
-                    sx={{
-                        minHeight: "18rem",
-                        maxHeight: "50vh",
-                        overflow: "auto",
-                    }}
-                >
-                    <List
-                        sx={{
-                            minWidth: "18rem",
-                            backgroundColor: "#303030",
-                        }}
-                        dense
-                        component="div"
-                        role="list"
-                        onClick={(event) => {
-                            event.stopPropagation();
-                        }}
-                    >
-                        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                            <SortableContext
-                                items={selectedButtons.map((button) => `button:${button.index}`)}
-                                strategy={verticalListSortingStrategy}
-                            >
-                                {selectedButtons.map((button) => (
-                                    <EditButtonsDragItem button={button} onRemove={removeButton} key={button.index} />
-                                ))}
-                            </SortableContext>
-                        </DndContext>
-                    </List>
-                </Box>
+                <Scrollbars>
+                    <Box>
+                        <List
+                            sx={{
+                                backgroundColor: "#303030",
+                            }}
+                            dense
+                            component="div"
+                            role="list"
+                            onClick={(event) => {
+                                event.stopPropagation();
+                            }}
+                        >
+                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                                <SortableContext
+                                    items={selectedButtons.map((button) => `button:${button.index}`)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {selectedButtons.map((button) => (
+                                        <EditButtonsDragItem
+                                            button={button}
+                                            onRemove={removeButton}
+                                            key={button.index}
+                                        />
+                                    ))}
+                                </SortableContext>
+                            </DndContext>
+                        </List>
+                    </Box>
+                </Scrollbars>
             </Box>
         );
     };
@@ -328,6 +337,9 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
             sx={{
                 "& .MuiDialog-paperScrollPaper": {
                     maxWidth: "none",
+                },
+                "& .MuiDialogContent-root": {
+                    padding: "0px 1rem",
                 },
             }}
         >
