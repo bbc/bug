@@ -3,7 +3,6 @@ import BugApiSwitch from "@core/BugApiSwitch";
 import BugPowerIcon from "@core/BugPowerIcon";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import CommentDialog from "./CommentDialog";
 import Link from "@mui/material/Link";
 import { formatDistanceToNow } from "date-fns";
 import BugApiTable from "@core/BugApiTable";
@@ -13,7 +12,6 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import EditIcon from "@mui/icons-material/Edit";
-import { useModal } from "react-modal-hook";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import GpsNotFixedIcon from "@mui/icons-material/GpsNotFixed";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -23,27 +21,31 @@ import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import BugTableNoData from "@core/BugTableNoData";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
 export default function LeaseList({ panelId }) {
     const history = useHistory();
     const sendAlert = useAlert();
-    const [commentDialogProps, setCommentDialogProps] = React.useState({});
     const nowTimestamp = Date.now();
+    const { renameDialog } = useBugRenameDialog();
 
-    const [showCommentDialog, hideCommentDialog] = useModal(
-        () => <CommentDialog {...commentDialogProps} onClose={() => hideCommentDialog()} />,
-        [commentDialogProps]
-    );
-
-    const handleCommentClicked = (event, item) => {
-        setCommentDialogProps({
-            panelId,
-            leaseId: item.id,
-            comment: item.comment,
-        });
-        showCommentDialog();
+    const handleCommentClicked = async (event, item) => {
         event.stopPropagation();
-        event.preventDefault();
+        const result = await renameDialog({
+            title: "Edit comment",
+            defaultValue: item.comment,
+            confirmText: "Change",
+        });
+
+        if (result !== false) {
+            if (await AxiosCommand(`/container/${panelId}/lease/comment/${item.id}/${result}`)) {
+                sendAlert(`Set comment on lease to '${result}'`, {
+                    variant: "success",
+                });
+            } else {
+                sendAlert(`Failed to set comment on lease`, { variant: "error" });
+            }
+        }
     };
 
     const handleDetailsClicked = (event, item) => {

@@ -110,6 +110,7 @@ export default function Lease({ panelId, leaseId }) {
                                     }}
                                     required
                                     fullWidth
+                                    variant="standard"
                                     error={errors.address}
                                     defaultValue={lease.address}
                                     type="text"
@@ -133,6 +134,7 @@ export default function Lease({ panelId, leaseId }) {
                                     error={errors.comment}
                                     defaultValue={lease.comment}
                                     type="text"
+                                    variant="standard"
                                     label="Comment"
                                 />
                             </Grid>
@@ -163,6 +165,7 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors["mac-address"]}
                                     defaultValue={lease["mac-address"]}
+                                    variant="standard"
                                     type="text"
                                     label="MAC Address"
                                 />
@@ -215,6 +218,7 @@ export default function Lease({ panelId, leaseId }) {
                             {servers && lease && (
                                 <Grid item xs={12}>
                                     <TextField
+                                        variant="standard"
                                         select
                                         inputProps={{
                                             ...register("server"),
