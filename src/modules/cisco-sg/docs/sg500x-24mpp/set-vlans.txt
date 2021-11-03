@@ -1,0 +1,22 @@
+ciscosw-L038859(config)#int GigabitEthernet
+ciscosw-L038859(config)#int GigabitEthernet
+  <1-1>  GigabitEthernet slot number
+ciscosw-L038859(config)#int GigabitEthernet 1/
+  <1-24>  GigabitEthernet port number
+ciscosw-L038859(config)#int GigabitEthernet 1/1
+ciscosw-L038859(config-if)#switchport trunk
+  allowed              Specify trunk as allowed
+  native               vlan unaware port
+ciscosw-L038859(config-if)#switchport trunk allowed
+  vlan                 Configure VLANs in a trunk port
+ciscosw-L038859(config-if)#switchport trunk allowed vlan
+  add                  Specify which VLAN to add to the port.
+  remove               Specify the VLAN to remove from port.
+ciscosw-L038859(config-if)#switchport trunk allowed vlan add
+  <2-4094>             Specify which VLAN to add to the port.
+  all                  Specify all existing IEEE 802.1 VLANs.
+ciscosw-L038859(config-if)#switchport trunk allowed vlan add
+
+ciscosw-L038859(config-if)#switchport access vlan
+  <1-4094>             vlan tag
+ciscosw-L038859(config-if)#switchport access vlan 1

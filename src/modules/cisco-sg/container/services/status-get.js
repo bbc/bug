@@ -1,0 +1,8 @@
+"use strict";
+
+const statusCheckCollection = require("@core/status-checkcollection");
+const statusCheckWorkers = require("@core/status-checkworkers");
+
+module.exports = async () => {
+    return [];
+};

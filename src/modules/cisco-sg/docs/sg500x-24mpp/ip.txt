@@ -1,0 +1,9 @@
+ciscosw-L038859#sh ip interface vlan 20
+
+
+    IP Address        I/F    I/F Status  Type   Directed  Prec Redirect Status
+                             admin/oper         Broadcast
+------------------ --------- ---------- ------- --------- ---- -------- ------
+172.24.62.2/25     vlan 20   UP/UP      DHCP    disable   No   enable   Valid
+
+ciscosw-L038859#

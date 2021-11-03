@@ -1,0 +1,67 @@
+ciscosw-L038859#sh interfaces description
+Port      Description
+-------   -----------
+gi1/1
+gi1/2
+gi1/3
+gi1/4
+gi1/5
+gi1/6
+gi1/7
+gi1/8
+gi1/9
+gi1/10
+gi1/11
+gi1/12
+gi1/13
+gi1/14
+gi1/15
+gi1/16
+gi1/17
+gi1/18
+gi1/19
+gi1/20
+gi1/21
+gi1/22
+gi1/23
+gi1/24
+te1/1
+te1/2
+te1/3
+te1/4
+
+Ch        Description
+-------   -----------
+Po1
+Po2
+Po3
+Po4
+Po5
+Po6
+Po7
+Po8
+Po9
+Po10
+Po11
+Po12
+Po13
+Po14
+Po15
+Po16
+Po17
+Po18
+Po19
+Po20
+Po21
+Po22
+Po23
+Po24
+Po25
+Po26
+Po27
+Po28
+Po29
+Po30
+Po31
+Po32
+ciscosw-L038859#

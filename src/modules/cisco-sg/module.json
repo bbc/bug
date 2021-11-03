@@ -1,6 +1,6 @@
 {
     "name": "cisco-sg",
-    "longname": "Cisco SG Switches",
+    "longname": "Cisco SG Switch",
     "version": "1.0.0",
     "description": "Monitoring and control of Cisco SG-series switches",
     "icon": "SettingsEthernet",
@@ -15,15 +15,14 @@
         "order": 0,
         "needsConfigured": true,
         "title": "",
-        "module": "mikrotik-interfaces",
+        "module": "cisco-sg",
         "description": "",
         "notes": "",
         "enabled": false,
         "address": "",
         "username": "bug",
         "password": "",
-        "passwordauth": true,
-        "community": "public",
+        "snmp_community": "public",
         "protected_interfaces": []
     }
 }

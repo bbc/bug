@@ -1,0 +1,11 @@
+ciscosw-L038859#sh arp
+
+Total number of entries: 1
+
+
+  VLAN    Interface     IP address        HW address          status
+--------------------- --------------- ------------------- ---------------
+vlan 20    te1/1      172.24.62.126   4c:5e:0c:24:07:1a   dynamic
+
+
+ciscosw-L038859#
