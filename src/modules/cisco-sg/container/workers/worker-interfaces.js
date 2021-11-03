@@ -83,6 +83,13 @@ const main = async () => {
             oid: "1.3.6.1.2.1.2.2.1.8"
         });
 
+        const ifShortIDs = await ciscoSGSNMP.subtree({
+            host: workerData.address,
+            community: workerData.snmp_community,
+            maxRepetitions: 1000,
+            oid: "1.3.6.1.2.1.31.1.1.1.1"
+        });
+
         // now fetch interface name - which we need to calculate the stack
         const ifDescriptions = await ciscoSGSNMP.subtree({
             host: workerData.address,
@@ -94,12 +101,14 @@ const main = async () => {
         for (let [eachOid, eachResult] of Object.entries(ifIDs)) {
             const interfaceId = parseInt(eachOid.substring(eachOid.lastIndexOf(".") + 1));
             if (eachResult < 3 && interfaceId < 1000) {
+                const shortId = ifShortIDs[`1.3.6.1.2.1.31.1.1.1.1.${interfaceId}`];
                 // check description
                 const description = ifDescriptions[`1.3.6.1.2.1.2.2.1.2.${interfaceId}`];
                 if (description) {
                     const portArray = splitPort(description);
                     const dbDocument = {
                         interfaceId: interfaceId,
+                        shortId: shortId,
                         description: description,
                         device: portArray.device,
                         slot: portArray.slot,
