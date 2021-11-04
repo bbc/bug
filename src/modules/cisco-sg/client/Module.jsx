@@ -8,10 +8,10 @@ export default function Module(props) {
         <>
             <Switch>
                 <Route path="/">
-                    <MainPanel {...props}/>
+                    <MainPanel {...props} />
                 </Route>
                 <Route path="/config">
-                    <ConfigPanel {...props}/>
+                    <ConfigPanel {...props} />
                 </Route>
             </Switch>
         </>
