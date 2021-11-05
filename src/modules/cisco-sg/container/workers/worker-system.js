@@ -28,7 +28,7 @@ const main = async () => {
     await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 120 });
 
     // remove previous values
-    // dataCollection.deleteMany({});
+    dataCollection.deleteMany({});
 
     // Kick things off
     console.log(`worker-system: connecting to device at ${workerData.address}`);

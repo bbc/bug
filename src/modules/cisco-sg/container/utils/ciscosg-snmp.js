@@ -1,13 +1,14 @@
 "use strict";
 const snmp = require("net-snmp");
+const convert = require('amrhextotext')
 
 const chunk = (str, size) => {
     return str.match(new RegExp('.{1,' + size + '}', 'g'));
 }
 
-const convert = (from, to) => str => Buffer.from(str, from).toString(to)
+// const convert = (from, to) => str => Buffer.from(str, from).toString(to)
 
-const utf8ToHex = convert('utf8', 'hex')
+// const utf8ToHex = convert('utf8', 'hex')
 
 const hex2bin = (hex) => {
     return (parseInt(hex, 16).toString(2)).padStart(8, '0');
@@ -31,7 +32,7 @@ const get = ({ host, community = "public", oid }) => {
                     returnValue = convertVarbind(varbinds[0]);
                 }
             }
-            // session.close();
+            session.close();
             resolve(returnValue);
         });
 
@@ -137,17 +138,11 @@ const portlist = ({ host, community = "public", oid = "" }) => {
             }
             session.close();
 
-            // snmpResult is an actual hex result - which needs converting to a hex string 
-            const snmpResult = convertVarbind(varbinds[0]);
-
-            // will look something like this:
-            // 000000efbfbd00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001efbfbd
-            const hexString = utf8ToHex(snmpResult);
+            // we do this manually so we can specify that's it's a hex buffer
+            const hexString = varbinds[0].value.toString('hex');
             if (!hexString) {
                 reject();
             }
-
-            // console.log(oid, hexString);
 
             // split the long hex string into 2 digit chunks
             const chunkedHex = chunk(hexString, 2);
@@ -157,12 +152,13 @@ const portlist = ({ host, community = "public", oid = "" }) => {
             const result = [];
             for (let eachChunk of chunkedHex) {
                 const binaryString = hex2bin(eachChunk);
-                // console.log(binaryString);
                 for (let eachChar of binaryString) {
-                    if (eachChar === "1") {
-                        result.push(interfaceIndex);
+                    if (interfaceIndex < 100) {
+                        if (eachChar === "1") {
+                            result.push(interfaceIndex);
+                        }
+                        interfaceIndex += 1;
                     }
-                    interfaceIndex += 1;
                 }
             }
 

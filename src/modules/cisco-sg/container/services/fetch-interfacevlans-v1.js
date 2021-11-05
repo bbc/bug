@@ -8,7 +8,7 @@ module.exports = async (workerData) => {
 
     // get the collection reference
     const vlanCollection = await mongoCollection("vlans");
-    const interfaceCollection = await mongoCollection("interfaces");
+    const interfacesCollection = await mongoCollection("interfaces");
 
     // Kick things off
     console.log(`fetch-interfacevlans-v1: connecting to device at ${workerData.address}`);
@@ -62,11 +62,40 @@ module.exports = async (workerData) => {
                     }
                 }
 
-                // console.log(`vlan ${eachVlan.id}`, result);
-                console.log(interfaceVlans);
+
             }
 
-            await delay(600000);
+            const interfaces = await interfacesCollection.find().toArray();
+            // loop through each interface, updating vlans on each one in turn
+            for (let eachInterface of interfaces) {
+
+                const matchedInterface = interfaceVlans[eachInterface.interfaceId];
+                if (matchedInterface) {
+                    let taggedVlans = matchedInterface["tagged-vlans"];
+                    let untaggedVlans = matchedInterface["untagged-vlans"];
+                    if (untaggedVlans.length === 1 && taggedVlans.length === 1) {
+                        if (untaggedVlans[0] === taggedVlans[0]) {
+                            // it's an access port, and we can remove the 'tagged' vlan
+                            taggedVlans = [];
+                        }
+                    }
+
+                    await interfacesCollection.updateOne(
+                        { "interfaceId": eachInterface.interfaceId },
+                        {
+                            "$set": {
+                                "tagged-vlans": taggedVlans,
+                                "untagged-vlans": untaggedVlans
+                            }
+                        },
+                        { upsert: false }
+                    );
+                }
+
+            }
+
+            // every 30 seconds
+            await delay(30000);
 
         }
     }

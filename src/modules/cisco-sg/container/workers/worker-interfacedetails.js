@@ -56,9 +56,9 @@ const main = async () => {
     interfacesCollection = await mongoCollection("interfaces");
 
     // Kick things off
+    console.log(`worker-interfacedetails: connecting to device at ${workerData.address}`);
 
     while (true) {
-        console.log(`worker-interfacedetails: connecting to device at ${workerData.address}`);
 
         // get list of interfaces
         const interfaces = await interfacesCollection.find().toArray();
