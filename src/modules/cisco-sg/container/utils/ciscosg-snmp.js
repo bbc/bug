@@ -123,7 +123,6 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid }) => {
 const portlist = ({ host, community = "public", oid = "" }) => {
     return new Promise((resolve, reject) => {
         var session = snmp.createSession(host, community);
-        let returnValue = null;
 
         session.get([trimOid(oid)], function (error, varbinds) {
             if (error) {

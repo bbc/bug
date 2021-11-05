@@ -14,6 +14,8 @@ const defaultRouter = require("@routes/default");
 // const destinationsRouter = require("@routes/destinations");
 // const groupsRouter = require("@routes/groups");
 // const validationRouter = require("@routes/validate");
+const interfaceRouter = require("@routes/interface");
+const vlanRouter = require("@routes/vlan");
 
 let app = express();
 
@@ -31,6 +33,8 @@ app.use(bodyParser.json());
 
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
+app.use("/api/interface", interfaceRouter);
+app.use("/api/vlan", vlanRouter);
 // app.use("/api/route", routeRouter);
 // app.use("/api", labelRouter);
 // app.use("/api", lockRouter);

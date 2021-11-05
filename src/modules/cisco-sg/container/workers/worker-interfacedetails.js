@@ -22,7 +22,7 @@ const convertAdminPortSpeed = (speed) => {
         case 10:
             return "10G";
         case 1000000000:
-            return "1000M";
+            return "1G";
         case 100000000:
             return "100M";
         case 100000000:
@@ -37,7 +37,7 @@ const convertOperationalPortSpeed = (speed) => {
         case 10000:
             return "10G";
         case 1000:
-            return "1000M";
+            return "1G";
         case 100:
             return "100M";
         case 10:
@@ -111,9 +111,9 @@ const main = async () => {
                     {
                         "$set": {
                             "alias": alias,
-                            "auto_negotiation": autoNegotiationState,
-                            "admin_speed": adminPortSpeed,
-                            "operational_speed": operationalPortSpeed
+                            "auto-negotiation": autoNegotiationState,
+                            "admin-speed": adminPortSpeed,
+                            "operational-speed": operationalPortSpeed
                         }
                     },
                     { upsert: false });

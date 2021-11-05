@@ -7,12 +7,15 @@ import BugModuleRoute from "@core/BugModuleRoute";
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
-            <BugModuleRoute exact path="/">
+            <BugModuleRoute exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </BugModuleRoute>
             <BugModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel {...props} />
             </BugModuleRoute>
+            {/* <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceName">
+                <InterfacePanel />
+            </BugModuleRoute> */}
         </BugModuleWrapper>
     );
 }

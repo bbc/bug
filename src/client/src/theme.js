@@ -185,6 +185,13 @@ const theme = createTheme({
                 },
             }
         },
+        MuiAutocomplete: {
+            styleOverrides: {
+                paper: {
+                    backgroundColor: "#212121"
+                }
+            }
+        },
         MuiAlertTitle: {
             styleOverrides: {
                 root: {
