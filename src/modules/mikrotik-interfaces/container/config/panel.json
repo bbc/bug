@@ -10,10 +10,5 @@
     "username": "bug",
     "password": "",
     "protected_interfaces": [],
-    "excluded_interfaces": [
-      "bridge",
-      "vlan",
-      "Loopback",
-      "eoip"
-    ]
-  }
+    "excluded_interfaces": ["bridge", "vlan", "Loopback", "eoip"]
+}

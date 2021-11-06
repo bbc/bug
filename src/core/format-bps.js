@@ -1,5 +1,8 @@
 module.exports = (bits, decimals) => {
     if (bits === 0) return "0";
+    if (bits < 0) {
+        bits = bits * -1;
+    }
     if (decimals === undefined) {
         decimals = 2;
     }
@@ -8,6 +11,6 @@ module.exports = (bits, decimals) => {
     const sizes = ["b/s", "Kb/s", "Mb/s", "Gb/s", "Tb/s", "Pb/s"];
 
     const i = Math.floor(Math.log(bits) / Math.log(k));
-
-    return parseFloat((bits / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+    const size = sizes[i] ? sizes[i] : sizes[0];
+    return parseFloat((bits / Math.pow(k, i)).toFixed(dm)) + " " + size;
 };

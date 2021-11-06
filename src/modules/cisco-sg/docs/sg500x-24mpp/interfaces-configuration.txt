@@ -1,0 +1,69 @@
+ciscosw-L038859#sh interfaces configuration
+                                               Flow    Admin     Back   Mdix
+Port     Type         Duplex  Speed  Neg      control  State   Pressure Mode
+-------- ------------ ------  -----  -------- -------  -----   -------- ----
+gi1/1    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/2    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/3    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/4    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/5    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/6    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/7    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/8    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/9    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/10   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/11   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/12   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/13   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/14   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/15   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/16   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/17   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/18   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/19   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/20   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/21   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/22   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/23   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/24   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+te1/1    10G-Fiber    Full    10000  Disabled Off      Up      Disabled Off
+te1/2    10G-Fiber    Full    10000  Disabled Off      Up      Disabled Off
+te1/3    10G-Fiber    Full    10000  Disabled Off      Up      Disabled Off
+te1/4    10G-Fiber    Full    10000  Disabled Off      Up      Disabled Off
+
+                                  Flow    Admin
+Ch       Type    Speed  Neg      control  State
+-------- ------- -----  -------- -------  -----
+Po1         --     --   Enabled  Off      Up
+Po2         --     --   Enabled  Off      Up
+Po3         --     --   Enabled  Off      Up
+Po4         --     --   Enabled  Off      Up
+Po5         --     --   Enabled  Off      Up
+Po6         --     --   Enabled  Off      Up
+Po7         --     --   Enabled  Off      Up
+Po8         --     --   Enabled  Off      Up
+Po9         --     --   Enabled  Off      Up
+Po10        --     --   Enabled  Off      Up
+Po11        --     --   Enabled  Off      Up
+Po12        --     --   Enabled  Off      Up
+Po13        --     --   Enabled  Off      Up
+Po14        --     --   Enabled  Off      Up
+Po15        --     --   Enabled  Off      Up
+Po16        --     --   Enabled  Off      Up
+Po17        --     --   Enabled  Off      Up
+Po18        --     --   Enabled  Off      Up
+Po19        --     --   Enabled  Off      Up
+Po20        --     --   Enabled  Off      Up
+Po21        --     --   Enabled  Off      Up
+Po22        --     --   Enabled  Off      Up
+Po23        --     --   Enabled  Off      Up
+Po24        --     --   Enabled  Off      Up
+Po25        --     --   Enabled  Off      Up
+Po26        --     --   Enabled  Off      Up
+Po27        --     --   Enabled  Off      Up
+Po28        --     --   Enabled  Off      Up
+Po29        --     --   Enabled  Off      Up
+Po30        --     --   Enabled  Off      Up
+Po31        --     --   Enabled  Off      Up
+Po32        --     --   Enabled  Off      Up
+ciscosw-L038859

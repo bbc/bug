@@ -1,0 +1,135 @@
+ciscosw-L042643#sh vlan 
+Created by: D-Default, S-Static, G-GVRP, R-Radius Assigned VLAN, V-Voice VLAN
+
+Vlan       Name           Tagged Ports      UnTagged Ports      Created by    
+---- ----------------- ------------------ ------------------ ---------------- 
+ 1           1         gi1,gi3-6,gi13-18    gi25-28,Po1-8           DV        
+ 20       MGMT_1       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+ 21       MGMT_2            gi25-28       gi1,gi3-6,gi13-18         S         
+101    Best_Effort_1   gi1,gi3-6,gi13-18, gi2,gi7-12,gi19-24        S         
+                       gi25-28                                                
+102    Best_Effort_2   gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+103    Best_Effort_3   gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+104    Best_Effort_4   gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+201       Guest_1      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+202       Guest_2      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+203       Guest_3      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+204       Guest_4      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+301       Audio_1      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+302       Audio_2      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+303       Audio_3      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+304       Audio_4      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+311       Video_1      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+312       Video_2      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+313       Video_3      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+314       Video_4      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+321      Control_1     gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+322      Control_2     gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+511      BCN_PTP_1     gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+512      BCN_PTP_2     gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+513      BCN_PTP_3     gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+514      BCN_PTP_4     gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+515      BCN_PTP_5     gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+901     BCN_Spare_1    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+902     BCN_Spare_2    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+903     BCN_Spare_3    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+904     BCN_Spare_4    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+905     BCN_Spare_5    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+906     BCN_Spare_6    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+907     BCN_Spare_7    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+908     BCN_Spare_8    gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+998         5G         gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+999         BMI        gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+1101       WAN_1       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+1102       WAN_2       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+1103       WAN_3       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+1104       WAN_4       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+2227       Reith       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+2627       BNCS        gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3110      Sport_1      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3120      Sport_2      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3130      Sport_3      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3140      Sport_4      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3247        RAW        gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3261      DANTE_1      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3262      DANTE_2      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3263      DANTE_3      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3264      DANTE_4      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3511       PTP_1       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3512       PTP_2       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3513       PTP_3       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3514       PTP_4       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3515       PTP_5       gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3901      SPARE_1      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3902      SPARE_2      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3903      SPARE_3      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3904      SPARE_4      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3905      SPARE_5      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3906      SPARE_6      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3907      SPARE_7      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3908      SPARE_8      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+3909      SPARE_9      gi1,gi3-6,gi13-18,                           S         
+                       gi25-28                                                
+
+ciscosw-L042643#

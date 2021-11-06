@@ -1,0 +1,85 @@
+ciscosw-L043950#sh vlan
+Created by: D-Default, S-Static, G-GVRP, R-Radius Assigned VLAN, V-Voice VLAN
+
+Vlan       Name           Tagged Ports      UnTagged Ports      Created by    
+---- ----------------- ------------------ ------------------ ---------------- 
+ 1           1                            te1/0/1-4,                DV        
+                                          gi2/0/1-48,                         
+                                          te2/0/1-4,                          
+                                          gi3/0/1-48,                         
+                                          te3/0/1-4,                          
+                                          gi4/0/1-48,                         
+                                          te4/0/1-4,Po1-8                     
+ 20       MGMT_1           te1/0/1-4           gi1/0/48             S         
+ 21       MGMT_2           te1/0/1-4                                S         
+101    Best_Effort_1   gi1/0/48,te1/0/1-4     gi1/0/1-47            S         
+102    Best_Effort_2       te1/0/1-4                                S         
+103    Best_Effort_3       te1/0/1-4                                S         
+104    Best_Effort_4       te1/0/1-4                                S         
+201       Guest_1          te1/0/1-4                                S         
+202       Guest_2          te1/0/1-4                                S         
+203       Guest_3          te1/0/1-4                                S         
+204       Guest_4          te1/0/1-4                                S         
+301       Audio_1          te1/0/1-4                                S         
+302       Audio_2          te1/0/1-4                                S         
+303       Audio_3          te1/0/1-4                                S         
+304       Audio_4          te1/0/1-4                                S         
+311       Video_1          te1/0/1-4                                S         
+312       Video_2          te1/0/1-4                                S         
+313       Video_3          te1/0/1-4                                S         
+314       Video_4          te1/0/1-4                                S         
+321      Control_1         te1/0/1-4                                S         
+322      Control_2         te1/0/1-4                                S         
+511      BCN_PTP_1         te1/0/1-4                                S         
+512      BCN_PTP_2         te1/0/1-4                                S         
+513      BCN_PTP_3         te1/0/1-4                                S         
+514      BCN_PTP_4         te1/0/1-4                                S         
+515      BCN_PTP_5         te1/0/1-4                                S         
+901     BCN_Spare_1        te1/0/1-4                                S         
+902     BCN_Spare_2        te1/0/1-4                                S         
+903     BCN_Spare_3        te1/0/1-4                                S         
+904     BCN_Spare_4        te1/0/1-4                                S         
+905     BCN_Spare_5        te1/0/1-4                                S         
+906     BCN_Spare_6        te1/0/1-4                                S         
+907     BCN_Spare_7        te1/0/1-4                                S         
+908     BCN_Spare_8        te1/0/1-4                                S         
+998         5G             te1/0/1-4                                S         
+999         BMI            te1/0/1-4                                S         
+1101       WAN_1           te1/0/1-4                                S         
+1102       WAN_2           te1/0/1-4                                S         
+1103       WAN_3           te1/0/1-4                                S         
+1104       WAN_4           te1/0/1-4                                S         
+1201   CB L3 Matrix        te1/0/1-4                                S         
+1301     CB Riedel         te1/0/1-4                                S         
+1401  CB Video Coders      te1/0/1-4                                S         
+1501  CB Audio Coders      te1/0/1-4                                S         
+1601 AW General Browse gi1/0/48,te1/0/1-4                           S         
+1701    AW Edit/EVS        te1/0/1-4                                S         
+1801 AW NDI/BBC Coders     te1/0/1-4                                S         
+2227       Reith           te1/0/1-4                                S         
+2627       BNCS            te1/0/1-4                                S         
+3110      Sport_1          te1/0/1-4                                S         
+3120      Sport_2          te1/0/1-4                                S         
+3130      Sport_3          te1/0/1-4                                S         
+3140      Sport_4          te1/0/1-4                                S         
+3247        RAW            te1/0/1-4                                S         
+3261      DANTE_1          te1/0/1-4                                S         
+3262      DANTE_2          te1/0/1-4                                S         
+3263      DANTE_3          te1/0/1-4                                S         
+3264      DANTE_4          te1/0/1-4                                S         
+3511       PTP_1           te1/0/1-4                                S         
+3512       PTP_2           te1/0/1-4                                S         
+3513       PTP_3           te1/0/1-4                                S         
+3514       PTP_4           te1/0/1-4                                S         
+3515       PTP_5           te1/0/1-4                                S         
+3901      SPARE_1          te1/0/1-4                                S         
+3902      SPARE_2          te1/0/1-4                                S         
+3903      SPARE_3          te1/0/1-4                                S         
+3904      SPARE_4          te1/0/1-4                                S         
+3905      SPARE_5          te1/0/1-4                                S         
+3906      SPARE_6          te1/0/1-4                                S         
+3907      SPARE_7          te1/0/1-4                                S         
+3908      SPARE_8          te1/0/1-4                                S         
+3909      SPARE_9          te1/0/1-4                                S         
+
+ciscosw-L043950#

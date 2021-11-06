@@ -4,7 +4,17 @@ import TextField from "@mui/material/TextField";
 
 //TODO - more work needed here to update the UI if the backend changes after a certain amount of time (like API Switch)
 
-export default function BugApiAutocomplete({ options, value, freeSolo = false, onChange }) {
+export default function BugApiAutocomplete({
+    options,
+    value,
+    freeSolo = false,
+    onChange,
+    disableClearable = false,
+    filterSelectedOptions = true,
+    groupBy,
+    renderOption,
+    getOptionLabel,
+}) {
     // we use this bit of code to work out if we're dealing with an array of objects.
     // autocomplete only allows simple arrays or object arrays with 'id' and 'label' keys
     let isObjectArray = false;
@@ -24,9 +34,13 @@ export default function BugApiAutocomplete({ options, value, freeSolo = false, o
 
     return (
         <Autocomplete
-            filterSelectedOptions
+            getOptionLabel={getOptionLabel}
+            filterSelectedOptions={filterSelectedOptions}
             options={options ? options : []}
             freeSolo={freeSolo}
+            disableClearable={disableClearable}
+            groupBy={groupBy}
+            renderOption={renderOption}
             onChange={(event, value) => {
                 onChange(event, value);
                 event.stopPropagation();

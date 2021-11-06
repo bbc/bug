@@ -24,22 +24,24 @@ exports.list = async function () {
 
         moduleArray = [];
         for (var i in files) {
-            try {
-                let filename = path.join(
-                    modulesFolder,
-                    files[i],
-                    "module.json"
-                );
-                let packageFile = await readJson(filename);
-                if (!packageFile) {
-                    logger.warning(`file '${filename}' not found`);
-                    return null;
+            if (!files[i].startsWith(".")) {
+                try {
+                    let filename = path.join(
+                        modulesFolder,
+                        files[i],
+                        "module.json"
+                    );
+                    let packageFile = await readJson(filename);
+                    if (!packageFile) {
+                        logger.warning(`file '${filename}' not found`);
+                        return null;
+                    }
+                    moduleArray.push(packageFile);
+                } catch (error) {
+                    logger.warning(
+                        `${error.stack || error.trace || error || error.message}`
+                    );
                 }
-                moduleArray.push(packageFile);
-            } catch (error) {
-                logger.warning(
-                    `${error.stack || error.trace || error || error.message}`
-                );
             }
         }
 

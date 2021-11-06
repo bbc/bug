@@ -1,19 +1,21 @@
 import React from "react";
 import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
-import { Switch, Route } from "react-router-dom";
+import BugModuleWrapper from "@core/BugModuleWrapper";
+import BugModuleRoute from "@core/BugModuleRoute";
 
 export default function Module(props) {
     return (
-        <>
-            <Switch>
-                <Route path="/">
-                    <MainPanel {...props} />
-                </Route>
-                <Route path="/config">
-                    <ConfigPanel {...props} />
-                </Route>
-            </Switch>
-        </>
+        <BugModuleWrapper {...props}>
+            <BugModuleRoute exact path="/panel/:panelId">
+                <MainPanel {...props} />
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/config">
+                <ConfigPanel {...props} />
+            </BugModuleRoute>
+            {/* <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceName">
+                <InterfacePanel />
+            </BugModuleRoute> */}
+        </BugModuleWrapper>
     );
 }

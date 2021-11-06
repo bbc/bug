@@ -1,0 +1,73 @@
+ciscosw-L026640#sh vlan
+Created by: D-Default, S-Static, G-GVRP, R-Radius Assigned VLAN, V-Voice VLAN
+
+Vlan       Name           Tagged Ports      UnTagged Ports      Created by    
+---- ----------------- ------------------ ------------------ ---------------- 
+ 1           1                              gi24-28,Po1-8           V         
+ 20       MGMT_1            gi24-28                                 S         
+ 21       MGMT_2            gi24-28                                 S         
+101    Best_Effort_1        gi24-28       gi1-3,gi5-8,gi11,         S         
+                                          gi13-16,gi18-23                     
+102    Best_Effort_2        gi24-28                                 S         
+103    Best_Effort_3        gi24-28          gi4,gi9,gi12           S         
+104    Best_Effort_4        gi24-28                                 S         
+201       Guest_1           gi24-28                                 S         
+202       Guest_2           gi24-28                                 S         
+203       Guest_3           gi24-28                                 S         
+204       Guest_4           gi24-28                                 S         
+301       Audio_1           gi24-28                                 S         
+302       Audio_2           gi24-28                                 S         
+303       Audio_3           gi24-28                                 S         
+304       Audio_4           gi24-28                                 S         
+311       Video_1           gi24-28              gi17               S         
+312       Video_2           gi24-28                                 S         
+313       Video_3           gi24-28                                 S         
+314       Video_4           gi24-28                                 S         
+321      Control_1          gi24-28                                 S         
+322      Control_2          gi24-28                                 S         
+511      BCN_PTP_1          gi24-28                                 S         
+512      BCN_PTP_2          gi24-28                                 S         
+513      BCN_PTP_3          gi24-28                                 S         
+514      BCN_PTP_4          gi24-28                                 S         
+515      BCN_PTP_5          gi24-28                                 S         
+901     BCN_Spare_1         gi24-28                                 S         
+902     BCN_Spare_2         gi24-28                                 S         
+903     BCN_Spare_3         gi24-28                                 S         
+904     BCN_Spare_4         gi24-28                                 S         
+905     BCN_Spare_5         gi24-28                                 S         
+906     BCN_Spare_6         gi24-28                                 S         
+907     BCN_Spare_7         gi24-28                                 S         
+908     BCN_Spare_8         gi24-28                                 S         
+998         5G              gi24-28                                 S         
+999         BMI             gi24-28                                 S         
+1101       WAN_1            gi24-28                                 S         
+1102       WAN_2            gi24-28                                 S         
+1103       WAN_3            gi24-28                                 S         
+1104       WAN_4            gi24-28                                 S         
+2227       Reith            gi24-28                                 S         
+2627       BNCS             gi24-28                                 S         
+3110      Sport_1           gi24-28                                 S         
+3120      Sport_2           gi24-28                                 S         
+3130      Sport_3           gi24-28                                 S         
+3140      Sport_4           gi24-28                                 S         
+3247        RAW             gi24-28              gi10               S         
+3261      DANTE_1           gi24-28                                 S         
+3262      DANTE_2           gi24-28                                 S         
+3263      DANTE_3           gi24-28                                 S         
+3264      DANTE_4           gi24-28                                 S         
+3511       PTP_1            gi24-28                                 S         
+3512       PTP_2            gi24-28                                 S         
+3513       PTP_3            gi24-28                                 S         
+3514       PTP_4            gi24-28                                 S         
+3515       PTP_5            gi24-28                                 S         
+3901      SPARE_1           gi24-28                                 S         
+3902      SPARE_2           gi24-28                                 S         
+3903      SPARE_3           gi24-28                                 S         
+3904      SPARE_4           gi24-28                                 S         
+3905      SPARE_5           gi24-28                                 S         
+3906      SPARE_6           gi24-28                                 S         
+3907      SPARE_7           gi24-28                                 S         
+3908      SPARE_8           gi24-28                                 S         
+3909      SPARE_9           gi24-28                                 S         
+                                                      
+ciscosw-L026640#
