@@ -9,12 +9,12 @@ export default function SourceSelector({ panelId }) {
 
     const sources = useApiPoller({
         url: `/container/${panelId}/source/list`,
-        interval: 5000,
+        interval: 10000,
     });
 
     const currentSource = useApiPoller({
         url: `/container/${panelId}/source/current`,
-        interval: 5000,
+        interval: 3000,
     });
 
     const handleSourceChange = async (source) => {
@@ -30,11 +30,11 @@ export default function SourceSelector({ panelId }) {
         }
     };
 
-    console.log(sources.data);
     const getSourceAutomcomplete = (currentValue) => {
         return (
             <>
                 <BugApiAutocomplete
+                    disableClearable={true}
                     options={sources?.data}
                     value={currentValue}
                     onChange={(event, value) => handleSourceChange(value)}
@@ -43,5 +43,5 @@ export default function SourceSelector({ panelId }) {
         );
     };
 
-    return getSourceAutomcomplete(currentSource?.data);
+    return getSourceAutomcomplete(currentSource?.data?.id);
 }

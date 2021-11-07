@@ -52,7 +52,7 @@ export default function DeviceTab({ panelId }) {
                                     Source
                                 </TableCell>
                                 <TableCell>
-                                    <SourceSelector panelId={panelId} />
+                                    <SourceSelector panelId={panelId} currentSource={device.data.ndi.name} />
                                 </TableCell>
                             </TableRow>
                             <TableRow>
@@ -66,6 +66,12 @@ export default function DeviceTab({ panelId }) {
                                     CPU Usage
                                 </TableCell>
                                 <TableCell>{device.data.device["cpu-usage"]}%</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell variant="head" className={classes.tableName}>
+                                    Memory
+                                </TableCell>
+                                <TableCell>{device.data.device["memory-usage"]}%</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
@@ -84,6 +90,18 @@ export default function DeviceTab({ panelId }) {
                                     Link Speed
                                 </TableCell>
                                 <TableCell>{device.data.ethernet["state"]}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell variant="head" className={classes.tableName}>
+                                    Video Jitter
+                                </TableCell>
+                                <TableCell>{device.data.ndi["video-jitter"]}ms</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell variant="head" className={classes.tableName}>
+                                    Audio Jitter
+                                </TableCell>
+                                <TableCell>{device.data.ndi["audio-jitter"]}ms</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
