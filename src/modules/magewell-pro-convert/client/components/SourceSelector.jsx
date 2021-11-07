@@ -30,14 +30,18 @@ export default function SourceSelector({ panelId }) {
         }
     };
 
-    console.log(currentSource.data);
-    return (
-        <>
-            <BugApiAutocomplete
-                options={sources?.data}
-                value={"TEST"}
-                onChange={(event, value) => handleSourceChange(value)}
-            />
-        </>
-    );
+    console.log(sources.data);
+    const getSourceAutomcomplete = (currentValue) => {
+        return (
+            <>
+                <BugApiAutocomplete
+                    options={sources?.data}
+                    value={currentValue}
+                    onChange={(event, value) => handleSourceChange(value)}
+                />
+            </>
+        );
+    };
+
+    return getSourceAutomcomplete(currentSource?.data);
 }

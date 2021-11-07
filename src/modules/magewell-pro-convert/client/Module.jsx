@@ -7,7 +7,10 @@ import BugModuleRoute from "@core/BugModuleRoute";
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
-            <BugModuleRoute exact path="/panel/:panelId">
+            <BugModuleRoute exact path="/panel/:panelId/device">
+                <MainPanel />
+            </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/network">
                 <MainPanel />
             </BugModuleRoute>
             <BugModuleRoute exact path="/panel/:panelId/config">
