@@ -4,10 +4,10 @@ const bodyParser = require("body-parser");
 const workerStore = require("@core/worker-store");
 
 // load routes
-const statusRouter = require("./routes/status");
-const configRouter = require("./routes/config");
+const statusRouter = require("@routes/status");
+const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
-// const routeRouter = require("@routes/route");
+const pendingRouter = require("@routes/pending");
 // const labelRouter = require("@routes/label");
 // const lockRouter = require("@routes/lock");
 // const sourcesRouter = require("@routes/sources");
@@ -35,7 +35,7 @@ app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/interface", interfaceRouter);
 app.use("/api/vlan", vlanRouter);
-// app.use("/api/route", routeRouter);
+app.use("/api/pending", pendingRouter);
 // app.use("/api", labelRouter);
 // app.use("/api", lockRouter);
 // app.use("/api/sources", sourcesRouter);

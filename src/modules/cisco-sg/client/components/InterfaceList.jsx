@@ -52,7 +52,7 @@ export default function InterfaceList({ panelId }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
+        history.push(`/panel/${panelId}/interface/${item.shortId}`);
     };
 
     const handleVlanChanged = (event, item) => {};
@@ -137,7 +137,10 @@ export default function InterfaceList({ panelId }) {
                         if (item?.["auto-negotiation"]) {
                             return `${item?.["operational-speed"]} - auto`;
                         }
-                        return `${item?.["operational-speed"]} - fixed`;
+                        if (item?.["operational-speed"]) {
+                            return `${item?.["operational-speed"]} - fixed`;
+                        }
+                        return null;
                     },
                 },
                 {
@@ -204,7 +207,7 @@ export default function InterfaceList({ panelId }) {
             }
             rowHeight="62px"
             sortable
-            // onRowClick={handleDetailsClicked}
+            onRowClick={handleDetailsClicked}
         />
     );
 }
