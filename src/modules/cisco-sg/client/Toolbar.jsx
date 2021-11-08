@@ -6,14 +6,33 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useApiPoller } from "@utils/ApiPoller";
 import SaveIcon from "@mui/icons-material/Save";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
 
 export default function Toolbar(props) {
+    const sendAlert = useAlert();
     const pending = useApiPoller({
         url: `/container/${props.panelId}/pending/`,
         interval: 1000,
     });
 
     const isPending = pending.status === "success" && pending.data;
+
+    const handleSave = async (event, item) => {
+        sendAlert("Saving device config ... please wait", {
+            variant: "info",
+        });
+        if (await AxiosCommand(`/container/${props.panelId}/device/save`)) {
+            sendAlert("Saved device config", {
+                broadcast: true,
+                variant: "success",
+            });
+        } else {
+            sendAlert("Failed to save device config", {
+                variant: "error",
+            });
+        }
+    };
 
     let toolbarProps = { ...props };
 
@@ -24,6 +43,7 @@ export default function Toolbar(props) {
                 variant="outlined"
                 color={isPending ? "warning" : "primary"}
                 startIcon={<SaveIcon />}
+                onClick={handleSave}
             >
                 Save
             </Button>
@@ -32,7 +52,7 @@ export default function Toolbar(props) {
 
     const menuItems = () => {
         return [
-            <MenuItem disabled={!isPending}>
+            <MenuItem disabled={!isPending} onClick={handleSave}>
                 <ListItemIcon>
                     <SaveIcon fontSize="small" />
                 </ListItemIcon>

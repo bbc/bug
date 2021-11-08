@@ -196,6 +196,34 @@ const getMultiple = ({ host, community = "public", oids = [] }) => {
 
 }
 
+const setString = ({ host, community = "public", oid, value }) => {
+
+    return new Promise((resolve, reject) => {
+        const session = snmp.createSession(host, community);
+        const varbinds = [{
+            oid: trimOid(oid),
+            type: snmp.ObjectType.OctetString,
+            value: value
+        }];
+        session.set(varbinds, function (error, varbinds) {
+            if (error) {
+                session.close();
+                console.error(error);
+                reject();
+            } else {
+                for (var i = 0; i < varbinds.length; i++) {
+                    if (snmp.isVarbindError(varbinds[i])) {
+                        session.close();
+                        reject();
+                    }
+                }
+            }
+            session.close();
+            resolve(true);
+        });
+    });
+}
+
 const trimOid = (oid) => {
     if (oid.length > 1 && oid.indexOf(".") === 0) {
         return oid.substring(1);
@@ -253,5 +281,6 @@ module.exports = {
     walk: walk,
     subtree: subtree,
     getMultiple: getMultiple,
-    portlist: portlist
+    portlist: portlist,
+    setString: setString
 }
