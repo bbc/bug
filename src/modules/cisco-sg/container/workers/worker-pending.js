@@ -14,7 +14,6 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
@@ -25,11 +24,11 @@ const main = async () => {
         const result = await ciscoSGSNMP.get({
             host: workerData.address,
             community: workerData.snmp_community,
-            oid: ".1.3.6.1.4.1.9.6.1.101.1.13.0"
+            oid: ".1.3.6.1.4.1.9.6.1.101.1.13.0",
         });
-        await mongoSingle.set("pending", (result === 2), 60);
+        await mongoSingle.set("pending", result === 2, 60);
         await delay(2000);
     }
-}
+};
 
 main();

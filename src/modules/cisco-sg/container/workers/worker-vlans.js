@@ -17,7 +17,6 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
@@ -37,7 +36,7 @@ const main = async () => {
         const vlanResults = await ciscoSGSNMP.subtree({
             host: workerData.address,
             community: workerData.snmp_community,
-            oid: ".1.3.6.1.2.1.17.7.1.4.3.1.1"
+            oid: ".1.3.6.1.2.1.17.7.1.4.3.1.1",
         });
 
         if (vlanResults) {
@@ -50,20 +49,20 @@ const main = async () => {
                 }
                 vlans.push({
                     id: vlan,
-                    label: eachResult
+                    label: eachResult,
                 });
-            };
+            }
 
             const dbDocument = {
-                "type": "vlans",
-                "vlans": vlans,
-                "timestamp": new Date()
+                type: "vlans",
+                vlans: vlans,
+                timestamp: new Date(),
             };
 
             await dataCollection.replaceOne({ type: "system" }, dbDocument, { upsert: true });
         }
         await delay(20400);
     }
-}
+};
 
 main();

@@ -1,18 +1,17 @@
 "use strict";
 
 module.exports = (source) => {
-
     const parseRow = (row, colPositions) => {
         const results = [];
         for (let eachCol of colPositions) {
             let header = row.substr(eachCol.start, eachCol.length);
-            header = header.trim()
+            header = header.trim();
             header = header.replace(" ", "_");
             header = header.toLowerCase();
             results.push(header);
         }
         return results;
-    }
+    };
 
     const processMultiline = (multilineData, headers) => {
         const rowData = [];
@@ -24,7 +23,7 @@ module.exports = (source) => {
             rowData.push(columnText);
         }
         return rowData;
-    }
+    };
 
     const rows = source.split("\n");
 
@@ -46,15 +45,14 @@ module.exports = (source) => {
             for (let eachCol of colArray) {
                 colPositions.push({
                     start: runningPosition,
-                    length: eachCol.length
+                    length: eachCol.length,
                 });
                 runningPosition += eachCol.length + 1;
             }
 
             // fetch the headers
             headers = parseRow(previousRow, colPositions);
-        }
-        else if (headers.length > 0) {
+        } else if (headers.length > 0) {
             // we're probably into the contents of the table
             let row = parseRow(eachRow, colPositions);
             if (row && row.length > 0) {
@@ -62,8 +60,7 @@ module.exports = (source) => {
                     // there's nothing in column one - it must be a multi-line row
                     // we'll save it for next time
                     multiline.push(row);
-                }
-                else {
+                } else {
                     // we have something in column 1
                     if (multiline.length > 0) {
                         // before we process this line, let's deal with any previous multiline stuff
@@ -89,5 +86,4 @@ module.exports = (source) => {
         results.push(result);
     }
     return results;
-}
-
+};

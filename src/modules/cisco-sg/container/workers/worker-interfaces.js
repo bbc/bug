@@ -22,13 +22,13 @@ parentPort.postMessage({
 
 const splitPort = (portString) => {
     const returnArray = {
-        "label": null,
-        "device": null,
-        "slot": null,
-        "port": null
+        label: null,
+        device: null,
+        slot: null,
+        port: null,
     };
 
-    const countSlashes = (portString.split("/").length - 1);
+    const countSlashes = portString.split("/").length - 1;
 
     if (countSlashes === 2) {
         // it's a stacked switch like Gi1/0/24
@@ -38,16 +38,14 @@ const splitPort = (portString) => {
         returnArray["device"] = parseInt(result[2]);
         returnArray["slot"] = parseInt(result[3]);
         returnArray["port"] = parseInt(result[4]);
-    }
-    else if (countSlashes === 1) {
+    } else if (countSlashes === 1) {
         // it's a stacked switch like Gi1/24
         const result = portString.match(/([a-zA-Z]+)(\d+)\/(\d+)/);
         // parse
         returnArray["label"] = result[1];
         returnArray["slot"] = parseInt(result[2]);
         returnArray["port"] = parseInt(result[3]);
-    }
-    else if (countSlashes == 0) {
+    } else if (countSlashes == 0) {
         // do the search
         const result = portString.match(/([a-zA-Z]+)(\d+)/);
         // parse
@@ -56,10 +54,9 @@ const splitPort = (portString) => {
     }
 
     return returnArray;
-}
+};
 
 const main = async () => {
-
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
@@ -80,14 +77,14 @@ const main = async () => {
             host: workerData.address,
             community: workerData.snmp_community,
             maxRepetitions: 1000,
-            oid: "1.3.6.1.2.1.2.2.1.8"
+            oid: "1.3.6.1.2.1.2.2.1.8",
         });
 
         const ifShortIDs = await ciscoSGSNMP.subtree({
             host: workerData.address,
             community: workerData.snmp_community,
             maxRepetitions: 1000,
-            oid: "1.3.6.1.2.1.31.1.1.1.1"
+            oid: "1.3.6.1.2.1.31.1.1.1.1",
         });
 
         // now fetch interface name - which we need to calculate the stack
@@ -95,7 +92,7 @@ const main = async () => {
             host: workerData.address,
             community: workerData.snmp_community,
             maxRepetitions: 1000,
-            oid: "1.3.6.1.2.1.2.2.1.2"
+            oid: "1.3.6.1.2.1.2.2.1.2",
         });
 
         for (let [eachOid, eachResult] of Object.entries(ifIDs)) {
@@ -113,19 +110,22 @@ const main = async () => {
                         device: portArray.device,
                         slot: portArray.slot,
                         port: portArray.port,
-                        'tagged-vlans': [],
-                        'untagged-vlans': [],
-                        timestamp: new Date()
+                        "tagged-vlans": [],
+                        "untagged-vlans": [],
+                        timestamp: new Date(),
                     };
-                    await interfacesCollection.updateOne({ "interfaceId": dbDocument.interfaceId }, { "$set": dbDocument }, { upsert: true });
+                    await interfacesCollection.updateOne(
+                        { interfaceId: dbDocument.interfaceId },
+                        { $set: dbDocument },
+                        { upsert: true }
+                    );
                 }
-
             }
         }
 
         // wait 10 minutes - the interfaces shouldn't really change...
         await delay(600000);
     }
-}
+};
 
 main();

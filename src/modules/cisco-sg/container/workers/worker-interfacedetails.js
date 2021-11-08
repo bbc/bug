@@ -30,7 +30,7 @@ const convertAdminPortSpeed = (speed) => {
         default:
             return "";
     }
-}
+};
 
 const convertOperationalPortSpeed = (speed) => {
     switch (speed) {
@@ -45,10 +45,9 @@ const convertOperationalPortSpeed = (speed) => {
         default:
             return "";
     }
-}
+};
 
 const main = async () => {
-
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
@@ -59,21 +58,18 @@ const main = async () => {
     console.log(`worker-interfacedetails: connecting to device at ${workerData.address}`);
 
     while (true) {
-
         // get list of interfaces
         const interfaces = await interfacesCollection.find().toArray();
         if (!interfaces) {
             console.log("worker-interfacedetails: no interfaces found in db - waiting ...");
             await delay(5000);
-        }
-        else {
-
+        } else {
             // get subtree of interface admin states
             const ifAliases = await ciscoSGSNMP.subtree({
                 host: workerData.address,
                 community: workerData.snmp_community,
                 maxRepetitions: 1000,
-                oid: "1.3.6.1.2.1.31.1.1.1.18"
+                oid: "1.3.6.1.2.1.31.1.1.1.18",
             });
 
             // get subtree of interface admin states
@@ -81,7 +77,7 @@ const main = async () => {
                 host: workerData.address,
                 community: workerData.snmp_community,
                 maxRepetitions: 1000,
-                oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.16"
+                oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.16",
             });
 
             // get subtree of interface admin states
@@ -89,7 +85,7 @@ const main = async () => {
                 host: workerData.address,
                 community: workerData.snmp_community,
                 maxRepetitions: 1000,
-                oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.15"
+                oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.15",
             });
 
             // get subtree of interface admin states
@@ -97,31 +93,37 @@ const main = async () => {
                 host: workerData.address,
                 community: workerData.snmp_community,
                 maxRepetitions: 1000,
-                oid: "1.3.6.1.2.1.31.1.1.1.15"
+                oid: "1.3.6.1.2.1.31.1.1.1.15",
             });
 
             for (let eachInterface of interfaces) {
                 const alias = ifAliases[`1.3.6.1.2.1.31.1.1.1.18.${eachInterface.interfaceId}`];
-                const autoNegotiationState = (ifAutoNegotiation[`1.3.6.1.4.1.9.6.1.101.43.1.1.16.${eachInterface.interfaceId}`] === 1);
-                const adminPortSpeed = convertAdminPortSpeed(ifAdminPortSpeed[`1.3.6.1.4.1.9.6.1.101.43.1.1.15.${eachInterface.interfaceId}`]);
-                const operationalPortSpeed = convertOperationalPortSpeed(ifOperationalPortSpeed[`1.3.6.1.2.1.31.1.1.1.15.${eachInterface.interfaceId}`]);
+                const autoNegotiationState =
+                    ifAutoNegotiation[`1.3.6.1.4.1.9.6.1.101.43.1.1.16.${eachInterface.interfaceId}`] === 1;
+                const adminPortSpeed = convertAdminPortSpeed(
+                    ifAdminPortSpeed[`1.3.6.1.4.1.9.6.1.101.43.1.1.15.${eachInterface.interfaceId}`]
+                );
+                const operationalPortSpeed = convertOperationalPortSpeed(
+                    ifOperationalPortSpeed[`1.3.6.1.2.1.31.1.1.1.15.${eachInterface.interfaceId}`]
+                );
 
                 await interfacesCollection.updateOne(
-                    { "interfaceId": eachInterface.interfaceId },
+                    { interfaceId: eachInterface.interfaceId },
                     {
-                        "$set": {
-                            "alias": alias,
+                        $set: {
+                            alias: alias,
                             "auto-negotiation": autoNegotiationState,
                             "admin-speed": adminPortSpeed,
-                            "operational-speed": operationalPortSpeed
-                        }
+                            "operational-speed": operationalPortSpeed,
+                        },
                     },
-                    { upsert: false });
+                    { upsert: false }
+                );
             }
         }
 
         await delay(10500);
     }
-}
+};
 
 main();
