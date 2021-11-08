@@ -15,13 +15,15 @@ export default function BugApiVlanAutocomplete({ options, taggedValue, untaggedV
         // access port
         value = untaggedValue[0];
     }
-    const groupedOptions = [
-        {
-            id: -1,
-            label: "Trunk (multiple)",
-        },
-        ...options,
-    ];
+    const groupedOptions = options
+        ? [
+              {
+                  id: -1,
+                  label: "Trunk (multiple)",
+              },
+              ...options,
+          ]
+        : [];
 
     return (
         <BugApiAutocomplete
@@ -32,6 +34,9 @@ export default function BugApiVlanAutocomplete({ options, taggedValue, untaggedV
             // disableClearable={true}
             filterSelectedOptions={false}
             getOptionLabel={(option) => {
+                if (!option) {
+                    return "";
+                }
                 return option.id === -1 ? trunkLabel : `${option.id} - ${option.label}`;
             }}
             renderOption={(props, option) => {
