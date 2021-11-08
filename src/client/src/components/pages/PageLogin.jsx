@@ -234,7 +234,7 @@ export default function PageLogin() {
                                     indicatorColor="primary"
                                     textColor="primary"
                                     onChange={handleChange}
-                                    variant={enabledStrategies.length < 3 ? `fullWidth` : `scrollable`}
+                                    variant={enabledStrategies.length < 4 ? `fullWidth` : `scrollable`}
                                     scrollButtons={true}
                                 >
                                     {enabledStrategies.map((eachStrategy, index) => (

@@ -47,6 +47,7 @@ export default function LocalLogin({ handleLogin }) {
                             fullWidth
                             error={errors?.username ? true : false}
                             type="text"
+                            variant="standard"
                             label="Username"
                         />
                     </Grid>
