@@ -1,18 +1,17 @@
 "use strict";
 const snmp = require("net-snmp");
-const convert = require('amrhextotext')
 
 const chunk = (str, size) => {
-    return str.match(new RegExp('.{1,' + size + '}', 'g'));
-}
+    return str.match(new RegExp(".{1," + size + "}", "g"));
+};
 
 // const convert = (from, to) => str => Buffer.from(str, from).toString(to)
 
 // const utf8ToHex = convert('utf8', 'hex')
 
 const hex2bin = (hex) => {
-    return (parseInt(hex, 16).toString(2)).padStart(8, '0');
-}
+    return parseInt(hex, 16).toString(2).padStart(8, "0");
+};
 
 const get = ({ host, community = "public", oid }) => {
     return new Promise((resolve, reject) => {
@@ -35,9 +34,8 @@ const get = ({ host, community = "public", oid }) => {
             session.close();
             resolve(returnValue);
         });
-
     });
-}
+};
 
 const getNext = ({ host, community = "public", oid }) => {
     return new Promise((resolve, reject) => {
@@ -56,16 +54,15 @@ const getNext = ({ host, community = "public", oid }) => {
             session.close();
             resolve(convertVarbind(varbinds[0]));
         });
-
     });
-}
+};
 
 const walk = ({ host, community = "public", maxRepetitions = 10, oid }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
         var session = snmp.createSession(host, community, {
-            version: snmp.Version2c
+            version: snmp.Version2c,
         });
 
         const addItem = (varbinds) => {
@@ -76,7 +73,7 @@ const walk = ({ host, community = "public", maxRepetitions = 10, oid }) => {
                     returnValues[varbinds[i].oid] = convertVarbind(varbinds[i]);
                 }
             }
-        }
+        };
 
         session.walk(trimOid(oid), maxRepetitions, addItem, (error) => {
             if (error) {
@@ -86,16 +83,16 @@ const walk = ({ host, community = "public", maxRepetitions = 10, oid }) => {
                 session.close();
                 resolve(returnValues);
             }
-        })
+        });
     });
-}
+};
 
 const subtree = ({ host, community = "public", maxRepetitions = 10, oid }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
         var session = snmp.createSession(host, community, {
-            version: snmp.Version2c
+            version: snmp.Version2c,
         });
 
         const addItem = (varbinds) => {
@@ -106,7 +103,7 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid }) => {
                     returnValues[varbinds[i].oid] = convertVarbind(varbinds[i]);
                 }
             }
-        }
+        };
 
         session.subtree(trimOid(oid), maxRepetitions, addItem, (error) => {
             if (error) {
@@ -116,9 +113,9 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid }) => {
                 session.close();
                 resolve(returnValues);
             }
-        })
+        });
     });
-}
+};
 
 const portlist = ({ host, community = "public", oid = "" }) => {
     return new Promise((resolve, reject) => {
@@ -138,7 +135,7 @@ const portlist = ({ host, community = "public", oid = "" }) => {
             session.close();
 
             // we do this manually so we can specify that's it's a hex buffer
-            const hexString = varbinds[0].value.toString('hex');
+            const hexString = varbinds[0].value.toString("hex");
             if (!hexString) {
                 reject();
             }
@@ -163,12 +160,10 @@ const portlist = ({ host, community = "public", oid = "" }) => {
 
             resolve(result);
         });
-
     });
-}
+};
 
 const getMultiple = ({ host, community = "public", oids = [] }) => {
-
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
@@ -191,10 +186,8 @@ const getMultiple = ({ host, community = "public", oids = [] }) => {
             session.close();
             resolve(returnValues);
         });
-
     });
-
-}
+};
 
 const setString = ({ host, community = "public", oid, value }) => {
 
@@ -229,7 +222,7 @@ const trimOid = (oid) => {
         return oid.substring(1);
     }
     return oid;
-}
+};
 
 const trimOids = (oids) => {
     const retArray = [];
@@ -237,10 +230,9 @@ const trimOids = (oids) => {
         retArray.push(trimOid(eachOid));
     }
     return retArray;
-}
+};
 
 const convertVarbind = (varbind) => {
-
     switch (varbind.type) {
         case 1: // Boolean
             return new Boolean(varbind.value);
@@ -273,7 +265,7 @@ const convertVarbind = (varbind) => {
         default:
             return null;
     }
-}
+};
 
 module.exports = {
     get: get,

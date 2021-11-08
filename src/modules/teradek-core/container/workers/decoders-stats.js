@@ -86,28 +86,25 @@ const main = async () => {
                     {
                         $set: {
                             framerate: stats.value,
-                            "framerate-text": `${stats.value.toFixed(2)} fps`
+                            "framerate-text": `${Math.round(stats?.value * 100) / 100} fps`,
                         },
                     }
                 );
             }
         });
 
-        // socket.on(`device:${decoder.sid}:decoder-status`, async (event) => {
-        //     const entry = await devicesCollection.updateOne(
-        //         {
-        //             sid: decoder.sid,
-        //         },
-        //         {
-        //             $push: {
-        //                 history_status: {
-        //                     $each: [{ ...event, timestamp: Date.now() }],
-        //                     $slice: 100,
-        //                 },
-        //             },
-        //         }
-        //     );
-        // });
+        socket.on(`device:${decoderSid}:decoder-status`, async (event) => {
+            const entry = await devicesCollection.updateOne(
+                {
+                    sid: decoderSid,
+                },
+                {
+                    $set: {
+                        decoderStatus: event?.status,
+                    },
+                }
+            );
+        });
     }
 };
 

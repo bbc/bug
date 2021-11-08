@@ -137,7 +137,7 @@ export default function DecoderTable({ panelId }) {
     };
 
     const isEnabled = (decoder) => {
-        if (decoder?.streamStatus === "streaming") {
+        if (decoder?.decoderStatus === "decoding") {
             return true;
         }
         return false;
@@ -158,7 +158,7 @@ export default function DecoderTable({ panelId }) {
                     noPadding: true,
                     width: 44,
                     field: "status",
-                    content: (item) => <BugPowerIcon enabled={isEnabled()} />,
+                    content: (item) => <BugPowerIcon enabled={isEnabled(item)} />,
                 },
                 {
                     sortable: false,
