@@ -1,14 +1,14 @@
 "use strict";
 const SSH2Shell = require('ssh2shell');
 
-module.exports = ({ host, port = 22, username, password, commands = [] }) => {
+module.exports = ({ host, port = 22, username, password, commands = [], debug = false, timeout = 5000 }) => {
     process.on('uncaughtException', function (err) {
         if (err.toString().indexOf("Connection closed") === -1) {
             console.log(err);
         }
     })
 
-    const preCommands = ["terminal datadump"];
+    const preCommands = ["terminal datadump", "terminal no prompt"];
     const results = [];
 
     const parseResponse = (command, response) => {
@@ -55,8 +55,10 @@ module.exports = ({ host, port = 22, username, password, commands = [] }) => {
                     kex: ['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group1-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group-exchange-sha256']
                 },
             },
+            debug: debug,
+            verbose: debug,
             commands: [...preCommands, ...commands],
-            idleTimeOut: 5000,
+            idleTimeOut: timeout,
             onCommandComplete: function (command, response, sshObj) {
                 parseResponse(command, response);
             },

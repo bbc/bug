@@ -59,6 +59,7 @@ export default function BugApiTable({
     hideHeader = false,
     noData,
     rowHeight = null,
+    forceRefresh,
 }) {
     const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
     const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
@@ -152,6 +153,7 @@ export default function BugApiTable({
         },
         url: apiUrl,
         interval: 2500,
+        forceRefresh: forceRefresh,
     });
 
     const handleSortClicked = (column) => {

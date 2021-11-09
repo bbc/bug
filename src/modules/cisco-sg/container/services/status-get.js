@@ -1,8 +1,8 @@
 "use strict";
 
 const statusCheckCollection = require("@core/status-checkcollection");
-const statusCheckWorkers = require("@core/status-checkworkers");
+const statusCheckPending = require("@services/status-checkpending");
 
 module.exports = async () => {
-    return [];
+    return await statusCheckPending();
 };

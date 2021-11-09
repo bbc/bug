@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const interfaceList = require("../../services/interface-list");
+const interfaceList = require("@services/interface-list");
 // const interfaceCombinedList = require("../../services/interface-combinedlist");
 // const interfaceCombined = require("../../services/interface-combined");
 // const interfaceHistory = require("../../services/interface-history");
@@ -8,7 +8,7 @@ const interfaceList = require("../../services/interface-list");
 // const mikrotikInterfaceDisable = require("../../services/mikrotik-interfacedisable");
 // const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
 // const mikrotikInterfaceUnprotect = require("../../services/mikrotik-interfaceunprotect");
-// const mikrotikInterfaceRename = require("../../services/mikrotik-interfacerename");
+const interfaceRename = require("@services/interface-rename");
 // const mikrotikInterfaceComment = require("../../services/mikrotik-interfacecomment");
 const asyncHandler = require("express-async-handler");
 
@@ -54,16 +54,27 @@ router.all(
 //     })
 // );
 
-// router.get(
-//     "/rename/:interfaceId/:interfaceName",
-//     asyncHandler(async (req, res) => {
-//         const result = await mikrotikInterfaceRename(req.params.interfaceId, req.params.interfaceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/rename/:interfaceId/:interfaceName",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceRename(req.params.interfaceId, req.params.interfaceName);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/rename/:interfaceId/",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceRename(req.params.interfaceId, "");
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
 // router.get(
 //     "/comment/:interfaceId/:interfaceComment",
