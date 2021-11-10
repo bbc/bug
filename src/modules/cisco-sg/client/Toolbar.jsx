@@ -1,6 +1,5 @@
 import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -8,6 +7,7 @@ import { useApiPoller } from "@utils/ApiPoller";
 import SaveIcon from "@mui/icons-material/Save";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import BugApiSaveButton from "@core/BugApiSaveButton";
 
 export default function Toolbar(props) {
     const sendAlert = useAlert();
@@ -38,21 +38,20 @@ export default function Toolbar(props) {
 
     const buttons = () => (
         <>
-            <Button
+            <BugApiSaveButton
                 disabled={!isPending}
                 variant="outlined"
                 color={isPending ? "warning" : "primary"}
-                startIcon={<SaveIcon />}
                 onClick={handleSave}
             >
                 Save
-            </Button>
+            </BugApiSaveButton>
         </>
     );
 
     const menuItems = () => {
         return [
-            <MenuItem disabled={!isPending} onClick={handleSave}>
+            <MenuItem key="save" disabled={!isPending} onClick={handleSave}>
                 <ListItemIcon>
                     <SaveIcon fontSize="small" />
                 </ListItemIcon>
