@@ -5,9 +5,9 @@ const theme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundImage: "none"
-                }
-            }
+                    backgroundImage: "none",
+                },
+            },
         },
         MuiTableCell: {
             styleOverrides: {
@@ -21,7 +21,7 @@ const theme = createTheme({
                     fontSize: "0.875rem",
                     padding: "12px 12px",
                 },
-            }
+            },
         },
         MuiTableHead: {
             styleOverrides: {
@@ -30,15 +30,15 @@ const theme = createTheme({
                         backgroundColor: "#212121",
                     },
                 },
-            }
+            },
         },
         MuiMenuItem: {
             styleOverrides: {
                 root: {
                     color: "#ffffff",
-                    height: 41
+                    height: 41,
                 },
-            }
+            },
         },
         MuiListItemText: {
             styleOverrides: {
@@ -46,7 +46,7 @@ const theme = createTheme({
                     fontSize: "0.875rem",
                     color: "#ffffff",
                 },
-            }
+            },
         },
         MuiListItemIcon: {
             styleOverrides: {
@@ -54,7 +54,7 @@ const theme = createTheme({
                     minWidth: 44,
                     color: "#ffffff",
                 },
-            }
+            },
         },
         MuiCardHeader: {
             styleOverrides: {
@@ -72,21 +72,21 @@ const theme = createTheme({
                     fontWeight: 500,
                     textTransform: "uppercase",
                 },
-            }
+            },
         },
         MuiTabs: {
             styleOverrides: {
                 root: {
                     minHeight: 56,
                 },
-            }
+            },
         },
         MuiTab: {
             styleOverrides: {
                 root: {
                     padding: "16px 12px",
                 },
-            }
+            },
         },
         MuiToolbar: {
             styleOverrides: {
@@ -107,14 +107,14 @@ const theme = createTheme({
                         marginLeft: "0.5rem",
                     },
                 },
-            }
+            },
         },
         MuiFormControl: {
             styleOverrides: {
                 "& .MuiInput-underline:before": {
-                    borderBottom: '1px solid rgba(255, 0, 255, 0.42)',
-                }
-            }
+                    borderBottom: "1px solid rgba(255, 0, 255, 0.42)",
+                },
+            },
         },
         MuiFormLabel: {
             styleOverrides: {
@@ -122,14 +122,14 @@ const theme = createTheme({
                     fontSize: "0.9rem",
                     opacity: 0.7,
                 },
-            }
+            },
         },
         MuiCard: {
             styleOverrides: {
                 root: {
                     borderRadius: 0,
                 },
-            }
+            },
         },
         MuiList: {
             styleOverrides: {
@@ -137,7 +137,7 @@ const theme = createTheme({
                     paddingTop: 4,
                     paddingBottom: 4,
                 },
-            }
+            },
         },
         MuiDivider: {
             styleOverrides: {
@@ -145,15 +145,15 @@ const theme = createTheme({
                     marginTop: 2,
                     marginBottom: 2,
                 },
-            }
+            },
         },
         MuiLink: {
             styleOverrides: {
                 root: {
                     fontFamily: "ReithSans",
-                    fontSize: "0.9rem"
+                    fontSize: "0.9rem",
                 },
-            }
+            },
         },
         MuiButtonBase: {
             styleOverrides: {
@@ -161,20 +161,17 @@ const theme = createTheme({
                     "&.MuiMenuItem-root+.MuiDivider-root": {
                         marginTop: 2,
                         marginBottom: 2,
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
         MuiSwitch: {
             styleOverrides: {
                 root: {
                     "& .Mui-checked.Mui-disabled": {
-                        color: "#333",
-                        "&+.MuiSwitch-track": {
-                            backgroundColor: "#333"
-                        }
+                        color: "#204260 !important",
                     },
-                }
+                },
             },
         },
         MuiChip: {
@@ -183,14 +180,14 @@ const theme = createTheme({
                     borderRadius: 3,
                     fontSize: "inherit",
                 },
-            }
+            },
         },
         MuiAutocomplete: {
             styleOverrides: {
                 paper: {
-                    backgroundColor: "#212121"
-                }
-            }
+                    backgroundColor: "#212121",
+                },
+            },
         },
         MuiAlertTitle: {
             styleOverrides: {
@@ -199,7 +196,7 @@ const theme = createTheme({
                     textTransform: "uppercase",
                     fontSize: "0.875rem",
                 },
-            }
+            },
         },
         MuiAlert: {
             styleOverrides: {
@@ -224,7 +221,7 @@ const theme = createTheme({
                         color: "#fff",
                     },
                 },
-            }
+            },
         },
         MuiDialogContent: {
             styleOverrides: {
@@ -247,7 +244,7 @@ const theme = createTheme({
             fontSize: 13,
             textTransform: "uppercase",
             opacity: 0.5,
-            fontWeight: 500
+            fontWeight: 500,
         },
     },
     palette: {
@@ -290,7 +287,7 @@ const theme = createTheme({
         },
 
         text: {
-            primary: "#ffffff"
+            primary: "#ffffff",
         },
 
         menu: {

@@ -61,14 +61,30 @@ export default function InterfaceList({ panelId }) {
 
     const handleVlanChanged = (event, item) => {};
 
-    const handleEnabledChanged = async (checked, interfaceName) => {
-        //     const command = checked ? "enable" : "disable";
-        //     const commandText = checked ? "Enabled" : "Disabled";
-        //     if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceName}`)) {
-        //         sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
-        //     } else {
-        //         sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
-        //     }
+    const handleEnabledChanged = (checked, item) => {
+        if (checked) {
+            handleEnableClicked(item);
+        } else {
+            handleDisableClicked(item);
+        }
+    };
+
+    const handleEnableClicked = async (item) => {
+        if (await AxiosCommand(`/container/${panelId}/interface/enable/${item.interfaceId}`)) {
+            sendAlert(`Enabled interface: ${item.description}`, { variant: "success" });
+            doForceRefresh();
+        } else {
+            sendAlert(`Failed to enable interface: ${item.description}`, { variant: "error" });
+        }
+    };
+
+    const handleDisableClicked = async (item) => {
+        if (await AxiosCommand(`/container/${panelId}/interface/disable/${item.interfaceId}`)) {
+            sendAlert(`Disabled interface: ${item.description}`, { variant: "success" });
+            doForceRefresh();
+        } else {
+            sendAlert(`Failed to disable interface: ${item.description}`, { variant: "error" });
+        }
     };
 
     const handleProtectClicked = async (event, item) => {
@@ -87,7 +103,7 @@ export default function InterfaceList({ panelId }) {
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <BugPowerIcon enabled={item.link_state} />,
+                    content: (item) => <BugPowerIcon enabled={item["link-state"]} />,
                 },
                 {
                     noPadding: true,
@@ -96,9 +112,10 @@ export default function InterfaceList({ panelId }) {
                     content: (item) => {
                         return (
                             <BugApiSwitch
-                                checked={item.admin_state}
-                                onChange={(checked) => handleEnabledChanged(checked, item.name)}
-                                disabled={item._protected}
+                                checked={item["admin-state"]}
+                                onChange={(checked) => handleEnabledChanged(checked, item)}
+                                // disabled={item._protected}
+                                disabled={item.interfaceId === 1}
                             />
                         );
                     },
@@ -176,15 +193,15 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "Enable",
-                    disabled: (item) => item.admin_state,
+                    disabled: (item) => item["admin-state"],
                     icon: <ToggleOnIcon fontSize="small" />,
-                    // onClick: handleEnabledClicked,
+                    onClick: handleEnableClicked,
                 },
                 {
                     title: "Disable",
-                    disabled: (item) => !item.admin_state,
+                    disabled: (item) => !item["admin-state"],
                     icon: <ToggleOffIcon fontSize="small" />,
-                    // onClick: handleDisabledClicked,
+                    onClick: handleDisableClicked,
                 },
                 {
                     title: "-",

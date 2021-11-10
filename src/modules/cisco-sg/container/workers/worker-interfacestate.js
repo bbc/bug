@@ -56,8 +56,8 @@ const main = async () => {
                     { interfaceId: eachInterface.interfaceId },
                     {
                         $set: {
-                            link_state: linkState,
-                            admin_state: adminState,
+                            "link-state": linkState,
+                            "admin-state": adminState,
                         },
                     },
                     { upsert: false }

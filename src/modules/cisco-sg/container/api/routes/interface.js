@@ -1,15 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const interfaceList = require("@services/interface-list");
-// const interfaceCombinedList = require("../../services/interface-combinedlist");
-// const interfaceCombined = require("../../services/interface-combined");
 // const interfaceHistory = require("../../services/interface-history");
-// const mikrotikInterfaceEnable = require("../../services/mikrotik-interfaceenable");
-// const mikrotikInterfaceDisable = require("../../services/mikrotik-interfacedisable");
+const interfaceEnable = require("@services/interface-enable");
+const interfaceDisable = require("@services/interface-disable");
 // const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
 // const mikrotikInterfaceUnprotect = require("../../services/mikrotik-interfaceunprotect");
 const interfaceRename = require("@services/interface-rename");
-// const mikrotikInterfaceComment = require("../../services/mikrotik-interfacecomment");
 const asyncHandler = require("express-async-handler");
 
 router.all(
@@ -113,27 +110,27 @@ router.get(
 //     })
 // );
 
-// router.get(
-//     "/enable/:interfaceName",
-//     asyncHandler(async (req, res) => {
-//         const result = await mikrotikInterfaceEnable(req.params.interfaceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: null,
-//         });
-//     })
-// );
+router.get(
+    "/enable/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceEnable(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: null,
+        });
+    })
+);
 
-// router.get(
-//     "/disable/:interfaceName",
-//     asyncHandler(async (req, res) => {
-//         const result = await mikrotikInterfaceDisable(req.params.interfaceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: null,
-//         });
-//     })
-// );
+router.get(
+    "/disable/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceDisable(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: null,
+        });
+    })
+);
 
 // router.get(
 //     "/protect/:interfaceName",
