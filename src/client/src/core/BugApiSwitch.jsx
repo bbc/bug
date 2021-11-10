@@ -1,53 +1,48 @@
 import React from "react";
 import Switch from "@mui/material/Switch";
 
-class BugApiSwitch extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checked: props.checked,
-        };
-        this.updateTimeout = props.timeout || 5000;
-        this.enabled = true;
-        this.timer = null;
-    }
+export default function BugApiSwitch({ checked, disabled = false, onChange, timeout = 5000, ...props }) {
+    const [isActive, setIsActive] = React.useState(false);
+    const [localChecked, setLocalChecked] = React.useState(checked);
 
-    handleChanged(event) {
-        if (this.props.disabled) {
-            return;
-        }
-        this.enabled = false;
-        clearTimeout(this.timer);
-        this.setState({
-            checked: event.target.checked,
-        });
-        this.props.onChange(event.target.checked);
-        setTimeout(() => {
-            this.enabled = true;
-        }, this.updateTimeout);
-    }
+    const timer = React.useRef();
 
-    render() {
-        var checked = this.state.checked;
-        if (this.props.checked === this.state.checked) {
-            this.enabled = true;
+    React.useEffect(() => {
+        if (isActive && localChecked === checked) {
+            // checked is now the same - we can clear the active flag
+            clearTimeout(timer.current);
+            setIsActive(false);
         }
+    }, [checked, isActive]);
 
-        if (this.enabled && this.props.checked !== this.state.checked) {
-            checked = this.props.checked;
-        }
-        return (
-            <Switch
-                checked={checked}
-                disabled={!this.enabled || this.props.disabled}
-                color="primary"
-                onChange={(e) => this.handleChanged(e)}
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-            />
-        );
-    }
+    const handleChanged = (event) => {
+        clearTimeout(timer.current);
+
+        // call the parent onClick handler
+        onChange(!localChecked);
+
+        // update the local state
+        setLocalChecked(!localChecked);
+
+        // disable the switch and show the spinner
+        setIsActive(true);
+
+        // in timeout seconds, we will unset the active state as it probably didn't work
+        timer.current = setTimeout(() => {
+            setIsActive(false);
+            setLocalChecked(checked);
+        }, timeout);
+    };
+
+    return (
+        <Switch
+            checked={localChecked}
+            disabled={isActive || disabled}
+            onChange={handleChanged}
+            onClick={(event) => {
+                event.stopPropagation();
+            }}
+            {...props}
+        />
+    );
 }
-
-export default BugApiSwitch;
