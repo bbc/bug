@@ -34,7 +34,7 @@ export default function BugApiVlanAutocomplete({ options, taggedValue, untaggedV
             // disableClearable={true}
             filterSelectedOptions={false}
             getOptionLabel={(option) => {
-                if (!option) {
+                if (!option || !option.id) {
                     return "";
                 }
                 return option.id === -1 ? trunkLabel : `${option.id} - ${option.label}`;

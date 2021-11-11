@@ -59,7 +59,9 @@ export default function InterfaceList({ panelId }) {
         history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
     };
 
-    const handleVlanChanged = (event, item) => {};
+    const handleVlanChanged = (event, value, item) => {
+        console.log(value);
+    };
 
     const handleEnabledChanged = (checked, item) => {
         if (checked) {
@@ -114,8 +116,7 @@ export default function InterfaceList({ panelId }) {
                             <BugApiSwitch
                                 checked={item["admin-state"]}
                                 onChange={(checked) => handleEnabledChanged(checked, item)}
-                                // disabled={item._protected}
-                                disabled={item.interfaceId === 1}
+                                disabled={item._protected}
                             />
                         );
                     },
@@ -145,7 +146,7 @@ export default function InterfaceList({ panelId }) {
                             options={vlans?.data}
                             taggedValue={item?.["tagged-vlans"]}
                             untaggedValue={item?.["untagged-vlans"]}
-                            onChange={(event, value) => handleVlanChanged(item, value)}
+                            onChange={(event, value) => handleVlanChanged(event, value, item)}
                         />
                     ),
                 },

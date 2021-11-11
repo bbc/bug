@@ -11,16 +11,50 @@ export default function BugApiAutocomplete({
     onChange,
     disableClearable = false,
     filterSelectedOptions = true,
+    timeout = 5000,
     groupBy,
     renderOption,
     getOptionLabel,
 }) {
+    const [isActive, setIsActive] = React.useState(false);
+    const [localValue, setLocalValue] = React.useState(value);
+    const timer = React.useRef();
+
+    React.useEffect(() => {
+        if (isActive && localValue === value) {
+            // value is now the same - we can clear the active flag
+            clearTimeout(timer.current);
+            setIsActive(false);
+        }
+    }, [value, isActive]);
+
     // we use this bit of code to work out if we're dealing with an array of objects.
     // autocomplete only allows simple arrays or object arrays with 'id' and 'label' keys
     let isObjectArray = false;
     if (Array.isArray(options) && options.length > 0 && options[0].id !== undefined && options[0].label !== undefined) {
         isObjectArray = true;
     }
+
+    const handleChanged = (event, value) => {
+        clearTimeout(timer.current);
+
+        // call the parent onClick handler
+        onChange(event, value);
+
+        // update the local state
+        setLocalValue(value);
+
+        // disable the control and show the spinner (maybe?)
+        setIsActive(true);
+
+        // in timeout seconds, we will unset the active state as it probably didn't work
+        timer.current = setTimeout(() => {
+            setIsActive(false);
+            setLocalValue(value);
+        }, timeout);
+
+        event.stopPropagation();
+    };
 
     const processValue = (value) => {
         if (!isObjectArray) {
@@ -34,6 +68,7 @@ export default function BugApiAutocomplete({
 
     return (
         <Autocomplete
+            disabled={isActive}
             getOptionLabel={getOptionLabel}
             filterSelectedOptions={filterSelectedOptions}
             options={options ? options : []}
@@ -41,11 +76,7 @@ export default function BugApiAutocomplete({
             disableClearable={disableClearable}
             groupBy={groupBy}
             renderOption={renderOption}
-            onChange={(event, value) => {
-                onChange(event, value);
-                event.stopPropagation();
-                event.preventDefault();
-            }}
+            onChange={handleChanged}
             onClick={(event) => {
                 event.stopPropagation();
                 event.preventDefault();

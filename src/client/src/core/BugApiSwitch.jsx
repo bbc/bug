@@ -4,7 +4,6 @@ import Switch from "@mui/material/Switch";
 export default function BugApiSwitch({ checked, disabled = false, onChange, timeout = 5000, ...props }) {
     const [isActive, setIsActive] = React.useState(false);
     const [localChecked, setLocalChecked] = React.useState(checked);
-
     const timer = React.useRef();
 
     React.useEffect(() => {
