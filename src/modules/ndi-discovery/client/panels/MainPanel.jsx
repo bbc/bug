@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
+import SourcesTable from "./../components/SourcesTable";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -14,5 +15,5 @@ export default function MainPanel() {
     const classes = useStyles();
     const params = useParams();
 
-    return <>NDI Sources Here</>;
+    return <SourcesTable panelId={params.panelId} />;
 }

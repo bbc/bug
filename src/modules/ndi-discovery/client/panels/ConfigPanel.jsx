@@ -51,7 +51,7 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <BugConfigFormTextField
                         //REGEX: Tests for IPv4 Addresses
                         inputProps={{

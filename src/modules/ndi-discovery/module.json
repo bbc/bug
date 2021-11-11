@@ -10,7 +10,6 @@
     "needsContainer": true,
     "devmounts": [
         "api",
-        "utils",
         "services",
         "workers"
     ],

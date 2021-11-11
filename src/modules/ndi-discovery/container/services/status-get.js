@@ -11,7 +11,7 @@ module.exports = async () => {
             collectionName: "sources",
             message: ["Could not find any NDI sources.", "Check the network or discovery server address."],
             itemType: "warning",
-            timeoutSeconds: 30,
+            timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         })
     );

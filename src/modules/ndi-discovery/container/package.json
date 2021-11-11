@@ -28,7 +28,7 @@
         "path": "^0.12.7",
         "ping": "^0.4.1",
         "underscore": "^1.13.1",
-        "xml-js": "^1.6.11"
+        "xml2json": "^0.12.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
