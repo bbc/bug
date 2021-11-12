@@ -21,11 +21,15 @@ parentPort.postMessage({
     restartOn: ["address"],
 });
 
+const isArray = (a) => {
+    return !!a && a.constructor === Array;
+};
+
 const getSources = async () => {
     let sources = [];
 
     client.connect({ port: 5959, host: workerData.address }, () => {
-        console.log("TCP connection established with the server.");
+        console.log(`get-sources-discovery: Connection established with the ${workerData.address}.`);
         let message = Buffer.alloc(9);
         message.fill("<query/>", 0, 8);
         client.write(message);
@@ -36,15 +40,35 @@ const getSources = async () => {
         if (chunks.includes("<sources>") && chunks.includes("</sources>")) {
             try {
                 chunks = chunks.substring(0, chunks.length - 1);
-                const test = fs.writeFileSync("/home/node/module/workers/test.xml", chunks);
                 const json = await parser.toJson(chunks);
                 const sources = JSON.parse(json)?.sources.source;
 
                 const collection = sources.map((item) => {
-                    return { ...item, ...{ timestamp: Date.now() } };
+                    let groups = [];
+
+                    if (item?.groups?.group) {
+                        if (isArray(item.groups.group)) {
+                            for (let group of item?.groups?.group) {
+                                groups.push(group);
+                            }
+                        } else {
+                            groups.push(item.groups.group);
+                        }
+                        groups.sort();
+                    }
+
+                    return {
+                        timestamp: Date.now(),
+                        address: item.address,
+                        port: item.port,
+                        device: item.name.split(" (")[0],
+                        source: item.name.split(" (")[1].replace(")", ""),
+                        groups: groups,
+                    };
                 });
 
-                await mongoSaveArray(sourceCollection, collection, "name");
+                await mongoSaveArray(sourceCollection, collection, "source");
+                await client.end();
             } catch (error) {
                 console.log("get-sources-discovery: Invalid syntax of XML.");
                 console.log(error);
@@ -54,7 +78,7 @@ const getSources = async () => {
     });
 
     client.on("end", async () => {
-        console.log("Connection closed");
+        console.log("get-sources-discovery: Connection closed");
     });
 };
 

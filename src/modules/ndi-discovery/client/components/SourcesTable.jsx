@@ -1,40 +1,86 @@
 import React from "react";
-import { useAlert } from "@utils/Snackbar";
 import BugApiTable from "@core/BugApiTable";
 import BugTableNoData from "@core/BugTableNoData";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { useHistory } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import BugScrollbars from "@core/BugScrollbars";
 
 export default function InterfaceList({ panelId }) {
-    const sendAlert = useAlert();
-    const history = useHistory();
-
     const handleGotoClicked = (event, item) => {
         window.open(`http://${item?.address}`);
+    };
+
+    const getGroupChips = (groups) => {
+        return groups.map((eachItem) => (
+            <Chip
+                sx={{
+                    margin: "2px",
+                    border: "none",
+                    borderRadius: "3px",
+                }}
+                key={eachItem}
+                label={eachItem}
+            />
+        ));
     };
 
     return (
         <BugApiTable
             columns={[
                 {
-                    sortable: "true",
-                    title: "Name",
+                    sortable: true,
+                    defaultSortDirection: "asc",
+                    filterType: "text",
+                    title: "Device",
                     width: "30rem",
-                    field: "name",
-                    hideWidth: 400,
-                    content: (item) => item["name"],
+                    field: "device",
+                    hideWidth: 200,
+                    content: (item) => item["device"],
                 },
                 {
-                    sortable: "true",
+                    sortable: true,
+                    defaultSortDirection: "asc",
+                    filterType: "text",
+                    title: "Source",
+                    width: "30rem",
+                    field: "source",
+                    hideWidth: 200,
+                    content: (item) => item["source"],
+                },
+                {
+                    title: "Groups",
+                    width: "30rem",
+                    sortable: false,
+                    content: (item) => (
+                        <Box
+                            sx={{
+                                position: "absolute",
+                                top: 0,
+                                bottom: 0,
+                                padding: "8px",
+                                width: "100%",
+                            }}
+                        >
+                            <BugScrollbars>{getGroupChips(item.groups)}</BugScrollbars>
+                        </Box>
+                    ),
+                },
+                {
+                    sortable: true,
                     title: "IP Address",
+                    defaultSortDirection: "asc",
+                    filterType: "text",
                     width: "10rem",
                     field: "address",
                     hideWidth: 600,
                     content: (item) => item["address"],
                 },
                 {
-                    sortable: "true",
+                    sortable: true,
                     title: "Port",
+                    defaultSortDirection: "asc",
+                    filterType: "number",
                     width: "10rem",
                     field: "port",
                     hideWidth: 800,
@@ -60,7 +106,7 @@ export default function InterfaceList({ panelId }) {
                 />
             }
             rowHeight="62px"
-            sortable
+            sortable={true}
         />
     );
 }
