@@ -64,7 +64,6 @@ const main = async () => {
             console.log("worker-interfacedetails: no interfaces found in db - waiting ...");
             await delay(5000);
         } else {
-            // get subtree of interface admin states
             const ifAliases = await ciscoSGSNMP.subtree({
                 host: workerData.address,
                 community: workerData.snmp_community,
@@ -72,7 +71,6 @@ const main = async () => {
                 oid: "1.3.6.1.2.1.31.1.1.1.18",
             });
 
-            // get subtree of interface admin states
             const ifAutoNegotiation = await ciscoSGSNMP.subtree({
                 host: workerData.address,
                 community: workerData.snmp_community,
@@ -80,7 +78,6 @@ const main = async () => {
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.16",
             });
 
-            // get subtree of interface admin states
             const ifAdminPortSpeed = await ciscoSGSNMP.subtree({
                 host: workerData.address,
                 community: workerData.snmp_community,
@@ -88,7 +85,6 @@ const main = async () => {
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.15",
             });
 
-            // get subtree of interface admin states
             const ifOperationalPortSpeed = await ciscoSGSNMP.subtree({
                 host: workerData.address,
                 community: workerData.snmp_community,

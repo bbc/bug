@@ -4,11 +4,8 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const mongoCollection = require("@core/mongo-collection");
-const mongoCreateIndex = require("@core/mongo-createindex");
 const ciscoSGSNMP = require("../utils/ciscosg-snmp");
-
-let dataCollection;
+const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -19,15 +16,6 @@ parentPort.postMessage({
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
-
-    // get the collection reference
-    dataCollection = await mongoCollection("system");
-
-    // and now create the index with ttl
-    await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 120 });
-
-    // remove previous values
-    dataCollection.deleteMany({});
 
     // Kick things off
     console.log(`worker-system: connecting to device at ${workerData.address}`);
@@ -55,18 +43,16 @@ const main = async () => {
         const controlVersion = Object.keys(newStyleResults).length === 0 ? 1 : 2;
 
         if (result) {
-            const dbDocument = {
-                type: "system",
+            const payload = {
                 description: result["1.3.6.1.2.1.1.1.0"],
                 uptime: result["1.3.6.1.2.1.1.3.0"],
                 contact: result["1.3.6.1.2.1.1.4.0"],
                 name: result["1.3.6.1.2.1.1.5.0"],
                 location: result["1.3.6.1.2.1.1.6.0"],
                 "control-version": controlVersion,
-                timestamp: new Date(),
             };
 
-            await dataCollection.replaceOne({ type: "system" }, dbDocument, { upsert: true });
+            await mongoSingle.set("system", payload, 120);
         }
         await delay(60000);
     }

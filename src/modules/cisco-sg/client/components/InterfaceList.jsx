@@ -112,6 +112,9 @@ export default function InterfaceList({ panelId }) {
                     hideWidth: 600,
                     width: 70,
                     content: (item) => {
+                        if (item["admin-state"] === undefined) {
+                            return null;
+                        }
                         return (
                             <BugApiSwitch
                                 checked={item["admin-state"]}
@@ -140,15 +143,20 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "VLAN",
-                    width: "20rem",
-                    content: (item) => (
-                        <BugApiVlanAutocomplete
-                            options={vlans?.data}
-                            taggedValue={item?.["tagged-vlans"]}
-                            untaggedValue={item?.["untagged-vlans"]}
-                            onChange={(event, value) => handleVlanChanged(event, value, item)}
-                        />
-                    ),
+                    width: "25rem",
+                    content: (item) => {
+                        if (item?.["tagged-vlans"] === undefined || item?.["untagged-vlans"] === undefined) {
+                            return null;
+                        }
+                        return (
+                            <BugApiVlanAutocomplete
+                                options={vlans?.data}
+                                taggedValue={item?.["tagged-vlans"]}
+                                untaggedValue={item?.["untagged-vlans"]}
+                                onChange={(event, value) => handleVlanChanged(event, value, item)}
+                            />
+                        );
+                    },
                 },
                 {
                     title: "Speed",

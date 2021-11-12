@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -21,7 +22,6 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     // get the collection reference
-    const vlanCollection = await mongoCollection("vlans");
     const interfacesCollection = await mongoCollection("interfaces");
 
     // Kick things off
@@ -29,13 +29,14 @@ const main = async () => {
 
     while (true) {
         // get the current list of vlans
-        const vlanDocument = await vlanCollection.findOne({ type: "vlans" });
-        if (!vlanDocument || !vlanDocument.vlans) {
+        const vlans = await mongoSingle.get("vlans");
+
+        if (!vlans) {
             await delay(4000);
         } else {
             const interfaceVlans = {};
             // loop through the vlans and fetch untagged interfaces
-            for (let eachVlan of vlanDocument.vlans) {
+            for (let eachVlan of vlans) {
                 // for (let eachVlan of [{ id: 20 }]) {
                 const untaggedResult = await ciscoSGSNMP.portlist({
                     host: workerData.address,

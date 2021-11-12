@@ -4,11 +4,8 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const mongoCollection = require("@core/mongo-collection");
-const mongoCreateIndex = require("@core/mongo-createindex");
 const ciscoSGSNMP = require("../utils/ciscosg-snmp");
-
-let dataCollection;
+const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -19,15 +16,6 @@ parentPort.postMessage({
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
-
-    // get the collection reference
-    dataCollection = await mongoCollection("vlans");
-
-    // and now create the index with ttl
-    await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 60 });
-
-    // remove previous values
-    dataCollection.deleteMany({});
 
     // Kick things off
     console.log(`worker-vlans: connecting to device at ${workerData.address}`);
@@ -53,13 +41,7 @@ const main = async () => {
                 });
             }
 
-            const dbDocument = {
-                type: "vlans",
-                vlans: vlans,
-                timestamp: new Date(),
-            };
-
-            await dataCollection.replaceOne({ type: "system" }, dbDocument, { upsert: true });
+            await mongoSingle.set("vlans", vlans, 60);
         }
         await delay(20400);
     }

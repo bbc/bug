@@ -14,6 +14,7 @@ export default function BugApiAutocomplete({
     timeout = 5000,
     groupBy,
     renderOption,
+    style,
     getOptionLabel,
 }) {
     const [isActive, setIsActive] = React.useState(false);
@@ -68,6 +69,7 @@ export default function BugApiAutocomplete({
 
     return (
         <Autocomplete
+            style={style}
             disabled={isActive}
             getOptionLabel={getOptionLabel}
             filterSelectedOptions={filterSelectedOptions}
