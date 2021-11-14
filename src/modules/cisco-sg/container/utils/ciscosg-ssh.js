@@ -58,6 +58,7 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
                         "diffie-hellman-group14-sha1",
                         "diffie-hellman-group-exchange-sha256",
                     ],
+                    cipher: ["aes256-cbc"],
                 },
             },
             debug: debug,
