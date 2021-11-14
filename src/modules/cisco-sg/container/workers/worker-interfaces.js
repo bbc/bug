@@ -69,6 +69,7 @@ const main = async () => {
                 if (description) {
                     const portArray = ciscoSGSplitPort(description);
                     const dbDocument = {
+                        longId: description,
                         interfaceId: interfaceId,
                         shortId: shortId,
                         description: `${portArray.label}${portArray.port}`,
