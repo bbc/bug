@@ -33,7 +33,7 @@ const main = async () => {
             ],
         });
 
-        // if the switch has any result from this oid then it's a NEW-style switch (SG350/SG500)
+        // if the switch has any result from this oid then it's a NEW-style switch (SG350/SG550)
         // otherwise it's a nasty old SG300 and we have to control it the old-fashioned way
         const newStyleResults = await ciscoSGSNMP.subtree({
             host: workerData.address,
