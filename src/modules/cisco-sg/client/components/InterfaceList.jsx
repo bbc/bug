@@ -17,6 +17,7 @@ import { useApiPoller } from "@utils/ApiPoller";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";
+import Box from "@mui/material/Box";
 
 export default function InterfaceList({ panelId }) {
     const sendAlert = useAlert();
@@ -160,13 +161,17 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "Speed",
-                    width: "6rem",
+                    width: "5rem",
                     content: (item) => {
-                        if (item?.["auto-negotiation"]) {
-                            return `${item?.["operational-speed"]} - auto`;
-                        }
                         if (item?.["operational-speed"]) {
-                            return `${item?.["operational-speed"]} - fixed`;
+                            return (
+                                <>
+                                    <Box sx={{ textAlign: "center" }}>{item?.["operational-speed"]}</Box>
+                                    <Box sx={{ textAlign: "center", opacity: 0.3 }}>
+                                        {item?.["auto-negotiation"] ? `auto` : `fixed`}
+                                    </Box>
+                                </>
+                            );
                         }
                         return null;
                     },
