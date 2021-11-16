@@ -9,10 +9,22 @@ import { useAlert } from "@utils/Snackbar";
 import { usePanelStatus } from "@hooks/PanelStatus";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        "& .MuiButton-startIcon": {
+            margin: 0,
+        },
+        marginRight: theme.spacing(1),
+    },
+}));
 
 export default function Toolbar(props) {
+    const classes = useStyles();
     let toolbarProps = { ...props };
     const panelStatus = usePanelStatus();
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -39,6 +51,14 @@ export default function Toolbar(props) {
 
     const menuItems = () => [
         <>
+            <MenuItem onClick={handleWebpageClicked}>
+                <ListItemIcon>
+                    <OpenInNewIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Goto Webpage" />
+            </MenuItem>
+        </>,
+        <>
             <MenuItem onClick={handleReboot}>
                 <ListItemIcon>
                     <PowerSettingsNewIcon fontSize="small" />
@@ -48,19 +68,34 @@ export default function Toolbar(props) {
         </>,
     ];
 
-    const buttons = () => (
+    const buttons = () => [
         <>
-            <Button
-                component={Link}
-                onClick={handleWebpageClicked}
-                variant="outlined"
-                color="primary"
-                startIcon={<OpenInNewIcon />}
-            >
-                Goto
-            </Button>
-        </>
-    );
+            <Tooltip title="Goto Webpage">
+                <IconButton
+                    className={classes.button}
+                    component={Link}
+                    onClick={handleWebpageClicked}
+                    variant="outlined"
+                    color="default"
+                >
+                    <OpenInNewIcon />
+                </IconButton>
+            </Tooltip>
+        </>,
+        <>
+            <Tooltip title="Reboot Device">
+                <IconButton
+                    className={classes.button}
+                    component={Link}
+                    onClick={handleReboot}
+                    variant="outlined"
+                    color="default"
+                >
+                    <PowerSettingsNewIcon />
+                </IconButton>
+            </Tooltip>
+        </>,
+    ];
 
     toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = panelStatus.hasCritical ? null : menuItems();

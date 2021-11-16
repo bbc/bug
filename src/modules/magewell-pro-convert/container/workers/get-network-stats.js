@@ -22,9 +22,9 @@ const writeNetworkStats = async () => {
     delete networkStats.status;
 
     const entry = await networkCollection.insertOne({
-        timestamp: Date.now(),
-        tx: networkStats["tx-speed-kbps"],
-        rx: networkStats["rx-speed-kbps"],
+        timestamp: new Date(),
+        tx: networkStats["tx-speed-kbps"] * 1000,
+        rx: networkStats["rx-speed-kbps"] * 1000,
     });
 };
 

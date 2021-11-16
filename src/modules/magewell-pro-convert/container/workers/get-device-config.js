@@ -20,7 +20,7 @@ parentPort.postMessage({
 
 const writeDeviceInfo = async () => {
     const device = await magewell.getSummary();
-    device.timestamp = Date.now();
+    device.timestamp = new Date();
     delete device.status;
     const entry = await dataCollection.insertOne(device);
 };
