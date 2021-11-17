@@ -142,8 +142,8 @@ const theme = createTheme({
         MuiDivider: {
             styleOverrides: {
                 root: {
-                    marginTop: 2,
-                    marginBottom: 2,
+                    marginTop: 0,
+                    marginBottom: 0,
                 },
             },
         },
@@ -186,6 +186,9 @@ const theme = createTheme({
             styleOverrides: {
                 paper: {
                     backgroundColor: "#212121",
+                },
+                option: {
+                    height: 41,
                 },
             },
         },
