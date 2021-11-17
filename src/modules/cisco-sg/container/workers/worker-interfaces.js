@@ -32,7 +32,7 @@ const main = async () => {
     await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 900 });
 
     // remove previous values
-    //TODO  interfacesCollection.deleteMany({});
+    interfacesCollection.deleteMany({});
 
     // Kick things off
     console.log(`worker-interfaces: connecting to device at ${workerData.address}`);

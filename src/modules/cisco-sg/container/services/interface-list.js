@@ -2,7 +2,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 
-module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId) => {
+module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     const dbInterfaces = await mongoCollection("interfaces");
 
     let interfaces = await dbInterfaces.find().toArray();
