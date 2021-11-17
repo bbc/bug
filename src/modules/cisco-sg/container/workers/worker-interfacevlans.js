@@ -48,11 +48,11 @@ const main = async () => {
                     if (eachInterface < 1000) {
                         if (!interfaceVlans[eachInterface]) {
                             interfaceVlans[eachInterface] = {
-                                "untagged-vlans": [],
+                                "untagged-vlan": 1,
                                 "tagged-vlans": [],
                             };
                         }
-                        interfaceVlans[eachInterface]["untagged-vlans"].push(eachVlan.id);
+                        interfaceVlans[eachInterface]["untagged-vlan"] = parseInt(eachVlan.id);
                     }
                 }
 
@@ -66,11 +66,11 @@ const main = async () => {
                     if (eachInterface < 1000) {
                         if (!interfaceVlans[eachInterface]) {
                             interfaceVlans[eachInterface] = {
-                                "untagged-vlans": [],
+                                "untagged-vlans": 1,
                                 "tagged-vlans": [],
                             };
                         }
-                        interfaceVlans[eachInterface]["tagged-vlans"].push(eachVlan.id);
+                        interfaceVlans[eachInterface]["tagged-vlans"].push(parseInt(eachVlan.id));
                     }
                 }
             }
@@ -81,9 +81,9 @@ const main = async () => {
                 const matchedInterface = interfaceVlans[eachInterface.interfaceId];
                 if (matchedInterface) {
                     let taggedVlans = matchedInterface["tagged-vlans"];
-                    let untaggedVlans = matchedInterface["untagged-vlans"];
-                    if (untaggedVlans.length === 1 && taggedVlans.length === 1) {
-                        if (untaggedVlans[0] === taggedVlans[0]) {
+                    let untaggedVlan = matchedInterface["untagged-vlan"];
+                    if (untaggedVlan && taggedVlans.length === 1) {
+                        if (untaggedVlan === taggedVlans[0]) {
                             // it's an access port, and we can remove the 'tagged' vlan
                             taggedVlans = [];
                         }
@@ -94,7 +94,7 @@ const main = async () => {
                         {
                             $set: {
                                 "tagged-vlans": taggedVlans,
-                                "untagged-vlans": untaggedVlans,
+                                "untagged-vlan": untaggedVlan,
                             },
                         },
                         { upsert: false }

@@ -146,14 +146,14 @@ export default function InterfaceList({ panelId }) {
                     title: "VLAN",
                     width: "25rem",
                     content: (item) => {
-                        if (item?.["tagged-vlans"] === undefined || item?.["untagged-vlans"] === undefined) {
+                        if (item?.["tagged-vlans"] === undefined || item?.["untagged-vlan"] === undefined) {
                             return null;
                         }
                         return (
                             <BugApiVlanAutocomplete
                                 options={vlans?.data}
                                 taggedValue={item?.["tagged-vlans"]}
-                                untaggedValue={item?.["untagged-vlans"]}
+                                untaggedValue={item?.["untagged-vlan"]}
                                 onChange={(event, value) => handleVlanChanged(event, value, item)}
                             />
                         );

@@ -10,13 +10,14 @@ export default function BugApiVlanAutocomplete({ options, taggedValue, untaggedV
     let value = null;
     let trunkLabel = "Trunk (multiple)";
     const isTrunk = taggedValue.length > 0;
-    const isAccess = untaggedValue.length === 1;
+
     if (isTrunk) {
         value = -1;
         trunkLabel = `Trunk ${convertToRange(taggedValue)}`;
-    } else if (isAccess) {
-        value = untaggedValue[0];
+    } else {
+        value = untaggedValue;
     }
+
     const groupedOptions = options
         ? [
               {

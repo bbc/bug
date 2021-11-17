@@ -36,7 +36,7 @@ const main = async () => {
                     eachResult = `VLAN_${vlan}`;
                 }
                 vlans.push({
-                    id: vlan,
+                    id: parseInt(vlan),
                     label: eachResult,
                 });
             }
