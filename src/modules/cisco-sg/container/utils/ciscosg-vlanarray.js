@@ -4,13 +4,6 @@ module.exports = (allVlans, vlanArray) => {
     const selectedVlans = new Array(4094);
 
     for (const eachVlan of vlanArray) {
-        if (eachVlan === "1-4094") {
-            // look - let's just return all the vlans - it's easier
-            return "all";
-        }
-    }
-
-    for (const eachVlan of vlanArray) {
         if (eachVlan.toString().indexOf("-") > -1) {
             // it's a range
             const vlanRange = eachVlan.split("-");

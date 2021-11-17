@@ -6,27 +6,31 @@ import convertToRange from "convert-to-ranges";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function BugApiVlanAutocomplete({ options, taggedValue, untaggedValue, onChange }) {
-    let value = null;
-    let trunkLabel = "Trunk (multiple)";
-    const isTrunk = taggedValue.length > 0;
-
-    if (isTrunk) {
-        value = -1;
-        trunkLabel = `Trunk ${convertToRange(taggedValue)}`;
-    } else {
-        value = untaggedValue;
-    }
+export default function BugApiVlanAutocomplete({ options, taggedValue, untaggedValue, onChange, timeout = 8000 }) {
+    let trunkLabel = "Trunk - Multiple VLANs";
 
     const groupedOptions = options
         ? [
               {
                   id: -1,
-                  label: "Trunk (multiple)",
+                  label: trunkLabel,
               },
               ...options,
           ]
         : [];
+
+    let value = null;
+    const isTrunk = taggedValue.length > 0;
+    if (isTrunk) {
+        value = -1;
+        if (taggedValue?.length === options?.length) {
+            trunkLabel = `Trunk - All VLANs`;
+        } else {
+            trunkLabel = `Trunk - ${convertToRange(taggedValue)}`;
+        }
+    } else {
+        value = untaggedValue;
+    }
 
     return (
         <Box
@@ -41,8 +45,13 @@ export default function BugApiVlanAutocomplete({ options, taggedValue, untaggedV
                 value={value}
                 freeSolo={false}
                 onChange={onChange}
-                // disableClearable={true}
+                disableClearable={true}
                 filterSelectedOptions={false}
+                timeout={timeout}
+                onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                }}
                 getOptionLabel={(option) => {
                     if (!option || !option.id) {
                         return "";

@@ -1,6 +1,7 @@
 import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
 import AxiosCommand from "@utils/AxiosCommand";
+import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
@@ -60,8 +61,33 @@ export default function InterfaceList({ panelId }) {
         history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
     };
 
-    const handleVlanChanged = (event, value, item) => {
-        console.log(value);
+    const handleVlanChanged = async (event, value, item) => {
+        if (value.id === -1) {
+            // trunk selected
+            sendAlert(`Changing interface ${item.shortId} to trunk mode`, { variant: "info" });
+            if (
+                await AxiosPost(`/container/${panelId}/interface/setvlantrunk/${item.interfaceId}`, {
+                    untaggedVlans: 1,
+                    taggedVlans: ["1-4094"],
+                })
+            ) {
+                doForceRefresh();
+                sendAlert(`Changed interface ${item.shortId} to trunk mode`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to change interface ${item.shortId} to trunk mode`, { variant: "error" });
+            }
+        } else {
+            // access selected
+            sendAlert(`Changing interface ${item.shortId} to access vlan ${value.id}`, { variant: "info" });
+            if (await AxiosCommand(`/container/${panelId}/interface/setvlanaccess/${item.interfaceId}/${value.id}`)) {
+                doForceRefresh();
+                sendAlert(`Changed interface ${item.shortId} to access vlan ${value.id}`, { variant: "success" });
+            } else {
+                sendAlert(`Failed to change interface ${item.shortId} to access vlan ${value.id}`, {
+                    variant: "error",
+                });
+            }
+        }
     };
 
     const handleEnabledChanged = (checked, item) => {

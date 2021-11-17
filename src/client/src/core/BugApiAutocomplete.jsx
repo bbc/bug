@@ -9,6 +9,7 @@ export default function BugApiAutocomplete({
     value,
     freeSolo = false,
     onChange,
+    onClick,
     disableClearable = false,
     filterSelectedOptions = true,
     timeout = 5000,
@@ -22,7 +23,14 @@ export default function BugApiAutocomplete({
     const timer = React.useRef();
 
     React.useEffect(() => {
-        if (isActive && localValue === value) {
+        // sometimes we end up with one of the values (new or old)
+        // being an object. This is because the options array hasn't loaded,
+        // so processValue() doesn't destructure it.
+
+        const newValue = value?.id !== undefined ? value?.id : value;
+        const oldValue = localValue?.id !== undefined ? localValue?.id : localValue;
+
+        if (isActive && oldValue === newValue) {
             // value is now the same - we can clear the active flag
             clearTimeout(timer.current);
             setIsActive(false);
@@ -82,6 +90,7 @@ export default function BugApiAutocomplete({
             onClick={(event) => {
                 event.stopPropagation();
                 event.preventDefault();
+                onClick(event);
             }}
             value={processValue(value)}
             renderInput={(params) => (
