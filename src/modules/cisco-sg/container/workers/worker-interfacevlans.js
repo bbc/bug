@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const ciscoSGSNMP = require("@utils/ciscosg-snmp");
 const mongoSingle = require("@core/mongo-single");
+const { deflate } = require("zlib");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -42,6 +43,7 @@ const main = async () => {
                     host: workerData.address,
                     community: workerData.snmp_community,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.5.0.${eachVlan.id}`,
+                    timeout: 30000,
                 });
 
                 for (let eachInterface of untaggedResult) {
@@ -60,6 +62,7 @@ const main = async () => {
                     host: workerData.address,
                     community: workerData.snmp_community,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.4.0.${eachVlan.id}`,
+                    timeout: 30000,
                 });
 
                 for (let eachInterface of taggedResult) {
@@ -73,6 +76,7 @@ const main = async () => {
                         interfaceVlans[eachInterface]["tagged-vlans"].push(parseInt(eachVlan.id));
                     }
                 }
+                await delay(100);
             }
 
             const interfaces = await interfacesCollection.find().toArray();

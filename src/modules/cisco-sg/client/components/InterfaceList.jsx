@@ -20,11 +20,10 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
 
-export default function InterfaceList({ panelId, stackId }) {
+export default function InterfaceList({ panelId, stackId = null }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
-
     const { forceRefresh, doForceRefresh } = useForceRefresh();
 
     const vlans = useApiPoller({
