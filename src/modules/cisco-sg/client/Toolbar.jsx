@@ -8,6 +8,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import BugApiSaveButton from "@core/BugApiSaveButton";
+import LaunchIcon from "@mui/icons-material/Launch";
+import Divider from "@mui/material/Divider";
 
 export default function Toolbar(props) {
     const sendAlert = useAlert();
@@ -55,7 +57,14 @@ export default function Toolbar(props) {
                 <ListItemIcon>
                     <SaveIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary="Save" />
+                <ListItemText primary="Save Changes" />
+            </MenuItem>,
+            <Divider key="divider" />,
+            <MenuItem key="launch" onClick={handleSave}>
+                <ListItemIcon>
+                    <LaunchIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Launch device webpage" />
             </MenuItem>,
         ];
     };
