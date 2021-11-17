@@ -20,7 +20,7 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
 
-export default function InterfaceList({ panelId }) {
+export default function InterfaceList({ panelId, stackId }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
@@ -152,8 +152,8 @@ export default function InterfaceList({ panelId }) {
                     },
                 },
                 {
-                    minWidth: "4rem",
-                    width: "4rem",
+                    minWidth: "5rem",
+                    width: "5rem",
                     noWrap: true,
                     title: "ID",
                     content: (item) => item.shortId,
@@ -193,7 +193,13 @@ export default function InterfaceList({ panelId }) {
                             return (
                                 <>
                                     <Box sx={{ textAlign: "center" }}>{item?.["operational-speed"]}</Box>
-                                    <Box sx={{ textAlign: "center", opacity: 0.3 }}>
+                                    <Box
+                                        sx={{
+                                            textAlign: "center",
+                                            opacity: item?.["auto-negotiation"] ? 0.2 : 1,
+                                            color: item?.["auto-negotiation"] ? "#ffffff" : "primary.main",
+                                        }}
+                                    >
                                         {item?.["auto-negotiation"] ? `auto` : `fixed`}
                                     </Box>
                                 </>
@@ -253,7 +259,11 @@ export default function InterfaceList({ panelId }) {
                     onClick: handleProtectClicked,
                 },
             ]}
-            apiUrl={`/container/${panelId}/interface`}
+            apiUrl={
+                stackId !== null
+                    ? `/container/${panelId}/interface/stack/${stackId}`
+                    : `/container/${panelId}/interface`
+            }
             panelId={panelId}
             hideHeader={false}
             noData={

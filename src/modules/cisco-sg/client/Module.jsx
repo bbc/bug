@@ -10,6 +10,9 @@ export default function Module(props) {
             <BugModuleRoute exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/:stackId">
+                <MainPanel {...props} />
+            </BugModuleRoute>
             <BugModuleRoute exact path="/panel/:panelId/config">
                 <ConfigPanel {...props} />
             </BugModuleRoute>

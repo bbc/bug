@@ -21,6 +21,16 @@ router.all(
     })
 );
 
+router.all(
+    "/stack/:stackId",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await interfaceList(req.body.sortField, req.body.sortDirection, req.body.filters, req.params.stackId),
+        });
+    })
+);
+
 // router.post(
 //     "/",
 //     asyncHandler(async (req, res) => {
