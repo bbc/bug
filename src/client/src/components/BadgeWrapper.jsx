@@ -1,9 +1,6 @@
 import React from "react";
 import Badge from "@mui/material/Badge";
 import { makeStyles } from "@mui/styles";
-import FaviconNotification from "@utils/FaviconNotification";
-
-const faviconNotification = new FaviconNotification();
 
 const useStyles = makeStyles((theme) => ({
     error: {
@@ -46,7 +43,6 @@ const BadgeWrapper = ({
     }
 
     if (criticalCount > 0) {
-        faviconNotification.critical();
         return (
             <Badge className={classes.error} badgeContent={criticalCount} anchorOrigin={position}>
                 {children}
@@ -55,7 +51,6 @@ const BadgeWrapper = ({
     }
 
     if (errorCount > 0) {
-        faviconNotification.error();
         return (
             <Badge className={classes.error} badgeContent={errorCount} anchorOrigin={position}>
                 {children}
@@ -64,7 +59,6 @@ const BadgeWrapper = ({
     }
 
     if (warningCount > 0) {
-        faviconNotification.warning();
         return (
             <Badge className={classes.warning} badgeContent={warningCount} anchorOrigin={position}>
                 {children}
@@ -73,7 +67,6 @@ const BadgeWrapper = ({
     }
 
     if (infoCount > 0) {
-        faviconNotification.info();
         return (
             <Badge className={classes.info} badgeContent={infoCount} anchorOrigin={position}>
                 {children}

@@ -55,35 +55,44 @@ module.exports = class FaviconNotification {
     }
 
     async generateIcon(color) {
-        const img = await document.createElement("img");
+        const img = document.createElement("img");
         img.src = options.url;
 
-        const lineWidth = 1;
-        const canvas = await document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
+        const drawNotification = async (ctx, image) => {
+            return new Promise((resolve) => {
+                img.onload = async () => {
+                    const lineWidth = 1;
+                    const canvas = await document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
 
-        const context = await canvas.getContext("2d");
-        await context.clearRect(0, 0, img.width, img.height);
-        await context.drawImage(img, 0, 0);
+                    const context = await canvas.getContext("2d");
+                    await context.clearRect(0, 0, img.width, img.height);
+                    await context.drawImage(img, 0, 0);
 
-        const centerX = img.width / 4.5 + lineWidth;
-        const centerY = img.height / 4.5 + lineWidth;
-        const radius = img.width / 4.5;
+                    const centerX = img.width / 4.5 + lineWidth;
+                    const centerY = img.height / 4.5 + lineWidth;
+                    const radius = img.width / 4.5;
 
-        context.fillStyle = color;
-        context.strokeStyle = options.lineColor;
-        context.lineWidth = lineWidth;
+                    context.fillStyle = color;
+                    context.strokeStyle = options.lineColor;
+                    context.lineWidth = lineWidth;
 
-        await context.beginPath();
-        await context.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
-        await context.closePath();
-        await context.fill();
-        await context.stroke();
+                    await context.beginPath();
+                    await context.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
+                    await context.closePath();
+                    await context.fill();
+                    await context.stroke();
 
-        const url = await context.canvas.toDataURL();
-        lastColor = color;
-        return url;
+                    const url = await context.canvas.toDataURL();
+                    lastColor = color;
+                    console.log(url);
+                    resolve(url);
+                };
+            });
+        };
+
+        return await drawNotification();
     }
 
     setOptions(newOptions) {
@@ -93,12 +102,17 @@ module.exports = class FaviconNotification {
     }
 
     async add(color) {
-        await this.addTitle(await this.getCount());
+        const totalCount = await this.getCount();
+        await this.addTitle(totalCount);
 
-        if (color !== lastColor || !generatedIcon) {
-            generatedIcon = await this.generateIcon(color);
+        if (totalCount > 0) {
+            if (color !== lastColor || !this.getColor) {
+                generatedIcon = await this.generateIcon(color);
+            }
+            iconElement.href = generatedIcon;
+        } else {
+            this.clear();
         }
-        iconElement.href = generatedIcon;
     }
 
     getColor() {
@@ -117,6 +131,12 @@ module.exports = class FaviconNotification {
             totalCount += count[key];
         }
         return totalCount;
+    }
+
+    async set(notificationCount) {
+        count = notificationCount;
+        const color = await this.getColor();
+        this.add(color);
     }
 
     async critical() {

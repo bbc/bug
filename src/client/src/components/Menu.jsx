@@ -24,6 +24,9 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import _ from "lodash";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
+import FaviconNotification from "@utils/FaviconNotification";
+
+const faviconNotification = new FaviconNotification();
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -176,6 +179,23 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
+    const setNotifications = (panels) => {
+        const notificationCount = {
+            info: 0,
+            warning: 0,
+            critical: 0,
+            error: 0,
+        };
+
+        for (let panel of panels) {
+            for (let notification of panel._status) {
+                notificationCount[notification.type] += 1;
+            }
+        }
+        faviconNotification.set(notificationCount);
+    };
+
+    setNotifications(enabledPanelList);
     //TODO move enabledStrategiesCount into redux user slice
     return (
         <>
