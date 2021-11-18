@@ -9,12 +9,13 @@ import Grid from "@mui/material/Grid";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { makeStyles } from "@mui/styles";
 import { useApiPoller } from "@utils/ApiPoller";
+import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import realitiveUptime from "@utils/RealitiveUptime";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
 import SourceSelector from "./SourceSelector";
-import AxiosGet from "@utils/AxiosGet";
+import AxiosPut from "@utils/AxiosPut";
 
 const useStyles = makeStyles((theme) => ({
     tableName: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DeviceTab({ panelId }) {
     const classes = useStyles();
+    const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
     const device = useApiPoller({
@@ -49,8 +51,8 @@ export default function DeviceTab({ panelId }) {
             return false;
         }
 
-        if (await AxiosGet(`/container/${panelId}/device/rename/${result}`)) {
-            sendAlert(`Successfully renamed device`, { variant: "success" });
+        if (await AxiosPut(`/container/${panelId}/device/rename`, { name: result })) {
+            sendAlert(`Successfully renamed device`, { broadcast: true, variant: "success" });
         } else {
             sendAlert(`Failed to rename device`, { variant: "error" });
         }

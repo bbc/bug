@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const rebootDevice = require("@services/device-reboot");
 const getDeviceConfig = require("@services/device-config-get");
 const deviceHistory = require("@services/device-history");
+const setDeviceName = require("@services/device-name-set");
 
 route.all("/reboot", async function (req, res) {
     try {
@@ -45,5 +46,20 @@ route.get(
         });
     })
 );
+
+route.put("/rename", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await setDeviceName(req.body.name),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set device name",
+        });
+    }
+});
 
 module.exports = route;

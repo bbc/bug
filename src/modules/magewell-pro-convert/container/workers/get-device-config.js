@@ -8,7 +8,7 @@ const mongoCollection = require("@core/mongo-collection");
 const Magewell = require("@utils/magewell");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
-const updateDelay = 5000;
+const updateDelay = 3000;
 let dataCollection;
 let magewell;
 
