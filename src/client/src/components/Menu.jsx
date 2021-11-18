@@ -117,7 +117,14 @@ const Menu = ({ showGroups = true }) => {
         }
         const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
-            <ListItem button component={Link} to={`/panel/${menuPanel.id}`} key={menuPanel.id} selected={isSelected}>
+            <ListItem
+                button
+                component={Link}
+                onClick={click}
+                to={`/panel/${menuPanel.id}`}
+                key={menuPanel.id}
+                selected={isSelected}
+            >
                 <ListItemIcon>
                     <BadgeWrapper panel={menuPanel}>
                         <BugDynamicIcon iconName={menuPanel._module.icon} />

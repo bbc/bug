@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
 import Box from "@mui/material/Box";
+import useSound from "use-sound";
 
 const useStyles = makeStyles((theme) => ({
     drawer: {
@@ -25,8 +26,10 @@ const useStyles = makeStyles((theme) => ({
 const NavMobile = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [menuSound] = useSound("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
+        menuSound();
         setOpen(!open);
     };
 
