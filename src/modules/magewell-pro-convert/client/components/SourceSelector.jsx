@@ -25,13 +25,21 @@ export default function SourceSelector({ panelId, currentSource }) {
         }
     };
 
-    if (currentSource) {
+    const getSourceId = (label) => {
+        for (let source of sources.data) {
+            if (source.label === label) {
+                return source.id;
+            }
+        }
+    };
+
+    if (currentSource && sources.status === "success") {
         return (
             <>
                 <BugApiAutocomplete
                     disableClearable={true}
                     options={sources?.data}
-                    value={currentSource}
+                    value={{ label: currentSource, id: getSourceId(currentSource) }}
                     onChange={(event, value) => handleSourceChange(value)}
                 />
             </>

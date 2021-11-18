@@ -103,10 +103,10 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     CPU Usage
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
-                                        value={`${history.data.cpu[0].value}%`}
+                                        value={`${history.data.cpu[0]?.value}%`}
                                         history={history.data.cpu}
                                     />
                                 </TableCell>
@@ -115,7 +115,7 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     Memory
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
                                         value={`${history.data.memory[0].value}%`}
@@ -127,11 +127,36 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     Temperature
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
-                                        value={`${device.data.device["core-temp"]}C`}
+                                        value={`${device.data.device["core-temp"]}${"\u00b0"}C`}
                                         history={history.data.temperature}
+                                    />
+                                </TableCell>
+                            </TableRow>
+
+                            <TableRow>
+                                <TableCell variant="head" className={classes.tableName}>
+                                    Video Jitter
+                                </TableCell>
+                                <TableCell sx={{ position: "relative" }}>
+                                    <BugSparkCell
+                                        height={30}
+                                        value={`${device.data.ndi["video-jitter"]}ms`}
+                                        history={history.data.videoJitter}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell variant="head" className={classes.tableName}>
+                                    Audio Jitter
+                                </TableCell>
+                                <TableCell sx={{ position: "relative" }}>
+                                    <BugSparkCell
+                                        height={30}
+                                        value={`${device.data.ndi["audio-jitter"]}ms`}
+                                        history={history.data.audioJitter}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -146,30 +171,6 @@ export default function DeviceTab({ panelId }) {
                                     Link Speed
                                 </TableCell>
                                 <TableCell>{device.data.ethernet["state"]}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head" className={classes.tableName}>
-                                    Video Jitter
-                                </TableCell>
-                                <TableCell>
-                                    <BugSparkCell
-                                        height={30}
-                                        value={`${device.data.ndi["video-jitter"]}ms`}
-                                        history={history.data.videoJitter}
-                                    />
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head" className={classes.tableName}>
-                                    Audio Jitter
-                                </TableCell>
-                                <TableCell>
-                                    <BugSparkCell
-                                        height={30}
-                                        value={`${device.data.ndi["audio-jitter"]}ms`}
-                                        history={history.data.audioJitter}
-                                    />
-                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
