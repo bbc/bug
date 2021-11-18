@@ -1,10 +1,14 @@
 import React from "react";
 import Switch from "@mui/material/Switch";
+import useSound from "use-sound";
 
 export default function BugApiSwitch({ checked, disabled = false, onChange, timeout = 5000, ...props }) {
     const [isActive, setIsActive] = React.useState(false);
     const [localChecked, setLocalChecked] = React.useState(checked);
     const timer = React.useRef();
+
+    const [clickOn] = useSound("/sounds/switch-on.mp3");
+    const [clickOff] = useSound("/sounds/switch-off.mp3");
 
     React.useEffect(() => {
         if (isActive && localChecked === checked) {
@@ -39,6 +43,7 @@ export default function BugApiSwitch({ checked, disabled = false, onChange, time
             disabled={isActive || disabled}
             onChange={handleChanged}
             onClick={(event) => {
+                clickOn();
                 event.stopPropagation();
             }}
             {...props}
