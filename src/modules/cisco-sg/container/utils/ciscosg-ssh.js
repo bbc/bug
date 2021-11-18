@@ -1,12 +1,12 @@
 "use strict";
-const SSH2Shell = require('ssh2shell');
+const SSH2Shell = require("ssh2shell");
 
 module.exports = ({ host, port = 22, username, password, commands = [], debug = false, timeout = 5000 }) => {
-    process.on('uncaughtException', function (err) {
+    process.on("uncaughtException", function (err) {
         if (err.toString().indexOf("Connection closed") === -1) {
             console.log(err);
         }
-    })
+    });
 
     const preCommands = ["terminal datadump", "terminal no prompt"];
     const results = [];
@@ -26,7 +26,7 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
         }
 
         // trim empty first line
-        if (parsedLines.length > 0 && parsedLines[0] === '') {
+        if (parsedLines.length > 0 && parsedLines[0] === "") {
             parsedLines = parsedLines.slice(1);
         }
 
@@ -40,7 +40,7 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
             }
         }
         results.push(parsedLines.join("\n"));
-    }
+    };
 
     return new Promise((resolve, reject) => {
         const ssh = new SSH2Shell({
@@ -52,7 +52,13 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
                 hashMethod: "md5",
                 readyTimeout: 50000,
                 algorithms: {
-                    kex: ['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group1-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group-exchange-sha256']
+                    kex: [
+                        "diffie-hellman-group-exchange-sha1",
+                        "diffie-hellman-group1-sha1",
+                        "diffie-hellman-group14-sha1",
+                        "diffie-hellman-group-exchange-sha256",
+                    ],
+                    cipher: ["aes256-cbc"],
                 },
             },
             debug: debug,
@@ -77,15 +83,13 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
             reject();
         }
     });
+};
 
-}
-
-
-        // const result = await ciscoSGSSH({
-        //     host: "192.168.172.105",
-        //     username: "cisco",
-        //     password: "Facs165%",
-        //     commands: [
-        //         "sh interfaces configuration",
-        //     ]
-        // });
+// const result = await ciscoSGSSH({
+//     host: "192.168.172.105",
+//     username: "cisco",
+//     password: "Facs165%",
+//     commands: [
+//         "sh interfaces configuration",
+//     ]
+// });

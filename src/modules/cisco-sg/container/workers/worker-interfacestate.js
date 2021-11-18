@@ -17,7 +17,6 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
@@ -28,21 +27,18 @@ const main = async () => {
     console.log(`worker-interfacestate: connecting to device at ${workerData.address}`);
 
     while (true) {
-
         // get list of interfaces
         const interfaces = await interfacesCollection.find().toArray();
         if (!interfaces) {
             console.log("worker-interfacedetails: no interfaces found in db - waiting ...");
             await delay(5000);
-        }
-        else {
-
+        } else {
             // get subtree of interface link states
             const ifLinkStates = await ciscoSGSNMP.subtree({
                 host: workerData.address,
                 community: workerData.snmp_community,
                 maxRepetitions: 1000,
-                oid: "1.3.6.1.2.1.2.2.1.8"
+                oid: "1.3.6.1.2.1.2.2.1.8",
             });
 
             // get subtree of interface admin states
@@ -50,21 +46,22 @@ const main = async () => {
                 host: workerData.address,
                 community: workerData.snmp_community,
                 maxRepetitions: 1000,
-                oid: "1.3.6.1.2.1.2.2.1.7"
+                oid: "1.3.6.1.2.1.2.2.1.7",
             });
 
             for (let eachInterface of interfaces) {
-                const linkState = (ifLinkStates[`1.3.6.1.2.1.2.2.1.8.${eachInterface.interfaceId}`] === 1);
-                const adminState = (ifAdminStates[`1.3.6.1.2.1.2.2.1.7.${eachInterface.interfaceId}`] === 1);
+                const linkState = ifLinkStates[`1.3.6.1.2.1.2.2.1.8.${eachInterface.interfaceId}`] === 1;
+                const adminState = ifAdminStates[`1.3.6.1.2.1.2.2.1.7.${eachInterface.interfaceId}`] === 1;
                 await interfacesCollection.updateOne(
-                    { "interfaceId": eachInterface.interfaceId },
+                    { interfaceId: eachInterface.interfaceId },
                     {
-                        "$set": {
-                            "link_state": linkState,
-                            "admin_state": adminState
-                        }
+                        $set: {
+                            "link-state": linkState,
+                            "admin-state": adminState,
+                        },
                     },
-                    { upsert: false });
+                    { upsert: false }
+                );
 
                 // not sure if we need this, but it evens out the CPU for this container ...
                 await delay(100);
@@ -73,6 +70,6 @@ const main = async () => {
 
         await delay(5000);
     }
-}
+};
 
 main();

@@ -1,12 +1,7 @@
-'use strict';
+"use strict";
 
-const mongoCollection = require('@core/mongo-collection');
+const mongoSingle = require("@core/mongo-single");
 
 module.exports = async () => {
-
-    const vlanCollection = await mongoCollection("vlans");
-    const vlanDocument = await vlanCollection.findOne({ "type": "vlans" });
-
-    return vlanDocument?.vlans;
-}
-
+    return mongoSingle.get("vlans");
+};

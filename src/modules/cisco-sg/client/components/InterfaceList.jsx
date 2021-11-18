@@ -17,6 +17,7 @@ import { useApiPoller } from "@utils/ApiPoller";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";
+import Box from "@mui/material/Box";
 
 export default function InterfaceList({ panelId }) {
     const sendAlert = useAlert();
@@ -59,16 +60,34 @@ export default function InterfaceList({ panelId }) {
         history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
     };
 
-    const handleVlanChanged = (event, item) => {};
+    const handleVlanChanged = (event, value, item) => {
+        console.log(value);
+    };
 
-    const handleEnabledChanged = async (checked, interfaceName) => {
-        //     const command = checked ? "enable" : "disable";
-        //     const commandText = checked ? "Enabled" : "Disabled";
-        //     if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceName}`)) {
-        //         sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
-        //     } else {
-        //         sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
-        //     }
+    const handleEnabledChanged = (checked, item) => {
+        if (checked) {
+            handleEnableClicked(item);
+        } else {
+            handleDisableClicked(item);
+        }
+    };
+
+    const handleEnableClicked = async (item) => {
+        if (await AxiosCommand(`/container/${panelId}/interface/enable/${item.interfaceId}`)) {
+            sendAlert(`Enabled interface: ${item.description}`, { variant: "success" });
+            doForceRefresh();
+        } else {
+            sendAlert(`Failed to enable interface: ${item.description}`, { variant: "error" });
+        }
+    };
+
+    const handleDisableClicked = async (item) => {
+        if (await AxiosCommand(`/container/${panelId}/interface/disable/${item.interfaceId}`)) {
+            sendAlert(`Disabled interface: ${item.description}`, { variant: "success" });
+            doForceRefresh();
+        } else {
+            sendAlert(`Failed to disable interface: ${item.description}`, { variant: "error" });
+        }
     };
 
     const handleProtectClicked = async (event, item) => {
@@ -87,17 +106,20 @@ export default function InterfaceList({ panelId }) {
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <BugPowerIcon enabled={item.link_state} />,
+                    content: (item) => <BugPowerIcon enabled={item["link-state"]} />,
                 },
                 {
                     noPadding: true,
                     hideWidth: 600,
                     width: 70,
                     content: (item) => {
+                        if (item["admin-state"] === undefined) {
+                            return null;
+                        }
                         return (
                             <BugApiSwitch
-                                checked={item.admin_state}
-                                onChange={(checked) => handleEnabledChanged(checked, item.name)}
+                                checked={item["admin-state"]}
+                                onChange={(checked) => handleEnabledChanged(checked, item)}
                                 disabled={item._protected}
                             />
                         );
@@ -122,25 +144,34 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "VLAN",
-                    width: "20rem",
-                    content: (item) => (
-                        <BugApiVlanAutocomplete
-                            options={vlans?.data}
-                            taggedValue={item?.["tagged-vlans"]}
-                            untaggedValue={item?.["untagged-vlans"]}
-                            onChange={(event, value) => handleVlanChanged(item, value)}
-                        />
-                    ),
+                    width: "25rem",
+                    content: (item) => {
+                        if (item?.["tagged-vlans"] === undefined || item?.["untagged-vlans"] === undefined) {
+                            return null;
+                        }
+                        return (
+                            <BugApiVlanAutocomplete
+                                options={vlans?.data}
+                                taggedValue={item?.["tagged-vlans"]}
+                                untaggedValue={item?.["untagged-vlans"]}
+                                onChange={(event, value) => handleVlanChanged(event, value, item)}
+                            />
+                        );
+                    },
                 },
                 {
                     title: "Speed",
-                    width: "6rem",
+                    width: "5rem",
                     content: (item) => {
-                        if (item?.["auto-negotiation"]) {
-                            return `${item?.["operational-speed"]} - auto`;
-                        }
                         if (item?.["operational-speed"]) {
-                            return `${item?.["operational-speed"]} - fixed`;
+                            return (
+                                <>
+                                    <Box sx={{ textAlign: "center" }}>{item?.["operational-speed"]}</Box>
+                                    <Box sx={{ textAlign: "center", opacity: 0.3 }}>
+                                        {item?.["auto-negotiation"] ? `auto` : `fixed`}
+                                    </Box>
+                                </>
+                            );
                         }
                         return null;
                     },
@@ -176,15 +207,15 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "Enable",
-                    disabled: (item) => item.admin_state,
+                    disabled: (item) => item["admin-state"],
                     icon: <ToggleOnIcon fontSize="small" />,
-                    // onClick: handleEnabledClicked,
+                    onClick: handleEnableClicked,
                 },
                 {
                     title: "Disable",
-                    disabled: (item) => !item.admin_state,
+                    disabled: (item) => !item["admin-state"],
                     icon: <ToggleOffIcon fontSize="small" />,
-                    // onClick: handleDisabledClicked,
+                    onClick: handleDisableClicked,
                 },
                 {
                     title: "-",

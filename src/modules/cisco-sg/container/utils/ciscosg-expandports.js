@@ -1,7 +1,6 @@
 "use strict";
 
 module.exports = (ports) => {
-
     // first of all split into array
     const portArray = ports.split(",");
     const result = [];
@@ -14,18 +13,16 @@ module.exports = (ports) => {
                 if (firstArray.length === 2) {
                     const start = parseInt(firstArray[1]);
                     const end = parseInt(rangeArray[1]);
-                    for (let index = start; index < (end + 1); index++) {
+                    for (let index = start; index < end + 1; index++) {
                         result.push(`${firstArray[0]}${index}`);
                     }
                 }
             }
-            // 
-        }
-        else {
+            //
+        } else {
             // it's just a single value
             result.push(eachPort);
         }
     }
     return result;
-}
-
+};
