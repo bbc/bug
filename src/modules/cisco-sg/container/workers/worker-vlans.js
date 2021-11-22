@@ -28,7 +28,7 @@ const main = async () => {
         });
 
         if (vlanResults) {
-            const vlans = [];
+            const vlans = [{ id: 1, label: "Default" }];
 
             for (let [eachOid, eachResult] of Object.entries(vlanResults)) {
                 const vlan = eachOid.substring(eachOid.lastIndexOf(".") + 1);
