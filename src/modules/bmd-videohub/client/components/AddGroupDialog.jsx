@@ -8,7 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export default function AddGroupDialog({ onCancel, onConfirm, groups }) {
+export default function AddGroupDialog({ onDismiss, onConfirm, groups }) {
     const [selectedGroups, setSelectedGroups] = React.useState([]);
 
     const modifiedGroups = groups.map((group) => {
@@ -19,7 +19,7 @@ export default function AddGroupDialog({ onCancel, onConfirm, groups }) {
     });
 
     return (
-        <Dialog open onClose={onCancel}>
+        <Dialog open onClose={onDismiss}>
             <form
                 onSubmit={(event) => {
                     event.preventDefault();
@@ -46,7 +46,7 @@ export default function AddGroupDialog({ onCancel, onConfirm, groups }) {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onCancel} color="primary">
+                    <Button onClick={onDismiss} color="primary">
                         Cancel
                     </Button>
                     <Button

@@ -7,7 +7,6 @@ const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const ciscoSGSNMP = require("@utils/ciscosg-snmp");
 const mongoSingle = require("@core/mongo-single");
-const { deflate } = require("zlib");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -69,7 +68,7 @@ const main = async () => {
                     if (eachInterface < 1000) {
                         if (!interfaceVlans[eachInterface]) {
                             interfaceVlans[eachInterface] = {
-                                "untagged-vlans": 1,
+                                "untagged-vlan": 1,
                                 "tagged-vlans": [],
                             };
                         }
@@ -86,6 +85,7 @@ const main = async () => {
                 if (matchedInterface) {
                     let taggedVlans = matchedInterface["tagged-vlans"];
                     let untaggedVlan = matchedInterface["untagged-vlan"];
+
                     if (untaggedVlan && taggedVlans.length === 1) {
                         if (untaggedVlan === taggedVlans[0]) {
                             // it's an access port, and we can remove the 'tagged' vlan

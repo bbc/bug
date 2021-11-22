@@ -9,7 +9,7 @@ module.exports = async () => {
         return [
             new StatusItem({
                 key: `pending`,
-                message: [`Device has unsaved changes which will be lost on reboot`],
+                message: [`Device has unsaved changes`],
                 type: "warning",
             }),
         ];

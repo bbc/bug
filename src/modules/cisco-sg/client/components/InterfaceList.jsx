@@ -19,6 +19,7 @@ import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
+import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
 
 export default function InterfaceList({ panelId, stackId = null }) {
     const sendAlert = useAlert();
@@ -60,59 +61,123 @@ export default function InterfaceList({ panelId, stackId = null }) {
         history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
     };
 
+    const getVlanChangedMessage = (interfaceId, oldValues, newValues) => {
+        const oldTags = JSON.stringify(oldValues.taggedVlans);
+        const newTags = JSON.stringify(newValues.taggedVlans);
+        console.log(oldValues, newValues);
+        if (oldValues.taggedVlans.length !== newValues.taggedVlans.length) {
+            if (newValues.taggedVlans.length === 0) {
+                // changed from trunk to access port
+                return {
+                    start: `Changing interface ${interfaceId} to access mode`,
+                    success: `Changed interface ${interfaceId} to access VLAN ${newValues.untaggedVlan}`,
+                    error: `Failed to set interface ${interfaceId} to access mode`,
+                };
+            }
+
+            if (oldValues.taggedVlans.length === 0) {
+                // changed from access to trunk port
+                return {
+                    start: `Changing interface ${interfaceId} to trunk mode`,
+                    success: `Changed interface ${interfaceId} to trunk mode`,
+                    error: `Failed to set interface ${interfaceId} to trunk mode`,
+                };
+            }
+        }
+
+        if (newTags !== oldTags && oldValues.untaggedVlan !== newValues.untaggedVlan) {
+            // it's a complex one - both changed
+            return {
+                start: `Updating VLAN configurarion on ${interfaceId}`,
+                success: `Updated VLAN configurarion on ${interfaceId}`,
+                error: `Failed to update VLAN configurarion on ${interfaceId}`,
+            };
+        }
+
+        if (newTags !== oldTags) {
+            return {
+                start: `Changing VLAN trunk members on ${interfaceId}`,
+                success: `Changed VLAN trunk members on ${interfaceId}`,
+                error: `Failed to set VLAN trunk members on ${interfaceId}`,
+            };
+        }
+
+        if (oldValues.untaggedVlan !== newValues.untaggedVlan) {
+            // changed access vlan (untagged)
+            return {
+                start: `Changing untagged VLAN on ${interfaceId}`,
+                success: `Changed untagged VLAN on ${interfaceId} to ${newValues.untaggedVlan}`,
+                error: `Failed to set untagged VLAN on ${interfaceId}`,
+            };
+        }
+
+        return {
+            start: `Updating ${interfaceId}`,
+            success: `Updated ${interfaceId}`,
+            error: `Failed to update ${interfaceId}`,
+        };
+    };
+
     const handleVlanChanged = async (event, value, item) => {
-        if (value.id === -1) {
+        const messages = getVlanChangedMessage(
+            item.shortId,
+            { untaggedVlan: item["untagged-vlan"], taggedVlans: item["tagged-vlans"] },
+            value
+        );
+
+        if (value.taggedVlans.length > 0) {
             // trunk selected
-            sendAlert(`Changing interface ${item.shortId} to trunk mode`, { variant: "info" });
+            sendAlert(messages.start, { variant: "info" });
             if (
                 await AxiosPost(`/container/${panelId}/interface/setvlantrunk/${item.interfaceId}`, {
-                    untaggedVlans: 1,
-                    taggedVlans: ["1-4094"],
+                    untaggedVlan: value.untaggedVlan,
+                    taggedVlans: value.taggedVlans,
                 })
             ) {
                 doForceRefresh();
-                sendAlert(`Changed interface ${item.shortId} to trunk mode`, { variant: "success" });
+                sendAlert(messages.success, { variant: "success" });
             } else {
-                sendAlert(`Failed to change interface ${item.shortId} to trunk mode`, { variant: "error" });
+                sendAlert(messages.error, { variant: "error" });
             }
         } else {
             // access selected
-            sendAlert(`Changing interface ${item.shortId} to access vlan ${value.id}`, { variant: "info" });
-            if (await AxiosCommand(`/container/${panelId}/interface/setvlanaccess/${item.interfaceId}/${value.id}`)) {
+            sendAlert(messages.start, { variant: "info" });
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/interface/setvlanaccess/${item.interfaceId}/${value.untaggedVlan}`
+                )
+            ) {
                 doForceRefresh();
-                sendAlert(`Changed interface ${item.shortId} to access vlan ${value.id}`, { variant: "success" });
+                sendAlert(messages.success, { variant: "success" });
             } else {
-                sendAlert(`Failed to change interface ${item.shortId} to access vlan ${value.id}`, {
-                    variant: "error",
-                });
+                sendAlert(messages.error, { variant: "error" });
             }
         }
     };
 
-    const handleEnabledChanged = (checked, item) => {
-        if (checked) {
-            handleEnableClicked(item);
+    const interfaceToggle = async (checked, item) => {
+        if (
+            await AxiosCommand(`/container/${panelId}/interface/${checked ? `enable` : `disable`}/${item.interfaceId}`)
+        ) {
+            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${item.description}`, { variant: "success" });
+            doForceRefresh();
         } else {
-            handleDisableClicked(item);
+            sendAlert(`Failed to ${checked ? `enable` : `disable`} interface: ${item.description}`, {
+                variant: "error",
+            });
         }
+    };
+
+    const handleSwitchChanged = (checked, item) => {
+        interfaceToggle(checked, item);
     };
 
     const handleEnableClicked = async (item) => {
-        if (await AxiosCommand(`/container/${panelId}/interface/enable/${item.interfaceId}`)) {
-            sendAlert(`Enabled interface: ${item.description}`, { variant: "success" });
-            doForceRefresh();
-        } else {
-            sendAlert(`Failed to enable interface: ${item.description}`, { variant: "error" });
-        }
+        return interfaceToggle(true, item);
     };
 
     const handleDisableClicked = async (item) => {
-        if (await AxiosCommand(`/container/${panelId}/interface/disable/${item.interfaceId}`)) {
-            sendAlert(`Disabled interface: ${item.description}`, { variant: "success" });
-            doForceRefresh();
-        } else {
-            sendAlert(`Failed to disable interface: ${item.description}`, { variant: "error" });
-        }
+        return interfaceToggle(false, item);
     };
 
     const handleProtectClicked = async (event, item) => {
@@ -139,12 +204,12 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     width: 70,
                     content: (item) => {
                         if (item["admin-state"] === undefined) {
-                            return null;
+                            return <BugApiSwitch disabled={true} />;
                         }
                         return (
                             <BugApiSwitch
                                 checked={item["admin-state"]}
-                                onChange={(checked) => handleEnabledChanged(checked, item)}
+                                onChange={(checked) => handleSwitchChanged(checked, item)}
                                 disabled={item._protected}
                             />
                         );
@@ -172,7 +237,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     width: "25rem",
                     content: (item) => {
                         if (item?.["tagged-vlans"] === undefined || item?.["untagged-vlan"] === undefined) {
-                            return null;
+                            return <BugAutocompletePlaceholder value="Loading ..." />;
                         }
                         return (
                             <BugApiVlanAutocomplete

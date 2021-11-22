@@ -12,6 +12,7 @@ export default function BugApiAutocomplete({
     onClick,
     disableClearable = false,
     filterSelectedOptions = true,
+    disabled = false,
     timeout = 5000,
     groupBy,
     renderOption,
@@ -58,6 +59,7 @@ export default function BugApiAutocomplete({
 
         // in timeout seconds, we will unset the active state as it probably didn't work
         timer.current = setTimeout(() => {
+            console.log("timeout");
             setIsActive(false);
             setLocalValue(value);
         }, timeout);
@@ -78,7 +80,7 @@ export default function BugApiAutocomplete({
     return (
         <Autocomplete
             style={style}
-            disabled={isActive}
+            disabled={isActive || disabled}
             getOptionLabel={getOptionLabel}
             filterSelectedOptions={filterSelectedOptions}
             options={options ? options : []}
