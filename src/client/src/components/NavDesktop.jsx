@@ -11,6 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Menu from "@components/Menu";
 import BugScrollbars from "@core/BugScrollbars";
+import useSound from "use-sound";
 
 const drawerWidth = 275;
 const fullMenuWidth = 1024;
@@ -52,7 +53,10 @@ const useStyles = makeStyles((theme) => ({
 const NavDesktop = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [menuSound] = useSound("/sounds/menu-open.mp3");
+
     const handleDrawerToggle = () => {
+        menuSound();
         setOpen(!open);
     };
 

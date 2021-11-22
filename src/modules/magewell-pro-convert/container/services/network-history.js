@@ -1,8 +1,9 @@
 "use strict";
 
 const mongoCollection = require("@core/mongo-collection");
+const e = require("express");
 
-module.exports = async (interfaceName, startTime = null, endTime = null) => {
+module.exports = async (startTime = null, endTime = null) => {
     try {
         if (endTime === null) {
             endTime = Date.now();
@@ -18,16 +19,13 @@ module.exports = async (interfaceName, startTime = null, endTime = null) => {
             .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
             .toArray();
 
-        let dataPoints = [];
+        history.map((item) => {
+            delete item._id;
+            item.timestamp = new Date(item.timestamp).getTime();
+            return item;
+        });
 
-        for (let eachItem of history) {
-            if (eachItem["interfaces"][interfaceName]) {
-                let dataPoint = eachItem["interfaces"][interfaceName];
-                dataPoint.timestamp = new Date(eachItem.timestamp).getTime();
-                dataPoints.push(dataPoint);
-            }
-        }
-        return dataPoints;
+        return history;
     } catch (error) {
         console.log(`network-history: ${error.stack || error.trace || error || error.message}`);
     }

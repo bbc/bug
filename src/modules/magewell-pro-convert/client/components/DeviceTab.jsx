@@ -6,11 +6,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import { makeStyles } from "@mui/styles";
 import { useApiPoller } from "@utils/ApiPoller";
+import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import realitiveUptime from "@utils/RealitiveUptime";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugSparkCell from "@core/BugSparkCell";
 import SourceSelector from "./SourceSelector";
+import AxiosPut from "@utils/AxiosPut";
+
 const useStyles = makeStyles((theme) => ({
     tableName: {
         width: "14rem",
@@ -22,16 +28,43 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DeviceTab({ panelId }) {
     const classes = useStyles();
+    const sendAlert = useAlert();
+    const { renameDialog } = useBugRenameDialog();
 
     const device = useApiPoller({
         url: `/container/${panelId}/device/config`,
         interval: 5000,
     });
 
+    const history = useApiPoller({
+        url: `/container/${panelId}/device/history/${Date.now() - 3600000}/${Date.now()}`,
+        interval: 5000,
+    });
+
+    const handleRenameClicked = async (event, device) => {
+        const result = await renameDialog({
+            title: "Rename NDI Device",
+            defaultValue: device.name,
+        });
+
+        if (result === false) {
+            return false;
+        }
+
+        if (await AxiosPut(`/container/${panelId}/device/rename`, { name: result })) {
+            sendAlert(`Successfully renamed device`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to rename device`, { variant: "error" });
+        }
+
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
     if (device.status === "idle" || device.status === "loading") {
         return <Loading height="30vh" />;
     }
-    if (device.status === "success" && !device.data) {
+    if (device.status !== "success" || !device.data || !history.data) {
         return <>Device information could not be retrieved.</>;
     }
 
@@ -45,7 +78,14 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     Name
                                 </TableCell>
-                                <TableCell>{device.data.device.name}</TableCell>
+
+                                <TableCell>
+                                    <BugTableLinkButton
+                                        onClick={(event) => handleRenameClicked(event, device.data.device)}
+                                    >
+                                        {device.data.device.name}
+                                    </BugTableLinkButton>
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
@@ -65,19 +105,62 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     CPU Usage
                                 </TableCell>
-                                <TableCell>{device.data.device["cpu-usage"]}%</TableCell>
+                                <TableCell sx={{ position: "relative" }}>
+                                    <BugSparkCell
+                                        height={30}
+                                        value={`${history.data.cpu[0]?.value}%`}
+                                        history={history.data.cpu}
+                                    />
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
                                     Memory
                                 </TableCell>
-                                <TableCell>{device.data.device["memory-usage"]}%</TableCell>
+                                <TableCell sx={{ position: "relative" }}>
+                                    <BugSparkCell
+                                        height={30}
+                                        value={`${history.data.memory[0].value}%`}
+                                        history={history.data.memory}
+                                    />
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
                                     Temperature
                                 </TableCell>
-                                <TableCell>{device.data.device["core-temp"]}&deg;C</TableCell>
+                                <TableCell sx={{ position: "relative" }}>
+                                    <BugSparkCell
+                                        height={30}
+                                        value={`${device.data.device["core-temp"]}${"\u00b0"}C`}
+                                        history={history.data.temperature}
+                                    />
+                                </TableCell>
+                            </TableRow>
+
+                            <TableRow>
+                                <TableCell variant="head" className={classes.tableName}>
+                                    Video Jitter
+                                </TableCell>
+                                <TableCell sx={{ position: "relative" }}>
+                                    <BugSparkCell
+                                        height={30}
+                                        value={`${device.data.ndi["video-jitter"]}ms`}
+                                        history={history.data.videoJitter}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell variant="head" className={classes.tableName}>
+                                    Audio Jitter
+                                </TableCell>
+                                <TableCell sx={{ position: "relative" }}>
+                                    <BugSparkCell
+                                        height={30}
+                                        value={`${device.data.ndi["audio-jitter"]}ms`}
+                                        history={history.data.audioJitter}
+                                    />
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
@@ -90,18 +173,6 @@ export default function DeviceTab({ panelId }) {
                                     Link Speed
                                 </TableCell>
                                 <TableCell>{device.data.ethernet["state"]}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head" className={classes.tableName}>
-                                    Video Jitter
-                                </TableCell>
-                                <TableCell>{device.data.ndi["video-jitter"]}ms</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head" className={classes.tableName}>
-                                    Audio Jitter
-                                </TableCell>
-                                <TableCell>{device.data.ndi["audio-jitter"]}ms</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>

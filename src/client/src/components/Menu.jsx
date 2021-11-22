@@ -24,6 +24,12 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import _ from "lodash";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
+import FaviconNotification from "@utils/FaviconNotification";
+import useSound from "use-sound";
+
+const faviconNotification = new FaviconNotification();
+let notificationsCount = 0;
+let firstRun = true;
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -79,6 +85,9 @@ const Menu = ({ showGroups = true }) => {
     const [expanded, setExpanded] = React.useState(false);
     const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
 
+    const [click] = useSound("/sounds/switch-off.mp3");
+    const [notification] = useSound("/sounds/notification.mp3");
+
     const getSelectedGroup = () => {
         // this is used to expand the groups when the page is loaded with a panel already open
         let selectedGroup = null;
@@ -108,7 +117,14 @@ const Menu = ({ showGroups = true }) => {
         }
         const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
-            <ListItem button component={Link} to={`/panel/${menuPanel.id}`} key={menuPanel.id} selected={isSelected}>
+            <ListItem
+                button
+                component={Link}
+                onClick={click}
+                to={`/panel/${menuPanel.id}`}
+                key={menuPanel.id}
+                selected={isSelected}
+            >
                 <ListItemIcon>
                     <BadgeWrapper panel={menuPanel}>
                         <BugDynamicIcon iconName={menuPanel._module.icon} />
@@ -137,6 +153,7 @@ const Menu = ({ showGroups = true }) => {
                         className={classes.groupHeader}
                         expandIcon={expanded === group ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                         onClick={(event) => {
+                            click();
                             event.stopPropagation();
                         }}
                     >
@@ -176,6 +193,44 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
+    const setNotifications = (panels) => {
+        const notificationCount = {
+            info: 0,
+            warning: 0,
+            critical: 0,
+            error: 0,
+        };
+
+        for (let panel of panels) {
+            for (let notification of panel._status) {
+                notificationCount[notification.type] += 1;
+            }
+        }
+        faviconNotification.set(notificationCount);
+    };
+
+    const soundNotifications = (panels) => {
+        const previousNotificationCount = notificationsCount;
+        notificationsCount = 0;
+
+        for (let panel of panels) {
+            for (let notification of panel._status) {
+                notificationsCount += 1;
+            }
+        }
+
+        if (!firstRun) {
+            if (notificationsCount > previousNotificationCount) {
+                notification();
+            }
+        } else {
+            firstRun = false;
+        }
+    };
+
+    soundNotifications(enabledPanelList);
+    setNotifications(enabledPanelList);
+
     //TODO move enabledStrategiesCount into redux user slice
     return (
         <>
@@ -198,6 +253,7 @@ const Menu = ({ showGroups = true }) => {
                                     to="/"
                                     selected={location.pathname === "/"}
                                     onClick={() => {
+                                        click();
                                         setExpanded(false);
                                     }}
                                 >
@@ -217,6 +273,7 @@ const Menu = ({ showGroups = true }) => {
                                     to="/system"
                                     selected={location.pathname.startsWith("/system")}
                                     onClick={() => {
+                                        click();
                                         setExpanded(false);
                                     }}
                                 >
@@ -231,6 +288,7 @@ const Menu = ({ showGroups = true }) => {
                                     to="/panels"
                                     selected={location.pathname.startsWith("/panels")}
                                     onClick={() => {
+                                        click();
                                         setExpanded(false);
                                     }}
                                 >

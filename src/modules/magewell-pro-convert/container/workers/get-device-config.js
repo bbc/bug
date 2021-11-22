@@ -8,7 +8,7 @@ const mongoCollection = require("@core/mongo-collection");
 const Magewell = require("@utils/magewell");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
-const updateDelay = 5000;
+const updateDelay = 3000;
 let dataCollection;
 let magewell;
 
@@ -20,7 +20,7 @@ parentPort.postMessage({
 
 const writeDeviceInfo = async () => {
     const device = await magewell.getSummary();
-    device.timestamp = Date.now();
+    device.timestamp = new Date();
     delete device.status;
     const entry = await dataCollection.insertOne(device);
 };

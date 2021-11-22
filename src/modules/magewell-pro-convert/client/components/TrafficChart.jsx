@@ -19,7 +19,7 @@ export default function TrafficChart({ panelId }) {
     return (
         <>
             <Grid item xs={12} className={classes.chart}>
-                <BugTrafficChart url={`/container/${panelId}/network/history`} />
+                <BugTrafficChart type="area" url={`/container/${panelId}/network/history`} />
             </Grid>
         </>
     );

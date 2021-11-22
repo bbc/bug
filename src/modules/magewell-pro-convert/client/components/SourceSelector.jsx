@@ -4,17 +4,12 @@ import { useApiPoller } from "@utils/ApiPoller";
 import { useAlert } from "@utils/Snackbar";
 import AxiosPost from "@utils/AxiosPost";
 
-export default function SourceSelector({ panelId }) {
+export default function SourceSelector({ panelId, currentSource }) {
     const sendAlert = useAlert();
 
     const sources = useApiPoller({
         url: `/container/${panelId}/source/list`,
         interval: 10000,
-    });
-
-    const currentSource = useApiPoller({
-        url: `/container/${panelId}/source/current`,
-        interval: 3000,
     });
 
     const handleSourceChange = async (source) => {
@@ -30,18 +25,25 @@ export default function SourceSelector({ panelId }) {
         }
     };
 
-    const getSourceAutomcomplete = (currentValue) => {
+    const getSourceId = (label) => {
+        for (let source of sources.data) {
+            if (source.label === label) {
+                return source.id;
+            }
+        }
+    };
+
+    if (currentSource && sources.status === "success") {
         return (
             <>
                 <BugApiAutocomplete
                     disableClearable={true}
                     options={sources?.data}
-                    value={currentValue}
+                    value={{ label: currentSource, id: getSourceId(currentSource) }}
                     onChange={(event, value) => handleSourceChange(value)}
                 />
             </>
         );
-    };
-
-    return getSourceAutomcomplete(currentSource?.data?.id);
+    }
+    return <></>;
 }

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import formatBps from "@utils/format-bps";
 import { format } from "date-fns";
 import { makeStyles } from "@mui/styles";
-import { ComposedChart, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { ComposedChart, Area, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Button from "@mui/material/Button";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function BugTrafficChart({ url }) {
+export default function BugTrafficChart({ url, type }) {
     const classes = useStyles();
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
@@ -106,6 +106,23 @@ export default function BugTrafficChart({ url }) {
         setRange([newEnd - rangeSpan * 60000, newEnd]);
     };
 
+    const getSeries = () => {
+        if (type === "area") {
+            return (
+                <>
+                    <Area isAnimationActive={false} type="monotone" dataKey="tx" fill="#337ab7" stroke="#337ab7" />
+                    <Area isAnimationActive={false} type="monotone" dataKey="rx" fill="#bb2828" stroke="#bb2828" />
+                </>
+            );
+        }
+        return (
+            <>
+                <Bar isAnimationActive={false} dataKey="tx" fill="#337ab7" />
+                <Bar isAnimationActive={false} dataKey="rx" fill="#bb2828" />
+            </>
+        );
+    };
+
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             let timestamp = payload[0].payload.timestamp;
@@ -140,8 +157,8 @@ export default function BugTrafficChart({ url }) {
                     margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
                     className={classes.chart}
                 >
-                    <Bar isAnimationActive={false} dataKey="tx" fill="#337ab7" />
-                    <Bar isAnimationActive={false} dataKey="rx" fill="#bb2828" />
+                    <Area isAnimationActive={false} type="monotone" dataKey="tx" fill="#337ab7" stroke="#337ab7" />
+                    <Area isAnimationActive={false} type="monotone" dataKey="rx" fill="#bb2828" stroke="#bb2828" />
                     <Legend
                         width={70}
                         layout="vertical"

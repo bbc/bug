@@ -126,6 +126,10 @@ class Magewell {
     setSource(name) {
         return this.setData("set-channel", { "ndi-name": true, name: name });
     }
+
+    setName(name) {
+        return this.setData("set-eth-config", { name: name });
+    }
 }
 
 module.exports = Magewell;

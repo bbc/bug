@@ -74,7 +74,7 @@ export default function BugApiAutocomplete({
         }
 
         // find the id/label pair in the options array and return it
-        return options?.find((object) => object.id === value);
+        return options?.find((object) => object.id === value.id);
     };
 
     return (
