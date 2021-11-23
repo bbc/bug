@@ -14,7 +14,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     iconButton: {
         padding: 4,
     },

@@ -11,7 +11,7 @@ import { useAlert } from "@utils/Snackbar";
 import clsx from "clsx";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     multiMessage: {
         marginTop: 2,
         marginBottom: 2,

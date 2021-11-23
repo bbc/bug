@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     textField: {
         "& .MuiInputBase-root": {
             borderRadius: 0,

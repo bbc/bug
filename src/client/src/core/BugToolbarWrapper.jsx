@@ -24,7 +24,7 @@ import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     dropdownMenu: {
         marginLeft: "0.5rem",
         marginRight: "0.5rem",

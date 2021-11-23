@@ -2,7 +2,7 @@ import React from "react";
 import Badge from "@mui/material/Badge";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     error: {
         "& .MuiBadge-badge": {
             backgroundColor: theme.palette.error.main,

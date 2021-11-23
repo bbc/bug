@@ -6,7 +6,7 @@ import DateString from "../components/DateString";
 import { useSelector } from "react-redux";
 import Hidden from "@mui/material/Hidden";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     content: {
         height: "100%",
         display: "flex",

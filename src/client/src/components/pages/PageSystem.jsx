@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     list: {
         backgroundColor: theme.palette.background.paper,
         maxWidth: 550,

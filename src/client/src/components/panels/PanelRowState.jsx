@@ -10,7 +10,7 @@ const state = {
     fontWeight: 500,
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     state_running: {
         ...state,
         color: theme.palette.success.main,

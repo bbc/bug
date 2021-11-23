@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import Weather from "../components/Weather";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     root: {
         flexGrow: 1,
     },

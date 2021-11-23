@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     textField: {
         "& .MuiInputBase-root": {
             borderRadius: 0,

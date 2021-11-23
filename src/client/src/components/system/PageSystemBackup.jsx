@@ -15,7 +15,7 @@ import LoadingOverlay from "@components/LoadingOverlay";
 import AxiosPost from "@utils/AxiosPost";
 import TextField from "@mui/material/TextField";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     card: {
         minWidth: 300,
         textAlign: "left",

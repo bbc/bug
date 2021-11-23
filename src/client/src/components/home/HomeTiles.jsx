@@ -8,7 +8,7 @@ import panelListGroups from "@utils/panelListGroups";
 import HomeTile from "@components/home/HomeTile";
 import HomeAddPanel from "@components/home/HomeAddPanel";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     groupHeader: {
         fontSize: "0.875rem",
         fontWeight: 500,

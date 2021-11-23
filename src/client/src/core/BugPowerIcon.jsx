@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     iconEnabled: {
         color: theme.palette.primary.main,
         display: "block",

@@ -10,7 +10,7 @@ import SecurityToolbar from "@components/toolbars/SecurityToolbar";
 import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
 import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     title: {
         flexGrow: 1,
         overflow: "hidden",

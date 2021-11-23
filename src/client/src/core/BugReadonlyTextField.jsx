@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     root: {
         "& .MuiInputLabel-formControl.Mui-focused": {
             color: "rgba(255, 255, 255, 0.7)",

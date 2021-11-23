@@ -9,7 +9,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     label: {
         color: theme.palette.secondary.main,
         opacity: 0.5,

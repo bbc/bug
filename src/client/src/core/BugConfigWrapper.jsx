@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     form: {
         "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
             color: theme.palette.success.main,

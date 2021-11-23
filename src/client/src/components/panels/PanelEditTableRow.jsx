@@ -9,7 +9,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     cellMenu: {
         width: "2rem",
     },

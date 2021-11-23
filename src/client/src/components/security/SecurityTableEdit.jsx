@@ -28,7 +28,7 @@ import {
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     colType: {
         "@media (max-width:512px)": {
             display: "none",

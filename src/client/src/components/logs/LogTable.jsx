@@ -12,7 +12,7 @@ import LogTableRow from "@components/logs/LogTableRow";
 import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     colTimestamp: {
         "@media (max-width:1024px)": {
             display: "none",

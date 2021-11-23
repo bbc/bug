@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     multiMessage: {
         marginTop: 14,
         marginBottom: 2,

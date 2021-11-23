@@ -12,7 +12,7 @@ import useAsyncEffect from "use-async-effect";
 import { TimePicker } from "@material-ui/pickers";
 import { useWindowSize } from "@utils/WindowSize";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     chart: {
         "& .recharts-legend-item": {
             marginLeft: 16,

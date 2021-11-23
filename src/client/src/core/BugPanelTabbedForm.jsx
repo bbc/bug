@@ -9,7 +9,7 @@ import Tab from "@mui/material/Tab";
 // import TabContainer from "@core/TabContainer.jsx";
 import { useHistory, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     header: {
         "& .MuiCardHeader-title": {
             fontSize: "1rem",

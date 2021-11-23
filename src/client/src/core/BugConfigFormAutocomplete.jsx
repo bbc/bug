@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     helperText: {
         color: "rgba(255, 255, 255, 0.7)",
         margin: "0",

@@ -15,7 +15,7 @@ import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
 import md5 from "crypto-js/md5";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     icon: {
         padding: "1px",
     },

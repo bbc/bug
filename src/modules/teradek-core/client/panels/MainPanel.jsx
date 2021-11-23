@@ -6,7 +6,7 @@ import SputniksTable from "../components/SputniksTable";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     form: {
         "& .tabSpacer": {
             height: 60,

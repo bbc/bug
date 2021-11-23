@@ -19,7 +19,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { TwitterPicker } from "react-color";
 import useAsyncEffect from "use-async-effect";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     buttonIcon: {
         margin: 4,
     },

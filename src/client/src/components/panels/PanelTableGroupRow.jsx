@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     groupHeader: {
         borderTop: "1px solid rgba(255, 255, 255, 0.12)",
         fontSize: "0.875rem",

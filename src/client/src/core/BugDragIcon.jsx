@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     dragIcon: {
         opacity: 0.6,
         color: theme.palette.primary.main,

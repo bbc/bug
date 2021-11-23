@@ -5,7 +5,7 @@ import TableRow from "@mui/material/TableRow";
 import BugDragIcon from "@core/BugDragIcon";
 import { useSortable } from "@dnd-kit/sortable";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     tableRow: {
         cursor: "grab",
         height: 55,

@@ -3,7 +3,7 @@ import Clock from "react-clock";
 import "react-clock/dist/Clock.css";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     container: {
         position: "relative",
         width: 300,

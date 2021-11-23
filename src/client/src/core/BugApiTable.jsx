@@ -17,7 +17,7 @@ import { useCookies } from "react-cookie";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import IconButton from "@mui/material/IconButton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     content: {},
     columns: ({ columns }) => columns,
     interfaceRowClickable: {

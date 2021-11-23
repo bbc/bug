@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 // import { makeStyles } from "@mui/styles";
 
-// const useStyles = makeStyles((theme) => ({}));
+// const useStyles =  makeStyles(async (theme) => ({}));
 
 export default function PageSystemSecurity(props) {
     // const classes = useStyles();

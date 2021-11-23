@@ -12,7 +12,7 @@ import { useAlert } from "@utils/Snackbar";
 import { Redirect } from "react-router";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     cellMenu: {
         width: "2rem",
     },

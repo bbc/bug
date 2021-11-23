@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     form: {
         padding: 0,
         paddingTop: 32,

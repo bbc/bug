@@ -11,7 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Hidden } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     dropdownMenu: {
         marginLeft: "0.5rem",
         marginRight: "0.5rem",

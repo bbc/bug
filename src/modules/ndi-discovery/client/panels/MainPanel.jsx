@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import SourcesTable from "./../components/SourcesTable";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     form: {
         "& .tabSpacer": {
             height: 60,

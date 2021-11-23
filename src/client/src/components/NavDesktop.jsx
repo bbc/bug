@@ -11,12 +11,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Menu from "@components/Menu";
 import BugScrollbars from "@core/BugScrollbars";
-import useSound from "use-sound";
+import useSounds from "@utils/Sounds";
 
 const drawerWidth = 275;
 const fullMenuWidth = 1024;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     menuButton: {
         marginRight: 20,
         marginLeft: 4,
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 const NavDesktop = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [menuSound] = useSound("/sounds/menu-open.mp3");
+    const menuSound = useSounds("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
         menuSound();

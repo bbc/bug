@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     number: {
         margin: 16,
         "@media (max-height:400px) and (max-width:800px)": {

@@ -14,7 +14,7 @@ import PanelTableGroupRow from "./PanelTableGroupRow";
 import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     colDescription: {
         "@media (max-width:1024px)": {
             display: "none",

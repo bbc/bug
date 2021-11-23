@@ -16,7 +16,7 @@ import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     form: {
         "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
             color: theme.palette.success.main,

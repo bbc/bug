@@ -8,9 +8,9 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
 import Box from "@mui/material/Box";
-import useSound from "use-sound";
+import useSounds from "@utils/Sounds";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     drawer: {
         "& .MuiDrawer-paper": {
             maxWidth: "90%",
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const NavMobile = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [menuSound] = useSound("/sounds/menu-open.mp3");
+    const [menuSound] = useSounds("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
         menuSound();

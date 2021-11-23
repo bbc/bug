@@ -7,7 +7,7 @@ import { makeStyles } from "@mui/styles";
 import ProgressCounter from "@components/ProgressCounter";
 import Hidden from "@mui/material/Hidden";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     text: {
         fontSize: "3rem",
         "@media (max-width:600px)": {

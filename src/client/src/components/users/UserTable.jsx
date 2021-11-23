@@ -13,7 +13,7 @@ import Loading from "@components/Loading";
 import { useApiPoller } from "@utils/ApiPoller";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     colState: {
         width: "1rem",
     },
