@@ -86,7 +86,6 @@ module.exports = class FaviconNotification {
 
                     const url = await context.canvas.toDataURL();
                     lastColor = color;
-                    console.log(url);
                     resolve(url);
                 };
             });
