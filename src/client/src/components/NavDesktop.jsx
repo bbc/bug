@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import Drawer from "@mui/material/Drawer";
@@ -11,7 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Menu from "@components/Menu";
 import BugScrollbars from "@core/BugScrollbars";
-import useSounds from "@utils/Sounds";
+import useSound from "use-sound";
 
 const drawerWidth = 275;
 const fullMenuWidth = 1024;
@@ -52,8 +52,8 @@ const useStyles = makeStyles(async (theme) => ({
 
 const NavDesktop = (props) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const menuSound = useSounds("/sounds/menu-open.mp3");
+    const [open, setOpen] = useState(false);
+    const [menuSound] = useSound("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
         menuSound();

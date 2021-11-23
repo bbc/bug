@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
 import Box from "@mui/material/Box";
-import useSounds from "@utils/Sounds";
+import useSound from "use-sound";
 
 const useStyles = makeStyles(async (theme) => ({
     drawer: {
@@ -25,8 +25,8 @@ const useStyles = makeStyles(async (theme) => ({
 
 const NavMobile = (props) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const [menuSound] = useSounds("/sounds/menu-open.mp3");
+    const [open, setOpen] = useState(false);
+    const [menuSound] = useSound("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
         menuSound();
