@@ -7,6 +7,7 @@ const interfaceDisable = require("@services/interface-disable");
 // const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
 // const mikrotikInterfaceUnprotect = require("../../services/mikrotik-interfaceunprotect");
 const interfaceSetVlanTrunk = require("@services/interface-setvlantrunk");
+const interfaceSetVlanAccess = require("@services/interface-setvlanaccess");
 const interfaceRename = require("@services/interface-rename");
 const asyncHandler = require("express-async-handler");
 
@@ -16,6 +17,16 @@ router.all(
         res.json({
             status: "success",
             data: await interfaceList(req.body.sortField, req.body.sortDirection, req.body.filters),
+        });
+    })
+);
+
+router.all(
+    "/stack/:stackId",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await interfaceList(req.body.sortField, req.body.sortDirection, req.body.filters, req.params.stackId),
         });
     })
 );
@@ -78,6 +89,17 @@ router.post(
     "/setvlantrunk/:interfaceId/",
     asyncHandler(async (req, res) => {
         const result = await interfaceSetVlanTrunk(req.params.interfaceId, req.body.untaggedVlan, req.body.taggedVlans);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/setvlanaccess/:interfaceId/:untaggedVlan",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceSetVlanAccess(req.params.interfaceId, req.params.untaggedVlan);
         res.json({
             status: result ? "success" : "failure",
             data: result,

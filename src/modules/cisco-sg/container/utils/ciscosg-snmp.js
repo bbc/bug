@@ -5,17 +5,16 @@ const chunk = (str, size) => {
     return str.match(new RegExp(".{1," + size + "}", "g"));
 };
 
-// const convert = (from, to) => str => Buffer.from(str, from).toString(to)
-
-// const utf8ToHex = convert('utf8', 'hex')
-
 const hex2bin = (hex) => {
     return parseInt(hex, 16).toString(2).padStart(8, "0");
 };
 
-const get = ({ host, community = "public", oid }) => {
+const get = ({ host, community = "public", oid, timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
-        var session = snmp.createSession(host, community);
+        var session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
         let returnValue = null;
 
         session.get([trimOid(oid)], function (error, varbinds) {
@@ -37,9 +36,12 @@ const get = ({ host, community = "public", oid }) => {
     });
 };
 
-const getNext = ({ host, community = "public", oid }) => {
+const getNext = ({ host, community = "public", oid, timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
-        var session = snmp.createSession(host, community);
+        var session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
         session.getNext([trimOid(oid)], function (error, varbinds) {
             if (error) {
                 session.close();
@@ -57,12 +59,13 @@ const getNext = ({ host, community = "public", oid }) => {
     });
 };
 
-const walk = ({ host, community = "public", maxRepetitions = 10, oid }) => {
+const walk = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
         var session = snmp.createSession(host, community, {
             version: snmp.Version2c,
+            timeout: timeout,
         });
 
         const addItem = (varbinds) => {
@@ -87,12 +90,13 @@ const walk = ({ host, community = "public", maxRepetitions = 10, oid }) => {
     });
 };
 
-const subtree = ({ host, community = "public", maxRepetitions = 10, oid }) => {
+const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
         var session = snmp.createSession(host, community, {
             version: snmp.Version2c,
+            timeout: timeout,
         });
 
         const addItem = (varbinds) => {
@@ -117,9 +121,12 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid }) => {
     });
 };
 
-const portlist = ({ host, community = "public", oid = "" }) => {
+const portlist = ({ host, community = "public", oid = "", timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
-        var session = snmp.createSession(host, community);
+        var session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
 
         session.get([trimOid(oid)], function (error, varbinds) {
             if (error) {
@@ -149,7 +156,7 @@ const portlist = ({ host, community = "public", oid = "" }) => {
             for (let eachChunk of chunkedHex) {
                 const binaryString = hex2bin(eachChunk);
                 for (let eachChar of binaryString) {
-                    if (interfaceIndex < 100) {
+                    if (interfaceIndex < 1000) {
                         if (eachChar === "1") {
                             result.push(interfaceIndex);
                         }
@@ -163,11 +170,14 @@ const portlist = ({ host, community = "public", oid = "" }) => {
     });
 };
 
-const getMultiple = ({ host, community = "public", oids = [] }) => {
+const getMultiple = ({ host, community = "public", oids = [], timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
-        var session = snmp.createSession(host, community);
+        var session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
 
         session.get(trimOids(oids), function (error, varbinds) {
             if (error) {
@@ -189,9 +199,12 @@ const getMultiple = ({ host, community = "public", oids = [] }) => {
     });
 };
 
-const setString = ({ host, community = "public", oid, value }) => {
+const setString = ({ host, community = "public", oid, value, timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
-        const session = snmp.createSession(host, community);
+        const session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
         const varbinds = [
             {
                 oid: trimOid(oid),
@@ -218,9 +231,12 @@ const setString = ({ host, community = "public", oid, value }) => {
     });
 };
 
-const setInt = ({ host, community = "public", oid, value }) => {
+const setInt = ({ host, community = "public", oid, value, timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
-        const session = snmp.createSession(host, community);
+        const session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
         const varbinds = [
             {
                 oid: trimOid(oid),

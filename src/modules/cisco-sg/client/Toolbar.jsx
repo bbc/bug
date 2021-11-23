@@ -8,15 +8,28 @@ import SaveIcon from "@mui/icons-material/Save";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import BugApiSaveButton from "@core/BugApiSaveButton";
+import LaunchIcon from "@mui/icons-material/Launch";
+import Divider from "@mui/material/Divider";
+import { useSelector } from "react-redux";
 
 export default function Toolbar(props) {
     const sendAlert = useAlert();
+    const panelConfig = useSelector((state) => state.panelConfig);
+
     const pending = useApiPoller({
         url: `/container/${props.panelId}/pending/`,
         interval: 1000,
     });
 
     const isPending = pending.status === "success" && pending.data;
+
+    const handleLaunchClicked = async (event, item) => {
+        if (panelConfig?.data?.address) {
+            const url = `http://${panelConfig.data.address}`;
+            const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+            if (newWindow) newWindow.opener = null;
+        }
+    };
 
     const handleSave = async (event, item) => {
         sendAlert("Saving device config ... please wait", {
@@ -55,7 +68,14 @@ export default function Toolbar(props) {
                 <ListItemIcon>
                     <SaveIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary="Save" />
+                <ListItemText primary="Save Changes" />
+            </MenuItem>,
+            <Divider key="divider" />,
+            <MenuItem key="launch" onClick={handleLaunchClicked}>
+                <ListItemIcon>
+                    <LaunchIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Launch device webpage" />
             </MenuItem>,
         ];
     };

@@ -7,7 +7,7 @@ const mongoSingle = require("@core/mongo-single");
 const ciscoSGVlanRanges = require("@utils/ciscosg-vlanranges");
 const ciscoSGVlanArray = require("@utils/ciscosg-vlanarray");
 
-module.exports = async (interfaceId, untaggedVlan = "1", taggedVlans = []) => {
+module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     const config = await configGet();
 
     const interfaceCollection = await mongoCollection("interfaces");
@@ -22,6 +22,10 @@ module.exports = async (interfaceId, untaggedVlan = "1", taggedVlans = []) => {
     // and the switch system information
     const system = await mongoSingle.get("system");
 
+    // now try to summarise this into a list of vlans so we can send them all at once
+    // it's used in the v1 control, and when updating the db
+    const vlanArray = ciscoSGVlanArray(allVlans, taggedVlans);
+
     const commands = ["conf", `interface ${iface.longId}`, "switchport mode trunk"];
     if (untaggedVlan !== "1") {
         commands.push(`switchport trunk native vlan ${untaggedVlan}`);
@@ -30,14 +34,19 @@ module.exports = async (interfaceId, untaggedVlan = "1", taggedVlans = []) => {
         if (system["control-version"] === 1) {
             // SG300/SG500
 
-            // now try to summarise this into a list of vlans so we can send them all at once
-            const vlanArray = ciscoSGVlanArray(allVlans, taggedVlans);
+            if (taggedVlans.length === 1 && taggedVlans[0] === "1-4094") {
+                // we've selected all vlans
+                //TODO - do I need this? Not on SG500Xs
+                commands.push(`switchport trunk allowed vlan add all`);
+            } else {
+                // remove all existing vlans
+                commands.push(`switchport trunk allowed vlan remove all`);
 
-            // remove all existing vlans
-            commands.push(`switchport trunk allowed vlan remove all`);
-
-            // and add the list
-            commands.push(`switchport trunk allowed vlan add ${vlanArray.join(",")}`);
+                // and add the list
+                for (const vlan of vlanArray) {
+                    commands.push(`switchport trunk allowed vlan add ${vlan}`);
+                }
+            }
         } else if (system["control-version"] === 2) {
             // SG350/SG550 etc
 
@@ -70,5 +79,14 @@ module.exports = async (interfaceId, untaggedVlan = "1", taggedVlans = []) => {
             allOk = false;
         }
     }
+
+    if (allOk) {
+        // update db
+        await interfaceCollection.updateOne(
+            { interfaceId: parseInt(interfaceId) },
+            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": vlanArray } }
+        );
+    }
+
     return allOk;
 };
