@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import LogTable from "@components/logs/LogTable";
+import LogTable from "@components/system/LogTable";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 

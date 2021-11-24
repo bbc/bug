@@ -108,7 +108,6 @@ export default function BugApiTable({
         if (noData) {
             return noData;
         }
-        return null;
     }
     return (
         <>
@@ -148,7 +147,7 @@ export default function BugApiTable({
                                         </BugApiTableStyledCell>
                                     ))}
 
-                                    <TableCell key="filter" sx={{ padding: "0px" }}>
+                                    <TableCell key="filter" sx={{ width: "2rem", padding: "0px" }}>
                                         {filterable && (
                                             <IconButton aria-label="filter list" onClick={handleFilterClicked}>
                                                 <FilterListIcon
@@ -192,6 +191,7 @@ export default function BugApiTable({
                                             {column.content(item)}
                                         </BugApiTableStyledCell>
                                     ))}
+                                    {!menuItems && filterable && <TableCell key="placeholder">&nbsp;</TableCell>}
                                     {menuItems && (
                                         <TableCell
                                             key="menu"

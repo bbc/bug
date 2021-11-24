@@ -160,26 +160,41 @@ router.put("/settings", restrict.to(["admin", "user"]), async function (req, res
 /**
  * @swagger
  * /system/logs/{level}:
- *   get:
+ *   all:
  *     description: Returns the logs of a particular level
  *     tags: [system]
  *     produces:
  *       - application/json
  *     parameters:
- *       - in: path
- *         name: level
- *         schema:
- *           type: string
- *         required: true
- *         description: The log level to return, options includ (info,http,action,warning,error)
+ *       - in: formData
+ *         name: sortField
+ *         type: string
+ *         required: false
+ *         description: The field to sort results by
+ *       - in: formData
+ *         name: sortDirection
+ *         type: string
+ *         required: false
+ *         description: The direction to sort by - either "asc" or "desc"
+ *       - in: formData
+ *         name: filters
+ *         type: object
+ *         required: false
+ *         description: An object containing key/value pairs to filter results by
  *     responses:
  *       '200':
  *         description: Success
  */
-router.get("/logs/:level", restrict.to(["admin", "user"]), async function (req, res, next) {
-    const logs = await systemLogs(req.params.level);
-    hashResponse(res, req, logs);
-});
+router.post(
+    "/logs/",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await systemLogs(req.body.sortField, req.body.sortDirection, req.body.filters),
+        });
+    })
+);
 
 /**
  * @swagger
