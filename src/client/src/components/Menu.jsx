@@ -24,7 +24,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import _ from "lodash";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 import FaviconNotification from "@utils/FaviconNotification";
-import useSound from "use-sound";
+import useSounds from "@utils/Sounds";
 
 const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;
@@ -40,8 +40,8 @@ const Menu = ({ showGroups = true }) => {
     const [expanded, setExpanded] = React.useState(false);
     const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
 
-    const [click] = useSound("/sounds/switch-off.mp3");
-    const [notification] = useSound("/sounds/notification.mp3");
+    const click = useSounds("/sounds/switch-off.mp3");
+    const notification = useSounds("/sounds/notification.mp3");
 
     const getSelectedGroup = () => {
         // this is used to expand the groups when the page is loaded with a panel already open
