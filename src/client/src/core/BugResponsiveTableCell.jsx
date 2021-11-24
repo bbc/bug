@@ -8,7 +8,7 @@ export default function BugResponsiveTableCell({ children, column, index, ...pro
                 width: column.width ? column.width : "auto",
                 [`@media (max-width:${column.hideWidth}px)`]: { display: "none" },
                 minWidth: column.minWidth ? column.minWidth : "auto",
-                maxWidth: column.noWrap ? "0px" : "none",
+                maxWidth: column.maxWidth ? column.maxWidth : column.noWrap ? "0px" : "none",
                 overflow: column.noWrap ? "hidden" : "visible",
                 textOverflow: column.noWrap ? "none" : "clip",
                 whiteSpace: column.noWrap ? "nowrap" : "normal",
