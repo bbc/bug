@@ -8,11 +8,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import AxiosPut from "@utils/AxiosPut";
-import { makeStyles } from "@mui/styles";
 import PanelEditTableRow from "@components/panels/PanelEditTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import PanelEditTableGroupRow from "./PanelEditTableGroupRow";
 import panelListGroups from "@utils/panelListGroups";
 import _ from "lodash";
 
@@ -25,29 +23,10 @@ import {
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
-
-const useStyles = makeStyles(async (theme) => ({
-    colDescription: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
-    colModule: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-    tableHead: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-}));
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 export default function PanelTable({ showGroups = true }) {
     const panelList = useSelector((state) => state.panelList);
-    const classes = useStyles();
     const [panelsByGroup, setPanelsByGroup] = useState();
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -178,13 +157,35 @@ export default function PanelTable({ showGroups = true }) {
             <>
                 <TableContainer component={Paper} square>
                     <Table aria-label="simple table">
-                        <TableHead className={classes.tableHead}>
+                        <TableHead
+                            sx={{
+                                "@media (max-width:512px)": {
+                                    display: "none",
+                                },
+                            }}
+                        >
                             <TableRow>
                                 <TableCell width="10"></TableCell>
                                 <TableCell></TableCell>
                                 <TableCell>Title</TableCell>
-                                <TableCell className={classes.colDescription}>Description</TableCell>
-                                <TableCell className={classes.colModule}>Module</TableCell>
+                                <TableCell
+                                    sx={{
+                                        "@media (max-width:1024px)": {
+                                            display: "none",
+                                        },
+                                    }}
+                                >
+                                    Description
+                                </TableCell>
+                                <TableCell
+                                    sx={{
+                                        "@media (max-width:512px)": {
+                                            display: "none",
+                                        },
+                                    }}
+                                >
+                                    Module
+                                </TableCell>
                                 <TableCell></TableCell>
                                 <TableCell></TableCell>
                             </TableRow>

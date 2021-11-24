@@ -18,7 +18,6 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
             dbFilters["timestamp"] = { $gte: new Date(Date.now() - filters["timestamp"] * 1000) };
         }
 
-        console.log(dbFilters);
         const logs = await logsCollection.find(dbFilters).toArray();
 
         const sortHandlerList = {
@@ -37,7 +36,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
 
         return logs;
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        throw new Error(`Failed to retrieve logs`);
     }
-    return null;
 };

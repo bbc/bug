@@ -160,7 +160,7 @@ router.put("/settings", restrict.to(["admin", "user"]), async function (req, res
 /**
  * @swagger
  * /system/logs/{level}:
- *   all:
+ *   post:
  *     description: Returns the logs of a particular level
  *     tags: [system]
  *     produces:

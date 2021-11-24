@@ -1,6 +1,6 @@
 import TableCell from "@mui/material/TableCell";
 
-export default function BugApiTableStyledCell({ children, column, index, ...props }) {
+export default function BugResponsiveTableCell({ children, column, index, ...props }) {
     return (
         <TableCell
             sx={{
