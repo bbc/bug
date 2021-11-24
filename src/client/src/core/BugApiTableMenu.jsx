@@ -6,18 +6,22 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import useSounds from "@utils/Sounds";
 
 export default function BugApiTableMenu({ item, menuItems }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const click = useSounds("/sounds/switch-on.mp3");
 
     const handleOpenMenuClick = (event) => {
+        click();
         setAnchorEl(event.currentTarget);
         event.stopPropagation();
         event.preventDefault();
     };
 
     const handleClose = (event) => {
+        click();
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();

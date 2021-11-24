@@ -2,10 +2,12 @@ import React from "react";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import SaveIcon from "@mui/icons-material/Save";
+import useSounds from "@utils/Sounds";
 
 export default function BugApiSaveButton({ disabled, onClick, timeout = 10000, children, ...props }) {
     const [isActive, setIsActive] = React.useState(false);
     const timer = React.useRef();
+    const click = useSounds("/sounds/switch-off.mp3");
 
     React.useEffect(() => {
         if (isActive && disabled) {
@@ -16,6 +18,7 @@ export default function BugApiSaveButton({ disabled, onClick, timeout = 10000, c
     }, [disabled, isActive]);
 
     const handleClick = (event) => {
+        click();
         clearTimeout(timer.current);
 
         // disabled the button and shows the spinner

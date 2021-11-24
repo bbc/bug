@@ -13,6 +13,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
 import md5 from "crypto-js/md5";
+import useSounds from "@utils/Sounds";
 
 const UserMenuItem = (props) => {
     const dispatch = useDispatch();
@@ -20,8 +21,10 @@ const UserMenuItem = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
     const open = Boolean(anchorEl);
+    const click = useSounds("/sounds/switch-on.mp3");
 
     const handleOpenMenuClick = (event) => {
+        click();
         if (user?.status === "success") {
             setAnchorEl(event.currentTarget);
         } else {
@@ -31,16 +34,19 @@ const UserMenuItem = (props) => {
     };
 
     const handleClose = () => {
+        click();
         setAnchorEl(null);
     };
 
     const handleEdit = (event) => {
+        click();
         history.push(`/system/user/${user?.data?.id}`);
         handleClose();
         event.stopPropagation();
     };
 
     const handleLogout = (event) => {
+        click();
         handleClose();
         logout();
         event.stopPropagation();
