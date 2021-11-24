@@ -8,7 +8,7 @@ import { useAlert } from "@utils/Snackbar";
 import SecurityMenu from "./SecurityMenu";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     tableRow: {
         cursor: "pointer",
     },

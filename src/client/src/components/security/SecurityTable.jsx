@@ -11,7 +11,7 @@ import SecurityTableRow from "@components/security/SecurityTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     colType: {
         "@media (max-width:512px)": {
             display: "none",

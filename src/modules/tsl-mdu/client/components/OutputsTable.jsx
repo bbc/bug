@@ -21,7 +21,7 @@ import LockOpenRoundedIcon from "@mui/icons-material/LockOpenRounded";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     content: {},
     outputRow: {
         cursor: "pointer",

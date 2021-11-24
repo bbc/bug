@@ -28,7 +28,7 @@ import BugPowerIcon from "@core/BugPowerIcon";
 import BugTableNoData from "@core/BugTableNoData";
 import BugScrollbars from "@core/BugScrollbars";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     iconRunning: {
         color: theme.palette.primary.main,
         display: "block",

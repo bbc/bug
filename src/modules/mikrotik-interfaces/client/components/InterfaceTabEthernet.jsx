@@ -10,7 +10,7 @@ import { makeStyles } from "@mui/styles";
 import { useApiPoller } from "@utils/ApiPoller";
 import Loading from "@components/Loading";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     tableName: {
         width: "14rem",
         "@media (max-width:512px)": {

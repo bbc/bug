@@ -8,7 +8,7 @@ import { useAlert } from "@utils/Snackbar";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Redirect } from "react-router";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     tableRow: {
         cursor: "pointer",
     },

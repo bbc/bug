@@ -1,5 +1,6 @@
 {
     "title": "Your BUG",
     "description": "A better way to manage your kit",
-    "theme": "dark"
+    "theme": "dark",
+    "sounds": true
 }

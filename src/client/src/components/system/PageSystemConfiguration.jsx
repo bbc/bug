@@ -9,7 +9,7 @@ import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import BugForm from "@core/BugForm";
 import Button from "@mui/material/Button";
-
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -23,6 +23,7 @@ export default function PageSystemBackup() {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors },
     } = useForm({});
 
@@ -121,6 +122,17 @@ export default function PageSystemBackup() {
                                     <option value={"dark"}>Dark</option>
                                     <option value={"light"}>Light</option>
                                 </TextField>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <BugConfigFormSwitch
+                                    name="sound"
+                                    control={control}
+                                    label="Enable Sounds"
+                                    defaultValue={settings?.data?.sound}
+                                    fullWidth
+                                    helperText="Enable tactile sounds in BUG."
+                                />
                             </Grid>
                         </Grid>
                     </BugForm.Body>

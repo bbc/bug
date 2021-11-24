@@ -17,7 +17,7 @@ import BugSparkCell from "@core/BugSparkCell";
 import SourceSelector from "./SourceSelector";
 import AxiosPut from "@utils/AxiosPut";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(async (theme) => ({
     tableName: {
         width: "14rem",
         "@media (max-width:512px)": {
