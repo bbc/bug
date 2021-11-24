@@ -123,11 +123,11 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
             sx={{
                 borderRadius: 0,
                 "& .MuiAlert-message": {
-                    padding: 0,
+                    padding: "0px",
                     flexGrow: 1,
                     width: "100%",
                 },
-                padding: 0,
+                padding: "0px",
                 "& .MuiAlert-icon": {
                     display: "none",
                     // padding: 10,

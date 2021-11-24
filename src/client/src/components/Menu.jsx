@@ -116,18 +116,18 @@ const Menu = ({ showGroups = true }) => {
                             fontSize: "0.875rem",
                             fontWeight: 500,
                             textTransform: "uppercase",
-                            height: 48,
+                            height: "48px",
                             "&.Mui-expanded": {
-                                minHeight: 48,
-                                height: 48,
+                                minHeight: "48px",
+                                height: "48px",
                             },
                             color: "primary.main",
                             "& .MuiAccordionSummary-content": {
                                 order: 2,
                             },
                             "& .MuiButtonBase-root": {
-                                paddingLeft: 0,
-                                marginRight: 0,
+                                paddingLeft: "0px",
+                                marginRight: "0px",
                             },
                             "& .MuiAccordionSummary-expandIcon.Mui-expanded": {
                                 transform: "none",

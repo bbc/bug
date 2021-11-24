@@ -13,10 +13,10 @@ const SectionHeader = styled("div")({
     fontSize: "0.875rem",
     fontWeight: 500,
     textTransform: "uppercase",
-    padding: 12,
+    padding: "12px",
     backgroundColor: "#212121",
     "@media (max-width:800px)": {
-        fontSize: 12,
+        fontSize: "12px",
         backgroundColor: "inherit",
         padding: "6px 6px 2px 6px",
     },

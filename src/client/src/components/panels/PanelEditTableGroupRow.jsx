@@ -15,11 +15,11 @@ const useStyles = makeStyles(async (theme) => ({
         color: theme.palette.primary.main,
         "& .MuiInputBase-input": {
             textTransform: "uppercase",
-            padding: 12,
+            padding: "12px",
         },
     },
     groupHeaderRow: {
-        height: 48,
+        height: "48px",
     },
 }));
 

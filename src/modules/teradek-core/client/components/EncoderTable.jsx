@@ -157,7 +157,7 @@ export default function EncodersTable({ panelId }) {
                             key={link?.id}
                             className={`${classes.channel}`}
                             label={getChannelName(link?.id)}
-                            style={{ paddingLeft: 4 }}
+                            sx={{ paddingLeft: "4px" }}
                         />
                     );
                 }

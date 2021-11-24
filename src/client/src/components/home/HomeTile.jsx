@@ -72,7 +72,7 @@ const StyledLink = styled(Link)({
 const StyledCardContent = styled(CardContent)({
     padding: 0,
     "&:last-child": {
-        paddingBottom: 0,
+        paddingBottom: "0px",
     },
     "@media (max-width:599px)": {
         display: "none",

@@ -80,7 +80,7 @@ export default function GroupButton({
                         height: "36px",
                         width: "92px",
                     },
-                    padding: 0,
+                    padding: "0px",
                     borderColor: borderColor,
                     textAlign: "center",
                     color: "#fff",
@@ -97,7 +97,7 @@ export default function GroupButton({
                         "@media (max-width:800px)": {
                             fontSize: 12,
                         },
-                        paddingLeft: editMode ? "10px" : 0,
+                        paddingLeft: editMode ? "10px" : "0px",
                     }}
                 >
                     {primaryText}

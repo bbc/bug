@@ -82,18 +82,18 @@ export default function RouterButton({
                 sx={{
                     backgroundColor: backgroundColor,
                     margin: "4px",
-                    width: 128,
-                    height: 128,
+                    width: "128px",
+                    height: "128px",
                     "@media (max-width:800px)": {
-                        height: 80,
-                        width: 92,
+                        height: "80px",
+                        width: "92px",
                     },
                     "@media (max-width:600px)": {
-                        height: 48,
-                        width: 92,
+                        height: "48px",
+                        width: "92px",
                     },
                     textTransform: "none",
-                    padding: 0,
+                    padding: "0px",
                     lineHeight: editMode ? 1.5 : 1.4,
                     cursor: editMode ? "move" : "pointer",
                     "& .MuiButton-label": {

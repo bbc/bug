@@ -21,11 +21,11 @@ import { styled } from "@mui/material/styles";
 
 const StyledList = styled(List)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
-    maxWidth: 550,
+    maxWidth: "550px",
     "& .MuiListItem-root": {
         borderBottom: "1px solid #121212",
     },
-    padding: 0,
+    padding: "0px",
     margin: "8px auto",
 }));
 

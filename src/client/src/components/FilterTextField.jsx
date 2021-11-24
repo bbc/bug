@@ -9,8 +9,8 @@ export default function FilterTextField({ value, onChange }) {
                     borderRadius: 0,
                 },
                 "& .MuiInputBase-input": {
-                    paddingTop: 10,
-                    paddingBottom: 10,
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
                     fontSize: "0.875rem",
                 },
             }}

@@ -35,7 +35,7 @@ export default function BugTableNoData({ title = "No data found", message = "", 
                         },
                     },
                     "& .MuiAlert-icon": {
-                        padding: 0,
+                        padding: "0px",
                     },
                 }}
                 severity="info"

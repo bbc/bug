@@ -36,7 +36,7 @@ const NavMobile = (props) => {
                 }}
                 elevation={1}
             >
-                <MuiToolbar style={{ paddingRight: 0 }}>
+                <MuiToolbar sx={{ paddingRight: "0px" }}>
                     <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerToggle} edge="start">
                         <MenuIcon />
                     </IconButton>
