@@ -32,7 +32,7 @@ export default function BugApiVlanAutocomplete({
             clearTimeout(timer.current);
             setIsActive(false);
         }
-    }, [taggedValue, untaggedValue, isActive]);
+    }, [taggedValue, untaggedValue, isActive, localTaggedValue, localUntaggedValue]);
 
     const handleChanged = (event, value) => {
         if (value.id === -1) {

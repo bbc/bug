@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import BugApiTable from "@core/BugApiTable";
-import BugTableNoData from "@core/BugTableNoData";
 
 export default function LogTable({ level, interval }) {
     return (

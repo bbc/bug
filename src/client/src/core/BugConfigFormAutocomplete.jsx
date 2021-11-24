@@ -2,7 +2,6 @@ import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
-import Box from "@mui/material/Box";
 import BugHelperText from "@core/BugHelperText";
 import { Controller } from "react-hook-form";
 

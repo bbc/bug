@@ -147,7 +147,6 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
                 {(hasMultipleLines() || hasFlags()) && (
                     <IconButton
                         sx={{
-                            transform: "rotate(0deg)",
                             marginLeft: "auto",
                             transitionProperty: "transform",
                             transitionDuration: "0.3s",
