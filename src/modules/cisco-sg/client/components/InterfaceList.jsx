@@ -217,13 +217,14 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     minWidth: "5rem",
+                    hideWidth: 1000,
                     width: "5rem",
                     noWrap: true,
                     title: "ID",
                     content: (item) => item.shortId,
                 },
                 {
-                    minWidth: "15rem",
+                    minWidth: "150px",
                     noWrap: true,
                     title: "Name",
                     content: (item) => (
@@ -234,6 +235,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     title: "VLAN",
+                    hideWidth: 440,
                     width: "25rem",
                     content: (item) => {
                         if (item?.["tagged-vlans"] === undefined || item?.["untagged-vlan"] === undefined) {
@@ -252,6 +254,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 {
                     title: "Speed",
                     width: "5rem",
+                    hideWidth: 640,
                     content: (item) => {
                         if (item?.["operational-speed"]) {
                             return (
@@ -274,14 +277,16 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     title: "TX Rate",
-                    hideWidth: 580,
+                    hideWidth: 1200,
+                    minWidth: "100px",
                     content: (item) => (
                         <BugSparkCell value={item?.["tx-rate-text"]} history={item?.["tx-history"]} height={40} />
                     ),
                 },
                 {
                     title: "RX Rate",
-                    hideWidth: 580,
+                    hideWidth: 1200,
+                    minWidth: "100px",
                     content: (item) => (
                         <BugSparkCell value={item?.["rx-rate-text"]} history={item?.["rx-history"]} height={40} />
                     ),

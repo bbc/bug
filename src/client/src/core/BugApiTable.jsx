@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,43 +9,13 @@ import Paper from "@mui/material/Paper";
 import Loading from "@components/Loading";
 import BugApiTableMenu from "./BugApiTableMenu";
 import { useApiPoller } from "@utils/ApiPoller";
-import clsx from "clsx";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import BugApiTableFilters from "@components/BugApiTableFilters";
 import { useCookies } from "react-cookie";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import IconButton from "@mui/material/IconButton";
 import { useCookieId } from "@hooks/CookieId";
-
-const useStyles = makeStyles(async (theme) => ({
-    content: {},
-    columns: ({ columns }) => columns,
-    interfaceRowClickable: {
-        cursor: "pointer",
-    },
-    interfaceRowDisabled: {
-        opacity: 0.4,
-    },
-    sortLabel: {
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-    },
-    cellMenu: {
-        width: "2rem",
-        paddingLeft: 0,
-        paddingRight: 4,
-    },
-    filterHeadCell: {
-        padding: 0,
-    },
-    filterIcon: {
-        opacity: 0.5,
-    },
-    filterIconActive: {
-        //TODO color: theme.palette.primary.main,
-    },
-}));
+import BugApiTableStyledCell from "@core/BugApiTableStyledCell";
 
 export default function BugApiTable({
     apiUrl,
@@ -62,11 +31,8 @@ export default function BugApiTable({
     rowHeight = null,
     forceRefresh,
 }) {
-    const [columnStyles, setColumnStyles] = React.useState({ columns: {} });
     const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
     const [sortField, setSortField] = React.useState(null);
-    const classes = useStyles(columnStyles);
-    const [cookies, setCookie] = useCookies(["BugApiTable"]);
     const [showFilters, setShowFilters] = React.useState(true);
     const [filters, setFilters] = React.useState({});
     const cookieId = useCookieId("BugApiTable");
@@ -83,11 +49,6 @@ export default function BugApiTable({
         }
     }, [defaultSortIndex, columns]);
 
-    useEffect(() => {
-        setColumnStyles(processColumnStyles());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [columns]);
-
     // run once
     useEffect(() => {
         if (cookies && cookies[`${cookieId}_filters`]) {
@@ -98,7 +59,7 @@ export default function BugApiTable({
             }
         }
         setShowFilters(false);
-    }, [cookies]);
+    }, [cookies, cookieId]);
 
     const handleFilterClicked = () => {
         if (showFilters) {
@@ -113,39 +74,6 @@ export default function BugApiTable({
         // update cookies and reload data
         setFilters(value);
         setCookie(`${cookieId}_filters`, value);
-    };
-
-    const processColumnStyles = () => {
-        let styleObj = {
-            columns: {},
-        };
-        for (const [index, col] of columns.entries()) {
-            styleObj["columns"][`& .col_${index}`] = {};
-            styleObj["columns"][`& .col_${index}`]["paddingRight"] = 12;
-            styleObj["columns"][`& .col_${index}`]["position"] = "relative";
-            if (col.width !== undefined) {
-                styleObj["columns"][`& .col_${index}`]["width"] = col.width;
-            }
-            if (col.hideWidth !== undefined) {
-                styleObj["columns"][`& .col_${index}`][`@media (max-width:${col.hideWidth}px)`] = { display: "none" };
-            }
-            if (col.minWidth !== undefined) {
-                styleObj["columns"][`& .col_${index}`]["min-width"] = col.minWidth;
-            }
-            if (col.noWrap) {
-                styleObj["columns"][`& .col_${index}`]["max-width"] = "0px";
-                styleObj["columns"][`& .col_${index}`]["overflow"] = "hidden";
-                styleObj["columns"][`& .col_${index}`]["text-overflow"] = "none";
-                styleObj["columns"][`& .col_${index}`]["white-space"] = "nowrap";
-            }
-            if (col.noPadding) {
-                styleObj["columns"][`& .col_${index}`]["padding"] = "0px";
-                if (index === 0) {
-                    styleObj["columns"][`& .col_${index}`]["paddingLeft"] = "8px";
-                }
-            }
-        }
-        return styleObj;
     };
 
     const pollResult = useApiPoller({
@@ -184,21 +112,26 @@ export default function BugApiTable({
     }
     return (
         <>
-            <div className={classes.content}>
+            <div>
                 <TableContainer component={Paper} square>
-                    <Table className={classes.table} aria-label="simple table">
+                    <Table aria-label="Bug table">
                         {!hideHeader && (
-                            <TableHead className={classes.tableHead}>
-                                <TableRow key="1" className={classes.columns}>
+                            <TableHead>
+                                <TableRow key="1">
                                     {columns.map((column, index) => (
-                                        <TableCell
+                                        <BugApiTableStyledCell
                                             key={index}
-                                            className={`col_${index} ${column.sortable ? classes.colSortable : ""}`}
+                                            column={column}
+                                            index={index}
                                             onClick={() => handleSortClicked(column)}
                                         >
                                             {column.sortable && sortable ? (
                                                 <TableSortLabel
-                                                    className={classes.sortLabel}
+                                                    sx={{
+                                                        overflow: "hidden",
+                                                        textOverflow: "ellipsis",
+                                                        whiteSpace: "nowrap",
+                                                    }}
                                                     active={sortField === column.field}
                                                     direction={
                                                         sortField === column.field
@@ -212,24 +145,24 @@ export default function BugApiTable({
                                             ) : (
                                                 column.title
                                             )}
-                                        </TableCell>
+                                        </BugApiTableStyledCell>
                                     ))}
 
-                                    <TableCell key="filter" className={classes.filterHeadCell}>
+                                    <TableCell key="filter" sx={{ padding: "0px" }}>
                                         {filterable && (
                                             <IconButton aria-label="filter list" onClick={handleFilterClicked}>
                                                 <FilterListIcon
-                                                    className={
-                                                        showFilters ? classes.filterIconActive : classes.filterIcon
-                                                    }
+                                                    sx={{
+                                                        opacity: showFilters ? 1 : 0.5,
+                                                        color: showFilters ? "primary.main" : "inherit",
+                                                    }}
                                                 />
                                             </IconButton>
                                         )}
                                     </TableCell>
                                 </TableRow>
-                                {showFilters && (
+                                {showFilters && filterable && (
                                     <BugApiTableFilters
-                                        classes={classes}
                                         columns={columns}
                                         filters={filters}
                                         onChange={(value) => handleFiltersChanged(value)}
@@ -242,11 +175,11 @@ export default function BugApiTable({
                             {pollResult?.data?.map((item, index) => (
                                 <TableRow
                                     hover={typeof onRowClick === "function"}
-                                    className={clsx(classes.interfaceRow, classes.columns, {
-                                        [classes.interfaceRowDisabled]: item.disabled,
-                                        [classes.interfaceRowClickable]: onRowClick !== undefined,
-                                    })}
-                                    style={{ height: rowHeight ? rowHeight : "auto" }}
+                                    sx={{
+                                        cursor: onRowClick !== undefined ? "pointer" : "auto",
+                                        opacity: item.disabled ? 0.5 : 1,
+                                        height: rowHeight ? `${rowHeight}px` : "auto",
+                                    }}
                                     key={index}
                                     onClick={(event) => {
                                         if (typeof onRowClick === "function") {
@@ -255,12 +188,19 @@ export default function BugApiTable({
                                     }}
                                 >
                                     {columns.map((column, index) => (
-                                        <TableCell key={index} className={`col_${index}`}>
+                                        <BugApiTableStyledCell key={index} column={column} index={index}>
                                             {column.content(item)}
-                                        </TableCell>
+                                        </BugApiTableStyledCell>
                                     ))}
                                     {menuItems && (
-                                        <TableCell key="menu" className={classes.cellMenu}>
+                                        <TableCell
+                                            key="menu"
+                                            sx={{
+                                                width: "2rem",
+                                                paddingLeft: "0px",
+                                                paddingRight: "4px",
+                                            }}
+                                        >
                                             <BugApiTableMenu item={item} menuItems={menuItems} />
                                         </TableCell>
                                     )}
