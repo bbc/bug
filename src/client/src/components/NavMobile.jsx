@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import MuiToolbar from "@mui/material/Toolbar";
@@ -7,11 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
 import Box from "@mui/material/Box";
-import useSound from "use-sound";
+import useSounds from "@utils/Sounds";
 
 const NavMobile = (props) => {
-    const [open, setOpen] = React.useState(false);
-    const [menuSound] = useSound("/sounds/menu-open.mp3");
+    const [open, setOpen] = useState(false);
+    const menuSound = useSounds("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
         menuSound();
