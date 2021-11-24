@@ -4,7 +4,6 @@ import { useAlert } from "@utils/Snackbar";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
-import { makeStyles } from "@mui/styles";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
@@ -14,19 +13,9 @@ import Link from "@mui/material/Link";
 import LoadingOverlay from "@components/LoadingOverlay";
 import AxiosPost from "@utils/AxiosPost";
 import TextField from "@mui/material/TextField";
-
-const useStyles = makeStyles((theme) => ({
-    card: {
-        minWidth: 300,
-        textAlign: "left",
-        color: theme.palette.text.secondary,
-        position: "relative",
-        maxWidth: "70rem",
-    },
-}));
+import BugCard from "@core/BugCard";
 
 export default function PageSystemBackup() {
-    const classes = useStyles();
     const sendAlert = useAlert();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -72,7 +61,7 @@ export default function PageSystemBackup() {
             {renderLoading()}
             <Grid container spacing={4}>
                 <Grid item lg={6} xs={12}>
-                    <Card className={classes.card}>
+                    <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Backup" />
                         <CardContent>
                             You can download the entire configuration of this BUG as a single, compressed file.
@@ -90,11 +79,11 @@ export default function PageSystemBackup() {
                                 </Button>
                             </div>
                         </CardContent>
-                    </Card>
+                    </BugCard>
                 </Grid>
 
                 <Grid item lg={6} xs={12}>
-                    <Card className={classes.card}>
+                    <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Restore" />
                         <CardContent>
                             Upload a backup file to restore a previous BUG configuration.
@@ -133,7 +122,7 @@ export default function PageSystemBackup() {
                                 </form>
                             </div>
                         </CardContent>
-                    </Card>
+                    </BugCard>
                 </Grid>
             </Grid>
         </>

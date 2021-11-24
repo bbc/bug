@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import List from "@mui/material/List";
@@ -18,24 +17,29 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-    list: {
-        backgroundColor: theme.palette.background.paper,
-        maxWidth: 550,
-        "& .MuiListItem-root": {
-            borderBottom: "1px solid #121212",
-        },
-        padding: 0,
-        margin: "8px auto",
+const StyledList = styled(List)({
+    backgroundColor: "background.paper",
+    maxWidth: 550,
+    "& .MuiListItem-root": {
+        borderBottom: "1px solid #121212",
     },
-    navIcon: {
-        minWidth: "auto",
-    },
-}));
+    padding: 0,
+    margin: "8px auto",
+});
+
+const NavIcon = () => (
+    <ListItemIcon
+        sx={{
+            minWidth: "auto",
+        }}
+    >
+        <ChevronRightIcon />
+    </ListItemIcon>
+);
 
 export default function PageSystem() {
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -44,7 +48,7 @@ export default function PageSystem() {
 
     return (
         <>
-            <List className={classes.list}>
+            <StyledList>
                 <ListItem button component={Link} to={`/system/about`}>
                     <ListItemIcon>
                         <FontAwesomeIcon size="lg" icon={faBug} />
@@ -53,32 +57,26 @@ export default function PageSystem() {
                         primary="About BUG"
                         secondary="Links to documentation, help and more information about BUG"
                     />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
-            </List>
-            <List className={classes.list}>
+            </StyledList>
+            <StyledList>
                 <ListItem button component={Link} to={`/system/configuration`}>
                     <ListItemIcon>
                         <SettingsIcon />
                     </ListItemIcon>
                     <ListItemText primary="Global Configuration" secondary="Configure global settings and options" />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/panels`}>
                     <ListItemIcon>
                         <DashboardIcon />
                     </ListItemIcon>
                     <ListItemText primary="Panels" secondary="Configure and maintain the panels on this BUG" />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
-            </List>
-            <List className={classes.list}>
+            </StyledList>
+            <StyledList>
                 <ListItem button component={Link} to={`/system/users`}>
                     <ListItemIcon>
                         <PeopleIcon />
@@ -87,21 +85,17 @@ export default function PageSystem() {
                         primary="Users"
                         secondary="Manage usernames and passwords for access to this server"
                     />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/security`}>
                     <ListItemIcon>
                         <SecurityIcon />
                     </ListItemIcon>
                     <ListItemText primary="Security" secondary="Configure authentication methods and options" />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
-            </List>
-            <List className={classes.list}>
+            </StyledList>
+            <StyledList>
                 <ListItem button component={Link} to={`/system/backup`}>
                     <ListItemIcon>
                         <SettingsBackupRestoreIcon />
@@ -110,38 +104,30 @@ export default function PageSystem() {
                         primary="Backup & Restore"
                         secondary="Download a complete backup or restore from file"
                     />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/software`}>
                     <ListItemIcon>
                         <SystemUpdateAltIcon />
                     </ListItemIcon>
                     <ListItemText primary="Software" secondary="View and install available software updates" />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/info`}>
                     <ListItemIcon>
                         <InfoIcon />
                     </ListItemIcon>
                     <ListItemText primary="System" secondary="CPU, RAM and disk information" />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/logs`}>
                     <ListItemIcon>
                         <ReceiptIcon />
                     </ListItemIcon>
                     <ListItemText primary="Logs" secondary="View application and module logs" />
-                    <ListItemIcon className={classes.navIcon}>
-                        <ChevronRightIcon />
-                    </ListItemIcon>
+                    <NavIcon />
                 </ListItem>
-            </List>
+            </StyledList>
         </>
     );
 }

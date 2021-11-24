@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import MuiToolbar from "@mui/material/Toolbar";
@@ -10,21 +9,7 @@ import Menu from "@components/Menu";
 import Box from "@mui/material/Box";
 import useSound from "use-sound";
 
-const useStyles = makeStyles((theme) => ({
-    drawer: {
-        "& .MuiDrawer-paper": {
-            maxWidth: "90%",
-            minWidth: "280px",
-        },
-    },
-    content: {
-        position: "relative",
-        flexGrow: 1,
-    },
-}));
-
 const NavMobile = (props) => {
-    const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [menuSound] = useSound("/sounds/menu-open.mp3");
 
@@ -52,24 +37,35 @@ const NavMobile = (props) => {
                 elevation={1}
             >
                 <MuiToolbar style={{ paddingRight: 0 }}>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerToggle}
-                        edge="start"
-                        className={classes.menuButton}
-                    >
+                    <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerToggle} edge="start">
                         <MenuIcon />
                     </IconButton>
                     <Toolbar></Toolbar>
                 </MuiToolbar>
             </AppBar>
-            <Drawer className={classes.drawer} transitionDuration={100} open={open} onClose={handleDrawerToggle}>
+            <Drawer
+                sx={{
+                    "& .MuiDrawer-paper": {
+                        maxWidth: "90%",
+                        minWidth: "280px",
+                    },
+                }}
+                transitionDuration={100}
+                open={open}
+                onClose={handleDrawerToggle}
+            >
                 <div onClick={handleDrawerToggle}>
                     <Menu />
                 </div>
             </Drawer>
-            <div className={classes.content}>{props.children}</div>
+            <div
+                sx={{
+                    position: "relative",
+                    flexGrow: 1,
+                }}
+            >
+                {props.children}
+            </div>
         </Box>
     );
 };

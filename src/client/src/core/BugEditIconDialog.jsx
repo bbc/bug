@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import AxiosPost from "@utils/AxiosPost";
 import AxiosGet from "@utils/AxiosGet";
 import BugDynamicIcon from "@core/BugDynamicIcon";
-import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,71 +14,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import { useDebounce } from "use-debounce";
 import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { TwitterPicker } from "react-color";
 import useAsyncEffect from "use-async-effect";
-
-const useStyles = makeStyles((theme) => ({
-    buttonIcon: {
-        margin: 4,
-    },
-    iconContainer: {
-        display: "inline-block",
-    },
-    content: {
-        padding: "0px 16px",
-        height: 420,
-    },
-    iconScroller: {
-        overflow: "scroll",
-        height: "100%",
-    },
-    controls: {
-        paddingBottom: 8,
-        display: "flex",
-    },
-    formControl: {
-        padding: 4,
-    },
-    backdrop: {
-        backgroundColor: "#262626",
-        zIndex: theme.zIndex.drawer + 1,
-        color: "#fff",
-        opacity: 0.8,
-        height: "22rem",
-        position: "absolute",
-        left: 0,
-        right: 0,
-    },
-    iconWrapper: {
-        position: "relative",
-        height: 350,
-    },
-    colourButton: {
-        height: 56,
-        backgroundColor: "rgba(255, 255, 255, 0.09)",
-        borderBottom: "1px solid #c4c4c4",
-        borderBottomLeftRadius: "0px",
-        borderBottomRightRadius: "0px",
-        padding: "6px 6px 6px 12px",
-    },
-    colourBlock: {
-        width: "100%",
-        height: 32,
-    },
-    colourPicker: {
-        position: "absolute",
-        zIndex: 2002,
-        right: 28,
-        marginTop: -12,
-        "& .twitter-picker": {
-            backgroundColor: "#3a3a3a !important",
-        },
-    },
-    dialogContent: {
-        padding: 4,
-    },
-}));
 
 const defaultCount = 500;
 
@@ -93,7 +31,6 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
     const [selectedVariant, setSelectedVariant] = React.useState(null);
     const [iconCount, setIconCount] = React.useState(defaultCount);
     const [showColourPicker, setShowColourPicker] = React.useState(false);
-    const classes = useStyles();
     const iconsContent = React.useRef(null);
     const [selectedColour, setSelectedColour] = React.useState(colour);
 
@@ -143,7 +80,17 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
         return (
             <>
                 {showColourPicker && (
-                    <div className={classes.colourPicker}>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            zIndex: 2002,
+                            right: 28,
+                            marginTop: -12,
+                            "& .twitter-picker": {
+                                backgroundColor: "#3a3a3a !important",
+                            },
+                        }}
+                    >
                         <TwitterPicker
                             triangle="hide"
                             color={selectedColour}
@@ -165,10 +112,22 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                                 "#9900EF",
                             ]}
                         />
-                    </div>
+                    </Box>
                 )}
                 {isLoading && (
-                    <div className={classes.backdrop} open={true}>
+                    <Box
+                        sx={{
+                            backgroundColor: "#262626",
+                            zIndex: "drawer + 1",
+                            color: "#fff",
+                            opacity: 0.8,
+                            height: "22rem",
+                            position: "absolute",
+                            left: 0,
+                            right: 0,
+                        }}
+                        open={true}
+                    >
                         <Grid
                             container
                             spacing={0}
@@ -183,28 +142,32 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                                 <CircularProgress disableShrink />
                             </Grid>
                         </Grid>
-                    </div>
+                    </Box>
                 )}
-                <div className={classes.iconWrapper}>
-                    <div className={classes.iconScroller} onScroll={scrollEvent} ref={iconsContent}>
-                        <div className={classes.iconScrollerContents}>
-                            <div className={classes.iconContainer}>
+                <Box sx={{ position: "relative", height: "350px" }}>
+                    <Box sx={{ overflow: "scroll", height: "100%" }} onScroll={scrollEvent} ref={iconsContent}>
+                        <div>
+                            <Box
+                                sx={{
+                                    display: "inline-block",
+                                }}
+                            >
                                 <Button
                                     variant={selectedIcon === null ? "contained" : "outlined"}
                                     color={selectedIcon === null ? "primary" : "default"}
                                     disableElevation
-                                    className={classes.buttonIcon}
+                                    sx={{ margin: 4 }}
                                     onClick={() => setSelectedIcon(null)}
                                     style={{ color: selectedColour }}
                                 >
                                     &nbsp;
                                 </Button>
-                            </div>
+                            </Box>
 
                             {memoizedIcons}
                         </div>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </>
         );
     };
@@ -212,27 +175,29 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
     const memoizedIcons = useMemo(
         () =>
             icons.icons.map((icon) => (
-                <div key={icon} className={classes.iconContainer}>
+                <Box key={icon} sx={{ display: "inline-block" }}>
                     <Tooltip title={icon}>
                         <Button
                             variant={selectedIcon === icon ? "contained" : "outlined"}
                             color={selectedIcon === icon ? "primary" : "default"}
                             disableElevation
-                            className={classes.buttonIcon}
+                            sx={{
+                                margin: 4,
+                            }}
                             onClick={() => setSelectedIcon(icon)}
                             style={{ color: selectedColour }}
                         >
-                            <BugDynamicIcon title={icon} className={classes.icon} iconName={icon} />
+                            <BugDynamicIcon title={icon} iconName={icon} />
                         </Button>
                     </Tooltip>
-                </div>
+                </Box>
             )),
-        [icons, selectedIcon, selectedColour, classes.iconContainer, classes.icon, classes.buttonIcon]
+        [icons, selectedIcon, selectedColour]
     );
 
     const controls = () => (
-        <div className={classes.controls}>
-            <FormControl className={classes.formControl} style={{ flexGrow: 1 }}>
+        <Box sx={{ paddingBottom: "8px", display: "flex" }}>
+            <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
                 <TextField
                     label="Filter icons ..."
                     variant="standard"
@@ -242,7 +207,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                     onChange={(e) => handleFilterChanged(e.target.value)}
                 />
             </FormControl>
-            <FormControl className={classes.formControl} style={{ flexGrow: 1 }}>
+            <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
                 <TextField
                     variant="standard"
                     select
@@ -259,19 +224,25 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                     ))}
                 </TextField>
             </FormControl>
-            <FormControl className={classes.formControl} style={{ width: 120 }}>
+            <FormControl sx={{ padding: "4px", width: "120px", flexGrow: 1 }}>
                 <Button
-                    className={classes.colourButton}
+                    sx={{
+                        height: "56px",
+                        backgroundColor: "rgba(255, 255, 255, 0.09)",
+                        borderBottom: "1px solid #c4c4c4",
+                        borderBottomLeftRadius: "0px",
+                        borderBottomRightRadius: "0px",
+                        padding: "6px 6px 6px 12px",
+                    }}
                     onClick={(e) => {
                         setShowColourPicker(!showColourPicker);
                     }}
-                    // variant="contained"
                 >
-                    <div className={classes.colourBlock} style={{ backgroundColor: selectedColour }}></div>
+                    <Box sx={{ width: "100%", height: "32px", backgroundColor: selectedColour }}></Box>
                     <ArrowDropDownIcon />
                 </Button>
             </FormControl>
-        </div>
+        </Box>
     );
 
     return (
@@ -282,11 +253,11 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                 }}
             >
                 <DialogTitle id="alert-dialog-title">Select an Icon</DialogTitle>
-                <DialogContent className={classes.dialogContent}>
-                    <div className={classes.content}>
+                <DialogContent sx={{ padding: "4px" }}>
+                    <Box sx={{ padding: "0px 16px", height: "420px" }}>
                         {controls()}
                         {iconContainer()}
-                    </div>
+                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onCancel} color="primary">

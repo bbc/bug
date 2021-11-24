@@ -7,17 +7,8 @@ import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    label: {
-        color: theme.palette.secondary.main,
-        opacity: 0.5,
-    },
-}));
 
 export default function ChartNetwork({ type, stats, showTitle }) {
-    const classes = useStyles();
     const windowSize = useWindowSize();
 
     const data = stats.map((rawData) => {
@@ -93,10 +84,25 @@ export default function ChartNetwork({ type, stats, showTitle }) {
                                 tickFormatter={(unixTime) => moment(Math.round(unixTime / 1000)).format("HH:mm Do")}
                                 type="number"
                             >
-                                <Label className={classes.label} value="Time" position="bottom" offset={0} />
+                                <Label
+                                    sx={{
+                                        color: "secondary.main",
+                                        opacity: 0.5,
+                                    }}
+                                    value="Time"
+                                    position="bottom"
+                                    offset={0}
+                                />
                             </XAxis>
                             <YAxis>
-                                <Label className={classes.label} value="Data Troughput (KB)" angle="-90" />
+                                <Label
+                                    sx={{
+                                        color: "secondary.main",
+                                        opacity: 0.5,
+                                    }}
+                                    value="Data Troughput (KB)"
+                                    angle="-90"
+                                />
                             </YAxis>
                             <YAxis />
                             <Tooltip formatter={tooltipFormatter} />

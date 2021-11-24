@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
 import ListItem from "@mui/material/ListItem";
@@ -9,14 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 
-const useStyles = makeStyles((theme) => ({
-    icon: {
-        padding: "2px",
-    },
-}));
-
-const BugMenuIcon = (props) => {
-    const classes = useStyles();
+const BugMenuIcon = () => {
     const [info, setInfo] = useState();
 
     useAsyncEffect(async () => {
@@ -25,7 +17,7 @@ const BugMenuIcon = (props) => {
 
     return (
         <ListItem button component={Link} to={`/system/about`}>
-            <ListItemIcon className={classes.icon}>
+            <ListItemIcon sx={{ padding: "2px" }}>
                 <FontAwesomeIcon size="lg" icon={faBug} />
             </ListItemIcon>
             <ListItemText

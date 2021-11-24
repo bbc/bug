@@ -7,17 +7,8 @@ import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    label: {
-        color: theme.palette.secondary.main,
-        opacity: 0.5,
-    },
-}));
 
 export default function ChartDisk({ stats, showTitle }) {
-    const classes = useStyles();
     const windowSize = useWindowSize();
     const factor = 0.0000000095367432;
     const units = "GB";
@@ -98,10 +89,25 @@ export default function ChartDisk({ stats, showTitle }) {
                                 tickFormatter={(unixTime) => moment(Math.round(unixTime / 1000)).format("HH:mm Do")}
                                 type="number"
                             >
-                                <Label className={classes.label} value="Time" position="bottom" offset={0} />
+                                <Label
+                                    sx={{
+                                        color: "secondary.main",
+                                        opacity: 0.5,
+                                    }}
+                                    value="Time"
+                                    position="bottom"
+                                    offset={0}
+                                />
                             </XAxis>
                             <YAxis domain={[0, disksSize]}>
-                                <Label className={classes.label} value="Disk Usage (GB)" angle="-90" />
+                                <Label
+                                    sx={{
+                                        color: "secondary.main",
+                                        opacity: 0.5,
+                                    }}
+                                    value="Disk Usage (GB)"
+                                    angle="-90"
+                                />
                             </YAxis>
                             <Tooltip formatter={tooltipFormatter} />
                             {getSeries(data[0], "timestamp")}

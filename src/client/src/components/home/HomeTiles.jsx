@@ -1,51 +1,14 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import Loading from "@components/Loading";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
 import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";
 import HomeTile from "@components/home/HomeTile";
 import HomeAddPanel from "@components/home/HomeAddPanel";
 
-const useStyles = makeStyles((theme) => ({
-    groupHeader: {
-        fontSize: "0.875rem",
-        fontWeight: 500,
-        textTransform: "uppercase",
-        color: theme.palette.primary.main,
-        padding: "12px 12px 6px 12px",
-        "@media (max-width:1200px)": {
-            paddingLeft: 8,
-        },
-        "@media (max-width:1024px)": {
-            paddingLeft: 4,
-        },
-        "@media (max-width:600px)": {
-            padding: 8,
-        },
-    },
-    gridItem: {
-        padding: 12,
-        "@media (max-width:1200px)": {
-            padding: 8,
-        },
-        "@media (max-width:1024px)": {
-            padding: 4,
-        },
-        "@media (max-width:600px)": {
-            padding: 0,
-            paddingBottom: 1,
-        },
-        "@media (max-height:400px)": {
-            padding: 4,
-            paddingBottom: 1,
-        },
-    },
-}));
-
-const HomeTiles = (props) => {
-    const classes = useStyles();
+const HomeTiles = () => {
     const panelList = useSelector((state) => state.panelList);
 
     const GroupedTiles = ({ groupedPanels }) => {
@@ -53,8 +16,29 @@ const HomeTiles = (props) => {
         return (
             <>
                 {sortedGroupKeys.map((groupKey) => (
-                    <Grid key={groupKey} className={classes.group}>
-                        {groupKey && <div className={classes.groupHeader}>{groupKey}</div>}
+                    <Grid key={groupKey}>
+                        {groupKey && (
+                            <Box
+                                sx={{
+                                    fontSize: "0.875rem",
+                                    fontWeight: 500,
+                                    textTransform: "uppercase",
+                                    color: "primary.main",
+                                    padding: "12px 12px 6px 12px",
+                                    "@media (max-width:1200px)": {
+                                        paddingLeft: "8px",
+                                    },
+                                    "@media (max-width:1024px)": {
+                                        paddingLeft: "4px",
+                                    },
+                                    "@media (max-width:600px)": {
+                                        padding: "8px",
+                                    },
+                                }}
+                            >
+                                {groupKey}
+                            </Box>
+                        )}
                         <Tiles panels={groupedPanels[groupKey]}></Tiles>
                     </Grid>
                 ))}
@@ -64,7 +48,7 @@ const HomeTiles = (props) => {
 
     const Tiles = ({ panels }) => {
         return (
-            <Grid container className={classes.gridContainer}>
+            <Grid container>
                 {panels.map((panel) => (
                     <HomeTile panel={panel} key={panel.id} />
                 ))}

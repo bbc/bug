@@ -4,24 +4,20 @@ import EncoderTable from "../components/EncoderTable";
 import DecoderTable from "../components/DecoderTable";
 import SputniksTable from "../components/SputniksTable";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    form: {
-        "& .tabSpacer": {
-            height: 60,
-        },
-    },
-}));
+import Box from "@mui/material/Box";
 
 export default function MainPanel() {
-    const classes = useStyles();
     const params = useParams();
 
     return (
-        <>
+        <Box
+            sx={{
+                "& .tabSpacer": {
+                    height: "60px",
+                },
+            }}
+        >
             <BugPanelTabbedForm
-                className={classes.form}
                 labels={["Encoders", "Decoders", "Sputniks"]}
                 content={[
                     <EncoderTable panelId={params.panelId} header={false} />,
@@ -35,6 +31,6 @@ export default function MainPanel() {
                 ]}
                 defaultTab={0}
             ></BugPanelTabbedForm>
-        </>
+        </Box>
     );
 }

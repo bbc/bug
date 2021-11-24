@@ -15,23 +15,10 @@
 
 import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
-import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
-
-const useStyles = makeStyles((theme) => ({
-    helperText: {
-        color: "rgba(255, 255, 255, 0.7)",
-        margin: "0",
-        fontSize: "0.75rem",
-        marginTop: "3px",
-        textAlign: "left",
-        fontFamily: "ReithSans",
-        fontWeight: "400",
-        lineHeight: "1.66",
-    },
-}));
+import BugHelperText from "@core/BugHelperText";
 
 const BugConfigFormChipInput = ({
     name,
@@ -48,8 +35,6 @@ const BugConfigFormChipInput = ({
     helperText,
     ...props
 }) => {
-    const classes = useStyles();
-
     if (sort) {
         // sort the contents (case insensitive)
         defaultValue = defaultValue.slice().sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
@@ -90,7 +75,7 @@ const BugConfigFormChipInput = ({
                     rules={rules}
                 />
             </FormControl>
-            {helperText && <div className={classes.helperText}>{helperText}</div>}
+            {helperText && <BugHelperText>{helperText}</BugHelperText>}
         </>
     );
 };

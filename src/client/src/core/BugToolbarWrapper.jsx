@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -24,19 +23,6 @@ import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
-    dropdownMenu: {
-        marginLeft: "0.5rem",
-        marginRight: "0.5rem",
-    },
-    notificationButton: {
-        "& .MuiButton-startIcon": {
-            margin: 0,
-        },
-        marginRight: theme.spacing(1),
-    },
-}));
-
 /*
  * this has optional properties:
  * - buttons - which can take buttons with links to show on the toolbar
@@ -44,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
  */
 
 export default function PanelToolbar(props) {
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const panel = useSelector((state) => state.panel);
@@ -141,7 +126,16 @@ export default function PanelToolbar(props) {
                             <PanelStatus statusItems={panel.data._status} panel={panel.data} />
                         </Popover>
 
-                        <IconButton className={classes.notificationButton} color="default" onClick={handleStatusClick}>
+                        <IconButton
+                            sx={{
+                                "& .MuiButton-startIcon": {
+                                    margin: 0,
+                                },
+                                marginRight: "8px",
+                            }}
+                            color="default"
+                            onClick={handleStatusClick}
+                        >
                             <BadgeWrapper
                                 panel={panel.data}
                                 position={{
@@ -156,7 +150,10 @@ export default function PanelToolbar(props) {
                 )}
                 <Hidden xsDown>{props.buttons ? props.buttons : null}</Hidden>
                 <IconButton
-                    className={classes.dropdownMenu}
+                    sx={{
+                        marginLeft: "0.5rem",
+                        marginRight: "0.5rem",
+                    }}
                     aria-label="more"
                     aria-controls="long-menu"
                     aria-haspopup="true"

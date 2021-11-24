@@ -6,7 +6,6 @@ import BugForm from "@core/BugForm";
 import BugReadonlyTextField from "@core/BugReadonlyTextField";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosDelete from "@utils/AxiosDelete";
@@ -16,23 +15,7 @@ import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
 
-const useStyles = makeStyles((theme) => ({
-    form: {
-        "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
-            color: theme.palette.success.main,
-        },
-    },
-    deleteButton: {
-        backgroundColor: theme.palette.error.main,
-        color: "#fff",
-        "&:hover": {
-            backgroundColor: theme.palette.error.hover,
-        },
-    },
-}));
-
 export default function Lease({ panelId, leaseId }) {
-    const classes = useStyles();
     const history = useHistory();
     const [lease, setLease] = React.useState(null);
     const [servers, setServers] = React.useState(null);
@@ -99,7 +82,15 @@ export default function Lease({ panelId, leaseId }) {
                 <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                     <BugForm.Header onClose={handleCancelClicked}>Edit DHCP Lease</BugForm.Header>
                     <BugForm.Body>
-                        <Grid container spacing={4} className={classes.form}>
+                        <Grid
+                            container
+                            spacing={4}
+                            sx={{
+                                "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
+                                    color: "success.main",
+                                },
+                            }}
+                        >
                             <Grid item xs={12}>
                                 <TextField
                                     inputProps={{
@@ -244,7 +235,13 @@ export default function Lease({ panelId, leaseId }) {
                     <BugForm.Actions>
                         <Button
                             variant="contained"
-                            className={classes.deleteButton}
+                            sx={{
+                                backgroundColor: "error.main",
+                                color: "#fff",
+                                "&:hover": {
+                                    backgroundColor: "error.hover",
+                                },
+                            }}
                             disableElevation
                             onClick={handleDeleteClicked}
                         >

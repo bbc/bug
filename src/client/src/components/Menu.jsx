@@ -15,7 +15,6 @@ import BugMenuIcon from "@components/BugMenuIcon";
 import UserMenuItem from "@components/users/UserMenuItem";
 import BadgeWrapper from "@components/BadgeWrapper";
 import { useSelector } from "react-redux";
-import { makeStyles } from "@mui/styles";
 import { useLocation } from "react-router-dom";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -31,51 +30,7 @@ const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;
 let firstRun = true;
 
-const useStyles = makeStyles((theme) => ({
-    list: {
-        padding: 0,
-    },
-    groupPanel: {
-        padding: 0,
-        display: "block",
-    },
-    group: {
-        "&.MuiAccordion-root:before": {
-            height: 0,
-        },
-        "&.Mui-expanded": {
-            margin: 0,
-        },
-    },
-    groupHeader: {
-        fontSize: "0.875rem",
-        fontWeight: 500,
-        textTransform: "uppercase",
-        height: 48,
-        "&.Mui-expanded": {
-            minHeight: 48,
-            height: 48,
-        },
-        color: theme.palette.primary.main,
-        "& .MuiAccordionSummary-content": {
-            order: 2,
-        },
-        "& .MuiButtonBase-root": {
-            paddingLeft: 0,
-            marginRight: 0,
-        },
-        "& .MuiAccordionSummary-expandIcon.Mui-expanded": {
-            transform: "none",
-        },
-    },
-    divider: {
-        backgroundColor: "#181818",
-        margin: 0,
-    },
-}));
-
 const Menu = ({ showGroups = true }) => {
-    const classes = useStyles();
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
     const user = useSelector((state) => state.user);
@@ -145,12 +100,39 @@ const Menu = ({ showGroups = true }) => {
                 <Accordion
                     key={group}
                     elevation={0}
-                    className={classes.group}
+                    sx={{
+                        "&.MuiAccordion-root:before": {
+                            height: 0,
+                        },
+                        "&.Mui-expanded": {
+                            margin: 0,
+                        },
+                    }}
                     expanded={expanded === group}
                     onChange={handleAccordionChange(group)}
                 >
                     <AccordionSummary
-                        className={classes.groupHeader}
+                        sx={{
+                            fontSize: "0.875rem",
+                            fontWeight: 500,
+                            textTransform: "uppercase",
+                            height: 48,
+                            "&.Mui-expanded": {
+                                minHeight: 48,
+                                height: 48,
+                            },
+                            color: "primary.main",
+                            "& .MuiAccordionSummary-content": {
+                                order: 2,
+                            },
+                            "& .MuiButtonBase-root": {
+                                paddingLeft: 0,
+                                marginRight: 0,
+                            },
+                            "& .MuiAccordionSummary-expandIcon.Mui-expanded": {
+                                transform: "none",
+                            },
+                        }}
                         expandIcon={expanded === group ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                         onClick={(event) => {
                             click();
@@ -159,14 +141,25 @@ const Menu = ({ showGroups = true }) => {
                     >
                         {group}
                     </AccordionSummary>
-                    <AccordionDetails className={classes.groupPanel}>
-                        <List className={classes.list}>{panels.map((eachPanel) => renderMenuItem(eachPanel))}</List>
+                    <AccordionDetails
+                        sx={{
+                            padding: "0px",
+                            display: "block",
+                        }}
+                    >
+                        <List
+                            sx={{
+                                padding: "0px",
+                            }}
+                        >
+                            {panels.map((eachPanel) => renderMenuItem(eachPanel))}
+                        </List>
                     </AccordionDetails>
                 </Accordion>
             );
         } else {
             return (
-                <List key={`nogroup_${group}`} className={classes.list}>
+                <List key={`nogroup_${group}`} disablePadding>
                     {panels.map((eachPanel) => renderMenuItem(eachPanel))}
                 </List>
             );
@@ -209,6 +202,8 @@ const Menu = ({ showGroups = true }) => {
         faviconNotification.set(notificationCount);
     };
 
+    const MenuDivider = () => <Divider sx={{ backgroundColor: "#181818", margin: 0 }} />;
+
     const soundNotifications = (panels) => {
         const previousNotificationCount = notificationsCount;
         notificationsCount = 0;
@@ -246,7 +241,7 @@ const Menu = ({ showGroups = true }) => {
                 <Grid item style={{ width: "100%" }}>
                     {(user?.data || enabledStrategiesCount === 0) && (
                         <>
-                            <List className={classes.list}>
+                            <List disablePadding>
                                 <ListItem
                                     button
                                     component={Link}
@@ -263,10 +258,10 @@ const Menu = ({ showGroups = true }) => {
                                     <ListItemText primary="Home" />
                                 </ListItem>
                             </List>
-                            <Divider className={classes.divider} />
+                            <MenuDivider />
                             {renderPanelMenuItems()}
-                            {enabledPanelList.length > 0 ? <Divider className={classes.divider} /> : null}
-                            <List className={classes.list}>
+                            {enabledPanelList.length > 0 ? <MenuDivider /> : null}
+                            <List disablePadding>
                                 <ListItem
                                     button
                                     component={Link}

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
@@ -11,15 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Hidden } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 
-const useStyles = makeStyles((theme) => ({
-    dropdownMenu: {
-        marginLeft: "0.5rem",
-        marginRight: "0.5rem",
-    },
-}));
-
 export default function UsersToolbar(props) {
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
@@ -39,7 +30,10 @@ export default function UsersToolbar(props) {
                 </Button>
             </Hidden>
             <IconButton
-                className={classes.dropdownMenu}
+                sx={{
+                    marginLeft: "0.5rem",
+                    marginRight: "0.5rem",
+                }}
                 aria-label="more"
                 aria-controls="long-menu"
                 aria-haspopup="true"

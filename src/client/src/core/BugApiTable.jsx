@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.5,
     },
     filterIconActive: {
-        color: theme.palette.primary.main,
+        //TODO color: theme.palette.primary.main,
     },
 }));
 

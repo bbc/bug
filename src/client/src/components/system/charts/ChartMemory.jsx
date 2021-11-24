@@ -7,17 +7,8 @@ import { useWindowSize } from "@utils/WindowSize";
 import hslToHex from "@utils/hslToHex";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    label: {
-        color: theme.palette.secondary.main,
-        opacity: 0.5,
-    },
-}));
 
 export default function ChartMemory({ stats, showTitle }) {
-    const classes = useStyles();
     const windowSize = useWindowSize();
     const factor = 0.00000095367432;
 
@@ -64,10 +55,25 @@ export default function ChartMemory({ stats, showTitle }) {
                                 tickFormatter={(unixTime) => moment(Math.round(unixTime / 1000)).format("HH:mm Do")}
                                 type="number"
                             >
-                                <Label className={classes.label} value="Time" position="bottom" offset={0} />
+                                <Label
+                                    sx={{
+                                        color: "secondary.main",
+                                        opacity: 0.5,
+                                    }}
+                                    value="Time"
+                                    position="bottom"
+                                    offset={0}
+                                />
                             </XAxis>
                             <YAxis>
-                                <Label className={classes.label} value="Memory (GB)" angle="-90" />
+                                <Label
+                                    sx={{
+                                        color: "secondary.main",
+                                        opacity: 0.5,
+                                    }}
+                                    value="Memory (GB)"
+                                    angle="-90"
+                                />
                             </YAxis>
                             <Tooltip formatter={tooltipFormatter} />
                             <Area

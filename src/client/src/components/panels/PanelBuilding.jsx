@@ -3,27 +3,25 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { makeStyles } from "@mui/styles";
 import ProgressCounter from "@components/ProgressCounter";
 import Hidden from "@mui/material/Hidden";
 
-const useStyles = makeStyles((theme) => ({
-    text: {
-        fontSize: "3rem",
-        "@media (max-width:600px)": {
-            fontSize: "1.5rem",
-        },
-    },
-}));
-
 export default function PanelBuilding(props) {
-    const classes = useStyles();
-
     const CircularProgressWithLabel = (props) => {
         const Value = ({ value }) => {
             if (value > -1) {
                 return (
-                    <Typography variant="caption" component="div" color="textSecondary" className={classes.text}>
+                    <Typography
+                        variant="caption"
+                        component="div"
+                        color="textSecondary"
+                        sx={{
+                            fontSize: "3rem",
+                            "@media (max-width:600px)": {
+                                fontSize: "1.5rem",
+                            },
+                        }}
+                    >
                         <ProgressCounter value={Math.round(props.value)} />%
                     </Typography>
                 );

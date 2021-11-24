@@ -1,43 +1,27 @@
 import React from "react";
+import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
 import ReplayIcon from "@mui/icons-material/Replay";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import clsx from "clsx";
 import { useHistory } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-    multiMessage: {
-        marginTop: 2,
-        marginBottom: 2,
+const StyledButton = styled(Button)({
+    borderColor: "#ccc",
+    color: "#ccc",
+    backgroundColor: alpha("#000000", 0.2),
+    "&:hover": {
+        backgroundColor: alpha("#000000", 0.3),
     },
-    button: {
-        borderColor: "#ccc",
-        color: "#ccc",
-        backgroundColor: alpha("#000000", 0.2),
-        "&:hover": {
-            backgroundColor: alpha("#000000", 0.3),
-        },
-        marginRight: "1rem",
-    },
-    controls: {
-        marginTop: 14,
-        marginBottom: 2,
-        textAlign: "right",
-        whiteSpace: "nowrap",
-    },
-    squareCorners: {
-        borderRadius: 0,
-    },
-}));
+    marginRight: "1rem",
+});
 
 export default function BugAlert({ type, message, flags = [], panel, square = false, width = null }) {
-    const classes = useStyles();
     const history = useHistory();
     const sendAlert = useAlert();
 
@@ -58,9 +42,15 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
     const renderMessage = () => {
         if (Array.isArray(message)) {
             return message.map((eachMessage, index) => (
-                <div key={index} className={classes.multiMessage}>
+                <Box
+                    key={index}
+                    sx={{
+                        marginTop: 2,
+                        marginBottom: 2,
+                    }}
+                >
                     {eachMessage}
-                </div>
+                </Box>
             ));
         }
         return message;
@@ -70,9 +60,8 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
         let controls = [];
         if (flags.includes("restartPanel")) {
             controls.push(
-                <Button
+                <StyledButton
                     key="restart"
-                    className={classes.button}
                     variant="contained"
                     color="secondary"
                     disableElevation
@@ -80,14 +69,13 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
                     startIcon={<ReplayIcon />}
                 >
                     Restart Panel
-                </Button>
+                </StyledButton>
             );
         }
         if (flags.includes("configurePanel")) {
             controls.push(
-                <Button
+                <StyledButton
                     key="configure"
-                    className={classes.button}
                     variant="contained"
                     color="secondary"
                     disableElevation
@@ -95,12 +83,23 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
                     startIcon={<SettingsIcon />}
                 >
                     Configure
-                </Button>
+                </StyledButton>
             );
         }
 
         if (controls.length > 0) {
-            return <div className={classes.controls}>{controls.map((control) => control)}</div>;
+            return (
+                <Box
+                    sx={{
+                        marginTop: 14,
+                        marginBottom: 2,
+                        textAlign: "right",
+                        whiteSpace: "nowrap",
+                    }}
+                >
+                    {controls.map((control) => control)}
+                </Box>
+            );
         }
         return null;
     };
@@ -122,13 +121,11 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
         <Alert
             sx={{
                 width: width === null ? "auto" : width,
+                borderRadius: square ? 0 : 4,
             }}
             severity={mappedSeverity[type]}
-            className={clsx({
-                [classes.squareCorners]: square,
-            })}
         >
-            <AlertTitle className={classes.title}>{titles[type]}</AlertTitle>
+            <AlertTitle>{titles[type]}</AlertTitle>
             {renderMessage()}
             {renderControls()}
         </Alert>

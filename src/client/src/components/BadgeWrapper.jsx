@@ -1,24 +1,5 @@
 import React from "react";
 import Badge from "@mui/material/Badge";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    error: {
-        "& .MuiBadge-badge": {
-            backgroundColor: theme.palette.error.main,
-        },
-    },
-    warning: {
-        "& .MuiBadge-badge": {
-            backgroundColor: theme.palette.warning.main,
-        },
-    },
-    info: {
-        "& .MuiBadge-badge": {
-            backgroundColor: theme.palette.info.main,
-        },
-    },
-}));
 
 const BadgeWrapper = ({
     panel,
@@ -28,8 +9,6 @@ const BadgeWrapper = ({
         horizontal: "right",
     },
 }) => {
-    const classes = useStyles();
-
     let errorCount = 0;
     let warningCount = 0;
     let infoCount = 0;
@@ -44,7 +23,15 @@ const BadgeWrapper = ({
 
     if (criticalCount > 0) {
         return (
-            <Badge className={classes.error} badgeContent={criticalCount} anchorOrigin={position}>
+            <Badge
+                sx={{
+                    "& .MuiBadge-badge": {
+                        backgroundColor: "error.main",
+                    },
+                }}
+                badgeContent={criticalCount}
+                anchorOrigin={position}
+            >
                 {children}
             </Badge>
         );
@@ -52,7 +39,15 @@ const BadgeWrapper = ({
 
     if (errorCount > 0) {
         return (
-            <Badge className={classes.error} badgeContent={errorCount} anchorOrigin={position}>
+            <Badge
+                sx={{
+                    "& .MuiBadge-badge": {
+                        backgroundColor: "error.main",
+                    },
+                }}
+                badgeContent={errorCount}
+                anchorOrigin={position}
+            >
                 {children}
             </Badge>
         );
@@ -60,7 +55,15 @@ const BadgeWrapper = ({
 
     if (warningCount > 0) {
         return (
-            <Badge className={classes.warning} badgeContent={warningCount} anchorOrigin={position}>
+            <Badge
+                sx={{
+                    "& .MuiBadge-badge": {
+                        backgroundColor: "warning.main",
+                    },
+                }}
+                badgeContent={warningCount}
+                anchorOrigin={position}
+            >
                 {children}
             </Badge>
         );
@@ -68,7 +71,15 @@ const BadgeWrapper = ({
 
     if (infoCount > 0) {
         return (
-            <Badge className={classes.info} badgeContent={infoCount} anchorOrigin={position}>
+            <Badge
+                sx={{
+                    "& .MuiBadge-badge": {
+                        backgroundColor: "info.main",
+                    },
+                }}
+                badgeContent={infoCount}
+                anchorOrigin={position}
+            >
                 {children}
             </Badge>
         );

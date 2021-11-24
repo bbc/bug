@@ -3,12 +3,8 @@ import SecurityTable from "@components/security/SecurityTable";
 import SecurityTableEdit from "@components/security/SecurityTableEdit";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
-// import { makeStyles } from "@mui/styles";
-
-// const useStyles = makeStyles((theme) => ({}));
 
 export default function PageSystemSecurity(props) {
-    // const classes = useStyles();
     const dispatch = useDispatch();
 
     useEffect(() => {

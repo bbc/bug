@@ -5,18 +5,8 @@ import { useAlert } from "@utils/Snackbar";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    form: {
-        "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
-            color: theme.palette.success.main,
-        },
-    },
-}));
 
 export default function BugConfigWrapper({ panelId, children, config, handleSubmit }) {
-    const classes = useStyles();
     const history = useHistory();
     const sendAlert = useAlert();
 
@@ -40,7 +30,15 @@ export default function BugConfigWrapper({ panelId, children, config, handleSubm
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <BugForm.Header onClose={onCancel}>Configuration</BugForm.Header>
                     <BugForm.Body>
-                        <Grid container spacing={4} className={classes.form}>
+                        <Grid
+                            container
+                            spacing={4}
+                            sx={{
+                                "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
+                                    color: "success.main",
+                                },
+                            }}
+                        >
                             {children}
                         </Grid>
                     </BugForm.Body>

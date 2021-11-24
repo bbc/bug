@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import formatBps from "@utils/format-bps";
 import { format } from "date-fns";
-import { makeStyles } from "@mui/styles";
 import { ComposedChart, Area, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -12,34 +12,7 @@ import useAsyncEffect from "use-async-effect";
 import { TimePicker } from "@material-ui/pickers";
 import { useWindowSize } from "@utils/WindowSize";
 
-const useStyles = makeStyles((theme) => ({
-    chart: {
-        "& .recharts-legend-item": {
-            marginLeft: 16,
-        },
-    },
-    button: {
-        margin: theme.spacing(1),
-    },
-    timePicker: {
-        margin: theme.spacing(1),
-    },
-    toolbar: {
-        textAlign: "center",
-    },
-    tooltip: {
-        padding: "0.5rem",
-        backgroundColor: theme.palette.background.default,
-        color: "rgba(255, 255, 255, 0.5)",
-    },
-    tooltipName: {
-        fontWeight: 500,
-        color: "rgba(255, 255, 255, 0.7)",
-    },
-}));
-
 export default function BugTrafficChart({ url, type }) {
-    const classes = useStyles();
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
@@ -129,17 +102,28 @@ export default function BugTrafficChart({ url, type }) {
             let tx = payload[0].payload.tx;
             let rx = payload[0].payload.rx;
             return (
-                <div className={classes.tooltip}>
+                <Box
+                    sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}
+                >
                     <div>
-                        <span className={classes.tooltipName}>TIME:</span> {format(timestamp, "kk:mm:ss")}
+                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                            TIME:
+                        </Box>
+                        {format(timestamp, "kk:mm:ss")}
                     </div>
                     <div>
-                        <span className={classes.tooltipName}>TX BITRATE:</span> {formatBps(tx)}
+                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                            TX BITRATE:
+                        </Box>
+                        {formatBps(tx)}
                     </div>
                     <div>
-                        <span className={classes.tooltipName}>RX BITRATE:</span> {formatBps(rx)}
+                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                            RX BITRATE:
+                        </Box>
+                        {formatBps(rx)}
                     </div>
-                </div>
+                </Box>
             );
         }
 
@@ -149,14 +133,15 @@ export default function BugTrafficChart({ url, type }) {
     const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
 
     return (
-        <>
+        <Box
+            sx={{
+                "& .recharts-legend-item": {
+                    marginLeft: "16px",
+                },
+            }}
+        >
             <ResponsiveContainer width="100%" height={chartHeight}>
-                <ComposedChart
-                    barGap={1}
-                    data={stats}
-                    margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-                    className={classes.chart}
-                >
+                <ComposedChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                     <Area isAnimationActive={false} type="monotone" dataKey="tx" fill="#337ab7" stroke="#337ab7" />
                     <Area isAnimationActive={false} type="monotone" dataKey="rx" fill="#bb2828" stroke="#bb2828" />
                     <Legend
@@ -193,9 +178,13 @@ export default function BugTrafficChart({ url, type }) {
                     <Tooltip content={<CustomTooltip />} />
                 </ComposedChart>
             </ResponsiveContainer>
-            <div className={classes.toolbar}>
+            <Box
+                sx={{
+                    textAlign: "center",
+                }}
+            >
                 <Button
-                    className={classes.button}
+                    sx={{ margin: 1 }}
                     variant="contained"
                     color="secondary"
                     onClick={() => handleBack(5)}
@@ -205,7 +194,7 @@ export default function BugTrafficChart({ url, type }) {
                 </Button>
 
                 <Button
-                    className={classes.button}
+                    sx={{ margin: 1 }}
                     variant="contained"
                     color={enableAutoRefresh ? "primary" : "secondary"}
                     onClick={handleLatest}
@@ -214,15 +203,10 @@ export default function BugTrafficChart({ url, type }) {
                     Latest
                 </Button>
 
-                <TimePicker
-                    ampm={false}
-                    className={classes.timePicker}
-                    value={range[1]}
-                    onChange={handleTimePickerChange}
-                />
+                <TimePicker ampm={false} sx={{ margin: 1 }} value={range[1]} onChange={handleTimePickerChange} />
 
                 <Button
-                    className={classes.button}
+                    sx={{ margin: 1 }}
                     variant="contained"
                     disabled={enableAutoRefresh}
                     color="secondary"
@@ -231,7 +215,7 @@ export default function BugTrafficChart({ url, type }) {
                 >
                     5 min
                 </Button>
-            </div>
-        </>
+            </Box>
+        </Box>
     );
 }

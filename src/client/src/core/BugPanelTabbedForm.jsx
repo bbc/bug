@@ -1,51 +1,14 @@
 import React from "react";
-import Card from "@mui/material/Card";
-import { makeStyles } from "@mui/styles";
 import { useHotkeys } from "react-hotkeys-hook";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-// import TabContainer from "@core/TabContainer.jsx";
+import BugCard from "@core/BugCard";
 import { useHistory, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
-const useStyles = makeStyles((theme) => ({
-    header: {
-        "& .MuiCardHeader-title": {
-            fontSize: "1rem",
-        },
-    },
-    card: {
-        minWidth: 300,
-        textAlign: "left",
-        color: theme.palette.text.secondary,
-        position: "relative",
-    },
-    actions: {
-        justifyContent: "flex-end",
-        "& .MuiCardHeader-title": {
-            fontSize: "1rem",
-        },
-        padding: "16px",
-    },
-    closeButton: {
-        position: "absolute",
-        right: 0,
-        top: 0,
-        color: "rgba(255, 255, 255, 0.7)",
-        padding: 16,
-        zIndex: 1,
-    },
-    tabs: {
-        marginRight: 48,
-        "& .MuiButtonBase-root": {
-            minHeight: 52,
-        },
-    },
-}));
 
 export default function BugPanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0 }) {
-    const classes = useStyles();
     const [tabIndex, setTabIndex] = React.useState(false);
     const history = useHistory();
     const location = useLocation();
@@ -59,9 +22,9 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
 
     const TabPanel = ({ children, value, index }) => {
         return (
-            <Card className={classes.card} role="tabpanel" hidden={value !== index}>
+            <BugCard role="tabpanel" hidden={value !== index}>
                 {value === index && <>{children}</>}
-            </Card>
+            </BugCard>
         );
     };
 
@@ -92,12 +55,28 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
                     }}
                 >
                     {onClose && (
-                        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+                        <IconButton
+                            aria-label="close"
+                            sx={{
+                                position: "absolute",
+                                right: "0px",
+                                top: "0px",
+                                color: "rgba(255, 255, 255, 0.7)",
+                                padding: "16px",
+                                zIndex: 1,
+                            }}
+                            onClick={onClose}
+                        >
                             <CloseIcon />
                         </IconButton>
                     )}
                     <Tabs
-                        className={classes.tabs}
+                        sx={{
+                            marginRight: "48px",
+                            "& .MuiButtonBase-root": {
+                                minHeight: "52px",
+                            },
+                        }}
                         value={tabIndex}
                         indicatorColor="primary"
                         textColor="primary"
@@ -119,7 +98,7 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
                     className={`tabSpacer`}
                 />
             </div>
-            <Card className={classes.card}>
+            <BugCard>
                 {content
                     ? content.map((content, index) => (
                           <TabPanel key={index} value={tabIndex} index={index}>
@@ -127,7 +106,7 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
                           </TabPanel>
                       ))
                     : null}
-            </Card>
+            </BugCard>
         </>
     );
 }

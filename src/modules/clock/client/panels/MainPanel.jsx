@@ -1,27 +1,12 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import DigitalClock from "../components/DigitalClock";
 import AnalogueClock from "../components/AnalogueClock";
 import DateString from "../components/DateString";
 import { useSelector } from "react-redux";
 import Hidden from "@mui/material/Hidden";
-
-const useStyles = makeStyles((theme) => ({
-    content: {
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-around",
-        minWidth: 200,
-        padding: theme.spacing(1),
-        textAlign: "center",
-        color: theme.palette.text.secondary,
-    },
-}));
+import Box from "@mui/material/Box";
 
 export default function MainPanel() {
-    const classes = useStyles();
     const panelConfig = useSelector((state) => state.panelConfig);
 
     const Clock = (props) => {
@@ -62,9 +47,21 @@ export default function MainPanel() {
     }
 
     return (
-        <div className={classes.content}>
+        <Box
+            sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "space-around",
+                minWidth: "200px",
+                padding: 1,
+                textAlign: "center",
+                color: "text.secondary",
+            }}
+        >
             {renderClock()}
             <DateString />
-        </div>
+        </Box>
     );
 }

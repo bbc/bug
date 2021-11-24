@@ -12,19 +12,8 @@ import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    button: {
-        "& .MuiButton-startIcon": {
-            margin: 0,
-        },
-        marginRight: theme.spacing(1),
-    },
-}));
 
 export default function Toolbar(props) {
-    const classes = useStyles();
     let toolbarProps = { ...props };
     const panelStatus = usePanelStatus();
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -72,7 +61,12 @@ export default function Toolbar(props) {
         <>
             <Tooltip title="Goto Webpage">
                 <IconButton
-                    className={classes.button}
+                    sx={{
+                        "& .MuiButton-startIcon": {
+                            margin: 0,
+                        },
+                        marginRight: 1,
+                    }}
                     component={Link}
                     onClick={handleWebpageClicked}
                     variant="outlined"
@@ -85,7 +79,12 @@ export default function Toolbar(props) {
         <>
             <Tooltip title="Reboot Device">
                 <IconButton
-                    className={classes.button}
+                    sx={{
+                        "& .MuiButton-startIcon": {
+                            margin: 0,
+                        },
+                        marginRight: 1,
+                    }}
                     component={Link}
                     onClick={handleReboot}
                     variant="outlined"

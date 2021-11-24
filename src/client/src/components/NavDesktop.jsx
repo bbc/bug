@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
 import MuiToolbar from "@mui/material/Toolbar";
@@ -12,46 +10,20 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Menu from "@components/Menu";
 import BugScrollbars from "@core/BugScrollbars";
 import useSound from "use-sound";
+import { styled } from "@mui/material/styles";
 
-const drawerWidth = 275;
 const fullMenuWidth = 1024;
 
-const useStyles = makeStyles((theme) => ({
-    menuButton: {
-        marginRight: 20,
-        marginLeft: 4,
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: "nowrap",
-        "& .MuiPaper-root": {
-            borderRightWidth: 0,
-        },
-    },
-    drawerOpen: {
-        width: drawerWidth,
-    },
-    drawerClose: {
-        overflowX: "hidden",
-        width: 56,
-    },
-    toolbar: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-    },
-    content: {
-        position: "relative",
-        flexGrow: 1,
-    },
+const DrawerHeader = styled("div")(({ theme }) => ({
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
 }));
 
 const NavDesktop = (props) => {
-    const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [menuSound] = useSound("/sounds/menu-open.mp3");
 
@@ -92,7 +64,10 @@ const NavDesktop = (props) => {
                         aria-label="open drawer"
                         onClick={handleDrawerToggle}
                         edge="start"
-                        className={classes.menuButton}
+                        sx={{
+                            marginRight: "20px",
+                            marginLeft: "4px",
+                        }}
                     >
                         {open ? <MenuOpenIcon /> : <MenuIcon />}
                     </IconButton>
@@ -104,24 +79,29 @@ const NavDesktop = (props) => {
                 sx={{
                     "& .MuiDrawer-paper": { overflowY: "visible" },
                     "& .MuiGrid-container": { flexWrap: "nowrap" },
-                }}
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                })}
-                classes={{
-                    paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
-                    }),
+                    flexShrink: 0,
+                    whiteSpace: "nowrap",
+                    "& .MuiPaper-root": {
+                        borderRightWidth: 0,
+                        width: open ? "275px" : "56px",
+                        overflowX: open ? "visible" : "hidden",
+                    },
+                    width: open ? "275px" : "56px",
                 }}
             >
-                <div className={classes.toolbar}></div>
+                <DrawerHeader />
                 <BugScrollbars>
                     <Menu showGroups={open} />
                 </BugScrollbars>
             </Drawer>
-            <div className={classes.content}>{props.children}</div>
+            <Box
+                sx={{
+                    position: "relative",
+                    flexGrow: 1,
+                }}
+            >
+                {props.children}
+            </Box>
         </Box>
     );
 };

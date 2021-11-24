@@ -1,22 +1,10 @@
 import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
-import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
+import Box from "@mui/material/Box";
+import BugHelperText from "@core/BugHelperText";
 import { Controller } from "react-hook-form";
-
-const useStyles = makeStyles((theme) => ({
-    helperText: {
-        color: "rgba(255, 255, 255, 0.7)",
-        margin: "0",
-        fontSize: "0.75rem",
-        marginTop: "3px",
-        textAlign: "left",
-        fontFamily: "ReithSans",
-        fontWeight: "400",
-        lineHeight: "1.66",
-    },
-}));
 
 const BugConfigFormAutocomplete = ({
     name,
@@ -33,8 +21,6 @@ const BugConfigFormAutocomplete = ({
     helperText,
     ...props
 }) => {
-    const classes = useStyles();
-
     // we use this bit of code to work out if we're dealing with an array of objects.
     // autocomplete only allows simple arrays or object arrays with 'id' and 'label' keys
     let isObjectArray = false;
@@ -107,7 +93,7 @@ const BugConfigFormAutocomplete = ({
                     rules={rules}
                 />
             </FormControl>
-            {helperText && <div className={classes.helperText}>{helperText}</div>}
+            {helperText && <BugHelperText>{helperText}</BugHelperText>}
         </>
     );
 };

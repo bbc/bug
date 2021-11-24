@@ -3,22 +3,19 @@ import { useParams } from "react-router-dom";
 import DeviceTab from "./../components/DeviceTab";
 import NetworkTab from "./../components/NetworkTab";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    form: {
-        "& .tabSpacer": {
-            height: 60,
-        },
-    },
-}));
+import Box from "@mui/material/Box";
 
 export default function MainPanel() {
-    const classes = useStyles();
     const params = useParams();
 
     return (
-        <>
+        <Box
+            sx={{
+                "& .tabSpacer": {
+                    height: "60px",
+                },
+            }}
+        >
             <BugPanelTabbedForm
                 className={classes.form}
                 labels={["Device", "Network"]}
@@ -29,6 +26,6 @@ export default function MainPanel() {
                 locations={[`/panel/${params.panelId}/device`, `/panel/${params.panelId}/network`]}
                 defaultTab={0}
             ></BugPanelTabbedForm>
-        </>
+        </Box>
     );
 }

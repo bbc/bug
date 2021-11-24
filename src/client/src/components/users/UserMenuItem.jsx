@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { makeStyles } from "@mui/styles";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -15,18 +14,7 @@ import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
 import md5 from "crypto-js/md5";
 
-const useStyles = makeStyles((theme) => ({
-    icon: {
-        padding: "1px",
-    },
-    small: {
-        width: theme.spacing(3),
-        height: theme.spacing(3),
-    },
-}));
-
 const UserMenuItem = (props) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -121,8 +109,8 @@ const UserMenuItem = (props) => {
     return (
         <>
             <ListItem button onClick={handleOpenMenuClick}>
-                <ListItemIcon className={classes.icon}>
-                    <Avatar src={getGravatarImage(user?.data?.email)} className={classes.small}>
+                <ListItemIcon sx={{ padding: "1px" }}>
+                    <Avatar src={getGravatarImage(user?.data?.email)} sx={{ width: "24px", height: "24px" }}>
                         {getInitials(user?.data?.name)}
                     </Avatar>
                 </ListItemIcon>

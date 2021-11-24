@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { makeStyles } from "@mui/styles";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -7,53 +6,7 @@ import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 
-const useStyles = makeStyles((theme) => ({
-    number: {
-        margin: 16,
-        "@media (max-height:400px) and (max-width:800px)": {
-            margin: 8,
-            fontSize: "1.8rem",
-        },
-    },
-    numberPad: {
-        marginBottom: 16,
-        "@media (max-height:400px) and (max-width:800px)": {
-            marginTop: 16,
-            marginRight: 16,
-        },
-    },
-    backspace: {
-        margin: 16,
-        marginTop: "19px",
-        marginBottom: "11px",
-        "@media (max-height:400px) and (max-width:800px)": {
-            margin: 8,
-            marginTop: 8,
-            marginBottom: 0,
-        },
-    },
-    textField: {
-        paddingTop: 16,
-        paddingBottom: 16,
-        textAlign: "center",
-        "& .MuiOutlinedInput-root": {
-            borderRadius: 0,
-            fontSize: "2.125rem",
-        },
-        "@media (max-height:400px) and (max-width:800px)": {
-            padding: 16,
-        },
-    },
-    controlContainer: {
-        "@media (max-height:400px) and (max-width:800px)": {
-            flexWrap: "nowrap",
-            flexDirection: "row",
-        },
-    },
-}));
-
 export default function PinLogin({ handleLogin }) {
-    const classes = useStyles();
     const [pin, setPin] = useState("");
 
     const handleDelete = async () => {
@@ -87,7 +40,17 @@ export default function PinLogin({ handleLogin }) {
                         variant="outlined"
                     >
                         <CardActionArea>
-                            <Typography className={classes.number} align="center" variant="h4">
+                            <Typography
+                                sx={{
+                                    margin: "16px",
+                                    "@media (max-height:400px) and (max-width:800px)": {
+                                        margin: "8px",
+                                        fontSize: "1.8rem",
+                                    },
+                                }}
+                                align="center"
+                                variant="h4"
+                            >
                                 {number}
                             </Typography>
                         </CardActionArea>
@@ -102,7 +65,20 @@ export default function PinLogin({ handleLogin }) {
                 <Grid item xs={4}>
                     <Card onClick={handleDelete} variant="outlined">
                         <CardActionArea>
-                            <Typography className={classes.backspace} align="center" variant="h4">
+                            <Typography
+                                sx={{
+                                    margin: "16px",
+                                    marginTop: "19px",
+                                    marginBottom: "11px",
+                                    "@media (max-height:400px) and (max-width:800px)": {
+                                        margin: "8px",
+                                        marginTop: "8px",
+                                        marginBottom: "0px",
+                                    },
+                                }}
+                                align="center"
+                                variant="h4"
+                            >
                                 <BackspaceIcon fontSize="inherit" />
                             </Typography>
                         </CardActionArea>
@@ -114,10 +90,29 @@ export default function PinLogin({ handleLogin }) {
 
     return (
         <form>
-            <Grid container className={classes.controlContainer}>
+            <Grid
+                container
+                sx={{
+                    "@media (max-height:400px) and (max-width:800px)": {
+                        flexWrap: "nowrap",
+                        flexDirection: "row",
+                    },
+                }}
+            >
                 <Grid item xs={12}>
                     <TextField
-                        className={classes.textField}
+                        sx={{
+                            paddingTop: "16px",
+                            paddingBottom: "16px",
+                            textAlign: "center",
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "0px",
+                                fontSize: "2.125rem",
+                            },
+                            "@media (max-height:400px) and (max-width:800px)": {
+                                padding: "16px",
+                            },
+                        }}
                         onChange={(event) => handleChange(event)}
                         value={pin}
                         inputProps={{ style: { textAlign: "center" } }}
@@ -126,7 +121,17 @@ export default function PinLogin({ handleLogin }) {
                         type="password"
                     />
                 </Grid>
-                <Grid item xs={12} className={classes.numberPad}>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        marginBottom: "16px",
+                        "@media (max-height:400px) and (max-width:800px)": {
+                            marginTop: "16px",
+                            marginRight: "16px",
+                        },
+                    }}
+                >
                     {getNumpad()}
                 </Grid>
             </Grid>

@@ -1,25 +1,19 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
-
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 
-const useStyles = makeStyles((theme) => ({
-    card: {
-        minWidth: 150,
-        padding: theme.spacing(1),
-        textAlign: "center",
-        color: theme.palette.text.secondary,
-    },
-}));
-
-export default function StatusCard(props) {
-    const classes = useStyles();
-
+export default function StatusCard() {
     return (
         <Grid item lg={12} sm={12} xs={12}>
-            <Card className={classes.card}>
+            <Card
+                sx={{
+                    minWidth: "150px",
+                    padding: 1,
+                    textAlign: "center",
+                    color: "text.secondary",
+                }}
+            >
                 <CardContent></CardContent>
             </Card>
         </Grid>

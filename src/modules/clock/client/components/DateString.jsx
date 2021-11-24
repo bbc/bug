@@ -1,20 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    dateText: {
-        fontSize: 40,
-        "@media (max-width:1280px)": {
-            fontSize: 30,
-        },
-        "@media (max-width:960px)": {
-            fontSize: 24,
-        },
-    },
-}));
+import Box from "@mui/material/Box";
 
 export default function DateString(props) {
-    const classes = useStyles();
     const [dateString, setDateString] = useState("DD/MM/YYYY");
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = [
@@ -49,5 +36,19 @@ export default function DateString(props) {
         setDateString(day + ", " + month + " " + date + ", " + year);
     };
 
-    return <div className={classes.dateText}>{dateString}</div>;
+    return (
+        <Box
+            sx={{
+                fontSize: "40px",
+                "@media (max-width:1280px)": {
+                    fontSize: "30px",
+                },
+                "@media (max-width:960px)": {
+                    fontSize: "24px",
+                },
+            }}
+        >
+            {dateString}
+        </Box>
+    );
 }

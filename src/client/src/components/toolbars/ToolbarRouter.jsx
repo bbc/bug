@@ -1,6 +1,5 @@
 import React from "react";
 import PageTitle from "@components/PageTitle";
-import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
@@ -8,17 +7,21 @@ import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
 import UsersToolbar from "@components/toolbars/UsersToolbar";
 import SecurityToolbar from "@components/toolbars/SecurityToolbar";
 import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
+import Box from "@mui/material/Box";
 import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
 
-const useStyles = makeStyles((theme) => ({
-    title: {
-        flexGrow: 1,
-        overflow: "hidden",
-    },
-}));
+const Title = ({ children }) => (
+    <Box
+        sx={{
+            flexGrow: 1,
+            overflow: "hidden",
+        }}
+    >
+        {children}
+    </Box>
+);
 
 const ToolbarRouter = (props) => {
-    const classes = useStyles();
     const location = useLocation();
 
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -43,45 +46,45 @@ const ToolbarRouter = (props) => {
         case "/panels":
             return (
                 <>
-                    <div className={classes.title}>
+                    <Title>
                         <PageTitle />
-                    </div>
+                    </Title>
                     <PanelsToolbar />
                 </>
             );
         case "/panels/edit":
             return (
                 <>
-                    <div className={classes.title}>
+                    <Title>
                         <PageTitle />
-                    </div>
+                    </Title>
                     <PanelsEditToolbar />
                 </>
             );
         case "/system/users":
             return (
                 <>
-                    <div className={classes.title}>
+                    <Title>
                         <PageTitle />
-                    </div>
+                    </Title>
                     <UsersToolbar />
                 </>
             );
         case "/system/security":
             return (
                 <>
-                    <div className={classes.title}>
+                    <Title>
                         <PageTitle />
-                    </div>
+                    </Title>
                     <SecurityToolbar />
                 </>
             );
         case "/system/security/edit":
             return (
                 <>
-                    <div className={classes.title}>
+                    <Title>
                         <PageTitle />
-                    </div>
+                    </Title>
                     <SecurityEditToolbar />
                 </>
             );
@@ -89,9 +92,9 @@ const ToolbarRouter = (props) => {
         default:
             return (
                 <>
-                    <div className={classes.title}>
+                    <Title>
                         <PageTitle />
-                    </div>
+                    </Title>
                     <PanelToolbar />
                 </>
             );

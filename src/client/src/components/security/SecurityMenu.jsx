@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -14,14 +13,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useHistory } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
-    iconButton: {
-        padding: 4,
-    },
-}));
-
 export default function SecurityMenu({ strategy }) {
-    const classes = useStyles();
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -77,7 +69,7 @@ export default function SecurityMenu({ strategy }) {
     return (
         <div>
             <IconButton
-                className={classes.iconButton}
+                sx={{ padding: "4px" }}
                 aria-label="more"
                 aria-controls="long-menu"
                 aria-haspopup="true"

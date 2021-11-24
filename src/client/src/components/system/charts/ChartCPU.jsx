@@ -8,16 +8,8 @@ import hslToHex from "@utils/hslToHex";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles((theme) => ({
-    label: {
-        color: theme.palette.secondary.main,
-    },
-}));
 
 export default function ChartCPU({ containers, stats, showTitle }) {
-    const classes = useStyles();
     const windowSize = useWindowSize();
     const panelList = useSelector((state) => state.panelList);
     const data = stats.map((rawData) => {
@@ -109,10 +101,10 @@ export default function ChartCPU({ containers, stats, showTitle }) {
                                 tickFormatter={(unixTime) => moment(Math.round(unixTime / 1000)).format("HH:mm Do")}
                                 type="number"
                             >
-                                <Label className={classes.label} value="Time" position="bottom" offset={0} />
+                                <Label sx={{ color: "secondary.main" }} value="Time" position="bottom" offset={0} />
                             </XAxis>
                             <YAxis>
-                                <Label className={classes.label} value="Percentage (%)" angle="-90" />
+                                <Label sx={{ color: "secondary.main" }} value="Percentage (%)" angle="-90" />
                             </YAxis>
                             <Tooltip formatter={tooltipFormatter} />
                             {getSeries(data[0], "timestamp")}

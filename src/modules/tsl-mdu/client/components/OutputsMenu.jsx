@@ -1,5 +1,4 @@
 import React from "react";
-// import { makeStyles } from "@mui/styles";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,7 +15,6 @@ import { useHistory } from "react-router-dom";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 export default function OutputMenu({ output, panelId, onChange, onRename, onDelay }) {
-    // const classes = useStyles();
     const sendAlert = useAlert();
     const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState(null);
