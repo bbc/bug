@@ -16,6 +16,7 @@ import BugApiTableFilters from "@components/BugApiTableFilters";
 import { useCookies } from "react-cookie";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import IconButton from "@mui/material/IconButton";
+import { useCookieId } from "@hooks/CookieId";
 
 const useStyles = makeStyles(async (theme) => ({
     content: {},
@@ -68,6 +69,8 @@ export default function BugApiTable({
     const [cookies, setCookie] = useCookies(["BugApiTable"]);
     const [showFilters, setShowFilters] = React.useState(true);
     const [filters, setFilters] = React.useState({});
+    const cookieId = useCookieId("BugApiTable");
+    const [cookies, setCookie] = useCookies([cookieId]);
 
     useEffect(() => {
         if (columns[defaultSortIndex] !== undefined) {
@@ -87,9 +90,9 @@ export default function BugApiTable({
 
     // run once
     useEffect(() => {
-        if (cookies && cookies["filters"]) {
-            if (cookies["filters"] && Object.keys(cookies["filters"]).length > 0) {
-                setFilters(cookies["filters"]);
+        if (cookies && cookies[`${cookieId}_filters`]) {
+            if (cookies[`${cookieId}_filters`] && Object.keys(cookies[`${cookieId}_filters`]).length > 0) {
+                setFilters(cookies[`${cookieId}_filters`]);
                 setShowFilters(true);
                 return;
             }
@@ -109,7 +112,7 @@ export default function BugApiTable({
     const handleFiltersChanged = (value) => {
         // update cookies and reload data
         setFilters(value);
-        setCookie("filters", value);
+        setCookie(`${cookieId}_filters`, value);
     };
 
     const processColumnStyles = () => {
