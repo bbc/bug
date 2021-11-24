@@ -19,15 +19,15 @@ import { faBug } from "@fortawesome/free-solid-svg-icons";
 import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 import { styled } from "@mui/material/styles";
 
-const StyledList = styled(List)({
-    backgroundColor: "background.paper",
+const StyledList = styled(List)(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
     maxWidth: 550,
     "& .MuiListItem-root": {
         borderBottom: "1px solid #121212",
     },
     padding: 0,
     margin: "8px auto",
-});
+}));
 
 const NavIcon = () => (
     <ListItemIcon
