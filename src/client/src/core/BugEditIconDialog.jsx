@@ -84,8 +84,8 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                         sx={{
                             position: "absolute",
                             zIndex: 2002,
-                            right: 28,
-                            marginTop: -12,
+                            right: "28px",
+                            marginTop: "-12px",
                             "& .twitter-picker": {
                                 backgroundColor: "#3a3a3a !important",
                             },
@@ -156,7 +156,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                                     variant={selectedIcon === null ? "contained" : "outlined"}
                                     color={selectedIcon === null ? "primary" : "default"}
                                     disableElevation
-                                    sx={{ margin: 4 }}
+                                    sx={{ margin: "4px" }}
                                     onClick={() => setSelectedIcon(null)}
                                     style={{ color: selectedColour }}
                                 >
@@ -182,7 +182,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                             color={selectedIcon === icon ? "primary" : "default"}
                             disableElevation
                             sx={{
-                                margin: 4,
+                                margin: "4px",
                             }}
                             onClick={() => setSelectedIcon(icon)}
                             style={{ color: selectedColour }}

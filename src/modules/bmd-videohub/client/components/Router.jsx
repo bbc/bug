@@ -170,11 +170,11 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 <Box
                     sx={{
                         position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
+                        top: "0px",
+                        left: "0px",
+                        right: "0px",
                         bottom: "50%",
-                        marginBottom: 2,
+                        marginBottom: "2px",
                         "@media (max-width:600px)": {
                             // marginBottom: 1,
                             // position: "static",

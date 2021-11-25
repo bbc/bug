@@ -121,7 +121,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
         <Alert
             severity={mappedSeverity[type]}
             sx={{
-                borderRadius: 0,
+                borderRadius: "0px",
                 "& .MuiAlert-message": {
                     padding: "0px",
                     flexGrow: 1,

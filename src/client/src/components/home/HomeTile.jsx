@@ -32,15 +32,15 @@ const StyledCardHeader = styled(CardHeader)({
         whiteSpace: "nowrap",
     },
     "& .MuiCardHeader-action": {
-        margin: 0,
+        margin: "0px",
         flexShrink: 0,
     },
     "& .MuiCardHeader-avatar": {
-        marginLeft: 16,
+        marginLeft: "16px",
         flexShrink: 0,
     },
     "& .MuiCardHeader-content": {
-        minWidth: 0,
+        minWidth: "0px",
         flexShrink: 1,
     },
 });
@@ -70,7 +70,7 @@ const StyledLink = styled(Link)({
 });
 
 const StyledCardContent = styled(CardContent)({
-    padding: 0,
+    padding: "0px",
     "&:last-child": {
         paddingBottom: "0px",
     },
@@ -80,20 +80,20 @@ const StyledCardContent = styled(CardContent)({
 });
 
 const StyledGrid = styled(Grid)({
-    padding: 8,
+    padding: "8px",
     "@media (max-width:1200px)": {
-        padding: 4,
+        padding: "4px",
     },
     "@media (max-width:1024px)": {
-        padding: 2,
+        padding: "2px",
     },
     "@media (max-width:600px)": {
-        padding: 0,
-        paddingBottom: 1,
+        padding: "0px",
+        paddingBottom: "1px",
     },
     "@media (max-height:400px)": {
-        padding: 4,
-        paddingBottom: 1,
+        padding: "4px",
+        paddingBottom: "1px",
     },
 });
 

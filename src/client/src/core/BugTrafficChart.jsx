@@ -148,11 +148,11 @@ export default function BugTrafficChart({ url, type }) {
                         width={70}
                         layout="vertical"
                         wrapperStyle={{
-                            top: 20,
-                            right: 20,
+                            top: "20px",
+                            right: "20px",
                             backgroundColor: "#333",
                             border: "1px solid #333",
-                            borderRadius: 3,
+                            borderRadius: "3px",
                             lineHeight: "40px",
                             opacity: 0.8,
                         }}
@@ -184,7 +184,7 @@ export default function BugTrafficChart({ url, type }) {
                 }}
             >
                 <Button
-                    sx={{ margin: 1 }}
+                    sx={{ margin: "8px" }}
                     variant="contained"
                     color="secondary"
                     onClick={() => handleBack(5)}
@@ -194,7 +194,7 @@ export default function BugTrafficChart({ url, type }) {
                 </Button>
 
                 <Button
-                    sx={{ margin: 1 }}
+                    sx={{ margin: "8px" }}
                     variant="contained"
                     color={enableAutoRefresh ? "primary" : "secondary"}
                     onClick={handleLatest}
@@ -203,10 +203,10 @@ export default function BugTrafficChart({ url, type }) {
                     Latest
                 </Button>
 
-                <TimePicker ampm={false} sx={{ margin: 1 }} value={range[1]} onChange={handleTimePickerChange} />
+                <TimePicker ampm={false} sx={{ margin: "8px" }} value={range[1]} onChange={handleTimePickerChange} />
 
                 <Button
-                    sx={{ margin: 1 }}
+                    sx={{ margin: "8px" }}
                     variant="contained"
                     disabled={enableAutoRefresh}
                     color="secondary"

@@ -282,9 +282,7 @@ export default function EncodersTable({ panelId }) {
                     title: "Name",
                     content: (item) => (
                         <>
-                            <Typography variant="body1">
-                                {item.customName} sifb ifshaih fsuifhgs ufhs fus dfsuifghsuif hsfudishfdsiu i
-                            </Typography>
+                            <Typography variant="body1">{item.customName}</Typography>
                             <Typography variant="subtitle1">{item.model}</Typography>
                         </>
                     ),

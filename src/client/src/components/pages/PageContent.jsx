@@ -23,20 +23,20 @@ import Box from "@mui/material/Box";
 
 const StyledPageContent = styled("div")({
     height: "100%",
-    padding: 4,
+    padding: "4px",
 });
 
 const StyledHomePageContent = styled("div")({
     height: "100%",
-    padding: 8,
+    padding: "8px",
     "@media (max-width:1200px)": {
-        padding: 4,
+        padding: "4px",
     },
     "@media (max-width:1024px)": {
-        padding: 2,
+        padding: "2px",
     },
     "@media (max-width:600px)": {
-        padding: 0,
+        padding: "0px",
     },
 });
 

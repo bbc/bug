@@ -55,7 +55,7 @@ export default function MainPanel() {
                 alignItems: "center",
                 justifyContent: "space-around",
                 minWidth: "200px",
-                padding: 1,
+                padding: "8px",
                 textAlign: "center",
                 color: "text.secondary",
             }}

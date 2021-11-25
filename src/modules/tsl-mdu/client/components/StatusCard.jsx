@@ -9,7 +9,7 @@ export default function StatusCard() {
             <Card
                 sx={{
                     minWidth: "150px",
-                    padding: 1,
+                    padding: "8px",
                     textAlign: "center",
                     color: "text.secondary",
                 }}

@@ -12,7 +12,7 @@ export default function Chips({ options }) {
                 display: "flex",
                 flexWrap: "wrap",
                 "& > *": {
-                    margin: 0.5,
+                    margin: "0.5px",
                 },
             }}
         >

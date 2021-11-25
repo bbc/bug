@@ -26,14 +26,14 @@ export default function PageReconnect(props) {
                     sx={{
                         fontSize: 20,
                         textAlign: "center",
-                        margin: 16,
+                        margin: "16px",
                         "@media (max-width:600px)": {
                             fontSize: 16,
-                            margin: 8,
+                            margin: "8px",
                         },
                         "@media (max-height:400px) and (max-width:800px)": {
                             fontSize: 20,
-                            margin: 6,
+                            margin: "6px",
                         },
                     }}
                 >
@@ -67,12 +67,12 @@ export default function PageReconnect(props) {
                     color="primary"
                     disableElevation
                     sx={{
-                        margin: 16,
+                        margin: "16px",
                         "@media (max-width:600px)": {
-                            margin: 8,
+                            margin: "8px",
                         },
                         "@media (max-height:400px) and (max-width:800px)": {
-                            margin: 4,
+                            margin: "4px",
                         },
                     }}
                 >
