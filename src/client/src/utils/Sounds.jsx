@@ -7,14 +7,14 @@ const useSounds = (path) => {
         console.log("Shhhh");
     };
 
-    const settings = useApiPoller({
-        url: `/api/system/settings`,
-        interval: 2000,
-    });
+    // const settings = useApiPoller({
+    //     url: `/api/system/settings`,
+    //     interval: 2000,
+    // });
 
-    if (settings.status === "success" && settings.data.sound) {
-        return play;
-    }
+    // if (settings.status === "success" && settings.data.sound) {
+    //     return play;
+    // }
 
     return quiet;
 };

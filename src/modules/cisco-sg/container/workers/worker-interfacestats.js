@@ -7,9 +7,8 @@ const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const ciscoSGSNMP = require("../utils/ciscosg-snmp");
 const formatBps = require("@core/format-bps");
-const { deflate } = require("zlib");
-
-let interfacesCollection;
+const trafficSaveHistory = require("../services/traffic-savehistory");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -22,7 +21,11 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     // get the collection reference
-    interfacesCollection = await mongoCollection("interfaces");
+    const interfacesCollection = await mongoCollection("interfaces");
+    const historyCollection = await mongoCollection("history");
+
+    // and now create indexes with ttl
+    await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
 
     // Kick things off
     console.log(`worker-interfacestate: connecting to device at ${workerData.address}`);
@@ -52,6 +55,8 @@ const main = async () => {
 
             // do this now - in case updating the DB takes a while ...
             const sampleDate = new Date();
+
+            const historyArray = [];
 
             for (let eachInterface of interfaces) {
                 // we create a new object, and use $set in mongo, so we don't overwrite the main interface worker results
@@ -120,6 +125,13 @@ const main = async () => {
                 fieldsToUpdate["tx-rate-text"] = formatBps(txRate);
                 fieldsToUpdate["rx-rate-text"] = formatBps(rxRate);
 
+                // save history
+                historyArray.push({
+                    id: eachInterface.interfaceId,
+                    "tx-rate": txRate,
+                    "rx-rate": rxRate,
+                });
+
                 // save back to database
                 await interfacesCollection.updateOne(
                     {
@@ -128,6 +140,9 @@ const main = async () => {
                     { $set: fieldsToUpdate }
                 );
             }
+
+            // save history
+            await trafficSaveHistory(historyCollection, historyArray);
         }
 
         await delay(5000);
