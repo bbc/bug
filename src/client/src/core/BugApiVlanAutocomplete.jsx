@@ -89,14 +89,20 @@ export default function BugApiVlanAutocomplete({
         : [];
 
     if (isTrunk) {
-        value = -1;
         if (taggedValue?.length === options?.length) {
             trunkLabel = `Trunk - All VLANs`;
         } else {
             trunkLabel = `Trunk - ${convertToRange(taggedValue)}`;
         }
+        value = {
+            id: -1,
+            label: trunkLabel,
+        };
     } else {
-        value = untaggedValue;
+        value = {
+            id: untaggedValue,
+            label: options.find((option) => option.id === untaggedValue),
+        };
     }
 
     return (
