@@ -9,7 +9,7 @@ module.exports = async () => {
         host: config.address,
         username: config.username,
         password: config.password,
-        timeout: 10000,
+        timeout: 20000,
         commands: ["write memory"],
     });
     return result && result.length === 1 && result[0].indexOf("Copy succeeded") > -1;

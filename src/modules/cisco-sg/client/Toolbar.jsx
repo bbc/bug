@@ -56,6 +56,7 @@ export default function Toolbar(props) {
                 variant="outlined"
                 color={isPending ? "warning" : "primary"}
                 onClick={handleSave}
+                timeout={20000}
             >
                 Save
             </BugApiSaveButton>
