@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import formatBps from "@utils/format-bps";
 import { format } from "date-fns";
-import { ComposedChart, Area, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { ComposedChart, Area, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";

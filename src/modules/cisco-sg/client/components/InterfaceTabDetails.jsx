@@ -10,7 +10,6 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
         interval: 5000,
     });
 
-    console.log(interfaceId);
     if (iface.status === "idle" || iface.status === "loading") {
         return <Loading height="30vh" />;
     }
