@@ -163,6 +163,7 @@ export default function BugApiVlanAutocomplete({
                         width: 54,
                         height: 54,
                     }}
+                    disabled={disabled || isActive}
                     aria-label="Edit Trunks"
                     onClick={handleEditClicked}
                 >
