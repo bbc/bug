@@ -29,9 +29,6 @@ export default function BugTrafficChart({ url, type }) {
 
     useAsyncEffect(async () => {
         const fetchedStats = await AxiosGet(`${url}/${range[0]}/${range[1]}`);
-        // for (let eachStat of fetchedStats) {
-        //     eachStat["rx"] = eachStat["rx"] * -1;
-        // }
         setStats(fetchedStats);
     }, [url, range]);
 
@@ -77,23 +74,6 @@ export default function BugTrafficChart({ url, type }) {
             newEnd = Date.now();
         }
         setRange([newEnd - rangeSpan * 60000, newEnd]);
-    };
-
-    const getSeries = () => {
-        if (type === "area") {
-            return (
-                <>
-                    <Area isAnimationActive={false} type="monotone" dataKey="tx" fill="#337ab7" stroke="#337ab7" />
-                    <Area isAnimationActive={false} type="monotone" dataKey="rx" fill="#bb2828" stroke="#bb2828" />
-                </>
-            );
-        }
-        return (
-            <>
-                <Bar isAnimationActive={false} dataKey="tx" fill="#337ab7" />
-                <Bar isAnimationActive={false} dataKey="rx" fill="#bb2828" />
-            </>
-        );
     };
 
     const CustomTooltip = ({ active, payload, label }) => {
@@ -142,8 +122,8 @@ export default function BugTrafficChart({ url, type }) {
         >
             <ResponsiveContainer width="100%" height={chartHeight}>
                 <ComposedChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                    <Area isAnimationActive={false} type="monotone" dataKey="tx" fill="#337ab7" stroke="#337ab7" />
-                    <Area isAnimationActive={false} type="monotone" dataKey="rx" fill="#bb2828" stroke="#bb2828" />
+                    <Area isAnimationActive={false} dataKey="tx" fill="#337ab7" stroke="#337ab7" />
+                    <Area isAnimationActive={false} dataKey="rx" fill="#bb2828" stroke="#bb2828" />
                     <Legend
                         width={70}
                         layout="vertical"
