@@ -9,8 +9,8 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
-import { TimePicker } from "@material-ui/pickers";
 import { useWindowSize } from "@utils/WindowSize";
+import BugTimePicker from "@core/BugTimePicker";
 
 export default function BugTrafficChart({ url, type }) {
     const rangeSpan = 10;
@@ -181,6 +181,9 @@ export default function BugTrafficChart({ url, type }) {
             <Box
                 sx={{
                     textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
                 <Button
@@ -203,7 +206,7 @@ export default function BugTrafficChart({ url, type }) {
                     Latest
                 </Button>
 
-                <TimePicker ampm={false} sx={{ margin: "8px" }} value={range[1]} onChange={handleTimePickerChange} />
+                <BugTimePicker value={range[1]} onChange={handleTimePickerChange} minutesStep={5} />
 
                 <Button
                     sx={{ margin: "8px" }}
