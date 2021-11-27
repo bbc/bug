@@ -98,6 +98,46 @@ router.get(
 
 /**
  * @swagger
+ * /user:
+ *   post:
+ *     description: Gets all the users from the BUG database
+ *     tags: [user]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: formData
+ *         name: sortField
+ *         type: string
+ *         required: false
+ *         description: The field to sort results by
+ *       - in: formData
+ *         name: sortDirection
+ *         type: string
+ *         required: false
+ *         description: The direction to sort by - either "asc" or "desc"
+ *       - in: formData
+ *         name: filters
+ *         type: object
+ *         required: false
+ *         description: An object containing key/value pairs to filter results by
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all users.
+ *         schema:
+ *           type: object
+ */
+router.post(
+    "/list/",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, {
+            status: "success",
+            data: await userList(req.body.sortField, req.body.sortDirection, req.body.filters),
+        });
+    })
+);
+/**
+ * @swagger
  * /user/{id}:
  *   get:
  *     description: Gets a users details from the BUG database

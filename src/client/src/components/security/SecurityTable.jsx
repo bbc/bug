@@ -6,34 +6,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { makeStyles } from "@mui/styles";
 import SecurityTableRow from "@components/security/SecurityTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles(async (theme) => ({
-    colType: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-    colDescription: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
-    tableHead: {
-        "@media (max-width:200px)": {
-            display: "none",
-        },
-    },
-    colNav: {
-        width: "1rem",
-    },
-}));
-
 export default function SecurityTable() {
-    const classes = useStyles();
     const strategies = useSelector((state) => state.strategies);
 
     if (strategies.status === "loading" || strategies.status === "idle") {
@@ -44,13 +21,35 @@ export default function SecurityTable() {
         <>
             <TableContainer component={Paper} square>
                 <Table>
-                    <TableHead className={classes.tableHead}>
+                    <TableHead
+                        sx={{
+                            "@media (max-width:200px)": {
+                                display: "none",
+                            },
+                        }}
+                    >
                         <TableRow>
-                            <TableCell className={classes.colState}></TableCell>
-                            <TableCell className={classes.colName}>Name</TableCell>
-                            <TableCell className={classes.colType}>Type</TableCell>
-                            <TableCell className={classes.colDescription}>Description</TableCell>
-                            <TableCell className={classes.colNav}></TableCell>
+                            <TableCell></TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell
+                                sx={{
+                                    "@media (max-width:512px)": {
+                                        display: "none",
+                                    },
+                                }}
+                            >
+                                Type
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    "@media (max-width:1024px)": {
+                                        display: "none",
+                                    },
+                                }}
+                            >
+                                Description
+                            </TableCell>
+                            <TableCell sx={{ width: "1rem" }}></TableCell>
                         </TableRow>
                     </TableHead>
 

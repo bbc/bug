@@ -56,56 +56,56 @@ const styles = (theme) => ({
             whiteSpace: "nowrap",
             fontSize: 15,
             "& .MuiBox-root": {
-                margin: 12,
+                margin: "12px",
             },
         },
     },
     icon: {
         color: theme.palette.primary.main,
         fontSize: 120,
-        padding: 16,
+        padding: "16px",
         "@media (max-width:800px)": {
             fontSize: 100,
-            padding: 10,
+            padding: "10px",
         },
         "@media (max-width:600px)": {
             fontSize: 80,
-            padding: 8,
+            padding: "8px",
         },
     },
     cardContent: {
         textAlign: "center",
-        marginLeft: 16,
-        marginRight: 16,
+        marginLeft: "16px",
+        marginRight: "16px",
         "@media (max-height:400px) and (max-width:800px)": {
-            margin: 0,
-            padding: 0,
+            margin: "0px",
+            padding: "0px",
             "&:last-child": {
                 paddingBottom: 0,
             },
         },
         "@media (max-width:480px)": {
-            padding: 8,
-            margin: 8,
+            padding: "8px",
+            margin: "8px",
         },
     },
     title: {
         fontSize: 50,
-        padding: 16,
+        padding: "16px",
         fontWeight: 500,
-        marginBottom: 16,
+        marginBottom: "16px",
         "@media (max-width:800px)": {
             fontSize: 44,
-            marginBottom: 10,
+            marginBottom: "10px",
         },
         "@media (max-width:600px)": {
             fontSize: 32,
-            paddingTop: 8,
-            marginBottom: 8,
+            paddingTop: "8px",
+            marginBottom: "8px",
         },
         "@media (max-height:400px) and (max-width:800px)": {
             fontSize: 26,
-            paddingTop: 4,
+            paddingTop: "4px",
         },
     },
     tabs: {
@@ -122,8 +122,8 @@ const styles = (theme) => ({
     },
     logoWrapper: {
         "@media (max-height:400px) and (max-width:800px)": {
-            margin: 16,
-            width: 300,
+            margin: "16px",
+            width: "300px",
         },
     },
 });

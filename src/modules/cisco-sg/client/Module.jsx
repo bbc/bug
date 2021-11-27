@@ -1,6 +1,7 @@
 import React from "react";
 import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
+import InterfacePanel from "./panels/InterfacePanel";
 import BugModuleWrapper from "@core/BugModuleWrapper";
 import BugModuleRoute from "@core/BugModuleRoute";
 
@@ -16,9 +17,9 @@ export default function Module(props) {
             <BugModuleRoute exact path="/panel/:panelId/:stackId">
                 <MainPanel {...props} />
             </BugModuleRoute>
-            {/* <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceName">
+            <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceId">
                 <InterfacePanel />
-            </BugModuleRoute> */}
+            </BugModuleRoute>
         </BugModuleWrapper>
     );
 }

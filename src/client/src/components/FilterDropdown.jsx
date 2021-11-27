@@ -8,7 +8,7 @@ export default function FilterTextField({ value, onChange, options }) {
             select
             sx={{
                 "& .MuiInputBase-root": {
-                    borderRadius: 0,
+                    borderRadius: "0px",
                     textTransform: "none",
                 },
                 "& .MuiInputBase-input": {

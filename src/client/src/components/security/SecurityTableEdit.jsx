@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { makeStyles } from "@mui/styles";
 import SecurityTableDraggableRow from "@components/security/SecurityTableDraggableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
@@ -28,29 +27,7 @@ import {
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 
-const useStyles = makeStyles(async (theme) => ({
-    colType: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-    colDescription: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
-    tableHead: {
-        "@media (max-width:200px)": {
-            display: "none",
-        },
-    },
-    colNav: {
-        width: "1rem",
-    },
-}));
-
 export default function SecurityTableEdit() {
-    const classes = useStyles();
     const strategies = useSelector((state) => state.strategies);
     const [localStrategies, setLocalStrategies] = React.useState(strategies.data);
     const sendAlert = useAlert();
@@ -90,13 +67,39 @@ export default function SecurityTableEdit() {
         <>
             <TableContainer component={Paper} square>
                 <Table>
-                    <TableHead className={classes.tableHead}>
+                    <TableHead
+                        sx={{
+                            "@media (max-width:200px)": {
+                                display: "none",
+                            },
+                        }}
+                    >
                         <TableRow>
-                            <TableCell className={classes.colDrag}></TableCell>
-                            <TableCell className={classes.colName}>Name</TableCell>
-                            <TableCell className={classes.colType}>Type</TableCell>
-                            <TableCell className={classes.colDescription}>Description</TableCell>
-                            <TableCell className={classes.colNav}></TableCell>
+                            <TableCell></TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell
+                                sx={{
+                                    "@media (max-width:512px)": {
+                                        display: "none",
+                                    },
+                                }}
+                            >
+                                Type
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    "@media (max-width:1024px)": {
+                                        display: "none",
+                                    },
+                                }}
+                            >
+                                Description
+                            </TableCell>
+                            <TableCell
+                                sx={{
+                                    width: "1rem",
+                                }}
+                            ></TableCell>
                         </TableRow>
                     </TableHead>
 

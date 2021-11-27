@@ -1,74 +1,84 @@
 import React from "react";
-import Table from "@mui/material/Table";
-import PropTypes from "prop-types";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { makeStyles } from "@mui/styles";
-import UserTableRow from "@components/users/UserTableRow";
-import Loading from "@components/Loading";
-import { useApiPoller } from "@utils/ApiPoller";
 import { useSelector } from "react-redux";
-
-const useStyles = makeStyles(async (theme) => ({
-    colState: {
-        width: "1rem",
-    },
-    colEmail: {
-        "@media (max-width:800px)": {
-            display: "none",
-        },
-    },
-    colNav: {
-        width: "1rem",
-    },
-}));
+import BugApiTable from "@core/BugApiTable";
+import { useHistory } from "react-router-dom";
+import BugApiSwitch from "@core/BugApiSwitch";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
 
 export default function UserTable({ interval }) {
-    const classes = useStyles();
+    const history = useHistory();
     const user = useSelector((state) => state.user);
     const currentUserId = user.status === "success" ? user.data?.id : null;
-    const users = useApiPoller({
-        url: `/api/user`,
-        interval: interval,
-    });
+    const sendAlert = useAlert();
 
-    if (users.status === "loading" || users.status === "idle") {
-        return <Loading />;
-    }
+    const handleRowClick = (event, item) => {
+        history.push(`/system/user/${item.id}`);
+    };
+
+    const handleSwitchChange = async (checked, item) => {
+        const command = checked ? "enable" : "disable";
+        const commandText = checked ? "Enabled" : "Disabled";
+        let status;
+
+        if (checked) {
+            status = await AxiosCommand(`/api/user/${item.id}/enable`);
+        } else {
+            status = await AxiosCommand(`/api/user/${item.id}/disable`);
+        }
+
+        if (status) {
+            sendAlert(`${commandText} ${item.username}`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to ${command} ${item.username}`, {
+                variant: "error",
+            });
+        }
+    };
 
     return (
-        <>
-            <TableContainer component={Paper} square>
-                <Table>
-                    <TableHead className={classes.tableHead}>
-                        <TableRow>
-                            <TableCell className={classes.colState}></TableCell>
-                            <TableCell className={classes.colUsername}>Username</TableCell>
-                            <TableCell className={classes.colName}>Name</TableCell>
-                            <TableCell className={classes.colEmail}>Email</TableCell>
-                            <TableCell className={classes.colNav}></TableCell>
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                        {users?.data?.map((user) => (
-                            <UserTableRow key={user.id} user={user} currentUserId={currentUserId} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </>
+        <BugApiTable
+            columns={[
+                {
+                    width: "2rem",
+                    content: (item) => (
+                        <BugApiSwitch
+                            checked={item.enabled}
+                            onChange={(checked) => handleSwitchChange(checked, item)}
+                            disabled={item.enabled && item.id === currentUserId}
+                        />
+                    ),
+                },
+                {
+                    title: "Username",
+                    field: "username",
+                    sortable: true,
+                    content: (item) => item.username,
+                },
+                {
+                    title: "Name",
+                    field: "name",
+                    sortable: true,
+                    content: (item) => item.name,
+                },
+                {
+                    title: "Email",
+                    field: "email",
+                    sortable: true,
+                    hideWidth: 800,
+                    content: (item) => item.email,
+                },
+            ]}
+            onRowClick={handleRowClick}
+            defaultSortIndex={1}
+            defaultSortDirection="asc"
+            sortable
+            showNavArrow
+            filterable
+            hideHeader={false}
+            apiUrl={`/api/user/list`}
+        />
     );
 }
-
-UserTable.defaultProps = {
-    interval: 1000,
-};
-
-UserTable.propTypes = {
-    interval: PropTypes.number,
-};

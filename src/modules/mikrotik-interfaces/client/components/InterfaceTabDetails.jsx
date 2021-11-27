@@ -1,27 +1,10 @@
 import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@mui/styles";
 import { useApiPoller } from "@utils/ApiPoller";
 import Loading from "@components/Loading";
-
-const useStyles = makeStyles(async (theme) => ({
-    tableName: {
-        width: "14rem",
-        "@media (max-width:512px)": {
-            width: "10rem",
-        },
-    },
-}));
+import BugDetailsTable from "@core/BugDetailsTable";
 
 export default function InterfaceTabDetails({ panelId, interfaceName }) {
-    const classes = useStyles();
-
     const iface = useApiPoller({
         url: `/container/${panelId}/interface/${interfaceName}`,
         interval: 5000,
@@ -37,48 +20,18 @@ export default function InterfaceTabDetails({ panelId, interfaceName }) {
     return (
         <>
             <Grid item xs={12}>
-                <TableContainer component={Paper} square>
-                    <Table className={classes.table} aria-label="simple table">
-                        <TableBody>
-                            <TableRow>
-                                <TableCell variant="head" className={classes.tableName}>
-                                    Name
-                                </TableCell>
-                                <TableCell>{iface.data.name}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head">Comment</TableCell>
-                                <TableCell>{iface.data.comment}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head">Running</TableCell>
-                                <TableCell>{iface.data.running ? "yes" : "no"}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head">Disabled</TableCell>
-                                <TableCell>{iface.data.disabled ? "yes" : "no"}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head">Type</TableCell>
-                                <TableCell>{iface.data.type}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head">MAC Address</TableCell>
-                                <TableCell>{iface["mac-address"]}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head">Last link up time</TableCell>
-                                <TableCell>{iface["last-link-up-time"]}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell variant="head">MTU</TableCell>
-                                <TableCell>
-                                    {iface.data.mtu} / actual: {iface["actual-mtu"]}
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <BugDetailsTable
+                    data={[
+                        { name: "Name", value: iface.data?.name },
+                        { name: "Comment", value: iface.data?.comment },
+                        { name: "Running", value: iface.data?.running ? "yes" : "no" },
+                        { name: "Disabled", value: iface.data?.disabled ? "yes" : "no" },
+                        { name: "Type", value: iface.data?.type },
+                        { name: "MAC Address", value: iface.data?.["mac-address"] },
+                        { name: "Last link up time", value: iface.data?.["last-link-up-time"] },
+                        { name: "MTU", value: `${iface.data?.mtu} / actual: ${iface.data?.["actual-mtu"]}` },
+                    ]}
+                />
             </Grid>
         </>
     );

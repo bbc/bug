@@ -16,7 +16,7 @@ export default function BugQuote(props) {
     return (
         <Box
             sx={{
-                margin: 2,
+                margin: "16px",
                 color: "primary.main",
                 fontSize: "1.1rem",
             }}

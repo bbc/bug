@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -28,45 +27,22 @@ import BugPowerIcon from "@core/BugPowerIcon";
 import BugTableNoData from "@core/BugTableNoData";
 import BugScrollbars from "@core/BugScrollbars";
 
-const useStyles = makeStyles(async (theme) => ({
-    iconRunning: {
-        color: theme.palette.primary.main,
-        display: "block",
-        margin: "auto",
-        minWidth: 36,
-    },
-    icon: {
-        opacity: 0.1,
-        display: "block",
-        margin: "auto",
-        minWidth: 36,
-    },
+const stateColors = {
     streaming: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: "primary.main",
         color: "#ffffff",
     },
     failed: {
         backgroundColor: "#333",
-        color: theme.palette.error.main,
+        color: "error.main",
     },
     connecting: {
         backgroundColor: "#333",
         color: "#555",
     },
-    chip: {
-        margin: 2,
-        border: "none",
-        borderRadius: 3,
-    },
-    channel: {
-        margin: 2,
-        border: "none",
-        backgroundColor: theme.palette.primary.main,
-    },
-}));
+};
 
 export default function EncodersTable({ panelId }) {
-    const classes = useStyles();
     const { confirmDialog } = useBugConfirmDialog();
     const { renameDialog } = useBugRenameDialog();
     const sendAlert = useAlert();
@@ -84,19 +60,6 @@ export default function EncodersTable({ panelId }) {
 
     const itemIsActive = (item) => {
         return item.streamStatus === "streaming";
-    };
-
-    const getColor = (status) => {
-        if (status === "connecting") {
-            return classes.connecting;
-        }
-        if (status === "streaming") {
-            return classes.streaming;
-        }
-        if (status === "failed") {
-            return classes.failed;
-        }
-        return null;
     };
 
     const getDeviceName = (sid) => {
@@ -133,7 +96,13 @@ export default function EncodersTable({ panelId }) {
                         <Chip
                             icon={<VideocamIcon />}
                             key={link?.sid}
-                            className={`${classes.chip} ${getColor(link?.status)}`}
+                            sx={{
+                                color: stateColors[link?.status]["color"],
+                                backgroundColor: stateColors[link?.status]["backgroundColor"],
+                                margin: "2px",
+                                border: "none",
+                                borderRadius: "3px",
+                            }}
                             onDelete={(event) => {
                                 handleUnpair(event, item?.sid, link?.sid);
                             }}
@@ -155,7 +124,11 @@ export default function EncodersTable({ panelId }) {
                         <Chip
                             icon={<CloudIcon />}
                             key={link?.id}
-                            className={`${classes.channel}`}
+                            sx={{
+                                margin: "2px",
+                                border: "none",
+                                backgroundColor: "primary.main",
+                            }}
                             label={getChannelName(link?.id)}
                             sx={{ paddingLeft: "4px" }}
                         />
@@ -291,7 +264,7 @@ export default function EncodersTable({ panelId }) {
                     },
                 },
                 {
-                    width: 1,
+                    width: "100px",
                     hideWidth: 440,
                     content: (item) => (
                         <BugAudioThumbnail
@@ -304,9 +277,8 @@ export default function EncodersTable({ panelId }) {
                     ),
                 },
                 {
-                    width: 280,
+                    width: "20%",
                     minWidth: 140,
-                    noWrap: true,
                     title: "Name",
                     content: (item) => (
                         <>
@@ -317,6 +289,7 @@ export default function EncodersTable({ panelId }) {
                 },
                 {
                     title: "Destinations",
+                    width: "35%",
                     hideWidth: 720,
                     content: (item) => (
                         <Box

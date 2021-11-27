@@ -36,7 +36,7 @@ export default function BugApiAutocomplete({
             clearTimeout(timer.current);
             setIsActive(false);
         }
-    }, [value, isActive]);
+    }, [value, isActive, localValue]);
 
     // we use this bit of code to work out if we're dealing with an array of objects.
     // autocomplete only allows simple arrays or object arrays with 'id' and 'label' keys

@@ -6,7 +6,7 @@ export default function FilterTextField({ value, onChange }) {
         <TextField
             sx={{
                 "& .MuiInputBase-root": {
-                    borderRadius: 0,
+                    borderRadius: "0px",
                 },
                 "& .MuiInputBase-input": {
                     paddingTop: "10px",

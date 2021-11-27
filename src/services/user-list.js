@@ -2,13 +2,34 @@
 
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
+const sortHandlers = require("@core/sort-handlers");
 
-module.exports = async () => {
+module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     try {
-        const userList = await userModel.list();
-        return userList.sort((a, b) => (a.username > b.username ? 1 : -1));
+        let users = await userModel.list();
+
+        for (const eachFilter of Object.keys(filters)) {
+            users.filter((user) => user[eachFilter].includes(filters[eachFilter]));
+        }
+
+        const sortHandlerList = {
+            username: sortHandlers.string,
+            name: sortHandlers.string,
+            email: sortHandlers.number,
+        };
+
+        // sort
+        if (sortField && sortHandlerList[sortField]) {
+            if (sortDirection === "asc") {
+                users.sort((a, b) => sortHandlerList[sortField](a, b, sortField));
+            } else {
+                users.sort((a, b) => sortHandlerList[sortField](b, a, sortField));
+            }
+        }
+
+        return users;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed retrieve users.`);
+        throw new Error(`Failed to retrieve users`);
     }
 };

@@ -84,15 +84,15 @@ const HomeAddPanel = () => {
                                 whiteSpace: "nowrap",
                             },
                             "& .MuiCardHeader-action": {
-                                margin: 0,
+                                margin: "0px",
                                 flexShrink: 0,
                             },
                             "& .MuiCardHeader-avatar": {
-                                marginLeft: 16,
+                                marginLeft: "16px",
                                 flexShrink: 0,
                             },
                             "& .MuiCardHeader-content": {
-                                minWidth: 0,
+                                minWidth: "0px",
                                 flexShrink: 1,
                             },
                         }}

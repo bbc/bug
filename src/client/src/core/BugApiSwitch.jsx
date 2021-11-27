@@ -15,7 +15,7 @@ export default function BugApiSwitch({ checked, disabled = false, onChange, time
             clearTimeout(timer.current);
             setIsActive(false);
         }
-    }, [checked, isActive]);
+    }, [checked, isActive, localChecked]);
 
     const handleChanged = (event) => {
         clearTimeout(timer.current);

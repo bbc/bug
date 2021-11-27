@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { makeStyles } from "@mui/styles";
 import PanelTableRow from "@components/panels/PanelTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
@@ -14,32 +13,8 @@ import PanelTableGroupRow from "./PanelTableGroupRow";
 import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";
 
-const useStyles = makeStyles(async (theme) => ({
-    colDescription: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
-    colModule: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-    colVersion: {
-        "@media (max-width:250px)": {
-            display: "none",
-        },
-    },
-    tableHead: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-}));
-
 export default function PanelTable() {
     const panelList = useSelector((state) => state.panelList);
-    const classes = useStyles();
 
     const GroupedPanelRow = (group, panels) => {
         const resultArray = [];
@@ -63,14 +38,44 @@ export default function PanelTable() {
             <>
                 <TableContainer component={Paper} square>
                     <Table aria-label="simple table">
-                        <TableHead className={classes.tableHead}>
+                        <TableHead
+                            sx={{
+                                "@media (max-width:512px)": {
+                                    display: "none",
+                                },
+                            }}
+                        >
                             <TableRow>
                                 <TableCell width="10"></TableCell>
                                 <TableCell width="10"></TableCell>
                                 <TableCell>Title</TableCell>
-                                <TableCell className={classes.colDescription}>Description</TableCell>
-                                <TableCell className={classes.colModule}>Module</TableCell>
-                                <TableCell className={classes.colVersion}>Version</TableCell>
+                                <TableCell
+                                    sx={{
+                                        "@media (max-width:1024px)": {
+                                            display: "none",
+                                        },
+                                    }}
+                                >
+                                    Description
+                                </TableCell>
+                                <TableCell
+                                    sx={{
+                                        "@media (max-width:512px)": {
+                                            display: "none",
+                                        },
+                                    }}
+                                >
+                                    Module
+                                </TableCell>
+                                <TableCell
+                                    sx={{
+                                        "@media (max-width:250px)": {
+                                            display: "none",
+                                        },
+                                    }}
+                                >
+                                    Version
+                                </TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>

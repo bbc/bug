@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import Link from "@mui/material/Link";
 
 export default function BugTableLinkButton(props) {

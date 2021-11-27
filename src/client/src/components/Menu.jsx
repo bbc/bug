@@ -102,10 +102,10 @@ const Menu = ({ showGroups = true }) => {
                     elevation={0}
                     sx={{
                         "&.MuiAccordion-root:before": {
-                            height: 0,
+                            height: "0px",
                         },
                         "&.Mui-expanded": {
-                            margin: 0,
+                            margin: "0px",
                         },
                     }}
                     expanded={expanded === group}

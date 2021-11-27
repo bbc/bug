@@ -1,20 +1,42 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const systemLogsModel = require("@models/system-logs");
+const mongoCollection = require("@core/mongo-collection");
+const sortHandlers = require("@core/sort-handlers");
 
-module.exports = async (level) => {
+module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     try {
-        const response = {};
-        response.data = await systemLogsModel.get(level);
+        const logsCollection = await mongoCollection("logs");
+        const dbFilters = {};
+        if (filters["level"]) {
+            dbFilters["level"] = filters["level"];
+        }
+        if (filters["message"]) {
+            dbFilters["message"] = { $regex: filters["message"], $options: "i" };
+        }
+        if (filters["timestamp"]) {
+            dbFilters["timestamp"] = { $gte: new Date(Date.now() - filters["timestamp"] * 1000) };
+        }
 
-        response.data.sort(function (a, b) {
-            return b.timestamp - a.timestamp;
-        });
+        const logs = await logsCollection.find(dbFilters).toArray();
 
-        return response;
+        const sortHandlerList = {
+            level: sortHandlers.string,
+            timestamp: sortHandlers.number,
+        };
+
+        // sort
+        if (sortField && sortHandlerList[sortField]) {
+            if (sortDirection === "asc") {
+                logs.sort((a, b) => sortHandlerList[sortField](a, b, sortField));
+            } else {
+                logs.sort((a, b) => sortHandlerList[sortField](b, a, sortField));
+            }
+        }
+
+        return logs;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed retrieve logs.`);
+        throw new Error(`Failed to retrieve logs`);
     }
 };

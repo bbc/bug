@@ -45,8 +45,8 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
                 <Box
                     key={index}
                     sx={{
-                        marginTop: 2,
-                        marginBottom: 2,
+                        marginTop: "2px",
+                        marginBottom: "2px",
                     }}
                 >
                     {eachMessage}
@@ -91,8 +91,8 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
             return (
                 <Box
                     sx={{
-                        marginTop: 14,
-                        marginBottom: 2,
+                        marginTop: "14px",
+                        marginBottom: "2px",
                         textAlign: "right",
                         whiteSpace: "nowrap",
                     }}
@@ -121,7 +121,7 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
         <Alert
             sx={{
                 width: width === null ? "auto" : width,
-                borderRadius: square ? 0 : 4,
+                borderRadius: square ? "0px" : "4px",
             }}
             severity={mappedSeverity[type]}
         >

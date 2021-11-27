@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import formatBps from "@utils/format-bps";
 import { format } from "date-fns";
-import { ComposedChart, Area, Bar, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { ComposedChart, Area, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -9,8 +9,8 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
-import { TimePicker } from "@material-ui/pickers";
 import { useWindowSize } from "@utils/WindowSize";
+import BugTimePicker from "@core/BugTimePicker";
 
 export default function BugTrafficChart({ url, type }) {
     const rangeSpan = 10;
@@ -29,9 +29,6 @@ export default function BugTrafficChart({ url, type }) {
 
     useAsyncEffect(async () => {
         const fetchedStats = await AxiosGet(`${url}/${range[0]}/${range[1]}`);
-        // for (let eachStat of fetchedStats) {
-        //     eachStat["rx"] = eachStat["rx"] * -1;
-        // }
         setStats(fetchedStats);
     }, [url, range]);
 
@@ -77,23 +74,6 @@ export default function BugTrafficChart({ url, type }) {
             newEnd = Date.now();
         }
         setRange([newEnd - rangeSpan * 60000, newEnd]);
-    };
-
-    const getSeries = () => {
-        if (type === "area") {
-            return (
-                <>
-                    <Area isAnimationActive={false} type="monotone" dataKey="tx" fill="#337ab7" stroke="#337ab7" />
-                    <Area isAnimationActive={false} type="monotone" dataKey="rx" fill="#bb2828" stroke="#bb2828" />
-                </>
-            );
-        }
-        return (
-            <>
-                <Bar isAnimationActive={false} dataKey="tx" fill="#337ab7" />
-                <Bar isAnimationActive={false} dataKey="rx" fill="#bb2828" />
-            </>
-        );
     };
 
     const CustomTooltip = ({ active, payload, label }) => {
@@ -142,17 +122,17 @@ export default function BugTrafficChart({ url, type }) {
         >
             <ResponsiveContainer width="100%" height={chartHeight}>
                 <ComposedChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                    <Area isAnimationActive={false} type="monotone" dataKey="tx" fill="#337ab7" stroke="#337ab7" />
-                    <Area isAnimationActive={false} type="monotone" dataKey="rx" fill="#bb2828" stroke="#bb2828" />
+                    <Area isAnimationActive={false} dataKey="tx" fill="#337ab7" stroke="#337ab7" />
+                    <Area isAnimationActive={false} dataKey="rx" fill="#bb2828" stroke="#bb2828" />
                     <Legend
                         width={70}
                         layout="vertical"
                         wrapperStyle={{
-                            top: 20,
-                            right: 20,
+                            top: "20px",
+                            right: "20px",
                             backgroundColor: "#333",
                             border: "1px solid #333",
-                            borderRadius: 3,
+                            borderRadius: "3px",
                             lineHeight: "40px",
                             opacity: 0.8,
                         }}
@@ -181,10 +161,13 @@ export default function BugTrafficChart({ url, type }) {
             <Box
                 sx={{
                     textAlign: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
                 <Button
-                    sx={{ margin: 1 }}
+                    sx={{ margin: "8px" }}
                     variant="contained"
                     color="secondary"
                     onClick={() => handleBack(5)}
@@ -194,7 +177,7 @@ export default function BugTrafficChart({ url, type }) {
                 </Button>
 
                 <Button
-                    sx={{ margin: 1 }}
+                    sx={{ margin: "8px" }}
                     variant="contained"
                     color={enableAutoRefresh ? "primary" : "secondary"}
                     onClick={handleLatest}
@@ -203,10 +186,10 @@ export default function BugTrafficChart({ url, type }) {
                     Latest
                 </Button>
 
-                <TimePicker ampm={false} sx={{ margin: 1 }} value={range[1]} onChange={handleTimePickerChange} />
+                <BugTimePicker value={range[1]} onChange={handleTimePickerChange} minutesStep={5} />
 
                 <Button
-                    sx={{ margin: 1 }}
+                    sx={{ margin: "8px" }}
                     variant="contained"
                     disabled={enableAutoRefresh}
                     color="secondary"

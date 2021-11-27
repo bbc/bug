@@ -1,6 +1,5 @@
 import React from "react";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { makeStyles } from "@mui/styles";
 import BugApiSwitch from "@core/BugApiSwitch";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableCell from "@mui/material/TableCell";
@@ -9,49 +8,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
 
-const useStyles = makeStyles(async (theme) => ({
-    cellMenu: {
-        width: "2rem",
-    },
-    disabledText: {
-        opacity: 0.3,
-    },
-    colDrag: {
-        color: theme.palette.secondary.main,
-        opacity: 0.3,
-        width: 48,
-        textAlign: "center",
-    },
-    colPower: {
-        width: 48,
-        textAlign: "center",
-    },
-    colDescription: {
-        "@media (max-width:1024px)": {
-            display: "none",
-        },
-    },
-    colModule: {
-        "@media (max-width:512px)": {
-            display: "none",
-        },
-    },
-    colIndent: {
-        width: "0rem",
-    },
-    colEnabled: {
-        width: "4rem",
-    },
-    panelRow: {
-        height: 65,
-        cursor: "move",
-        backgroundColor: "#262626",
-    },
-}));
-
 export default function PanelEditTableRow({ id, showGroups, panel }) {
-    const classes = useStyles();
-
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
 
     let transformString = null;
@@ -66,26 +23,38 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
     };
 
     return (
-        <TableRow ref={setNodeRef} style={style} {...attributes} {...listeners} key={id} className={classes.panelRow}>
-            {panel.showGroups ? <TableCell className={classes.colIndent} /> : null}
-            <TableCell className={classes.colDrag}>
+        <TableRow
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+            key={id}
+            sx={{ height: "65px", cursor: "move", backgroundColor: "#262626" }}
+        >
+            {panel.showGroups ? <TableCell sx={{ width: "0rem" }} /> : null}
+            <TableCell sx={{ color: "secondary.main", opacity: 0.3, width: 48, textAlign: "center" }}>
                 <DragIndicatorIcon />
             </TableCell>
 
-            <TableCell className={classes.colPower}>
+            <TableCell
+                sx={{
+                    width: "48px",
+                    textAlign: "center",
+                }}
+            >
                 <PanelPowerIcon panel={panel} />
             </TableCell>
-            <TableCell className={classes.colEnabled} style={{ textAlign: "center" }}>
+            <TableCell sx={{ width: "4rem", textAlign: "center" }}>
                 <BugApiSwitch panelId={panel.id} checked={panel.enabled} disabled />
             </TableCell>
             <TableCell>
-                <div className={classes.drag_text}>{panel.title}</div>
+                <div>{panel.title}</div>
                 <PanelRowState panel={panel} />
             </TableCell>
-            <TableCell className={classes.drag_text}>{panel.description}</TableCell>
-            <TableCell className={classes.drag_text}>{panel._module.longname}</TableCell>
-            <TableCell className={classes.cellMenu}>
-                <MoreVertIcon className={classes.colDrag} />
+            <TableCell>{panel.description}</TableCell>
+            <TableCell>{panel._module.longname}</TableCell>
+            <TableCell sx={{ width: "2rem" }}>
+                <MoreVertIcon />
             </TableCell>
         </TableRow>
     );

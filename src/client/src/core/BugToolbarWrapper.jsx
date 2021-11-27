@@ -129,7 +129,7 @@ export default function PanelToolbar(props) {
                         <IconButton
                             sx={{
                                 "& .MuiButton-startIcon": {
-                                    margin: 0,
+                                    margin: "0px",
                                 },
                                 marginRight: "8px",
                             }}

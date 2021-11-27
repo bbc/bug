@@ -64,7 +64,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const getVlanChangedMessage = (interfaceId, oldValues, newValues) => {
         const oldTags = JSON.stringify(oldValues.taggedVlans);
         const newTags = JSON.stringify(newValues.taggedVlans);
-        console.log(oldValues, newValues);
+
         if (oldValues.taggedVlans.length !== newValues.taggedVlans.length) {
             if (newValues.taggedVlans.length === 0) {
                 // changed from trunk to access port

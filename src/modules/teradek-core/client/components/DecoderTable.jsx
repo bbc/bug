@@ -188,13 +188,18 @@ export default function DecoderTable({ panelId }) {
                 {
                     title: "Encoder",
                     width: "30%",
-                    content: (item) => (
-                        <BugApiAutocomplete
-                            options={encoders?.data}
-                            value={item?.link?.encoderSid}
-                            onChange={(event, value) => handleEncoderChanged(item, value)}
-                        />
-                    ),
+                    content: (item) => {
+                        if (item?.link?.encoderSid) {
+                            return (
+                                <BugApiAutocomplete
+                                    options={encoders?.data}
+                                    value={item?.link?.encoderSid}
+                                    onChange={(event, value) => handleEncoderChanged(item, value)}
+                                />
+                            );
+                        }
+                        return null;
+                    },
                 },
                 {
                     title: "Framerate",

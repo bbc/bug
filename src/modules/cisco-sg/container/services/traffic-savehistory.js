@@ -8,9 +8,9 @@ module.exports = async (collection, interfaceArray) => {
 
     for (let eachInterface of interfaceArray) {
         try {
-            saveDocument.interfaces[eachInterface["name"]] = {
-                tx: eachInterface["tx-bits-per-second"],
-                rx: eachInterface["rx-bits-per-second"],
+            saveDocument.interfaces[eachInterface["id"]] = {
+                tx: eachInterface["tx-rate"],
+                rx: eachInterface["rx-rate"],
             };
         } catch (error) {
             console.log(error);

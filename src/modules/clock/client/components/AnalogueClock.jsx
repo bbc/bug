@@ -1,95 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Clock from "react-clock";
 import "react-clock/dist/Clock.css";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles(async (theme) => ({
-    container: {
-        position: "relative",
-        width: 300,
-        "& .react-clock": {
-            width: "inherit !important",
-            paddingTop: "100%",
-        },
-        "& .react-clock__face": {
-            backgroundColor: "#ccc",
-        },
-    },
-    xs: {
-        "& .react-clock__mark.react-clock__hour-mark .react-clock__mark__number": {
-            fontSize: 16,
-        },
-        "& .react-clock__face": {
-            borderWidth: "6px !important",
-        },
-    },
-    sm: {
-        "& .react-clock__mark.react-clock__hour-mark .react-clock__mark__number": {
-            fontSize: 20,
-        },
-        "& .react-clock__face": {
-            borderWidth: "8px !important",
-        },
-    },
-    md: {
-        "& .react-clock__mark.react-clock__hour-mark .react-clock__mark__number": {
-            fontSize: 40,
-        },
-        "& .react-clock__face": {
-            borderWidth: "12px !important",
-        },
-    },
-    lg: {
-        "& .react-clock__mark.react-clock__hour-mark .react-clock__mark__number": {
-            fontSize: 65,
-        },
-        "& .react-clock__face": {
-            borderWidth: "16px !important",
-        },
-    },
-    clock: {
-        "& .react-clock__minute-hand__body": {
-            boxShadow: "0 0 16px 0 rgba(0, 0, 0, 0.5)",
-            borderRadius: "10px 10px 0 0",
-        },
-        "& .react-clock__hour-hand__body": {
-            boxShadow: "0 0 16px 0 rgba(0, 0, 0, 0.5)",
-            borderRadius: "10px 10px 0 0",
-        },
-        "& .react-clock__mark__number": {
-            fontSize: 90,
-            color: "#000000",
-            fontWeight: 400,
-            opacity: "0.8",
-            left: -60,
-            width: 120,
-        },
-        "& .react-clock__second-hand__body": {
-            backgroundColor: "#d0211c",
-            borderRadius: 10,
-            borderRadius: "10px 20px 0 0",
-        },
-        "& .react-clock__face": {
-            borderColor: "#ccc",
-            borderWidth: 20,
-        },
-    },
-    dot: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: -21,
-        marginLeft: -21,
-        height: 42,
-        width: 42,
-        backgroundColor: "#d0211c",
-        borderRadius: "50%",
-        display: "inline-block",
-    },
-}));
+import Box from "@mui/material/Box";
 
 const AnalogueClock = ({ size }) => {
-    const classes = useStyles();
     const [value, setValue] = useState(new Date());
     let width = 500;
     switch (size) {
@@ -167,10 +81,62 @@ const AnalogueClock = ({ size }) => {
         xl: 3,
     };
 
+    const numberFontSizes = {
+        xs: "16px",
+        sm: "20px",
+        md: "40px",
+        lg: "65px",
+        xl: "90px",
+    };
+
+    const borderWidths = {
+        xs: "6px",
+        sm: "8px",
+        md: "12px",
+        lg: "16px",
+        xl: "20px",
+    };
+
     return (
-        <div className={classes.container} style={{ width: width }}>
+        <Box
+            sx={{
+                position: "relative",
+                width: `${width}px`,
+                "& .react-clock": {
+                    width: "inherit !important",
+                    paddingTop: "100%",
+                },
+                "& .react-clock__mark.react-clock__hour-mark .react-clock__mark__number": {
+                    fontSize: numberFontSizes[size],
+                },
+                "& .react-clock__minute-hand__body": {
+                    boxShadow: "0 0 16px 0 rgba(0, 0, 0, 0.5)",
+                    borderRadius: "10px 10px 0 0",
+                },
+                "& .react-clock__hour-hand__body": {
+                    boxShadow: "0 0 16px 0 rgba(0, 0, 0, 0.5)",
+                    borderRadius: "10px 10px 0 0",
+                },
+                "& .react-clock__mark__number": {
+                    fontSize: 90,
+                    color: "#000000",
+                    fontWeight: 400,
+                    opacity: "0.8",
+                    left: "-60px",
+                    width: "120px",
+                },
+                "& .react-clock__second-hand__body": {
+                    backgroundColor: "#d0211c",
+                    borderRadius: "10px 20px 0 0",
+                },
+                "& .react-clock__face": {
+                    borderColor: "#ccc",
+                    backgroundColor: "#ccc",
+                    borderWidth: `${borderWidths[size]} !important`,
+                },
+            }}
+        >
             <Clock
-                className={`${classes.clock} ${classes[size]}`}
                 value={value}
                 hourHandLength={60}
                 hourHandOppositeLength={20}
@@ -187,16 +153,24 @@ const AnalogueClock = ({ size }) => {
                 secondHandOppositeLength={20}
                 secondHandWidth={secondHandWidths[size]}
             />
-            <span
-                className={classes.dot}
-                style={{
+            <Box
+                component="span"
+                sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+
                     width: dotWidths[size],
                     height: dotWidths[size],
-                    marginTop: (dotWidths[size] / 2) * -1,
-                    marginLeft: (dotWidths[size] / 2) * -1,
+                    marginTop: `${(dotWidths[size] / 2) * -1}px`,
+                    marginLeft: `${(dotWidths[size] / 2) * -1}px`,
+
+                    backgroundColor: "#d0211c",
+                    borderRadius: "50%",
+                    display: "inline-block",
                 }}
-            ></span>
-        </div>
+            ></Box>
+        </Box>
     );
 };
 

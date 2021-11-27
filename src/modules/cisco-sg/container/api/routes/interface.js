@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const interfaceList = require("@services/interface-list");
-// const interfaceHistory = require("../../services/interface-history");
+const interfaceGet = require("@services/interface-get");
+const interfaceHistory = require("@services/interface-history");
 const interfaceEnable = require("@services/interface-enable");
 const interfaceDisable = require("@services/interface-disable");
 // const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
@@ -41,27 +42,27 @@ router.all(
 //     })
 // );
 
-// router.get(
-//     "/:interfaceName",
-//     asyncHandler(async (req, res) => {
-//         const result = await interfaceCombined(req.params.interfaceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceGet(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-// router.get(
-//     "/history/:interfaceName",
-//     asyncHandler(async (req, res) => {
-//         const result = await interfaceHistory(req.params.interfaceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/history/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceHistory(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
 router.get(
     "/rename/:interfaceId/:interfaceName",
@@ -107,20 +108,20 @@ router.get(
     })
 );
 
-// router.get(
-//     "/history/:interfaceName/:start/:end",
-//     asyncHandler(async (req, res) => {
-//         const result = await interfaceHistory(
-//             req.params.interfaceName,
-//             parseInt(req.params.start),
-//             parseInt(req.params.end)
-//         );
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/history/:interfaceId/:start/:end",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceHistory(
+            req.params.interfaceId,
+            parseInt(req.params.start),
+            parseInt(req.params.end)
+        );
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
 router.get(
     "/enable/:interfaceId",

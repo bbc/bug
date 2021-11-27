@@ -32,7 +32,7 @@ export default function BugApiVlanAutocomplete({
             clearTimeout(timer.current);
             setIsActive(false);
         }
-    }, [taggedValue, untaggedValue, isActive]);
+    }, [taggedValue, untaggedValue, isActive, localTaggedValue, localUntaggedValue]);
 
     const handleChanged = (event, value) => {
         if (value.id === -1) {
@@ -89,14 +89,20 @@ export default function BugApiVlanAutocomplete({
         : [];
 
     if (isTrunk) {
-        value = -1;
         if (taggedValue?.length === options?.length) {
             trunkLabel = `Trunk - All VLANs`;
         } else {
             trunkLabel = `Trunk - ${convertToRange(taggedValue)}`;
         }
+        value = {
+            id: -1,
+            label: trunkLabel,
+        };
     } else {
-        value = untaggedValue;
+        value = {
+            id: untaggedValue,
+            label: options.find((option) => option.id === untaggedValue),
+        };
     }
 
     return (
@@ -157,6 +163,7 @@ export default function BugApiVlanAutocomplete({
                         width: 54,
                         height: 54,
                     }}
+                    disabled={disabled || isActive}
                     aria-label="Edit Trunks"
                     onClick={handleEditClicked}
                 >

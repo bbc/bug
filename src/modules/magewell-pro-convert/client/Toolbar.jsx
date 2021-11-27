@@ -63,9 +63,9 @@ export default function Toolbar(props) {
                 <IconButton
                     sx={{
                         "& .MuiButton-startIcon": {
-                            margin: 0,
+                            margin: "0px",
                         },
-                        marginRight: 1,
+                        marginRight: "8px",
                     }}
                     component={Link}
                     onClick={handleWebpageClicked}
@@ -81,9 +81,9 @@ export default function Toolbar(props) {
                 <IconButton
                     sx={{
                         "& .MuiButton-startIcon": {
-                            margin: 0,
+                            margin: "0px",
                         },
-                        marginRight: 1,
+                        marginRight: "8px",
                     }}
                     component={Link}
                     onClick={handleReboot}

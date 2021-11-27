@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import BugTrafficChart from "@core/BugTrafficChart";
 
-export default function InterfaceTabStatistics({ panelId, interfaceName }) {
+export default function InterfaceTabStatistics({ panelId, interfaceId }) {
     return (
         <>
             <Grid
@@ -16,7 +16,7 @@ export default function InterfaceTabStatistics({ panelId, interfaceName }) {
                     },
                 }}
             >
-                <BugTrafficChart url={`/container/${panelId}/interface/history/${interfaceName}`} />
+                <BugTrafficChart url={`/container/${panelId}/interface/history/${interfaceId}`} />
             </Grid>
         </>
     );
