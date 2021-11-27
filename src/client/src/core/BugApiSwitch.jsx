@@ -1,6 +1,6 @@
 import React from "react";
 import Switch from "@mui/material/Switch";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 
 export default function BugApiSwitch({ checked, disabled = false, onChange, timeout = 5000, ...props }) {
     const [isActive, setIsActive] = React.useState(false);

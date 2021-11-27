@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
 import Box from "@mui/material/Box";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 
 const NavMobile = (props) => {
     const [open, setOpen] = useState(false);

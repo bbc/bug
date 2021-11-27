@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import LoadingOverlay from "@components/LoadingOverlay";
 import AxiosPut from "@utils/AxiosPut";
-import { useApiPoller } from "@utils/ApiPoller";
 import pageTitleSlice from "@redux/pageTitleSlice";
+import settingsSlice from "@redux/settingsSlice";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import BugForm from "@core/BugForm";
@@ -16,6 +17,7 @@ import TextField from "@mui/material/TextField";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
+    const settings = useSelector((state) => state.settings);
     const history = useHistory();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -31,15 +33,11 @@ export default function PageSystemBackup() {
         dispatch(pageTitleSlice.actions.set("System Configuration"));
     }, [dispatch]);
 
-    const settings = useApiPoller({
-        url: `/api/system/settings`,
-        interval: 5000,
-    });
-
     const onSubmit = async (form) => {
         setLoading(true);
         const response = await AxiosPut(`/api/system/settings`, form);
         if (!response?.error) {
+            dispatch(settingsSlice.actions.success({ data: form }));
             sendAlert(`BUG Settings have been updated`, {
                 broadcast: true,
                 variant: "success",
@@ -131,7 +129,7 @@ export default function PageSystemBackup() {
                                     label="Enable Sounds"
                                     defaultValue={settings?.data?.sound}
                                     fullWidth
-                                    helperText="Enable tactile sounds in BUG."
+                                    helperText="Enable tactile sounds"
                                 />
                             </Grid>
                         </Grid>

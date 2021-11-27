@@ -7,7 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 
 const BugMenuIcon = () => {
     const [info, setInfo] = useState();

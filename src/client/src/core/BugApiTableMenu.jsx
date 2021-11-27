@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 
 export default function BugApiTableMenu({ item, menuItems }) {
     const [anchorEl, setAnchorEl] = React.useState(null);

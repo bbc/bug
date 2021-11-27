@@ -13,6 +13,7 @@ import { BugCustomDialogProvider } from "@core/BugCustomDialog";
 import DateFnsUtils from "@date-io/date-fns";
 import PanelListHandler from "@data/PanelListHandler";
 import UserHandler from "@data/UserHandler";
+import SettingsHandler from "@data/SettingsHandler";
 import StrategiesHandler from "@data/StrategiesHandler";
 import { ModalProvider } from "react-modal-hook";
 import { Provider } from "react-redux";
@@ -42,6 +43,7 @@ export default function App() {
                                             <SnackbarConfigurator />
                                             <CssBaseline />
                                             <UserHandler />
+                                            <SettingsHandler />
                                             <StrategiesHandler />
                                             <PanelListHandler />
                                             <ModalProvider>

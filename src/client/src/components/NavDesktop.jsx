@@ -9,7 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import Menu from "@components/Menu";
 import BugScrollbars from "@core/BugScrollbars";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 import { styled } from "@mui/material/styles";
 
 const fullMenuWidth = 1024;

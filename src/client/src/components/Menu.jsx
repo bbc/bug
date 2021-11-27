@@ -24,7 +24,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import _ from "lodash";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 import FaviconNotification from "@utils/FaviconNotification";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 
 const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;

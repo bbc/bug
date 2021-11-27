@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import SaveIcon from "@mui/icons-material/Save";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 
 export default function BugApiSaveButton({ disabled, onClick, timeout = 10000, children, ...props }) {
     const [isActive, setIsActive] = React.useState(false);

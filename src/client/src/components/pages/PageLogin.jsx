@@ -20,6 +20,7 @@ import PinLogin from "@components/login/PinLogin";
 import LocalLogin from "@components/login/LocalLogin";
 import ProxyLogin from "@components/login/ProxyLogin";
 import useClasses from "@utils/Classes";
+import { useSelector } from "react-redux";
 
 //TODO move to SX props
 
@@ -133,14 +134,12 @@ export default function PageLogin() {
     const classes = useClasses(styles);
     const [loading, setLoading] = useState(true);
     const [tabIndex, setTabIndex] = useState(0);
-    const [settings, setSettings] = useState(0);
     const [enabledStrategies, setEnabledStrategies] = React.useState([]);
     const [alert, setAlert] = React.useState("");
+    const settings = useSelector((state) => state.settings);
 
     useAsyncEffect(async () => {
         const allStrategies = await AxiosGet(`/api/strategy/safe`);
-        const globalSettings = await AxiosGet(`/api/system/settings`);
-        setSettings(globalSettings);
         setEnabledStrategies(allStrategies.filter((eachStrategy) => eachStrategy.enabled));
         setLoading(false);
     }, []);

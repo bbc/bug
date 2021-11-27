@@ -13,7 +13,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
 import md5 from "crypto-js/md5";
-import useSounds from "@utils/Sounds";
+import useSounds from "@hooks/Sounds";
 
 const UserMenuItem = (props) => {
     const dispatch = useDispatch();
