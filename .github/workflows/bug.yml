@@ -18,10 +18,25 @@ jobs:
                 working-directory: ./src
         steps:
             - uses: actions/checkout@v2
-              name: Backend Build & Test using Node.js ${{ matrix.node-version }}
+              name: Backend Install & Test using Node.js ${{ matrix.node-version }}
               with:
                   node-version: ${{ matrix.node-version }}
             - run: npm ci
-              working-directory: ./src
             - run: npm run build --if-present
             - run: npm test
+    frontend:
+        runs-on: self-hosted
+        strategy:
+            matrix:
+                node-version: [10.x, 12.x, 14.x]
+        defaults:
+            run:
+                working-directory: ./src/client
+        steps:
+            - uses: actions/checkout@v2
+              name: Frontend Build & Test using Node.js ${{ matrix.node-version }}
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: npm ci
+            - run: npm test
+            - run: npm run build --if-present
