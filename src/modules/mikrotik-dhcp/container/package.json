@@ -1,5 +1,5 @@
 {
-    "name": "mikrotik-interfaces",
+    "name": "mikrotik-dhcp",
     "main": "index.js",
     "scripts": {
         "production": "node ./api/server ",

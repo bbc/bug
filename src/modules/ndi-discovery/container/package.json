@@ -1,5 +1,5 @@
 {
-    "name": "magewell-pro-convert",
+    "name": "ndi-discovery",
     "main": "",
     "scripts": {
         "production": "node ./api/server",
