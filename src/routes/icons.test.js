@@ -10,7 +10,7 @@ const testIcons = ["mdi-abacus", "access-alarm"];
 
 describe("Test the '/api/icons/' endpoint", () => {
     test("Test the '/variants' route", async (done) => {
-        const response = await request(system).get("/api/icons/variants/");
+        const response = await request(system).get("/api/icons/variants");
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toContain(iconsSettings.variants[0]);

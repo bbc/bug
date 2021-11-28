@@ -9,7 +9,7 @@ const restrict = require("@middleware/restrict");
 
 /**
  * @swagger
- * /icons/variants/{iconName}:
+ * /icons/variants:
  *   get:
  *     description: Returns a list of available variants for the icons
  *     tags: [icon]
@@ -26,7 +26,7 @@ const restrict = require("@middleware/restrict");
  *           type: object
  */
 router.get(
-    "/variants/",
+    "/variants",
     restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
@@ -49,7 +49,7 @@ router.get(
  *         name: iconName
  *         schema:
  *           type: string
- *         required: true
+ *         required: false
  *         description: The icon name
  *     responses:
  *       200:
