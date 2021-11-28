@@ -4,6 +4,7 @@ const logger = require("@utils/logger")(module);
 const path = require("path");
 const readJson = require("@core/read-json");
 const avalibleversion = require("@services/system-avalibleversion");
+const systemIp = require("@services/system-ip");
 
 const filename = path.join(__dirname, "..", "package.json");
 
@@ -20,6 +21,7 @@ module.exports = async () => {
         const NpmPackage = await getPackage();
         const response = {
             data: {
+                ip: await systemIp(),
                 version: NpmPackage?.version,
                 avalibleVersion: await avalibleversion(),
             },
