@@ -78,7 +78,11 @@ const NavDesktop = (props) => {
                 variant="permanent"
                 sx={{
                     "& .MuiDrawer-paper": { overflowY: "visible" },
-                    "& .MuiGrid-container": { flexWrap: "nowrap" },
+                    "& .MuiGrid-container": {
+                        flexWrap: "nowrap",
+                        width: open ? "auto" : "56px",
+                        overflowX: open ? "visible" : "hidden",
+                    },
                     flexShrink: 0,
                     whiteSpace: "nowrap",
                     "& .MuiPaper-root": {
