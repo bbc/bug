@@ -40,6 +40,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
         // this boolean helps the UI know whether the interface can be directly removed from the protected interfaces
         // if it's false, then the protection is provided by a wildcard
         eachInterface["_allowunprotect"] =
+            config.protectedInterfaces &&
             config.protectedInterfaces.find((loopInterface, index) => {
                 return loopInterface == eachInterface.longId;
             }) !== undefined;
