@@ -12,16 +12,18 @@ import LaunchIcon from "@mui/icons-material/Launch";
 import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
 
-export default function Toolbar(props) {
+export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
+    const panel = useSelector((state) => state.panel);
 
     const pending = useApiPoller({
-        url: `/container/${props.panelId}/pending/`,
+        url: `/container/${panelId}/pending/`,
         interval: 1000,
     });
 
     const isPending = pending.status === "success" && pending.data;
+    const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
     const handleLaunchClicked = async (event, item) => {
         if (panelConfig?.data?.address) {
@@ -35,7 +37,7 @@ export default function Toolbar(props) {
         sendAlert("Saving device config ... please wait", {
             variant: "info",
         });
-        if (await AxiosCommand(`/container/${props.panelId}/device/save`)) {
+        if (await AxiosCommand(`/container/${panelId}/device/save`)) {
             sendAlert("Saved device config", {
                 broadcast: true,
                 variant: "success",
@@ -52,7 +54,7 @@ export default function Toolbar(props) {
     const buttons = () => (
         <>
             <BugApiSaveButton
-                disabled={!isPending}
+                disabled={!isPending || hasCritical}
                 variant="outlined"
                 color={isPending ? "warning" : "primary"}
                 onClick={handleSave}
