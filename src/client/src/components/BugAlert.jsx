@@ -122,6 +122,9 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
             sx={{
                 width: width === null ? "auto" : width,
                 borderRadius: square ? "0px" : "4px",
+                "& .MuiAlert-message": {
+                    paddingRight: "4px",
+                },
             }}
             severity={mappedSeverity[type]}
         >
