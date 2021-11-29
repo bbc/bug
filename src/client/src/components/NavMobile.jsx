@@ -46,6 +46,7 @@ const NavMobile = (props) => {
             <Drawer
                 sx={{
                     "& .MuiDrawer-paper": {
+                        marginTop: "56px",
                         maxWidth: "90%",
                         minWidth: "280px",
                     },
