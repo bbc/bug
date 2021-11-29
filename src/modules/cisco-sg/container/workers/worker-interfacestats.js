@@ -73,7 +73,7 @@ const main = async () => {
                     // get millisecond-resolution dates to compare ...
                     const previousMilliseconds = eachInterface["stats-date"].getTime();
                     const currentMilliseconds = sampleDate.getTime();
-                    const differenceSeconds = currentMilliseconds - previousMilliseconds;
+                    const differenceSeconds = (currentMilliseconds - previousMilliseconds) / 1000;
 
                     // calculate the rates
                     if (eachInterface["out-octets"] !== undefined) {
