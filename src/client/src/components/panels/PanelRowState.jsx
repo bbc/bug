@@ -63,7 +63,7 @@ export default function PanelRowState({ panel }) {
     } else if (errorCount > 0) {
         return <State state="error">RUNNING - WITH {errorCount} ERROR(S)</State>;
     } else if (warningCount > 0) {
-        return <State state="warning">RUNNING - WITH {warningCount} WARNINGS(S)</State>;
+        return <State state="warning">RUNNING - WITH {warningCount} WARNING(S)</State>;
     }
 
     // this'll only be 'running' but I just left the whole thing in here ...
