@@ -107,6 +107,7 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.protectedInterfaces}
                         sort={true}
                         error={errors.protectedInterfaces}
+                        helperText="Specific interface name or wildcard eg: ether*"
                         fullWidth
                     />
                 </Grid>
