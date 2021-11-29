@@ -181,13 +181,22 @@ export default function InterfaceList({ panelId, stackId = null }) {
     };
 
     const handleProtectClicked = async (event, item) => {
-        //     const command = item._protected ? "unprotect" : "protect";
-        //     const commandAction = item._protected ? "Unprotected" : "Protected";
-        //     if (await AxiosCommand(`/container/${panelId}/interface/${command}/${item.name}`)) {
-        //         sendAlert(`${commandAction} interface: ${item.name}`, { variant: "success" });
-        //     } else {
-        //         sendAlert(`Failed to ${command} interface: ${item.name}`, { variant: "error" });
-        //     }
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(
+                    item.longId
+                )}`
+            )
+        ) {
+            doForceRefresh();
+            sendAlert(`${item._protected ? "Unprotected" : "Protected"} interface: ${item.shortId}`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to ${item._protected ? "unprotect" : "protect"} interface: ${item.shortId}`, {
+                variant: "error",
+            });
+        }
     };
 
     return (
@@ -243,6 +252,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                         }
                         return (
                             <BugApiVlanAutocomplete
+                                disabled={item._protected}
                                 options={vlans?.data}
                                 taggedValue={item?.["tagged-vlans"]}
                                 untaggedValue={item?.["untagged-vlan"]}
@@ -308,13 +318,13 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     title: "Enable",
-                    disabled: (item) => item["admin-state"],
+                    disabled: (item) => item["admin-state"] || item._protected,
                     icon: <ToggleOnIcon fontSize="small" />,
                     onClick: handleEnableClicked,
                 },
                 {
                     title: "Disable",
-                    disabled: (item) => !item["admin-state"],
+                    disabled: (item) => !item["admin-state"] || item._protected,
                     icon: <ToggleOffIcon fontSize="small" />,
                     onClick: handleDisableClicked,
                 },

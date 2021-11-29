@@ -5,8 +5,8 @@ const interfaceGet = require("@services/interface-get");
 const interfaceHistory = require("@services/interface-history");
 const interfaceEnable = require("@services/interface-enable");
 const interfaceDisable = require("@services/interface-disable");
-// const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
-// const mikrotikInterfaceUnprotect = require("../../services/mikrotik-interfaceunprotect");
+const interfaceProtect = require("@services/interface-protect");
+const interfaceUnprotect = require("@services/interface-unprotect");
 const interfaceSetVlanTrunk = require("@services/interface-setvlantrunk");
 const interfaceSetVlanAccess = require("@services/interface-setvlanaccess");
 const interfaceRename = require("@services/interface-rename");
@@ -31,16 +31,6 @@ router.all(
         });
     })
 );
-
-// router.post(
-//     "/",
-//     asyncHandler(async (req, res) => {
-//         res.json({
-//             status: "success",
-//             data: await interfaceCombinedList(req.body.sortField, req.body.sortDirection, req.body.filters),
-//         });
-//     })
-// );
 
 router.get(
     "/:interfaceId",
@@ -145,26 +135,26 @@ router.get(
     })
 );
 
-// router.get(
-//     "/protect/:interfaceName",
-//     asyncHandler(async (req, res) => {
-//         const result = await mikrotikInterfaceProtect(req.params.interfaceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: null,
-//         });
-//     })
-// );
+router.get(
+    "/protect/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceProtect(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: null,
+        });
+    })
+);
 
-// router.get(
-//     "/unprotect/:interfaceName",
-//     asyncHandler(async (req, res) => {
-//         const result = await mikrotikInterfaceUnprotect(req.params.interfaceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: null,
-//         });
-//     })
-// );
+router.get(
+    "/unprotect/:interfaceId",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceUnprotect(req.params.interfaceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: null,
+        });
+    })
+);
 
 module.exports = router;

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigWrapper from "@core/BugConfigWrapper";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -105,6 +106,19 @@ export default function ConfigPanel() {
                         onChange={(event) => validateServer(event, "snmp_community", ["address"])}
                         type="text"
                         label="SNMP Community String"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
+                        name="protectedInterfaces"
+                        label="Protected Interfaces"
+                        control={control}
+                        defaultValue={panelConfig.data.protectedInterfaces}
+                        sort={true}
+                        error={errors.protectedInterfaces}
+                        helperText="Full interface ID, short ID or wildcard eg: gi1/1*"
+                        fullWidth
                     />
                 </Grid>
             </BugConfigWrapper>
