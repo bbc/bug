@@ -101,7 +101,7 @@ export default function BugApiVlanAutocomplete({
     } else {
         value = {
             id: untaggedValue,
-            label: options.find((option) => option.id === untaggedValue),
+            label: options?.find((option) => option?.id === untaggedValue),
         };
     }
 
