@@ -58,13 +58,7 @@ const BugConfigFormChipInput = ({
                                 defaultValue={value}
                                 value={value || ""}
                                 renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label={label}
-                                        helperText={helperText}
-                                        error={error}
-                                    />
+                                    <TextField {...params} variant="standard" label={label} error={error} />
                                 )}
                             />
                         );
