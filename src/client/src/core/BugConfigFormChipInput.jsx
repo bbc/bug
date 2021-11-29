@@ -35,7 +35,7 @@ const BugConfigFormChipInput = ({
     helperText,
     ...props
 }) => {
-    if (sort) {
+    if (sort && defaultValue) {
         // sort the contents (case insensitive)
         defaultValue = defaultValue.slice().sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
     }
