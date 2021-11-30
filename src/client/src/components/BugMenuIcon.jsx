@@ -18,7 +18,7 @@ const BugMenuIcon = () => {
     }, []);
 
     return (
-        <ListItem button component={Link} onclick={click} to={`/system/about`}>
+        <ListItem button component={Link} onClick={click} to={`/system/about`}>
             <ListItemIcon sx={{ padding: "2px" }}>
                 <FontAwesomeIcon size="lg" icon={faBug} />
             </ListItemIcon>
