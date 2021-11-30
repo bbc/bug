@@ -11,6 +11,7 @@ const panelAdd = require("@services/panel-add");
 const panelDelete = require("@services/panel-delete");
 const panelEnable = require("@services/panel-enable");
 const panelDisable = require("@services/panel-disable");
+const panelListByCapability = require("@services/panel-listbycapability");
 const hashResponse = require("@core/hash-response");
 const panelSetGroup = require("@services/panel-setgroup");
 const restrict = require("@middleware/restrict");
@@ -74,6 +75,38 @@ router.get(
         hashResponse(res, req, {
             status: "success",
             data: await panelList(),
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /panel:
+ *   get:
+ *     description: Gets a list of panels, filtered by the specified capability key
+ *     tags: [panel]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: capability
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: A capability key to search for
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the list of panels.
+ *         schema:
+ *           type: object
+ */
+router.get(
+    "/bycapability/:capability",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, {
+            status: "success",
+            data: await panelListByCapability(req.params.capability),
         });
     })
 );
