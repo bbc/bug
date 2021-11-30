@@ -99,12 +99,12 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12} lg={6}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("snmp_community", { required: true }) }}
+                        inputProps={{ ...register("snmpCommunity", { required: true }) }}
                         fullWidth
-                        error={errors.snmp_community}
-                        helperText={messages.snmp_community}
-                        defaultValue={panelConfig.data.snmp_community}
-                        onChange={(event) => validateServer(event, "snmp_community", ["address"])}
+                        error={errors.snmpCommunity}
+                        helperText={messages.snmpCommunity}
+                        defaultValue={panelConfig.data.snmpCommunity}
+                        onChange={(event) => validateServer(event, "snmpCommunity", ["address"])}
                         type="text"
                         label="SNMP Community String"
                     />

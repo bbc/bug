@@ -23,7 +23,7 @@
         "address": "",
         "username": "bug",
         "password": "",
-        "snmp_community": "public",
+        "snmpCommunity": "public",
         "protectedInterfaces": [],
         "dhcpSources": []
     }
