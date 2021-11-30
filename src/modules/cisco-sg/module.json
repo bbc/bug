@@ -24,6 +24,7 @@
         "username": "bug",
         "password": "",
         "snmp_community": "public",
-        "protected_interfaces": []
+        "protectedInterfaces": [],
+        "dhcpSources": []
     }
 }
