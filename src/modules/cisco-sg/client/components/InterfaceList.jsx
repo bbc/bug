@@ -199,6 +199,25 @@ export default function InterfaceList({ panelId, stackId = null }) {
         }
     };
 
+    const getItemSubName = (item) => {
+        if (item?.lldp?.system_name) {
+            return item?.lldp?.system_name;
+        }
+        if (item?.fdb) {
+            if (item?.fdb.length === 1) {
+                if (item?.fdb[0]?.comment) {
+                    return item?.fdb[0]?.comment;
+                }
+                if (item?.fdb[0]?.hostname) {
+                    return item?.fdb[0]?.hostname;
+                }
+            }
+            if (item?.fdb.length > 1) {
+                return `${item?.fdb.length} device(s)`;
+            }
+        }
+        return null;
+    };
     return (
         <BugApiTable
             columns={[
@@ -241,23 +260,22 @@ export default function InterfaceList({ panelId, stackId = null }) {
                             <BugTableLinkButton onClick={(event) => handleRenameClicked(event, item)}>
                                 {item.alias ? item.alias : item.description}
                             </BugTableLinkButton>
-                            {item?.lldp?.system_name && (
-                                <Box
-                                    sx={{
-                                        color: "#ffffff",
-                                        opacity: 0.3,
-                                        whiteSpace: "nowrap",
-                                        fontWeight: 400,
-                                        textOverflow: "ellipsis",
-                                        overflow: "hidden",
-                                        fontFamily: "fontFamily",
-                                        fontSize: "0.875rem",
-                                        lineHeight: 1.43,
-                                    }}
-                                >
-                                    {item?.lldp?.system_name}
-                                </Box>
-                            )}
+                            <Box
+                                sx={{
+                                    color: "#ffffff",
+                                    opacity: 0.3,
+                                    whiteSpace: "nowrap",
+                                    fontWeight: 400,
+                                    textOverflow: "ellipsis",
+                                    overflow: "hidden",
+                                    fontFamily: "fontFamily",
+                                    fontSize: "0.875rem",
+                                    lineHeight: 1.43,
+                                    paddingTop: "2px",
+                                }}
+                            >
+                                {getItemSubName(item)}
+                            </Box>
                         </>
                     ),
                 },
