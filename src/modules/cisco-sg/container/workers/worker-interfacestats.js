@@ -13,7 +13,7 @@ const mongoCreateIndex = require("@core/mongo-createindex");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address"],
+    restartOn: ["address", "snmp_community"],
 });
 
 const main = async () => {

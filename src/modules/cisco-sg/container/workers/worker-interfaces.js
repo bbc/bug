@@ -14,7 +14,7 @@ let interfacesCollection;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address"],
+    restartOn: ["address", "snmp_community"],
 });
 
 // so ... this worker just gets the interface IDs and labels. It seems like a lot of effort for a simple
