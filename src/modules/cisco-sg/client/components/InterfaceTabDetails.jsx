@@ -36,7 +36,10 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                         { name: "Operational Speed", value: iface.data?.["operational-speed"] },
 
                         { name: "Untagged VLAN", value: iface.data?.["untagged-vlan"] },
-                        { name: "Tagged VLANs", value: iface.data?.["tagged-vlans"].join(", ") },
+                        {
+                            name: "Tagged VLANs",
+                            value: iface.data?.["tagged-vlans"] ? iface.data?.["tagged-vlans"].join(", ") : "",
+                        },
                     ]}
                 />
             </Grid>
