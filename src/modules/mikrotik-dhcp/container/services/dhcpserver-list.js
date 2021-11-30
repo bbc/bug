@@ -17,7 +17,7 @@ module.exports = async () => {
             address: lease["address"],
             hostname: lease["host-name"] ? lease["host-name"] : "",
             comment: lease["comment"] ? lease["comment"] : "",
-            active: lease["status"] === "active" ? true : false,
+            active: lease["status"] === "bound" ? true : false,
             static: !lease["dynamic"],
         };
     });

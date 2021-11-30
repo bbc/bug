@@ -319,7 +319,7 @@ const oidToMac = (oid) => {
     for (const eachVal of valArray) {
         macArray.push(parseInt(eachVal).toString(16).padStart(2, "0"));
     }
-    return macArray.join(":");
+    return macArray.join(":").toUpperCase();
 };
 
 module.exports = {

@@ -7,6 +7,7 @@ import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -119,6 +120,19 @@ export default function ConfigPanel() {
                         error={errors.protectedInterfaces}
                         helperText="Full interface ID, short ID or wildcard eg: gi1/1*"
                         fullWidth
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <BugConfigFormPanelSelect
+                        name="dhcpSources"
+                        label="DHCP Source Devices"
+                        control={control}
+                        defaultValue={panelConfig.data.dhcpSources}
+                        error={errors.dhcpSources}
+                        helperText="Select one or more devices for DHCP lookup information"
+                        fullWidth
+                        capability="dhcp-server"
                     />
                 </Grid>
             </BugConfigWrapper>

@@ -1,9 +1,9 @@
 import React from "react";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import InterfaceTabDetails from "./InterfaceTabDetails";
-// import InterfaceTabEthernet from "./InterfaceTabEthernet";
+import InterfaceTabNeighbours from "./InterfaceTabNeighbours";
 import InterfaceTabStatistics from "./InterfaceTabStatistics";
-// import InterfaceTabHardware from "./InterfaceTabHardware";
+import InterfaceTabDevices from "./InterfaceTabDevices";
 import { useHistory } from "react-router-dom";
 
 export default function Interface({ panelId, interfaceId }) {
@@ -17,12 +17,12 @@ export default function Interface({ panelId, interfaceId }) {
         <>
             <BugPanelTabbedForm
                 onClose={handleBackClicked}
-                labels={["Details", "Statistics"]}
+                labels={["Details", "Statistics", "Neighbour", "Devices"]}
                 content={[
                     <InterfaceTabDetails panelId={panelId} interfaceId={interfaceId} />,
                     <InterfaceTabStatistics panelId={panelId} interfaceId={interfaceId} />,
-                    // <InterfaceTabEthernet panelId={panelId} interfaceName={interfaceName} />,
-                    // <InterfaceTabHardware panelId={panelId} interfaceName={interfaceName} />,
+                    <InterfaceTabNeighbours panelId={panelId} interfaceId={interfaceId} />,
+                    <InterfaceTabDevices panelId={panelId} interfaceId={interfaceId} />,
                 ]}
             ></BugPanelTabbedForm>
         </>

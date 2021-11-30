@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const interfaceList = require("@services/interface-list");
 const interfaceGet = require("@services/interface-get");
+const interfaceGetFdb = require("@services/interface-getfdb");
 const interfaceHistory = require("@services/interface-history");
 const interfaceEnable = require("@services/interface-enable");
 const interfaceDisable = require("@services/interface-disable");
@@ -39,6 +40,21 @@ router.get(
         res.json({
             status: result ? "success" : "failure",
             data: result,
+        });
+    })
+);
+
+router.all(
+    "/fdb/:interfaceId",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await interfaceGetFdb(
+                req.body.sortField,
+                req.body.sortDirection,
+                req.body.filters,
+                req.params.interfaceId
+            ),
         });
     })
 );

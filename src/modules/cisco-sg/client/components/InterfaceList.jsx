@@ -237,9 +237,28 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     noWrap: true,
                     title: "Name",
                     content: (item) => (
-                        <BugTableLinkButton onClick={(event) => handleRenameClicked(event, item)}>
-                            {item.alias ? item.alias : item.description}
-                        </BugTableLinkButton>
+                        <>
+                            <BugTableLinkButton onClick={(event) => handleRenameClicked(event, item)}>
+                                {item.alias ? item.alias : item.description}
+                            </BugTableLinkButton>
+                            {item?.lldp?.system_name && (
+                                <Box
+                                    sx={{
+                                        color: "#ffffff",
+                                        opacity: 0.3,
+                                        whiteSpace: "nowrap",
+                                        fontWeight: 400,
+                                        textOverflow: "ellipsis",
+                                        overflow: "hidden",
+                                        fontFamily: "fontFamily",
+                                        fontSize: "0.875rem",
+                                        lineHeight: 1.43,
+                                    }}
+                                >
+                                    {item?.lldp?.system_name}
+                                </Box>
+                            )}
+                        </>
                     ),
                 },
                 {
@@ -273,7 +292,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                                     <Box
                                         sx={{
                                             textAlign: "center",
-                                            opacity: item?.["auto-negotiation"] ? 0.2 : 1,
+                                            opacity: item?.["auto-negotiation"] ? 0.3 : 1,
                                             color: item?.["auto-negotiation"] ? "#ffffff" : "primary.main",
                                         }}
                                     >
