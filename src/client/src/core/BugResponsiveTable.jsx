@@ -89,7 +89,7 @@ export default function BugResponsiveTable({
                                     sx={{
                                         cursor: onRowClick !== undefined ? "pointer" : "auto",
                                         opacity: item.disabled ? 0.5 : 1,
-                                        height: rowHeight ? `${rowHeight}px` : "auto",
+                                        height: rowHeight ? `${rowHeight}` : "auto",
                                     }}
                                     key={index}
                                     onClick={(event) => {
