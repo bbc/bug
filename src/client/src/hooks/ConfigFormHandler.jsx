@@ -70,6 +70,12 @@ export function useConfigFormHandler({ panelId = null }) {
         const fieldData = {};
         fieldData[field] = event.target.value;
 
+        // clear errors for this field and all dependencies
+        clearErrors(field);
+        for (const eachField of dependencies) {
+            clearErrors(eachField);
+        }
+
         // fetch dependencies
         for (let eachDependency of dependencies) {
             fieldData[eachDependency] = getValues(eachDependency);
