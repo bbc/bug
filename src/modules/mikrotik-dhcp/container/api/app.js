@@ -11,6 +11,7 @@ const serverRouter = require("@routes/server");
 const addressListRouter = require("@routes/addresslist");
 const defaultRouter = require("@routes/default");
 const validationRouter = require("@routes/validate");
+const dhcpServerRouter = require("@routes/dhcp-server");
 
 let app = express();
 
@@ -32,6 +33,7 @@ app.use("/api/lease", leaseRouter);
 app.use("/api/server", serverRouter);
 app.use("/api/addresslist", addressListRouter);
 app.use("/api/validate", validationRouter);
+app.use("/api/dhcp-server", dhcpServerRouter);
 app.use("*", defaultRouter);
 
 module.exports = app;
