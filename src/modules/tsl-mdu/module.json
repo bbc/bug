@@ -2,21 +2,15 @@
     "name": "tsl-mdu",
     "longname": "TSL MDU",
     "description": "Monitoring and control of TSL MDUs",
+    "capabilities": ["power-control"],
     "notes": "",
     "version": "2.0.0",
     "icon": "mdi-power-plug-outline",
     "author": "Ryan McCartney",
     "license": "MIT",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "utils",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "utils", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,

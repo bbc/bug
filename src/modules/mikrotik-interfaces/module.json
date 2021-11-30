@@ -2,6 +2,7 @@
     "name": "mikrotik-interfaces",
     "longname": "Mikrotik Interfaces",
     "description": "Monitoring and control of mikrotik interfaces",
+    "capabilities": [],
     "notes": "",
     "version": "1.0.0",
     "icon": "mdi-router",

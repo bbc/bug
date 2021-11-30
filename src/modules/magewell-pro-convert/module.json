@@ -2,21 +2,15 @@
     "name": "magewell-pro-convert",
     "longname": "Magewell Pro Convert",
     "description": "Control NDI Sources on Magewell Devices",
+    "capabilities": ["ndi"],
     "notes": "",
     "version": "1.0.0",
     "icon": "mdi-video-wireless",
     "author": "Ryan McCartney",
     "license": "ISC",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "utils",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "utils", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

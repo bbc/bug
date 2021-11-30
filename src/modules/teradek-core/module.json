@@ -2,21 +2,15 @@
     "name": "teradek-core",
     "longname": "Teradek Core",
     "description": "Control devices in the Teradek Core from BUG",
+    "capabilities": [],
     "notes": "",
     "version": "0.1.0",
     "icon": "mdi-video",
     "author": "Ryan McCartney",
     "license": "MIT",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "utils",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "utils", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,

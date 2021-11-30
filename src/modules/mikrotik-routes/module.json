@@ -3,6 +3,7 @@
     "longname": "Mikrotik Routes",
     "version": "1.0.0",
     "description": "Allows selection of default route on Mikrotik routers",
+    "capabilities": [],
     "notes": "",
     "icon": "SettingsInputComponent",
     "author": "Geoff House",

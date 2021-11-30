@@ -2,6 +2,7 @@
     "name": "weather",
     "longname": "Weather Forecast",
     "description": "Get the Weather on Location",
+    "capabilities": [],
     "version": "1.0.0",
     "icon": "Cloud",
     "author": "Ryan McCartney",

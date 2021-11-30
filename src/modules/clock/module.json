@@ -2,6 +2,7 @@
     "name": "clock",
     "longname": "Clock",
     "description": "Digital and Analogue Clocks",
+    "capabilities": [],
     "version": "1.0.0",
     "icon": "Schedule",
     "author": "Ryan McCartney",
