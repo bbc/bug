@@ -14,7 +14,7 @@ let interfacesCollection;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 // so ... this worker just gets the interface IDs and labels. It seems like a lot of effort for a simple
@@ -40,14 +40,14 @@ const main = async () => {
     while (true) {
         const ifIDs = await ciscoSGSNMP.subtree({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             maxRepetitions: 1000,
             oid: "1.3.6.1.2.1.2.2.1.8",
         });
 
         const ifShortIDs = await ciscoSGSNMP.subtree({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             maxRepetitions: 1000,
             oid: "1.3.6.1.2.1.31.1.1.1.1",
         });
@@ -55,7 +55,7 @@ const main = async () => {
         // now fetch interface name - which we need to calculate the stack
         const ifDescriptions = await ciscoSGSNMP.subtree({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             maxRepetitions: 1000,
             oid: "1.3.6.1.2.1.2.2.1.2",
         });

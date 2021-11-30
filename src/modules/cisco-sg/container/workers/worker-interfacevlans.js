@@ -11,7 +11,7 @@ const mongoSingle = require("@core/mongo-single");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 const main = async () => {
@@ -40,7 +40,7 @@ const main = async () => {
                 // for (let eachVlan of [{ id: 20 }]) {
                 const untaggedResult = await ciscoSGSNMP.portlist({
                     host: workerData.address,
-                    community: workerData.snmp_community,
+                    community: workerData.snmpCommunity,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.5.0.${eachVlan.id}`,
                     timeout: 30000,
                 });
@@ -59,7 +59,7 @@ const main = async () => {
 
                 const taggedResult = await ciscoSGSNMP.portlist({
                     host: workerData.address,
-                    community: workerData.snmp_community,
+                    community: workerData.snmpCommunity,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.4.0.${eachVlan.id}`,
                     timeout: 30000,
                 });

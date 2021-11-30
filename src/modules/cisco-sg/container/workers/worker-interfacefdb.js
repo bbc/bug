@@ -11,7 +11,7 @@ const mongoSingle = require("@core/mongo-single");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 const main = async () => {
@@ -42,7 +42,7 @@ const main = async () => {
         const fbpOid = `1.3.6.1.2.1.17.4.3.1.2`;
         const fdbList = await ciscoSGSNMP.subtree({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             oid: `1.3.6.1.2.1.17.4.3.1.2`,
             timeout: 30000,
         });

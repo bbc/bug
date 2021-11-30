@@ -9,7 +9,7 @@ module.exports = async (interfaceId, newName) => {
 
     const result = await ciscoSGSNMP.setString({
         host: config.address,
-        community: config.snmp_community,
+        community: config.snmpCommunity,
         oid: `.1.3.6.1.2.1.31.1.1.1.18.${interfaceId}`,
         value: newName,
     });

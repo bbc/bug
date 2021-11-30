@@ -13,7 +13,7 @@ let interfacesCollection;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 const main = async () => {
@@ -36,7 +36,7 @@ const main = async () => {
             // get subtree of interface link states
             const ifLinkStates = await ciscoSGSNMP.subtree({
                 host: workerData.address,
-                community: workerData.snmp_community,
+                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.8",
             });
@@ -44,7 +44,7 @@ const main = async () => {
             // get subtree of interface admin states
             const ifAdminStates = await ciscoSGSNMP.subtree({
                 host: workerData.address,
-                community: workerData.snmp_community,
+                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.7",
             });

@@ -10,7 +10,7 @@ const mongoSingle = require("@core/mongo-single");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 const main = async () => {
@@ -23,7 +23,7 @@ const main = async () => {
     while (true) {
         const result = await ciscoSGSNMP.getMultiple({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             oids: [
                 "1.3.6.1.2.1.1.1.0",
                 "1.3.6.1.2.1.1.3.0",
@@ -37,7 +37,7 @@ const main = async () => {
         // otherwise it's a nasty old SG300 and we have to control it the old-fashioned way
         const newStyleResults = await ciscoSGSNMP.subtree({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             oid: "1.3.6.1.4.1.9.6.1.101.48.61.1.1",
         });
         const controlVersion = Object.keys(newStyleResults).length === 0 ? 1 : 2;

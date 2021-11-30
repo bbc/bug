@@ -10,7 +10,7 @@ const mongoSingle = require("@core/mongo-single");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 const main = async () => {
@@ -23,7 +23,7 @@ const main = async () => {
     while (true) {
         const result = await ciscoSGSNMP.get({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             oid: ".1.3.6.1.4.1.9.6.1.101.1.13.0",
         });
         await mongoSingle.set("pending", result === 2, 60);

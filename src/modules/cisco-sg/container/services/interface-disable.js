@@ -9,7 +9,7 @@ module.exports = async (interfaceId) => {
 
     const result = await ciscoSGSNMP.setInt({
         host: config.address,
-        community: config.snmp_community,
+        community: config.snmpCommunity,
         oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,
         value: 2,
     });

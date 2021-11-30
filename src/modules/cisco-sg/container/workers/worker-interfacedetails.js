@@ -12,7 +12,7 @@ let interfacesCollection;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 // see: http://www.circitor.fr/Mibs/Html/C/CISCOSB-rlInterfaces.php
@@ -66,28 +66,28 @@ const main = async () => {
         } else {
             const ifAliases = await ciscoSGSNMP.subtree({
                 host: workerData.address,
-                community: workerData.snmp_community,
+                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.31.1.1.1.18",
             });
 
             const ifAutoNegotiation = await ciscoSGSNMP.subtree({
                 host: workerData.address,
-                community: workerData.snmp_community,
+                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.16",
             });
 
             const ifAdminPortSpeed = await ciscoSGSNMP.subtree({
                 host: workerData.address,
-                community: workerData.snmp_community,
+                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.15",
             });
 
             const ifOperationalPortSpeed = await ciscoSGSNMP.subtree({
                 host: workerData.address,
-                community: workerData.snmp_community,
+                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.31.1.1.1.15",
             });

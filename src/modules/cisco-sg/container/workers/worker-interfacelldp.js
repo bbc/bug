@@ -11,7 +11,7 @@ const chunk = require("@core/chunk");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmp_community"],
+    restartOn: ["address", "snmpCommunity"],
 });
 
 const parseHexString = (hexString) => {
@@ -42,7 +42,7 @@ const main = async () => {
         // fetch list of LLDP neighbors
         const lldpInfo = await ciscoSGSNMP.subtree({
             host: workerData.address,
-            community: workerData.snmp_community,
+            community: workerData.snmpCommunity,
             oid: "1.0.8802.1.1.2.1.4.1.1",
             timeout: 30000,
             raw: true,
