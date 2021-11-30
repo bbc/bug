@@ -1,15 +1,12 @@
 "use strict";
 const snmp = require("net-snmp");
-
-const chunk = (str, size) => {
-    return str.match(new RegExp(".{1," + size + "}", "g"));
-};
+const chunk = require("@core/chunk");
 
 const hex2bin = (hex) => {
     return parseInt(hex, 16).toString(2).padStart(8, "0");
 };
 
-const get = ({ host, community = "public", oid, timeout = 5000 }) => {
+const get = ({ host, community = "public", oid, timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         var session = snmp.createSession(host, community, {
             version: snmp.Version2c,
@@ -27,7 +24,7 @@ const get = ({ host, community = "public", oid, timeout = 5000 }) => {
                     console.error(snmp.varbindError(varbinds[0]));
                     reject();
                 } else {
-                    returnValue = convertVarbind(varbinds[0]);
+                    returnValue = convertVarbind(varbinds[0], raw);
                 }
             }
             session.close();
@@ -36,7 +33,7 @@ const get = ({ host, community = "public", oid, timeout = 5000 }) => {
     });
 };
 
-const getNext = ({ host, community = "public", oid, timeout = 5000 }) => {
+const getNext = ({ host, community = "public", oid, timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         var session = snmp.createSession(host, community, {
             version: snmp.Version2c,
@@ -54,12 +51,12 @@ const getNext = ({ host, community = "public", oid, timeout = 5000 }) => {
                 }
             }
             session.close();
-            resolve(convertVarbind(varbinds[0]));
+            resolve(convertVarbind(varbinds[0], raw));
         });
     });
 };
 
-const walk = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 5000 }) => {
+const walk = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
@@ -73,7 +70,7 @@ const walk = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 
                 if (snmp.isVarbindError(varbinds[i])) {
                     console.error(snmp.varbindError(varbinds[i]));
                 } else {
-                    returnValues[varbinds[i].oid] = convertVarbind(varbinds[i]);
+                    returnValues[varbinds[i].oid] = convertVarbind(varbinds[i], raw);
                 }
             }
         };
@@ -90,7 +87,7 @@ const walk = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 
     });
 };
 
-const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 5000 }) => {
+const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
@@ -104,7 +101,7 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout
                 if (snmp.isVarbindError(varbinds[i])) {
                     console.error(snmp.varbindError(varbinds[i]));
                 } else {
-                    returnValues[varbinds[i].oid] = convertVarbind(varbinds[i]);
+                    returnValues[varbinds[i].oid] = convertVarbind(varbinds[i], raw);
                 }
             }
         };
@@ -121,7 +118,7 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout
     });
 };
 
-const portlist = ({ host, community = "public", oid = "", timeout = 5000 }) => {
+const portlist = ({ host, community = "public", oid = "", timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         var session = snmp.createSession(host, community, {
             version: snmp.Version2c,
@@ -170,7 +167,7 @@ const portlist = ({ host, community = "public", oid = "", timeout = 5000 }) => {
     });
 };
 
-const getMultiple = ({ host, community = "public", oids = [], timeout = 5000 }) => {
+const getMultiple = ({ host, community = "public", oids = [], timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
 
@@ -189,7 +186,7 @@ const getMultiple = ({ host, community = "public", oids = [], timeout = 5000 }) 
                     if (snmp.isVarbindError(varbinds[i])) {
                         console.error(snmp.varbindError(varbinds[i]));
                     } else {
-                        returnValues[varbinds[i].oid] = convertVarbind(varbinds[i]);
+                        returnValues[varbinds[i].oid] = convertVarbind(varbinds[i], raw);
                     }
                 }
             }
@@ -278,7 +275,10 @@ const trimOids = (oids) => {
     return retArray;
 };
 
-const convertVarbind = (varbind) => {
+const convertVarbind = (varbind, raw = false) => {
+    if (raw) {
+        return varbind.value;
+    }
     switch (varbind.type) {
         case 1: // Boolean
             return new Boolean(varbind.value);
@@ -313,6 +313,15 @@ const convertVarbind = (varbind) => {
     }
 };
 
+const oidToMac = (oid) => {
+    const valArray = oid.split(".");
+    const macArray = [];
+    for (const eachVal of valArray) {
+        macArray.push(parseInt(eachVal).toString(16).padStart(2, "0"));
+    }
+    return macArray.join(":");
+};
+
 module.exports = {
     get: get,
     getNext: getNext,
@@ -322,4 +331,5 @@ module.exports = {
     portlist: portlist,
     setString: setString,
     setInt: setInt,
+    oidToMac: oidToMac,
 };
