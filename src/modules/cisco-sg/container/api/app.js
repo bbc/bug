@@ -9,11 +9,7 @@ const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
 const pendingRouter = require("@routes/pending");
 const deviceRouter = require("@routes/device");
-// const lockRouter = require("@routes/lock");
-// const sourcesRouter = require("@routes/sources");
-// const destinationsRouter = require("@routes/destinations");
-// const groupsRouter = require("@routes/groups");
-// const validationRouter = require("@routes/validate");
+const validationRouter = require("@routes/validate");
 const interfaceRouter = require("@routes/interface");
 const vlanRouter = require("@routes/vlan");
 
@@ -37,11 +33,7 @@ app.use("/api/interface", interfaceRouter);
 app.use("/api/vlan", vlanRouter);
 app.use("/api/pending", pendingRouter);
 app.use("/api/device", deviceRouter);
-// app.use("/api", lockRouter);
-// app.use("/api/sources", sourcesRouter);
-// app.use("/api/destinations", destinationsRouter);
-// app.use("/api/groups", groupsRouter);
-// app.use("/api/validate", validationRouter);
+app.use("/api/validate", validationRouter);
 
 app.use("*", defaultRouter);
 

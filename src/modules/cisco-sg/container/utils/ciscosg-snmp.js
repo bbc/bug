@@ -198,33 +198,38 @@ const getMultiple = ({ host, community = "public", oids = [], timeout = 5000, ra
 
 const setString = ({ host, community = "public", oid, value, timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
-        const session = snmp.createSession(host, community, {
-            version: snmp.Version2c,
-            timeout: timeout,
-        });
-        const varbinds = [
-            {
-                oid: trimOid(oid),
-                type: snmp.ObjectType.OctetString,
-                value: value,
-            },
-        ];
-        session.set(varbinds, function (error, varbinds) {
-            if (error) {
-                session.close();
-                console.error(error);
-                reject();
-            } else {
-                for (var i = 0; i < varbinds.length; i++) {
-                    if (snmp.isVarbindError(varbinds[i])) {
-                        session.close();
-                        reject();
+        try {
+            const session = snmp.createSession(host, community, {
+                version: snmp.Version2c,
+                timeout: timeout,
+            });
+            const varbinds = [
+                {
+                    oid: trimOid(oid),
+                    type: snmp.ObjectType.OctetString,
+                    value: value,
+                },
+            ];
+            session.set(varbinds, function (error, varbinds) {
+                if (error) {
+                    session.close();
+                    console.error(error);
+                    reject();
+                } else {
+                    for (var i = 0; i < varbinds.length; i++) {
+                        if (snmp.isVarbindError(varbinds[i])) {
+                            session.close();
+                            reject();
+                        }
                     }
                 }
-            }
-            session.close();
-            resolve(true);
-        });
+                session.close();
+                resolve(true);
+            });
+        } catch (error) {
+            console.error(error);
+            reject();
+        }
     });
 };
 

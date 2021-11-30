@@ -2,6 +2,11 @@
 
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
+
+process.on("uncaughtException", function (exception) {
+    console.log(exception);
+});
+
 const app = require("./app");
 
 const port = process.env.PORT || 3200;

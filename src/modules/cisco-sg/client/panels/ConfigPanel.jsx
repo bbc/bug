@@ -79,7 +79,9 @@ export default function ConfigPanel() {
                         fullWidth
                         variant="standard"
                         error={errors?.username}
+                        helperText={messages.username}
                         defaultValue={panelConfig.data.username}
+                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
                         type="text"
                         label="SSH Username"
                     />
@@ -91,13 +93,15 @@ export default function ConfigPanel() {
                         fullWidth
                         variant="standard"
                         error={errors?.password}
+                        helperText={messages.password}
                         defaultValue={panelConfig.data.password}
+                        onChange={(event) => validateServer(event, "password", ["address", "username"])}
                         type="password"
                         label="SSH Password"
                     />
                 </Grid>
 
-                <Grid item xs={12} lg={6}>
+                <Grid item xs={12}>
                     <BugConfigFormTextField
                         inputProps={{ ...register("snmpCommunity", { required: true }) }}
                         fullWidth
