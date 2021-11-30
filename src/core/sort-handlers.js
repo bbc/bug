@@ -7,26 +7,42 @@
  */
 
 const string = (a, b, sortField) => {
-    return a[sortField]?.localeCompare(b[sortField], "en", { sensitivity: "base" })
+    return a[sortField]?.localeCompare(b[sortField], "en", { sensitivity: "base" });
 };
 
 const ipAddress = (a, b, sortField) => {
-    const num1 = Number(a[sortField].split(".").map((num) => (`000${num}`).slice(-3)).join(""));
-    const num2 = Number(b[sortField].split(".").map((num) => (`000${num}`).slice(-3)).join(""));
+    const num1 = a[sortField]
+        ? Number(
+              a[sortField]
+                  .split(".")
+                  .map((num) => `000${num}`.slice(-3))
+                  .join("")
+          )
+        : 255255255255;
+    const num2 = b[sortField]
+        ? Number(
+              b[sortField]
+                  .split(".")
+                  .map((num) => `000${num}`.slice(-3))
+                  .join("")
+          )
+        : 255255255255;
     return num1 - num2;
 };
 
 const number = (a, b, sortField) => {
     return a[sortField] - b[sortField];
-}
+};
 
 const boolean = (a, b, sortField) => {
-    return b[sortField] - a[sortField];
-}
+    const val1 = b[sortField] === undefined ? false : b[sortField];
+    const val2 = a[sortField] === undefined ? false : a[sortField];
+    return val1 - val2;
+};
 
 module.exports = {
     string: string,
     ipAddress: ipAddress,
     number: number,
-    boolean: boolean
-}
+    boolean: boolean,
+};
