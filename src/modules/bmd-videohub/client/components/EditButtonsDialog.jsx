@@ -147,6 +147,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                     sx={{
                         backgroundColor: "#212121",
                         fontWeight: 500,
+                        color: "rgba(255, 255, 255, 0.7)",
                         lineHeight: "1.5rem",
                         textTransform: "uppercase",
                     }}
@@ -157,7 +158,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                         onClick={handleSelectAll}
                         sx={{
                             padding: "4px",
-                            fontWeight: 500,
+                            // fontWeight: 500,
                         }}
                     >
                         <ListItemIcon
@@ -173,7 +174,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                                 disableRipple
                             />
                         </ListItemIcon>
-                        Available Buttons
+                        <div className="MuiTableHead-root">Available Buttons</div>
                     </ListItem>
                 </Box>
                 <BugScrollbars>
@@ -256,6 +257,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                     sx={{
                         backgroundColor: "#212121",
                         padding: "13px",
+                        color: "rgba(255, 255, 255, 0.7)",
                         fontWeight: 500,
                         lineHeight: "1.5rem",
                         textTransform: "uppercase",
