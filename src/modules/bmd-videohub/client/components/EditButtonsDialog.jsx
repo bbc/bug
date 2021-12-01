@@ -14,7 +14,6 @@ import useAsyncEffect from "use-async-effect";
 import CircularProgress from "@mui/material/CircularProgress";
 import EditButtonsDragItem from "./EditButtonsDragItem";
 import _ from "lodash";
-import { useAlert } from "@utils/Snackbar";
 import AxiosPost from "@utils/AxiosPost";
 import Box from "@mui/material/Box";
 import BugScrollbars from "@core/BugScrollbars";
@@ -35,7 +34,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubmit, groups, groupIndex }) {
+export default function EditButtonsDialog({ open, panelId, onDismiss, groupType, onConfirm, groupIndex }) {
     const [buttons, setButtons] = React.useState(null);
     const [selectedButtons, setSelectedButtons] = React.useState(null);
     const sensors = useSensors(
@@ -45,7 +44,6 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
         }),
         useSensor(TouchSensor)
     );
-    const sendAlert = useAlert();
 
     // fetch list of all buttons
     useAsyncEffect(async () => {
@@ -112,11 +110,8 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
             buttons: buttonIndexArray,
         };
         const url = `/container/${panelId}/groups/set/${groupType}/${groupIndex}`;
-
         if (await AxiosPost(url, postData)) {
-            onSubmit();
-        } else {
-            sendAlert(`Failed to save group`, { variant: "error" });
+            onConfirm();
         }
     };
 
@@ -333,7 +328,9 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
 
     return (
         <Dialog
-            open
+            open={open}
+            onClose={onDismiss}
+            maxWidth={false}
             sx={{
                 "& .MuiDialog-paperScrollPaper": {
                     maxWidth: "none",
@@ -351,7 +348,7 @@ export default function EditButtonsDialog({ panelId, onCancel, groupType, onSubm
                 <DialogTitle id="alert-dialog-title">Edit group {groupType}s</DialogTitle>
                 <DialogContent>{content()}</DialogContent>
                 <DialogActions>
-                    <Button onClick={onCancel} color="primary">
+                    <Button onClick={onDismiss} color="primary">
                         Cancel
                     </Button>
                     <Button type="submit" onClick={handleSubmit} color="primary" autoFocus>

@@ -16,7 +16,7 @@ export default function RouterButton({
     buttonType,
     button,
     onClick,
-    selected,
+    selected = false,
     editMode = false,
     onChange,
     onEditIcon,

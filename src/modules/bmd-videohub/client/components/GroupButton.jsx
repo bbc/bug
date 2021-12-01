@@ -1,119 +1,70 @@
 import React from "react";
-import GroupMenu from "./GroupMenu";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import { useSortable } from "@dnd-kit/sortable";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugRouterGroupButton from "@core/BugRouterGroupButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import BallotIcon from "@mui/icons-material/Ballot";
+import EditIcon from "@mui/icons-material/Edit";
+import AxiosDelete from "@utils/AxiosDelete";
 
-export default function GroupButton({
-    panelId,
-    selected = false,
-    index,
-    primaryText,
-    onClick,
-    groupType,
-    editMode = false,
-    onChange,
-    onEditButtons,
-}) {
+export default function GroupButton({ panelId, group, onClick, groupType, editMode = false, onChange, onEditButtons }) {
     const sendAlert = useAlert();
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: primaryText });
     const { renameDialog } = useBugRenameDialog();
 
-    let transformString = null;
-
-    if (transform?.x) {
-        transformString = `translateX(${Math.round(transform?.x)}px)`;
-    }
-
-    const style = {
-        transform: transformString,
-        transition,
-    };
-
-    const handleRenameClicked = async () => {
+    const handleRenameClicked = async (event, item) => {
         const result = await renameDialog({
             title: "Rename group",
-            defaultValue: primaryText,
+            defaultValue: group.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/groups/rename/${groupType}/${primaryText}/${result}`)) {
-                sendAlert(`Renamed group: ${primaryText} -> ${result}`, { variant: "success" });
+            if (await AxiosCommand(`/container/${panelId}/groups/rename/${groupType}/${group.label}/${result}`)) {
+                sendAlert(`Renamed group: ${group.label} -> ${result}`, { variant: "success" });
             } else {
-                sendAlert(`Failed to rename group: ${primaryText}`, { variant: "error" });
+                sendAlert(`Failed to rename group: ${group.label}`, { variant: "error" });
             }
             onChange();
         }
     };
 
-    // bg color:
-    let backgroundColor = "#444";
-    if (editMode) {
-        backgroundColor = "none";
-    } else if (selected) {
-        backgroundColor = "#337ab7";
-    }
-
-    // border color
-    let borderColor = "rgba(136, 136, 136, 0.5)";
-    if (editMode && selected) {
-        borderColor = "#33b77a";
-    }
+    const handleDeleteClicked = async (event, item) => {
+        if (await AxiosDelete(`/container/${panelId}/groups/${groupType}/${group.label}`)) {
+            sendAlert(`Deleted group: ${group.label}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to delete group: ${group.label}`, { variant: "error" });
+        }
+        onChange();
+    };
 
     return (
-        <>
-            <Button
-                ref={setNodeRef}
-                style={style}
-                {...attributes}
-                {...listeners}
-                sx={{
-                    backgroundColor: backgroundColor,
-                    margin: "4px",
-                    flexDirection: "row",
-                    justifyContent: editMode ? "space-between" : "center",
-                    width: "128px",
-                    height: "48px",
-                    "@media (max-width:800px)": {
-                        height: "36px",
-                        width: "92px",
-                    },
-                    padding: "0px",
-                    borderColor: borderColor,
-                    textAlign: "center",
-                    color: "#fff",
-                }}
-                onClick={onClick}
-                variant="outlined"
-                color="secondary"
-            >
-                <Box
-                    sx={{
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        "@media (max-width:800px)": {
-                            fontSize: 12,
-                        },
-                        paddingLeft: editMode ? "10px" : "0px",
-                    }}
-                >
-                    {primaryText}
-                </Box>
-                {editMode ? (
-                    <GroupMenu
-                        panelId={panelId}
-                        groupType={groupType}
-                        groupName={primaryText}
-                        groupIndex={index}
-                        onRename={handleRenameClicked}
-                        onChange={onChange}
-                        onEditButtons={onEditButtons}
-                    />
-                ) : null}
-            </Button>
-        </>
+        <BugRouterGroupButton
+            id={group.index}
+            draggable
+            onClick={onClick}
+            item={group}
+            primaryLabel={group.label}
+            selected={group.selected}
+            editMode={editMode}
+            menuItems={[
+                {
+                    title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
+                    icon: <BallotIcon fontSize="small" />,
+                    onClick: onEditButtons,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Rename",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleRenameClicked,
+                },
+                {
+                    title: "Delete",
+                    icon: <DeleteIcon fontSize="small" />,
+                    onClick: handleDeleteClicked,
+                },
+            ]}
+        />
     );
 }

@@ -3,7 +3,7 @@ import BugDynamicIcon from "@core/BugDynamicIcon";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import BugRouterButtonMenu from "@core/BugRouterButtonMenu";
+import BugItemMenu from "@core/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
 
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
@@ -32,19 +32,21 @@ const BugRouterButton = ({
         id: id,
     });
 
-    let transformString = "";
-
-    if (transform?.x) {
-        transformString += `translateX(${Math.round(transform?.x)}px)`;
-    }
-    if (transform?.y) {
-        transformString += ` translateY(${Math.round(transform?.y)}px)`;
-    }
-
-    const style = {
-        transform: transformString,
+    let style = {
+        transform: "",
         transition,
     };
+
+    if (transform?.x) {
+        style.transform += `translateX(${Math.round(transform?.x)}px)`;
+    }
+    if (transform?.y) {
+        style.transform += ` translateY(${Math.round(transform?.y)}px)`;
+    }
+    if (transform?.x || transform?.y) {
+        style.zIndex = 9999;
+        style.backgroundColor = "#262626";
+    }
 
     let backgroundColor = "#444";
     if (editMode) {
@@ -198,7 +200,7 @@ const BugRouterButton = ({
                     >
                         {primaryLabel}
                     </Box>
-                    {editMode && menuItems && <BugRouterButtonMenu item={item} menuItems={menuItems} />}
+                    {editMode && menuItems && <BugItemMenu item={item} menuItems={menuItems} />}
                 </Box>
             </Box>
         </Button>

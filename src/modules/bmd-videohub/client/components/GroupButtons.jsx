@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import EditButtonsDialog from "./EditButtonsDialog";
 import Box from "@mui/material/Box";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
 
 import {
     DndContext,
@@ -29,12 +30,12 @@ import {
 export default function GroupButtons({ panelId, editMode = false, groupType, selectedDestination, buttons, onChange }) {
     const sendAlert = useAlert();
     const history = useHistory();
-    const [editButtonsDialogGroupIndex, setEditButtonsDialogGroupIndex] = React.useState(null);
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;
     const [localButtons, setLocalButtons] = React.useState(null);
     const { renameDialog } = useBugRenameDialog();
+    const { customDialog } = useBugCustomDialog();
 
     useEffect(() => {
         setLocalButtons(buttons.data.groups);
@@ -57,7 +58,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         }
     };
 
-    const handleAddGroupClicked = async () => {
+    const handleAddGroupClicked = async (event) => {
         const result = await renameDialog({
             title: "Add group",
             defaultValue: "",
@@ -67,9 +68,6 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
             if (await AxiosPost(`/container/${panelId}/groups/${groupType}/${result}`)) {
                 onChange();
                 sendAlert(`Added group: ${result}`, { variant: "success" });
-
-                // and now edit buttons in this group...
-                setEditButtonsDialogGroupIndex(localButtons.length);
             } else {
                 sendAlert(`Failed to add group: ${result}`, { variant: "error" });
             }
@@ -102,26 +100,14 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         }
     };
 
-    const handleEditButtonsSubmitted = () => {
-        setEditButtonsDialogGroupIndex(null);
-        onChange();
-    };
-
-    const Content = () => {
-        if (editMode) {
-            return (
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                    <SortableContext
-                        items={localButtons.map((group) => group.label)}
-                        strategy={horizontalListSortingStrategy}
-                    >
-                        {renderGroupButtons()}
-                    </SortableContext>
-                </DndContext>
-            );
+    const handleEditButtonsClicked = async (event, item) => {
+        const result = await customDialog({
+            dialog: <EditButtonsDialog panelId={panelId} groupType={groupType} groupIndex={item.index} />,
+        });
+        if (result !== false) {
+            sendAlert(`Updated buttons for group: ${item.label}`, { variant: "success" });
+            onChange();
         }
-
-        return renderGroupButtons();
     };
 
     const renderGroupButtons = () => {
@@ -142,15 +128,13 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                 {localButtons.map((group) => (
                     <GroupButton
                         key={group.index}
-                        selected={group.selected}
-                        index={group.index}
-                        primaryText={group.label}
+                        group={group}
                         onClick={() => handleGroupButtonClicked(group.index)}
                         editMode={editMode}
                         panelId={panelId}
                         groupType={groupType}
                         onChange={onChange}
-                        onEditButtons={(groupIndex) => setEditButtonsDialogGroupIndex(groupIndex)}
+                        onEditButtons={handleEditButtonsClicked}
                     />
                 ))}
                 {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
@@ -162,18 +146,18 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
         return <Loading />;
     }
 
-    return (
-        <>
-            <Content />
-            {editButtonsDialogGroupIndex !== null && (
-                <EditButtonsDialog
-                    onCancel={() => setEditButtonsDialogGroupIndex(null)}
-                    onSubmit={handleEditButtonsSubmitted}
-                    groupIndex={editButtonsDialogGroupIndex}
-                    panelId={panelId}
-                    groupType={groupType}
-                />
-            )}
-        </>
-    );
+    if (editMode) {
+        return (
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext
+                    items={localButtons.map((group) => group.label)}
+                    strategy={horizontalListSortingStrategy}
+                >
+                    {renderGroupButtons()}
+                </SortableContext>
+            </DndContext>
+        );
+    }
+
+    return renderGroupButtons();
 }
