@@ -71,8 +71,8 @@ export default function Router({
     const handleDragEnd = async (event) => {
         const { active, over } = event;
 
-        const activeId = active.id.split(":")[1];
-        const overId = over.id.split(":")[1];
+        const activeId = active?.id?.split(":")[1];
+        const overId = over?.id?.split(":")[1];
 
         if (activeId !== overId) {
             const oldIndex = localButtons.findIndex((button) => button.index === parseInt(activeId));

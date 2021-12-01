@@ -1,20 +1,15 @@
 import React from "react";
-import ButtonMenu from "./ButtonMenu";
-import { useSortable } from "@dnd-kit/sortable";
-import BugDynamicIcon from "@core/BugDynamicIcon";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-
-const StyledBugDynamicIcon = styled(BugDynamicIcon)({
-    fontSize: "2rem",
-    "@media (max-width:800px)": {
-        fontSize: 20,
-    },
-});
+import BugRouterButton from "@core/BugRouterButton";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import BackspaceIcon from "@mui/icons-material/Backspace";
+import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
+import AddGroupDialog from "./AddGroupDialog";
 
 export default function RouterButton({
     panelId,
@@ -28,28 +23,11 @@ export default function RouterButton({
     groups,
     useDoubleClick = false,
 }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-        id: `${buttonType}:${button.index}`,
-    });
-    const indexPlusOne = (button.index + 1).toString();
+    const { customDialog } = useBugCustomDialog();
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
-    let transformString = "";
-
-    if (transform?.x) {
-        transformString += `translateX(${Math.round(transform?.x)}px)`;
-    }
-    if (transform?.y) {
-        transformString += ` translateY(${Math.round(transform?.y)}px)`;
-    }
-
-    const style = {
-        transform: transformString,
-        transition,
-    };
-
-    const handleRenameClicked = async () => {
+    const handleRenameClicked = async (event, item) => {
         const result = await renameDialog({
             title: `Rename ${buttonType}`,
             defaultValue: button.label,
@@ -64,174 +42,94 @@ export default function RouterButton({
         }
     };
 
-    let backgroundColor = "#444";
-    if (editMode) {
-        backgroundColor = "none";
-    } else if (selected) {
-        backgroundColor = "#337ab7";
-    }
+    const handleClearClicked = async (event, item) => {
+        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/-`)) {
+            sendAlert(`Cleared button label for ${buttonType} ${button.index + 1}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to clear label for ${buttonType} ${button.index + 1}`, { variant: "error" });
+        }
+        onChange();
+    };
 
-    const secondaryText = buttonType === "source" ? "" : button.sourceLabel;
+    const handleRemoveClicked = async (event, item) => {
+        const url =
+            buttonType === "source"
+                ? `/container/${panelId}/${buttonType}s/${sourceGroup}/${button.index}`
+                : `/container/${panelId}/${buttonType}s/${destinationGroup}/${button.index}`;
+
+        if (!(await AxiosDelete(url))) {
+            sendAlert(`Failed to delete button`, { variant: "error" });
+        }
+        onChange();
+    };
+
+    const handleAddGroupClick = async (event) => {
+        const groupIndexes = await customDialog({
+            dialog: <AddGroupDialog groups={groups} />,
+        });
+        if (groupIndexes !== false) {
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/groups/addbutton/${buttonType}/${groupIndexes}/${button.index}`
+                )
+            ) {
+                sendAlert(`Added button to group(s) '${groupIndexes.join(",")}'`, { variant: "success" });
+                onChange();
+            } else {
+                sendAlert(`Failed to add button to group(s)`, { variant: "error" });
+            }
+        }
+    };
+
     return (
-        <>
-            <Button
-                ref={setNodeRef}
-                style={style}
-                {...attributes}
-                {...listeners}
-                sx={{
-                    backgroundColor: backgroundColor,
-                    margin: "4px",
-                    width: "128px",
-                    height: "128px",
-                    "@media (max-width:800px)": {
-                        height: "80px",
-                        width: "92px",
-                    },
-                    "@media (max-width:600px)": {
-                        height: "48px",
-                        width: "92px",
-                    },
-                    textTransform: "none",
-                    padding: "0px",
-                    lineHeight: editMode ? 1.5 : 1.4,
-                    cursor: editMode ? "move" : "pointer",
-                    "& .MuiButton-label": {
-                        flexDirection: "column",
-                        height: "100%",
-                    },
-                    "&:hover": {
-                        backgroundColor: editMode ? "inherit" : "#0069d9",
-                    },
-                }}
-                variant="outlined"
-                color="secondary"
-                onClick={useDoubleClick ? undefined : onClick}
-                onDoubleClick={useDoubleClick ? onClick : undefined}
-            >
-                <Box
-                    className="MuiButton-label"
-                    sx={{
-                        width: "100%",
-                        "@media (max-width:600px)": {
-                            padding: "4px",
-                        },
-                    }}
-                >
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "65%",
-                            "@media (max-width:600px)": {
-                                display: "none",
-                            },
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                border: "2px solid #3a3a3a",
-                                borderRadius: "100%",
-                                height: "64px",
-                                width: "64px",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                "@media (max-width:800px)": {
-                                    height: "36px",
-                                    width: "36px",
-                                },
-                            }}
-                        >
-                            {button.icon ? (
-                                <StyledBugDynamicIcon color={button.iconColour} iconName={button.icon} />
-                            ) : (
-                                <Box
-                                    sx={{
-                                        color: "#303030",
-                                        fontSize: "28px",
-                                        fontWeight: 300,
-                                        "@media (max-width:800px)": {
-                                            fontSize: "20px",
-                                        },
-                                    }}
-                                >
-                                    {indexPlusOne}
-                                </Box>
-                            )}
-                        </Box>
-                    </Box>
-                    <Box
-                        sx={{
-                            width: "100%",
-                            backgroundColor: "#333",
-                            display: "flex",
-                            justifyContent: editMode ? "space-between" : "center",
-                            alignItems: "center",
-                            height: "35%",
-                            flexDirection: editMode ? "row" : "column",
-                            borderBottomLeftRadius: 5,
-                            borderBottomRightRadius: 5,
-                            padding: "0 8px",
-                            "@media (max-width:800px)": {
-                                height: "50%",
-                                padding: "0 4px",
-                            },
-                            "@media (max-width:600px)": {
-                                backgroundColor: "inherit",
-                                height: "100%",
-                            },
-                        }}
-                    >
-                        {editMode ? null : (
-                            <Box
-                                sx={{
-                                    fontWeight: 500,
-                                    fontSize: "0.7rem",
-                                    opacity: 0.6,
-                                    textOverflow: "ellipsis",
-                                    width: "100%",
-                                    overflow: "hidden",
-                                    whiteSpace: "nowrap",
-                                    textAlign: "center",
-                                    "@media (max-width:800px)": {
-                                        fontSize: 10,
-                                    },
-                                }}
-                            >
-                                {secondaryText}
-                            </Box>
-                        )}
-                        <Box
-                            sx={{
-                                textOverflow: "ellipsis",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                width: "100%",
-                                textAlign: "center",
-                                "@media (max-width:800px)": {
-                                    fontSize: "12px",
-                                },
-                                paddingLeft: editMode ? "10px" : "0px",
-                            }}
-                        >
-                            {button.label}
-                        </Box>
-                        {editMode ? (
-                            <ButtonMenu
-                                panelId={panelId}
-                                buttonType={buttonType}
-                                button={button}
-                                onChange={onChange}
-                                groups={groups}
-                                onEditIcon={onEditIcon}
-                                onRename={handleRenameClicked}
-                            />
-                        ) : null}
-                    </Box>
-                </Box>
-            </Button>
-        </>
+        <BugRouterButton
+            id={`${buttonType}:${button.index}`}
+            draggable
+            onClick={onClick}
+            item={button}
+            icon={button.icon}
+            iconColor={button.iconColour}
+            primaryLabel={button.label}
+            secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
+            number={button.index + 1}
+            selected={selected}
+            editMode={editMode}
+            menuItems={[
+                {
+                    title: "Rename",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleRenameClicked,
+                },
+                {
+                    title: "Clear Label",
+                    icon: <BackspaceIcon fontSize="small" />,
+                    onClick: handleClearClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Edit Icon",
+                    icon: <FilterTiltShiftIcon fontSize="small" />,
+                    onClick: onEditIcon,
+                },
+                {
+                    title: "Remove",
+                    icon: <RemoveCircleIcon fontSize="small" />,
+                    onClick: handleRemoveClicked,
+                    disabled: groups.length === 0,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Add to Group",
+                    icon: <AddIcon fontSize="small" />,
+                    onClick: handleAddGroupClick,
+                    disabled: groups.length === 0,
+                },
+            ]}
+            useDoubleClick={useDoubleClick}
+        />
     );
 }

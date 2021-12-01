@@ -190,7 +190,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         left: 0,
                         right: 0,
                         top: "50%",
-                        marginTop: 2,
+                        marginTop: "2px",
                         "@media (max-width:600px)": {
                             // position: "static",
                         },
