@@ -19,8 +19,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
     justifyContent: "flex-end",
     alignItems: "center",
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+    minHeight: "64px",
+    "@media (max-width:800px)": {
+        minHeight: "52px",
+    },
 }));
 
 const NavDesktop = (props) => {
@@ -58,7 +60,13 @@ const NavDesktop = (props) => {
                 }}
                 elevation={1}
             >
-                <MuiToolbar>
+                <MuiToolbar
+                    sx={{
+                        "@media (max-width:800px)": {
+                            minHeight: "52px",
+                        },
+                    }}
+                >
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -66,7 +74,7 @@ const NavDesktop = (props) => {
                         edge="start"
                         sx={{
                             marginRight: "20px",
-                            marginLeft: "4px",
+                            marginLeft: "8px",
                         }}
                     >
                         {open ? <MenuOpenIcon /> : <MenuIcon />}

@@ -36,8 +36,16 @@ const NavMobile = (props) => {
                 }}
                 elevation={1}
             >
-                <MuiToolbar sx={{ paddingRight: "0px" }}>
-                    <IconButton color="inherit" aria-label="open drawer" onClick={handleDrawerToggle} edge="start">
+                <MuiToolbar sx={{ paddingRight: "0px", minHeight: "52px" }}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerToggle}
+                        edge="start"
+                        sx={{
+                            marginRight: "4px",
+                        }}
+                    >
                         <MenuIcon />
                     </IconButton>
                     <Toolbar></Toolbar>
@@ -46,7 +54,7 @@ const NavMobile = (props) => {
             <Drawer
                 sx={{
                     "& .MuiDrawer-paper": {
-                        marginTop: "56px",
+                        marginTop: "52px",
                         maxWidth: "90%",
                         minWidth: "280px",
                     },
@@ -59,14 +67,14 @@ const NavMobile = (props) => {
                     <Menu />
                 </div>
             </Drawer>
-            <div
+            <Box
                 sx={{
                     position: "relative",
                     flexGrow: 1,
                 }}
             >
                 {props.children}
-            </div>
+            </Box>
         </Box>
     );
 };
