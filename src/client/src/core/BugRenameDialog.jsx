@@ -44,50 +44,56 @@ const BugRenameDialog = ({
         inputRef.current.focus();
     };
 
+    const handeFormSubmit = (event) => {
+        event.preventDefault();
+        onRename(value);
+    };
     return (
         <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <DialogTitle>{title}</DialogTitle>
-            <DialogContent>
-                <TextField
-                    inputRef={inputRef}
-                    sx={{
-                        width: "26rem",
-                        "& .MuiInput-root": {
-                            padding: "4px",
-                        },
-                    }}
-                    value={value}
-                    onChange={(event) => {
-                        setValue(event.target.value);
-                    }}
-                    variant="standard"
-                    placeholder={placeholder}
-                    fullWidth
-                    type="text"
-                    label={label}
-                    onClick={(event) => {
-                        event.stopPropagation();
-                    }}
-                    autoFocus
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton aria-label="clear" onClick={handleClear}>
-                                    <CancelIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                ></TextField>
-            </DialogContent>
-            <DialogActions>
-                <Button color="secondary" onClick={onDismiss}>
-                    Cancel
-                </Button>
-                <Button color="primary" disabled={!allowBlank && value === ""} onClick={() => onRename(value)}>
-                    {confirmText}
-                </Button>
-            </DialogActions>
+            <form onSubmit={handeFormSubmit}>
+                <DialogContent>
+                    <TextField
+                        inputRef={inputRef}
+                        sx={{
+                            width: "26rem",
+                            "& .MuiInput-root": {
+                                padding: "4px",
+                            },
+                        }}
+                        value={value}
+                        onChange={(event) => {
+                            setValue(event.target.value);
+                        }}
+                        variant="standard"
+                        placeholder={placeholder}
+                        fullWidth
+                        type="text"
+                        label={label}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                        }}
+                        autoFocus
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton aria-label="clear" onClick={handleClear}>
+                                        <CancelIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    ></TextField>
+                </DialogContent>
+                <DialogActions>
+                    <Button color="secondary" onClick={onDismiss}>
+                        Cancel
+                    </Button>
+                    <Button color="primary" disabled={!allowBlank && value === ""} onClick={() => onRename(value)}>
+                        {confirmText}
+                    </Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 };
