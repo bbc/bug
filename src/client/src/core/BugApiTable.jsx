@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Loading from "@components/Loading";
-import BugApiTableMenu from "./BugApiTableMenu";
+import BugItemMenu from "./BugItemMenu";
 import { useApiPoller } from "@utils/ApiPoller";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import BugApiTableFilters from "@components/BugApiTableFilters";
@@ -205,7 +205,7 @@ export default function BugApiTable({
                                                 paddingRight: "4px",
                                             }}
                                         >
-                                            <BugApiTableMenu item={item} menuItems={menuItems} />
+                                            <BugItemMenu item={item} menuItems={menuItems} />
                                         </TableCell>
                                     )}
                                     {showNavArrow && !menuItems && (

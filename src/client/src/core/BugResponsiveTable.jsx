@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import BugApiTableMenu from "./BugApiTableMenu";
+import BugItemMenu from "./BugItemMenu";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import BugApiTableFilters from "@components/BugApiTableFilters";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -113,7 +113,7 @@ export default function BugResponsiveTable({
                                                 paddingRight: "4px",
                                             }}
                                         >
-                                            <BugApiTableMenu item={item} menuItems={menuItems} />
+                                            <BugItemMenu item={item} menuItems={menuItems} />
                                         </TableCell>
                                     )}
                                 </TableRow>
