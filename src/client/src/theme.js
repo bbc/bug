@@ -255,10 +255,17 @@ const theme = createTheme({
 
         primary: {
             main: "#337ab7",
+            hover: "#2e6da4",
         },
 
         secondary: {
             main: "#888888",
+            hover: "#777777",
+        },
+
+        tertiary: {
+            main: "#444",
+            hover: "#404040",
         },
 
         error: {

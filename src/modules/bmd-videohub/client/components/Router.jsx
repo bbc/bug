@@ -8,6 +8,7 @@ import RouterButtons from "./RouterButtons";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import BugScrollbars from "@core/BugScrollbars";
 
 const SectionHeader = styled("div")({
     fontSize: "0.875rem",
@@ -74,6 +75,17 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
     };
 
+    const scrollableGroupButtonsIfEditing = (props) => {
+        if (editMode) {
+            return <GroupButtons {...props} />;
+        }
+        return (
+            <BugScrollbars>
+                <GroupButtons {...props} />;
+            </BugScrollbars>
+        );
+    };
+
     const renderSources = () => {
         if (sourceButtons.status === "loading" || sourceButtons.status === "idle" || !sourceButtons.data) {
             return <Loading />;
@@ -86,30 +98,48 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    // "@media (max-height:400px)": {
-                    //     overflow: "auto",
-                    // },
                 }}
             >
                 <SectionHeader>Sources</SectionHeader>
-                <GroupButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    groupType="source"
-                    selectedDestination={selectedDestination}
-                    buttons={sourceButtons}
-                    onChange={() => setSourceForceRefreshHash(sourceForceRefreshHash + 1)}
-                />
-                <RouterButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    buttonType="source"
-                    selectedDestination={selectedDestination}
-                    buttons={sourceButtons}
-                    onClick={handleSourceButtonClicked}
-                    useDoubleClick={useDoubleClick}
-                    onChange={() => setSourceForceRefreshHash(sourceForceRefreshHash + 1)}
-                />
+                <Box
+                    sx={{
+                        height: editMode ? "auto" : "72px",
+                        width: "100%",
+                        padding: "8px 8px 0px 8px",
+                        "@media (max-width:800px)": {
+                            padding: "4px 4px 0px 4px",
+                            height: editMode ? "auto" : "54px",
+                        },
+                    }}
+                >
+                    {scrollableGroupButtonsIfEditing({
+                        panelId: panelId,
+                        editMode: editMode,
+                        groupType: "source",
+                        selectedDestination: selectedDestination,
+                        buttons: sourceButtons,
+                        onChange: () => setSourceForceRefreshHash(sourceForceRefreshHash + 1),
+                    })}
+                </Box>
+                <Box
+                    sx={{
+                        width: "100%",
+                        flexGrow: 1,
+                    }}
+                >
+                    <BugScrollbars>
+                        <RouterButtons
+                            panelId={panelId}
+                            editMode={editMode}
+                            buttonType="source"
+                            selectedDestination={selectedDestination}
+                            buttons={sourceButtons}
+                            onClick={handleSourceButtonClicked}
+                            useDoubleClick={useDoubleClick}
+                            onChange={() => setSourceForceRefreshHash(sourceForceRefreshHash + 1)}
+                        />
+                    </BugScrollbars>
+                </Box>
             </Box>
         );
     };
@@ -130,28 +160,46 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    "@media (max-height:400px)": {
-                        // overflow: "auto",
-                    },
                 }}
             >
                 <SectionHeader>Destinations</SectionHeader>
-                <GroupButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    groupType="destination"
-                    buttons={destinationButtons}
-                    onChange={() => setDestinationForceRefreshHash(destinationForceRefreshHash + 1)}
-                />
-                <RouterButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    buttonType="destination"
-                    selectedDestination={selectedDestination}
-                    buttons={destinationButtons}
-                    onClick={handleDestinationButtonClicked}
-                    onChange={() => setDestinationForceRefreshHash(destinationForceRefreshHash + 1)}
-                />
+                <Box
+                    sx={{
+                        height: editMode ? "auto" : "72px",
+                        width: "100%",
+                        padding: "8px 8px 0px 8px",
+                        "@media (max-width:800px)": {
+                            padding: "4px 4px 0px 4px",
+                            height: editMode ? "auto" : "54px",
+                        },
+                    }}
+                >
+                    {scrollableGroupButtonsIfEditing({
+                        panelId: panelId,
+                        editMode: editMode,
+                        groupType: "destination",
+                        buttons: destinationButtons,
+                        onChange: () => setSourceForceRefreshHash(destinationForceRefreshHash + 1),
+                    })}
+                </Box>
+                <Box
+                    sx={{
+                        width: "100%",
+                        flexGrow: 1,
+                    }}
+                >
+                    <BugScrollbars>
+                        <RouterButtons
+                            panelId={panelId}
+                            editMode={editMode}
+                            buttonType="destination"
+                            selectedDestination={selectedDestination}
+                            buttons={destinationButtons}
+                            onClick={handleDestinationButtonClicked}
+                            onChange={() => setDestinationForceRefreshHash(destinationForceRefreshHash + 1)}
+                        />
+                    </BugScrollbars>
+                </Box>
             </Box>
         );
     };
@@ -162,9 +210,6 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 sx={{
                     position: "relative",
                     height: "100%",
-                    "@media (max-width:600px)": {
-                        // position: "static",
-                    },
                 }}
             >
                 <Box
@@ -175,10 +220,6 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         right: "0px",
                         bottom: "50%",
                         marginBottom: "2px",
-                        "@media (max-width:600px)": {
-                            // marginBottom: 1,
-                            // position: "static",
-                        },
                     }}
                 >
                     {renderSources()}
@@ -191,9 +232,6 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         right: 0,
                         top: "50%",
                         marginTop: "2px",
-                        "@media (max-width:600px)": {
-                            // position: "static",
-                        },
                     }}
                 >
                     {renderDestinations()}

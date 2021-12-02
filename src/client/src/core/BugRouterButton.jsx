@@ -48,13 +48,6 @@ const BugRouterButton = ({
         style.backgroundColor = "#262626";
     }
 
-    let backgroundColor = "#444";
-    if (editMode) {
-        backgroundColor = "none";
-    } else if (selected) {
-        backgroundColor = "#337ab7";
-    }
-
     const extraProps = draggable ? { ...attributes, ...listeners, style: style } : {};
 
     return (
@@ -62,13 +55,14 @@ const BugRouterButton = ({
             ref={setNodeRef}
             {...extraProps}
             sx={{
-                backgroundColor: backgroundColor,
+                backgroundColor: editMode ? "none" : selected ? "primary.main" : "tertiary.main",
                 margin: "4px",
                 width: "128px",
                 height: "128px",
                 "@media (max-width:800px)": {
                     height: "80px",
                     width: "92px",
+                    color: "#ffffff",
                 },
                 "@media (max-width:600px)": {
                     height: "48px",
@@ -83,7 +77,7 @@ const BugRouterButton = ({
                     height: "100%",
                 },
                 "&:hover": {
-                    backgroundColor: editMode ? "inherit" : "#0069d9",
+                    backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
                 },
             }}
             variant="outlined"
@@ -106,6 +100,9 @@ const BugRouterButton = ({
                         justifyContent: "center",
                         alignItems: "center",
                         height: "65%",
+                        "@media (max-width:800px)": {
+                            height: "56%",
+                        },
                         "@media (max-width:600px)": {
                             display: "none",
                         },
@@ -157,7 +154,7 @@ const BugRouterButton = ({
                         borderBottomRightRadius: 5,
                         padding: "0 4px",
                         "@media (max-width:800px)": {
-                            height: "50%",
+                            height: "44%",
                             padding: "0 4px",
                         },
                         "@media (max-width:600px)": {

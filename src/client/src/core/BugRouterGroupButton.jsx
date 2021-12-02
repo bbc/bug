@@ -29,13 +29,6 @@ export default function GroupButton({
         style.backgroundColor = "#262626";
     }
 
-    let backgroundColor = "#444";
-    if (editMode) {
-        backgroundColor = "#262626";
-    } else if (selected) {
-        backgroundColor = "#337ab7";
-    }
-
     let borderColor = "rgba(136, 136, 136, 0.5)";
     if (editMode && selected) {
         borderColor = "#33b77a";
@@ -49,7 +42,7 @@ export default function GroupButton({
                 ref={setNodeRef}
                 {...extraProps}
                 sx={{
-                    backgroundColor: backgroundColor,
+                    backgroundColor: editMode ? "none" : selected ? "primary.main" : "tertiary.main",
                     margin: "4px",
                     flexDirection: "row",
                     justifyContent: editMode ? "space-between" : "center",
@@ -63,6 +56,10 @@ export default function GroupButton({
                     borderColor: borderColor,
                     textAlign: "center",
                     color: "#fff",
+                    cursor: editMode ? (draggable ? "move" : "default") : "pointer",
+                    "&:hover": {
+                        backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
+                    },
                 }}
                 onClick={onClick}
                 variant="outlined"

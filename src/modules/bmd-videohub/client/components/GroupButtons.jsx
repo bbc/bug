@@ -27,7 +27,7 @@ import {
     horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-export default function GroupButtons({ panelId, editMode = false, groupType, selectedDestination, buttons, onChange }) {
+export default function GroupButtons({ panelId, editMode = false, groupType, buttons, onChange }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const params = useParams();
@@ -77,12 +77,13 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
     const handleDragEnd = async (event) => {
         const { active, over } = event;
 
-        if (active.id !== over.id) {
-            const oldIndex = localButtons.findIndex((group) => group.label === active.id);
-            const newIndex = localButtons.findIndex((group) => group.label === over.id);
-            const newGroups = arrayMove(localButtons, oldIndex, newIndex);
+        const oldIndex = active?.id?.split(":")[2];
+        const newIndex = over?.id?.split(":")[2];
 
+        if (oldIndex !== newIndex) {
+            const newGroups = arrayMove(localButtons, oldIndex, newIndex);
             const groupNamesInOrder = newGroups.map((group) => group.label);
+            setLocalButtons(newGroups);
             if (
                 !(await AxiosPost(`/container/${panelId}/groups/reorder/${groupType}`, {
                     groups: groupNamesInOrder,
@@ -96,7 +97,6 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
             } else {
                 history.push(`/panel/${panelId}${editText}/${sourceGroup}/${newIndex}`);
             }
-            setLocalButtons(newGroups);
         }
     };
 
@@ -112,19 +112,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
 
     const renderGroupButtons = () => {
         return (
-            <Box
-                sx={{
-                    padding: "8px",
-                    ["@media (max-height:400px)"]: {
-                        padding: "0px 2px",
-                    },
-                    ["@media (max-width:600px)"]: {
-                        padding: "0px 2px",
-                        whiteSpace: "nowrap",
-                        overflow: "scroll", //TODO - NO!
-                    },
-                }}
-            >
+            <>
                 {localButtons.map((group) => (
                     <GroupButton
                         key={group.index}
@@ -138,7 +126,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
                     />
                 ))}
                 {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
-            </Box>
+            </>
         );
     };
 
@@ -148,16 +136,26 @@ export default function GroupButtons({ panelId, editMode = false, groupType, sel
 
     if (editMode) {
         return (
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <SortableContext
-                    items={localButtons.map((group) => group.label)}
-                    strategy={horizontalListSortingStrategy}
-                >
-                    {renderGroupButtons()}
-                </SortableContext>
-            </DndContext>
+            <Box>
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                    <SortableContext
+                        items={localButtons.map((button) => `group:${groupType}:${button.index}`)}
+                        strategy={horizontalListSortingStrategy}
+                    >
+                        {renderGroupButtons()}
+                    </SortableContext>
+                </DndContext>
+            </Box>
         );
     }
 
-    return renderGroupButtons();
+    return (
+        <Box
+            sx={{
+                whiteSpace: "nowrap",
+            }}
+        >
+            {renderGroupButtons()}
+        </Box>
+    );
 }

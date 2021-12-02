@@ -22,7 +22,7 @@
         "enabled": false,
         "address": "",
         "port": "9990",
-        "useTake": false,
+        "useTake": true,
         "sourceGroups": [],
         "destinationGroups": [],
         "sourceIconColours": [],

@@ -38,7 +38,7 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
 
     return (
         <BugRouterGroupButton
-            id={group.index}
+            id={`group:${groupType}:${group.index}`}
             draggable
             onClick={onClick}
             item={group}
