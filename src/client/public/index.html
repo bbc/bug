@@ -10,6 +10,23 @@
         <link rel="stylesheet" href="/fonts/bbc-reith/bbc-reith.css" />
         <link rel="manifest" href="/manifest.json" />
         <title>BUG</title>
+        <style>
+            * {
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: -moz-none;
+                -o-user-select: none;
+                user-select: none;
+            }
+
+            p {
+                -webkit-user-select: text;
+                -khtml-user-select: text;
+                -moz-user-select: text;
+                -o-user-select: text;
+                user-select: text;
+            }
+        </style>
     </head>
     <body style="height: 100%; overflow: hidden">
         <noscript>You need to enable JavaScript to run this app.</noscript>
