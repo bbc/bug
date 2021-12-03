@@ -1,6 +1,9 @@
 const express = require("express");
 const videohubGetDestinations = require("@services/videohub-getdestinations");
 const videohubGetAllDestinations = require("@services/videohub-getalldestinations");
+const videohubLock = require("@services/videohub-lock");
+const videohubUnlock = require("@services/videohub-unlock");
+const videohubForceUnlock = require("@services/videohub-forceunlock");
 const buttonRemove = require("@services/button-remove");
 const buttonSetIcon = require("@services/button-seticon");
 const route = express.Router();
@@ -61,6 +64,52 @@ route.post("/:groupIndex", async function (req, res, next) {
         res.json({
             status: "error",
             message: "Failed to get destinations",
+        });
+    }
+});
+
+route.get("/lock/:index", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await videohubLock(req.params?.index),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to lock destination",
+        });
+    }
+});
+
+route.get("/unlock/:index", async function (req, res, next) {
+    try {
+        console.log("SSSS");
+        res.json({
+            status: "success",
+            data: await videohubUnlock(req.params?.index),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to unlock destination",
+        });
+    }
+});
+
+route.get("/forceunlock/:index", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await videohubForceUnlock(req.params?.index),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to force unlock destination",
         });
     }
 });

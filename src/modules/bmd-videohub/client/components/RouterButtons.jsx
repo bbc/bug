@@ -26,6 +26,7 @@ export default function Router({
     selectedDestination,
     onClick,
     onChange,
+    disabled = false,
     useDoubleClick = false,
 }) {
     const sendAlert = useAlert();
@@ -109,6 +110,7 @@ export default function Router({
                     onChange={onChange}
                     editMode={editMode}
                     buttonType={buttonType}
+                    disabled={disabled}
                     groups={buttons.data.groups}
                     useDoubleClick={useDoubleClick}
                 />

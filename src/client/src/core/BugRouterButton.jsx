@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import BugItemMenu from "@core/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
+import LockIcon from "@mui/icons-material/Lock";
 
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
     fontSize: "2rem",
@@ -25,6 +26,8 @@ const BugRouterButton = ({
     selected,
     id,
     editMode = false,
+    locked = false,
+    disabled = false,
     menuItems,
     useDoubleClick = false,
 }) => {
@@ -71,7 +74,7 @@ const BugRouterButton = ({
                 textTransform: "none",
                 padding: "0px",
                 lineHeight: editMode ? 1.5 : 1.4,
-                cursor: editMode ? (draggable ? "move" : "default") : "pointer",
+                cursor: disabled ? "not-allowed" : editMode ? (draggable ? "move" : "default") : "pointer",
                 "& .MuiButton-label": {
                     flexDirection: "column",
                     height: "100%",
@@ -82,8 +85,8 @@ const BugRouterButton = ({
             }}
             variant="outlined"
             color="secondary"
-            onClick={useDoubleClick ? undefined : onClick}
-            onDoubleClick={useDoubleClick ? onClick : undefined}
+            onClick={disabled ? undefined : useDoubleClick ? undefined : onClick}
+            onDoubleClick={disabled ? undefined : useDoubleClick ? onClick : undefined}
         >
             <Box
                 className="MuiButton-label"
@@ -94,6 +97,18 @@ const BugRouterButton = ({
                     },
                 }}
             >
+                {locked && (
+                    <LockIcon
+                        sx={{
+                            position: "absolute",
+                            right: "0px",
+                            top: "0px",
+                            fontSize: "12px !important",
+                            margin: "4px",
+                            color: editMode ? "#fff" : "#212121",
+                        }}
+                    />
+                )}
                 <Box
                     sx={{
                         display: "flex",

@@ -10,6 +10,8 @@ import BackspaceIcon from "@mui/icons-material/Backspace";
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import AddGroupDialog from "./AddGroupDialog";
+import CheckIcon from "@mui/icons-material/Check";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 export default function RouterButton({
     panelId,
@@ -18,11 +20,13 @@ export default function RouterButton({
     onClick,
     selected = false,
     editMode = false,
+    disabled = false,
     onChange,
     onEditIcon,
     groups,
     useDoubleClick = false,
 }) {
+    const { confirmDialog } = useBugConfirmDialog();
     const { customDialog } = useBugCustomDialog();
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
@@ -63,7 +67,44 @@ export default function RouterButton({
         onChange();
     };
 
-    const handleAddGroupClick = async (event) => {
+    const handleLockClicked = async (event, item) => {
+        let action = "lock";
+        let actionLong = "Locked";
+
+        if (button.isLocked) {
+            action = "unlock";
+            actionLong = "Unlocked";
+
+            if (button.isRemoteLocked) {
+                // we're unlocking and we need to check ...
+                action = "forceunlock";
+                if (
+                    !(await confirmDialog({
+                        title: "Unlock Destination",
+                        message:
+                            "This destination has been locked by another user. Are you sure you want to unlock it?",
+                        confirmButtonText: "Unlock",
+                    }))
+                ) {
+                    // they've changed their mind ...
+                    return false;
+                }
+            }
+        }
+
+        if (await AxiosCommand(`/container/${panelId}/destinations/${action}/${button.index}`)) {
+            sendAlert(`${actionLong} ${buttonType} ${button.index + 1}`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to ${action} ${buttonType} ${button.index + 1}`, {
+                variant: "error",
+            });
+        }
+        onChange();
+    };
+
+    const handleAddGroupClicked = async (event) => {
         const groupIndexes = await customDialog({
             dialog: <AddGroupDialog groups={groups} />,
         });
@@ -93,7 +134,9 @@ export default function RouterButton({
             secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
             number={button.index + 1}
             selected={selected}
+            disabled={disabled}
             editMode={editMode}
+            locked={button.isLocked}
             menuItems={[
                 {
                     title: "Rename",
@@ -123,9 +166,18 @@ export default function RouterButton({
                     title: "-",
                 },
                 {
+                    title: "Lock",
+                    disabled: buttonType !== "destination",
+                    icon: (item) => (item.isLocked ? <CheckIcon fontSize="small" /> : null),
+                    onClick: handleLockClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
                     title: "Add to Group",
                     icon: <AddIcon fontSize="small" />,
-                    onClick: handleAddGroupClick,
+                    onClick: handleAddGroupClicked,
                     disabled: groups.length === 0,
                 },
             ]}

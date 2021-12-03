@@ -56,18 +56,10 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
     const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
 
-    let sourcesLocked = false;
-    let lockStatus;
     let selectedSourceIndex = null;
     if (destinationIndex !== null) {
         if (dbOutputRouting && dbOutputRouting["data"][destinationIndex] !== null) {
             selectedSourceIndex = parseInt(dbOutputRouting["data"][destinationIndex]);
-        }
-        if (dbOutputLocks && dbOutputLocks["data"][destinationIndex] !== null) {
-            lockStatus = dbOutputLocks["data"][destinationIndex];
-            sourcesLocked = lockStatus == "L" || lockStatus == "O";
-        } else {
-            lockStatus = "U";
         }
     }
 
@@ -95,7 +87,6 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
                     selected: isSelected,
                     hidden: isExcluded,
                     order: order,
-                    isLocked: sourcesLocked,
                     icon: icons[intIndex] ? icons[intIndex] : null,
                     iconColour: iconColours[intIndex] ? iconColours[intIndex] : "#ffffff",
                 });

@@ -91,6 +91,14 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
             return <Loading />;
         }
 
+        let destinationLocked = false;
+        if (destinationButtons.status === "success" && selectedDestination !== null) {
+            const selectedDestinationObject = destinationButtons.data.destinations.find(
+                (x) => x.index === selectedDestination
+            );
+            destinationLocked = selectedDestinationObject && selectedDestinationObject.isLocked;
+        }
+
         return (
             <Box
                 sx={{
@@ -137,6 +145,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             onClick={handleSourceButtonClicked}
                             useDoubleClick={useDoubleClick}
                             onChange={() => setSourceForceRefreshHash(sourceForceRefreshHash + 1)}
+                            disabled={destinationLocked}
                         />
                     </BugScrollbars>
                 </Box>
