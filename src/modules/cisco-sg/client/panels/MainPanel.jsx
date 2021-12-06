@@ -16,7 +16,7 @@ export default function MainPanel({ panelId }) {
         return <Loading />;
     }
 
-    if (stackDevices.data !== null && stackDevices?.data?.length > 0) {
+    if (stackDevices.data !== null && stackDevices?.data?.length > 1) {
         const labels = [];
         const content = [];
         const locations = [];
