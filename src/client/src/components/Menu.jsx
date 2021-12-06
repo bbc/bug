@@ -195,8 +195,16 @@ const Menu = ({ showGroups = true }) => {
         };
 
         for (let panel of panels) {
-            for (let notification of panel._status) {
-                notificationCount[notification.type] += 1;
+            const criticalStatusCount = panel._status && panel._status.filter((x) => x.type === "critical").length;
+
+            // if we have any critical statuses for this panel, ignore any others
+            if (criticalStatusCount > 0) {
+                notificationCount["critical"] += 1;
+            } else {
+                // otherwise, count all the statuses
+                for (let notification of panel._status) {
+                    notificationCount[notification.type] += 1;
+                }
             }
         }
         faviconNotification.set(notificationCount);
