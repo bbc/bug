@@ -9,13 +9,7 @@ export default function MainPanel() {
     const params = useParams();
 
     return (
-        <Box
-            sx={{
-                "& .tabSpacer": {
-                    height: "60px",
-                },
-            }}
-        >
+        <Box>
             <BugPanelTabbedForm
                 labels={["Device", "Network"]}
                 content={[

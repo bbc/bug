@@ -1,5 +1,5 @@
 import React from "react";
-import InterfaceList from '../components/InterfaceList';
+import InterfaceList from "../components/InterfaceList";
 import { useParams } from "react-router-dom";
 
 export default function MainPanel() {
@@ -7,7 +7,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <InterfaceList panelId={params.panelId}/>
+            <InterfaceList panelId={params.panelId} />
         </>
     );
 }
