@@ -28,7 +28,13 @@ const main = async () => {
         });
 
         if (vlanResults) {
-            const vlans = [{ id: 1, label: "Default" }];
+            const vlans = [];
+
+            // some switches include the default VLAN (1) in the list - we should check
+            // and provide it if it's missing
+            if (vlanResults["1.3.6.1.2.1.17.7.1.4.3.1.1.1"] === undefined) {
+                vlans.push({ id: 1, label: "Default" });
+            }
 
             for (let [eachOid, eachResult] of Object.entries(vlanResults)) {
                 const vlan = eachOid.substring(eachOid.lastIndexOf(".") + 1);
