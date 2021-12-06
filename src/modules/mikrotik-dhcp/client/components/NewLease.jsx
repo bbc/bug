@@ -95,6 +95,29 @@ export default function Lease({ panelId, leaseId }) {
                             }}
                         >
                             <Grid item xs={12}>
+                                {servers && (
+                                    <TextField
+                                        select
+                                        inputProps={{
+                                            ...register("server"),
+                                        }}
+                                        fullWidth
+                                        label="DHCP Server"
+                                        variant="standard"
+                                        SelectProps={{
+                                            native: true,
+                                        }}
+                                    >
+                                        <option value={null}>all</option>
+                                        {servers.map((server) => (
+                                            <option value={server.name} key={server.id}>
+                                                {server.name}
+                                            </option>
+                                        ))}
+                                    </TextField>
+                                )}
+                            </Grid>
+                            <Grid item xs={12}>
                                 <TextField
                                     inputProps={{
                                         ...register("address", {
@@ -107,6 +130,7 @@ export default function Lease({ panelId, leaseId }) {
                                     error={errors.address}
                                     type="text"
                                     label="Address"
+                                    variant="standard"
                                     onChange={handleAddressChanged}
                                     autoFocus
                                 />
@@ -117,6 +141,7 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors.comment}
                                     type="text"
+                                    variant="standard"
                                     label="Comment"
                                 />
                             </Grid>
@@ -132,6 +157,7 @@ export default function Lease({ panelId, leaseId }) {
                                     defaultValue="02:00:00:00:00:00"
                                     error={errors["mac-address"]}
                                     type="text"
+                                    variant="standard"
                                     label="MAC Address"
                                 />
                             </Grid>
@@ -158,29 +184,6 @@ export default function Lease({ panelId, leaseId }) {
                                     />
                                 </Grid>
                             )}
-
-                            <Grid item xs={12}>
-                                {servers && (
-                                    <TextField
-                                        select
-                                        inputProps={{
-                                            ...register("server"),
-                                        }}
-                                        fullWidth
-                                        label="DHCP Server"
-                                        SelectProps={{
-                                            native: true,
-                                        }}
-                                    >
-                                        <option value={null}>all</option>
-                                        {servers.map((server) => (
-                                            <option value={server.name} key={server.id}>
-                                                {server.name}
-                                            </option>
-                                        ))}
-                                    </TextField>
-                                )}
-                            </Grid>
                         </Grid>
                     </BugForm.Body>
                     <BugForm.Actions>
