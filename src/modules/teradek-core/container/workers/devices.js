@@ -51,7 +51,7 @@ const main = async () => {
     await mongoCreateIndex(devicesCollection, "timestamp", { expireAfterSeconds: 120 });
 
     // remove previous values
-    // await devicesCollection.deleteMany({});
+    await devicesCollection.deleteMany({});
 
     console.log(`devices: teradek-core device worker starting...`);
 
