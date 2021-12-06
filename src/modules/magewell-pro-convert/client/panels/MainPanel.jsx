@@ -17,7 +17,6 @@ export default function MainPanel() {
             }}
         >
             <BugPanelTabbedForm
-                className={classes.form}
                 labels={["Device", "Network"]}
                 content={[
                     <DeviceTab panelId={params.panelId} header={false} />,
