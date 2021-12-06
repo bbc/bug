@@ -92,7 +92,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
         }
         if (controls.length > 0) {
             return (
-                <Box sx={{ marginTop: 4, marginBottom: 4, textAlign: "right", whiteSpace: "nowrap" }}>
+                <Box sx={{ marginTop: "4px", marginBottom: "4px", textAlign: "right", whiteSpace: "nowrap" }}>
                     {controls.map((control) => control)}
                 </Box>
             );
