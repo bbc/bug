@@ -83,7 +83,7 @@ export default function DeviceTab({ panelId }) {
                                     <BugTableLinkButton
                                         onClick={(event) => handleRenameClicked(event, device.data.device)}
                                     >
-                                        {device.data.device.name}
+                                        {device?.data?.device?.name}
                                     </BugTableLinkButton>
                                 </TableCell>
                             </TableRow>
@@ -99,7 +99,7 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     Model
                                 </TableCell>
-                                <TableCell>{device.data.device.model}</TableCell>
+                                <TableCell>{device?.data?.device?.model}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
@@ -108,8 +108,8 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
-                                        value={`${history.data.cpu[0]?.value}%`}
-                                        history={history.data.cpu}
+                                        value={`${history?.data?.cpu[0]?.value}%`}
+                                        history={history?.data?.cpu}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -120,8 +120,8 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
-                                        value={`${history.data.memory[0].value}%`}
-                                        history={history.data.memory}
+                                        value={`${history?.data?.memory[0]?.value}%`}
+                                        history={history?.data?.memory}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -132,8 +132,8 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
-                                        value={`${device.data.device["core-temp"]}${"\u00b0"}C`}
-                                        history={history.data.temperature}
+                                        value={`${device?.data?.device["core-temp"]}${"\u00b0"}C`}
+                                        history={history?.data?.temperature}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -145,8 +145,12 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
-                                        value={`${device.data.ndi["video-jitter"]}ms`}
-                                        history={history.data.videoJitter}
+                                        value={
+                                            device?.data?.ndi["video-jitter"]
+                                                ? `${device?.data?.ndi["video-jitter"]}ms`
+                                                : ""
+                                        }
+                                        history={history?.data?.videoJitter}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -157,8 +161,12 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell sx={{ position: "relative" }}>
                                     <BugSparkCell
                                         height={30}
-                                        value={`${device.data.ndi["audio-jitter"]}ms`}
-                                        history={history.data.audioJitter}
+                                        value={
+                                            device?.data?.ndi["audio-jitter"]
+                                                ? `${device?.data?.ndi["audio-jitter"]}ms`
+                                                : ""
+                                        }
+                                        history={history?.data?.audioJitter}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -172,13 +180,13 @@ export default function DeviceTab({ panelId }) {
                                 <TableCell variant="head" className={classes.tableName}>
                                     Link Speed
                                 </TableCell>
-                                <TableCell>{device.data.ethernet["state"]}</TableCell>
+                                <TableCell>{device?.data?.ethernet["state"].toUpperCase()}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell variant="head" className={classes.tableName}>
                                     Serial Number
                                 </TableCell>
-                                <TableCell>{device.data.device["serial-no"]}</TableCell>
+                                <TableCell>{device?.data?.device["serial-no"]}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
