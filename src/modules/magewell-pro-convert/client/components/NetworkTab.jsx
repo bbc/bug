@@ -6,7 +6,7 @@ export default function NetworkTab({ panelId }) {
     return (
         <>
             <Grid item xs={12}>
-                <TrafficChart panelId={panelId} type={"area"} />
+                <TrafficChart panelId={panelId} type="area" />
             </Grid>
         </>
     );
