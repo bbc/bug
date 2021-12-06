@@ -40,13 +40,13 @@ export default function Toolbar(props) {
     };
 
     const menuItems = () => [
-        <MenuItem onClick={handleWebpageClicked}>
+        <MenuItem onClick={handleWebpageClicked} key="launch">
             <ListItemIcon>
                 <OpenInNewIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Goto Webpage" />
         </MenuItem>,
-        <MenuItem onClick={handleReboot}>
+        <MenuItem onClick={handleReboot} key="reboot">
             <ListItemIcon>
                 <PowerSettingsNewIcon fontSize="small" />
             </ListItemIcon>
