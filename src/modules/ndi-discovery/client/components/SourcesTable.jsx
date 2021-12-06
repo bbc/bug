@@ -1,6 +1,6 @@
 import React from "react";
 import BugApiTable from "@core/BugApiTable";
-import BugTableNoData from "@core/BugTableNoData";
+import BugNoData from "@core/BugNoData";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -98,7 +98,7 @@ export default function InterfaceList({ panelId }) {
             panelId={panelId}
             hideHeader={false}
             noData={
-                <BugTableNoData
+                <BugNoData
                     panelId={panelId}
                     title="No NDI Sources found"
                     message="Click to change the discovery server address."

@@ -18,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import BugTableNoData from "@core/BugTableNoData";
+import BugNoData from "@core/BugNoData";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
@@ -399,7 +399,7 @@ export default function LeaseList({ panelId }) {
                 onRowClick={handleDetailsClicked}
                 sortable
                 filterable
-                noData={<BugTableNoData panelId={panelId} title="No leases found" showConfigButton={false} />}
+                noData={<BugNoData panelId={panelId} title="No leases found" showConfigButton={false} />}
             />
         </>
     );

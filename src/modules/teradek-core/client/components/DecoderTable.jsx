@@ -18,7 +18,7 @@ import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import LaunchIcon from "@mui/icons-material/Launch";
 import AxiosDelete from "@utils/AxiosDelete";
 import DeleteIcon from "@mui/icons-material/Delete";
-import BugTableNoData from "@core/BugTableNoData";
+import BugNoData from "@core/BugNoData";
 
 export default function DecoderTable({ panelId }) {
     const { confirmDialog } = useBugConfirmDialog();
@@ -266,7 +266,7 @@ export default function DecoderTable({ panelId }) {
             panelId={panelId}
             hideHeader={false}
             noData={
-                <BugTableNoData
+                <BugNoData
                     panelId={panelId}
                     title="No decoders configured"
                     message="Click to edit panel configuration and add decoders"

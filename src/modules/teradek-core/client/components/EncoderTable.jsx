@@ -24,7 +24,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import BugAudioThumbnail from "@core/BugAudioThumbnail";
 import BugPowerIcon from "@core/BugPowerIcon";
-import BugTableNoData from "@core/BugTableNoData";
+import BugNoData from "@core/BugNoData";
 import BugScrollbars from "@core/BugScrollbars";
 
 const stateColors = {
@@ -370,7 +370,7 @@ export default function EncodersTable({ panelId }) {
             panelId={panelId}
             hideHeader={false}
             noData={
-                <BugTableNoData
+                <BugNoData
                     panelId={panelId}
                     title="No encoders configured"
                     message="Click to edit panel configuration and add encoders"

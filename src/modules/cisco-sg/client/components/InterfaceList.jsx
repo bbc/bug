@@ -7,7 +7,7 @@ import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiTable from "@core/BugApiTable";
-import BugTableNoData from "@core/BugTableNoData";
+import BugNoData from "@core/BugNoData";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
@@ -383,7 +383,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
             panelId={panelId}
             hideHeader={false}
             noData={
-                <BugTableNoData
+                <BugNoData
                     panelId={panelId}
                     title="No switch data found"
                     message="Click to edit panel configuration"

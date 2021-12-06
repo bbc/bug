@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import LiveTvIcon from "@mui/icons-material/LiveTv";
-import BugTableNoData from "@core/BugTableNoData";
+import BugNoData from "@core/BugNoData";
 import BugScrollbars from "@core/BugScrollbars";
 
 export default function SputniksTable({ panelId }) {
@@ -107,7 +107,7 @@ export default function SputniksTable({ panelId }) {
             hideHeader={false}
             rowHeight="126px"
             noData={
-                <BugTableNoData
+                <BugNoData
                     panelId={panelId}
                     title="No sputniks found"
                     message="This account contains no sputnik servers"

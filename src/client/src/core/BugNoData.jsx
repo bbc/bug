@@ -6,7 +6,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useHistory } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-export default function BugTableNoData({ title = "No data found", message = "", panelId, showConfigButton = true }) {
+export default function BugNoData({ title = "No data found", message = "", panelId, showConfigButton = true }) {
     const history = useHistory();
 
     const handleConfig = (event) => {
