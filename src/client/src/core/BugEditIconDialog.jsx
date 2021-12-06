@@ -21,7 +21,7 @@ import useAsyncEffect from "use-async-effect";
 
 const defaultCount = 500;
 
-export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff", icon = null }) {
+export default function EditIconDialog({ onCancel, onSubmit, color = "#ffffff", icon = null }) {
     const [iconFilter, setIconFilter] = React.useState(icon ? icon : "");
     const [debouncedIconFilter] = useDebounce(iconFilter, 500);
     const [icons, setIcons] = React.useState({ icons: [], length: null });
@@ -30,9 +30,9 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
     const [isLoading, setIsLoading] = React.useState(true);
     const [selectedVariant, setSelectedVariant] = React.useState(null);
     const [iconCount, setIconCount] = React.useState(defaultCount);
-    const [showColourPicker, setShowColourPicker] = React.useState(false);
+    const [showColorPicker, setShowColorPicker] = React.useState(false);
     const iconsContent = React.useRef(null);
-    const [selectedColour, setSelectedColour] = React.useState(colour);
+    const [selectedColor, setSelectedColor] = React.useState(color);
 
     const handleFilterChanged = (value) => {
         setIsLoading(true);
@@ -71,15 +71,15 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
         setVariants(await AxiosGet(`/api/icons/variants`));
     }, []);
 
-    const handleColourChanged = (colour, event) => {
-        setSelectedColour(colour.hex);
-        setShowColourPicker(false);
+    const handleColorChanged = (color, event) => {
+        setSelectedColor(color.hex);
+        setShowColorPicker(false);
     };
 
     const iconContainer = () => {
         return (
             <>
-                {showColourPicker && (
+                {showColorPicker && (
                     <Box
                         sx={{
                             position: "absolute",
@@ -93,8 +93,8 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                     >
                         <TwitterPicker
                             triangle="hide"
-                            color={selectedColour}
-                            onChange={handleColourChanged}
+                            color={selectedColor}
+                            onChange={handleColorChanged}
                             colors={[
                                 "#FFFFFF",
                                 "#ABB8C3",
@@ -158,7 +158,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                                     disableElevation
                                     sx={{ margin: "4px" }}
                                     onClick={() => setSelectedIcon(null)}
-                                    style={{ color: selectedColour }}
+                                    style={{ color: selectedColor }}
                                 >
                                     &nbsp;
                                 </Button>
@@ -185,14 +185,14 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                                 margin: "4px",
                             }}
                             onClick={() => setSelectedIcon(icon)}
-                            style={{ color: selectedColour }}
+                            style={{ color: selectedColor }}
                         >
                             <BugDynamicIcon title={icon} iconName={icon} />
                         </Button>
                     </Tooltip>
                 </Box>
             )),
-        [icons, selectedIcon, selectedColour]
+        [icons, selectedIcon, selectedColor]
     );
 
     const controls = () => (
@@ -235,10 +235,10 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                         padding: "6px 6px 6px 12px",
                     }}
                     onClick={(e) => {
-                        setShowColourPicker(!showColourPicker);
+                        setShowColorPicker(!showColorPicker);
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "32px", backgroundColor: selectedColour }}></Box>
+                    <Box sx={{ width: "100%", height: "32px", backgroundColor: selectedColor }}></Box>
                     <ArrowDropDownIcon />
                 </Button>
             </FormControl>
@@ -265,7 +265,7 @@ export default function EditIconDialog({ onCancel, onSubmit, colour = "#ffffff",
                     </Button>
                     <Button
                         type="submit"
-                        onClick={() => onSubmit(selectedIcon, selectedColour)}
+                        onClick={() => onSubmit(selectedIcon, selectedColor)}
                         color="primary"
                         autoFocus
                     >

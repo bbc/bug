@@ -129,7 +129,7 @@ export default function RouterButton({
             onClick={onClick}
             item={button}
             icon={button.icon}
-            iconColor={button.iconColour}
+            iconColor={button.iconColor}
             primaryLabel={button.label}
             secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
             number={button.index + 1}

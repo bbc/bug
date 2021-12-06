@@ -52,11 +52,11 @@ export default function Router({
         setEditIconDialogButton(button);
     };
 
-    const handleEditIconSubmitted = async (icon, colour, button) => {
+    const handleEditIconSubmitted = async (icon, color, button) => {
         setEditIconDialogButton(null);
 
         const postData = {
-            colour: colour,
+            color: color,
             icon: icon,
         };
         const url = `/container/${panelId}/${buttonType}s/seticon/${button.index}`;
@@ -148,7 +148,7 @@ export default function Router({
                         icon={editIconDialogButton.icon}
                         color={editIconDialogButton.color}
                         onCancel={() => setEditIconDialogButton(null)}
-                        onSubmit={(icon, colour) => handleEditIconSubmitted(icon, colour, editIconDialogButton)}
+                        onSubmit={(icon, color) => handleEditIconSubmitted(icon, color, editIconDialogButton)}
                         panelId={panelId}
                         buttonType={buttonType}
                     />

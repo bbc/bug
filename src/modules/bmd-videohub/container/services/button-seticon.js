@@ -3,7 +3,7 @@
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
 
-module.exports = async (type, buttonIndex, icon, colour) => {
+module.exports = async (type, buttonIndex, icon, color) => {
     const config = await configGet();
     if (!config) {
         return false;
@@ -20,8 +20,8 @@ module.exports = async (type, buttonIndex, icon, colour) => {
     }
     config[typeVar][buttonIndex] = icon;
 
-    // update colours
-    typeVar = `${type}IconColours`;
+    // update colors
+    typeVar = `${type}IconColors`;
     if (!config[typeVar]) {
         config[typeVar] = [];
     }
@@ -29,7 +29,7 @@ module.exports = async (type, buttonIndex, icon, colour) => {
     if (config[typeVar].length < buttonIndex) {
         config[typeVar].fill(config[typeVar].length, buttonIndex);
     }
-    config[typeVar][buttonIndex] = colour;
+    config[typeVar][buttonIndex] = color;
 
     return await configPutViaCore(config);
 };
