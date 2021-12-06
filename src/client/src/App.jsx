@@ -16,6 +16,9 @@ import StrategiesHandler from "@data/StrategiesHandler";
 import { ModalProvider } from "react-modal-hook";
 import { Provider } from "react-redux";
 import reduxStore from "@redux/store";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en.json";
+TimeAgo.addDefaultLocale(en);
 
 export default function App() {
     return (

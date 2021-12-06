@@ -16,20 +16,13 @@ import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
 import SourceSelector from "./SourceSelector";
 import AxiosPut from "@utils/AxiosPut";
-
-const useStyles = makeStyles(async (theme) => ({
-    tableName: {
-        width: "14rem",
-        "@media (max-width:512px)": {
-            width: "10rem",
-        },
-    },
-}));
+import TimeAgo from "javascript-time-ago";
 
 export default function DeviceTab({ panelId }) {
     const classes = useStyles();
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
+    const timeAgo = new TimeAgo("en-GB");
 
     const device = useApiPoller({
         url: `/container/${panelId}/device/config`,
