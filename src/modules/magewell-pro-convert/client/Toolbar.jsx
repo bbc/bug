@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import BugToolbarIcon from "@core/BugToolbarIcon";
 
 export default function Toolbar(props) {
     let toolbarProps = { ...props };
@@ -39,62 +40,21 @@ export default function Toolbar(props) {
     };
 
     const menuItems = () => [
-        <>
-            <MenuItem onClick={handleWebpageClicked}>
-                <ListItemIcon>
-                    <OpenInNewIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Goto Webpage" />
-            </MenuItem>
-        </>,
-        <>
-            <MenuItem onClick={handleReboot}>
-                <ListItemIcon>
-                    <PowerSettingsNewIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Reboot Device" />
-            </MenuItem>
-        </>,
+        <MenuItem onClick={handleWebpageClicked}>
+            <ListItemIcon>
+                <OpenInNewIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Goto Webpage" />
+        </MenuItem>,
+        <MenuItem onClick={handleReboot}>
+            <ListItemIcon>
+                <PowerSettingsNewIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Reboot Device" />
+        </MenuItem>,
     ];
 
-    const buttons = () => [
-        <>
-            <Tooltip title="Goto Webpage">
-                <IconButton
-                    sx={{
-                        "& .MuiButton-startIcon": {
-                            margin: "0px",
-                        },
-                        marginRight: "8px",
-                    }}
-                    component={Link}
-                    onClick={handleWebpageClicked}
-                    variant="outlined"
-                    color="default"
-                >
-                    <OpenInNewIcon />
-                </IconButton>
-            </Tooltip>
-        </>,
-        <>
-            <Tooltip title="Reboot Device">
-                <IconButton
-                    sx={{
-                        "& .MuiButton-startIcon": {
-                            margin: "0px",
-                        },
-                        marginRight: "8px",
-                    }}
-                    component={Link}
-                    onClick={handleReboot}
-                    variant="outlined"
-                    color="default"
-                >
-                    <PowerSettingsNewIcon />
-                </IconButton>
-            </Tooltip>
-        </>,
-    ];
+    const buttons = () => [];
 
     toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = panelStatus.hasCritical ? null : menuItems();

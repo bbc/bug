@@ -22,6 +22,7 @@ import { useAlert } from "@utils/Snackbar";
 import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useHistory } from "react-router-dom";
+import BugToolbarIcon from "@core/BugToolbarIcon";
 
 /*
  * this has optional properties:
@@ -126,16 +127,7 @@ export default function PanelToolbar(props) {
                             <PanelStatus statusItems={panel.data._status} panel={panel.data} />
                         </Popover>
 
-                        <IconButton
-                            sx={{
-                                "& .MuiButton-startIcon": {
-                                    margin: "0px",
-                                },
-                                marginRight: "8px",
-                            }}
-                            color="default"
-                            onClick={handleStatusClick}
-                        >
+                        <BugToolbarIcon onClick={handleStatusClick}>
                             <BadgeWrapper
                                 panel={panel.data}
                                 position={{
@@ -145,7 +137,7 @@ export default function PanelToolbar(props) {
                             >
                                 <NotificationsIcon />
                             </BadgeWrapper>
-                        </IconButton>
+                        </BugToolbarIcon>
                     </>
                 )}
                 <Hidden xsDown>{props.buttons ? props.buttons : null}</Hidden>
