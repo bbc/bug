@@ -45,7 +45,7 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
                 <PanelPowerIcon panel={panel} />
             </TableCell>
             <TableCell sx={{ width: "4rem", textAlign: "center" }}>
-                <BugApiSwitch panelId={panel.id} checked={panel.enabled} disabled />
+                <BugApiSwitch checked={panel.enabled} disabled />
             </TableCell>
             <TableCell>
                 <div>{panel.title}</div>
