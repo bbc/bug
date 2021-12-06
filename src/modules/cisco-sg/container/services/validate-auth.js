@@ -11,7 +11,8 @@ module.exports = async (formData) => {
             timeout: 20000,
             commands: ["show version"],
         });
-        if (result && result.length === 1 && result[0].indexOf("version") > -1) {
+
+        if (result && result.length > 0 && result[0].toLowerCase().indexOf("version") > -1) {
             return new validationResult([
                 {
                     state: true,
