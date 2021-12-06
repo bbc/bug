@@ -18,6 +18,7 @@ export default function BugDetailsTable({ data, width = "15rem" }) {
                                     variant="head"
                                     sx={{
                                         width: width,
+                                        position: "relative",
                                         "@media (max-width:512px)": {
                                             width: "10rem",
                                         },
@@ -26,7 +27,13 @@ export default function BugDetailsTable({ data, width = "15rem" }) {
                                     {row.name}
                                 </TableCell>
 
-                                <TableCell>{row.value}</TableCell>
+                                <TableCell
+                                    sx={{
+                                        position: "relative",
+                                    }}
+                                >
+                                    {row.value}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
