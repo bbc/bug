@@ -10,6 +10,9 @@ export default function SparkCell({ value, history, height = null }) {
     // pull values from array of objects
     let values = history.map((a) => a.value);
 
+    // replace all undefined values with 0
+    values = values.map((v) => (v === undefined ? 0 : v));
+
     return (
         <Box
             sx={{
