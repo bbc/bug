@@ -5,7 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const ciscoSGSNMP = require("../utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 const formatBps = require("@core/format-bps");
 const trafficSaveHistory = require("../services/traffic-savehistory");
 const mongoCreateIndex = require("@core/mongo-createindex");
@@ -38,7 +38,7 @@ const main = async () => {
             await delay(5000);
         } else {
             // get subtree of interface input stats
-            const ifInOctets = await ciscoSGSNMP.subtree({
+            const ifInOctets = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
@@ -46,7 +46,7 @@ const main = async () => {
             });
 
             // get subtree of interface output stats
-            const ifOutOctets = await ciscoSGSNMP.subtree({
+            const ifOutOctets = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,

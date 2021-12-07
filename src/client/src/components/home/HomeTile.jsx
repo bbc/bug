@@ -103,7 +103,16 @@ const HomeTile = ({ panel }) => {
     }
 
     const StatusItems = () => {
-        return panel._status.map((eachItem) => (
+        let itemsToRender = panel._status;
+
+        // if we only have critical alerts, just show them
+        const criticalStatusOnly = panel._status && panel._status.filter((x) => x.type === "critical");
+        if (criticalStatusOnly.length > 0) {
+            itemsToRender = criticalStatusOnly;
+        }
+
+        // otherwise, show everything
+        return itemsToRender.map((eachItem) => (
             <StyledCardContent key={eachItem.key}>
                 <CollapsibleBugAlert
                     type={eachItem.type}

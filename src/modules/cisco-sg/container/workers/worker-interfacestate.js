@@ -6,7 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
-const ciscoSGSNMP = require("../utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 
 let interfacesCollection;
 
@@ -34,7 +34,7 @@ const main = async () => {
             await delay(5000);
         } else {
             // get subtree of interface link states
-            const ifLinkStates = await ciscoSGSNMP.subtree({
+            const ifLinkStates = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
@@ -42,7 +42,7 @@ const main = async () => {
             });
 
             // get subtree of interface admin states
-            const ifAdminStates = await ciscoSGSNMP.subtree({
+            const ifAdminStates = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,

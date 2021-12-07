@@ -5,7 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 
 let interfacesCollection;
 
@@ -64,28 +64,28 @@ const main = async () => {
             console.log("worker-interfacedetails: no interfaces found in db - waiting ...");
             await delay(5000);
         } else {
-            const ifAliases = await ciscoSGSNMP.subtree({
+            const ifAliases = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.31.1.1.1.18",
             });
 
-            const ifAutoNegotiation = await ciscoSGSNMP.subtree({
+            const ifAutoNegotiation = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.16",
             });
 
-            const ifAdminPortSpeed = await ciscoSGSNMP.subtree({
+            const ifAdminPortSpeed = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.15",
             });
 
-            const ifOperationalPortSpeed = await ciscoSGSNMP.subtree({
+            const ifOperationalPortSpeed = await snmpAwait.subtree({
                 host: workerData.address,
                 community: workerData.snmpCommunity,
                 maxRepetitions: 1000,

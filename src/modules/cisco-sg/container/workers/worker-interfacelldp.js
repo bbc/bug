@@ -5,7 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 const chunk = require("@core/chunk");
 
 // Tell the manager the things you care about
@@ -40,7 +40,7 @@ const main = async () => {
 
     while (true) {
         // fetch list of LLDP neighbors
-        const lldpInfo = await ciscoSGSNMP.subtree({
+        const lldpInfo = await snmpAwait.subtree({
             host: workerData.address,
             community: workerData.snmpCommunity,
             oid: "1.0.8802.1.1.2.1.4.1.1",

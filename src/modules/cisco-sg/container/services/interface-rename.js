@@ -1,13 +1,13 @@
 "use strict";
 
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (interfaceId, newName) => {
     const config = await configGet();
 
-    const result = await ciscoSGSNMP.setString({
+    const result = await snmpAwait.setString({
         host: config.address,
         community: config.snmpCommunity,
         oid: `.1.3.6.1.2.1.31.1.1.1.18.${interfaceId}`,

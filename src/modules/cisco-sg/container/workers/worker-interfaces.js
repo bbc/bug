@@ -6,7 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 const ciscoSGSplitPort = require("@utils/ciscosg-splitport");
 
 let interfacesCollection;
@@ -38,14 +38,14 @@ const main = async () => {
     console.log(`worker-interfaces: connecting to device at ${workerData.address}`);
 
     while (true) {
-        const ifIDs = await ciscoSGSNMP.subtree({
+        const ifIDs = await snmpAwait.subtree({
             host: workerData.address,
             community: workerData.snmpCommunity,
             maxRepetitions: 1000,
             oid: "1.3.6.1.2.1.2.2.1.8",
         });
 
-        const ifShortIDs = await ciscoSGSNMP.subtree({
+        const ifShortIDs = await snmpAwait.subtree({
             host: workerData.address,
             community: workerData.snmpCommunity,
             maxRepetitions: 1000,
@@ -53,7 +53,7 @@ const main = async () => {
         });
 
         // now fetch interface name - which we need to calculate the stack
-        const ifDescriptions = await ciscoSGSNMP.subtree({
+        const ifDescriptions = await snmpAwait.subtree({
             host: workerData.address,
             community: workerData.snmpCommunity,
             maxRepetitions: 1000,

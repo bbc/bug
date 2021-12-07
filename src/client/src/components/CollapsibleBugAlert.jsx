@@ -30,7 +30,11 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
     const AllMessages = () => {
         if (Array.isArray(message)) {
             return (
-                <Box>
+                <Box
+                    sx={{
+                        minWidth: 0,
+                    }}
+                >
                     {message.map((eachMessage, index) => (
                         <Box
                             key={index}
@@ -138,7 +142,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
             <Box
                 sx={{
                     display: "flex",
-                    flexDirection: "rows",
+                    flexDirection: "row",
                     width: "100%",
                     paddingLeft: "14px",
                 }}
