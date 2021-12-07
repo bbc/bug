@@ -7,32 +7,43 @@ version: "3.8"
 
 networks:
     bug:
-        name: ${DOCKER_NETWORK_NAME}
+        name: bug
         driver: bridge
 
 services:
     app:
-        container_name: ${BUG_CONTAINER}
+        container_name: bug
         build: "./src"
         restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ./src:/home/node/bug
-        env_file:
-            - .env
-        hostname: ${BUG_CONTAINER}
+        hostname: bug
+        environment:
+            MODULE_PORT: 3200
+            MODULE_HOME: /home/node/module
+            DOCKER_NETWORK_NAME: bug
+            BUG_CONTAINER: bug
+            BUG_PORT: 3101
+            BUG_HOST: http://localhost
+            BUG_LOG_FOLDER: logs
+            BUG_LOG_NAME: bug
+            BUG_CONSOLE_LEVEL: debug
+            BUG_REGISTRY_FQDN: 172.26.108.110
+            PORT: 3000
+            NODE_ENV: development
+            SESSION_SECRET: aSecretForYourSessions
         networks:
-            - ${DOCKER_NETWORK_NAME}
+            - bug
         ports:
-            - ${PORT}:${PORT}
-            - ${BUG_PORT}:${BUG_PORT}
-
+            - 3000:3000
+            - 3101:3101
     mongo:
         image: mongo:latest
         restart: unless-stopped
         container_name: bug-mongo
         networks:
-            - ${DOCKER_NETWORK_NAME}
+            - bug
         ports:
             - 27017:27017
 
@@ -41,12 +52,12 @@ services:
         container_name: bug-mongo-express
         restart: unless-stopped
         ports:
-            - ${MONGO_EXPRESS_PORT}:8081
+            - 3202:8081
         environment:
-            ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_EXPRESS_USERNAME}
-            ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_EXPRESS_PASSWORD}
+            ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+            ME_CONFIG_MONGODB_ADMINPASSWORD: bugdev
         hostname: mongo-web
         networks:
-            - ${DOCKER_NETWORK_NAME}
+            - bug
         depends_on:
             - mongo
