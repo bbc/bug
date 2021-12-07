@@ -1,10 +1,10 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 
 module.exports = async (formData) => {
     try {
-        const result = await ciscoSGSNMP.get({
+        const result = await snmpAwait.get({
             host: formData.address,
             community: formData.snmpCommunity,
             oid: ".1.3.6.1.2.1.1.1.0",
@@ -25,13 +25,13 @@ module.exports = async (formData) => {
 
     try {
         // now we check if we can write with the community string
-        const contactName = await ciscoSGSNMP.get({
+        const contactName = await snmpAwait.get({
             host: formData.address,
             community: formData.snmpCommunity,
             oid: "1.3.6.1.2.1.1.4.0",
             timeout: 2000,
         });
-        const writeResult = await ciscoSGSNMP.setString({
+        const writeResult = await snmpAwait.setString({
             host: formData.address,
             community: formData.snmpCommunity,
             oid: "1.3.6.1.2.1.1.4.0",

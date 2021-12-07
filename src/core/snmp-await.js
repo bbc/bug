@@ -118,6 +118,7 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout
     });
 };
 
+// this one is designed for cisco SG Switches - not sure it's useful 
 const portlist = ({ host, community = "public", oid = "", timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         var session = snmp.createSession(host, community, {

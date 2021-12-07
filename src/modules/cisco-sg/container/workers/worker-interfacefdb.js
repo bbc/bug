@@ -5,7 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
@@ -40,7 +40,7 @@ const main = async () => {
 
         // fetch list of FDB (forwarding database) entries
         const fbpOid = `1.3.6.1.2.1.17.4.3.1.2`;
-        const fdbList = await ciscoSGSNMP.subtree({
+        const fdbList = await snmpAwait.subtree({
             host: workerData.address,
             community: workerData.snmpCommunity,
             oid: `1.3.6.1.2.1.17.4.3.1.2`,
@@ -57,7 +57,7 @@ const main = async () => {
                 // eg 1.3.6.1.2.17.4.3.1.2.0.1.192.34.4.195
                 //                         ^^^^^^^^^^^^^^^^
                 const macString = eachOid.substring(fbpOid.length + 1);
-                const mac = ciscoSGSNMP.oidToMac(macString);
+                const mac = snmpAwait.oidToMac(macString);
 
                 // initialise the fdb object if it doesn't exist
                 if (!fdbByInterface[interfaceId]) {

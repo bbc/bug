@@ -4,7 +4,7 @@ const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
@@ -21,7 +21,7 @@ const main = async () => {
     console.log(`worker-pending: connecting to device at ${workerData.address}`);
 
     while (true) {
-        const result = await ciscoSGSNMP.get({
+        const result = await snmpAwait.get({
             host: workerData.address,
             community: workerData.snmpCommunity,
             oid: ".1.3.6.1.4.1.9.6.1.101.1.13.0",

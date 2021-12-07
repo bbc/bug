@@ -5,8 +5,9 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const ciscoSGSNMP = require("@utils/ciscosg-snmp");
 const mongoSingle = require("@core/mongo-single");
+const ciscoPortlist = require("@utils/ciscosg-portlist");
+const snmpAwait = require("@core/snmp-await");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -37,14 +38,15 @@ const main = async () => {
             const interfaceVlans = {};
             // loop through the vlans and fetch untagged interfaces
             for (let eachVlan of vlans) {
-                // for (let eachVlan of [{ id: 20 }]) {
-                const untaggedResult = await ciscoSGSNMP.portlist({
+                // for (let eachVlan of [{ id: 1 }, { id: 20 }, { id: 101 }, { id: 102 }, { id: 103 }, { id: 104 }]) {
+                const rawUntaggedResult = await snmpAwait.get({
                     host: workerData.address,
                     community: workerData.snmpCommunity,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.5.0.${eachVlan.id}`,
                     timeout: 30000,
+                    raw: true,
                 });
-
+                const untaggedResult = ciscoPortlist(rawUntaggedResult);
                 for (let eachInterface of untaggedResult) {
                     if (eachInterface < 1000) {
                         if (!interfaceVlans[eachInterface]) {
@@ -57,13 +59,14 @@ const main = async () => {
                     }
                 }
 
-                const taggedResult = await ciscoSGSNMP.portlist({
+                const rawTaggedResult = await snmpAwait.get({
                     host: workerData.address,
                     community: workerData.snmpCommunity,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.4.0.${eachVlan.id}`,
                     timeout: 30000,
+                    raw: true,
                 });
-
+                const taggedResult = ciscoPortlist(rawTaggedResult);
                 for (let eachInterface of taggedResult) {
                     if (eachInterface < 1000) {
                         if (!interfaceVlans[eachInterface]) {
@@ -75,7 +78,6 @@ const main = async () => {
                         interfaceVlans[eachInterface]["tagged-vlans"].push(parseInt(eachVlan.id));
                     }
                 }
-                await delay(100);
             }
 
             const interfaces = await interfacesCollection.find().toArray();

@@ -4,7 +4,7 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const ciscoSGSNMP = require("../utils/ciscosg-snmp");
+const snmpAwait = require("@core/snmp-await");
 const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
@@ -21,7 +21,7 @@ const main = async () => {
     console.log(`worker-vlans: connecting to device at ${workerData.address}`);
 
     while (true) {
-        const vlanResults = await ciscoSGSNMP.subtree({
+        const vlanResults = await snmpAwait.subtree({
             host: workerData.address,
             community: workerData.snmpCommunity,
             oid: ".1.3.6.1.2.1.17.7.1.4.3.1.1",
