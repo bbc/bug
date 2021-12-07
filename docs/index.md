@@ -4,7 +4,9 @@ layout: default
 
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
-[Link to another page](./another-page.html).
+-   [Installation](./pages/installation.html)
+-   [Development](./pages/development.html)
+-   [Modules](./pages/modules.html)
 
 There should be whitespace between paragraphs.
 
@@ -95,10 +97,6 @@ end
 ### Small image
 
 ![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
 
 ### Definition lists can be used with HTML syntax.
 

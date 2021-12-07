@@ -1,4 +1,5 @@
 theme: jekyll-theme-cayman
-title: [BBC BUG]
-description: [Broadcast User Gateway]
+title:
+    - BBC BUG
+description: Broadcast User Gateway
 show_downloads: true
