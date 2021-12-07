@@ -5,7 +5,11 @@ name: BUG - Build, Test, Deploy
 
 on:
     push:
-        branches: [main]
+        branches:
+            - main
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
 
 jobs:
     backend:
