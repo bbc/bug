@@ -1,4 +1,4 @@
-theme: just-the-docs
+remote_theme: pmarsceill/just-the-docs
 title: BBC BUG
 description: Broadcast User Gateway
 show_downloads: true
