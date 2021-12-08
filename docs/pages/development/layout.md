@@ -1,4 +1,4 @@
-# Layout
+# Development - Project Layout
 
 BUG's project structure is documented here - what types of files are in each folder. What there general functions are and in some case what is passed to and from the functions they contain.
 
