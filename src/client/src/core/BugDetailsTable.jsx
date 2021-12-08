@@ -6,11 +6,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-export default function BugDetailsTable({ data, width = "15rem" }) {
+export default function BugDetailsTable({ data, width = "15rem", gridLines = true }) {
     return (
         <>
             <TableContainer component={Paper} square>
-                <Table aria-label="BUG details table">
+                <Table
+                    aria-label="BUG details table"
+                    sx={{
+                        "& .MuiTableCell-root": {
+                            borderBottom: gridLines ? "1px solid #181818" : "none",
+                        },
+                    }}
+                >
                     <TableBody>
                         {data.map((row, index) => (
                             <TableRow key={index}>
