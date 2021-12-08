@@ -1,4 +1,9 @@
-# Development - Coding Style
+---
+layout: page
+title: Coding Style
+parent: Development
+nav_order: 2
+---
 
 Mostly along AirBNB NodeJS style guide: https://github.com/airbnb/javascript
 

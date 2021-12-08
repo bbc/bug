@@ -1,4 +1,9 @@
-# Development - UX
+---
+layout: page
+title: UX Guidelines
+parent: Development
+nav_order: 2
+---
 
 A list of things to consider when designing your module.
 

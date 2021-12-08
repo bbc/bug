@@ -1,4 +1,9 @@
-# Development - Project Layout
+---
+layout: page
+title: Project Layout
+parent: Development
+nav_order: 2
+---
 
 BUG's project structure is documented here - what types of files are in each folder. What there general functions are and in some case what is passed to and from the functions they contain.
 

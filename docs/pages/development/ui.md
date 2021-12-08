@@ -1,4 +1,9 @@
-# Development - UI
+---
+layout: page
+title: UI Guidelines
+parent: Development
+nav_order: 2
+---
 
 When developing a module GUI, here are a few guidelines:
 

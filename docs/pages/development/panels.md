@@ -1,4 +1,9 @@
-# Development - Panels
+---
+layout: page
+title: Panels
+parent: Development
+nav_order: 2
+---
 
 ## On Panel Add
 

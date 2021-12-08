@@ -1,3 +1,10 @@
+---
+layout: page
+title: Custom Registry
+parent: Installation
+nav_order: 2
+---
+
 # Getting BUG from the BCN Repository
 
 For internal development builds within the BCN BUG is avalible from a Docker container registry within the BCN.

@@ -1,5 +1,8 @@
 ---
-layout: default
+layout: page
+title: Linux
+parent: Installation
+nav_order: 2
 ---
 
 # Linux

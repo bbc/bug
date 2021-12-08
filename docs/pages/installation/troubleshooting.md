@@ -1,4 +1,9 @@
-# Troubleshooting
+---
+layout: page
+title: Troubleshooting
+parent: Installation
+nav_order: 2
+---
 
 Help me! My BUG won't work.
 

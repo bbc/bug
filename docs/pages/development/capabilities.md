@@ -1,3 +1,10 @@
+---
+layout: page
+title: Cababilities
+parent: Development
+nav_order: 2
+---
+
 # Development - Module Capabilities
 
 Each module type can support one or more capabilities. These are standardised API endpoints to allow data flow between modules.

@@ -1,4 +1,9 @@
-# Development - Live Validation
+---
+layout: page
+title: Live Validation
+parent: Development
+nav_order: 2
+---
 
 Each container can optionally support live config validation. This should be via a RESTful API endpoint at
 `/container/[panelid]/validate/[field]` with the following form data.
