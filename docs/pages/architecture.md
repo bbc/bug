@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 ---
 
 BUG makes a few underlying assumptions built into its architecture that will guide you in developing modules for it. A module's backend exists within its own docker container. The frontend is loaded by BUG core

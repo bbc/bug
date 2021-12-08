@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: home
 ---
 
 **BUG** - Broadcast User Gateway

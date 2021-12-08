@@ -1,7 +1,11 @@
 ---
 ---
-
-@import "{{ site.theme }}";
+{% if site.color_scheme and site.color_scheme != "nil" %}
+  {% assign color_scheme = site.color_scheme %}
+{% else %}
+  {% assign color_scheme = "light" %}
+{% endif %}
+{% include css/just-the-docs.scss.liquid color_scheme=color_scheme %}
 
 .page-header {
     background-color: #163550;
