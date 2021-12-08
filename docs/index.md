@@ -15,6 +15,8 @@ Control and monitor a wide range of equipment from a single web interface.
 
 -   [Architecture](./pages/architecture.html)
 -   [Development](./pages/development.html)
+-   [Project Layout](/pages/development/layout.html)
+-   [Coding Style](/pages/development/style.html)
 
 This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
 
