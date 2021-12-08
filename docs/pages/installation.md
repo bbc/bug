@@ -11,3 +11,7 @@ layout: default
 # Using Custom Registry
 
 -   [BCN Registry](/pages/installation/registry.html)
+
+# Troubleshooting
+
+-   [Troubleshooting](/pages/installation/troubleshooting.html)
