@@ -3,6 +3,11 @@
 
 @import "{{ site.theme }}";
 
+.page-header {
+    background-color: #0f2769;
+    background-image: none;
+}
+
 .main-content {
     h1,
     h2,
