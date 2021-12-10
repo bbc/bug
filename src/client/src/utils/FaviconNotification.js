@@ -19,7 +19,7 @@ let count = {
     error: 0,
 };
 
-module.exports = class FaviconNotification {
+export default class FaviconNotification {
     constructor(initOptions) {
         if (initOptions) {
             this.setOptions(initOptions);
@@ -184,4 +184,4 @@ module.exports = class FaviconNotification {
         };
         iconElement.href = options.url;
     }
-};
+}
