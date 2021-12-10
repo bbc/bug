@@ -1,0 +1,27 @@
+{
+    "name": "ntt-mve5000",
+    "longname": "NTT MVE5000",
+    "version": "1.0.0",
+    "description": "Control of NTT MVE5000 encoders",
+    "capabilities": [],
+    "icon": "ResetTv",
+    "notes": "",
+    "author": "Geoff House",
+    "license": "ISC",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "ntt-mve5000",
+        "showAdvanced": false,
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "snmpCommunity": "public"
+    }
+}
