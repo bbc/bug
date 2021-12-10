@@ -1,8 +1,7 @@
 import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-
-//TODO - more work needed here to update the UI if the backend changes after a certain amount of time (like API Switch)
+import Paper from "@mui/material/Paper";
 
 export default function BugApiAutocomplete({
     options,
@@ -95,10 +94,21 @@ export default function BugApiAutocomplete({
                 onClick(event);
             }}
             value={processValue(value)}
+            PaperComponent={({ children, ...other }) => (
+                <Paper square elevation={8}>
+                    {children}
+                </Paper>
+            )}
             renderInput={(params) => (
                 <TextField
                     {...params}
                     variant="outlined"
+                    sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                        "& .MuiInputBase-root": {
+                            borderRadius: 0,
+                        },
+                    }}
                     onClick={(event) => {
                         event.stopPropagation();
                         event.preventDefault();
