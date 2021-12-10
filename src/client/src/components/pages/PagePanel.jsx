@@ -31,6 +31,7 @@ export default function PagePanel(props) {
             return <Loading />;
         }
 
+        console.log("WHY DOES THIS MAKE EVERYTHING BETTER?");
         if (Modules["modules"][moduleName]) {
             const Module = Modules["modules"][moduleName]["client"]["Module"];
             // we only include pathname here to trigger a re-render if the URL changes

@@ -3,7 +3,9 @@
 const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const bugQuote = require("@services/bug-quote");
+const bugShutdown = require("@services/bug-shutdown");
 const hashResponse = require("@core/hash-response");
+
 /**
  * @swagger
  * /bug/quote:
@@ -22,6 +24,28 @@ router.get(
         hashResponse(res, req, {
             status: "success",
             data: await bugQuote(),
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /bug/shutdown:
+ *    get:
+ *      description: Shuts down your BUG.
+ *      tags: [bug]
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
+router.get(
+    "/shutdown",
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, {
+            status: "success",
+            data: await bugShutdown(),
         });
     })
 );
