@@ -17,7 +17,7 @@ const theme = createTheme({
                 },
                 head: {
                     textTransform: "uppercase",
-                    color: "rgba(255, 255, 255, 0.7)",
+                    color: "rgba(255, 255, 255, 0.5)",
                     fontSize: "0.875rem",
                     padding: "12px 12px",
                 },
@@ -162,6 +162,9 @@ const theme = createTheme({
                         marginTop: 2,
                         marginBottom: 2,
                     },
+                    "&.MuiMenuItem-root.Mui-selected": {
+                        backgroundColor: "#163550",
+                    },
                 },
             },
         },
@@ -184,6 +187,11 @@ const theme = createTheme({
         },
         MuiAutocomplete: {
             styleOverrides: {
+                listbox: {
+                    "& .MuiAutocomplete-option.Mui-focused": {
+                        backgroundColor: "#163550 !important",
+                    },
+                },
                 paper: {
                     backgroundColor: "#212121",
                 },
