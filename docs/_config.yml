@@ -1,4 +1,6 @@
-theme: jekyll-theme-cayman
-title: [BBC BUG]
-description: [Broadcast User Gateway]
+remote_theme: pmarsceill/just-the-docs
+title: BBC BUG
+logo: "/assets/images/logo.png"
+color_scheme: dark
+description: Broadcast User Gateway
 show_downloads: true
