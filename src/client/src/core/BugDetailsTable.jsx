@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 export default function BugDetailsTable({ data, width = "15rem", gridLines = true }) {
     return (
         <>
-            <TableContainer component={Paper} square>
+            <TableContainer>
                 <Table
                     aria-label="BUG details table"
                     sx={{
@@ -19,30 +19,36 @@ export default function BugDetailsTable({ data, width = "15rem", gridLines = tru
                     }}
                 >
                     <TableBody>
-                        {data.map((row, index) => (
-                            <TableRow key={index}>
-                                <TableCell
-                                    variant="head"
-                                    sx={{
-                                        width: width,
-                                        position: "relative",
-                                        "@media (max-width:512px)": {
-                                            width: "10rem",
-                                        },
-                                    }}
-                                >
-                                    {row.name}
-                                </TableCell>
+                        {data.map((row, index) => {
+                            if (!row) {
+                                return null;
+                            }
 
-                                <TableCell
-                                    sx={{
-                                        position: "relative",
-                                    }}
-                                >
-                                    {row.value}
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                            return (
+                                <TableRow key={index}>
+                                    <TableCell
+                                        variant="head"
+                                        sx={{
+                                            width: width,
+                                            position: "relative",
+                                            "@media (max-width:512px)": {
+                                                width: "10rem",
+                                            },
+                                        }}
+                                    >
+                                        {row.name}
+                                    </TableCell>
+
+                                    <TableCell
+                                        sx={{
+                                            position: "relative",
+                                        }}
+                                    >
+                                        {row.value}
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>

@@ -20,7 +20,6 @@ const ExpandMore = styled((props) => {
 }));
 
 const MemoizedBugDetailsTable = ({ width, data }) => {
-    console.log("memo");
     return React.useMemo(() => <BugDetailsTable width={width} gridLines={false} data={data} />, [data]);
 };
 
