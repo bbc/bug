@@ -9,3 +9,5 @@ nav_order: 2
 
 -   Digital or ye olde analogue clock
 -   Set timezone
+
+![Clock Module Screenshot](/assets/images/screenshots/module-clock.png)
