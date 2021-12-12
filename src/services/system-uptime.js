@@ -1,11 +1,11 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const os = require("os");
+const process = require("process");
 
 module.exports = async () => {
     try {
-        const uptime = await os.uptime();
+        const uptime = await process.uptime();
         return uptime;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);

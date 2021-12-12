@@ -34,7 +34,6 @@ export default function PageSystemBackup() {
         const dataArray = [];
         for (let key in info.data) {
             if (key === "uptime") {
-                info.data[key] = timeAgo.format(Date.now() - parseInt(info.data[key]) * 1000);
             }
             dataArray.push({
                 name: key,
@@ -93,7 +92,19 @@ export default function PageSystemBackup() {
                 </Grid>
 
                 <Grid item lg={6} xs={12}>
-                    <BugDetailsCard title="Server Infomation" width="10rem" data={getData()} />
+                    <BugDetailsCard
+                        title="Server Infomation"
+                        width="10rem"
+                        data={[
+                            { name: "IP Address", value: info.data.ip },
+                            { name: "Uptime", value: timeAgo.format(Date.now() - parseInt(info.data?.uptime) * 1000) },
+                            { name: "Current Version", value: info.data.version },
+                            {
+                                name: "Update Needed",
+                                value: info.data?.upToDate ? "Yes" : "Up to Date",
+                            },
+                        ]}
+                    />
                 </Grid>
             </Grid>
         </>

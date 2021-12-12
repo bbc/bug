@@ -26,6 +26,7 @@ module.exports = async () => {
                     id: eachImage["Id"],
                     module: module,
                     tag: tag,
+                    labels: eachImage["Labels"],
                     created: eachImage["Created"],
                     parentId: eachImage["ParentId"],
                     size: eachImage["Size"],

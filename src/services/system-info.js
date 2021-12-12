@@ -3,7 +3,7 @@
 const logger = require("@utils/logger")(module);
 const path = require("path");
 const readJson = require("@core/read-json");
-const avalibleversion = require("@services/system-avalibleversion");
+const updateVersion = require("@services/system-update-version");
 const systemIp = require("@services/system-ip");
 const systemUptime = require("@services/system-uptime");
 
@@ -20,12 +20,14 @@ async function getPackage() {
 module.exports = async () => {
     try {
         const NpmPackage = await getPackage();
+        const updates = await updateVersion();
+
         const response = {
             data: {
                 ip: await systemIp(),
                 uptime: await systemUptime(),
                 version: NpmPackage?.version,
-                avalibleVersion: await avalibleversion(),
+                updates: updates,
             },
         };
         return response;

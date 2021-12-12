@@ -31,7 +31,6 @@ module.exports = async () => {
         // }
 
         const response = await lookupPromise("host.docker.internal");
-        console.log(response);
 
         return response;
     } catch (error) {
