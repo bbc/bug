@@ -11,6 +11,8 @@ import BugApiSaveButton from "@core/BugApiSaveButton";
 import LaunchIcon from "@mui/icons-material/Launch";
 import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
+import CheckIcon from "@mui/icons-material/Check";
+import AxiosPut from "@utils/AxiosPut";
 
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
@@ -49,6 +51,12 @@ export default function Toolbar({ panelId, ...props }) {
         }
     };
 
+    const handleShowAdvancedClicked = async (event, item) => {
+        await AxiosPut(`/api/panelconfig/${panelId}`, {
+            showAdvanced: !panelConfig?.data?.showAdvanced,
+        });
+    };
+
     let toolbarProps = { ...props };
 
     const buttons = () => (
@@ -74,6 +82,10 @@ export default function Toolbar({ panelId, ...props }) {
                 <ListItemText primary="Save Changes" />
             </MenuItem>,
             <Divider key="divider" />,
+            <MenuItem key="launch" onClick={handleShowAdvancedClicked}>
+                <ListItemIcon>{panelConfig?.data?.showAdvanced ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
+                <ListItemText primary="Show Advanced" />
+            </MenuItem>,
             <MenuItem key="launch" onClick={handleLaunchClicked}>
                 <ListItemIcon>
                     <LaunchIcon fontSize="small" />

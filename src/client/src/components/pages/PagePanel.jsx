@@ -32,6 +32,8 @@ export default function PagePanel(props) {
         }
 
         console.log("WHY DOES THIS MAKE EVERYTHING BETTER?");
+        // I have literally no idea why it does. It makes me so cross!
+
         if (Modules["modules"][moduleName]) {
             const Module = Modules["modules"][moduleName]["client"]["Module"];
             // we only include pathname here to trigger a re-render if the URL changes
