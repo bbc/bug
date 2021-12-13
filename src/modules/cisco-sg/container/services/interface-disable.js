@@ -7,7 +7,7 @@ const mongoCollection = require("@core/mongo-collection");
 module.exports = async (interfaceId) => {
     const config = await configGet();
 
-    const result = await snmpAwait.setInt({
+    const result = await snmpAwait.set({
         host: config.address,
         community: config.snmpCommunity,
         oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,

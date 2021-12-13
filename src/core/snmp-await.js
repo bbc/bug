@@ -118,7 +118,7 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout
     });
 };
 
-// this one is designed for cisco SG Switches - not sure it's useful 
+// this one is designed for cisco SG Switches - not sure it's useful
 const portlist = ({ host, community = "public", oid = "", timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         var session = snmp.createSession(host, community, {
@@ -197,56 +197,86 @@ const getMultiple = ({ host, community = "public", oids = [], timeout = 5000, ra
     });
 };
 
-const setString = ({ host, community = "public", oid, value, timeout = 5000 }) => {
-    return new Promise((resolve, reject) => {
-        try {
-            const session = snmp.createSession(host, community, {
-                version: snmp.Version2c,
-                timeout: timeout,
-            });
-            const varbinds = [
-                {
-                    oid: trimOid(oid),
-                    type: snmp.ObjectType.OctetString,
+const getSnmpObject = (oid, value) => {
+    // we do some cunning auto-detection.
+    // if it's an object then we expect the type to be passed
+
+    let detectedType = typeof value;
+    if (detectedType === "object") {
+        detectedType = value?.type;
+        value = value?.value;
+    }
+
+    switch (detectedType) {
+        case "string":
+            return {
+                oid: oid,
+                type: snmp.ObjectType.OctetString,
+                value: value.toString(),
+            };
+        case "number":
+            return {
+                oid: oid,
+                type: snmp.ObjectType.Integer,
+                value: parseInt(value),
+            };
+        default:
+            if (snmp.ObjectType[detectedType] !== undefined) {
+                return {
+                    oid: oid,
+                    type: snmp.ObjectType[detectedType],
                     value: value,
-                },
-            ];
-            session.set(varbinds, function (error, varbinds) {
-                if (error) {
-                    session.close();
-                    console.error(error);
-                    reject();
-                } else {
-                    for (var i = 0; i < varbinds.length; i++) {
-                        if (snmp.isVarbindError(varbinds[i])) {
-                            session.close();
-                            reject();
-                        }
-                    }
-                }
-                session.close();
-                resolve(true);
-            });
-        } catch (error) {
-            console.error(error);
-            reject();
-        }
-    });
+                };
+            }
+            console.error(`snmp-await: unsupported type '${detectedType}'`);
+            return null;
+    }
 };
 
-const setInt = ({ host, community = "public", oid, value, timeout = 5000 }) => {
+// this accepts an array of objects, each with an oid and value
+// remember the value can itself be an object containing a type and value - see getSnmpObject
+const setMultiple = ({ host, community = "public", values = [], timeout = 5000 }) => {
     return new Promise((resolve, reject) => {
         const session = snmp.createSession(host, community, {
             version: snmp.Version2c,
             timeout: timeout,
         });
-        const varbinds = [
-            {
-                oid: trimOid(oid),
-                type: snmp.ObjectType.Integer,
-                value: parseInt(value),
-            },
-        ];
+
+        const varbinds = [];
+        for (let eachValue of values) {
+            varbinds.push(getSnmpObject(trimOid(eachValue.oid), eachValue.value));
+        }
+
+        console.log(varbinds);
+        session.set(varbinds, function (error, varbinds) {
+            if (error) {
+                session.close();
+                console.error(error);
+                reject();
+            } else {
+                for (var i = 0; i < varbinds.length; i++) {
+                    if (snmp.isVarbindError(varbinds[i])) {
+                        session.close();
+                        reject();
+                    }
+                }
+            }
+            session.close();
+            resolve(true);
+        });
+    });
+};
+
+// the value here can be an object containing a type and value - see getSnmpObject
+const set = ({ host, community = "public", oid, value, timeout = 5000 }) => {
+    return new Promise((resolve, reject) => {
+        const session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
+
+        const varbinds = [getSnmpObject(trimOid(oid), value)];
+        console.log(varbinds);
         session.set(varbinds, function (error, varbinds) {
             if (error) {
                 session.close();
@@ -330,12 +360,12 @@ const oidToMac = (oid) => {
 
 module.exports = {
     get: get,
+    set: set,
+    setMultiple: setMultiple,
     getNext: getNext,
     walk: walk,
     subtree: subtree,
     getMultiple: getMultiple,
     portlist: portlist,
-    setString: setString,
-    setInt: setInt,
     oidToMac: oidToMac,
 };

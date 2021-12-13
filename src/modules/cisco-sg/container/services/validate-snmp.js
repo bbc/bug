@@ -31,11 +31,11 @@ module.exports = async (formData) => {
             oid: "1.3.6.1.2.1.1.4.0",
             timeout: 2000,
         });
-        const writeResult = await snmpAwait.setString({
+        const writeResult = await snmpAwait.set({
             host: formData.address,
             community: formData.snmpCommunity,
             oid: "1.3.6.1.2.1.1.4.0",
-            value: contactName,
+            value: contactName.toString(),
             timeout: 2000,
         });
         if (!writeResult) {
