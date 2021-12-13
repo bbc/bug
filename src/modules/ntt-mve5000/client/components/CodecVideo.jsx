@@ -29,6 +29,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         name: "Video Format",
                         value: (
                             <BugSelect
+                                disabled={true}
                                 value={codecdata?.InputVideoFormat}
                                 onChange={(event) => onChange(parseInt(event.target.value), "InputVideoFormat")}
                                 items={{
