@@ -13,14 +13,19 @@ import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
 import CheckIcon from "@mui/icons-material/Check";
 import AxiosPut from "@utils/AxiosPut";
+import UndoIcon from "@mui/icons-material/Undo";
+import Button from "@mui/material/Button";
+import panelDataSlice from "@redux/panelDataSlice";
+import { useDispatch } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
+    const dispatch = useDispatch();
 
     const pending = useApiPoller({
-        url: `/container/${panelId}/pending/`,
+        url: `/container/${panelId}/localdata/checkpending/`,
         interval: 1000,
     });
 
@@ -35,11 +40,22 @@ export default function Toolbar({ panelId, ...props }) {
         }
     };
 
-    const handleSave = async (event, item) => {
+    const handleCancelClicked = async (event, item) => {
+        if (await AxiosCommand(`/container/${panelId}/device/revert`)) {
+            dispatch(panelDataSlice.actions["update"]({ forceRefresh: Date.now() }));
+        } else {
+            sendAlert("Failed to revert device config", {
+                variant: "error",
+            });
+        }
+    };
+
+    const handleSaveClicked = async (event, item) => {
         sendAlert("Saving device config ... please wait", {
             variant: "info",
         });
         if (await AxiosCommand(`/container/${panelId}/device/save`)) {
+            dispatch(panelDataSlice.actions["update"]({ forceRefresh: Date.now() }));
             sendAlert("Saved device config", {
                 broadcast: true,
                 variant: "success",
@@ -62,27 +78,44 @@ export default function Toolbar({ panelId, ...props }) {
     const buttons = () => (
         <>
             <BugApiSaveButton
+                key="save_button"
                 disabled={!isPending || hasCritical}
                 variant="outlined"
                 color={isPending ? "warning" : "primary"}
-                onClick={handleSave}
-                timeout={20000}
+                onClick={handleSaveClicked}
+                timeout={5000}
             >
                 Save
             </BugApiSaveButton>
+            <Button
+                key="cancel_button"
+                disabled={!isPending || hasCritical}
+                variant="outlined"
+                color="primary"
+                onClick={handleCancelClicked}
+            >
+                Cancel
+            </Button>
         </>
     );
 
     const menuItems = () => {
         return [
-            <MenuItem key="save" disabled={!isPending} onClick={handleSave}>
+            <Divider key="divider1" />,
+            <MenuItem key="save" disabled={!isPending} onClick={handleSaveClicked}>
                 <ListItemIcon>
                     <SaveIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText primary="Save Changes" />
             </MenuItem>,
+            <MenuItem key="cancel" disabled={!isPending} onClick={handleCancelClicked}>
+                <ListItemIcon>
+                    <UndoIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Cancel" />
+            </MenuItem>,
             <Divider key="divider" />,
-            <MenuItem key="launch" onClick={handleShowAdvancedClicked}>
+            <MenuItem key="showadvanced" onClick={handleShowAdvancedClicked}>
                 <ListItemIcon>{panelConfig?.data?.showAdvanced ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
                 <ListItemText primary="Show Advanced" />
             </MenuItem>,

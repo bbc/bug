@@ -9,9 +9,7 @@ const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
 const codecdataRouter = require("@routes/codecdata");
 const localdataRouter = require("@routes/localdata");
-// const validationRouter = require("@routes/validate");
-// const interfaceRouter = require("@routes/interface");
-// const vlanRouter = require("@routes/vlan");
+const deviceRouter = require("@routes/device");
 
 let app = express();
 
@@ -31,9 +29,7 @@ app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/codecdata", codecdataRouter);
 app.use("/api/localdata", localdataRouter);
-// app.use("/api/pending", pendingRouter);
-// app.use("/api/device", deviceRouter);
-// app.use("/api/validate", validationRouter);
+app.use("/api/device", deviceRouter);
 
 app.use("*", defaultRouter);
 

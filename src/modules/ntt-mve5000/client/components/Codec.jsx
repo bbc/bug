@@ -9,17 +9,21 @@ import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import useAsyncEffect from "use-async-effect";
 import { useSelector } from "react-redux";
+import { useAlert } from "@utils/Snackbar";
 
 export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
     const panelConfig = useSelector((state) => state.panelConfig);
     const timer = React.useRef();
+    const sendAlert = useAlert();
 
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
+    const panelData = useSelector((state) => state.panelData);
+    const forceRefresh = panelData?.forceRefresh || null;
 
     useAsyncEffect(async () => {
         setCodecdata(await AxiosGet(`/container/${panelId}/codecdata/`));
-    }, [panelId]);
+    }, [panelId, forceRefresh]);
 
     const onChange = (value, field) => {
         clearTimeout(timer.current);
@@ -29,13 +33,14 @@ export default function Codec({ panelId }) {
 
         timer.current = setTimeout(() => {
             updateBackend(value, field);
-        }, 1000);
+        }, 200);
     };
 
-    const updateBackend = (value, field) => {
-        console.log("updateBackend", value, field);
+    const updateBackend = async (value, field) => {
         // and send to backend to persist
-        AxiosPost(`/container/${panelId}/localdata/`, { [field]: value });
+        if (!(await AxiosPost(`/container/${panelId}/localdata/`, { [field]: value }))) {
+            sendAlert(`Changes could not be saved`, { variant: "error" });
+        }
     };
 
     if (Object.keys(codecdata).length === 0) {

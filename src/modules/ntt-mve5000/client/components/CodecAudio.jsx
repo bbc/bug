@@ -53,7 +53,7 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.audio_1_EncAudioFormat}
-                                onChange={(event) => onChange(event.target.value, "audio_1_EncAudioFormat")}
+                                onChange={(event) => onChange(parseInt(event.target.value), "audio_1_EncAudioFormat")}
                                 items={{
                                     0: "None",
                                     1: "MPEG1-L2 Dual Mono",
@@ -67,7 +67,7 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.audio_1_EncAudioRate2Ch}
-                                onChange={(event) => onChange(event.target.value, "audio_1_EncAudioRate2Ch")}
+                                onChange={(event) => onChange(parseInt(event.target.value), "audio_1_EncAudioRate2Ch")}
                                 items={{
                                     0: "64kbps",
                                     1: "96kbps",

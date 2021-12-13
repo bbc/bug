@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
 const BugSelect = ({ items, disabled = false, ...props }) => {
-    console.log(disabled);
     return (
         <TextField
             select
