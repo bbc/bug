@@ -43,7 +43,7 @@ export default function Codec({ panelId }) {
         }
     };
 
-    if (Object.keys(codecdata).length === 0) {
+    if (!codecdata || Object.keys(codecdata).length === 0) {
         return <Loading />;
     }
 

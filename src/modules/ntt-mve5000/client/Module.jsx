@@ -5,7 +5,6 @@ import BugModuleWrapper from "@core/BugModuleWrapper";
 import BugModuleRoute from "@core/BugModuleRoute";
 
 export default function Module(props) {
-    console.log("Module.jsx");
     return (
         <BugModuleWrapper {...props}>
             <BugModuleRoute exact path="/panel/:panelId/config">
