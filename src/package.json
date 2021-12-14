@@ -101,7 +101,8 @@
         "testPathIgnorePatterns": [
             "./node_modules/",
             "./modules/",
-            "./client/"
+            "./client/",
+            "./routes/icons.test.js"
         ],
         "setupFilesAfterEnv": [
             "jest-extended"
