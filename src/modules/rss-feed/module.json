@@ -1,0 +1,31 @@
+{
+    "name": "rss-feed",
+    "longname": "RSS Feed Display",
+    "description": "Show the latest posts from an RSS feed",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-rss-box",
+    "author": "Ryan McCartney",
+    "license": "MIT",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "rss-feed",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": ""
+    }
+}
