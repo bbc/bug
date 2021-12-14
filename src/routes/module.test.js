@@ -10,7 +10,12 @@ afterAll(async () => {
 const fetchExampleModuleName = async () => {
     const modulesFolder = path.join(__dirname, "..", "modules");
     const moduleList = await fs.readdir(modulesFolder);
-    return moduleList[0];
+    for (let eachModule of moduleList) {
+        if (!eachModule.startsWith(".")) {
+            return eachModule;
+        }
+    }
+    return null;
 };
 
 describe("Test the '/api/module/' endpoint", () => {

@@ -217,9 +217,7 @@ const Menu = ({ showGroups = true }) => {
         notificationsCount = 0;
 
         for (let panel of panels) {
-            for (let notification of panel._status) {
-                notificationsCount += 1;
-            }
+            notificationsCount += panel._status.length;
         }
 
         if (!firstRun) {

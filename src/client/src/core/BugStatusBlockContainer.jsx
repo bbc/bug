@@ -1,5 +1,4 @@
 import React from "react";
-import Loading from "@components/Loading";
 import Box from "@mui/material/Box";
 import BugStatusBlock from "@core/BugStatusBlock";
 

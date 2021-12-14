@@ -30,18 +30,18 @@ export default function PageSystemBackup() {
         AxiosGet("/api/bug/reboot");
     };
 
-    const getData = () => {
-        const dataArray = [];
-        for (let key in info.data) {
-            if (key === "uptime") {
-            }
-            dataArray.push({
-                name: key,
-                value: <>{info.data[key]}</>,
-            });
-        }
-        return dataArray;
-    };
+    // const getData = () => {
+    //     const dataArray = [];
+    //     for (let key in info.data) {
+    //         if (key === "uptime") {
+    //         }
+    //         dataArray.push({
+    //             name: key,
+    //             value: <>{info.data[key]}</>,
+    //         });
+    //     }
+    //     return dataArray;
+    // };
 
     useEffect(() => {
         dispatch(pageTitleSlice.actions.set("About BUG"));

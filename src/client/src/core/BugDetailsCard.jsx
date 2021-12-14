@@ -20,7 +20,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const MemoizedBugDetailsTable = ({ width, data }) => {
-    return React.useMemo(() => <BugDetailsTable width={width} gridLines={false} data={data} />, [data]);
+    return React.useMemo(() => <BugDetailsTable width={width} gridLines={false} data={data} />, [data, width]);
 };
 
 function BugDetailsCard({ title, width, data, collapsible = false, collapsed = false, ...props }) {

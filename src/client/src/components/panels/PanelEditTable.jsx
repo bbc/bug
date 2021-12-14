@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import AxiosPut from "@utils/AxiosPut";
-import PanelEditTableRow from "@components/panels/PanelEditTableRow";
+// import PanelEditTableRow from "@components/panels/PanelEditTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import panelListGroups from "@utils/panelListGroups";
@@ -71,64 +71,65 @@ export default function PanelTable({ showGroups = true }) {
     };
 
     const renderGroups = () => {
-        const sortedGroupKeys = _.keys(panelsByGroup).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+        // const sortedGroupKeys = _.keys(panelsByGroup).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
         const resultArray = [];
 
-        for (const group of sortedGroupKeys) {
-            const items = panelsByGroup[group].map((panel) => {
-                return `${panel?.group}:${panel?.id}`;
-            });
+        // for (const group of sortedGroupKeys) {
+        //     // const items = panelsByGroup[group].map((panel) => {
+        //     //     return `${panel?.group}:${panel?.id}`;
+        //     // });
 
-            // COMMENTED OUT SO IT COMPILES FOR ME - PLEASE REMOVE - GH
+        //     // COMMENTED OUT SO IT COMPILES FOR ME - PLEASE REMOVE - GH
 
-            // const { setNodeRef: setGroupRef } = useDroppable({
-            //     id: group,
-            // });
+        //     // const { setNodeRef: setGroupRef } = useDroppable({
+        //     //     id: group,
+        //     // });
 
-            // if (group) {
-            //     resultArray.push(
-            //         <PanelEditTableGroupRow
-            //             handleNewGroupName={(newGroupName) => {
-            //                 updateGroupName(group, newGroupName);
-            //             }}
-            //             title={group}
-            //             key={group}
-            //         />
-            //     );
-            // }
-            // resultArray.push(
-            //     <div ref={setGroupRef}>
-            //         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            //             {renderRows(panelsByGroup[group])}
-            //         </SortableContext>
-            //     </div>
-            // );
-        }
+        //     // if (group) {
+        //     //     resultArray.push(
+        //     //         <PanelEditTableGroupRow
+        //     //             handleNewGroupName={(newGroupName) => {
+        //     //                 updateGroupName(group, newGroupName);
+        //     //             }}
+        //     //             title={group}
+        //     //             key={group}
+        //     //         />
+        //     //     );
+        //     // }
+        //     // resultArray.push(
+        //     //     <div ref={setGroupRef}>
+        //     //         <SortableContext items={items} strategy={verticalListSortingStrategy}>
+        //     //             {renderRows(panelsByGroup[group])}
+        //     //         </SortableContext>
+        //     //     </div>
+        //     // );
+        // }
         return resultArray;
     };
 
-    const renderRows = (panels) => {
-        const rows = [];
-        for (let panel of panels) {
-            const id = `${panel?.group}:${panel?.id}`;
-            rows.push(<PanelEditTableRow id={id} key={id} showGroups={false} panel={panel} />);
-        }
-        return rows;
-    };
+    // const renderRows = (panels) => {
+    //     const rows = [];
+    //     for (let panel of panels) {
+    //         const id = `${panel?.group}:${panel?.id}`;
+    //         rows.push(<PanelEditTableRow id={id} key={id} showGroups={false} panel={panel} />);
+    //     }
+    //     return rows;
+    // };
 
-    const updateGroupName = async (currentGroupName, newGroupName) => {
-        const newPanelsByGroup = panelsByGroup;
-        newPanelsByGroup[newGroupName] = newPanelsByGroup[currentGroupName];
-        delete newPanelsByGroup[currentGroupName];
+    // const updateGroupName = async (currentGroupName, newGroupName) => {
+    //     const newPanelsByGroup = panelsByGroup;
+    //     newPanelsByGroup[newGroupName] = newPanelsByGroup[currentGroupName];
+    //     delete newPanelsByGroup[currentGroupName];
 
-        for (let group in newPanelsByGroup) {
-            for (let index in newPanelsByGroup[group]) {
-                await AxiosPut(`/api/panelconfig/${panelsByGroup[group][index].id}`, {
-                    group: group,
-                });
-            }
-        }
-    };
+    //     for (let group in newPanelsByGroup) {
+    //         for (let index in newPanelsByGroup[group]) {
+    //             await AxiosPut(`/api/panelconfig/${panelsByGroup[group][index].id}`, {
+    //                 group: group,
+    //             });
+    //         }
+    //     }
+    // };
+
     const updateOrder = async (panelsByGroup) => {
         for (let group in panelsByGroup) {
             for (let index in panelsByGroup[group]) {
