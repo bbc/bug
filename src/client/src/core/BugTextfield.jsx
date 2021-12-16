@@ -36,6 +36,9 @@ const BugTextfield = (props) => {
                 "& .MuiInputBase-root": {
                     borderRadius: 0,
                 },
+                "& .MuiInputBase-input": {
+                    padding: "14px",
+                },
             }}
             fullWidth
             variant="outlined"
