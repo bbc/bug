@@ -48,8 +48,8 @@ export default function BugStatusBlock({ label, items, state }) {
                     },
                 }}
             >
-                {items.map((item) => (
-                    <ScaleText maxFontSize={isSmall ? 24 : 34}>
+                {items.map((item, index) => (
+                    <ScaleText key={index} maxFontSize={isSmall ? 24 : 34}>
                         <div style={{ whiteSpace: "nowrap", fontWeight: 500 }}>{item}</div>
                     </ScaleText>
                 ))}
