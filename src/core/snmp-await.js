@@ -87,6 +87,44 @@ const walk = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 
     });
 };
 
+const checkExists = ({ host, community = "public", maxRepetitions = 10, oids, timeout = 5000 }) => {
+    return new Promise((resolve, reject) => {
+        let returnValues = [];
+
+        var session = snmp.createSession(host, community, {
+            version: snmp.Version2c,
+            timeout: timeout,
+        });
+
+        session.get(trimOids(oids), function (error, varbinds) {
+            if (error) {
+                session.close();
+                console.error(error);
+                reject();
+            } else {
+                for (var i = 0; i < varbinds.length; i++) {
+                    if (
+                        snmp.isVarbindError(varbinds[i]) &&
+                        snmp.varbindError(varbinds[i]).indexOf("NoSuchInstance") > -1
+                    ) {
+                        returnValues.push({
+                            oid: varbinds[i].oid,
+                            isValid: false,
+                        });
+                    } else {
+                        returnValues.push({
+                            oid: varbinds[i].oid,
+                            isValid: true,
+                        });
+                    }
+                }
+            }
+            session.close();
+            resolve(returnValues);
+        });
+    });
+};
+
 const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout = 5000, raw = false }) => {
     return new Promise((resolve, reject) => {
         let returnValues = {};
@@ -114,56 +152,6 @@ const subtree = ({ host, community = "public", maxRepetitions = 10, oid, timeout
                 session.close();
                 resolve(returnValues);
             }
-        });
-    });
-};
-
-// this one is designed for cisco SG Switches - not sure it's useful
-const portlist = ({ host, community = "public", oid = "", timeout = 5000, raw = false }) => {
-    return new Promise((resolve, reject) => {
-        var session = snmp.createSession(host, community, {
-            version: snmp.Version2c,
-            timeout: timeout,
-        });
-
-        session.get([trimOid(oid)], function (error, varbinds) {
-            if (error) {
-                session.close();
-                console.error(error);
-                reject();
-            } else {
-                if (snmp.isVarbindError(varbinds[0])) {
-                    console.error(snmp.varbindError(varbinds[0]));
-                    reject();
-                }
-            }
-            session.close();
-
-            // we do this manually so we can specify that's it's a hex buffer
-            const hexString = varbinds[0].value.toString("hex");
-            if (!hexString) {
-                reject();
-            }
-
-            // split the long hex string into 2 digit chunks
-            const chunkedHex = chunk(hexString, 2);
-
-            // we increase this with each binary character, and use it to reference the interface ID
-            let interfaceIndex = 1;
-            const result = [];
-            for (let eachChunk of chunkedHex) {
-                const binaryString = hex2bin(eachChunk);
-                for (let eachChar of binaryString) {
-                    if (interfaceIndex < 1000) {
-                        if (eachChar === "1") {
-                            result.push(interfaceIndex);
-                        }
-                        interfaceIndex += 1;
-                    }
-                }
-            }
-
-            resolve(result);
         });
     });
 };
@@ -247,7 +235,6 @@ const setMultiple = ({ host, community = "public", values = [], timeout = 5000 }
             varbinds.push(getSnmpObject(trimOid(eachValue.oid), eachValue.value));
         }
 
-        console.log(varbinds);
         session.set(varbinds, function (error, varbinds) {
             if (error) {
                 session.close();
@@ -366,6 +353,6 @@ module.exports = {
     walk: walk,
     subtree: subtree,
     getMultiple: getMultiple,
-    portlist: portlist,
     oidToMac: oidToMac,
+    checkExists: checkExists,
 };
