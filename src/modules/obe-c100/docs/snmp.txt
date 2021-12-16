@@ -1,0 +1,53 @@
+obeEncoderName:             .1.3.6.1.4.1.40562.3.2.4.1.1.2.[encoderIndex]
+obeEncoderAutoStart:        .1.3.6.1.4.1.40562.3.2.4.1.1.3.[encoderIndex]
+obeEncoderRowStatus         .1.3.6.1.4.1.40562.3.2.4.1.1.4.[encoderIndex]       1=streaming, 0=idle
+
+inputDeviceType:            .1.3.6.1.4.1.40562.3.2.5.1.1.1.[encoderIndex]       1=decklink, 2=bars&tone
+inputCardidx:               .1.3.6.1.4.1.40562.3.2.5.1.1.2.[encoderIndex]
+inputVideoFormat:           .1.3.6.1.4.1.40562.3.2.5.1.1.3.[encoderIndex]
+                                                                                vid576i2500(1),
+                                                                                vid480i2997(2),
+                                                                                vid720p5000(3),
+                                                                                vid720p5994(4),
+                                                                                vid1080i5000(5),
+                                                                                vid1080i5994(6),
+                                                                                vid1080p2398(7),
+                                                                                vid1080p24(8),
+                                                                                vid1080p25(9),
+                                                                                vidUnknown(19),
+                                                                                vidAuto(50) 
+inputStatus                 .1.3.6.1.4.1.40562.3.2.5.1.1.4.[encoderIndex]       2=ok
+inputPictureOnSignalLoss:   .1.3.6.1.4.1.40562.3.2.5.1.1.6.[encoderIndex]       1 = none, 2=bars&tone, 3=lastgoodframe, 4=blackframe
+inputBarsLine1:             .1.3.6.1.4.1.40562.3.2.5.1.1.7.[encoderIndex]
+inputBarsLine2:             .1.3.6.1.4.1.40562.3.2.5.1.1.8.[encoderIndex]
+inputBarsLine3:             .1.3.6.1.4.1.40562.3.2.5.1.1.9.[encoderIndex]
+inputBarsLine4:             .1.3.6.1.4.1.40562.3.2.5.1.1.10.[encoderIndex]
+
+videoAvcProfile:            .1.3.6.1.4.1.40562.3.2.6.1.1.1.[encoderIndex]       main=1, high=2, 422=3
+videoBitrate:               .1.3.6.1.4.1.40562.3.2.6.1.1.2.[encoderIndex]       in kbps
+videoBufferSize:            .1.3.6.1.4.1.40562.3.2.6.1.1.3.[encoderIndex]
+videoKeyframeInterval:      .1.3.6.1.4.1.40562.3.2.6.1.1.4.[encoderIndex]
+videoBFrames:               .1.3.6.1.4.1.40562.3.2.6.1.1.5.[encoderIndex]
+videoLatency:               .1.3.6.1.4.1.40562.3.2.6.1.1.14.[encoderIndex]      1=normal, 2=lowest, 3=lowPPP, 4=lowIPPP
+videoRowStatus              .1.3.6.1.4.1.40562.3.2.6.1.1.15.[encoderIndex]      1=ok?
+
+audioFormat:                .1.3.6.1.4.1.40562.3.2.7.1.1.2.[encoderIndex].[audioIndex]       1=mp2, 2=aac, 3=opus, 4=S302M
+audioChannelMap:            .1.3.6.1.4.1.40562.3.2.7.1.1.3.[encoderIndex].[audioIndex]       1=mono, 2=stereo, 3=5.0, 4=5.1
+audioBitrate:               .1.3.6.1.4.1.40562.3.2.7.1.1.4.[encoderIndex].[audioIndex]       in kbps
+audioSdiPair:               .1.3.6.1.4.1.40562.3.2.7.1.1.5.[encoderIndex].[audioIndex]
+audioPid:                   .1.3.6.1.4.1.40562.3.2.7.1.1.10.[encoderIndex].[audioIndex]
+
+
+muxRate:                    .1.3.6.1.4.1.40562.3.2.9.1.1.1.[encoderIndex]       bps
+muxDvbServiceName:          .1.3.6.1.4.1.40562.3.2.9.1.1.10.[encoderIndex]
+muxDvbProviderName:         .1.3.6.1.4.1.40562.3.2.9.1.1.11.[encoderIndex]
+
+outputMethod:               .1.3.6.1.4.1.40562.3.2.10.1.1.2.[encoderIndex].[outputIndex]    1=rtp, 2=udp
+outputIP:                   .1.3.6.1.4.1.40562.3.2.10.1.1.4.[encoderIndex].[outputIndex]
+outputPort:                 .1.3.6.1.4.1.40562.3.2.10.1.1.5.[encoderIndex].[outputIndex]
+outputTTL:                  .1.3.6.1.4.1.40562.3.2.10.1.1.6.[encoderIndex].[outputIndex]
+outputFecType:              .1.3.6.1.4.1.40562.3.2.10.1.1.9.[encoderIndex].[outputIndex]    1=none, 2=cop3block (yes), 3=LDPC (no)
+outputFecColumns:           .1.3.6.1.4.1.40562.3.2.10.1.1.10.[encoderIndex].[outputIndex]
+outputFecRows:              .1.3.6.1.4.1.40562.3.2.10.1.1.11.[encoderIndex].[outputIndex]
+outputDupDelay:             .1.3.6.1.4.1.40562.3.2.10.1.1.13.[encoderIndex].[outputIndex]   0=disabled
+

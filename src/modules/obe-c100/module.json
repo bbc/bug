@@ -1,0 +1,28 @@
+{
+    "name": "obe-c100",
+    "longname": "OBE C-100",
+    "version": "1.0.0",
+    "description": "Control of Open Broadcast Systems' C-100 Encoders",
+    "capabilities": [],
+    "icon": "ShuffleOn",
+    "notes": "",
+    "author": "Geoff House",
+    "license": "ISC",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "obe-c100",
+        "encoderIndex": 0,
+        "showAdvanced": false,
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "snmpCommunity": "public"
+    }
+}
