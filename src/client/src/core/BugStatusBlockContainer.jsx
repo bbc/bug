@@ -15,14 +15,15 @@ export default function BugStatusBlockContainer({ statusItems, minWidth = 700 })
                     marginBottom: "8px",
                 }}
             >
-                {statusItems.map((statusItem, index) => (
-                    <BugStatusBlock
-                        label={statusItem.label}
-                        state={statusItem.state}
-                        key={index}
-                        items={statusItem.items}
-                    />
-                ))}
+                {statusItems &&
+                    statusItems.map((statusItem, index) => (
+                        <BugStatusBlock
+                            label={statusItem.label}
+                            state={statusItem.state}
+                            key={index}
+                            items={statusItem.items}
+                        />
+                    ))}
             </Box>
         </Box>
     );
