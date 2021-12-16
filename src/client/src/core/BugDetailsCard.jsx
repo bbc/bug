@@ -6,6 +6,7 @@ import BugDetailsTable from "@core/BugDetailsTable";
 import Collapse from "@mui/material/Collapse";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 
 const ExpandMore = styled((props) => {
@@ -23,11 +24,43 @@ const MemoizedBugDetailsTable = ({ width, data }) => {
     return React.useMemo(() => <BugDetailsTable width={width} gridLines={false} data={data} />, [data, width]);
 };
 
-function BugDetailsCard({ title, width, data, collapsible = false, collapsed = false, ...props }) {
+function BugDetailsCard({
+    title,
+    width,
+    data,
+    collapsible = false,
+    closable = false,
+    onClose,
+    collapsed = false,
+    ...props
+}) {
     const [expanded, setExpanded] = React.useState(!collapsed);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
+    };
+
+    const getAction = () => {
+        if (collapsible) {
+            return (
+                <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                >
+                    <ExpandMoreIcon />
+                </ExpandMore>
+            );
+        }
+        if (closable) {
+            return (
+                <IconButton onClick={onClose}>
+                    <CloseIcon />
+                </IconButton>
+            );
+        }
+        return null;
     };
 
     return (
@@ -52,18 +85,7 @@ function BugDetailsCard({ title, width, data, collapsible = false, collapsed = f
                         padding: "8px 16px",
                     }}
                     title={title}
-                    action={
-                        collapsible && (
-                            <ExpandMore
-                                expand={expanded}
-                                onClick={handleExpandClick}
-                                aria-expanded={expanded}
-                                aria-label="show more"
-                            >
-                                <ExpandMoreIcon />
-                            </ExpandMore>
-                        )
-                    }
+                    action={getAction()}
                 />
             )}
             {data && (
