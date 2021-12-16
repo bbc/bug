@@ -42,13 +42,13 @@ module.exports = async () => {
         25: "1080p23",
         26: "1080p25",
         27: "1080p50",
-        255: "No Signal",
+        255: "NO SIGNAL",
     };
 
     const audioFormats = {
-        1: "None",
-        1: "Dual Mono",
-        2: "Stereo",
+        1: "NONE",
+        1: "DUAL MONO",
+        2: "STEREO",
         3: "AAC",
         4: "AAC",
         5: "AAC",
@@ -81,7 +81,7 @@ module.exports = async () => {
     statusBlocks.push({
         label: "Video",
         state: encoderStatus ? "success" : "inactive",
-        items: [videoBitrate?.value, videoBitrate?.label],
+        items: [videoBitrate?.value, `\u00A0\u00A0\u00A0${videoBitrate?.label}\u00A0\u00A0\u00A0`],
     });
 
     // audio channels
@@ -110,7 +110,7 @@ module.exports = async () => {
         statusBlocks.push({
             label: "Audio",
             state: encoderStatus ? "success" : "inactive",
-            items: [audioCount, "Channels"],
+            items: [audioCount, "CHANNELS"],
         });
     }
 
@@ -119,7 +119,7 @@ module.exports = async () => {
     statusBlocks.push({
         label: "Mux",
         state: encoderStatus ? "success" : "inactive",
-        items: [muxRate?.value, muxRate?.label],
+        items: [muxRate?.value, `\u00A0\u00A0\u00A0${muxRate?.label}\u00A0\u00A0\u00A0`],
     });
 
     const outputCount =
@@ -128,9 +128,9 @@ module.exports = async () => {
 
     if (outputCount === 0) {
         statusBlocks.push({
-            label: "Output",
+            label: "Outputs",
             state: "inactive",
-            items: ["No Outputs"],
+            items: ["NO OUTPUTS"],
         });
     } else if (outputCount === 1) {
         const selectedOutputIndex = codecData?.outputs_0_StreamTransmission === 1 ? 0 : 1;
@@ -148,7 +148,7 @@ module.exports = async () => {
         statusBlocks.push({
             label: "Output",
             state: encoderStatus ? "success" : "inactive",
-            items: [outputCount, "Outputs"],
+            items: [outputCount, "OUTPUTS"],
         });
     }
     return statusBlocks;
