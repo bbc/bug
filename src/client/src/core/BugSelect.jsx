@@ -17,6 +17,10 @@ const BugSelect = ({ items, disabled = false, ...props }) => {
                     borderRadius: 0,
                 },
 
+                "& .MuiSelect-select": {
+                    padding: "14px",
+                },
+
                 "& .MuiSelect-select:focus": {
                     backgroundColor: "inherit",
                 },
