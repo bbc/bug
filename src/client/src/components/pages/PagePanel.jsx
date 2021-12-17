@@ -31,7 +31,7 @@ export default function PagePanel(props) {
             return <Loading />;
         }
 
-        console.log("WHY DOES THIS MAKE EVERYTHING BETTER?");
+        console.log("WHY1 DOES THIS MAKE EVERYTHING BETTER?");
         // I have literally no idea why it does. It makes me so cross!
 
         if (Modules["modules"][moduleName]) {
