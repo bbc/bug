@@ -1,31 +1,39 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 
-const BugTextfield = (props) => {
+const BugTextfield = ({ min = null, max = null, filter, onChange, numeric = false, maxLength, ...props }) => {
     const handleChange = (event) => {
         let eventCopy = Object.assign({}, event);
-        if (props.filter) {
-            eventCopy.target.value = event.target.value.replace(props.filter, "");
-            // eventCopy.target.value = stringToReplace.replace(/[^\w\s]/gi, '')
+        if (numeric) {
+            eventCopy.target.value = event.target.value.replace(/[^0-9]/, "");
+            if (eventCopy.target.value === "") {
+                eventCopy.target.value = min !== null ? min : 0;
+            }
         }
-        if (props.onChange !== undefined) {
-            props.onChange(eventCopy);
-        }
+        onChange(eventCopy);
     };
 
     const handleBlur = (event) => {
         let eventCopy = Object.assign({}, event);
         let valueModified = false;
-        if (props.min !== undefined && event.target.value < props.min) {
-            eventCopy.target.value = props.min;
+        if (numeric && min !== undefined && event.target.value < min) {
+            eventCopy.target.value = min;
             valueModified = true;
         }
-        if (props.max !== undefined && event.target.value > props.max) {
-            eventCopy.target.value = props.max;
+        if (numeric && max !== undefined && event.target.value > max) {
+            eventCopy.target.value = max;
             valueModified = true;
         }
-        if (valueModified && props.onChange !== undefined) {
-            props.onChange(eventCopy);
+        if (filter) {
+            if (typeof filter === "function") {
+                eventCopy.target.value = filter(event.target.value);
+            } else {
+                eventCopy.target.value = event.target.value.replace(filter, "");
+            }
+            valueModified = true;
+        }
+        if (valueModified && onChange !== undefined) {
+            onChange(eventCopy);
         }
     };
 
@@ -43,6 +51,7 @@ const BugTextfield = (props) => {
             fullWidth
             variant="outlined"
             {...props}
+            inputProps={{ maxLength: maxLength }}
             onChange={handleChange}
             onBlur={handleBlur}
         />
