@@ -17,6 +17,7 @@ export default function CodecMux({ codecdata, onChange }) {
                                 value={codecdata?.EncTsRate}
                                 onChange={(event) => onChange(parseInt(event.target.value), "EncTsRate")}
                                 filter={/[^0-9]/}
+                                numeric
                                 min={3200}
                                 max={50000}
                                 InputProps={{

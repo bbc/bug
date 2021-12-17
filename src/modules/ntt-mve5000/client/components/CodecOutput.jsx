@@ -61,6 +61,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                     onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamPortNumber`)
                                 }
                                 filter={/[^0-9]/}
+                                numeric
                                 min={1}
                                 max={65531}
                             />
@@ -75,6 +76,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                     onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamOutputIpv4Ttl`)
                                 }
                                 filter={/[^0-9]/}
+                                numeric
                                 min={1}
                                 max={255}
                             />
@@ -146,6 +148,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                     )
                                 }
                                 filter={/[^0-9]/}
+                                numeric
                                 min={1}
                                 max={20}
                             />
@@ -163,6 +166,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                     )
                                 }
                                 filter={/[^0-9]/}
+                                numeric
                                 min={4}
                                 max={20}
                             />

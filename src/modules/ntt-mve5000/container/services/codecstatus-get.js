@@ -46,7 +46,7 @@ module.exports = async () => {
     };
 
     const audioFormats = {
-        1: "NONE",
+        0: "NONE",
         1: "DUAL MONO",
         2: "STEREO",
         3: "AAC",
