@@ -33,18 +33,19 @@ export default function Codec({ panelId }) {
         setCodecdata(await AxiosGet(`/container/${panelId}/codecdata/`));
     };
 
-    const onChange = (value, field, arrayName = null, index = null) => {
+    const onChange = (values, arrayName = null, index = null) => {
         clearTimeout(timer.current);
-        const codecdataClone = { ...codecdata };
+
+        let codecdataClone = { ...codecdata };
         if (arrayName !== null && index !== null) {
-            codecdataClone[arrayName][index][field] = value;
+            codecdataClone[arrayName][index] = { ...codecdataClone[arrayName][index], ...values };
         } else {
-            codecdataClone[field] = value;
+            codecdataClone = { ...codecdataClone, ...values };
         }
         setCodecdata(codecdataClone);
 
         timer.current = setTimeout(() => {
-            updateBackend(value, field, arrayName, index);
+            updateBackend(values, arrayName, index);
         }, 200);
     };
 
@@ -84,14 +85,16 @@ export default function Codec({ panelId }) {
         }
     };
 
-    const updateBackend = async (value, field, arrayName, index) => {
+    const updateBackend = async (values, arrayName, index) => {
         // and send to backend to persist
         let url = `/container/${panelId}/localdata/`;
         if (arrayName && index !== null) {
             url += `${arrayName}/${index}/`;
         }
-        if (!(await AxiosPost(url, { [field]: value }))) {
+        if (!(await AxiosPost(url, values))) {
             sendAlert(`Changes could not be saved`, { variant: "error" });
+        } else {
+            refreshCodecdata();
         }
     };
 
@@ -110,7 +113,12 @@ export default function Codec({ panelId }) {
             <Grid item xs={12} md={6} xl={8}>
                 <Grid container spacing={1}>
                     <Grid item xs={12} xl={6}>
-                        <CodecInput codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
+                        <CodecInput
+                            codecdata={codecdata}
+                            onChange={onChange}
+                            showAdvanced={showAdvanced}
+                            panelId={panelId}
+                        />
                         <CodecTest codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                         <CodecVideo codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                     </Grid>
@@ -122,7 +130,7 @@ export default function Codec({ panelId }) {
                                     key={index}
                                     audioData={audio}
                                     audioIndex={index}
-                                    onChange={(value, field) => onChange(value, field, "audio", index)}
+                                    onChange={(values) => onChange(values, "audio", index)}
                                     onClose={onAudioClose}
                                     showAdvanced={showAdvanced}
                                 />
@@ -138,7 +146,7 @@ export default function Codec({ panelId }) {
                             key={index}
                             outputData={output}
                             outputIndex={index}
-                            onChange={(value, field) => onChange(value, field, "outputs", index)}
+                            onChange={(values) => onChange(values, "outputs", index)}
                             onClose={onOutputClose}
                             showAdvanced={showAdvanced}
                         />

@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const updateBitrate = require("@services/update-bitrate");
 
 module.exports = async (trackIndex) => {
     // so ... to remove one of the audio tracks, we need to copy across all the codecdata into the localdata
@@ -27,5 +28,9 @@ module.exports = async (trackIndex) => {
     localData.audio.splice(trackIndex, 1);
 
     // save and return
-    return await mongoSingle.set("localdata", localData);
+    if (!(await mongoSingle.set("localdata", localData))) {
+        return false;
+    }
+
+    return await updateBitrate();
 };

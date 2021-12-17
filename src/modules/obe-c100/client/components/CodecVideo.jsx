@@ -2,10 +2,18 @@ import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextfield from "@core/BugTextfield";
-import Switch from "@mui/material/Switch";
 import InputAdornment from "@mui/material/InputAdornment";
 
 export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
+    const handleChange = (values) => {
+        // there are a few cases which need to be handled differently
+        if (values["videoLatency"] !== undefined && values["videoLatency"] !== 1) {
+            // set b-frames to 0 if latency is not normal
+            values["videoBFrames"] = 0;
+        }
+        onChange(values);
+    };
+
     return (
         <>
             <BugDetailsCard
@@ -17,9 +25,9 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.videoLatency}
-                                onChange={(event) => onChange(parseInt(event.target.value), "videoLatency")}
+                                onChange={(event) => handleChange({ videoLatency: parseInt(event.target.value) })}
                                 items={{
-                                    1: "High",
+                                    1: "Normal",
                                     3: "Low (PPP)",
                                     4: "Low (IPP)",
                                     2: "Lowest",
@@ -32,7 +40,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.videoAvcProfile}
-                                onChange={(event) => onChange(parseInt(event.target.value), "videoAvcProfile")}
+                                onChange={(event) => handleChange({ videoAvcProfile: parseInt(event.target.value) })}
                                 items={{
                                     1: "Main",
                                     2: "High",
@@ -46,10 +54,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugTextfield
                                 value={codecdata?.videoBitrate}
-                                onChange={(event) => onChange(parseInt(event.target.value), "videoBitrate")}
-                                filter={/[^0-9]/}
-                                min={500}
-                                max={50000}
+                                disabled
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">kbps</InputAdornment>,
                                 }}
@@ -61,8 +66,9 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugTextfield
                                 value={codecdata?.videoBufferSize}
-                                onChange={(event) => onChange(parseInt(event.target.value), "videoBufferSize")}
+                                onChange={(event) => handleChange({ videoBufferSize: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
+                                numeric
                                 min={10}
                                 max={10000}
                                 InputProps={{
@@ -76,8 +82,16 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugTextfield
                                 value={codecdata?.videoKeyframeInterval}
-                                onChange={(event) => onChange(parseInt(event.target.value), "videoKeyframeInterval")}
-                                filter={/[^0-9]/}
+                                onChange={(event) =>
+                                    handleChange({
+                                        videoKeyframeInterval: parseInt(event.target.value),
+                                    })
+                                }
+                                filter={(value) => {
+                                    const by4 = parseInt(parseInt(value) / 4) * 4;
+                                    return by4 > 0 ? by4 : 4;
+                                }}
+                                numeric
                                 min={4}
                                 max={400}
                             ></BugTextfield>
@@ -87,8 +101,9 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         name: "B-frames",
                         value: (
                             <BugSelect
+                                disabled={codecdata?.videoLatency > 1}
                                 value={codecdata?.videoBFrames}
-                                onChange={(event) => onChange(parseInt(event.target.value), "videoBFrames")}
+                                onChange={(event) => handleChange({ videoBFrames: parseInt(event.target.value) })}
                                 items={{
                                     0: "0",
                                     1: "1",

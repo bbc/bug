@@ -1,8 +1,8 @@
 obeEncoderName:             .1.3.6.1.4.1.40562.3.2.4.1.1.2.[encoderIndex]
 obeEncoderAutoStart:        .1.3.6.1.4.1.40562.3.2.4.1.1.3.[encoderIndex]
-obeEncoderRowStatus         .1.3.6.1.4.1.40562.3.2.4.1.1.4.[encoderIndex]       1=streaming, 0=idle
+obeEncoderRowStatus         .1.3.6.1.4.1.40562.3.2.4.1.1.4.[encoderIndex]       2=streaming, 1=idle
 
-inputDeviceType:            .1.3.6.1.4.1.40562.3.2.5.1.1.1.[encoderIndex]       1=decklink, 2=bars&tone
+inputDeviceType:            .1.3.6.1.4.1.40562.3.2.5.1.1.1.[encoderIndex]       1=sdi, 2=bars&tone, 3=2022-6, 4=2022-7, 5=2110(dual), 6=2110, 7: obe SDI
 inputCardidx:               .1.3.6.1.4.1.40562.3.2.5.1.1.2.[encoderIndex]
 inputVideoFormat:           .1.3.6.1.4.1.40562.3.2.5.1.1.3.[encoderIndex]
                                                                                 vid576i2500(1),

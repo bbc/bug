@@ -15,8 +15,9 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugTextfield
                                 value={codecdata?.muxRate ? parseInt(codecdata?.muxRate) / 1000 : 0}
-                                onChange={(event) => onChange(parseInt(event.target.value) * 1000, "muxRate")}
+                                onChange={(event) => onChange({ muxRate: parseInt(event.target.value) * 1000 })}
                                 filter={/[^0-9]/}
+                                numeric
                                 min={1000}
                                 max={49000}
                                 InputProps={{
@@ -29,8 +30,9 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                         name: "Service Name",
                         value: (
                             <BugTextfield
+                                maxLength={64}
                                 value={codecdata?.muxDvbServiceName}
-                                onChange={(event) => onChange(event.target.value, "muxDvbServiceName")}
+                                onChange={(event) => onChange({ muxDvbServiceName: event.target.value })}
                             ></BugTextfield>
                         ),
                     },
@@ -38,8 +40,9 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                         name: "Provider Name",
                         value: (
                             <BugTextfield
+                                maxLength={64}
                                 value={codecdata?.muxDvbProviderName}
-                                onChange={(event) => onChange(event.target.value, "muxDvbProviderName")}
+                                onChange={(event) => onChange({ muxDvbProviderName: event.target.value })}
                             ></BugTextfield>
                         ),
                     },

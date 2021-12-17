@@ -17,7 +17,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 1",
                             value: (
                                 <BugTextfield
-                                    onChange={(event) => onChange(event.target.value, "inputBarsLine1")}
+                                    onChange={(event) => onChange({ inputBarsLine1: event.target.value })}
                                     value={codecdata?.inputBarsLine1}
                                 />
                             ),
@@ -26,7 +26,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 2",
                             value: (
                                 <BugTextfield
-                                    onChange={(event) => onChange(event.target.value, "inputBarsLine2")}
+                                    onChange={(event) => onChange({ inputBarsLine2: event.target.value })}
                                     value={codecdata?.inputBarsLine2}
                                 />
                             ),
@@ -35,7 +35,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 3",
                             value: (
                                 <BugTextfield
-                                    onChange={(event) => onChange(event.target.value, "inputBarsLine3")}
+                                    onChange={(event) => onChange({ inputBarsLine3: event.target.value })}
                                     value={codecdata?.inputBarsLine3}
                                 />
                             ),
@@ -44,7 +44,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 4",
                             value: (
                                 <BugTextfield
-                                    onChange={(event) => onChange(event.target.value, "inputBarsLine4")}
+                                    onChange={(event) => onChange({ inputBarsLine4: event.target.value })}
                                     value={codecdata?.inputBarsLine4}
                                 />
                             ),
@@ -54,7 +54,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             value: (
                                 <Switch
                                     checked={codecdata?.inputClapper === 1}
-                                    onChange={(event) => onChange(event.target.checked ? 1 : 0, "inputClapper")}
+                                    onChange={(event) => onChange({ inputClapper: event.target.checked ? 1 : 0 })}
                                 />
                             ),
                         },
@@ -63,8 +63,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             value: (
                                 <BugTextfield
                                     value={codecdata?.inputClapperInterval}
-                                    onChange={(event) => onChange(parseInt(event.target.value), "inputClapperInterval")}
+                                    onChange={(event) =>
+                                        onChange({ inputClapperInterval: parseInt(event.target.value) })
+                                    }
                                     filter={/[^0-9]/}
+                                    numeric
                                     min={1}
                                     max={20}
                                     InputProps={{

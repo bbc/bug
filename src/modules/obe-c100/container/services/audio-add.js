@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const updateBitrate = require("@services/update-bitrate");
 
 module.exports = async () => {
     // fetch codec data
@@ -9,12 +10,10 @@ module.exports = async () => {
     // fetch local data
     let localData = await mongoSingle.get("localdata");
     if (!localData) {
-        console.log("IT'S EMPTY audio");
         localData = {};
     }
 
     if (!localData.audio) {
-        console.log("no local audio");
         localData.audio = codecData.audio;
     }
 
@@ -25,11 +24,15 @@ module.exports = async () => {
         audioFormat: 1,
         audioChannelMap: 2,
         audioBitrate: 256,
-        audioSdiPair: lastAudioSdiPair + 1,
+        audioSdiPair: lastAudioSdiPair === 8 ? 1 : lastAudioSdiPair + 1,
         audioMp2Mode: 1,
         audioPid: lastAudioPid + 1,
     });
 
     // save and return
-    return await mongoSingle.set("localdata", localData);
+    if (!(await mongoSingle.set("localdata", localData))) {
+        return false;
+    }
+
+    return await updateBitrate();
 };

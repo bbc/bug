@@ -10,74 +10,69 @@ module.exports = async () => {
     // group into nice status blocks
     const statusBlocks = [];
 
-    const encoderStatus =
-        codecData?.outputs_0_StreamTransmission === 0 || codecData?.outputs_1_StreamTransmission === 0;
-    const inputStatus = codecData?.InputSignal === 1;
+    const encoderStatus = codecData?.obeEncoderRowStatus === 1;
+    const inputStatus = codecData?.inputStatus === 2;
     const inputConnectors = {
-        0: "SDI",
-        1: "HDMI",
-        2: "Analog",
+        1: "SDI",
+        2: "TEST",
+        3: "SMPTE 2022-6",
+        4: "SMPTE 2022-7",
+        5: "SMPTE 2110 (Dual)",
+        6: "SMPTE 2110",
+        7: "OBE SDI",
     };
     const videoFormats = {
-        0: "1080i29",
-        1: "1080i25",
-        2: "1080p24",
-        3: "720p59",
-        4: "1035i29",
-        5: "720p50",
-        6: "480i29",
-        9: "576i25",
-        10: "480p59",
-        11: "VGA",
-        12: "576p50",
-        16: "1080i30",
-        17: "720p60",
-        18: "1035i30",
-        19: "480i30",
-        20: "480p60",
-        21: "1080p30",
-        22: "1080p29",
-        23: "1080p60",
-        24: "1080p59",
-        25: "1080p23",
-        26: "1080p25",
-        27: "1080p50",
-        255: "No Signal",
+        1: "625i (PAL)",
+        2: "480i (NTSC)",
+        3: "720p50",
+        4: "720p59.94",
+        5: "1080i50",
+        6: "1080i59.94",
+        7: "1080p23.98",
+        8: "1080p24",
+        9: "1080p25",
     };
 
     const audioFormats = {
-        1: "None",
-        1: "Dual Mono",
-        2: "Stereo",
-        3: "AAC",
-        4: "AAC",
-        5: "AAC",
+        1: "MP2",
+        2: "AAC-LC",
+        3: "OPUS",
+        4: "SMPTE 302M",
     };
 
     const audioRates = {
-        0: "64k",
-        1: "96k",
-        2: "128k",
-        3: "192k",
-        4: "256k",
-        5: "384k",
+        96: "96kbps",
+        112: "112kbps",
+        128: "128kbps",
+        160: "160kbps",
+        192: "192kbps",
+        224: "224kbps",
+        256: "256kbps",
+        320: "320kbps",
+        384: "384kbps",
+    };
+
+    const outputMethods = {
+        1: "UDP",
+        2: "RTP",
+        3: "RIST/ARQ",
     };
 
     // input status
     statusBlocks.push({
         label: "Input",
         state: encoderStatus ? (inputStatus ? "success" : "error") : "inactive",
-        items: [inputConnectors?.[codecData?.InputInterfaceVideo]],
+        items: [inputConnectors?.[codecData?.inputDeviceType]],
     });
 
     statusBlocks.push({
         label: "Format",
         state: encoderStatus ? "success" : "inactive",
-        items: [videoFormats?.[codecData?.InputVideoFormat]],
+        items: [videoFormats?.[codecData?.inputVideoFormat]],
     });
 
     // video bitrate
-    const videoBitrate = formatBps(codecData?.EncVideoRate * 1024, 1, true);
+    const videoBitrate = formatBps(codecData?.videoBitrate * 1024, 1, true);
     statusBlocks.push({
         label: "Video",
         state: encoderStatus ? "success" : "inactive",
@@ -85,70 +80,44 @@ module.exports = async () => {
     });
 
     // audio channels
-    const audioCount =
-        (codecData?.audio_0_EncAudioFormat === 0 ? 0 : 1) + (codecData?.audio_1_EncAudioFormat === 0 ? 0 : 1);
 
-    if (audioCount == 1) {
-        let audioFormat = "";
-        let audioRate = "";
-
-        if (codecData?.audio_0_EncAudioFormat !== 0) {
-            audioFormat = audioFormats[codecData?.audio_0_EncAudioFormat];
-            audioRate = audioRates[codecData?.audio_0_EncAudioRate2Ch];
-        }
-        if (codecData?.audio_1_EncAudioFormat !== 0) {
-            audioFormat = audioFormats[codecData?.audio_1_EncAudioFormat];
-            audioRate = audioRates[codecData?.audio_1_EncAudioRate2Ch];
-        }
-
+    if (codecData?.audio.length == 1) {
         statusBlocks.push({
             label: "Audio",
             state: encoderStatus ? "success" : "inactive",
-            items: [audioFormat, audioRate],
+            items: [audioFormats[codecData?.audio[0].audioFormat], audioRates[codecData?.audio[0].audioBitrate]],
         });
     } else {
         statusBlocks.push({
             label: "Audio",
             state: encoderStatus ? "success" : "inactive",
-            items: [audioCount, "Channels"],
+            items: [codecData?.audio.length, "CHANNELS"],
         });
     }
 
     // mux rate
-    const muxRate = formatBps(codecData?.EncTsRate * 1024, 1, true);
+    const muxRate = formatBps(codecData?.muxRate, 1, true);
     statusBlocks.push({
         label: "Mux",
         state: encoderStatus ? "success" : "inactive",
         items: [muxRate?.value, muxRate?.label],
     });
 
-    const outputCount =
-        (codecData?.outputs_0_StreamTransmission === 1 ? 0 : 1) +
-        (codecData?.outputs_1_StreamTransmission === 1 ? 0 : 1);
-
-    if (outputCount === 0) {
-        statusBlocks.push({
-            label: "Output",
-            state: "inactive",
-            items: ["No Outputs"],
-        });
-    } else if (outputCount === 1) {
-        const selectedOutputIndex = codecData?.outputs_0_StreamTransmission === 1 ? 0 : 1;
-
+    if (codecData?.outputs.length === 1) {
         statusBlocks.push({
             label: "Output",
             state: encoderStatus ? "success" : "inactive",
             items: [
-                codecData?.[`outputs_${selectedOutputIndex}_StreamProtocol`] === 0 ? "RTP" : "UDP",
-                codecData?.[`outputs_${selectedOutputIndex}_StreamIpv4DstAddress`],
-                `:${codecData?.[`outputs_${selectedOutputIndex}_StreamPortNumber`]}`,
+                outputMethods[codecData?.outputs[0].outputMethod],
+                codecData?.outputs[0].outputIP,
+                `:${codecData?.outputs[0].outputPort}`,
             ],
         });
     } else {
         statusBlocks.push({
             label: "Output",
             state: encoderStatus ? "success" : "inactive",
-            items: [outputCount, "Outputs"],
+            items: [codecData?.outputs.length, "OUTPUTS"],
         });
     }
     return statusBlocks;

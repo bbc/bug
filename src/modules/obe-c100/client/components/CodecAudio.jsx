@@ -16,7 +16,7 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioFormat}
-                                onChange={(event) => onChange(parseInt(event.target.value), "audioFormat")}
+                                onChange={(event) => onChange({ audioFormat: parseInt(event.target.value) })}
                                 items={{
                                     1: "MPEG-1 Layer 2",
                                     2: "MPEG-4 AAC-LC",
@@ -31,7 +31,7 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioChannelMap}
-                                onChange={(event) => onChange(parseInt(event.target.value), "audioChannelMap")}
+                                onChange={(event) => onChange({ audioChannelMap: parseInt(event.target.value) })}
                                 items={{
                                     1: "Mono",
                                     2: "Stereo",
@@ -46,7 +46,7 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioBitrate}
-                                onChange={(event) => onChange(parseInt(event.target.value), "audioBitrate")}
+                                onChange={(event) => onChange({ audioBitrate: parseInt(event.target.value) })}
                                 items={{
                                     96: "96kbps",
                                     112: "112kbps",
@@ -66,7 +66,7 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioSdiPair}
-                                onChange={(event) => onChange(parseInt(event.target.value), "audioSdiPair")}
+                                onChange={(event) => onChange({ audioSdiPair: parseInt(event.target.value) })}
                                 items={{
                                     1: "1",
                                     2: "2",
@@ -86,7 +86,7 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                             <BugSelect
                                 value={audioData?.audioMp2Mode}
                                 disabled={audioData?.audioFormat !== 1}
-                                onChange={(event) => onChange(parseInt(event.target.value), "audioMp2Mode")}
+                                onChange={(event) => onChange({ audioMp2Mode: parseInt(event.target.value) })}
                                 items={{
                                     1: "Auto",
                                     2: "Stereo",

@@ -13,6 +13,7 @@ const localdataRouter = require("@routes/localdata");
 const deviceRouter = require("@routes/device");
 const outputRouter = require("@routes/output");
 const audioRouter = require("@routes/audio");
+const inputRouter = require("@routes/input");
 const validationRouter = require("@routes/validate");
 
 let app = express();
@@ -37,6 +38,7 @@ app.use("/api/localdata", localdataRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/output", outputRouter);
 app.use("/api/audio", audioRouter);
+app.use("/api/input", inputRouter);
 app.use("/api/validate", validationRouter);
 
 app.use("*", defaultRouter);

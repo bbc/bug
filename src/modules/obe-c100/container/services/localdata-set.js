@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const updateBitrate = require("@services/update-bitrate");
 
 module.exports = async (newLocalData, arrayName = null, index = null) => {
     // fetch the existing data
@@ -25,6 +26,15 @@ module.exports = async (newLocalData, arrayName = null, index = null) => {
         // just update the main array
         existingData = Object.assign(existingData, newLocalData);
     }
+
     // save and return
-    return await mongoSingle.set("localdata", existingData);
+    if (!(await mongoSingle.set("localdata", existingData))) {
+        return false;
+    }
+
+    if (newLocalData["videoBufferSize"] !== undefined) {
+        return true;
+    }
+
+    return await updateBitrate();
 };

@@ -3,9 +3,31 @@ import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextfield from "@core/BugTextfield";
 import Switch from "@mui/material/Switch";
-import InputAdornment from "@mui/material/InputAdornment";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import { useAlert } from "@utils/Snackbar";
+import AxiosGet from "@utils/AxiosGet";
 
-export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
+export default function CodecInput({ codecdata, onChange, showAdvanced, panelId }) {
+    const sendAlert = useAlert();
+    const [isDetecting, setIsDetecting] = React.useState(false);
+
+    const handleDetect = async () => {
+        setIsDetecting(true);
+        sendAlert(`Detecting input ...`, { variant: "info" });
+        const result = await AxiosGet(`/container/${panelId}/input/detect/`);
+        if (result === 19) {
+            sendAlert(`No input signal detected`, { variant: "warning" });
+        } else if (result) {
+            sendAlert(`Successfully detected input`, { variant: "success" });
+            onChange({ inputVideoFormat: result });
+        } else {
+            sendAlert(`Failed to detect input`, { variant: "error" });
+        }
+        setIsDetecting(false);
+    };
+
     return (
         <>
             <BugDetailsCard
@@ -16,8 +38,8 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         name: "Transmit",
                         value: (
                             <Switch
-                                checked={codecdata?.enableStream}
-                                onChange={(event) => onChange(event.target.checked, "enableStream")}
+                                checked={codecdata?.obeEncoderRowStatus === 1}
+                                onChange={(event) => onChange({ obeEncoderRowStatus: event.target.checked ? 1 : 2 })}
                             />
                         ),
                     },
@@ -26,7 +48,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugTextfield
                                 value={codecdata?.obeEncoderName}
-                                onChange={(event) => onChange(event.target.value, "obeEncoderName")}
+                                onChange={(event) => onChange({ obeEncoderName: event.target.value })}
                             ></BugTextfield>
                         ),
                     },
@@ -35,7 +57,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.inputDeviceType}
-                                onChange={(event) => onChange(parseInt(event.target.value), "inputDeviceType")}
+                                onChange={(event) => onChange({ inputDeviceType: parseInt(event.target.value) })}
                                 items={{
                                     1: "SDI",
                                     2: "Bars and Tone",
@@ -54,7 +76,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 disabled={codecdata?.inputDeviceType !== 1 && codecdata?.inputDeviceType !== 7}
                                 value={codecdata?.inputCardidx}
-                                onChange={(event) => onChange(parseInt(event.target.value), "inputCardidx")}
+                                onChange={(event) => onChange({ inputCardidx: parseInt(event.target.value) })}
                                 items={{
                                     0: "Input 0",
                                     1: "Input 1",
@@ -67,21 +89,35 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                     {
                         name: "Video Format",
                         value: (
-                            <BugSelect
-                                value={codecdata?.inputVideoFormat}
-                                onChange={(event) => onChange(parseInt(event.target.value), "inputVideoFormat")}
-                                items={{
-                                    1: "625i (PAL)",
-                                    2: "480i (NTSC)",
-                                    3: "720p50",
-                                    4: "720p59.94",
-                                    5: "1080i50",
-                                    6: "1080i59.94",
-                                    7: "1080p23.98",
-                                    8: "1080p24",
-                                    9: "1080p25",
+                            <Box
+                                sx={{
+                                    display: "flex",
                                 }}
-                            ></BugSelect>
+                            >
+                                <BugSelect
+                                    value={codecdata?.inputVideoFormat}
+                                    disabled={isDetecting}
+                                    onChange={(event) => onChange({ inputVideoFormat: parseInt(event.target.value) })}
+                                    items={{
+                                        1: "625i (PAL)",
+                                        2: "480i (NTSC)",
+                                        3: "720p50",
+                                        4: "720p59.94",
+                                        5: "1080i50",
+                                        6: "1080i59.94",
+                                        7: "1080p23.98",
+                                        8: "1080p24",
+                                        9: "1080p25",
+                                    }}
+                                ></BugSelect>
+                                <IconButton
+                                    sx={{ marginLeft: "4px", width: "48px" }}
+                                    disabled={isDetecting}
+                                    onClick={handleDetect}
+                                >
+                                    <GpsFixedIcon />
+                                </IconButton>
+                            </Box>
                         ),
                     },
                     showAdvanced && {
@@ -89,7 +125,9 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.inputPictureOnSignalLoss}
-                                onChange={(event) => onChange(parseInt(event.target.value), "inputPictureOnSignalLoss")}
+                                onChange={(event) =>
+                                    onChange({ inputPictureOnSignalLoss: parseInt(event.target.value) })
+                                }
                                 items={{
                                     1: "Stop Streaming",
                                     2: "Bars and Tone",
@@ -104,7 +142,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <Switch
                                 checked={codecdata?.obeEncoderAutoStart === 2}
-                                onChange={(event) => onChange(event.target.checked ? 2 : 1, "obeEncoderAutoStart")}
+                                onChange={(event) => onChange({ obeEncoderAutoStart: event.target.checked ? 2 : 1 })}
                             />
                         ),
                     },
@@ -113,7 +151,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.inputSDDownscale}
-                                onChange={(event) => onChange(parseInt(event.target.value), "inputSDDownscale")}
+                                onChange={(event) => onChange({ inputSDDownscale: parseInt(event.target.value) })}
                                 items={{
                                     1: "Disabled",
                                     2: "Fast",
