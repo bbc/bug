@@ -53,7 +53,7 @@ jobs:
                     - 5000:5000
         defaults:
             run:
-                working-directory: ./src/client
+                working-directory: ./src
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -68,7 +68,7 @@ jobs:
               with:
                   context: .
                   push: true
-                  tags: localhost:5000/name/app:latest
+                  tags: localhost:5000/bug/app:latest
             - name: Inspect
               run: |
-                  docker buildx imagetools inspect localhost:5000/name/app:latest
+                  docker buildx imagetools inspect localhost:5000/bug/app:latest
