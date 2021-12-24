@@ -33,7 +33,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid container spacing={4}>
+            <Grid container spacing={2}>
                 {getCards(items.data)}
             </Grid>
         </>
