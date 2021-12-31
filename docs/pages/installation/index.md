@@ -11,7 +11,7 @@ BUG allows you to control equipment in a production or broadcast setting from a 
 
 Run BUG on any operating system and deploy a central interface with user management and audit trails that allow you to control a range of equipment.
 
-You can see the full list on the [Modules Page](https://github.com/bbc/bbcnews-bug/wiki/Modules)
+You can see the full list on the [Modules Page](/pages/modules)
 
 ## Supported Operating Systems
 

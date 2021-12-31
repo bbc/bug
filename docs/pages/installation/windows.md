@@ -24,68 +24,49 @@ Note - This describes where to get the docker containers needed to run BUG from 
 version: "3.8"
 
 networks:
-  bug:
-    name: ${DOCKER_NETWORK_NAME}
-    driver: bridge
+    bug:
+        name: bug
+        driver: bridge
 
 services:
-  app:
-    image: 172.26.108.110/bug/app:latest
-    container_name: ${BUG_CONTAINER}
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./logs:/home/node/bug/logs
-      - ./config/panels:/home/node/bug/config/panels
-      - ./config/global:/home/node/bug/config/global
-    env_file:
-      - .env
-    environment:
-      NODE_ENV: 'production'
-    hostname: ${BUG_CONTAINER}
-    networks:
-      - ${DOCKER_NETWORK_NAME}
-    ports:
-      - ${BUG_PORT}:${BUG_PORT}
-
-  mongo:
-    image: mongo:latest
-    restart: unless-stopped
-    container_name: bug-mongo
-    networks:
-      - ${DOCKER_NETWORK_NAME}
+    app:
+        container_name: bug
+        image: 172.26.108.110/bug/app:latest
+        restart: always
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - ./logs:/home/node/bug/logs
+          - ./config/panels:/home/node/bug/config/panels
+          - ./config/global:/home/node/bug/config/global
+        hostname: bug
+        environment:
+            MODULE_PORT: 3200
+            MODULE_HOME: /home/node/module
+            DOCKER_NETWORK_NAME: bug
+            BUG_CONTAINER: bug
+            BUG_PORT: 3101
+            BUG_HOST: http://localhost
+            BUG_LOG_FOLDER: logs
+            BUG_LOG_NAME: bug
+            BUG_CONSOLE_LEVEL: debug
+            BUG_REGISTRY_FQDN: 172.26.108.110
+            PORT: 3000
+            NODE_ENV: production
+            SESSION_SECRET: aSecretForYourSessions
+        networks:
+            - bug
+        ports:
+            - 3000:3000
+            - 3101:3101
+    mongo:
+        image: mongo:latest
+        restart: unless-stopped
+        container_name: bug-mongo
+        networks:
+            - bug
 ```
 
-3. Next you need to create a file called `.env` in the same directory as your `docker-compose.yml` file above
-4. Copy the below code snippet into your `.env` file and save it.
-
-Note - This environment file contains variables that you might want to adjust when setting up docker initially, here we've provided some sensible defaults to get you going.
-
-```
-MODULE_PORT=3200
-MODULE_HOME=/home/node/module
-
-DOCKER_NETWORK_NAME=bug
-
-BUG_CONTAINER=bug-app
-BUG_PORT=3101
-BUG_HOST=http://localhost
-BUG_LOG_FOLDER=logs
-BUG_LOG_NAME=bug
-BUG_CONSOLE_LEVEL=debug
-
-BUG_REGISTRY_FQDN=172.26.108.110
-BUG_REGISTRY_PASSWORD=A_PASSWORD
-BUG_REGISTRY_EMAIL=AN_EMAIL
-
-MONGO_EXPRESS_PORT=3202
-MONGO_EXPRESS_USERNAME=admin
-MONGO_EXPRESS_PASSWORD=bugdev
-
-PORT=3000
-NODE_ENV=development
-SESSION_SECRET=aSecretForYourSessions
-```
+Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environmnet variables will mean they run with a sensible default
 
 ## Create Folder Structure
 
@@ -94,7 +75,6 @@ SESSION_SECRET=aSecretForYourSessions
 ```
 .
 ├── `docker-compose.yml`.       # Docker Compose file created in step 2
-├── `.env`                      # Environment file created in step 4
 ├── config                      # Create a config folder to store bug configs outside the docker container
 │   ├── panels                  # Create an empty folder inside `config` to store each panel's configuration
 │   └── global                  # Create an empty folder inside `config` to store global configuration
