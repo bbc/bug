@@ -48,8 +48,8 @@ services:
             MODULE_HOME: /home/node/module
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
-            BUG_PORT: 3101
-            BUG_HOST: http://localhost
+            BUG_PORT: 80
+            BUG_HOST: http://172.29.10.3
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_CONSOLE_LEVEL: debug
@@ -60,8 +60,7 @@ services:
         networks:
             - bug
         ports:
-            - 3000:3000
-            - 3101:3101
+            - 80:80
     mongo:
         image: mongo:latest
         restart: unless-stopped

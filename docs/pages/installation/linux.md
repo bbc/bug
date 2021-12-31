@@ -68,8 +68,8 @@ services:
             MODULE_HOME: /home/node/module
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
-            BUG_PORT: 3101
-            BUG_HOST: http://localhost
+            BUG_PORT: 80
+            BUG_HOST: http://172.29.10.3
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_CONSOLE_LEVEL: debug
@@ -80,8 +80,7 @@ services:
         networks:
             - bug
         ports:
-            - 3000:3000
-            - 3101:3101
+            - 80:80
     mongo:
         image: mongo:latest
         restart: unless-stopped
@@ -91,19 +90,6 @@ services:
 ```
 
 Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environmnet variables will mean they run with a sensible default
-
-## Create Folder Structure
-
-1. Next you'll need to have a place to put your log files and configs. Create a folder structure that looks like this
-
-```
-.
-├── `docker-compose.yml`.       # Docker Compose file created in step 2
-├── config                      # Create a config folder to store bug configs outside the docker container
-│   ├── panels                  # Create an empty folder inside `config` to store each panel's configuration
-│   ├── global                  # Create an empty folder inside `config` to store global configuration
-└── logs                        # Create an empty folder to store the logs
-```
 
 ## Start BUG
 
