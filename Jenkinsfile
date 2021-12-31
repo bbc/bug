@@ -57,13 +57,13 @@ pipeline {
             sh "docker buildx rm builder.${env.BUILD_NUMBER}"
         }
         success {
-            slackSend(color: "#30fc03", channel: "#ci-bug", message: "*#${env.BUILD_NUMBER} Success:* Built, tested and deployed '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")
+            slackSend(color: "#30fc03", channel: "#ci-bug-dev", message: "*#${env.BUILD_NUMBER} Success:* Built, tested and deployed '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")
         }
         failure {
-            slackSend(color: "#ff6347", channel: "#ci-bug", message: "*#${env.BUILD_NUMBER} Failed:* An error occurred '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")
+            slackSend(color: "#ff6347", channel: "#ci-bug-dev", message: "*#${env.BUILD_NUMBER} Failed:* An error occurred '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")
         }
         unstable {
-            slackSend(color: "#ffbf00", channel: "#ci-bug", message: "*#${env.BUILD_NUMBER} Unstable:* something went wrong '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")
+            slackSend(color: "#ffbf00", channel: "#ci-bug-dev", message: "*#${env.BUILD_NUMBER} Unstable:* something went wrong '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")
         }
     }
 }
