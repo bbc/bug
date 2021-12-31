@@ -15,7 +15,25 @@ nav_order: 2
 
 ## Install Docker-Compose
 
-1. TODO
+On Linux platforms docker engine is packaged seperately to other docker tools. Docker Compose is used to spin up the main BUG app and additional services together in a single command.
+
+1. Run this command to download the current stable release of Docker Compose:
+
+```
+ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+2. Apply executable permissions to the binary
+
+```
+ sudo chmod +x /usr/local/bin/docker-compose
+```
+
+3. Check it works. A sensible version number should be returned
+
+```
+docker-compose --version
+```
 
 ## Create Files
 
