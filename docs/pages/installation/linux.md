@@ -56,6 +56,8 @@ services:
     app:
         container_name: bug
         image: 172.26.108.110/bug/app:latest
+        extra_hosts:
+          - "host.docker.internal:host-gateway"
         restart: always
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
