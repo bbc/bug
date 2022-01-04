@@ -10,7 +10,5 @@ module.exports = async () => {
     let localData = await mongoSingle.get("localdata");
 
     // merge arrays
-    let mergedData = Object.assign(codecData, localData);
-
-    return mergedData;
+    return localData ? Object.assign(codecData, localData) : codecData;
 };
