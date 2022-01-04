@@ -8,6 +8,7 @@
 
 const { MongoClient } = require("mongodb");
 const url = `mongodb://bug-mongo:27017`;
+let isConnected;
 
 class Mongo {
     constructor() {
@@ -18,9 +19,10 @@ class Mongo {
     }
 
     async connect(dbName) {
-        if (!this.client.isConnected()) {
+        if (!isConnected) {
             console.log(`mongo-db: connecting to mongo db at ${url}`);
             await this.client.connect();
+            isConnected = true;
             console.log("mongo-db: connected to mongo db OK");
         }
         console.log(`mongo-db: opening database ${dbName}`);
