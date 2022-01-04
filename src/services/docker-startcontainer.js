@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const logger = require('@utils/logger')(module);
+const logger = require("@utils/logger")(module);
 
 module.exports = async (container) => {
     try {
@@ -12,20 +12,18 @@ module.exports = async (container) => {
                     if (error.statusCode === 304) {
                         logger.info(`container id ${container.id} already started`);
                         resolve(true);
-                    }
-                    else {
+                    } else {
                         logger.warning(`${error.stack || error.trace || error || error.message}`);
                         resolve(false);
                     }
-                }
-                else {
+                } else {
                     logger.info(`container id ${container.id} started OK`);
                     resolve(true);
                 }
             });
         });
     } catch (error) {
-        logger.error(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
         throw new Error(`Failed to start container id ${container.id}`);
     }
-}
+};

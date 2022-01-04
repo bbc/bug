@@ -19,7 +19,7 @@ module.exports = async () => {
         const container = docker.getContainer(bugContainer);
         await dockerStopContainer(container);
     } catch (error) {
-        logger.error(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
         throw new Error(`Failed to get modules folder`);
     }
     return null;

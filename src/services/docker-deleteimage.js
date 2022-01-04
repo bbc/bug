@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const docker = require('@utils/docker');
-const logger = require('@utils/logger')(module);
+const docker = require("@utils/docker");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (imageId, force = false) => {
     try {
@@ -13,15 +13,14 @@ module.exports = async (imageId, force = false) => {
                 if (error) {
                     logger.warning(`${error.stack || error.trace || error || error.message}`);
                     resolve(false);
-                }
-                else {
+                } else {
                     logger.info(`image id ${imageId} deleted OK`);
                     resolve(true);
                 }
             });
         });
     } catch (error) {
-        logger.error(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
         throw new Error(`Failed to delete docker image id ${imageId}`);
     }
-}
+};

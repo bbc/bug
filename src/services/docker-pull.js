@@ -43,7 +43,7 @@ module.exports = async (image) => {
             }
         });
     } catch (error) {
-        logger.error(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
         throw new Error(`Failed to pull docker image ${image}`);
     }
 };

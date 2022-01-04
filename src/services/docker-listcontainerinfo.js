@@ -39,7 +39,7 @@ module.exports = async () => {
                 }
             }
         } catch (error) {
-            logger.error(`${error.stack || error.trace || error || error.message}`);
+            logger.error(`${error?.stack || error?.trace || error || error?.message}`);
             throw new Error(`Failed to list container info`);
         }
         cacheStore.set(cacheKey, response, 1);
