@@ -65,11 +65,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                 <BugPowerIcon panel={panel} />
             </TableCell>
             <TableCell sx={{ width: "4rem" }} style={{ textAlign: "center" }}>
-                <BugApiSwitch
-                    panelId={panel.id}
-                    checked={panel.enabled}
-                    onChange={(checked) => handleEnabledChanged(checked, panel.id)}
-                />
+                <BugApiSwitch checked={panel.enabled} onChange={(checked) => handleEnabledChanged(checked, panel.id)} />
             </TableCell>
             <TableCell
                 sx={{
