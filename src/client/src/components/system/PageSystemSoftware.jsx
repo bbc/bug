@@ -51,14 +51,14 @@ export default function PageSystemBackup() {
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
                         title="System Version"
-                        width="10rem"
+                        width="12rem"
                         data={[
                             {
-                                name: "Curernt Version",
+                                name: "Current Version",
                                 value: info.data?.version,
                             },
                             {
-                                name: "Avalible Version",
+                                name: "Available Version",
                                 value: info.data?.updates.version,
                             },
                         ]}
@@ -68,7 +68,7 @@ export default function PageSystemBackup() {
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
                         title="System Update"
-                        width="10rem"
+                        width="12rem"
                         data={[
                             {
                                 name: "Last Checked",
