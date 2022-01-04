@@ -41,6 +41,10 @@ export default function PageSystemBackup() {
         return <Loading />;
     }
 
+    const lastChecked = info.data?.updates.checkTime
+        ? timeAgo.format(Date.now() - parseInt(info.data?.updates.checkTime) * 1000)
+        : "Never";
+
     return (
         <>
             <Grid container spacing={4}>
@@ -68,7 +72,7 @@ export default function PageSystemBackup() {
                         data={[
                             {
                                 name: "Last Checked",
-                                value: timeAgo.format(Date.now() - parseInt(info.data?.updates.checkTime) * 1000),
+                                value: lastChecked,
                             },
                             {
                                 name: "",
