@@ -9,12 +9,11 @@ import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
 
 export default function PanelEditTableRow({ id, showGroups, panel }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
-
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });
     let transformString = null;
 
     if (transform?.y) {
-        transformString = `translateY(${Math.round(transform?.y)}px)`;
+        // transformString = `translateY(${Math.round(transform?.y)}px)`;
     }
 
     const style = {
@@ -22,8 +21,17 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
         transition,
     };
 
+    if (isDragging) {
+        style.zIndex = 999999;
+        style.backgroundColor = "#337ab7";
+        style.boxShadow = "0px 0px 30px 5px #202020";
+    }
+
+    const opacity = isDragging ? 1 : 0.5;
+
     return (
         <TableRow
+            hover
             ref={setNodeRef}
             style={style}
             {...attributes}
@@ -32,7 +40,7 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
             sx={{ height: "65px", cursor: "move", backgroundColor: "#262626" }}
         >
             {panel.showGroups ? <TableCell sx={{ width: "0rem" }} /> : null}
-            <TableCell sx={{ color: "secondary.main", opacity: 0.3, width: 48, textAlign: "center" }}>
+            <TableCell sx={{ color: isDragging ? "#fff" : "#ccc", textAlign: "center" }}>
                 <DragIndicatorIcon />
             </TableCell>
 
@@ -44,16 +52,15 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
             >
                 <PanelPowerIcon panel={panel} />
             </TableCell>
-            <TableCell sx={{ width: "4rem", textAlign: "center" }}>
+            <TableCell sx={{ textAlign: "center", opacity: opacity }}>
                 <BugApiSwitch checked={panel.enabled} disabled />
             </TableCell>
-            <TableCell>
+            <TableCell sx={{ width: "50%", opacity: opacity }}>
                 <div>{panel.title}</div>
                 <PanelRowState panel={panel} />
             </TableCell>
-            <TableCell>{panel.description}</TableCell>
-            <TableCell>{panel._module.longname}</TableCell>
-            <TableCell sx={{ width: "2rem" }}>
+            <TableCell sx={{ width: "50%", opacity: opacity }}>{panel._module.longname}</TableCell>
+            <TableCell sx={{ width: "48px", opacity: opacity }}>
                 <MoreVertIcon />
             </TableCell>
         </TableRow>

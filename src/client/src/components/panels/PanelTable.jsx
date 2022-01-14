@@ -16,12 +16,12 @@ import panelListGroups from "@utils/panelListGroups";
 export default function PanelTable() {
     const panelList = useSelector((state) => state.panelList);
 
-    const GroupedPanelRow = (group, panels) => {
+    const GroupedPanelRow = (groupedArrayItem) => {
         const resultArray = [];
-        if (group) {
-            resultArray.push(<PanelTableGroupRow key={group} title={group} />);
+        if (groupedArrayItem.group) {
+            resultArray.push(<PanelTableGroupRow key={groupedArrayItem.group} title={groupedArrayItem.group} />);
         }
-        for (const eachPanel of panels) {
+        for (const eachPanel of groupedArrayItem.items) {
             resultArray.push(<PanelTableRow key={eachPanel.id} panel={eachPanel} />);
         }
         return resultArray;
@@ -32,7 +32,6 @@ export default function PanelTable() {
     }
     if (panelList.status === "success") {
         const panelsByGroup = panelListGroups(panelList.data, false);
-        const sortedGroupKeys = _.keys(panelsByGroup).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
 
         return (
             <>
@@ -80,14 +79,7 @@ export default function PanelTable() {
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>
-                            {sortedGroupKeys.map((eachKey) => {
-                                return GroupedPanelRow(
-                                    eachKey,
-                                    panelList.data.filter((panel) => panel.group === eachKey)
-                                );
-                            })}
-                        </TableBody>
+                        <TableBody>{panelsByGroup.map((panelArrayItem) => GroupedPanelRow(panelArrayItem))}</TableBody>
                     </Table>
                 </TableContainer>
             </>

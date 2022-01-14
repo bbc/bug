@@ -13,5 +13,13 @@ export default function panelListGroups(panelListData, hideDisabledGroups = true
         }
     }
 
-    return panelsByGroup;
+    const panelsByGroupArray = [];
+    for (const [group, items] of Object.entries(panelsByGroup)) {
+        panelsByGroupArray.push({
+            group: group,
+            items: items,
+        });
+    }
+
+    return panelsByGroupArray.sort((a, b) => a.group.localeCompare(b.group, "en", { sensitivity: "base" }));
 }

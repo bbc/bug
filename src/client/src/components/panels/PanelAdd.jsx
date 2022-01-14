@@ -17,7 +17,7 @@ import Select from "@mui/material/Select";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 
-export default function PanelsAdd(props) {
+export default function PanelAdd(props) {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [moduleList, setModuleList] = useState([]);

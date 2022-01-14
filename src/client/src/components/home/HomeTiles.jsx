@@ -11,13 +11,12 @@ import HomeAddPanel from "@components/home/HomeAddPanel";
 const HomeTiles = () => {
     const panelList = useSelector((state) => state.panelList);
 
-    const GroupedTiles = ({ groupedPanels }) => {
-        const sortedGroupKeys = _.keys(groupedPanels).sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base" }));
+    const GroupedTiles = ({ groupedPanelArray }) => {
         return (
             <>
-                {sortedGroupKeys.map((groupKey) => (
-                    <Grid key={groupKey}>
-                        {groupKey && (
+                {groupedPanelArray.map((groupArrayItem, index) => (
+                    <Grid key={index}>
+                        {groupArrayItem.group && (
                             <Box
                                 sx={{
                                     fontSize: "0.875rem",
@@ -36,10 +35,10 @@ const HomeTiles = () => {
                                     },
                                 }}
                             >
-                                {groupKey}
+                                {groupArrayItem.group}
                             </Box>
                         )}
-                        <Tiles panels={groupedPanels[groupKey]}></Tiles>
+                        <Tiles panels={groupArrayItem.items}></Tiles>
                     </Grid>
                 ))}
             </>
@@ -65,10 +64,10 @@ const HomeTiles = () => {
             if (panelList.data.length === 0) {
                 return <HomeAddPanel />;
             }
-            if (Object.keys(panelsByGroup).length === 1) {
+            if (panelsByGroup.length === 1) {
                 return <Tiles panels={panelList.data} />;
             } else {
-                return <GroupedTiles groupedPanels={panelsByGroup} />;
+                return <GroupedTiles groupedPanelArray={panelsByGroup} />;
             }
         }
         return null;

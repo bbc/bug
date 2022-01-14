@@ -21,7 +21,6 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import _ from "lodash";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 import FaviconNotification from "@utils/FaviconNotification";
 import useSounds from "@hooks/Sounds";
@@ -94,11 +93,11 @@ const Menu = ({ showGroups = true }) => {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const groupedMenuItems = (group, panels) => {
-        if (group && showGroups) {
+    const groupedMenuItems = (groupArrayItem) => {
+        if (groupArrayItem.group && showGroups) {
             return (
                 <Accordion
-                    key={group}
+                    key={groupArrayItem.group}
                     elevation={0}
                     sx={{
                         "&.MuiAccordion-root:before": {
@@ -108,8 +107,8 @@ const Menu = ({ showGroups = true }) => {
                             margin: "0px",
                         },
                     }}
-                    expanded={expanded === group}
-                    onChange={handleAccordionChange(group)}
+                    expanded={expanded === groupArrayItem.group}
+                    onChange={handleAccordionChange(groupArrayItem.group)}
                 >
                     <AccordionSummary
                         sx={{
@@ -133,13 +132,13 @@ const Menu = ({ showGroups = true }) => {
                                 transform: "none",
                             },
                         }}
-                        expandIcon={expanded === group ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                        expandIcon={expanded === groupArrayItem.group ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
                         onClick={(event) => {
                             click();
                             event.stopPropagation();
                         }}
                     >
-                        {group}
+                        {groupArrayItem.group}
                     </AccordionSummary>
                     <AccordionDetails
                         sx={{
@@ -152,15 +151,15 @@ const Menu = ({ showGroups = true }) => {
                                 padding: "0px",
                             }}
                         >
-                            {panels.map((eachPanel) => renderMenuItem(eachPanel))}
+                            {groupArrayItem.items.map((eachPanel) => renderMenuItem(eachPanel))}
                         </List>
                     </AccordionDetails>
                 </Accordion>
             );
         } else {
             return (
-                <List key={`nogroup_${group}`} disablePadding>
-                    {panels.map((eachPanel) => renderMenuItem(eachPanel))}
+                <List key={`nogroup_${groupArrayItem.group}`} disablePadding>
+                    {groupArrayItem.items.map((eachPanel) => renderMenuItem(eachPanel))}
                 </List>
             );
         }
@@ -172,15 +171,7 @@ const Menu = ({ showGroups = true }) => {
         }
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
-            const sortedGroupKeys = _.keys(panelsByGroup).sort((a, b) =>
-                a.localeCompare(b, "en", { sensitivity: "base" })
-            );
-            return sortedGroupKeys.map((eachKey) => {
-                return groupedMenuItems(
-                    eachKey,
-                    panelList.data.filter((panel) => panel.group === eachKey)
-                );
-            });
+            return panelsByGroup.map((groups) => groupedMenuItems(groups));
         } else {
             return null;
         }
