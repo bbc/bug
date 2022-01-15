@@ -1,18 +1,25 @@
 "use strict";
 
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (interfaceId) => {
     const config = await configGet();
 
-    const result = await snmpAwait.set({
+    // create new snmp session
+    const snmpAwait = new SnmpAwait({
         host: config.address,
         community: config.snmpCommunity,
+    });
+
+    const result = await snmpAwait.set({
         oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,
         value: 1,
     });
+
+    // we're done with the SNMP session
+    snmpAwait.close();
 
     if (result) {
         try {

@@ -5,10 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const mongoCreateIndex = require("@core/mongo-createindex");
-const snmpAwait = require("@core/snmp-await");
-
-let interfacesCollection;
+const SnmpAwait = require("@core/snmp-await");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -16,12 +13,18 @@ parentPort.postMessage({
     restartOn: ["address", "snmpCommunity"],
 });
 
+// create new snmp session
+const snmpAwait = new SnmpAwait({
+    host: workerData.address,
+    community: workerData.snmpCommunity,
+});
+
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
     // get the collection reference
-    interfacesCollection = await mongoCollection("interfaces");
+    const interfacesCollection = await mongoCollection("interfaces");
 
     // Kick things off
     console.log(`worker-interfacestate: connecting to device at ${workerData.address}`);
@@ -35,16 +38,12 @@ const main = async () => {
         } else {
             // get subtree of interface link states
             const ifLinkStates = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.8",
             });
 
             // get subtree of interface admin states
             const ifAdminStates = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.7",
             });

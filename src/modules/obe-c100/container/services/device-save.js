@@ -1,17 +1,15 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 const obeOids = require("@utils/obe-oids");
 const configGet = require("@core/config-get");
 const mergedCodecdata = require("@services/codecdata-get");
 
-const send = async (config, values) => {
+const send = async (snmpSession, values) => {
     console.log(values);
     if (values && values.length > 0) {
-        return await snmpAwait.setMultiple({
-            host: config.address,
-            community: config.snmpCommunity,
+        return await snmpSession.setMultiple({
             values: values,
         });
     }
@@ -24,6 +22,12 @@ module.exports = async () => {
     if (!config) {
         throw new Error();
     }
+
+    // create new snmp session
+    const snmpAwait = new SnmpAwait({
+        host: config.address,
+        community: config.snmpCommunity,
+    });
 
     // get current codec data
     const codecdata = await mongoSingle.get("codecdata");
@@ -44,7 +48,7 @@ module.exports = async () => {
     }
 
     // send the device values
-    if (!(await send(config, valuesToSend))) {
+    if (!(await send(snmpAwait, valuesToSend))) {
         return false;
     }
     valuesToSend = [];
@@ -58,7 +62,7 @@ module.exports = async () => {
     }
 
     // send the command to remove the audio channels
-    if (!(await send(config, valuesToSend))) {
+    if (!(await send(snmpAwait, valuesToSend))) {
         return false;
     }
     valuesToSend = [];
@@ -87,7 +91,7 @@ module.exports = async () => {
     });
 
     // send the command to add the audio channels back
-    if (!(await send(config, valuesToSend))) {
+    if (!(await send(snmpAwait, valuesToSend))) {
         return false;
     }
     valuesToSend = [];
@@ -101,7 +105,7 @@ module.exports = async () => {
     }
 
     // send the command to remove any extra outputs
-    if (!(await send(config, valuesToSend))) {
+    if (!(await send(snmpAwait, valuesToSend))) {
         return false;
     }
     valuesToSend = [];
@@ -127,7 +131,7 @@ module.exports = async () => {
     });
 
     // send the command to add the outputs back
-    if (!(await send(config, valuesToSend))) {
+    if (!(await send(snmpAwait, valuesToSend))) {
         return false;
     }
 

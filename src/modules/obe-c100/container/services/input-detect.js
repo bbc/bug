@@ -2,7 +2,7 @@
 
 const mongoSingle = require("@core/mongo-single");
 const configGet = require("@core/config-get");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 
 module.exports = async () => {
     const config = await configGet();
@@ -10,11 +10,15 @@ module.exports = async () => {
         throw new Error();
     }
 
+    // create new snmp session
+    const snmpAwait = new SnmpAwait({
+        host: config.address,
+        community: config.snmpCommunity,
+    });
+
     const oid = `1.3.6.1.4.1.40562.3.2.5.1.1.5.${config.encoderIndex}`;
 
     let result = await snmpAwait.get({
-        host: config.address,
-        community: config.snmpCommunity,
         maxRepetitions: 1000,
         oid: oid,
     });

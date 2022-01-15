@@ -5,7 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
@@ -14,9 +14,15 @@ parentPort.postMessage({
     restartOn: ["address", "snmpCommunity"],
 });
 
+// create new snmp session
+const snmpAwait = new SnmpAwait({
+    host: workerData.address,
+    community: workerData.snmpCommunity,
+});
+
 const main = async () => {
     // stagger start of script ...
-    // await delay(2000);
+    await delay(2000);
 
     // Connect to the db
     await mongoDb.connect(workerData.id);
@@ -41,8 +47,6 @@ const main = async () => {
         // fetch list of FDB (forwarding database) entries
         const fbpOid = `1.3.6.1.2.1.17.4.3.1.2`;
         const fdbList = await snmpAwait.subtree({
-            host: workerData.address,
-            community: workerData.snmpCommunity,
             oid: `1.3.6.1.2.1.17.4.3.1.2`,
             timeout: 30000,
         });

@@ -7,12 +7,18 @@ const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoSingle = require("@core/mongo-single");
 const ciscoPortlist = require("@utils/ciscosg-portlist");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "snmpCommunity"],
+});
+
+// create new snmp session
+const snmpAwait = new SnmpAwait({
+    host: workerData.address,
+    community: workerData.snmpCommunity,
 });
 
 const main = async () => {
@@ -40,8 +46,6 @@ const main = async () => {
             for (let eachVlan of vlans) {
                 // for (let eachVlan of [{ id: 1 }, { id: 20 }, { id: 101 }, { id: 102 }, { id: 103 }, { id: 104 }]) {
                 const rawUntaggedResult = await snmpAwait.get({
-                    host: workerData.address,
-                    community: workerData.snmpCommunity,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.5.0.${eachVlan.id}`,
                     timeout: 30000,
                     raw: true,
@@ -60,8 +64,6 @@ const main = async () => {
                 }
 
                 const rawTaggedResult = await snmpAwait.get({
-                    host: workerData.address,
-                    community: workerData.snmpCommunity,
                     oid: `1.3.6.1.2.1.17.7.1.4.2.1.4.0.${eachVlan.id}`,
                     timeout: 30000,
                     raw: true,

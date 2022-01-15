@@ -1,19 +1,28 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 
 module.exports = async (formData) => {
+    // create new snmp session
+    const snmpAwait = new SnmpAwait({
+        host: formData.address,
+        community: formData.snmpCommunity,
+        timeout: 2000,
+    });
+
     try {
         const result = await snmpAwait.get({
-            host: formData.address,
-            community: formData.snmpCommunity,
             oid: ".1.3.6.1.2.1.1.6.0",
-            timeout: 2000,
         });
+
         if (!result) {
+            // we're done with the SNMP session
+            snmpAwait.close();
             throw new Error("SNMP error");
         }
     } catch (error) {
+        // we're done with the SNMP session
+        snmpAwait.close();
         return new validationResult([
             {
                 state: false,
@@ -26,18 +35,16 @@ module.exports = async (formData) => {
     try {
         // now we check if we can write with the community string
         const location = await snmpAwait.get({
-            host: formData.address,
-            community: formData.snmpCommunity,
             oid: "1.3.6.1.2.1.1.6.0",
-            timeout: 2000,
         });
         const writeResult = await snmpAwait.set({
-            host: formData.address,
-            community: formData.snmpCommunity,
             oid: "1.3.6.1.2.1.1.6.0",
             value: location.toString(),
-            timeout: 2000,
         });
+
+        // we're done with the SNMP session
+        snmpAwait.close();
+
         if (!writeResult) {
             throw new Error("SNMP error");
         }

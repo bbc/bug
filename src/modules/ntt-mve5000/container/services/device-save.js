@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 const deviceOids = require("@utils/device-oids");
 const configGet = require("@core/config-get");
 
@@ -10,6 +10,12 @@ module.exports = async () => {
     if (!config) {
         throw new Error();
     }
+
+    // create new snmp session
+    const snmpAwait = new SnmpAwait({
+        host: config.address,
+        community: config.snmpCommunity,
+    });
 
     // get list of changes
     const localdata = await mongoSingle.get("localdata");
@@ -29,14 +35,15 @@ module.exports = async () => {
                 valuesToSend.push({ oid, value });
             }
         }
-        console.log(valuesToSend);
-        if (
-            await snmpAwait.setMultiple({
-                host: config.address,
-                community: config.snmpCommunity,
-                values: valuesToSend,
-            })
-        ) {
+
+        const result = await snmpAwait.setMultiple({
+            values: valuesToSend,
+        });
+
+        // we're done with the SNMP session
+        snmpAwait.close();
+
+        if (result) {
             // it's worked ... so we overwrite codecdata with the new values
             const codecdata = await mongoSingle.get("codecdata");
             await mongoSingle.set("codecdata", Object.assign(codecdata, localdata));

@@ -5,14 +5,18 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const snmpAwait = require("@core/snmp-await");
-
-let interfacesCollection;
+const SnmpAwait = require("@core/snmp-await");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "snmpCommunity"],
+});
+
+// create new snmp session
+const snmpAwait = new SnmpAwait({
+    host: workerData.address,
+    community: workerData.snmpCommunity,
 });
 
 // see: http://www.circitor.fr/Mibs/Html/C/CISCOSB-rlInterfaces.php
@@ -52,7 +56,7 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     // get the collection reference
-    interfacesCollection = await mongoCollection("interfaces");
+    const interfacesCollection = await mongoCollection("interfaces");
 
     // Kick things off
     console.log(`worker-interfacedetails: connecting to device at ${workerData.address}`);
@@ -65,29 +69,21 @@ const main = async () => {
             await delay(5000);
         } else {
             const ifAliases = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.31.1.1.1.18",
             });
 
             const ifAutoNegotiation = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.16",
             });
 
             const ifAdminPortSpeed = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.15",
             });
 
             const ifOperationalPortSpeed = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.31.1.1.1.15",
             });

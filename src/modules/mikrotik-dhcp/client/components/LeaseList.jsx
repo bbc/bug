@@ -398,6 +398,7 @@ export default function LeaseList({ panelId }) {
                 panelId={panelId}
                 onRowClick={handleDetailsClicked}
                 sortable
+                rowHeight="58px"
                 filterable
                 noData={<BugNoData panelId={panelId} title="No leases found" showConfigButton={false} />}
             />

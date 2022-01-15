@@ -4,7 +4,7 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 const mongoSingle = require("@core/mongo-single");
 const obeOids = require("@utils/obe-oids");
 
@@ -12,6 +12,12 @@ const obeOids = require("@utils/obe-oids");
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "snmpCommunity", "encoderIndex"],
+});
+
+// create new snmp session
+const snmpAwait = new SnmpAwait({
+    host: workerData.address,
+    community: workerData.snmpCommunity,
 });
 
 const main = async () => {
@@ -28,8 +34,6 @@ const main = async () => {
         // fetch device OIDs first
         const deviceOids = obeOids.getDevice(workerData.encoderIndex);
         const deviceSnmpResults = await snmpAwait.getMultiple({
-            host: workerData.address,
-            community: workerData.snmpCommunity,
             maxRepetitions: 1000,
             oids: Object.keys(deviceOids),
         });
@@ -46,8 +50,6 @@ const main = async () => {
             allAudioOids.push(`1.3.6.1.4.1.40562.3.2.7.1.1.2.${workerData.encoderIndex}.${i}`);
         }
         const validAudioTracks = await snmpAwait.checkExists({
-            host: workerData.address,
-            community: workerData.snmpCommunity,
             maxRepetitions: 1000,
             oids: allAudioOids,
         });
@@ -60,8 +62,6 @@ const main = async () => {
                 results["audio"][index] = {};
                 const audioTrackOids = obeOids.getAudio(workerData.encoderIndex, index);
                 const audioSnmpResults = await snmpAwait.getMultiple({
-                    host: workerData.address,
-                    community: workerData.snmpCommunity,
                     maxRepetitions: 1000,
                     oids: Object.keys(audioTrackOids),
                 });
@@ -80,8 +80,6 @@ const main = async () => {
             allOutputOids.push(`1.3.6.1.4.1.40562.3.2.10.1.1.2.${workerData.encoderIndex}.${i}`);
         }
         const validOutputs = await snmpAwait.checkExists({
-            host: workerData.address,
-            community: workerData.snmpCommunity,
             maxRepetitions: 1000,
             oids: allOutputOids,
         });
@@ -94,8 +92,6 @@ const main = async () => {
                 results["outputs"][index] = {};
                 const outputOids = obeOids.getOutput(workerData.encoderIndex, index);
                 const outputSnmpResults = await snmpAwait.getMultiple({
-                    host: workerData.address,
-                    community: workerData.snmpCommunity,
                     maxRepetitions: 1000,
                     oids: Object.keys(outputOids),
                 });

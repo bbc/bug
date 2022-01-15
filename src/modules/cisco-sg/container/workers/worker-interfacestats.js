@@ -5,7 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const snmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@core/snmp-await");
 const formatBps = require("@core/format-bps");
 const trafficSaveHistory = require("../services/traffic-savehistory");
 const mongoCreateIndex = require("@core/mongo-createindex");
@@ -14,6 +14,12 @@ const mongoCreateIndex = require("@core/mongo-createindex");
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "snmpCommunity"],
+});
+
+// create new snmp session
+const snmpAwait = new SnmpAwait({
+    host: workerData.address,
+    community: workerData.snmpCommunity,
 });
 
 const main = async () => {
@@ -39,16 +45,12 @@ const main = async () => {
         } else {
             // get subtree of interface input stats
             const ifInOctets = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.10",
             });
 
             // get subtree of interface output stats
             const ifOutOctets = await snmpAwait.subtree({
-                host: workerData.address,
-                community: workerData.snmpCommunity,
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.16",
             });

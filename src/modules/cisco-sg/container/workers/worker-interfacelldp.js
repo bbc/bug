@@ -5,13 +5,19 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const snmpAwait = require("@core/snmp-await");
 const chunk = require("@core/chunk");
+const SnmpAwait = require("@core/snmp-await");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "snmpCommunity"],
+});
+
+// create new snmp session
+const snmpAwait = new SnmpAwait({
+    host: workerData.address,
+    community: workerData.snmpCommunity,
 });
 
 const parseHexString = (hexString) => {
@@ -41,8 +47,6 @@ const main = async () => {
     while (true) {
         // fetch list of LLDP neighbors
         const lldpInfo = await snmpAwait.subtree({
-            host: workerData.address,
-            community: workerData.snmpCommunity,
             oid: "1.0.8802.1.1.2.1.4.1.1",
             timeout: 30000,
             raw: true,
