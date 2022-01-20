@@ -8,12 +8,12 @@ import { useSortable } from "@dnd-kit/sortable";
 import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
 
-export default function PanelEditTableRow({ id, showGroups, panel }) {
+export default function PanelEditTableRow({ id, panel }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });
     let transformString = null;
 
     if (transform?.y) {
-        // transformString = `translateY(${Math.round(transform?.y)}px)`;
+        transformString = `translateY(${Math.round(transform?.y)}px)`;
     }
 
     const style = {
@@ -22,7 +22,6 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
     };
 
     if (isDragging) {
-        style.zIndex = 999999;
         style.backgroundColor = "#337ab7";
         style.boxShadow = "0px 0px 30px 5px #202020";
     }
@@ -39,8 +38,7 @@ export default function PanelEditTableRow({ id, showGroups, panel }) {
             key={id}
             sx={{ height: "65px", cursor: "move", backgroundColor: "#262626" }}
         >
-            {panel.showGroups ? <TableCell sx={{ width: "0rem" }} /> : null}
-            <TableCell sx={{ color: isDragging ? "#fff" : "#ccc", textAlign: "center" }}>
+            <TableCell sx={{ color: "#ccc", textAlign: "center" }}>
                 <DragIndicatorIcon />
             </TableCell>
 
