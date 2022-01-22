@@ -54,7 +54,7 @@
         "moment": "^2.29.1",
         "mongodb": "^4.2.2",
         "morgan": "^1.10.0",
-        "nanoid": "^3.1.30",
+        "nanoid": "^3.1.31",
         "node-cache": "^5.1.2",
         "openapi-types": "^10.0.0",
         "passport": "^0.5.2",
