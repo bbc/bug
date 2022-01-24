@@ -17,6 +17,7 @@ const fetch = async () => {
         while (true) {
             const currentVersion = await checkUpdate();
 
+            await updateCollection.deleteMany({});
             await mongoSaveArray(
                 updateCollection,
                 [{ ...{ status: currentVersion.status }, ...currentVersion.data }],
