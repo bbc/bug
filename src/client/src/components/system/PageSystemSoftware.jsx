@@ -42,7 +42,7 @@ export default function PageSystemBackup() {
     }
 
     const lastChecked = info.data?.updates.checkTime
-        ? timeAgo.format(Date.now() - parseInt(info.data?.updates.checkTime) * 1000)
+        ? timeAgo.format(Date.parse(info.data?.updates.checkTime))
         : "Never";
 
     return (
