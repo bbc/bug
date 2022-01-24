@@ -4,7 +4,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import BugTextField from "@core/BugTextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelIcon from "@mui/icons-material/Cancel";
