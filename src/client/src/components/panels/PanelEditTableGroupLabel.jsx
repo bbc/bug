@@ -5,7 +5,7 @@ import TableRow from "@mui/material/TableRow";
 import BugTextField from "@core/BugTextField";
 import { useSortable } from "@dnd-kit/sortable";
 
-export default function PanelEditTableGroupLabel({ group, onChanged, placeholder, id, passedKey }) {
+export default function PanelEditTableGroupLabel({ group, onChange, placeholder, id, passedKey }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });
     let transformString = null;
 
@@ -56,7 +56,7 @@ export default function PanelEditTableGroupLabel({ group, onChanged, placeholder
                     style={{ width: "26rem" }}
                     value={group}
                     filter={(char) => char.replace(":", "")}
-                    onChange={(e) => onChanged(group, e.target.value)}
+                    onChange={(e) => onChange(group, e.target.value)}
                     placeholder={placeholder}
                     type="text"
                     variant="outlined"

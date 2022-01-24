@@ -181,7 +181,7 @@ export default function PanelTable({ showGroups = true }) {
                                         if (item.type === "group") {
                                             return (
                                                 <PanelEditTableGroupLabel
-                                                    onChanged={updateGroupName}
+                                                    onChange={updateGroupName}
                                                     group={item.value}
                                                     id={item.id}
                                                     key={index}
