@@ -2,7 +2,7 @@ import React from "react";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
+import BugTextField from "@core/BugTextField";
 import { useSortable } from "@dnd-kit/sortable";
 
 export default function PanelEditTableGroupLabel({ group, onChanged, placeholder, id, passedKey }) {
@@ -42,7 +42,7 @@ export default function PanelEditTableGroupLabel({ group, onChanged, placeholder
                 <DragIndicatorIcon />
             </TableCell>
             <TableCell colSpan={6}>
-                <TextField
+                <BugTextField
                     sx={{
                         fontSize: "0.875rem",
                         fontWeight: 500,
@@ -55,11 +55,12 @@ export default function PanelEditTableGroupLabel({ group, onChanged, placeholder
                     fullWidth
                     style={{ width: "26rem" }}
                     value={group}
+                    filter={(char) => char.replace(":", "")}
                     onChange={(e) => onChanged(group, e.target.value)}
                     placeholder={placeholder}
                     type="text"
                     variant="outlined"
-                ></TextField>
+                ></BugTextField>
             </TableCell>
         </TableRow>
     );

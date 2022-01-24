@@ -1,7 +1,7 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugTextfield from "@core/BugTextfield";
+import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 
 export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
@@ -114,7 +114,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                     showAdvanced && {
                         name: "Upper Text",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 onChange={(event) => onChange(event.target.value, "InputSuperimposeUpperText")}
                                 value={codecdata?.InputSuperimposeUpperText}
                             />
@@ -123,7 +123,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                     showAdvanced && {
                         name: "Lower Text",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 onChange={(event) => onChange(event.target.value, "InputSuperimposeLowerText")}
                                 value={codecdata?.InputSuperimposeLowerText}
                             />

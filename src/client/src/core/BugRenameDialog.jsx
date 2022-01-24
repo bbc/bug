@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import BugTextField from "@core/BugTextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelIcon from "@mui/icons-material/Cancel";
 import IconButton from "@mui/material/IconButton";
@@ -26,6 +27,7 @@ const BugRenameDialog = ({
     open,
     title = "Rename",
     label = "",
+    filter = null,
     onRename,
     onDismiss,
     defaultValue,
@@ -48,12 +50,15 @@ const BugRenameDialog = ({
         event.preventDefault();
         onRename(value);
     };
+
+    console.log(filter);
+
     return (
         <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <DialogTitle>{title}</DialogTitle>
             <form onSubmit={handeFormSubmit}>
                 <DialogContent>
-                    <TextField
+                    <BugTextField
                         inputRef={inputRef}
                         sx={{
                             width: "26rem",
@@ -67,7 +72,7 @@ const BugRenameDialog = ({
                         }}
                         variant="standard"
                         placeholder={placeholder}
-                        fullWidth
+                        filter={filter}
                         type="text"
                         label={label}
                         onClick={(event) => {
@@ -83,7 +88,7 @@ const BugRenameDialog = ({
                                 </InputAdornment>
                             ),
                         }}
-                    ></TextField>
+                    ></BugTextField>
                 </DialogContent>
                 <DialogActions>
                     <Button color="secondary" onClick={onDismiss}>
@@ -104,9 +109,18 @@ const BugRenameDialogProvider = ({ children }) => {
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [dialogConfig, setDialogConfig] = React.useState({});
 
-    const openDialog = ({ title, message, actionCallback, defaultValue, confirmText, placeholder, allowBlank }) => {
+    const openDialog = ({
+        title,
+        message,
+        actionCallback,
+        defaultValue,
+        confirmText,
+        placeholder,
+        allowBlank,
+        filter,
+    }) => {
         setDialogOpen(true);
-        setDialogConfig({ title, message, actionCallback, defaultValue, confirmText, placeholder, allowBlank });
+        setDialogConfig({ title, message, actionCallback, defaultValue, confirmText, placeholder, allowBlank, filter });
     };
 
     const onRename = (value) => {
@@ -135,6 +149,7 @@ const BugRenameDialogProvider = ({ children }) => {
                 onDismiss={onDismiss}
                 confirmText={dialogConfig?.confirmText}
                 defaultValue={dialogConfig.defaultValue}
+                filter={dialogConfig?.filter}
             />
             {children}
         </BugRenameDialogContext.Provider>

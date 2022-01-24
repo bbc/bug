@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 
-const BugTextfield = ({ min = null, max = null, filter, onChange, numeric = false, maxLength, ...props }) => {
+const BugTextField = ({ min = null, max = null, filter, onChange, numeric = false, maxLength, ...props }) => {
     const handleChange = (event) => {
         let eventCopy = Object.assign({}, event);
         if (numeric) {
@@ -58,4 +58,4 @@ const BugTextfield = ({ min = null, max = null, filter, onChange, numeric = fals
     );
 };
 
-export default BugTextfield;
+export default BugTextField;

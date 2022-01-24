@@ -1,7 +1,7 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugTextfield from "@core/BugTextfield";
+import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 import InputAdornment from "@mui/material/InputAdornment";
 
@@ -49,7 +49,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                     {
                         name: "IP Address",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={outputData?.outputIP}
                                 onChange={(event) => handleChange({ outputIP: event.target.value })}
                                 // filter={/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/}
@@ -59,7 +59,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                     {
                         name: "Port",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={outputData?.outputPort}
                                 onChange={(event) => handleChange({ outputPort: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -72,7 +72,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                     showAdvanced && {
                         name: "TTL",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={outputData?.outputTTL}
                                 onChange={(event) => handleChange({ outputTTL: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -111,7 +111,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                     outputData?.outputFecType === 2 && {
                         name: "FEC Columns",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={outputData?.outputFecColumns}
                                 onChange={(event) => handleChange({ outputFecColumns: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -124,7 +124,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                     outputData?.outputFecType === 2 && {
                         name: "FEC Rows",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={outputData?.outputFecRows}
                                 onChange={(event) => handleChange({ outputFecRows: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -148,7 +148,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                     showAdvanced && {
                         name: "Duplicate Stream Delay",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 disabled={outputData?.outputDupDelay === 0}
                                 value={outputData?.outputDupDelay}
                                 onChange={(event) => handleChange({ outputDupDelay: parseInt(event.target.value) })}
@@ -165,7 +165,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                     outputData?.outputMethod === 3 && {
                         name: "RIST/ARQ Buffer",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={outputData?.outputARQBuffer}
                                 onChange={(event) => handleChange({ outputARQBuffer: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}

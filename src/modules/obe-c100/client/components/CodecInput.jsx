@@ -1,7 +1,7 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugTextfield from "@core/BugTextfield";
+import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -46,10 +46,10 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                     {
                         name: "Name",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.obeEncoderName}
                                 onChange={(event) => onChange({ obeEncoderName: event.target.value })}
-                            ></BugTextfield>
+                            ></BugTextField>
                         ),
                     },
                     showAdvanced && {

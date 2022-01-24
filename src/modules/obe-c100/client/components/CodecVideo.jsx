@@ -1,7 +1,7 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugTextfield from "@core/BugTextfield";
+import BugTextField from "@core/BugTextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
@@ -52,19 +52,19 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                     {
                         name: "Video bitrate",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.videoBitrate}
                                 disabled
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">kbps</InputAdornment>,
                                 }}
-                            ></BugTextfield>
+                            ></BugTextField>
                         ),
                     },
                     showAdvanced && {
                         name: "Buffer size",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.videoBufferSize}
                                 onChange={(event) => handleChange({ videoBufferSize: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -74,13 +74,13 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">kbit</InputAdornment>,
                                 }}
-                            ></BugTextfield>
+                            ></BugTextField>
                         ),
                     },
                     showAdvanced && {
                         name: "Keyframe interval",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.videoKeyframeInterval}
                                 onChange={(event) =>
                                     handleChange({
@@ -94,7 +94,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                                 numeric
                                 min={4}
                                 max={400}
-                            ></BugTextfield>
+                            ></BugTextField>
                         ),
                     },
                     showAdvanced && {

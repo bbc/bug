@@ -1,7 +1,7 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugTextfield from "@core/BugTextfield";
+import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 
 export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvanced, collapsed }) {
@@ -42,7 +42,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                     {
                         name: "IP Address",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamIpv4DstAddress`]}
                                 onChange={(event) =>
                                     onChange(event.target.value, `outputs_${outputIndex}_StreamIpv4DstAddress`)
@@ -54,7 +54,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                     {
                         name: "Port",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamPortNumber`]}
                                 onChange={(event) =>
                                     onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamPortNumber`)
@@ -69,7 +69,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                     showAdvanced && {
                         name: "TTL",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamOutputIpv4Ttl`]}
                                 onChange={(event) =>
                                     onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamOutputIpv4Ttl`)
@@ -138,7 +138,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                     codecdata?.[`outputs_${outputIndex}_StreamErrorCorrectionMode`] > 0 && {
                         name: "FEC Columns",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamErrFecColumnNumber`]}
                                 onChange={(event) =>
                                     onChange(
@@ -156,7 +156,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                     codecdata?.[`outputs_${outputIndex}_StreamErrorCorrectionMode`] > 0 && {
                         name: "FEC Rows",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamErrFecRowNumber`]}
                                 onChange={(event) =>
                                     onChange(

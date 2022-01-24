@@ -1,7 +1,7 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugTextfield from "@core/BugTextfield";
+import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 import InputAdornment from "@mui/material/InputAdornment";
 
@@ -16,7 +16,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         {
                             name: "Bars Line 1",
                             value: (
-                                <BugTextfield
+                                <BugTextField
                                     onChange={(event) => onChange({ inputBarsLine1: event.target.value })}
                                     value={codecdata?.inputBarsLine1}
                                 />
@@ -25,7 +25,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         {
                             name: "Bars Line 2",
                             value: (
-                                <BugTextfield
+                                <BugTextField
                                     onChange={(event) => onChange({ inputBarsLine2: event.target.value })}
                                     value={codecdata?.inputBarsLine2}
                                 />
@@ -34,7 +34,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         {
                             name: "Bars Line 3",
                             value: (
-                                <BugTextfield
+                                <BugTextField
                                     onChange={(event) => onChange({ inputBarsLine3: event.target.value })}
                                     value={codecdata?.inputBarsLine3}
                                 />
@@ -43,7 +43,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         {
                             name: "Bars Line 4",
                             value: (
-                                <BugTextfield
+                                <BugTextField
                                     onChange={(event) => onChange({ inputBarsLine4: event.target.value })}
                                     value={codecdata?.inputBarsLine4}
                                 />
@@ -61,7 +61,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         showAdvanced && {
                             name: "Clapper Interval",
                             value: (
-                                <BugTextfield
+                                <BugTextField
                                     value={codecdata?.inputClapperInterval}
                                     onChange={(event) =>
                                         onChange({ inputClapperInterval: parseInt(event.target.value) })
@@ -73,7 +73,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                                     InputProps={{
                                         endAdornment: <InputAdornment position="end">sec</InputAdornment>,
                                     }}
-                                ></BugTextfield>
+                                ></BugTextField>
                             ),
                         },
                     ]}

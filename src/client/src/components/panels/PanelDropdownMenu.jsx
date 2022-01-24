@@ -136,6 +136,7 @@ export default function PanelDropdownMenu({ panel }) {
             title: "Change panel group",
             defaultValue: panel?.group,
             confirmText: "Change",
+            filter: (char) => char.replace(":", ""),
             allowBlank: true,
         });
 

@@ -1,6 +1,6 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
-import BugTextfield from "@core/BugTextfield";
+import BugTextField from "@core/BugTextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 export default function CodecMux({ codecdata, onChange }) {
@@ -13,7 +13,7 @@ export default function CodecMux({ codecdata, onChange }) {
                     {
                         name: "TS Bitrate",
                         value: (
-                            <BugTextfield
+                            <BugTextField
                                 value={codecdata?.EncTsRate}
                                 onChange={(event) => onChange(parseInt(event.target.value), "EncTsRate")}
                                 filter={/[^0-9]/}
@@ -23,7 +23,7 @@ export default function CodecMux({ codecdata, onChange }) {
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">kbps</InputAdornment>,
                                 }}
-                            ></BugTextfield>
+                            ></BugTextField>
                         ),
                     },
                 ]}

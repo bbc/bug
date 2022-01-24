@@ -5,13 +5,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { useAlert } from "@utils/Snackbar";
-import TextField from "@mui/material/TextField";
+import BugTextField from "@core/BugTextField";
 import AxiosPost from "@utils/AxiosPost";
 import InputAdornment from "@mui/material/InputAdornment";
 import CancelIcon from "@mui/icons-material/Cancel";
 import IconButton from "@mui/material/IconButton";
 
-export default function RenameDialog({ outputNumber, outputName, onClose, panelId }) {
+export default function RenameDialog({ outputNumber, outputName, onClose, panelId, filter = null }) {
     const sendAlert = useAlert();
     const [value, setValue] = React.useState(outputName);
     const inputRef = React.useRef();
@@ -56,18 +56,18 @@ export default function RenameDialog({ outputNumber, outputName, onClose, panelI
             >
                 <DialogTitle id="alert-dialog-title">Rename Output</DialogTitle>
                 <DialogContent>
-                    <TextField
+                    <BugTextField
                         inputRef={inputRef}
                         style={{ width: "26rem" }}
                         value={value}
                         onChange={handleTextChanged}
                         placeholder={defaultName}
-                        fullWidth
                         type="text"
                         label="Output name"
                         onClick={(event) => {
                             event.stopPropagation();
                         }}
+                        filter={filter}
                         autoFocus
                         InputProps={{
                             endAdornment: (
@@ -78,7 +78,7 @@ export default function RenameDialog({ outputNumber, outputName, onClose, panelI
                                 </InputAdornment>
                             ),
                         }}
-                    ></TextField>
+                    ></BugTextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleRenameDialogClose} color="primary">
