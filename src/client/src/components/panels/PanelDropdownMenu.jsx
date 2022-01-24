@@ -9,7 +9,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
-import PanelGroupDialog from "@components/panels/PanelGroupDialog";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
@@ -18,15 +17,15 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import { useHistory } from "react-router-dom";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
-export default function PanelDropdownMenu(props) {
+export default function PanelDropdownMenu({ panel }) {
     const sendAlert = useAlert();
     const history = useHistory();
-
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
-    const [groupDialogOpen, setGroupDialogOpen] = React.useState(false);
     const open = Boolean(anchorEl);
+    const { renameDialog } = useBugRenameDialog();
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -40,22 +39,22 @@ export default function PanelDropdownMenu(props) {
         event.preventDefault();
     };
 
-    const needsContainer = props?.panel?._module.needsContainer ?? true;
+    const needsContainer = panel?._module.needsContainer ?? true;
     const hideRestart = !needsContainer;
     const hideUpgrade = !needsContainer;
-    const disableEnable = props.panel.enabled || props.panel._dockerContainer._isBuilding;
-    const disableDisable = !props.panel.enabled || props.panel._dockerContainer._isBuilding;
+    const disableEnable = panel?.enabled || panel?._dockerContainer._isBuilding;
+    const disableDisable = !panel?.enabled || panel?._dockerContainer._isBuilding;
     const disableRestart = !needsContainer;
-    const disableUpgrade = !props?.panel?.upgradeable;
-    const disableDelete = props.panel._dockerContainer._isBuilding;
-    const disableConfig = !props.panel.enabled || props.panel._dockerContainer._isBuilding;
+    const disableUpgrade = panel?.upgradeable;
+    const disableDelete = panel?._dockerContainer._isBuilding;
+    const disableConfig = !panel?.enabled || panel?._dockerContainer._isBuilding;
 
     const handleEnable = async (event) => {
         setAnchorEl(null);
-        if (await AxiosCommand(`/api/panel/enable/${props.panel.id}`)) {
-            sendAlert(`Enabled panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
+        if (await AxiosCommand(`/api/panel/enable/${panel?.id}`)) {
+            sendAlert(`Enabled panel: ${panel?.title}`, { broadcast: true, variant: "success" });
         } else {
-            sendAlert(`Failed to enable panel: ${props.panel.title}`, { variant: "error" });
+            sendAlert(`Failed to enable panel: ${panel?.title}`, { variant: "error" });
         }
         event.stopPropagation();
         event.preventDefault();
@@ -63,10 +62,10 @@ export default function PanelDropdownMenu(props) {
 
     const handleDisable = async (event) => {
         setAnchorEl(null);
-        if (await AxiosCommand(`/api/panel/disable/${props.panel.id}`)) {
-            sendAlert(`Disabled panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
+        if (await AxiosCommand(`/api/panel/disable/${panel?.id}`)) {
+            sendAlert(`Disabled panel: ${panel?.title}`, { broadcast: true, variant: "success" });
         } else {
-            sendAlert(`Failed to disable panel: ${props.panel.title}`, { variant: "error" });
+            sendAlert(`Failed to disable panel: ${panel?.title}`, { variant: "error" });
         }
         event.stopPropagation();
         event.preventDefault();
@@ -76,11 +75,11 @@ export default function PanelDropdownMenu(props) {
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();
-        sendAlert(`Restarting panel: ${props.panel.title} - please wait ...`, { broadcast: true, variant: "info" });
-        if (await AxiosCommand(`/api/panel/restart/${props.panel.id}`)) {
-            sendAlert(`Restarted panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
+        sendAlert(`Restarting panel: ${panel?.title} - please wait ...`, { broadcast: true, variant: "info" });
+        if (await AxiosCommand(`/api/panel/restart/${panel?.id}`)) {
+            sendAlert(`Restarted panel: ${panel?.title}`, { broadcast: true, variant: "success" });
         } else {
-            sendAlert(`Failed to restart panel: ${props.panel.title}`, { variant: "error" });
+            sendAlert(`Failed to restart panel: ${panel?.title}`, { variant: "error" });
         }
     };
 
@@ -89,17 +88,17 @@ export default function PanelDropdownMenu(props) {
         event.stopPropagation();
         event.preventDefault();
         sendAlert(
-            `Upgrading panel: ${props.panel.title} - from ${props.panel?._dockerContainer?.version} to ${props.panel?._module?.version}`,
+            `Upgrading panel: ${panel?.title} - from ${panel?._dockerContainer?.version} to ${panel?._module?.version}`,
             {
                 broadcast: true,
                 variant: "info",
             }
         );
 
-        if (await AxiosCommand(`/api/module/rebuild/${props.panel?._module.name}`)) {
-            sendAlert(`Upgraded panel: ${props.panel.title}`, { broadcast: true, variant: "success" });
+        if (await AxiosCommand(`/api/module/rebuild/${panel?._module.name}`)) {
+            sendAlert(`Upgraded panel: ${panel?.title}`, { broadcast: true, variant: "success" });
         } else {
-            sendAlert(`Failed to upgrade panel: ${props.panel.title}`, { variant: "error" });
+            sendAlert(`Failed to upgrade panel: ${panel?.title}`, { variant: "error" });
         }
     };
 
@@ -111,16 +110,29 @@ export default function PanelDropdownMenu(props) {
     };
 
     const handleConfig = (event) => {
-        history.push(`/panel/${props.panel.id}/config`);
+        history.push(`/panel/${panel?.id}/config`);
         event.stopPropagation();
         event.preventDefault();
     };
 
-    const handleEditGroup = (event) => {
+    const handleEditGroup = async (event) => {
         setAnchorEl(null);
-        setGroupDialogOpen(true);
         event.stopPropagation();
         event.preventDefault();
+        const result = await renameDialog({
+            title: "Change panel group",
+            defaultValue: panel?.group,
+            confirmText: "Change",
+            allowBlank: true,
+        });
+
+        if (result !== false) {
+            if (await AxiosCommand(`/api/panel/group/${panel?.id}/${result}`)) {
+                sendAlert(`Updated group for panel ${panel?.title}`, { broadcast: true, variant: "success" });
+            } else {
+                sendAlert(`Failed to change group for panel: ${panel?.title}`, { variant: "error" });
+            }
+        }
     };
 
     const PanelMenuItem = React.forwardRef(({ text, onClick, hidden, disabled, children }, ref) => {
@@ -174,17 +186,9 @@ export default function PanelDropdownMenu(props) {
             </Menu>
             {deleteDialogOpen ? (
                 <PanelDeleteDialog
-                    panelId={props.panel.id}
-                    panelTitle={props.panel.title}
+                    panelId={panel?.id}
+                    panelTitle={panel?.title}
                     onClose={() => setDeleteDialogOpen(false)}
-                />
-            ) : null}
-            {groupDialogOpen ? (
-                <PanelGroupDialog
-                    panelId={props.panel.id}
-                    panelGroup={props.panel.group}
-                    panelTitle={props.panel.title}
-                    onClose={() => setGroupDialogOpen(false)}
                 />
             ) : null}
         </div>
