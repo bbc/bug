@@ -2,9 +2,9 @@ import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 const BugConfirmDialog = ({
     open,
@@ -14,13 +14,18 @@ const BugConfirmDialog = ({
     onDismiss,
     confirmButtonText = "Confirm",
 }) => {
+    const getMessage = () => {
+        if (Array.isArray(message)) {
+            return message.map((eachLine) => <Typography component="p">{eachLine}</Typography>);
+        }
+        return message;
+    };
+
     return (
         open && (
             <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
                 <DialogTitle>{title}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>{message}</DialogContentText>
-                </DialogContent>
+                <DialogContent>{getMessage()}</DialogContent>
                 <DialogActions>
                     <Button onClick={onDismiss}>Cancel</Button>
                     <Button color="primary" onClick={onConfirm}>

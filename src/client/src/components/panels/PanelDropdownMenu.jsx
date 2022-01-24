@@ -109,7 +109,7 @@ export default function PanelDropdownMenu({ panel }) {
         event.preventDefault();
         const result = await confirmDialog({
             title: "Delete panel?",
-            message: "This will also stop and remove any associated containers. This action is irreversible.",
+            message: ["This will also stop and remove any associated containers.", "This action is irreversible."],
             confirmButtonText: "Delete",
         });
 

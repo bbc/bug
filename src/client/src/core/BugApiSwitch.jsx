@@ -15,6 +15,10 @@ export default function BugApiSwitch({ checked, disabled = false, onChange, time
             clearTimeout(timer.current);
             setIsActive(false);
         }
+        if (!isActive && checked !== localChecked) {
+            // this value has been updated by new props - overwrite the local value
+            setLocalChecked(checked);
+        }
     }, [checked, isActive, localChecked]);
 
     const handleChanged = (event) => {

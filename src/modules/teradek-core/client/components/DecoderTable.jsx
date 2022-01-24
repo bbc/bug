@@ -88,7 +88,7 @@ export default function DecoderTable({ panelId }) {
         if (
             await confirmDialog({
                 title: "Restart video",
-                message: "All active streams will be interrupted. Are you sure?",
+                message: ["All active streams will be interrupted.", "Are you sure?"],
                 confirmButtonText: "Restart",
             })
         ) {
@@ -106,7 +106,7 @@ export default function DecoderTable({ panelId }) {
         if (
             await confirmDialog({
                 title: "Reboot decoder",
-                message: "All active streams will be interrupted. Are you sure?",
+                message: ["All active streams will be interrupted.", "Are you sure?"],
                 confirmButtonText: "Reboot",
             })
         ) {

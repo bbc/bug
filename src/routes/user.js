@@ -161,6 +161,7 @@ router.post(
         });
     })
 );
+
 /**
  * @swagger
  * /user/{id}:

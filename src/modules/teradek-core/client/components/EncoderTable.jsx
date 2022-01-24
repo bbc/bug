@@ -181,7 +181,7 @@ export default function EncodersTable({ panelId }) {
         if (
             await confirmDialog({
                 title: "Unlink decoder",
-                message: "Are you sure? This will unlink the specified endoder and decoder",
+                message: ["Are you sure?", "This will unlink the specified endoder and decoder"],
                 confirmButtonText: "Unlink",
             })
         ) {
@@ -207,7 +207,7 @@ export default function EncodersTable({ panelId }) {
         if (
             await confirmDialog({
                 title: "Restart video",
-                message: "All active streams will be interrupted. Are you sure?",
+                message: ["All active streams will be interrupted.", "Are you sure?"],
                 confirmButtonText: "Restart",
             })
         ) {
@@ -225,7 +225,7 @@ export default function EncodersTable({ panelId }) {
         if (
             await confirmDialog({
                 title: "Reboot encoder",
-                message: "All active streams will be interrupted. Are you sure?",
+                message: ["All active streams will be interrupted.", "Are you sure?"],
                 confirmButtonText: "Reboot",
             })
         ) {

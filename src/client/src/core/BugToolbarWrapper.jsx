@@ -102,7 +102,7 @@ export default function PanelToolbar(props) {
     const handleDelete = async () => {
         const result = await confirmDialog({
             title: "Delete panel?",
-            message: "This will also stop and remove any associated containers. This action is irreversible.",
+            message: ["This will also stop and remove any associated containers.", "This action is irreversible."],
             confirmButtonText: "Delete",
         });
 

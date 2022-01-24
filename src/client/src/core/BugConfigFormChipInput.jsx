@@ -49,7 +49,7 @@ const BugConfigFormChipInput = ({
                             <Autocomplete
                                 multiple
                                 filterSelectedOptions
-                                options={[]}
+                                options={options ? options : []}
                                 freeSolo={true}
                                 onBlur={onBlur}
                                 onChange={(event, values) => {

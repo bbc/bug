@@ -4,16 +4,45 @@ import BugApiTable from "@core/BugApiTable";
 import { useHistory } from "react-router-dom";
 import BugApiSwitch from "@core/BugApiSwitch";
 import AxiosCommand from "@utils/AxiosCommand";
+import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 export default function UserTable({ interval }) {
     const history = useHistory();
     const user = useSelector((state) => state.user);
     const currentUserId = user.status === "success" ? user.data?.id : null;
     const sendAlert = useAlert();
+    const { forceRefresh, doForceRefresh } = useForceRefresh();
+    const { confirmDialog } = useBugConfirmDialog();
 
     const handleRowClick = (event, item) => {
         history.push(`/system/user/${item.id}`);
+    };
+
+    const handleEditClick = (event, item) => {
+        history.push(`/system/user/${item.id}`);
+    };
+
+    const handleDeleteClick = async (event, item) => {
+        const result = await confirmDialog({
+            title: "Delete user?",
+            message: ["This will delete the user and all of their settings.", "Are you sure?"],
+            confirmButtonText: "Delete",
+        });
+
+        if (result !== false) {
+            if (await AxiosDelete(`/api/user/${item.id}`)) {
+                sendAlert(`Deleted user: ${item.name}`, { broadcast: true, variant: "success" });
+            } else {
+                sendAlert(`Failed to delete user: ${item.name}`, { variant: "error" });
+            }
+        }
     };
 
     const handleSwitchChange = async (checked, item) => {
@@ -28,6 +57,7 @@ export default function UserTable({ interval }) {
         }
 
         if (status) {
+            doForceRefresh();
             sendAlert(`${commandText} ${item.username}`, {
                 variant: "success",
             });
@@ -75,10 +105,38 @@ export default function UserTable({ interval }) {
             defaultSortIndex={1}
             defaultSortDirection="asc"
             sortable
-            showNavArrow
             filterable
             hideHeader={false}
             apiUrl={`/api/user/list`}
+            menuItems={[
+                {
+                    title: "Enable",
+                    disabled: (item) => item.enabled,
+                    icon: <ToggleOnIcon fontSize="small" />,
+                    onClick: (event, item) => handleSwitchChange(true, item),
+                },
+                {
+                    title: "Disable",
+                    disabled: (item) => !item.enabled && item.id === currentUserId,
+                    icon: <ToggleOffIcon fontSize="small" />,
+                    onClick: (event, item) => handleSwitchChange(false, item),
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Edit",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleEditClick,
+                },
+                {
+                    title: "Delete",
+                    disabled: (item) => item.id === currentUserId,
+                    icon: <DeleteIcon fontSize="small" />,
+                    onClick: handleDeleteClick,
+                },
+            ]}
+            forceRefresh={forceRefresh}
         />
     );
 }
