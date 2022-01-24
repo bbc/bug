@@ -3,18 +3,21 @@ import { useForm } from "react-hook-form";
 import AxiosPut from "@utils/AxiosPut";
 import AxiosPost from "@utils/AxiosPost";
 import AxiosGet from "@utils/AxiosGet";
+import AxiosDelete from "@utils/AxiosDelete";
 import BugForm from "@core/BugForm";
 import LoadingOverlay from "@components/LoadingOverlay";
 import { useAlert } from "@utils/Snackbar";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugPasswordTextField from "@core/BugPasswordTextField";
-import MenuItem from "@mui/material/MenuItem";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import { useSelector } from "react-redux";
+import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
@@ -29,7 +32,7 @@ export default function UserEdit({ userId = null }) {
     } = useForm({});
     const inputRef = React.useRef();
     const blankPassword = user !== null ? "*".repeat(user.passwordLength) : "";
-
+    const { confirmDialog } = useBugConfirmDialog();
     const currentUser = useSelector((state) => state.user);
     const currentUserId = currentUser.status === "success" ? currentUser.data?.id : null;
 
@@ -84,6 +87,23 @@ export default function UserEdit({ userId = null }) {
         setLoading(false);
     };
 
+    const handleDeleteClicked = async () => {
+        const result = await confirmDialog({
+            title: "Delete user?",
+            message: ["This will delete the user and all of their settings.", "Are you sure?"],
+            confirmButtonText: "Delete",
+        });
+
+        if (result !== false) {
+            if (await AxiosDelete(`/api/user/${user.id}`)) {
+                sendAlert(`Deleted user: ${user.name}`, { broadcast: true, variant: "success" });
+                history.push(`/system/users`);
+            } else {
+                sendAlert(`Failed to delete user: ${user.name}`, { variant: "error" });
+            }
+        }
+    };
+
     const handleCancel = () => {
         history.push(`/system/users`);
     };
@@ -99,7 +119,7 @@ export default function UserEdit({ userId = null }) {
                         <BugForm.Body>
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
-                                    <TextField
+                                    <BugConfigFormTextField
                                         inputProps={{
                                             ...register("name", {
                                                 required: true,
@@ -115,7 +135,7 @@ export default function UserEdit({ userId = null }) {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <TextField
+                                    <BugConfigFormTextField
                                         inputProps={{
                                             ...register("username", {
                                                 required: true,
@@ -135,7 +155,7 @@ export default function UserEdit({ userId = null }) {
                                         name="enabled"
                                         label="Enable user"
                                         control={control}
-                                        defaultValue={userId === null ? true : user.enabled}
+                                        defaultValue={userId === null ? false : user.enabled}
                                         disabled={userId === null}
                                         fullWidth
                                         helperText={
@@ -147,7 +167,7 @@ export default function UserEdit({ userId = null }) {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <TextField
+                                    <BugConfigFormTextField
                                         inputProps={{
                                             ...register("email", {
                                                 pattern: {
@@ -166,27 +186,28 @@ export default function UserEdit({ userId = null }) {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <TextField
-                                        inputProps={{
-                                            ...register("roles"),
-                                        }}
-                                        select
-                                        fullWidth
-                                        defaultValue={user.roles ? user.roles : []}
-                                        variant="standard"
-                                        type="text"
+                                    <BugConfigFormChipInput
+                                        name="roles"
                                         label="Roles"
-                                        SelectProps={{
-                                            multiple: true,
-                                        }}
-                                    >
-                                        <MenuItem value="user">User</MenuItem>
-                                        <MenuItem value="admin">Admin</MenuItem>
-                                    </TextField>
+                                        control={control}
+                                        defaultValue={user.roles ? user.roles : []}
+                                        options={[
+                                            {
+                                                id: "user",
+                                                label: "User",
+                                            },
+                                            {
+                                                id: "admin",
+                                                label: "Admin",
+                                            },
+                                        ]}
+                                        sort={true}
+                                        fullWidth
+                                    />
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <TextField
+                                    <BugConfigFormTextField
                                         inputProps={{ ...register("password") }}
                                         fullWidth
                                         autoComplete="off"
@@ -217,6 +238,7 @@ export default function UserEdit({ userId = null }) {
                             </Grid>
                         </BugForm.Body>
                         <BugForm.Actions>
+                            {userId !== null && <BugConfigFormDeleteButton onClick={handleDeleteClicked} />}
                             <Button variant="contained" color="secondary" disableElevation onClick={handleCancel}>
                                 Cancel
                             </Button>

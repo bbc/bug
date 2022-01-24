@@ -111,6 +111,7 @@ export default function BugApiTable({
             return noData;
         }
     }
+
     return (
         <>
             <div>
