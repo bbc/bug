@@ -3,7 +3,7 @@ import PanelAdd from "@components/panels/PanelAdd";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 
-export default function PagePanels() {
+export default function PagePanelsAdd() {
     const dispatch = useDispatch();
 
     useEffect(() => {

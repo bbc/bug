@@ -34,7 +34,7 @@ const ToolbarRouter = (props) => {
             return <></>;
         }
 
-        console.log("WHY1 DOES THIS MAKE EVERYTHING BETTER?");
+        console.log("WHY2 DOES THIS MAKE EVERYTHING BETTER?");
 
         if (Toolbars["modules"][panelConfig?.data?.module]) {
             const Toolbar = Toolbars["modules"][panelConfig.data.module]["client"]["Toolbar"];
