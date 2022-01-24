@@ -65,7 +65,8 @@
         "use-async-effect": "^2.2.3",
         "use-debounce": "^6.0.1",
         "use-sound": "^4.0.1",
-        "web-vitals": "^1.0.1"
+        "web-vitals": "^1.0.1",
+        "webmidi": "^3.0.11"
     },
     "peerDependencies": {
         "react": "^16.0.0 || ^16.3.0",
