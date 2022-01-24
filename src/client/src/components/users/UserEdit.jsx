@@ -135,10 +135,11 @@ export default function UserEdit({ userId = null }) {
                                         name="enabled"
                                         label="Enable user"
                                         control={control}
-                                        defaultValue={user.enabled}
+                                        defaultValue={userId === null ? true : user.enabled}
+                                        disabled={userId === null}
                                         fullWidth
                                         helperText={
-                                            currentUserId === user.id
+                                            userId && currentUserId === user.id
                                                 ? "CAUTION: disabling your own user may cause you to lose acccess"
                                                 : ""
                                         }
@@ -171,7 +172,7 @@ export default function UserEdit({ userId = null }) {
                                         }}
                                         select
                                         fullWidth
-                                        defaultValue={user.roles}
+                                        defaultValue={user.roles ? user.roles : []}
                                         variant="standard"
                                         type="text"
                                         label="Roles"

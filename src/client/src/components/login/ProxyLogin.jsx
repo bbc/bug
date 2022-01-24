@@ -20,7 +20,7 @@ export default function LocalLogin({ handleLogin }) {
         handleLogin(form);
     };
 
-    if (user == false) {
+    if (user === false) {
         return <Loading />;
     }
 
