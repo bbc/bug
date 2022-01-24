@@ -15,14 +15,13 @@ import CheckIcon from "@mui/icons-material/Check";
 import AxiosPut from "@utils/AxiosPut";
 import UndoIcon from "@mui/icons-material/Undo";
 import Button from "@mui/material/Button";
-import panelDataSlice from "@redux/panelDataSlice";
-import { useDispatch } from "react-redux";
+import { usePanelToolbarEventTrigger } from "@hooks/PanelToolbarEvent";
 
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
-    const dispatch = useDispatch();
+    const triggerPanelEvent = usePanelToolbarEventTrigger();
 
     const pending = useApiPoller({
         url: `/container/${panelId}/localdata/checkpending/`,
@@ -42,7 +41,7 @@ export default function Toolbar({ panelId, ...props }) {
 
     const handleCancelClicked = async (event, item) => {
         if (await AxiosCommand(`/container/${panelId}/device/revert`)) {
-            dispatch(panelDataSlice.actions["update"]({ forceRefresh: Date.now() }));
+            triggerPanelEvent("refresh");
         } else {
             sendAlert("Failed to revert device config", {
                 variant: "error",
@@ -55,7 +54,7 @@ export default function Toolbar({ panelId, ...props }) {
             variant: "info",
         });
         if (await AxiosCommand(`/container/${panelId}/device/save`)) {
-            dispatch(panelDataSlice.actions["update"]({ forceRefresh: Date.now() }));
+            triggerPanelEvent("refresh");
             sendAlert("Saved device config", {
                 broadcast: true,
                 variant: "success",

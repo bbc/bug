@@ -5,7 +5,6 @@ import BugTextfield from "@core/BugTextfield";
 import Switch from "@mui/material/Switch";
 
 export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvanced, collapsed }) {
-    console.log("codecoutput");
     return (
         <>
             <BugDetailsCard

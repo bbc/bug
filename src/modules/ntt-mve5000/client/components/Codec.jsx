@@ -10,20 +10,26 @@ import AxiosPost from "@utils/AxiosPost";
 import useAsyncEffect from "use-async-effect";
 import { useSelector } from "react-redux";
 import { useAlert } from "@utils/Snackbar";
+import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
 
 export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
     const panelConfig = useSelector((state) => state.panelConfig);
     const timer = React.useRef();
     const sendAlert = useAlert();
-
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
-    const panelData = useSelector((state) => state.panelData);
-    const forceRefresh = panelData?.forceRefresh || null;
+
+    usePanelToolbarEvent("refresh", () => {
+        refreshCodecdata();
+    });
 
     useAsyncEffect(async () => {
+        refreshCodecdata();
+    }, [panelId]);
+
+    const refreshCodecdata = async () => {
         setCodecdata(await AxiosGet(`/container/${panelId}/codecdata/`));
-    }, [panelId, forceRefresh]);
+    };
 
     const onChange = (value, field) => {
         clearTimeout(timer.current);

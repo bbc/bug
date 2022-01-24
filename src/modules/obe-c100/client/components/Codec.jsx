@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { useAlert } from "@utils/Snackbar";
 import AxiosDelete from "@utils/AxiosDelete";
 import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
+import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
 
 export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
@@ -22,12 +23,14 @@ export default function Codec({ panelId }) {
     const sendAlert = useAlert();
 
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
-    const panelData = useSelector((state) => state.panelData);
-    let forceRefresh = panelData?.forceRefresh || null;
+
+    usePanelToolbarEvent("refresh", () => {
+        refreshCodecdata();
+    });
 
     useAsyncEffect(async () => {
         refreshCodecdata();
-    }, [panelId, forceRefresh]);
+    }, [panelId]);
 
     const refreshCodecdata = async () => {
         setCodecdata(await AxiosGet(`/container/${panelId}/codecdata/`));
