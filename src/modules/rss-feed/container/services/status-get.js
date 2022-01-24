@@ -8,7 +8,7 @@ module.exports = async () => {
     // if (a % 2 == 0) {
     return [].concat(
         await statusCheckCollection({
-            collectionName: "sources",
+            collectionName: "feed",
             message: ["Could not find any items in the RSS feed.", "Check the feed address."],
             itemType: "warning",
             timeoutSeconds: 60,
