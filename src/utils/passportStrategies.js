@@ -9,7 +9,7 @@ const SamlStrategy = require("passport-saml").Strategy;
 const OpenIdStrategy = require("passport-openid").Strategy;
 
 const logger = require("@utils/logger")(module);
-const userGetByFeild = require("@services/user-get-by-feild");
+const userGetByFeild = require("@services/user-get-by-field");
 const ipCompare = require("@utils/ip-compare");
 const ipClean = require("@utils/ip-clean");
 const bcrypt = require("bcryptjs");

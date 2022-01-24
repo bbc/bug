@@ -3,13 +3,13 @@
 const logger = require("@utils/logger")(module);
 const userModel = require("@models/user");
 
-async function getUserIndex(users, feildValue, feildName) {
-    if (users && feildValue && feildName) {
+async function getUserIndex(users, fieldValue, fieldName) {
+    if (users && fieldValue && fieldName) {
         const index = await users
             .map(function (user) {
-                return user[feildName];
+                return user[fieldName];
             })
-            .indexOf(feildValue);
+            .indexOf(fieldValue);
         return index;
     }
     return -1;

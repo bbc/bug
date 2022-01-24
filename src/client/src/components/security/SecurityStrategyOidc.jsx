@@ -135,7 +135,7 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                         defaultValue={strategy.profileFeild}
                         type="text"
                         label="User field"
-                        helperText="The feild name in the returned profile to use"
+                        helperText="The field name in the returned profile to use"
                     />
                 </Grid>
 

@@ -148,7 +148,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                         variant="standard"
                         type="text"
                         label="User field"
-                        helperText="The feild name in the returned profile to use"
+                        helperText="The field name in the returned profile to use"
                     />
                 </Grid>
 
