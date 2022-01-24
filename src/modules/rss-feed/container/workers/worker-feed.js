@@ -26,6 +26,8 @@ const getFeed = async () => {
     const feed = await parse(workerData.address);
     if (isArray(feed?.items)) {
         for (let item of feed.items) {
+            item.published = new Date(item.published);
+            item.created = new Date(item.created);
             feedItems.push(item);
         }
     }

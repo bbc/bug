@@ -18,7 +18,7 @@ export default function FeedCard({ item }) {
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        {timeAgo.format(Date.now() - new Date(item?.created / 1000))}
+                        {timeAgo.format(Date.parse(item?.published))}
                     </Typography>
                     <Typography variant="h5" component="div">
                         {item?.title}
