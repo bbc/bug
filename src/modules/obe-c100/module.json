@@ -1,7 +1,7 @@
 {
     "name": "obe-c100",
     "longname": "OBE C-100",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Control of Open Broadcast Systems' C-100 Encoders",
     "capabilities": [],
     "icon": "ShuffleOn",

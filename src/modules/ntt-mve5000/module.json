@@ -1,7 +1,7 @@
 {
     "name": "ntt-mve5000",
     "longname": "NTT MVE5000",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Control of NTT MVE5000 encoders",
     "capabilities": [],
     "icon": "ResetTv",
