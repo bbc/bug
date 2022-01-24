@@ -14,6 +14,7 @@ const usePanelToolbarEvent = (eventName, handleChange) => {
             setValue(eventValue);
             handleChange();
         }
+        // eslint-disable-next-line
     }, [eventValue]);
 };
 

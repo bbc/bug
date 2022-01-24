@@ -10,7 +10,6 @@ import PanelTableRow from "@components/panels/PanelTableRow";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import PanelTableGroupRow from "./PanelTableGroupRow";
-import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";
 
 export default function PanelTable() {

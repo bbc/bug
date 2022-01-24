@@ -3,7 +3,6 @@ import Loading from "@components/Loading";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
-import _ from "lodash";
 import panelListGroups from "@utils/panelListGroups";
 import HomeTile from "@components/home/HomeTile";
 import HomeAddPanel from "@components/home/HomeAddPanel";
