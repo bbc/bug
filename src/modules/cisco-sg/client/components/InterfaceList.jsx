@@ -172,11 +172,11 @@ export default function InterfaceList({ panelId, stackId = null }) {
         interfaceToggle(checked, item);
     };
 
-    const handleEnableClicked = async (item) => {
+    const handleEnableClicked = async (event, item) => {
         return interfaceToggle(true, item);
     };
 
-    const handleDisableClicked = async (item) => {
+    const handleDisableClicked = async (event, item) => {
         return interfaceToggle(false, item);
     };
 
