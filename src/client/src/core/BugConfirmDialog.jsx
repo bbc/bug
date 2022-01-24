@@ -15,18 +15,20 @@ const BugConfirmDialog = ({
     confirmButtonText = "Confirm",
 }) => {
     return (
-        <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogContent>
-                <DialogContentText>{message}</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={onDismiss}>Cancel</Button>
-                <Button color="primary" onClick={onConfirm}>
-                    {confirmButtonText}
-                </Button>
-            </DialogActions>
-        </Dialog>
+        open && (
+            <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
+                <DialogTitle>{title}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{message}</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onDismiss}>Cancel</Button>
+                    <Button color="primary" onClick={onConfirm}>
+                        {confirmButtonText}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        )
     );
 };
 

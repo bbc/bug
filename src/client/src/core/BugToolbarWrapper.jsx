@@ -18,11 +18,12 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useSelector } from "react-redux";
 import Popover from "@mui/material/Popover";
 import AxiosCommand from "@utils/AxiosCommand";
+import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
-import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useHistory } from "react-router-dom";
 import BugToolbarIcon from "@core/BugToolbarIcon";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 /*
  * this has optional properties:
@@ -35,12 +36,12 @@ export default function PanelToolbar(props) {
     const open = Boolean(anchorEl);
     const panel = useSelector((state) => state.panel);
     const [statusEl, setStatusEl] = React.useState(null);
-    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const statusOpen = Boolean(statusEl);
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
     const statusItemCount = panel.data._status ? panel.data._status.length : 0;
     const sendAlert = useAlert();
     const history = useHistory();
+    const { confirmDialog } = useBugConfirmDialog();
 
     useEffect(() => {
         // if the number if status items changes, and it's now 0, hide the popup
@@ -98,9 +99,21 @@ export default function PanelToolbar(props) {
         }
     };
 
-    const handleDelete = () => {
-        setAnchorEl(null);
-        setDeleteDialogOpen(true);
+    const handleDelete = async () => {
+        const result = await confirmDialog({
+            title: "Delete panel?",
+            message: "This will also stop and remove any associated containers. This action is irreversible.",
+            confirmButtonText: "Delete",
+        });
+
+        if (result !== false) {
+            if (await AxiosDelete(`/api/panel/${panel.data.id}`)) {
+                history.push("/");
+                sendAlert(`Deleted panel: ${panel.data.title}`, { broadcast: true, variant: "success" });
+            } else {
+                sendAlert(`Failed to delete panel: ${panel.data.title}`, { variant: "error" });
+            }
+        }
     };
 
     if (panel.status === "loading") {
@@ -187,13 +200,6 @@ export default function PanelToolbar(props) {
                         <ListItemText primary="Delete Panel" />
                     </MenuItem>
                 </Menu>
-                {deleteDialogOpen ? (
-                    <PanelDeleteDialog
-                        panelId={panel.data.id}
-                        panelTitle={panel.data.title}
-                        onClose={() => setDeleteDialogOpen(false)}
-                    />
-                ) : null}
             </>
         );
     }

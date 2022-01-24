@@ -8,8 +8,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import PanelDeleteDialog from "@components/panels/PanelDeleteDialog";
 import AxiosCommand from "@utils/AxiosCommand";
+import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
@@ -18,14 +18,15 @@ import ClearAllIcon from "@mui/icons-material/ClearAll";
 import { useHistory } from "react-router-dom";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 export default function PanelDropdownMenu({ panel }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const open = Boolean(anchorEl);
     const { renameDialog } = useBugRenameDialog();
+    const { confirmDialog } = useBugConfirmDialog();
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -102,11 +103,23 @@ export default function PanelDropdownMenu({ panel }) {
         }
     };
 
-    const handleDelete = (event) => {
+    const handleDelete = async (event) => {
         setAnchorEl(null);
-        setDeleteDialogOpen(true);
         event.stopPropagation();
         event.preventDefault();
+        const result = await confirmDialog({
+            title: "Delete panel?",
+            message: "This will also stop and remove any associated containers. This action is irreversible.",
+            confirmButtonText: "Delete",
+        });
+
+        if (result !== false) {
+            if (await AxiosDelete(`/api/panel/${panel.id}`)) {
+                sendAlert(`Deleted panel: ${panel.title}`, { broadcast: true, variant: "success" });
+            } else {
+                sendAlert(`Failed to delete panel: ${panel.title}`, { variant: "error" });
+            }
+        }
     };
 
     const handleConfig = (event) => {
@@ -184,13 +197,6 @@ export default function PanelDropdownMenu({ panel }) {
                     <ReplayIcon fontSize="small" />
                 </PanelMenuItem>
             </Menu>
-            {deleteDialogOpen ? (
-                <PanelDeleteDialog
-                    panelId={panel?.id}
-                    panelTitle={panel?.title}
-                    onClose={() => setDeleteDialogOpen(false)}
-                />
-            ) : null}
         </div>
     );
 }
