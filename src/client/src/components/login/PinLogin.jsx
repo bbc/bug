@@ -113,6 +113,7 @@ export default function PinLogin({ handleLogin }) {
                                 padding: "16px",
                             },
                         }}
+                        autoFocus
                         onChange={(event) => handleChange(event)}
                         value={pin}
                         inputProps={{ style: { textAlign: "center" } }}

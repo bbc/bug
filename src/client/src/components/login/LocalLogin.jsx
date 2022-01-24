@@ -34,7 +34,7 @@ export default function LocalLogin({ handleLogin }) {
                             fullWidth
                             error={errors?.username ? true : false}
                             type="text"
-                            variant="standard"
+                            variant="outlined"
                             label="Username"
                         />
                     </Grid>
@@ -44,7 +44,7 @@ export default function LocalLogin({ handleLogin }) {
                             fullWidth
                             error={errors?.password ? true : false}
                             type="password"
-                            variant="standard"
+                            variant="outlined"
                             label="Password"
                         />
                     </Grid>

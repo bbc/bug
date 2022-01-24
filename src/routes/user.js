@@ -10,6 +10,7 @@ const userUpdate = require("@services/user-update");
 const userList = require("@services/user-list");
 const userGet = require("@services/user-get");
 const userEnable = require("@services/user-enable");
+const userGetProxyId = require("@services/user-getproxyid");
 
 /**
  * @swagger
@@ -64,6 +65,30 @@ router.get(
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: result ? `Retrieved the current user.` : "There is no current user.",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /user/current:
+ *    get:
+ *      description: Retrieves into about the current user grouped by strategy. Mainly for fetching any matched http-header value
+ *      tags: [system]
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
+router.get(
+    "/getproxyid",
+    asyncHandler(async (req, res) => {
+        const result = await userGetProxyId(req.headers);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            message: result ? `Retrieved the current user info.` : "Failed to retrieve user info.",
             data: result,
         });
     })

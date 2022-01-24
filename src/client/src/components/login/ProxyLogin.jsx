@@ -3,13 +3,26 @@ import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import AxiosGet from "@utils/AxiosGet";
+import useAsyncEffect from "use-async-effect";
+import TextField from "@mui/material/TextField";
+import Loading from "@components/Loading";
 
 export default function LocalLogin({ handleLogin }) {
     const { handleSubmit } = useForm({});
+    const [user, setUser] = React.useState(false);
+
+    useAsyncEffect(async () => {
+        setUser(await AxiosGet(`/api/user/getproxyid`));
+    }, []);
 
     const onSubmit = async (form) => {
         handleLogin(form);
     };
+
+    if (user == false) {
+        return <Loading />;
+    }
 
     return (
         <Box
@@ -23,6 +36,10 @@ export default function LocalLogin({ handleLogin }) {
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                        <TextField disabled value={user ? user : "No user ID found"} variant="outlined" fullWidth />
+                    </Grid>
+
                     <Grid item xs={12}>
                         <Button
                             fullWidth
