@@ -5,7 +5,7 @@ import LoadingOverlay from "@components/LoadingOverlay";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import userSlice from "@redux/userSlice";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -19,119 +19,10 @@ import axios from "axios";
 import PinLogin from "@components/login/PinLogin";
 import LocalLogin from "@components/login/LocalLogin";
 import ProxyLogin from "@components/login/ProxyLogin";
-import useClasses from "@utils/Classes";
 import { useSelector } from "react-redux";
-
-//TODO move to SX props
-
-const styles = (theme) => ({
-    root: {
-        margin: "auto",
-        marginTop: "4rem",
-        maxWidth: 620,
-        minHeight: 800,
-        "@media (max-width:800px)": {
-            minHeight: 680,
-        },
-        "@media (max-width:624px)": {
-            marginTop: 0,
-            minHeight: "inherit",
-        },
-        "@media (max-height:400px) and (max-width:800px)": {
-            maxWidth: "inherit",
-            marginTop: 0,
-            backgroundColor: "inherit",
-            minHeight: "inherit",
-        },
-    },
-    quote: {
-        margin: "auto",
-        maxWidth: 620,
-        fontSize: "1rem",
-        textAlign: "center",
-        "@media (max-height:400px) and (max-width:800px)": {
-            maxWidth: "inherit",
-            textOverflow: "ellipsis",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-            fontSize: 15,
-            "& .MuiBox-root": {
-                margin: "12px",
-            },
-        },
-    },
-    icon: {
-        color: theme.palette.primary.main,
-        fontSize: 120,
-        padding: "16px",
-        "@media (max-width:800px)": {
-            fontSize: 100,
-            padding: "10px",
-        },
-        "@media (max-width:600px)": {
-            fontSize: 80,
-            padding: "8px",
-        },
-    },
-    cardContent: {
-        textAlign: "center",
-        marginLeft: "16px",
-        marginRight: "16px",
-        "@media (max-height:400px) and (max-width:800px)": {
-            margin: "0px",
-            padding: "0px",
-            "&:last-child": {
-                paddingBottom: 0,
-            },
-        },
-        "@media (max-width:480px)": {
-            padding: "8px",
-            margin: "8px",
-        },
-    },
-    title: {
-        fontSize: 50,
-        padding: "16px",
-        fontWeight: 500,
-        marginBottom: "16px",
-        "@media (max-width:800px)": {
-            fontSize: 44,
-            marginBottom: "10px",
-        },
-        "@media (max-width:600px)": {
-            fontSize: 32,
-            paddingTop: "8px",
-            marginBottom: "8px",
-        },
-        "@media (max-height:400px) and (max-width:800px)": {
-            fontSize: 26,
-            paddingTop: "4px",
-        },
-    },
-    tabs: {
-        backgroundColor: theme.palette.appbar.default,
-    },
-    tabContainer: {
-        position: "static",
-    },
-    tabPanel: {
-        paddingTop: 0,
-        "@media (max-height:400px) and (max-width:800px)": {
-            height: 292,
-        },
-    },
-    logoWrapper: {
-        "@media (max-height:400px) and (max-width:800px)": {
-            margin: "16px",
-            width: "300px",
-        },
-    },
-});
 
 export default function PageLogin() {
     const dispatch = useDispatch();
-    // const classes = useStyles();
-    const classes = useClasses(styles);
     const [loading, setLoading] = useState(true);
     const [tabIndex, setTabIndex] = useState(0);
     const [enabledStrategies, setEnabledStrategies] = React.useState([]);
@@ -150,9 +41,18 @@ export default function PageLogin() {
 
     const TabPanel = ({ children, value, index }) => {
         return (
-            <div className={classes.tabPanel} role="tabpanel" hidden={value !== index}>
+            <Box
+                sx={{
+                    paddingTop: "0px",
+                    "@media (max-height:400px) and (max-width:800px)": {
+                        height: "292px",
+                    },
+                }}
+                role="tabpanel"
+                hidden={value !== index}
+            >
                 {value === index && <>{children}</>}
-            </div>
+            </Box>
         );
     };
 
@@ -199,8 +99,45 @@ export default function PageLogin() {
     return (
         <>
             <div style={{ height: "100%", width: "100%", overflow: "auto" }} sx={{ backgroundColor: "#ff0000" }}>
-                <Card className={classes.root}>
-                    <CardContent className={classes.cardContent}>
+                <Card
+                    sx={{
+                        margin: "auto",
+                        marginTop: "4rem",
+                        maxWidth: "620px",
+                        minHeight: "800px",
+                        "@media (max-width:800px)": {
+                            minHeight: "680px",
+                        },
+                        "@media (max-width:624px)": {
+                            marginTop: "0px",
+                            minHeight: "inherit",
+                        },
+                        "@media (max-height:400px) and (max-width:800px)": {
+                            maxWidth: "inherit",
+                            marginTop: "0px",
+                            backgroundColor: "inherit",
+                            minHeight: "inherit",
+                        },
+                    }}
+                >
+                    <CardContent
+                        sx={{
+                            textAlign: "center",
+                            marginLeft: "16px",
+                            marginRight: "16px",
+                            "@media (max-height:400px) and (max-width:800px)": {
+                                margin: "0px",
+                                padding: "0px",
+                                "&:last-child": {
+                                    paddingBottom: "0px",
+                                },
+                            },
+                            "@media (max-width:480px)": {
+                                padding: "8px",
+                                margin: "8px",
+                            },
+                        }}
+                    >
                         <Grid
                             container
                             sx={{
@@ -214,9 +151,57 @@ export default function PageLogin() {
                                 },
                             }}
                         >
-                            <Grid item className={classes.logoWrapper}>
-                                <FontAwesomeIcon size="lg" icon={faBug} className={classes.icon} />
-                                <div className={classes.title}>{settings?.title}</div>
+                            <Grid
+                                item
+                                sx={{
+                                    "@media (max-height:400px) and (max-width:800px)": {
+                                        margin: "16px",
+                                        width: "300px",
+                                    },
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        "& .fa-bug": {
+                                            color: "primary.main",
+                                            fontSize: 120,
+                                            padding: "16px",
+                                            "@media (max-width:800px)": {
+                                                fontSize: 100,
+                                                padding: "10px",
+                                            },
+                                            "@media (max-width:600px)": {
+                                                fontSize: 80,
+                                                padding: "8px",
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <FontAwesomeIcon size="lg" icon={faBug} />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        fontSize: "50px",
+                                        padding: "16px",
+                                        fontWeight: 500,
+                                        marginBottom: "16px",
+                                        "@media (max-width:800px)": {
+                                            fontSize: "44px",
+                                            marginBottom: "10px",
+                                        },
+                                        "@media (max-width:600px)": {
+                                            fontSize: "32px",
+                                            paddingTop: "8px",
+                                            marginBottom: "8px",
+                                        },
+                                        "@media (max-height:400px) and (max-width:800px)": {
+                                            fontSize: "26px",
+                                            paddingTop: "4px",
+                                        },
+                                    }}
+                                >
+                                    {settings?.data?.title}
+                                </Box>
                             </Grid>
                             <Grid
                                 item
@@ -228,7 +213,9 @@ export default function PageLogin() {
                                 }}
                             >
                                 <Tabs
-                                    className={classes.tabs}
+                                    sx={{
+                                        backgroundColor: "appbar.default",
+                                    }}
                                     value={tabIndex}
                                     indicatorColor="primary"
                                     textColor="primary"
@@ -258,9 +245,26 @@ export default function PageLogin() {
                     </CardContent>
                 </Card>
 
-                <Typography variant="body2" component="p" className={classes.quote}>
+                <Box
+                    sx={{
+                        margin: "auto",
+                        maxWidth: 620,
+                        fontSize: "1rem",
+                        textAlign: "center",
+                        "@media (max-height:400px) and (max-width:800px)": {
+                            maxWidth: "inherit",
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            fontSize: 15,
+                            "& .MuiBox-root": {
+                                margin: "12px",
+                            },
+                        },
+                    }}
+                >
                     <BugQuote />
-                </Typography>
+                </Box>
             </div>
         </>
     );
