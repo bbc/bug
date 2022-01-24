@@ -24,10 +24,10 @@ module.exports = async (encoderSid, decoderSid) => {
 
         console.log(response);
         if (response.data?.meta?.status === "ok") {
-            console.log(`Unpaired ${encoderSid} from ${decoderSid}.`);
+            console.log(`device-unpair: unpaired ${encoderSid} from ${decoderSid}.`);
             return await deviceUpdateLocal(decoderSid, "link", null);
         } else {
-            console.log(`Could not unpair ${encoderSid} from ${decoderSid}.`);
+            console.log(`device-unpair: could not unpair ${encoderSid} from ${decoderSid}.`);
             console.log(response.data);
             return false;
         }

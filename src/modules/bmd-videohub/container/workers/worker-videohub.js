@@ -60,7 +60,7 @@ const main = async () => {
     dataCollection.deleteMany({});
 
     // Kick things off
-    console.log(`videohub-worker: connecting to device at ${workerData.address}:${workerData.port}`);
+    console.log(`worker-videohub: connecting to device at ${workerData.address}:${workerData.port}`);
 
     let router;
     try {
@@ -73,13 +73,19 @@ const main = async () => {
     }
 
     router.on("update", saveResult);
-    console.log("videohub-worker: attempting connection ... ");
+    console.log("worker-videohub: attempting connection ... ");
 
     await router.connect();
-    console.log("videohub-worker: waiting for events ...");
+    console.log("worker-videohub: waiting for events ...");
 
     let statusDumpTime = Date.now();
-    let statusDumpFields = ["VIDEOHUB DEVICE", "INPUT LABELS", "OUTPUT LABELS", "VIDEO OUTPUT LOCKS", "VIDEO OUTPUT ROUTING"];
+    let statusDumpFields = [
+        "VIDEOHUB DEVICE",
+        "INPUT LABELS",
+        "OUTPUT LABELS",
+        "VIDEO OUTPUT LOCKS",
+        "VIDEO OUTPUT ROUTING",
+    ];
     while (true) {
         // poll occasionally
         await delay(updateDelay);

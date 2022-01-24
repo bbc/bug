@@ -34,27 +34,31 @@ const main = async () => {
     });
 
     try {
-        console.log("fetch-addresslists: connecting to device " + JSON.stringify(conn));
+        console.log("worker-addresslists: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
         throw "fetch-addresslists: failed to connect to device";
     }
-    console.log("fetch-addresslists: device connected ok");
+    console.log("worker-addresslists: device connected ok");
 
     let noErrors = true;
-    console.log("fetch-addresslists: starting device poll....");
+    console.log("worker-addresslists: starting device poll....");
     while (noErrors) {
         try {
             const addressLists = await mikrotikFetchAddressLists(conn);
             // this is a simple array, so we save it manually
-            await addressListsCollection.replaceOne({ "key": "addresslists" }, {
-                key: "addresslists",
-                data: addressLists
-            }, { upsert: true });
+            await addressListsCollection.replaceOne(
+                { key: "addresslists" },
+                {
+                    key: "addresslists",
+                    data: addressLists,
+                },
+                { upsert: true }
+            );
 
             // await mongoSaveArray(addressListsCollection, addressLists, "name");
         } catch (error) {
-            console.log("fetch-addresslists: ", error);
+            console.log("worker-addresslists: ", error);
             noErrors = false;
         }
         await delay(updateDelay);

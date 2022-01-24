@@ -34,7 +34,7 @@ const main = async () => {
     await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
 
     // Kick things off
-    console.log(`worker-interfacestate: connecting to device at ${workerData.address}`);
+    console.log(`worker-interfacestats: connecting to device at ${workerData.address}`);
 
     while (true) {
         // get list of interfaces

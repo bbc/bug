@@ -31,7 +31,7 @@ const main = async () => {
     // remove previous values
     channelsCollection.deleteMany({});
 
-    console.log(`channels: teradek-core channels worker starting...`);
+    console.log(`worker-channels: teradek-core channels worker starting...`);
 
     // initial delay (to stagger device polls)
     await delay(1500);
@@ -49,7 +49,7 @@ const main = async () => {
             });
             await mongoSaveArray(channelsCollection, channels, "id");
         } else {
-            console.log(`channels: ${response.data?.meta?.error?.message}`);
+            console.log(`worker-channels: ${response.data?.meta?.error?.message}`);
         }
 
         await delay(updateDelay);

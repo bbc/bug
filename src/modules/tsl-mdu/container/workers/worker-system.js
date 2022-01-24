@@ -23,7 +23,7 @@ const main = async () => {
     systemCollection.createIndex({ timestamp: 1 }, { expireAfterSeconds: 86400 });
 
     const mdu = await MDU(workerData);
-    console.log(`mdu: ${workerData?.model} starting...`);
+    console.log(`worker-system: ${workerData?.model} starting...`);
 
     while (true) {
         const system = await mdu.getStatus();

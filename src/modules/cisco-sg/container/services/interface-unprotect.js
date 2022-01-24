@@ -10,7 +10,7 @@ module.exports = async (interfaceId) => {
     }
 
     if (!config.protectedInterfaces.includes(interfaceId)) {
-        console.log(`interface-protect: cannot find interface ${interfaceId}`);
+        console.log(`interface-unprotect: cannot find interface ${interfaceId}`);
         return false;
     }
 

@@ -29,7 +29,7 @@ const getSources = async () => {
     let sources = [];
 
     client.connect({ port: 5959, host: workerData.address }, () => {
-        console.log(`get-sources-discovery: Connection established with the ${workerData.address}.`);
+        console.log(`worker-sourcesdiscovery: Connection established with the ${workerData.address}.`);
         let message = Buffer.alloc(9);
         message.fill("<query/>", 0, 8);
         client.write(message);
@@ -70,7 +70,7 @@ const getSources = async () => {
                 await mongoSaveArray(sourceCollection, collection, "source");
                 await client.end();
             } catch (error) {
-                console.log("get-sources-discovery: Invalid syntax of XML.");
+                console.log("worker-sourcesdiscovery: Invalid syntax of XML.");
                 console.log(error);
             }
             chunks = "";
@@ -78,7 +78,7 @@ const getSources = async () => {
     });
 
     client.on("end", async () => {
-        console.log("get-sources-discovery: Connection closed");
+        console.log("worker-sourcesdiscovery: Connection closed");
     });
 };
 

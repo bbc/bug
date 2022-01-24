@@ -19,7 +19,7 @@ module.exports = async (params) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-setlabel: failed to fetch config`);
+        console.log(`videohub-setlabels: failed to fetch config`);
         return false;
     }
 

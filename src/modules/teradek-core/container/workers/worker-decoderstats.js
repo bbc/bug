@@ -35,7 +35,7 @@ const main = async () => {
     const tokenCollection = await mongoDb.db.collection("token");
     const devicesCollection = await mongoDb.db.collection("devices");
 
-    console.log(`decoders-stats: starting to collect device stats starting...`);
+    console.log(`worker-decoderstats: starting to collect device stats starting...`);
 
     const token = await tokenCollection.findOne();
 
@@ -48,7 +48,7 @@ const main = async () => {
     });
 
     socket.on("connect_error", (event) => {
-        console.log("decoder-stats: ", error);
+        console.log("worker-decoderstats: ", error);
     });
 
     socket.on("connect", () => {
@@ -56,7 +56,7 @@ const main = async () => {
     });
 
     for (let decoderSid of workerData?.decoders) {
-        console.log(`decoders-stats: registering websocket listener for device sid ${decoderSid}`);
+        console.log(`worker-decoderstats: registering websocket listener for device sid ${decoderSid}`);
 
         socket.emit("room:enter", `device:${decoderSid}:decoder-stats`);
         // socket.emit("room:enter", `device:${decoder}:decoder-status`);

@@ -11,7 +11,7 @@ module.exports = async (destinatonIndex, sourceIndex) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-connect: failed to fetch config`);
+        console.log(`videohub-route: failed to fetch config`);
         return false;
     }
 
@@ -21,7 +21,7 @@ module.exports = async (destinatonIndex, sourceIndex) => {
         await router.send("VIDEO OUTPUT ROUTING", `${destinatonIndex} ${sourceIndex}`);
         return true;
     } catch (error) {
-        console.log("videohub-send: ", error);
+        console.log("videohub-route: ", error);
         return false;
     }
 };

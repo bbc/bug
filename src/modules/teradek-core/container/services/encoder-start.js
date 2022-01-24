@@ -21,10 +21,10 @@ module.exports = async (sid) => {
         );
 
         if (response.data?.meta?.status === "ok") {
-            console.log(`started encoder ${sid}`);
+            console.log(`encoder-start: started encoder ${sid}`);
             return await deviceUpdateLocal(sid, "streamStatus", "streaming");
         } else {
-            console.log(`failed to start encoder ${sid}`);
+            console.log(`encoder-start: failed to start encoder ${sid}`);
             console.log(response.data);
             return false;
         }

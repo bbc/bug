@@ -39,24 +39,22 @@ const main = async () => {
         timeout: 5,
     });
 
-    console.log("fetch-traffic: starting ...");
+    console.log("worker-traffic: starting ...");
 
     // initial delay (to stagger device polls)
     await delay(2000);
 
     try {
-        console.log(
-            "fetch-traffic: connecting to device " + JSON.stringify(conn)
-        );
+        console.log("worker-traffic: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
-        console.log("fetch-traffic: failed to connect to device");
+        console.log("worker-traffic: failed to connect to device");
         return;
     }
-    console.log("fetch-traffic: device connected ok");
+    console.log("worker-traffic: device connected ok");
 
     let noErrors = true;
-    console.log("fetch-traffic: starting device poll....");
+    console.log("worker-traffic: starting device poll....");
     while (noErrors) {
         try {
             // fetch interface list from db (empty if not yet fetched)
@@ -66,9 +64,7 @@ const main = async () => {
             let trafficArray = [];
             if (interfaces) {
                 for (let eachInterface of interfaces) {
-                    trafficArray.push(
-                        await mikrotikFetchTraffic(conn, eachInterface["name"])
-                    );
+                    trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface["name"]));
                 }
             }
 
@@ -76,15 +72,12 @@ const main = async () => {
             await trafficSaveHistory(historyCollection, trafficArray);
 
             // add historical data (for sparklines)
-            trafficArray = await trafficAddHistory(
-                trafficCollection,
-                trafficArray
-            );
+            trafficArray = await trafficAddHistory(trafficCollection, trafficArray);
 
             // save to mongo
             await mongoSaveArray(trafficCollection, trafficArray, "name");
         } catch (error) {
-            console.log("fetch-traffic: ", error);
+            console.log("worker-traffic: ", error);
             noErrors = false;
         }
         await delay(updateDelay);

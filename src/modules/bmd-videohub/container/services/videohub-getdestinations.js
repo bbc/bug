@@ -11,7 +11,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-getsources: failed to fetch config`);
+        console.log(`videohub-getdestinations: failed to fetch config`);
         return false;
     }
 

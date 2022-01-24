@@ -27,7 +27,6 @@ const main = async () => {
     // Kick things off
     console.log(`worker-codec: connecting to device at ${workerData.address}`);
 
-    // console.log(workerData);
     while (true) {
         const results = {};
 

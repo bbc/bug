@@ -29,7 +29,7 @@ const main = async () => {
     // and now create the index with ttl
     await mongoCreateIndex(linksCollection, "timestamp", { expireAfterSeconds: 120 });
 
-    console.log(`links: teradek-core link worker starting...`);
+    console.log(`worker-links: teradek-core link worker starting...`);
 
     // initial delay (to stagger device polls)
     await delay(12000);
@@ -44,7 +44,6 @@ const main = async () => {
         });
 
         if (response.data?.meta?.status === "ok") {
-
             // update devices first
             for (let link of response.data?.response) {
                 const result = await devicesCollection.updateOne(
@@ -59,7 +58,7 @@ const main = async () => {
                 const filteredLink = {
                     id: link.id,
                     encoderSid: link.encoderSid,
-                }
+                };
 
                 for (let decoder of link.linksToDecoders) {
                     await devicesCollection.updateOne(
@@ -74,7 +73,6 @@ const main = async () => {
 
             // and add to the links collection
             await mongoSaveArray(linksCollection, response.data?.response, "id");
-
         } else {
             throw response.data;
         }

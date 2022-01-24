@@ -45,7 +45,7 @@ const main = async () => {
     const tokenCollection = await mongoDb.db.collection("token");
     const devicesCollection = await mongoDb.db.collection("devices");
 
-    console.log(`encoders-stats: starting to collect device stats starting...`);
+    console.log(`worker-encoderstats: starting to collect device stats starting...`);
 
     const token = await tokenCollection.findOne();
 
@@ -58,15 +58,15 @@ const main = async () => {
     });
 
     socket.on("connect_error", (event) => {
-        console.log("encoder-stats: ", error);
+        console.log("worker-encoderstats: ", error);
     });
 
     socket.on("connect", () => {
-        console.log(`encoders-stats: connected to teradek core ${socket.id}`);
+        console.log(`worker-encoderstats: connected to teradek core ${socket.id}`);
     });
 
     for (let encoderSid of workerData.encoders) {
-        console.log(`encoders-stats: registering websocket listener for device sid ${encoderSid}`);
+        console.log(`worker-encoderstats: registering websocket listener for device sid ${encoderSid}`);
 
         socket.emit("room:enter", `device:${encoderSid}:preview`);
         socket.emit("room:enter", `device:${encoderSid}:audio-preview`);
@@ -112,7 +112,6 @@ const main = async () => {
                     },
                 }
             );
-
         });
 
         socket.on(`device:${encoderSid}:stats`, async (event) => {
@@ -168,7 +167,7 @@ const main = async () => {
                     {
                         $set: {
                             bitrate: stats.value,
-                            "bitrate-text": formatBps(parseInt(stats.value) * 1024)
+                            "bitrate-text": formatBps(parseInt(stats.value) * 1024),
                         },
                     }
                 );

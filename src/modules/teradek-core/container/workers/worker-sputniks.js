@@ -22,7 +22,7 @@ const main = async () => {
     const tokenCollection = await mongoDb.db.collection("token");
     const sputniksCollection = await mongoDb.db.collection("sputniks");
 
-    console.log(`sputniks: teradek-core sputnik worker starting...`);
+    console.log(`worker-sputniks: teradek-core sputnik worker starting...`);
 
     // initial delay (to stagger polls)
     await delay(2500);

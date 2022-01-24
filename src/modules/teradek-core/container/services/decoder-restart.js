@@ -19,7 +19,7 @@ module.exports = async (sid) => {
     );
 
     if (response.data?.meta?.status === "ok") {
-        console.log(`Restarted ${sid}.`);
+        console.log(`decoder-restart: restarted ${sid}.`);
         return true;
     } else {
         console.log(response.data);

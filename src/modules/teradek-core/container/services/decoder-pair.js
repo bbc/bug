@@ -15,7 +15,7 @@ module.exports = async (encoderSid, decoderSid) => {
     // so ... first of all we need to check if the decoder is already paired, and if so, remove it.
     const decoder = await devicesCollection.findOne({ sid: decoderSid });
     if (!decoder) {
-        console.log(`failed to find decoder ${decoderSid}`);
+        console.log(`decoder-pair: failed to find decoder ${decoderSid}`);
         throw new Error();
     }
     if (decoder?.link?.encoderSid) {
@@ -30,9 +30,9 @@ module.exports = async (encoderSid, decoderSid) => {
             }
         );
         if (response.data?.meta?.status === "ok") {
-            console.log(`Unpaired ${encoderSid} from ${decoderSid}.`);
+            console.log(`decoder-pair: Unpaired ${encoderSid} from ${decoderSid}.`);
         } else {
-            console.log(`failed to unpair ${encoderSid} from ${decoderSid}.`);
+            console.log(`decoder-pair: failed to unpair ${encoderSid} from ${decoderSid}.`);
             throw new Error();
         }
     }
@@ -56,7 +56,7 @@ module.exports = async (encoderSid, decoderSid) => {
     );
 
     if (response.data?.meta?.status === "ok") {
-        console.log(`Paired ${encoderSid} to ${decoderSid}.`);
+        console.log(`decoder-pair: paired ${encoderSid} to ${decoderSid}.`);
         return await deviceUpdateLocal(decoderSid, "link", { encoderSid: encoderSid });
     } else {
         console.log(response.data);

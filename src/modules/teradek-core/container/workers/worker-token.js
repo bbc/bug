@@ -22,7 +22,7 @@ const main = async () => {
     await mongoDb.connect(workerData?.id);
     const tokenCollection = await mongoDb.db.collection("token");
 
-    console.log(`token: teradek-core token fetcher starting...`);
+    console.log(`worker-token: teradek-core token fetcher starting...`);
 
     // initial delay (to stagger device polls)
     await delay(5);
@@ -43,7 +43,7 @@ const main = async () => {
         if (response.data?.meta?.status === "ok") {
             if (!runOnce) {
                 runOnce = true;
-                console.log(`token: successfully logged in`);
+                console.log(`worker-token: successfully logged in`);
             }
             const token = {
                 ...response?.data?.response,

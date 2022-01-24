@@ -20,7 +20,7 @@ const main = async () => {
     const tokenCollection = await mongoDb.db.collection("token");
     const devicesCollection = await mongoDb.db.collection("devices");
 
-    console.log(`devices-firmware: starting to collect device firmware info...`);
+    console.log(`worker-devicefirmware: starting to collect device firmware info...`);
 
     const token = await tokenCollection.findOne();
 
@@ -31,7 +31,7 @@ const main = async () => {
         // const token = await tokenCollection.findOne();
         const response = await axios.get(`v1.0/${workerData.organisation}/devices`, {
             params: {
-                "details": true,
+                details: true,
                 auth_token: token?.auth_token,
             },
         });
@@ -51,7 +51,7 @@ const main = async () => {
                 devicesCollection.updateOne(query, update, options);
             }
         } else {
-            console.log(`channels: ${response.data?.meta?.error?.message}`);
+            console.log(`worker-devicefirmware: ${response.data?.meta?.error?.message}`);
         }
         await delay(updateDelay);
     }

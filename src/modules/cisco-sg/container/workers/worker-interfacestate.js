@@ -33,7 +33,7 @@ const main = async () => {
         // get list of interfaces
         const interfaces = await interfacesCollection.find().toArray();
         if (!interfaces) {
-            console.log("worker-interfacedetails: no interfaces found in db - waiting ...");
+            console.log("worker-interfacestate: no interfaces found in db - waiting ...");
             await delay(5000);
         } else {
             // get subtree of interface link states

@@ -53,7 +53,7 @@ const main = async () => {
     // remove previous values
     await devicesCollection.deleteMany({});
 
-    console.log(`devices: teradek-core device worker starting...`);
+    console.log(`worker-devices: teradek-core device worker starting...`);
 
     // initial delay (to stagger device polls)
     await delay(2500);
@@ -77,7 +77,7 @@ const main = async () => {
                 devicesCollection.updateOne(query, update, options);
             }
         } else {
-            console.log(`channels: ${response.data?.meta?.error?.message}`);
+            console.log(`worker-devices: ${response.data?.meta?.error?.message}`);
         }
         await delay(updateDelay);
     }

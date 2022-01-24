@@ -6,7 +6,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const mikrotikFetchLeases = require("../services/mikrotik-fetchleases");
+const mikrotikFetchInterfaces = require("../services/mikrotik-fetchinterfaces");
 const mongoSaveArray = require("@core/mongo-savearray");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
@@ -21,10 +21,10 @@ parentPort.postMessage({
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
-    const leasesCollection = await mongoCollection("leases");
+    const interfacesCollection = await mongoCollection("interfaces");
 
-    // update ttl
-    await mongoCreateIndex(leasesCollection, "timestamp", { expireAfterSeconds: 20 });
+    // and now create the index with ttl
+    await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 60 });
 
     const conn = new RosApi({
         host: workerData.address,
@@ -34,21 +34,21 @@ const main = async () => {
     });
 
     try {
-        console.log("fetch-leases: connecting to device " + JSON.stringify(conn));
+        console.log("worker-interfaces: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
-        throw "fetch-leases: failed to connect to device";
+        throw "worker-interfaces: failed to connect to device";
     }
-    console.log("fetch-leases: device connected ok");
+    console.log("worker-interfaces: device connected ok");
 
     let noErrors = true;
-    console.log("fetch-leases: starting device poll....");
+    console.log("worker-interfaces: starting device poll....");
     while (noErrors) {
         try {
-            const leases = await mikrotikFetchLeases(conn);
-            await mongoSaveArray(leasesCollection, leases, "id");
+            const interfaces = await mikrotikFetchInterfaces(conn);
+            await mongoSaveArray(interfacesCollection, interfaces, "id");
         } catch (error) {
-            console.log("fetch-leases: ", error);
+            console.log("worker-interfaces: ", error);
             noErrors = false;
         }
         await delay(updateDelay);

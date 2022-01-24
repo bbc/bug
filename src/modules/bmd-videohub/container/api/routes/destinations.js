@@ -85,7 +85,6 @@ route.get("/lock/:index", async function (req, res, next) {
 
 route.get("/unlock/:index", async function (req, res, next) {
     try {
-        console.log("SSSS");
         res.json({
             status: "success",
             data: await videohubUnlock(req.params?.index),

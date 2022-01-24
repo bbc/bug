@@ -33,24 +33,22 @@ const main = async () => {
         timeout: 10,
     });
 
-    console.log("fetch-linkstats: starting ...");
+    console.log("worker-linkstats: starting ...");
 
     // initial delay (to stagger device polls)
     await delay(1000);
 
     try {
-        console.log(
-            "fetch-linkstats: connecting to device " + JSON.stringify(conn)
-        );
+        console.log("worker-linkstats: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
-        console.log("fetch-linkstats: failed to connect to device");
+        console.log("worker-linkstats: failed to connect to device");
         return;
     }
-    console.log("fetch-linkstats: device connected ok");
+    console.log("worker-linkstats: device connected ok");
 
     let noErrors = true;
-    console.log("fetch-linkstats: starting device poll....");
+    console.log("worker-linkstats: starting device poll....");
     while (noErrors) {
         try {
             // fetch interface list from db (empty if not yet fetched)
@@ -61,18 +59,13 @@ const main = async () => {
             if (interfaces) {
                 for (let eachInterface of interfaces) {
                     if (eachInterface["type"] === "ether") {
-                        linkStatsArray.push(
-                            await mikrotikFetchLinkStats(
-                                conn,
-                                eachInterface["name"]
-                            )
-                        );
+                        linkStatsArray.push(await mikrotikFetchLinkStats(conn, eachInterface["name"]));
                     }
                 }
             }
             await mongoSaveArray(linkStatsCollection, linkStatsArray, "name");
         } catch (error) {
-            console.log("fetch-linkstats: ", error);
+            console.log("worker-linkstats: ", error);
             noErrors = false;
         }
         await delay(updateDelay);

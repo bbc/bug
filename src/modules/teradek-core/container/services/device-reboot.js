@@ -11,14 +11,14 @@ module.exports = async (sid) => {
         const config = await configGet();
 
         const response = await axios.post(
-            `https://api-core.teradek.com/api/v1.0/${config?.organisation}/devices/${sid}/reboot?auth_token=${token?.auth_token}`,
+            `https://api-core.teradek.com/api/v1.0/${config?.organisation}/devices/${sid}/reboot?auth_token=${token?.auth_token}`
         );
 
         if (response.data?.meta?.status === "ok") {
-            console.log(`Rebooted ${sid}.`);
+            console.log(`device-reboot: rebooted ${sid}.`);
             return true;
         } else {
-            console.log(`Could not reboot ${sid}.`);
+            console.log(`device-reboot: could not reboot ${sid}.`);
             console.log(response.data);
             return false;
         }

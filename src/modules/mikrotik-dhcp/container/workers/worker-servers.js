@@ -34,21 +34,21 @@ const main = async () => {
     });
 
     try {
-        console.log("fetch-servers: connecting to device " + JSON.stringify(conn));
+        console.log("worker-servers: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
         throw "fetch-servers: failed to connect to device";
     }
-    console.log("fetch-servers: device connected ok");
+    console.log("worker-servers: device connected ok");
 
     let noErrors = true;
-    console.log("fetch-servers: starting device poll....");
+    console.log("worker-servers: starting device poll....");
     while (noErrors) {
         try {
             const servers = await mikrotikFetchServers(conn);
             await mongoSaveArray(serversCollection, servers, "id");
         } catch (error) {
-            console.log("fetch-servers: ", error);
+            console.log("worker-servers: ", error);
             noErrors = false;
         }
         await delay(updateDelay);

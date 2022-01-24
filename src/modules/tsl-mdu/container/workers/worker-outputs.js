@@ -23,7 +23,7 @@ const main = async () => {
     const outputsCollection = await mongoDb.db.collection("outputs");
 
     const mdu = await MDU(workerData);
-    console.log(`mdu: ${workerData?.model} starting...`);
+    console.log(`worker-outputs: ${workerData?.model} starting...`);
 
     while (true) {
         let outputs = await mdu.getOutputs();

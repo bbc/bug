@@ -6,7 +6,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const mikrotikFetchInterfaces = require("../services/mikrotik-fetchinterfaces");
+const mikrotikFetchLeases = require("../services/mikrotik-fetchleases");
 const mongoSaveArray = require("@core/mongo-savearray");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
@@ -21,10 +21,10 @@ parentPort.postMessage({
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
-    const interfacesCollection = await mongoCollection("interfaces");
+    const leasesCollection = await mongoCollection("leases");
 
-    // and now create the index with ttl
-    await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 60 });
+    // update ttl
+    await mongoCreateIndex(leasesCollection, "timestamp", { expireAfterSeconds: 20 });
 
     const conn = new RosApi({
         host: workerData.address,
@@ -34,23 +34,21 @@ const main = async () => {
     });
 
     try {
-        console.log(
-            "fetch-interfaces: connecting to device " + JSON.stringify(conn)
-        );
+        console.log("worker-leases: connecting to device " + JSON.stringify(conn));
         await conn.connect();
     } catch (error) {
-        throw "fetch-interfaces: failed to connect to device";
+        throw "fetch-leases: failed to connect to device";
     }
-    console.log("fetch-interfaces: device connected ok");
+    console.log("worker-leases: device connected ok");
 
     let noErrors = true;
-    console.log("fetch-interfaces: starting device poll....");
+    console.log("worker-leases: starting device poll....");
     while (noErrors) {
         try {
-            const interfaces = await mikrotikFetchInterfaces(conn);
-            await mongoSaveArray(interfacesCollection, interfaces, "id");
+            const leases = await mikrotikFetchLeases(conn);
+            await mongoSaveArray(leasesCollection, leases, "id");
         } catch (error) {
-            console.log("fetch-interfaces: ", error);
+            console.log("worker-leases: ", error);
             noErrors = false;
         }
         await delay(updateDelay);

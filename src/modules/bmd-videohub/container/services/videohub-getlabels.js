@@ -11,7 +11,7 @@ module.exports = async () => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-getsources: failed to fetch config`);
+        console.log(`videohub-getlabels: failed to fetch config`);
         return false;
     }
 
