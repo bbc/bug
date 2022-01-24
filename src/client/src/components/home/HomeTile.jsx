@@ -143,7 +143,7 @@ const HomeTile = ({ panel }) => {
                         }
                         action={<PanelDropdownMenu panel={panel} />}
                         title={panel.title}
-                        subheader={panel.description}
+                        subheader={panel.description ? panel.description : panel._module.description}
                     />
                     {panel !== null && <StatusItems />}
                 </StyledCard>
