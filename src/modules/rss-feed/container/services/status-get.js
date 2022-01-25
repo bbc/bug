@@ -11,7 +11,7 @@ module.exports = async () => {
             collectionName: "feed",
             message: ["Could not find any items in the RSS feed.", "Check the feed address."],
             itemType: "warning",
-            timeoutSeconds: 60,
+            timeoutSeconds: 300,
             flags: ["restartPanel", "configurePanel"],
         })
     );
