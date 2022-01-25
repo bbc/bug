@@ -14,7 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useHistory } from "react-router-dom";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";

@@ -2,7 +2,7 @@ import React from "react";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import BugApiTable from "@core/BugApiTable";
 import BugApiSwitch from "@core/BugApiSwitch";
 import Chip from "@mui/material/Chip";

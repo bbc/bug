@@ -6,7 +6,7 @@ import pageTitleSlice from "@redux/pageTitleSlice";
 import Button from "@mui/material/Button";
 import AxiosGet from "@utils/AxiosGet";
 import BugDetailsCard from "@core/BugDetailsCard";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import Loading from "@components/Loading";
 import TimeAgo from "javascript-time-ago";
 

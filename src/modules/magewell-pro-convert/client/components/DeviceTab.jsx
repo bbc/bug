@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import BugTableLinkButton from "@core/BugTableLinkButton";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import { useBugRenameDialog } from "@core/BugRenameDialog";

@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Loading from "@components/Loading";
 import BugItemMenu from "./BugItemMenu";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import BugApiTableFilters from "@components/BugApiTableFilters";
 import { useCookies } from "react-cookie";

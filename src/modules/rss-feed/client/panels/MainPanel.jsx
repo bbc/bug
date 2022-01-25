@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import Loading from "@components/Loading";
 import FeedCard from "./../components/FeedCard";
 import Grid from "@mui/material/Grid";

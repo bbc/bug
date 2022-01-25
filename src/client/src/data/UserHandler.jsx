@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import userSlice from "@redux/userSlice";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import { useEffect } from "react";
 
 // this is used to fetch the initial user state - which may already be logged in

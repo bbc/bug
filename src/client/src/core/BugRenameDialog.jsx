@@ -50,8 +50,6 @@ const BugRenameDialog = ({
         onRename(value);
     };
 
-    console.log(filter);
-
     return (
         <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <DialogTitle>{title}</DialogTitle>

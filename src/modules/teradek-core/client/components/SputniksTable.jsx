@@ -1,5 +1,5 @@
 import React from "react";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import BugApiTable from "@core/BugApiTable";
 import BugPowerIcon from "@core/BugPowerIcon";
 import Typography from "@mui/material/Typography";

@@ -12,7 +12,7 @@ import Loading from "@components/Loading";
 import OutputsMenu from "./OutputsMenu";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "@utils/Snackbar";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import RenameDialog from "./dialogs/RenameDialog";
 import DelayDialog from "./dialogs/DelayDialog";
 import Link from "@mui/material/Link";

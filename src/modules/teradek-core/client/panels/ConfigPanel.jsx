@@ -8,7 +8,7 @@ import BugPasswordTextField from "@core/BugPasswordTextField";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import { useParams } from "react-router-dom";
 
 export default function ConfigPanel() {
