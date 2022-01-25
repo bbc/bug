@@ -24,8 +24,8 @@
         "sessionLength": "86400000",
         "entryPoint": "",
         "issuer": "",
-        "profileFeild": "mail",
-        "matchFeild": "email",
+        "profileField": "mail",
+        "matchField": "email",
         "loginPath": "",
         "identifierFormat": "",
         "enabled": false
@@ -37,8 +37,8 @@
         "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
         "sessionLength": "86400000",
         "returnURL": "",
-        "profileFeild": "mail",
-        "matchFeild": "email",
+        "profileField": "mail",
+        "matchField": "email",
         "realm": "",
         "enabled": false
     },

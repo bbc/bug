@@ -141,10 +141,10 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{
-                            ...register("profileFeild"),
+                            ...register("profileField"),
                         }}
                         fullWidth
-                        defaultValue={strategy.profileFeild}
+                        defaultValue={strategy.profileField}
                         variant="standard"
                         type="text"
                         label="User field"
@@ -156,13 +156,13 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     <TextField
                         select
                         inputProps={{
-                            ...register("matchFeild"),
+                            ...register("matchField"),
                         }}
                         fullWidth
                         label="SAML match field"
                         helperText="Which BUG user field to match against"
                         variant="standard"
-                        defaultValue={strategy.matchFeild}
+                        defaultValue={strategy.matchField}
                         SelectProps={{
                             native: true,
                         }}
