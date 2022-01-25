@@ -6,7 +6,7 @@ import CardActions from "@mui/material/CardActions";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
+import CodeIcon from "@mui/icons-material/Code";
 import { useHotkeys } from "react-hotkeys-hook";
 
 const BugForm = (props) => {
@@ -20,14 +20,14 @@ const BugForm = (props) => {
                     aria-label="close"
                     sx={{
                         position: "absolute",
-                        right: "35px",
+                        right: "40px",
                         top: "-2px",
                         color: "grey.A500",
                         padding: "15px",
                     }}
                     onClick={props.onEditor}
                 >
-                    <EditIcon />
+                    <CodeIcon />
                 </IconButton>
             );
         }
