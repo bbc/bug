@@ -5,6 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TimeAgo from "javascript-time-ago";
+import ReactHtmlParser from "react-html-parser";
 
 export default function FeedCard({ item }) {
     const timeAgo = new TimeAgo("en-GB");
@@ -26,7 +27,7 @@ export default function FeedCard({ item }) {
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {item?.author}
                     </Typography>
-                    <Typography variant="body2"> {item?.description}</Typography>
+                    <Typography variant="body2"> {ReactHtmlParser(item?.description)}</Typography>
                 </CardContent>
                 <CardActions>
                     <Button onClick={handleDetails} size="small">
