@@ -42,7 +42,7 @@ export default function BugApiSwitch({ checked, disabled = false, onChange, time
 
     return (
         <Switch
-            checked={localChecked}
+            checked={localChecked === true}
             disabled={isActive || disabled}
             onChange={handleChanged}
             onClick={(event) => {
