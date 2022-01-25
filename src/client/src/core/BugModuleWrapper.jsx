@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { usePanel } from "@data/Panel";
+import { usePanel } from "@data/PanelHandler";
 import { useHistory } from "react-router-dom";
 
 function ModuleSwitch({ children, panelId }) {
