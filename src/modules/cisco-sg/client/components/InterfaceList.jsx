@@ -257,7 +257,10 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     title: "Name",
                     content: (item) => (
                         <>
-                            <BugTableLinkButton onClick={(event) => handleRenameClicked(event, item)}>
+                            <BugTableLinkButton
+                                disabled={item._protected}
+                                onClick={(event) => handleRenameClicked(event, item)}
+                            >
                                 {item.alias ? item.alias : item.description}
                             </BugTableLinkButton>
                             <Box
@@ -347,6 +350,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     title: "Rename",
+                    disabled: (item) => item._protected,
                     icon: <EditIcon fontSize="small" />,
                     onClick: handleRenameClicked,
                 },

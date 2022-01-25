@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "@mui/material/Link";
 
-export default function BugTableLinkButton(props) {
+export default function BugTableLinkButton({ onClick, children, disabled }) {
     return (
         <Link
+            disabled={disabled}
             sx={{
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
@@ -15,11 +16,15 @@ export default function BugTableLinkButton(props) {
                 display: "block",
                 maxWidth: "100%",
                 textAlign: "left",
+                opacity: disabled ? 0.5 : 1,
+                "&:hover": {
+                    textDecoration: disabled ? "none" : "underline",
+                },
             }}
             component="button"
-            onClick={props?.onClick}
+            onClick={onClick}
         >
-            {props.children}
+            {children}
         </Link>
     );
 }
