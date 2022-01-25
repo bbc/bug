@@ -3,6 +3,7 @@
 const mongoSingle = require("@core/mongo-single");
 const codecdataGet = require("@services/codecdata-get");
 const dvbRateCalc = require("@utils/dvbrate-calc");
+const deviceIdGet = require("@services/deviceid-get");
 
 const frameRates = {
     1: 25,
@@ -19,6 +20,9 @@ const frameRates = {
 };
 
 module.exports = async () => {
+    // fetch hashed address of device to use as id
+    const deviceId = await deviceIdGet();
+
     const codecdata = await codecdataGet();
 
     // fetch array of audio bitrates
@@ -31,7 +35,7 @@ module.exports = async () => {
     const videoBitrate = dvbRateCalc.calculateVideoBitrate(codecdata.muxRate, fps, audioBitratesArray);
 
     // now we can update the localdata
-    const localdata = await mongoSingle.get("localdata");
+    const localdata = await mongoSingle.get(`localdata_${deviceId}`);
     localdata.videoBitrate = videoBitrate;
     localdata.videoBufferSize = parseInt((videoBitrate * 1.2) / fps);
 
@@ -40,5 +44,5 @@ module.exports = async () => {
     }
 
     // save and return
-    return await mongoSingle.set("localdata", localdata);
+    return await mongoSingle.set(`localdata_${deviceId}`, localdata);
 };

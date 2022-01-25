@@ -2,10 +2,14 @@
 
 const mongoSingle = require("@core/mongo-single");
 const updateBitrate = require("@services/update-bitrate");
+const deviceIdGet = require("@services/deviceid-get");
 
 module.exports = async (newLocalData, arrayName = null, index = null) => {
+    // fetch hashed address of device to use as id
+    const deviceId = await deviceIdGet();
+
     // fetch the existing data
-    let existingData = await mongoSingle.get("localdata");
+    let existingData = await mongoSingle.get(`localdata_${deviceId}`);
     if (!existingData) {
         existingData = {};
     }
@@ -28,7 +32,7 @@ module.exports = async (newLocalData, arrayName = null, index = null) => {
     }
 
     // save and return
-    if (!(await mongoSingle.set("localdata", existingData))) {
+    if (!(await mongoSingle.set(`localdata_${deviceId}`, existingData))) {
         return false;
     }
 
