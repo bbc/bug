@@ -54,6 +54,7 @@ export default function ChartCPU({ containers, stats, showTitle }) {
                 const color = hslToHex(208, 57, Math.round((current / count) * 100));
                 series.push(
                     <Area
+                        isAnimationActive={false}
                         name={getTitle(key)}
                         key={key}
                         type="monotone"

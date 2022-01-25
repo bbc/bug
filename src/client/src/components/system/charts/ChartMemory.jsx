@@ -77,6 +77,7 @@ export default function ChartMemory({ stats, showTitle }) {
                             </YAxis>
                             <Tooltip formatter={tooltipFormatter} />
                             <Area
+                                isAnimationActive={false}
                                 name={"Used Memory"}
                                 type="monotone"
                                 dataKey={"used"}
@@ -86,6 +87,7 @@ export default function ChartMemory({ stats, showTitle }) {
                                 unit="MB"
                             />
                             <Area
+                                isAnimationActive={false}
                                 name={"Free Memory"}
                                 type="monotone"
                                 dataKey={"free"}

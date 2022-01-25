@@ -42,6 +42,7 @@ export default function ChartDisk({ stats, showTitle }) {
                 const color = hslToHex(208, 57, Math.round((current / count) * 100));
                 series.push(
                     <Area
+                        isAnimationActive={false}
                         unit={units}
                         name={key}
                         key={key}

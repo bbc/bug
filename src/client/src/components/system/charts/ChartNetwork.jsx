@@ -33,6 +33,7 @@ export default function ChartNetwork({ type, stats, showTitle }) {
                 const color = hslToHex(208, 57, Math.round((current / count) * 100));
                 series.push(
                     <Area
+                        isAnimationActive={false}
                         unit="MB"
                         name={key}
                         key={key}
