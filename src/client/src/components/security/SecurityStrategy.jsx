@@ -13,6 +13,7 @@ import SecurityStrategyOidc from "@components/security/SecurityStrategyOidc";
 import SecurityStrategyPin from "@components/security/SecurityStrategyPin";
 import SecurityStrategyProxy from "@components/security/SecurityStrategyProxy";
 import SecurityStrategySaml from "@components/security/SecurityStrategySaml";
+import SecurityStrategyAuto from "@components/security/SecurityStrategyAuto";
 
 export default function SecurityStrategy({ type = null }) {
     const [loading, setLoading] = useState(false);
@@ -81,6 +82,8 @@ export default function SecurityStrategy({ type = null }) {
                 return <SecurityStrategyProxy {...props} />;
             case "saml":
                 return <SecurityStrategySaml {...props} />;
+            case "auto":
+                return <SecurityStrategyAuto {...props} />;
             default:
                 return null;
         }

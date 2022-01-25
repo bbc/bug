@@ -31,6 +31,20 @@
         "enabled": false
     },
     {
+        "type": "auto",
+        "description": "Provides automatic login from a list of whitelisted addresses",
+        "name": "Auto Login",
+        "sourceFilterList": ["127.0.0.0/8"],
+        "sessionLength": "1800000",
+        "entryPoint": "",
+        "issuer": "",
+        "profileField": "mail",
+        "matchField": "email",
+        "loginPath": "",
+        "identifierFormat": "",
+        "enabled": false
+    },
+    {
         "type": "oidc",
         "description": "Provides user authentication via Open ID",
         "name": "Open ID SSO",
