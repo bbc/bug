@@ -2,9 +2,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 
-module.exports = async (index) => {
+module.exports = async () => {
     const outputsCollection = await mongoCollection("outputs");
-    return await outputsCollection.findOne({
-        number: parseInt(index),
-    });
+    return await outputsCollection.find().toArray();
 };

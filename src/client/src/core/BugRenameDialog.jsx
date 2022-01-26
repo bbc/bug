@@ -26,7 +26,7 @@ const BugRenameDialog = ({
     open,
     title = "Rename",
     label = "",
-    filter = null,
+    textFieldProps = {},
     onRename,
     onDismiss,
     defaultValue,
@@ -69,7 +69,6 @@ const BugRenameDialog = ({
                         }}
                         variant="standard"
                         placeholder={placeholder}
-                        filter={filter}
                         type="text"
                         label={label}
                         onClick={(event) => {
@@ -85,6 +84,7 @@ const BugRenameDialog = ({
                                 </InputAdornment>
                             ),
                         }}
+                        {...textFieldProps}
                     ></BugTextField>
                 </DialogContent>
                 <DialogActions>
@@ -114,10 +114,19 @@ const BugRenameDialogProvider = ({ children }) => {
         confirmText,
         placeholder,
         allowBlank,
-        filter,
+        textFieldProps,
     }) => {
         setDialogOpen(true);
-        setDialogConfig({ title, message, actionCallback, defaultValue, confirmText, placeholder, allowBlank, filter });
+        setDialogConfig({
+            title,
+            message,
+            actionCallback,
+            defaultValue,
+            confirmText,
+            placeholder,
+            allowBlank,
+            textFieldProps,
+        });
     };
 
     const onRename = (value) => {
@@ -146,7 +155,7 @@ const BugRenameDialogProvider = ({ children }) => {
                 onDismiss={onDismiss}
                 confirmText={dialogConfig?.confirmText}
                 defaultValue={dialogConfig.defaultValue}
-                filter={dialogConfig?.filter}
+                textFieldProps={dialogConfig?.textFieldProps}
             />
             {children}
         </BugRenameDialogContext.Provider>

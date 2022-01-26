@@ -1,21 +1,28 @@
-//NAME: output.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 18/04/2021
-//DESC: System status
-
 const express = require("express");
-const output = express.Router();
-
+const router = express.Router();
 const hashResponse = require("@core/hash-response");
-const getSystemAll = require("@services/system-get-all");
-const getSystemLatest = require("@services/system-get-latest");
+const systemList = require("@services/system-list");
+const systemGetLatest = require("@services/system-getlatest");
+const asyncHandler = require("express-async-handler");
 
-output.get("/", async function (req, res) {
-    hashResponse(res, req, await getSystemAll());
-});
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, {
+            status: "success",
+            data: await systemList(),
+        });
+    })
+);
 
-output.get("/latest", async function (req, res) {
-    hashResponse(res, req, await getSystemLatest());
-});
+router.get(
+    "/latest",
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, {
+            status: "success",
+            data: await systemGetLatest(),
+        });
+    })
+);
 
-module.exports = output;
+module.exports = router;
