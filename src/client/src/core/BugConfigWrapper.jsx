@@ -7,6 +7,9 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import JSONInput from "react-json-editor-ajrm";
 import locale from "react-json-editor-ajrm/locale/en";
+import IconButton from "@mui/material/IconButton";
+import CodeIcon from "@mui/icons-material/Code";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export default function BugConfigWrapper({ panelId, children, config, handleSubmit }) {
     const history = useHistory();
@@ -14,41 +17,22 @@ export default function BugConfigWrapper({ panelId, children, config, handleSubm
     const [editorJson, setEditorJson] = useState(config);
     const sendAlert = useAlert();
 
+    useHotkeys("e", () => {
+        setEditorMode(true);
+    });
+
     const onCancel = () => {
         history.goBack();
     };
 
-    const onEditorMode = () => {
-        const newEditorMode = editorMode;
-        setEditorMode(!newEditorMode);
+    const handleEditorMode = () => {
+        setEditorMode(!editorMode);
     };
 
-    const onEditorChange = (editor) => {
+    const handleEditorChange = (editor) => {
         if (!editor.error) {
             setEditorJson(editor.jsObject);
         }
-    };
-
-    const getSaveButton = () => {
-        if (editorMode) {
-            return (
-                <Button
-                    onClick={() => {
-                        onSubmit(editorJson);
-                    }}
-                    variant="contained"
-                    color="primary"
-                    disableElevation
-                >
-                    Save Changes
-                </Button>
-            );
-        }
-        return (
-            <Button type="submit" variant="contained" color="primary" disableElevation>
-                Save Changes
-            </Button>
-        );
     };
 
     const getBody = () => {
@@ -56,7 +40,7 @@ export default function BugConfigWrapper({ panelId, children, config, handleSubm
             return (
                 <JSONInput
                     id="json_editor"
-                    onChange={onEditorChange}
+                    onChange={handleEditorChange}
                     placeholder={config}
                     colors={{ background: "#262626" }}
                     locale={locale}
@@ -81,7 +65,6 @@ export default function BugConfigWrapper({ panelId, children, config, handleSubm
     };
 
     const onSubmit = async (form) => {
-        console.log(form);
         const response = await AxiosPut(`/api/panelconfig/${config?.id}`, form);
         if (!response?.error) {
             sendAlert(`${config?.title} has been updated.`, { broadcast: true, variant: "success" });
@@ -93,7 +76,21 @@ export default function BugConfigWrapper({ panelId, children, config, handleSubm
 
     return (
         <>
-            <BugForm onEditor={onEditorMode} onClose={onCancel}>
+            <BugForm
+                onClose={onCancel}
+                iconButtons={
+                    <IconButton
+                        aria-label="close"
+                        sx={{
+                            color: editorMode ? "primary.main" : "grey.A500",
+                            padding: "14px",
+                        }}
+                        onClick={handleEditorMode}
+                    >
+                        <CodeIcon />
+                    </IconButton>
+                }
+            >
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <BugForm.Header onClose={onCancel}>Configuration</BugForm.Header>
                     <BugForm.Body>{getBody()}</BugForm.Body>
@@ -101,7 +98,15 @@ export default function BugConfigWrapper({ panelId, children, config, handleSubm
                         <Button variant="contained" color="secondary" disableElevation onClick={onCancel}>
                             Cancel
                         </Button>
-                        {getSaveButton()}
+                        <Button
+                            type={editorMode ? "button" : "submit"}
+                            variant="contained"
+                            color="primary"
+                            disableElevation
+                            onClick={editorMode ? () => onSubmit(editorJson) : () => {}}
+                        >
+                            Save Changes
+                        </Button>
                     </BugForm.Actions>
                 </form>
             </BugForm>

@@ -4,34 +4,13 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
 import { useHotkeys } from "react-hotkeys-hook";
 
-const BugForm = (props) => {
-    useHotkeys("esc", props.onClose);
-    useHotkeys("e", props?.onEditor);
-
-    const getEditIcon = () => {
-        if (props.onEditor) {
-            return (
-                <IconButton
-                    aria-label="close"
-                    sx={{
-                        position: "absolute",
-                        right: "35px",
-                        top: "-2px",
-                        color: "grey.A500",
-                        padding: "15px",
-                    }}
-                    onClick={props.onEditor}
-                >
-                    <EditIcon />
-                </IconButton>
-            );
-        }
-    };
+const BugForm = ({ onClose, children, iconButtons = [] }) => {
+    useHotkeys("esc", onClose);
 
     return (
         <Card
@@ -44,49 +23,55 @@ const BugForm = (props) => {
                 margin: "auto",
             }}
         >
-            {props.onClose && (
-                <>
+            <Box
+                sx={{
+                    marginRight: "8px",
+                    height: "52px",
+                    width: "100%",
+                    position: "absolute",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                }}
+            >
+                {iconButtons}
+                {onClose && (
                     <IconButton
                         aria-label="close"
                         sx={{
-                            position: "absolute",
-                            right: "0px",
-                            top: "-2px",
                             color: "grey.A500",
-                            padding: "15px",
+                            padding: "14px",
                         }}
-                        onClick={props.onClose}
+                        onClick={onClose}
                     >
                         <CloseIcon />
                     </IconButton>
-                    {getEditIcon()}
-                </>
-            )}
+                )}
+            </Box>
 
-            {props.children}
+            {children}
         </Card>
     );
 };
 
-const Header = (props) => {
+const Header = ({ children }) => {
     return (
         <CardHeader
             component={Paper}
             square
             elevation={1}
             sx={{
-                padding: "15px",
+                padding: "16px",
             }}
-            title={props.children}
+            title={children}
         ></CardHeader>
     );
 };
 
-const Body = (props) => {
-    return <CardContent>{props.children}</CardContent>;
+const Body = ({ children }) => {
+    return <CardContent>{children}</CardContent>;
 };
 
-const Actions = (props) => {
+const Actions = ({ children }) => {
     return (
         <CardActions
             sx={{
@@ -97,7 +82,7 @@ const Actions = (props) => {
                 justifyContent: "flex-end",
             }}
         >
-            {props.children}
+            {children}
         </CardActions>
     );
 };
