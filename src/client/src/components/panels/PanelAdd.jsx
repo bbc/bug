@@ -11,11 +11,9 @@ import LoadingOverlay from "@components/LoadingOverlay";
 import { useAlert } from "@utils/Snackbar";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 export default function PanelAdd(props) {
     const history = useHistory();
@@ -53,26 +51,14 @@ export default function PanelAdd(props) {
     };
 
     const getModuleOptions = () => {
-        const modules = [<option key={`_select`} value="" disabled></option>];
-        if (moduleList && Array.isArray(moduleList)) {
-            for (let module of moduleList) {
-                modules.push(
-                    <option key={module.name} value={module?.name}>
-                        {module?.longname}
-                    </option>
-                );
-            }
+        const options = {};
+        for (let module of moduleList) {
+            options[module.name] = module?.longname;
         }
-        return modules;
+        return options;
     };
 
-    const getLoading = () => {
-        if (loading) {
-            return <LoadingOverlay />;
-        }
-    };
-
-    const renderForm = () => (
+    return (
         <>
             <BugForm onClose={handleCancel}>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -104,18 +90,14 @@ export default function PanelAdd(props) {
                             </Grid>
 
                             <Grid item xs={12} md={6}>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="outlined-age-native-simple">Module</InputLabel>
-                                    <Select
-                                        native
-                                        defaultValue=""
-                                        variant="standard"
-                                        error={errors?.module ? true : false}
-                                        inputProps={{ ...register("module", { required: true }) }}
-                                    >
-                                        {getModuleOptions()}
-                                    </Select>
-                                </FormControl>
+                                <BugConfigFormSelect
+                                    inputProps={{ ...register("module", { required: true }) }}
+                                    fullWidth
+                                    error={errors?.module ? true : false}
+                                    defaultValue=""
+                                    label="Module"
+                                    items={getModuleOptions()}
+                                />
                             </Grid>
                         </Grid>
                     </BugForm.Body>
@@ -129,13 +111,7 @@ export default function PanelAdd(props) {
                     </BugForm.Actions>
                 </form>
             </BugForm>
-        </>
-    );
-
-    return (
-        <>
-            {renderForm()}
-            {getLoading()}
+            {loading && <LoadingOverlay />}
         </>
     );
 }

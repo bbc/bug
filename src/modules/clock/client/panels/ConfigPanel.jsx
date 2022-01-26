@@ -6,9 +6,8 @@ import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
@@ -57,22 +56,17 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                        <InputLabel>Type</InputLabel>
-                        <Select
-                            native
-                            variant="standard"
-                            defaultValue={panelConfig.data.type}
-                            label="Type"
-                            error={errors?.type ? true : false}
-                            inputProps={{
-                                ...register("type", { required: true }),
-                            }}
-                        >
-                            <option value={"analogue"}>Analogue</option>
-                            <option value={"digital"}>Digital</option>
-                        </Select>
-                    </FormControl>
+                    <BugConfigFormSelect
+                        inputProps={{ ...register("type", { required: true }) }}
+                        fullWidth
+                        error={errors?.type ? true : false}
+                        defaultValue="analogue"
+                        label="Type"
+                        items={{
+                            analogue: "Analogue",
+                            digital: "Digital",
+                        }}
+                    />
                 </Grid>
             </BugConfigWrapper>
         </>

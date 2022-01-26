@@ -1,22 +1,19 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import { useForm } from "react-hook-form";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import { useSelector } from "react-redux";
+import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+        panelId: panelConfig.data.id,
+    });
 
     if (panelConfig.status === "loading") {
         return <Loading />;
@@ -50,6 +47,21 @@ export default function ConfigPanel() {
                 />
             </Grid>
 
+            <Grid item xs={12} md={6}>
+                <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+                <BugConfigFormTextField
+                    inputProps={{ ...register("label", { required: true }) }}
+                    fullWidth
+                    error={errors?.label ? true : false}
+                    defaultValue={panelConfig.data.label}
+                    type="text"
+                    label="Location Name"
+                />
+            </Grid>
+
             <Grid item xs={12}>
                 <BugConfigFormTextField
                     inputProps={{ ...register("openweather_key", { required: true }) }}
@@ -58,17 +70,6 @@ export default function ConfigPanel() {
                     defaultValue={panelConfig.data.openweather_key}
                     type="text"
                     label="OpenWeather API Key"
-                />
-            </Grid>
-
-            <Grid item xs={12}>
-                <BugConfigFormTextField
-                    inputProps={{ ...register("label", { required: true }) }}
-                    fullWidth
-                    error={errors?.label ? true : false}
-                    defaultValue={panelConfig.data.label}
-                    type="text"
-                    label="Location Name"
                 />
             </Grid>
 
@@ -96,36 +97,32 @@ export default function ConfigPanel() {
             </Grid>
 
             <Grid item xs={6}>
-                <FormControl fullWidth>
-                    <InputLabel>Forecast Length</InputLabel>
-                    <Select
-                        native
-                        defaultValue={panelConfig.data.length}
-                        label="Forecast Length"
-                        error={errors?.length ? true : false}
-                        inputProps={{ ...register("length", { required: true }) }}
-                    >
-                        <option value={"today"}>Today Only</option>
-                        <option value={"week"}>5 Day Forecast</option>
-                    </Select>
-                </FormControl>
+                <BugConfigFormSelect
+                    inputProps={{ ...register("length", { required: true }) }}
+                    fullWidth
+                    error={errors?.length ? true : false}
+                    defaultValue={panelConfig.data.length}
+                    label="Forecast Length"
+                    items={{
+                        today: "Today Only",
+                        week: "5 Day Forecast",
+                    }}
+                />
             </Grid>
 
             <Grid item xs={6}>
-                <FormControl fullWidth>
-                    <InputLabel>Units</InputLabel>
-                    <Select
-                        native
-                        defaultValue={panelConfig.data.units}
-                        label="Units"
-                        error={errors?.units ? true : false}
-                        inputProps={{ ...register("units", { required: true }) }}
-                    >
-                        <option value={"metric"}>Metric</option>
-                        <option value={"standard"}>Standard</option>
-                        <option value={"imperial"}>Imperial</option>
-                    </Select>
-                </FormControl>
+                <BugConfigFormSelect
+                    inputProps={{ ...register("units", { required: true }) }}
+                    fullWidth
+                    error={errors?.units ? true : false}
+                    defaultValue={panelConfig.data.units}
+                    label="Units"
+                    items={{
+                        metric: "Metric",
+                        standard: "Standard",
+                        imperial: "Imperial",
+                    }}
+                />
             </Grid>
         </BugConfigWrapper>
     );
