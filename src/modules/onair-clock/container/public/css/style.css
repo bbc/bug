@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "reith";
+    src: url("./../woff/BBCReithSans_W_Rg.woff") format("woff");
+}
+body {
+    background-color: rgb(0, 0, 0);
+}
+h1 {
+    font-size: 3em;
+    color: rgb(255, 255, 255);
+    font-family: reith;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

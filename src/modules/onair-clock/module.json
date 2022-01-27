@@ -1,0 +1,32 @@
+{
+    "name": "onair-clock",
+    "longname": "On-Air Clock",
+    "description": "HTML Based On Air clock for rendering with OBS or CasparCG",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "Schedule",
+    "author": "Ryan McCartney",
+    "license": "MIT",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "pages",
+        "public"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "onair-clock",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "header": "On Air Clock"
+    }
+}
