@@ -1,9 +1,8 @@
-'use strict';
+"use strict";
 
-const logger = require('@utils/logger')(module);
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
-
     let quotes = [
         "It's a buggy buggy day.",
         "Found any bugs in this software? Enjoy!",
@@ -36,9 +35,9 @@ module.exports = async () => {
         "Why was the grocery store out of butter? Because Butter flies.",
         "What do you call a musical insect? A humbug!",
         "What do you call a bee who's having a bad hair day? A frizz-bee!",
-        "What bug is always running away from everything? A flea!"
+        "What bug is always running away from everything? A flea!",
     ];
 
-    let random = quotes[Math.floor(Math.random()*quotes.length)]
+    let random = quotes[Math.floor(Math.random() * quotes.length)];
     return random.trim();
-}
+};

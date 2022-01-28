@@ -1,8 +1,3 @@
-//NAME: server.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 23/03/2021
-//DESC: TSL MDU Module
-
 "use strict";
 
 const register = require("module-alias/register");
@@ -17,7 +12,7 @@ const serve = async () => {
         await mongoDb.connect(myPanelId);
 
         app.listen(port, () => {
-            console.log("tsl-mdu listening on " + port.toString());
+            console.log("api listening on " + port.toString());
         });
     } catch (error) {
         throw error;

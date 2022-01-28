@@ -1,8 +1,3 @@
-//NAME: app.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 23/03/2021
-//DESC: TSL MDU Module
-
 const createError = require("http-errors");
 const express = require("express");
 const workerStore = require("@core/worker-store");
