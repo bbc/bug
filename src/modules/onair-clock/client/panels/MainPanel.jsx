@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import BugTableLinkButton from "@core/BugTableLinkButton";
@@ -9,6 +9,19 @@ import BugDetailsTable from "@core/BugDetailsTable";
 import { useSelector } from "react-redux";
 import Loading from "@components/Loading";
 import BugNoData from "@core/BugNoData";
+import BugColorPicker from "@core/BugColorPicker";
+import BugTimeZonePicker from "@core/BugTimeZonePicker";
+import Iframe from "react-iframe";
+import Input from "@mui/material/Input";
+import Switch from "@mui/material/Switch";
+
+const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
 
 export default function MainPanel() {
     const params = useParams();
@@ -23,6 +36,48 @@ export default function MainPanel() {
     if (panelConfig.status !== "success" || !panelConfig.data || !panelConfig.data) {
         return <BugNoData panelId={panelId} title="No device information found" showConfigButton={false} />;
     }
+
+    const handleBackgroundColorChange = async (color) => {
+        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { backgroundColor: color.hex })) {
+            sendAlert(`Successfully changed background color`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to change background color.`, { variant: "error" });
+        }
+    };
+
+    const handleTextColorChange = async (color) => {
+        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { textColor: color.hex })) {
+            sendAlert(`Successfully changed text color`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to change text color.`, { variant: "error" });
+        }
+    };
+
+    const handleTimeZoneChange = async (timezone) => {
+        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { timezone: timezone })) {
+            sendAlert(`Successfully changed timezone`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to change timezone.`, { variant: "error" });
+        }
+    };
+
+    const handleShowDateChange = async (event) => {
+        console.log(event.target.checked);
+        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { showDate: event.target.checked })) {
+            sendAlert(`Now showing the date`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to show date.`, { variant: "error" });
+        }
+    };
+
+    const handleShowTimeChange = async (event) => {
+        console.log(event.target.checked);
+        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { showTime: event.target.checked })) {
+            sendAlert(`Now showing the time`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to show time.`, { variant: "error" });
+        }
+    };
 
     const handleRenameClicked = async (event, currentHeader) => {
         const result = await renameDialog({
@@ -44,6 +99,20 @@ export default function MainPanel() {
         event.preventDefault();
     };
 
+    const handleLogoChange = async (event) => {
+        const logo = event.target.files[0];
+        const data = await toBase64(logo);
+        if (
+            await AxiosPut(`/api/panelconfig/${params?.panelId}`, {
+                logo: { name: logo.name, image: data },
+            })
+        ) {
+            sendAlert(`Successfully upadted logo`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to change logo.`, { variant: "error" });
+        }
+    };
+
     return (
         <>
             <Grid item xs={12}>
@@ -60,10 +129,82 @@ export default function MainPanel() {
                             ),
                         },
                         {
+                            name: "Background Color",
+                            value: (
+                                <BugColorPicker
+                                    color={panelConfig?.data?.backgroundColor}
+                                    onColorChange={handleBackgroundColorChange}
+                                />
+                            ),
+                        },
+                        {
+                            name: "Text Color",
+                            value: (
+                                <BugColorPicker
+                                    color={panelConfig?.data?.textColor}
+                                    onColorChange={handleTextColorChange}
+                                />
+                            ),
+                        },
+                        {
                             name: "Time Zone",
-                            value: "GMT",
+                            value: (
+                                <BugTimeZonePicker
+                                    value={panelConfig?.data?.timezone}
+                                    onChange={handleTimeZoneChange}
+                                />
+                            ),
+                        },
+                        {
+                            name: "Show Date",
+                            value: (
+                                <Switch
+                                    color="primary"
+                                    onChange={handleShowDateChange}
+                                    checked={panelConfig?.data?.showDate}
+                                />
+                            ),
+                        },
+                        {
+                            name: "Show Time",
+                            value: (
+                                <Switch
+                                    color="primary"
+                                    onChange={handleShowTimeChange}
+                                    checked={panelConfig?.data?.showTime}
+                                />
+                            ),
+                        },
+                        {
+                            name: "Logo",
+                            value: (
+                                <Input
+                                    color="primary"
+                                    disableElevation
+                                    underline="none"
+                                    component="label"
+                                    type="file"
+                                    name="file"
+                                    size="small"
+                                    onChange={handleLogoChange}
+                                    inputProps={{
+                                        ...{ accept: "image/*" },
+                                    }}
+                                    fullWidth
+                                ></Input>
+                            ),
                         },
                     ]}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Iframe
+                    url="./../../container/g1kz5wxo8p59smk/clock/large"
+                    width="90%"
+                    height="300"
+                    id="clock-preview"
+                    display="initial"
+                    position="relative"
                 />
             </Grid>
         </>
