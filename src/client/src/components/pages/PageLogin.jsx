@@ -17,6 +17,7 @@ import Alert from "@mui/material/Alert";
 import Fade from "@mui/material/Fade";
 import axios from "axios";
 import PinLogin from "@components/login/PinLogin";
+import AutoLogin from "@components/login/AutoLogin";
 import LocalLogin from "@components/login/LocalLogin";
 import ProxyLogin from "@components/login/ProxyLogin";
 import { useSelector } from "react-redux";
@@ -83,6 +84,8 @@ export default function PageLogin() {
         switch (type) {
             case "local":
                 return <LocalLogin {...props} />;
+            case "auto":
+                return <AutoLogin {...props} />;
             case "oidc":
                 return null;
             case "pin":

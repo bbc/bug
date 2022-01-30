@@ -28,7 +28,7 @@ const set = async (name, value, ttl = null) => {
         const document = {
             type: name,
             payload: value,
-            timestamp: Date.now(),
+            timestamp: new Date(),
         };
         await collection.replaceOne({ type: name }, document, { upsert: true });
         return true;

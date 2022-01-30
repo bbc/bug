@@ -1,8 +1,9 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import Loading from "@components/Loading";
 import BugDetailsTable from "@core/BugDetailsTable";
+import BugNoData from "@core/BugNoData";
 
 export default function InterfaceTabEthernet({ panelId, interfaceName }) {
     const iface = useApiPoller({
@@ -14,7 +15,7 @@ export default function InterfaceTabEthernet({ panelId, interfaceName }) {
         return <Loading height="30vh" />;
     }
     if (iface.status === "success" && !iface.data) {
-        return <>Interface not found</>;
+        return <BugNoData title="Interface not found" showConfigButton={false} />;
     }
 
     return (

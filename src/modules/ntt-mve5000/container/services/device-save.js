@@ -4,12 +4,16 @@ const mongoSingle = require("@core/mongo-single");
 const SnmpAwait = require("@core/snmp-await");
 const deviceOids = require("@utils/device-oids");
 const configGet = require("@core/config-get");
+const deviceIdGet = require("@services/deviceid-get");
 
 module.exports = async () => {
     const config = await configGet();
     if (!config) {
         throw new Error();
     }
+
+    // fetch hashed address of device to use as id
+    const deviceId = await deviceIdGet();
 
     // create new snmp session
     const snmpAwait = new SnmpAwait({
@@ -18,7 +22,7 @@ module.exports = async () => {
     });
 
     // get list of changes
-    const localdata = await mongoSingle.get("localdata");
+    const localdata = await mongoSingle.get(`localdata_${deviceId}`);
 
     try {
         // saves device config back
@@ -49,7 +53,7 @@ module.exports = async () => {
             await mongoSingle.set("codecdata", Object.assign(codecdata, localdata));
 
             // and then clear the localdata
-            await mongoSingle.set("localdata", {});
+            await mongoSingle.set(`localdata_${deviceId}`, {});
 
             return true;
         }

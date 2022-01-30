@@ -74,7 +74,11 @@ module.exports = class SnmpAwait {
         }
     }
 
-    get({ oid, raw = false }) {
+    isMissing(varbind) {
+        return varbind.indexOf("NoSuchInstance") > -1 || varbind.indexOf("NoSuchObject") > -1;
+    }
+
+    get({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
             let returnValue = null;
@@ -84,7 +88,10 @@ module.exports = class SnmpAwait {
                     console.error(error);
                     reject();
                 } else {
-                    if (snmp.isVarbindError(varbinds[0])) {
+                    if (
+                        snmp.isVarbindError(varbinds[0]) &&
+                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
+                    ) {
                         console.error(snmp.varbindError(varbinds[0]));
                         reject();
                     } else {
@@ -96,7 +103,7 @@ module.exports = class SnmpAwait {
         });
     }
 
-    getNext({ oid, raw = false }) {
+    getNext({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
             self.session.getNext([self.trimOid(oid)], function (error, varbinds) {
@@ -104,7 +111,10 @@ module.exports = class SnmpAwait {
                     console.error(error);
                     reject();
                 } else {
-                    if (snmp.isVarbindError(varbinds[0])) {
+                    if (
+                        snmp.isVarbindError(varbinds[0]) &&
+                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
+                    ) {
                         console.error(snmp.varbindError(varbinds[0]));
                         reject();
                     }
@@ -114,14 +124,17 @@ module.exports = class SnmpAwait {
         });
     }
 
-    walk({ maxRepetitions = 10, oid, raw = false }) {
+    walk({ maxRepetitions = 10, oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
             let returnValues = {};
 
             const addItem = (varbinds) => {
                 for (var i = 0; i < varbinds.length; i++) {
-                    if (snmp.isVarbindError(varbinds[i])) {
+                    if (
+                        snmp.isVarbindError(varbinds[i]) &&
+                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
+                    ) {
                         console.error(snmp.varbindError(varbinds[i]));
                     } else {
                         returnValues[varbinds[i].oid] = self.convertVarbind(varbinds[i], raw);
@@ -172,14 +185,17 @@ module.exports = class SnmpAwait {
         });
     }
 
-    subtree({ maxRepetitions = 10, oid, raw = false }) {
+    subtree({ maxRepetitions = 10, oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
             let returnValues = {};
 
             const addItem = (varbinds) => {
                 for (var i = 0; i < varbinds.length; i++) {
-                    if (snmp.isVarbindError(varbinds[i])) {
+                    if (
+                        snmp.isVarbindError(varbinds[i]) &&
+                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
+                    ) {
                         console.error(snmp.varbindError(varbinds[i]));
                     } else {
                         returnValues[varbinds[i].oid] = self.convertVarbind(varbinds[i], raw);
@@ -198,7 +214,7 @@ module.exports = class SnmpAwait {
         });
     }
 
-    getMultiple({ oids = [], raw = false }) {
+    getMultiple({ oids = [], raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
             let returnValues = {};
@@ -208,7 +224,10 @@ module.exports = class SnmpAwait {
                     reject();
                 } else {
                     for (var i = 0; i < varbinds.length; i++) {
-                        if (snmp.isVarbindError(varbinds[i])) {
+                        if (
+                            snmp.isVarbindError(varbinds[i]) &&
+                            !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
+                        ) {
                             console.error(snmp.varbindError(varbinds[i]));
                         } else {
                             returnValues[varbinds[i].oid] = self.convertVarbind(varbinds[i], raw);

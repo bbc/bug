@@ -1,59 +1,66 @@
-//NAME: output.js
-//AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
-//DATE: 18/04/2021
-//DESC: System status
-
 const express = require("express");
-const output = express.Router();
+const router = express.Router();
 
+const outputList = require("@services/output-list");
+const outputGet = require("@services/output-get");
+const outputSetState = require("@services/output-setstate");
+const outputSetName = require("@services/output-setname");
+const outputSetDelay = require("@services/output-setdelay");
+const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
-const getOutputs = require("@services/outputs-get");
-const getOutput = require("@services/output-get");
-const setOutput = require("@services/output-set");
-const setOutputState = require("@services/output-state-set");
-const setOutputName = require("@services/output-name-set");
-const setOutputDelay = require("@services/output-delay-set");
 
-output.get("/all", async function (req, res) {
-    hashResponse(res, req, {
-        data: await getOutputs(),
-    });
-});
+router.all(
+    "/",
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, {
+            status: "success",
+            data: await outputList(),
+        });
+    })
+);
 
-output.get("/:output_number", async function (req, res) {
-    hashResponse(res, req, await getOutput(req?.params?.output_number));
-});
+router.get(
+    "/:outputNumber",
+    asyncHandler(async (req, res) => {
+        const result = await outputGet(req?.params?.outputNumber);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-output.post("/:output_number/state", async function (req, res) {
-    const response = await setOutputState(
-        req?.params?.output_number,
-        req.body.state
-    );
-    hashResponse(res, req, response);
-});
+router.post(
+    "/:outputNumber/state",
+    asyncHandler(async (req, res) => {
+        const result = await outputSetState(req?.params?.outputNumber, req.body.state);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-output.post("/:output_number/name", async function (req, res) {
-    const response = await setOutputName(
-        req?.params?.output_number,
-        req.body.name
-    );
-    hashResponse(res, req, response);
-});
+router.post(
+    "/:outputNumber/name",
+    asyncHandler(async (req, res) => {
+        const result = await outputSetName(req?.params?.outputNumber, req.body.name);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-output.post("/:output_number/delay", async function (req, res) {
-    const response = await setOutputDelay(
-        req?.params?.output_number,
-        req.body.delay
-    );
-    hashResponse(res, req, response);
-});
+router.post(
+    "/:outputNumber/delay",
+    asyncHandler(async (req, res) => {
+        const result = await outputSetDelay(req?.params?.outputNumber, req.body.delay);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-output.post("/:output_number", async function (req, res) {
-    const status = await setOutput(req?.params?.output_number);
-
-    hashResponse(res, req, {
-        output: status,
-    });
-});
-
-module.exports = output;
+module.exports = router;

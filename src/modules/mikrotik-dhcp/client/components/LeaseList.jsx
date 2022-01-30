@@ -395,7 +395,6 @@ export default function LeaseList({ panelId }) {
                 ]}
                 defaultSortIndex={4}
                 apiUrl={`/container/${panelId}/lease`}
-                panelId={panelId}
                 onRowClick={handleDetailsClicked}
                 sortable
                 rowHeight="58px"

@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import BugHelperText from "@core/BugHelperText";
 import { Controller } from "react-hook-form";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 
 const BugConfigFormPanelSelect = ({
     name,

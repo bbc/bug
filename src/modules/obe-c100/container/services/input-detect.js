@@ -3,12 +3,16 @@
 const mongoSingle = require("@core/mongo-single");
 const configGet = require("@core/config-get");
 const SnmpAwait = require("@core/snmp-await");
+const deviceIdGet = require("@services/deviceid-get");
 
 module.exports = async () => {
     const config = await configGet();
     if (!config) {
         throw new Error();
     }
+
+    // fetch hashed address of device to use as id
+    const deviceId = await deviceIdGet();
 
     // create new snmp session
     const snmpAwait = new SnmpAwait({
@@ -28,10 +32,10 @@ module.exports = async () => {
     }
 
     // update localdata with the results
-    const localdata = mongoSingle.get("localdata");
+    const localdata = mongoSingle.get(`localdata_${deviceId}`);
     localdata.inputVideoFormat = result;
 
-    if (!mongoSingle.set("localdata", localdata)) {
+    if (!mongoSingle.set(`localdata_${deviceId}`, localdata)) {
         throw new Error();
     }
     return result;

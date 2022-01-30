@@ -15,10 +15,10 @@ async function getUserIndex(users, fieldValue, fieldName) {
     return -1;
 }
 
-module.exports = async (userFeildValue, userFeildName) => {
+module.exports = async (userFieldValue, userFieldName) => {
     try {
         const users = await userModel.list();
-        const index = await getUserIndex(users, userFeildValue, userFeildName);
+        const index = await getUserIndex(users, userFieldValue, userFieldName);
         if (index !== -1) {
             return users[index];
         }
@@ -26,6 +26,6 @@ module.exports = async (userFeildValue, userFeildName) => {
         return null;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to retrieve user by ${userFeildName}`);
+        throw new Error(`Failed to retrieve user by ${userFieldName}`);
     }
 };

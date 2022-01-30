@@ -128,11 +128,11 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 <Grid item xs={12}>
                     <TextField
                         inputProps={{
-                            ...register("profileFeild"),
+                            ...register("profileField"),
                         }}
                         fullWidth
                         variant="standard"
-                        defaultValue={strategy.profileFeild}
+                        defaultValue={strategy.profileField}
                         type="text"
                         label="User field"
                         helperText="The field name in the returned profile to use"
@@ -143,13 +143,13 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                     <TextField
                         select
                         inputProps={{
-                            ...register("matchFeild"),
+                            ...register("matchField"),
                         }}
                         variant="standard"
                         fullWidth
                         label="OIDC match field"
                         helperText="Which BUG user field to match against"
-                        defaultValue={strategy.matchFeild}
+                        defaultValue={strategy.matchField}
                         SelectProps={{
                             native: true,
                         }}

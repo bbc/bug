@@ -145,7 +145,7 @@ router.get(
  *         schema:
  *           type: string
  *         required: true
- *         description: The security strategies' type. One of [local,pin,saml,proxy]
+ *         description: The security strategies' type. One of [local,pin,saml,proxy,auto]
  *     responses:
  *       200:
  *         description: Successfully retrieved the strategy.

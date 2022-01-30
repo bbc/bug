@@ -1,6 +1,6 @@
 import React from "react";
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import { useAlert } from "@utils/Snackbar";
 import AxiosPost from "@utils/AxiosPost";
 

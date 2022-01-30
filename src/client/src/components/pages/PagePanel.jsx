@@ -2,7 +2,7 @@ import { useParams, useLocation } from "react-router-dom";
 import React from "react";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import { usePanelConfig } from "@data/PanelConfig";
+import { usePanelConfig } from "@data/PanelConfigHandler";
 import { Redirect } from "react-router";
 import * as Modules from "../../../../modules/*/client/Module.jsx";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ export default function PagePanel(props) {
             return <Loading />;
         }
 
-        console.log("WHY3 DOES THIS MAKE EVERYTHING BETTER?");
+        console.log("WHY1 DOES THIS MAKE EVERYTHING BETTER?");
         // I have literally no idea why it does. It makes me so cross!
 
         if (Modules["modules"][moduleName]) {

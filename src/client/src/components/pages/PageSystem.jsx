@@ -117,7 +117,7 @@ export default function PageSystem() {
                     <ListItemIcon>
                         <InfoIcon />
                     </ListItemIcon>
-                    <ListItemText primary="System" secondary="CPU, RAM and disk information" />
+                    <ListItemText primary="System Information" secondary="CPU, RAM and disk information" />
                     <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/logs`}>

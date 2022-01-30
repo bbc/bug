@@ -1,5 +1,5 @@
 import React from "react";
-import OutputsTable from "../components/OutputsTable";
+import OutputsList from "../components/OutputsList";
 import { useParams } from "react-router-dom";
 
 export default function MainPanel() {
@@ -7,7 +7,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <OutputsTable panelId={params.panelId} />
+            <OutputsList panelId={params.panelId} />
         </>
     );
 }

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import settingsSlice from "@redux/settingsSlice";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import { useEffect } from "react";
 
 // this is used to fetch the initial global configuration settings state

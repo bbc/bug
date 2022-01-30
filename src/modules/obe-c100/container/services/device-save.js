@@ -5,6 +5,7 @@ const SnmpAwait = require("@core/snmp-await");
 const obeOids = require("@utils/obe-oids");
 const configGet = require("@core/config-get");
 const mergedCodecdata = require("@services/codecdata-get");
+const deviceIdGet = require("@services/deviceid-get");
 
 const send = async (snmpSession, values) => {
     console.log(values);
@@ -23,6 +24,9 @@ module.exports = async () => {
         throw new Error();
     }
 
+    // fetch hashed address of device to use as id
+    const deviceId = await deviceIdGet();
+
     // create new snmp session
     const snmpAwait = new SnmpAwait({
         host: config.address,
@@ -33,7 +37,7 @@ module.exports = async () => {
     const codecdata = await mongoSingle.get("codecdata");
 
     // get list of changes
-    const localdata = await mongoSingle.get("localdata");
+    const localdata = await mongoSingle.get(`localdata_${deviceId}`);
 
     // saves device config back
     const deviceOids = obeOids.getDevice(config.encoderIndex);
@@ -138,5 +142,5 @@ module.exports = async () => {
     // it's worked ... so we overwrite codecdata with the new values
     await mongoSingle.set("codecdata", await mergedCodecdata());
     // and then clear the localdata
-    await mongoSingle.set("localdata", {});
+    await mongoSingle.set(`localdata_${deviceId}`, {});
 };

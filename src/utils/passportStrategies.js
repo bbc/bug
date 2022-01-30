@@ -9,7 +9,7 @@ const SamlStrategy = require("passport-saml").Strategy;
 const OpenIdStrategy = require("passport-openid").Strategy;
 
 const logger = require("@utils/logger")(module);
-const userGetByFeild = require("@services/user-get-by-field");
+const userGetByField = require("@services/user-get-by-field");
 const ipCompare = require("@utils/ip-compare");
 const ipClean = require("@utils/ip-clean");
 const bcrypt = require("bcryptjs");
@@ -19,7 +19,7 @@ const proxyStrategy = (settings) => {
     return new HeaderStrategy(
         { header: settings?.headerField, passReqToCallback: true, passReqToCallback: true },
         async (req, header, done) => {
-            const user = await userGetByFeild(header.toLowerCase(), settings?.headerFieldMatch);
+            const user = await userGetByField(header.toLowerCase(), settings?.headerFieldMatch);
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -52,7 +52,7 @@ const localStrategy = (settings) => {
     return new LocalStrategy(
         { usernameField: "username", passwordField: "password", passReqToCallback: true },
         async (req, username, password, done) => {
-            const user = await userGetByFeild(username.toLowerCase(), "username");
+            const user = await userGetByField(username.toLowerCase(), "username");
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -89,7 +89,7 @@ const pinStrategy = (settings) => {
     return new LocalStrategy(
         { usernameField: "pin", passwordField: "pin", passReqToCallback: true },
         async (req, username, password, done) => {
-            const user = await userGetByFeild(username, "pin");
+            const user = await userGetByField(username, "pin");
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -126,7 +126,7 @@ const samlStrategy = (settings) => {
             passReqToCallback: true,
         },
         async (req, profile, done) => {
-            const user = await userGetByFeild(profile[settings?.profileFeild].toLowerCase(), setings?.matchFeild);
+            const user = await userGetByField(profile[settings?.profileField].toLowerCase(), setings?.matchField);
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -135,7 +135,7 @@ const samlStrategy = (settings) => {
             }
 
             if (!user) {
-                logger.info(`SAML login: User '${profile[settings?.profileFeild].toLowerCase()}' does not exist.`);
+                logger.info(`SAML login: User '${profile[settings?.profileField].toLowerCase()}' does not exist.`);
                 return done(null, false);
             }
 
@@ -167,7 +167,7 @@ const oidcStrategy = (settings) => {
             passReqToCallback: true,
         },
         async (req, identifier, done) => {
-            const user = await userGetByFeild(identifier[settings?.profileFeild].toLowerCase(), setings?.matchFeild);
+            const user = await userGetByField(identifier[settings?.profileField].toLowerCase(), setings?.matchField);
 
             //Check Traffic Source Filter
             if (!(await ipCompare(req?.ip, settings?.sourceFilterList))) {
@@ -176,7 +176,7 @@ const oidcStrategy = (settings) => {
             }
 
             if (!user) {
-                logger.info(`OIDC login: User '${identifier[settings?.profileFeild].toLowerCase()}' does not exist.`);
+                logger.info(`OIDC login: User '${identifier[settings?.profileField].toLowerCase()}' does not exist.`);
                 return done(null, false);
             }
 

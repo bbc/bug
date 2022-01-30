@@ -11,7 +11,7 @@ const mongoSingle = require("@core/mongo-single");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmpCommunity"],
+    restartOn: ["address", "snmpCommunity", "dhcpSources"],
 });
 
 // create new snmp session
@@ -90,8 +90,8 @@ const main = async () => {
             );
         });
 
-        // every 30 seconds
-        await delay(30000);
+        // every 20 seconds
+        await delay(20000);
     }
 };
 

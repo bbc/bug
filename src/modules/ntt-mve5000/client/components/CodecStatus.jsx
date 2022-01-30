@@ -1,6 +1,6 @@
 import React from "react";
 import Loading from "@components/Loading";
-import { useApiPoller } from "@utils/ApiPoller";
+import { useApiPoller } from "@hooks/ApiPoller";
 import BugStatusBlockContainer from "@core/BugStatusBlockContainer";
 
 export default function CodecStatus({ panelId }) {

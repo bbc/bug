@@ -10,6 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -96,23 +97,22 @@ export default function ConfigPanel() {
                     />
                 </Grid>
 
+                <Grid item xs={12} md={6}>
+                    <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
+                </Grid>
+
                 <Grid item xs={6}>
-                    <FormControl fullWidth>
-                        <InputLabel>Model</InputLabel>
-                        <Select
-                            native
-                            defaultValue={panelConfig.data.model}
-                            label="Model"
-                            error={errors?.model ? true : false}
-                            inputProps={{
-                                ...register("model", { required: true }),
-                            }}
-                        >
-                            <option value={"tsl-mdu-12-pm"}>TSL MDU 12 PM</option>
-                            <option value={"tsl-mdu-3es"}>TSL MDU 3ES</option>
-                            <option value={"tsl-mdu-3es"}>TSL MDU 3ES</option>
-                        </Select>
-                    </FormControl>
+                    <BugConfigFormSelect
+                        inputProps={{ ...register("model", { required: true }) }}
+                        fullWidth
+                        error={errors?.model ? true : false}
+                        defaultValue={panelConfig.data.model}
+                        label="Model"
+                        items={{
+                            "tsl-mdu-12-pm": "TSL MDU 12 PM",
+                            "tsl-mdu-3es": "TSL MDU 3ES",
+                        }}
+                    />
                 </Grid>
             </BugConfigWrapper>
         </>
