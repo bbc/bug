@@ -4,14 +4,14 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 95%;
-    height: 20em;
+    height: 30em;
     position: relative;
-    width: 20em;
+    width: 30em;
     padding: 1em;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.2em;
 }
 
 .clock.simple:after {
