@@ -193,9 +193,37 @@ export default function InterfaceList({ panelId }) {
                     title: "MAC Address",
                     width: "10rem",
                     field: "mac-address",
-                    hideWidth: 1200,
+                    hideWidth: 2000,
                     content: (item) => item["mac-address"],
                 },
+                {
+                    title: "Speed",
+                    width: "5rem",
+                    hideWidth: 1000,
+                    content: (item) => {
+                        if (item?.linkstats?.rate) {
+                            return (
+                                <>
+                                    <Box sx={{ textAlign: "center" }}>{item?.linkstats?.rate}</Box>
+                                    <Box
+                                        sx={{
+                                            textAlign: "center",
+                                            opacity: item?.linkstats?.["auto-negotiation"] === "done" ? 0.3 : 1,
+                                            color:
+                                                item?.linkstats?.["auto-negotiation"] === "done"
+                                                    ? "#ffffff"
+                                                    : "primary.main",
+                                        }}
+                                    >
+                                        {item?.linkstats?.["auto-negotiation"] === "done" ? `auto` : `fixed`}
+                                    </Box>
+                                </>
+                            );
+                        }
+                        return null;
+                    },
+                },
+
                 {
                     title: "TX Rate",
                     hideWidth: 650,
