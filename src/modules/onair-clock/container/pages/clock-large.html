@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BUG Clock</title>
+        <style></style>
+        <link rel="stylesheet" href="./../css/style.css" />
+        <link rel="stylesheet" href="./../css/clock.css" />
+    </head>
+    <body id="main">
+        <div>
+            <h1 id="headertag">On Air Clock</h1>
+        </div>
+
+        <div class="clock-large">
+            <article class="clock">
+                <div class="hours-container">
+                    <div class="hours"></div>
+                </div>
+                <div class="minutes-container">
+                    <div class="minutes"></div>
+                </div>
+                <div class="seconds-container">
+                    <div class="seconds"></div>
+                </div>
+            </article>
+        </div>
+
+        <div>
+            <h2 id="time"></h2>
+        </div>
+
+        <div>
+            <h2 id="date"></h2>
+        </div>
+
+        <img src="" id="logo" />
+
+        <script src="./../js/axios.min.js"></script>
+
+        <script>
+            const getConfig = async () => {
+                try {
+                    const response = await axios.get("./../config");
+                    if (response?.data?.data?.backgroundColor) {
+                        document.body.style.backgroundColor = response?.data?.data?.backgroundColor;
+                    }
+                    if (response?.data?.data?.textColor) {
+                        document.body.style.color = response?.data?.data?.textColor;
+                    }
+                    if (response?.data?.data?.header) {
+                        document.getElementById("headertag").innerHTML = response?.data?.data?.header;
+                    }
+                    if (response?.data?.data?.logo?.image) {
+                        document.getElementById("logo").src = response?.data?.data?.logo?.image;
+                    }
+
+                    document.getElementById("date").hidden = !response?.data?.data?.showDate;
+                    document.getElementById("time").hidden = !response?.data?.data?.showTime;
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+
+            const getDate = () => {
+                const date = new Date();
+                const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+                const dateString = date.toLocaleDateString("en-US", options);
+                document.getElementById("date").innerHTML = dateString;
+            };
+
+            const getTime = () => {
+                const date = new Date();
+                const options = { hour: "numeric", minute: "numeric", second: "numeric", hour12: false };
+                const timeString = date.toLocaleDateString("en-US", options);
+                document.getElementById("time").innerHTML = timeString;
+            };
+
+            const initLocalClocks = () => {
+                const date = new Date();
+                const seconds = date.getSeconds();
+                const minutes = date.getMinutes();
+                const hours = date.getHours();
+
+                const hands = [
+                    {
+                        hand: "hours",
+                        angle: hours * 30 + minutes / 2,
+                    },
+                    {
+                        hand: "minutes",
+                        angle: minutes * 6,
+                    },
+                    {
+                        hand: "seconds",
+                        angle: seconds * 6,
+                    },
+                ];
+
+                // Loop through each of these hands to set their angle
+                for (let j = 0; j < hands.length; j++) {
+                    const elements = document.querySelectorAll("." + hands[j].hand);
+                    for (let k = 0; k < elements.length; k++) {
+                        elements[k].style.webkitTransform = "rotateZ(" + hands[j].angle + "deg)";
+                        elements[k].style.transform = "rotateZ(" + hands[j].angle + "deg)";
+                        // If this is a minute hand, note the seconds position (to calculate minute position later)
+                        if (hands[j].hand === "minutes") {
+                            elements[k].parentNode.setAttribute("data-second-angle", hands[j + 1].angle);
+                        }
+                    }
+                }
+            };
+
+            initLocalClocks();
+            getDate();
+            getTime();
+            getConfig();
+            setInterval(getConfig, 2000);
+            setInterval(getDate, 60000);
+            setInterval(getTime, 500);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+{
+    "name": "links",
+    "longname": "Links",
+    "description": "Link to other services",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-link",
+    "author": "Ryan McCartney",
+    "license": "MIT",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "links",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "links": []
+    }
+}
