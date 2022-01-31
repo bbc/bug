@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -31,7 +32,8 @@ const HomeAddPanel = () => {
                 },
             }}
         >
-            <Link
+            <Button
+                component={Link}
                 sx={{
                     color: "#cccccc",
                     textDecoration: "none",
@@ -63,7 +65,7 @@ const HomeAddPanel = () => {
                         sx={{
                             backgroundColor: "#181818",
                             borderWidth: 0,
-                            padding: "8px 0px",
+                            padding: "8px 8px 8px 0px",
                             "&:hover": {
                                 background: "#333",
                             },
@@ -80,6 +82,7 @@ const HomeAddPanel = () => {
                                 color: "rgba(255, 255, 255, 0.4)",
                                 fontSize: "0.9rem",
                                 overflow: "hidden",
+                                textTransform: "none",
                                 textOverflow: "ellipsis",
                                 whiteSpace: "nowrap",
                             },
@@ -98,7 +101,7 @@ const HomeAddPanel = () => {
                         }}
                     />
                 </Card>
-            </Link>
+            </Button>
         </Grid>
     );
 };

@@ -60,7 +60,7 @@ const HomeTiles = () => {
         }
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
-            if (panelList.data.length === 0) {
+            if (panelsByGroup.length === 0) {
                 return <HomeAddPanel />;
             }
             if (panelsByGroup.length === 1) {
