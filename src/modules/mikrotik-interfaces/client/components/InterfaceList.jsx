@@ -13,6 +13,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import CommentIcon from "@mui/icons-material/Comment";
 import { useHistory } from "react-router-dom";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 
 export default function InterfaceList({ panelId }) {
     const sendAlert = useAlert();
@@ -84,6 +86,14 @@ export default function InterfaceList({ panelId }) {
         } else {
             sendAlert(`Failed to ${command} interface: ${item.name}`, { variant: "error" });
         }
+    };
+
+    const handleEnabledClicked = (event, item) => {
+        handleEnabledChanged(true, item.name);
+    };
+
+    const handleDisabledClicked = (event, item) => {
+        handleEnabledChanged(false, item.name);
     };
 
     return (
@@ -196,6 +206,24 @@ export default function InterfaceList({ panelId }) {
                     title: "View Details",
                     icon: <SettingsInputComponentIcon fontSize="small" />,
                     onClick: handleDetailsClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Enable",
+                    disabled: (item) => !item.disabled,
+                    icon: <ToggleOnIcon fontSize="small" />,
+                    onClick: handleEnabledClicked,
+                },
+                {
+                    title: "Disable",
+                    disabled: (item) => item.disabled,
+                    icon: <ToggleOffIcon fontSize="small" />,
+                    onClick: handleDisabledClicked,
+                },
+                {
+                    title: "-",
                 },
                 {
                     title: "Rename",
