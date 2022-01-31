@@ -6,6 +6,8 @@ const outputGet = require("@services/output-get");
 const outputSetState = require("@services/output-setstate");
 const outputSetName = require("@services/output-setname");
 const outputSetDelay = require("@services/output-setdelay");
+const outputProtect = require("@services/output-protect");
+const outputUnprotect = require("@services/output-unprotect");
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 
@@ -59,6 +61,28 @@ router.post(
         res.json({
             status: result ? "success" : "failure",
             data: result,
+        });
+    })
+);
+
+router.get(
+    "/:outputNumber/protect/",
+    asyncHandler(async (req, res) => {
+        const result = await outputProtect(req?.params?.outputNumber);
+        res.json({
+            status: result ? "success" : "failure",
+            data: null,
+        });
+    })
+);
+
+router.get(
+    "/:outputNumber/unprotect/",
+    asyncHandler(async (req, res) => {
+        const result = await outputUnprotect(req?.params?.outputNumber);
+        res.json({
+            status: result ? "success" : "failure",
+            data: null,
         });
     })
 );

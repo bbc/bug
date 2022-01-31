@@ -13,6 +13,7 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import TimerIcon from "@mui/icons-material/Timer";
+import AxiosCommand from "@utils/AxiosCommand";
 
 export default function OutputsList2({ panelId }) {
     const history = useHistory();
@@ -70,7 +71,7 @@ export default function OutputsList2({ panelId }) {
         const command = item._protected ? "unprotect" : "protect";
         const commandAction = item._protected ? "Unprotected" : "Protected";
 
-        if (await AxiosCommand(`/container/${panelId}/output/${command}/${item.number}`)) {
+        if (await AxiosCommand(`/container/${panelId}/output/${item.number}/${command}`)) {
             sendAlert(`${commandAction} output ${item.number}`, { variant: "success" });
         } else {
             sendAlert(`Failed to ${command} output ${item.number}`, { variant: "error" });
@@ -114,6 +115,7 @@ export default function OutputsList2({ panelId }) {
                                 <BugApiSwitch
                                     checked={item.state}
                                     onChange={(checked) => handleEnabledChanged(checked, item)}
+                                    disabled={item._protected}
                                 />
                             );
                         },
@@ -126,7 +128,10 @@ export default function OutputsList2({ panelId }) {
                         content: (item) => {
                             return (
                                 <>
-                                    <BugTableLinkButton onClick={(event) => handleRenameClicked(event, item)}>
+                                    <BugTableLinkButton
+                                        disabled={item._protected}
+                                        onClick={(event) => handleRenameClicked(event, item)}
+                                    >
                                         {item.name}
                                     </BugTableLinkButton>
                                 </>

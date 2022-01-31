@@ -6,7 +6,7 @@ const configGet = require("@core/config-get");
 module.exports = async (deviceIndex) => {
     const system = await mongoSingle.get("system");
 
-    // we also add the output names from the config
+    // we also add the output names (and protected state) from the config
     const config = await configGet();
     if (!config) {
         return false;
@@ -21,7 +21,7 @@ module.exports = async (deviceIndex) => {
             deviceToReturn.outputs[index].outputName = `Output ${outputIndex}`;
         }
 
-        // check protected state
+        // add protected state
         deviceToReturn.outputs[index]._protected = config.protectedOutputs?.includes(`${deviceIndex}/${outputIndex}`);
     }
     return deviceToReturn;

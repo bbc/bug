@@ -22,6 +22,7 @@
         "enabled": false,
         "address": "",
         "username": "root",
-        "password": "telsys"
+        "password": "telsys",
+        "protectedOutputs": []
     }
 }
