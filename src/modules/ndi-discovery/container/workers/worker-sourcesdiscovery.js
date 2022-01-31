@@ -58,7 +58,7 @@ const getSources = async () => {
                     }
 
                     return {
-                        timestamp: Date.now(),
+                        timestamp: new Date(),
                         address: item.address,
                         port: item.port,
                         device: item.name.split(" (")[0],
