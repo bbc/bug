@@ -179,7 +179,6 @@ export default function BugApiTable({
                                     hover={typeof onRowClick === "function"}
                                     sx={{
                                         cursor: onRowClick !== undefined ? "pointer" : "auto",
-                                        opacity: item.disabled ? 0.5 : 1,
                                         height: rowHeight ? `${rowHeight}` : "auto",
                                     }}
                                     key={index}
