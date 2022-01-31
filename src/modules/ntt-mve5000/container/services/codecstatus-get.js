@@ -10,6 +10,10 @@ module.exports = async () => {
     // group into nice status blocks
     const statusBlocks = [];
 
+    if (!codecData) {
+        return [];
+    }
+
     const encoderStatus =
         codecData?.outputs_0_StreamTransmission === 0 || codecData?.outputs_1_StreamTransmission === 0;
     const inputStatus = codecData?.InputSignal === 1;
