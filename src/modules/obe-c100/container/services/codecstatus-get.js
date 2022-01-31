@@ -10,6 +10,10 @@ module.exports = async () => {
     // group into nice status blocks
     const statusBlocks = [];
 
+    if (!codecData) {
+        return [];
+    }
+
     const encoderStatus = codecData?.obeEncoderRowStatus === 1;
     const inputStatus = codecData?.inputStatus === 2;
     const inputConnectors = {
