@@ -99,7 +99,7 @@ export default function InterfaceList({ panelId }) {
 
     const handleLldpClicked = (event, item) => {};
 
-    const getItemNeighbour = (item) => {
+    const getItemNeighbor = (item) => {
         if (item?.lldp === undefined || item?.lldp.length === 0) {
             return null;
         }
@@ -165,7 +165,7 @@ export default function InterfaceList({ panelId }) {
                                         variant="secondary"
                                         onClick={(event) => handleLldpClicked(event, item)}
                                     >
-                                        {getItemNeighbour(item)}
+                                        {getItemNeighbor(item)}
                                     </BugTableLinkButton>
                                 </>
                             );
@@ -182,7 +182,7 @@ export default function InterfaceList({ panelId }) {
                                     variant="secondary"
                                     onClick={(event) => handleLldpClicked(event, item)}
                                 >
-                                    {getItemNeighbour(item)}
+                                    {getItemNeighbor(item)}
                                 </BugTableLinkButton>
                             </>
                         );
