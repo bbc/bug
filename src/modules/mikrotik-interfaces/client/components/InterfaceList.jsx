@@ -2,7 +2,7 @@ import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
 import BugSparkCell from "@core/BugSparkCell";
 import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiTable from "@core/BugApiTable";
@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 
 export default function InterfaceList({ panelId }) {
     const sendAlert = useAlert();
@@ -96,6 +97,21 @@ export default function InterfaceList({ panelId }) {
         handleEnabledChanged(false, item.name);
     };
 
+    const handleLldpClicked = (event, item) => {};
+
+    const getItemNeighbour = (item) => {
+        if (item?.lldp === undefined || item?.lldp.length === 0) {
+            return null;
+        }
+        if (item?.lldp.length > 1) {
+            return `${item?.lldp.length} device(s)`;
+        }
+        if (item.lldp[0].identity) {
+            return item.lldp[0].identity;
+        }
+        return "1 device";
+    };
+
     return (
         <BugApiTable
             columns={[
@@ -109,7 +125,7 @@ export default function InterfaceList({ panelId }) {
                 {
                     sortable: false,
                     noPadding: true,
-                    hideWidth: 600,
+                    hideWidth: 700,
                     width: 70,
                     content: (item) => {
                         return (
@@ -123,52 +139,54 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     sortable: "true",
+                    minWidth: "4rem",
+                    noWrap: true,
+                    field: "default-name",
+                    title: "ID",
+                    content: (item) => <>{item["default-name"]}</>,
+                },
+                {
+                    sortable: "true",
                     minWidth: "15rem",
                     noWrap: true,
                     field: "name",
                     title: "Name",
-                    content: (item) => (
-                        <>
-                            <Link
-                                sx={{
-                                    whiteSpace: "nowrap",
-                                    textOverflow: "ellipsis",
-                                    overflow: "hidden",
-                                    color: "#ffffff",
-                                    fontFamily: "fontFamily",
-                                    fontSize: "0.875rem",
-                                    lineHeight: 1.43,
-                                    display: "block",
-                                    maxWidth: "100%",
-                                    textAlign: "left",
-                                }}
-                                component="button"
-                                onClick={(event) => handleRenameClicked(event, item)}
-                            >
-                                {item.name}
-                            </Link>
-                            <Link
-                                sx={{
-                                    color: "#ffffff",
-                                    opacity: 0.3,
-                                    whiteSpace: "nowrap",
-                                    fontWeight: 500,
-                                    textOverflow: "ellipsis",
-                                    overflow: "hidden",
-                                    fontFamily: "fontFamily",
-                                    fontSize: "0.875rem",
-                                    lineHeight: 1.43,
-                                    display: "block",
-                                    maxWidth: "100%",
-                                    textAlign: "left",
-                                }}
-                                component="button"
-                                onClick={(event) => handleCommentClicked(event, item)}
-                            >
-                                {item.comment ? item.comment : ""}
-                            </Link>
-                        </>
-                    ),
+                    content: (item) => {
+                        if (item.comment) {
+                            return (
+                                <>
+                                    <BugTableLinkButton
+                                        disabled={item._protected}
+                                        onClick={(event) => handleCommentClicked(event, item)}
+                                    >
+                                        {item.comment}
+                                    </BugTableLinkButton>
+                                    <BugTableLinkButton
+                                        variant="secondary"
+                                        onClick={(event) => handleLldpClicked(event, item)}
+                                    >
+                                        {getItemNeighbour(item)}
+                                    </BugTableLinkButton>
+                                </>
+                            );
+                        }
+                        return (
+                            <>
+                                <BugTableLinkButton
+                                    disabled={item._protected}
+                                    onClick={(event) => handleRenameClicked(event, item)}
+                                >
+                                    {item.name}
+                                </BugTableLinkButton>
+                                <BugTableLinkButton
+                                    variant="secondary"
+                                    onClick={(event) => handleLldpClicked(event, item)}
+                                >
+                                    {getItemNeighbour(item)}
+                                </BugTableLinkButton>
+                            </>
+                        );
+                    },
                 },
                 {
                     sortable: "true",
@@ -180,7 +198,7 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "TX Rate",
-                    hideWidth: 580,
+                    hideWidth: 650,
                     content: (item) => (
                         <BugSparkCell
                             value={item?.traffic["tx-bits-per-second-text"]}
@@ -191,7 +209,7 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "RX Rate",
-                    hideWidth: 580,
+                    hideWidth: 650,
                     content: (item) => (
                         <BugSparkCell
                             value={item?.traffic["rx-bits-per-second-text"]}
