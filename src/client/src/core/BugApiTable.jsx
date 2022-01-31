@@ -107,7 +107,7 @@ export default function BugApiTable({
     }
 
     if (pollResult?.data?.length === 0) {
-        if (noData) {
+        if (noData && !showFilters) {
             return noData;
         }
     }
