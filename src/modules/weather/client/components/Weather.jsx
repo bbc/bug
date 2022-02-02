@@ -2,7 +2,6 @@ import React from "react";
 import ReactWeather, { useOpenWeather } from "react-open-weather";
 
 const customStyles = {
-    fontFamily: "ReithSans, sans-serif",
     gradientStart: "#153550",
     gradientMid: "#153550",
     gradientEnd: "#153550",

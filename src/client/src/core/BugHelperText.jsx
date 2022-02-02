@@ -10,7 +10,7 @@ const BugHelperText = ({ children }) => {
                 fontSize: "0.75rem",
                 marginTop: "3px",
                 textAlign: "left",
-                fontFamily: "ReithSans",
+                fontFamily: "fontFamily",
                 fontWeight: "400",
                 lineHeight: "1.66",
             }}

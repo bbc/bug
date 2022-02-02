@@ -150,7 +150,6 @@ const theme = createTheme({
         MuiLink: {
             styleOverrides: {
                 root: {
-                    fontFamily: "ReithSans",
                     fontSize: "0.9rem",
                 },
             },
@@ -244,7 +243,8 @@ const theme = createTheme({
         },
     },
     typography: {
-        fontFamily: "ReithSans",
+        // fontFamily: "Nunito Sans",
+        fontFamily: "Roboto",
         serviceState: {
             opacity: 0.5,
         },
