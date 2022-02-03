@@ -3,12 +3,15 @@ import useSound from "use-sound";
 
 const useSounds = (path) => {
     const [play] = useSound(path);
-    const settings = useSelector((state) => state.settings);
-
     const quiet = () => {};
 
-    if (settings?.data?.sound) {
-        return play;
+    try {
+        const settings = useSelector((state) => state.settings);
+        if (settings?.data?.sound) {
+            return play;
+        }
+    } catch (error) {
+        return quiet;
     }
 
     return quiet;
