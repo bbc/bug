@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell } from "recharts";
 import Box from "@mui/material/Box";
 import useDimensions from "react-cool-dimensions";
 
-export default function BugGauge({ max = 100, value, title = "", unit = "", decimalPlaces = 2 }) {
+export default function BugGauge({ max = 100, value, title = "", unit = "%", decimalPlaces = 2 }) {
     const { observe, width, height } = useDimensions({
         onResize: ({ observe, unobserve }) => {
             unobserve();
