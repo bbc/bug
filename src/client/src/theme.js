@@ -1,10 +1,13 @@
 import { createTheme } from "@mui/material/styles";
 const defaultTheme = createTheme();
+const selectedFont = "Roboto";
+
 const theme = createTheme({
     components: {
         MuiPaper: {
             styleOverrides: {
                 root: {
+                    fontFamily: selectedFont,
                     backgroundImage: "none",
                 },
             },
@@ -243,8 +246,7 @@ const theme = createTheme({
         },
     },
     typography: {
-        // fontFamily: "Nunito Sans",
-        fontFamily: "Roboto",
+        fontFamily: selectedFont,
         serviceState: {
             opacity: 0.5,
         },
