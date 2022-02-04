@@ -1,19 +1,18 @@
-import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
-import { action } from "@storybook/addon-actions";
 
 export default {
-    title: "BUG Core/Forms/BugConfigFormAutocomplete",
-    component: BugConfigFormAutocomplete,
+    title: "BUG Core/Forms/BugConfigFormPanelSelect",
+    component: BugConfigFormPanelSelect,
     parameters: {
         docs: {
             description: {
                 component: `This is a form control, designed to work within a BugForm.<br/>
                 BugForm uses react-hook-form to manage the form state. See https://react-hook-form.com/ for more info.<br />
-                An autocomplete dropdown to display multiple items.<br />
-                Can be used with a simple array of strings, or with a custom object with an id and label properties.`,
+                A dropdown control for selecting panels. Often used to select remote panel data sources.<br/>
+                Optionally takes a 'capability' field which filters panels by the capability they provide.`,
             },
         },
         controls: { sort: "requiredFirst" },
@@ -25,7 +24,7 @@ export default {
         name: {
             type: { name: "string", required: true },
             defaultValue: "control-name",
-            description: "Field name to use for this control eg 'tags' or 'categories'",
+            description: "Field name to use for this control eg 'group'",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
@@ -33,7 +32,7 @@ export default {
         },
         label: {
             type: { name: "string", required: true },
-            defaultValue: "My Control Name",
+            defaultValue: "Select Panels",
             description: "Short description to be shown in the control",
             table: {
                 type: { summary: "string" },
@@ -42,8 +41,17 @@ export default {
         },
         helperText: {
             type: { name: "string", required: false },
-            defaultValue: "Select a number of animals",
+            defaultValue: "Select a panel source for DHCP data",
             description: "Optional helper text to be shown below the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
+        capability: {
+            type: { name: "string", required: false },
+            defaultValue: "dhcp-server",
+            description: "This value is used to search available panels by capability",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
@@ -81,57 +89,31 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        sort: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description:
-                "Whether the selected values should be sorted alphabetically (only applies when control is first loaded)",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
         defaultValue: {
             type: { name: "data", required: false },
-            defaultValue: ["zebra"],
-            description:
-                "The selected value when the control is loaded. Can be an array of strings or objects with id and label properties.",
+            defaultValue: [1, 2],
+            description: "The selected value when the control is loaded. An array of panel IDs.",
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
-            },
-        },
-        options: {
-            type: { name: "data", required: true },
-            description: "An array of available values to be selected",
-            defaultValue: ["zebra", "caterpillar", "horse"],
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        freeSolo: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to allow 'free' text input",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
             },
         },
         fullWidth: {
             type: { name: "boolean" },
-            defaultValue: false,
+            defaultValue: true,
             description: "Expands the control to fill available horizontal space",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
+        mockApiData: {
+            table: { disable: true },
+        },
     },
 };
 
-export const MyBugConfigFormAutocomplete = (args) => {
+export const MyBugConfigFormPanelSelect = (args) => {
     const { control } = useForm();
 
     return (
@@ -140,18 +122,18 @@ export const MyBugConfigFormAutocomplete = (args) => {
             <BugForm.Body>
                 <Grid container>
                     <Grid item xs={12}>
-                        <BugConfigFormAutocomplete
+                        <BugConfigFormPanelSelect
                             name={args.name}
+                            control={control}
+                            defaultValue={args.defaultValue}
                             label={args.label}
                             error={args.error}
-                            control={control}
                             fullWidth
-                            freeSolo={args.freeSolo}
-                            sort={args.sort}
                             options={args.options}
                             defaultValue={args.defaultValue}
                             helperText={args.helperText}
                             fullWidth={args.fullWidth}
+                            mockApiData={args.mockApiData}
                         />
                     </Grid>
                 </Grid>
@@ -160,9 +142,31 @@ export const MyBugConfigFormAutocomplete = (args) => {
     );
 };
 
-MyBugConfigFormAutocomplete.displayName = "BugConfigFormAutocomplete";
-MyBugConfigFormAutocomplete.storyName = "BugConfigFormAutocomplete";
-MyBugConfigFormAutocomplete.parameters = {
+MyBugConfigFormPanelSelect.displayName = "BugConfigFormPanelSelect";
+MyBugConfigFormPanelSelect.storyName = "BugConfigFormPanelSelect";
+MyBugConfigFormPanelSelect.args = {
+    mockApiData: {
+        status: "success",
+        data: [
+            {
+                id: 1,
+                title: "Cisco Router Bay 1",
+                enabled: true,
+            },
+            {
+                id: 2,
+                title: "Mikrotik Router Bay 1",
+                enabled: true,
+            },
+            {
+                id: 3,
+                title: "Mikrotik Router Bay 2",
+                enabled: true,
+            },
+        ],
+    },
+};
+MyBugConfigFormPanelSelect.parameters = {
     docs: {
         source: {
             code: `
@@ -171,17 +175,16 @@ MyBugConfigFormAutocomplete.parameters = {
     <BugForm.Body>
         <Grid container>
             <Grid item xs={12}>
-                <BugConfigFormAutocomplete
+                <BugConfigFormPanelSelect
                     name="control-name"
-                    label="My Control Name"
-                    error={false}
+                    label="Select Panels"
+                    helperText="Select a panel source for DHCP data"
+                    capability="dhcp-server"
                     control={control}
-                    freeSolo={false}
-                    sort={true}
-                    options={["zebra", "caterpillar", "horse"]}
-                    defaultValue={["zebra"]}
-                    helperText="Optional helper text to be shown below the control"
-                    fullWidth={false}
+                    error={false}
+                    rules={{ required: true }}
+                    defaultValue={[1, 2]}
+                    fullWidth={true}
                 />
             </Grid>
         </Grid>

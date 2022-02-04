@@ -1,12 +1,12 @@
-import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
 import { action } from "@storybook/addon-actions";
 
 export default {
-    title: "BUG Core/Forms/BugConfigFormAutocomplete",
-    component: BugConfigFormAutocomplete,
+    title: "BUG Core/Forms/BugConfigFormChipInput",
+    component: BugConfigFormChipInput,
     parameters: {
         docs: {
             description: {
@@ -50,7 +50,7 @@ export default {
             },
         },
         control: {
-            type: { name: "data", required: true },
+            type: { name: "data", required: false },
             defaultValue: {},
             description: "This should be passed from the parent BugForm",
             control: {
@@ -131,7 +131,7 @@ export default {
     },
 };
 
-export const MyBugConfigFormAutocomplete = (args) => {
+export const MyBugConfigFormChipInput = (args) => {
     const { control } = useForm();
 
     return (
@@ -140,7 +140,7 @@ export const MyBugConfigFormAutocomplete = (args) => {
             <BugForm.Body>
                 <Grid container>
                     <Grid item xs={12}>
-                        <BugConfigFormAutocomplete
+                        <BugConfigFormChipInput
                             name={args.name}
                             label={args.label}
                             error={args.error}
@@ -160,9 +160,9 @@ export const MyBugConfigFormAutocomplete = (args) => {
     );
 };
 
-MyBugConfigFormAutocomplete.displayName = "BugConfigFormAutocomplete";
-MyBugConfigFormAutocomplete.storyName = "BugConfigFormAutocomplete";
-MyBugConfigFormAutocomplete.parameters = {
+MyBugConfigFormChipInput.displayName = "BugConfigFormChipInput";
+MyBugConfigFormChipInput.storyName = "BugConfigFormChipInput";
+MyBugConfigFormChipInput.parameters = {
     docs: {
         source: {
             code: `
@@ -171,11 +171,12 @@ MyBugConfigFormAutocomplete.parameters = {
     <BugForm.Body>
         <Grid container>
             <Grid item xs={12}>
-                <BugConfigFormAutocomplete
+                <BugConfigFormChipInput
                     name="control-name"
                     label="My Control Name"
                     error={false}
                     control={control}
+                    fullWidth={true}
                     freeSolo={false}
                     sort={true}
                     options={["zebra", "caterpillar", "horse"]}
