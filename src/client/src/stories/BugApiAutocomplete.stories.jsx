@@ -10,7 +10,7 @@ export default {
                 component: `An autocomplete dropdown which is designed for use with an API.<br />
                     Triggers the onChange event, and disables the control to allow the new value to be updated.<br />
                     If the value hasn't changed within the timeout period the control is re-enabled.<br />
-                    Can be used with a simple array of strings, or with a custom object with a label and value properties.`,
+                    Can be used with a simple array of strings, or with a custom object with an id and label properties.`,
             },
             page: () => (
                 <>
@@ -27,7 +27,7 @@ export default {
     argTypes: {
         onChange: { action: "changed" },
         options: {
-            type: { name: "data" },
+            type: { name: "data", required: true },
             description: "An array of available values to be selected",
             defaultValue: {},
             table: {
