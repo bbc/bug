@@ -2,19 +2,29 @@ import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { useRecursiveTimeout } from "@hooks/RecursiveTimeout";
 
-export function useApiPoller({ url, interval, forceRefresh, errorInterval = null, postData = null }) {
+export function useApiPoller({
+    url,
+    mockApiData = null,
+    interval,
+    forceRefresh,
+    errorInterval = null,
+    postData = null,
+}) {
     const [pollResult, setPollResult] = useState({
         status: "idle",
         data: null,
         error: null,
     });
 
+    if (mockApiData) {
+        return mockApiData;
+    }
+
     const localResult = useRef(pollResult);
     if (!errorInterval) {
         errorInterval = interval;
     }
 
-    // useEffect(() => {
     const source = axios.CancelToken.source();
     const cancelToken = source.token;
 

@@ -79,7 +79,8 @@ export default function BugApiTable({
         setCookie(`${cookieId}_filters`, value);
     };
 
-    const pollResult = useApiPoller({
+    const pollData = useApiPoller({
+        mockApiData: mockApiData,
         postData: {
             sortDirection: sortDirection,
             sortField: sortField,
@@ -89,8 +90,6 @@ export default function BugApiTable({
         interval: 2500,
         forceRefresh: forceRefresh,
     });
-
-    const pollData = mockApiData ? mockApiData : pollResult;
 
     const handleSortClicked = (column) => {
         if (!sortable || !column.sortable) {

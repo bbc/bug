@@ -2,7 +2,6 @@ import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
-import BugHelperText from "@core/BugHelperText";
 import { Controller } from "react-hook-form";
 import { useApiPoller } from "@hooks/ApiPoller";
 
@@ -14,13 +13,13 @@ const BugConfigFormPanelSelect = ({
     children,
     rules,
     error,
-    variant,
-    freeSolo,
     helperText,
     capability,
+    mockApiData = null,
     ...props
 }) => {
     const panels = useApiPoller({
+        mockApiData: mockApiData,
         url: `/api/panel/bycapability/${capability}`,
         interval: 10000,
     });
@@ -69,7 +68,13 @@ const BugConfigFormPanelSelect = ({
                                 defaultValue={processValues(value)}
                                 value={processValues(value)}
                                 renderInput={(params) => (
-                                    <TextField {...params} variant="standard" label={label} error={error} />
+                                    <TextField
+                                        {...params}
+                                        helperText={helperText}
+                                        variant="standard"
+                                        label={label}
+                                        error={error}
+                                    />
                                 )}
                             />
                         );
@@ -80,7 +85,6 @@ const BugConfigFormPanelSelect = ({
                     rules={rules}
                 />
             </FormControl>
-            {helperText && <BugHelperText>{helperText}</BugHelperText>}
         </>
     );
 };
