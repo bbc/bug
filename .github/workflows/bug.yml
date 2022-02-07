@@ -61,12 +61,17 @@ jobs:
               uses: actions/checkout@v2
             #Get the package.json version
             - uses: martinbeentjes/npm-get-version-action@master
-              name: Get package.json Version
-              id: package-version
+              name: Get Backend Version
+              id: backend-version
               with:
-                  path: /src/package.json
-            - name: Print Current Version
-              run: echo ${{ steps.package-version.outputs.current-version }}
+                  path: ./src
+            - uses: martinbeentjes/npm-get-version-action@master
+              name: Get Frontend Version
+              id: frontend-version
+              with:
+                  path: ./src/client
+            - name: Print Current Versions
+              run: echo ${{ steps.backend-version.outputs.current-version }}  ${{ steps.frontend-version.outputs.current-version }}
             #Docker Setup
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v1
