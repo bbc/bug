@@ -71,24 +71,26 @@ jobs:
               with:
                   path: ./src/client
             - name: Print Current Versions
-              run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and fronten version ${{ steps.frontend-version.outputs.current-version }}
-            #Docker Setup
-            - name: Set up QEMU
-              uses: docker/setup-qemu-action@v1
-            - name: Set up Docker Buildx
-              id: buildx
-              uses: docker/setup-buildx-action@v1
-              with:
-                  buildkitd-flags: --debug --output=type=registry,registry.insecure=true
-                  driver-opts: network=host
-            - name: List available platforms
-              run: echo ${{ steps.buildx.outputs.platforms }}
+              run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and frontend version ${{ steps.frontend-version.outputs.current-version }}
+            #Docker Registry Login
             - name: Login to Harbor Registry
               uses: docker/login-action@v1
               with:
                   registry: ${{ env.regsitry }}
                   username: ${{ secrets.HARBOR_USER }}
                   password: ${{ secrets.HARBOR_KEY }}
+            #Docker Buildx Setup
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v1
+            - name: Set up Docker Buildx
+              id: buildx
+              uses: docker/setup-buildx-action@v1
+              with:
+                  buildkitd-flags: --debug
+                  driver-opts: network=host
+            - name: List available platforms
+              run: echo ${{ steps.buildx.outputs.platforms }}
+            #Docker Build Image and Push to Registry
             - name: Build and push to local registry
               uses: docker/build-push-action@v2
               with:
@@ -96,6 +98,7 @@ jobs:
                   dockerfile: ./src/Dockerfile
                   platforms: ${{ matrix.architecture}}
                   push: true
+                  outpus: type=registry,registry.insecure=true
                   tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
             - name: Inspect
               run: |
