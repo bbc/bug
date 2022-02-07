@@ -80,6 +80,8 @@ jobs:
                   driver-opts: network=host
             - name: List available platforms
               run: echo ${{ steps.buildx.outputs.platforms }}
+            - name: Login to Harbor Registry
+              run: docker login -u {{ secrets.`HARBOR_USER` }} -p ${{ secrets.`HARBOR_KEY` }}
             - name: Build and push to local registry
               uses: docker/build-push-action@v2
               with:
