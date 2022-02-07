@@ -1,6 +1,6 @@
 {
   "name": "bbcnews-bug-client",
-  "version": "3.0.0-b",
+  "version": "3.0.2-b",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
@@ -122,7 +122,6 @@
     "@storybook/addon-essentials": "^6.4.18",
     "@storybook/addon-links": "^6.4.18",
     "@storybook/react": "^6.4.18",
-    "babel-loader": "^8.2.3",
     "babel-plugin-bulk-import": "^2.0.0",
     "babel-plugin-import": "^1.13.3",
     "customize-cra": "^1.0.0"
