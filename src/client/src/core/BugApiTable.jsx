@@ -20,7 +20,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 export default function BugApiTable({
     apiUrl,
-    columns,
+    mockApiData = null,
+    columns = [],
     onRowClick,
     menuItems,
     sortable,
@@ -41,7 +42,7 @@ export default function BugApiTable({
     const [cookies, setCookie] = useCookies([cookieId]);
 
     useEffect(() => {
-        if (columns[defaultSortIndex] !== undefined) {
+        if (columns?.[defaultSortIndex] !== undefined) {
             if (columns[defaultSortIndex]["defaultSortDirection"] !== undefined) {
                 setSortDirection(columns[defaultSortIndex]["defaultSortDirection"]);
             }
@@ -89,6 +90,8 @@ export default function BugApiTable({
         forceRefresh: forceRefresh,
     });
 
+    const pollData = mockApiData ? mockApiData : pollResult;
+
     const handleSortClicked = (column) => {
         if (!sortable || !column.sortable) {
             return false;
@@ -102,12 +105,12 @@ export default function BugApiTable({
         }
     };
 
-    if (pollResult.status === "loading" || pollResult.status === "idle") {
+    if (pollData.status === "loading" || pollData.status === "idle") {
         return <Loading />;
     }
 
-    if (pollResult?.data?.length === 0) {
-        if (noData) {
+    if (pollData?.data?.length === 0) {
+        if (noData && !showFilters) {
             return noData;
         }
     }
@@ -120,7 +123,7 @@ export default function BugApiTable({
                         {!hideHeader && (
                             <TableHead>
                                 <TableRow key="1">
-                                    {columns.map((column, index) => (
+                                    {columns?.map((column, index) => (
                                         <BugResponsiveTableCell
                                             key={index}
                                             column={column}
@@ -174,12 +177,11 @@ export default function BugApiTable({
                             </TableHead>
                         )}
                         <TableBody>
-                            {pollResult?.data?.map((item, index) => (
+                            {pollData?.data?.map((item, index) => (
                                 <TableRow
                                     hover={typeof onRowClick === "function"}
                                     sx={{
                                         cursor: onRowClick !== undefined ? "pointer" : "auto",
-                                        opacity: item.disabled ? 0.5 : 1,
                                         height: rowHeight ? `${rowHeight}` : "auto",
                                     }}
                                     key={index}

@@ -61,6 +61,16 @@ export default function InterfaceList({ panelId, stackId = null }) {
         history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
     };
 
+    const handleNeighborLinkClicked = (event, item) => {
+        event.stopPropagation();
+        history.push(`/panel/${panelId}/interface/${item.interfaceId}/neighbor`);
+    };
+
+    const handleDevicesLinkClicked = (event, item) => {
+        event.stopPropagation();
+        history.push(`/panel/${panelId}/interface/${item.interfaceId}/devices`);
+    };
+
     const getVlanChangedMessage = (interfaceId, oldValues, newValues) => {
         const oldTags = JSON.stringify(oldValues.taggedVlans);
         const newTags = JSON.stringify(newValues.taggedVlans);
@@ -201,20 +211,22 @@ export default function InterfaceList({ panelId, stackId = null }) {
 
     const getItemSubName = (item) => {
         if (item?.lldp?.system_name) {
-            return item?.lldp?.system_name;
+            return (
+                <BugTableLinkButton variant="secondary" onClick={(event) => handleNeighborLinkClicked(event, item)}>
+                    {item?.lldp?.system_name}
+                </BugTableLinkButton>
+            );
         }
         if (item?.fdb) {
+            let displayText = `${item?.fdb.length} device(s)`;
             if (item?.fdb.length === 1) {
-                if (item?.fdb[0]?.comment) {
-                    return item?.fdb[0]?.comment;
-                }
-                if (item?.fdb[0]?.hostname) {
-                    return item?.fdb[0]?.hostname;
-                }
+                displayText = item?.fdb[0]?.comment ? item?.fdb[0]?.comment : item?.fdb[0]?.hostname;
             }
-            if (item?.fdb.length > 1) {
-                return `${item?.fdb.length} device(s)`;
-            }
+            return (
+                <BugTableLinkButton variant="secondary" onClick={(event) => handleDevicesLinkClicked(event, item)}>
+                    {displayText}
+                </BugTableLinkButton>
+            );
         }
         return null;
     };
@@ -263,22 +275,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                             >
                                 {item.alias ? item.alias : item.description}
                             </BugTableLinkButton>
-                            <Box
-                                sx={{
-                                    color: "#ffffff",
-                                    opacity: 0.3,
-                                    whiteSpace: "nowrap",
-                                    fontWeight: 400,
-                                    textOverflow: "ellipsis",
-                                    overflow: "hidden",
-                                    fontFamily: "fontFamily",
-                                    fontSize: "0.875rem",
-                                    lineHeight: 1.43,
-                                    paddingTop: "2px",
-                                }}
-                            >
-                                {getItemSubName(item)}
-                            </Box>
+                            {getItemSubName(item)}
                         </>
                     ),
                 },

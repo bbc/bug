@@ -14,6 +14,8 @@ module.exports = async (interfaceId) => {
         return false;
     }
 
+    console.log(`interface-unprotect: unprotecting interface ${interfaceId}`);
+
     config.protectedInterfaces = config.protectedInterfaces.filter((item) => item !== interfaceId);
 
     return await configPutViaCore(config);

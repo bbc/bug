@@ -1,5 +1,5 @@
 // This file (along with customize-cra) allows us to compile the JSX files in the modules folder
-var path = require("path");
+const path = require("path");
 const {
     override,
     addBabelPlugin,

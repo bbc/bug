@@ -11,13 +11,12 @@ const BugConfigFormAutocomplete = ({
     control,
     sort,
     defaultValue,
-    children,
     rules,
     error,
     options,
-    variant,
     freeSolo,
     helperText,
+    fullWidth = false,
     ...props
 }) => {
     // we use this bit of code to work out if we're dealing with an array of objects.
@@ -49,7 +48,7 @@ const BugConfigFormAutocomplete = ({
 
     return (
         <>
-            <FormControl {...props}>
+            <FormControl fullWidth={fullWidth} {...props}>
                 <Controller
                     render={({ field: { onChange, onBlur, value } }) => {
                         return (
@@ -92,7 +91,6 @@ const BugConfigFormAutocomplete = ({
                     rules={rules}
                 />
             </FormControl>
-            {helperText && <BugHelperText>{helperText}</BugHelperText>}
         </>
     );
 };

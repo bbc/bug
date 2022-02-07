@@ -3,7 +3,6 @@ import BugApiSwitch from "@core/BugApiSwitch";
 import BugPowerIcon from "@core/BugPowerIcon";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import Link from "@mui/material/Link";
 import { formatDistanceToNow } from "date-fns";
 import BugApiTable from "@core/BugApiTable";
 import BugChipDisplay from "@core/BugChipDisplay";
@@ -20,8 +19,8 @@ import AxiosGet from "@utils/AxiosGet";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import BugNoData from "@core/BugNoData";
 import Tooltip from "@mui/material/Tooltip";
-import Box from "@mui/material/Box";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 
 export default function LeaseList({ panelId }) {
     const history = useHistory();
@@ -201,44 +200,14 @@ export default function LeaseList({ panelId }) {
                         content: (item) => {
                             return (
                                 <>
-                                    {item["host-name"] && (
-                                        <Box
-                                            sx={{
-                                                whiteSpace: "nowrap",
-                                                textOverflow: "ellipsis",
-                                                overflow: "hidden",
-                                                color: "#ffffff",
-                                                fontFamily: "fontFamily",
-                                                fontSize: "0.875rem",
-                                                lineHeight: 1.43,
-                                                display: "block",
-                                                maxWidth: "100%",
-                                                textAlign: "left",
-                                            }}
-                                        >
-                                            {item["host-name"]}
-                                        </Box>
-                                    )}
+                                    {item["host-name"] && <BugTableLinkButton>{item["host-name"]}</BugTableLinkButton>}
                                     {item.comment && (
-                                        <Link
-                                            component="button"
+                                        <BugTableLinkButton
                                             onClick={(event) => handleCommentClicked(event, item)}
-                                            sx={{
-                                                color: "#ffffff",
-                                                opacity: 0.3,
-                                                whiteSpace: "nowrap",
-                                                textOverflow: "ellipsis",
-                                                overflow: "hidden",
-                                                fontFamily: "fontFamily",
-                                                fontSize: "0.875rem",
-                                                lineHeight: 1.43,
-                                                display: "block",
-                                                maxWidth: "100%",
-                                                textAlign: "left",
-                                            }}
+                                            variant="secondary"
                                         >
                                             {item.comment}
-                                        </Link>
+                                        </BugTableLinkButton>
                                     )}
                                 </>
                             );
@@ -251,13 +220,11 @@ export default function LeaseList({ panelId }) {
                         field: "address",
                         defaultSortDirection: "asc",
                         filterType: "text",
-                        content: (item) => {
-                            return (
-                                <Link component="button" onClick={(event) => handleLinkClicked(event, item)}>
-                                    {item.address}
-                                </Link>
-                            );
-                        },
+                        content: (item) => (
+                            <BugTableLinkButton variant="primary" onClick={(event) => handleLinkClicked(event, item)}>
+                                {item.address}
+                            </BugTableLinkButton>
+                        ),
                     },
                     {
                         title: "Manufacturer",

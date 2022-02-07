@@ -10,11 +10,15 @@ const ciscoSGVlanArray = require("@utils/ciscosg-vlanarray");
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     const config = await configGet();
 
+    console.log(`interface-setvlantrunk: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
+
     const interfaceCollection = await mongoCollection("interfaces");
     const iface = await interfaceCollection.findOne({ interfaceId: parseInt(interfaceId) });
     if (!iface) {
         throw new Error(`interface ${interfaceId} not found`);
     }
+
+    console.log(`interface-setvlantrunk: interface ${interfaceId} found in db`);
 
     // fetch the list of available vlans
     const allVlans = await mongoSingle.get("vlans");
@@ -63,7 +67,8 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         }
     }
 
-    console.log(`interface-setvlantrunk: sending commands to switch: \n${commands.join("\n")}`);
+    console.log(`interface-setvlantrunk: sending commands to switch: ${JSON.stringify(commands)}`);
+
     const result = await ciscoSGSSH({
         host: config.address,
         username: config.username,
@@ -81,12 +86,15 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     }
 
     if (allOk) {
+        console.log(`interface-setvlantrunk: success - updating DB`);
+
         // update db
-        await interfaceCollection.updateOne(
+        const dbResult = await interfaceCollection.updateOne(
             { interfaceId: parseInt(interfaceId) },
             { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": vlanArray } }
         );
+        console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
     }
-
-    return allOk;
+    console.log(`interface-setvlantrunk: failed to set vlan ${untaggedVlan} on interface ${interfaceId}`);
+    return false;
 };

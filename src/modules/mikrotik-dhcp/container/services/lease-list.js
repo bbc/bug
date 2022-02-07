@@ -11,33 +11,36 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         leases = [];
     }
 
-    if (filters['name']) {
+    if (filters["name"]) {
         leases = leases.filter((lease) => {
-            const hasName = lease['host-name'] && lease['host-name'].toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
+            const hasName =
+                lease["host-name"] && lease["host-name"].toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
             const hasComment = lease.comment && lease.comment.toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
             return hasName || hasComment;
         });
     }
 
-    if (filters['last-seen']) {
-        leases = leases.filter((lease) => lease["last-seen"] < parseInt(filters['last-seen']));
+    if (filters["last-seen"]) {
+        leases = leases.filter((lease) => lease["last-seen"] < parseInt(filters["last-seen"]));
     }
 
-    if (filters['expires-after']) {
-        leases = leases.filter((lease) => lease["expires-after"] < parseInt(filters['expires-after']));
+    if (filters["expires-after"]) {
+        leases = leases.filter((lease) => lease["expires-after"] < parseInt(filters["expires-after"]));
     }
 
-    if (filters['server']) {
-        leases = leases.filter((lease) => lease["server"] === filters['server']);
-    }
-
-    if (filters['status']) {
-        leases = leases.filter((lease) => lease["status"] === filters['status']);
-    }
-
-    if (filters['address']) {
+    if (filters["server"]) {
         leases = leases.filter((lease) => {
-            return lease['address'] && lease['address'].indexOf(filters.address) > -1;
+            return lease["server"] && lease["server"].indexOf(filters.server) > -1;
+        });
+    }
+
+    if (filters["status"]) {
+        leases = leases.filter((lease) => lease["status"] === filters["status"]);
+    }
+
+    if (filters["address"]) {
+        leases = leases.filter((lease) => {
+            return lease["address"] && lease["address"].indexOf(filters.address) > -1;
         });
     }
 
@@ -55,16 +58,18 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         // set sortable hostname field (or comment if not set)
         eachLease["name"] = "-- no name --";
         if (eachLease["host-name"]) {
-            eachLease["name"] = eachLease["host-name"]
-        }
-        else if (eachLease["comment"]) {
-            eachLease["name"] = eachLease["comment"]
+            eachLease["name"] = eachLease["host-name"];
+        } else if (eachLease["comment"]) {
+            eachLease["name"] = eachLease["comment"];
         }
     }
 
-    if (filters['manufacturer']) {
+    if (filters["manufacturer"]) {
         leases = leases.filter((lease) => {
-            return lease['manufacturer'] && lease['manufacturer'].toLowerCase().indexOf(filters.manufacturer.toLowerCase()) > -1;
+            return (
+                lease["manufacturer"] &&
+                lease["manufacturer"].toLowerCase().indexOf(filters.manufacturer.toLowerCase()) > -1
+            );
         });
     }
 
@@ -74,19 +79,18 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         name: sortHandlers.string,
         address: sortHandlers.ipAddress,
         manufacturer: sortHandlers.string,
-        ['mac-address']: sortHandlers.string,
-        ['last-seen']: sortHandlers.number,
-        ['last-seen']: sortHandlers.number,
-        ['expires-after']: sortHandlers.number,
+        ["mac-address"]: sortHandlers.string,
+        ["last-seen"]: sortHandlers.number,
+        ["last-seen"]: sortHandlers.number,
+        ["expires-after"]: sortHandlers.number,
         server: sortHandlers.string,
-    }
+    };
 
     // sort
     if (sortField && sortHandlerList[sortField]) {
         if (sortDirection === "asc") {
             leases.sort((a, b) => sortHandlerList[sortField](a, b, sortField));
-        }
-        else {
+        } else {
             leases.sort((a, b) => sortHandlerList[sortField](b, a, sortField));
         }
     }

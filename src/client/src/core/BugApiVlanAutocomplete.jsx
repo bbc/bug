@@ -77,7 +77,7 @@ export default function BugApiVlanAutocomplete({
 
     let trunkLabel = "Trunk - Multiple VLANs";
     let value = null;
-    const isTrunk = taggedValue.length > 0;
+    const isTrunk = taggedValue?.length > 0;
     const groupedOptions = options
         ? [
               {

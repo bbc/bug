@@ -3,6 +3,7 @@ const router = express.Router();
 const interfaceCombinedList = require("../../services/interface-combinedlist");
 const interfaceCombined = require("../../services/interface-combined");
 const interfaceHistory = require("../../services/interface-history");
+const interfaceLldp = require("../../services/interface-lldp");
 const mikrotikInterfaceEnable = require("../../services/mikrotik-interfaceenable");
 const mikrotikInterfaceDisable = require("../../services/mikrotik-interfacedisable");
 const mikrotikInterfaceProtect = require("../../services/mikrotik-interfaceprotect");
@@ -94,6 +95,17 @@ router.get(
             parseInt(req.params.start),
             parseInt(req.params.end)
         );
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.all(
+    "/lldp/:interfaceName",
+    asyncHandler(async (req, res) => {
+        const result = await interfaceLldp(req.params.interfaceName);
         res.json({
             status: result ? "success" : "failure",
             data: result,

@@ -20,6 +20,9 @@ export default function Module(props) {
             <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceId">
                 <InterfacePanel />
             </BugModuleRoute>
+            <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceId/:tab">
+                <InterfacePanel />
+            </BugModuleRoute>
         </BugModuleWrapper>
     );
 }

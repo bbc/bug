@@ -46,7 +46,7 @@ const main = async () => {
     while (noErrors) {
         try {
             const interfaces = await mikrotikFetchInterfaces(conn);
-            await mongoSaveArray(interfacesCollection, interfaces, "id");
+            await mongoSaveArray(interfacesCollection, interfaces, "id", true);
         } catch (error) {
             console.log("worker-interfaces: ", error);
             noErrors = false;

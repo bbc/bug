@@ -33,6 +33,7 @@ export default function BugNoData({ title = "No data found", message = "", panel
                             marginBottom: 0,
                             marginTop: "1px",
                         },
+                        flexGrow: 1,
                     },
                     "& .MuiAlert-icon": {
                         padding: "0px",
@@ -44,6 +45,7 @@ export default function BugNoData({ title = "No data found", message = "", panel
                     sx={{
                         display: "flex",
                         flexDirection: "column",
+                        flexGrow: 1,
                     }}
                 >
                     <AlertTitle>{title}</AlertTitle>

@@ -71,7 +71,9 @@ export function useApiPoller({ url, interval, forceRefresh, errorInterval = null
     };
 
     useEffect(() => {
-        fetch();
+        if (url) {
+            fetch();
+        }
 
         return () => {
             // this is run when the component is unloaded
@@ -82,7 +84,9 @@ export function useApiPoller({ url, interval, forceRefresh, errorInterval = null
     }, [url, interval, forceRefresh, errorInterval, postData]);
 
     useRecursiveTimeout(async () => {
-        await fetch();
+        if (url) {
+            await fetch();
+        }
     }, interval);
 
     return pollResult;

@@ -70,6 +70,7 @@ const HomeAddPanel = () => {
                                 background: "#333",
                             },
                             "& .MuiCardHeader-title": {
+                                fontFamily: "fontFamily",
                                 color: "rgba(255, 255, 255, 1)",
                                 fontSize: "1.1rem",
                                 fontWeight: "500",
