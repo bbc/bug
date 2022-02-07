@@ -40,20 +40,6 @@ jobs:
                   path: ./src/client
             - name: Print Current Versions
               run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and frontend version ${{ steps.frontend-version.outputs.current-version }}
-            # Docker Image Metadata
-            - name: Docker Metadata
-              id: docker-metadata
-              uses: docker/metadata-action@v3
-              with:
-                  images: ${{ env.regsitry }}/bug/app
-                  tags: |
-                      type=schedule
-                      type=ref,event=branch
-                      type=ref,event=pr
-                      type=semver,pattern={{version}}
-                      type=semver,pattern={{major}}.{{minor}}
-                      type=semver,pattern={{major}}
-                      type=sha
             #Docker Buildx Setup
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v1
@@ -80,8 +66,7 @@ jobs:
                   dockerfile: ./src/Dockerfile
                   platforms: ${{ matrix.architecture}}
                   push: ${{ github.event_name != 'pull_request' }}
-                  tags: ${{ steps.docker-metadata.outputs.tags }}
-                  labels: ${{ steps.docker-metadata.outputs.labels }}
+                  tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
             - name: Inspect
               run: |
                   docker buildx imagetools inspect ${{env.regsitry}}/bug/app:latest
