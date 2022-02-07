@@ -15,16 +15,6 @@ on:
             - "docs/**"
 
 jobs:
-    version-check:
-        runs-on: self-hosted
-        steps:
-            - uses: martinbeentjes/npm-get-version-action@master
-              name: Get Application Version
-              id: package-version
-              with:
-                  path: ./src/package.json
-            - name: Current Version
-              run: echo ${{ steps.package-version.outputs.current-version }}
     backend:
         runs-on: self-hosted
         strategy:
@@ -59,17 +49,25 @@ jobs:
             - run: npm run build --if-present
     docker:
         runs-on: self-hosted
-        services:
-            registry:
-                image: registry:2
-                ports:
-                    - 5000:5000
+        strategy:
+            matrix:
+                architecture: [linux/amd64, linux/arm64]
         defaults:
             run:
                 working-directory: ./src
         steps:
+            #Get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v2
+            #Get the package.json version
+            - uses: martinbeentjes/npm-get-version-action@master
+              name: Get package.json Version
+              id: package-version
+              with:
+                  path: /src/package.json
+            - name: Print Current Version
+              run: echo ${{ steps.package-version.outputs.current-version }}
+            #Docker Setup
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v1
             - name: Set up Docker Buildx
@@ -91,9 +89,9 @@ jobs:
               with:
                   context: "./src"
                   dockerfile: ./src/Dockerfile
+                  platforms: ${{ matrix.architecture}}
                   push: true
-                  allow: security.insecure
-                  tags: "${{env.regsitry}}/bug/app:latest"
+                  tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.package-version.outputs.current-version}}
             - name: Inspect
               run: |
                   docker buildx imagetools inspect ${{env.regsitry}}/bug/app:latest
