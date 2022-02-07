@@ -1,17 +1,17 @@
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
 
 export default {
-    title: "BUG Core/Forms/BugConfigFormSelect",
-    component: BugConfigFormSelect,
+    title: "BUG Core/Forms/BugConfigFormSwitch",
+    component: BugConfigFormSwitch,
     parameters: {
         docs: {
             description: {
                 component: `This is a form control, designed to work within a BugForm.<br/>
                 BugForm uses react-hook-form to manage the form state. See https://react-hook-form.com/ for more info.<br />
-                A simple select dropdown with BUG styling. Items are passed as a javascript object.`,
+                A switch control. Items are passed as a javascript object.`,
             },
         },
         controls: { sort: "requiredFirst" },
@@ -40,7 +40,7 @@ export default {
         },
         helperText: {
             type: { name: "string", required: false },
-            defaultValue: "Select an animal",
+            defaultValue: "Choose true ... or false!",
             description: "Optional helper text to be shown below the control",
             table: {
                 type: { summary: "string" },
@@ -59,19 +59,9 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        error: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description:
-                "This is usually handled by the parent BugForm but can also be set manually. Change the helperText to add additional error information.",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
         rules: {
             type: { name: "data", required: false },
-            defaultValue: { required: true },
+            defaultValue: null,
             description:
                 "Optional validation rules in object format. See https://react-hook-form.com/api/usecontroller/controller for more information.",
             table: {
@@ -80,28 +70,9 @@ export default {
             },
         },
         defaultValue: {
-            type: { name: "data", required: false },
-            defaultValue: "zebra",
-            description:
-                "The selected value when the control is loaded. This should be a valid ID listed in the items array.",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        items: {
-            type: { name: "data", required: true },
-            description: "An array of available values to be selected",
-            defaultValue: { zebra: "Zebra", caterpillar: "Caterpillar", horse: "Horse" },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        fullWidth: {
-            type: { name: "boolean" },
-            defaultValue: true,
-            description: "Expands the control to fill available horizontal space",
+            type: { name: "boolean", required: false },
+            defaultValue: false,
+            description: "The selected value when the control is loaded. True or false.",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
@@ -119,7 +90,7 @@ export default {
     },
 };
 
-export const MyBugConfigFormSelect = (args) => {
+export const MyBugConfigFormSwitch = (args) => {
     const { control } = useForm();
 
     return (
@@ -128,14 +99,11 @@ export const MyBugConfigFormSelect = (args) => {
             <BugForm.Body>
                 <Grid container>
                     <Grid item xs={12}>
-                        <BugConfigFormSelect
+                        <BugConfigFormSwitch
                             name={args.name}
                             control={control}
-                            fullWidth={args.fullWidth}
                             label={args.label}
                             helperText={args.helperText}
-                            items={args.items}
-                            error={args.error}
                             rules={args.rules}
                             defaultValue={args.defaultValue}
                             disabled={args.disabled}
@@ -147,9 +115,9 @@ export const MyBugConfigFormSelect = (args) => {
     );
 };
 
-MyBugConfigFormSelect.displayName = "BugConfigFormSelect";
-MyBugConfigFormSelect.storyName = "BugConfigFormSelect";
-MyBugConfigFormSelect.parameters = {
+MyBugConfigFormSwitch.displayName = "BugConfigFormSwitch";
+MyBugConfigFormSwitch.storyName = "BugConfigFormSwitch";
+MyBugConfigFormSwitch.parameters = {
     docs: {
         source: {
             code: `
@@ -158,18 +126,12 @@ MyBugConfigFormSelect.parameters = {
     <BugForm.Body>
         <Grid container>
             <Grid item xs={12}>
-                <BugConfigFormSelect
+                <BugConfigFormSwitch
                     name="control-name"
                     control={control}
                     label="My Control Name"
-                    helperText="Select an animal"
-                    fullWidth={true}
-                    defaultValue="zebra"
-                    items={{
-                        zebra: "Zebra", 
-                        caterpillar: "Caterpillar", 
-                        horse: "Horse"
-                    }}
+                    helperText="Choose true ... or false!"
+                    defaultValue={false}
                     disabled={false}
                 />
             </Grid>
