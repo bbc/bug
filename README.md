@@ -1,3 +1,9 @@
+[![Backend](https://github.com/bbc/bbcnews-bug/actions/workflows/backend.yml/badge.svg)](https://github.com/bbc/bbcnews-bug/actions/workflows/backend.yml)
+
+[![Frontend](https://github.com/bbc/bbcnews-bug/actions/workflows/frontend.yml/badge.svg)](https://github.com/bbc/bbcnews-bug/actions/workflows/frontend.yml)
+
+[![Deploy](https://github.com/bbc/bbcnews-bug/actions/workflows/docker.yml/badge.svg)](https://github.com/bbc/bbcnews-bug/actions/workflows/docker.yml)
+
 # BUG (Broadcast Universal Gateway)
 
 ![BUG Logo](https://github.com/bbc/bbcnews-bug/blob/main/src/client/public/icons/bug-logo-256x256.png?raw=true)
