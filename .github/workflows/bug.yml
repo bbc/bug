@@ -92,6 +92,7 @@ jobs:
                   context: "./src"
                   dockerfile: ./src/Dockerfile
                   push: true
+                  allow: security.insecure
                   tags: "${{env.regsitry}}/bug/app:latest"
             - name: Inspect
               run: |
