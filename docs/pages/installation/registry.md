@@ -11,10 +11,14 @@ For internal development builds within the BCN BUG is avalible from a Docker con
 
 To access the repository you'll need to first be on the BCN and then modify you'r docker configuration to allow you to connect to the registry.
 
-The following line will need to be added to the `deamon.json` file in linux.
+The following line will need to be added to the `/etc/docker/daemon.json` file in linux. Edit the file using `sudo nano /etc/docker/daemon.json`.
+
+Paste in the following respecting whatever's in there already.
 
 ```
-"insecure-registries" : ["172.26.108.110"]
+{
+    "insecure-registries" : ["172.26.108.110"]
+}
 ```
 
 On Docker desktop for Mac and Windows, this can be done from the docker preferences menu. To access the Docker preferences menu on MacOS see the screenshot below.
