@@ -4,7 +4,7 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import BugPasswordTextField from "@core/BugPasswordTextField";
+import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
@@ -53,37 +53,34 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("title", { required: true }),
-                        }}
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
-                        error={errors?.title ? true : false}
+                        error={errors.title}
                         defaultValue={panelConfig.data.title}
-                        type="text"
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
-                        error={errors?.description ? true : false}
+                        error={errors.description}
                         defaultValue={panelConfig.data.description}
-                        type="text"
                         label="Description"
                     />
                 </Grid>
 
                 <Grid item xs={6}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("username", { required: true }),
-                        }}
+                        name="username"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors?.username ? true : false}
                         defaultValue={panelConfig.data.username}
-                        type="text"
                         label="Email"
                     />
                 </Grid>
@@ -113,10 +110,10 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <BugPasswordTextField
-                        inputProps={{
-                            ...register("password", { required: true }),
-                        }}
+                    <BugConfigFormPasswordTextField
+                        name="password"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors?.password ? true : false}
                         defaultValue={panelConfig.data.password}
@@ -127,13 +124,12 @@ export default function ConfigPanel() {
 
                 <Grid item xs={6}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("organisation", { required: true }),
-                        }}
+                        name="organisation"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors?.organisation ? true : false}
                         defaultValue={panelConfig.data.organisation}
-                        type="text"
                         label="Teradek Core Organisation Name"
                     />
                 </Grid>

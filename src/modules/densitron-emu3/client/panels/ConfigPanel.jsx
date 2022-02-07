@@ -10,7 +10,6 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -23,7 +22,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+    const { handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -32,41 +31,37 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("title", { required: true }),
-                        }}
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
-                        error={errors?.title ? true : false}
+                        error={errors.title}
                         defaultValue={panelConfig.data.title}
                         type="text"
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
-                        error={errors?.description ? true : false}
+                        error={errors.description}
                         defaultValue={panelConfig.data.description}
                         type="text"
                         label="Description"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        //REGEX: Tests for IPv4 Addresses
-                        inputProps={{
-                            ...register("address", {
-                                required: true,
-                                pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
-                            }),
-                        }}
+                        name="address"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "address")}
                         type="text"
                         label="IP Address"
@@ -75,11 +70,14 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("snmpCommunity", { required: true }) }}
+                        name="snmpCommunity"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.snmpCommunity}
                         helperText={messages.snmpCommunity}
                         defaultValue={panelConfig.data.snmpCommunity}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "snmpCommunity", ["address"])}
                         type="text"
                         label="SNMP Community String"

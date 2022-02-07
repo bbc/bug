@@ -1,30 +1,60 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import { Controller } from "react-hook-form";
 
-const BugConfigFormSelect = ({ items, disabled = false, ...props }) => {
+const BugConfigFormSelect = ({
+    name,
+    label,
+    items = [],
+    disabled = false,
+    control,
+    defaultValue,
+    rules,
+    error,
+    helperText,
+    ...props
+}) => {
     return (
-        <TextField
-            select
-            value={props.value}
-            fullWidth
-            disabled={disabled}
-            variant="standard"
-            {...props}
-            sx={{
-                "& .MuiSelect-select:focus": {
-                    backgroundColor: "inherit",
-                },
-            }}
-        >
-            {items &&
-                Object.keys(items).map((key, index) => (
-                    <MenuItem key={index} value={key}>
-                        {items[key]}
-                    </MenuItem>
-                ))}
-        </TextField>
+        <>
+            <FormControl {...props}>
+                <Controller
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <TextField
+                                select
+                                value={value}
+                                label={label}
+                                fullWidth
+                                disabled={disabled}
+                                onChange={onChange}
+                                variant="standard"
+                                error={error}
+                                helperText={helperText}
+                                {...props}
+                                sx={{
+                                    "& .MuiSelect-select:focus": {
+                                        backgroundColor: "inherit",
+                                    },
+                                }}
+                            >
+                                {items &&
+                                    Object.keys(items).map((key, index) => (
+                                        <MenuItem key={index} value={key}>
+                                            {items[key]}
+                                        </MenuItem>
+                                    ))}
+                            </TextField>
+                        );
+                    }}
+                    name={name}
+                    control={control}
+                    defaultValue={defaultValue}
+                    rules={rules}
+                />
+            </FormControl>
+        </>
     );
 };
-
 export default BugConfigFormSelect;

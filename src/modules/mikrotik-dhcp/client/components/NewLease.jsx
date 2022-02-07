@@ -4,13 +4,14 @@ import { useAlert } from "@utils/Snackbar";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import useAsyncEffect from "use-async-effect";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 export default function Lease({ panelId, leaseId }) {
     const history = useHistory();
@@ -19,7 +20,12 @@ export default function Lease({ panelId, leaseId }) {
     const sendAlert = useAlert();
 
     useAsyncEffect(async () => {
-        setServers(await AxiosGet(`/container/${panelId}/server/`));
+        const serverResult = await AxiosGet(`/container/${panelId}/server/`);
+        const resultArray = {};
+        for (let eachServer of serverResult) {
+            resultArray[eachServer.id] = eachServer.name;
+        }
+        setServers(resultArray);
     }, []);
 
     useAsyncEffect(async () => {
@@ -96,68 +102,47 @@ export default function Lease({ panelId, leaseId }) {
                         >
                             <Grid item xs={12}>
                                 {servers && (
-                                    <TextField
-                                        select
-                                        inputProps={{
-                                            ...register("server"),
-                                        }}
+                                    <BugConfigFormSelect
+                                        name="server"
+                                        control={control}
+                                        rules={{ required: true }}
                                         fullWidth
+                                        error={errors.server}
                                         label="DHCP Server"
-                                        variant="standard"
-                                        SelectProps={{
-                                            native: true,
-                                        }}
-                                    >
-                                        <option value={null}>all</option>
-                                        {servers.map((server) => (
-                                            <option value={server.name} key={server.id}>
-                                                {server.name}
-                                            </option>
-                                        ))}
-                                    </TextField>
+                                        items={servers}
+                                    />
                                 )}
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{
-                                        ...register("address", {
-                                            required: true,
-                                            pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
-                                        }),
-                                    }}
-                                    required
+                                <BugConfigFormTextField
+                                    name="address"
+                                    control={control}
+                                    rules={{ required: true }}
                                     fullWidth
                                     error={errors.address}
                                     type="text"
                                     label="Address"
-                                    variant="standard"
-                                    onChange={handleAddressChanged}
-                                    autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{ ...register("comment") }}
+                                <BugConfigFormTextField
+                                    name="comment"
+                                    control={control}
                                     fullWidth
                                     error={errors.comment}
                                     type="text"
-                                    variant="standard"
                                     label="Comment"
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{
-                                        ...register("mac-address", {
-                                            required: true,
-                                            pattern: /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
-                                        }),
-                                    }}
+                                <BugConfigFormTextField
+                                    name="mac-address"
+                                    control={control}
+                                    rules={{ required: true }}
                                     fullWidth
-                                    defaultValue="02:00:00:00:00:00"
                                     error={errors["mac-address"]}
+                                    defaultValue="02:00:00:00:00:00"
                                     type="text"
-                                    variant="standard"
                                     label="MAC Address"
                                 />
                             </Grid>

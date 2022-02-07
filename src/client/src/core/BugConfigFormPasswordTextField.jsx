@@ -1,28 +1,25 @@
 import React from "react";
-import BugTextField from "@core/BugTextField";
+import BugPasswordTextField from "@core/BugPasswordTextField";
 import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
 
-const BugConfigFormTextField = ({
+const BugConfigFormPasswordTextField = ({
     name,
     label,
     control,
     disabled = false,
     defaultValue,
-    fullWidth = false,
     rules,
     error,
     helperText,
     supportsValidation = false,
-    numeric = false,
-    min,
-    max,
+    type = "text",
     ...props
 }) => {
     return (
         <>
             <FormControl
-                fullWidth={fullWidth}
+                {...props}
                 sx={{
                     "& .MuiFormHelperText-root:not(.Mui-error)": {
                         color: supportsValidation ? "success.main" : "text.primary",
@@ -32,18 +29,14 @@ const BugConfigFormTextField = ({
                 <Controller
                     render={({ field: { onChange, value } }) => {
                         return (
-                            <BugTextField
+                            <BugPasswordTextField
                                 value={value}
                                 label={label}
                                 fullWidth
                                 disabled={disabled}
                                 onChange={onChange}
-                                variant="standard"
                                 error={error}
                                 helperText={helperText}
-                                numeric={numeric}
-                                min={min}
-                                max={max}
                             />
                         );
                     }}
@@ -57,4 +50,4 @@ const BugConfigFormTextField = ({
     );
 };
 
-export default BugConfigFormTextField;
+export default BugConfigFormPasswordTextField;

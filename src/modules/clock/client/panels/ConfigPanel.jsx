@@ -28,10 +28,9 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("title", { required: true }),
-                        }}
-                        required
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
@@ -39,13 +38,14 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
+                        variant="standard"
                         type="text"
                         label="Description"
                     />
@@ -57,10 +57,12 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12} md={6}>
                     <BugConfigFormSelect
-                        inputProps={{ ...register("type", { required: true }) }}
+                        name="type"
+                        control={control}
+                        error={errors.type}
                         fullWidth
-                        error={errors?.type ? true : false}
-                        defaultValue="analogue"
+                        defaultValue={panelConfig.data.type}
+                        rules={{ required: true }}
                         label="Type"
                         items={{
                             analogue: "Analogue",

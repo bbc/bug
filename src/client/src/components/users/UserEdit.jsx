@@ -120,15 +120,13 @@ export default function UserEdit({ userId = null }) {
                             <Grid container spacing={4}>
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField
-                                        inputProps={{
-                                            ...register("name", {
-                                                required: true,
-                                            }),
-                                        }}
+                                        name="name"
+                                        control={control}
+                                        rules={{ required: true }}
                                         fullWidth
                                         variant="standard"
                                         defaultValue={user.name}
-                                        error={errors?.name ? true : false}
+                                        error={errors?.name}
                                         type="text"
                                         label="Name"
                                     />
@@ -136,15 +134,13 @@ export default function UserEdit({ userId = null }) {
 
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField
-                                        inputProps={{
-                                            ...register("username", {
-                                                required: true,
-                                            }),
-                                        }}
+                                        name="username"
+                                        control={control}
+                                        rules={{ required: true }}
                                         fullWidth
                                         variant="standard"
                                         defaultValue={user.username}
-                                        error={errors?.username ? true : false}
+                                        error={errors?.username}
                                         type="text"
                                         label="Username"
                                     />
@@ -168,18 +164,11 @@ export default function UserEdit({ userId = null }) {
 
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField
-                                        inputProps={{
-                                            ...register("email", {
-                                                pattern: {
-                                                    value: /\S+@\S+\.\S+/,
-                                                    message: "invalid email address",
-                                                },
-                                            }),
-                                        }}
-                                        variant="standard"
+                                        name="email"
+                                        control={control}
                                         fullWidth
                                         defaultValue={user.email}
-                                        error={errors?.email ? true : false}
+                                        error={errors?.email}
                                         type="email"
                                         label="Email address"
                                     />
@@ -208,18 +197,16 @@ export default function UserEdit({ userId = null }) {
 
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField
-                                        inputProps={{ ...register("password") }}
+                                        name="password"
+                                        control={control}
                                         fullWidth
                                         autoComplete="off"
                                         defaultValue={blankPassword}
-                                        variant="standard"
                                         inputRef={inputRef}
                                         type="password"
                                         label="Password (optional)"
-                                        onFocus={() => {
-                                            if (inputRef.current.value === blankPassword) {
-                                                inputRef.current.value = "";
-                                            }
+                                        filter={(value) => {
+                                            return value === blankPassword ? "" : value;
                                         }}
                                         helperText="Only used if the 'local' security type is enabled"
                                     />

@@ -5,8 +5,10 @@ import { useAlert } from "@utils/Snackbar";
 import BugForm from "@core/BugForm";
 import BugReadonlyTextField from "@core/BugReadonlyTextField";
 import Grid from "@mui/material/Grid";
+import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosDelete from "@utils/AxiosDelete";
 import Loading from "@components/Loading";
@@ -27,7 +29,12 @@ export default function Lease({ panelId, leaseId }) {
     }, []);
 
     useAsyncEffect(async () => {
-        setServers(await AxiosGet(`/container/${panelId}/server/`));
+        const serverResult = await AxiosGet(`/container/${panelId}/server/`);
+        const resultArray = {};
+        for (let eachServer of serverResult) {
+            resultArray[eachServer.id] = eachServer.name;
+        }
+        setServers(resultArray);
     }, []);
 
     useAsyncEffect(async () => {
@@ -48,7 +55,7 @@ export default function Lease({ panelId, leaseId }) {
         history.goBack();
     };
 
-    const { register, handleSubmit, control, formState, setError, getValues, clearErrors } = useForm();
+    const { handleSubmit, control, formState } = useForm();
 
     const getErrors = () => {
         const errors = {};
@@ -92,16 +99,11 @@ export default function Lease({ panelId, leaseId }) {
                             }}
                         >
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{
-                                        ...register("address", {
-                                            required: true,
-                                            pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
-                                        }),
-                                    }}
-                                    required
+                                <BugConfigFormTextField
+                                    name="address"
+                                    control={control}
+                                    rules={{ required: true }}
                                     fullWidth
-                                    variant="standard"
                                     error={errors.address}
                                     defaultValue={lease.address}
                                     type="text"
@@ -119,13 +121,13 @@ export default function Lease({ panelId, leaseId }) {
                                 </Grid>
                             )}
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{ ...register("comment") }}
+                                <BugConfigFormTextField
+                                    name="comment"
+                                    control={control}
                                     fullWidth
                                     error={errors.comment}
                                     defaultValue={lease.comment}
                                     type="text"
-                                    variant="standard"
                                     label="Comment"
                                 />
                             </Grid>
@@ -140,23 +142,17 @@ export default function Lease({ panelId, leaseId }) {
                                         fullWidth
                                         sort
                                         options={addressLists}
-
-                                        // helperText="Only allow this security type from these addresses"
                                     />
                                 </Grid>
                             )}
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{
-                                        ...register("mac-address", {
-                                            required: true,
-                                            pattern: /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
-                                        }),
-                                    }}
+                                <BugConfigFormTextField
+                                    name="mac-address"
+                                    control={control}
+                                    rules={{ required: true }}
                                     fullWidth
                                     error={errors["mac-address"]}
                                     defaultValue={lease["mac-address"]}
-                                    variant="standard"
                                     type="text"
                                     label="MAC Address"
                                 />
@@ -200,54 +196,26 @@ export default function Lease({ panelId, leaseId }) {
                                         fullWidth
                                         sort
                                         options={addressLists}
-
-                                        // helperText="Only allow this security type from these addresses"
                                     />
                                 </Grid>
                             )}
 
                             {servers && lease && (
                                 <Grid item xs={12}>
-                                    <TextField
-                                        variant="standard"
-                                        select
-                                        inputProps={{
-                                            ...register("server"),
-                                        }}
+                                    <BugConfigFormSelect
+                                        name="server"
+                                        control={control}
                                         fullWidth
                                         label="DHCP Server"
                                         defaultValue={lease.server}
-                                        SelectProps={{
-                                            native: true,
-                                        }}
-                                    >
-                                        <option value={null}>all</option>
-                                        {servers.map((server) => (
-                                            <option value={server.name} key={server.id}>
-                                                {server.name}
-                                            </option>
-                                        ))}
-                                    </TextField>
+                                        items={servers}
+                                    />
                                 </Grid>
                             )}
                         </Grid>
                     </BugForm.Body>
                     <BugForm.Actions>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                backgroundColor: "error.main",
-                                color: "#fff",
-                                "&:hover": {
-                                    backgroundColor: "error.hover",
-                                },
-                            }}
-                            disableElevation
-                            onClick={handleDeleteClicked}
-                        >
-                            Delete
-                        </Button>
-                        <div style={{ flexGrow: 1 }}></div>
+                        <BugConfigFormDeleteButton onClick={handleDeleteClicked} />
                         <Button variant="contained" color="secondary" disableElevation onClick={handleCancelClicked}>
                             Cancel
                         </Button>
