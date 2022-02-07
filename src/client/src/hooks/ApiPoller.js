@@ -16,10 +16,6 @@ export function useApiPoller({
         error: null,
     });
 
-    if (mockApiData) {
-        return mockApiData;
-    }
-
     const localResult = useRef(pollResult);
     if (!errorInterval) {
         errorInterval = interval;
@@ -81,7 +77,7 @@ export function useApiPoller({
     };
 
     useEffect(() => {
-        if (url) {
+        if (url && !mockApiData) {
             fetch();
         }
 
@@ -94,10 +90,14 @@ export function useApiPoller({
     }, [url, interval, forceRefresh, errorInterval, postData]);
 
     useRecursiveTimeout(async () => {
-        if (url) {
+        if (url && !mockApiData) {
             await fetch();
         }
     }, interval);
+
+    if (mockApiData) {
+        return mockApiData;
+    }
 
     return pollResult;
 }
