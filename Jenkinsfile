@@ -55,7 +55,7 @@ pipeline {
         always {
             cleanWs()
             sh "docker buildx rm builder.${env.BUILD_NUMBER}"
-        }
+        }ƒinse
         success {
             slackSend(color: "#30fc03", channel: "#ci-bug-dev", message: "*#${env.BUILD_NUMBER} Success:* Built, tested and deployed '${env.JOB_NAME}' ${VERSION} (${env.BUILD_URL})")
         }
