@@ -11,7 +11,6 @@ import Loading from "@components/Loading";
 import BugNoData from "@core/BugNoData";
 import BugColorPicker from "@core/BugColorPicker";
 import BugTimeZonePicker from "@core/BugTimeZonePicker";
-import Iframe from "react-iframe";
 import Input from "@mui/material/Input";
 import Switch from "@mui/material/Switch";
 
@@ -53,7 +52,7 @@ export default function MainPanel() {
         }
     };
 
-    const handleTimeZoneChange = async (timezone) => {
+    const handleTimeZoneChange = async (event, timezone) => {
         if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { timezone: timezone })) {
             sendAlert(`Successfully changed timezone`, { broadcast: true, variant: "success" });
         } else {
@@ -149,10 +148,7 @@ export default function MainPanel() {
                         {
                             name: "Time Zone",
                             value: (
-                                <BugTimeZonePicker
-                                    value={panelConfig?.data?.timezone}
-                                    onChange={handleTimeZoneChange}
-                                />
+                                <BugTimeZonePicker value={panelConfig?.data?.timezone} handler={handleTimeZoneChange} />
                             ),
                         },
                         {
@@ -195,16 +191,6 @@ export default function MainPanel() {
                             ),
                         },
                     ]}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <Iframe
-                    url="./../../container/g1kz5wxo8p59smk/clock/large"
-                    width="90%"
-                    height="300"
-                    id="clock-preview"
-                    display="initial"
-                    position="relative"
                 />
             </Grid>
         </>
