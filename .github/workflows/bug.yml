@@ -23,6 +23,7 @@ jobs:
               id: package-version
               with:
                   path: ./src/package.json
+            - name: Current Version
               run: echo ${{ steps.package-version.outputs.current-version }}
     backend:
         runs-on: self-hosted
