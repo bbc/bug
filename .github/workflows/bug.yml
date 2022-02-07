@@ -3,6 +3,9 @@
 
 name: BUG - Build, Test, Deploy
 
+env:
+    regsitry: "172.26.108.110"
+
 on:
     push:
         branches:
@@ -70,9 +73,10 @@ jobs:
             - name: Build and push to local registry
               uses: docker/build-push-action@v2
               with:
-                  context: "{{defaultContext}}:src"
+                  context: "./src"
+                  dockerfile: ./src/Dockerfile
                   push: true
-                  tags: localhost:5000/bug/app:latest
+                  tags: "${{env.regsitry}}/bug/app:latest"
             - name: Inspect
               run: |
-                  docker buildx imagetools inspect localhost:5000/bug/app:latest
+                  docker buildx imagetools inspect ${{env.regsitry}}/bug/app:latest
