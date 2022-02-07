@@ -19,7 +19,7 @@ jobs:
         runs-on: self-hosted
         steps:
             - uses: martinbeentjes/npm-get-version-action@master
-              name: get-npm-version
+              name: Get Application Version
               id: package-version
               with:
                   path: ./src/package.json
