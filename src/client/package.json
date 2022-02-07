@@ -30,7 +30,7 @@
     "moment": "^2.29.1",
     "notistack": "^1.0.6-next.3",
     "postcss": "^8.4.6",
-    "react": "^17.0.2",
+    "react": "^17.0.0",
     "react-app-rewired": "^2.1.8",
     "react-clock": "^3.0.0",
     "react-color": "^2.19.3",
@@ -38,7 +38,7 @@
     "react-cool-dimensions": "^2.0.7",
     "react-countup": "^4.3.3",
     "react-custom-scrollbars-2": "^4.4.0",
-    "react-dom": "^17.0.2",
+    "react-dom": "^17.0.0",
     "react-hook-form": "^7.0.6",
     "react-hotkeys-hook": "^3.3.1",
     "react-html-parser": "^2.0.2",
@@ -71,7 +71,8 @@
     "test": "react-app-rewired test --watchAll=false",
     "eject": "react-app-rewired eject",
     "storybook": "start-storybook -p 3303",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "eslintConfig": {
     "extends": [
@@ -110,6 +111,7 @@
     "@storybook/addon-essentials": "^6.4.17",
     "@storybook/addon-links": "^6.4.17",
     "@storybook/react": "^6.4.17",
+    "@storybook/storybook-deployer": "^2.8.10",
     "babel-plugin-bulk-import": "^2.0.0",
     "babel-plugin-import": "^1.13.3",
     "customize-cra": "^1.0.0"

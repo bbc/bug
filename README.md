@@ -22,7 +22,7 @@ For development on your local machine with docker (recommended)
 -   Run `npm install`.
 -   Change directories to the `./src/client` folder of the repository
 -   Run `npm install`.
--   Spin up your development instnace with `docker compose up -d`
+-   Spin up your development instance with `docker compose up -d`
 
 You can change many of the port parameters, logging locations by setting environment variables in a `.env` file in the root directory.
 
