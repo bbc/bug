@@ -31,6 +31,7 @@ const BugConfigFormSelect = ({
                                 onChange={onChange}
                                 variant="standard"
                                 error={error}
+                                helperText={helperText}
                                 {...props}
                                 sx={{
                                     "& .MuiSelect-select:focus": {

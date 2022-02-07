@@ -29,23 +29,22 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("title", { required: true }) }}
-                        required
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
-                        type="text"
                         label="Panel Title"
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
-                        variant="standard"
-                        type="text"
                         label="Description"
                     />
                 </Grid>
@@ -54,36 +53,31 @@ export default function ConfigPanel() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
-                        //REGEX: Tests for IPv4 Addresses
-                        inputProps={{
-                            ...register("address", {
-                                required: true,
-                                pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
-                            }),
-                        }}
+                        name="address"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "address", ["port"])}
-                        type="text"
                         label="IP Address"
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
-                        //REGEX: Tests for IPv4 Port
-                        inputProps={{
-                            ...register("port", {
-                                required: true,
-                                pattern:
-                                    /^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$/,
-                            }),
-                        }}
+                        name="port"
+                        control={control}
+                        rules={{ required: true }}
+                        numeric
+                        min={1}
+                        max={65535}
                         fullWidth
                         error={errors.port}
                         helperText={messages.port}
                         defaultValue={panelConfig.data.port}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "port", ["address"])}
                         type="text"
                         label="Device Port"

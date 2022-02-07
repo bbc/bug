@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
@@ -29,8 +30,9 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("title", { required: true }) }}
-                        required
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
@@ -38,10 +40,10 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
@@ -56,17 +58,14 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        //REGEX: Tests for IPv4 Addresses
-                        inputProps={{
-                            ...register("address", {
-                                required: true,
-                                pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
-                            }),
-                        }}
+                        name="address"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "address")}
                         type="text"
                         label="IP Address"
@@ -75,11 +74,14 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12} lg={6}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("username", { required: true }) }}
+                        name="username"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.username}
                         helperText={messages.username}
                         defaultValue={panelConfig.data.username}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "password"])}
                         type="text"
                         label="Username"
@@ -87,12 +89,15 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12} lg={6}>
-                    <BugPasswordTextField
-                        inputProps={{ ...register("password", { required: true }) }}
+                    <BugConfigFormPasswordTextField
+                        name="password"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.password}
                         helperText={messages.password}
                         defaultValue={panelConfig.data.password}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "username"])}
                         type="password"
                         label="Password"

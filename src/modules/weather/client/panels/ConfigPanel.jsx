@@ -27,20 +27,22 @@ export default function ConfigPanel() {
         <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
             <Grid item xs={12}>
                 <BugConfigFormTextField
-                    inputProps={{ ...register("title", { required: true }) }}
+                    name="title"
+                    control={control}
+                    rules={{ required: true }}
                     fullWidth
-                    error={errors?.title ? true : false}
+                    error={errors.title}
                     defaultValue={panelConfig.data.title}
                     type="text"
                     label="Panel Title"
                 />
             </Grid>
-
             <Grid item xs={12}>
                 <BugConfigFormTextField
-                    inputProps={{ ...register("description") }}
+                    name="description"
+                    control={control}
                     fullWidth
-                    error={errors?.description ? true : false}
+                    error={errors.description}
                     defaultValue={panelConfig.data.description}
                     type="text"
                     label="Description"
@@ -53,7 +55,9 @@ export default function ConfigPanel() {
 
             <Grid item xs={12} md={6}>
                 <BugConfigFormTextField
-                    inputProps={{ ...register("label", { required: true }) }}
+                    name="label"
+                    control={control}
+                    rules={{ required: true }}
                     fullWidth
                     error={errors?.label ? true : false}
                     defaultValue={panelConfig.data.label}
@@ -64,7 +68,9 @@ export default function ConfigPanel() {
 
             <Grid item xs={12}>
                 <BugConfigFormTextField
-                    inputProps={{ ...register("openweather_key", { required: true }) }}
+                    name="openweather_key"
+                    control={control}
+                    rules={{ required: true }}
                     fullWidth
                     error={errors?.openweather_key ? true : false}
                     defaultValue={panelConfig.data.openweather_key}
@@ -75,24 +81,34 @@ export default function ConfigPanel() {
 
             <Grid item xs={6}>
                 <BugConfigFormTextField
-                    inputProps={{ ...register("longitude", { required: true }), step: "any" }}
+                    name="latitude"
+                    control={control}
+                    rules={{ required: true }}
+                    min={-90}
+                    max={90}
+                    numeric={true}
+                    fullWidth
+                    error={errors?.latitude}
+                    defaultValue={panelConfig.data.latitude}
+                    type="number"
+                    label="Location Latitude"
+                />
+            </Grid>
+
+            <Grid item xs={6}>
+                <BugConfigFormTextField
+                    name="longitude"
+                    control={control}
+                    rules={{ required: true }}
+                    min={-90}
+                    max={90}
+                    numeric={true}
                     fullWidth
                     error={errors?.longitude ? true : false}
                     defaultValue={panelConfig.data.longitude}
                     type="number"
                     label="Location Longitude"
                     step="any"
-                />
-            </Grid>
-
-            <Grid item xs={6}>
-                <BugConfigFormTextField
-                    inputProps={{ ...register("latitude", { required: true }), step: "any" }}
-                    fullWidth
-                    error={errors?.latitude}
-                    defaultValue={panelConfig.data.latitude}
-                    type="number"
-                    label="Location Latitude"
                 />
             </Grid>
 

@@ -29,8 +29,9 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("title", { required: true }) }}
-                        required
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
@@ -38,14 +39,13 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
-                        variant="standard"
                         type="text"
                         label="Description"
                     />
@@ -56,31 +56,30 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        //REGEX: Tests for IPv4 Addresses
-                        inputProps={{
-                            ...register("address", {
-                                required: true,
-                                pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
-                            }),
-                        }}
+                        name="address"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "address")}
                         type="text"
-                        label="IP Address"
+                        label="IP Address or FQDN"
                     />
                 </Grid>
 
                 <Grid item xs={6}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("username", { required: true }) }}
+                        name="username"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
-                        variant="standard"
                         error={errors?.username}
                         helperText={messages.username}
                         defaultValue={panelConfig.data.username}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "password"])}
                         type="text"
                         label="SSH Username"
@@ -89,12 +88,14 @@ export default function ConfigPanel() {
 
                 <Grid item xs={6}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("password", { required: true }) }}
+                        name="password"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
-                        variant="standard"
                         error={errors?.password}
                         helperText={messages.password}
                         defaultValue={panelConfig.data.password}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "password", ["address", "username"])}
                         type="password"
                         label="SSH Password"
@@ -103,11 +104,14 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("snmpCommunity", { required: true }) }}
+                        name="snmpCommunity"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.snmpCommunity}
                         helperText={messages.snmpCommunity}
                         defaultValue={panelConfig.data.snmpCommunity}
+                        supportsValidation
                         onChange={(event) => validateServer(event, "snmpCommunity", ["address"])}
                         type="text"
                         label="SNMP Community String"

@@ -4,10 +4,7 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import BugPasswordTextField from "@core/BugPasswordTextField";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
+import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
@@ -23,7 +20,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+    const { handleSubmit, control, errors } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -32,67 +29,58 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("title", { required: true }),
-                        }}
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
-                        error={errors?.title ? true : false}
+                        error={errors.title}
                         defaultValue={panelConfig.data.title}
-                        type="text"
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
-                        error={errors?.description ? true : false}
+                        error={errors.description}
                         defaultValue={panelConfig.data.description}
-                        type="text"
                         label="Description"
                     />
                 </Grid>
 
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        //REGEX: Tests for IPv4 Addresses
-                        inputProps={{
-                            ...register("address", {
-                                required: true,
-                                pattern: /((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/,
-                            }),
-                        }}
+                        name="address"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors?.address ? true : false}
                         defaultValue={panelConfig.data.address}
-                        type="text"
                         label="IP Address"
                     />
                 </Grid>
 
                 <Grid item xs={6}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("username", { required: true }),
-                        }}
+                        name="username"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors?.username ? true : false}
                         defaultValue={panelConfig.data.username}
-                        type="text"
                         label="Web Interface Username"
                     />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <BugPasswordTextField
-                        inputProps={{
-                            ...register("password", { required: true }),
-                        }}
+                    <BugConfigFormPasswordTextField
+                        name="password"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors?.password ? true : false}
                         defaultValue={panelConfig.data.password}
-                        type="password"
                         label="Web Interface Password"
                     />
                 </Grid>

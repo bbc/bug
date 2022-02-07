@@ -67,9 +67,11 @@ export default function PanelAdd(props) {
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <BugConfigFormTextField
-                                    inputProps={{ ...register("title", { required: true }) }}
+                                    name="title"
+                                    control={control}
                                     fullWidth
-                                    error={errors?.title ? true : false}
+                                    error={errors?.title}
+                                    rules={{ required: true }}
                                     type="text"
                                     label="Title"
                                 />
@@ -77,9 +79,10 @@ export default function PanelAdd(props) {
 
                             <Grid item xs={12}>
                                 <BugConfigFormTextField
-                                    inputProps={{ ...register("description") }}
+                                    name="description"
+                                    control={control}
                                     fullWidth
-                                    error={errors?.description ? true : false}
+                                    error={errors?.description}
                                     type="text"
                                     label="Description"
                                 />

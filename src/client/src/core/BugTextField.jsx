@@ -1,7 +1,16 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 
-const BugTextField = ({ min = null, max = null, filter, onChange, numeric = false, maxLength, ...props }) => {
+const BugTextField = ({
+    min = null,
+    max = null,
+    filter,
+    onChange,
+    numeric = false,
+    maxLength,
+    variant = "outlined",
+    ...props
+}) => {
     const handleChange = (event) => {
         let eventCopy = Object.assign({}, event);
         if (numeric) {
@@ -37,19 +46,24 @@ const BugTextField = ({ min = null, max = null, filter, onChange, numeric = fals
         }
     };
 
+    const sx =
+        variant === "outlined"
+            ? {
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  "& .MuiInputBase-root": {
+                      borderRadius: 0,
+                  },
+                  "& .MuiInputBase-input": {
+                      padding: "14px",
+                  },
+              }
+            : {};
+
     return (
         <TextField
-            sx={{
-                backgroundColor: "rgba(255, 255, 255, 0.05)",
-                "& .MuiInputBase-root": {
-                    borderRadius: 0,
-                },
-                "& .MuiInputBase-input": {
-                    padding: "14px",
-                },
-            }}
+            sx={sx}
             fullWidth
-            variant="outlined"
+            variant={variant}
             {...props}
             inputProps={{ maxLength: maxLength }}
             onChange={handleChange}

@@ -1,6 +1,5 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import BugPasswordTextField from "@core/BugPasswordTextField";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
@@ -19,7 +18,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+    const { handleSubmit, control, errors, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -28,23 +27,22 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("title", { required: true }) }}
-                        required
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
-                        type="text"
                         label="Panel Title"
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
-                        variant="standard"
-                        type="text"
                         label="Description"
                     />
                 </Grid>
@@ -53,16 +51,13 @@ export default function ConfigPanel() {
                 </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("address", {
-                                required: true,
-                            }),
-                        }}
+                        name="address"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
-                        type="text"
                         label="Feed Address"
                     />
                 </Grid>

@@ -50,15 +50,7 @@ export default function BugConfigWrapper({ panelId, children, config, handleSubm
             );
         }
         return (
-            <Grid
-                container
-                spacing={4}
-                sx={{
-                    "& .MuiFormControl-root .MuiFormHelperText-root:not(.Mui-error)": {
-                        color: "success.main",
-                    },
-                }}
-            >
+            <Grid container spacing={4}>
                 {children}
             </Grid>
         );

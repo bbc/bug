@@ -28,10 +28,9 @@ export default function ConfigPanel() {
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{
-                            ...register("title", { required: true }),
-                        }}
-                        required
+                        name="title"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
@@ -39,13 +38,14 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
-                        inputProps={{ ...register("description") }}
+                        name="description"
+                        control={control}
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
+                        variant="standard"
                         type="text"
                         label="Description"
                     />
