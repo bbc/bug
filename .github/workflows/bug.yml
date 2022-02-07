@@ -71,7 +71,7 @@ jobs:
               with:
                   path: ./src/client
             - name: Print Current Versions
-              run: echo ${{ steps.backend-version.outputs.current-version }}  ${{ steps.frontend-version.outputs.current-version }}
+              run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and fronten version ${{ steps.frontend-version.outputs.current-version }}
             #Docker Setup
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v1
@@ -96,7 +96,7 @@ jobs:
                   dockerfile: ./src/Dockerfile
                   platforms: ${{ matrix.architecture}}
                   push: true
-                  tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.package-version.outputs.current-version}}
+                  tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
             - name: Inspect
               run: |
                   docker buildx imagetools inspect ${{env.regsitry}}/bug/app:latest
