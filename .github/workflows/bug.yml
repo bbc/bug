@@ -81,7 +81,11 @@ jobs:
             - name: List available platforms
               run: echo ${{ steps.buildx.outputs.platforms }}
             - name: Login to Harbor Registry
-              run: echo ${{ secrets.HARBOR_KEY }} | docker login --username ${{ secrets.HARBOR_USER }} --password-stdin ${{ env.regsitry }}
+              uses: docker/login-action@v1
+              with:
+                  registry: ${{ env.regsitry }}
+                  username: ${{ secrets.HARBOR_USER }}
+                  password: ${{ secrets.HARBOR_KEY }}
             - name: Build and push to local registry
               uses: docker/build-push-action@v2
               with:
