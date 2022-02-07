@@ -15,10 +15,7 @@ export default function BugPanelGroupDropdown({ value, onChange, fullWidth = fal
         return <Paper elevation={8} {...props} />;
     };
 
-    if (panelList.status !== "success") {
-        return null;
-    }
-    let panelListGroups = _.uniq(panelList.data.map((a) => a.group));
+    let panelListGroups = panelList.data ? _.uniq(panelList.data.map((a) => a.group)) : [];
     _.pull(panelListGroups, "");
 
     return (

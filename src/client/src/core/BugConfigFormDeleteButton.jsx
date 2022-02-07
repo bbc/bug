@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-export default function ConfigFormDeleteButton({ ...props }) {
+export default function BugConfigFormDeleteButton({ ...props }) {
     return (
         <Button
             variant="contained"

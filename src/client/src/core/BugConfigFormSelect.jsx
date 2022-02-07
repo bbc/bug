@@ -17,11 +17,12 @@ const BugConfigFormSelect = ({ items, disabled = false, ...props }) => {
                 },
             }}
         >
-            {Object.keys(items).map((key, index) => (
-                <MenuItem key={index} value={key}>
-                    {items[key]}
-                </MenuItem>
-            ))}
+            {items &&
+                Object.keys(items).map((key, index) => (
+                    <MenuItem key={index} value={key}>
+                        {items[key]}
+                    </MenuItem>
+                ))}
         </TextField>
     );
 };

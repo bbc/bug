@@ -6,25 +6,21 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@mui/styles";
-
-const useStyles = makeStyles(async (theme) => ({
-    tableName: {
-        width: "14rem",
-        "@media (max-width:512px)": {
-            width: "10rem",
-        },
-    },
-}));
 
 export default function OutputTabDetails({ output, panelId }) {
-    const classes = useStyles();
-    console.log(output);
     return (
         <>
             <Grid item xs={12}>
                 <TableContainer component={Paper} square>
-                    <Table className={classes.table} aria-label="simple table">
+                    <Table
+                        sx={{
+                            width: "14rem",
+                            "@media (max-width:512px)": {
+                                width: "10rem",
+                            },
+                        }}
+                        aria-label="simple table"
+                    >
                         <TableBody>
                             <TableRow>
                                 <TableCell variant="head">Number</TableCell>

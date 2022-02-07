@@ -1,16 +1,20 @@
 import { ThemeProvider as MUIThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import { ThemeProvider } from "emotion-theming";
 import theme from "../src/theme";
+import { Provider } from "react-redux";
+import reduxStore from "@redux/store";
 
 export const decorators = [
     (Story) => (
-        <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={theme}>
-                <>
-                    <Story />
-                </>
-            </ThemeProvider>
-        </StyledEngineProvider>
+        <Provider store={reduxStore}>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={theme}>
+                    <>
+                        <Story />
+                    </>
+                </ThemeProvider>
+            </StyledEngineProvider>
+        </Provider>
     ),
 
     (Story) => (

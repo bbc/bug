@@ -1,24 +1,8 @@
-// const BugConfigFormChipInput = ({
-//     name,
-//     label,
-//     control,
-//     sort,
-//     defaultValue,
-//     children,
-//     rules,
-//     error,
-//     chipsError,
-//     variant,
-//     helperText,
-//     ...props
-// }) => {
-
 import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
-import BugHelperText from "@core/BugHelperText";
 
 const BugConfigFormChipInput = ({
     name,
@@ -58,7 +42,13 @@ const BugConfigFormChipInput = ({
                                 defaultValue={value}
                                 value={value || ""}
                                 renderInput={(params) => (
-                                    <TextField {...params} variant="standard" label={label} error={error} />
+                                    <TextField
+                                        {...params}
+                                        helperText={helperText}
+                                        variant="standard"
+                                        label={label}
+                                        error={error}
+                                    />
                                 )}
                             />
                         );
@@ -69,7 +59,6 @@ const BugConfigFormChipInput = ({
                     rules={rules}
                 />
             </FormControl>
-            {helperText && <BugHelperText>{helperText}</BugHelperText>}
         </>
     );
 };
