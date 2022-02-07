@@ -89,7 +89,7 @@ export default function ConfigPanel() {
                 <BugConfigFormTextField
                     inputProps={{ ...register("latitude", { required: true }), step: "any" }}
                     fullWidth
-                    error={errors?.latitude ? true : false}
+                    error={errors?.latitude}
                     defaultValue={panelConfig.data.latitude}
                     type="number"
                     label="Location Latitude"
@@ -98,11 +98,13 @@ export default function ConfigPanel() {
 
             <Grid item xs={6}>
                 <BugConfigFormSelect
-                    inputProps={{ ...register("length", { required: true }) }}
+                    name="length"
+                    control={control}
                     fullWidth
-                    error={errors?.length ? true : false}
+                    error={errors?.length}
                     defaultValue={panelConfig.data.length}
                     label="Forecast Length"
+                    rules={{ required: true }}
                     items={{
                         today: "Today Only",
                         week: "5 Day Forecast",
@@ -112,11 +114,13 @@ export default function ConfigPanel() {
 
             <Grid item xs={6}>
                 <BugConfigFormSelect
-                    inputProps={{ ...register("units", { required: true }) }}
+                    name="units"
+                    control={control}
                     fullWidth
                     error={errors?.units ? true : false}
                     defaultValue={panelConfig.data.units}
                     label="Units"
+                    rules={{ required: true }}
                     items={{
                         metric: "Metric",
                         standard: "Standard",

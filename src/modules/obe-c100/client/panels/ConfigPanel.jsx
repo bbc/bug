@@ -87,12 +87,14 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12}>
                     <BugConfigFormSelect
-                        inputProps={{ ...register("encoderIndex", { required: true }) }}
+                        name="encoderIndex"
+                        control={control}
                         fullWidth
                         error={errors.encoderIndex}
                         helperText={messages.encoderIndex}
                         defaultValue={panelConfig.data.encoderIndex}
                         label="Encoder index (0-3)"
+                        rules={{ required: true }}
                         items={{
                             0: "Encoder 0",
                             1: "Encoder 1",

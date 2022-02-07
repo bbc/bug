@@ -103,11 +103,13 @@ export default function ConfigPanel() {
 
                 <Grid item xs={6}>
                     <BugConfigFormSelect
-                        inputProps={{ ...register("model", { required: true }) }}
+                        name="model"
+                        control={control}
                         fullWidth
-                        error={errors?.model ? true : false}
+                        error={errors?.model}
                         defaultValue={panelConfig.data.model}
                         label="Model"
+                        rules={{ required: true }}
                         items={{
                             "tsl-mdu-12-pm": "TSL MDU 12 PM",
                             "tsl-mdu-3es": "TSL MDU 3ES",

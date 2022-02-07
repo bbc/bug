@@ -91,10 +91,12 @@ export default function PanelAdd(props) {
 
                             <Grid item xs={12} md={6}>
                                 <BugConfigFormSelect
-                                    inputProps={{ ...register("module", { required: true }) }}
+                                    name="module"
+                                    control={control}
                                     fullWidth
-                                    error={errors?.module ? true : false}
+                                    error={errors?.module}
                                     defaultValue=""
+                                    rules={{ required: true }}
                                     label="Module"
                                     items={getModuleOptions()}
                                 />

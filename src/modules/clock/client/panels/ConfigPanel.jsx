@@ -57,10 +57,12 @@ export default function ConfigPanel() {
 
                 <Grid item xs={12} md={6}>
                     <BugConfigFormSelect
-                        inputProps={{ ...register("type", { required: true }) }}
+                        name="type"
+                        control={control}
+                        error={errors.type}
                         fullWidth
-                        error={errors?.type ? true : false}
-                        defaultValue="analogue"
+                        defaultValue={panelConfig.data.type}
+                        rules={{ required: true }}
                         label="Type"
                         items={{
                             analogue: "Analogue",
