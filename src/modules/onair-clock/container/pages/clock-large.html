@@ -38,6 +38,15 @@
         <script src="./../js/axios.min.js"></script>
 
         <script>
+            let timezone = {
+                value: "GMT Standard Time",
+                abbr: "GMT",
+                offset: 0,
+                isdst: false,
+                label: "(UTC) Edinburgh, London",
+                utc: ["Europe/London"],
+            };
+
             const getConfig = async () => {
                 try {
                     const response = await axios.get("./../config");
@@ -53,6 +62,11 @@
                     if (response?.data?.data?.logo?.image) {
                         document.getElementById("logo").src = response?.data?.data?.logo?.image;
                     }
+                    if (response?.data?.data?.timezone !== timezone) {
+                        timezone = response?.data?.data?.timezone;
+                        getDate();
+                        getTime();
+                    }
 
                     document.getElementById("date").hidden = !response?.data?.data?.showDate;
                     document.getElementById("time").hidden = !response?.data?.data?.showTime;
@@ -63,23 +77,35 @@
 
             const getDate = () => {
                 const date = new Date();
-                const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+                const options = {
+                    timezone: timezone?.utc[0],
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                };
                 const dateString = date.toLocaleDateString("en-US", options);
                 document.getElementById("date").innerHTML = dateString;
             };
 
             const getTime = () => {
                 const date = new Date();
-                const options = { hour: "numeric", minute: "numeric", second: "numeric", hour12: false };
+                const options = {
+                    timezone: timezone?.utc[0],
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                    hour12: false,
+                };
                 const timeString = date.toLocaleDateString("en-US", options);
                 document.getElementById("time").innerHTML = timeString;
             };
 
-            const initLocalClocks = () => {
+            const startClock = () => {
                 const date = new Date();
                 const seconds = date.getSeconds();
                 const minutes = date.getMinutes();
-                const hours = date.getHours();
+                const hours = date.getHours() + timezone?.offset;
 
                 const hands = [
                     {
@@ -110,7 +136,7 @@
                 }
             };
 
-            initLocalClocks();
+            startClock();
             getDate();
             getTime();
             getConfig();
