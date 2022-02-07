@@ -5,7 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import BugHelperText from "@core/BugHelperText";
 
-const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, children, rules, helperText, ...props }) => {
+const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, rules, helperText, ...props }) => {
     return (
         <>
             <FormControl

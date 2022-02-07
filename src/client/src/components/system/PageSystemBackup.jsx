@@ -12,6 +12,7 @@ import Link from "@mui/material/Link";
 import LoadingOverlay from "@components/LoadingOverlay";
 import AxiosPost from "@utils/AxiosPost";
 import TextField from "@mui/material/TextField";
+import BugConfigFormFileUpload from "@core/BugConfigFormFileUpload";
 import BugCard from "@core/BugCard";
 
 export default function PageSystemBackup() {
@@ -21,6 +22,7 @@ export default function PageSystemBackup() {
 
     const {
         register,
+        control,
         handleSubmit,
         formState: { errors },
     } = useForm({});
@@ -58,7 +60,7 @@ export default function PageSystemBackup() {
     return (
         <>
             {renderLoading()}
-            <Grid container spacing={4}>
+            <Grid container spacing={1}>
                 <Grid item lg={6} xs={12}>
                     <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Backup" />
@@ -90,21 +92,12 @@ export default function PageSystemBackup() {
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Grid container spacing={4}>
                                         <Grid item lg={6} xs={12}>
-                                            <TextField
-                                                color="primary"
-                                                disableElevation
-                                                underline="none"
-                                                error={errors?.file ? true : false}
-                                                component="label"
-                                                type="file"
+                                            <BugConfigFormFileUpload
+                                                error={errors?.file}
                                                 name="file"
-                                                size="small"
-                                                inputProps={{
-                                                    ...{ accept: "application/gzip" },
-                                                    ...register("file", { required: true }),
-                                                }}
+                                                control={control}
                                                 fullWidth
-                                            ></TextField>
+                                            />
                                         </Grid>
                                         <Grid item lg={6} xs={12}>
                                             <Button

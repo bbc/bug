@@ -9,11 +9,12 @@ import settingsSlice from "@redux/settingsSlice";
 import { useAlert } from "@utils/Snackbar";
 import Loading from "@components/Loading";
 import BugForm from "@core/BugForm";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import Button from "@mui/material/Button";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
@@ -23,7 +24,6 @@ export default function PageSystemBackup() {
     const [loading, setLoading] = useState(false);
 
     const {
-        register,
         handleSubmit,
         control,
         formState: { errors },
@@ -74,52 +74,40 @@ export default function PageSystemBackup() {
                     <BugForm.Body>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{
-                                        ...register("title", {
-                                            required: true,
-                                        }),
-                                    }}
+                                <BugConfigFormTextField
+                                    name="title"
+                                    control={control}
+                                    rules={{ required: true }}
                                     fullWidth
                                     defaultValue={settings?.data?.title}
-                                    error={errors?.title ? true : false}
-                                    variant="standard"
-                                    type="text"
+                                    error={errors?.title}
                                     label="Title"
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField
-                                    inputProps={{
-                                        ...register("description"),
-                                    }}
+                                <BugConfigFormTextField
+                                    name="description"
+                                    control={control}
                                     fullWidth
-                                    variant="standard"
                                     defaultValue={settings?.data?.description}
-                                    error={errors?.description ? true : false}
-                                    type="text"
+                                    error={errors?.description}
                                     label="Description"
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField
-                                    select
-                                    inputProps={{
-                                        ...register("theme"),
-                                    }}
+                                <BugConfigFormSelect
+                                    name="theme"
+                                    control={control}
                                     fullWidth
-                                    variant="standard"
                                     label="Theme"
                                     defaultValue={settings?.data?.theme}
-                                    SelectProps={{
-                                        native: true,
+                                    items={{
+                                        dark: "Dark",
+                                        light: "Light",
                                     }}
-                                >
-                                    <option value={"dark"}>Dark</option>
-                                    <option value={"light"}>Light</option>
-                                </TextField>
+                                />
                             </Grid>
 
                             <Grid item xs={12}>

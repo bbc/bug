@@ -28,7 +28,7 @@ export default {
 };
 
 export const MyBugConfigFormDeleteButton = (args) => {
-    const { register, handleSubmit } = useForm();
+    const { control, handleSubmit } = useForm();
 
     return (
         <BugForm>
@@ -36,7 +36,7 @@ export const MyBugConfigFormDeleteButton = (args) => {
             <BugForm.Body>
                 <Grid container>
                     <Grid item xs={12}>
-                        <BugConfigFormTextField inputProps={{ ...register("title") }} fullWidth label="Title" />
+                        <BugConfigFormTextField name="title" control={control} fullWidth label="Title" />
                     </Grid>
                 </Grid>
             </BugForm.Body>
@@ -64,7 +64,7 @@ MyBugConfigFormDeleteButton.parameters = {
     <BugForm.Body>
         <Grid container>
             <Grid item xs={12}>
-                <BugConfigFormTextField inputProps={{ ...register("title") }} fullWidth label="Title" />
+                <BugConfigFormTextField name="title" control={control} fullWidth label="Title" />
             </Grid>
         </Grid>
     </BugForm.Body>

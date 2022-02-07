@@ -14,6 +14,7 @@ const BugConfigFormTextField = ({
     error,
     helperText,
     supportsValidation = false,
+    variant = "standard",
     numeric = false,
     min,
     max,
@@ -38,7 +39,7 @@ const BugConfigFormTextField = ({
                                 fullWidth
                                 disabled={disabled}
                                 onChange={onChange}
-                                variant="standard"
+                                variant={variant}
                                 error={error}
                                 helperText={helperText}
                                 numeric={numeric}
