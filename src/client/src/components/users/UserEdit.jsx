@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
-import BugPasswordTextField from "@core/BugPasswordTextField";
+import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import { useSelector } from "react-redux";
@@ -213,8 +213,9 @@ export default function UserEdit({ userId = null }) {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <BugPasswordTextField
-                                        inputProps={{ ...register("pin") }}
+                                    <BugConfigFormPasswordTextField
+                                        name="pin"
+                                        control={control}
                                         fullWidth
                                         defaultValue={user.pin}
                                         error={errors?.pin ? true : false}

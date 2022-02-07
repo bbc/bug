@@ -1,25 +1,23 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 
-export default function SecurityStrategyOidc({ strategy, register, errors, control }) {
+export default function SecurityStrategyOidc({ strategy, errors, control }) {
     return (
         <>
             <Grid container spacing={4}>
                 <Grid item xs={12}>
-                    <TextField
-                        inputProps={{
-                            ...register("name", {
-                                required: true,
-                            }),
-                        }}
+                    <BugConfigFormTextField
+                        name="name"
+                        control={control}
+                        rules={{ required: true }}
                         fullWidth
-                        variant="standard"
                         defaultValue={strategy.name}
-                        error={errors?.name ? true : false}
-                        type="text"
+                        error={errors?.name}
                         label="Name"
                     />
                 </Grid>
@@ -36,15 +34,13 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
-                        inputProps={{
-                            ...register("description"),
-                        }}
-                        variant="standard"
+                    <BugConfigFormTextField
+                        name="description"
+                        control={control}
                         fullWidth
+                        variant="standard"
                         defaultValue={strategy.description}
-                        error={errors?.description ? true : false}
-                        type="text"
+                        error={errors?.description}
                         label="Description"
                     />
                 </Grid>
@@ -61,29 +57,25 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
-                        select
-                        inputProps={{
-                            ...register("sessionLength"),
-                        }}
+                    <BugConfigFormSelect
+                        name="sessionLength"
+                        control={control}
                         fullWidth
                         label="Session length"
                         defaultValue={strategy.sessionLength}
-                        SelectProps={{
-                            native: true,
+                        items={{
+                            [-1]: "Unlimited",
+                            60000: "1 minute",
+                            1800000: "30 minutes",
+                            3600000: "1 hour",
+                            14400000: "4 hours",
+                            86400000: "1 day",
+                            172800000: "2 days",
+                            604800000: "1 week",
+                            1209600000: "2 weeks",
+                            31536000000: "1 year",
                         }}
-                    >
-                        <option value={-1}>Unlimited</option>
-                        <option value={60000}>1 minute</option>
-                        <option value={1800000}>30 minutes</option>
-                        <option value={3600000}>1 hour</option>
-                        <option value={14400000}>4 hours</option>
-                        <option value={86400000}>1 day</option>
-                        <option value={172800000}>2 days</option>
-                        <option value={604800000}>1 week</option>
-                        <option value={1209600000}>2 weeks</option>
-                        <option value={31536000000}>1 year</option>
-                    </TextField>
+                    />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -100,66 +92,52 @@ export default function SecurityStrategyOidc({ strategy, register, errors, contr
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
-                        inputProps={{
-                            ...register("returnURL"),
-                        }}
-                        variant="standard"
+                    <BugConfigFormTextField
+                        name="returnUrl"
+                        control={control}
                         fullWidth
                         defaultValue={strategy.returnURL}
-                        type="text"
                         label="OpenID Return URL"
                     />
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
-                        inputProps={{
-                            ...register("realm"),
-                        }}
-                        variant="standard"
+                    <BugConfigFormTextField
+                        name="realm"
+                        control={control}
                         fullWidth
                         defaultValue={strategy.realm}
-                        type="text"
                         label="OpenID Realm URL"
                     />
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
-                        inputProps={{
-                            ...register("profileField"),
-                        }}
+                    <BugConfigFormTextField
+                        name="profileField"
+                        control={control}
                         fullWidth
-                        variant="standard"
                         defaultValue={strategy.profileField}
-                        type="text"
                         label="User field"
                         helperText="The field name in the returned profile to use"
                     />
                 </Grid>
 
                 <Grid item xs={12}>
-                    <TextField
-                        select
-                        inputProps={{
-                            ...register("matchField"),
-                        }}
-                        variant="standard"
+                    <BugConfigFormSelect
+                        name="matchField"
+                        control={control}
                         fullWidth
                         label="OIDC match field"
                         helperText="Which BUG user field to match against"
                         defaultValue={strategy.matchField}
-                        SelectProps={{
-                            native: true,
+                        items={{
+                            [""]: "None",
+                            email: "Email Address",
+                            username: "User name",
+                            name: "Name",
+                            id: "ID",
                         }}
-                    >
-                        <option value="">None</option>
-                        <option value="email">Email Address</option>
-                        <option value="username">User name</option>
-                        <option value="name">Name</option>
-                        <option value="id">ID</option>
-                    </TextField>
+                    />
                 </Grid>
             </Grid>
         </>
