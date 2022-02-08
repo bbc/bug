@@ -13,6 +13,7 @@ const BugConfigFormPasswordTextField = ({
     error,
     helperText,
     supportsValidation = false,
+    variant = "outlined",
     type = "text",
     ...props
 }) => {
@@ -35,6 +36,7 @@ const BugConfigFormPasswordTextField = ({
                                 fullWidth
                                 disabled={disabled}
                                 onChange={onChange}
+                                variant={variant}
                                 error={error}
                                 helperText={helperText}
                             />
