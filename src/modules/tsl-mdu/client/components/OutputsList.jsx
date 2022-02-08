@@ -25,7 +25,7 @@ export default function OutputsList2({ panelId }) {
         const result = await renameDialog({
             title: "Edit name",
             defaultValue: item.name,
-            confirmText: "Change",
+            confirmButtonText: "Change",
         });
 
         if (result !== false) {
@@ -44,7 +44,7 @@ export default function OutputsList2({ panelId }) {
         const result = await renameDialog({
             title: "Edit delay",
             defaultValue: item.delay,
-            confirmText: "Change",
+            confirmButtonText: "Change",
             textFieldProps: {
                 numeric: true,
                 min: 0,

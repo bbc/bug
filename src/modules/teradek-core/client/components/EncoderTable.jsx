@@ -247,7 +247,7 @@ export default function EncodersTable({ panelId }) {
                     noPadding: true,
                     width: 44,
                     field: "status",
-                    content: (item) => <BugPowerIcon enabled={item.streamStatus === "streaming"} />,
+                    content: (item) => <BugPowerIcon disabled={item.streamStatus !== "streaming"} />,
                 },
                 {
                     sortable: false,

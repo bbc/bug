@@ -18,7 +18,7 @@ export default function InterfaceTabDevices({ panelId, interfaceId }) {
                         if (item.active === undefined) {
                             return null;
                         }
-                        return <BugPowerIcon enabled={item.active} />;
+                        return <BugPowerIcon disabled={!item.active} />;
                     },
                 },
                 {

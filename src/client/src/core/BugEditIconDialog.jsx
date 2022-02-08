@@ -21,7 +21,7 @@ import useAsyncEffect from "use-async-effect";
 
 const defaultCount = 500;
 
-export default function EditIconDialog({ onCancel, onSubmit, color = "#ffffff", icon = null }) {
+export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff", icon = null }) {
     const [iconFilter, setIconFilter] = React.useState(icon ? icon : "");
     const [debouncedIconFilter] = useDebounce(iconFilter, 500);
     const [icons, setIcons] = React.useState({ icons: [], length: null });

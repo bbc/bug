@@ -8,10 +8,10 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { action } from "@storybook/addon-actions";
-import { ArgsTable, Meta, Story } from "@storybook/addon-docs";
+import { ArgsTable } from "@storybook/addon-docs";
 
 export default {
-    title: "BUG Core/Tables/BugApiTable",
+    title: "BUG Core/API Controls/BugApiTable",
     component: BugApiTable,
     parameters: {
         docs: {
@@ -171,7 +171,7 @@ MyApiTable.args = {
                 { name: "Inactive", value: false },
                 { name: "Active", value: true },
             ],
-            content: (item) => <BugPowerIcon enabled={item.link_state} />,
+            content: (item) => <BugPowerIcon disabled={!item.link_state} />,
         },
         {
             title: "Enabled",

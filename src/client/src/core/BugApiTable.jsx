@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Loading from "@components/Loading";
-import BugItemMenu from "./BugItemMenu";
+import BugItemMenu from "@components/BugItemMenu";
 import { useApiPoller } from "@hooks/ApiPoller";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import BugApiTableFilters from "@components/BugApiTableFilters";
@@ -15,7 +15,7 @@ import { useCookies } from "react-cookie";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import IconButton from "@mui/material/IconButton";
 import { useCookieId } from "@hooks/CookieId";
-import BugResponsiveTableCell from "@core/BugResponsiveTableCell";
+import BugApiTableCell from "@components/BugApiTableCell";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 export default function BugApiTable({
@@ -123,7 +123,7 @@ export default function BugApiTable({
                             <TableHead>
                                 <TableRow key="1">
                                     {columns?.map((column, index) => (
-                                        <BugResponsiveTableCell
+                                        <BugApiTableCell
                                             key={index}
                                             column={column}
                                             index={index}
@@ -149,7 +149,7 @@ export default function BugApiTable({
                                             ) : (
                                                 column.title
                                             )}
-                                        </BugResponsiveTableCell>
+                                        </BugApiTableCell>
                                     ))}
 
                                     <TableCell key="filter" sx={{ width: "2rem", padding: "0px" }}>
@@ -191,9 +191,9 @@ export default function BugApiTable({
                                     }}
                                 >
                                     {columns.map((column, index) => (
-                                        <BugResponsiveTableCell key={index} column={column} index={index}>
+                                        <BugApiTableCell key={index} column={column} index={index}>
                                             {column.content(item)}
-                                        </BugResponsiveTableCell>
+                                        </BugApiTableCell>
                                     ))}
                                     {!menuItems && !showNavArrow && filterable && (
                                         <TableCell key="placeholder">&nbsp;</TableCell>

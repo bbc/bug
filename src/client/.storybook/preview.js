@@ -5,19 +5,23 @@ import { Provider } from "react-redux";
 import reduxStore from "@redux/store";
 import { BugCustomDialogProvider } from "@core/BugCustomDialog";
 import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
+import { BugRenameDialogProvider } from "@core/BugRenameDialog";
+import { MemoryRouter as Router } from "react-router";
 
 export const decorators = [
     (Story) => (
         <Provider store={reduxStore}>
             <BugConfirmDialogProvider>
                 <BugCustomDialogProvider>
-                    <StyledEngineProvider injectFirst>
-                        <ThemeProvider theme={theme}>
-                            <>
-                                <Story />
-                            </>
-                        </ThemeProvider>
-                    </StyledEngineProvider>
+                    <BugRenameDialogProvider>
+                        <StyledEngineProvider injectFirst>
+                            <ThemeProvider theme={theme}>
+                                <Router>
+                                    <Story />
+                                </Router>
+                            </ThemeProvider>
+                        </StyledEngineProvider>
+                    </BugRenameDialogProvider>
                 </BugCustomDialogProvider>
             </BugConfirmDialogProvider>
         </Provider>
@@ -25,7 +29,7 @@ export const decorators = [
 
     (Story) => (
         <>
-            <body
+            <div
                 style={{
                     margin: "0",
                     color: "#ffffff",
@@ -43,7 +47,7 @@ export const decorators = [
                         </>
                     </ThemeProvider>
                 </MUIThemeProvider>
-            </body>
+            </div>
         </>
     ),
 ];

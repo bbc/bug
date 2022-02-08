@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 
 const filter = createFilterOptions();
 
-export default function BugPanelGroupDropdown({ value, onChange, fullWidth = false, variant = "filled" }) {
+export default function BugPanelGroupDropdown({ value, onChange, fullWidth = false, variant = "standard" }) {
     const panelList = useSelector((state) => state.panelList);
     const [inputValue, setInputValue] = React.useState(value);
 
@@ -44,11 +44,10 @@ export default function BugPanelGroupDropdown({ value, onChange, fullWidth = fal
             fullWidth={fullWidth}
             clearOnBlur
             PaperComponent={CustomPaper}
-            variant="standard"
             handleHomeEndKeys
             options={panelListGroups}
             freeSolo
-            renderInput={(params) => <TextField variant="standard" {...params} label="Panel group" />}
+            renderInput={(params) => <TextField variant={variant} {...params} label="Panel group" />}
         />
     );
 }

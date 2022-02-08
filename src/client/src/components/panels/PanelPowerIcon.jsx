@@ -12,5 +12,5 @@ export default function PanelPowerIcon({ panel }) {
         return <CircularProgress size={30} />;
     }
     const enabled = panel._dockerContainer._isRunning || (!panel._module.needsContainer && panel.enabled);
-    return <BugPowerIcon enabled={enabled} />;
+    return <BugPowerIcon disabled={!enabled} />;
 }

@@ -1,7 +1,7 @@
 import BugApiSwitch from "../core/BugApiSwitch";
 
 export default {
-    title: "BUG Core/Data/BugApiSwitch",
+    title: "BUG Core/API Controls/BugApiSwitch",
     component: BugApiSwitch,
     parameters: {
         docs: {

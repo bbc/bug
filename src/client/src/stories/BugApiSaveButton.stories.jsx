@@ -1,7 +1,7 @@
 import BugApiSaveButton from "../core/BugApiSaveButton";
 
 export default {
-    title: "BUG Core/Data/BugApiSaveButton",
+    title: "BUG Core/API Controls/BugApiSaveButton",
     component: BugApiSaveButton,
     parameters: {
         docs: {

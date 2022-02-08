@@ -3,7 +3,7 @@ import BugDynamicIcon from "@core/BugDynamicIcon";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import BugItemMenu from "@core/BugItemMenu";
+import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
 import LockIcon from "@mui/icons-material/Lock";
 

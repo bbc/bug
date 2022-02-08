@@ -3,7 +3,7 @@ import React from "react";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import BugForm from "@core/BugForm";
-import BugReadonlyTextField from "@core/BugReadonlyTextField";
+import BugTextField from "@core/BugTextField";
 import Grid from "@mui/material/Grid";
 import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
 import Button from "@mui/material/Button";
@@ -112,11 +112,13 @@ export default function Lease({ panelId, leaseId }) {
                             </Grid>
                             {lease["host-name"] && (
                                 <Grid item xs={12}>
-                                    <BugReadonlyTextField
+                                    <BugTextField
+                                        disabled
                                         fullWidth
                                         defaultValue={lease["host-name"]}
                                         type="text"
                                         label="Hostname"
+                                        variant="standard"
                                     />
                                 </Grid>
                             )}
@@ -159,20 +161,24 @@ export default function Lease({ panelId, leaseId }) {
                             </Grid>
                             {lease["manufacturer"] && (
                                 <Grid item xs={12}>
-                                    <BugReadonlyTextField
+                                    <BugTextField
+                                        disabled
                                         fullWidth
                                         defaultValue={lease["manufacturer"]}
                                         type="text"
                                         label="Manufacturer"
+                                        variant="standard"
                                     />
                                 </Grid>
                             )}
                             <Grid item xs={12}>
-                                <BugReadonlyTextField
+                                <BugTextField
+                                    disabled
                                     fullWidth
                                     defaultValue={lease["status"]}
                                     type="text"
                                     label="Status"
+                                    variant="standard"
                                 />
                             </Grid>
                             <Grid item xs={12}>

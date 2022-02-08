@@ -65,7 +65,7 @@ export default function SputniksTable({ panelId }) {
                     noPadding: true,
                     width: 44,
                     field: "status",
-                    content: (item) => <BugPowerIcon enabled={item.status === "online"} />,
+                    content: (item) => <BugPowerIcon disabled={item.status !== "online"} />,
                 },
                 {
                     title: "Name",

@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const BugConfirmDialog = ({
-    open,
+    open = true,
     title = "Confirm",
     message,
     onConfirm,

@@ -144,6 +144,16 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        variant: {
+            options: ["filled", "outlined", "standard"],
+            description: "The MUI variant of the button. Always use 'standard' in config forms.",
+            defaultValue: "standard",
+            control: { type: "select" },
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "standard" },
+            },
+        },
     },
 };
 
@@ -170,6 +180,7 @@ export const MyBugConfigFormTextField = (args) => {
                             numeric={args.numeric}
                             min={args.min}
                             max={args.max}
+                            variant={args.variant}
                         />
                     </Grid>
                 </Grid>
@@ -202,6 +213,7 @@ MyBugConfigFormTextField.parameters = {
                         horse: "Horse"
                     }}
                     disabled={false}
+                    variant="standard"
                 />
             </Grid>
         </Grid>

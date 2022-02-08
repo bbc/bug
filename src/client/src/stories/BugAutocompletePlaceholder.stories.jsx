@@ -1,7 +1,7 @@
 import BugAutocompletePlaceholder from "../core/BugAutocompletePlaceholder";
 
 export default {
-    title: "BUG Core/Data/BugAutocompletePlaceholder",
+    title: "BUG Core/Controls/BugAutocompletePlaceholder",
     component: BugAutocompletePlaceholder,
     parameters: {
         docs: {

@@ -1,7 +1,7 @@
 import BugChipDisplay from "../core/BugChipDisplay";
 
 export default {
-    title: "BUG Core/Data/BugChipDisplay",
+    title: "BUG Core/Controls/BugChipDisplay",
     component: BugChipDisplay,
     parameters: {
         docs: {

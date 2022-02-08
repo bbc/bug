@@ -22,7 +22,7 @@ export default function OutputList({ panelId, deviceIndex }) {
             title: "Edit name",
             defaultValue: item.outputName,
             placeholder: `Output ${item.outputIndex}`,
-            confirmText: "Change",
+            confirmButtonText: "Change",
             allowBlank: true,
         });
 

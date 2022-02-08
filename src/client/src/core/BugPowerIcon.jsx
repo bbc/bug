@@ -1,13 +1,12 @@
 import React from "react";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
 
-export default function BugPowerIcon(props) {
-    const enabled = props && props.enabled;
+export default function BugPowerIcon({ disabled = false }) {
     return (
         <PowerSettingsNew
             sx={{
-                color: enabled ? "primary.main" : "#ffffff",
-                opacity: enabled ? 1 : 0.1,
+                color: disabled ? "#ffffff" : "primary.main",
+                opacity: disabled ? 0.1 : 1,
                 display: "block",
                 margin: "auto",
             }}

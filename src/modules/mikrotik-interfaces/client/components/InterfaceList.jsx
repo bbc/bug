@@ -29,7 +29,7 @@ export default function InterfaceList({ panelId }) {
             title: "Edit interface name",
             defaultValue: item["name"],
             placeholder: item["default-name"],
-            confirmText: "Rename",
+            confirmButtonText: "Rename",
             allowBlank: true,
         });
         if (result === false) {
@@ -51,7 +51,7 @@ export default function InterfaceList({ panelId }) {
         let result = await renameDialog({
             title: "Edit interface comment",
             defaultValue: item["comment"],
-            confirmText: "Change",
+            confirmButtonText: "Change",
             allowBlank: true,
         });
         if (result === false) {
@@ -120,7 +120,7 @@ export default function InterfaceList({ panelId }) {
                     noPadding: true,
                     width: 44,
                     field: "running",
-                    content: (item) => <BugPowerIcon enabled={item.running} />,
+                    content: (item) => <BugPowerIcon disabled={!item.running} />,
                 },
                 {
                     sortable: false,

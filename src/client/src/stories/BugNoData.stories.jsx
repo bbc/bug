@@ -1,7 +1,7 @@
 import BugNoData from "../core/BugNoData";
 
 export default {
-    title: "BUG Core/Tables/BugNoData",
+    title: "BUG Core/Controls/BugNoData",
     component: BugNoData,
     parameters: {
         docs: {

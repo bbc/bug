@@ -62,7 +62,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, but
         const result = await renameDialog({
             title: "Add group",
             defaultValue: "",
-            confirmText: "Add",
+            confirmButtonText: "Add",
         });
         if (result !== false) {
             if (await AxiosPost(`/container/${panelId}/groups/${groupType}/${result}`)) {

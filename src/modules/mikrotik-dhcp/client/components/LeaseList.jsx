@@ -33,7 +33,7 @@ export default function LeaseList({ panelId }) {
         const result = await renameDialog({
             title: "Edit comment",
             defaultValue: item.comment,
-            confirmText: "Change",
+            confirmButtonText: "Change",
         });
 
         if (result !== false) {
@@ -137,7 +137,7 @@ export default function LeaseList({ panelId }) {
                             { name: "Bound", value: "bound" },
                             { name: "Waiting", value: "waiting" },
                         ],
-                        content: (item) => <BugPowerIcon enabled={item.status === "bound"} />,
+                        content: (item) => <BugPowerIcon disabled={item.status !== "bound"} />,
                     },
                     {
                         title: "Enabled",

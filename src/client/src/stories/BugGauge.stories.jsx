@@ -1,7 +1,7 @@
 import BugGauge from "../core/BugGauge";
 
 export default {
-    title: "BUG Core/Data/BugGauge",
+    title: "BUG Core/Controls/BugGauge",
     component: BugGauge,
     parameters: {
         docs: {
