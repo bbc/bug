@@ -55,7 +55,7 @@ networks:
 services:
     app:
         container_name: bug
-        image: 172.26.108.110/bug/app:latest
+        image: harbor.prod.bcn.bbc.co.uk/bug/app:latest
         extra_hosts:
           - "host.docker.internal:host-gateway"
         restart: always
@@ -64,18 +64,18 @@ services:
           - ./logs:/home/node/bug/logs
           - ./config/panels:/home/node/bug/config/panels
           - ./config/global:/home/node/bug/config/global
-        hostname: bug
+        hostname: bug0
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
             BUG_PORT: 80
-            BUG_HOST: http://172.29.10.3
+            BUG_HOST: http://localhost
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_CONSOLE_LEVEL: debug
-            BUG_REGISTRY_FQDN: 172.26.108.110
+            BUG_REGISTRY_FQDN: harbor.prod.bcn.bbc.co.uk
             PORT: 3000
             NODE_ENV: production
             SESSION_SECRET: aSecretForYourSessions
