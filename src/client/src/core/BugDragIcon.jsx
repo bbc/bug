@@ -8,7 +8,7 @@ export default function BugDragIcon(props) {
             sx={{
                 opacity: 0.6,
                 color: "primary.main",
-                marginTop: 4,
+                marginTop: "4px",
             }}
         />
     );
