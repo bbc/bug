@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 
-export default function BugDetailsTable({ data, width = "15rem", gridLines = true }) {
+export default function BugDetailsTable({ items, width = "15rem", gridLines = true }) {
     return (
         <>
             <TableContainer>
@@ -18,7 +18,7 @@ export default function BugDetailsTable({ data, width = "15rem", gridLines = tru
                     }}
                 >
                     <TableBody>
-                        {data.map((row, index) => {
+                        {items.map((row, index) => {
                             if (!row) {
                                 return null;
                             }

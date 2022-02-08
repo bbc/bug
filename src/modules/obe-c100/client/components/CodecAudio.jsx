@@ -10,7 +10,7 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                 closable
                 onClose={() => onClose(audioIndex)}
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "Format",
                         value: (

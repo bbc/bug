@@ -58,7 +58,7 @@ export default function DeviceTab({ panelId }) {
         <>
             <Grid item xs={12}>
                 <BugDetailsTable
-                    data={[
+                    items={[
                         {
                             name: "Name",
                             value: (

@@ -10,7 +10,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
             <BugDetailsCard
                 title="Input"
                 width="10rem"
-                data={[
+                items={[
                     showAdvanced && {
                         name: "Video Source",
                         value: (
@@ -81,7 +81,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
             <BugDetailsCard
                 title="Processing"
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "Bars",
                         value: (
@@ -167,7 +167,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
             <BugDetailsCard
                 title="Video Compression"
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "Latency",
                         value: (

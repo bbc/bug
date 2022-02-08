@@ -22,7 +22,7 @@ export default function InterfaceTabEthernet({ panelId, interfaceName }) {
         <>
             <Grid item xs={12}>
                 <BugDetailsTable
-                    data={[
+                    items={[
                         { name: "Status", value: iface.data?.linkstats?.status },
                         { name: "Auto Negotiation", value: iface.data?.linkstats?.["auto-negotiation"] },
                         { name: "Negotiated Rate", value: iface.data?.linkstats?.rate },

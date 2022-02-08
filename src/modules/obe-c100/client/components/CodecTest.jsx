@@ -12,7 +12,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                 <BugDetailsCard
                     title="Test"
                     width="10rem"
-                    data={[
+                    items={[
                         {
                             name: "Bars Line 1",
                             value: (

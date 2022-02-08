@@ -19,7 +19,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
             <BugDetailsCard
                 title="Video Compression"
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "Latency",
                         value: (

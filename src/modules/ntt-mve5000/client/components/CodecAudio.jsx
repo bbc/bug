@@ -10,7 +10,7 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
             <BugDetailsCard
                 title="Audio 1"
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "Format",
                         value: (
@@ -47,7 +47,7 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
             <BugDetailsCard
                 title="Audio 2"
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "Format",
                         value: (

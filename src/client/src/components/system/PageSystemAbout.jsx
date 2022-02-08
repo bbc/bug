@@ -58,7 +58,7 @@ export default function PageSystemBackup() {
                     <BugDetailsCard
                         title="Server Controls"
                         width="10rem"
-                        data={[
+                        items={[
                             {
                                 name: "Shutdown",
                                 value: (
@@ -95,7 +95,7 @@ export default function PageSystemBackup() {
                     <BugDetailsCard
                         title="Server Infomation"
                         width="10rem"
-                        data={[
+                        items={[
                             { name: "IP Address", value: info.data.ip },
                             { name: "Uptime", value: timeAgo.format(Date.now() - parseInt(info.data?.uptime) * 1000) },
                             { name: "Current Version", value: info.data.version },

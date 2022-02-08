@@ -22,7 +22,7 @@ export default function InterfaceTabDetails({ panelId, interfaceName }) {
         <>
             <Grid item xs={12}>
                 <BugDetailsTable
-                    data={[
+                    items={[
                         { name: "Name", value: iface.data?.name },
                         { name: "Comment", value: iface.data?.comment },
                         { name: "Running", value: iface.data?.running ? "yes" : "no" },
