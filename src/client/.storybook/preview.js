@@ -3,17 +3,23 @@ import { ThemeProvider } from "emotion-theming";
 import theme from "../src/theme";
 import { Provider } from "react-redux";
 import reduxStore from "@redux/store";
+import { BugCustomDialogProvider } from "@core/BugCustomDialog";
+import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
 
 export const decorators = [
     (Story) => (
         <Provider store={reduxStore}>
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <>
-                        <Story />
-                    </>
-                </ThemeProvider>
-            </StyledEngineProvider>
+            <BugConfirmDialogProvider>
+                <BugCustomDialogProvider>
+                    <StyledEngineProvider injectFirst>
+                        <ThemeProvider theme={theme}>
+                            <>
+                                <Story />
+                            </>
+                        </ThemeProvider>
+                    </StyledEngineProvider>
+                </BugCustomDialogProvider>
+            </BugConfirmDialogProvider>
         </Provider>
     ),
 
@@ -55,5 +61,10 @@ export const parameters = {
         values: [{ name: "dark", value: "#181818" }],
     },
     viewMode: "docs",
+    previewTabs: {
+        canvas: {
+            hidden: true,
+        },
+    },
     controls: { expanded: true },
 };
