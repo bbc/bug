@@ -1,4 +1,4 @@
-import BugChipDisplay from "../core/BugChipDisplay";
+import BugChipDisplay from "@core/BugChipDisplay";
 
 export default {
     title: "BUG Core/Controls/BugChipDisplay",

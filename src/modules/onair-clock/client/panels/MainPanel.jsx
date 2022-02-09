@@ -148,7 +148,10 @@ export default function MainPanel() {
                         {
                             name: "Time Zone",
                             value: (
-                                <BugTimeZonePicker value={panelConfig?.data?.timezone} handler={handleTimeZoneChange} />
+                                <BugTimeZonePicker
+                                    value={panelConfig?.data?.timezone}
+                                    onChange={handleTimeZoneChange}
+                                />
                             ),
                         },
                         {

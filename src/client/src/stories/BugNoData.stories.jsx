@@ -1,4 +1,4 @@
-import BugNoData from "../core/BugNoData";
+import BugNoData from "@core/BugNoData";
 
 export default {
     title: "BUG Core/Controls/BugNoData",

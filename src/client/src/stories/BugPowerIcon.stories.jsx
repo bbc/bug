@@ -1,4 +1,4 @@
-import BugPowerIcon from "../core/BugPowerIcon";
+import BugPowerIcon from "@core/BugPowerIcon";
 
 export default {
     title: "BUG Core/Icons/BugPowerIcon",

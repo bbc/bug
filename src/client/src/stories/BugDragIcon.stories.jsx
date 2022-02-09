@@ -1,4 +1,4 @@
-import BugDragIcon from "../core/BugDragIcon";
+import BugDragIcon from "@core/BugDragIcon";
 
 export default {
     title: "BUG Core/Icons/BugDragIcon",

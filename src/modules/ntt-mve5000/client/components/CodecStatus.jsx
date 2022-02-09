@@ -13,5 +13,5 @@ export default function CodecStatus({ panelId }) {
         return <Loading />;
     }
 
-    return <BugStatusBlockContainer statusItems={codecstatus.data} />;
+    return <BugStatusBlockContainer items={codecstatus.data} />;
 }

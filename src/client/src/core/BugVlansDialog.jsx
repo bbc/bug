@@ -13,7 +13,7 @@ import Switch from "@mui/material/Switch";
 import Checkbox from "@mui/material/Checkbox";
 import BugScrollbars from "@core/BugScrollbars";
 
-export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDismiss, onConfirm, groups }) {
+export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDismiss, onConfirm }) {
     const [localUntaggedVlan, setLocalUntaggedVlan] = React.useState(untaggedVlan);
     const [localTaggedVlans, setLocalTaggedVlans] = React.useState(taggedVlans);
 
@@ -73,10 +73,10 @@ export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDis
                                             Tagged
                                             <Checkbox
                                                 sx={{ padding: "4px 12px" }}
-                                                checked={localTaggedVlans.length === vlans.length}
+                                                checked={localTaggedVlans?.length === vlans?.length}
                                                 indeterminate={
-                                                    localTaggedVlans.length !== vlans.length &&
-                                                    localTaggedVlans.length > 0
+                                                    localTaggedVlans?.length !== vlans?.length &&
+                                                    localTaggedVlans?.length > 0
                                                 }
                                                 tabIndex={-1}
                                                 disableRipple
@@ -86,32 +86,33 @@ export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDis
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {vlans.map((vlan, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>
-                                                {vlan.id} - {vlan.label}
-                                            </TableCell>
-                                            <TableCell>
-                                                <Switch
-                                                    color="primary"
-                                                    onChange={(event) => handleUntaggedChanged(event, vlan.id)}
-                                                    checked={localUntaggedVlan === vlan.id}
-                                                    disabled={localUntaggedVlan === vlan.id}
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Switch
-                                                    color="primary"
-                                                    onChange={(event) => handleTaggedChanged(event, vlan.id)}
-                                                    checked={
-                                                        localTaggedVlans.includes(vlan.id) &&
-                                                        vlan.id !== localUntaggedVlan
-                                                    }
-                                                    disabled={localUntaggedVlan === vlan.id}
-                                                />
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {vlans &&
+                                        vlans.map((vlan, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>
+                                                    {vlan.id} - {vlan.label}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Switch
+                                                        color="primary"
+                                                        onChange={(event) => handleUntaggedChanged(event, vlan.id)}
+                                                        checked={localUntaggedVlan === vlan.id}
+                                                        disabled={localUntaggedVlan === vlan.id}
+                                                    />
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Switch
+                                                        color="primary"
+                                                        onChange={(event) => handleTaggedChanged(event, vlan.id)}
+                                                        checked={
+                                                            localTaggedVlans.includes(vlan.id) &&
+                                                            vlan.id !== localUntaggedVlan
+                                                        }
+                                                        disabled={localUntaggedVlan === vlan.id}
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
                                 </TableBody>
                             </Table>
                         </Box>

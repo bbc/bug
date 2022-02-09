@@ -1,4 +1,4 @@
-import BugAudioThumbnail from "../core/BugAudioThumbnail";
+import BugAudioThumbnail from "@core/BugAudioThumbnail";
 
 export default {
     title: "BUG Core/Controls/BugAudioThumbnail",

@@ -1,4 +1,4 @@
-import BugApiSaveButton from "../core/BugApiSaveButton";
+import BugApiSaveButton from "@core/BugApiSaveButton";
 
 export default {
     title: "BUG Core/API Controls/BugApiSaveButton",
@@ -17,7 +17,18 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
-        onClick: { action: "clicked" },
+        onClick: {
+            type: { name: "function", required: true },
+            defaultValue: null,
+            description: "This callback is called when the button is clicked",
+            control: {
+                disable: true,
+            },
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: null },
+            },
+        },
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,

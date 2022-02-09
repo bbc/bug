@@ -4,15 +4,15 @@ import Box from "@mui/material/Box";
 import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
 
-export default function GroupButton({
-    onClick,
-    item,
-    primaryLabel,
+export default function BugRouterGroupButton({
     draggable = false,
-    selected = false,
-    id,
     editMode = false,
+    id,
+    item,
     menuItems,
+    onClick,
+    primaryLabel,
+    selected = false,
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
 

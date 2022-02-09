@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import { action } from "@storybook/addon-actions";
 
 export default {
     title: "BUG Core/Forms/BugConfigFormDeleteButton",
@@ -23,7 +22,18 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
 
     argTypes: {
-        onClick: { action: "clicked", table: { disable: true } },
+        onClick: {
+            type: { name: "function", required: true },
+            defaultValue: null,
+            description: "This callback is called when the button is clicked",
+            control: {
+                disable: true,
+            },
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: null },
+            },
+        },
     },
 };
 

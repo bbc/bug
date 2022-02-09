@@ -1,4 +1,4 @@
-import BugColorPicker from "../core/BugColorPicker";
+import BugColorPicker from "@core/BugColorPicker";
 
 export default {
     title: "BUG Core/Controls/BugColorPicker",

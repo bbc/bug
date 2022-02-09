@@ -2,7 +2,6 @@ import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
-import { action } from "@storybook/addon-actions";
 
 export default {
     title: "BUG Core/Forms/BugConfigFormChipInput",

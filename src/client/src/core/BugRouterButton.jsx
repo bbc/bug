@@ -15,20 +15,20 @@ const StyledBugDynamicIcon = styled(BugDynamicIcon)({
 });
 
 const BugRouterButton = ({
-    onClick,
-    item,
+    disabled = false,
+    draggable = false,
+    editMode = false,
+    id,
     icon = null,
     iconColor = null,
+    item,
+    locked = false,
+    menuItems,
+    number,
+    onClick,
     primaryLabel,
     secondaryLabel,
-    number,
-    draggable = false,
     selected,
-    id,
-    editMode = false,
-    locked = false,
-    disabled = false,
-    menuItems,
     useDoubleClick = false,
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
@@ -158,6 +158,7 @@ const BugRouterButton = ({
                 </Box>
                 <Box
                     sx={{
+                        boxSizing: "border-box",
                         width: "100%",
                         backgroundColor: "#333",
                         display: "flex",

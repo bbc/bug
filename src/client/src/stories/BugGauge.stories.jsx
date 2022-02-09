@@ -1,4 +1,4 @@
-import BugGauge from "../core/BugGauge";
+import BugGauge from "@core/BugGauge";
 
 export default {
     title: "BUG Core/Controls/BugGauge",

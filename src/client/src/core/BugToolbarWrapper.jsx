@@ -22,7 +22,7 @@ import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useHistory } from "react-router-dom";
-import BugToolbarIcon from "@core/BugToolbarIcon";
+import BugToolbarIcon from "@components/BugToolbarIcon";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 /*
@@ -31,7 +31,7 @@ import { useBugConfirmDialog } from "@core/BugConfirmDialog";
  * - menuitems - which can take menuitems which will be shown in the list
  */
 
-export default function PanelToolbar(props) {
+export default function BugToolbarWrapper({ buttons, menuItems }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const panel = useSelector((state) => state.panel);
@@ -153,7 +153,7 @@ export default function PanelToolbar(props) {
                         </BugToolbarIcon>
                     </>
                 )}
-                <Hidden xsDown>{props.buttons ? props.buttons : null}</Hidden>
+                <Hidden xsDown>{buttons ? buttons : null}</Hidden>
                 <IconButton
                     sx={{
                         marginLeft: "0.5rem",
@@ -173,7 +173,7 @@ export default function PanelToolbar(props) {
                         </ListItemIcon>
                         <ListItemText primary="Config" />
                     </MenuItem>
-                    {props.menuItems}
+                    {menuItems}
                     <Divider />
                     <MenuItem disabled>
                         <ListItemIcon>

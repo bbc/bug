@@ -1,4 +1,4 @@
-import BugDynamicIcon from "../core/BugDynamicIcon";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 
 export default {
     title: "BUG Core/Icons/BugDynamicIcon",
