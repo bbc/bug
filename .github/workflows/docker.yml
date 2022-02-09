@@ -55,6 +55,7 @@ jobs:
                   registry: ${{ env.regsitry }}
                   username: ${{ secrets.HARBOR_USER }}
                   password: ${{ secrets.HARBOR_KEY }}
+                  logout: false
             #Docker Build Image and Push to Registry
             - name: Build and push to local registry
               uses: docker/build-push-action@v2
@@ -63,6 +64,11 @@ jobs:
                   platforms: ${{ matrix.architecture}}
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
+                  labels: |
+                      version='${{steps.backend-version.outputs.current-version}}'
+                      uk.co.bbc.bug.build.number='${{github.run_number}}'
+                      uk.co.bbc.bug.build.branch='${{GITHUB_REF}}'
+                      uk.co.bbc.bug.build.commit='${{GITHUB_SHA}}'
             - name: Inspect
               run: |
                   docker buildx imagetools inspect ${{env.regsitry}}/bug/app:latest
