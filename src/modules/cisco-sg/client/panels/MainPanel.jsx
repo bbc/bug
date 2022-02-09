@@ -29,7 +29,6 @@ export default function MainPanel({ panelId }) {
         return (
             <>
                 <BugPanelTabbedForm
-                    // className={classes.form}
                     labels={labels}
                     content={content}
                     locations={locations}

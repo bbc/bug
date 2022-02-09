@@ -52,7 +52,7 @@ export default function PageSystemBackup() {
                     <BugDetailsCard
                         title="System Version"
                         width="12rem"
-                        data={[
+                        items={[
                             {
                                 name: "Current Version",
                                 value: info.data?.version,
@@ -69,7 +69,7 @@ export default function PageSystemBackup() {
                     <BugDetailsCard
                         title="System Update"
                         width="12rem"
-                        data={[
+                        items={[
                             {
                                 name: "Last Checked",
                                 value: lastChecked,

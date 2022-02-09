@@ -17,21 +17,21 @@ const { renameDialog } = useBugRenameDialog();
 const result = await renameDialog({
     title: "Add group",
     defaultValue: "",
-    confirmText: "Add",
+    confirmButtonText: "Add",
 });
 */
 
 const BugRenameDialog = ({
     allowBlank = false,
-    open,
-    title = "Rename",
-    label = "",
-    textFieldProps = {},
-    onRename,
-    onDismiss,
+    confirmButtonText = "Rename",
     defaultValue,
-    confirmText = "Rename",
+    label = "",
+    onDismiss,
+    onRename,
+    open,
     placeholder = null,
+    textFieldProps = {},
+    title = "Rename",
 }) => {
     const [value, setValue] = React.useState("");
     const inputRef = React.useRef();
@@ -92,7 +92,7 @@ const BugRenameDialog = ({
                         Cancel
                     </Button>
                     <Button color="primary" disabled={!allowBlank && value === ""} onClick={() => onRename(value)}>
-                        {confirmText}
+                        {confirmButtonText}
                     </Button>
                 </DialogActions>
             </form>
@@ -111,7 +111,7 @@ const BugRenameDialogProvider = ({ children }) => {
         message,
         actionCallback,
         defaultValue,
-        confirmText,
+        confirmButtonText,
         placeholder,
         allowBlank,
         textFieldProps,
@@ -122,7 +122,7 @@ const BugRenameDialogProvider = ({ children }) => {
             message,
             actionCallback,
             defaultValue,
-            confirmText,
+            confirmButtonText,
             placeholder,
             allowBlank,
             textFieldProps,
@@ -153,7 +153,7 @@ const BugRenameDialogProvider = ({ children }) => {
                 allowBlank={dialogConfig?.allowBlank}
                 onRename={onRename}
                 onDismiss={onDismiss}
-                confirmText={dialogConfig?.confirmText}
+                confirmButtonText={dialogConfig?.confirmButtonText}
                 defaultValue={dialogConfig.defaultValue}
                 textFieldProps={dialogConfig?.textFieldProps}
             />

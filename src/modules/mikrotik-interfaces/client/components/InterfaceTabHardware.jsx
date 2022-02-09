@@ -22,7 +22,7 @@ export default function InterfaceTabHardware({ panelId, interfaceName }) {
         <>
             <Grid item xs={12}>
                 <BugDetailsTable
-                    data={[
+                    items={[
                         {
                             name: "SFP Module Present",
                             value: iface?.data?.linkstats?.["sfp-module-present"] ? "yes" : "no",

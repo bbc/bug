@@ -33,7 +33,7 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
             <BugDetailsCard
                 title="Input"
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "Transmit",
                         value: (

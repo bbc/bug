@@ -4,7 +4,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Paper from "@mui/material/Paper";
 
 export default {
-    title: "BUG Core/Data/BugCard",
+    title: "BUG Core/Layout/BugCard",
     component: BugCard,
     parameters: {
         docs: {

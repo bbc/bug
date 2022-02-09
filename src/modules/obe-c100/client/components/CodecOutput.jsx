@@ -31,7 +31,7 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                 onClose={() => onClose(outputIndex)}
                 title={`Output ${outputIndex + 1}`}
                 width="11rem"
-                data={[
+                items={[
                     {
                         name: "Output Type",
                         value: (

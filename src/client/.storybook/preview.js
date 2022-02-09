@@ -3,23 +3,33 @@ import { ThemeProvider } from "emotion-theming";
 import theme from "../src/theme";
 import { Provider } from "react-redux";
 import reduxStore from "@redux/store";
+import { BugCustomDialogProvider } from "@core/BugCustomDialog";
+import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
+import { BugRenameDialogProvider } from "@core/BugRenameDialog";
+import { MemoryRouter as Router } from "react-router";
 
 export const decorators = [
     (Story) => (
         <Provider store={reduxStore}>
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <>
-                        <Story />
-                    </>
-                </ThemeProvider>
-            </StyledEngineProvider>
+            <BugConfirmDialogProvider>
+                <BugCustomDialogProvider>
+                    <BugRenameDialogProvider>
+                        <StyledEngineProvider injectFirst>
+                            <ThemeProvider theme={theme}>
+                                <Router>
+                                    <Story />
+                                </Router>
+                            </ThemeProvider>
+                        </StyledEngineProvider>
+                    </BugRenameDialogProvider>
+                </BugCustomDialogProvider>
+            </BugConfirmDialogProvider>
         </Provider>
     ),
 
     (Story) => (
         <>
-            <body
+            <div
                 style={{
                     margin: "0",
                     color: "#ffffff",
@@ -37,7 +47,7 @@ export const decorators = [
                         </>
                     </ThemeProvider>
                 </MUIThemeProvider>
-            </body>
+            </div>
         </>
     ),
 ];
@@ -55,5 +65,10 @@ export const parameters = {
         values: [{ name: "dark", value: "#181818" }],
     },
     viewMode: "docs",
+    previewTabs: {
+        canvas: {
+            hidden: true,
+        },
+    },
     controls: { expanded: true },
 };

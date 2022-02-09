@@ -135,7 +135,7 @@ export default function PanelDropdownMenu({ panel }) {
         const result = await renameDialog({
             title: "Change panel group",
             defaultValue: panel?.group,
-            confirmText: "Change",
+            confirmButtonText: "Change",
             filter: (char) => char.replace(":", ""),
             allowBlank: true,
         });

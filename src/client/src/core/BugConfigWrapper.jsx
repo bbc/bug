@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import CodeIcon from "@mui/icons-material/Code";
 import { useHotkeys } from "react-hotkeys-hook";
 
-export default function BugConfigWrapper({ panelId, children, config, handleSubmit }) {
+export default function BugConfigWrapper({ children, config, handleSubmit = () => {} }) {
     const history = useHistory();
     const [editorMode, setEditorMode] = useState(false);
     const [editorJson, setEditorJson] = useState(config);

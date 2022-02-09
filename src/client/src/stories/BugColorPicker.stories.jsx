@@ -1,7 +1,7 @@
 import BugColorPicker from "../core/BugColorPicker";
 
 export default {
-    title: "BUG Core/Data/BugColorPicker",
+    title: "BUG Core/Controls/BugColorPicker",
     component: BugColorPicker,
     parameters: {
         docs: {

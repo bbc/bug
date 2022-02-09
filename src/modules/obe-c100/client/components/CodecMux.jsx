@@ -9,7 +9,7 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
             <BugDetailsCard
                 title="Mux"
                 width="10rem"
-                data={[
+                items={[
                     {
                         name: "TS Bitrate",
                         value: (

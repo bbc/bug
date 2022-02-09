@@ -3,26 +3,26 @@ import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
 import InterfacePanel from "./panels/InterfacePanel";
 import BugModuleWrapper from "@core/BugModuleWrapper";
-import BugModuleRoute from "@core/BugModuleRoute";
+import { Route } from "react-router-dom";
 
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
-            <BugModuleRoute exact path="/panel/:panelId/config">
+            <Route exact path="/panel/:panelId/config">
                 <ConfigPanel {...props} />
-            </BugModuleRoute>
-            <BugModuleRoute exact path="/panel/:panelId">
+            </Route>
+            <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
-            </BugModuleRoute>
-            <BugModuleRoute exact path="/panel/:panelId/:stackId">
+            </Route>
+            <Route exact path="/panel/:panelId/:stackId">
                 <MainPanel {...props} />
-            </BugModuleRoute>
-            <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceId">
+            </Route>
+            <Route exact path="/panel/:panelId/interface/:interfaceId">
                 <InterfacePanel />
-            </BugModuleRoute>
-            <BugModuleRoute exact path="/panel/:panelId/interface/:interfaceId/:tab">
+            </Route>
+            <Route exact path="/panel/:panelId/interface/:interfaceId/:tab">
                 <InterfacePanel />
-            </BugModuleRoute>
+            </Route>
         </BugModuleWrapper>
     );
 }

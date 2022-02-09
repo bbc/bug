@@ -11,18 +11,18 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import LoadingOverlay from "@components/LoadingOverlay";
 import AxiosPost from "@utils/AxiosPost";
-import TextField from "@mui/material/TextField";
-import BugConfigFormFileUpload from "@core/BugConfigFormFileUpload";
 import BugCard from "@core/BugCard";
+import Box from "@mui/material/Box";
+import Input from "@mui/material/Input";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
+    const [filename, setFilename] = React.useState("");
 
     const {
         register,
-        control,
         handleSubmit,
         formState: { errors },
     } = useForm({});
@@ -30,7 +30,6 @@ export default function PageSystemBackup() {
     const onSubmit = async (form) => {
         const formData = new FormData();
         formData.append("backup", form.file[0]);
-
         setLoading(true);
         const response = await AxiosPost(`/api/system/restore`, formData);
         if (response) {
@@ -92,12 +91,49 @@ export default function PageSystemBackup() {
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Grid container spacing={4}>
                                         <Grid item lg={6} xs={12}>
-                                            <BugConfigFormFileUpload
-                                                error={errors?.file}
-                                                name="file"
-                                                control={control}
-                                                fullWidth
-                                            />
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    flexDirection: "rows",
+                                                }}
+                                            >
+                                                <label htmlFor="contained-button-file">
+                                                    <Input
+                                                        sx={{ display: "none" }}
+                                                        accept="image/*"
+                                                        id="contained-button-file"
+                                                        multiple
+                                                        onChange={(event) => {
+                                                            const filename = event.target.value.replace(/^.*\\/, "");
+                                                            setFilename(filename);
+                                                        }}
+                                                        type="file"
+                                                        inputProps={{
+                                                            ...{ accept: "application/gzip" },
+                                                            ...register("file", { required: true }),
+                                                        }}
+                                                    />
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        sx={{
+                                                            width: "6rem",
+                                                            height: "36px",
+                                                        }}
+                                                        component="span"
+                                                    >
+                                                        Select
+                                                    </Button>
+                                                </label>
+                                                <Box
+                                                    sx={{
+                                                        padding: "8px",
+                                                        flexGrow: 1,
+                                                    }}
+                                                >
+                                                    {filename ? filename : "No file selected"}
+                                                </Box>
+                                            </Box>
                                         </Grid>
                                         <Grid item lg={6} xs={12}>
                                             <Button
@@ -106,6 +142,7 @@ export default function PageSystemBackup() {
                                                 disableElevation
                                                 underline="none"
                                                 variant="outlined"
+                                                disabled={!filename}
                                             >
                                                 Restore
                                             </Button>

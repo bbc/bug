@@ -116,7 +116,7 @@ export default function MainPanel() {
         <>
             <Grid item xs={12}>
                 <BugDetailsTable
-                    data={[
+                    items={[
                         {
                             name: "Name",
                             value: (

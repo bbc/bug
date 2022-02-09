@@ -5,17 +5,31 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 
-export default function BugPasswordTextField(props) {
+export default function BugPasswordTextField({ variant = "standard", allowShowPassword = true, ...props }) {
     const [showPassword, setShowPassword] = useState(false);
+
+    const sx =
+        variant === "outlined"
+            ? {
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  "& .MuiInputBase-root": {
+                      borderRadius: 0,
+                  },
+                  "& .MuiInputBase-input": {
+                      padding: "14px",
+                  },
+              }
+            : {};
 
     return (
         <TextField
+            variant={variant}
+            sx={sx}
             {...props}
             type={showPassword ? "text" : "password"}
-            variant="standard"
             autoComplete="off"
             InputProps={{
-                endAdornment: (
+                endAdornment: allowShowPassword && (
                     <InputAdornment position="end">
                         <IconButton
                             aria-label="toggle password visibility"

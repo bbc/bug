@@ -12,7 +12,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                 collapsed={collapsed}
                 title={`Output ${outputIndex + 1}`}
                 width="11rem"
-                data={[
+                items={[
                     {
                         name: "Transmit",
                         value: (

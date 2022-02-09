@@ -38,7 +38,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
             title: "Edit interface name",
             defaultValue: item["alias"],
             placeholder: item["description"],
-            confirmText: "Rename",
+            confirmButtonText: "Rename",
             allowBlank: true,
         });
         if (result === false) {
@@ -236,7 +236,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <BugPowerIcon enabled={item["link-state"]} />,
+                    content: (item) => <BugPowerIcon disabled={!item["link-state"]} />,
                 },
                 {
                     noPadding: true,

@@ -20,14 +20,14 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-const MemoizedBugDetailsTable = ({ width, data }) => {
-    return React.useMemo(() => <BugDetailsTable width={width} gridLines={false} data={data} />, [data, width]);
+const MemoizedBugDetailsTable = ({ width, items }) => {
+    return React.useMemo(() => <BugDetailsTable width={width} gridLines={false} items={items} />, [items, width]);
 };
 
 function BugDetailsCard({
     title,
-    width,
-    data,
+    width = "10rem",
+    items = [],
     collapsible = false,
     closable = false,
     onClose,
@@ -81,17 +81,17 @@ function BugDetailsCard({
                             fontWeight: 500,
                             color: "#ffffff",
                         },
-                        height: "49px",
+                        height: "32px",
                         padding: "8px 16px",
                     }}
                     title={title}
                     action={getAction()}
                 />
             )}
-            {data && (
+            {items && (
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <Box sx={{ margin: "2px" }}>
-                        <MemoizedBugDetailsTable width={width} gridLines={false} data={data} />
+                        <MemoizedBugDetailsTable width={width} gridLines={false} items={items} />
                     </Box>
                 </Collapse>
             )}

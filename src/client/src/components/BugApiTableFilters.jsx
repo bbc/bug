@@ -5,7 +5,7 @@ import FilterTextField from "@components/FilterTextField";
 import FilterDropdown from "@components/FilterDropdown";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-import BugResponsiveTableCell from "@core/BugResponsiveTableCell";
+import BugApiTableCell from "@components/BugApiTableCell";
 
 export default function BugApiTable({ onChange, columns, classes, filters, onClose }) {
     const [localFilters, setLocalFilters] = React.useState({});
@@ -54,9 +54,9 @@ export default function BugApiTable({ onChange, columns, classes, filters, onClo
         <>
             <TableRow key="filters">
                 {columns.map((column, index) => (
-                    <BugResponsiveTableCell key={index} column={column} index={index}>
+                    <BugApiTableCell key={index} column={column} index={index}>
                         {renderFilterCell(column)}
-                    </BugResponsiveTableCell>
+                    </BugApiTableCell>
                 ))}
 
                 <TableCell style={{ padding: 0 }}>

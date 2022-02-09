@@ -9,6 +9,8 @@ const BugTextField = ({
     numeric = false,
     maxLength,
     variant = "outlined",
+    fullWidth = true,
+    disabled = false,
     ...props
 }) => {
     const handleChange = (event) => {
@@ -62,8 +64,9 @@ const BugTextField = ({
     return (
         <TextField
             sx={sx}
-            fullWidth
+            fullWidth={fullWidth}
             variant={variant}
+            disabled={disabled}
             {...props}
             inputProps={{ maxLength: maxLength }}
             onChange={handleChange}

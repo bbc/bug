@@ -2,7 +2,7 @@ import Box from "@material-ui/core/Box";
 import { Title, Subtitle, Description, ArgsTable, PRIMARY_STORY } from "@storybook/addon-docs";
 
 export default {
-    title: "BUG Core/Tables/BugApiTableColumn",
+    title: "BUG Core/API Controls/BugApiTableColumn",
     component: Box,
     parameters: {
         previewTabs: {

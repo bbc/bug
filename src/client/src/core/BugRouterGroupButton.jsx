@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import BugItemMenu from "@core/BugItemMenu";
+import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
 
 export default function GroupButton({

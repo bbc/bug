@@ -4,10 +4,6 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import Loading from "@components/Loading";
 import { useSelector } from "react-redux";
-import BugPasswordTextField from "@core/BugPasswordTextField";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 

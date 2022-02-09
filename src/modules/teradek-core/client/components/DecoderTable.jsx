@@ -158,7 +158,7 @@ export default function DecoderTable({ panelId }) {
                     noPadding: true,
                     width: 44,
                     field: "status",
-                    content: (item) => <BugPowerIcon enabled={isEnabled(item)} />,
+                    content: (item) => <BugPowerIcon disabled={!isEnabled(item)} />,
                 },
                 {
                     sortable: false,
