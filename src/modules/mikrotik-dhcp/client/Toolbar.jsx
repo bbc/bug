@@ -56,5 +56,5 @@ export default function Toolbar(props) {
     toolbarProps["buttons"] = buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
-    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} />;
 }

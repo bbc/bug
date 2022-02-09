@@ -55,5 +55,5 @@ export default function Toolbar(props) {
     toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = panelStatus.hasCritical ? null : menuItems();
 
-    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} />;
 }
