@@ -12,8 +12,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
-import md5 from "crypto-js/md5";
 import useSounds from "@hooks/Sounds";
+import md5 from "md5";
 
 const UserMenuItem = (props) => {
     const dispatch = useDispatch();
