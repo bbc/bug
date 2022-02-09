@@ -66,6 +66,7 @@
                         timezone = response?.data?.data?.timezone;
                         getDate();
                         getTime();
+                        startClock();
                     }
 
                     document.getElementById("date").hidden = !response?.data?.data?.showDate;
