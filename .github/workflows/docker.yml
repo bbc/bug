@@ -61,10 +61,6 @@ jobs:
               with:
                   context: "./src"
                   platforms: ${{ matrix.architecture}}
-                  cache-to: |
-                      type=registry,
-                      ${{env.regsitry}}/bug/app:latest
-                  outputs: type=registry
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
             - name: Inspect
