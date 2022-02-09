@@ -2,7 +2,7 @@
 name: BUG Deploy
 
 env:
-    regsitry: "harbor.prod.bcn.bbc.co.uk"
+    regsitry: "172.26.108.110"
 
 on:
     push:
@@ -65,7 +65,9 @@ jobs:
                   context: "./src"
                   platforms: ${{ matrix.architecture}}
                   push: ${{ github.event_name != 'pull_request' }}
-                  tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
+                  tags: ${{env.regsitry}}/bug/app:latest
+                  outputs: |
+                      registry.insecure=true
                   labels: |
                       version='${{steps.backend-version.outputs.current-version}}'
                       uk.co.bbc.bug.build.number='${{github.run_number}}'
