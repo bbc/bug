@@ -54,6 +54,15 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        helperText: {
+            type: { name: "string", required: false },
+            defaultValue: "Tell me something interesting",
+            description: "Optional helper text to be shown below the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
         onChange: {
             type: { name: "function", required: true },
             defaultValue: {},
@@ -68,31 +77,12 @@ export default {
         },
         variant: {
             options: ["filled", "outlined", "standard"],
-            description: "The MUI variant of the button",
+            description: "The MUI variant of the control",
             defaultValue: "standard",
             control: { type: "select" },
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "standard" },
-            },
-        },
-        error: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description:
-                "This is usually handled by the parent BugForm but can also be set manually. Change the helperText to add additional error information.",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        helperText: {
-            type: { name: "string", required: false },
-            defaultValue: "Tell me something interesting",
-            description: "Optional helper text to be shown below the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
             },
         },
         allowShowPassword: {

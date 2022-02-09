@@ -1,14 +1,13 @@
 import React from "react";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
-export default function BugDragIcon(props) {
+export default function BugDragIcon({ color = "primary" }) {
     return (
         <DragIndicatorIcon
-            {...props}
             sx={{
                 opacity: 0.6,
-                color: "primary.main",
-                marginTop: "4px",
+                color: `${color}.main`,
+                marginTop: "2px",
             }}
         />
     );

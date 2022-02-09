@@ -1,4 +1,4 @@
-import BugAutocompletePlaceholder from "../core/BugAutocompletePlaceholder";
+import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
 
 export default {
     title: "BUG Core/Controls/BugAutocompletePlaceholder",

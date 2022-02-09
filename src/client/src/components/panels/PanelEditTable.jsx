@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import panelListGroups from "@utils/panelListGroups";
 import _ from "lodash";
@@ -134,7 +134,7 @@ export default function PanelTable({ showGroups = true }) {
     }
 
     if (panelList.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
     if (panelList.status === "success" && itemList) {
         const itemIDs = itemList.map((item) => item.id);

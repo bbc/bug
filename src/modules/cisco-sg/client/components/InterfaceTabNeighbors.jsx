@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import BugDetailsTable from "@core/BugDetailsTable";
 import BugNoData from "@core/BugNoData";
 

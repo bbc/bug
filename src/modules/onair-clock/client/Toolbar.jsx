@@ -1,16 +1,12 @@
 import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import { useSelector } from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import Popover from "@mui/material/Popover";
-import Iframe from "react-iframe";
 
 export default function Toolbar(props) {
     let toolbarProps = { ...props };
-    const panelConfig = useSelector((state) => state.panelConfig);
 
     toolbarProps["onClick"] = null;
 
@@ -31,11 +27,9 @@ export default function Toolbar(props) {
         </MenuItem>,
     ];
 
-    const buttons = () => [];
-
     toolbarProps["buttons"] = null;
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
 
-    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} />;
 }

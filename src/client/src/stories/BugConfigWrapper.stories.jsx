@@ -1,5 +1,6 @@
 import { Source } from "@storybook/addon-docs/blocks";
 import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
+
 export default {
     title: "BUG Core/Wrappers/BugConfigWrapper",
     component: "div",

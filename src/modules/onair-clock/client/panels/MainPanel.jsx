@@ -7,7 +7,7 @@ import { useBugRenameDialog } from "@core/BugRenameDialog";
 import AxiosPut from "@utils/AxiosPut";
 import BugDetailsTable from "@core/BugDetailsTable";
 import { useSelector } from "react-redux";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import BugColorPicker from "@core/BugColorPicker";
 import BugTimeZonePicker from "@core/BugTimeZonePicker";
@@ -148,7 +148,10 @@ export default function MainPanel() {
                         {
                             name: "Time Zone",
                             value: (
-                                <BugTimeZonePicker value={panelConfig?.data?.timezone} handler={handleTimeZoneChange} />
+                                <BugTimeZonePicker
+                                    value={panelConfig?.data?.timezone}
+                                    onChange={handleTimeZoneChange}
+                                />
                             ),
                         },
                         {

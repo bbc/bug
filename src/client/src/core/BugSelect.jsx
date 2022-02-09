@@ -2,14 +2,14 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-const BugSelect = ({ items, disabled = false, ...props }) => {
+const BugSelect = ({ disabled = false, fullWidth = true, variant = "outlined", items, value, ...props }) => {
     return (
         <TextField
-            select
-            value={props.value}
-            fullWidth
             disabled={disabled}
-            variant="outlined"
+            fullWidth={fullWidth}
+            select
+            value={value}
+            variant={variant}
             {...props}
             sx={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",

@@ -1,16 +1,11 @@
 import React from "react";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 
 export default function AutoLogin({ handleLogin }) {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({});
+    const { handleSubmit } = useForm({});
 
     const onSubmit = async (form) => {
         handleLogin(form);

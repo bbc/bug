@@ -1,4 +1,4 @@
-import BugDetailsTable from "../core/BugDetailsTable";
+import BugDetailsTable from "@core/BugDetailsTable";
 
 export default {
     title: "BUG Core/Layout/BugDetailsTable",

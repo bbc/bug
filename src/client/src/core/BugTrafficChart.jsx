@@ -12,7 +12,7 @@ import useAsyncEffect from "use-async-effect";
 import { useWindowSize } from "@utils/WindowSize";
 import BugTimePicker from "@core/BugTimePicker";
 
-export default function BugTrafficChart({ url, type }) {
+export default function BugTrafficChart({ url, mockApiData = null }) {
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
@@ -20,7 +20,7 @@ export default function BugTrafficChart({ url, type }) {
 
     const [enableAutoRefresh, setEnableAutoRefresh] = useState(true);
     const [range, setRange] = useState(initialRange);
-    const [stats, setStats] = useState(null);
+    const [stats, setStats] = useState(mockApiData);
 
     const doAutoRefresh = useCallback(() => {
         setRange([Date.now() - rangeSpan * 60000, Date.now()]);
@@ -28,8 +28,10 @@ export default function BugTrafficChart({ url, type }) {
     }, []);
 
     useAsyncEffect(async () => {
-        const fetchedStats = await AxiosGet(`${url}/${range[0]}/${range[1]}`);
-        setStats(fetchedStats);
+        if (url) {
+            const fetchedStats = await AxiosGet(`${url}/${range[0]}/${range[1]}`);
+            setStats(fetchedStats);
+        }
     }, [url, range]);
 
     useEffect(() => {
@@ -110,7 +112,7 @@ export default function BugTrafficChart({ url, type }) {
         return null;
     };
 
-    const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 450;
+    const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 400;
 
     return (
         <Box

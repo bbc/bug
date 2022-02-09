@@ -6,7 +6,7 @@ import ChartCPU from "@components/system/charts/ChartCPU";
 import ChartMemory from "@components/system/charts/ChartMemory";
 import ChartDisk from "@components/system/charts/ChartDisk";
 import ChartNetwork from "@components/system/charts/ChartNetwork";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 
@@ -29,7 +29,7 @@ export default function PageSystemInfo() {
     }, [dispatch]);
 
     if (stats.status === "loading" || stats.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return (

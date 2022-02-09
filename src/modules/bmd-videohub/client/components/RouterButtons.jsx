@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import RouterButton from "./RouterButton";
 import { useParams } from "react-router-dom";
 import { useAlert } from "@utils/Snackbar";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import BugEditIconDialog from "@core/BugEditIconDialog";
 import AxiosPost from "@utils/AxiosPost";
 import Box from "@mui/material/Box";
@@ -119,7 +119,7 @@ export default function Router({
     );
 
     if (!localButtons) {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (editMode) {

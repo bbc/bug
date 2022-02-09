@@ -1,5 +1,5 @@
-import BugApiTable from "../core/BugApiTable";
-import BugPowerIcon from "../core/BugPowerIcon";
+import BugApiTable from "@core/BugApiTable";
+import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiSwitch from "@core/BugApiSwitch";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import CheckIcon from "@mui/icons-material/Check";
@@ -41,23 +41,26 @@ export default {
         },
         columns: {
             type: { name: "data", required: true },
-            description: "An array of column definitions",
+            description: "An array of column definitions - see **BugApiTableColumn** for details",
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: "[]" },
+            },
+            control: {
+                disable: true,
             },
         },
         menuItems: {
             type: "data",
-            description: "An array of menuitems to be shown via the context menu",
+            description: "An array of menu items to be shown via the context menu - see **BugMenuItems** for details",
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: "[]" },
             },
+            control: {
+                disable: true,
+            },
         },
-
-        // onRowClick,
-        // menuItems,
         sortable: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -65,6 +68,9 @@ export default {
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
+            },
+            control: {
+                disable: true,
             },
         },
         filterable: {
@@ -75,6 +81,9 @@ export default {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
+            control: {
+                disable: true,
+            },
         },
         defaultSortIndex: {
             type: { name: "number" },
@@ -84,6 +93,9 @@ export default {
                 type: { summary: "number" },
                 defaultValue: { summary: 0 },
             },
+            control: {
+                disable: true,
+            },
         },
         defaultSortDirection: {
             options: ["asc", "desc"],
@@ -92,6 +104,9 @@ export default {
             control: { type: "select" },
             table: {
                 type: { summary: "string" },
+            },
+            control: {
+                disable: true,
             },
         },
         hideHeader: {
@@ -119,6 +134,9 @@ export default {
                 type: { summary: "data" },
                 defaultValue: { summary: "null" },
             },
+            control: {
+                disable: true,
+            },
         },
         rowHeight: {
             type: "string",
@@ -135,6 +153,9 @@ export default {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
             },
+            control: {
+                disable: true,
+            },
         },
         mockApiData: {
             table: { disable: true },
@@ -144,6 +165,9 @@ export default {
             description: "Change the value of this to force a refresh of the table data source",
             table: {
                 type: { summary: "number" },
+            },
+            control: {
+                disable: true,
             },
         },
     },
@@ -285,5 +309,110 @@ MyApiTable.args = {
                 rx_bytes: "-",
             },
         ],
+    },
+};
+MyApiTable.parameters = {
+    docs: {
+        source: {
+            code: `
+<BugApiTable
+  columns={[
+    {
+        title: "Active",
+        sortable: true,
+        noPadding: true,
+        hideWidth: 440,
+        width: 58,
+        field: "status",
+        filterType: "dropdown",
+        filterOptions: [
+            { name: "View all items", value: "" },
+            { name: "Inactive", value: false },
+            { name: "Active", value: true },
+        ],
+        content: (item) => <BugPowerIcon disabled={!item.link_state} />,
+    },
+    {
+        title: "Enabled",
+        sortable: true,
+        noPadding: true,
+        field: "enabled",
+        content: (item) => <BugApiSwitch checked={item.enabled} />,
+    },
+    {
+        title: "Title",
+        sortable: true,
+        width: "12rem",
+        field: "title",
+        defaultSortDirection: "asc",
+        filterType: "text",
+        content: (item) => item.title,
+    },
+    {
+        title: "TX",
+        sortable: false,
+        width: "12rem",
+        field: "tx_bytes",
+        content: (item) => item.tx_bytes,
+    },
+    {
+        title: "RX",
+        sortable: false,
+        width: "12rem",
+        field: "rx_bytes",
+        content: (item) => item.rx_bytes,
+    },
+  ]}
+  defaultSortDirection="asc"
+  defaultSortIndex={0}
+  menuItems={[
+    {
+        title: "View Details",
+        icon: <SettingsInputComponentIcon fontSize="small" />,
+        onClick: handleMenuClicked,
+    },
+    {
+        title: "-",
+    },
+    {
+        title: "Enable",
+        disabled: (item) => !item.disabled,
+        icon: <ToggleOnIcon fontSize="small" />,
+        onClick: handleMenuClicked,
+    },
+    {
+        title: "Disable",
+        disabled: (item) => item.disabled,
+        icon: <ToggleOffIcon fontSize="small" />,
+        onClick: handleMenuClicked,
+    },
+    {
+        title: "-",
+    },
+    {
+        title: "Rename",
+        icon: <EditIcon fontSize="small" />,
+        onClick: handleMenuClicked,
+    },
+    {
+        title: "Comment",
+        icon: <CommentIcon fontSize="small" />,
+        onClick: handleMenuClicked,
+    },
+    {
+        title: "-",
+    },
+    {
+        title: "Protect",
+        disabled: (item) => item._protected && !item._allowunprotect,
+        icon: (item) => (item._protected ? <CheckIcon fontSize="small" /> : null),
+        onClick: handleMenuClicked,
+    },
+  ]}
+  apiUrl="/container/yourpanelid/endpoint/"
+  onRowClick={handleRowClick}
+  rowHeight="48px"
+/>`,
+        },
     },
 };

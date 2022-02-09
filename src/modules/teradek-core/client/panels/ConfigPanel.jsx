@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
@@ -27,7 +27,7 @@ export default function ConfigPanel() {
     });
 
     if (panelConfig.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (panelConfig.status !== "success") {
@@ -79,7 +79,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.username ? true : false}
+                        error={errors?.username}
                         defaultValue={panelConfig.data.username}
                         label="Email"
                     />
@@ -115,9 +115,8 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.password ? true : false}
+                        error={errors?.password}
                         defaultValue={panelConfig.data.password}
-                        type="password"
                         label="Password"
                     />
                 </Grid>
@@ -128,7 +127,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.organisation ? true : false}
+                        error={errors?.organisation}
                         defaultValue={panelConfig.data.organisation}
                         label="Teradek Core Organisation Name"
                     />

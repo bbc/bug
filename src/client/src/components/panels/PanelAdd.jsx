@@ -22,7 +22,6 @@ export default function PanelAdd(props) {
     const sendAlert = useAlert();
     const {
         control,
-        register,
         handleSubmit,
         formState: { errors },
     } = useForm({});
@@ -72,7 +71,6 @@ export default function PanelAdd(props) {
                                     fullWidth
                                     error={errors?.title}
                                     rules={{ required: true }}
-                                    type="text"
                                     label="Title"
                                 />
                             </Grid>
@@ -83,7 +81,6 @@ export default function PanelAdd(props) {
                                     control={control}
                                     fullWidth
                                     error={errors?.description}
-                                    type="text"
                                     label="Description"
                                 />
                             </Grid>

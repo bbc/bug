@@ -131,7 +131,6 @@ export default function SecurityStrategyOidc({ strategy, errors, control }) {
                         helperText="Which BUG user field to match against"
                         defaultValue={strategy.matchField}
                         items={{
-                            [""]: "None",
                             email: "Email Address",
                             username: "User name",
                             name: "Name",

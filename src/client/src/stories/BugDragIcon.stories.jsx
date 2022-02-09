@@ -1,4 +1,4 @@
-import BugDragIcon from "../core/BugDragIcon";
+import BugDragIcon from "@core/BugDragIcon";
 
 export default {
     title: "BUG Core/Icons/BugDragIcon",
@@ -14,7 +14,18 @@ export default {
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
-    argTypes: {},
+    argTypes: {
+        color: {
+            options: ["primary", "secondary"],
+            description: "The color type to display (primary, secondary)",
+            defaultValue: "primary",
+            control: { type: "select" },
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "primary" },
+            },
+        },
+    },
 };
 
 export const MyBugDragIcon = (args) => <BugDragIcon {...args} />;

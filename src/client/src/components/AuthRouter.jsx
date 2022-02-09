@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import PageLogin from "@components/pages/PageLogin";
 import PageRouter from "@components/pages/PageRouter";
 import PageReconnect from "@components/pages/PageReconnect";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const AuthRouter = (props) => {
@@ -12,7 +12,7 @@ const AuthRouter = (props) => {
 
     // strategies first. If they're not loaded then wait
     if (strategies.status !== "success") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     // if they're loaded and none enabled, then we're done
@@ -32,7 +32,7 @@ const AuthRouter = (props) => {
 
     // if we've got to here, then there must be a strategy enabled
     if (user.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (user.data && user.data.id !== null) {

@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import Grid from "@mui/material/Grid";
 import CodecVideo from "./CodecVideo";
 import CodecInput from "./CodecInput";
@@ -102,7 +102,7 @@ export default function Codec({ panelId }) {
     };
 
     if (!codecdata || Object.keys(codecdata).length === 0) {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return (

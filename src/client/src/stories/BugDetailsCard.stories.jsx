@@ -1,4 +1,4 @@
-import BugDetailsCard from "../core/BugDetailsCard";
+import BugDetailsCard from "@core/BugDetailsCard";
 
 export default {
     title: "BUG Core/Layout/BugDetailsCard",

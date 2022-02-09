@@ -8,11 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useAlert } from "@utils/Snackbar";
 import { usePanelStatus } from "@hooks/PanelStatus";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import BugToolbarIcon from "@core/BugToolbarIcon";
 
 export default function Toolbar(props) {
     let toolbarProps = { ...props };
@@ -59,5 +55,5 @@ export default function Toolbar(props) {
     toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = panelStatus.hasCritical ? null : menuItems();
 
-    return <BugToolbarWrapper {...toolbarProps} isClosed={false} />;
+    return <BugToolbarWrapper {...toolbarProps} />;
 }

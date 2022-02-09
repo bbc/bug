@@ -1,6 +1,6 @@
 import { useParams, useLocation } from "react-router-dom";
 import React from "react";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import { usePanelConfig } from "@data/PanelConfigHandler";
 import { Redirect } from "react-router";
@@ -28,7 +28,7 @@ export default function PagePanel(props) {
     // we memoize this as we don't care if the panelconfig has changed in here - just the status or id
     return React.useMemo(() => {
         if (panelConfig.status !== "success") {
-            return <Loading />;
+            return <BugLoading />;
         }
 
         console.log("WHY2 DOES THIS MAKE EVERYTHING BETTER?");

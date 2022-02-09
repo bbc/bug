@@ -17,7 +17,7 @@ export default function SecurityStrategyLocal({ strategy, errors, control }) {
                         rules={{ required: true }}
                         fullWidth
                         defaultValue={strategy.name}
-                        error={errors?.name ? true : false}
+                        error={errors?.name}
                         label="Name"
                     />
                 </Grid>

@@ -21,11 +21,7 @@ export default function PageSystemBackup() {
     const [loading, setLoading] = useState(false);
     const [filename, setFilename] = React.useState("");
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({});
+    const { register, handleSubmit } = useForm({});
 
     const onSubmit = async (form) => {
         const formData = new FormData();

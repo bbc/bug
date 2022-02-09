@@ -11,7 +11,7 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosDelete from "@utils/AxiosDelete";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import useAsyncEffect from "use-async-effect";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
@@ -80,7 +80,7 @@ export default function Lease({ panelId, leaseId }) {
     };
 
     if (lease === null) {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return (
@@ -106,7 +106,6 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors.address}
                                     defaultValue={lease.address}
-                                    type="text"
                                     label="Address"
                                 />
                             </Grid>
@@ -129,7 +128,6 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors.comment}
                                     defaultValue={lease.comment}
-                                    type="text"
                                     label="Comment"
                                 />
                             </Grid>
@@ -155,7 +153,6 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors["mac-address"]}
                                     defaultValue={lease["mac-address"]}
-                                    type="text"
                                     label="MAC Address"
                                 />
                             </Grid>

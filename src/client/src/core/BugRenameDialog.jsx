@@ -69,7 +69,6 @@ const BugRenameDialog = ({
                         }}
                         variant="standard"
                         placeholder={placeholder}
-                        type="text"
                         label={label}
                         onClick={(event) => {
                             event.stopPropagation();

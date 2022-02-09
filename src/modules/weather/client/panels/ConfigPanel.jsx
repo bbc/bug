@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
@@ -16,7 +16,7 @@ export default function ConfigPanel() {
     });
 
     if (panelConfig.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (panelConfig.status !== "success") {
@@ -33,7 +33,6 @@ export default function ConfigPanel() {
                     fullWidth
                     error={errors.title}
                     defaultValue={panelConfig.data.title}
-                    type="text"
                     label="Panel Title"
                 />
             </Grid>
@@ -44,7 +43,6 @@ export default function ConfigPanel() {
                     fullWidth
                     error={errors.description}
                     defaultValue={panelConfig.data.description}
-                    type="text"
                     label="Description"
                 />
             </Grid>
@@ -59,9 +57,8 @@ export default function ConfigPanel() {
                     control={control}
                     rules={{ required: true }}
                     fullWidth
-                    error={errors?.label ? true : false}
+                    error={errors?.label}
                     defaultValue={panelConfig.data.label}
-                    type="text"
                     label="Location Name"
                 />
             </Grid>
@@ -72,9 +69,8 @@ export default function ConfigPanel() {
                     control={control}
                     rules={{ required: true }}
                     fullWidth
-                    error={errors?.openweather_key ? true : false}
+                    error={errors?.openweather_key}
                     defaultValue={panelConfig.data.openweather_key}
-                    type="text"
                     label="OpenWeather API Key"
                 />
             </Grid>
@@ -104,7 +100,7 @@ export default function ConfigPanel() {
                     max={90}
                     numeric={true}
                     fullWidth
-                    error={errors?.longitude ? true : false}
+                    error={errors?.longitude}
                     defaultValue={panelConfig.data.longitude}
                     type="number"
                     label="Location Longitude"
@@ -133,7 +129,7 @@ export default function ConfigPanel() {
                     name="units"
                     control={control}
                     fullWidth
-                    error={errors?.units ? true : false}
+                    error={errors?.units}
                     defaultValue={panelConfig.data.units}
                     label="Units"
                     rules={{ required: true }}

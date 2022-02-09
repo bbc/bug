@@ -1,4 +1,4 @@
-import BugApiSwitch from "../core/BugApiSwitch";
+import BugApiSwitch from "@core/BugApiSwitch";
 
 export default {
     title: "BUG Core/API Controls/BugApiSwitch",

@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import AxiosGet from "@utils/AxiosGet";
 import BugDetailsCard from "@core/BugDetailsCard";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import TimeAgo from "javascript-time-ago";
 
 export default function PageSystemBackup() {
@@ -38,7 +38,7 @@ export default function PageSystemBackup() {
     }, [dispatch]);
 
     if (info.status === "loading" || info.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     const lastChecked = info.data?.updates.checkTime

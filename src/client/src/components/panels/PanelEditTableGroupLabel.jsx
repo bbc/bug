@@ -1,5 +1,5 @@
 import React from "react";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import BugDragIcon from "@core/BugDragIcon";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import BugTextField from "@core/BugTextField";
@@ -38,8 +38,8 @@ export default function PanelEditTableGroupLabel({ group, onChange, placeholder,
                 backgroundColor: "#212121",
             }}
         >
-            <TableCell sx={{ color: "#ccc", textAlign: "center" }}>
-                <DragIndicatorIcon />
+            <TableCell sx={{ textAlign: "center" }}>
+                <BugDragIcon />
             </TableCell>
             <TableCell colSpan={6}>
                 <BugTextField

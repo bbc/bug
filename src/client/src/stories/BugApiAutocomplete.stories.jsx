@@ -1,4 +1,4 @@
-import BugApiAutocomplete from "../core/BugApiAutocomplete";
+import BugApiAutocomplete from "@core/BugApiAutocomplete";
 import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
 
 export default {

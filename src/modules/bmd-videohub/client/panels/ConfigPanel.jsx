@@ -4,7 +4,7 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigWrapper from "@core/BugConfigWrapper";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
@@ -13,7 +13,7 @@ export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     if (panelConfig.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (panelConfig.status !== "success") {

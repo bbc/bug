@@ -2,7 +2,7 @@ import React from "react";
 import Device from "../components/Device";
 import { useParams } from "react-router-dom";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import BugNoData from "@core/BugNoData";
 
@@ -14,7 +14,7 @@ export default function MainPanel({ panelId }) {
     });
 
     if (deviceList.status !== "success") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (!deviceList.data) {

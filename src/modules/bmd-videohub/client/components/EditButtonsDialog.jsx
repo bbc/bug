@@ -221,6 +221,8 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                                         </ListItemIcon>
                                         <Box
                                             sx={{
+                                                fontSize: "17px",
+                                                marginTop: "1px",
                                                 paddingRight: "8px",
                                                 fontWeight: 900,
                                                 opacity: 0.3,

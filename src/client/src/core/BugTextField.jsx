@@ -2,15 +2,16 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 
 const BugTextField = ({
-    min = null,
-    max = null,
-    filter,
-    onChange,
-    numeric = false,
-    maxLength,
-    variant = "outlined",
-    fullWidth = true,
     disabled = false,
+    filter,
+    fullWidth = true,
+    helperText,
+    max = null,
+    maxLength,
+    min = null,
+    numeric = false,
+    onChange,
+    variant = "outlined",
     ...props
 }) => {
     const handleChange = (event) => {
@@ -67,6 +68,7 @@ const BugTextField = ({
             fullWidth={fullWidth}
             variant={variant}
             disabled={disabled}
+            helperText={helperText}
             {...props}
             inputProps={{ maxLength: maxLength }}
             onChange={handleChange}

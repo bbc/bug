@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
@@ -56,7 +56,7 @@ const HomeTiles = () => {
 
     return React.useMemo(() => {
         if (panelList.status === "loading") {
-            return <Loading />;
+            return <BugLoading />;
         }
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);

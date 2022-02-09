@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import BugStatusBlock from "@core/BugStatusBlock";
 
-export default function BugStatusBlockContainer({ statusItems, minWidth = 700 }) {
+export default function BugStatusBlockContainer({ items }) {
     return (
         <Box
             sx={{
@@ -15,8 +15,8 @@ export default function BugStatusBlockContainer({ statusItems, minWidth = 700 })
                     marginBottom: "8px",
                 }}
             >
-                {statusItems &&
-                    statusItems.map((statusItem, index) => (
+                {items &&
+                    items.map((statusItem, index) => (
                         <BugStatusBlock
                             label={statusItem.label}
                             state={statusItem.state}

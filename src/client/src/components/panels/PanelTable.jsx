@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import PanelTableRow from "@components/panels/PanelTableRow";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import PanelTableGroupRow from "./PanelTableGroupRow";
 import panelListGroups from "@utils/panelListGroups";
@@ -27,7 +27,7 @@ export default function PanelTable() {
     };
 
     if (panelList.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
     if (panelList.status === "success") {
         const panelsByGroup = panelListGroups(panelList.data, false);
