@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import { useApiPoller } from "@hooks/ApiPoller";
@@ -88,7 +88,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
 
     const renderSources = () => {
         if (sourceButtons.status === "loading" || sourceButtons.status === "idle" || !sourceButtons.data) {
-            return <Loading />;
+            return <BugLoading />;
         }
 
         let destinationLocked = false;
@@ -159,7 +159,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
             destinationButtons.status === "idle" ||
             !destinationButtons.data
         ) {
-            return <Loading />;
+            return <BugLoading />;
         }
 
         return (

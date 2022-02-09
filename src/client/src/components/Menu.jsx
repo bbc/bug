@@ -10,7 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BugDynamicIcon from "@core/BugDynamicIcon";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import BugMenuIcon from "@components/BugMenuIcon";
 import UserMenuItem from "@components/users/UserMenuItem";
 import BadgeWrapper from "@components/BadgeWrapper";
@@ -167,7 +167,7 @@ const Menu = ({ showGroups = true }) => {
 
     const renderPanelMenuItems = () => {
         if (panelList.status === "loading") {
-            return <Loading />;
+            return <BugLoading />;
         }
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);

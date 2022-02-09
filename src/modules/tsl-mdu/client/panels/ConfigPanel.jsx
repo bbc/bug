@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
@@ -13,7 +13,7 @@ export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     if (panelConfig.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (panelConfig.status !== "success") {

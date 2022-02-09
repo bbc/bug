@@ -7,7 +7,7 @@ import AxiosPut from "@utils/AxiosPut";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import settingsSlice from "@redux/settingsSlice";
 import { useAlert } from "@utils/Snackbar";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import BugForm from "@core/BugForm";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
@@ -62,7 +62,7 @@ export default function PageSystemBackup() {
     };
 
     if (settings.status === "loading" || settings.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return (

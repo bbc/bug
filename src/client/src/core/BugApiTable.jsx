@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import BugItemMenu from "@components/BugItemMenu";
 import { useApiPoller } from "@hooks/ApiPoller";
 import TableSortLabel from "@mui/material/TableSortLabel";
@@ -105,7 +105,7 @@ export default function BugApiTable({
     };
 
     if (pollData.status === "loading" || pollData.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (pollData?.data?.length === 0) {

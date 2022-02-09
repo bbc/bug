@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useApiPoller } from "@hooks/ApiPoller";
 import BugStatusBlockContainer from "@core/BugStatusBlockContainer";
 
@@ -10,7 +10,7 @@ export default function CodecStatus({ panelId }) {
     });
 
     if (codecstatus.status === "loading" || codecstatus.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return <BugStatusBlockContainer items={codecstatus.data} />;

@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useAlert } from "@utils/Snackbar";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
 import SourceSelector from "./SourceSelector";

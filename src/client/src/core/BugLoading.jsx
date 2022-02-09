@@ -2,7 +2,7 @@ import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 
-export default function Loading({ height = "100vh" }) {
+export default function BugLoading({ height = "100vh" }) {
     return (
         <Grid
             container

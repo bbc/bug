@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import FeedCard from "./../components/FeedCard";
 import Grid from "@mui/material/Grid";
 
@@ -28,7 +28,7 @@ export default function MainPanel() {
     };
 
     if (items.status === "loading" || items.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return (

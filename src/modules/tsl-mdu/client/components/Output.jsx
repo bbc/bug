@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useApiPoller } from "@hooks/ApiPoller";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import OutputTabDetails from "./OutputTabDetails";

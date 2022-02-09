@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import PanelBuilding from "@components/panels/PanelBuilding";
 import PanelStopped from "@components/panels/PanelStopped";
 import PanelRestarting from "@components/panels/PanelRestarting";
@@ -39,7 +39,7 @@ export default function BugModuleWrapper({ panelId, children }) {
     }
 
     if (panel.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     // check protected routes

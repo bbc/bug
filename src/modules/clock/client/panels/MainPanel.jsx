@@ -39,7 +39,7 @@ export default function MainPanel() {
     };
 
     if (panelConfig.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (panelConfig.status !== "success") {

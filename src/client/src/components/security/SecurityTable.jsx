@@ -7,14 +7,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import SecurityTableRow from "@components/security/SecurityTableRow";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 
 export default function SecurityTable() {
     const strategies = useSelector((state) => state.strategies);
 
     if (strategies.status === "loading" || strategies.status === "idle") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return (

@@ -7,7 +7,7 @@ export default function MainPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     if (panelConfig.status === "loading") {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (panelConfig.status !== "success") {

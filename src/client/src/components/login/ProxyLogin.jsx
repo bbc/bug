@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
 import TextField from "@mui/material/TextField";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 
 export default function LocalLogin({ handleLogin }) {
     const { handleSubmit } = useForm({});
@@ -21,7 +21,7 @@ export default function LocalLogin({ handleLogin }) {
     };
 
     if (user === false) {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     return (

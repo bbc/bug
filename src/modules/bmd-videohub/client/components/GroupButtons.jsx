@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Loading from "@components/Loading";
+import BugLoading from "@core/BugLoading";
 import { useAlert } from "@utils/Snackbar";
 import GroupButton from "./GroupButton";
 import AddGroupButton from "./AddGroupButton";
@@ -131,7 +131,7 @@ export default function GroupButtons({ panelId, editMode = false, groupType, but
     };
 
     if (!localButtons) {
-        return <Loading />;
+        return <BugLoading />;
     }
 
     if (editMode) {
