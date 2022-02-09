@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
@@ -35,7 +36,6 @@ export default function ConfigPanel() {
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
-                        type="text"
                         label="Panel Title"
                     />
                 </Grid>
@@ -46,7 +46,6 @@ export default function ConfigPanel() {
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
-                        type="text"
                         label="Description"
                     />
                 </Grid>
@@ -65,7 +64,6 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.address}
                         supportsValidation
                         onChange={(event) => validateServer(event, "address")}
-                        type="text"
                         label="IP Address or FQDN"
                     />
                 </Grid>
@@ -81,13 +79,12 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.username}
                         supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "password"])}
-                        type="text"
                         label="SSH Username"
                     />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <BugConfigFormTextField
+                    <BugConfigFormPasswordTextField
                         name="password"
                         control={control}
                         rules={{ required: true }}
@@ -97,7 +94,6 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.password}
                         supportsValidation
                         onChange={(event) => validateServer(event, "password", ["address", "username"])}
-                        type="password"
                         label="SSH Password"
                     />
                 </Grid>
@@ -113,7 +109,6 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.snmpCommunity}
                         supportsValidation
                         onChange={(event) => validateServer(event, "snmpCommunity", ["address"])}
-                        type="text"
                         label="SNMP Community String"
                     />
                 </Grid>

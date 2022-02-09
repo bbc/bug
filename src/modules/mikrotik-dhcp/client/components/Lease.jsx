@@ -106,7 +106,6 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors.address}
                                     defaultValue={lease.address}
-                                    type="text"
                                     label="Address"
                                 />
                             </Grid>
@@ -129,7 +128,6 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors.comment}
                                     defaultValue={lease.comment}
-                                    type="text"
                                     label="Comment"
                                 />
                             </Grid>
@@ -155,7 +153,6 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors["mac-address"]}
                                     defaultValue={lease["mac-address"]}
-                                    type="text"
                                     label="MAC Address"
                                 />
                             </Grid>

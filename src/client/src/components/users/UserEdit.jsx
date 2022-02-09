@@ -127,7 +127,6 @@ export default function UserEdit({ userId = null }) {
                                         variant="standard"
                                         defaultValue={user.name}
                                         error={errors?.name}
-                                        type="text"
                                         label="Name"
                                     />
                                 </Grid>
@@ -141,7 +140,6 @@ export default function UserEdit({ userId = null }) {
                                         variant="standard"
                                         defaultValue={user.username}
                                         error={errors?.username}
-                                        type="text"
                                         label="Username"
                                     />
                                 </Grid>
@@ -215,6 +213,7 @@ export default function UserEdit({ userId = null }) {
                                 <Grid item xs={12}>
                                     <BugConfigFormPasswordTextField
                                         name="pin"
+                                        variant="outlined"
                                         control={control}
                                         fullWidth
                                         defaultValue={user.pin}

@@ -117,7 +117,6 @@ export default function ConfigPanel() {
                         fullWidth
                         error={errors?.password}
                         defaultValue={panelConfig.data.password}
-                        type="password"
                         label="Password"
                     />
                 </Grid>

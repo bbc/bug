@@ -120,7 +120,6 @@ export default function Lease({ panelId, leaseId }) {
                                     rules={{ required: true }}
                                     fullWidth
                                     error={errors.address}
-                                    type="text"
                                     label="Address"
                                 />
                             </Grid>
@@ -130,7 +129,6 @@ export default function Lease({ panelId, leaseId }) {
                                     control={control}
                                     fullWidth
                                     error={errors.comment}
-                                    type="text"
                                     label="Comment"
                                 />
                             </Grid>
@@ -142,7 +140,6 @@ export default function Lease({ panelId, leaseId }) {
                                     fullWidth
                                     error={errors["mac-address"]}
                                     defaultValue="02:00:00:00:00:00"
-                                    type="text"
                                     label="MAC Address"
                                 />
                             </Grid>

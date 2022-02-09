@@ -13,7 +13,7 @@ const BugConfigFormPasswordTextField = ({
     error,
     helperText,
     supportsValidation = false,
-    variant = "outlined",
+    variant = "standard",
     allowShowPassword = true,
     type = "text",
     ...props

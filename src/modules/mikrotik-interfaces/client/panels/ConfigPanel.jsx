@@ -36,7 +36,6 @@ export default function ConfigPanel() {
                         fullWidth
                         error={errors.title}
                         defaultValue={panelConfig.data.title}
-                        type="text"
                         label="Panel Title"
                     />
                 </Grid>
@@ -47,7 +46,6 @@ export default function ConfigPanel() {
                         fullWidth
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
-                        type="text"
                         label="Description"
                     />
                 </Grid>
@@ -67,7 +65,6 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.address}
                         supportsValidation
                         onChange={(event) => validateServer(event, "address")}
-                        type="text"
                         label="IP Address"
                     />
                 </Grid>
@@ -83,7 +80,6 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.username}
                         supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "password"])}
-                        type="text"
                         label="Username"
                     />
                 </Grid>
@@ -99,7 +95,6 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.password}
                         supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "username"])}
-                        type="password"
                         label="Password"
                     />
                 </Grid>
