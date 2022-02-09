@@ -2,11 +2,11 @@ import React from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { useSortable } from "@dnd-kit/sortable";
 import Box from "@mui/material/Box";
+import BugDragIcon from "@core/BugDragIcon";
 
 export default function EditButtonsDragItem({ button, onRemove }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: `button:${button.index}` });
@@ -41,17 +41,17 @@ export default function EditButtonsDragItem({ button, onRemove }) {
         >
             <ListItemIcon
                 sx={{
-                    opacity: 0.6,
-                    color: "primary.main",
                     minWidth: "32px",
                     padding: "4px",
                 }}
             >
-                <DragIndicatorIcon fontSize="small" />
+                <BugDragIcon />
             </ListItemIcon>
             <Box
                 sx={{
                     paddingRight: "8px",
+                    fontSize: "17px",
+                    marginTop: "1px",
                     fontWeight: 900,
                     opacity: 0.3,
                 }}

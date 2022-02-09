@@ -1,5 +1,5 @@
 import React from "react";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import BugDragIcon from "@core/BugDragIcon";
 import BugApiSwitch from "@core/BugApiSwitch";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import TableCell from "@mui/material/TableCell";
@@ -38,8 +38,8 @@ export default function PanelEditTableRow({ id, panel }) {
             key={id}
             sx={{ height: "65px", cursor: "move", backgroundColor: "#262626" }}
         >
-            <TableCell sx={{ color: "#ccc", textAlign: "center" }}>
-                <DragIndicatorIcon />
+            <TableCell sx={{ textAlign: "center" }}>
+                <BugDragIcon />
             </TableCell>
 
             <TableCell
