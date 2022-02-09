@@ -11,7 +11,7 @@ export default {
             description: {
                 component: `This is a form control, designed to work within a BugForm.<br/>
                 BugForm uses react-hook-form to manage the form state. See https://react-hook-form.com/ for more info.<br />
-                An autocomplete dropdown to display multiple items.<br />
+                Similar in UI design to Autocomplete, but allows free entry of new items.<br />
                 Can be used with a simple array of strings, or with a custom object with an id and label properties.`,
             },
         },

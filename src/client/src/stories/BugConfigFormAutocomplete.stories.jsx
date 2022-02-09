@@ -2,7 +2,6 @@ import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
-import { action } from "@storybook/addon-actions";
 
 export default {
     title: "BUG Core/Forms/BugConfigFormAutocomplete",
@@ -13,6 +12,7 @@ export default {
                 component: `This is a form control, designed to work within a BugForm.<br/>
                 BugForm uses react-hook-form to manage the form state. See https://react-hook-form.com/ for more info.<br />
                 An autocomplete dropdown to display multiple items.<br />
+                Similar in UI design to ChipInput, values can only be selected (and searched) from the dropdown list.<br />
                 Can be used with a simple array of strings, or with a custom object with an id and label properties.`,
             },
         },
