@@ -79,7 +79,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.username ? true : false}
+                        error={errors?.username}
                         defaultValue={panelConfig.data.username}
                         label="Email"
                     />
@@ -115,7 +115,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.password ? true : false}
+                        error={errors?.password}
                         defaultValue={panelConfig.data.password}
                         type="password"
                         label="Password"
@@ -128,7 +128,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.organisation ? true : false}
+                        error={errors?.organisation}
                         defaultValue={panelConfig.data.organisation}
                         label="Teradek Core Organisation Name"
                     />

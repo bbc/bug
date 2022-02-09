@@ -36,7 +36,7 @@ export default function LocalLogin({ handleLogin }) {
                             name="username"
                             control={control}
                             fullWidth
-                            error={errors?.username ? true : false}
+                            error={errors?.username}
                             variant="outlined"
                             label="Username"
                         />

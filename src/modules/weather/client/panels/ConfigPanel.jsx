@@ -59,7 +59,7 @@ export default function ConfigPanel() {
                     control={control}
                     rules={{ required: true }}
                     fullWidth
-                    error={errors?.label ? true : false}
+                    error={errors?.label}
                     defaultValue={panelConfig.data.label}
                     type="text"
                     label="Location Name"
@@ -72,7 +72,7 @@ export default function ConfigPanel() {
                     control={control}
                     rules={{ required: true }}
                     fullWidth
-                    error={errors?.openweather_key ? true : false}
+                    error={errors?.openweather_key}
                     defaultValue={panelConfig.data.openweather_key}
                     type="text"
                     label="OpenWeather API Key"
@@ -104,7 +104,7 @@ export default function ConfigPanel() {
                     max={90}
                     numeric={true}
                     fullWidth
-                    error={errors?.longitude ? true : false}
+                    error={errors?.longitude}
                     defaultValue={panelConfig.data.longitude}
                     type="number"
                     label="Location Longitude"
@@ -133,7 +133,7 @@ export default function ConfigPanel() {
                     name="units"
                     control={control}
                     fullWidth
-                    error={errors?.units ? true : false}
+                    error={errors?.units}
                     defaultValue={panelConfig.data.units}
                     label="Units"
                     rules={{ required: true }}

@@ -218,7 +218,7 @@ export default function UserEdit({ userId = null }) {
                                         control={control}
                                         fullWidth
                                         defaultValue={user.pin}
-                                        error={errors?.pin ? true : false}
+                                        error={errors?.pin}
                                         label="PIN (optional)"
                                         helperText="Only used if the 'PIN' security type is enabled - be aware that it's relatively insecure"
                                     />

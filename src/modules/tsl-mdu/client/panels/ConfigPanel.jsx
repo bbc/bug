@@ -55,7 +55,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.address ? true : false}
+                        error={errors?.address}
                         defaultValue={panelConfig.data.address}
                         label="IP Address"
                     />
@@ -67,7 +67,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.username ? true : false}
+                        error={errors?.username}
                         defaultValue={panelConfig.data.username}
                         label="Web Interface Username"
                     />
@@ -79,7 +79,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors?.password ? true : false}
+                        error={errors?.password}
                         defaultValue={panelConfig.data.password}
                         label="Web Interface Password"
                     />
