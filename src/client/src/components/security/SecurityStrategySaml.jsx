@@ -136,7 +136,6 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                         helperText="Which BUG user field to match against"
                         defaultValue={strategy.matchField}
                         items={{
-                            [""]: "None",
                             email: "Email Address",
                             username: "User name",
                             name: "Name",

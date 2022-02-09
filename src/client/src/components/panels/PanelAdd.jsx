@@ -22,7 +22,6 @@ export default function PanelAdd(props) {
     const sendAlert = useAlert();
     const {
         control,
-        register,
         handleSubmit,
         formState: { errors },
     } = useForm({});

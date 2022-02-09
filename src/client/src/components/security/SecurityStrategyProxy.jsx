@@ -98,7 +98,6 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                         helperText="Which BUG user field to match against"
                         defaultValue={strategy.headerFieldMatch}
                         items={{
-                            [""]: "None",
                             email: "Email Address",
                             username: "User name",
                             name: "Name",

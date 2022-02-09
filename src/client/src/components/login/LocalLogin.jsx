@@ -1,5 +1,4 @@
 import React from "react";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
@@ -9,7 +8,6 @@ import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField
 
 export default function LocalLogin({ handleLogin }) {
     const {
-        register,
         handleSubmit,
         control,
         formState: { errors },

@@ -26,7 +26,6 @@ export default function UserEdit({ userId = null }) {
     const [user, setUser] = React.useState(null);
     const {
         control,
-        register,
         handleSubmit,
         formState: { errors },
     } = useForm({});
