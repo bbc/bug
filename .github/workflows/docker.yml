@@ -72,6 +72,3 @@ jobs:
                       uk.co.bbc.bug.build.number='${{github.run_number}}'
                       uk.co.bbc.bug.build.branch='${{github.ref_name}}'
                       uk.co.bbc.bug.build.commit='${{github.github_sha}}'
-            - name: Inspect
-              run: |
-                  docker buildx imagetools inspect ${{env.regsitry}}/bug/app:latest
