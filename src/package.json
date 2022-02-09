@@ -9,7 +9,7 @@
     "scripts": {
         "production": "node bin/bug-prod",
         "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
-        "test": "jest --forceExit --detectOpenHandles --maxWorkers=1"
+        "test": "jest --forceExit --env=jsdom --detectOpenHandles --maxWorkers=1"
     },
     "nodemonConfig": {
         "ignore": [
