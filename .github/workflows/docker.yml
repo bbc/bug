@@ -67,8 +67,8 @@ jobs:
                   labels: |
                       version='${{steps.backend-version.outputs.current-version}}'
                       uk.co.bbc.bug.build.number='${{github.run_number}}'
-                      uk.co.bbc.bug.build.branch='${{GITHUB_REF}}'
-                      uk.co.bbc.bug.build.commit='${{GITHUB_SHA}}'
+                      uk.co.bbc.bug.build.branch='${{env.GITHUB_REF_NAME}}'
+                      uk.co.bbc.bug.build.commit='${{env.GITHUB_SHA}}'
             - name: Inspect
               run: |
                   docker buildx imagetools inspect ${{env.regsitry}}/bug/app:latest
