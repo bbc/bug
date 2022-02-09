@@ -20,7 +20,7 @@ jobs:
         runs-on: self-hosted
         strategy:
             matrix:
-                node-version: [14.x]
+                node-version: [10.x, 12.x, 14.x]
         defaults:
             run:
                 working-directory: ./src

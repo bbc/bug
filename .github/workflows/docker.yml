@@ -46,9 +46,6 @@ jobs:
             - name: Set up Docker Buildx
               id: buildx
               uses: docker/setup-buildx-action@v1
-              with:
-                  buildkitd-flags: --debug
-                  driver-opts: network=host
             - name: List available platforms
               run: echo ${{ steps.buildx.outputs.platforms }}
             #Docker Registry Login
@@ -65,6 +62,7 @@ jobs:
                   context: "./src"
                   dockerfile: ./src/Dockerfile
                   platforms: ${{ matrix.architecture}}
+                  outputs: type=registry
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: ${{env.regsitry}}/bug/app:latest,${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
             - name: Inspect
