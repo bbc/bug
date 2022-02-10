@@ -6,7 +6,7 @@ on:
             - main
 
 jobs:
-    version:
+    backend-version:
         runs-on: self-hosted
         steps:
             - name: "Automated Version Bump"
@@ -15,7 +15,22 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: "src"
               with:
-                  commit-message: "CI: bumps version to {{version}} [skip ci]"
+                  commit-message: "CI: bumps backend version to {{version}}"
+                  target-branch: "main"
+                  minor-wording: "add,Adds,new"
+                  major-wording: "major,Major,breaking"
+                  rc-wording: "RELEASE,alpha"
+                  tag-prefix: "v"
+    frontend-version:
+        runs-on: self-hosted
+        steps:
+            - name: "Automated Version Bump"
+              uses: "phips28/gh-action-bump-version@master"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PACKAGEJSON_DIR: "src/client"
+              with:
+                  commit-message: "CI: bumps frontend version to {{version}}"
                   target-branch: "main"
                   minor-wording: "add,Adds,new"
                   major-wording: "major,Major,breaking"
