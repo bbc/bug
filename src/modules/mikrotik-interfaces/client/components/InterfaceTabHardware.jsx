@@ -12,7 +12,7 @@ export default function InterfaceTabHardware({ panelId, interfaceName }) {
     });
 
     if (iface.status === "idle" || iface.status === "loading") {
-        return <Loading height="30vh" />;
+        return <BugLoading height="30vh" />;
     }
     if (iface.status === "success" && !iface.data) {
         return <BugNoData title="Interface not found" showConfigButton={false} />;

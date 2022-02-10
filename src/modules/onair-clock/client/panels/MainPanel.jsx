@@ -30,7 +30,7 @@ export default function MainPanel() {
     const { renameDialog } = useBugRenameDialog();
 
     if (panelConfig.status === "idle" || panelConfig.status === "loading") {
-        return <Loading height="30vh" />;
+        return <BugLoading height="30vh" />;
     }
     if (panelConfig.status !== "success" || !panelConfig.data || !panelConfig.data) {
         return <BugNoData panelId={panelId} title="No device information found" showConfigButton={false} />;
