@@ -65,7 +65,9 @@ jobs:
                   context: "./src"
                   platforms: ${{ matrix.architecture}}
                   push: ${{ github.event_name != 'pull_request' }}
-                  tags: ${{env.regsitry}}/bug/app:latest
+                  tags: |
+                      ${{env.regsitry}}/bug/app:latest
+                      ${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
                   outputs: type=registry,registry.insecure=true
                   labels: |
                       version='${{steps.backend-version.outputs.current-version}}'
