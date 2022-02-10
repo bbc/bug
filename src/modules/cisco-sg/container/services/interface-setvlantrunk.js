@@ -94,6 +94,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": vlanArray } }
         );
         console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+        return true;
     }
     console.log(`interface-setvlantrunk: failed to set vlan ${untaggedVlan} on interface ${interfaceId}`);
     return false;
