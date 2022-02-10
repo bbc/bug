@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Connecting Panels
+title: Docker
 parent: Development
 nav_order: 10
 ---
@@ -11,15 +11,11 @@ BUG's main application runs in a docker container, it speaks to a seperate datab
 
 Below we've gathered a few helpful terminal commands that'll help you work with the docker cli and debug inside a panel's container.
 
-### Detaching from the Terminal
-
-Using the flag `-d` with docker-compose detaches the container output stream from the terminal
-
-### Checking BUG status
+## Checking BUG status
 
 Verify your containers are running using the `docker ps` command.
 
-### Check individual container outputs
+## Check individual container outputs
 
 To look at the logs (terminal) of the core container use;
 
@@ -27,8 +23,12 @@ To look at the logs (terminal) of the core container use;
 
 Where `bbcnew-bug_app` is the name of the container that can be seen from `docker ps`. You could also add a panel id here to view a panel's terminal output
 
-### Stop BUG
+## Stop BUG
 
 To stop the bug, all it's services and containers use;
 
 `docker compose down --remove-orphans`
+
+## Detaching from the Terminal
+
+Using the flag `-d` with docker-compose detaches the container output stream from the terminal
