@@ -7,6 +7,7 @@ import { BugCustomDialogProvider } from "@core/BugCustomDialog";
 import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
 import { BugRenameDialogProvider } from "@core/BugRenameDialog";
 import { MemoryRouter as Router } from "react-router";
+import { themes } from "@storybook/theming";
 
 export const decorators = [
     (Story) => (
@@ -71,4 +72,7 @@ export const parameters = {
         },
     },
     controls: { expanded: true },
+    docs: {
+        theme: themes.dark,
+    },
 };

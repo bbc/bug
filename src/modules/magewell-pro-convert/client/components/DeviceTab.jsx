@@ -48,7 +48,7 @@ export default function DeviceTab({ panelId }) {
     };
 
     if (device.status === "idle" || device.status === "loading") {
-        return <Loading height="30vh" />;
+        return <BugLoading height="30vh" />;
     }
     if (device.status !== "success" || !device.data || !history.data) {
         return <BugNoData panelId={panelId} title="No device information found" showConfigButton={false} />;

@@ -26,7 +26,7 @@ export default function Output({ panelId, outputNumber }) {
     console.log(system);
 
     if (output.status === "idle" || output.status === "loading") {
-        return <Loading height="30vh" />;
+        return <BugLoading height="30vh" />;
     }
     if (output.status === "success" && !output.data) {
         return <>Output does not exist </>;

@@ -39,6 +39,9 @@ src/routes/logs
 /src/client/build/*
 !/src/client/build/.gitkeep
 
+# Storybook
+src/client/storybook-static
+
 # misc
 ._*
 .DS_Store
