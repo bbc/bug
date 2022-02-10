@@ -20,12 +20,13 @@ jobs:
         runs-on: self-hosted
         strategy:
             matrix:
-                node-version: [14.x]
+                node-version: [10, 12, 14]
         defaults:
             run:
                 working-directory: ./src
         steps:
             - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
               name: Backend Install & Test using Node.js ${{ matrix.node-version }}
               with:
                   node-version: ${{ matrix.node-version }}
