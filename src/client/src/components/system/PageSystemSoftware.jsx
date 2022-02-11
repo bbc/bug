@@ -20,6 +20,27 @@ export default function PageSystemBackup() {
         interval: 5000,
     });
 
+    const getButton = () => {
+        if (info.data?.updates.newVersion) {
+            return (
+                <Button onClick={onUpdate} underline="none" variant="outlined" color="primary" disableElevation>
+                    Update BUG
+                </Button>
+            );
+        }
+
+        return (
+            <Button onClick={onCheckUpdate} underline="none" variant="outlined" color="primary" disableElevation>
+                Check for Updates
+            </Button>
+        );
+    };
+
+    const onUpdate = async () => {
+        const response = await AxiosGet(`/api/system/update`);
+        sendAlert(`Updating BUG to version ${info.data.updates.version}`, { variant: "success" });
+    };
+
     const onCheckUpdate = async () => {
         const response = await AxiosGet(`/api/system/updatecheck`);
         if (response?.newVersion) {
@@ -76,19 +97,7 @@ export default function PageSystemBackup() {
                             },
                             {
                                 name: "",
-                                value: (
-                                    <>
-                                        <Button
-                                            onClick={onCheckUpdate}
-                                            underline="none"
-                                            variant="outlined"
-                                            color="primary"
-                                            disableElevation
-                                        >
-                                            Check for Updates
-                                        </Button>
-                                    </>
-                                ),
+                                value: getButton(),
                             },
                         ]}
                     />
