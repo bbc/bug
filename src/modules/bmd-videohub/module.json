@@ -2,24 +2,15 @@
     "name": "bmd-videohub",
     "longname": "Blackmagic Videohub",
     "description": "Control and monitor Blackmagic videohub devices",
-    "capabilities": [
-        "video-router"
-    ],
+    "capabilities": ["video-router"],
     "notes": "",
     "version": "1.2.0",
     "icon": "mdi-matrix",
     "author": "Geoff House",
     "license": "ISC",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "utils",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "utils", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,
@@ -31,7 +22,7 @@
         "enabled": false,
         "address": "",
         "port": "9990",
-        "useTake": true,
+        "useTake": false,
         "sourceGroups": [],
         "destinationGroups": [],
         "sourceIconColors": [],
