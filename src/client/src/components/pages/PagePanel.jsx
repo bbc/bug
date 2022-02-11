@@ -31,9 +31,6 @@ export default function PagePanel(props) {
             return <BugLoading />;
         }
 
-        console.log("WHY2 DOES THIS MAKE EVERYTHING BETTER?");
-        // I have literally no idea why it does. It makes me so cross!
-
         if (Modules["modules"][moduleName]) {
             const Module = Modules["modules"][moduleName]["client"]["Module"];
             // we only include pathname here to trigger a re-render if the URL changes
