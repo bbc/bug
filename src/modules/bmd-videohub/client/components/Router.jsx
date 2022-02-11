@@ -75,14 +75,41 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
     };
 
-    const scrollableGroupButtonsIfEditing = (props) => {
+    const scrollableGroupButtons = (props) => {
+        if (props?.buttons?.data?.groups?.length === 0 && !editMode) {
+            return false;
+        }
         if (editMode) {
-            return <GroupButtons {...props} />;
+            return (
+                <Box
+                    sx={{
+                        width: "100%",
+                        padding: "8px 8px 0px 8px",
+                        "@media (max-width:800px)": {
+                            padding: "4px 4px 0px 4px",
+                        },
+                    }}
+                >
+                    <GroupButtons {...props} />
+                </Box>
+            );
         }
         return (
-            <BugScrollbars>
-                <GroupButtons {...props} />;
-            </BugScrollbars>
+            <Box
+                sx={{
+                    height: "72px",
+                    width: "100%",
+                    padding: "8px 8px 0px 8px",
+                    "@media (max-width:800px)": {
+                        padding: "4px 4px 0px 4px",
+                        height: "54px",
+                    },
+                }}
+            >
+                <BugScrollbars>
+                    <GroupButtons {...props} />
+                </BugScrollbars>
+            </Box>
         );
     };
 
@@ -109,26 +136,15 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 }}
             >
                 <SectionHeader>Sources</SectionHeader>
-                <Box
-                    sx={{
-                        height: editMode ? "auto" : "72px",
-                        width: "100%",
-                        padding: "8px 8px 0px 8px",
-                        "@media (max-width:800px)": {
-                            padding: "4px 4px 0px 4px",
-                            height: editMode ? "auto" : "54px",
-                        },
-                    }}
-                >
-                    {scrollableGroupButtonsIfEditing({
-                        panelId: panelId,
-                        editMode: editMode,
-                        groupType: "source",
-                        selectedDestination: selectedDestination,
-                        buttons: sourceButtons,
-                        onChange: () => setSourceForceRefreshHash(sourceForceRefreshHash + 1),
-                    })}
-                </Box>
+
+                {scrollableGroupButtons({
+                    panelId: panelId,
+                    editMode: editMode,
+                    groupType: "source",
+                    selectedDestination: selectedDestination,
+                    buttons: sourceButtons,
+                    onChange: () => setSourceForceRefreshHash(sourceForceRefreshHash + 1),
+                })}
                 <Box
                     sx={{
                         width: "100%",
@@ -172,25 +188,13 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 }}
             >
                 <SectionHeader>Destinations</SectionHeader>
-                <Box
-                    sx={{
-                        height: editMode ? "auto" : "72px",
-                        width: "100%",
-                        padding: "8px 8px 0px 8px",
-                        "@media (max-width:800px)": {
-                            padding: "4px 4px 0px 4px",
-                            height: editMode ? "auto" : "54px",
-                        },
-                    }}
-                >
-                    {scrollableGroupButtonsIfEditing({
-                        panelId: panelId,
-                        editMode: editMode,
-                        groupType: "destination",
-                        buttons: destinationButtons,
-                        onChange: () => setSourceForceRefreshHash(destinationForceRefreshHash + 1),
-                    })}
-                </Box>
+                {scrollableGroupButtons({
+                    panelId: panelId,
+                    editMode: editMode,
+                    groupType: "destination",
+                    buttons: destinationButtons,
+                    onChange: () => setSourceForceRefreshHash(destinationForceRefreshHash + 1),
+                })}
                 <Box
                     sx={{
                         width: "100%",

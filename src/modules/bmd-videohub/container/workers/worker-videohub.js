@@ -85,6 +85,7 @@ const main = async () => {
         "OUTPUT LABELS",
         "VIDEO OUTPUT LOCKS",
         "VIDEO OUTPUT ROUTING",
+        "ALARM STATUS",
     ];
     while (true) {
         // poll occasionally
