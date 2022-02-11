@@ -15,10 +15,10 @@ Note - There's a different version for Intel and M1 based macs. You'll need to p
 
 ## Create Files
 
-1. Create a file called `docker-compose.yml`
+1. Create a file called `docker-compose.yml`. You can create this file anywhere on your system but it's probably simpliest to put it in a new folder all of it's own.
 2. Copy the below code snippet into the file
 
-Note - This describes where to get the docker containers needed to run BUG from and how to create them plumbing the right bits and pieces from your system into dockers such as ports and files.
+Note - This file describes where to get the docker containers needed to run BUG from and how to create them plumbing the right bits and pieces from your system into dockers such as ports and files.
 
 Note - You may find a text editor such as [Atom](https://atom.io/) makes the process of creating these configuration files easier.
 
@@ -71,23 +71,27 @@ services:
 
 Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environmnet variables will mean they run with a sensible default
 
-## Create Folder Structure
-
-1. Next you'll need to have a place to put your log files and configs. Create a folder structure that looks like this
-
-```
-.
-├── `docker-compose.yml`.       # Docker Compose file created in step 2
-├── config                      # Create a config folder to store bug configs outside the docker container
-│   ├── panels                  # Create an empty folder inside `config` to store each panel's configuration
-│   └── global                  # Create an empty folder inside `config` to store global configuration
-└── logs                        # Create an empty folder to store the logs
-```
-
 ## Start BUG
 
 1. Finally, we can now start BUG from the terminal by running `docker compose up -d` from the directory containing the `docker-compose.yml` file.
 
-Note - This command hands over the contents of the `docker-compose.yml` file to Docker Desktop which launches the containers as described in the file. You'll need to run this command from the directory containing the `docker-compose.yml`
+Note - This command hands over the contents of the `docker-compose.yml` file to Docker Desktop which launches the containers as described in the file. You'll need to run this command from the directory containing the `docker-compose.yml`,
 
 2. BUG should now be available on [http://localhost](http://localhost)
+
+3. You can double check BUG is running by typing `docker ps` into your terminal. Hopefully you'll see something that looks like this;
+
+![docker ps](/assets/images/screenshots/docker-ps.png)
+
+## BUG Folder Structure
+
+When running you're BUG folder structure should look like this;
+
+```
+.
+├── `docker-compose.yml`.       # Docker Compose file created in step 2
+├── config                      # A folder to hold all the BUG configuration
+│   ├── panels                  # Each inviduals panel's configuration can be viewed here
+│   └── global                  # Global configuration can be viewed here
+└── logs                        # You can find all the logs here
+```
