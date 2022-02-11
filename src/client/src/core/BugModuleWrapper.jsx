@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import BugLoading from "@core/BugLoading";
 import PanelBuilding from "@components/panels/PanelBuilding";
 import PanelStopped from "@components/panels/PanelStopped";
@@ -14,7 +14,11 @@ import { useHistory } from "react-router-dom";
 function ModuleSwitch({ children, panelId }) {
     // we memoize this to hide any panel.data changes from updating the page
     return React.useMemo(() => {
-        return <Switch>{children}</Switch>;
+        return (
+            <Switch>
+                <Suspense fallback={<BugLoading />}>{children}</Suspense>
+            </Switch>
+        );
     }, [children]);
 }
 

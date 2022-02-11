@@ -1,9 +1,10 @@
 import React from "react";
-import MainPanel from "./panels/MainPanel";
-import ConfigPanel from "./panels/ConfigPanel";
-import EditPanel from "./panels/EditPanel";
 import BugModuleWrapper from "@core/BugModuleWrapper";
 import { Route } from "react-router-dom";
+
+const MainPanel = React.lazy(() => import("./panels/MainPanel"));
+const ConfigPanel = React.lazy(() => import("./panels/ConfigPanel"));
+const EditPanel = React.lazy(() => import("./panels/EditPanel"));
 
 export default function Module(props) {
     return (
