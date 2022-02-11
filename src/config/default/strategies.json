@@ -4,7 +4,10 @@
         "description": "Provides access via local usernames and passwords",
         "name": "Local",
         "sessionLength": "86400000",
-        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
+        "sourceFilterList": [
+            "172.0.0.0/8",
+            "127.0.0.0/8"
+        ],
         "enforceComplexity": true,
         "enabled": false
     },
@@ -12,7 +15,10 @@
         "type": "pin",
         "name": "PIN",
         "description": "Provides authentication with a simple 4-digit PIN",
-        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
+        "sourceFilterList": [
+            "172.0.0.0/8",
+            "127.0.0.0/8"
+        ],
         "sessionLength": "1800000",
         "enabled": false
     },
@@ -20,7 +26,10 @@
         "type": "saml",
         "description": "Provides user authentication via SAML",
         "name": "SAML SSO",
-        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
+        "sourceFilterList": [
+            "172.0.0.0/8",
+            "127.0.0.0/8"
+        ],
         "sessionLength": "86400000",
         "entryPoint": "",
         "issuer": "",
@@ -31,24 +40,23 @@
         "enabled": false
     },
     {
-        "type": "auto",
+        "type": "whitelist",
         "description": "Provides automatic login from a list of whitelisted addresses",
-        "name": "Auto Login",
-        "sourceFilterList": ["127.0.0.0/8"],
-        "sessionLength": "1800000",
-        "entryPoint": "",
-        "issuer": "",
-        "profileField": "mail",
-        "matchField": "email",
-        "loginPath": "",
-        "identifierFormat": "",
+        "name": "Whitelist Login",
+        "sourceFilterList": [
+            "127.0.0.0/8"
+        ],
+        "sessionLength": "86400000",
         "enabled": false
     },
     {
         "type": "oidc",
         "description": "Provides user authentication via Open ID",
         "name": "Open ID SSO",
-        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
+        "sourceFilterList": [
+            "172.0.0.0/8",
+            "127.0.0.0/8"
+        ],
         "sessionLength": "86400000",
         "returnURL": "",
         "profileField": "mail",
@@ -60,7 +68,10 @@
         "type": "proxy",
         "name": "HTTP Proxy",
         "description": "Provides authentication via HTTP-header / proxy server",
-        "sourceFilterList": ["172.0.0.0/8", "127.0.0.0/8"],
+        "sourceFilterList": [
+            "172.0.0.0/8",
+            "127.0.0.0/8"
+        ],
         "sessionLength": "86400000",
         "headerField": "REMOTE_USER",
         "headerFieldMatch": "email",
