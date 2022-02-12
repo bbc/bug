@@ -16,6 +16,7 @@ jobs:
                   PACKAGEJSON_DIR: "src"
               with:
                   commit-message: "CI: bumps backend version to {{version}}"
+                  skip-push: "true"
                   target-branch: "main"
                   minor-wording: "add,Adds,new"
                   major-wording: "major,Major,breaking"
@@ -34,5 +35,5 @@ jobs:
                   target-branch: "main"
                   minor-wording: "add,Adds,new"
                   major-wording: "major,Major,breaking"
-                  rc-wording: "RELEASE,alpha"
+                  rc-wording: "Release,release"
                   tag-prefix: "v"
