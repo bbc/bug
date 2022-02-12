@@ -5,9 +5,7 @@ env:
     regsitry: "172.26.108.110"
 
 on:
-    push:
-        branches:
-            - main
+    create:
         tags:
             - "v*.*.*"
         paths-ignore:
