@@ -19,7 +19,7 @@ jobs:
         runs-on: self-hosted
         strategy:
             matrix:
-                architecture: [linux/amd64, linux/arm64]
+                architecture: [linux/amd64]
         defaults:
             run:
                 working-directory: ./src
@@ -73,4 +73,5 @@ jobs:
                       version=${{steps.backend-version.outputs.current-version}}
                       uk.co.bbc.bug.build.number=${{github.run_number}}
                       uk.co.bbc.bug.build.branch=${{github.ref_name}}
-                      uk.co.bbc.bug.build.commit=${{github.github_sha}}
+                      uk.co.bbc.bug.build.commit=${{github.sha}}
+                      uk.co.bbc.bug.build.repository=${{github.repository}}
