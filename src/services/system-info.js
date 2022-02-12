@@ -6,6 +6,7 @@ const readJson = require("@core/read-json");
 const updateVersion = require("@services/system-update-version");
 const systemIp = require("@services/system-ip");
 const systemUptime = require("@services/system-uptime");
+const systemGitInfo = require("@services/system-git-info");
 
 const filename = path.join(__dirname, "..", "package.json");
 
@@ -26,6 +27,7 @@ module.exports = async () => {
             data: {
                 ip: await systemIp(),
                 uptime: await systemUptime(),
+                git: await systemGitInfo(),
                 version: NpmPackage?.version,
                 updates: updates,
             },

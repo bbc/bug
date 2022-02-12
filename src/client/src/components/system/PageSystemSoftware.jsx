@@ -9,6 +9,7 @@ import BugDetailsCard from "@core/BugDetailsCard";
 import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import TimeAgo from "javascript-time-ago";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
@@ -54,6 +55,13 @@ export default function PageSystemBackup() {
         }
     };
 
+    const openWebpage = async (event, url) => {
+        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+        if (newWindow) newWindow.opener = null;
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
     useEffect(() => {
         dispatch(pageTitleSlice.actions.set("System Updates"));
     }, [dispatch]);
@@ -76,11 +84,67 @@ export default function PageSystemBackup() {
                         items={[
                             {
                                 name: "Current Version",
-                                value: info.data?.version,
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) =>
+                                            openWebpage(
+                                                event,
+                                                `https://github.com/${info.data?.git.repository}/releases/tag/${info.data?.version}`
+                                            )
+                                        }
+                                        color="secondary"
+                                    >
+                                        {info.data?.version}
+                                    </BugTableLinkButton>
+                                ),
                             },
                             {
                                 name: "Available Version",
-                                value: info.data?.updates.version,
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) =>
+                                            openWebpage(
+                                                event,
+                                                `https://github.com/${info.data?.git.repository}/releases/tag/${info.data?.updates.version}`
+                                            )
+                                        }
+                                        color="secondary"
+                                    >
+                                        {info.data?.updates.version}
+                                    </BugTableLinkButton>
+                                ),
+                            },
+                            {
+                                name: "GitHub Commit Hash",
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) =>
+                                            openWebpage(
+                                                event,
+                                                `https://github.com/${info.data?.git.repository}/commit/${info.data?.git.commit}`
+                                            )
+                                        }
+                                        color="secondary"
+                                    >
+                                        {info.data?.git.commit}
+                                    </BugTableLinkButton>
+                                ),
+                            },
+                            {
+                                name: "Build Number",
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) =>
+                                            openWebpage(
+                                                event,
+                                                `https://github.com/${info.data?.git.repository}/actions/runs/${info.data?.git.buildId}`
+                                            )
+                                        }
+                                        color="secondary"
+                                    >
+                                        {info.data?.git.buildNumber}
+                                    </BugTableLinkButton>
+                                ),
                             },
                         ]}
                     />

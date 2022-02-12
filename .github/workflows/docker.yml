@@ -72,6 +72,7 @@ jobs:
                   labels: |
                       version=${{steps.backend-version.outputs.current-version}}
                       uk.co.bbc.bug.build.number=${{github.run_number}}
+                      uk.co.bbc.bug.build.id=${{github.run_id}}
                       uk.co.bbc.bug.build.branch=${{github.ref_name}}
                       uk.co.bbc.bug.build.commit=${{github.sha}}
                       uk.co.bbc.bug.build.repository=${{github.repository}}
