@@ -6,8 +6,10 @@ env:
 
 on:
     push:
+        branches:
+            - main
         tags:
-            - "*"
+            - "v*"
         paths-ignore:
             - "**/README.md"
             - "docs/**"
