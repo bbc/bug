@@ -12,7 +12,10 @@ module.exports = async () => {
         const response = { data: {}, status: "success" };
 
         const imageName = `${registry}/${bugImage}`;
+
+        //Get exisitng BUG app container's source code hash
         const container = await dockerGetImage(imageName);
+        const previousCommit = container.Config.Labels["uk.co.bbc.bug.build.commit"];
 
         //Pull a new image from a central registry
         await dockerPull(bugImage);
@@ -26,7 +29,7 @@ module.exports = async () => {
             response.data.tag = newContainer.RepoTags[0];
             response.data.containerCount = newContainer.Containers;
             response.data.newVersion = false;
-            if (container?.Id !== newContainer?.Id) {
+            if (previousCommit !== newContainer?.Labels["uk.co.bbc.bug.build.commit"]) {
                 response.data.newVersion = true;
             }
         } else {
