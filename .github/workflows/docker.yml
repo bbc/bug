@@ -5,9 +5,9 @@ env:
     regsitry: "172.26.108.110"
 
 on:
-    create:
+    push:
         tags:
-            - "v*.*.*"
+            - "*"
         paths-ignore:
             - "**/README.md"
             - "docs/**"
