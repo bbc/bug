@@ -89,7 +89,7 @@ export default function PageSystemBackup() {
                                         onClick={(event) =>
                                             openWebpage(
                                                 event,
-                                                `https://github.com/${info.data?.git.repository}/releases/tag/${info.data?.version}`
+                                                `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.version}`
                                             )
                                         }
                                         color="secondary"
@@ -105,7 +105,7 @@ export default function PageSystemBackup() {
                                         onClick={(event) =>
                                             openWebpage(
                                                 event,
-                                                `https://github.com/${info.data?.git.repository}/releases/tag/${info.data?.updates.version}`
+                                                `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates.version}`
                                             )
                                         }
                                         color="secondary"
