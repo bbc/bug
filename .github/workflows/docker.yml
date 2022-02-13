@@ -70,6 +70,7 @@ jobs:
                       ${{env.regsitry}}/bug/app:${{steps.backend-version.outputs.current-version}}
                   outputs: type=registry,registry.insecure=true
                   labels: |
+                      author=${{github.actor}}
                       version=${{steps.backend-version.outputs.current-version}}
                       uk.co.bbc.bug.build.number=${{github.run_number}}
                       uk.co.bbc.bug.build.id=${{github.run_id}}
