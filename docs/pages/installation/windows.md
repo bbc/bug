@@ -56,6 +56,19 @@ services:
             PORT: 3000
             NODE_ENV: production
             SESSION_SECRET: aSecretForYourSessions
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CONTAINER: watchtower
+    watchtower:
+        container_name: bug-watchtower
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - bug
+        environment:
+            WATCHTOWER_HTTP_API_UPDATE: true
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CLEANUP: true
         networks:
             - bug
         ports:

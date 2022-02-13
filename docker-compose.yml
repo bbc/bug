@@ -22,6 +22,8 @@ services:
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CONTAINER: watchtower
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
             BUG_PORT: 3101
@@ -46,7 +48,20 @@ services:
             - bug
         ports:
             - 27017:27017
-
+    watchtower:
+        container_name: bug-watchtower
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - bug
+        ports:
+            - 8080:8080
+        environment:
+            WATCHTOWER_DEBUG: true
+            WATCHTOWER_HTTP_API_UPDATE: true
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CLEANUP: true
     mongo-web:
         image: mongo-express
         container_name: bug-mongo-express

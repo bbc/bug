@@ -42,7 +42,6 @@ services:
           - ./logs:/home/node/bug/logs
           - ./config/panels:/home/node/bug/config/panels
           - ./config/global:/home/node/bug/config/global
-        hostname: bug
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
@@ -57,10 +56,23 @@ services:
             PORT: 3000
             NODE_ENV: production
             SESSION_SECRET: aSecretForYourSessions
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CONTAINER: watchtower
         networks:
             - bug
         ports:
             - 80:80
+    watchtower:
+        container_name: bug-watchtower
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - bug
+        environment:
+            WATCHTOWER_HTTP_API_UPDATE: true
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CLEANUP: true
     mongo:
         image: mongo:latest
         restart: unless-stopped
