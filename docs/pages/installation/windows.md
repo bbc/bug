@@ -66,9 +66,9 @@ services:
         networks:
             - bug
         environment:
-            WATCHTOWER_HTTP_API_UPDATE: true
+            WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CLEANUP: true
+            WATCHTOWER_CLEANUP: "true"
         networks:
             - bug
         ports:
