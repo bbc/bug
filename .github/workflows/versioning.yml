@@ -24,7 +24,7 @@ jobs:
                   skip-tag: "true"
                   skip-push: "true"
                   target-branch: "main"
-                  minor-wording: "add,Adds,new"
+                  minor-wording: "add,Adds,added,Added,New"
                   major-wording: "major,Major,breaking"
                   rc-wording: "RELEASE,alpha"
                   tag-prefix: "v"
