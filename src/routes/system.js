@@ -11,7 +11,7 @@ const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
 const systemInfo = require("@services/system-info");
 const systemUpdate = require("@services/system-update-apply");
-const systemUpdateCheck = require("@services/system-update-check");
+const systemUpdateCache = require("@services/system-update-cache");
 const systemSettingsGet = require("@services/system-settings-get");
 const systemSettingsUpdate = require("@services/system-settings-update");
 
@@ -139,7 +139,7 @@ router.get("/update", async function (req, res, next) {
  *         description: Success
  */
 router.get("/updatecheck", async function (req, res, next) {
-    const result = await systemUpdateCheck();
+    const result = await systemUpdateCache();
     hashResponse(res, req, {
         status: result ? "success" : "failure",
         data: result?.data,

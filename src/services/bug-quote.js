@@ -8,7 +8,7 @@ module.exports = async () => {
         "Found any bugs in this software? Enjoy!",
         "You know what really bugs me? Bad puns.",
         "You know what, really bugs me? Bad. Punctuation.",
-        "Why wouldn’t they let the butterfly into the dance? Because it was a mothball.",
+        "Why wouldn't they let the butterfly into the dance? Because it was a mothball.",
         "Why did the fly never land on the computer? He was afraid of the world wide web.",
         "You win! No bad jokes or puns for you.",
         "What do you call a fly without wings? A walk.",
