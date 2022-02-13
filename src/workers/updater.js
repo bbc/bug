@@ -24,8 +24,8 @@ const fetch = async () => {
                 "checkTime"
             );
 
-            //Wait half an hour before checking again
-            await delay(1800 * 1000);
+            //Wait 10 seocnds before checking again
+            await delay(10000);
         }
     } catch (error) {
         logger.warning(`workers/docker: ${error.stack || error.trace || error || error.message}`);
