@@ -9,6 +9,10 @@ jobs:
     backend-version:
         runs-on: self-hosted
         steps:
+            #Get the latest version of the repository
+            - name: Checkout
+              uses: actions/checkout@v2
+            #Bump the backend version
             - name: "Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
@@ -27,6 +31,7 @@ jobs:
     frontend-version:
         runs-on: self-hosted
         steps:
+            #Bump the frontend version
             - name: "Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
