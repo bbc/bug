@@ -38,7 +38,7 @@ export default function PageSystemBackup() {
     };
 
     const onUpdate = async () => {
-        const response = await AxiosGet(`/api/system/update`);
+        await AxiosGet(`/api/system/update`);
         sendAlert(`Updating BUG to version ${info.data.updates.version}`, { variant: "success" });
     };
 
