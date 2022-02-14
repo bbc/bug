@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import BugApiTable from "@core/BugApiTable";
+import BugChipDisplay from "@core/BugChipDisplay";
 
 export default function LogTable({ level, interval }) {
     return (
@@ -46,6 +47,17 @@ export default function LogTable({ level, interval }) {
                     field: "message",
                     filterType: "text",
                     content: (item) => <>{item.message}</>,
+                },
+                {
+                    title: "Tags",
+                    sortable: false,
+                    field: "meta",
+                    filterType: "text",
+                    content: (item) => {
+                        if (item.meta) {
+                            return <BugChipDisplay options={Object.values(item.meta)} />;
+                        }
+                    },
                 },
             ]}
             defaultSortIndex={0}

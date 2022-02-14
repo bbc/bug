@@ -2,10 +2,28 @@ const winston = require("winston");
 require("winston-daily-rotate-file");
 require("winston-mongodb");
 const path = require("path");
+const readJson = require("@core/read-json");
 
 const logFolder = process.env.BUG_LOG_FOLDER || "logs";
 const logName = process.env.BUG_LOG_NAME || "bug";
 const databaseName = process.env.BUG_CONTAINER || "bug";
+
+let logLevel = process.env.BUG_LOG_LEVEL || "info";
+logLevel = logLevel.toLowerCase();
+
+async function getSettings() {
+    const filename = path.join(__dirname, "..", "config", "global", "settings.json");
+    const defaultFilename = path.join(__dirname, "..", "config", "default", "settings.json");
+    try {
+        return await readJson(filename);
+    } catch (error) {
+        const contents = await readJson(defaultFilename);
+        if (await writeJson(filename, contents)) {
+            return contents;
+        }
+        throw error;
+    }
+}
 
 const customLevels = {
     levels: {
@@ -26,14 +44,6 @@ const customLevels = {
     },
 };
 
-const httpFilter = winston.format((log, opts) => {
-    return log.level === "http" ? log : false;
-});
-
-const actionFilter = winston.format((log, opts) => {
-    return log.level === "action" ? log : false;
-});
-
 const customLogFormat = winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.timestamp(),
@@ -44,57 +54,19 @@ const customLogFormat = winston.format.combine(
 winston.addColors(customLevels.colors);
 
 const loggerInstance = winston.createLogger({
-    level: "debug",
+    level: logLevel,
     levels: customLevels.levels,
     handleExceptions: false,
     transports: [
         new winston.transports.DailyRotateFile({
-            level: "warning",
             format: customLogFormat,
-            filename: path.join(logFolder, logName + "-warning-%DATE%.log"),
+            filename: path.join(logFolder, logName + "-%DATE%.log"),
             datePattern: "YYYY-MM-DD",
             zippedArchive: true,
-            maxSize: "200m",
-            maxFiles: "7d",
-        }),
-        new winston.transports.DailyRotateFile({
-            level: "info",
-            format: customLogFormat,
-            filename: path.join(logFolder, logName + "-info-%DATE%.log"),
-            datePattern: "YYYY-MM-DD",
-            zippedArchive: true,
-            maxSize: "200m",
-            maxFiles: "2d",
-        }),
-        new winston.transports.DailyRotateFile({
-            level: "debug",
-            format: customLogFormat,
-            filename: path.join(logFolder, logName + "-debug-%DATE%.log"),
-            datePattern: "YYYY-MM-DD",
-            zippedArchive: true,
-            maxSize: "200m",
-            maxFiles: "1d",
-        }),
-        new winston.transports.DailyRotateFile({
-            level: "http",
-            format: customLogFormat,
-            filename: path.join(logFolder, logName + "-http-%DATE%.log"),
-            datePattern: "YYYY-MM-DD",
-            zippedArchive: true,
-            maxSize: "200m",
-            maxFiles: "1d",
-        }),
-        new winston.transports.DailyRotateFile({
-            level: "action",
-            format: customLogFormat,
-            filename: path.join(logFolder, logName + "-action-%DATE%.log"),
-            datePattern: "YYYY-MM-DD",
-            zippedArchive: true,
-            maxSize: "200m",
+            maxSize: "100m",
             maxFiles: "1d",
         }),
         new winston.transports.MongoDB({
-            level: "info",
             db: `mongodb://bug-mongo:27017/${databaseName}`,
             options: {
                 poolSize: 2,
@@ -102,20 +74,15 @@ const loggerInstance = winston.createLogger({
                 useNewUrlParser: true,
             },
             collection: "logs",
-            label: "n/a",
-            name: "action",
             cappedMax: 5000,
         }),
     ],
 });
 
-let consoleLogLevel = process.env.BUG_CONSOLE_LEVEL || "info";
-consoleLogLevel = consoleLogLevel.toLowerCase();
-
 if (process.env.NODE_ENV !== "production") {
     loggerInstance.add(
         new winston.transports.Console({
-            level: consoleLogLevel,
+            level: logLevel,
             handleExceptions: true,
             colorize: true,
             format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
@@ -128,8 +95,8 @@ const logger = (module) => {
     const loggers = {};
 
     for (let level in customLevels?.levels) {
-        loggers[level] = (message) => {
-            loggerInstance[level](`(${filename}) ${message}`);
+        loggers[level] = (message, metadata) => {
+            loggerInstance[level](message, { metadata: { ...{ filename: filename }, ...metadata } });
         };
     }
 

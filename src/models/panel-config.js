@@ -11,56 +11,30 @@ const deleteFile = require("@core/delete-file");
 
 exports.get = async function (panelId) {
     try {
-        const filename = path.join(
-            __dirname,
-            "..",
-            "config",
-            "panels",
-            `${panelId}.json`
-        );
+        const filename = path.join(__dirname, "..", "config", "panels", `${panelId}.json`);
         return await readJson(filename);
     } catch (error) {
-        logger.warning(
-            `panel id ${panelId} - ${error.stack || error.trace || error || error.message}`
-        );
+        logger.warning(`panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
     }
 };
 
 exports.set = async function (panelConfig) {
     try {
-        const filename = path.join(
-            __dirname,
-            "..",
-            "config",
-            "panels",
-            `${panelConfig.id}.json`
-        );
+        const filename = path.join(__dirname, "..", "config", "panels", `${panelConfig.id}.json`);
         return await writeJson(filename, panelConfig);
     } catch (error) {
-        logger.warning(
-            `panel id ${panelConfig.id} - ${error.trace || error || error.message
-            }`
-        );
+        logger.warning(`panel id ${panelConfig.id} - ${error.trace || error || error.message}`);
         return false;
     }
 };
 
 exports.delete = async function (panelId) {
     try {
-        const filename = path.join(
-            __dirname,
-            "..",
-            "config",
-            "panels",
-            `${panelId}.json`
-        );
+        const filename = path.join(__dirname, "..", "config", "panels", `${panelId}.json`);
         logger.debug(`deleting file ${filename}`);
         return await deleteFile(filename);
     } catch (error) {
-        logger.warning(
-            `panel id ${panelConfig.id} - ${error.stack || error.trace || error || error.message
-            }`
-        );
+        logger.warning(`panel id ${panelConfig.id} - ${error.stack || error.trace || error || error.message}`);
         return false;
     }
 };

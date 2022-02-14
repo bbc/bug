@@ -2,7 +2,7 @@ import React from "react";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 
-export default function Chips({ options }) {
+export default function BugChipDisplay({ options }) {
     if (!options) {
         return null;
     }

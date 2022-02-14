@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 const restrict = require("@middleware/restrict");
 const logger = require("@utils/logger")(module);
 const axios = require("axios");
+const userGet = require("@services/user-get");
 const hashResponse = require("@core/hash-response");
 
 // const authUser = require('@middleware/auth-user');
@@ -53,8 +54,13 @@ router.use(
             if (req.body) {
                 axiosConfig["data"] = req.body;
             }
-            if (req.body?.action) {
-                logger.action(req.body?.action);
+
+            //If a log object is in the request, pass it for logging and pad with panelId and username
+            if (req.body?.log) {
+                const user = await userGet(req.user);
+                const message = req.body?.log?.message;
+                delete req.body?.log?.message;
+                logger.panel(message, { ...{ user: user, panelId: req.params.panelid }, ...req.body?.log });
             }
 
             const axiosResponse = await axios(axiosConfig);

@@ -1,12 +1,11 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const mongoCollection = require("@core/mongo-collection");
+const logsModel = require("@models/logs");
 const sortHandlers = require("@core/sort-handlers");
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     try {
-        const logsCollection = await mongoCollection("logs");
         const dbFilters = {};
         if (filters["level"]) {
             dbFilters["level"] = filters["level"];
@@ -18,7 +17,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
             dbFilters["timestamp"] = { $gte: new Date(Date.now() - filters["timestamp"] * 1000) };
         }
 
-        const logs = await logsCollection.find(dbFilters).toArray();
+        const logs = await logsModel.get(dbFilters);
 
         const sortHandlerList = {
             level: sortHandlers.string,

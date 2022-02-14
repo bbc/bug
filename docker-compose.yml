@@ -29,7 +29,7 @@ services:
             BUG_HOST: http://localhost
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
-            BUG_CONSOLE_LEVEL: debug
+            BUG_LOG_LEVEL: debug
             BUG_REGISTRY_FQDN: harbor.prod.bcn.bbc.co.uk
             PORT: 3000
             NODE_ENV: development
