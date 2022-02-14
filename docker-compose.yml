@@ -18,7 +18,6 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ./src:/home/node/bug
-        hostname: bug
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module

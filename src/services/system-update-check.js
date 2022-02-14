@@ -3,7 +3,9 @@
 const logger = require("@utils/logger")(module);
 const dockerPull = require("@services/docker-pull");
 const dockerGetImage = require("@services/docker-getimage");
+const dockerGetContainer = require("@services/docker-getcontainer");
 
+const bugContainer = process.env.BUG_CONTAINER || "bug";
 const bugImage = process.env.BUG_REGISTRY_IMAGE || "bug/app";
 const registry = process.env.BUG_REGISTRY_FQDN || "";
 
@@ -14,8 +16,17 @@ module.exports = async () => {
         const imageName = `${registry}/${bugImage}`;
 
         //Get exisitng BUG app container's source code hash
-        const container = await dockerGetImage(imageName);
-        const previousCommit = container.Labels["uk.co.bbc.bug.build.commit"];
+        const container = await dockerGetContainer(bugContainer);
+        const labels = await new Promise((resolve, reject) => {
+            const processLabels = (err, data) => {
+                if (data?.Config?.Labels) {
+                    resolve(data?.Config?.Labels);
+                }
+                resolve(false);
+            };
+
+            container.inspect(processLabels);
+        });
 
         //Pull a new image from a central registry
         await dockerPull(bugImage);
@@ -29,7 +40,7 @@ module.exports = async () => {
             response.data.tag = newContainer.RepoTags[0];
             response.data.containerCount = newContainer.Containers;
             response.data.newVersion = false;
-            if (previousCommit !== newContainer?.Labels["uk.co.bbc.bug.build.commit"]) {
+            if (labels["uk.co.bbc.bug.build.commit"] !== newContainer?.Labels["uk.co.bbc.bug.build.commit"]) {
                 response.data.newVersion = true;
             }
         } else {
