@@ -22,7 +22,7 @@ export default function PageSystemBackup() {
     });
 
     const getButton = () => {
-        if (info.data?.updates.newVersion) {
+        if (info.data?.updates.newVersion && !info.data.git.development) {
             return (
                 <Button onClick={onUpdate} underline="none" variant="outlined" color="primary" disableElevation>
                     Update BUG
@@ -101,49 +101,67 @@ export default function PageSystemBackup() {
                             {
                                 name: "Available Version",
                                 value: (
-                                    <BugTableLinkButton
-                                        onClick={(event) =>
-                                            openWebpage(
-                                                event,
-                                                `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates.version}`
-                                            )
-                                        }
-                                        color="secondary"
-                                    >
-                                        {info.data?.updates.version}
-                                    </BugTableLinkButton>
+                                    <>
+                                        {info.data.updates.newVersion ? (
+                                            <BugTableLinkButton
+                                                onClick={(event) =>
+                                                    openWebpage(
+                                                        event,
+                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates.version}`
+                                                    )
+                                                }
+                                                color="secondary"
+                                            >
+                                                {info.data?.updates.version}
+                                            </BugTableLinkButton>
+                                        ) : (
+                                            "BUG is up to date"
+                                        )}
+                                    </>
                                 ),
                             },
                             {
                                 name: "GitHub Commit Hash",
                                 value: (
-                                    <BugTableLinkButton
-                                        onClick={(event) =>
-                                            openWebpage(
-                                                event,
-                                                `https://github.com/${info.data?.git.repository}/commit/${info.data?.git.commit}`
-                                            )
-                                        }
-                                        color="secondary"
-                                    >
-                                        {info.data?.git.commit}
-                                    </BugTableLinkButton>
+                                    <>
+                                        {info.data.git.development ? (
+                                            "Development Build"
+                                        ) : (
+                                            <BugTableLinkButton
+                                                onClick={(event) =>
+                                                    openWebpage(
+                                                        event,
+                                                        `https://github.com/${info.data?.git.repository}/commit/${info.data?.git.commit}`
+                                                    )
+                                                }
+                                                color="secondary"
+                                            >
+                                                {info.data?.git.commit}
+                                            </BugTableLinkButton>
+                                        )}
+                                    </>
                                 ),
                             },
                             {
                                 name: "Build Number",
                                 value: (
-                                    <BugTableLinkButton
-                                        onClick={(event) =>
-                                            openWebpage(
-                                                event,
-                                                `https://github.com/${info.data?.git.repository}/actions/runs/${info.data?.git.buildId}`
-                                            )
-                                        }
-                                        color="secondary"
-                                    >
-                                        {info.data?.git.buildNumber}
-                                    </BugTableLinkButton>
+                                    <>
+                                        {info.data.git.development ? (
+                                            "N/A"
+                                        ) : (
+                                            <BugTableLinkButton
+                                                onClick={(event) =>
+                                                    openWebpage(
+                                                        event,
+                                                        `https://github.com/${info.data?.git.repository}/actions/runs/${info.data?.git.buildId}`
+                                                    )
+                                                }
+                                                color="secondary"
+                                            >
+                                                {info.data?.git.buildNumber}
+                                            </BugTableLinkButton>
+                                        )}
+                                    </>
                                 ),
                             },
                         ]}
@@ -165,6 +183,10 @@ export default function PageSystemBackup() {
                             },
                         ]}
                     />
+                </Grid>
+
+                <Grid item lg={6} xs={12}>
+                    <BugDetailsCard title="Changelogs" width="12rem" items={[]} />
                 </Grid>
             </Grid>
         </>

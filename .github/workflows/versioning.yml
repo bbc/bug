@@ -20,7 +20,6 @@ jobs:
                   PACKAGEJSON_DIR: "src"
               with:
                   commit-message: "CI: bumps backend version to {{version}}"
-                  skip-commit: "true"
                   skip-tag: "true"
                   skip-push: "true"
                   target-branch: "main"
