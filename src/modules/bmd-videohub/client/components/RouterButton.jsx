@@ -122,66 +122,69 @@ export default function RouterButton({
         }
     };
 
-    return (
-        <BugRouterButton
-            id={`${buttonType}:${button.index}`}
-            draggable
-            onClick={onClick}
-            item={button}
-            icon={button.icon}
-            iconColor={button.iconColor}
-            primaryLabel={button.label}
-            secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
-            number={button.index + 1}
-            selected={selected}
-            disabled={disabled}
-            editMode={editMode}
-            locked={button.isLocked}
-            menuItems={[
-                {
-                    title: "Rename",
-                    icon: <EditIcon fontSize="small" />,
-                    onClick: handleRenameClicked,
-                },
-                {
-                    title: "Clear Label",
-                    icon: <BackspaceIcon fontSize="small" />,
-                    onClick: handleClearClicked,
-                },
-                {
-                    title: "-",
-                },
-                {
-                    title: "Edit Icon",
-                    icon: <FilterTiltShiftIcon fontSize="small" />,
-                    onClick: onEditIcon,
-                },
-                {
-                    title: "Remove",
-                    icon: <RemoveCircleIcon fontSize="small" />,
-                    onClick: handleRemoveClicked,
-                    disabled: groups.length === 0,
-                },
-                {
-                    title: "-",
-                },
-                {
-                    title: "Lock",
-                    disabled: buttonType !== "destination",
-                    icon: (item) => (item.isLocked ? <CheckIcon fontSize="small" /> : null),
-                    onClick: handleLockClicked,
-                },
-                {
-                    title: "-",
-                },
-                {
-                    title: "Add to Group",
-                    icon: <AddIcon fontSize="small" />,
-                    onClick: handleAddGroupClicked,
-                    disabled: groups.length === 0,
-                },
-            ]}
-            useDoubleClick={useDoubleClick}
-        />
+    return React.useMemo(
+        () => (
+            <BugRouterButton
+                id={`${buttonType}:${button.index}`}
+                draggable
+                onClick={onClick}
+                item={button}
+                icon={button.icon}
+                iconColor={button.iconColor}
+                primaryLabel={button.label}
+                secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
+                number={button.index + 1}
+                selected={selected}
+                disabled={disabled}
+                editMode={editMode}
+                locked={button.isLocked}
+                menuItems={[
+                    {
+                        title: "Rename",
+                        icon: <EditIcon fontSize="small" />,
+                        onClick: handleRenameClicked,
+                    },
+                    {
+                        title: "Clear Label",
+                        icon: <BackspaceIcon fontSize="small" />,
+                        onClick: handleClearClicked,
+                    },
+                    {
+                        title: "-",
+                    },
+                    {
+                        title: "Edit Icon",
+                        icon: <FilterTiltShiftIcon fontSize="small" />,
+                        onClick: onEditIcon,
+                    },
+                    {
+                        title: "Remove",
+                        icon: <RemoveCircleIcon fontSize="small" />,
+                        onClick: handleRemoveClicked,
+                        disabled: groups.length === 0,
+                    },
+                    {
+                        title: "-",
+                    },
+                    {
+                        title: "Lock",
+                        disabled: buttonType !== "destination",
+                        icon: (item) => (item.isLocked ? <CheckIcon fontSize="small" /> : null),
+                        onClick: handleLockClicked,
+                    },
+                    {
+                        title: "-",
+                    },
+                    {
+                        title: "Add to Group",
+                        icon: <AddIcon fontSize="small" />,
+                        onClick: handleAddGroupClicked,
+                        disabled: groups.length === 0,
+                    },
+                ]}
+                useDoubleClick={useDoubleClick}
+            />
+        ),
+        [button.label, button.sourceLabel, selected, disabled, editMode, button.isLocked, button.icon]
     );
 }

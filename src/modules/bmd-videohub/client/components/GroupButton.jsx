@@ -36,35 +36,38 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
         onChange();
     };
 
-    return (
-        <BugRouterGroupButton
-            id={`group:${groupType}:${group.index}`}
-            draggable
-            onClick={onClick}
-            item={group}
-            primaryLabel={group.label}
-            selected={group.selected}
-            editMode={editMode}
-            menuItems={[
-                {
-                    title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
-                    icon: <BallotIcon fontSize="small" />,
-                    onClick: onEditButtons,
-                },
-                {
-                    title: "-",
-                },
-                {
-                    title: "Rename",
-                    icon: <EditIcon fontSize="small" />,
-                    onClick: handleRenameClicked,
-                },
-                {
-                    title: "Delete",
-                    icon: <DeleteIcon fontSize="small" />,
-                    onClick: handleDeleteClicked,
-                },
-            ]}
-        />
+    return React.useMemo(
+        () => (
+            <BugRouterGroupButton
+                id={`group:${groupType}:${group.index}`}
+                draggable
+                onClick={onClick}
+                item={group}
+                primaryLabel={group.label}
+                selected={group.selected}
+                editMode={editMode}
+                menuItems={[
+                    {
+                        title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
+                        icon: <BallotIcon fontSize="small" />,
+                        onClick: onEditButtons,
+                    },
+                    {
+                        title: "-",
+                    },
+                    {
+                        title: "Rename",
+                        icon: <EditIcon fontSize="small" />,
+                        onClick: handleRenameClicked,
+                    },
+                    {
+                        title: "Delete",
+                        icon: <DeleteIcon fontSize="small" />,
+                        onClick: handleDeleteClicked,
+                    },
+                ]}
+            />
+        ),
+        [group.label, group.selected, editMode]
     );
 }
