@@ -15,7 +15,7 @@ module.exports = async () => {
 
         //Get exisitng BUG app container's source code hash
         const container = await dockerGetImage(imageName);
-        const previousCommit = container.Config.Labels["uk.co.bbc.bug.build.commit"];
+        const previousCommit = container.Labels["uk.co.bbc.bug.build.commit"];
 
         //Pull a new image from a central registry
         await dockerPull(bugImage);
