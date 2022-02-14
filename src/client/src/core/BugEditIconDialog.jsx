@@ -18,6 +18,9 @@ import Box from "@mui/material/Box";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { TwitterPicker } from "react-color";
 import useAsyncEffect from "use-async-effect";
+import InputAdornment from "@mui/material/InputAdornment";
+import CancelIcon from "@mui/icons-material/Cancel";
+import IconButton from "@mui/material/IconButton";
 
 const defaultCount = 500;
 
@@ -44,6 +47,11 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
         setIconCount(defaultCount);
         setSelectedVariant(value);
         iconsContent.current.scrollTo(0, 0);
+    };
+
+    const handleClear = () => {
+        setIsLoading(true);
+        setIconFilter("");
     };
 
     const scrollEvent = (e) => {
@@ -205,6 +213,15 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                     autoFocus
                     value={iconFilter}
                     onChange={(e) => handleFilterChanged(e.target.value)}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton aria-label="clear" onClick={handleClear}>
+                                    <CancelIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
                 />
             </FormControl>
             <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
