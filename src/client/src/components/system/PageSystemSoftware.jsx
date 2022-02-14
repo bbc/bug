@@ -38,8 +38,13 @@ export default function PageSystemBackup() {
     };
 
     const onUpdate = async () => {
-        await AxiosGet(`/api/system/update`);
-        sendAlert(`Updating BUG to version ${info.data.updates.version}`, { variant: "success" });
+        const response = await AxiosGet(`/api/system/update`);
+
+        if (response) {
+            sendAlert(`Updating BUG to version ${info.data.updates.version}`, { broadcast: true, variant: "success" });
+        } else {
+            sendAlert(`Failed to apply BUG update. Please try again`, { variant: "error" });
+        }
     };
 
     const onCheckUpdate = async () => {
@@ -51,7 +56,7 @@ export default function PageSystemBackup() {
             sendAlert(`You're using the latest version of BUG.`, { variant: "success" });
         }
         if (!response) {
-            sendAlert(`Failed to check for sysyem updates.`, { variant: "error" });
+            sendAlert(`Failed to check for system updates.`, { variant: "error" });
         }
     };
 
