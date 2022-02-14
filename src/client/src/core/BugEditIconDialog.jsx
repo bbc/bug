@@ -18,6 +18,9 @@ import Box from "@mui/material/Box";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { TwitterPicker } from "react-color";
 import useAsyncEffect from "use-async-effect";
+import InputAdornment from "@mui/material/InputAdornment";
+import CancelIcon from "@mui/icons-material/Cancel";
+import IconButton from "@mui/material/IconButton";
 
 const defaultCount = 500;
 
@@ -44,6 +47,11 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
         setIconCount(defaultCount);
         setSelectedVariant(value);
         iconsContent.current.scrollTo(0, 0);
+    };
+
+    const handleClear = () => {
+        setIsLoading(true);
+        setIconFilter("");
     };
 
     const scrollEvent = (e) => {
@@ -144,7 +152,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                         </Grid>
                     </Box>
                 )}
-                <Box sx={{ position: "relative", height: "350px" }}>
+                <Box sx={{ position: "relative", height: "350px", opacity: isLoading ? 0.2 : 1 }}>
                     <Box sx={{ overflow: "scroll", height: "100%" }} onScroll={scrollEvent} ref={iconsContent}>
                         <div>
                             <Box
@@ -200,16 +208,25 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
             <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
                 <TextField
                     label="Filter icons ..."
-                    variant="standard"
+                    variant="filled"
                     fullWidth
                     autoFocus
                     value={iconFilter}
                     onChange={(e) => handleFilterChanged(e.target.value)}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton aria-label="clear" onClick={handleClear}>
+                                    <CancelIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
                 />
             </FormControl>
             <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
                 <TextField
-                    variant="standard"
+                    variant="filled"
                     select
                     fullWidth
                     label="Variant"
@@ -227,7 +244,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
             <FormControl sx={{ padding: "4px", width: "120px", flexGrow: 1 }}>
                 <Button
                     sx={{
-                        height: "56px",
+                        height: "53px",
                         backgroundColor: "rgba(255, 255, 255, 0.09)",
                         borderBottom: "1px solid #c4c4c4",
                         borderBottomLeftRadius: "0px",

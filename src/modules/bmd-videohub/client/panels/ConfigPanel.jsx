@@ -86,7 +86,7 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <BugConfigFormSwitch
                         name="useTake"
-                        label="Require double-click to take"
+                        label="Require confirmation click to take"
                         control={control}
                         defaultValue={panelConfig.data.useTake}
                         fullWidth

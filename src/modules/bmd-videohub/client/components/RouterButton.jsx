@@ -122,11 +122,14 @@ export default function RouterButton({
         }
     };
 
+    const handleClick = (event) => {
+        onClick(event);
+    };
     return (
         <BugRouterButton
             id={`${buttonType}:${button.index}`}
             draggable
-            onClick={onClick}
+            onClick={handleClick}
             item={button}
             icon={button.icon}
             iconColor={button.iconColor}
