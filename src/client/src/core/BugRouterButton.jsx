@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
 import LockIcon from "@mui/icons-material/Lock";
+import BugCountdownSpinner from "@core/BugCountdownSpinner";
 
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
     fontSize: "2rem",
@@ -34,6 +35,7 @@ const BugRouterButton = ({
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: id,
     });
+    const timer = React.useRef();
 
     let style = {
         transform: "",
@@ -53,11 +55,45 @@ const BugRouterButton = ({
 
     const extraProps = draggable ? { ...attributes, ...listeners, style: style } : {};
 
+    const [isWaitingForConfirmation, setIsWaitingForConfirmation] = React.useState(false);
+
+    const onConfirmClick = () => {
+        if (isWaitingForConfirmation) {
+            setIsWaitingForConfirmation(false);
+            onClick();
+        } else {
+            setIsWaitingForConfirmation(true);
+            timer.current = setTimeout(() => {
+                setIsWaitingForConfirmation(false);
+            }, 3000);
+        }
+    };
+
+    const handleClick = () => {
+        if (disabled) {
+            return;
+        }
+        if (editMode) {
+            return onClick();
+        }
+        if (selected) {
+            return false;
+        }
+        if (useDoubleClick) {
+            return onConfirmClick();
+        } else {
+            return onClick();
+        }
+    };
+
     return (
         <Button
             ref={setNodeRef}
             {...extraProps}
             sx={{
+                borderWidth: "1px",
+                borderStyle: isWaitingForConfirmation ? "dashed" : "solid",
+                borderColor: isWaitingForConfirmation ? "primary.main" : "rgba(136, 136, 136, 0.5)",
                 backgroundColor: editMode ? "none" : selected ? "primary.main" : "tertiary.main",
                 margin: "4px",
                 width: "128px",
@@ -80,13 +116,14 @@ const BugRouterButton = ({
                     height: "100%",
                 },
                 "&:hover": {
+                    borderStyle: isWaitingForConfirmation ? "dashed" : "solid",
+                    borderColor: isWaitingForConfirmation ? "primary.main" : "rgba(136, 136, 136, 0.5)",
                     backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
                 },
             }}
             variant="outlined"
             color="secondary"
-            onClick={disabled ? undefined : useDoubleClick ? undefined : onClick}
-            onDoubleClick={disabled ? undefined : useDoubleClick ? onClick : undefined}
+            onClick={handleClick}
         >
             <Box
                 className="MuiButton-label"
@@ -138,7 +175,9 @@ const BugRouterButton = ({
                             },
                         }}
                     >
-                        {icon ? (
+                        {isWaitingForConfirmation ? (
+                            <BugCountdownSpinner duration={3000} />
+                        ) : icon ? (
                             <StyledBugDynamicIcon color={iconColor} iconName={icon} />
                         ) : (
                             <Box
