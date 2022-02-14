@@ -111,6 +111,24 @@ export default function PageSystemBackup() {
                             </Grid>
 
                             <Grid item xs={12}>
+                                <BugConfigFormSelect
+                                    name="logLevel"
+                                    control={control}
+                                    fullWidth
+                                    label="Logging Level"
+                                    defaultValue={settings?.data?.logLevel}
+                                    items={{
+                                        error: "Error",
+                                        warning: "Warning",
+                                        action: "Action",
+                                        info: "Info",
+                                        http: "HTTP",
+                                        debug: "Debug",
+                                    }}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
                                 <BugConfigFormSwitch
                                     name="sound"
                                     control={control}
