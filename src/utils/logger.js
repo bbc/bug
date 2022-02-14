@@ -8,7 +8,7 @@ const logFolder = process.env.BUG_LOG_FOLDER || "logs";
 const logName = process.env.BUG_LOG_NAME || "bug";
 const databaseName = process.env.BUG_CONTAINER || "bug";
 
-let logLevel = process.env.BUG_LOG_LEVEL || "info";
+let logLevel = process.env.BUG_LOG_LEVEL || "debug";
 logLevel = logLevel.toLowerCase();
 
 async function getSettings() {
@@ -59,6 +59,7 @@ const loggerInstance = winston.createLogger({
     handleExceptions: false,
     transports: [
         new winston.transports.DailyRotateFile({
+            level: logLevel,
             format: customLogFormat,
             filename: path.join(logFolder, logName + "-%DATE%.log"),
             datePattern: "YYYY-MM-DD",
@@ -67,6 +68,7 @@ const loggerInstance = winston.createLogger({
             maxFiles: "1d",
         }),
         new winston.transports.MongoDB({
+            level: logLevel,
             db: `mongodb://bug-mongo:27017/${databaseName}`,
             options: {
                 poolSize: 2,

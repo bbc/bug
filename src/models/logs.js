@@ -18,3 +18,24 @@ exports.get = async function (filter) {
     }
     return null;
 };
+
+exports.pagination = async function (filter, pageNumber, nPerPage) {
+    try {
+        const logsCollection = await mongoCollection("logs");
+
+        if (logsCollection) {
+            const result = await logsCollection
+                .find(filter)
+                .sort({ _id: 1 })
+                .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
+                .limit(nPerPage)
+                .toArray();
+            if (result) {
+                return result;
+            }
+        }
+    } catch (error) {
+        logger.warning(`${error.trace || error || error.message}`);
+    }
+    return null;
+};
