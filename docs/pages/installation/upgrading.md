@@ -9,13 +9,15 @@ has_children: true
 
 ## Web Interface
 
+You're BUG should automatically check for updates. You can see if any are avalible and update by going to the `settings` page and then `Software Updates`. Click the `Check for Updates` button followed by `Update` and BUG should update automatically!
+
 ## Command Line
 
 If you want to upgrade BUG from command line
 
 The first stage is to get the latest version of the BUG image from the registry using this command
 
-`docker pull harbor.prod.bcn.bbc.co.uk/bug:latest`
+`docker pull harbor.prod.bcn.bbc.co.uk/bug/app:latest`
 
 Next, run the following command and Docker will determine which containers to restart with minimal downtime of approximately 10 seconds.
 
