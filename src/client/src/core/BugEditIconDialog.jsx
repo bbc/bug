@@ -152,7 +152,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                         </Grid>
                     </Box>
                 )}
-                <Box sx={{ position: "relative", height: "350px" }}>
+                <Box sx={{ position: "relative", height: "350px", opacity: isLoading ? 0.2 : 1 }}>
                     <Box sx={{ overflow: "scroll", height: "100%" }} onScroll={scrollEvent} ref={iconsContent}>
                         <div>
                             <Box
@@ -208,7 +208,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
             <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
                 <TextField
                     label="Filter icons ..."
-                    variant="standard"
+                    variant="filled"
                     fullWidth
                     autoFocus
                     value={iconFilter}
@@ -226,7 +226,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
             </FormControl>
             <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
                 <TextField
-                    variant="standard"
+                    variant="filled"
                     select
                     fullWidth
                     label="Variant"
@@ -244,7 +244,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
             <FormControl sx={{ padding: "4px", width: "120px", flexGrow: 1 }}>
                 <Button
                     sx={{
-                        height: "56px",
+                        height: "53px",
                         backgroundColor: "rgba(255, 255, 255, 0.09)",
                         borderBottom: "1px solid #c4c4c4",
                         borderBottomLeftRadius: "0px",
