@@ -53,7 +53,7 @@ bugApi.use(httpLogger);
 bugApi.use(cors());
 bugApi.use(
     helmet.contentSecurityPolicy({
-        reportOnly: false,
+        reportOnly: true,
         directives: {
             "default-src": ["'self'"],
             "base-uri": ["'self'"],
