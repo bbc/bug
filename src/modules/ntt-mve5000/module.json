@@ -7,10 +7,17 @@
     "icon": "ResetTv",
     "notes": "",
     "author": "Geoff House",
-    "license": "ISC",
+    "license": "Apache-2.0",
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,

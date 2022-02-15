@@ -2,5 +2,6 @@
     "title": "Your BUG",
     "description": "A better way to manage your kit",
     "theme": "dark",
-    "sounds": false
+    "sounds": false,
+    "logLevel": "info"
 }

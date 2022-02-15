@@ -16,7 +16,7 @@ export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
     const panelConfig = useSelector((state) => state.panelConfig);
     const timer = React.useRef();
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
 
     usePanelToolbarEvent("refresh", () => {

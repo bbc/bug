@@ -1,33 +1,30 @@
-'use strict';
+"use strict";
 
-const logger = require('@utils/logger')(module);
-const moduleConfig = require('@models/module-config');
-const dockerListImages = require('@services/docker-listimages');
+const logger = require("@utils/logger")(module);
+const moduleConfig = require("@models/module-config");
+const dockerListImages = require("@services/docker-listimages");
 
 module.exports = async () => {
-
     let response = [];
 
-    const images = await dockerListImages()
+    const images = await dockerListImages();
     const moduleList = await moduleConfig.list();
 
     try {
         for (let eachModule of moduleList) {
-
             for (const eachImage of images) {
                 if (eachImage.module === eachModule.name) {
-                    eachModule.image = eachImage
+                    eachModule.image = eachImage;
                 }
             }
             delete eachModule.defaultconfig;
             delete eachModule.devmounts;
-            response.push(eachModule)
+            response.push(eachModule);
         }
-
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);
         throw new Error(`Failed to get module list`);
     }
 
-    return response
-}
+    return response;
+};

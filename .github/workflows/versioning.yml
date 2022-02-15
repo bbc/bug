@@ -9,6 +9,12 @@ jobs:
     backend-version:
         runs-on: self-hosted
         steps:
+            #Start with a clean slate
+            - name: Clean working directory
+              shell: bash
+              run: |
+                  cd $RUNNER_WORKSPACE
+                  rm -r *
             #Get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v2

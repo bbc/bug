@@ -8,9 +8,16 @@
     "icon": "mdi-router",
     "author": "Geoff House",
     "needsContainer": true,
-    "license": "ISC",
-    "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["config"],
+    "license": "Apache-2.0",
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
@@ -23,6 +30,11 @@
         "username": "bug",
         "password": "",
         "protectedInterfaces": [],
-        "excludedInterfaces": ["bridge*", "vlan*", "Loopback*", "eoip*"]
+        "excludedInterfaces": [
+            "bridge*",
+            "vlan*",
+            "Loopback*",
+            "eoip*"
+        ]
     }
 }

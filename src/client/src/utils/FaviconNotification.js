@@ -1,5 +1,5 @@
 let options = {
-    url: "/favicon.ico",
+    url: "/icon/favicon.ico",
     defaultColor: "#153550",
     criticalColor: "#B52425",
     errorColor: "#B52425",

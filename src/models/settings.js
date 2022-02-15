@@ -4,7 +4,6 @@ const logger = require("@utils/logger")(module);
 const readJson = require("@core/read-json");
 const writeJson = require("@core/write-json");
 const path = require("path");
-const { v4: uuidv4 } = require("uuid");
 const hash = require("@utils/hash");
 
 const filename = path.join(__dirname, "..", "config", "global", "settings.json");

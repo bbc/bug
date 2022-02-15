@@ -17,7 +17,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 
 export default function OutputsList2({ panelId }) {
     const history = useHistory();
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
 
     const handleRenameClicked = async (event, item) => {

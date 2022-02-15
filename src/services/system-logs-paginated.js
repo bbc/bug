@@ -4,7 +4,7 @@ const logger = require("@utils/logger")(module);
 const logsModel = require("@models/logs");
 const sortHandlers = require("@core/sort-handlers");
 
-module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
+module.exports = async (sortField = null, sortDirection = "asc", filters = {}, pageNumber = 1, numberPerPage = 100) => {
     try {
         const dbFilters = {};
         if (filters["level"]) {
@@ -20,7 +20,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
             dbFilters["timestamp"] = { $gte: new Date(Date.now() - filters["timestamp"] * 1000) };
         }
 
-        const logs = await logsModel.get(dbFilters);
+        console.log(dbFilters);
+
+        const logs = await logsModel.pagination(dbFilters, pageNumber, numberPerPage);
 
         const sortHandlerList = {
             level: sortHandlers.string,

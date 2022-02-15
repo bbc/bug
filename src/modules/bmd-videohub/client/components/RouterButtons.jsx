@@ -29,7 +29,7 @@ export default function Router({
     disabled = false,
     useDoubleClick = false,
 }) {
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;
     const destinationGroup = params.destinationGroup ?? 0;

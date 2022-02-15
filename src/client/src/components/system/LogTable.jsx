@@ -1,8 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import BugApiTable from "@core/BugApiTable";
+import BugChipDisplay from "@core/BugChipDisplay";
+import { useSelector } from "react-redux";
 
-export default function LogTable({ level, interval }) {
+export default function LogTable({ panelId, level, interval }) {
+    const panelFilter = useSelector((state) =>
+        state.panelList.data.map((item) => {
+            return { name: item.title, value: item.id };
+        })
+    );
+
+    console.log(panelFilter);
     return (
         <BugApiTable
             columns={[
@@ -47,10 +56,22 @@ export default function LogTable({ level, interval }) {
                     filterType: "text",
                     content: (item) => <>{item.message}</>,
                 },
+                {
+                    title: "Tags",
+                    sortable: false,
+                    field: "meta",
+                    filterType: "dropdown",
+                    filterOptions: panelFilter,
+                    content: (item) => {
+                        if (item.meta) {
+                            return <BugChipDisplay options={Object.values(item.meta)} />;
+                        }
+                    },
+                },
             ]}
             defaultSortIndex={0}
             defaultSortDirection="desc"
-            apiUrl={`/api/system/logs/`}
+            apiUrl={`/api/system/logs/1`}
             sortable
             filterable
         />

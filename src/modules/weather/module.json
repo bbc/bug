@@ -7,8 +7,10 @@
     "icon": "Cloud",
     "author": "Ryan McCartney",
     "needsContainer": false,
-    "protectedRoutes": ["config"],
-    "license": "ISC",
+    "protectedRoutes": [
+        "config"
+    ],
+    "license": "Apache-2.0",
     "defaultconfig": {
         "id": "",
         "order": 0,

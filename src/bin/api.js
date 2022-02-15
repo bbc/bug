@@ -70,7 +70,7 @@ bugApi.use(
     })
 );
 
-bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "favicon.ico")));
+bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "icons", "favicon.ico")));
 bugApi.use(
     fileUpload({
         useTempFiles: true,
@@ -101,12 +101,14 @@ bugApi.use("/api", function (req, res, next) {
 });
 
 if (nodeEnv === "production") {
+    const root = require("path").join(__dirname, "..", "client", "build");
+
     // production: include react build static client files
-    bugApi.use(express.static(path.join(__dirname, "..", "client", "build")));
+    bugApi.use(express.static(root));
 
     // production: serve react frontend for bug on the default route
-    bugApi.get("*", function (req, res) {
-        res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
+    bugApi.get("*", (req, res) => {
+        res.sendFile("index.html", { root });
     });
 } else {
     // development: serve files in the public folder
