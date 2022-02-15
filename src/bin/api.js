@@ -61,7 +61,7 @@ bugApi.use(
             "font-src": ["'self'", "https:", "http:", "data:"],
             "frame-ancestors": ["'self'"],
             "img-src": ["'self'", "data:", "https:"],
-            "object-src": ["none"],
+            "object-src": ["'none'"],
             "style-src": ["'self'", "https:", "http:", "'unsafe-inline'"],
             "upgrade-insecure-requests": [],
         },
