@@ -24,6 +24,10 @@ jobs:
             run:
                 working-directory: ./src
         steps:
+            - name: Set current date and time as an environment variable
+              run: echo "timestamp::$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+            - name: Print current date and time
+              run: echo $timestamp
             #Get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v2
@@ -72,8 +76,15 @@ jobs:
                   labels: |
                       author=${{github.actor}}
                       version=${{steps.backend-version.outputs.current-version}}
+                      uk.co.bbc.bug.build.timestamp=${{env.timestamp}}
                       uk.co.bbc.bug.build.number=${{github.run_number}}
                       uk.co.bbc.bug.build.id=${{github.run_id}}
                       uk.co.bbc.bug.build.branch=${{github.ref_name}}
                       uk.co.bbc.bug.build.commit=${{github.sha}}
                       uk.co.bbc.bug.build.repository=${{github.repository}}
+            - name: Clean working directory
+              shell: bash
+              run: |
+                  cd $RUNNER_WORKSPACE
+                  cd ..
+                  rm -r *
