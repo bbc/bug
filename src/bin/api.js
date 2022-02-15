@@ -63,7 +63,6 @@ bugApi.use(
             "img-src": ["'self'", "data:", "https:"],
             "object-src": ["'none'"],
             "style-src": ["'self'", "https:", "http:", "'unsafe-inline'"],
-            "upgrade-insecure-requests": [],
         },
     })
 );
