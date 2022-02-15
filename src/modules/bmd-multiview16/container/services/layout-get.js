@@ -23,7 +23,6 @@ module.exports = async () => {
     const sources = await sourceList();
     const routes = await routeList();
 
-    console.log(routes);
     if (deviceConfig && sourceList && routes) {
         const colCount = parseInt(deviceConfig?.layout.substring(0, 1));
         const rowCount = parseInt(deviceConfig?.layout.substring(2, 3));

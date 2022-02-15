@@ -11,10 +11,12 @@ import { useAlert } from "@utils/Snackbar";
 
 export default function TabLayout({ panelId }) {
     const sendAlert = useAlert();
+    const [layoutForceRefreshHash, setLayoutForceRefreshHash] = React.useState(0);
 
     const layout = useApiPoller({
         url: `/container/${panelId}/layout`,
         interval: 5000,
+        forceRefresh: layoutForceRefreshHash,
     });
 
     const sources = useApiPoller({
@@ -29,9 +31,48 @@ export default function TabLayout({ panelId }) {
                 variant: "success",
             });
             // force a refresh of the destinations
-            // setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
+            setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
         } else {
             sendAlert(`Failed to change source for output ${outputIndex + 1}`, { variant: "error" });
+        }
+    };
+
+    const handleAudioChange = async (inputIndex) => {
+        if (await AxiosCommand(`/container/${panelId}/destination/setaudio/${inputIndex}`)) {
+            sendAlert(`Successfully selected audio source ${inputIndex + 1}`, {
+                broadcast: true,
+                variant: "success",
+            });
+            // force a refresh of the layout
+            setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
+        } else {
+            sendAlert(`Failed to change audio source to input ${inputIndex + 1}`, { variant: "error" });
+        }
+    };
+
+    const handleSoloChange = async (inputIndex, enableSolo) => {
+        if (enableSolo) {
+            if (await AxiosCommand(`/container/${panelId}/source/setsolo/${inputIndex}`)) {
+                sendAlert(`Successfully selected solo source ${inputIndex + 1}`, {
+                    broadcast: true,
+                    variant: "success",
+                });
+                // force a refresh of the layout
+                setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
+            } else {
+                sendAlert(`Failed to change solo source to input ${inputIndex + 1}`, { variant: "error" });
+            }
+        } else {
+            if (await AxiosCommand(`/container/${panelId}/source/clearsolo`)) {
+                sendAlert(`Successfully unselected solo source`, {
+                    broadcast: true,
+                    variant: "success",
+                });
+                // force a refresh of the layout
+                setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
+            } else {
+                sendAlert(`Failed to unselect solo source`, { variant: "error" });
+            }
         }
     };
 
@@ -44,64 +85,63 @@ export default function TabLayout({ panelId }) {
         return <BugLoading height="30vh" />;
     }
 
-    console.log(layout.data);
-
     if (layout.data && sources.data) {
+        const sourcesArray = sources.data.map((source, index) => ({
+            id: index,
+            label: source,
+        }));
+
         return (
             <>
                 <Grid container spacing={1} sx={{ backgroundColor: "background.default", paddingTop: "2px" }}>
-                    {layout.data.map((row, rowIndex) => (
-                        <>
-                            {row.map((col, colIndex) => {
-                                console.log(col);
-                                return (
-                                    <Grid item key={`${colIndex}-${rowIndex}`} xs={12 / layout.data.length}>
-                                        <Box sx={{ padding: "16px", backgroundColor: "background.paper" }}>
-                                            <BugApiSelect
-                                                value={col.inputIndex}
-                                                items={sources.data}
-                                                onChange={(event) =>
-                                                    // javascript object keys can only be strings, so we have to convert to int here. Grrrr.
-                                                    handleSourceChange(col.outputIndex, parseInt(event.target.value))
-                                                }
-                                                renderItem={(item, key) => (
-                                                    <>
-                                                        <span style={{ fontWeight: 600, marginRight: "0.5rem" }}>
-                                                            {parseInt(key) + 1}
-                                                        </span>
-                                                        {item}
-                                                    </>
-                                                )}
-                                            />
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                    justifyContent: "center",
-                                                }}
+                    {layout.data.map((row, rowIndex) => {
+                        return row.map((col, colIndex) => {
+                            return (
+                                <Grid item key={`${colIndex}-${rowIndex}`} xs={12 / layout.data.length}>
+                                    <Box sx={{ padding: "16px", backgroundColor: "background.paper" }}>
+                                        <BugApiSelect
+                                            value={col.inputIndex}
+                                            options={sourcesArray}
+                                            onChange={(event) =>
+                                                handleSourceChange(col.outputIndex, event.target.value)
+                                            }
+                                            renderItem={(item) => (
+                                                <>
+                                                    <span style={{ fontWeight: 600, marginRight: "0.5rem" }}>
+                                                        {item.id + 1}
+                                                    </span>
+                                                    {item.label}
+                                                </>
+                                            )}
+                                        />
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            <Button
+                                                color={col.audioSelected ? "primary" : "secondary"}
+                                                variant="contained"
+                                                sx={{ margin: "16px 8px 0 0" }}
+                                                onClick={() => handleAudioChange(col.inputIndex)}
                                             >
-                                                <Button
-                                                    color={col.audioSelected ? "primary" : "secondary"}
-                                                    variant="contained"
-                                                    sx={{ margin: "16px 8px 0 0" }}
-                                                    // onClick={() => handleAudioClick}
-                                                >
-                                                    Audio
-                                                </Button>
-                                                <Button
-                                                    color={col.soloSelected ? "primary" : "secondary"}
-                                                    variant="contained"
-                                                    sx={{ margin: "16px 0 0 8px" }}
-                                                    // onClick={handleAudioClick}
-                                                >
-                                                    Solo
-                                                </Button>
-                                            </Box>
+                                                Audio
+                                            </Button>
+                                            <Button
+                                                color={col.soloSelected ? "primary" : "secondary"}
+                                                variant="contained"
+                                                sx={{ margin: "16px 0 0 8px" }}
+                                                onClick={() => handleSoloChange(col.inputIndex, !col.soloSelected)}
+                                            >
+                                                Solo
+                                            </Button>
                                         </Box>
-                                    </Grid>
-                                );
-                            })}
-                        </>
-                    ))}
+                                    </Box>
+                                </Grid>
+                            );
+                        });
+                    })}
                 </Grid>
             </>
         );
