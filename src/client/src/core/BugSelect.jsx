@@ -26,11 +26,12 @@ const BugSelect = ({ disabled = false, fullWidth = true, variant = "outlined", i
                 },
             }}
         >
-            {Object.keys(items).map((key, index) => (
-                <MenuItem key={index} value={key}>
-                    {items[key]}
-                </MenuItem>
-            ))}
+            {items &&
+                Object.keys(items).map((key, index) => (
+                    <MenuItem key={index} value={key}>
+                        {items[key]}
+                    </MenuItem>
+                ))}
         </TextField>
     );
 };
