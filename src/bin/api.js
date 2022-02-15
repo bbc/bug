@@ -53,17 +53,15 @@ bugApi.use(httpLogger);
 bugApi.use(cors());
 bugApi.use(
     helmet.contentSecurityPolicy({
-        reportOnly: true,
+        reportOnly: false,
         directives: {
             "default-src": ["'self'"],
             "base-uri": ["'self'"],
             "block-all-mixed-content": [],
             "font-src": ["'self'", "https:", "http:", "data:"],
             "frame-ancestors": ["'self'"],
-            "img-src": ["'self'", "data:"],
-            "object-src": ["'none'"],
-            "script-src": ["'self'"],
-            "script-src-attr": ["'none'"],
+            "img-src": ["'self'", "data:", "https:"],
+            "object-src": ["none"],
             "style-src": ["'self'", "https:", "http:", "'unsafe-inline'"],
             "upgrade-insecure-requests": [],
         },
