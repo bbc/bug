@@ -7,7 +7,7 @@
     "version": "1.0.0",
     "icon": "mdi-link",
     "author": "Ryan McCartney",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "needsContainer": true,
     "devmounts": [
         "api",

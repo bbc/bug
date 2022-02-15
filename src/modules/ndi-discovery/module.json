@@ -7,10 +7,16 @@
     "version": "1.0.0",
     "icon": "mdi-order-alphabetical-ascending",
     "author": "Ryan McCartney",
-    "license": "NDI",
+    "license": "Apache-2.0",
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
