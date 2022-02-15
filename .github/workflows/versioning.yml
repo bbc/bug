@@ -14,7 +14,6 @@ jobs:
               shell: bash
               run: |
                   cd $RUNNER_WORKSPACE
-                  cd ..
                   rm -r *
             #Get the latest version of the repository
             - name: Checkout
