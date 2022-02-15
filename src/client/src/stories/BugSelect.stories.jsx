@@ -42,6 +42,17 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        renderItem: {
+            type: { name: "function", required: true },
+            description: "An optional callback function to render each item. Takes the item and key as arguments",
+            control: {
+                disable: true,
+            },
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: null },
+            },
+        },
         value: {
             type: { name: "data", required: false },
             defaultValue: "zebra",

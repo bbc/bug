@@ -2,7 +2,15 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-const BugSelect = ({ disabled = false, fullWidth = true, variant = "outlined", items, value, ...props }) => {
+const BugSelect = ({
+    disabled = false,
+    renderItem = false,
+    fullWidth = true,
+    variant = "outlined",
+    items,
+    value,
+    ...props
+}) => {
     return (
         <TextField
             disabled={disabled}
@@ -29,7 +37,7 @@ const BugSelect = ({ disabled = false, fullWidth = true, variant = "outlined", i
             {items &&
                 Object.keys(items).map((key, index) => (
                     <MenuItem key={index} value={key}>
-                        {items[key]}
+                        {renderItem ? renderItem(items[key], key) : items[key]}
                     </MenuItem>
                 ))}
         </TextField>
