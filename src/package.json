@@ -23,7 +23,7 @@
         "url": "git+https://github.com/bbc/bbcnews-bug.git"
     },
     "author": "Geoff House",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/bbc/bbcnews-bug/issues"
     },
