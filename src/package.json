@@ -27,7 +27,7 @@
     "bugs": {
         "url": "https://github.com/bbc/bbcnews-bug/issues"
     },
-    "homepage": "https://github.com/bbc/bbcnews-bug#readme",
+    "homepage": ".",
     "dependencies": {
         "@apidevtools/swagger-parser": "^10.0.3",
         "axios": "^0.24.0",
