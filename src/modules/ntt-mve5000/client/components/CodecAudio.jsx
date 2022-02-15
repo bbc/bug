@@ -17,11 +17,11 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.audio_0_EncAudioFormat}
                                 onChange={(event) => onChange(parseInt(event.target.value), "audio_0_EncAudioFormat")}
-                                items={{
-                                    0: "None",
-                                    1: "MPEG1-L2 Dual Mono",
-                                    2: "MPEG1-L2 Stereo",
-                                }}
+                                options={[
+                                    { id: 0, label: "None" },
+                                    { id: 1, label: "MPEG1-L2 Dual Mono" },
+                                    { id: 2, label: "MPEG1-L2 Stereo" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -31,14 +31,14 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.audio_0_EncAudioRate2Ch}
                                 onChange={(event) => onChange(parseInt(event.target.value), "audio_0_EncAudioRate2Ch")}
-                                items={{
-                                    0: "64kbps",
-                                    1: "96kbps",
-                                    2: "128kbps",
-                                    3: "192kbps",
-                                    4: "256kbps",
-                                    5: "384kbps",
-                                }}
+                                options={[
+                                    { id: 0, label: "64kbps" },
+                                    { id: 1, label: "96kbps" },
+                                    { id: 2, label: "128kbps" },
+                                    { id: 3, label: "192kbps" },
+                                    { id: 4, label: "256kbps" },
+                                    { id: 5, label: "384kbps" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -54,11 +54,11 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.audio_1_EncAudioFormat}
                                 onChange={(event) => onChange(parseInt(event.target.value), "audio_1_EncAudioFormat")}
-                                items={{
-                                    0: "None",
-                                    1: "MPEG1-L2 Dual Mono",
-                                    2: "MPEG1-L2 Stereo",
-                                }}
+                                options={[
+                                    { id: 0, label: "None" },
+                                    { id: 1, label: "MPEG1-L2 Dual Mono" },
+                                    { id: 2, label: "MPEG1-L2 Stereo" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -68,14 +68,14 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.audio_1_EncAudioRate2Ch}
                                 onChange={(event) => onChange(parseInt(event.target.value), "audio_1_EncAudioRate2Ch")}
-                                items={{
-                                    0: "64kbps",
-                                    1: "96kbps",
-                                    2: "128kbps",
-                                    3: "192kbps",
-                                    4: "256kbps",
-                                    5: "384kbps",
-                                }}
+                                options={[
+                                    { id: 0, label: "64kbps" },
+                                    { id: 1, label: "96kbps" },
+                                    { id: 2, label: "128kbps" },
+                                    { id: 3, label: "192kbps" },
+                                    { id: 4, label: "256kbps" },
+                                    { id: 5, label: "384kbps" },
+                                ]}
                             ></BugSelect>
                         ),
                     },

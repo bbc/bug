@@ -2,7 +2,16 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-const BugSelect = ({ disabled = false, fullWidth = true, variant = "outlined", items, value, ...props }) => {
+const BugSelect = ({
+    disabled = false,
+    renderItem = false,
+    fullWidth = true,
+    variant = "outlined",
+    options = [],
+    onChange,
+    value,
+    ...props
+}) => {
     return (
         <TextField
             disabled={disabled}
@@ -10,6 +19,7 @@ const BugSelect = ({ disabled = false, fullWidth = true, variant = "outlined", i
             select
             value={value}
             variant={variant}
+            onChange={onChange}
             {...props}
             sx={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
@@ -26,11 +36,12 @@ const BugSelect = ({ disabled = false, fullWidth = true, variant = "outlined", i
                 },
             }}
         >
-            {Object.keys(items).map((key, index) => (
-                <MenuItem key={index} value={key}>
-                    {items[key]}
-                </MenuItem>
-            ))}
+            {options &&
+                options.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {renderItem ? renderItem(option) : option.label}
+                    </MenuItem>
+                ))}
         </TextField>
     );
 };

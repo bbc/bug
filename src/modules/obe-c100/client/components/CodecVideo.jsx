@@ -26,12 +26,12 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.videoLatency}
                                 onChange={(event) => handleChange({ videoLatency: parseInt(event.target.value) })}
-                                items={{
-                                    1: "Normal",
-                                    3: "Low (PPP)",
-                                    4: "Low (IPP)",
-                                    2: "Lowest",
-                                }}
+                                options={[
+                                    { id: 1, label: "Normal" },
+                                    { id: 3, label: "Low (PPP)" },
+                                    { id: 4, label: "Low (IPP)" },
+                                    { id: 2, label: "Lowest" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -41,11 +41,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.videoAvcProfile}
                                 onChange={(event) => handleChange({ videoAvcProfile: parseInt(event.target.value) })}
-                                items={{
-                                    1: "Main",
-                                    2: "High",
-                                    3: "High 4:2:2",
-                                }}
+                                options={[
+                                    { id: 1, label: "Main" },
+                                    { id: 2, label: "High" },
+                                    { id: 3, label: "High 4:2:2" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -104,11 +104,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                                 disabled={codecdata?.videoLatency > 1}
                                 value={codecdata?.videoBFrames}
                                 onChange={(event) => handleChange({ videoBFrames: parseInt(event.target.value) })}
-                                items={{
-                                    0: "0",
-                                    1: "1",
-                                    2: "2",
-                                }}
+                                options={[
+                                    { id: 0, label: "0" },
+                                    { id: 1, label: "1" },
+                                    { id: 2, label: "2" },
+                                ]}
                             ></BugSelect>
                         ),
                     },

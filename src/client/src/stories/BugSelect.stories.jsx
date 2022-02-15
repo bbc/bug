@@ -33,10 +33,26 @@ export default {
                 defaultValue: { summary: true },
             },
         },
-        items: {
+        options: {
             type: { name: "data", required: true },
-            description: "An array of available values to be selected",
-            defaultValue: { zebra: "Zebra", caterpillar: "Caterpillar", horse: "Horse" },
+            description: "An object array of available values. Each item must have an id and a label property.",
+            defaultValue: [
+                { id: "zebra", label: "Zebra" },
+                { id: "caterpillar", label: "Caterpillar" },
+                { id: "horse", label: "Horse" },
+            ],
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: null },
+            },
+        },
+        renderItem: {
+            type: { name: "function", required: true },
+            description:
+                "An optional callback function to render each item. Passes the item object (containing ID and label properties) as the first argument.",
+            control: {
+                disable: true,
+            },
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
@@ -46,7 +62,7 @@ export default {
             type: { name: "data", required: false },
             defaultValue: "zebra",
             description:
-                "The selected value when the control is loaded. This should be a valid ID listed in the items array.",
+                "The selected value when the control is loaded. This should be a valid ID listed in the options array.",
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },

@@ -17,6 +17,15 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em" }}>{Story()}</div>],
 
     argTypes: {
+        contentProps: {
+            type: { name: "data", required: false },
+            defaultValue: {},
+            description: "An object containing props to pass to the MUI Paper component which wraps the content",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
         onClose: {
             type: { name: "function", required: true },
             defaultValue: null,

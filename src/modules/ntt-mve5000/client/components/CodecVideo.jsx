@@ -17,11 +17,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.InputInterfaceVideo}
                                 onChange={(event) => onChange(parseInt(event.target.value), "InputInterfaceVideo")}
-                                items={{
-                                    0: "SDI",
-                                    1: "HDMI",
-                                    2: "Analog",
-                                }}
+                                options={[
+                                    { id: 0, label: "SDI" },
+                                    { id: 1, label: "HDMI" },
+                                    { id: 2, label: "Analog" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -32,32 +32,32 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                                 disabled={true}
                                 value={codecdata?.InputVideoFormat}
                                 onChange={(event) => onChange(parseInt(event.target.value), "InputVideoFormat")}
-                                items={{
-                                    0: "1080i29",
-                                    1: "1080i25",
-                                    2: "1080p24",
-                                    3: "720p59",
-                                    4: "1035i29",
-                                    5: "720p50",
-                                    6: "480i29",
-                                    9: "576i25",
-                                    10: "480p59",
-                                    11: "VGA",
-                                    12: "576p50",
-                                    16: "1080i30",
-                                    17: "720p60",
-                                    18: "1035i30",
-                                    19: "480i30",
-                                    20: "480p60",
-                                    21: "1080p30",
-                                    22: "1080p29",
-                                    23: "1080p60",
-                                    24: "1080p59",
-                                    25: "1080p23",
-                                    26: "1080p25",
-                                    27: "1080p50",
-                                    255: "No Signal",
-                                }}
+                                options={[
+                                    { id: 0, label: "1080i29" },
+                                    { id: 1, label: "1080i25" },
+                                    { id: 2, label: "1080p24" },
+                                    { id: 3, label: "720p59" },
+                                    { id: 4, label: "1035i29" },
+                                    { id: 5, label: "720p50" },
+                                    { id: 6, label: "480i29" },
+                                    { id: 9, label: "576i25" },
+                                    { id: 10, label: "480p59" },
+                                    { id: 11, label: "VGA" },
+                                    { id: 12, label: "576p50" },
+                                    { id: 16, label: "1080i30" },
+                                    { id: 17, label: "720p60" },
+                                    { id: 18, label: "1035i30" },
+                                    { id: 19, label: "480i30" },
+                                    { id: 20, label: "480p60" },
+                                    { id: 21, label: "1080p30" },
+                                    { id: 22, label: "1080p29" },
+                                    { id: 23, label: "1080p60" },
+                                    { id: 24, label: "1080p59" },
+                                    { id: 25, label: "1080p23" },
+                                    { id: 26, label: "1080p25" },
+                                    { id: 27, label: "1080p50" },
+                                    { id: 255, label: "No Signal" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -69,10 +69,10 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                                 onChange={(event) =>
                                     onChange(parseInt(event.target.value), "InputVideoSignalUndetected")
                                 }
-                                items={{
-                                    0: "Show last frame",
-                                    1: "Blue screen",
-                                }}
+                                options={[
+                                    { id: 0, label: "Show last frame" },
+                                    { id: 1, label: "Blue screen" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -135,13 +135,13 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.InputSuperimposeFontSize}
                                 onChange={(event) => onChange(parseInt(event.target.value), "InputSuperimposeFontSize")}
-                                items={{
-                                    0: "Minimum",
-                                    1: "Small",
-                                    2: "Medium",
-                                    3: "Large",
-                                    4: "Maximum",
-                                }}
+                                options={[
+                                    { id: 0, label: "Minimum" },
+                                    { id: 1, label: "Small" },
+                                    { id: 2, label: "Medium" },
+                                    { id: 3, label: "Large" },
+                                    { id: 4, label: "Maximum" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -151,14 +151,14 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.InputSuperimposeEffect}
                                 onChange={(event) => onChange(parseInt(event.target.value), "InputSuperimposeEffect")}
-                                items={{
-                                    0: "0%",
-                                    1: "25%",
-                                    2: "50%",
-                                    3: "75%",
-                                    4: "100%",
-                                    5: "100% + border",
-                                }}
+                                options={[
+                                    { id: 0, label: "0%" },
+                                    { id: 1, label: "25%" },
+                                    { id: 2, label: "50%" },
+                                    { id: 3, label: "75%" },
+                                    { id: 4, label: "100%" },
+                                    { id: 5, label: "100% + border" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -174,11 +174,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.EncLatencyMode}
                                 onChange={(event) => onChange(parseInt(event.target.value), "EncLatencyMode")}
-                                items={{
-                                    0: "Standard",
-                                    1: "Low",
-                                    2: "Super Low",
-                                }}
+                                options={[
+                                    { id: 0, label: "Standard" },
+                                    { id: 1, label: "Low" },
+                                    { id: 2, label: "Super Low" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -188,10 +188,10 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.EncVideoProfileLevel}
                                 onChange={(event) => onChange(parseInt(event.target.value), "EncVideoProfileLevel")}
-                                items={{
-                                    1: "Main",
-                                    3: "High",
-                                }}
+                                options={[
+                                    { id: 0, label: "Main" },
+                                    { id: 3, label: "High" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -201,26 +201,26 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.EncVideoFormat}
                                 onChange={(event) => onChange(parseInt(event.target.value), "EncVideoFormat")}
-                                items={{
-                                    0: "1920x1080i29",
-                                    1: "1440x1080i29",
-                                    2: "1280x1080i29",
-                                    3: "960x1080i29",
-                                    4: "1920x1080i25",
-                                    5: "1440x1080i25",
-                                    6: "1280x1080i25",
-                                    7: "960x1080i25",
-                                    8: "1280x720p59",
-                                    9: "960x720p59",
-                                    10: "640x720p59",
-                                    11: "1280x720p50",
-                                    12: "960x720p50",
-                                    13: "640x720p50",
-                                    14: "720x480i29",
-                                    18: "352x480i29",
-                                    19: "720x576i25",
-                                    23: "352x576i25",
-                                }}
+                                options={[
+                                    { id: 0, label: "1920x1080i29" },
+                                    { id: 1, label: "1440x1080i29" },
+                                    { id: 2, label: "1280x1080i29" },
+                                    { id: 3, label: "960x1080i29" },
+                                    { id: 4, label: "1920x1080i25" },
+                                    { id: 5, label: "1440x1080i25" },
+                                    { id: 6, label: "1280x1080i25" },
+                                    { id: 7, label: "960x1080i25" },
+                                    { id: 8, label: "1280x720p59" },
+                                    { id: 9, label: "960x720p59" },
+                                    { id: 10, label: "640x720p59" },
+                                    { id: 11, label: "1280x720p50" },
+                                    { id: 12, label: "960x720p50" },
+                                    { id: 13, label: "640x720p50" },
+                                    { id: 14, label: "720x480i29" },
+                                    { id: 18, label: "352x480i29" },
+                                    { id: 19, label: "720x576i25" },
+                                    { id: 23, label: "352x576i25" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
