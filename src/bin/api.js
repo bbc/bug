@@ -70,7 +70,7 @@ bugApi.use(
     })
 );
 
-bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "favicon.ico")));
+bugApi.use(favicon(path.join(__dirname, "..", "client", "public", "icons", "favicon.ico")));
 bugApi.use(
     fileUpload({
         useTempFiles: true,
