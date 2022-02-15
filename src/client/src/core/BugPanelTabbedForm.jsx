@@ -8,7 +8,7 @@ import BugCard from "@core/BugCard";
 import { useHistory, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-export default function BugPanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0 }) {
+export default function BugPanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0, contentProps = {} }) {
     const [tabIndex, setTabIndex] = React.useState(false);
     const history = useHistory();
     const location = useLocation();
@@ -98,7 +98,7 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
                     className={`tabSpacer`}
                 />
             </div>
-            <BugCard>
+            <BugCard {...contentProps}>
                 {content
                     ? content.map((content, index) => (
                           <TabPanel key={index} value={tabIndex} index={index}>
