@@ -55,6 +55,8 @@ bugApi.use(
     helmet.contentSecurityPolicy({
         reportOnly: true,
         directives: {
+            upgradeInsecureRequests: null,
+            scriptSrc: ["'self'", "'unsafe-inline'"],
             "default-src": ["'self'"],
             "base-uri": ["'self'"],
             "block-all-mixed-content": [],
