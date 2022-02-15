@@ -31,6 +31,7 @@ jobs:
             #Get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
             #Get the package.json version
             - uses: martinbeentjes/npm-get-version-action@master
               name: Get Backend Version
@@ -82,9 +83,3 @@ jobs:
                       uk.co.bbc.bug.build.branch=${{github.ref_name}}
                       uk.co.bbc.bug.build.commit=${{github.sha}}
                       uk.co.bbc.bug.build.repository=${{github.repository}}
-            - name: Clean working directory
-              shell: bash
-              run: |
-                  cd $RUNNER_WORKSPACE
-                  cd ..
-                  rm -r *
