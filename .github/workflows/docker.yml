@@ -25,9 +25,9 @@ jobs:
                 working-directory: ./src
         steps:
             - name: Set current date and time as an environment variable
-              run: echo "timestamp::$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+              run: echo "timestamp=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
             - name: Print current date and time
-              run: echo $timestamp
+              run: echo ${{ env.timestamp }}
             #Get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v2
