@@ -7,7 +7,8 @@ const BugSelect = ({
     renderItem = false,
     fullWidth = true,
     variant = "outlined",
-    items,
+    options = [],
+    onChange,
     value,
     ...props
 }) => {
@@ -18,6 +19,7 @@ const BugSelect = ({
             select
             value={value}
             variant={variant}
+            onChange={onChange}
             {...props}
             sx={{
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
@@ -34,10 +36,10 @@ const BugSelect = ({
                 },
             }}
         >
-            {items &&
-                Object.keys(items).map((key, index) => (
-                    <MenuItem key={index} value={key}>
-                        {renderItem ? renderItem(items[key], key) : items[key]}
+            {options &&
+                options.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {renderItem ? renderItem(option) : option.label}
                     </MenuItem>
                 ))}
         </TextField>

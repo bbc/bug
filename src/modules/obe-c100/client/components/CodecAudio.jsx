@@ -17,12 +17,12 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                             <BugSelect
                                 value={audioData?.audioFormat}
                                 onChange={(event) => onChange({ audioFormat: parseInt(event.target.value) })}
-                                items={{
-                                    1: "MPEG-1 Layer 2",
-                                    2: "MPEG-4 AAC-LC",
-                                    3: "Opus",
-                                    4: "SMPTE 302M",
-                                }}
+                                options={[
+                                    { id: 1, label: "MPEG-1 Layer 2" },
+                                    { id: 2, label: "MPEG-4 AAC-LC" },
+                                    { id: 3, label: "Opus" },
+                                    { id: 4, label: "SMPTE 302M" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -32,12 +32,12 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                             <BugSelect
                                 value={audioData?.audioChannelMap}
                                 onChange={(event) => onChange({ audioChannelMap: parseInt(event.target.value) })}
-                                items={{
-                                    1: "Mono",
-                                    2: "Stereo",
-                                    3: "5.0",
-                                    4: "5.1",
-                                }}
+                                options={[
+                                    { id: 1, label: "Mono" },
+                                    { id: 2, label: "Stereo" },
+                                    { id: 3, label: "5.0" },
+                                    { id: 4, label: "5.1" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -47,17 +47,17 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                             <BugSelect
                                 value={audioData?.audioBitrate}
                                 onChange={(event) => onChange({ audioBitrate: parseInt(event.target.value) })}
-                                items={{
-                                    96: "96kbps",
-                                    112: "112kbps",
-                                    128: "128kbps",
-                                    160: "160kbps",
-                                    192: "192kbps",
-                                    224: "224kbps",
-                                    256: "256kbps",
-                                    320: "320kbps",
-                                    384: "384kbps",
-                                }}
+                                options={[
+                                    { id: 96, label: "96kbps" },
+                                    { id: 112, label: "112kbps" },
+                                    { id: 128, label: "128kbps" },
+                                    { id: 160, label: "160kbps" },
+                                    { id: 192, label: "192kbps" },
+                                    { id: 224, label: "224kbps" },
+                                    { id: 256, label: "256kbps" },
+                                    { id: 320, label: "320kbps" },
+                                    { id: 384, label: "384kbps" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -67,16 +67,16 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                             <BugSelect
                                 value={audioData?.audioSdiPair}
                                 onChange={(event) => onChange({ audioSdiPair: parseInt(event.target.value) })}
-                                items={{
-                                    1: "1",
-                                    2: "2",
-                                    3: "3",
-                                    4: "4",
-                                    5: "5",
-                                    6: "6",
-                                    7: "7",
-                                    8: "8",
-                                }}
+                                options={[
+                                    { id: 1, label: "1" },
+                                    { id: 2, label: "2" },
+                                    { id: 3, label: "3" },
+                                    { id: 4, label: "4" },
+                                    { id: 5, label: "5" },
+                                    { id: 6, label: "6" },
+                                    { id: 7, label: "7" },
+                                    { id: 8, label: "8" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -87,12 +87,12 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                                 value={audioData?.audioMp2Mode}
                                 disabled={audioData?.audioFormat !== 1}
                                 onChange={(event) => onChange({ audioMp2Mode: parseInt(event.target.value) })}
-                                items={{
-                                    1: "Auto",
-                                    2: "Stereo",
-                                    3: "Joint Stereo",
-                                    4: "Dual Channel",
-                                }}
+                                options={[
+                                    { id: 1, label: "Auto" },
+                                    { id: 2, label: "Stereo" },
+                                    { id: 3, label: "Joint Stereo" },
+                                    { id: 4, label: "Dual Channel" },
+                                ]}
                             ></BugSelect>
                         ),
                     },

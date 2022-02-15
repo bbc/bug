@@ -58,15 +58,15 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                             <BugSelect
                                 value={codecdata?.inputDeviceType}
                                 onChange={(event) => onChange({ inputDeviceType: parseInt(event.target.value) })}
-                                items={{
-                                    1: "SDI",
-                                    2: "Bars and Tone",
-                                    3: "SMPTE 2022-6",
-                                    4: "SMPTE 2022-7",
-                                    5: "SMPTE 2110 (Dual)",
-                                    6: "SMPTE 2110",
-                                    7: "OBE SDI",
-                                }}
+                                options={[
+                                    { id: 1, label: "SDI" },
+                                    { id: 2, label: "Bars and Tone" },
+                                    { id: 3, label: "SMPTE 2022-6" },
+                                    { id: 4, label: "SMPTE 2022-7" },
+                                    { id: 5, label: "SMPTE 2110 (Dual)" },
+                                    { id: 6, label: "SMPTE 2110" },
+                                    { id: 7, label: "OBE SDI" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -77,12 +77,12 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                                 disabled={codecdata?.inputDeviceType !== 1 && codecdata?.inputDeviceType !== 7}
                                 value={codecdata?.inputCardidx}
                                 onChange={(event) => onChange({ inputCardidx: parseInt(event.target.value) })}
-                                items={{
-                                    0: "Input 0",
-                                    1: "Input 1",
-                                    2: "Input 2",
-                                    3: "Input 3",
-                                }}
+                                options={[
+                                    { id: 0, label: "Input 0" },
+                                    { id: 1, label: "Input 1" },
+                                    { id: 2, label: "Input 2" },
+                                    { id: 3, label: "Input 3" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -98,17 +98,17 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                                     value={codecdata?.inputVideoFormat}
                                     disabled={isDetecting}
                                     onChange={(event) => onChange({ inputVideoFormat: parseInt(event.target.value) })}
-                                    items={{
-                                        1: "625i (PAL)",
-                                        2: "480i (NTSC)",
-                                        3: "720p50",
-                                        4: "720p59.94",
-                                        5: "1080i50",
-                                        6: "1080i59.94",
-                                        7: "1080p23.98",
-                                        8: "1080p24",
-                                        9: "1080p25",
-                                    }}
+                                    options={[
+                                        { id: 1, label: "625i (PAL)" },
+                                        { id: 2, label: "480i (NTSC)" },
+                                        { id: 3, label: "720p50" },
+                                        { id: 4, label: "720p59.94" },
+                                        { id: 5, label: "1080i50" },
+                                        { id: 6, label: "1080i59.94" },
+                                        { id: 7, label: "1080p23.98" },
+                                        { id: 8, label: "1080p24" },
+                                        { id: 9, label: "1080p25" },
+                                    ]}
                                 ></BugSelect>
                                 <IconButton
                                     sx={{ marginLeft: "4px", width: "48px" }}
@@ -128,12 +128,12 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                                 onChange={(event) =>
                                     onChange({ inputPictureOnSignalLoss: parseInt(event.target.value) })
                                 }
-                                items={{
-                                    1: "Stop Streaming",
-                                    2: "Bars and Tone",
-                                    3: "Last good frame",
-                                    4: "Black",
-                                }}
+                                options={[
+                                    { id: 1, label: "Stop Streaming" },
+                                    { id: 2, label: "Bars and Tone" },
+                                    { id: 3, label: "Last good frame" },
+                                    { id: 4, label: "Black" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -152,10 +152,10 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                             <BugSelect
                                 value={codecdata?.inputSDDownscale}
                                 onChange={(event) => onChange({ inputSDDownscale: parseInt(event.target.value) })}
-                                items={{
-                                    1: "Disabled",
-                                    2: "Fast",
-                                }}
+                                options={[
+                                    { id: 1, label: "Disabled" },
+                                    { id: 2, label: "Fast" },
+                                ]}
                             ></BugSelect>
                         ),
                     },

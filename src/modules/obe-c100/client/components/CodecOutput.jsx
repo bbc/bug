@@ -38,11 +38,11 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                             <BugSelect
                                 value={outputData?.outputMethod}
                                 onChange={(event) => handleChange({ outputMethod: parseInt(event.target.value) })}
-                                items={{
-                                    1: "UDP",
-                                    2: "RTP",
-                                    3: "RIST/ARQ",
-                                }}
+                                options={[
+                                    { id: 1, label: "UDP" },
+                                    { id: 2, label: "RTP" },
+                                    { id: 3, label: "RIST/ARQ" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -88,10 +88,10 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                             <BugSelect
                                 value={outputData?.outputTOS}
                                 onChange={(event) => handleChange({ outputTOS: parseInt(event.target.value) })}
-                                items={{
-                                    0: "None",
-                                    26: "DSCP 26",
-                                }}
+                                options={[
+                                    { id: 0, label: "None" },
+                                    { id: 26, label: "DSCP 26" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -101,10 +101,10 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                             <BugSelect
                                 value={outputData?.outputFecType}
                                 onChange={(event) => handleChange({ outputFecType: parseInt(event.target.value) })}
-                                items={{
-                                    1: "None",
-                                    2: "FEC",
-                                }}
+                                options={[
+                                    { id: 1, label: "None" },
+                                    { id: 2, label: "FEC" },
+                                ]}
                             ></BugSelect>
                         ),
                     },

@@ -32,10 +32,10 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                 onChange={(event) =>
                                     onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamProtocol`)
                                 }
-                                items={{
-                                    0: "RTP",
-                                    1: "UDP",
-                                }}
+                                options={[
+                                    { id: 0, label: "RTP" },
+                                    { id: 1, label: "UDP" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -89,10 +89,10 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                 onChange={(event) =>
                                     onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamOutputIpv4Tos`)
                                 }
-                                items={{
-                                    0: "None",
-                                    104: "DSCP 26",
-                                }}
+                                options={[
+                                    { id: 0, label: "None" },
+                                    { id: 104, label: "DSCP 26" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -107,12 +107,12 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                         `outputs_${outputIndex}_StreamTransmitInterface`
                                     )
                                 }
-                                items={{
-                                    0: "GbE",
-                                    1: "FE",
-                                    2: "PPPoE1",
-                                    3: "PPPoE2",
-                                }}
+                                options={[
+                                    { id: 0, label: "GbE" },
+                                    { id: 1, label: "FE" },
+                                    { id: 2, label: "PPPoE1" },
+                                    { id: 3, label: "PPPoE2" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
@@ -127,11 +127,11 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                                         `outputs_${outputIndex}_StreamErrorCorrectionMode`
                                     )
                                 }
-                                items={{
-                                    0: "None",
-                                    1: "FEC",
-                                    2: "ARQ",
-                                }}
+                                options={[
+                                    { id: 0, label: "None" },
+                                    { id: 1, label: "FEC" },
+                                    { id: 2, label: "ARQ" },
+                                ]}
                             ></BugSelect>
                         ),
                     },
