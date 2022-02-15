@@ -10,7 +10,7 @@ import { useAlert } from "@utils/Snackbar";
 import AxiosGet from "@utils/AxiosGet";
 
 export default function CodecInput({ codecdata, onChange, showAdvanced, panelId }) {
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const [isDetecting, setIsDetecting] = React.useState(false);
 
     const handleDetect = async () => {

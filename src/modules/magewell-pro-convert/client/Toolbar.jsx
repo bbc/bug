@@ -14,7 +14,7 @@ export default function Toolbar(props) {
     let toolbarProps = { ...props };
     const panelStatus = usePanelStatus();
     const panelConfig = useSelector((state) => state.panelConfig);
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(props?.panelId);
 
     toolbarProps["onClick"] = null;
 

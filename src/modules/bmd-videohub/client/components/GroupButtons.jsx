@@ -28,7 +28,7 @@ import {
 } from "@dnd-kit/sortable";
 
 export default function GroupButtons({ panelId, editMode = false, groupType, buttons, onChange }) {
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const history = useHistory();
     const params = useParams();
     const sourceGroup = params.sourceGroup ?? 0;

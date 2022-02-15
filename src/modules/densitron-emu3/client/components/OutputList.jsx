@@ -13,7 +13,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function OutputList({ panelId, deviceIndex }) {
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
 
     const handleRenameClicked = async (event, item) => {

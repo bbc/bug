@@ -5,7 +5,7 @@ import { useAlert } from "@utils/Snackbar";
 import AxiosPost from "@utils/AxiosPost";
 
 export default function SourceSelector({ panelId, currentSource }) {
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
 
     const sources = useApiPoller({
         url: `/container/${panelId}/source/list`,

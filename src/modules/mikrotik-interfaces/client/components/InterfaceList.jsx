@@ -18,7 +18,7 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 
 export default function InterfaceList({ panelId }) {
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
 

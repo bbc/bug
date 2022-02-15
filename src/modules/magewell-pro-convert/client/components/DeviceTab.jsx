@@ -13,7 +13,7 @@ import BugDetailsTable from "@core/BugDetailsTable";
 import TimeAgo from "javascript-time-ago";
 
 export default function DeviceTab({ panelId }) {
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
     const timeAgo = new TimeAgo("en-GB");
 

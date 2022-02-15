@@ -26,7 +26,7 @@ export default function MainPanel() {
     const params = useParams();
     const panelConfig = useSelector((state) => state.panelConfig);
 
-    const sendAlert = useAlert();
+    const sendAlert = useAlert(params?.panelId);
     const { renameDialog } = useBugRenameDialog();
 
     if (panelConfig.status === "idle" || panelConfig.status === "loading") {
