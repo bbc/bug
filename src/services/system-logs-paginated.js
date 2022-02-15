@@ -10,12 +10,17 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, p
         if (filters["level"]) {
             dbFilters["level"] = filters["level"];
         }
+        if (filters["meta"]) {
+            dbFilters["meta"] = { panelId: filters["meta"] };
+        }
         if (filters["message"]) {
             dbFilters["message"] = { $regex: filters["message"], $options: "i" };
         }
         if (filters["timestamp"]) {
             dbFilters["timestamp"] = { $gte: new Date(Date.now() - filters["timestamp"] * 1000) };
         }
+
+        console.log(dbFilters);
 
         const logs = await logsModel.pagination(dbFilters, pageNumber, numberPerPage);
 

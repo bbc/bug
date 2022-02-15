@@ -266,8 +266,8 @@ router.post(
                 req.body.sortField,
                 req.body.sortDirection,
                 req.body.filters,
-                req.body.nPerPage,
-                req.params.page
+                req.params.page,
+                req.body.nPerPage
             ),
         });
     })

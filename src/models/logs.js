@@ -28,7 +28,7 @@ exports.pagination = async function (filter, pageNumber, nPerPage) {
                 .find(filter)
                 .sort({ _id: 1 })
                 .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
-                .limit(nPerPage)
+                .limit(parseInt(nPerPage))
                 .toArray();
             if (result) {
                 return result;

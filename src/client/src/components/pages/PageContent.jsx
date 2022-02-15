@@ -175,6 +175,13 @@ const PageContent = () => {
                                 </BugScrollbars>
                             </StyledPageContent>
                         </Route>
+                        <Route exact path="/system/logs/:panelId">
+                            <StyledPageContent>
+                                <BugScrollbars>
+                                    <PageSystemLogs />
+                                </BugScrollbars>
+                            </StyledPageContent>
+                        </Route>
                         <Route exact path="/system/about">
                             <StyledPageContent>
                                 <BugScrollbars>

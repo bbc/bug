@@ -10,6 +10,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         if (filters["level"]) {
             dbFilters["level"] = filters["level"];
         }
+        if (filters["meta"]) {
+            dbFilters["meta"] = { panelId: filters["meta"] };
+        }
         if (filters["message"]) {
             dbFilters["message"] = { $regex: filters["message"], $options: "i" };
         }
