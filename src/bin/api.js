@@ -55,17 +55,16 @@ bugApi.use(
     helmet.contentSecurityPolicy({
         reportOnly: true,
         directives: {
-            "default-src": ["'self'"],
+            upgradeInsecureRequests: null,
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "https:", "http:", "'unsafe-inline'"],
+            defaultSrc: ["'self'"],
             "base-uri": ["'self'"],
             "block-all-mixed-content": [],
             "font-src": ["'self'", "https:", "http:", "data:"],
             "frame-ancestors": ["'self'"],
-            "img-src": ["'self'", "data:"],
+            "img-src": ["'self'", "data:", "https:"],
             "object-src": ["'none'"],
-            "script-src": ["'self'"],
-            "script-src-attr": ["'none'"],
-            "style-src": ["'self'", "https:", "http:", "'unsafe-inline'"],
-            "upgrade-insecure-requests": [],
         },
     })
 );

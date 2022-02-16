@@ -9,7 +9,7 @@
     "icon": "SettingsEthernet",
     "notes": "",
     "author": "Geoff House",
-    "license": "Apache-2.0",
+    "license": "GPLv3",
     "needsContainer": true,
     "devmounts": [
         "api",

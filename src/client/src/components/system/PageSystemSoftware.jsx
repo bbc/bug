@@ -193,6 +193,39 @@ export default function PageSystemBackup() {
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard title="Changelogs" width="12rem" items={[]} />
                 </Grid>
+
+                <Grid item lg={6} xs={12}>
+                    <BugDetailsCard
+                        title="Developer"
+                        width="12rem"
+                        items={[
+                            {
+                                name: "Documentation",
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) =>
+                                            openWebpage(event, `https://laughing-journey-961a0bed.pages.github.io/`)
+                                        }
+                                        color="secondary"
+                                    >
+                                        bug.bbc.pages.github.io
+                                    </BugTableLinkButton>
+                                ),
+                            },
+                            {
+                                name: "API Documentation",
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) => openWebpage(event, `/documentation`)}
+                                        color="secondary"
+                                    >
+                                        /documentation
+                                    </BugTableLinkButton>
+                                ),
+                            },
+                        ]}
+                    />
+                </Grid>
             </Grid>
         </>
     );

@@ -10,7 +10,7 @@
     "protectedRoutes": [
         "config"
     ],
-    "license": "Apache-2.0",
+    "license": "GPLv3",
     "defaultconfig": {
         "id": "",
         "order": 0,

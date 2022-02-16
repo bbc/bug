@@ -9,21 +9,19 @@ const logName = process.env.BUG_LOG_NAME || "bug";
 const databaseName = process.env.BUG_CONTAINER || "bug";
 
 let logLevel = process.env.BUG_LOG_LEVEL || "debug";
-logLevel = logLevel.toLowerCase();
 
-async function getSettings() {
+const getLogLevel = async () => {
+    let logLevel;
     const filename = path.join(__dirname, "..", "config", "global", "settings.json");
-    const defaultFilename = path.join(__dirname, "..", "config", "default", "settings.json");
     try {
-        return await readJson(filename);
+        const settings = await readJson(filename);
+        logLevel = settings?.logLevel;
     } catch (error) {
-        const contents = await readJson(defaultFilename);
-        if (await writeJson(filename, contents)) {
-            return contents;
-        }
+        logLevel = process.env.BUG_LOG_LEVEL || "debug";
         throw error;
     }
-}
+    return logLevel.toLowerCase();
+};
 
 const customLevels = {
     levels: {
@@ -54,7 +52,6 @@ const customLogFormat = winston.format.combine(
 winston.addColors(customLevels.colors);
 
 const loggerInstance = winston.createLogger({
-    level: logLevel,
     levels: customLevels.levels,
     handleExceptions: false,
     transports: [
