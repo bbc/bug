@@ -23,9 +23,9 @@ module.exports = async () => {
     const sources = await sourceList();
     const routes = await routeList();
 
-    if (deviceConfig && sourceList && routes) {
-        const colCount = parseInt(deviceConfig?.layout.substring(0, 1));
-        const rowCount = parseInt(deviceConfig?.layout.substring(2, 3));
+    if (deviceConfig && sourceList && routes && deviceConfig.layout) {
+        const colCount = parseInt(deviceConfig?.layout?.substring(0, 1));
+        const rowCount = parseInt(deviceConfig?.layout?.substring(2, 3));
 
         // loop through colCount
         let cellIndex = 0;

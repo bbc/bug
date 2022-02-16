@@ -12,6 +12,7 @@ const deviceConfigRouter = require("@routes/deviceconfig");
 const sourceRouter = require("@routes/source");
 const layoutRouter = require("@routes/layout");
 const destinationRouter = require("@routes/destination");
+const labelRouter = require("@routes/label");
 
 let app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/deviceconfig", deviceConfigRouter);
 app.use("/api/source", sourceRouter);
 app.use("/api/layout", layoutRouter);
 app.use("/api/destination", destinationRouter);
+app.use("/api/label", labelRouter);
 
 app.use("*", defaultRouter);
 

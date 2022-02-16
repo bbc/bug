@@ -3,7 +3,7 @@
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
 
-module.exports = async (name, value) => {
+module.exports = async (inputIndex, label) => {
     let config;
     try {
         config = await configGet();
@@ -11,17 +11,17 @@ module.exports = async (name, value) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`deviceconfig-set: failed to fetch config`);
+        console.log(`label-set: failed to fetch config`);
         return false;
     }
 
     try {
         const router = new videohub({ port: config.port, host: config.address });
         await router.connect();
-        await router.send("CONFIGURATION", `${name}: ${value}`);
+        await router.send("INPUT LABELS", `${inputIndex} ${label}`, true);
         return true;
     } catch (error) {
-        console.log("deviceconfig-set: ", error);
+        console.log("label-set: ", error);
         return false;
     }
 };

@@ -22,6 +22,8 @@
         "enabled": false,
         "address": "",
         "port": "9990",
-        "labelSource": ""
+        "autoLabelSource": null,
+        "autoLabelEnabled": [],
+        "autoLabelIndex": {}
     }
 }
