@@ -57,14 +57,14 @@ bugApi.use(
         directives: {
             upgradeInsecureRequests: null,
             scriptSrc: ["'self'", "'unsafe-inline'"],
-            "default-src": ["'self'"],
+            styleSrc: ["'self'", "https:", "http:", "'unsafe-inline'"],
+            defaultSrc: ["'self'"],
             "base-uri": ["'self'"],
             "block-all-mixed-content": [],
             "font-src": ["'self'", "https:", "http:", "data:"],
             "frame-ancestors": ["'self'"],
             "img-src": ["'self'", "data:", "https:"],
             "object-src": ["'none'"],
-            "style-src": ["'self'", "https:", "http:", "'unsafe-inline'"],
         },
     })
 );

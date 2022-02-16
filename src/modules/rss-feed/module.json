@@ -7,7 +7,7 @@
     "version": "1.0.0",
     "icon": "mdi-rss-box",
     "author": "Ryan McCartney",
-    "license": "Apache-2.0",
+    "license": "GPLv3",
     "needsContainer": true,
     "devmounts": [
         "api",
