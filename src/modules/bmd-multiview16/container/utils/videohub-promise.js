@@ -43,7 +43,7 @@ Router.prototype.connect = function () {
     });
 };
 
-Router.prototype.send = function (field, command) {
+Router.prototype.send = function (field, command, log = false) {
     const instance = this;
 
     return new Promise((resolve, reject) => {
@@ -53,6 +53,9 @@ Router.prototype.send = function (field, command) {
                 message += `${command}\n\n`;
             } else {
                 message += `\n`;
+            }
+            if (log) {
+                console.log(`videohub-promise: sending ${JSON.stringify(message)}`);
             }
             instance.socket.write(message, () => {
                 setTimeout(() => {
