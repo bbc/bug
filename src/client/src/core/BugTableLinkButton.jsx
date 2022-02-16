@@ -19,7 +19,7 @@ export default function BugTableLinkButton({ children, disabled = false, onClick
                 maxWidth: "100%",
                 textAlign: "left",
                 margin: "1px 0px",
-                opacity: disabled ? 0.3 : 1,
+                opacity: disabled ? 0.4 : 1,
                 textDecoration: "none",
                 "&:hover": {
                     textDecoration: disabled ? "none" : "underline",
