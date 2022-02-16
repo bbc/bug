@@ -12,7 +12,6 @@ module.exports = async (inputIndex, state) => {
     if (!config.autoLabelEnabled) {
         config.autoLabelEnabled = [];
     }
-
     if (state) {
         if (config.autoLabelEnabled.includes(inputIndex)) {
             console.log(`label-setauto: input ${inputIndex} already enabled`);

@@ -1,13 +1,12 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
-import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -81,6 +80,23 @@ export default function ConfigPanel() {
                         onChange={(event) => validateServer(event, "port", ["address"])}
                         type="text"
                         label="Device Port"
+                    />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <BugConfigFormSelect
+                        name="autolayout"
+                        control={control}
+                        fullWidth
+                        error={errors?.autolayout}
+                        defaultValue={panelConfig?.data?.autolayout}
+                        rules={{ required: false }}
+                        label="Auto layout"
+                        helperText="Automatically routes inputs to ouputs when the layout changes"
+                        items={{
+                            none: "None",
+                            uk: "UK Layout (rows then columns)",
+                            us: "US Layout (columns then rows)",
+                        }}
                     />
                 </Grid>
             </BugConfigWrapper>

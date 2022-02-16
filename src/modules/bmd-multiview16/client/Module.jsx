@@ -11,11 +11,11 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </Route>
-            <Route exact path="/panel/:panelId/:tab">
-                <MainPanel {...props} />
-            </Route>
             <Route exact path="/panel/:panelId/config">
                 <ConfigPanel {...props} />
+            </Route>
+            <Route exact path="/panel/:panelId/display/:tab">
+                <MainPanel {...props} />
             </Route>
         </BugModuleWrapper>
     );

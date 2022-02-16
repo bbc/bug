@@ -9,7 +9,11 @@ export default function MainPanel({ panelId }) {
         <>
             <BugPanelTabbedForm
                 labels={["Layout", "Labels", "Config"]}
-                locations={[`/panel/${panelId}/layout`, `/panel/${panelId}/labels`, `/panel/${panelId}/deviceconfig`]}
+                locations={[
+                    `/panel/${panelId}/display/layout`,
+                    `/panel/${panelId}/display/labels`,
+                    `/panel/${panelId}/display/deviceconfig`,
+                ]}
                 content={[
                     <TabLayout panelId={panelId} />,
                     <TabLabels panelId={panelId} />,

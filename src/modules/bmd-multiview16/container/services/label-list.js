@@ -29,6 +29,5 @@ module.exports = async () => {
             });
         }
     }
-    labelsArray[1]["autoLabelEnabled"] = true;
     return labelsArray;
 };

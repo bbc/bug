@@ -18,7 +18,7 @@ module.exports = async (name, value) => {
     try {
         const router = new videohub({ port: config.port, host: config.address });
         await router.connect();
-        await router.send("CONFIGURATION", `${name}: ${value}`);
+        await router.send("CONFIGURATION", `${name}: ${value}`, true);
         return true;
     } catch (error) {
         console.log("deviceconfig-set: ", error);

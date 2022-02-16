@@ -24,6 +24,7 @@
         "port": "9990",
         "autoLabelSource": null,
         "autoLabelEnabled": [],
-        "autoLabelIndex": {}
+        "autoLabelIndex": {},
+        "autoLayout": "none"
     }
 }
