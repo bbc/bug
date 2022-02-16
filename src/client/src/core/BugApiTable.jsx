@@ -124,6 +124,7 @@ export default function BugApiTable({
                                 <TableRow key="1">
                                     {columns?.map((column, index) => (
                                         <BugApiTableCell
+                                            sx={{ padding: "12px" }}
                                             key={index}
                                             column={column}
                                             index={index}
@@ -152,8 +153,8 @@ export default function BugApiTable({
                                         </BugApiTableCell>
                                     ))}
 
-                                    <TableCell key="filter" sx={{ width: "2rem", padding: "0px" }}>
-                                        {filterable && (
+                                    {filterable && (
+                                        <TableCell key="filter" sx={{ width: "2rem", padding: "0px" }}>
                                             <IconButton aria-label="filter list" onClick={handleFilterClicked}>
                                                 <FilterListIcon
                                                     sx={{
@@ -162,8 +163,8 @@ export default function BugApiTable({
                                                     }}
                                                 />
                                             </IconButton>
-                                        )}
-                                    </TableCell>
+                                        </TableCell>
+                                    )}
                                 </TableRow>
                                 {showFilters && filterable && (
                                     <BugApiTableFilters
