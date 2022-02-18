@@ -54,7 +54,6 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
 
     // get get the existing data from the db
     const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
-    const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
 
     let selectedSourceIndex = null;
     if (destinationIndex !== null) {

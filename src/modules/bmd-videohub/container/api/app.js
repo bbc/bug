@@ -14,6 +14,7 @@ const sourcesRouter = require("@routes/sources");
 const destinationsRouter = require("@routes/destinations");
 const groupsRouter = require("@routes/groups");
 const validationRouter = require("@routes/validate");
+const capabilitiesRouter = require("@routes/capabilities");
 
 let app = express();
 
@@ -38,6 +39,7 @@ app.use("/api/sources", sourcesRouter);
 app.use("/api/destinations", destinationsRouter);
 app.use("/api/groups", groupsRouter);
 app.use("/api/validate", validationRouter);
+app.use("/api/capabilities", capabilitiesRouter);
 
 app.use("*", defaultRouter);
 
