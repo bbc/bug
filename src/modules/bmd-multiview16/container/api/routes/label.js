@@ -1,6 +1,7 @@
 const express = require("express");
 const labelList = require("@services/label-list");
 const labelSet = require("@services/label-set");
+const labelGetRouterOutputs = require("@services/label-getrouteroutputs");
 const labelSetAutoState = require("@services/label-setautostate");
 const labelSetAutoIndex = require("@services/label-setautoindex");
 const router = express.Router();
@@ -10,6 +11,21 @@ router.all("/", async function (req, res, next) {
         res.json({
             status: "success",
             data: await labelList(),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to get label list",
+        });
+    }
+});
+
+router.get("/getrouteroutputs", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await labelGetRouterOutputs(),
         });
     } catch (error) {
         console.log(error);

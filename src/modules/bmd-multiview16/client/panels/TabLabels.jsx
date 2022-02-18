@@ -9,18 +9,18 @@ import AxiosPost from "@utils/AxiosPost";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useAlert } from "@utils/Snackbar";
 import { useForceRefresh } from "@hooks/ForceRefresh";
+import { useApiPoller } from "@hooks/ApiPoller";
 
 export default function TabLabels({ panelId }) {
     const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
     const { forceRefresh, doForceRefresh } = useForceRefresh();
-    const destinations = [
-        { id: -1, label: "Multiview 99" },
-        { id: 1, label: "Multiview 1" },
-        { id: 2, label: "Multiview 2" },
-        { id: 3, label: "Multiview 3" },
-        { id: 4, label: "Multiview 4" },
-    ];
+
+    const labelRouterOutputs = useApiPoller({
+        url: `/container/${panelId}/label/getrouteroutputs`,
+        interval: 5000,
+        forceRefresh: forceRefresh,
+    });
 
     const handleLabelClicked = async (event, item) => {
         let result = await renameDialog({
@@ -82,6 +82,16 @@ export default function TabLabels({ panelId }) {
         }
     };
 
+    if (labelRouterOutputs.status !== "success" || !labelRouterOutputs.data) {
+        return null;
+    }
+
+    const destinations = labelRouterOutputs.data.map((item, index) => {
+        return {
+            id: index,
+            label: item,
+        };
+    });
     return (
         <>
             <Grid item xs={12}>
@@ -105,7 +115,7 @@ export default function TabLabels({ panelId }) {
                             ),
                         },
                         {
-                            title: "Router Destination",
+                            title: "Autolabel Source",
                             hideWidth: 600,
                             content: (item) => (
                                 <BugApiSelect
@@ -127,7 +137,7 @@ export default function TabLabels({ panelId }) {
                             ),
                         },
                         {
-                            title: "Router Label",
+                            title: "Autolabel",
                             hideWidth: 600,
                             content: (item) => <TextField value={item.autoLabel} disabled fullWidth />,
                         },

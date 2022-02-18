@@ -15,16 +15,19 @@ module.exports = async () => {
         return false;
     }
 
+    const routerLabels = await mongoSingle.get("routerlabels");
     const labelsFromDb = await mongoSingle.get("input_labels");
     const labelsArray = [];
     if (labelsFromDb) {
         for (const [key, value] of Object.entries(labelsFromDb)) {
+            const autoLabelIndex = config?.autoLabelIndex?.[key] ?? "";
+
             labelsArray.push({
                 inputIndex: parseInt(key),
                 input: (parseInt(key) + 1).toString(),
                 label: value,
-                autoLabel: `Auto Label ${key}`,
-                autoLabelIndex: config?.autoLabelIndex?.[key] ?? -1,
+                autoLabel: routerLabels?.[autoLabelIndex]?.inputLabel ?? "",
+                autoLabelIndex: autoLabelIndex,
                 autoLabelEnabled: config?.autoLabelEnabled?.includes(parseInt(key)),
             });
         }

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -97,6 +98,18 @@ export default function ConfigPanel() {
                             uk: "UK Layout (rows then columns)",
                             us: "US Layout (columns then rows)",
                         }}
+                    />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <BugConfigFormPanelSelect
+                        name="autoLabelSource"
+                        label="Label Source Device"
+                        control={control}
+                        defaultValue={panelConfig.data.autoLabelSource ?? ""}
+                        error={errors.autoLabelSource}
+                        helperText="Select a devices for router label lookup information"
+                        fullWidth
+                        capability="video-router"
                     />
                 </Grid>
             </BugConfigWrapper>
