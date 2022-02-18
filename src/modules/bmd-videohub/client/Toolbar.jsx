@@ -37,7 +37,7 @@ export default function Toolbar({ panelId, ...props }) {
             {editMode ? (
                 <Button
                     component={Link}
-                    to={`/panel/${props.panelId}`}
+                    to={`/panel/${panelId}`}
                     variant="outlined"
                     color="primary"
                     startIcon={<DoneIcon />}
@@ -47,7 +47,7 @@ export default function Toolbar({ panelId, ...props }) {
             ) : (
                 <Button
                     component={Link}
-                    to={`/panel/${props.panelId}/edit`}
+                    to={`/panel/${panelId}/edit`}
                     variant="outlined"
                     color="primary"
                     startIcon={<EditIcon />}
