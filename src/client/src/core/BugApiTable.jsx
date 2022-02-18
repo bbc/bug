@@ -165,6 +165,7 @@ export default function BugApiTable({
                                             </IconButton>
                                         </TableCell>
                                     )}
+                                    {menuItems && !filterable && <TableCell key="blank"></TableCell>}
                                 </TableRow>
                                 {showFilters && filterable && (
                                     <BugApiTableFilters
