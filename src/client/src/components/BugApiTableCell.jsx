@@ -1,9 +1,10 @@
 import TableCell from "@mui/material/TableCell";
 
-export default function BugApiTableCell({ children, column, index, ...props }) {
+export default function BugApiTableCell({ children, column, index, sx, ...props }) {
     return (
         <TableCell
             sx={{
+                ...sx,
                 position: "relative",
                 width: column.width ? column.width : "auto",
                 [`@media (max-width:${column.hideWidth}px)`]: { display: "none" },
