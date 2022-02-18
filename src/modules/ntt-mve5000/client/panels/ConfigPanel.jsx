@@ -6,8 +6,6 @@ import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigWrapper from "@core/BugConfigWrapper";
-import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
-import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
