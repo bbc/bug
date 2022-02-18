@@ -5,15 +5,16 @@ import FormControl from "@mui/material/FormControl";
 import { Controller } from "react-hook-form";
 
 const BugConfigFormSelect = ({
-    name,
-    label,
-    items = [],
-    disabled = false,
     control,
     defaultValue,
-    rules,
+    disabled = false,
     error,
+    fullWidth=true,
     helperText,
+    items = [],
+    label,
+    name,
+    rules,
     ...props
 }) => {
     return (
@@ -26,7 +27,7 @@ const BugConfigFormSelect = ({
                                 select
                                 value={value}
                                 label={label}
-                                fullWidth
+                                fullWidth={fullWidth}
                                 disabled={disabled}
                                 onChange={onChange}
                                 variant="standard"
