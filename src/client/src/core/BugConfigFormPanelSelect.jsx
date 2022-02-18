@@ -1,22 +1,19 @@
 import React from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import { Controller } from "react-hook-form";
 import { useApiPoller } from "@hooks/ApiPoller";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 const BugConfigFormPanelSelect = ({
     name,
     label,
     control,
-    defaultValue,
-    children,
+    defaultValue = "",
+    disabled = false,
+    fullWidth = true,
     rules,
     error,
     helperText,
     capability,
     mockApiData = null,
-    ...props
 }) => {
     const panels = useApiPoller({
         mockApiData: mockApiData,
@@ -24,68 +21,35 @@ const BugConfigFormPanelSelect = ({
         interval: 10000,
     });
 
-    const options =
-        panels.status === "success"
-            ? panels.data.map((panel) => ({
-                  id: panel.id,
-                  label: panel.title,
-              }))
-            : [];
+    // NEW STYLE
+    // const options =
+    //     panels.status === "success"
+    //         ? panels.data.map((panel) => ({
+    //               id: panel.id,
+    //               label: panel.title,
+    //           }))
+    //         : [];
 
-    const processValues = (value) => {
-        let returnArray = [];
-        if (value) {
-            for (let eachValue of value) {
-                const foundObject = options.find((object) => object.id === eachValue);
-                if (foundObject) {
-                    returnArray.push(foundObject);
-                }
-            }
+    let options = {};
+    if (panels.status === "success") {
+        for (let panel of panels.data) {
+            options[panel.id] = panel.title;
         }
-        return returnArray;
-    };
+    }
 
     return (
-        <>
-            <FormControl {...props}>
-                <Controller
-                    render={({ field: { onChange, onBlur, value } }) => {
-                        return (
-                            <Autocomplete
-                                multiple
-                                filterSelectedOptions
-                                options={options}
-                                onBlur={onBlur}
-                                onChange={(event, values) => {
-                                    const returnValues = [];
-                                    for (let eachValue of values) {
-                                        if (eachValue.id) {
-                                            returnValues.push(eachValue.id);
-                                        }
-                                    }
-                                    onChange(returnValues);
-                                }}
-                                defaultValue={processValues(value)}
-                                value={processValues(value)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        helperText={helperText}
-                                        variant="standard"
-                                        label={label}
-                                        error={error}
-                                    />
-                                )}
-                            />
-                        );
-                    }}
-                    name={name}
-                    control={control}
-                    defaultValue={defaultValue}
-                    rules={rules}
-                />
-            </FormControl>
-        </>
+        <BugConfigFormSelect
+            control={control}
+            defaultValue={defaultValue}
+            disabled={disabled}
+            error={error}
+            fullWidth={fullWidth}
+            helperText={helperText}
+            items={options}
+            label={label}
+            name={name}
+            rules={rules}
+        />
     );
 };
 export default BugConfigFormPanelSelect;
