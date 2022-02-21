@@ -117,7 +117,7 @@ export default function PageSystemBackup() {
                                     fullWidth
                                     label="Logging Level"
                                     defaultValue={settings?.data?.logLevel}
-                                    items={[
+                                    options={[
                                         { id: "error", label: "Error" },
                                         { id: "warning", label: "Warning" },
                                         { id: "action", label: "Action" },
