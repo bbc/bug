@@ -117,10 +117,10 @@ export default function ConfigPanel() {
                     defaultValue={panelConfig.data.length}
                     label="Forecast Length"
                     rules={{ required: true }}
-                    items={{
-                        today: "Today Only",
-                        week: "5 Day Forecast",
-                    }}
+                    options={[
+                        { id: "today", label: "Today Only" },
+                        { id: "week", label: "5 Day Forecast" },
+                    ]}
                 />
             </Grid>
 
@@ -133,11 +133,11 @@ export default function ConfigPanel() {
                     defaultValue={panelConfig.data.units}
                     label="Units"
                     rules={{ required: true }}
-                    items={{
-                        metric: "Metric",
-                        standard: "Standard",
-                        imperial: "Imperial",
-                    }}
+                    options={[
+                        { id: "metric", label: "Metric" },
+                        { id: "standard", label: "Standard" },
+                        { id: "imperial", label: "Imperial" },
+                    ]}
                 />
             </Grid>
         </BugConfigWrapper>

@@ -103,10 +103,10 @@ export default function PageSystemBackup() {
                                     fullWidth
                                     label="Theme"
                                     defaultValue={settings?.data?.theme}
-                                    items={{
-                                        dark: "Dark",
-                                        light: "Light",
-                                    }}
+                                    items={[
+                                        { id: "dark", label: "Dark" },
+                                        { id: "light", label: "Light" },
+                                    ]}
                                 />
                             </Grid>
 
@@ -117,14 +117,14 @@ export default function PageSystemBackup() {
                                     fullWidth
                                     label="Logging Level"
                                     defaultValue={settings?.data?.logLevel}
-                                    items={{
-                                        error: "Error",
-                                        warning: "Warning",
-                                        action: "Action",
-                                        info: "Info",
-                                        http: "HTTP",
-                                        debug: "Debug",
-                                    }}
+                                    items={[
+                                        { id: "error", label: "Error" },
+                                        { id: "warning", label: "Warning" },
+                                        { id: "action", label: "Action" },
+                                        { id: "info", label: "Info" },
+                                        { id: "http", label: "HTTP" },
+                                        { id: "debug", label: "Debug" },
+                                    ]}
                                 />
                             </Grid>
 

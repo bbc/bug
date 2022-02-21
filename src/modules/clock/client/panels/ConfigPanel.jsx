@@ -61,10 +61,10 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.type}
                         rules={{ required: true }}
                         label="Type"
-                        items={{
-                            analogue: "Analogue",
-                            digital: "Digital",
-                        }}
+                        options={[
+                            { id: "analogue", label: "Analogue" },
+                            { id: "digital", label: "Digital" },
+                        ]}
                     />
                 </Grid>
             </BugConfigWrapper>

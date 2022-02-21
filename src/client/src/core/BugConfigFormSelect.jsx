@@ -9,9 +9,9 @@ const BugConfigFormSelect = ({
     defaultValue,
     disabled = false,
     error,
-    fullWidth=true,
+    fullWidth = true,
     helperText,
-    items = [],
+    options = [],
     label,
     name,
     rules,
@@ -19,7 +19,7 @@ const BugConfigFormSelect = ({
 }) => {
     return (
         <>
-            <FormControl {...props}>
+            <FormControl fullWidth={fullWidth} {...props}>
                 <Controller
                     render={({ field: { onChange, value } }) => {
                         return (
@@ -27,7 +27,6 @@ const BugConfigFormSelect = ({
                                 select
                                 value={value}
                                 label={label}
-                                fullWidth={fullWidth}
                                 disabled={disabled}
                                 onChange={onChange}
                                 variant="standard"
@@ -40,10 +39,10 @@ const BugConfigFormSelect = ({
                                     },
                                 }}
                             >
-                                {items &&
-                                    Object.keys(items).map((key, index) => (
-                                        <MenuItem key={index} value={key}>
-                                            {items[key]}
+                                {options &&
+                                    options.map((option) => (
+                                        <MenuItem key={option.id} value={option.id}>
+                                            {option.label}
                                         </MenuItem>
                                     ))}
                             </TextField>

@@ -91,12 +91,12 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.encoderIndex}
                         label="Encoder index (0-3)"
                         rules={{ required: true }}
-                        items={{
-                            0: "Encoder 0",
-                            1: "Encoder 1",
-                            2: "Encoder 2",
-                            3: "Encoder 3",
-                        }}
+                        options={[
+                            { id: 0, label: "Encoder 0" },
+                            { id: 1, label: "Encoder 1" },
+                            { id: 2, label: "Encoder 2" },
+                            { id: 3, label: "Encoder 3" },
+                        ]}
                     />
                 </Grid>
             </BugConfigWrapper>

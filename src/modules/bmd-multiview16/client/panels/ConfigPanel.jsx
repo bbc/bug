@@ -93,11 +93,11 @@ export default function ConfigPanel() {
                         rules={{ required: false }}
                         label="Auto layout"
                         helperText="Automatically routes inputs to ouputs when the layout changes"
-                        items={{
-                            none: "None",
-                            uk: "UK Layout (rows then columns)",
-                            us: "US Layout (columns then rows)",
-                        }}
+                        options={[
+                            { id: "none", label: "None" },
+                            { id: "uk", label: "UK Layout (rows then columns)" },
+                            { id: "us", label: "US Layout (columns then rows)" },
+                        ]}
                     />
                 </Grid>
                 <Grid item xs={12} md={12}>

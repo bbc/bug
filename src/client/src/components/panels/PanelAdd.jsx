@@ -50,9 +50,12 @@ export default function PanelAdd(props) {
     };
 
     const getModuleOptions = () => {
-        const options = {};
+        const options = [];
         for (let module of moduleList) {
-            options[module.name] = module?.longname;
+            options.push({
+                id: module.name,
+                label: module?.longname,
+            });
         }
         return options;
     };
@@ -98,7 +101,7 @@ export default function PanelAdd(props) {
                                     defaultValue=""
                                     rules={{ required: true }}
                                     label="Module"
-                                    items={getModuleOptions()}
+                                    options={getModuleOptions()}
                                 />
                             </Grid>
                         </Grid>

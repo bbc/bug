@@ -98,10 +98,10 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.model}
                         label="Model"
                         rules={{ required: true }}
-                        items={{
-                            "tsl-mdu-12-pm": "TSL MDU 12 PM",
-                            "tsl-mdu-3es": "TSL MDU 3ES",
-                        }}
+                        options={[
+                            { id: "tsl-mdu-12-pm", label: "TSL MDU 12 PM" },
+                            { id: "tsl-mdu-3es", label: "TSL MDU 3ES" },
+                        ]}
                     />
                 </Grid>
             </BugConfigWrapper>

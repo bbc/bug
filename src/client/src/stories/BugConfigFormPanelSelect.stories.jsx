@@ -11,8 +11,8 @@ export default {
             description: {
                 component: `This is a form control, designed to work within a BugForm.<br/>
                 BugForm uses react-hook-form to manage the form state. See https://react-hook-form.com/ for more info.<br />
-                A dropdown control for selecting panels. Often used to select remote panel data sources.<br/>
-                Optionally takes a 'capability' field which filters panels by the capability they provide.`,
+                A dropdown control for selecting a single panel. Often used to select remote panel data sources.<br/>
+                Optionally takes a 'capability' field which filters panels by the capability the panel provides.`,
             },
         },
         controls: { sort: "requiredFirst" },
@@ -32,7 +32,7 @@ export default {
         },
         label: {
             type: { name: "string", required: true },
-            defaultValue: "Select Panels",
+            defaultValue: "Select a panel",
             description: "Short description to be shown in the control",
             table: {
                 type: { summary: "string" },
@@ -91,8 +91,8 @@ export default {
         },
         defaultValue: {
             type: { name: "data", required: false },
-            defaultValue: [1, 2],
-            description: "The selected value when the control is loaded. An array of panel IDs.",
+            defaultValue: "1",
+            description: "The selected value when the control is loaded. A single panel ID.",
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
@@ -149,17 +149,17 @@ MyBugConfigFormPanelSelect.args = {
         status: "success",
         data: [
             {
-                id: 1,
+                id: "1",
                 title: "Cisco Router Bay 1",
                 enabled: true,
             },
             {
-                id: 2,
+                id: "2",
                 title: "Mikrotik Router Bay 1",
                 enabled: true,
             },
             {
-                id: 3,
+                id: "3",
                 title: "Mikrotik Router Bay 2",
                 enabled: true,
             },

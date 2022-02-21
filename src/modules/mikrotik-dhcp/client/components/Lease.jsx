@@ -30,9 +30,9 @@ export default function Lease({ panelId, leaseId }) {
 
     useAsyncEffect(async () => {
         const serverResult = await AxiosGet(`/container/${panelId}/server/`);
-        const resultArray = {};
+        const resultArray = [];
         for (let eachServer of serverResult) {
-            resultArray[eachServer.id] = eachServer.name;
+            resultArray.push({ id: eachServer.id, label: eachServer.name });
         }
         setServers(resultArray);
     }, []);
@@ -211,7 +211,7 @@ export default function Lease({ panelId, leaseId }) {
                                         fullWidth
                                         label="DHCP Server"
                                         defaultValue={lease.server}
-                                        items={servers}
+                                        options={servers}
                                     />
                                 </Grid>
                             )}

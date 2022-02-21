@@ -63,18 +63,18 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                         fullWidth
                         label="Session length"
                         defaultValue={strategy.sessionLength}
-                        items={{
-                            [-1]: "Unlimited",
-                            60000: "1 minute",
-                            1800000: "30 minutes",
-                            3600000: "1 hour",
-                            14400000: "4 hours",
-                            86400000: "1 day",
-                            172800000: "2 days",
-                            604800000: "1 week",
-                            1209600000: "2 weeks",
-                            31536000000: "1 year",
-                        }}
+                        options={[
+                            { id: -1, label: "Unlimited" },
+                            { id: 60000, label: "1 minute" },
+                            { id: 1800000, label: "30 minutes" },
+                            { id: 3600000, label: "1 hour" },
+                            { id: 14400000, label: "4 hours" },
+                            { id: 86400000, label: "1 day" },
+                            { id: 172800000, label: "2 days" },
+                            { id: 604800000, label: "1 week" },
+                            { id: 1209600000, label: "2 weeks" },
+                            { id: 31536000000, label: "1 year" },
+                        ]}
                     />
                 </Grid>
 
@@ -97,12 +97,12 @@ export default function SecurityStrategyProxy({ strategy, register, errors, cont
                         label="Proxy match field"
                         helperText="Which BUG user field to match against"
                         defaultValue={strategy.headerFieldMatch}
-                        items={{
-                            email: "Email Address",
-                            username: "User name",
-                            name: "Name",
-                            id: "ID",
-                        }}
+                        options={[
+                            { id: "email", label: "Email Address" },
+                            { id: "username", label: "User name" },
+                            { id: "name", label: "Name" },
+                            { id: "id", label: "ID" },
+                        ]}
                     />
                 </Grid>
 

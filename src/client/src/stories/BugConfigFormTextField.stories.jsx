@@ -176,10 +176,10 @@ export const MyBugConfigFormTextField = (args) => {
                             rules={args.rules}
                             error={args.error}
                             helperText={args.helperText}
-                            supportsValidation={args.supportsValidation}
                             numeric={args.numeric}
                             min={args.min}
                             max={args.max}
+                            supportsValidation={args.supportsValidation}
                             variant={args.variant}
                         />
                     </Grid>
@@ -202,17 +202,16 @@ MyBugConfigFormTextField.parameters = {
             <Grid item xs={12}>
                 <BugConfigFormTextField
                     name="control-name"
-                    control={control}
                     label="My Control Name"
-                    helperText="Select an animal"
-                    fullWidth={true}
-                    defaultValue="zebra"
-                    items={{
-                        zebra: "Zebra", 
-                        caterpillar: "Caterpillar", 
-                        horse: "Horse"
-                    }}
+                    control={control}
                     disabled={false}
+                    defaultValue="This is some text"
+                    fullWidth={true}
+                    helperText="Tell me something interesting"
+                    numeric={false}
+                    min={null}
+                    max={null}
+                    supportsValidation={false}
                     variant="standard"
                 />
             </Grid>

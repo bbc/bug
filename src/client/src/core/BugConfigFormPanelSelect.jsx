@@ -21,20 +21,15 @@ const BugConfigFormPanelSelect = ({
         interval: 10000,
     });
 
-    // NEW STYLE
-    // const options =
-    //     panels.status === "success"
-    //         ? panels.data.map((panel) => ({
-    //               id: panel.id,
-    //               label: panel.title,
-    //           }))
-    //         : [];
+    let options = [{ id: "", label: "" }];
 
-    let options = {};
     if (panels.status === "success") {
-        for (let panel of panels.data) {
-            options[panel.id] = panel.title;
-        }
+        options = options.concat(
+            panels.data.map((panel) => ({
+                id: panel.id,
+                label: panel.title,
+            }))
+        );
     }
 
     return (
@@ -45,7 +40,7 @@ const BugConfigFormPanelSelect = ({
             error={error}
             fullWidth={fullWidth}
             helperText={helperText}
-            items={options}
+            options={options}
             label={label}
             name={name}
             rules={rules}

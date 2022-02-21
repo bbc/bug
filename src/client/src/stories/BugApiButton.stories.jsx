@@ -12,6 +12,7 @@ export default {
                 Can be used with a simple array of strings, or with a custom object with a label and value properties.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
@@ -26,10 +27,10 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        onClick: {
-            type: { name: "function", required: true },
+        icon: {
+            type: { name: "data", required: false },
             defaultValue: null,
-            description: "This callback is called when the button is clicked",
+            description: "Optional icon to display at the start of the button. Pass a valid React element.",
             control: {
                 disable: true,
             },
@@ -38,10 +39,10 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        icon: {
-            type: { name: "data", required: false },
+        onClick: {
+            type: { name: "function", required: true },
             defaultValue: null,
-            description: "Optional icon to display at the start of the button. Pass a valid React element.",
+            description: "This callback is called when the button is clicked",
             control: {
                 disable: true,
             },
@@ -68,6 +69,15 @@ export default {
     },
 };
 
-export const MyApiSaveButton = (args) => <BugApiSaveButton {...args}>Click Me!</BugApiSaveButton>;
-MyApiSaveButton.displayName = "BugApiSaveButton";
-MyApiSaveButton.storyName = "BugApiSaveButton";
+export const MyApiButton = (args) => (
+    <BugApiButton
+        {...args}
+        onClick={() => {
+            alert("thank you!");
+        }}
+    >
+        Click Me!
+    </BugApiButton>
+);
+MyApiButton.displayName = "BugApiButton";
+MyApiButton.storyName = "BugApiButton";

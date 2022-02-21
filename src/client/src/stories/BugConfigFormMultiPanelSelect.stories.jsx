@@ -1,17 +1,18 @@
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormMultiPanelSelect from "@core/BugConfigFormMultiPanelSelect";
 import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
 
 export default {
-    title: "BUG Core/Forms/BugConfigFormSelect",
-    component: BugConfigFormSelect,
+    title: "BUG Core/Forms/BugConfigFormMultiPanelSelect",
+    component: BugConfigFormMultiPanelSelect,
     parameters: {
         docs: {
             description: {
                 component: `This is a form control, designed to work within a BugForm.<br/>
                 BugForm uses react-hook-form to manage the form state. See https://react-hook-form.com/ for more info.<br />
-                A simple select dropdown with BUG styling. Items are passed as a javascript object.`,
+                A dropdown control for selecting one or more panels. Often used to select remote panel data sources.<br/>
+                Optionally takes a 'capability' field which filters panels by the capability they provide.`,
             },
         },
         controls: { sort: "requiredFirst" },
@@ -23,7 +24,7 @@ export default {
         name: {
             type: { name: "string", required: true },
             defaultValue: "control-name",
-            description: "Field name to use for this control eg 'tags' or 'categories'",
+            description: "Field name to use for this control eg 'group'",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
@@ -31,7 +32,7 @@ export default {
         },
         label: {
             type: { name: "string", required: true },
-            defaultValue: "My Control Name",
+            defaultValue: "Select Panels",
             description: "Short description to be shown in the control",
             table: {
                 type: { summary: "string" },
@@ -40,8 +41,17 @@ export default {
         },
         helperText: {
             type: { name: "string", required: false },
-            defaultValue: "Select an animal",
+            defaultValue: "Select a panel source for DHCP data",
             description: "Optional helper text to be shown below the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
+        capability: {
+            type: { name: "string", required: false },
+            defaultValue: "dhcp-server",
+            description: "This value is used to search available panels by capability",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
@@ -81,23 +91,8 @@ export default {
         },
         defaultValue: {
             type: { name: "data", required: false },
-            defaultValue: "zebra",
-            description:
-                "The selected value when the control is loaded. This should be a valid ID listed in the items array.",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        options: {
-            type: { name: "data", required: true },
-            description:
-                "An array of available values to be selected. Each array item should contain an id and lebel property.",
-            defaultValue: [
-                { id: "zebra", label: "Zebra" },
-                { id: "caterpillar", label: "Caterpillar" },
-                { id: "horse", label: "Horse" },
-            ],
+            defaultValue: [1, 2],
+            description: "The selected value when the control is loaded. An array of panel IDs.",
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
@@ -112,19 +107,13 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to disable the control",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
+        mockApiData: {
+            table: { disable: true },
         },
     },
 };
 
-export const MyBugConfigFormSelect = (args) => {
+export const MyBugConfigFormMultiPanelSelect = (args) => {
     const { control } = useForm();
 
     return (
@@ -133,17 +122,18 @@ export const MyBugConfigFormSelect = (args) => {
             <BugForm.Body>
                 <Grid container>
                     <Grid item xs={12}>
-                        <BugConfigFormSelect
+                        <BugConfigFormMultiPanelSelect
                             name={args.name}
                             control={control}
-                            fullWidth={args.fullWidth}
-                            label={args.label}
-                            helperText={args.helperText}
-                            options={args.options}
-                            error={args.error}
-                            rules={args.rules}
                             defaultValue={args.defaultValue}
-                            disabled={args.disabled}
+                            label={args.label}
+                            error={args.error}
+                            fullWidth
+                            options={args.options}
+                            defaultValue={args.defaultValue}
+                            helperText={args.helperText}
+                            fullWidth={args.fullWidth}
+                            mockApiData={args.mockApiData}
                         />
                     </Grid>
                 </Grid>
@@ -152,9 +142,31 @@ export const MyBugConfigFormSelect = (args) => {
     );
 };
 
-MyBugConfigFormSelect.displayName = "BugConfigFormSelect";
-MyBugConfigFormSelect.storyName = "BugConfigFormSelect";
-MyBugConfigFormSelect.parameters = {
+MyBugConfigFormMultiPanelSelect.displayName = "BugConfigFormMultiPanelSelect";
+MyBugConfigFormMultiPanelSelect.storyName = "BugConfigFormMultiPanelSelect";
+MyBugConfigFormMultiPanelSelect.args = {
+    mockApiData: {
+        status: "success",
+        data: [
+            {
+                id: 1,
+                title: "Cisco Router Bay 1",
+                enabled: true,
+            },
+            {
+                id: 2,
+                title: "Mikrotik Router Bay 1",
+                enabled: true,
+            },
+            {
+                id: 3,
+                title: "Mikrotik Router Bay 2",
+                enabled: true,
+            },
+        ],
+    },
+};
+MyBugConfigFormMultiPanelSelect.parameters = {
     docs: {
         source: {
             code: `
@@ -163,25 +175,21 @@ MyBugConfigFormSelect.parameters = {
     <BugForm.Body>
         <Grid container>
             <Grid item xs={12}>
-                <BugConfigFormSelect
+                <BugConfigFormMultiPanelSelect
                     name="control-name"
+                    label="Select Panels"
+                    helperText="Select a panel source for DHCP data"
+                    capability="dhcp-server"
                     control={control}
-                    label="My Control Name"
-                    helperText="Select an animal"
+                    error={false}
+                    rules={{ required: true }}
+                    defaultValue={[1, 2]}
                     fullWidth={true}
-                    defaultValue="zebra"
-                    options={[
-                        {id: "zebra", label: "Zebra"},
-                        {id: "caterpillar", label: "Caterpillar"},
-                        {id: "horse", label: "Horse"},
-                    ]}
-                    disabled={false}
                 />
             </Grid>
         </Grid>
     </BugForm.Body>
-</BugForm>
-        `,
+</BugForm>`,
         },
     },
 };
