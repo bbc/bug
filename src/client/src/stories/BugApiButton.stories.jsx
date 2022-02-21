@@ -53,10 +53,10 @@ export default {
         timeout: {
             type: { name: "number" },
             description: "Duration to wait (in milliseconds) before reverting to previous state",
-            defaultValue: 10000,
+            defaultValue: 5000,
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: 5000 },
             },
         },
         variant: {
