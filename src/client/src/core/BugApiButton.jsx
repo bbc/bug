@@ -1,10 +1,9 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import SaveIcon from "@mui/icons-material/Save";
 // import useSounds from "@hooks/Sounds";
 
-export default function BugApiSaveButton({ disabled, onClick, timeout = 10000, children, ...props }) {
+export default function BugApiButton({ disabled, onClick, timeout = 10000, icon, children, ...props }) {
     const [isActive, setIsActive] = React.useState(false);
     const timer = React.useRef();
     // *** browser complains about updating non-mounted component if this line is enabled :( - GH
@@ -34,13 +33,15 @@ export default function BugApiSaveButton({ disabled, onClick, timeout = 10000, c
         onClick(event);
     };
 
+    const getIcon = () => {
+        if (!icon) {
+            return null;
+        }
+        return isActive ? <CircularProgress size={20} /> : icon;
+    };
+
     return (
-        <Button
-            disabled={isActive || disabled}
-            onClick={handleClick}
-            startIcon={isActive ? <CircularProgress size={20} /> : <SaveIcon />}
-            {...props}
-        >
+        <Button disabled={isActive || disabled} onClick={handleClick} startIcon={getIcon()} {...props}>
             {children}
         </Button>
     );

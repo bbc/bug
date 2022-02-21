@@ -1,8 +1,8 @@
-import BugApiSaveButton from "@core/BugApiSaveButton";
+import BugApiButton from "@core/BugApiButton";
 
 export default {
-    title: "BUG Core/API Controls/BugApiSaveButton",
-    component: BugApiSaveButton,
+    title: "BUG Core/API Controls/BugApiButton",
+    component: BugApiButton,
     parameters: {
         docs: {
             description: {
@@ -17,6 +17,15 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
+        disabled: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether the control is disabled",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
         onClick: {
             type: { name: "function", required: true },
             defaultValue: null,
@@ -29,13 +38,16 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is disabled",
+        icon: {
+            type: { name: "data", required: false },
+            defaultValue: null,
+            description: "Optional icon to display at the start of the button. Pass a valid React element.",
+            control: {
+                disable: true,
+            },
             table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                type: { summary: "data" },
+                defaultValue: { summary: null },
             },
         },
         timeout: {

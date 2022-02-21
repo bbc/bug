@@ -6,7 +6,6 @@ import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import BugApiSelect from "@core/BugApiSelect";
-import BugApiButton from "@core/BugApiButton";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import { useForceRefresh } from "@hooks/ForceRefresh";
@@ -122,14 +121,14 @@ export default function TabLayout({ panelId }) {
                                                 justifyContent: "center",
                                             }}
                                         >
-                                            <BugApiButton
+                                            <Button
                                                 color={col.audioSelected ? "primary" : "secondary"}
                                                 variant="contained"
                                                 sx={{ margin: "16px 8px 0 0" }}
                                                 onClick={() => handleAudioChange(col.inputIndex)}
                                             >
                                                 Audio
-                                            </BugApiButton>
+                                            </Button>
                                             <Button
                                                 color={col.soloSelected ? "primary" : "secondary"}
                                                 variant="contained"

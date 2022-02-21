@@ -14,8 +14,6 @@ export default function BugStatusBlock({ items, label, state }) {
 
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
-    console.log(label);
-    console.log(items);
     return (
         <Box sx={{ padding: "4px", display: "inline-block", verticalAlign: "top" }}>
             <Box

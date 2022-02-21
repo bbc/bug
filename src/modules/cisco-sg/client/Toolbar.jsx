@@ -7,7 +7,7 @@ import { useApiPoller } from "@hooks/ApiPoller";
 import SaveIcon from "@mui/icons-material/Save";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import BugApiSaveButton from "@core/BugApiSaveButton";
+import BugApiButton from "@core/BugApiButton";
 import LaunchIcon from "@mui/icons-material/Launch";
 import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
@@ -53,15 +53,16 @@ export default function Toolbar({ panelId, ...props }) {
 
     const buttons = () => (
         <>
-            <BugApiSaveButton
+            <BugApiButton
                 disabled={!isPending || hasCritical}
                 variant="outlined"
                 color={isPending ? "warning" : "primary"}
                 onClick={handleSave}
                 timeout={20000}
+                icon={<SaveIcon />}
             >
                 Save
-            </BugApiSaveButton>
+            </BugApiButton>
         </>
     );
 
