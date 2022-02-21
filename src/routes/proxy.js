@@ -12,7 +12,7 @@ const hashResponse = require("@core/hash-response");
 // const authGuest = require('@middleware/auth-guest');
 // const authAdmin = require('@middleware/auth-admin');
 
-const modulePort = process.env.MODULE_PORT || 3000;
+const modulePort = process.env.MODULE_PORT || 3200;
 
 /**
  * @swagger

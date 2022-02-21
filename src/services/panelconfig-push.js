@@ -4,7 +4,7 @@ const logger = require("@utils/logger")(module);
 const panelConfigModel = require("@models/panel-config");
 const panelGet = require("@services/panel-get");
 const axios = require("axios");
-const modulePort = process.env.MODULE_PORT || 3000;
+const modulePort = process.env.MODULE_PORT || 3200;
 
 module.exports = async (panelId) => {
     const url = `http://${panelId}:${modulePort}/api/config`;

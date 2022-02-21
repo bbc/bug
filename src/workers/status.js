@@ -11,7 +11,7 @@ const axios = require("axios");
 const StatusItem = require("@core/StatusItem");
 const mongoCollection = require("@core/mongo-collection");
 
-const modulePort = process.env.MODULE_PORT || 3000;
+const modulePort = process.env.MODULE_PORT || 3200;
 const databaseName = process.env.BUG_CONTAINER || "bug";
 
 const fetch = async () => {
