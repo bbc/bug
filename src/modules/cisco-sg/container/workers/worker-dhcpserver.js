@@ -25,7 +25,7 @@ const main = async () => {
 
     // loop through each dhcp source and fetch the list
     for (const dhcpSource of workerData?.dhcpSources) {
-        const url = `http://${dhcpSource}:${modulePort}/api/dhcp-server`;
+        const url = `http://${dhcpSource}:${modulePort}/api/capabilities/dhcp-server`;
         try {
             // make the request
             const response = await axios.get(url);
