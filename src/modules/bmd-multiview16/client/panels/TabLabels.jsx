@@ -115,7 +115,7 @@ export default function TabLabels({ panelId }) {
                             ),
                         },
                         {
-                            title: "Autolabel Source",
+                            title: "Autolabel Destination",
                             hideWidth: 600,
                             content: (item) => (
                                 <BugApiSelect
