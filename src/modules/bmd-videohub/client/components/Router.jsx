@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import BugScrollbars from "@core/BugScrollbars";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 
 const SectionHeader = styled("div")({
     fontSize: "0.875rem",
@@ -26,22 +27,21 @@ const SectionHeader = styled("div")({
 export default function Router({ panelId, editMode = false, sourceGroup = 0, destinationGroup = 0 }) {
     const sendAlert = useAlert(panelId);
     const [selectedDestination, setSelectedDestination] = React.useState(null);
-    const [sourceForceRefreshHash, setSourceForceRefreshHash] = React.useState(0);
-    const [destinationForceRefreshHash, setDestinationForceRefreshHash] = React.useState(0);
+    const [sourceForceRefresh, setSourceForceRefresh] = useForceRefresh();
+    const [destinationForceRefresh, setDestinationForceRefresh] = useForceRefresh();
     const panelConfig = useSelector((state) => state.panelConfig);
-
     const useDoubleClick = panelConfig && panelConfig.data.useTake;
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination === null ? -1 : selectedDestination}/${sourceGroup}`,
         interval: editMode ? 5000 : 500,
-        forceRefresh: sourceForceRefreshHash,
+        forceRefresh: sourceForceRefresh,
     });
 
     const destinationButtons = useApiPoller({
         url: `/container/${panelId}/destinations/${destinationGroup}`,
         interval: 5000,
-        forceRefresh: destinationForceRefreshHash,
+        forceRefresh: destinationForceRefresh,
     });
 
     const handleDestinationButtonClicked = (destinationIndex) => {
@@ -69,7 +69,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 variant: "success",
             });
             // force a refresh of the destinations
-            setDestinationForceRefreshHash(destinationForceRefreshHash + 1);
+            setDestinationForceRefresh();
             return;
         }
         sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
@@ -143,7 +143,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     groupType: "source",
                     selectedDestination: selectedDestination,
                     buttons: sourceButtons,
-                    onChange: () => setSourceForceRefreshHash(sourceForceRefreshHash + 1),
+                    onChange: () => setSourceForceRefresh(),
                 })}
                 <Box
                     sx={{
@@ -160,7 +160,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             buttons={sourceButtons}
                             onClick={handleSourceButtonClicked}
                             useDoubleClick={useDoubleClick}
-                            onChange={() => setSourceForceRefreshHash(sourceForceRefreshHash + 1)}
+                            onChange={() => setSourceForceRefresh()}
                             disabled={destinationLocked}
                         />
                     </BugScrollbars>
@@ -193,7 +193,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     editMode: editMode,
                     groupType: "destination",
                     buttons: destinationButtons,
-                    onChange: () => setSourceForceRefreshHash(destinationForceRefreshHash + 1),
+                    onChange: () => setSourceForceRefresh(),
                 })}
                 <Box
                     sx={{
@@ -209,7 +209,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             selectedDestination={selectedDestination}
                             buttons={destinationButtons}
                             onClick={handleDestinationButtonClicked}
-                            onChange={() => setDestinationForceRefreshHash(destinationForceRefreshHash + 1)}
+                            onChange={() => setDestinationForceRefresh()}
                         />
                     </BugScrollbars>
                 </Box>

@@ -14,7 +14,7 @@ import { useApiPoller } from "@hooks/ApiPoller";
 export default function TabLabels({ panelId }) {
     const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
-    const { forceRefresh, doForceRefresh } = useForceRefresh();
+    const [forceRefresh, doForceRefresh] = useForceRefresh();
 
     const labelRouterOutputs = useApiPoller({
         url: `/container/${panelId}/label/getrouteroutputs`,

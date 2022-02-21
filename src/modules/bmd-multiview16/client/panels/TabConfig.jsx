@@ -11,7 +11,7 @@ import { useAlert } from "@utils/Snackbar";
 
 export default function TabConfig({ panelId }) {
     const sendAlert = useAlert(panelId);
-    const { forceRefresh, doForceRefresh } = useForceRefresh();
+    const [forceRefresh, doForceRefresh] = useForceRefresh();
 
     const deviceConfig = useApiPoller({
         url: `/container/${panelId}/deviceconfig`,

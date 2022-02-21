@@ -25,7 +25,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const sendAlert = useAlert(panelId);
     const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
-    const { forceRefresh, doForceRefresh } = useForceRefresh();
+    const [forceRefresh, doForceRefresh] = useForceRefresh();
 
     const vlans = useApiPoller({
         url: `/container/${panelId}/vlan`,

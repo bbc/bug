@@ -6,17 +6,19 @@ import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import BugApiSelect from "@core/BugApiSelect";
+import BugApiButton from "@core/BugApiButton";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 
 export default function TabLayout({ panelId }) {
     const sendAlert = useAlert();
-    const [layoutForceRefreshHash, setLayoutForceRefreshHash] = React.useState(0);
+    const [forceRefresh, doForceRefresh] = useForceRefresh();
 
     const layout = useApiPoller({
         url: `/container/${panelId}/layout`,
         interval: 5000,
-        forceRefresh: layoutForceRefreshHash,
+        forceRefresh: forceRefresh,
     });
 
     const sources = useApiPoller({
@@ -31,7 +33,7 @@ export default function TabLayout({ panelId }) {
                 variant: "success",
             });
             // force a refresh of the destinations
-            setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
+            doForceRefresh();
         } else {
             sendAlert(`Failed to change source for output ${outputIndex + 1}`, { variant: "error" });
         }
@@ -44,7 +46,7 @@ export default function TabLayout({ panelId }) {
                 variant: "success",
             });
             // force a refresh of the layout
-            setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
+            doForceRefresh();
         } else {
             sendAlert(`Failed to change audio source to input ${inputIndex + 1}`, { variant: "error" });
         }
@@ -58,7 +60,7 @@ export default function TabLayout({ panelId }) {
                     variant: "success",
                 });
                 // force a refresh of the layout
-                setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
+                doForceRefresh();
             } else {
                 sendAlert(`Failed to change solo source to input ${inputIndex + 1}`, { variant: "error" });
             }
@@ -69,7 +71,7 @@ export default function TabLayout({ panelId }) {
                     variant: "success",
                 });
                 // force a refresh of the layout
-                setLayoutForceRefreshHash(layoutForceRefreshHash + 1);
+                doForceRefresh();
             } else {
                 sendAlert(`Failed to unselect solo source`, { variant: "error" });
             }
@@ -120,14 +122,14 @@ export default function TabLayout({ panelId }) {
                                                 justifyContent: "center",
                                             }}
                                         >
-                                            <Button
+                                            <BugApiButton
                                                 color={col.audioSelected ? "primary" : "secondary"}
                                                 variant="contained"
                                                 sx={{ margin: "16px 8px 0 0" }}
                                                 onClick={() => handleAudioChange(col.inputIndex)}
                                             >
                                                 Audio
-                                            </Button>
+                                            </BugApiButton>
                                             <Button
                                                 color={col.soloSelected ? "primary" : "secondary"}
                                                 variant="contained"

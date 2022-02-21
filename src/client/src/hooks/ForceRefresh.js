@@ -5,10 +5,7 @@ export function useForceRefresh() {
 
     const doForceRefresh = () => {
         setCounter(counter + 1);
-    }
-
-    return {
-        forceRefresh: counter,
-        doForceRefresh: doForceRefresh
     };
+
+    return [counter, doForceRefresh];
 }

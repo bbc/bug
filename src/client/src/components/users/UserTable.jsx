@@ -18,7 +18,7 @@ export default function UserTable({ interval }) {
     const user = useSelector((state) => state.user);
     const currentUserId = user.status === "success" ? user.data?.id : null;
     const sendAlert = useAlert();
-    const { forceRefresh, doForceRefresh } = useForceRefresh();
+    const [forceRefresh, doForceRefresh] = useForceRefresh();
     const { confirmDialog } = useBugConfirmDialog();
 
     const handleRowClick = (event, item) => {
