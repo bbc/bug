@@ -81,7 +81,7 @@ function BugDetailsCard({
                             fontWeight: 500,
                             color: "#ffffff",
                         },
-                        height: "32px",
+                        height: "50px",
                         padding: "8px 16px",
                     }}
                     title={title}
