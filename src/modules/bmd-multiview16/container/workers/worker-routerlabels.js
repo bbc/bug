@@ -35,6 +35,8 @@ const main = async () => {
                 }
             } catch (error) {
                 console.log(`worker-routerlabels: ${error.stack || error.trace || error || error.message}`);
+                // it's not available - wait a few seconds
+                await delay(5000);
             }
         }
 

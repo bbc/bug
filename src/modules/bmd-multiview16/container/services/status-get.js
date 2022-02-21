@@ -8,7 +8,7 @@ module.exports = async () => {
             collectionName: "videohub_device",
             message: ["There is no recent data for this device.", "Check your connection or address details."],
             itemType: "critical",
-            timeoutSeconds: 15,
+            timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         })
     );
