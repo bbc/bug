@@ -7,9 +7,8 @@ export default {
         docs: {
             description: {
                 component: `A simple button which is designed for use with an API.<br />
-                Triggers the onChange event, and disables the control to allow the new value to be updated.<br />
-                If the value hasn't changed within the timeout period the control is re-enabled.<br />
-                Can be used with a simple array of strings, or with a custom object with a label and value properties.`,
+                Triggers the onClick event, and disables the control to allow the new value to be updated.<br />
+                If the value hasn't changed within the timeout period the control is re-enabled.`,
             },
         },
         controls: { sort: "requiredFirst" },
@@ -53,7 +52,7 @@ export default {
         },
         timeout: {
             type: { name: "number" },
-            description: "Duration to wait (in seconds) before reverting to previous state",
+            description: "Duration to wait (in milliseconds) before reverting to previous state",
             defaultValue: 10000,
             table: {
                 type: { summary: "number" },

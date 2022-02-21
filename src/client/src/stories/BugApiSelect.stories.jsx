@@ -1,24 +1,27 @@
-import BugSelect from "@core/BugSelect";
+import BugApiSelect from "@core/BugApiSelect";
 
 export default {
-    title: "BUG Core/Controls/BugSelect",
-    component: BugSelect,
+    title: "BUG Core/API Controls/BugApiSelect",
+    component: BugApiSelect,
     parameters: {
         docs: {
             description: {
-                component: `A simple select dropdown with BUG styling. Items are passed as a javascript object.`,
+                component: `A dropdown which is designed for use with an API.<br />
+                Triggers the onChange event, and disables the control to allow the new value to be updated.<br />
+                If the value hasn't changed within the timeout period the control is re-enabled.<br />
+                Takes an options array - which should contain objects with id and label properties.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
+    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
-            description: "Whether to disable the control",
+            description: "Whether the control is disabled",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
@@ -83,17 +86,34 @@ export default {
         variant: {
             options: ["filled", "outlined", "standard"],
             description: "The MUI variant of the control.",
-            defaultValue: "outlined",
+            defaultValue: "standard",
             control: { type: "select" },
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: "outlined" },
+                defaultValue: { summary: "standard" },
+            },
+        },
+        timeout: {
+            type: { name: "number" },
+            description: "Duration to wait (in milliseconds) before reverting to previous state",
+            defaultValue: 5000,
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: 5000 },
             },
         },
     },
 };
 
-export const MyBugSelect = (args) => <BugSelect {...args} />;
-
-MyBugSelect.displayName = "BugSelect";
-MyBugSelect.storyName = "BugSelect";
+export const MyApiButton = (args) => (
+    <BugApiSelect
+        {...args}
+        onChange={() => {
+            alert("thank you!");
+        }}
+    >
+        Click Me!
+    </BugApiSelect>
+);
+MyApiButton.displayName = "BugApiSelect";
+MyApiButton.storyName = "BugApiSelect";

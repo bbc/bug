@@ -8,6 +8,7 @@ export default function BugApiSelect({
     onChange,
     renderItem = null,
     value,
+    variant = "standard",
     timeout = 5000,
 }) {
     const [isActive, setIsActive] = React.useState(false);
@@ -45,12 +46,13 @@ export default function BugApiSelect({
 
     return (
         <BugSelect
-            options={options || []}
             disabled={isActive || disabled}
             fullWidth={fullWidth}
-            renderItem={renderItem}
             onChange={handleChanged}
+            options={options || []}
+            renderItem={renderItem}
             value={value}
+            variant={variant}
         />
     );
 }
