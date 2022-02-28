@@ -182,8 +182,10 @@ const theme = createTheme({
         MuiChip: {
             styleOverrides: {
                 root: {
+                    margin: "2px",
                     borderRadius: 3,
                     fontSize: "inherit",
+                    height: "28px",
                 },
             },
         },

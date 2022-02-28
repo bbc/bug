@@ -15,7 +15,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TimerIcon from "@mui/icons-material/Timer";
 import AxiosCommand from "@utils/AxiosCommand";
 
-export default function OutputsList2({ panelId }) {
+export default function OutputsList({ panelId }) {
     const history = useHistory();
     const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();

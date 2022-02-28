@@ -7,11 +7,10 @@ import { useSelector } from "react-redux";
 export default function LogTable({ panelId, level, interval }) {
     const panelFilter = useSelector((state) =>
         state.panelList.data.map((item) => {
-            return { name: item.title, value: item.id };
+            return { label: item.title, id: item.id };
         })
     );
 
-    console.log(panelFilter);
     return (
         <BugApiTable
             columns={[
@@ -23,11 +22,11 @@ export default function LogTable({ panelId, level, interval }) {
                     field: "timestamp",
                     filterType: "dropdown",
                     filterOptions: [
-                        { name: "View all items", value: "" },
-                        { name: "Last 5 minutes", value: 300 },
-                        { name: "Last 30 minutes", value: 1800 },
-                        { name: "Last hour", value: 3600 },
-                        { name: "Last 2 hours", value: 7200 },
+                        { label: "View all items", id: "" },
+                        { label: "Last 5 minutes", id: 300 },
+                        { label: "Last 30 minutes", id: 1800 },
+                        { label: "Last hour", id: 3600 },
+                        { label: "Last 2 hours", id: 7200 },
                     ],
                     content: (item) => <>{item.timestamp}</>,
                 },
@@ -38,11 +37,11 @@ export default function LogTable({ panelId, level, interval }) {
                     field: "level",
                     filterType: "dropdown",
                     filterOptions: [
-                        { name: "All logs", value: "" },
-                        { name: "Error", value: "error" },
-                        { name: "Warning", value: "warning" },
-                        { name: "Info", value: "info" },
-                        { name: "Action", value: "action" },
+                        { label: "All logs", id: "" },
+                        { label: "Error", id: "error" },
+                        { label: "Warning", id: "warning" },
+                        { label: "Info", id: "info" },
+                        { label: "Action", id: "action" },
                     ],
                     sortable: true,
                     content: (item) => {

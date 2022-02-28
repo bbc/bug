@@ -3,6 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import FilterTextField from "@components/FilterTextField";
 import FilterDropdown from "@components/FilterDropdown";
+import FilterMultiDropdown from "@components/FilterMultiDropdown";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import BugApiTableCell from "@components/BugApiTableCell";
@@ -40,6 +41,14 @@ export default function BugApiTable({ onChange, columns, classes, filters, onClo
             case "dropdown":
                 return (
                     <FilterDropdown
+                        value={value}
+                        onChange={(event) => handleFilterChanged(column.field, event.target.value)}
+                        options={column.filterOptions}
+                    />
+                );
+            case "multidropdown":
+                return (
+                    <FilterMultiDropdown
                         value={value}
                         onChange={(event) => handleFilterChanged(column.field, event.target.value)}
                         options={column.filterOptions}

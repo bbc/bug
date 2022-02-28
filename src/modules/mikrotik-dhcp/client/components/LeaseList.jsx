@@ -133,9 +133,9 @@ export default function LeaseList({ panelId }) {
                         field: "status",
                         filterType: "dropdown",
                         filterOptions: [
-                            { name: "View all items", value: "" },
-                            { name: "Bound", value: "bound" },
-                            { name: "Waiting", value: "waiting" },
+                            { id: "View all items", label: "" },
+                            { id: "Bound", label: "bound" },
+                            { id: "Waiting", label: "waiting" },
                         ],
                         content: (item) => <BugPowerIcon disabled={item.status !== "bound"} />,
                     },
@@ -264,11 +264,11 @@ export default function LeaseList({ panelId }) {
                         defaultSortDirection: "desc",
                         filterType: "dropdown",
                         filterOptions: [
-                            { name: "View all items", value: "" },
-                            { name: "Next 5 minutes", value: 300 },
-                            { name: "Next 30 minutes", value: 1800 },
-                            { name: "Next hour", value: 3600 },
-                            { name: "Next 2 hours", value: 7200 },
+                            { name: "View all items", label: "" },
+                            { name: "Next 5 minutes", label: 300 },
+                            { name: "Next 30 minutes", label: 1800 },
+                            { name: "Next hour", label: 3600 },
+                            { name: "Next 2 hours", label: 7200 },
                         ],
                         hideWidth: 2000,
                         content: (item) => {
@@ -283,12 +283,12 @@ export default function LeaseList({ panelId }) {
                         hideWidth: 1800,
                         filterType: "dropdown",
                         filterOptions: [
-                            { name: "View all items", value: "" },
-                            { name: "Last 30 seconds", value: 30 },
-                            { name: "Last minute", value: 60 },
-                            { name: "Last 5 minutes", value: 300 },
-                            { name: "Last 15 minutes", value: 600 },
-                            { name: "Last 30 minutes", value: 900 },
+                            { name: "View all items", label: "" },
+                            { name: "Last 30 seconds", label: 30 },
+                            { name: "Last minute", label: 60 },
+                            { name: "Last 5 minutes", label: 300 },
+                            { name: "Last 15 minutes", label: 600 },
+                            { name: "Last 30 minutes", label: 900 },
                         ],
                         content: (item) => {
                             return formatLastSeen(item["last-seen"]);
