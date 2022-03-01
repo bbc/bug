@@ -31,14 +31,19 @@ export default function Codec({ panelId }) {
         setCodecdata(await AxiosGet(`/container/${panelId}/codecdata/`));
     };
 
-    const onChange = (value, field) => {
+    const onChange = (updateObject) => {
         clearTimeout(timer.current);
+
         const codecdataClone = { ...codecdata };
-        codecdataClone[field] = value;
+        for (const [field, value] of Object.entries(updateObject)) {
+            codecdataClone[field] = value;
+        }
         setCodecdata(codecdataClone);
 
-        timer.current = setTimeout(() => {
-            updateBackend(value, field);
+        timer.current = setTimeout(async () => {
+            for (const [field, value] of Object.entries(updateObject)) {
+                await updateBackend(value, field);
+            }
         }, 200);
     };
 
@@ -80,6 +85,7 @@ export default function Codec({ panelId }) {
                     showAdvanced={showAdvanced}
                     collapsed={false}
                     key="output0"
+                    panelId={panelId}
                 />
                 <CodecOutput
                     codecdata={codecdata}
@@ -88,6 +94,7 @@ export default function Codec({ panelId }) {
                     showAdvanced={showAdvanced}
                     collapsed={true}
                     key="output1"
+                    panelId={panelId}
                 />
             </Grid>
         </Grid>

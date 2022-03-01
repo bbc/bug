@@ -3,8 +3,9 @@ import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
+import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
 
-export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvanced, collapsed }) {
+export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvanced, collapsed, panelId }) {
     return (
         <>
             <BugDetailsCard
@@ -19,7 +20,9 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <Switch
                                 checked={codecdata?.[`outputs_${outputIndex}_StreamTransmission`] === 0}
                                 onChange={(event) =>
-                                    onChange(event.target.checked ? 0 : 1, `outputs_${outputIndex}_StreamTransmission`)
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamTransmission`]: event.target.checked ? 0 : 1,
+                                    })
                                 }
                             />
                         ),
@@ -30,7 +33,9 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugSelect
                                 value={codecdata?.[`outputs_${outputIndex}_StreamProtocol`]}
                                 onChange={(event) =>
-                                    onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamProtocol`)
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamProtocol`]: parseInt(event.target.value),
+                                    })
                                 }
                                 options={[
                                     { id: 0, label: "RTP" },
@@ -40,14 +45,30 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                         ),
                     },
                     {
+                        name: "Codec",
+                        value: (
+                            <BugCodecAutocomplete
+                                addressValue={codecdata?.[`outputs_${outputIndex}_StreamIpv4DstAddress`]}
+                                portValue={codecdata?.[`outputs_${outputIndex}_StreamPortNumber`]}
+                                apiUrl={`/container/${panelId}/codecdb`}
+                                capability={codecdata?.[`outputs_${outputIndex}_StreamProtocol`] === 0 ? "rtp" : "udp"}
+                                onChange={(event, codec) => {
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamIpv4DstAddress`]: codec.address,
+                                        [`outputs_${outputIndex}_StreamPortNumber`]: codec.port,
+                                    });
+                                }}
+                            />
+                        ),
+                    },
+                    {
                         name: "IP Address",
                         value: (
                             <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamIpv4DstAddress`]}
                                 onChange={(event) =>
-                                    onChange(event.target.value, `outputs_${outputIndex}_StreamIpv4DstAddress`)
+                                    onChange({ [`outputs_${outputIndex}_StreamIpv4DstAddress`]: event.target.value })
                                 }
-                                // filter={/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/}
                             />
                         ),
                     },
@@ -57,7 +78,9 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamPortNumber`]}
                                 onChange={(event) =>
-                                    onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamPortNumber`)
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamPortNumber`]: parseInt(event.target.value),
+                                    })
                                 }
                                 filter={/[^0-9]/}
                                 numeric
@@ -72,7 +95,9 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamOutputIpv4Ttl`]}
                                 onChange={(event) =>
-                                    onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamOutputIpv4Ttl`)
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamOutputIpv4Ttl`]: parseInt(event.target.value),
+                                    })
                                 }
                                 filter={/[^0-9]/}
                                 numeric
@@ -87,7 +112,9 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugSelect
                                 value={codecdata?.[`outputs_${outputIndex}_StreamOutputIpv4Tos`]}
                                 onChange={(event) =>
-                                    onChange(parseInt(event.target.value), `outputs_${outputIndex}_StreamOutputIpv4Tos`)
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamOutputIpv4Tos`]: parseInt(event.target.value),
+                                    })
                                 }
                                 options={[
                                     { id: 0, label: "None" },
@@ -102,10 +129,11 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugSelect
                                 value={codecdata?.[`outputs_${outputIndex}_StreamTransmitInterface`]}
                                 onChange={(event) =>
-                                    onChange(
-                                        parseInt(event.target.value),
-                                        `outputs_${outputIndex}_StreamTransmitInterface`
-                                    )
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamTransmitInterface`]: parseInt(
+                                            event.target.value
+                                        ),
+                                    })
                                 }
                                 options={[
                                     { id: 0, label: "GbE" },
@@ -122,10 +150,11 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugSelect
                                 value={codecdata?.[`outputs_${outputIndex}_StreamErrorCorrectionMode`]}
                                 onChange={(event) =>
-                                    onChange(
-                                        parseInt(event.target.value),
-                                        `outputs_${outputIndex}_StreamErrorCorrectionMode`
-                                    )
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamErrorCorrectionMode`]: parseInt(
+                                            event.target.value
+                                        ),
+                                    })
                                 }
                                 options={[
                                     { id: 0, label: "None" },
@@ -141,10 +170,11 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamErrFecColumnNumber`]}
                                 onChange={(event) =>
-                                    onChange(
-                                        parseInt(event.target.value),
-                                        `outputs_${outputIndex}_StreamErrFecColumnNumber`
-                                    )
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamErrFecColumnNumber`]: parseInt(
+                                            event.target.value
+                                        ),
+                                    })
                                 }
                                 filter={/[^0-9]/}
                                 numeric
@@ -159,10 +189,9 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             <BugTextField
                                 value={codecdata?.[`outputs_${outputIndex}_StreamErrFecRowNumber`]}
                                 onChange={(event) =>
-                                    onChange(
-                                        parseInt(event.target.value),
-                                        `outputs_${outputIndex}_StreamErrFecRowNumber`
-                                    )
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamErrFecRowNumber`]: parseInt(event.target.value),
+                                    })
                                 }
                                 filter={/[^0-9]/}
                                 numeric
