@@ -23,6 +23,7 @@ export default function Codec({ panelId }) {
     const sendAlert = useAlert(panelId);
 
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
+    const showCodecDropdown = panelConfig && panelConfig.data.codecSource;
 
     usePanelToolbarEvent("refresh", () => {
         refreshCodecdata();
@@ -152,6 +153,8 @@ export default function Codec({ panelId }) {
                             onChange={(values) => onChange(values, "outputs", index)}
                             onClose={onOutputClose}
                             showAdvanced={showAdvanced}
+                            panelId={panelId}
+                            showCodecDropdown={showCodecDropdown}
                         />
                     ))}
                 <BugDetailsCardAdd onAdd={onOutputAdd} />

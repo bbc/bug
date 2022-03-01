@@ -5,7 +5,15 @@ import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
 
-export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvanced, collapsed, panelId }) {
+export default function CodecVideo({
+    codecdata,
+    onChange,
+    outputIndex,
+    showAdvanced,
+    collapsed,
+    panelId,
+    showCodecDropdown,
+}) {
     return (
         <>
             <BugDetailsCard
@@ -44,7 +52,7 @@ export default function CodecVideo({ codecdata, onChange, outputIndex, showAdvan
                             ></BugSelect>
                         ),
                     },
-                    {
+                    showCodecDropdown && {
                         name: "Codec",
                         value: (
                             <BugCodecAutocomplete

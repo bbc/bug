@@ -17,7 +17,9 @@ export default function Codec({ panelId }) {
     const panelConfig = useSelector((state) => state.panelConfig);
     const timer = React.useRef();
     const sendAlert = useAlert(panelId);
+
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
+    const showCodecDropdown = panelConfig && panelConfig.data.codecSource;
 
     usePanelToolbarEvent("refresh", () => {
         refreshCodecdata();
@@ -86,6 +88,7 @@ export default function Codec({ panelId }) {
                     collapsed={false}
                     key="output0"
                     panelId={panelId}
+                    showCodecDropdown={showCodecDropdown}
                 />
                 <CodecOutput
                     codecdata={codecdata}
@@ -95,6 +98,7 @@ export default function Codec({ panelId }) {
                     collapsed={true}
                     key="output1"
                     panelId={panelId}
+                    showCodecDropdown={showCodecDropdown}
                 />
             </Grid>
         </Grid>

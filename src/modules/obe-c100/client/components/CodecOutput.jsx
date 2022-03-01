@@ -4,8 +4,17 @@ import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 import InputAdornment from "@mui/material/InputAdornment";
+import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
 
-export default function CodecOutput({ outputData, onChange, onClose, outputIndex, showAdvanced }) {
+export default function CodecOutput({
+    outputData,
+    onChange,
+    onClose,
+    outputIndex,
+    showAdvanced,
+    panelId,
+    showCodecDropdown,
+}) {
     const handleChange = (values) => {
         // there are a few cases which need to be handled differently
         if (values["outputMethod"] === 1) {
@@ -23,6 +32,13 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
 
         onChange(values);
     };
+
+    let codecCapability = "udp";
+    if (outputData?.outputMethod === 2) {
+        codecCapability = "rtp";
+    } else if (outputData?.outputMethod === 3) {
+        codecCapability = "rist";
+    }
 
     return (
         <>
@@ -44,6 +60,23 @@ export default function CodecOutput({ outputData, onChange, onClose, outputIndex
                                     { id: 3, label: "RIST/ARQ" },
                                 ]}
                             ></BugSelect>
+                        ),
+                    },
+                    showCodecDropdown && {
+                        name: "Codec",
+                        value: (
+                            <BugCodecAutocomplete
+                                addressValue={outputData?.outputIP}
+                                portValue={outputData?.outputPort}
+                                apiUrl={`/container/${panelId}/codecdb`}
+                                capability={codecCapability}
+                                onChange={(event, codec) => {
+                                    onChange({
+                                        outputIP: codec.address,
+                                        outputPort: codec.port,
+                                    });
+                                }}
+                            />
                         ),
                     },
                     {

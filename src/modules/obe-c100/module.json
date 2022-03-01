@@ -9,15 +9,8 @@
     "author": "Geoff House",
     "license": "GPLv3",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,
@@ -30,6 +23,7 @@
         "notes": "",
         "enabled": false,
         "address": "",
-        "snmpCommunity": "public"
+        "snmpCommunity": "public",
+        "codecSource": ""
     }
 }
