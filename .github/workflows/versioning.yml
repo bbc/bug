@@ -6,14 +6,14 @@ on:
             - main
 
 jobs:
-    backend-version:
+    version:
         runs-on: self-hosted
         steps:
             #Get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v2
             #Bump the backend version
-            - name: "Automated Version Bump"
+            - name: "Backend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -27,11 +27,8 @@ jobs:
                   major-wording: "major,Major,breaking"
                   rc-wording: "RELEASE,alpha"
                   tag-prefix: "v"
-    frontend-version:
-        runs-on: self-hosted
-        steps:
             #Bump the frontend version
-            - name: "Automated Version Bump"
+            - name: "Frontend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
