@@ -34,6 +34,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: "src/client"
               with:
+                  bump-policy: "ignore"
                   commit-message: "CI: bumps frontend version to {{version}}"
                   target-branch: "main"
                   minor-wording: "add,Adds,added,Added,New"
