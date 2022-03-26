@@ -9,6 +9,12 @@ jobs:
     version:
         runs-on: self-hosted
         steps:
+            - name: "Cleanup Build folder"
+              run: |
+                  ls -la ./
+                  rm -rf ./* || true
+                  rm -rf ./.??* || true
+                  ls -la ./
             #Get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v2
