@@ -15,9 +15,9 @@ function ModuleSwitch({ children, panelId }) {
     // we memoize this to hide any panel.data changes from updating the page
     return React.useMemo(() => {
         return (
-            <Switch>
-                <Suspense fallback={<BugLoading />}>{children}</Suspense>
-            </Switch>
+            <Suspense fallback={<BugLoading />}>
+                <Switch>{children}</Switch>
+            </Suspense>
         );
     }, [children]);
 }
