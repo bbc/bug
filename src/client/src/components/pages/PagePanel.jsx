@@ -35,6 +35,7 @@ export default function PagePanel(props) {
 
         if (Modules["modules"][moduleName]) {
             const Module = Modules["modules"][moduleName]["client"]["Module"];
+            console.log("this again...");
             // we only include pathname here to trigger a re-render if the URL changes
             return <Module panelId={panelId} pathname={location.pathname} />;
         }
