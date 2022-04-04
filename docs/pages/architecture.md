@@ -13,6 +13,8 @@ BUG is made up of a number of containers. Every BUG instance will have at least 
 -   BUG Core
 -   Mongo
 
+![docker ps](/assets/images/bug-architecture.png)
+
 In development an additional module
 
 -   Mongo Express
