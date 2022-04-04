@@ -12,6 +12,7 @@ const codecstatusRouter = require("@routes/codecstatus");
 const localdataRouter = require("@routes/localdata");
 const deviceRouter = require("@routes/device");
 const validationRouter = require("@routes/validate");
+const codecDbRouter = require("@routes/codecdb");
 
 let app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/codecstatus", codecstatusRouter);
 app.use("/api/localdata", localdataRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/validate", validationRouter);
+app.use("/api/codecdb", codecDbRouter);
 
 app.use("*", defaultRouter);
 

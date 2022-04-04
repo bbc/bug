@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigWrapper from "@core/BugConfigWrapper";
+import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -77,6 +78,19 @@ export default function ConfigPanel() {
                         supportsValidation
                         onChange={(event) => validateServer(event, "snmpCommunity", ["address"])}
                         label="SNMP Community String"
+                    />
+                </Grid>
+
+                <Grid item xs={12} md={12}>
+                    <BugConfigFormPanelSelect
+                        name="codecSource"
+                        label="Codec Database Source"
+                        control={control}
+                        defaultValue={panelConfig.data.codecSource ?? ""}
+                        error={errors.codecSource}
+                        helperText="Select a source of codec information"
+                        fullWidth
+                        capability="codec-db"
                     />
                 </Grid>
             </BugConfigWrapper>
