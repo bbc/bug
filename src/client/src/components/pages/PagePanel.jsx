@@ -27,15 +27,13 @@ export default function PagePanel(props) {
 
     // we memoize this as we don't care if the panelconfig has changed in here - just the status or id
     return React.useMemo(() => {
-        // console.log("Uncomment this line in development to force a refresh of the Module include logic above");
-
+        console.log("Uncomment this line in development to force a refresh of the Module include logic above");
         if (panelConfig.status !== "success") {
             return <BugLoading />;
         }
 
         if (Modules["modules"][moduleName]) {
             const Module = Modules["modules"][moduleName]["client"]["Module"];
-            console.log("this again...");
             // we only include pathname here to trigger a re-render if the URL changes
             return <Module panelId={panelId} pathname={location.pathname} />;
         }

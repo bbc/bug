@@ -6,9 +6,7 @@ const workerStore = require("@core/worker-store");
 // load routes
 const statusRouter = require("@routes/status");
 const configRouter = require("@routes/config");
-const feedRouter = require("@routes/feed");
 const defaultRouter = require("@routes/default");
-const validationRouter = require("@routes/validate");
 
 let app = express();
 
@@ -26,8 +24,6 @@ app.use(bodyParser.json());
 
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
-app.use("/api/feed", feedRouter);
-app.use("/api/validate", validationRouter);
 
 app.use("*", defaultRouter);
 
