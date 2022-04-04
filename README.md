@@ -10,6 +10,16 @@ This is the all new version 3.
 
 All the detailed information you'll need to get started is [bug.bbc.github.io](https://laughing-journey-961a0bed.pages.github.io/).
 
+# Getting Started
+
+## Production
+
+See the (BUG Website)[https://laughing-journey-961a0bed.pages.github.io/pages/installation/] for more detailed information on setting up a production version of BUG.
+
+## Development
+
+See the (BUG Website)[https://laughing-journey-961a0bed.pages.github.io/pages/development/] for more detailed information on setting up a development environment for BUG.
+
 # Copyright Notice
 
 Geoff House, Ryan McCartney © BBC 2022
@@ -25,31 +35,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-## Development: Docker
-
-For development on your local machine with docker (recommended)
-
--   Install the latest version of `docker`, `docker-compose`, `node.js` and `npm`.
--   Clone this repository
--   Change directories to the `./src` folder of the repository
--   Run `npm install`.
--   Change directories to the `./src/client` folder of the repository
--   Run `npm install`.
--   Spin up your development instance with `docker compose up -d`
-
-You can change many of the port parameters, logging locations by setting environment variables in a `.env` file in the root directory.
-
-When developing in docker changes will automatically be relfected in docker using volume mounts and nodemon to reload. Please make sure to `npm install` on your local machine before spinning up the compose project.
-
-## Development: Local Machine
-
--   Clone the repository
--   Change directories to the `./src` folder of the repository
--   Run `npm install`.
--   Change directories to the `./src/client` folder of the repository
--   Run `npm install`.
--   Change directories to the `./src` folder of the repository
--   Use `npm run development` to run on your local machine.
-
-Note that this method still requires you to have docker on your machine to test functionality like adding and removing panels. You'll also need a locally running MongoDB aswell.
