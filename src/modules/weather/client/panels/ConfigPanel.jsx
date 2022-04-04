@@ -80,13 +80,11 @@ export default function ConfigPanel() {
                     name="latitude"
                     control={control}
                     rules={{ required: true }}
-                    min={-90}
-                    max={90}
-                    numeric={true}
+                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    type="number"
                     fullWidth
                     error={errors?.latitude}
                     defaultValue={panelConfig.data.latitude}
-                    type="number"
                     label="Location Latitude"
                 />
             </Grid>
@@ -96,15 +94,12 @@ export default function ConfigPanel() {
                     name="longitude"
                     control={control}
                     rules={{ required: true }}
-                    min={-90}
-                    max={90}
-                    numeric={true}
+                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    type="number"
                     fullWidth
                     error={errors?.longitude}
                     defaultValue={panelConfig.data.longitude}
-                    type="number"
                     label="Location Longitude"
-                    step="any"
                 />
             </Grid>
 

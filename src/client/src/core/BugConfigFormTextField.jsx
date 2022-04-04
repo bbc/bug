@@ -10,14 +10,13 @@ const BugConfigFormTextField = ({
     disabled = false,
     defaultValue,
     fullWidth = false,
+    type = "text",
     rules,
     error,
     helperText,
     supportsValidation = false,
     variant = "standard",
-    numeric = false,
-    min,
-    max,
+    inputProps = {},
     ...props
 }) => {
     return (
@@ -42,9 +41,8 @@ const BugConfigFormTextField = ({
                                 variant={variant}
                                 error={error}
                                 helperText={helperText}
-                                numeric={numeric}
-                                min={min}
-                                max={max}
+                                inputProps={inputProps}
+                                type={type}
                             />
                         );
                     }}

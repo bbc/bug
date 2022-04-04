@@ -6,14 +6,20 @@ on:
             - main
 
 jobs:
-    backend-version:
+    version:
         runs-on: self-hosted
         steps:
+            - name: "Cleanup Build folder"
+              run: |
+                  ls -la ./
+                  rm -rf ./* || true
+                  rm -rf ./.??* || true
+                  ls -la ./
             #Get the latest version of the repository
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
             #Bump the backend version
-            - name: "Automated Version Bump"
+            - name: "Backend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -27,19 +33,17 @@ jobs:
                   major-wording: "major,Major,breaking"
                   rc-wording: "RELEASE,alpha"
                   tag-prefix: "v"
-    frontend-version:
-        runs-on: self-hosted
-        steps:
             #Bump the frontend version
-            - name: "Automated Version Bump"
+            - name: "Frontend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: "src/client"
               with:
+                  bump-policy: "ignore"
                   commit-message: "CI: bumps frontend version to {{version}}"
                   target-branch: "main"
-                  minor-wording: "add,Adds,new"
+                  minor-wording: "add,Adds,added,Added,New"
                   major-wording: "major,Major,breaking"
-                  rc-wording: "Release,release"
+                  rc-wording: "RELEASE,alpha"
                   tag-prefix: "v"
