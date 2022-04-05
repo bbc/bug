@@ -38,6 +38,10 @@ Each module is then allocated its own container, an isolated environment to carr
 
 ---
 
+## Panel Communication
+
+![Panel Communication](/assets/diagrams/panel-communication.drawio.svg)
+
 ## Panel Config
 
 Configs contain panel configurations. This configuration is stored in BUG core and pushed to panels on either start or update.
