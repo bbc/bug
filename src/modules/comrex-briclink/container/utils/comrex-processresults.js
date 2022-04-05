@@ -11,7 +11,7 @@ const comrexChannelStats = require("@models/comrex-channelstats");
 const comrexLevels = require("@models/comrex-levels");
 
 module.exports = async (result, resultFilter = null) => {
-    console.log(`comrex-processresults: got result for ${result?.children?.[0]?.name}`);
+    // console.log(`comrex-processresults: got result for ${result?.children?.[0]?.name}`);
 
     if (resultFilter && !resultFilter.includes(result?.children?.[0]?.name)) {
         return null;
@@ -51,7 +51,7 @@ module.exports = async (result, resultFilter = null) => {
         case "levels":
             const levels = comrexLevels.parse(result);
             if (levels) {
-                // await mongoSingle.set("levels", levels, 30);
+                await mongoSingle.set("levels", levels, 30);
             }
             break;
         case "channelStats":

@@ -1,7 +1,6 @@
 "use strict";
 
 const { parentPort, workerData } = require("worker_threads");
-const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const comrexSocket = require("@utils/comrex-socket");
@@ -18,7 +17,10 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     // Kick things off
-    console.log(`worker-peers: connecting to device at ${workerData.address}`);
+    console.log(`worker-levels: connecting to device at ${workerData.address}`);
+
+    const updateEveryMilliseconds = 500;
+    let lastUpdated = Date.now();
 
     try {
         const device = new comrexSocket({
@@ -28,9 +30,14 @@ const main = async () => {
             password: workerData.password,
             monitors: { metering: "true", meterInterval: "1" },
         });
-        // device.on("update", (result) => comrexProcessResults(result, ["levels"]));
+        device.on("update", (result) => {
+            if (Date.now() - lastUpdated > updateEveryMilliseconds) {
+                comrexProcessResults(result, ["levels"]);
+                lastUpdated = Date.now();
+            }
+        });
         await device.connect();
-        console.log("worker-peers: waiting for events ...");
+        console.log("worker-levels: waiting for events ...");
     } catch (error) {
         throw new Error("failed to connect");
     }

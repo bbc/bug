@@ -18,7 +18,7 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     // Kick things off
-    console.log(`worker-peers: connecting to device at ${workerData.address}`);
+    console.log(`worker-device: connecting to device at ${workerData.address}`);
 
     try {
         const device = new comrexSocket({
@@ -26,11 +26,23 @@ const main = async () => {
             port: workerData.port ?? 80,
             username: workerData.username,
             password: workerData.password,
-            monitors: { channelStats: "true" },
+            commands: ["getCodecList", "getProfileList", "getPeerList"],
         });
-        device.on("update", (result) => comrexProcessResults(result, ["channelStats"]));
+        device.on("update", (result) =>
+            comrexProcessResults(result, ["codecList", "peerList", "profileList", "currentEncoder", "sipProxy"])
+        );
         await device.connect();
-        console.log("worker-peers: waiting for events ...");
+        console.log("worker-device: waiting for events ...");
+
+        while (true) {
+            // every 30 seconds
+            await delay(30000);
+            device.send("<getCodecList />");
+            await delay(2000);
+            device.send("<getPeerList />");
+            await delay(2000);
+            device.send("<getProfileList />");
+        }
     } catch (error) {
         throw new Error("failed to connect");
     }
