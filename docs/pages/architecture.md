@@ -13,7 +13,7 @@ BUG is made up of a number of containers. Every BUG instance will have at least 
 -   BUG Core
 -   Mongo
 
-![Architecture Overview](/assets/diagrams/architecture-overview.svg)
+![Architecture Overview](/assets/diagrams/architecture-overview.drawio.svg)
 
 In development an additional module
 
