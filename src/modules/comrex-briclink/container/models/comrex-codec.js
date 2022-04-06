@@ -11,7 +11,13 @@ exports.parseList = function (xml) {
     if (xml?.children?.[0]?.name === "codecList") {
         for (const codec of xml?.children?.[0]?.children) {
             // copy the profile attributes
-            results.push({ ...codec.attributes });
+            results.push({
+                ...codec.attributes,
+                delay: parseInt(codec?.attributes?.delay),
+                licensed: codec?.attributes?.licensed === "true",
+                quality: parseInt(codec?.attributes?.quality),
+                rate: parseInt(codec?.attributes?.rate),
+            });
         }
         return results;
     }
