@@ -50,7 +50,7 @@ const hashResponse = require("@core/hash-response");
  */
 router.put(
     "/:panelId",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin", "user", "panel"]),
     asyncHandler(async (req, res) => {
         const result = await panelConfigSet({
             ...{ id: req.params.panelId },

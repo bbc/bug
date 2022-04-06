@@ -5,6 +5,7 @@ const panelConfigModel = require("@models/panel-config");
 const moduleGet = require("@services/module-get");
 const logger = require("@utils/logger")(module);
 const panelStart = require("@services/panel-start");
+const key = require("@utils/key");
 
 module.exports = async (panelConfig) => {
     try {
@@ -12,6 +13,9 @@ module.exports = async (panelConfig) => {
         if (panelConfig.id === undefined) {
             panelConfig.id = await id();
         }
+
+        //Create an API key for the panel
+        panelConfig.key = await key();
 
         // merge config passed with default module config
         const module = await moduleGet(panelConfig.module);
