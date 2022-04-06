@@ -8,17 +8,17 @@ BUG provides management and control of network devices in broadcast environments
 
 This is the all new version 3.
 
-All the detailed information you'll need to get started is [bug.bbc.github.io](https://laughing-journey-961a0bed.pages.github.io/).
+All the detailed information you'll need to get started is [bug.bbc.github.io](https://https://bug.locfacs.co.uk/).
 
 # Getting Started
 
 ## Production
 
-See the [BUG Website](https://laughing-journey-961a0bed.pages.github.io/pages/installation/) for more detailed information on setting up a production version of BUG.
+See the [BUG Website](https://https://bug.locfacs.co.uk/pages/installation/) for more detailed information on setting up a production version of BUG.
 
 ## Development
 
-See the [BUG Website](https://laughing-journey-961a0bed.pages.github.io/pages/development/) for more detailed information on setting up a development environment for BUG.
+See the [BUG Website](https://https://bug.locfacs.co.uk/pages/development/) for more detailed information on setting up a development environment for BUG.
 
 # Copyright Notice
 

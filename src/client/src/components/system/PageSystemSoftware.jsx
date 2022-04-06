@@ -203,9 +203,7 @@ export default function PageSystemBackup() {
                                 name: "Documentation",
                                 value: (
                                     <BugTableLinkButton
-                                        onClick={(event) =>
-                                            openWebpage(event, `https://laughing-journey-961a0bed.pages.github.io/`)
-                                        }
+                                        onClick={(event) => openWebpage(event, `https://https://bug.locfacs.co.uk/`)}
                                         color="secondary"
                                     >
                                         bug.bbc.pages.github.io
