@@ -7,6 +7,7 @@ import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -93,6 +94,20 @@ export default function ConfigPanel() {
                         supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "username"])}
                         label="Password"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <BugConfigFormSelect
+                        name="port"
+                        control={control}
+                        fullWidth
+                        label="Control Port"
+                        defaultValue={panelConfig.data.port}
+                        options={[
+                            { id: "80", label: "80 (v4 firmware)" },
+                            { id: "8080", label: "8080 (v2/v3 firmware)" },
+                        ]}
                     />
                 </Grid>
             </BugConfigWrapper>

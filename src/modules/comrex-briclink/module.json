@@ -22,6 +22,7 @@
         "enabled": false,
         "address": "",
         "username": "bug",
-        "password": "comrex"
+        "password": "comrex",
+        "port": "80"
     }
 }
