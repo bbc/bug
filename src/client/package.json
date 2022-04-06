@@ -113,7 +113,7 @@
     "@storybook/addon-essentials": "^6.4.17",
     "@storybook/addon-links": "^6.4.17",
     "@storybook/react": "^6.4.17",
-    "@storybook/storybook-deployer": "^2.8.10",
+    "@storybook/storybook-deployer": "^2.8.11",
     "babel-plugin-bulk-import": "^2.0.0",
     "babel-plugin-import": "^1.13.3",
     "customize-cra": "^1.0.0"
