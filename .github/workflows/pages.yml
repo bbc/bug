@@ -1,5 +1,5 @@
 # .github/workflows/backend.yml
-name: BUG Backend
+name: BUG Pages
 
 on:
     push:
@@ -28,9 +28,9 @@ jobs:
             - name: Build Storybook and Publish to GitHub pages ${{ matrix.node-version }}
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}@
               with:
                   node-version: ${{ matrix.node-version }}
             - run: npm ci
             - run: npm run deploy-storybook -- --ci --out=./../../docs --source-branch=main --host-token-env-variable=GITHUB_TOKEN
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
