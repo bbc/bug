@@ -2,7 +2,7 @@
 name: BUG Deploy
 
 env:
-    regsitry: "172.26.108.110"
+    regsitry: "harbor.prod.bcn.bbc.co.uk"
 
 on:
     push:
