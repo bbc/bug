@@ -1,0 +1,36 @@
+# .github/workflows/backend.yml
+name: BUG Backend
+
+on:
+    push:
+        branches:
+            - "**"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+    pull_request:
+        branches:
+            - "main"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+
+jobs:
+    backend:
+        runs-on: self-hosted
+        strategy:
+            matrix:
+                node-version: [16]
+        defaults:
+            run:
+                working-directory: ./src/client
+        steps:
+            - name: Build Storybook and Publish to GitHub pages ${{ matrix.node-version }}
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}@
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: npm ci
+            - run: npm run deploy-storybook -- --ci --out=./../../docs --source-branch=main --host-token-env-variable=GITHUB_TOKEN
