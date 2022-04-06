@@ -57,6 +57,7 @@ const BugConfigFormAutocomplete = ({
                                 options={options}
                                 freeSolo={freeSolo}
                                 onBlur={onBlur}
+                                blurOnSelect="touch"
                                 onChange={(event, values) => {
                                     if (isObjectArray) {
                                         const returnValues = [];
