@@ -36,7 +36,6 @@ export const useAlert = () => {
     const user = useSelector((state) => state?.user);
     const panelConfig = useSelector((state) => state?.panelConfig);
 
-    console.log(panelConfig);
     const sendAlert = (message, options) => {
         alert.emit("event", {
             message: message,
