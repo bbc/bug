@@ -17,8 +17,9 @@ module.exports = async (workers, config) => {
         console.log(`config-put: saved config file to ${filename}`);
 
         //Tell the worker manager that a new config is avalible
-
-        await workers.pushConfig(config);
+        if (workers) {
+            await workers.pushConfig(config);
+        }
 
         return true;
     } catch (error) {
