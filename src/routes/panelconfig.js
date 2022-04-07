@@ -53,8 +53,8 @@ router.put(
     restrict.to(["admin", "user", "panel"]),
     asyncHandler(async (req, res) => {
         const result = await panelConfigSet({
-            ...{ id: req.params.panelId },
             ...req.body,
+            ...{ id: req.params.panelId },
         });
         hashResponse(res, req, {
             status: result ? "success" : "failure",
