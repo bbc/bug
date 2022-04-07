@@ -3,5 +3,6 @@
     "description": "A better way to manage your kit",
     "theme": "dark",
     "sounds": false,
-    "logLevel": "info"
+    "logLevel": "info",
+    "moduleStatus": ["stable"]
 }

@@ -10,6 +10,7 @@ import { useAlert } from "@utils/Snackbar";
 import BugLoading from "@core/BugLoading";
 import BugForm from "@core/BugForm";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import Button from "@mui/material/Button";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
@@ -125,6 +126,21 @@ export default function PageSystemBackup() {
                                         { id: "http", label: "HTTP" },
                                         { id: "debug", label: "Debug" },
                                     ]}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <BugConfigFormAutocomplete
+                                    name="moduleStatus"
+                                    label="Module Status"
+                                    control={control}
+                                    defaultValue={settings?.data?.moduleStatus}
+                                    options={[
+                                        { id: "stable", label: "Stable" },
+                                        { id: "beta", label: "Beta" },
+                                    ]}
+                                    fullWidth
+                                    helperText="What should be development status of a module before letting a user add it."
                                 />
                             </Grid>
 
