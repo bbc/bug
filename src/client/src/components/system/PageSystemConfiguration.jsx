@@ -104,7 +104,7 @@ export default function PageSystemBackup() {
                                     fullWidth
                                     label="Theme"
                                     defaultValue={settings?.data?.theme}
-                                    items={[
+                                    options={[
                                         { id: "dark", label: "Dark" },
                                         { id: "light", label: "Light" },
                                     ]}
