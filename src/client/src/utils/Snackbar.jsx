@@ -31,20 +31,19 @@ export function SnackbarConfigurator() {
     );
 }
 
-export const useAlert = (panelId) => {
+export const useAlert = () => {
     const { enqueueSnackbar } = useSnackbar();
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state?.user);
+    const panelConfig = useSelector((state) => state?.panelConfig);
 
+    console.log(panelConfig);
     const sendAlert = (message, options) => {
-        if (options?.broadcast) {
-            delete options.broadcast;
-            alert.emit("event", {
-                message: message,
-                userId: user?.data?.id,
-                panelId: panelId,
-                options: options,
-            });
-        }
+        alert.emit("event", {
+            message: message,
+            userId: user?.data?.id,
+            panelId: panelConfig?.data?.id,
+            options: options,
+        });
         enqueueSnackbar(message, options);
     };
 

@@ -16,7 +16,7 @@ export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
     const panelConfig = useSelector((state) => state.panelConfig);
     const timer = React.useRef();
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
 
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
     const showCodecDropdown = panelConfig && panelConfig.data.codecSource;

@@ -22,7 +22,7 @@ export default function Lease({ panelId, leaseId }) {
     const [lease, setLease] = React.useState(null);
     const [servers, setServers] = React.useState(null);
     const [addressLists, setAddressLists] = React.useState(null);
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
 
     useAsyncEffect(async () => {
         setLease(await AxiosGet(`/container/${panelId}/lease/${leaseId}`));

@@ -29,7 +29,7 @@ export default function MainPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
     const [filename, setFilename] = useState(panelConfig?.data?.logo?.name);
 
-    const sendAlert = useAlert(params?.panelId);
+    const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
     if (panelConfig.status === "idle" || panelConfig.status === "loading") {

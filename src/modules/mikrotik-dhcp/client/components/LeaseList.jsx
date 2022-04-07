@@ -24,7 +24,7 @@ import BugTableLinkButton from "@core/BugTableLinkButton";
 
 export default function LeaseList({ panelId }) {
     const history = useHistory();
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const nowTimestamp = Date.now();
     const { renameDialog } = useBugRenameDialog();
 
