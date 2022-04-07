@@ -8,7 +8,6 @@ const statusRouter = require("@routes/status");
 const configRouter = require("@routes/config");
 const clockRouter = require("@routes/clock");
 const defaultRouter = require("@routes/default");
-const validationRouter = require("@routes/validate");
 
 let app = express();
 
@@ -22,7 +21,6 @@ app.use("/api", express.static(path.join(__dirname, "..", "public")));
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/clock", clockRouter);
-app.use("/api/validate", validationRouter);
 
 app.use("*", defaultRouter);
 

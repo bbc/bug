@@ -11,8 +11,10 @@ import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import BugColorPicker from "@core/BugColorPicker";
 import BugTimeZonePicker from "@core/BugTimeZonePicker";
+import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
 import Switch from "@mui/material/Switch";
+import Button from "@mui/material/Button";
 
 const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -25,6 +27,7 @@ const toBase64 = (file) =>
 export default function MainPanel() {
     const params = useParams();
     const panelConfig = useSelector((state) => state.panelConfig);
+    const [filename, setFilename] = useState(panelConfig?.data?.logo?.name);
 
     const sendAlert = useAlert(params?.panelId);
     const { renameDialog } = useBugRenameDialog();
@@ -177,20 +180,48 @@ export default function MainPanel() {
                         {
                             name: "Logo",
                             value: (
-                                <Input
-                                    color="primary"
-                                    disableElevation
-                                    underline="none"
-                                    component="label"
-                                    type="file"
-                                    name="file"
-                                    size="small"
-                                    onChange={handleLogoChange}
-                                    inputProps={{
-                                        ...{ accept: "image/*" },
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "rows",
                                     }}
-                                    fullWidth
-                                ></Input>
+                                >
+                                    <label htmlFor="contained-button-file">
+                                        <Input
+                                            sx={{ display: "none" }}
+                                            id="contained-button-file"
+                                            multiple
+                                            onChange={(event) => {
+                                                const filename = event.target.value.replace(/^.*\\/, "");
+                                                setFilename(filename);
+                                                handleLogoChange(event);
+                                            }}
+                                            type="file"
+                                            inputProps={{
+                                                ...{ accept: "image/*" },
+                                            }}
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            sx={{
+                                                width: "6rem",
+                                                height: "36px",
+                                            }}
+                                            component="span"
+                                        >
+                                            Select
+                                        </Button>
+                                    </label>
+                                    <Box
+                                        sx={{
+                                            padding: "8px",
+                                            flexGrow: 1,
+                                        }}
+                                    >
+                                        {filename ? filename : "No file selected"}
+                                    </Box>
+                                </Box>
                             ),
                         },
                     ]}
