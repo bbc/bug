@@ -30,6 +30,10 @@ export default function PageSystemBackup() {
         AxiosGet("/api/bug/reboot");
     };
 
+    const onRefresh = async () => {
+        window.location.reload();
+    };
+
     // const getData = () => {
     //     const dataArray = [];
     //     for (let key in info.data) {
@@ -84,6 +88,20 @@ export default function PageSystemBackup() {
                                         disableElevation
                                     >
                                         Reboot
+                                    </Button>
+                                ),
+                            },
+                            {
+                                name: "Refresh Page",
+                                value: (
+                                    <Button
+                                        onClick={onRefresh}
+                                        underline="none"
+                                        variant="outlined"
+                                        color="primary"
+                                        disableElevation
+                                    >
+                                        Refresh
                                     </Button>
                                 ),
                             },
