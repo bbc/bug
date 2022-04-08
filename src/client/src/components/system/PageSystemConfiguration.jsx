@@ -134,7 +134,7 @@ export default function PageSystemBackup() {
                                     name="moduleStatus"
                                     label="Module Status"
                                     control={control}
-                                    defaultValue={settings?.data?.moduleStatus}
+                                    defaultValue={settings.data.moduleStatus ? settings.data.moduleStatus : []}
                                     options={[
                                         { id: "stable", label: "Stable" },
                                         { id: "beta", label: "Beta" },

@@ -26,7 +26,7 @@ services:
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
             BUG_PORT: 3101
-            BUG_HOST: http://localhost
+            BUG_HOST: "127.0.0.1"
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_LOG_LEVEL: debug
