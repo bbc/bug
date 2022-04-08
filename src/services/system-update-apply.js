@@ -16,7 +16,7 @@ module.exports = async () => {
             headers: { Authorization: `Bearer ${watchtowerToken}` },
         });
 
-        if (response.status) {
+        if (watchtowerResponse.status === 200) {
             response.data = { updating: true };
         } else {
             throw new Error(`Watchtower responsed with a code ${watchtowerResponse.status}`);

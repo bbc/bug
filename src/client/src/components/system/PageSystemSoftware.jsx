@@ -24,18 +24,10 @@ export default function PageSystemBackup() {
     });
 
     const getButton = () => {
-        if (info.data?.updates.newVersion && !info.data.git.development) {
-            return (
-                <Button onClick={onUpdate} underline="none" variant="outlined" color="primary" disableElevation>
-                    Update BUG
-                </Button>
-            );
-        }
-
         if (updating) {
             return (
                 <Button
-                    startIcon={<CircularProgress />}
+                    startIcon={<CircularProgress size={25} />}
                     onClick={onCancelUpdate}
                     underline="none"
                     variant="outlined"
@@ -43,6 +35,14 @@ export default function PageSystemBackup() {
                     disableElevation
                 >
                     Updating...
+                </Button>
+            );
+        }
+
+        if (info.data?.updates.newVersion && !info.data.git.development) {
+            return (
+                <Button onClick={onUpdate} underline="none" variant="outlined" color="primary" disableElevation>
+                    Update BUG
                 </Button>
             );
         }
@@ -62,10 +62,12 @@ export default function PageSystemBackup() {
         setUpdating(true);
         const response = await AxiosGet(`/api/system/update`);
 
-        if (!response.error) {
+        if (response.status === "success") {
             sendAlert(`Updating BUG to version ${info.data.updates.version}`, { broadcast: true, variant: "success" });
         } else {
-            sendAlert(`Failed to apply BUG update. ${response?.error?.message}`, { variant: "error" });
+            sendAlert(`Failed to apply BUG update. ${response.error.message ? response.error.message : ""}`, {
+                variant: "error",
+            });
             setUpdating(false);
         }
     };
