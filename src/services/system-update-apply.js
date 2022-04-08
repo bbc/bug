@@ -9,16 +9,23 @@ const watchtowerContainer = process.env.WATCHTOWER_CONTAINER || "watchtower";
 const axios = require("axios");
 
 module.exports = async () => {
+    let response = {};
     try {
-        const response = await axios.get(`http://${watchtowerContainer}:8080/v1/update`, {
+        const watchtowerResponse = await axios.get(`http://${watchtowerContainer}:8080/v1/update`, {
+            timeout: 5000,
             headers: { Authorization: `Bearer ${watchtowerToken}` },
         });
 
-        console.log(response?.data);
+        if (response.status) {
+            response.data = { updating: true };
+        } else {
+            throw new Error(`Watchtower responsed with a code ${watchtowerResponse.status}`);
+        }
 
-        return response?.data;
+        return response;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed apply the bug update.`);
+        response.error = error;
+        return response;
     }
 };

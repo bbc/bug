@@ -43,6 +43,8 @@ services:
         image: mongo:latest
         restart: unless-stopped
         container_name: bug-mongo
+        labels:
+            - "com.centurylinklabs.watchtower.enable=false"
         networks:
             - bug
         ports:
@@ -56,6 +58,8 @@ services:
             - bug
         ports:
             - 8080:8080
+        labels:
+            - "com.centurylinklabs.watchtower.enable=false"
         environment:
             WATCHTOWER_DEBUG: "true"
             WATCHTOWER_HTTP_API_UPDATE: "true"
@@ -65,6 +69,8 @@ services:
         image: mongo-express
         container_name: bug-mongo-express
         restart: unless-stopped
+        labels:
+            - "com.centurylinklabs.watchtower.enable=false"
         ports:
             - 3202:8081
         environment:

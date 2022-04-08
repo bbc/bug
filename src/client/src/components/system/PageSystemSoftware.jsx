@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAlert } from "@utils/Snackbar";
 import Grid from "@mui/material/Grid";
 import { useDispatch } from "react-redux";
@@ -10,15 +10,17 @@ import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import TimeAgo from "javascript-time-ago";
 import BugTableLinkButton from "@core/BugTableLinkButton";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
     const dispatch = useDispatch();
+    const [updating, setUpdating] = useState(false);
     const timeAgo = new TimeAgo("en-GB");
 
     const info = useApiPoller({
         url: `/api/system/info`,
-        interval: 5000,
+        interval: 3000,
     });
 
     const getButton = () => {
@@ -30,6 +32,21 @@ export default function PageSystemBackup() {
             );
         }
 
+        if (updating) {
+            return (
+                <Button
+                    startIcon={<CircularProgress />}
+                    onClick={onCancelUpdate}
+                    underline="none"
+                    variant="outlined"
+                    color="primary"
+                    disableElevation
+                >
+                    Updating...
+                </Button>
+            );
+        }
+
         return (
             <Button onClick={onCheckUpdate} underline="none" variant="outlined" color="primary" disableElevation>
                 Check for Updates
@@ -37,13 +54,19 @@ export default function PageSystemBackup() {
         );
     };
 
+    const onCancelUpdate = () => {
+        setUpdating(false);
+    };
+
     const onUpdate = async () => {
+        setUpdating(true);
         const response = await AxiosGet(`/api/system/update`);
 
-        if (response) {
+        if (!response.error) {
             sendAlert(`Updating BUG to version ${info.data.updates.version}`, { broadcast: true, variant: "success" });
         } else {
-            sendAlert(`Failed to apply BUG update. Please try again`, { variant: "error" });
+            sendAlert(`Failed to apply BUG update. ${response?.error?.message}`, { variant: "error" });
+            setUpdating(false);
         }
     };
 
@@ -70,6 +93,13 @@ export default function PageSystemBackup() {
     useEffect(() => {
         dispatch(pageTitleSlice.actions.set("System Updates"));
     }, [dispatch]);
+
+    //If update is complete API should should return no new version avalible. In that case reload the page
+    useEffect(() => {
+        if (updating && !info.data?.updates.newVersion) {
+            window.location.reload();
+        }
+    }, [info]);
 
     if (info.status === "loading" || info.status === "idle") {
         return <BugLoading />;
@@ -188,10 +218,6 @@ export default function PageSystemBackup() {
                             },
                         ]}
                     />
-                </Grid>
-
-                <Grid item lg={6} xs={12}>
-                    <BugDetailsCard title="Changelogs" width="12rem" items={[]} />
                 </Grid>
 
                 <Grid item lg={6} xs={12}>

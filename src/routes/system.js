@@ -121,9 +121,10 @@ router.get("/settings", async function (req, res, next) {
  */
 router.get("/update", async function (req, res, next) {
     const result = await systemUpdate();
+    console.log(result);
     hashResponse(res, req, {
-        status: result ? "success" : "failure",
-        data: result?.data,
+        ...result,
+        status: result.error ? "failure" : "success",
     });
 });
 
