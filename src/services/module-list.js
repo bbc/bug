@@ -13,16 +13,20 @@ module.exports = async () => {
 
     //Filter out the modules according to user set beta/stable
     let moduleList = await moduleConfig.list();
-    moduleList = moduleList.filter((module) => {
-        let statusMatch = false;
-        for (let status of settings.moduleStatus) {
-            if (status === module.status) {
-                statusMatch = true;
-                break;
+
+    //Handle feild not being avalible in settings
+    if (settings?.moduleStatus) {
+        moduleList = moduleList.filter((module) => {
+            let statusMatch = false;
+            for (let status of settings.moduleStatus) {
+                if (status === module.status) {
+                    statusMatch = true;
+                    break;
+                }
             }
-        }
-        return statusMatch;
-    });
+            return statusMatch;
+        });
+    }
 
     try {
         for (let eachModule of moduleList) {
