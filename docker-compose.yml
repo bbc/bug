@@ -57,10 +57,10 @@ services:
         ports:
             - 8080:8080
         environment:
-            WATCHTOWER_DEBUG: true
-            WATCHTOWER_HTTP_API_UPDATE: true
+            WATCHTOWER_DEBUG: "true"
+            WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CLEANUP: true
+            WATCHTOWER_CLEANUP: "true"
     mongo-web:
         image: mongo-express
         container_name: bug-mongo-express
