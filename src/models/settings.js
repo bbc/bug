@@ -5,6 +5,7 @@ const readJson = require("@core/read-json");
 const writeJson = require("@core/write-json");
 const path = require("path");
 const hash = require("@utils/hash");
+const global = require("@utils/globalEmitter");
 
 const filename = path.join(__dirname, "..", "config", "global", "settings.json");
 
@@ -35,6 +36,10 @@ exports.get = async function () {
 exports.update = async function (newSettings) {
     try {
         const settings = await getSettings();
+        const mergedSettings = { ...settings, ...newSettings };
+
+        global.emit("settings", mergedSettings);
+
         return await writeJson(filename, { ...settings, ...newSettings });
     } catch (error) {
         logger.warning(`${error.trace || error || error.message}`);

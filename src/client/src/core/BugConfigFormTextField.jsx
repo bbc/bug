@@ -39,7 +39,9 @@ const BugConfigFormTextField = ({
                                 disabled={disabled}
                                 onChange={(event) => {
                                     onChange(event);
-                                    props.onChange(event);
+                                    if (props.onChange) {
+                                        props.onChange(event);
+                                    }
                                 }}
                                 variant={variant}
                                 error={error}

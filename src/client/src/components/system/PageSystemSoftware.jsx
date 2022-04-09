@@ -99,15 +99,6 @@ export default function PageSystemBackup() {
         dispatch(pageTitleSlice.actions.set("System Updates"));
     }, [dispatch]);
 
-    //If update is complete API should should return no new version avalible. In that case reload the page
-    useEffect(() => {
-        if (info?.data?.updates) {
-            if (updating && !info.data.updates.newVersion) {
-                window.location.reload();
-            }
-        }
-    }, [info]);
-
     if (info.status === "loading" || info.status === "idle") {
         return <BugLoading />;
     }
