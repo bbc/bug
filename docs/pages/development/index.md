@@ -21,9 +21,9 @@ For development on your local machine with docker (recommended)
    and the latest LTS verion od [Node.js](https://nodejs.dev/download/) on your development machine.
 2. Clone the BUG repository using `git clone https://github.com/bbc/bbcnews-bug`
 3. Change directory to the `./src` folder of the repository
-4. Run `npm install`. To install all the backend dependencies locally
+4. Run `npm ci`. To install all the backend dependencies locally
 5. Change directory to the `./src/client` folder of the repository
-6. Run `npm install`. To install all the frontend dependencies locally
+6. Run `npm ci`. To install all the frontend dependencies locally
 7. Change directory to the root folder of the repository
 8. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become avalible.
 9. Get developing. If you're using the default ports, the web interface will be avalible on port 3000, the API on port 3101 and ta GUI view of the MongoDB database on port 3202.
