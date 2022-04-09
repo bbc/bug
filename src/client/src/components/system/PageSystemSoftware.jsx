@@ -98,8 +98,10 @@ export default function PageSystemBackup() {
 
     //If update is complete API should should return no new version avalible. In that case reload the page
     useEffect(() => {
-        if (updating && !info.data?.updates.newVersion) {
-            window.location.reload();
+        if (info.data.updates) {
+            if (updating && !info.data.updates.newVersion) {
+                window.location.reload();
+            }
         }
     }, [info]);
 
