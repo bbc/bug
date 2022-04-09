@@ -25,7 +25,7 @@ For development on your local machine with docker (recommended)
 5. Change directory to the `./src/client` folder of the repository
 6. Run `npm install`. To install all the frontend dependencies locally
 7. Change directory to the root folder of the repository
-8. Spin up your development instance with `docker compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become avalible.
+8. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become avalible.
 9. Get developing. If you're using the default ports, the web interface will be avalible on port 3000, the API on port 3101 and ta GUI view of the MongoDB database on port 3202.
 
 You can change many of the port parameters, logging locations by setting environment variables in the `docker-compose.yml` file in the root directory.
