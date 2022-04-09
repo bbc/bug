@@ -5,7 +5,7 @@ const basicAuth = require("@utils/basic-auth");
 module.exports = async (formData) => {
     try {
         const result = await basicAuth({
-            host: formData.address,
+            host: `${formData.address}/Output.htm`,
             username: formData.username,
             password: formData.password,
             timeout: 3000,

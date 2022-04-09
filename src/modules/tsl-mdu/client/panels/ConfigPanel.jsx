@@ -58,6 +58,7 @@ export default function ConfigPanel() {
                         error={errors?.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
+                        supportsValidation={true}
                         onChange={(event) => validateServer(event, "address")}
                         label="IP Address"
                     />
@@ -72,7 +73,8 @@ export default function ConfigPanel() {
                         error={errors?.username}
                         helperText={messages.username}
                         defaultValue={panelConfig.data.username}
-                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
+                        supportsValidation={true}
+                        onChange={(event) => validateServer(event, "username", ["address", " username", "password"])}
                         label="Web Interface Username"
                     />
                 </Grid>
@@ -86,7 +88,8 @@ export default function ConfigPanel() {
                         error={errors?.password}
                         helperText={messages.password}
                         defaultValue={panelConfig.data.password}
-                        onChange={(event) => validateServer(event, "password", ["address", "password"])}
+                        supportsValidation={true}
+                        onChange={(event) => validateServer(event, "password", ["address", "username", "password"])}
                         label="Web Interface Password"
                     />
                 </Grid>
