@@ -58,6 +58,8 @@ services:
             SESSION_SECRET: aSecretForYourSessions
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
             WATCHTOWER_CONTAINER: bug-watchtower
+        labels:
+            - "com.centurylinklabs.watchtower.enable=true"
         networks:
             - bug
         ports:
@@ -73,12 +75,11 @@ services:
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
             WATCHTOWER_CLEANUP: "true"
+            WATCHTOWER_LABEL_ENABLE: "true"
     mongo:
         image: mongo:latest
         restart: unless-stopped
         container_name: bug-mongo
-        labels:
-            - "com.centurylinklabs.watchtower.enable=false"
         networks:
             - bug
 ```
