@@ -8,6 +8,7 @@
     "icon": "mdi-rss-box",
     "author": "Ryan McCartney",
     "license": "GPLv3",
+    "status": "stable",
     "needsContainer": true,
     "devmounts": [
         "api",

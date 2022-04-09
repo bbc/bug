@@ -3,12 +3,30 @@
 const logger = require("@utils/logger")(module);
 const moduleConfig = require("@models/module-config");
 const dockerListImages = require("@services/docker-listimages");
+const settingsModel = require("@models/settings");
 
 module.exports = async () => {
     let response = [];
 
     const images = await dockerListImages();
-    const moduleList = await moduleConfig.list();
+    const settings = await settingsModel.get();
+
+    //Filter out the modules according to user set beta/stable
+    let moduleList = await moduleConfig.list();
+
+    //Handle feild not being avalible in settings
+    if (settings?.moduleStatus) {
+        moduleList = moduleList.filter((module) => {
+            let statusMatch = false;
+            for (let status of settings.moduleStatus) {
+                if (status === module.status) {
+                    statusMatch = true;
+                    break;
+                }
+            }
+            return statusMatch;
+        });
+    }
 
     try {
         for (let eachModule of moduleList) {

@@ -8,6 +8,7 @@
     "icon": "mdi-order-alphabetical-ascending",
     "author": "Ryan McCartney",
     "license": "GPLv3",
+    "status": "stable",
     "needsContainer": true,
     "devmounts": [
         "api",

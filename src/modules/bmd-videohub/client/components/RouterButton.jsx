@@ -28,7 +28,7 @@ export default function RouterButton({
 }) {
     const { confirmDialog } = useBugConfirmDialog();
     const { customDialog } = useBugCustomDialog();
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
     const handleRenameClicked = async (event, item) => {

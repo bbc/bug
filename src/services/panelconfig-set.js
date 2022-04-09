@@ -4,6 +4,7 @@ const logger = require("@utils/logger")(module);
 const panelConfigModel = require("@models/panel-config");
 const panelConfigPush = require("@services/panelconfig-push");
 const moduleGet = require("@services/module-get");
+const key = require("@utils/key");
 
 module.exports = async (newConfig) => {
     try {
@@ -14,6 +15,11 @@ module.exports = async (newConfig) => {
 
         //Module has been configured, so set the flag
         combinedConfig.needsConfigured = false;
+
+        //Get an API Key for the panel if it doesn't have one already
+        if (!combinedConfig.key) {
+            combinedConfig.key = await key();
+        }
 
         // and save it to a file
         if (!(await panelConfigModel.set(combinedConfig))) {

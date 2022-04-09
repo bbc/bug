@@ -71,7 +71,6 @@ export default function BugModuleWrapper({ panelId, children }) {
         if (hasCritical) {
             return <PanelCritical panel={panel.data} />;
         }
-
         if (panel.data._module.needsContainer) {
             if (panel.data._dockerContainer._isRestarting) {
                 return <PanelRestarting panel={panel.data} />;

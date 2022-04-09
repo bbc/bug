@@ -16,8 +16,10 @@ export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
     const panelConfig = useSelector((state) => state.panelConfig);
     const timer = React.useRef();
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
+
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
+    const showCodecDropdown = panelConfig && panelConfig.data.codecSource;
 
     usePanelToolbarEvent("refresh", () => {
         refreshCodecdata();
@@ -31,14 +33,19 @@ export default function Codec({ panelId }) {
         setCodecdata(await AxiosGet(`/container/${panelId}/codecdata/`));
     };
 
-    const onChange = (value, field) => {
+    const onChange = (updateObject) => {
         clearTimeout(timer.current);
+
         const codecdataClone = { ...codecdata };
-        codecdataClone[field] = value;
+        for (const [field, value] of Object.entries(updateObject)) {
+            codecdataClone[field] = value;
+        }
         setCodecdata(codecdataClone);
 
-        timer.current = setTimeout(() => {
-            updateBackend(value, field);
+        timer.current = setTimeout(async () => {
+            for (const [field, value] of Object.entries(updateObject)) {
+                await updateBackend(value, field);
+            }
         }, 200);
     };
 
@@ -80,6 +87,8 @@ export default function Codec({ panelId }) {
                     showAdvanced={showAdvanced}
                     collapsed={false}
                     key="output0"
+                    panelId={panelId}
+                    showCodecDropdown={showCodecDropdown}
                 />
                 <CodecOutput
                     codecdata={codecdata}
@@ -88,6 +97,8 @@ export default function Codec({ panelId }) {
                     showAdvanced={showAdvanced}
                     collapsed={true}
                     key="output1"
+                    panelId={panelId}
+                    showCodecDropdown={showCodecDropdown}
                 />
             </Grid>
         </Grid>

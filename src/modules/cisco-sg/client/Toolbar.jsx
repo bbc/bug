@@ -13,7 +13,7 @@ import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
 

@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const validateAddress = require("../../services/validate-address");
+const codecDbGet = require("@services/codecdb-get");
 const asyncHandler = require("express-async-handler");
 
-router.post(
-    "/address",
+router.get(
+    "/:streamType",
     asyncHandler(async (req, res) => {
+        const result = await codecDbGet(req.params.streamType);
         res.json({
-            status: "success",
-            data: await validateAddress(req.body),
+            status: result ? "success" : "failure",
+            data: result,
         });
     })
 );

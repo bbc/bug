@@ -10,6 +10,7 @@
     "icon": "mdi-power-plug-outline",
     "author": "Ryan McCartney",
     "license": "GPLv3",
+    "status": "beta",
     "needsContainer": true,
     "devmounts": [
         "api",

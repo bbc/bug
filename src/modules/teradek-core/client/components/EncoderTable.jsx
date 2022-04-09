@@ -45,7 +45,7 @@ const stateColors = {
 export default function EncodersTable({ panelId }) {
     const { confirmDialog } = useBugConfirmDialog();
     const { renameDialog } = useBugRenameDialog();
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const history = useHistory();
 
     const decoders = useApiPoller({

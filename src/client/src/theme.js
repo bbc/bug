@@ -191,6 +191,11 @@ const theme = createTheme({
         },
         MuiAutocomplete: {
             styleOverrides: {
+                root: {
+                    "& .MuiOutlinedInput-root": {
+                        padding: "6.5px",
+                    },
+                },
                 listbox: {
                     "& .MuiAutocomplete-option.Mui-focused": {
                         backgroundColor: "#163550 !important",

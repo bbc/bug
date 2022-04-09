@@ -10,7 +10,7 @@ import { useForceRefresh } from "@hooks/ForceRefresh";
 import { useAlert } from "@utils/Snackbar";
 
 export default function TabConfig({ panelId }) {
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
 
     const deviceConfig = useApiPoller({

@@ -8,6 +8,7 @@
     "icon": "SettingsInputComponent",
     "author": "Geoff House",
     "license": "GPLv3",
+    "status": "beta",
     "needsContainer": true,
     "protectedRoutes": [
         "config"

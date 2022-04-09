@@ -15,6 +15,7 @@ const outputRouter = require("@routes/output");
 const audioRouter = require("@routes/audio");
 const inputRouter = require("@routes/input");
 const validationRouter = require("@routes/validate");
+const codecDbRouter = require("@routes/codecdb");
 
 let app = express();
 
@@ -40,6 +41,7 @@ app.use("/api/output", outputRouter);
 app.use("/api/audio", audioRouter);
 app.use("/api/input", inputRouter);
 app.use("/api/validate", validationRouter);
+app.use("/api/codecdb", codecDbRouter);
 
 app.use("*", defaultRouter);
 

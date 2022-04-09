@@ -13,6 +13,8 @@ BUG is made up of a number of containers. Every BUG instance will have at least 
 -   BUG Core
 -   Mongo
 
+![Architecture Overview](/assets/diagrams/architecture-overview.drawio.svg)
+
 In development an additional module
 
 -   Mongo Express
@@ -35,6 +37,10 @@ Each module is then allocated its own container, an isolated environment to carr
 *   Consider connections to device
 
 ---
+
+## Panel Communication
+
+![Panel Communication](/assets/diagrams/panel-communication.drawio.svg)
 
 ## Panel Config
 

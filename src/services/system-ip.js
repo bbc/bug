@@ -3,7 +3,7 @@
 const logger = require("@utils/logger")(module);
 const dns = require("dns");
 
-// const { networkInterfaces } = require("os");
+const bugHost = process.env.BUG_HOST;
 
 async function lookupPromise(hostname) {
     return new Promise((resolve, reject) => {
@@ -16,22 +16,10 @@ async function lookupPromise(hostname) {
 
 module.exports = async () => {
     try {
-        // const nets = networkInterfaces();
-        // const response = {};
-
-        // for (const name of Object.keys(nets)) {
-        //     for (const net of nets[name]) {
-        //         if (net.family === "IPv4" && !net.internal) {
-        //             if (!response[name]) {
-        //                 response[name] = [];
-        //             }
-        //             response[name].push(net.address);
-        //         }
-        //     }
-        // }
-
-        const response = await lookupPromise("host.docker.internal");
-
+        let response = bugHost;
+        if (!response) {
+            response = await lookupPromise("host.docker.internal");
+        }
         return response;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);

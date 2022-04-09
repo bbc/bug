@@ -19,7 +19,8 @@ let workers = [];
 let config;
 
 module.exports = class WorkerManager {
-    constructor(folder) {
+    constructor(folder, isModule = true) {
+        this.isModule = isModule;
         this.fileExtension = "js";
         this.folder = folder || path.join(__dirname, "..", "workers");
         this.setup();
@@ -31,11 +32,21 @@ module.exports = class WorkerManager {
     async setup() {
         workers = await this.getWorkerFiles(this.folder);
         config = await configGet();
-        if (!config) {
-            console.log(`WorkerManager->setup: No panel config. Starting workers without one...`);
+
+        if (this.isModule && config) {
+            if (config.needsConfigured) {
+                console.log(`WorkerManager->setup: Panel on first run and needs so not starting workers...`);
+            }
+            await this.createWorkers();
+        } else if (!this.isModule) {
+            //Start workers without needing a confif - as this only applies to modules
+            console.log(
+                `WorkerManager->setup: Starting workers. They're not part of a Module and don't have a config.`
+            );
+            await this.createWorkers();
+        } else {
+            console.log(`WorkerManager->setup: Not starting workers as module has no conifg`);
         }
-        //Start workers whether there's a config or not
-        await this.createWorkers();
     }
 
     async getWorkers() {
@@ -181,6 +192,9 @@ module.exports = class WorkerManager {
             workers[index].restarting = true;
             const state = await workers[index].worker.terminate();
             console.log(`WorkerManager->restartWorder: ${workers[index]?.filename} terminated with code ${state}`);
+        } else {
+            //If worker doesn't exist create it
+            this.createWorker(index);
         }
     }
 

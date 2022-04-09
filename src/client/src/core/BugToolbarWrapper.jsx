@@ -24,6 +24,7 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { useHistory } from "react-router-dom";
 import BugToolbarIcon from "@components/BugToolbarIcon";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import BugToolbarLogsButton from "@core/BugToolbarLogsButton";
 
 /*
  * this has optional properties:
@@ -187,6 +188,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                         </ListItemIcon>
                         <ListItemText primary="Disable Panel" />
                     </MenuItem>
+                    <BugToolbarLogsButton panelId={panel.data.id} />
                     <MenuItem onClick={handleRestart}>
                         <ListItemIcon>
                             <ReplayIcon fontSize="small" />

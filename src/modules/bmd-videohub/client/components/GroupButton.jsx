@@ -9,7 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import AxiosDelete from "@utils/AxiosDelete";
 
 export default function GroupButton({ panelId, group, onClick, groupType, editMode = false, onChange, onEditButtons }) {
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
     const handleRenameClicked = async (event, item) => {

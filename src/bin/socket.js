@@ -29,7 +29,6 @@ const bugSocket = (server) => {
 
     io.use((socket, next) => {
         if (socket.request.user) {
-            console.log(socket.request.user);
             next();
         } else {
             next(new Error("Unauthorized"));

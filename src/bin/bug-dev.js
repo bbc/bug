@@ -6,7 +6,11 @@ const bugSocket = require("@bin/socket");
 const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
-const workerStore = require("@core/worker-store");
+const WorkerManager = require("@core/WorkerManager");
+
+//Start Core Workers
+const manager = new WorkerManager(undefined, false);
+
 const port = process.env.BUG_PORT || "3101";
 bugApi.set("port", port);
 

@@ -9,6 +9,7 @@
     "author": "Geoff House",
     "needsContainer": true,
     "license": "GPLv3",
+    "status": "stable",
     "devmounts": [
         "api",
         "services",

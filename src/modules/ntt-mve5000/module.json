@@ -8,6 +8,7 @@
     "notes": "",
     "author": "Geoff House",
     "license": "GPLv3",
+    "status": "stable",
     "needsContainer": true,
     "devmounts": [
         "api",
@@ -29,6 +30,7 @@
         "notes": "",
         "enabled": false,
         "address": "",
-        "snmpCommunity": "public"
+        "snmpCommunity": "public",
+        "codecSource": ""
     }
 }

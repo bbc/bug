@@ -17,7 +17,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 
 export default function OutputsList({ panelId }) {
     const history = useHistory();
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
     const handleRenameClicked = async (event, item) => {
@@ -208,7 +208,7 @@ export default function OutputsList({ panelId }) {
                 ]}
                 apiUrl={`/container/${panelId}/output/`}
                 onRowClick={handleDetailsClicked}
-                noData={<BugNoData panelId={panelId} title="No leases found" showConfigButton={false} />}
+                noData={<BugNoData panelId={panelId} title="No power outputs found" showConfigButton={false} />}
             />
         </>
     );
