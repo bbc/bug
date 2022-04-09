@@ -57,7 +57,9 @@ services:
             NODE_ENV: production
             SESSION_SECRET: aSecretForYourSessions
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CONTAINER: watchtower
+            WATCHTOWER_CONTAINER: bug-watchtower
+        labels:
+            - "com.centurylinklabs.watchtower.enable=true"
     watchtower:
         container_name: bug-watchtower
         image: containrrr/watchtower
@@ -69,6 +71,7 @@ services:
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
             WATCHTOWER_CLEANUP: "true"
+            WATCHTOWER_LABEL_ENABLE: "true"
         networks:
             - bug
         ports:
