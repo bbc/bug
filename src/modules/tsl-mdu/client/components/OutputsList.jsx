@@ -208,7 +208,7 @@ export default function OutputsList({ panelId }) {
                 ]}
                 apiUrl={`/container/${panelId}/output/`}
                 onRowClick={handleDetailsClicked}
-                noData={<BugNoData panelId={panelId} title="No leases found" showConfigButton={false} />}
+                noData={<BugNoData panelId={panelId} title="No power outputs found" showConfigButton={false} />}
             />
         </>
     );
