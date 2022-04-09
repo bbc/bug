@@ -22,6 +22,9 @@ export default function PageSystemBackup() {
     });
 
     const openWebpage = async (event, url) => {
+        if (!url.inlude("http")) {
+            url = `http://${url}`;
+        }
         const newWindow = window.open(url, "_blank", "noopener,noreferrer");
         if (newWindow) newWindow.opener = null;
         event.stopPropagation();

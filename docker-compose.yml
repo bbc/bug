@@ -22,7 +22,7 @@ services:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CONTAINER: watchtower
+            WATCHTOWER_CONTAINER: bug-watchtower
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
             BUG_PORT: 3101
