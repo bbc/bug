@@ -63,4 +63,6 @@ Exec=/home/bug/bug.sh
 X-GNOME-Autostart-enabled=true
 ```
 
-8. Reboot and watch the magic.
+8. Prevent Sleeping with the follows `sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target`
+
+9. Reboot and watch the magic.
