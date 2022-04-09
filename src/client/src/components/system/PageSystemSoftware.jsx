@@ -62,10 +62,10 @@ export default function PageSystemBackup() {
         setUpdating(true);
         const response = await AxiosGet(`/api/system/update`);
 
-        if (response.status === "success") {
+        if (response.updating) {
             sendAlert(`Updating BUG to version ${info.data.updates.version}`, { broadcast: true, variant: "success" });
         } else {
-            sendAlert(`Failed to apply BUG update. ${response.error.message ? response.error.message : ""}`, {
+            sendAlert(`Failed to apply BUG update.}`, {
                 variant: "error",
             });
             setUpdating(false);
