@@ -39,7 +39,7 @@ export default function PageSystemBackup() {
             );
         }
 
-        if (info.data?.updates.newVersion && !info.data.git.development) {
+        if (info.data?.updates?.newVersion && !info.data.git.development) {
             return (
                 <Button onClick={onUpdate} underline="none" variant="outlined" color="primary" disableElevation>
                     Update BUG
@@ -63,7 +63,10 @@ export default function PageSystemBackup() {
         const response = await AxiosGet(`/api/system/update`);
 
         if (response.updating) {
-            sendAlert(`Updating BUG to version ${info.data.updates.version}`, { broadcast: true, variant: "success" });
+            sendAlert(`Updating BUG to version ${info.data?.updates?.version}`, {
+                broadcast: true,
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to apply BUG update.}`, {
                 variant: "error",
@@ -98,7 +101,7 @@ export default function PageSystemBackup() {
 
     //If update is complete API should should return no new version avalible. In that case reload the page
     useEffect(() => {
-        if (info.data.updates) {
+        if (info?.data?.updates) {
             if (updating && !info.data.updates.newVersion) {
                 window.location.reload();
             }
@@ -109,8 +112,8 @@ export default function PageSystemBackup() {
         return <BugLoading />;
     }
 
-    const lastChecked = info.data?.updates.checkTime
-        ? timeAgo.format(Date.parse(info.data?.updates.checkTime))
+    const lastChecked = info.data?.updates?.checkTime
+        ? timeAgo.format(Date.parse(info.data?.updates?.checkTime))
         : "Never";
 
     return (
@@ -141,17 +144,17 @@ export default function PageSystemBackup() {
                                 name: "Available Version",
                                 value: (
                                     <>
-                                        {info.data.updates.newVersion ? (
+                                        {info.data?.updates?.newVersion ? (
                                             <BugTableLinkButton
                                                 onClick={(event) =>
                                                     openWebpage(
                                                         event,
-                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates.version}`
+                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates?.version}`
                                                     )
                                                 }
                                                 color="secondary"
                                             >
-                                                {info.data?.updates.version}
+                                                {info.data?.updates?.version}
                                             </BugTableLinkButton>
                                         ) : (
                                             "BUG is up to date"
