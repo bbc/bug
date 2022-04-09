@@ -1,6 +1,7 @@
 import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugTextField from "@core/BugTextField";
+import Switch from "@mui/material/Switch";
 import InputAdornment from "@mui/material/InputAdornment";
 
 export default function CodecMux({ codecdata, onChange, showAdvanced }) {
@@ -44,6 +45,15 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                                 value={codecdata?.muxDvbProviderName}
                                 onChange={(event) => onChange({ muxDvbProviderName: event.target.value })}
                             ></BugTextField>
+                        ),
+                    },
+                    showAdvanced && {
+                        name: "Enable Null Frames",
+                        value: (
+                            <Switch
+                                checked={codecdata?.muxNullPackets}
+                                onChange={(event) => onChange({ muxNullPackets: event.target.checked ? 1 : 0 })}
+                            />
                         ),
                     },
                 ]}
