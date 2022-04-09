@@ -17,10 +17,9 @@ export default function SettingsHandler(props) {
 
     useEffect(() => {
         system.on("connect", () => {
-            console.log(`${system.id}: system - subscribed`);
+            //console.log(`${system.id}: system - subscribed`);
             setConnection(true);
             system.emit("settings");
-            system.emit("reload");
         });
 
         system.on("settings", (result) => {

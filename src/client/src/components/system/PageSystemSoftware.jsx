@@ -99,7 +99,7 @@ export default function PageSystemBackup() {
         dispatch(pageTitleSlice.actions.set("System Updates"));
     }, [dispatch]);
 
-    if (info.status === "loading" || info.status === "idle") {
+    if (info.status === "idle") {
         return <BugLoading />;
     }
 
