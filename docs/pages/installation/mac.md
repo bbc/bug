@@ -48,7 +48,7 @@ services:
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
             BUG_PORT: 80
-            BUG_HOST: http://localhost
+            BUG_HOST: 127.0.0.1
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_CONSOLE_LEVEL: debug
@@ -57,7 +57,9 @@ services:
             NODE_ENV: production
             SESSION_SECRET: aSecretForYourSessions
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CONTAINER: watchtower
+            WATCHTOWER_CONTAINER: bug-watchtower
+        labels:
+            - "com.centurylinklabs.watchtower.enable=true"
         networks:
             - bug
         ports:
@@ -73,6 +75,7 @@ services:
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
             WATCHTOWER_CLEANUP: "true"
+            WATCHTOWER_LABEL_ENABLE: "true"
     mongo:
         image: mongo:latest
         restart: unless-stopped

@@ -18,7 +18,7 @@ import Button from "@mui/material/Button";
 import { usePanelToolbarEventTrigger } from "@hooks/PanelToolbarEvent";
 
 export default function Toolbar({ panelId, ...props }) {
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
     const triggerPanelEvent = usePanelToolbarEventTrigger();

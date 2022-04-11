@@ -25,7 +25,7 @@ const SectionHeader = styled("div")({
 });
 
 export default function Router({ panelId, editMode = false, sourceGroup = 0, destinationGroup = 0 }) {
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const [selectedDestination, setSelectedDestination] = React.useState(null);
     const [sourceForceRefresh, setSourceForceRefresh] = useForceRefresh();
     const [destinationForceRefresh, setDestinationForceRefresh] = useForceRefresh();

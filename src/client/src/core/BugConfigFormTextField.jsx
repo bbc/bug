@@ -37,7 +37,12 @@ const BugConfigFormTextField = ({
                                 label={label}
                                 fullWidth
                                 disabled={disabled}
-                                onChange={onChange}
+                                onChange={(event) => {
+                                    onChange(event);
+                                    if (props.onChange) {
+                                        props.onChange(event);
+                                    }
+                                }}
                                 variant={variant}
                                 error={error}
                                 helperText={helperText}

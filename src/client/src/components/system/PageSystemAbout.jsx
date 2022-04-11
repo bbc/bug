@@ -9,6 +9,7 @@ import BugDetailsCard from "@core/BugDetailsCard";
 import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import TimeAgo from "javascript-time-ago";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
@@ -20,6 +21,24 @@ export default function PageSystemBackup() {
         interval: 5000,
     });
 
+    const openWebpage = async (event, url) => {
+        if (!url.inlude("http")) {
+            url = `http://${url}`;
+        }
+        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+        if (newWindow) newWindow.opener = null;
+        event.stopPropagation();
+        event.preventDefault();
+    };
+
+    const bugIpAddressButton = () => {
+        return (
+            <BugTableLinkButton onClick={(event) => openWebpage(event, info.data.ip)} color="secondary">
+                {info.data.ip}
+            </BugTableLinkButton>
+        );
+    };
+
     const onShutdown = async () => {
         sendAlert(`System shutdown initiated`, { broadcast: true, variant: "success" });
         AxiosGet("/api/bug/shutdown");
@@ -28,6 +47,10 @@ export default function PageSystemBackup() {
     const onReboot = async () => {
         sendAlert(`System reboot initiated`, { broadcast: true, variant: "success" });
         AxiosGet("/api/bug/reboot");
+    };
+
+    const onRefresh = async () => {
+        window.location.reload();
     };
 
     // const getData = () => {
@@ -87,6 +110,20 @@ export default function PageSystemBackup() {
                                     </Button>
                                 ),
                             },
+                            {
+                                name: "Refresh Page",
+                                value: (
+                                    <Button
+                                        onClick={onRefresh}
+                                        underline="none"
+                                        variant="outlined"
+                                        color="primary"
+                                        disableElevation
+                                    >
+                                        Refresh
+                                    </Button>
+                                ),
+                            },
                         ]}
                     />
                 </Grid>
@@ -96,7 +133,7 @@ export default function PageSystemBackup() {
                         title="Server Infomation"
                         width="10rem"
                         items={[
-                            { name: "IP Address", value: info.data.ip },
+                            { name: "IP Address", value: bugIpAddressButton() },
                             { name: "Uptime", value: timeAgo.format(Date.now() - parseInt(info.data?.uptime) * 1000) },
                             { name: "Current Version", value: info.data.version },
                             {

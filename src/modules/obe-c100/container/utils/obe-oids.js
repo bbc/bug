@@ -23,6 +23,7 @@ const getDevice = (encoderIndex) => {
         [`1.3.6.1.4.1.40562.3.2.6.1.1.14.${encoderIndex}`]: "videoLatency",
         [`1.3.6.1.4.1.40562.3.2.6.1.1.15.${encoderIndex}`]: "videoRowStatus",
         [`1.3.6.1.4.1.40562.3.2.9.1.1.1.${encoderIndex}`]: "muxRate",
+        [`1.3.6.1.4.1.40562.3.2.9.1.1.3.${encoderIndex}`]: "muxNullPackets",
         [`1.3.6.1.4.1.40562.3.2.9.1.1.10.${encoderIndex}`]: "muxDvbServiceName",
         [`1.3.6.1.4.1.40562.3.2.9.1.1.11.${encoderIndex}`]: "muxDvbProviderName",
     };

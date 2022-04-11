@@ -1,21 +1,42 @@
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import PageReconnect from "@components/pages/PageReconnect";
 import settingsSlice from "@redux/settingsSlice";
-import { useApiPoller } from "@hooks/ApiPoller";
 import { useEffect } from "react";
+import io from "@utils/io";
+
+const system = io("/system", {
+    reconnection: true,
+    reconnectionDelay: 500,
+});
 
 // this is used to fetch the initial global configuration settings state
 export default function SettingsHandler(props) {
     const dispatch = useDispatch();
-
-    const settings = useApiPoller({
-        url: `/api/system/settings`,
-        interval: 5000,
-        errorInterval: 1000,
-    });
+    const [connection, setConnection] = useState(true);
 
     useEffect(() => {
-        dispatch(settingsSlice.actions[settings.status](settings));
-    }, [settings, dispatch]);
+        system.on("connect", () => {
+            //console.log(`${system.id}: system - subscribed`);
+            setConnection(true);
+            system.emit("settings");
+        });
 
-    return null;
+        system.on("settings", (result) => {
+            // console.log(`${system.id}: system - settings event`, result);
+            dispatch(settingsSlice.actions[result["status"]](result));
+        });
+
+        system.on("disconnect", () => {
+            console.log(`${system.id}: system - disconnected`);
+            setConnection(false);
+        });
+
+        return async () => {
+            // console.log(`${system.id}: system - unsubscribed`);
+            system.disconnect();
+        };
+    }, [dispatch]);
+
+    return <PageReconnect connection={connection} />;
 }

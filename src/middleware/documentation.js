@@ -6,7 +6,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
 
 const host = process.env.BUG_HOST || "localhost";
 const port = process.env.BUG_PORT || "3101";
-const url = `${host}:${port}/api/`;
+const url = `http://${host}:${port}/api/`;
 
 const options = {
     customCssUrl: "/css/documentation.css",

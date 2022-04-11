@@ -36,6 +36,7 @@ const BugConfigFormChipInput = ({
                                 options={options ? options : []}
                                 freeSolo={true}
                                 onBlur={onBlur}
+                                blurOnSelect="touch"
                                 onChange={(event, values) => {
                                     onChange(values);
                                 }}

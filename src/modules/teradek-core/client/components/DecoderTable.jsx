@@ -22,7 +22,7 @@ import BugNoData from "@core/BugNoData";
 
 export default function DecoderTable({ panelId }) {
     const { confirmDialog } = useBugConfirmDialog();
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
     const encoders = useApiPoller({

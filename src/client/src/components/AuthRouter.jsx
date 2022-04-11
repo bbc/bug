@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PageLogin from "@components/pages/PageLogin";
 import PageRouter from "@components/pages/PageRouter";
-import PageReconnect from "@components/pages/PageReconnect";
 import BugLoading from "@core/BugLoading";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -24,10 +23,6 @@ const AuthRouter = (props) => {
                 <PageRouter />
             </Router>
         );
-    }
-
-    if (user.status === "failure") {
-        return <PageReconnect />;
     }
 
     // if we've got to here, then there must be a strategy enabled

@@ -12,7 +12,7 @@ import { useForceRefresh } from "@hooks/ForceRefresh";
 import { useApiPoller } from "@hooks/ApiPoller";
 
 export default function TabLabels({ panelId }) {
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
 

@@ -7,6 +7,8 @@ const strategyGetEnabledCount = require("@services/strategy-getenabledcount");
 const checkUserRoles = require("@services/user-roles-check");
 const hashResponse = require("@core/hash-response");
 const userGet = require("@services/user-get");
+const panelCheckKey = require("@services/panelconfig-checkkey");
+const keyClean = require("@utils/key-clean");
 
 const restrictedTo = (roles) => {
     const checkCredentials = async (req, res, next) => {
@@ -14,6 +16,14 @@ const restrictedTo = (roles) => {
         if ((await strategyGetEnabledCount()) === 0) {
             req.logout();
             return next();
+        }
+
+        //If the endpoint is allowed to be accessed from a panel - check it's keys
+        if (roles.includes("panel")) {
+            const apiKey = await keyClean(await req.headers["authorization"]);
+            if (await panelCheckKey(apiKey)) {
+                return next();
+            }
         }
 
         //Check if user has been authenticated by passport

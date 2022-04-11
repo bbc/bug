@@ -10,18 +10,17 @@ module.exports = async (formData) => {
                 {
                     state: true,
                     field: "address",
-                    message: "Device is reachable and connecting OK",
-                },
-            ]);
-        } else {
-            return new validationResult([
-                {
-                    state: false,
-                    field: "address",
-                    message: "Device is not reachable",
+                    message: "MDU is reachable",
                 },
             ]);
         }
+        return new validationResult([
+            {
+                state: false,
+                field: "address",
+                message: "MDU is not reachable",
+            },
+        ]);
     } catch (error) {
         return new validationResult([
             {

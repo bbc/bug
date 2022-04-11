@@ -22,7 +22,7 @@ import Box from "@mui/material/Box";
 import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
 
 export default function InterfaceList({ panelId, stackId = null }) {
-    const sendAlert = useAlert(panelId);
+    const sendAlert = useAlert();
     const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();

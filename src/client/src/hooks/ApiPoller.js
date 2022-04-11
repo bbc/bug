@@ -67,7 +67,7 @@ export function useApiPoller({
             // send an update with the failed state
             triggerUpdate({
                 status: "failure",
-                data: null,
+                data: pollResult.data,
                 error: null,
             });
 

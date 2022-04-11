@@ -22,11 +22,11 @@ services:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CONTAINER: watchtower
+            WATCHTOWER_CONTAINER: bug-watchtower
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
             BUG_PORT: 3101
-            BUG_HOST: http://localhost
+            BUG_HOST: "127.0.0.1"
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_LOG_LEVEL: debug
@@ -57,10 +57,11 @@ services:
         ports:
             - 8080:8080
         environment:
-            WATCHTOWER_DEBUG: true
-            WATCHTOWER_HTTP_API_UPDATE: true
+            WATCHTOWER_DEBUG: "true"
+            WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CLEANUP: true
+            WATCHTOWER_CLEANUP: "true"
+            WATCHTOWER_LABEL_ENABLE: "true"
     mongo-web:
         image: mongo-express
         container_name: bug-mongo-express
