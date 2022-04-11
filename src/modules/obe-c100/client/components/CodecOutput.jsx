@@ -123,7 +123,7 @@ export default function CodecOutput({
                                 onChange={(event) => handleChange({ outputTOS: parseInt(event.target.value) })}
                                 options={[
                                     { id: 0, label: "None" },
-                                    { id: 26, label: "DSCP 26" },
+                                    { id: 104, label: "DSCP 26 (TOS 104)" },
                                 ]}
                             ></BugSelect>
                         ),

@@ -12,15 +12,14 @@ const WorkerManager = require("@core/WorkerManager");
 const manager = new WorkerManager(undefined, false);
 
 const port = process.env.BUG_PORT || "80";
-const collectionName = process.env.BUG_CONTAINER || "bug";
-
 bugApi.set("port", port);
 
 const server = http.createServer(bugApi);
+const dbName = process.env.BUG_CONTAINER || "bug";
 
 const serve = async () => {
     try {
-        await mongoDb.connect(collectionName);
+        await mongoDb.connect(dbName);
 
         server.on("error", onError);
         server.on("listening", onListening);

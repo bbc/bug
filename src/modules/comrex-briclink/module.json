@@ -1,0 +1,28 @@
+{
+    "name": "comrex-briclink",
+    "longname": "Comrex BRIC-Link",
+    "version": "1.0.1",
+    "description": "Control of Comrex BRIC-Link and BRIC-Link II devices",
+    "capabilities": [],
+    "icon": "mdi-phone-settings",
+    "notes": "",
+    "author": "Geoff House",
+    "license": "GPLv3",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils", "models"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "comrex-briclink",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "username": "bug",
+        "password": "comrex",
+        "port": "80"
+    }
+}
