@@ -11,11 +11,11 @@ const port = process.env.BUG_PORT || "3101";
 bugApi.set("port", port);
 
 const server = http.createServer(bugApi);
-const collectionName = process.env.BUG_CONTAINER || "bug";
+const dbName = process.env.BUG_CONTAINER || "bug";
 
 const serve = async () => {
     try {
-        await mongoDb.connect(collectionName);
+        await mongoDb.connect(dbName);
 
         server.on("error", onError);
         server.on("listening", onListening);

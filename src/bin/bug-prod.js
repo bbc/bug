@@ -7,17 +7,15 @@ const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const workerStore = require("@core/worker-store");
-
 const port = process.env.BUG_PORT || "80";
-const collectionName = process.env.BUG_CONTAINER || "bug";
-
 bugApi.set("port", port);
 
 const server = http.createServer(bugApi);
+const dbName = process.env.BUG_CONTAINER || "bug";
 
 const serve = async () => {
     try {
-        await mongoDb.connect(collectionName);
+        await mongoDb.connect(dbName);
 
         server.on("error", onError);
         server.on("listening", onListening);
