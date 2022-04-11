@@ -16,7 +16,11 @@ const BugConfirmDialog = ({
 }) => {
     const getMessage = () => {
         if (Array.isArray(message)) {
-            return message.map((eachLine) => <Typography component="p">{eachLine}</Typography>);
+            return message.map((eachLine, index) => (
+                <Typography key={index} component="p">
+                    {eachLine}
+                </Typography>
+            ));
         }
         return message;
     };
