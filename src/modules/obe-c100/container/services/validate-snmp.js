@@ -33,12 +33,12 @@ module.exports = async (formData) => {
 
     try {
         // now we check if we can write with the community string
-        const location = await snmpAwait.get({
-            oid: "1.3.6.1.2.1.1.6.0",
+        const encName0 = await snmpAwait.get({
+            oid: ".1.3.6.1.4.1.40562.3.2.4.1.1.2.0",
         });
         const writeResult = await snmpAwait.set({
-            oid: "1.3.6.1.2.1.1.6.0",
-            value: location.toString(),
+            oid: ".1.3.6.1.4.1.40562.3.2.4.1.1.2.0",
+            value: encName0.toString(),
         });
 
         // we're done with the SNMP session
