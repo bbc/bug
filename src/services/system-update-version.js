@@ -1,15 +1,13 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const mongoCollection = require("@core/mongo-collection");
+const systemInfo = require("@models/system-info");
 
 module.exports = async () => {
     try {
-        const updatesCollection = await mongoCollection("updates");
-        const updates = await updatesCollection.findOne();
+        const updates = await systemInfo.get();
 
         if (updates) {
-            delete updates._id;
             return updates;
         }
 
