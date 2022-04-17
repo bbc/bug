@@ -6,6 +6,7 @@ import BugLoading from "@core/BugLoading";
 import Grid from "@mui/material/Grid";
 import PowerChart from "../components/PowerChart";
 import ReceiverStatus from "../components/ReceiverStatus";
+import BugNoData from "@core/BugNoData";
 
 export default function MainPanel() {
     const params = useParams();
@@ -13,11 +14,22 @@ export default function MainPanel() {
 
     const items = useApiPoller({
         url: `/container/${params.panelId}/status`,
-        interval: 60000,
+        interval: 30000,
     });
 
     if (items.status === "loading" || items.status === "idle") {
         return <BugLoading />;
+    }
+
+    if (items.data) {
+        console.log(items.data);
+        return (
+            <BugNoData
+                panelId={params.panelId}
+                title="No receiver data found. Check your receiver settings."
+                showConfigButton={false}
+            />
+        );
     }
 
     return (

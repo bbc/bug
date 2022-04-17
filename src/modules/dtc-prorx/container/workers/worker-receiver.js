@@ -19,7 +19,7 @@ parentPort.postMessage({
 
 const getReceiverStatus = async () => {
     const response = await axios.get(`http://${workerData.address}:80/status.json`, { timeout: 10000 });
-    if (response) {
+    if (response.data) {
         const entry = await receiverCollection.insertOne({
             timestamp: new Date(),
             unitName: response.data.unitName,
