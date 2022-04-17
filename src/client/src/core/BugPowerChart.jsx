@@ -84,7 +84,7 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
 
             const getTooltipValues = () => {
                 const lines = [
-                    <div>
+                    <div key="timestamp">
                         <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
                             TIME:
                         </Box>

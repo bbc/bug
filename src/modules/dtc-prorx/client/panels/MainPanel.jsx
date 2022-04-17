@@ -1,14 +1,18 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { useSelector } from "react-redux";
 import BugLoading from "@core/BugLoading";
 import Grid from "@mui/material/Grid";
 import PowerChart from "../components/PowerChart";
+import ReceiverStatus from "../components/ReceiverStatus";
+
 export default function MainPanel() {
     const params = useParams();
+    const panelConfig = useSelector((state) => state.panelConfig);
 
     const items = useApiPoller({
-        url: `/container/${params.panelId}/receiver/snr`,
+        url: `/container/${params.panelId}/status`,
         interval: 60000,
     });
 
@@ -18,8 +22,9 @@ export default function MainPanel() {
 
     return (
         <>
+            <ReceiverStatus panelId={params.panelId} />
             <Grid container spacing={2}>
-                <PowerChart panelId={params.panelId} />
+                <PowerChart receiverCount={panelConfig?.data?.receiverCount} panelId={params.panelId} />
             </Grid>
         </>
     );

@@ -18,9 +18,8 @@ parentPort.postMessage({
 });
 
 const getReceiverStatus = async () => {
-    const response = await axios.get(`http://${workerData.address}/status.json`);
-
-    if (response.data) {
+    const response = await axios.get(`http://${workerData.address}:80/status.json`, { timeout: 10000 });
+    if (response) {
         const entry = await receiverCollection.insertOne({
             timestamp: new Date(),
             unitName: response.data.unitName,
@@ -66,7 +65,6 @@ const main = async () => {
 
     // get the collection reference
     receiverCollection = await mongoCollection("receiver");
-    receiverCollection.deleteMany({});
 
     while (true) {
         await getReceiverStatus();

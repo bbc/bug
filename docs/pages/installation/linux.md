@@ -89,6 +89,7 @@ services:
     watchtower:
         container_name: bug-watchtower
         image: containrrr/watchtower
+        restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
         networks:

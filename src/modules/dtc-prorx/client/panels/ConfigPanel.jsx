@@ -18,7 +18,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { handleSubmit, control, errors, messages } = useConfigFormHandler({
+    const { handleSubmit, control, validateServer, errors, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -55,10 +55,29 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         fullWidth
-                        error={errors.address}
+                        error={errors?.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
+                        supportsValidation={true}
+                        onChange={(event) => validateServer(event, "address")}
                         label="IP Address"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <BugConfigFormTextField
+                        name="receiverCount"
+                        control={control}
+                        rules={{ required: true }}
+                        numeric
+                        min={1}
+                        max={12}
+                        fullWidth
+                        error={errors.receiverCount}
+                        helperText={messages.receiverCount}
+                        defaultValue={panelConfig.data?.receiverCount}
+                        type="text"
+                        label="Receivers Avalible"
                     />
                 </Grid>
             </BugConfigWrapper>
