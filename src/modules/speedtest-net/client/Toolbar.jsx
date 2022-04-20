@@ -35,7 +35,7 @@ export default function Toolbar({ panelId, ...props }) {
                 timeout={20000}
                 icon={<PlayArrowIcon />}
             >
-                Start
+                Run Test
             </BugApiButton>
         </>
     );

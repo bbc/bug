@@ -8,11 +8,11 @@ module.exports = async () => {
     // if (a % 2 == 0) {
     return [].concat(
         await statusCheckCollection({
-            collectionName: "download",
-            message: ["Could not find any NDI sources.", "Check the network or discovery server address."],
+            collectionName: "test-results",
+            message: ["Could not find any Speedtest results.", "Try running a test first."],
             itemType: "warning",
             timeoutSeconds: 60,
-            flags: ["restartPanel", "configurePanel"],
+            flags: ["startTest"],
         })
     );
 };
