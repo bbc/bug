@@ -1,0 +1,29 @@
+{
+    "name": "dish-pointer",
+    "longname": "Satelite Dish Pointer",
+    "description": "Get the Azimuth and Elevation to point a Satelite Dish",
+    "capabilities": [],
+    "version": "1.0.0",
+    "icon": "mdi-satellite-uplink",
+    "author": "Ryan McCartney",
+    "needsContainer": false,
+    "protectedRoutes": [
+        "config"
+    ],
+    "license": "GPLv3",
+    "status": "stable",
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "order": 0,
+        "title": "Satelite Dish Pointer",
+        "module": "dish-pointer",
+        "esLatitude": 51.518788,
+        "esLongitude": -0.143521,
+        "esAltitude": 0,
+        "satLongitude": 16,
+        "satDirection": "east",
+        "description": "Satelite Dish Pointer",
+        "enabled": false
+    }
+}
