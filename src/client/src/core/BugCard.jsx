@@ -1,10 +1,11 @@
 import React from "react";
 import Card from "@mui/material/Card";
 
-export default function BugCard({ children, ...props }) {
+export default function BugCard({ minHeight = "auto", children, ...props }) {
     return (
         <Card
             sx={{
+                minHeight: minHeight,
                 minWidth: 300,
                 textAlign: "left",
                 color: "text.secondary",

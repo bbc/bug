@@ -1,0 +1,31 @@
+{
+    "name": "speedtest-net",
+    "longname": "Speedtest.net",
+    "description": "Run a speedtest.net test from your server",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-speedometer",
+    "author": "Ryan McCartney",
+    "license": "GPLv3",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": false,
+        "title": "",
+        "module": "mdi-speedometer",
+        "description": "",
+        "notes": "",
+        "enabled": false
+    }
+}

@@ -92,7 +92,7 @@ export default function Map({
             >
                 <TileLayer url="https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png" />
                 <DraggableMarker icon={icon}>
-                    <Popup minWidth={90}>
+                    <Popup style={{ background: "#262626", color: "#ffffff" }} minWidth={100}>
                         <Typography variant="h6" noWrap>
                             {title}
                         </Typography>
