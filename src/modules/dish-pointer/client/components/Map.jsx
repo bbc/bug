@@ -1,9 +1,10 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents } from "react-leaflet";
 import Leaflet from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Typography from "@mui/material/Typography";
 import geostationaryCalcultation from "./../utils/geostationaryCalcultation";
+import AxiosPut from "@utils/AxiosPut";
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -16,9 +17,22 @@ export default function Map({
     satLongitude = 16,
     satLatitude = 0,
     satDirection = "east",
+    panelId,
 }) {
     const [position, setPosition] = useState({ lat: esLatitude, lng: esLongitude });
+    const isMounted = useRef(false);
     const pathOptions = { color: "#e74b3c" };
+
+    //Update the position in the config if changed. Don't run on mount
+    useEffect(() => {
+        if (isMounted.current) {
+            if (position.lat && position.lng) {
+                AxiosPut(`/api/panelconfig/${panelId}`, { esLatitude: position.lat, esLongitude: position.lng });
+            }
+        } else {
+            isMounted.current = true;
+        }
+    }, [position]);
 
     const getAzimuth = (position) => {
         const { azimuth, elevation } = geostationaryCalcultation(satLongitude, satDirection, position);

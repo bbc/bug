@@ -10,6 +10,7 @@ export default function MainPanel() {
             title={panelConfig.data.title}
             esLongitude={panelConfig.data.esLongitude}
             esLatitude={panelConfig.data.esLatitude}
+            panelId={panelConfig.data.id}
         />
     );
 }
