@@ -13,7 +13,8 @@
     "devmounts": [
         "api",
         "services",
-        "workers"
+        "workers",
+        "utils"
     ],
     "protectedRoutes": [
         "config"
@@ -24,6 +25,8 @@
         "needsConfigured": false,
         "title": "",
         "module": "mdi-speedometer",
+        "interval": 10,
+        "periodicTesting": false,
         "description": "",
         "notes": "",
         "enabled": false

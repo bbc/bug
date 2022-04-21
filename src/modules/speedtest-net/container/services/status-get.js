@@ -11,8 +11,7 @@ module.exports = async () => {
             collectionName: "test-results",
             message: ["Could not find any Speedtest results.", "Try running a test first."],
             itemType: "warning",
-            timeoutSeconds: 60,
-            flags: ["startTest"],
+            timeoutSeconds: 24 * 60 * 60,
         })
     );
 };

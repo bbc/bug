@@ -7,8 +7,16 @@ import Typography from "@mui/material/Typography";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { useApiPoller } from "@hooks/ApiPoller";
 
-export default function SpeedCard({ url, units = "Mb/s", title = "Download", interval = 1000, label = "speed" }) {
+export default function SpeedCard({
+    running = true,
+    url,
+    units = "Mb/s",
+    title = "Download",
+    interval = 1000,
+    label = "speed",
+}) {
     const stats = useApiPoller({
+        polling: running,
         url: url,
         interval: interval,
     });
