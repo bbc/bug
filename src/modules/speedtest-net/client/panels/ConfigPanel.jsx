@@ -55,7 +55,7 @@ export default function ConfigPanel() {
                 <Grid item xs={12} md={6}>
                     <BugConfigFormSwitch
                         name="periodicTesting"
-                        label="Conductor periodic speed testing"
+                        label="Periodic speed testing"
                         control={control}
                         defaultValue={panelConfig.data?.periodicTesting}
                         fullWidth
