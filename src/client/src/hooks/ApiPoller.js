@@ -3,6 +3,7 @@ import axios from "axios";
 import { useRecursiveTimeout } from "@hooks/RecursiveTimeout";
 
 export function useApiPoller({
+    polling = true,
     url,
     mockApiData = null,
     interval,
@@ -90,7 +91,7 @@ export function useApiPoller({
     }, [url, interval, forceRefresh, errorInterval, postData]);
 
     useRecursiveTimeout(async () => {
-        if (url && !mockApiData) {
+        if (url && !mockApiData && polling) {
             await fetch();
         }
     }, interval);
