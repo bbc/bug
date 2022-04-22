@@ -12,6 +12,8 @@ export default function LogTable({ panelId, level, interval }) {
         })
     );
 
+    const currentUser = useSelector((state) => state.user);
+
     const getPanelName = (panelId) => {
         for (let panel of panelFilter) {
             if (panel.id === panelId) {
@@ -30,63 +32,84 @@ export default function LogTable({ panelId, level, interval }) {
         return url;
     };
 
+    const getColumns = (user) => {
+        const columns = [
+            {
+                title: "Time",
+                hideWidth: 1024,
+                width: 220,
+                sortable: true,
+                field: "timestamp",
+                filterType: "dropdown",
+                filterOptions: [
+                    { label: "View all items", id: "" },
+                    { label: "Last 5 minutes", id: 300 },
+                    { label: "Last 30 minutes", id: 1800 },
+                    { label: "Last hour", id: 3600 },
+                    { label: "Last 2 hours", id: 7200 },
+                ],
+                content: (item) => <>{item.timestamp}</>,
+            },
+            {
+                title: "Level",
+                width: 150,
+                hideWidth: 512,
+                field: "level",
+                filterType: "dropdown",
+                filterOptions: [
+                    { label: "All logs", id: "" },
+                    { label: "Error", id: "error" },
+                    { label: "Warning", id: "warning" },
+                    { label: "Info", id: "info" },
+                    { label: "Action", id: "action" },
+                ],
+                sortable: true,
+                content: (item) => {
+                    return <>{item.level}</>;
+                },
+            },
+            {
+                title: "Message",
+                sortable: false,
+                field: "message",
+                filterType: "text",
+                content: (item) => <>{item.message}</>,
+            },
+            {
+                title: "Panel",
+                sortable: false,
+                field: "meta",
+                filterType: "dropdown",
+                filterOptions: panelFilter,
+                content: (item) => {
+                    if (item.meta.panelId) {
+                        return <BugChipDisplay options={[getPanelName(item.meta.panelId)]} />;
+                    }
+                },
+            },
+        ];
+
+        if (user) {
+            columns.push({
+                title: "User",
+                sortable: false,
+                field: "meta",
+                filterType: "dropdown",
+                filterOptions: panelFilter,
+                content: (item) => {
+                    if (item.meta.userId) {
+                        return <BugChipDisplay options={[item.meta.userId]} />;
+                    }
+                },
+            });
+        }
+
+        return columns;
+    };
+
     return (
         <BugApiTable
-            columns={[
-                {
-                    title: "Time",
-                    hideWidth: 1024,
-                    width: 220,
-                    sortable: true,
-                    field: "timestamp",
-                    filterType: "dropdown",
-                    filterOptions: [
-                        { label: "View all items", id: "" },
-                        { label: "Last 5 minutes", id: 300 },
-                        { label: "Last 30 minutes", id: 1800 },
-                        { label: "Last hour", id: 3600 },
-                        { label: "Last 2 hours", id: 7200 },
-                    ],
-                    content: (item) => <>{item.timestamp}</>,
-                },
-                {
-                    title: "Level",
-                    width: 150,
-                    hideWidth: 512,
-                    field: "level",
-                    filterType: "dropdown",
-                    filterOptions: [
-                        { label: "All logs", id: "" },
-                        { label: "Error", id: "error" },
-                        { label: "Warning", id: "warning" },
-                        { label: "Info", id: "info" },
-                        { label: "Action", id: "action" },
-                    ],
-                    sortable: true,
-                    content: (item) => {
-                        return <>{item.level}</>;
-                    },
-                },
-                {
-                    title: "Message",
-                    sortable: false,
-                    field: "message",
-                    filterType: "text",
-                    content: (item) => <>{item.message}</>,
-                },
-                {
-                    title: "Panel",
-                    sortable: false,
-                    field: "meta",
-                    filterType: "dropdown",
-                    filterOptions: panelFilter,
-                    content: (item) => {
-                        if (item.meta.panelId) {
-                            return <BugChipDisplay options={[getPanelName(item.meta.panelId)]} />;
-                        }
-                    },
-                },
-            ]}
+            columns={getColumns(currentUser.data)}
             defaultSortIndex={0}
             defaultSortDirection="desc"
             apiUrl={getURL(panelId)}

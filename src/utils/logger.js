@@ -2,26 +2,13 @@ const winston = require("winston");
 require("winston-daily-rotate-file");
 require("winston-mongodb");
 const path = require("path");
-const readJson = require("@core/read-json");
+const global = require("@utils/globalEmitter");
 
 const logFolder = process.env.BUG_LOG_FOLDER || "logs";
 const logName = process.env.BUG_LOG_NAME || "bug";
 const databaseName = process.env.BUG_CONTAINER || "bug";
 
-let logLevel = process.env.BUG_LOG_LEVEL || "debug";
-
-const getLogLevel = async () => {
-    let logLevel;
-    const filename = path.join(__dirname, "..", "config", "global", "settings.json");
-    try {
-        const settings = await readJson(filename);
-        logLevel = settings?.logLevel;
-    } catch (error) {
-        logLevel = process.env.BUG_LOG_LEVEL || "debug";
-        throw error;
-    }
-    return logLevel.toLowerCase();
-};
+let logLevel = "info";
 
 const customLevels = {
     levels: {
@@ -101,5 +88,15 @@ const logger = (module) => {
 
     return loggers;
 };
+
+//Global Event on settings change to update the log level
+global.on("settings", async (settings) => {
+    if (settings.logLevel) {
+        logLevel = settings.logLevel;
+    }
+    for (let transport of loggerInstance.transports) {
+        transport.level = logLevel;
+    }
+});
 
 module.exports = logger;
