@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import BugNoData from "@core/BugNoData";
 import BugApiTable from "@core/BugApiTable";
 import BugChipDisplay from "@core/BugChipDisplay";
 import { useSelector } from "react-redux";
@@ -10,6 +11,24 @@ export default function LogTable({ panelId, level, interval }) {
             return { label: item.title, id: item.id };
         })
     );
+
+    const getPanelName = (panelId) => {
+        for (let panel of panelFilter) {
+            if (panel.id === panelId) {
+                return panel?.label;
+            }
+        }
+
+        return "Unknown Panel";
+    };
+
+    const getURL = (panelId) => {
+        let url = `/api/system/logs`;
+        if (panelId) {
+            url += `/${panelId}`;
+        }
+        return url;
+    };
 
     return (
         <BugApiTable
@@ -56,21 +75,22 @@ export default function LogTable({ panelId, level, interval }) {
                     content: (item) => <>{item.message}</>,
                 },
                 {
-                    title: "Tags",
+                    title: "Panel",
                     sortable: false,
                     field: "meta",
                     filterType: "dropdown",
                     filterOptions: panelFilter,
                     content: (item) => {
-                        if (item.meta) {
-                            return <BugChipDisplay options={Object.values(item.meta)} />;
+                        if (item.meta.panelId) {
+                            return <BugChipDisplay options={[getPanelName(item.meta.panelId)]} />;
                         }
                     },
                 },
             ]}
             defaultSortIndex={0}
             defaultSortDirection="desc"
-            apiUrl={`/api/system/logs/1`}
+            apiUrl={getURL(panelId)}
+            noData={<BugNoData panelId={panelId} title="No logs found" showConfigButton={false} />}
             sortable
             filterable
         />
@@ -79,10 +99,12 @@ export default function LogTable({ panelId, level, interval }) {
 
 LogTable.defaultProps = {
     level: "info",
+    panelId: "",
     interval: 1000,
 };
 
 LogTable.propTypes = {
     level: PropTypes.string,
+    panelId: PropTypes.string,
     interval: PropTypes.number,
 };

@@ -19,14 +19,22 @@ exports.get = async function (filter) {
     return null;
 };
 
-exports.pagination = async function (filter, pageNumber, nPerPage) {
+exports.pagination = async function (
+    filter = {},
+    sort = { feild: "timestamp", direction: "asc" },
+    pageNumber = 1,
+    nPerPage = 25
+) {
     try {
         const logsCollection = await mongoCollection("logs");
+
+        const sortObject = {};
+        sortObject[sort.feild] = sort.direction === "asc" ? 1 : -1;
 
         if (logsCollection) {
             const result = await logsCollection
                 .find(filter)
-                .sort({ _id: 1 })
+                .sort(sortObject)
                 .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
                 .limit(parseInt(nPerPage))
                 .toArray();

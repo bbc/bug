@@ -257,18 +257,19 @@ router.post(
  *         description: Success
  */
 router.post(
-    "/logs/:page",
+    "/logs/:panelId",
     restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
+        const logs = await systemLogsPaginated(
+            req.body.sortField,
+            req.body.sortDirection,
+            { ...req.body.filters, ...{ panelId: req.params.panelId } },
+            req.body.page,
+            req.body.nPerPage
+        );
         res.json({
-            status: "success",
-            data: await systemLogsPaginated(
-                req.body.sortField,
-                req.body.sortDirection,
-                req.body.filters,
-                req.params.page,
-                req.body.nPerPage
-            ),
+            status: logs.length > 0 ? "success" : "failure",
+            data: logs,
         });
     })
 );

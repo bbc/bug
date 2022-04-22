@@ -73,7 +73,7 @@ const loggerInstance = winston.createLogger({
                 useNewUrlParser: true,
             },
             collection: "logs",
-            cappedMax: 5000,
+            cappedMax: 10000,
         }),
     ],
 });
