@@ -10,7 +10,7 @@ const axios = require("axios");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address"],
+    restartOn: ["url"],
 });
 
 const main = async () => {
