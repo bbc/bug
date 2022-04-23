@@ -40,7 +40,7 @@ const proxyStrategy = (settings) => {
             //Set Session Length
             req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
-            logger.action(`Proxy login: ${user?.username} logged in.`);
+            logger.info(`Proxy login: ${user?.username} logged in.`);
 
             return done(null, user.id);
         }
@@ -78,7 +78,7 @@ const localStrategy = (settings) => {
             //Set Session Length
             req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
-            logger.action(`Local login: ${user?.username} logged in.`);
+            logger.info(`Local login: ${user?.username} logged in.`);
             return done(null, user.id);
         }
     );
@@ -110,7 +110,7 @@ const pinStrategy = (settings) => {
             //Set Session Length
             req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
-            logger.action(`Pin login: ${user?.username} logged in.`);
+            logger.info(`Pin login: ${user?.username} logged in.`);
             return done(null, user.id);
         }
     );
@@ -152,7 +152,7 @@ const samlStrategy = (settings) => {
             //Set Session Length
             req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
-            logger.action(`SAML login: ${user?.username} logged in.`);
+            logger.info(`SAML login: ${user?.username} logged in.`);
             return done(null, user.id);
         }
     );
@@ -193,7 +193,7 @@ const oidcStrategy = (settings) => {
             //Set Session Length
             req.session.cookie.maxAge = parseInt(settings?.sessionLength);
 
-            logger.action(`OIDC login: ${user?.username} logged in.`);
+            logger.info(`OIDC login: ${user?.username} logged in.`);
             return done(null, user.id);
         }
     );
