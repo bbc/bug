@@ -66,7 +66,7 @@ router.use(
             const axiosResponse = await axios(axiosConfig);
 
             if (axiosResponse?.data?.action) {
-                logger.action(req.body?.action);
+                logger.info(req.body?.action);
             }
 
             res.status(axiosResponse.status);

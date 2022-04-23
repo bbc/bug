@@ -121,7 +121,6 @@ export default function PageSystemBackup() {
                                     options={[
                                         { id: "error", label: "Error" },
                                         { id: "warning", label: "Warning" },
-                                        { id: "action", label: "Action" },
                                         { id: "info", label: "Info" },
                                         { id: "http", label: "HTTP" },
                                         { id: "debug", label: "Debug" },

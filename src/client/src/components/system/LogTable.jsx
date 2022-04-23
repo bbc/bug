@@ -61,7 +61,7 @@ export default function LogTable({ panelId, level, interval }) {
                     { label: "Error", id: "error" },
                     { label: "Warning", id: "warning" },
                     { label: "Info", id: "info" },
-                    { label: "Action", id: "action" },
+                    { label: "Debug", id: "debug" },
                 ],
                 sortable: true,
                 content: (item) => {

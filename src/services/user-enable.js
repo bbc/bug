@@ -7,9 +7,9 @@ module.exports = async (uuid, state) => {
     try {
         const user = await userModel.update(uuid, { enabled: state });
         if (state) {
-            logger.action(`Enabled User: ${uuid}`);
+            logger.info(`Enabled User: ${uuid}`);
         } else {
-            logger.action(`Disabled User: ${uuid}`);
+            logger.info(`Disabled User: ${uuid}`);
         }
         return user;
     } catch (error) {

@@ -14,15 +14,13 @@ const customLevels = {
     levels: {
         error: 0,
         warning: 1,
-        action: 2,
-        info: 3,
-        http: 4,
-        debug: 5,
+        info: 2,
+        http: 3,
+        debug: 4,
     },
     colors: {
         error: "red",
         warning: "yellow",
-        action: "green",
         info: "blue",
         http: "magenta",
         debug: "gray",
