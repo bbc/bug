@@ -73,7 +73,6 @@ services:
             BUG_HOST: 127.0.0.1
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
-            BUG_CONSOLE_LEVEL: debug
             BUG_REGISTRY_FQDN: harbor.prod.bcn.bbc.co.uk
             PORT: 3000
             NODE_ENV: production
