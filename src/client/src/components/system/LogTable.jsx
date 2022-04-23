@@ -1,9 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import BugNoData from "@core/BugNoData";
+import BugLoading from "@core/BugLoading";
 import BugApiTable from "@core/BugApiTable";
 import BugChipDisplay from "@core/BugChipDisplay";
+import Avatar from "@mui/material/Avatar";
 import { useSelector } from "react-redux";
+import { useApiPoller } from "@hooks/ApiPoller";
+import md5 from "md5";
 
 export default function LogTable({ panelId, level, interval }) {
     const panelFilter = useSelector((state) =>
@@ -12,7 +16,21 @@ export default function LogTable({ panelId, level, interval }) {
         })
     );
 
+    const users = useApiPoller({
+        url: `/api/user`,
+        interval: 5000,
+    });
+
     const currentUser = useSelector((state) => state.user);
+
+    const getUser = (userId) => {
+        for (let user of users.data) {
+            if (userId === user.id) {
+                return user;
+            }
+        }
+        return userId;
+    };
 
     const getPanelName = (panelId) => {
         for (let panel of panelFilter) {
@@ -32,7 +50,7 @@ export default function LogTable({ panelId, level, interval }) {
         return url;
     };
 
-    const getColumns = (user) => {
+    const getColumns = (user, users) => {
         const columns = [
             {
                 title: "Time",
@@ -98,7 +116,14 @@ export default function LogTable({ panelId, level, interval }) {
                 filterOptions: panelFilter,
                 content: (item) => {
                     if (item.meta.userId) {
-                        return <BugChipDisplay options={[item.meta.userId]} />;
+                        const user = getUser(item.meta.userId);
+                        const hash = md5(user?.email);
+                        return (
+                            <BugChipDisplay
+                                avatar={<Avatar alt={user?.name} src={`https://s.gravatar.com/avatar/${hash}?s=80`} />}
+                                options={[user?.name]}
+                            />
+                        );
                     }
                 },
             });
@@ -106,6 +131,10 @@ export default function LogTable({ panelId, level, interval }) {
 
         return columns;
     };
+
+    if (panelFilter.status === "loading" || currentUser.status === "loading" || users.status === "loading") {
+        return <BugLoading />;
+    }
 
     return (
         <BugApiTable

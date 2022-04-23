@@ -2,7 +2,7 @@ import React from "react";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 
-export default function BugChipDisplay({ options }) {
+export default function BugChipDisplay({ options, avatar = undefined }) {
     if (!options) {
         return null;
     }
@@ -17,7 +17,7 @@ export default function BugChipDisplay({ options }) {
             }}
         >
             {options.map((option) => (
-                <Chip key={option} label={option} />
+                <Chip avatar={avatar} key={option} label={option} />
             ))}
         </Box>
     );
