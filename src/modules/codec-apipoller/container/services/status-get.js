@@ -8,7 +8,7 @@ module.exports = async () => {
             collectionName: "codecs",
             message: ["There is no recent codec data for this service.", "Check your settings."],
             itemType: "critical",
-            timeoutSeconds: 10,
+            timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         })
     );

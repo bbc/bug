@@ -13,7 +13,6 @@ const mongoCreateIndex = require("@core/mongo-createindex");
 const get = async (name) => {
     const collection = await mongoCollection(name);
     const document = await collection.findOne({ type: name });
-    console.log(document);
     if (document && document.payload) {
         return document.payload;
     }
