@@ -13,7 +13,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
 import useSounds from "@hooks/Sounds";
-import md5 from "md5";
+import getGravatarUrl from "@utils/getGravatarUrl";
 
 const UserMenuItem = (props) => {
     const dispatch = useDispatch();
@@ -95,15 +95,6 @@ const UserMenuItem = (props) => {
         );
     };
 
-    const getGravatarImage = (email) => {
-        if (email) {
-            const hash = md5(email);
-            const imageSource = `https://www.gravatar.com/avatar/${hash}`;
-            return imageSource;
-        }
-        return null;
-    };
-
     if (user.status !== "success") {
         return null;
     }
@@ -116,7 +107,7 @@ const UserMenuItem = (props) => {
         <>
             <ListItem button onClick={handleOpenMenuClick}>
                 <ListItemIcon sx={{ padding: "1px" }}>
-                    <Avatar src={getGravatarImage(user?.data?.email)} sx={{ width: "24px", height: "24px" }}>
+                    <Avatar src={getGravatarUrl(user?.data?.email)} sx={{ width: "24px", height: "24px" }}>
                         {getInitials(user?.data?.name)}
                     </Avatar>
                 </ListItemIcon>

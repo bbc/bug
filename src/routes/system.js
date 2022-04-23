@@ -213,7 +213,7 @@ router.post(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await systemLogs(req.body.sortField, req.body.sortDirection, req.body.filters),
+            data: await systemLogsPaginated(req.body.sortField, req.body.sortDirection, req.body.filters, 1, 100),
         });
     })
 );

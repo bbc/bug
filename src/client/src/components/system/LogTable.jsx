@@ -7,7 +7,7 @@ import BugChipDisplay from "@core/BugChipDisplay";
 import Avatar from "@mui/material/Avatar";
 import { useSelector } from "react-redux";
 import { useApiPoller } from "@hooks/ApiPoller";
-import md5 from "md5";
+import getGravatarUrl from "@utils/getGravatarUrl";
 
 export default function LogTable({ panelId, level, interval }) {
     const panelFilter = useSelector((state) =>
@@ -24,9 +24,11 @@ export default function LogTable({ panelId, level, interval }) {
     const currentUser = useSelector((state) => state.user);
 
     const getUser = (userId) => {
-        for (let user of users.data) {
-            if (userId === user.id) {
-                return user;
+        if (Array.isArray(users.data)) {
+            for (let user of users.data) {
+                if (userId === user.id) {
+                    return user;
+                }
             }
         }
         return userId;
@@ -117,10 +119,9 @@ export default function LogTable({ panelId, level, interval }) {
                 content: (item) => {
                     if (item.meta.userId) {
                         const user = getUser(item.meta.userId);
-                        const hash = md5(user?.email);
                         return (
                             <BugChipDisplay
-                                avatar={<Avatar alt={user?.name} src={`https://s.gravatar.com/avatar/${hash}?s=80`} />}
+                                avatar={<Avatar alt={user?.name} src={getGravatarUrl(user?.email)} />}
                                 options={[user?.name]}
                             />
                         );
