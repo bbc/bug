@@ -7,7 +7,7 @@ router.get(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: true,
+            data: [],
         });
     })
 );

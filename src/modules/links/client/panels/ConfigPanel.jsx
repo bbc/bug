@@ -1,7 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import BugConfigFormDynamicGroup from "@core/BugConfigFormDynamicGroup";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
@@ -50,21 +49,6 @@ export default function ConfigPanel() {
                 </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
-                </Grid>
-                <Grid item xs={12}>
-                    <BugConfigFormDynamicGroup
-                        name="links"
-                        control={control}
-                        rules={{ required: true }}
-                        fullWidth
-                        error={errors.links}
-                        helperText={messages.links}
-                        defaultValue={panelConfig.data.links}
-                        label="Links"
-                    >
-                        <TextField label="title" variant="outlined" />
-                        <TextField label="url" variant="outlined" />
-                    </BugConfigFormDynamicGroup>
                 </Grid>
             </BugConfigWrapper>
         </>

@@ -13,11 +13,9 @@ export default function MainPanel() {
         const cards = [];
         for (let index in links) {
             cards.push(
-                <>
-                    <Grid item lg={6} xs={12}>
-                        <LinkCard {...{ ...{ index: index }, ...links[index] }} />
-                    </Grid>
-                </>
+                <Grid key={index} item lg={6} xs={12}>
+                    <LinkCard {...{ ...{ index: index }, ...links[index] }} />
+                </Grid>
             );
         }
         return cards;
@@ -33,7 +31,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
                 {getLinkCards(panelConfig.data.links)}
             </Grid>
         </>

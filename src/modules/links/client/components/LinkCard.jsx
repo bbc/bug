@@ -23,7 +23,16 @@ export default function LinkCard({ title, description, behaviour, url, index }) 
 
     return (
         <>
-            <Card onClick={handleClick} sx={{ minWidth: 275 }}>
+            <Card
+                onClick={handleClick}
+                sx={{
+                    borderRadius: "3px",
+                    minWidth: 275,
+                    margin: "4px",
+                }}
+                variant="outlined"
+                color="secondary"
+            >
                 <CardActionArea>
                     <CardContent>
                         <Typography variant="h5" component="div">
