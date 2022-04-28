@@ -19,9 +19,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
     } = useForm();
 
     useEffect(() => {
-        if (defaultData) {
-            setDefault(defaultData);
-        }
+        setDefault(defaultData);
     }, [defaultData]);
 
     const onSubmit = (form) => {

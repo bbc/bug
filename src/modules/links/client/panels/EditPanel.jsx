@@ -7,9 +7,11 @@ import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
 import AddDialog from "./../components/AddDialog";
 import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
 
 export default function EditPanel() {
     const params = useParams();
+    const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(null);
@@ -18,6 +20,11 @@ export default function EditPanel() {
         const updatedLinks = Object.assign([], panelConfig.data.links);
         updatedLinks.splice(index, 1);
         const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, { links: updatedLinks });
+        if (response) {
+            sendAlert(`Deleted link to ${panelConfig.data.links[index].title}`, { variant: "success" });
+        } else {
+            sendAlert(`Could not delete link to ${panelConfig.data.links[index].title}`, { variant: "error" });
+        }
     };
 
     const createLink = async (link) => {
@@ -25,6 +32,11 @@ export default function EditPanel() {
         updatedLinks.push(link);
         const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, { links: updatedLinks });
         setCurrentIndex(null);
+        if (response) {
+            sendAlert(`Created link to ${link.title}`, { variant: "success" });
+        } else {
+            sendAlert(`Could not create link to ${link.title}`, { variant: "error" });
+        }
     };
 
     const updateLink = async (link, index) => {
@@ -32,25 +44,25 @@ export default function EditPanel() {
         updatedLinks[index] = link;
         const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, { links: updatedLinks });
         setCurrentIndex(null);
+        if (response) {
+            sendAlert(`Updated link to ${link.title}`, { variant: "success" });
+        } else {
+            sendAlert(`Could not update link to ${link.title}`, { variant: "error" });
+        }
     };
 
     const onClickAdd = (index) => {
         setDialogOpen(true);
         if (index) {
             setCurrentIndex(index);
+        } else {
+            setCurrentIndex(null);
         }
     };
 
     const onDismiss = () => {
         setDialogOpen(false);
         setCurrentIndex(null);
-    };
-
-    const getDialogData = () => {
-        if (currentIndex) {
-            return panelConfig.data.links[currentIndex];
-        }
-        return null;
     };
 
     const getLinkCards = (links) => {
