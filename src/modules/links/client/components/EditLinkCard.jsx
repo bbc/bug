@@ -4,7 +4,7 @@ import { Typography, Button, Card, CardContent, CardActionArea, CardActions } fr
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function LinkCard({ onDelete, onEdit, link, index }) {
+export default function LinkCard({ handleDelete, handleEdit, link, index }) {
     const params = useParams();
     const history = useHistory();
 
@@ -21,11 +21,11 @@ export default function LinkCard({ onDelete, onEdit, link, index }) {
     };
 
     const handleEditClick = (event) => {
-        onEdit(index, link);
+        handleEdit(index);
     };
 
     const handleDeleteClick = (event) => {
-        onDelete(index);
+        handleDelete(index);
     };
 
     return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,27 +10,36 @@ import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import AxiosPut from "@utils/AxiosPut";
 
-const AddDialog = ({ links = [], panelId, defaultData, onDismiss, open, title = "New Link" }) => {
+const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, title = "New Link" }) => {
+    const [data, setDefault] = useState(defaultData);
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    const updateLinks = async (newLinks) => {
-        const response = await AxiosPut(`/api/panelconfig/${panelId}`, { links: newLinks });
-        console.log(response);
-    };
+    useEffect(() => {
+        if (defaultData) {
+            setDefault(defaultData);
+        }
+    }, [defaultData]);
+
     const onSubmit = (form) => {
         //If new link
-        if (!defaultData) {
-            let newLinks = Object.assign([], links);
-            newLinks.push(form);
-            updateLinks(newLinks);
+        if (!index) {
+            onCreate(form);
+        } else {
+            onEdit(form, index);
         }
         onDismiss();
     };
 
+    const getActionText = () => {
+        if (index) {
+            return "Edit Link";
+        }
+        return "Add Link";
+    };
     return (
         <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,7 +53,7 @@ const AddDialog = ({ links = [], panelId, defaultData, onDismiss, open, title = 
                                 rules={{ required: true }}
                                 fullWidth
                                 error={errors.title}
-                                defaultValue={defaultData?.title}
+                                defaultValue={data?.title}
                                 label="Title"
                             />
                         </Grid>
@@ -55,7 +64,7 @@ const AddDialog = ({ links = [], panelId, defaultData, onDismiss, open, title = 
                                 rules={{ required: true }}
                                 fullWidth
                                 error={errors.description}
-                                defaultValue={defaultData?.description}
+                                defaultValue={data?.description}
                                 label="Description"
                             />
                         </Grid>
@@ -66,7 +75,7 @@ const AddDialog = ({ links = [], panelId, defaultData, onDismiss, open, title = 
                                 rules={{ required: true }}
                                 fullWidth
                                 error={errors.url}
-                                defaultValue={defaultData?.url}
+                                defaultValue={data?.url}
                                 label="URL"
                             />
                         </Grid>
@@ -77,7 +86,7 @@ const AddDialog = ({ links = [], panelId, defaultData, onDismiss, open, title = 
                                 control={control}
                                 fullWidth
                                 error={errors?.behaviour}
-                                defaultValue={defaultData?.behaviour}
+                                defaultValue={data?.behaviour}
                                 label="Behaviour"
                                 rules={{ required: true }}
                                 options={[
@@ -94,7 +103,7 @@ const AddDialog = ({ links = [], panelId, defaultData, onDismiss, open, title = 
                         Cancel
                     </Button>
                     <Button color="primary" type="submit">
-                        Add Link
+                        {getActionText()}
                     </Button>
                 </DialogActions>
             </form>

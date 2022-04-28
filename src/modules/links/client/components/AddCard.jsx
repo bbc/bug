@@ -5,11 +5,14 @@ import CardContent from "@mui/material/CardContent";
 import AddIcon from "@mui/icons-material/Add";
 import Stack from "@mui/material/Stack";
 
-export default function AddCard({ onClick }) {
+export default function AddCard({ handleClick }) {
+    const handleAddClick = () => {
+        handleClick();
+    };
     return (
         <>
             <Card
-                onClick={onClick}
+                onClick={handleAddClick}
                 sx={{
                     borderStyle: "dashed",
                     borderRadius: "3px",

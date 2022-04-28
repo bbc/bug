@@ -16,7 +16,7 @@ export default function LinkPage() {
     const history = useHistory();
 
     const onClose = () => {
-        history.goBack();
+        history.push(`/panel/${params.panelId}`);
     };
 
     const link = panelConfig.data.links[params.linkIndex];
