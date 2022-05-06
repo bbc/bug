@@ -48,11 +48,15 @@ const getReceiverStatus = async () => {
                     frequency: response.data.inputFrequency1,
                     batteryVoltage: response.data.txBatteryVolts1,
                     videoLock: response.data.videoLock1,
+                    preErrors: response.data.preViterbiErrors1,
+                    postErrors: response.data.postViterbiErrors1,
                 },
                 {
                     frequency: response.data.inputFrequency2,
                     batteryVoltage: response.data.txBatteryVolts2,
                     videoLock: response.data.videoLocl2,
+                    preErrors: response.data.preViterbiErrors2,
+                    postErrors: response.data.postViterbiErrors2,
                 },
             ],
         });

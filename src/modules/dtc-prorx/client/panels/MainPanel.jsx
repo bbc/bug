@@ -13,7 +13,7 @@ export default function MainPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     const items = useApiPoller({
-        url: `/container/${params.panelId}/status`,
+        url: `/container/${params.panelId}/receiver/status`,
         interval: 30000,
     });
 
@@ -21,8 +21,7 @@ export default function MainPanel() {
         return <BugLoading />;
     }
 
-    if (items.data) {
-        console.log(items.data);
+    if (items.data.length <= 0) {
         return (
             <BugNoData
                 panelId={params.panelId}

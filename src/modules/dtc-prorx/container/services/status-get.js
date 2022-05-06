@@ -8,7 +8,7 @@ module.exports = async () => {
     // if (a % 2 == 0) {
     return [].concat(
         await statusCheckCollection({
-            collectionName: "recevier",
+            collectionName: "receiver",
             message: ["Could not find any receiver data.", "Check the IP address and try again."],
             itemType: "warning",
             timeoutSeconds: 60,
