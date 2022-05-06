@@ -58,7 +58,7 @@ jobs:
               run: echo ${{ steps.buildx.outputs.platforms }}
             #Docker Registry Login
             - name: Login to Harbor Registry
-              uses: docker/login-action@v1
+              uses: docker/login-action@v2
               with:
                   registry: ${{ env.regsitry }}
                   username: ${{ secrets.HARBOR_USER }}
