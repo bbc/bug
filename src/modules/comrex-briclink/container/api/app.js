@@ -7,7 +7,7 @@ const workerStore = require("@core/worker-store");
 const statusRouter = require("@routes/status");
 const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
-// const codecdataRouter = require("@routes/codecdata");
+const peerRouter = require("@routes/peer");
 // const codecstatusRouter = require("@routes/codecstatus");
 // const localdataRouter = require("@routes/localdata");
 // const deviceRouter = require("@routes/device");
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
-// app.use("/api/codecdata", codecdataRouter);
+app.use("/api/peer", peerRouter);
 // app.use("/api/codecstatus", codecstatusRouter);
 // app.use("/api/localdata", localdataRouter);
 // app.use("/api/device", deviceRouter);

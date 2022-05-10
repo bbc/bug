@@ -147,6 +147,10 @@ class ComrexSocket extends EventEmitter {
     send(message) {
         this.socket.write(`${message}${Char0}`);
     }
+
+    disconnect() {
+        this.socket.destroy();
+    }
 }
 
 module.exports = ComrexSocket;

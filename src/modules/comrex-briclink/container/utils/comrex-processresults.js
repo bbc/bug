@@ -9,6 +9,7 @@ const comrexSipProxy = require("@models/comrex-sipproxy");
 const comrexPeerStats = require("@models/comrex-peerstats");
 const comrexChannelStats = require("@models/comrex-channelstats");
 const comrexLevels = require("@models/comrex-levels");
+const comrexSystem = require("@models/comrex-system");
 
 module.exports = async (result, resultFilter = null) => {
     // console.log(`comrex-processresults: got result for ${result?.children?.[0]?.name}`);
@@ -52,6 +53,12 @@ module.exports = async (result, resultFilter = null) => {
             const levels = comrexLevels.parse(result);
             if (levels) {
                 await mongoSingle.set("levels", levels, 30);
+            }
+            break;
+        case "sysOptions":
+            const sysOptions = comrexSystem.parse(result);
+            if (sysOptions) {
+                await mongoSingle.set("sysOptions", sysOptions, 30);
             }
             break;
         case "channelStats":

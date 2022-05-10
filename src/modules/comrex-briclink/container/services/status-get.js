@@ -9,8 +9,8 @@ module.exports = async () => {
         // await statusCheckPending(),
         // await statusCheckInput(),
         await statusCheckMongoSingle({
-            collectionName: "codecdata",
-            message: ["There is no recent codec information for this device."],
+            collectionName: "peerList",
+            message: ["There is no recent information for this device."],
             itemType: "critical",
             flags: ["restartPanel", "configurePanel"],
         })
