@@ -1,0 +1,39 @@
+{
+    "name": "pinger",
+    "longname": "Pinger",
+    "description": "Monitor over services",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-lan",
+    "author": "Ryan McCartney",
+    "license": "GPLv3",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "pinger",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "freuency": 30,
+        "hosts": {
+            "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed": {
+                "title": "Google",
+                "description": "Is the internet up?",
+                "host": "8.8.8.8"
+            }
+        }
+    }
+}
