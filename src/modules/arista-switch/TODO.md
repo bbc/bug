@@ -1,0 +1,2 @@
+-   add temp alerts - sh environment temperature
+-   add power alerts - sh environment power

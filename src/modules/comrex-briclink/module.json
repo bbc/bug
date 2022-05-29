@@ -11,6 +11,7 @@
     "needsContainer": true,
     "devmounts": ["api", "services", "workers", "utils", "models"],
     "protectedRoutes": ["config"],
+    "status": "beta",
     "defaultconfig": {
         "id": "",
         "order": 0,

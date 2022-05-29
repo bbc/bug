@@ -1,12 +1,10 @@
 import React from "react";
-import Codec from "../components/Codec";
-import CodecStatus from "../components/CodecStatus";
+import PeerList from "../components/PeerList";
 
 export default function MainPanel({ panelId }) {
     return (
         <>
-            <CodecStatus panelId={panelId} />
-            <Codec panelId={panelId} />
+            <PeerList panelId={panelId} />
         </>
     );
 }
