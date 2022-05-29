@@ -13,7 +13,7 @@ module.exports = async (host) => {
 
     if (host.host && host.title) {
         const hostId = await uuidv4();
-        config.hosts.hostId = host;
+        config.hosts[hostId] = host;
     }
 
     return await configPutViaCore(config);

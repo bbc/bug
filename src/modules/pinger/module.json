@@ -27,7 +27,7 @@
         "description": "",
         "notes": "",
         "enabled": false,
-        "freuency": 30,
+        "frequency": 30,
         "hosts": {
             "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed": {
                 "title": "Google",

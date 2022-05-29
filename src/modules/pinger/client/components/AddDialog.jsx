@@ -57,7 +57,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, hostId, open, tit
                             <BugConfigFormTextField
                                 name="description"
                                 control={control}
-                                rules={{ required: true }}
+                                rules={{ required: false }}
                                 fullWidth
                                 error={errors.description}
                                 defaultValue={data?.description}

@@ -10,10 +10,10 @@ module.exports = async (hostId, newHost) => {
         return false;
     }
 
-    if (!config.host[hostId]) {
+    if (!config.hosts[hostId]) {
         return false;
     }
 
-    config.hosts.hostId = { ...config.host[hostId], ...newHost };
+    config.hosts[hostId] = { ...config.hosts[hostId], ...newHost };
     return await configPutViaCore(config);
 };

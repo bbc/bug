@@ -22,9 +22,9 @@ export default function EditPanel() {
     const deleteHost = async (hostId) => {
         const response = await AxiosDelete(`/container/${params?.panelId}/hosts/${hostId}`);
         if (response) {
-            sendAlert(`Deleted host  ${panelConfig.data.hosts.hostId.title}`, { variant: "success" });
+            sendAlert(`Deleted host  ${panelConfig.data.hosts[hostId].title}`, { variant: "success" });
         } else {
-            sendAlert(`Could not delete host ${panelConfig.data.hosts.hostId.title}`, { variant: "error" });
+            sendAlert(`Could not delete host ${panelConfig.data.hosts[hostId].title}`, { variant: "error" });
         }
     };
 
@@ -35,12 +35,12 @@ export default function EditPanel() {
         } else {
             sendAlert(`Could not create host ${host.title}`, { variant: "error" });
         }
+        setCurrentHostId(null);
     };
 
     const updateHost = async (host, hostId) => {
-        console.log(hostId);
-        const response = await AxiosPut(`/container/${params?.panelId}/hosts/${hostId}`, host);
         setCurrentHostId(null);
+        const response = await AxiosPut(`/container/${params?.panelId}/hosts/${hostId}`, host);
         if (response) {
             sendAlert(`Updated host ${host.title}`, { variant: "success" });
         } else {
@@ -49,12 +49,17 @@ export default function EditPanel() {
     };
 
     const onClickAdd = (hostId) => {
+        setCurrentHostId(null);
         setDialogOpen(true);
+    };
+
+    const onClickEdit = (hostId) => {
         if (hostId) {
             setCurrentHostId(hostId);
         } else {
             setCurrentHostId(null);
         }
+        setDialogOpen(true);
     };
 
     const onDismiss = () => {
@@ -66,10 +71,10 @@ export default function EditPanel() {
         const cards = [];
         for (let hostId in hosts) {
             cards.push(
-                <Grid item key={hostId} lg={6} xs={12}>
+                <Grid item key={hostId} lg={3} md={6} xs={12}>
                     <HostCardEdit
                         handleDelete={deleteHost}
-                        handleEdit={onClickAdd}
+                        handleEdit={onClickEdit}
                         host={hosts[hostId]}
                         hostId={hostId}
                     />
@@ -91,11 +96,11 @@ export default function EditPanel() {
         <>
             <AddDialog
                 hostId={currentHostId}
-                defaultData={panelConfig.data.hosts.hostId}
+                defaultData={panelConfig?.data?.hosts[currentHostId]}
                 open={dialogOpen}
                 onDismiss={onDismiss}
-                onEdit={updateHost}
                 onCreate={createHost}
+                onEdit={updateHost}
             />
             <Grid container spacing={1}>
                 {getHostCards(panelConfig.data.hosts)}

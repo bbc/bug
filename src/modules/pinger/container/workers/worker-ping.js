@@ -32,7 +32,7 @@ const filteredResponse = (response) => {
 
 const findHost = (hosts, hostId) => {
     for (let exisitingHost of hosts) {
-        if (exisitingHost.hostId === hostId) {
+        if (exisitingHost === hostId) {
             return exisitingHost;
         }
     }

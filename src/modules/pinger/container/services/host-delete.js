@@ -12,11 +12,11 @@ module.exports = async (hostId) => {
         return false;
     }
 
-    if (!config.hosts.hostId) {
+    if (!config.hosts[hostId]) {
         return false;
     }
 
-    delete config.hosts.hostId;
+    delete config.hosts[hostId];
     hostsCollection.deleteOne({ hostId: hostId });
 
     return await configPutViaCore(config);
