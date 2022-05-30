@@ -32,7 +32,7 @@ const filteredResponse = (response) => {
 
 const findHost = (hosts, hostId) => {
     for (let exisitingHost of hosts) {
-        if (exisitingHost === hostId) {
+        if (exisitingHost.hostId === hostId) {
             return exisitingHost;
         }
     }
@@ -61,6 +61,7 @@ const main = async () => {
                         timeout: 10,
                     });
 
+                    console.log(`Pinged ${host.host}`);
                     //Add database entry
                     const query = { host: host?.host };
                     const update = {
