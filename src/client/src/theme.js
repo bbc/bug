@@ -24,12 +24,14 @@ const theme = (selectedTheme = "dark") => {
                 },
 
                 error: {
-                    main: "#b52424",
+                    main: "rgba(181, 36, 36, 1)",
+                    secondary: "rgba(181, 36, 36, 0.5)",
                     hover: "#962222",
                 },
 
                 warning: {
-                    main: "#d07111",
+                    main: "rgba(208, 113, 17, 1)",
+                    secondary: "rgba(208, 113, 17, 0.5)",
                 },
 
                 control: {
@@ -48,7 +50,8 @@ const theme = (selectedTheme = "dark") => {
                 },
 
                 success: {
-                    main: "#05990c",
+                    main: "rgba(5, 153, 12, 1)",
+                    secondary: "rgba(5, 153, 12, 0.51)",
                 },
 
                 text: {
@@ -88,12 +91,14 @@ const theme = (selectedTheme = "dark") => {
             },
 
             error: {
-                main: "#b52424",
+                main: "rgba(203, 101, 101, 1)",
                 hover: "#962222",
+                secondary: "rgba(203, 101, 101, 0.5)",
             },
 
             warning: {
                 main: "#d07111",
+                secondary: "#E7B888",
             },
 
             control: {
@@ -113,6 +118,7 @@ const theme = (selectedTheme = "dark") => {
 
             success: {
                 main: "#05990c",
+                secondary: "rgba(5, 153, 12, 0.51)",
             },
 
             text: {

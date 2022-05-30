@@ -6,8 +6,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { Sparklines, SparklinesLine } from "react-sparklines";
+import { formatDistanceToNow } from "date-fns";
 
-export default function HostCard({ title, description, alive, host, hostId, data }) {
+export default function HostCard({ title, description, alive, host, hostId, lastPinged, data }) {
     const params = useParams();
     const history = useHistory();
     const label = "avg";
@@ -24,7 +25,7 @@ export default function HostCard({ title, description, alive, host, hostId, data
     };
 
     const getPingText = (time, alive) => {
-        let text = "";
+        let text = "inf";
         console.log();
         if (alive || time !== "unknown") {
             text = `${parseInt(time)}ms`;
@@ -61,8 +62,8 @@ export default function HostCard({ title, description, alive, host, hostId, data
                 sx={{
                     borderRadius: "3px",
                     minWidth: 275,
-                    margin: "4px",
-                    backgroundColor: `${cardColor}.main`,
+                    margin: "0.5em",
+                    backgroundColor: `${cardColor}.secondary`,
                     "&:hover": {
                         background: `${cardColor}.hover`,
                     },
@@ -70,30 +71,46 @@ export default function HostCard({ title, description, alive, host, hostId, data
                 variant="outlined"
             >
                 <CardActionArea sx={{ padding: 0 }}>
-                    <CardContent sx={{ padding: 0 }}>
+                    <CardContent sx={{ width: "100%", padding: 0 }}>
                         <div style={{ margin: "auto", position: "relative" }}>
-                            <Sparklines data={formatStats(data)} style={{ opacity: 0.7 }} min={0}>
-                                <SparklinesLine color="#333333" />
+                            <Sparklines data={formatStats(data)} limit={50} style={{ opacity: 0.7 }} min={0}>
+                                <SparklinesLine style={{ fill: "none" }} color="#333333" />
                             </Sparklines>
                             <div
                                 style={{
                                     padding: "1em",
                                     top: 0,
                                     left: 0,
+                                    width: "100%",
+                                    height: "100%",
                                     position: "absolute",
                                 }}
                             >
                                 <Grid container>
-                                    <Grid key={1} item xs={0}>
-                                        <Typography variant="h5" component="div">
+                                    <Grid width={"50%"} direction="column" key={1} item xs={0}>
+                                        <Typography variant="h4" component="div">
                                             {title}
                                         </Typography>
                                         <Typography variant="body2">{description}</Typography>
                                     </Grid>
 
-                                    <Grid sx={{ textAlign: "right" }} key={0} item xs={0}>
+                                    <Grid
+                                        width={"50%"}
+                                        direction="column"
+                                        alignItems="flex-end"
+                                        justify="flex-end"
+                                        key={0}
+                                        item
+                                        xs={0}
+                                    >
                                         <Typography sx={{ textAlign: "right" }} variant="h4" component="div">
                                             {getPingText(data[data.length - 1].avg, alive)}
+                                        </Typography>
+                                        <Typography sx={{ textAlign: "right" }} variant="body2">
+                                            {formatDistanceToNow(new Date(lastPinged), {
+                                                includeSeconds: true,
+                                                addSuffix: true,
+                                            })}
                                         </Typography>
                                     </Grid>
                                 </Grid>

@@ -61,7 +61,7 @@ const main = async () => {
                         timeout: 10,
                     });
 
-                    console.log(`Pinged ${host.host}`);
+                    //console.log(`Pinged ${host.host}`);
                     //Add database entry
                     const query = { host: host?.host };
                     const update = {
