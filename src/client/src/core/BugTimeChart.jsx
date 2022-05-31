@@ -179,10 +179,10 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
                     sx={{ margin: "8px" }}
                     variant="contained"
                     color="secondary"
-                    onClick={() => handleBack(5)}
+                    onClick={() => handleBack(60)}
                     startIcon={<ArrowLeftIcon />}
                 >
-                    5 min
+                    1 hour
                 </Button>
 
                 <Button
@@ -202,10 +202,10 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
                     variant="contained"
                     disabled={enableAutoRefresh}
                     color="secondary"
-                    onClick={() => handleForward(5)}
+                    onClick={() => handleForward(60)}
                     endIcon={<ArrowRightIcon />}
                 >
-                    5 min
+                    1 hour
                 </Button>
             </Box>
         </Box>
