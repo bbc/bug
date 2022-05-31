@@ -16,7 +16,7 @@ export default function MainPanel() {
         const cards = [];
         for (let host of hosts) {
             cards.push(
-                <Grid key={host?.hostId} item lg={3} md={6} xs={12}>
+                <Grid key={host?.hostId} item xl={3} lg={4} md={6} xs={12}>
                     <HostCard {...host} />
                 </Grid>
             );

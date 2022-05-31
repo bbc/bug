@@ -71,7 +71,7 @@ export default function EditPanel() {
         const cards = [];
         for (let hostId in hosts) {
             cards.push(
-                <Grid item key={hostId} lg={3} md={6} xs={12}>
+                <Grid item key={hostId} xl={3} lg={4} md={6} xs={12}>
                     <HostCardEdit
                         handleDelete={deleteHost}
                         handleEdit={onClickEdit}
@@ -104,7 +104,7 @@ export default function EditPanel() {
             />
             <Grid container spacing={1}>
                 {getHostCards(panelConfig.data.hosts)}
-                <Grid item key={"addDialog"} lg={3} md={6} xs={12}>
+                <Grid item key={"addDialog"} xl={3} lg={4} md={6} xs={12}>
                     <AddCard handleClick={onClickAdd} />
                 </Grid>
             </Grid>

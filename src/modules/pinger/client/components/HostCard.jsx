@@ -88,7 +88,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
                             >
                                 <Grid container>
                                     <Grid width={"50%"} direction="column" key={1} item xs={0}>
-                                        <Typography variant="h3" component="div">
+                                        <Typography variant="h4" component="div">
                                             {title}
                                         </Typography>
                                         <Typography variant="body2">{description}</Typography>
