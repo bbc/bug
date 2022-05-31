@@ -1,7 +1,6 @@
 "use strict";
 
 const mongoCollection = require("@core/mongo-collection");
-const e = require("express");
 
 module.exports = async (startTime = null, endTime = null) => {
     try {

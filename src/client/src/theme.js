@@ -25,13 +25,13 @@ const theme = (selectedTheme = "dark") => {
 
                 error: {
                     main: "rgba(181, 36, 36, 1)",
-                    secondary: "rgba(181, 36, 36, 0.5)",
+                    secondary: "rgba(181, 36, 36, 0.75)",
                     hover: "#962222",
                 },
 
                 warning: {
                     main: "rgba(208, 113, 17, 1)",
-                    secondary: "rgba(208, 113, 17, 0.5)",
+                    secondary: "rgba(208, 113, 17, 0.75)",
                 },
 
                 control: {
@@ -51,7 +51,7 @@ const theme = (selectedTheme = "dark") => {
 
                 success: {
                     main: "rgba(5, 153, 12, 1)",
-                    secondary: "rgba(5, 153, 12, 0.51)",
+                    secondary: "rgba(5, 153, 12, 0.75)",
                 },
 
                 text: {
@@ -93,7 +93,7 @@ const theme = (selectedTheme = "dark") => {
             error: {
                 main: "rgba(203, 101, 101, 1)",
                 hover: "#962222",
-                secondary: "rgba(203, 101, 101, 0.5)",
+                secondary: "rgba(203, 101, 101, 0.75)",
             },
 
             warning: {
@@ -118,7 +118,7 @@ const theme = (selectedTheme = "dark") => {
 
             success: {
                 main: "#05990c",
-                secondary: "rgba(5, 153, 12, 0.51)",
+                secondary: "rgba(5, 153, 12, 0.8)",
             },
 
             text: {

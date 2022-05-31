@@ -7,6 +7,7 @@ const hostDetails = require("@services/host-details");
 const hostList = require("@services/host-list");
 const hostUpdate = require("@services/host-update");
 const hostDelete = require("@services/host-delete");
+const getPingHistory = require("@services/host-ping-history");
 
 route.get(
     "/",
@@ -26,6 +27,17 @@ route.get(
         hashResponse(res, req, {
             status: results.length > 0 ? "success" : "failure",
             data: results,
+        });
+    })
+);
+
+route.get(
+    "/:hostId/:start/:end",
+    asyncHandler(async (req, res) => {
+        const result = await getPingHistory(req.params.hostId, parseInt(req.params.start), parseInt(req.params.end));
+        res.json({
+            status: result.length > 0 ? "success" : "failure",
+            data: result,
         });
     })
 );

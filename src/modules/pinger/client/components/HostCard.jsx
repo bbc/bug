@@ -16,12 +16,12 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
     if (!alive) {
         cardColor = "error";
-    } else if (data[0].avg > 60) {
+    } else if (data[0].packetLoss > 0) {
         cardColor = "warning";
     }
 
     const handleClick = (event) => {
-        history.push(`/panel/${params.panelId}/host/${index}`);
+        history.push(`/panel/${params.panelId}/host/${hostId}`);
     };
 
     const getPingText = (time, alive) => {
@@ -88,7 +88,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
                             >
                                 <Grid container>
                                     <Grid width={"50%"} direction="column" key={1} item xs={0}>
-                                        <Typography variant="h4" component="div">
+                                        <Typography variant="h3" component="div">
                                             {title}
                                         </Typography>
                                         <Typography variant="body2">{description}</Typography>

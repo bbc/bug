@@ -8,24 +8,22 @@ import Box from "@mui/material/Box";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import CloseIcon from "@mui/icons-material/Close";
-import Iframe from "react-iframe";
+import BugTimeChart from "@core/BugTimeChart";
 
-export default function LinkPage() {
-    const params = useParams();
+export default function HostDetails() {
+    const { panelId, hostId } = useParams();
     const panelConfig = useSelector((state) => state.panelConfig);
     const history = useHistory();
 
     const onClose = () => {
-        history.push(`/panel/${params.panelId}`);
+        history.push(`/panel/${panelId}`);
     };
-
-    const host = panelConfig.data.hosts[params.hostIndex];
 
     if (panelConfig.status === "idle" || panelConfig.status === "loading") {
         return <BugLoading height="30vh" />;
     }
 
-    if (!panelConfig.data.hosts[params.hostIndex]) {
+    if (!panelConfig.data.hosts[hostId]) {
         return <BugNoData title="Link not Found" showConfigButton={false} />;
     }
 
@@ -52,7 +50,7 @@ export default function LinkPage() {
                             zIndex: 1,
                         }}
                     >
-                        {host.title}
+                        {panelConfig.data.hosts[hostId].title} - {panelConfig.data.hosts[hostId].host}
                     </Typography>
                     <IconButton
                         aria-label="close"
@@ -77,8 +75,8 @@ export default function LinkPage() {
                     }}
                     className={`tabSpacer`}
                 />
+                <BugTimeChart url={`/container/${panelId}/hosts/${hostId}`} />
             </div>
-            <Iframe url={host.host} frameBorder="0" width="100%" height="90%" id="link" position="relative" />
         </>
     );
 }

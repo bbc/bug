@@ -19,7 +19,7 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId/config">
                 <ConfigPanel />
             </Route>
-            <Route exact path="/panel/:panelId/host/:hostIndex">
+            <Route exact path="/panel/:panelId/host/:hostId">
                 <HostDetails />
             </Route>
         </BugModuleWrapper>
