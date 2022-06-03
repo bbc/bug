@@ -116,7 +116,10 @@ export default function PinLogin({ handleLogin }) {
                         autoFocus
                         onChange={(event) => handleChange(event)}
                         value={pin}
-                        inputProps={{ style: { textAlign: "center" } }}
+                        inputProps={{
+                            style: { textAlign: "center" },
+                        }}
+                        onFocus={(event) => event.target.blur()}
                         variant="outlined"
                         fullWidth
                         type="password"
