@@ -142,6 +142,8 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     editMode: editMode,
                     groupType: "source",
                     selectedDestination: selectedDestination,
+                    sourceGroup: sourceGroup,
+                    destinationGroup: destinationGroup,
                     buttons: sourceButtons,
                     onChange: () => setSourceForceRefresh(),
                 })}
@@ -191,6 +193,8 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 {scrollableGroupButtons({
                     panelId: panelId,
                     editMode: editMode,
+                    sourceGroup: sourceGroup,
+                    destinationGroup: destinationGroup,
                     groupType: "destination",
                     buttons: destinationButtons,
                     onChange: () => setSourceForceRefresh(),

@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BugLoading from "@core/BugLoading";
 import { useAlert } from "@utils/Snackbar";
 import GroupButton from "./GroupButton";
 import AddGroupButton from "./AddGroupButton";
 import AxiosPost from "@utils/AxiosPost";
 import { useHistory } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import EditButtonsDialog from "./EditButtonsDialog";
 import Box from "@mui/material/Box";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
@@ -27,13 +26,18 @@ import {
     horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-export default function GroupButtons({ panelId, editMode = false, groupType, buttons, onChange }) {
+export default function GroupButtons({
+    panelId,
+    editMode = false,
+    groupType,
+    buttons,
+    onChange,
+    destinationGroup = 0,
+    sourceGroup = 0,
+}) {
     const sendAlert = useAlert();
     const history = useHistory();
-    const params = useParams();
-    const sourceGroup = params.sourceGroup ?? 0;
-    const destinationGroup = params.destinationGroup ?? 0;
-    const [localButtons, setLocalButtons] = React.useState(null);
+    const [localButtons, setLocalButtons] = useState(null);
     const { renameDialog } = useBugRenameDialog();
     const { customDialog } = useBugCustomDialog();
 
@@ -51,10 +55,14 @@ export default function GroupButtons({ panelId, editMode = false, groupType, but
 
     const handleGroupButtonClicked = (groupIndex) => {
         const editText = editMode ? "/edit" : "";
+        const pathItems = window.location.pathname.split("/");
+        const sourceIndex = pathItems[3] ? pathItems[3] : 0;
+        const destinationIndex = pathItems[4] ? pathItems[4] : 0;
+
         if (groupType === "source") {
-            history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationGroup}`);
+            history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationIndex}`);
         } else {
-            history.push(`/panel/${panelId}${editText}/${sourceGroup}/${groupIndex}`);
+            history.push(`/panel/${panelId}${editText}/${sourceIndex}/${groupIndex}`);
         }
     };
 
