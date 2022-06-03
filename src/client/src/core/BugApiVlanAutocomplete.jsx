@@ -8,14 +8,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugVlansDialog from "./BugVlansDialog";
 
-export default function BugApiVlanAutocomplete({
+const BugApiVlanAutocomplete = ({
     options,
     taggedValue,
     untaggedValue,
     onChange,
     timeout = 8000,
     disabled = false,
-}) {
+}) => {
     const [isActive, setIsActive] = React.useState(false);
     const [localTaggedValue, setLocalTaggedValue] = React.useState(taggedValue);
     const [localUntaggedValue, setLocalUntaggedValue] = React.useState(untaggedValue);
@@ -172,4 +172,6 @@ export default function BugApiVlanAutocomplete({
             )}
         </Box>
     );
-}
+};
+
+export default React.memo(BugApiVlanAutocomplete);

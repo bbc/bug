@@ -3,7 +3,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 
-export default function BugApiAutocomplete({
+export default React.memo(function BugApiAutocomplete({
     options,
     value,
     freeSolo = false,
@@ -117,4 +117,4 @@ export default function BugApiAutocomplete({
             )}
         />
     );
-}
+});

@@ -88,7 +88,6 @@ export default function BugApiTable({
         },
         url: apiUrl,
         interval: 2500,
-        forceRefresh: forceRefresh,
     });
 
     const handleSortClicked = (column) => {
