@@ -33,6 +33,8 @@ module.exports = async (hostId, startTime = null, endTime = null) => {
                         } else {
                             itemCopy[key] = parseFloat(itemCopy[key]);
                         }
+                    } else {
+                        itemCopy[key] = new Date(itemCopy[key]).getTime().toFixed(0);
                     }
                 }
                 return itemCopy;

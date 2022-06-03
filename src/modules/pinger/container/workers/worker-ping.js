@@ -59,6 +59,7 @@ const main = async () => {
                 if (!exisitingHost || exisitingHost.lastPinged < new Date() - workerData.frequency * 1000) {
                     const response = await ping.promise.probe(host.host, {
                         timeout: 10,
+                        extra: ["-c", "5"],
                     });
 
                     //console.log(`Pinged ${host.host}`);

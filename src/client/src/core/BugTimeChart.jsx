@@ -78,7 +78,11 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
         setRange([newEnd - rangeSpan * 60000, newEnd]);
     };
 
-    const CustomTooltip = ({ active, payload, label }) => {
+    const CustomTooltip = ({
+        active,
+        payload,
+        units = { avg: "ms", min: "ms", max: "ms", stddev: "ms", packetLoss: "%" },
+    }) => {
         if (active && payload && payload.length > 0) {
             let timestamp = payload[0].payload.timestamp;
 
@@ -88,7 +92,7 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
                         <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
                             TIME:
                         </Box>
-                        {timestamp}
+                        {` ${format(parseInt(timestamp), "kk:mm")}`}
                     </div>,
                 ];
 
@@ -97,9 +101,9 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
                         lines.push(
                             <div key={series}>
                                 <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                                    {series}:
+                                    {series.toUpperCase()}:
                                 </Box>
-                                {` ${Math.round(payload[0].payload[series] * 100) / 100} ${units}`}
+                                {` ${Math.round(payload[0].payload[series] * 100) / 100}${units[series]}`}
                             </div>
                         );
                     }
@@ -149,15 +153,16 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
             <ResponsiveContainer width="100%" height={chartHeight}>
                 <ComposedChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                     {getSeries()}
-                    {/* <XAxis
+                    <XAxis
                         dataKey="timestamp"
-                        type="number"
                         domain={range}
                         tickCount={5}
+                        scale="time"
+                        type="number"
                         tickFormatter={(value) => {
-                            return format(value, "kk:mm");
+                            return format(parseInt(value), "kk:mm");
                         }}
-                    /> */}
+                    />
                     <YAxis
                         tickFormatter={(value) => {
                             return `${value} ${units}`;

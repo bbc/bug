@@ -16,7 +16,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
     if (!alive) {
         cardColor = "error";
-    } else if (data[0].packetLoss > 0) {
+    } else if (data[data.length - 1].packetLoss > 0) {
         cardColor = "warning";
     }
 
@@ -26,7 +26,6 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
     const getPingText = (time, alive) => {
         let text = "inf";
-        console.log();
         if (alive || time !== "unknown") {
             text = `${parseInt(time)}ms`;
         }
