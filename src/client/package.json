@@ -61,6 +61,7 @@
     "typescript": "^2.9.2",
     "use-async-effect": "^2.2.3",
     "use-debounce": "^6.0.1",
+    "use-long-press": "^2.0.2",
     "use-sound": "^4.0.1",
     "web-vitals": "^1.0.1",
     "webmidi": "^3.0.11"
