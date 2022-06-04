@@ -1,6 +1,6 @@
 {
   "name": "bbcnews-bug-client",
-  "version": "3.2.66",
+  "version": "3.2.67",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
