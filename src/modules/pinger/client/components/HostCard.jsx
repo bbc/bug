@@ -61,7 +61,6 @@ export default function HostCard({ title, description, alive, host, hostId, last
                 sx={{
                     borderRadius: "3px",
                     minWidth: 275,
-                    margin: "0.5em",
                     backgroundColor: `${cardColor}.secondary`,
                     "&:hover": {
                         background: `${cardColor}.hover`,
@@ -70,7 +69,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
                 variant="outlined"
             >
                 <CardActionArea sx={{ padding: 0 }}>
-                    <CardContent sx={{ width: "100%", padding: 0 }}>
+                    <CardContent sx={{ width: "100%", padding: "0.2em" }}>
                         <div style={{ margin: "auto", position: "relative" }}>
                             <Sparklines data={formatStats(data)} limit={50} style={{ opacity: 0.7 }} min={0}>
                                 <SparklinesLine style={{ fill: "none" }} color="#333333" />
@@ -86,22 +85,14 @@ export default function HostCard({ title, description, alive, host, hostId, last
                                 }}
                             >
                                 <Grid container>
-                                    <Grid width={"50%"} direction="column" key={1} item xs={0}>
+                                    <Grid width={"50%"} key={1} item xs={0}>
                                         <Typography variant="h4" component="div">
                                             {title}
                                         </Typography>
                                         <Typography variant="body2">{description}</Typography>
                                     </Grid>
 
-                                    <Grid
-                                        width={"50%"}
-                                        direction="column"
-                                        alignItems="flex-end"
-                                        justify="flex-end"
-                                        key={0}
-                                        item
-                                        xs={0}
-                                    >
+                                    <Grid width={"50%"} alignItems="flex-end" justify="flex-end" key={0} item xs={0}>
                                         <Typography sx={{ textAlign: "right" }} variant="h4" component="div">
                                             {getPingText(data[data.length - 1].avg, alive)}
                                         </Typography>

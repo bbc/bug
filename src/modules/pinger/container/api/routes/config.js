@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const configGet = require("@core/config-get");
 const configPut = require("@core/config-put");
+const hostClean = require("@services/host-clean");
 
 router.get("/", async function (req, res, next) {
     try {
@@ -21,9 +22,11 @@ router.get("/", async function (req, res, next) {
 // it shouldn't be used by the module client itself
 router.put("/", async function (req, res, next) {
     try {
+        let state = hostClean(req.body?.hosts);
+        state = configPut(req.workers, req.body);
         res.json({
-            status: "success",
-            data: await configPut(req.workers, req.body),
+            status: state ? "success" : "failure",
+            data: state,
         });
     } catch (error) {
         res.json({

@@ -8,6 +8,7 @@ const statusRouter = require("@routes/status");
 const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
 const hostsRouter = require("@routes/hosts");
+const edgesRouter = require("@routes/edges");
 
 let app = express();
 
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/hosts", hostsRouter);
+app.use("/api/edges", edgesRouter);
 
 app.use("*", defaultRouter);
 
