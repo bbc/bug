@@ -2,17 +2,16 @@ const express = require("express");
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 const route = express.Router();
-const hostAdd = require("@services/host-add");
-const hostDetails = require("@services/host-details");
-const hostList = require("@services/host-list");
-const hostUpdate = require("@services/host-update");
-const hostDelete = require("@services/host-delete");
-const getPingHistory = require("@services/host-ping-history");
+const edgeAdd = require("@services/edge-add");
+const edgeDetails = require("@services/edge-details");
+const edgeList = require("@services/edge-list");
+const edgeUpdate = require("@services/edge-update");
+const edgeDelete = require("@services/edge-delete");
 
 route.get(
     "/",
     asyncHandler(async (req, res) => {
-        const results = await hostList();
+        const results = await edgeList();
         hashResponse(res, req, {
             status: results.length > 0 ? "success" : "failure",
             data: results,
@@ -21,9 +20,9 @@ route.get(
 );
 
 route.get(
-    "/:hostId",
+    "/:edgeId",
     asyncHandler(async (req, res) => {
-        const results = await hostDetails(req.params?.hostId);
+        const results = await edgeDetails(req.params?.edgeId);
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,
@@ -31,21 +30,10 @@ route.get(
     })
 );
 
-route.get(
-    "/:hostId/:start/:end",
-    asyncHandler(async (req, res) => {
-        const result = await getPingHistory(req.params.hostId, parseInt(req.params.start), parseInt(req.params.end));
-        res.json({
-            status: result.length > 0 ? "success" : "failure",
-            data: result,
-        });
-    })
-);
-
 route.put(
-    "/:hostId",
+    "/:edgeId",
     asyncHandler(async (req, res) => {
-        const results = await hostUpdate(req.params?.hostId, req.body);
+        const results = await edgeUpdate(req.params?.edgeId, req.body);
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,
@@ -56,7 +44,7 @@ route.put(
 route.post(
     "/",
     asyncHandler(async (req, res) => {
-        const result = await hostAdd(req.body);
+        const result = await edgeAdd(req.body);
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             data: result,
@@ -65,9 +53,9 @@ route.post(
 );
 
 route.delete(
-    "/:hostId",
+    "/:edgeId",
     asyncHandler(async (req, res) => {
-        const results = await hostDelete(req.params?.hostId);
+        const results = await edgeDelete(req.params?.edgeId);
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,
