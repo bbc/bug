@@ -30,15 +30,31 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
         }
     };
 
+    const edgeDelete = async (edge) => {
+        console.log("edgeDelete", edge);
+    };
+
+    const isAnimated = (sourceId, targetId) => {
+        for (let host of hosts) {
+            if (host.hostId === sourceId || host.hostId === targetId) {
+                if (!host.alive) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+
     useEffect(() => {
         if (hosts?.length > 0) {
             const nodes = hosts.map((host) => {
                 let position = host?.position;
                 if (!position) {
-                    position = { x: Math.random() * 500, y: Math.random() * 500 };
+                    position = { x: Math.random() * 1500, y: Math.random() * 1500 };
                 }
 
                 return {
+                    type: "input",
                     id: host.hostId,
                     data: { label: <HostCard {...host} /> },
                     position: position,
@@ -56,7 +72,8 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
                     id: edgeId,
                     source: edgesData[edgeId].source,
                     target: edgesData[edgeId].target,
-                    animated: true,
+                    animated: isAnimated(edgesData[edgeId].source, edgesData[edgeId].target),
+                    type: "smoothstep",
                 });
             }
             setEdges(parsedEdges);
@@ -73,11 +90,14 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
                 onNodeDragStop={(event, node) => {
                     updateHostPositsion(node?.id, node?.position);
                 }}
+                onEdgeUpdateEnd={(event, edge) => {}}
+                onEdgesDelete={edgeDelete}
                 onConnect={onConnect}
                 onInit={onInit}
                 style={reactFlowStyle}
                 fitView
                 attributionPosition="bottom-right"
+                connectionMode="loose"
             >
                 <Background gap={16} />
             </ReactFlow>
