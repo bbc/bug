@@ -1,4 +1,5 @@
 import React from "react";
+import BugModuleWrapper from "@core/BugModuleWrapper";
 import { Route } from "react-router-dom";
 
 const MainPanel = React.lazy(() => import("./panels/MainPanel"));

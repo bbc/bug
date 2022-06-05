@@ -7,6 +7,8 @@ import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
 import LockIcon from "@mui/icons-material/Lock";
 import BugCountdownSpinner from "@core/BugCountdownSpinner";
+import { useLongPress } from "use-long-press";
+import BugContextMenu from "@core/BugContextMenu";
 
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
     fontSize: "2rem",
@@ -36,6 +38,11 @@ const BugRouterButton = ({
         id: id,
     });
     const timer = React.useRef();
+    const [contextMenuAnchorEl, setContextMenuAnchorEl] = React.useState(null);
+
+    const bind = useLongPress((event) => {
+        setContextMenuAnchorEl(event.target);
+    });
 
     let style = {
         transform: "",
@@ -124,7 +131,16 @@ const BugRouterButton = ({
             variant="outlined"
             color="secondary"
             onClick={handleClick}
+            {...bind()}
         >
+            {!editMode && (
+                <BugContextMenu
+                    anchorEl={contextMenuAnchorEl}
+                    onClose={() => setContextMenuAnchorEl(null)}
+                    item={item}
+                    menuItems={menuItems}
+                />
+            )}
             <Box
                 className="MuiButton-label"
                 sx={{
