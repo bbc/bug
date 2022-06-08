@@ -30,7 +30,7 @@ services:
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_REGISTRY_FQDN: harbor.prod.bcn.bbc.co.uk
-            BUG_UPDATE_CHECK: false
+            BUG_UPDATE_CHECK: "false"
             PORT: 3000
             NODE_ENV: development
             SESSION_SECRET: aSecretForYourSessions

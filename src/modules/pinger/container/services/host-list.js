@@ -9,8 +9,14 @@ module.exports = async () => {
         const hostsCollection = await mongoCollection("hosts");
         const hosts = await hostsCollection.find().toArray();
 
-        const mergedHosts = hosts.map((host) => {
-            return { ...host, ...config.hosts[host.hostId] };
+        let mergedHosts = [];
+
+        mergedHosts = hosts.map((host) => {
+            return {
+                ...host,
+                ...config.hosts[host.hostId],
+                ...{ data: host.data.slice(host.data.length - 1 - 50, host.data.length - 1) },
+            };
         });
 
         return await mergedHosts;

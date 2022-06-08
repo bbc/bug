@@ -16,7 +16,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
     if (!alive) {
         cardColor = "error";
-    } else if (data[data.length - 1].packetLoss > 0) {
+    } else if (data[data.length - 1]?.packetLoss > 0) {
         cardColor = "warning";
     }
 
