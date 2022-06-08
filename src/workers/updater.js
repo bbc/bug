@@ -8,16 +8,17 @@ const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
 const systemInfo = require("@models/system-info");
 const databaseName = process.env.BUG_CONTAINER || "bug";
+const checkFrequency = process.env.BUG_UPDATE_CHECK || 1800;
 
 const fetch = async () => {
     try {
-        while (true) {
+        while (checkFrequency) {
             const currentVersion = await checkUpdate();
 
             systemInfo.set(currentVersion);
 
             //Wait half an hour before checking again
-            await delay(1800 * 1000);
+            await delay(checkFrequency * 1000);
         }
     } catch (error) {
         logger.warning(`workers/docker: ${error.stack || error.trace || error || error.message}`);
