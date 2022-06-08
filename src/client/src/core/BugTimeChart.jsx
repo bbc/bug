@@ -13,7 +13,7 @@ import { useWindowSize } from "@utils/WindowSize";
 import BugTimePicker from "@core/BugTimePicker";
 
 export default function BugTimeChart({ url, units = "ms", mockApiData = null }) {
-    const rangeSpan = 10;
+    const rangeSpan = 60;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
     const windowSize = useWindowSize();
