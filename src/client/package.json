@@ -59,6 +59,7 @@
     "react-table": "^7.7.0",
     "recharts": "^2.0.9",
     "socket.io-client": "^4.0.1",
+    "typeface-roboto": "^1.1.13",
     "typescript": "^2.9.2",
     "use-async-effect": "^2.2.3",
     "use-debounce": "^6.0.1",

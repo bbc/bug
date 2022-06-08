@@ -34,6 +34,8 @@ services:
             PORT: 3000
             NODE_ENV: development
             SESSION_SECRET: aSecretForYourSessions
+        depends_on:
+            - mongo
         networks:
             - bug
         ports:
@@ -41,7 +43,7 @@ services:
             - 3101:3101
     mongo:
         image: mongo:latest
-        restart: unless-stopped
+        restart: always
         container_name: bug-mongo
         networks:
             - bug
