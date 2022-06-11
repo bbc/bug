@@ -5,7 +5,7 @@ COPY . .
 RUN npm install
 
 WORKDIR /home/node/bug/client
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 RUN npm run build
 
