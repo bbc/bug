@@ -7,7 +7,10 @@
  */
 
 const { MongoClient } = require("mongodb");
-const url = `mongodb://bug-mongo:27017`;
+
+const mongoContainer = process.env.MONGO_CONTAINER || "bug-mongo";
+const mongoPort = process.env.MONGO_PORT || "27017";
+const url = `mongodb://${mongoContainer}:${mongoPort}`;
 let isConnected;
 
 class Mongo {
