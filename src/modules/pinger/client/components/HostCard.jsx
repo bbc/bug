@@ -94,7 +94,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
                                     <Grid width={"50%"} alignItems="flex-end" justify="flex-end" key={0} item xs={0}>
                                         <Typography sx={{ textAlign: "right" }} variant="h4" component="div">
-                                            {getPingText(data[data.length - 1].avg, alive)}
+                                            {getPingText(data[data.length - 1]?.avg, alive)}
                                         </Typography>
                                         <Typography sx={{ textAlign: "right" }} variant="body2">
                                             {formatDistanceToNow(new Date(lastPinged), {
