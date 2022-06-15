@@ -12,13 +12,13 @@ const checkFrequency = process.env.BUG_UPDATE_CHECK || 1800;
 
 const fetch = async () => {
     try {
-        while (checkFrequency) {
+        while (checkFrequency !== "false") {
             const currentVersion = await checkUpdate();
 
             systemInfo.set(currentVersion);
 
-            //Wait half an hour before checking again
-            await delay(checkFrequency * 1000);
+            //Wait a default of half an hour before checking again
+            await delay(parseInt(checkFrequency) * 1000);
         }
     } catch (error) {
         logger.warning(`workers/docker: ${error.stack || error.trace || error || error.message}`);
