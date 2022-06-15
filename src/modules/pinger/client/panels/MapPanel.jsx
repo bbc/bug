@@ -108,12 +108,12 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
 export default function MapPanel({ panelId }) {
     const hosts = useApiPoller({
         url: `/container/${panelId}/hosts/`,
-        interval: 5000,
+        interval: 10000,
     });
 
     const edges = useApiPoller({
         url: `/container/${panelId}/edges/`,
-        interval: 5000,
+        interval: 10000,
     });
 
     if (

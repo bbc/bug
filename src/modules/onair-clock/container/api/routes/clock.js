@@ -4,6 +4,7 @@ const path = require("path");
 
 route.all("/large", async function (req, res) {
     try {
+        res.set("Content-Type", "text/html");
         res.sendFile(path.join(__dirname, "..", "..", "pages", "clock-large.html"));
     } catch (error) {
         console.log(error);

@@ -7,6 +7,9 @@ const readJson = require("@core/read-json");
 const logFolder = process.env.BUG_LOG_FOLDER || "logs";
 const logName = process.env.BUG_LOG_NAME || "bug";
 const databaseName = process.env.BUG_CONTAINER || "bug";
+const mongoContainer = process.env.MONGO_CONTAINER || "mongo";
+const mongoPort = process.env.MONGO_PORT || "27017";
+const url = `mongodb://${mongoContainer}:${mongoPort}`;
 
 let logLevel = "info";
 
@@ -51,13 +54,14 @@ const loggerInstance = winston.createLogger({
         }),
         new winston.transports.MongoDB({
             level: logLevel,
-            db: `mongodb://bug-mongo:27017/${databaseName}`,
+            db: `${url}/${databaseName}`,
             options: {
                 poolSize: 2,
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
             },
             collection: "logs",
+            tryReconnect: true,
             cappedMax: 10000,
         }),
     ],
