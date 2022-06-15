@@ -9,9 +9,15 @@ const hashResponse = require("@core/hash-response");
 const userGet = require("@services/user-get");
 const panelCheckKey = require("@services/panelconfig-checkkey");
 const keyClean = require("@utils/key-clean");
+const isPublicRoute = require("@services/panel-ispublicroute");
 
 const restrictedTo = (roles) => {
     const checkCredentials = async (req, res, next) => {
+        //Checks if the request is directed at a panel and if the route is not subject to auth
+        if (await isPublicRoute(req.params.panelid, req.path)) {
+            return next();
+        }
+
         //Check if any stragetgies are enabled
         if ((await strategyGetEnabledCount()) === 0) {
             req.logout();

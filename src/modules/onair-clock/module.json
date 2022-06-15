@@ -4,7 +4,7 @@
     "description": "HTML Based On Air clock for rendering with OBS or CasparCG",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "icon": "Schedule",
     "author": "Ryan McCartney",
     "license": "GPLv3",
@@ -18,6 +18,15 @@
     ],
     "protectedRoutes": [
         "config"
+    ],
+    "publicRoutes": [
+        "/clock/large",
+        "/config",
+        "/js/axios.min.js",
+        "/css/style.css",
+        "/css/clock.css",
+        "/images/clock-face.webp",
+        "/woff/BBCReithSans_W_Rg.woff"
     ],
     "defaultconfig": {
         "id": "",
