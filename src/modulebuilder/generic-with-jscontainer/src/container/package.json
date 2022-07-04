@@ -1,5 +1,5 @@
 {
-    "name": "codec-apipoller",
+    "name": "<%= name %>",
     "main": "",
     "scripts": {
         "production": "node ./api/server",
@@ -12,7 +12,7 @@
         ]
     },
     "author": "",
-    "license": "ISC",
+    "license": "<%= license %>",
     "dependencies": {
         "axios": "^0.21.2",
         "delay": "^5.0.0",
