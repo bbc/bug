@@ -1,0 +1,26 @@
+{
+    "name": "<%= name %>",
+    "longname": "<%= longname %>",
+    "description": "<%= description %>",
+    "capabilities": [],
+    "notes": "<%= notes %>",
+    "version": "1.0.0",
+    "icon": "<%= icon %>",
+    "author": "<%= author %>",
+    "license": "<%= license %>",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "<%= name %>",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "url": ""
+    }
+}
