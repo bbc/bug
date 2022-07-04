@@ -9,7 +9,8 @@
     "scripts": {
         "production": "node bin/bug-prod",
         "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
-        "test": "jest --forceExit --detectOpenHandles --maxWorkers=1"
+        "test": "jest --forceExit --detectOpenHandles --maxWorkers=1",
+        "modulebuilder": "node modulebuilder/cli.mjs"
     },
     "nodemonConfig": {
         "ignore": [
@@ -40,12 +41,15 @@
         "delay": "^5.0.0",
         "dockerode": "^3.3.1",
         "dotenv": "^10.0.0",
+        "ejs": "^3.1.8",
         "express": "^4.18.1",
         "express-async-handler": "^1.2.0",
         "express-fileupload": "^1.4.0",
         "express-session": "^1.17.3",
         "fs-extra": "^10.1.0",
+        "glob": "^8.0.3",
         "helmet": "^5.1.0",
+        "inquirer": "^9.0.0",
         "ip-range-check": "^0.2.0",
         "lodash": "^4.17.21",
         "md5": "^2.3.0",
