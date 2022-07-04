@@ -40,7 +40,7 @@ exports.list = async function () {
         }
 
         // cache the result
-        cacheStore.set(cacheKey, moduleArray);
+        cacheStore.set(cacheKey, moduleArray, 60);
     }
     return moduleArray;
 };
