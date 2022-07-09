@@ -9,6 +9,7 @@ import HomeAddPanel from "@components/home/HomeAddPanel";
 
 const HomeTiles = () => {
     const panelList = useSelector((state) => state.panelList);
+    const user = useSelector((state) => state.user);
 
     const GroupedTiles = ({ groupedPanelArray }) => {
         return (
@@ -48,7 +49,7 @@ const HomeTiles = () => {
         return (
             <Grid container>
                 {panels.map((panel) => (
-                    <HomeTile panel={panel} key={panel.id} />
+                    <HomeTile user={user?.data?.roles} panel={panel} key={panel.id} />
                 ))}
             </Grid>
         );
@@ -58,7 +59,7 @@ const HomeTiles = () => {
         if (panelList.status === "loading") {
             return <BugLoading />;
         }
-        if (panelList.status === "success") {
+        if (panelList.status === "success" && Array.isArray(user.data.roles) && user.data.roles.includes("user")) {
             const panelsByGroup = panelListGroups(panelList.data);
             if (panelsByGroup.length === 0) {
                 return <HomeAddPanel />;

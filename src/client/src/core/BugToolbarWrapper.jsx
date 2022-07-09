@@ -36,6 +36,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const panel = useSelector((state) => state.panel);
+    const user = useSelector((state) => state.user);
     const [statusEl, setStatusEl] = React.useState(null);
     const statusOpen = Boolean(statusEl);
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
@@ -117,6 +118,78 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
         }
     };
 
+    const getToolbar = (roles, menuItems) => {
+        if ((Array.isArray(menuItems) && menuItems.length > 0) || roles.includes("admin")) {
+            return (
+                <>
+                    {" "}
+                    <IconButton
+                        sx={{
+                            marginLeft: "0.5rem",
+                            marginRight: "0.5rem",
+                        }}
+                        aria-label="more"
+                        aria-controls="long-menu"
+                        aria-haspopup="true"
+                        onClick={handleOpenMenuClick}
+                    >
+                        <MoreIcon />
+                    </IconButton>
+                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
+                        {getAdminItems(roles, menuItems)}
+                    </Menu>
+                </>
+            );
+        }
+
+        return null;
+    };
+
+    const getAdminItems = (roles = [], menuItems = null) => {
+        console.log(roles);
+        if (Array.isArray(roles) && roles.includes("admin")) {
+            return (
+                <>
+                    {" "}
+                    <MenuItem component={Link} to={`/panel/${panel.data.id}/config`}>
+                        <ListItemIcon>
+                            <SettingsIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Config" />
+                    </MenuItem>
+                    {menuItems}
+                    <Divider />
+                    <MenuItem disabled>
+                        <ListItemIcon>
+                            <ToggleOnIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Enable Panel" />
+                    </MenuItem>
+                    <MenuItem onClick={handleDisable}>
+                        <ListItemIcon>
+                            <ToggleOffIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Disable Panel" />
+                    </MenuItem>
+                    <BugToolbarLogsButton panelId={panel.data.id} />
+                    <MenuItem onClick={handleRestart}>
+                        <ListItemIcon>
+                            <ReplayIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Restart Panel" />
+                    </MenuItem>
+                    <MenuItem onClick={handleDelete}>
+                        <ListItemIcon>
+                            <DeleteIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Delete Panel" />
+                    </MenuItem>
+                </>
+            );
+        }
+        return menuItems;
+    };
+
     if (panel.status === "loading") {
         return null;
     }
@@ -155,53 +228,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                     </>
                 )}
                 <Hidden xsDown>{buttons ? buttons : null}</Hidden>
-                <IconButton
-                    sx={{
-                        marginLeft: "0.5rem",
-                        marginRight: "0.5rem",
-                    }}
-                    aria-label="more"
-                    aria-controls="long-menu"
-                    aria-haspopup="true"
-                    onClick={handleOpenMenuClick}
-                >
-                    <MoreIcon />
-                </IconButton>
-                <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
-                    <MenuItem component={Link} to={`/panel/${panel.data.id}/config`}>
-                        <ListItemIcon>
-                            <SettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Config" />
-                    </MenuItem>
-                    {menuItems}
-                    <Divider />
-                    <MenuItem disabled>
-                        <ListItemIcon>
-                            <ToggleOnIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Enable Panel" />
-                    </MenuItem>
-                    <MenuItem onClick={handleDisable}>
-                        <ListItemIcon>
-                            <ToggleOffIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Disable Panel" />
-                    </MenuItem>
-                    <BugToolbarLogsButton panelId={panel.data.id} />
-                    <MenuItem onClick={handleRestart}>
-                        <ListItemIcon>
-                            <ReplayIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Restart Panel" />
-                    </MenuItem>
-                    <MenuItem onClick={handleDelete}>
-                        <ListItemIcon>
-                            <DeleteIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Delete Panel" />
-                    </MenuItem>
-                </Menu>
+                {getToolbar(user?.data?.roles, menuItems)}
             </>
         );
     }

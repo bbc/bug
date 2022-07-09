@@ -33,7 +33,7 @@ const AuthRouter = (props) => {
     if (user.data && user.data.id !== null) {
         return (
             <Router>
-                <PageRouter />
+                <PageRouter roles={user.data.roles} />
             </Router>
         );
     }

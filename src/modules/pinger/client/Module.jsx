@@ -10,7 +10,7 @@ const HostDetails = React.lazy(() => import("./panels/HostDetails"));
 
 export default function Module(props) {
     return (
-        <BugModuleWrapper {...props}>
+        <BugModuleWrapper configPanel={ConfigPanel} {...props}>
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </Route>
@@ -20,9 +20,7 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId/edit">
                 <EditPanel {...props} />
             </Route>
-            <Route exact path="/panel/:panelId/config">
-                <ConfigPanel />
-            </Route>
+
             <Route exact path="/panel/:panelId/host/:hostId">
                 <HostDetails />
             </Route>

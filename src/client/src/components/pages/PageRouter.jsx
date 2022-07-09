@@ -5,7 +5,7 @@ import NavMobile from "@components/NavMobile";
 import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const PageRouter = () => {
+const PageRouter = ({ roles }) => {
     const showMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
     const showDesktop = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
@@ -28,7 +28,7 @@ const PageRouter = () => {
                 }}
             >
                 <NavSwitcher showMobile={showMobile} showDesktop={showDesktop}>
-                    <PageContent />
+                    <PageContent roles={roles} />
                 </NavSwitcher>
             </Box>
         ),

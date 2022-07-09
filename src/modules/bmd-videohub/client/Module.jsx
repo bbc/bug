@@ -8,7 +8,7 @@ const EditPanel = React.lazy(() => import("./panels/EditPanel"));
 
 export default function Module(props) {
     return (
-        <BugModuleWrapper {...props}>
+        <BugModuleWrapper configPanel={ConfigPanel} {...props}>
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </Route>
@@ -20,9 +20,6 @@ export default function Module(props) {
             </Route>
             <Route exact path="/panel/:panelId/edit/:sourceGroup/:destinationGroup">
                 <EditPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/config">
-                <ConfigPanel {...props} />
             </Route>
         </BugModuleWrapper>
     );

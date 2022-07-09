@@ -61,6 +61,18 @@ export default function UserEdit({ userId = null }) {
         setLoading(true);
         let response;
 
+        if (form?.roles && Array.isArray(form.roles)) {
+            const roles = [];
+            for (let role of form.roles) {
+                if (role.id) {
+                    roles.push(role?.id);
+                }
+            }
+            form.roles = roles;
+        } else {
+            form.roles = [];
+        }
+
         if (form.password === blankPassword) {
             // it hasn't been changed
             delete form.password;
@@ -105,6 +117,13 @@ export default function UserEdit({ userId = null }) {
 
     const handleCancel = () => {
         history.push(`/system/users`);
+    };
+
+    const getRoles = (roles) => {
+        if (Array.isArray(roles)) {
+            return roles;
+        }
+        return [];
     };
 
     return (
@@ -176,7 +195,7 @@ export default function UserEdit({ userId = null }) {
                                         name="roles"
                                         label="Roles"
                                         control={control}
-                                        defaultValue={user.roles ? user.roles : []}
+                                        defaultValue={getRoles(user.roles)}
                                         options={[
                                             {
                                                 id: "user",

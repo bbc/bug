@@ -165,11 +165,11 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
-    const renderPanelMenuItems = () => {
+    const renderPanelMenuItems = (roles) => {
         if (panelList.status === "loading") {
             return <BugLoading />;
         }
-        if (panelList.status === "success") {
+        if (panelList.status === "success" && roles.includes("user")) {
             const panelsByGroup = panelListGroups(panelList.data);
             return panelsByGroup.map((groups) => groupedMenuItems(groups));
         } else {
@@ -220,6 +220,46 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
+    const getAdminItems = (roles) => {
+        if (Array.isArray(roles) && roles.includes("admin")) {
+            return (
+                <List disablePadding>
+                    <ListItem
+                        button
+                        component={Link}
+                        to="/system"
+                        selected={location.pathname.startsWith("/system")}
+                        onClick={() => {
+                            click();
+                            setExpanded(false);
+                        }}
+                    >
+                        <ListItemIcon>
+                            <SettingsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="System" />
+                    </ListItem>
+                    <ListItem
+                        button
+                        component={Link}
+                        to="/panels"
+                        selected={location.pathname.startsWith("/panels")}
+                        onClick={() => {
+                            click();
+                            setExpanded(false);
+                        }}
+                    >
+                        <ListItemIcon>
+                            <DashboardIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Panels" />
+                    </ListItem>
+                </List>
+            );
+        }
+        return null;
+    };
+
     soundNotifications(enabledPanelList);
     setNotifications(enabledPanelList);
 
@@ -256,40 +296,9 @@ const Menu = ({ showGroups = true }) => {
                                 </ListItem>
                             </List>
                             <MenuDivider />
-                            {renderPanelMenuItems()}
+                            {renderPanelMenuItems(user?.data?.roles)}
                             {enabledPanelList.length > 0 ? <MenuDivider /> : null}
-                            <List disablePadding>
-                                <ListItem
-                                    button
-                                    component={Link}
-                                    to="/system"
-                                    selected={location.pathname.startsWith("/system")}
-                                    onClick={() => {
-                                        click();
-                                        setExpanded(false);
-                                    }}
-                                >
-                                    <ListItemIcon>
-                                        <SettingsIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="System" />
-                                </ListItem>
-                                <ListItem
-                                    button
-                                    component={Link}
-                                    to="/panels"
-                                    selected={location.pathname.startsWith("/panels")}
-                                    onClick={() => {
-                                        click();
-                                        setExpanded(false);
-                                    }}
-                                >
-                                    <ListItemIcon>
-                                        <DashboardIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Panels" />
-                                </ListItem>
-                            </List>
+                            {getAdminItems(user?.data?.roles)}
                         </>
                     )}
                 </Grid>

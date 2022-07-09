@@ -97,7 +97,7 @@ const StyledGrid = styled(Grid)({
     },
 });
 
-const HomeTile = ({ panel }) => {
+const HomeTile = ({ panel, userRoles = [] }) => {
     if (!panel.enabled) {
         return null;
     }
@@ -125,6 +125,13 @@ const HomeTile = ({ panel }) => {
         ));
     };
 
+    const getPanelDropdownMenu = (roles) => {
+        if (Array.isArray(roles) && roles.includes("admin")) {
+            return <PanelDropdownMenu panel={panel} />;
+        }
+        return null;
+    };
+
     return (
         <StyledGrid item xl={3} lg={4} sm={6} xs={12} key={panel.id}>
             <StyledLink key={panel.id} to={`/panel/${panel.id}`}>
@@ -141,7 +148,7 @@ const HomeTile = ({ panel }) => {
                                 <StyledBugDynamicIcon iconName={panel._module.icon} />
                             </BadgeWrapper>
                         }
-                        action={<PanelDropdownMenu panel={panel} />}
+                        action={getPanelDropdownMenu(userRoles)}
                         title={panel.title}
                         subheader={panel.description ? panel.description : panel._module.description}
                     />

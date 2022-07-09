@@ -7,12 +7,9 @@ const ConfigPanel = React.lazy(() => import("./panels/ConfigPanel"));
 
 export default function Module(props) {
     return (
-        <BugModuleWrapper {...props}>
+        <BugModuleWrapper configPanel={ConfigPanel} {...props}>
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/config">
-                <ConfigPanel {...props} />
             </Route>
             <Route exact path="/panel/:panelId/:deviceIndex">
                 <MainPanel {...props} />
