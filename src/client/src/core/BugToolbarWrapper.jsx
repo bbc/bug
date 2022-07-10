@@ -145,47 +145,47 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
         return null;
     };
 
-    const getAdminItems = (roles = [], menuItems = null) => {
-        console.log(roles);
+    const getAdminItems = (roles = [], menuItems = []) => {
         if (Array.isArray(roles) && roles.includes("admin")) {
-            return (
-                <>
-                    {" "}
-                    <MenuItem component={Link} to={`/panel/${panel.data.id}/config`}>
+            return [
+                ...[
+                    <MenuItem key="config" component={Link} to={`/panel/${panel.data.id}/config`}>
                         <ListItemIcon>
                             <SettingsIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Config" />
-                    </MenuItem>
-                    {menuItems}
-                    <Divider />
-                    <MenuItem disabled>
+                    </MenuItem>,
+                ],
+                ...menuItems,
+                ...[
+                    <Divider key="divider" />,
+                    <MenuItem key="enablePanel" disabled>
                         <ListItemIcon>
                             <ToggleOnIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Enable Panel" />
-                    </MenuItem>
-                    <MenuItem onClick={handleDisable}>
+                    </MenuItem>,
+                    <MenuItem key="diabelPanel" onClick={handleDisable}>
                         <ListItemIcon>
                             <ToggleOffIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Disable Panel" />
-                    </MenuItem>
-                    <BugToolbarLogsButton panelId={panel.data.id} />
-                    <MenuItem onClick={handleRestart}>
+                    </MenuItem>,
+                    <BugToolbarLogsButton key="logs" panelId={panel.data.id} />,
+                    <MenuItem key="restart" onClick={handleRestart}>
                         <ListItemIcon>
                             <ReplayIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Restart Panel" />
-                    </MenuItem>
-                    <MenuItem onClick={handleDelete}>
+                    </MenuItem>,
+                    <MenuItem key="delete" onClick={handleDelete}>
                         <ListItemIcon>
                             <DeleteIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Delete Panel" />
-                    </MenuItem>
-                </>
-            );
+                    </MenuItem>,
+                ],
+            ];
         }
         return menuItems;
     };

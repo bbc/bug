@@ -34,7 +34,11 @@ export default function UserEdit({ userId = null }) {
     const { confirmDialog } = useBugConfirmDialog();
     const currentUser = useSelector((state) => state.user);
     const currentUserId = currentUser.status === "success" ? currentUser.data?.id : null;
-
+    const panelList = useSelector((state) =>
+        state.panelList.data.map((item) => {
+            return { label: item.title, id: item.id };
+        })
+    );
     useAsyncEffect(async () => {
         if (!userId) {
             // we're creating a new user
@@ -61,6 +65,7 @@ export default function UserEdit({ userId = null }) {
         setLoading(true);
         let response;
 
+        //Parse Roles
         if (form?.roles && Array.isArray(form.roles)) {
             const roles = [];
             for (let role of form.roles) {
@@ -73,12 +78,27 @@ export default function UserEdit({ userId = null }) {
             form.roles = [];
         }
 
+        //Parse Panels
+        if (form?.panels && Array.isArray(form.panels)) {
+            const panels = [];
+            for (let panel of form.panels) {
+                if (panel.id) {
+                    panels.push(panel?.id);
+                }
+            }
+            form.panels = panels;
+        } else {
+            form.panels = [];
+        }
+
         if (form.password === blankPassword) {
             // it hasn't been changed
             delete form.password;
         }
 
-        if (userId) {
+        if (userId && userId === currentUserId) {
+            response = await AxiosPut(`/api/user/current`, form);
+        } else if (userId) {
             response = await AxiosPut(`/api/user/${userId}`, form);
         } else {
             response = await AxiosPost(`/api/user`, form);
@@ -119,11 +139,47 @@ export default function UserEdit({ userId = null }) {
         history.push(`/system/users`);
     };
 
-    const getRoles = (roles) => {
-        if (Array.isArray(roles)) {
-            return roles;
+    const showAdminFeilds = (roles) => {
+        if (Array.isArray(roles) && roles.includes("admin")) {
+            return (
+                <>
+                    <Grid item key="roles" xs={12}>
+                        <BugConfigFormChipInput
+                            name="roles"
+                            label="Roles"
+                            control={control}
+                            defaultValue={Array.isArray(user.roles) ? user.roles : []}
+                            options={[
+                                {
+                                    id: "user",
+                                    label: "User",
+                                },
+                                {
+                                    id: "admin",
+                                    label: "Admin",
+                                },
+                            ]}
+                            sort={true}
+                            fullWidth
+                        />
+                    </Grid>
+
+                    <Grid item key="panels" xs={12}>
+                        <BugConfigFormChipInput
+                            name="panels"
+                            label="Panels"
+                            control={control}
+                            defaultValue={Array.isArray(user.panels) ? user.panels : []}
+                            options={panelList}
+                            helperText={"Select the panels the user should be able to access"}
+                            sort={true}
+                            fullWidth
+                        />
+                    </Grid>
+                </>
+            );
         }
-        return [];
+        return null;
     };
 
     return (
@@ -168,11 +224,11 @@ export default function UserEdit({ userId = null }) {
                                         label="Enable user"
                                         control={control}
                                         defaultValue={userId === null ? false : user.enabled}
-                                        disabled={userId === null}
+                                        disabled={userId === null ? false : true}
                                         fullWidth
                                         helperText={
                                             userId && currentUserId === user.id
-                                                ? "CAUTION: disabling your own user may cause you to lose acccess"
+                                                ? "Disabling your own user will cause you to lose acccess"
                                                 : ""
                                         }
                                     />
@@ -189,28 +245,7 @@ export default function UserEdit({ userId = null }) {
                                         label="Email address"
                                     />
                                 </Grid>
-
-                                <Grid item xs={12}>
-                                    <BugConfigFormChipInput
-                                        name="roles"
-                                        label="Roles"
-                                        control={control}
-                                        defaultValue={getRoles(user.roles)}
-                                        options={[
-                                            {
-                                                id: "user",
-                                                label: "User",
-                                            },
-                                            {
-                                                id: "admin",
-                                                label: "Admin",
-                                            },
-                                        ]}
-                                        sort={true}
-                                        fullWidth
-                                    />
-                                </Grid>
-
+                                {showAdminFeilds(currentUser.data.roles)}
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField
                                         name="password"

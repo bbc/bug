@@ -10,25 +10,19 @@ import { Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { usePanel } from "@data/PanelHandler";
 import { useHistory } from "react-router-dom";
-import { Route } from "react-router-dom";
 
-function ModuleSwitch({ children, configPanel }) {
+function ModuleSwitch({ children }) {
     // we memoize this to hide any panel.data changes from updating the page
     return React.useMemo(() => {
         return (
             <Suspense fallback={<BugLoading />}>
-                <Switch>
-                    {children}
-                    <Route exact path="/panel/:panelId/config">
-                        {configPanel}
-                    </Route>
-                </Switch>
+                <Switch>{children}</Switch>
             </Suspense>
         );
     }, [children]);
 }
 
-export default function BugModuleWrapper({ panelId, children, configPanel }) {
+export default function BugModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
@@ -87,5 +81,5 @@ export default function BugModuleWrapper({ panelId, children, configPanel }) {
             }
         }
     }
-    return <ModuleSwitch children={children} configPanel={configPanel} panelId={panelId} />;
+    return <ModuleSwitch children={children} panelId={panelId} />;
 }

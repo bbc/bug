@@ -107,13 +107,6 @@ const PageContent = ({ roles }) => {
                 </BugScrollbars>
             </StyledPageContent>
         </Route>,
-        <Route exact key="/system/user/:userId" path="/system/user/:userId">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemUserEdit />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
         <Route exact key="/system/security" path="/system/security">
             <StyledPageContent>
                 <BugScrollbars>
@@ -187,10 +180,16 @@ const PageContent = ({ roles }) => {
                 </BugScrollbars>
             </StyledPageContent>
         </Route>,
+        <Route exact key="/system/user/:userId" path="/system/user/:userId">
+            <StyledPageContent>
+                <BugScrollbars>
+                    <PageSystemUserEdit />
+                </BugScrollbars>
+            </StyledPageContent>
+        </Route>,
         <Route exact key="/login" path="/login">
             <Redirect to="/" />
         </Route>,
-        <Redirect to="/" />,
     ];
 
     const getContent = (roles) => {
@@ -203,6 +202,7 @@ const PageContent = ({ roles }) => {
         }
         return content;
     };
+
     return (
         <>
             <Box

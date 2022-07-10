@@ -10,11 +10,13 @@ import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import TimeAgo from "javascript-time-ago";
 import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useSelector } from "react-redux";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
     const dispatch = useDispatch();
     const timeAgo = new TimeAgo("en-GB");
+    const user = useSelector((state) => state.user);
 
     const info = useApiPoller({
         url: `/api/system/info`,
@@ -53,30 +55,9 @@ export default function PageSystemBackup() {
         window.location.reload();
     };
 
-    // const getData = () => {
-    //     const dataArray = [];
-    //     for (let key in info.data) {
-    //         if (key === "uptime") {
-    //         }
-    //         dataArray.push({
-    //             name: key,
-    //             value: <>{info.data[key]}</>,
-    //         });
-    //     }
-    //     return dataArray;
-    // };
-
-    useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("About BUG"));
-    }, [dispatch]);
-
-    if (info.status === "loading" || info.status === "idle") {
-        return <BugLoading />;
-    }
-
-    return (
-        <>
-            <Grid container spacing={4}>
+    const getServerControls = (roles = []) => {
+        if (Array.isArray(roles) && roles.includes("admin")) {
+            return (
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
                         title="Server Controls"
@@ -127,7 +108,22 @@ export default function PageSystemBackup() {
                         ]}
                     />
                 </Grid>
+            );
+        }
+        return null;
+    };
+    useEffect(() => {
+        dispatch(pageTitleSlice.actions.set("About BUG"));
+    }, [dispatch]);
 
+    if (info.status === "loading" || info.status === "idle") {
+        return <BugLoading />;
+    }
+
+    return (
+        <>
+            <Grid container spacing={4}>
+                {getServerControls(user?.data?.roles)}
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
                         title="Server Infomation"
