@@ -283,7 +283,7 @@ export default function UserEdit({ userId = null }) {
                                 <Grid item xs={12}>
                                     <BugConfigFormPasswordTextField
                                         name="pin"
-                                        variant="outlined"
+                                        variant="standard"
                                         control={control}
                                         fullWidth
                                         defaultValue={user.pin}
