@@ -13,6 +13,7 @@ import PageSystemBackup from "@components/system/PageSystemBackup";
 import { Redirect } from "react-router";
 import BugLoading from "@core/BugLoading";
 import BugScrollbars from "@core/BugScrollbars";
+import BugRestrictTo from "@core/BugRestrictTo";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
@@ -46,163 +47,7 @@ const StyledHomePageContent = styled("div")({
     },
 });
 
-const PageContent = ({ roles }) => {
-    const userContent = [
-        <Route key="panel/:panelid" path="/panel/:panelid">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PagePanel />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-    ];
-
-    const adminContent = [
-        <Route exact key="/panels" path="/panels">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PagePanels />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/panels/add" path="/panels/add">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PagePanelsAdd />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/panels/edit" path="/panels/edit">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PagePanelsEdit />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system" path="/system">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystem />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/configuration" path="/system/configuration">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemConfiguration />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/users" path="/system/users">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemUsers />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/user" path="/system/user">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemUserEdit />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/security" path="/system/security">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemSecurity />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/security/edit" path="/system/security/edit">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemSecurity edit />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/security/:type" path="/system/security/:type">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemSecurityStrategy />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/software" path="/system/software">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemSoftware />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/info" path="/system/info">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemInfo />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/logs" path="/system/logs">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemLogs />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/logs/:panelId" path="/system/logs/:panelId">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemLogs />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/backup" path="/system/backup">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemBackup />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-    ];
-
-    const allContent = [
-        <Route key="/" exact path="/">
-            <StyledHomePageContent>
-                <BugScrollbars>
-                    <PageHome />
-                </BugScrollbars>
-            </StyledHomePageContent>
-        </Route>,
-        <Route exact key="/system/about" path="/system/about">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemAbout />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/system/user/:userId" path="/system/user/:userId">
-            <StyledPageContent>
-                <BugScrollbars>
-                    <PageSystemUserEdit />
-                </BugScrollbars>
-            </StyledPageContent>
-        </Route>,
-        <Route exact key="/login" path="/login">
-            <Redirect to="/" />
-        </Route>,
-    ];
-
-    const getContent = (roles) => {
-        let content = allContent;
-        if (roles.includes("user")) {
-            content = content.concat(userContent);
-        }
-        if (roles.includes("admin")) {
-            content = content.concat(adminContent);
-        }
-        return content;
-    };
-
+const PageContent = () => {
     return (
         <>
             <Box
@@ -218,7 +63,165 @@ const PageContent = ({ roles }) => {
                 }}
             >
                 <Switch>
-                    <Suspense fallback={<BugLoading />}>{getContent(roles)}</Suspense>
+                    <Suspense fallback={<BugLoading />}>
+                        <BugRestrictTo role="admin">
+                            <Route exact path="/panels">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanels />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/panels/add">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanelsAdd />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/panels/edit">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanelsEdit />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystem />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/configuration">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemConfiguration />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/users">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemUsers />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/user">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemUserEdit />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/security">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSecurity />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/security/edit">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSecurity edit />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/security/:type">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSecurityStrategy />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/software">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSoftware />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/info">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemInfo />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/logs">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemLogs />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/logs/:panelId">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemLogs />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/backup">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemBackup />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+                        </BugRestrictTo>
+                        <BugRestrictTo role="user">
+                            <Route path="/panel/:panelid">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanel />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+                        </BugRestrictTo>
+                        <Route exact path="/">
+                            <StyledHomePageContent>
+                                <BugScrollbars>
+                                    <PageHome />
+                                </BugScrollbars>
+                            </StyledHomePageContent>
+                        </Route>
+
+                        <Route exact path="/system/about">
+                            <StyledPageContent>
+                                <BugScrollbars>
+                                    <PageSystemAbout />
+                                </BugScrollbars>
+                            </StyledPageContent>
+                        </Route>
+
+                        <Route exact path="/system/user/:userId">
+                            <StyledPageContent>
+                                <BugScrollbars>
+                                    <PageSystemUserEdit />
+                                </BugScrollbars>
+                            </StyledPageContent>
+                        </Route>
+
+                        <Route exact path="/login">
+                            <Redirect to="/" />
+                        </Route>
+                    </Suspense>
                 </Switch>
             </Box>
         </>

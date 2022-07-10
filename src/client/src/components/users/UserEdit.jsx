@@ -18,6 +18,7 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import { useSelector } from "react-redux";
 import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
@@ -96,7 +97,7 @@ export default function UserEdit({ userId = null }) {
             delete form.password;
         }
 
-        if (userId && userId === currentUserId) {
+        if (userId && userId === currentUserId && !currentUser.data.roles.includes("admin")) {
             response = await AxiosPut(`/api/user/current`, form);
         } else if (userId) {
             response = await AxiosPut(`/api/user/${userId}`, form);
@@ -118,6 +119,16 @@ export default function UserEdit({ userId = null }) {
         setLoading(false);
     };
 
+    const rolesList = [
+        {
+            id: "user",
+            label: "User",
+        },
+        {
+            id: "admin",
+            label: "Admin",
+        },
+    ];
     const handleDeleteClicked = async () => {
         const result = await confirmDialog({
             title: "Delete user?",
@@ -139,47 +150,30 @@ export default function UserEdit({ userId = null }) {
         history.push(`/system/users`);
     };
 
-    const showAdminFeilds = (roles) => {
-        if (Array.isArray(roles) && roles.includes("admin")) {
-            return (
-                <>
-                    <Grid item key="roles" xs={12}>
-                        <BugConfigFormChipInput
-                            name="roles"
-                            label="Roles"
-                            control={control}
-                            defaultValue={Array.isArray(user.roles) ? user.roles : []}
-                            options={[
-                                {
-                                    id: "user",
-                                    label: "User",
-                                },
-                                {
-                                    id: "admin",
-                                    label: "Admin",
-                                },
-                            ]}
-                            sort={true}
-                            fullWidth
-                        />
-                    </Grid>
-
-                    <Grid item key="panels" xs={12}>
-                        <BugConfigFormChipInput
-                            name="panels"
-                            label="Panels"
-                            control={control}
-                            defaultValue={Array.isArray(user.panels) ? user.panels : []}
-                            options={panelList}
-                            helperText={"Select the panels the user should be able to access"}
-                            sort={true}
-                            fullWidth
-                        />
-                    </Grid>
-                </>
-            );
+    const getPanels = (panels = []) => {
+        const panelOptions = [];
+        for (let panel of panels) {
+            for (let panelOption of panelList) {
+                if (panelOption.id === panel) {
+                    panelOptions.push(panelOption);
+                }
+            }
         }
-        return null;
+
+        return panelOptions;
+    };
+
+    const getRoles = (roles = []) => {
+        const roleOptions = [];
+        for (let role of roles) {
+            for (let roleOption of rolesList) {
+                if (roleOption.id === role) {
+                    roleOptions.push(roleOption);
+                }
+            }
+        }
+
+        return roleOptions;
     };
 
     return (
@@ -245,7 +239,30 @@ export default function UserEdit({ userId = null }) {
                                         label="Email address"
                                     />
                                 </Grid>
-                                {showAdminFeilds(currentUser.data.roles)}
+                                <BugRestrictTo role="admin">
+                                    <Grid item xs={12}>
+                                        <BugConfigFormChipInput
+                                            name="roles"
+                                            label="Roles"
+                                            control={control}
+                                            defaultValue={getRoles(user.roles)}
+                                            options={rolesList}
+                                            fullWidth
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <BugConfigFormChipInput
+                                            name="panels"
+                                            label="Panels"
+                                            control={control}
+                                            defaultValue={getPanels(user.panels)}
+                                            options={panelList}
+                                            helperText={"Select the panels the user should be able to access"}
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                </BugRestrictTo>
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField
                                         name="password"
