@@ -222,7 +222,7 @@ export default function UserEdit({ userId = null }) {
                                         fullWidth
                                         helperText={
                                             userId && currentUserId === user.id
-                                                ? "Disabling your own user will cause you to lose acccess"
+                                                ? "Disabling your own user will cause you to lose access"
                                                 : ""
                                         }
                                     />
