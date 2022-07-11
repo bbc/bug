@@ -30,7 +30,7 @@ export default function PageSystemBackup() {
         const response = await AxiosPost(`/api/system/restore`, formData);
         if (response) {
             sendAlert(`BUG configuration has been restored`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
         } else {

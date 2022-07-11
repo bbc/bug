@@ -25,6 +25,7 @@ import { useHistory } from "react-router-dom";
 import BugToolbarIcon from "@components/BugToolbarIcon";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import BugToolbarLogsButton from "@core/BugToolbarLogsButton";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 /*
  * this has optional properties:
@@ -37,6 +38,8 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
     const open = Boolean(anchorEl);
     const panel = useSelector((state) => state.panel);
     const user = useSelector((state) => state.user);
+    const strategies = useSelector((state) => state.strategies);
+    const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
     const [statusEl, setStatusEl] = React.useState(null);
     const statusOpen = Boolean(statusEl);
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
@@ -72,7 +75,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
         setStatusEl(null);
         if (await AxiosCommand(`/api/panel/disable/${panel.data.id}`)) {
             sendAlert(`Disabled panel: ${panel.data.title}`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
             history.push("/");
@@ -85,13 +88,13 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
 
     const handleRestart = async () => {
         sendAlert(`Restarting panel: ${panel.data.title} - please wait ...`, {
-            broadcast: true,
+            broadcast: "true",
             variant: "info",
         });
         setAnchorEl(null);
         if (await AxiosCommand(`/api/panel/restart/${panel.data.id}`)) {
             sendAlert(`Restarted panel: ${panel.data.title}`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
         } else {
@@ -111,18 +114,21 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
         if (result !== false) {
             if (await AxiosDelete(`/api/panel/${panel.data.id}`)) {
                 history.push("/");
-                sendAlert(`Deleted panel: ${panel.data.title}`, { broadcast: true, variant: "success" });
+                sendAlert(`Deleted panel: ${panel.data.title}`, { broadcast: "true", variant: "success" });
             } else {
                 sendAlert(`Failed to delete panel: ${panel.data.title}`, { variant: "error" });
             }
         }
     };
 
-    const getToolbar = (roles, menuItems) => {
-        if ((Array.isArray(menuItems) && menuItems.length > 0) || roles.includes("admin")) {
+    const getToolbar = (roles = [], menuItems) => {
+        if (
+            (Array.isArray(menuItems) && menuItems.length > 0) ||
+            roles.includes("admin") ||
+            enabledStrategiesCount === 0
+        ) {
             return (
                 <>
-                    {" "}
                     <IconButton
                         sx={{
                             marginLeft: "0.5rem",
@@ -136,58 +142,49 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                         <MoreIcon />
                     </IconButton>
                     <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
-                        {getAdminItems(roles, menuItems)}
+                        <BugRestrictTo role="admin">
+                            <MenuItem component={Link} to={`/panel/${panel.data.id}/config`}>
+                                <ListItemIcon>
+                                    <SettingsIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="Config" />
+                            </MenuItem>
+
+                            {menuItems}
+
+                            <Divider />
+                            <MenuItem disabled>
+                                <ListItemIcon>
+                                    <ToggleOnIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="Enable Panel" />
+                            </MenuItem>
+                            <MenuItem onClick={handleDisable}>
+                                <ListItemIcon>
+                                    <ToggleOffIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="Disable Panel" />
+                            </MenuItem>
+                            <BugToolbarLogsButton panelId={panel.data.id} />
+                            <MenuItem onClick={handleRestart}>
+                                <ListItemIcon>
+                                    <ReplayIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="Restart Panel" />
+                            </MenuItem>
+                            <MenuItem onClick={handleDelete}>
+                                <ListItemIcon>
+                                    <DeleteIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText primary="Delete Panel" />
+                            </MenuItem>
+                        </BugRestrictTo>
                     </Menu>
                 </>
             );
         }
 
         return null;
-    };
-
-    const getAdminItems = (roles = [], menuItems = []) => {
-        if (Array.isArray(roles) && roles.includes("admin")) {
-            return [
-                ...[
-                    <MenuItem key="config" component={Link} to={`/panel/${panel.data.id}/config`}>
-                        <ListItemIcon>
-                            <SettingsIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Config" />
-                    </MenuItem>,
-                ],
-                ...menuItems,
-                ...[
-                    <Divider key="divider" />,
-                    <MenuItem key="enablePanel" disabled>
-                        <ListItemIcon>
-                            <ToggleOnIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Enable Panel" />
-                    </MenuItem>,
-                    <MenuItem key="diabelPanel" onClick={handleDisable}>
-                        <ListItemIcon>
-                            <ToggleOffIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Disable Panel" />
-                    </MenuItem>,
-                    <BugToolbarLogsButton key="logs" panelId={panel.data.id} />,
-                    <MenuItem key="restart" onClick={handleRestart}>
-                        <ListItemIcon>
-                            <ReplayIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Restart Panel" />
-                    </MenuItem>,
-                    <MenuItem key="delete" onClick={handleDelete}>
-                        <ListItemIcon>
-                            <DeleteIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary="Delete Panel" />
-                    </MenuItem>,
-                ],
-            ];
-        }
-        return menuItems;
     };
 
     if (panel.status === "loading") {

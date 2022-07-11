@@ -25,6 +25,7 @@ export default function UserEdit({ userId = null }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const [user, setUser] = React.useState(null);
+    const [restrictPanels, setRestrictPanels] = React.useState(false);
     const {
         control,
         handleSubmit,
@@ -54,6 +55,7 @@ export default function UserEdit({ userId = null }) {
         const userResult = await AxiosGet(`/api/user/${userId}`);
         if (userResult) {
             setUser(userResult);
+            setRestrictPanels(userResult.restrictPanels);
         } else {
             sendAlert(`Failed to load user`, { variant: "warning" });
             setTimeout(() => {
@@ -65,7 +67,6 @@ export default function UserEdit({ userId = null }) {
     const onSubmit = async (form) => {
         setLoading(true);
         let response;
-
         //Parse Roles
         if (form?.roles && Array.isArray(form.roles)) {
             const roles = [];
@@ -107,7 +108,7 @@ export default function UserEdit({ userId = null }) {
 
         if (response) {
             sendAlert(`Successfully ${userId ? "updated" : "added"} user '${form.username}'`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
             history.push(`/system/users`);
@@ -138,7 +139,7 @@ export default function UserEdit({ userId = null }) {
 
         if (result !== false) {
             if (await AxiosDelete(`/api/user/${user.id}`)) {
-                sendAlert(`Deleted user: ${user.name}`, { broadcast: true, variant: "success" });
+                sendAlert(`Deleted user: ${user.name}`, { broadcast: "true", variant: "success" });
                 history.push(`/system/users`);
             } else {
                 sendAlert(`Failed to delete user: ${user.name}`, { variant: "error" });
@@ -174,6 +175,25 @@ export default function UserEdit({ userId = null }) {
         }
 
         return roleOptions;
+    };
+
+    const getPanelSelectionInput = () => {
+        if (restrictPanels) {
+            return (
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
+                        name="panels"
+                        label="Panels"
+                        control={control}
+                        defaultValue={getPanels(user.panels)}
+                        options={panelList}
+                        helperText={"Select the panels the user should be able to access"}
+                        fullWidth
+                    />
+                </Grid>
+            );
+        }
+        return null;
     };
 
     return (
@@ -252,16 +272,20 @@ export default function UserEdit({ userId = null }) {
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <BugConfigFormChipInput
-                                            name="panels"
-                                            label="Panels"
+                                        <BugConfigFormSwitch
+                                            name="restrictPanels"
+                                            label="Restrict Panels"
                                             control={control}
-                                            defaultValue={getPanels(user.panels)}
-                                            options={panelList}
-                                            helperText={"Select the panels the user should be able to access"}
+                                            onChange={() => {
+                                                setRestrictPanels(!restrictPanels);
+                                            }}
+                                            defaultValue={user?.restrictPanels}
                                             fullWidth
+                                            helperText="Enabling allows access to specific panels to be restricted"
                                         />
                                     </Grid>
+
+                                    {getPanelSelectionInput()}
                                 </BugRestrictTo>
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField

@@ -24,6 +24,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 import FaviconNotification from "@utils/FaviconNotification";
 import useSounds from "@hooks/Sounds";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;
@@ -165,13 +166,15 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
-    const renderPanelMenuItems = (roles) => {
+    const renderPanelMenuItems = (roles = []) => {
         if (panelList.status === "loading") {
             return <BugLoading />;
         }
-        if (panelList.status === "success" && roles.includes("user")) {
-            const panelsByGroup = panelListGroups(panelList.data);
-            return panelsByGroup.map((groups) => groupedMenuItems(groups));
+        if (panelList.status === "success") {
+            if (roles.includes("user") || enabledStrategiesCount === 0) {
+                const panelsByGroup = panelListGroups(panelList.data);
+                return panelsByGroup.map((groups) => groupedMenuItems(groups));
+            }
         } else {
             return null;
         }
@@ -220,46 +223,6 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
-    const getAdminItems = (roles) => {
-        if (Array.isArray(roles) && roles.includes("admin")) {
-            return (
-                <List disablePadding>
-                    <ListItem
-                        button
-                        component={Link}
-                        to="/system"
-                        selected={location.pathname.startsWith("/system")}
-                        onClick={() => {
-                            click();
-                            setExpanded(false);
-                        }}
-                    >
-                        <ListItemIcon>
-                            <SettingsIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="System" />
-                    </ListItem>
-                    <ListItem
-                        button
-                        component={Link}
-                        to="/panels"
-                        selected={location.pathname.startsWith("/panels")}
-                        onClick={() => {
-                            click();
-                            setExpanded(false);
-                        }}
-                    >
-                        <ListItemIcon>
-                            <DashboardIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Panels" />
-                    </ListItem>
-                </List>
-            );
-        }
-        return null;
-    };
-
     soundNotifications(enabledPanelList);
     setNotifications(enabledPanelList);
 
@@ -298,7 +261,41 @@ const Menu = ({ showGroups = true }) => {
                             <MenuDivider />
                             {renderPanelMenuItems(user?.data?.roles)}
                             {enabledPanelList.length > 0 ? <MenuDivider /> : null}
-                            {getAdminItems(user?.data?.roles)}
+
+                            <BugRestrictTo role="admin">
+                                <List disablePadding>
+                                    <ListItem
+                                        button
+                                        component={Link}
+                                        to="/system"
+                                        selected={location.pathname.startsWith("/system")}
+                                        onClick={() => {
+                                            click();
+                                            setExpanded(false);
+                                        }}
+                                    >
+                                        <ListItemIcon>
+                                            <SettingsIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="System" />
+                                    </ListItem>
+                                    <ListItem
+                                        button
+                                        component={Link}
+                                        to="/panels"
+                                        selected={location.pathname.startsWith("/panels")}
+                                        onClick={() => {
+                                            click();
+                                            setExpanded(false);
+                                        }}
+                                    >
+                                        <ListItemIcon>
+                                            <DashboardIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Panels" />
+                                    </ListItem>
+                                </List>
+                            </BugRestrictTo>
                         </>
                     )}
                 </Grid>

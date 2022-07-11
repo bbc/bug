@@ -64,7 +64,7 @@ export default function PageSystemBackup() {
 
         if (response.updating) {
             sendAlert(`Updating BUG to version ${info.data?.updates?.version}`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
         } else {

@@ -40,7 +40,7 @@ export default function PageSystemBackup() {
         if (!response?.error) {
             dispatch(settingsSlice.actions.success({ data: form }));
             sendAlert(`BUG Settings have been updated`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
         } else {

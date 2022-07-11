@@ -39,7 +39,7 @@ export default function InterfaceList({ panelId }) {
             result = item["default-name"];
         }
         if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.id}/${result}`)) {
-            sendAlert(`Renamed interface to ${result}`, { broadcast: true, variant: "success" });
+            sendAlert(`Renamed interface to ${result}`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to rename interface to ${result}`, { variant: "error" });
         }
@@ -58,7 +58,10 @@ export default function InterfaceList({ panelId }) {
             return;
         }
         if (await AxiosCommand(`/container/${panelId}/interface/comment/${item.id}/${result}`)) {
-            sendAlert(`Set comment on interface ${item.name} to '${result}'`, { broadcast: true, variant: "success" });
+            sendAlert(`Set comment on interface ${item.name} to '${result}'`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to set comment on interface ${item.name}`, { variant: "error" });
         }

@@ -39,7 +39,7 @@ export default function Toolbar({ panelId, ...props }) {
         });
         if (await AxiosCommand(`/container/${panelId}/device/save`)) {
             sendAlert("Saved device config", {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
         } else {

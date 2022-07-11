@@ -10,13 +10,12 @@ import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import TimeAgo from "javascript-time-ago";
 import BugTableLinkButton from "@core/BugTableLinkButton";
-import { useSelector } from "react-redux";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
     const dispatch = useDispatch();
     const timeAgo = new TimeAgo("en-GB");
-    const user = useSelector((state) => state.user);
 
     const info = useApiPoller({
         url: `/api/system/info`,
@@ -42,12 +41,12 @@ export default function PageSystemBackup() {
     };
 
     const onShutdown = async () => {
-        sendAlert(`System shutdown initiated`, { broadcast: true, variant: "success" });
+        sendAlert(`System shutdown initiated`, { broadcast: "true", variant: "success" });
         AxiosGet("/api/bug/shutdown");
     };
 
     const onReboot = async () => {
-        sendAlert(`System reboot initiated`, { broadcast: true, variant: "success" });
+        sendAlert(`System reboot initiated`, { broadcast: "true", variant: "success" });
         AxiosGet("/api/bug/reboot");
     };
 
@@ -55,63 +54,6 @@ export default function PageSystemBackup() {
         window.location.reload();
     };
 
-    const getServerControls = (roles = []) => {
-        if (Array.isArray(roles) && roles.includes("admin")) {
-            return (
-                <Grid item lg={6} xs={12}>
-                    <BugDetailsCard
-                        title="Server Controls"
-                        width="10rem"
-                        items={[
-                            {
-                                name: "Shutdown",
-                                value: (
-                                    <Button
-                                        onClick={onShutdown}
-                                        underline="none"
-                                        variant="outlined"
-                                        color="primary"
-                                        disableElevation
-                                    >
-                                        Shutdown
-                                    </Button>
-                                ),
-                            },
-                            {
-                                name: "Reboot",
-                                value: (
-                                    <Button
-                                        onClick={onReboot}
-                                        underline="none"
-                                        variant="outlined"
-                                        color="primary"
-                                        disableElevation
-                                    >
-                                        Reboot
-                                    </Button>
-                                ),
-                            },
-                            {
-                                name: "Refresh Page",
-                                value: (
-                                    <Button
-                                        onClick={onRefresh}
-                                        underline="none"
-                                        variant="outlined"
-                                        color="primary"
-                                        disableElevation
-                                    >
-                                        Refresh
-                                    </Button>
-                                ),
-                            },
-                        ]}
-                    />
-                </Grid>
-            );
-        }
-        return null;
-    };
     useEffect(() => {
         dispatch(pageTitleSlice.actions.set("About BUG"));
     }, [dispatch]);
@@ -123,7 +65,58 @@ export default function PageSystemBackup() {
     return (
         <>
             <Grid container spacing={4}>
-                {getServerControls(user?.data?.roles)}
+                <BugRestrictTo role="admin">
+                    <Grid item lg={6} xs={12}>
+                        <BugDetailsCard
+                            title="Server Controls"
+                            width="10rem"
+                            items={[
+                                {
+                                    name: "Shutdown",
+                                    value: (
+                                        <Button
+                                            onClick={onShutdown}
+                                            underline="none"
+                                            variant="outlined"
+                                            color="primary"
+                                            disableElevation
+                                        >
+                                            Shutdown
+                                        </Button>
+                                    ),
+                                },
+                                {
+                                    name: "Reboot",
+                                    value: (
+                                        <Button
+                                            onClick={onReboot}
+                                            underline="none"
+                                            variant="outlined"
+                                            color="primary"
+                                            disableElevation
+                                        >
+                                            Reboot
+                                        </Button>
+                                    ),
+                                },
+                                {
+                                    name: "Refresh Page",
+                                    value: (
+                                        <Button
+                                            onClick={onRefresh}
+                                            underline="none"
+                                            variant="outlined"
+                                            color="primary"
+                                            disableElevation
+                                        >
+                                            Refresh
+                                        </Button>
+                                    ),
+                                },
+                            ]}
+                        />
+                    </Grid>
+                </BugRestrictTo>
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
                         title="Server Infomation"

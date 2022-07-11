@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 import panelListGroups from "@utils/panelListGroups";
 import HomeTile from "@components/home/HomeTile";
 import HomeAddPanel from "@components/home/HomeAddPanel";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 const HomeTiles = () => {
     const panelList = useSelector((state) => state.panelList);
-    const user = useSelector((state) => state.user);
 
     const GroupedTiles = ({ groupedPanelArray }) => {
         return (
@@ -49,7 +49,7 @@ const HomeTiles = () => {
         return (
             <Grid container>
                 {panels.map((panel) => (
-                    <HomeTile user={user?.data?.roles} panel={panel} key={panel.id} />
+                    <HomeTile panel={panel} key={panel.id} />
                 ))}
             </Grid>
         );
@@ -59,15 +59,27 @@ const HomeTiles = () => {
         if (panelList.status === "loading") {
             return <BugLoading />;
         }
-        if (panelList.status === "success" && Array.isArray(user.data.roles) && user.data.roles.includes("user")) {
+        if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
             if (panelsByGroup.length === 0) {
-                return <HomeAddPanel />;
+                return (
+                    <BugRestrictTo>
+                        <HomeAddPanel />
+                    </BugRestrictTo>
+                );
             }
             if (panelsByGroup.length === 1) {
-                return <Tiles panels={panelList.data} />;
+                return (
+                    <BugRestrictTo>
+                        <Tiles panels={panelList.data} />{" "}
+                    </BugRestrictTo>
+                );
             } else {
-                return <GroupedTiles groupedPanelArray={panelsByGroup} />;
+                return (
+                    <BugRestrictTo>
+                        <GroupedTiles groupedPanelArray={panelsByGroup} />{" "}
+                    </BugRestrictTo>
+                );
             }
         }
         return null;

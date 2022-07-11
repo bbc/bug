@@ -56,7 +56,7 @@ export default function Toolbar({ panelId, ...props }) {
         if (await AxiosCommand(`/container/${panelId}/device/save`)) {
             triggerPanelEvent("refresh");
             sendAlert("Saved device config", {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
         } else {

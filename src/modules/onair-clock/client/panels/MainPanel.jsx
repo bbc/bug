@@ -41,7 +41,7 @@ export default function MainPanel() {
 
     const handleBackgroundColorChange = async (color) => {
         if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { backgroundColor: color.hex })) {
-            sendAlert(`Successfully changed background color`, { broadcast: true, variant: "success" });
+            sendAlert(`Successfully changed background color`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to change background color.`, { variant: "error" });
         }
@@ -49,7 +49,7 @@ export default function MainPanel() {
 
     const handleTextColorChange = async (color) => {
         if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { textColor: color.hex })) {
-            sendAlert(`Successfully changed text color`, { broadcast: true, variant: "success" });
+            sendAlert(`Successfully changed text color`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to change text color.`, { variant: "error" });
         }
@@ -57,7 +57,7 @@ export default function MainPanel() {
 
     const handleTimeZoneChange = async (event, timezone) => {
         if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { timezone: timezone })) {
-            sendAlert(`Successfully changed timezone`, { broadcast: true, variant: "success" });
+            sendAlert(`Successfully changed timezone`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to change timezone.`, { variant: "error" });
         }
@@ -66,7 +66,7 @@ export default function MainPanel() {
     const handleShowDateChange = async (event) => {
         console.log(event.target.checked);
         if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { showDate: event.target.checked })) {
-            sendAlert(`Now showing the date`, { broadcast: true, variant: "success" });
+            sendAlert(`Now showing the date`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to show date.`, { variant: "error" });
         }
@@ -75,7 +75,7 @@ export default function MainPanel() {
     const handleShowTimeChange = async (event) => {
         console.log(event.target.checked);
         if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { showTime: event.target.checked })) {
-            sendAlert(`Now showing the time`, { broadcast: true, variant: "success" });
+            sendAlert(`Now showing the time`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to show time.`, { variant: "error" });
         }
@@ -92,7 +92,7 @@ export default function MainPanel() {
         }
 
         if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { header: result })) {
-            sendAlert(`Successfully renamed device`, { broadcast: true, variant: "success" });
+            sendAlert(`Successfully renamed device`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to change clock title.`, { variant: "error" });
         }
@@ -109,7 +109,7 @@ export default function MainPanel() {
                 logo: { name: logo.name, image: data },
             })
         ) {
-            sendAlert(`Successfully upadted logo`, { broadcast: true, variant: "success" });
+            sendAlert(`Successfully upadted logo`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to change logo.`, { variant: "error" });
         }

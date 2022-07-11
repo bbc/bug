@@ -19,9 +19,9 @@ export default function Toolbar(props) {
     toolbarProps["onClick"] = null;
 
     const handleReboot = async (event) => {
-        sendAlert(`Rebooting ${panelConfig.data.name}, please wait ...`, { broadcast: true, variant: "info" });
+        sendAlert(`Rebooting ${panelConfig.data.name}, please wait ...`, { broadcast: "true", variant: "info" });
         if (await AxiosCommand(`/container/${props?.panelId}/device/reboot`)) {
-            sendAlert(`Restarted ${panelConfig.data.name}`, { broadcast: true, variant: "success" });
+            sendAlert(`Restarted ${panelConfig.data.name}`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to reboot ${panelConfig.data.name}`, { variant: "error" });
         }

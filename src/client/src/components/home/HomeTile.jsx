@@ -9,6 +9,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import { styled } from "@mui/material/styles";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 const StyledCardHeader = styled(CardHeader)({
     padding: "8px 0px",
@@ -97,7 +98,7 @@ const StyledGrid = styled(Grid)({
     },
 });
 
-const HomeTile = ({ panel, userRoles = [] }) => {
+const HomeTile = ({ panel }) => {
     if (!panel.enabled) {
         return null;
     }
@@ -125,13 +126,6 @@ const HomeTile = ({ panel, userRoles = [] }) => {
         ));
     };
 
-    const getPanelDropdownMenu = (roles) => {
-        if (Array.isArray(roles) && roles.includes("admin")) {
-            return <PanelDropdownMenu panel={panel} />;
-        }
-        return null;
-    };
-
     return (
         <StyledGrid item xl={3} lg={4} sm={6} xs={12} key={panel.id}>
             <StyledLink key={panel.id} to={`/panel/${panel.id}`}>
@@ -148,7 +142,11 @@ const HomeTile = ({ panel, userRoles = [] }) => {
                                 <StyledBugDynamicIcon iconName={panel._module.icon} />
                             </BadgeWrapper>
                         }
-                        action={getPanelDropdownMenu(userRoles)}
+                        action={
+                            <BugRestrictTo role="admin">
+                                <PanelDropdownMenu panel={panel} />
+                            </BugRestrictTo>
+                        }
                         title={panel.title}
                         subheader={panel.description ? panel.description : panel._module.description}
                     />
