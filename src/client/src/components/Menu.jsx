@@ -72,21 +72,16 @@ const Menu = ({ showGroups = true }) => {
         }
         const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
-            <ListItem
-                button
-                component={Link}
-                onClick={click}
-                to={`/panel/${menuPanel.id}`}
-                key={menuPanel.id}
-                selected={isSelected}
-            >
-                <ListItemIcon>
-                    <BadgeWrapper panel={menuPanel}>
-                        <BugDynamicIcon iconName={menuPanel._module.icon} />
-                    </BadgeWrapper>
-                </ListItemIcon>
-                <ListItemText primary={menuPanel.title} />
-            </ListItem>
+            <BugRestrictTo key={menuPanel.id} panel={menuPanel?.id}>
+                <ListItem button component={Link} onClick={click} to={`/panel/${menuPanel.id}`} selected={isSelected}>
+                    <ListItemIcon>
+                        <BadgeWrapper panel={menuPanel}>
+                            <BugDynamicIcon iconName={menuPanel._module.icon} />
+                        </BadgeWrapper>
+                    </ListItemIcon>
+                    <ListItemText primary={menuPanel.title} />
+                </ListItem>
+            </BugRestrictTo>
         );
     };
 

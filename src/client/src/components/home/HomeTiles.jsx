@@ -49,7 +49,9 @@ const HomeTiles = () => {
         return (
             <Grid container>
                 {panels.map((panel) => (
-                    <HomeTile panel={panel} key={panel.id} />
+                    <BugRestrictTo key={panel.id} panel={panel?.id}>
+                        <HomeTile panel={panel} />
+                    </BugRestrictTo>
                 ))}
             </Grid>
         );
@@ -63,20 +65,20 @@ const HomeTiles = () => {
             const panelsByGroup = panelListGroups(panelList.data);
             if (panelsByGroup.length === 0) {
                 return (
-                    <BugRestrictTo>
+                    <BugRestrictTo role="admin">
                         <HomeAddPanel />
                     </BugRestrictTo>
                 );
             }
             if (panelsByGroup.length === 1) {
                 return (
-                    <BugRestrictTo>
+                    <BugRestrictTo role="user">
                         <Tiles panels={panelList.data} />{" "}
                     </BugRestrictTo>
                 );
             } else {
                 return (
-                    <BugRestrictTo>
+                    <BugRestrictTo role="user">
                         <GroupedTiles groupedPanelArray={panelsByGroup} />{" "}
                     </BugRestrictTo>
                 );
