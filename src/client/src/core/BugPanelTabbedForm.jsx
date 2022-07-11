@@ -8,6 +8,14 @@ import BugCard from "@core/BugCard";
 import { useHistory, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 
+const TabPanel = ({ children, value, index }) => {
+    return (
+        <BugCard role="tabpanel" hidden={value !== index}>
+            {value === index && <>{children}</>}
+        </BugCard>
+    );
+};
+
 export default function BugPanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0, contentProps = {} }) {
     const [tabIndex, setTabIndex] = React.useState(false);
     const history = useHistory();
@@ -18,14 +26,6 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
         if (locations && locations[newIndex] && locations[newIndex] !== location.pathname) {
             history.push(locations[newIndex]);
         }
-    };
-
-    const TabPanel = ({ children, value, index }) => {
-        return (
-            <BugCard role="tabpanel" hidden={value !== index}>
-                {value === index && <>{children}</>}
-            </BugCard>
-        );
     };
 
     useHotkeys("esc", onClose);
