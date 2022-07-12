@@ -24,6 +24,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 import FaviconNotification from "@utils/FaviconNotification";
 import useSounds from "@hooks/Sounds";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;
@@ -71,21 +72,16 @@ const Menu = ({ showGroups = true }) => {
         }
         const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
-            <ListItem
-                button
-                component={Link}
-                onClick={click}
-                to={`/panel/${menuPanel.id}`}
-                key={menuPanel.id}
-                selected={isSelected}
-            >
-                <ListItemIcon>
-                    <BadgeWrapper panel={menuPanel}>
-                        <BugDynamicIcon iconName={menuPanel._module.icon} />
-                    </BadgeWrapper>
-                </ListItemIcon>
-                <ListItemText primary={menuPanel.title} />
-            </ListItem>
+            <BugRestrictTo key={menuPanel.id} panel={menuPanel?.id}>
+                <ListItem button component={Link} onClick={click} to={`/panel/${menuPanel.id}`} selected={isSelected}>
+                    <ListItemIcon>
+                        <BadgeWrapper panel={menuPanel}>
+                            <BugDynamicIcon iconName={menuPanel._module.icon} />
+                        </BadgeWrapper>
+                    </ListItemIcon>
+                    <ListItemText primary={menuPanel.title} />
+                </ListItem>
+            </BugRestrictTo>
         );
     };
 
@@ -165,13 +161,15 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
-    const renderPanelMenuItems = () => {
+    const renderPanelMenuItems = (roles = []) => {
         if (panelList.status === "loading") {
             return <BugLoading />;
         }
         if (panelList.status === "success") {
-            const panelsByGroup = panelListGroups(panelList.data);
-            return panelsByGroup.map((groups) => groupedMenuItems(groups));
+            if (roles.includes("user") || enabledStrategiesCount === 0) {
+                const panelsByGroup = panelListGroups(panelList.data);
+                return panelsByGroup.map((groups) => groupedMenuItems(groups));
+            }
         } else {
             return null;
         }
@@ -256,40 +254,43 @@ const Menu = ({ showGroups = true }) => {
                                 </ListItem>
                             </List>
                             <MenuDivider />
-                            {renderPanelMenuItems()}
+                            {renderPanelMenuItems(user?.data?.roles)}
                             {enabledPanelList.length > 0 ? <MenuDivider /> : null}
-                            <List disablePadding>
-                                <ListItem
-                                    button
-                                    component={Link}
-                                    to="/system"
-                                    selected={location.pathname.startsWith("/system")}
-                                    onClick={() => {
-                                        click();
-                                        setExpanded(false);
-                                    }}
-                                >
-                                    <ListItemIcon>
-                                        <SettingsIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="System" />
-                                </ListItem>
-                                <ListItem
-                                    button
-                                    component={Link}
-                                    to="/panels"
-                                    selected={location.pathname.startsWith("/panels")}
-                                    onClick={() => {
-                                        click();
-                                        setExpanded(false);
-                                    }}
-                                >
-                                    <ListItemIcon>
-                                        <DashboardIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Panels" />
-                                </ListItem>
-                            </List>
+
+                            <BugRestrictTo role="admin">
+                                <List disablePadding>
+                                    <ListItem
+                                        button
+                                        component={Link}
+                                        to="/system"
+                                        selected={location.pathname.startsWith("/system")}
+                                        onClick={() => {
+                                            click();
+                                            setExpanded(false);
+                                        }}
+                                    >
+                                        <ListItemIcon>
+                                            <SettingsIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="System" />
+                                    </ListItem>
+                                    <ListItem
+                                        button
+                                        component={Link}
+                                        to="/panels"
+                                        selected={location.pathname.startsWith("/panels")}
+                                        onClick={() => {
+                                            click();
+                                            setExpanded(false);
+                                        }}
+                                    >
+                                        <ListItemIcon>
+                                            <DashboardIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Panels" />
+                                    </ListItem>
+                                </List>
+                            </BugRestrictTo>
                         </>
                     )}
                 </Grid>

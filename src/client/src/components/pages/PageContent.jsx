@@ -13,6 +13,7 @@ import PageSystemBackup from "@components/system/PageSystemBackup";
 import { Redirect } from "react-router";
 import BugLoading from "@core/BugLoading";
 import BugScrollbars from "@core/BugScrollbars";
+import BugRestrictTo from "@core/BugRestrictTo";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
@@ -63,6 +64,136 @@ const PageContent = () => {
             >
                 <Switch>
                     <Suspense fallback={<BugLoading />}>
+                        <BugRestrictTo role="admin">
+                            <Route exact path="/panels">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanels />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/panels/add">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanelsAdd />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/panels/edit">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanelsEdit />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystem />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/configuration">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemConfiguration />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/users">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemUsers />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/user">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemUserEdit />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/security">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSecurity />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/security/edit">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSecurity edit />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/security/:type">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSecurityStrategy />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/software">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemSoftware />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/info">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemInfo />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/logs">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemLogs />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/logs/:panelId">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemLogs />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+
+                            <Route exact path="/system/backup">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PageSystemBackup />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+                        </BugRestrictTo>
+                        <BugRestrictTo role="user">
+                            <Route path="/panel/:panelid">
+                                <StyledPageContent>
+                                    <BugScrollbars>
+                                        <PagePanel />
+                                    </BugScrollbars>
+                                </StyledPageContent>
+                            </Route>
+                        </BugRestrictTo>
                         <Route exact path="/">
                             <StyledHomePageContent>
                                 <BugScrollbars>
@@ -70,118 +201,7 @@ const PageContent = () => {
                                 </BugScrollbars>
                             </StyledHomePageContent>
                         </Route>
-                        <Route exact path="/panels">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PagePanels />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/panels/add">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PagePanelsAdd />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/panels/edit">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PagePanelsEdit />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route path="/panel/:panelid">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PagePanel />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystem />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/configuration">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemConfiguration />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/users">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemUsers />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/user">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemUserEdit />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/user/:userId">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemUserEdit />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/security">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemSecurity />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/security/edit">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemSecurity edit />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/security/:type">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemSecurityStrategy />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/software">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemSoftware />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/info">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemInfo />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/logs">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemLogs />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
-                        <Route exact path="/system/logs/:panelId">
-                            <StyledPageContent>
-                                <BugScrollbars>
-                                    <PageSystemLogs />
-                                </BugScrollbars>
-                            </StyledPageContent>
-                        </Route>
+
                         <Route exact path="/system/about">
                             <StyledPageContent>
                                 <BugScrollbars>
@@ -189,13 +209,15 @@ const PageContent = () => {
                                 </BugScrollbars>
                             </StyledPageContent>
                         </Route>
-                        <Route exact path="/system/backup">
+
+                        <Route exact path="/system/user/:userId">
                             <StyledPageContent>
                                 <BugScrollbars>
-                                    <PageSystemBackup />
+                                    <PageSystemUserEdit />
                                 </BugScrollbars>
                             </StyledPageContent>
                         </Route>
+
                         <Route exact path="/login">
                             <Redirect to="/" />
                         </Route>

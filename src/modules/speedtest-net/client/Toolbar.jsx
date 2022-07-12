@@ -22,7 +22,7 @@ export default function Toolbar({ panelId, ...props }) {
     const handleStart = async (event, item) => {
         if (await AxiosGet(`/container/${panelId}/test/start`)) {
             sendAlert("Speedtest has started", {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
         } else {

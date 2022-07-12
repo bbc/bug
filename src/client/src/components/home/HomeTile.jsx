@@ -9,6 +9,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import { styled } from "@mui/material/styles";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 const StyledCardHeader = styled(CardHeader)({
     padding: "8px 0px",
@@ -141,7 +142,11 @@ const HomeTile = ({ panel }) => {
                                 <StyledBugDynamicIcon iconName={panel._module.icon} />
                             </BadgeWrapper>
                         }
-                        action={<PanelDropdownMenu panel={panel} />}
+                        action={
+                            <BugRestrictTo role="admin">
+                                <PanelDropdownMenu panel={panel} />
+                            </BugRestrictTo>
+                        }
                         title={panel.title}
                         subheader={panel.description ? panel.description : panel._module.description}
                     />

@@ -219,7 +219,7 @@ router.get(
  */
 router.get(
     "/:id/enable",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await userEnable(req.params.id, true);
         hashResponse(res, req, {
@@ -253,7 +253,7 @@ router.get(
  */
 router.get(
     "/:id/disable",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await userEnable(req.params.id, false);
         hashResponse(res, req, {
@@ -311,12 +311,79 @@ router.get(
  */
 router.post(
     "/",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await userSet(req.body);
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: result ? `Succesfully added the user.` : "Failed to add the user.",
+            data: result,
+        });
+    })
+);
+
+/**
+ * @swagger
+ * /user/{id}:
+ *   put:
+ *     description: Updates the current user
+ *     tags: [user]
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user's unique UUID.
+ *       - in: formData
+ *         name: firstName
+ *         type: string
+ *         description: First Name
+ *         required: false
+ *       - in: formData
+ *         name: lastName
+ *         type: string
+ *         description: Last Name
+ *         required: false
+ *       - in: formData
+ *         name: email
+ *         type: string
+ *         description: Email Address
+ *         required: true
+ *       - in: formData
+ *         name: username
+ *         type: string
+ *         description: Username
+ *         required: false
+ *       - in: formData
+ *         name: password
+ *         type: string
+ *         description: Password
+ *         required: false
+ *       - in: formData
+ *         name: pin
+ *         type: number
+ *         description: Pin
+ *         required: false
+ *     responses:
+ *       200:
+ *         description: Successfully updated the current user.
+ *         schema:
+ *           type: object
+ */
+router.put(
+    "/current",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        delete req.body.id;
+        delete req.body.roles;
+        delete req.body.panels;
+        const result = await userUpdate(req.user, req.body);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            message: result ? `Succesfully updated the current user.` : "Failed to update the current user.",
             data: result,
         });
     })
@@ -375,7 +442,7 @@ router.post(
  */
 router.put(
     "/:id",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await userUpdate(req.params.id, req.body);
         hashResponse(res, req, {

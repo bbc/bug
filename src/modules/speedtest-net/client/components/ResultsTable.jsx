@@ -15,7 +15,7 @@ export default function ResultsTable({ panelId, limit = 10 }) {
     const handleDeleteClicked = async (event, item) => {
         if (item._id) {
             if (await AxiosDelete(`/container/${panelId}/test/result/${item._id}`)) {
-                sendAlert(`Deleted test result`, { broadcast: true, variant: "success" });
+                sendAlert(`Deleted test result`, { broadcast: "true", variant: "success" });
             } else {
                 sendAlert(`Failed to delete test result`, { variant: "error" });
             }

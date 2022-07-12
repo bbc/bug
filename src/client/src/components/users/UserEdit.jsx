@@ -18,12 +18,14 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import { useSelector } from "react-redux";
 import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 export default function UserEdit({ userId = null }) {
     const [loading, setLoading] = useState(false);
     const sendAlert = useAlert();
     const history = useHistory();
     const [user, setUser] = React.useState(null);
+    const [restrictPanels, setRestrictPanels] = React.useState(false);
     const {
         control,
         handleSubmit,
@@ -34,7 +36,11 @@ export default function UserEdit({ userId = null }) {
     const { confirmDialog } = useBugConfirmDialog();
     const currentUser = useSelector((state) => state.user);
     const currentUserId = currentUser.status === "success" ? currentUser.data?.id : null;
-
+    const panelList = useSelector((state) =>
+        state.panelList.data.map((item) => {
+            return { label: item.title, id: item.id };
+        })
+    );
     useAsyncEffect(async () => {
         if (!userId) {
             // we're creating a new user
@@ -49,6 +55,7 @@ export default function UserEdit({ userId = null }) {
         const userResult = await AxiosGet(`/api/user/${userId}`);
         if (userResult) {
             setUser(userResult);
+            setRestrictPanels(userResult.restrictPanels);
         } else {
             sendAlert(`Failed to load user`, { variant: "warning" });
             setTimeout(() => {
@@ -60,13 +67,40 @@ export default function UserEdit({ userId = null }) {
     const onSubmit = async (form) => {
         setLoading(true);
         let response;
+        //Parse Roles
+        if (form?.roles && Array.isArray(form.roles)) {
+            const roles = [];
+            for (let role of form.roles) {
+                if (role.id) {
+                    roles.push(role?.id);
+                }
+            }
+            form.roles = roles;
+        } else {
+            form.roles = [];
+        }
+
+        //Parse Panels
+        if (form?.panels && Array.isArray(form.panels)) {
+            const panels = [];
+            for (let panel of form.panels) {
+                if (panel.id) {
+                    panels.push(panel?.id);
+                }
+            }
+            form.panels = panels;
+        } else {
+            form.panels = [];
+        }
 
         if (form.password === blankPassword) {
             // it hasn't been changed
             delete form.password;
         }
 
-        if (userId) {
+        if (userId && userId === currentUserId && !currentUser.data.roles.includes("admin")) {
+            response = await AxiosPut(`/api/user/current`, form);
+        } else if (userId) {
             response = await AxiosPut(`/api/user/${userId}`, form);
         } else {
             response = await AxiosPost(`/api/user`, form);
@@ -74,7 +108,7 @@ export default function UserEdit({ userId = null }) {
 
         if (response) {
             sendAlert(`Successfully ${userId ? "updated" : "added"} user '${form.username}'`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
             history.push(`/system/users`);
@@ -86,6 +120,16 @@ export default function UserEdit({ userId = null }) {
         setLoading(false);
     };
 
+    const rolesList = [
+        {
+            id: "user",
+            label: "User",
+        },
+        {
+            id: "admin",
+            label: "Admin",
+        },
+    ];
     const handleDeleteClicked = async () => {
         const result = await confirmDialog({
             title: "Delete user?",
@@ -95,7 +139,7 @@ export default function UserEdit({ userId = null }) {
 
         if (result !== false) {
             if (await AxiosDelete(`/api/user/${user.id}`)) {
-                sendAlert(`Deleted user: ${user.name}`, { broadcast: true, variant: "success" });
+                sendAlert(`Deleted user: ${user.name}`, { broadcast: "true", variant: "success" });
                 history.push(`/system/users`);
             } else {
                 sendAlert(`Failed to delete user: ${user.name}`, { variant: "error" });
@@ -105,6 +149,51 @@ export default function UserEdit({ userId = null }) {
 
     const handleCancel = () => {
         history.push(`/system/users`);
+    };
+
+    const getPanels = (panels = []) => {
+        const panelOptions = [];
+        for (let panel of panels) {
+            for (let panelOption of panelList) {
+                if (panelOption.id === panel) {
+                    panelOptions.push(panelOption);
+                }
+            }
+        }
+
+        return panelOptions;
+    };
+
+    const getRoles = (roles = []) => {
+        const roleOptions = [];
+        for (let role of roles) {
+            for (let roleOption of rolesList) {
+                if (roleOption.id === role) {
+                    roleOptions.push(roleOption);
+                }
+            }
+        }
+
+        return roleOptions;
+    };
+
+    const getPanelSelectionInput = () => {
+        if (restrictPanels) {
+            return (
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
+                        name="panels"
+                        label="Panels"
+                        control={control}
+                        defaultValue={getPanels(user.panels)}
+                        options={panelList}
+                        helperText={"Select the panels the user should be able to access"}
+                        fullWidth
+                    />
+                </Grid>
+            );
+        }
+        return null;
     };
 
     return (
@@ -149,11 +238,11 @@ export default function UserEdit({ userId = null }) {
                                         label="Enable user"
                                         control={control}
                                         defaultValue={userId === null ? false : user.enabled}
-                                        disabled={userId === null}
+                                        disabled={userId === null ? false : true}
                                         fullWidth
                                         helperText={
                                             userId && currentUserId === user.id
-                                                ? "CAUTION: disabling your own user may cause you to lose acccess"
+                                                ? "Disabling your own user will cause you to lose access"
                                                 : ""
                                         }
                                     />
@@ -170,28 +259,34 @@ export default function UserEdit({ userId = null }) {
                                         label="Email address"
                                     />
                                 </Grid>
+                                <BugRestrictTo role="admin">
+                                    <Grid item xs={12}>
+                                        <BugConfigFormChipInput
+                                            name="roles"
+                                            label="Roles"
+                                            control={control}
+                                            defaultValue={getRoles(user.roles)}
+                                            options={rolesList}
+                                            fullWidth
+                                        />
+                                    </Grid>
 
-                                <Grid item xs={12}>
-                                    <BugConfigFormChipInput
-                                        name="roles"
-                                        label="Roles"
-                                        control={control}
-                                        defaultValue={user.roles ? user.roles : []}
-                                        options={[
-                                            {
-                                                id: "user",
-                                                label: "User",
-                                            },
-                                            {
-                                                id: "admin",
-                                                label: "Admin",
-                                            },
-                                        ]}
-                                        sort={true}
-                                        fullWidth
-                                    />
-                                </Grid>
+                                    <Grid item xs={12}>
+                                        <BugConfigFormSwitch
+                                            name="restrictPanels"
+                                            label="Restrict Panels"
+                                            control={control}
+                                            onChange={() => {
+                                                setRestrictPanels(!restrictPanels);
+                                            }}
+                                            defaultValue={user?.restrictPanels}
+                                            fullWidth
+                                            helperText="Enabling allows access to specific panels to be restricted"
+                                        />
+                                    </Grid>
 
+                                    {getPanelSelectionInput()}
+                                </BugRestrictTo>
                                 <Grid item xs={12}>
                                     <BugConfigFormTextField
                                         name="password"
@@ -212,7 +307,7 @@ export default function UserEdit({ userId = null }) {
                                 <Grid item xs={12}>
                                     <BugConfigFormPasswordTextField
                                         name="pin"
-                                        variant="outlined"
+                                        variant="standard"
                                         control={control}
                                         fullWidth
                                         defaultValue={user.pin}

@@ -78,7 +78,7 @@ export default function Lease({ panelId, leaseId }) {
     const onSubmit = async (form) => {
         const response = await AxiosPost(`/container/${panelId}/lease/add/`, form);
         if (response) {
-            sendAlert(`Lease has been updated.`, { broadcast: true, variant: "success" });
+            sendAlert(`Lease has been updated.`, { broadcast: "true", variant: "success" });
             history.goBack();
         } else {
             sendAlert(`Lease could not be updated.`, { variant: "warning" });

@@ -18,7 +18,7 @@ export default function PanelTableRow({ panel, showGroups }) {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
         if (await AxiosCommand(`/api/panel/${command}/${panelId}`)) {
-            sendAlert(`${commandText} panel: ${panel.title}`, { broadcast: true, variant: "success" });
+            sendAlert(`${commandText} panel: ${panel.title}`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to ${command} panel: ${panel.title}`, { variant: "error" });
         }

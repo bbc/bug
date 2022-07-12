@@ -109,9 +109,9 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
     };
 
     const handleRestart = async (event) => {
-        sendAlert(`Restarting panel: ${panel.title} - please wait ...`, { broadcast: true, variant: "info" });
+        sendAlert(`Restarting panel: ${panel.title} - please wait ...`, { broadcast: "true", variant: "info" });
         if (await AxiosCommand(`/api/panel/restart/${panel.id}`)) {
-            sendAlert(`Restarted panel: ${panel.title}`, { broadcast: true, variant: "success" });
+            sendAlert(`Restarted panel: ${panel.title}`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to restart panel: ${panel.title}`, { variant: "error" });
         }

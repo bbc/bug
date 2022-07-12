@@ -80,7 +80,7 @@ export default function LeaseList({ panelId }) {
     const handleDeleteClicked = async (event, item) => {
         const response = await AxiosDelete(`/container/${panelId}/lease/${item.id}`);
         if (response) {
-            sendAlert(`Lease has been deleted.`, { broadcast: true, variant: "success" });
+            sendAlert(`Lease has been deleted.`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Lease could not be deleted.`, { variant: "warning" });
         }
@@ -89,7 +89,7 @@ export default function LeaseList({ panelId }) {
     const handleMakeStaticClicked = async (event, item) => {
         const response = await AxiosGet(`/container/${panelId}/lease/makestatic/${item.id}`);
         if (response) {
-            sendAlert(`Set lease to static.`, { broadcast: true, variant: "success" });
+            sendAlert(`Set lease to static.`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Lease could not be set to static.`, { variant: "warning" });
         }
@@ -98,7 +98,7 @@ export default function LeaseList({ panelId }) {
     const handleWolClicked = async (event, item) => {
         const response = await AxiosGet(`/container/${panelId}/lease/magicpacket/${item.id}`);
         if (response) {
-            sendAlert(`Set wake request.`, { broadcast: true, variant: "success" });
+            sendAlert(`Set wake request.`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to send wake request.`, { variant: "warning" });
         }

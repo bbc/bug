@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { usePanel } from "@data/PanelHandler";
 import { useHistory } from "react-router-dom";
 
-function ModuleSwitch({ children, panelId }) {
+function ModuleSwitch({ children }) {
     // we memoize this to hide any panel.data changes from updating the page
     return React.useMemo(() => {
         return (

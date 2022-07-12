@@ -48,7 +48,7 @@ export default function SecurityStrategy({ type = null }) {
         const response = await AxiosPut(`/api/strategy/${strategy.type}`, form);
         if (!response?.error) {
             sendAlert(`Security type '${strategy.type}' has been updated`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
             history.push(`/system/security`);

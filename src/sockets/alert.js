@@ -9,7 +9,7 @@ const alertHandler = (namespace, socket) => {
                 level = "info";
                 break;
             case "warning":
-                level = "warn";
+                level = "warning";
                 break;
             case "error":
                 level = "error";

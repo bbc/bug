@@ -28,7 +28,7 @@ export default function TabLayout({ panelId }) {
     const handleSourceChange = async (outputIndex, inputIndex) => {
         if (await AxiosCommand(`/container/${panelId}/destination/${outputIndex}/${inputIndex}`)) {
             sendAlert(`Successfully changed source for output ${outputIndex + 1}`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
             // force a refresh of the destinations
@@ -41,7 +41,7 @@ export default function TabLayout({ panelId }) {
     const handleAudioChange = async (inputIndex) => {
         if (await AxiosCommand(`/container/${panelId}/destination/setaudio/${inputIndex}`)) {
             sendAlert(`Successfully selected audio source ${inputIndex + 1}`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
             // force a refresh of the layout
@@ -55,7 +55,7 @@ export default function TabLayout({ panelId }) {
         if (enableSolo) {
             if (await AxiosCommand(`/container/${panelId}/source/setsolo/${inputIndex}`)) {
                 sendAlert(`Successfully selected solo source ${inputIndex + 1}`, {
-                    broadcast: true,
+                    broadcast: "true",
                     variant: "success",
                 });
                 // force a refresh of the layout
@@ -66,7 +66,7 @@ export default function TabLayout({ panelId }) {
         } else {
             if (await AxiosCommand(`/container/${panelId}/source/clearsolo`)) {
                 sendAlert(`Successfully unselected solo source`, {
-                    broadcast: true,
+                    broadcast: "true",
                     variant: "success",
                 });
                 // force a refresh of the layout

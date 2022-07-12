@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import panelListGroups from "@utils/panelListGroups";
 import HomeTile from "@components/home/HomeTile";
 import HomeAddPanel from "@components/home/HomeAddPanel";
+import BugRestrictTo from "@core/BugRestrictTo";
 
 const HomeTiles = () => {
     const panelList = useSelector((state) => state.panelList);
@@ -48,7 +49,9 @@ const HomeTiles = () => {
         return (
             <Grid container>
                 {panels.map((panel) => (
-                    <HomeTile panel={panel} key={panel.id} />
+                    <BugRestrictTo key={panel.id} panel={panel?.id}>
+                        <HomeTile panel={panel} />
+                    </BugRestrictTo>
                 ))}
             </Grid>
         );
@@ -61,12 +64,24 @@ const HomeTiles = () => {
         if (panelList.status === "success") {
             const panelsByGroup = panelListGroups(panelList.data);
             if (panelsByGroup.length === 0) {
-                return <HomeAddPanel />;
+                return (
+                    <BugRestrictTo role="admin">
+                        <HomeAddPanel />
+                    </BugRestrictTo>
+                );
             }
             if (panelsByGroup.length === 1) {
-                return <Tiles panels={panelList.data} />;
+                return (
+                    <BugRestrictTo role="user">
+                        <Tiles panels={panelList.data} />{" "}
+                    </BugRestrictTo>
+                );
             } else {
-                return <GroupedTiles groupedPanelArray={panelsByGroup} />;
+                return (
+                    <BugRestrictTo role="user">
+                        <GroupedTiles groupedPanelArray={panelsByGroup} />{" "}
+                    </BugRestrictTo>
+                );
             }
         }
         return null;

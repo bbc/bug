@@ -37,7 +37,7 @@ export default function PanelAdd(props) {
         setLoading(true);
         const response = await AxiosPost(`/api/panel`, form);
         if (!response?.error) {
-            sendAlert(`${form?.title} has been added.`, { broadcast: true, variant: "success" });
+            sendAlert(`${form?.title} has been added.`, { broadcast: "true", variant: "success" });
             history.goBack();
         } else {
             sendAlert(`${form?.title} could not be added.`, { variant: "warning" });

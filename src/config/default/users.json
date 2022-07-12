@@ -8,9 +8,11 @@
     "id": "7552f840-e4a5-42ec-9f6c-e2e6039ffcb7",
     "enabled": true,
     "roles": [
-      "admin",
-      "user"
+      "user",
+      "admin"
     ],
+    "restrictPanels": false,
+    "panels": [],
     "passwordLength": 5,
     "pinLength": 4
   }

@@ -65,7 +65,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
 
         if (await AxiosCommand(`/container/${panelId}/route/${selectedDestination}/${sourceIndex}`)) {
             sendAlert(`Successfully routed '${source[0].label}' to '${destination[0].label}'`, {
-                broadcast: true,
+                broadcast: "true",
                 variant: "success",
             });
             // force a refresh of the destinations
