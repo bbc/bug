@@ -83,6 +83,7 @@ function BugDetailsCard({
                         },
                         height: "50px",
                         padding: "8px 16px",
+                        borderBottom: "1px solid #181818",
                     }}
                     title={title}
                     action={getAction()}
