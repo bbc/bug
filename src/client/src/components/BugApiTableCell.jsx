@@ -11,6 +11,7 @@ export default function BugApiTableCell({ children, column, index, sx, ...props 
                 minWidth: column.minWidth ? column.minWidth : "auto",
                 maxWidth: column.maxWidth ? column.maxWidth : column.noWrap ? "0px" : "none",
                 overflow: column.noWrap ? "hidden" : "visible",
+                textAlign: column.align ? column.align : "start",
                 textOverflow: column.noWrap ? "none" : "clip",
                 whiteSpace: column.noWrap ? "nowrap" : "normal",
                 paddingLeft: column.noPadding ? (index === 0 ? "8px" : "4px") : "12px",
