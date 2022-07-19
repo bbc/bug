@@ -90,7 +90,11 @@ const BugRenameDialog = ({
                     <Button color="secondary" onClick={onDismiss}>
                         Cancel
                     </Button>
-                    <Button color="primary" disabled={!allowBlank && value === ""} onClick={() => onRename(value)}>
+                    <Button
+                        color="primary"
+                        disabled={!allowBlank && value?.trim() === ""}
+                        onClick={() => onRename(value)}
+                    >
                         {confirmButtonText}
                     </Button>
                 </DialogActions>
