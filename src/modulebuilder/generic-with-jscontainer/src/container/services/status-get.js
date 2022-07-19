@@ -1,7 +1,6 @@
 "use strict";
 
 const statusCheckCollection = require("@core/status-checkcollection");
-const statusCheckPending = require("@services/status-checkpending");
 
 module.exports = async () => {
     return [].concat(
@@ -23,7 +22,6 @@ module.exports = async () => {
             message: "System information is out of date.",
             itemType: "warning",
             timeoutSeconds: 150,
-        }),
-        await statusCheckPending()
+        })
     );
 };
