@@ -10,7 +10,7 @@
     "license": "<%= license %>",
     "status": "beta",
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers"],
+    "devmounts": ["api", "services", "workers", "utils"],
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
