@@ -10,6 +10,11 @@ const InterfacePanel = React.lazy(() => import("./panels/InterfacePanel"));
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
+            <BugRestrictTo role="admin">
+                <Route exact path="/panel/:panelId/config">
+                    <ConfigPanel />
+                </Route>
+            </BugRestrictTo>
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </Route>
@@ -22,11 +27,6 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId/interface/:interfaceId/:tab">
                 <InterfacePanel />
             </Route>
-            <BugRestrictTo role="admin">
-                <Route exact path="/panel/:panelId/config">
-                    <ConfigPanel />
-                </Route>
-            </BugRestrictTo>
         </BugModuleWrapper>
     );
 }
