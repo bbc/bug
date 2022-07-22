@@ -35,6 +35,7 @@ const Menu = ({ showGroups = true }) => {
     const panel = useSelector((state) => state.panel);
     const user = useSelector((state) => state.user);
     const strategies = useSelector((state) => state.strategies);
+    const settings = useSelector((state) => state.settings);
     const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
     const location = useLocation();
     const [expanded, setExpanded] = React.useState(false);
@@ -195,6 +196,9 @@ const Menu = ({ showGroups = true }) => {
                     notificationCount[notification.type] += 1;
                 }
             }
+        }
+        if (settings?.data?.title && settings?.data?.title !== "") {
+            faviconNotification.setOptions({ title: settings.data.title });
         }
         faviconNotification.set(notificationCount);
     };
