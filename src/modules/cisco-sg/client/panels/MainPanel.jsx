@@ -5,9 +5,8 @@ import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 
-export default function MainPanel({ panelId }) {
-    //TODO params.panelId or panelID? You choose.
-    const params = useParams();
+export default function MainPanel(props) {
+    const { panelId, stackId } = useParams();
     const stackDevices = useApiPoller({
         url: `/container/${panelId}/device/stackcount`,
         interval: 20000,
@@ -23,8 +22,8 @@ export default function MainPanel({ panelId }) {
         const locations = [];
         for (const eachStack of stackDevices.data) {
             labels.push(`Stack ${eachStack}`);
-            content.push(<InterfaceList panelId={params.panelId} stackId={eachStack} />);
-            locations.push(`/panel/${params.panelId}/${eachStack}`);
+            content.push(<InterfaceList panelId={panelId} stackId={eachStack} />);
+            locations.push(`/panel/${panelId}/${eachStack}`);
         }
         return (
             <>
@@ -41,7 +40,7 @@ export default function MainPanel({ panelId }) {
     // just a single page
     return (
         <>
-            <InterfaceList panelId={params.panelId} />
+            <InterfaceList stackId={stackId} panelId={panelId} />
         </>
     );
 }
