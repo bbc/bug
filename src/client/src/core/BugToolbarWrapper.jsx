@@ -149,9 +149,9 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                                 </ListItemIcon>
                                 <ListItemText primary="Config" />
                             </MenuItem>
-
-                            {menuItems}
-
+                        </BugRestrictTo>
+                        {menuItems}
+                        <BugRestrictTo role="admin">
                             <Divider />
                             <MenuItem disabled>
                                 <ListItemIcon>
