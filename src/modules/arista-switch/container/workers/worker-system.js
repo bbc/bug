@@ -4,7 +4,6 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-// const SnmpAwait = require("@core/snmp-await");
 const mongoSingle = require("@core/mongo-single");
 const aristaApi = require("@utils/arista-api");
 

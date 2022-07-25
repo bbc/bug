@@ -5,7 +5,6 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-// const SnmpAwait = require("@core/snmp-await");
 const formatBps = require("@core/format-bps");
 const trafficSaveHistory = require("../services/traffic-savehistory");
 const mongoCreateIndex = require("@core/mongo-createindex");
