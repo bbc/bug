@@ -161,9 +161,9 @@ const BugRouterButton = ({
                             position: "absolute",
                             right: "0px",
                             top: "0px",
-                            fontSize: "12px !important",
+                            fontSize: "14px !important",
                             margin: "4px",
-                            color: editMode ? "#fff" : "#212121",
+                            color: editMode ? "#fff" : "#ccc",
                         }}
                     />
                 )}
