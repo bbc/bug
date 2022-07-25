@@ -11,7 +11,7 @@ const system = io("/system", {
 });
 
 // this is used to fetch the initial global configuration settings state
-export default function SettingsHandler(props) {
+export default function SettingsHandler() {
     const dispatch = useDispatch();
     const [connection, setConnection] = useState(true);
 
