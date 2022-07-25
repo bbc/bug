@@ -261,13 +261,13 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "Enable",
-                    disabled: (item) => !item.disabled,
+                    disabled: (item) => !item.disabled || item._protected,
                     icon: <ToggleOnIcon fontSize="small" />,
                     onClick: handleEnabledClicked,
                 },
                 {
                     title: "Disable",
-                    disabled: (item) => item.disabled,
+                    disabled: (item) => item.disabled || item._protected,
                     icon: <ToggleOffIcon fontSize="small" />,
                     onClick: handleDisabledClicked,
                 },
@@ -276,11 +276,13 @@ export default function InterfaceList({ panelId }) {
                 },
                 {
                     title: "Rename",
+                    disabled: (item) => item._protected,
                     icon: <EditIcon fontSize="small" />,
                     onClick: handleRenameClicked,
                 },
                 {
                     title: "Comment",
+                    disabled: (item) => item._protected,
                     icon: <CommentIcon fontSize="small" />,
                     onClick: handleCommentClicked,
                 },
