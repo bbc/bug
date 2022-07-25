@@ -110,6 +110,7 @@ export default function Router({
                     onChange={onChange}
                     editMode={editMode}
                     buttonType={buttonType}
+                    selectedGroup={buttonType === "source" ? sourceGroup : destinationGroup}
                     disabled={disabled}
                     groups={buttons.data.groups}
                     useDoubleClick={useDoubleClick}
