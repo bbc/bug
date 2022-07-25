@@ -127,8 +127,8 @@ const BugRouterButton = ({
                     borderColor: isWaitingForConfirmation ? "primary.main" : "rgba(136, 136, 136, 0.5)",
                     backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
                 },
-                "-webkit-touch-callout": "none !important",
-                "-webkit-user-select": "none !important",
+                WebkitTouchCallout: "none !important",
+                WebkitUserSelect: "none !important",
             }}
             variant="outlined"
             color="secondary"
