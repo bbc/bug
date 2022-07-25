@@ -12,19 +12,19 @@ import { useSelector } from "react-redux";
 import PanelTableGroupRow from "./PanelTableGroupRow";
 import panelListGroups from "@utils/panelListGroups";
 
+const GroupedPanelRow = (groupedArrayItem) => {
+    const resultArray = [];
+    if (groupedArrayItem.group) {
+        resultArray.push(<PanelTableGroupRow key={groupedArrayItem.group} title={groupedArrayItem.group} />);
+    }
+    for (const eachPanel of groupedArrayItem.items) {
+        resultArray.push(<PanelTableRow key={eachPanel.id} panel={eachPanel} />);
+    }
+    return resultArray;
+};
+
 export default function PanelTable() {
     const panelList = useSelector((state) => state.panelList);
-
-    const GroupedPanelRow = (groupedArrayItem) => {
-        const resultArray = [];
-        if (groupedArrayItem.group) {
-            resultArray.push(<PanelTableGroupRow key={groupedArrayItem.group} title={groupedArrayItem.group} />);
-        }
-        for (const eachPanel of groupedArrayItem.items) {
-            resultArray.push(<PanelTableRow key={eachPanel.id} panel={eachPanel} />);
-        }
-        return resultArray;
-    };
 
     if (panelList.status === "loading") {
         return <BugLoading />;

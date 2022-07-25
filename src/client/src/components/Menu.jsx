@@ -30,6 +30,8 @@ const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;
 let firstRun = true;
 
+const MenuDivider = () => <Divider sx={{ backgroundColor: "#181818", margin: 0 }} />;
+
 const Menu = ({ showGroups = true }) => {
     const panelList = useSelector((state) => state.panelList);
     const panel = useSelector((state) => state.panel);
@@ -202,8 +204,6 @@ const Menu = ({ showGroups = true }) => {
         }
         faviconNotification.set(notificationCount);
     };
-
-    const MenuDivider = () => <Divider sx={{ backgroundColor: "#181818", margin: 0 }} />;
 
     const soundNotifications = (panels) => {
         const previousNotificationCount = notificationsCount;

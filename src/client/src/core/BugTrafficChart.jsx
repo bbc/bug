@@ -12,6 +12,38 @@ import useAsyncEffect from "use-async-effect";
 import { useWindowSize } from "@utils/WindowSize";
 import BugTimePicker from "@core/BugTimePicker";
 
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        let timestamp = payload[0].payload.timestamp;
+        let tx = payload[0].payload.tx;
+        let rx = payload[0].payload.rx;
+        return (
+            <Box sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}>
+                <div>
+                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                        TIME:
+                    </Box>
+                    {format(timestamp, "kk:mm:ss")}
+                </div>
+                <div>
+                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                        TX BITRATE:
+                    </Box>
+                    {formatBps(tx)}
+                </div>
+                <div>
+                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                        RX BITRATE:
+                    </Box>
+                    {formatBps(rx)}
+                </div>
+            </Box>
+        );
+    }
+
+    return null;
+};
+
 export default function BugTrafficChart({ url, mockApiData = null }) {
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
@@ -76,40 +108,6 @@ export default function BugTrafficChart({ url, mockApiData = null }) {
             newEnd = Date.now();
         }
         setRange([newEnd - rangeSpan * 60000, newEnd]);
-    };
-
-    const CustomTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            let timestamp = payload[0].payload.timestamp;
-            let tx = payload[0].payload.tx;
-            let rx = payload[0].payload.rx;
-            return (
-                <Box
-                    sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}
-                >
-                    <div>
-                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                            TIME:
-                        </Box>
-                        {format(timestamp, "kk:mm:ss")}
-                    </div>
-                    <div>
-                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                            TX BITRATE:
-                        </Box>
-                        {formatBps(tx)}
-                    </div>
-                    <div>
-                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                            RX BITRATE:
-                        </Box>
-                        {formatBps(rx)}
-                    </div>
-                </Box>
-            );
-        }
-
-        return null;
     };
 
     const chartHeight = windowSize.height < 650 ? windowSize.height - 200 : 400;

@@ -27,7 +27,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
         error: "error",
     };
 
-    const AllMessages = () => {
+    const renderAllMessages = () => {
         if (Array.isArray(message)) {
             return (
                 <Box
@@ -56,7 +56,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
         return message;
     };
 
-    const FirstLine = () => (
+    const renderFirstLine = () => (
         <Box
             sx={{
                 marginTop: "14px",
@@ -78,7 +78,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
         return Array.isArray(flags) && flags.length > 0;
     };
 
-    const Controls = () => {
+    const renderControls = () => {
         let controls = [];
         if (flags.includes("restartPanel")) {
             controls.push(
@@ -147,7 +147,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
                     paddingLeft: "14px",
                 }}
             >
-                {open ? <AllMessages /> : <FirstLine />}
+                {open ? renderAllMessages() : renderFirstLine()}
                 {(hasMultipleLines() || hasFlags()) && (
                     <IconButton
                         sx={{
@@ -167,7 +167,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
                     </IconButton>
                 )}
             </Box>
-            {open && <Controls />}
+            {open && renderControls()}
         </Alert>
     );
 }

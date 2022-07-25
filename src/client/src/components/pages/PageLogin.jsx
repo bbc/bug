@@ -22,6 +22,43 @@ import LocalLogin from "@components/login/LocalLogin";
 import ProxyLogin from "@components/login/ProxyLogin";
 import { useSelector } from "react-redux";
 
+const TabPanel = ({ children, value, index }) => {
+    return (
+        <Box
+            sx={{
+                paddingTop: "0px",
+                "@media (max-height:400px) and (max-width:800px)": {
+                    height: "292px",
+                },
+            }}
+            role="tabpanel"
+            hidden={value !== index}
+        >
+            {value === index && <>{children}</>}
+        </Box>
+    );
+};
+
+const LoginMethod = ({ type, handleLogin, index }) => {
+    const props = { handleLogin, index };
+    switch (type) {
+        case "local":
+            return <LocalLogin {...props} />;
+        case "auto":
+            return <AutoLogin {...props} />;
+        case "oidc":
+            return null;
+        case "pin":
+            return <PinLogin {...props} />;
+        case "proxy":
+            return <ProxyLogin {...props} />;
+        case "saml":
+            return null;
+        default:
+            return null;
+    }
+};
+
 export default function PageLogin() {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
@@ -38,23 +75,6 @@ export default function PageLogin() {
 
     const handleChange = (event, newIndex) => {
         setTabIndex(newIndex);
-    };
-
-    const TabPanel = ({ children, value, index }) => {
-        return (
-            <Box
-                sx={{
-                    paddingTop: "0px",
-                    "@media (max-height:400px) and (max-width:800px)": {
-                        height: "292px",
-                    },
-                }}
-                role="tabpanel"
-                hidden={value !== index}
-            >
-                {value === index && <>{children}</>}
-            </Box>
-        );
     };
 
     const setAlertWithTimeout = (alert, timeout = 4000) => {
@@ -78,26 +98,6 @@ export default function PageLogin() {
     if (loading) {
         return <LoadingOverlay />;
     }
-
-    const LoginMethod = ({ type, handleLogin, index }) => {
-        const props = { handleLogin, index };
-        switch (type) {
-            case "local":
-                return <LocalLogin {...props} />;
-            case "auto":
-                return <AutoLogin {...props} />;
-            case "oidc":
-                return null;
-            case "pin":
-                return <PinLogin {...props} />;
-            case "proxy":
-                return <ProxyLogin {...props} />;
-            case "saml":
-                return null;
-            default:
-                return null;
-        }
-    };
 
     return (
         <>

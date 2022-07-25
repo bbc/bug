@@ -15,7 +15,7 @@ import userSlice from "@redux/userSlice";
 import useSounds from "@hooks/Sounds";
 import getGravatarUrl from "@utils/getGravatarUrl";
 
-const UserMenuItem = (props) => {
+const UserMenuItem = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [anchorEl, setAnchorEl] = useState(null);
