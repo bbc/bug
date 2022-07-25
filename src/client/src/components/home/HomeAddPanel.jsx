@@ -63,6 +63,7 @@ const HomeAddPanel = () => {
                         title="Add Panel"
                         subheader="Click to create your first panel"
                         sx={{
+                            minWidth: "22rem",
                             backgroundColor: "#181818",
                             borderWidth: 0,
                             padding: "8px 8px 8px 0px",
