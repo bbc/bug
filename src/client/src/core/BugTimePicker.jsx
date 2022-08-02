@@ -1,7 +1,7 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider"
 import { TimePicker } from "@mui/x-date-pickers";
 import { styled } from "@mui/material/styles";
 
