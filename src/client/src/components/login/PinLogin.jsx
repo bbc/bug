@@ -19,8 +19,6 @@ export default function PinLogin({ handleLogin }) {
     };
 
     const handleChange = async (event) => {
-        console.log("HEY");
-        console.log(event.target.value);
         setPin(event.target.value);
         if (event.target.value.length === 4) {
             handleLogin({ pin: event.target.value });
@@ -89,8 +87,6 @@ export default function PinLogin({ handleLogin }) {
             </Grid>
         );
     };
-
-    console.log("YP");
 
     return (
         <form>
