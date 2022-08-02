@@ -27,7 +27,9 @@ export default function PagePanel(props) {
 
     // we memoize this as we don't care if the panelconfig has changed in here - just the status or id
     return React.useMemo(() => {
-        console.log("New Text Uncomment this line in development to force a refresh of the Module include logic above");
+        console.log(
+            "Even newer Text Uncomment this line in development to force a refresh of the Module include logic above"
+        );
         if (panelConfig.status !== "success") {
             return <BugLoading />;
         }

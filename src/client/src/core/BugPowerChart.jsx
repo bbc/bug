@@ -19,20 +19,20 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
     const windowSize = useWindowSize();
 
     const [enableAutoRefresh, setEnableAutoRefresh] = useState(true);
-    const [range, setRange] = useState(initialRange);
+    const [xRange, setXRange] = useState(initialRange);
     const [stats, setStats] = useState(mockApiData);
 
     const doAutoRefresh = useCallback(() => {
-        setRange([Date.now() - rangeSpan * 60000, Date.now()]);
+        setXRange([Date.now() - rangeSpan * 60000, Date.now()]);
         timer.current = setTimeout(doAutoRefresh, 5000);
     }, []);
 
     useAsyncEffect(async () => {
         if (url) {
-            const fetchedStats = await AxiosGet(`${url}/${range[0]}/${range[1]}`);
+            const fetchedStats = await AxiosGet(`${url}/${xRange[0]}/${xRange[1]}`);
             setStats(fetchedStats);
         }
-    }, [url, range]);
+    }, [url, xRange]);
 
     useEffect(() => {
         if (enableAutoRefresh) {
@@ -51,18 +51,18 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
 
     const handleBack = (mins) => {
         setEnableAutoRefresh(false);
-        setRange([range[0] - mins * 60000, range[1] - mins * 60000]);
+        setXRange([xRange[0] - mins * 60000, xRange[1] - mins * 60000]);
     };
 
     const handleForward = (mins) => {
-        let newEnd = range[1] + mins * 60000;
+        let newEnd = xRange[1] + mins * 60000;
         if (newEnd > Date.now()) {
             setEnableAutoRefresh(true);
             newEnd = Date.now();
         } else {
             setEnableAutoRefresh(false);
         }
-        setRange([newEnd - rangeSpan * 60000, newEnd]);
+        setXRange([newEnd - rangeSpan * 60000, newEnd]);
     };
 
     const handleLatest = () => {
@@ -75,7 +75,7 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
         if (newEnd > Date.now()) {
             newEnd = Date.now();
         }
-        setRange([newEnd - rangeSpan * 60000, newEnd]);
+        setXRange([newEnd - rangeSpan * 60000, newEnd]);
     };
 
     const CustomTooltip = ({ active, payload, label }) => {
@@ -143,11 +143,10 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
         >
             <ResponsiveContainer width="100%" height={chartHeight}>
                 <ComposedChart barGap={1} data={stats} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                    {getSeries()}
                     <XAxis
                         dataKey="timestamp"
                         type="number"
-                        domain={range}
+                        domain={xRange}
                         tickCount={5}
                         tickFormatter={(value) => {
                             return format(value, "kk:mm");
@@ -159,6 +158,7 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
                         }}
                         width={80}
                     />
+                    {getSeries()}
                     <Tooltip content={<CustomTooltip />} />
                 </ComposedChart>
             </ResponsiveContainer>
@@ -190,7 +190,7 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
                     Latest
                 </Button>
 
-                <BugTimePicker value={range[1]} onChange={handleTimePickerChange} minutesStep={5} />
+                <BugTimePicker value={xRange[1]} onChange={handleTimePickerChange} minutesStep={5} />
 
                 <Button
                     sx={{ margin: "8px" }}

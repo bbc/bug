@@ -3,10 +3,9 @@
   "order": 0,
   "needsConfigured": true,
   "title": "",
-  "module": "dtc-prorx",
+  "module": "vislink-lynx",
   "description": "",
   "notes": "",
   "enabled": false,
-  "address": "",
-  "receiverCount": 4
+  "address": ""
 }

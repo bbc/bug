@@ -1,7 +1,7 @@
 {
-    "name": "dtc-prorx",
-    "longname": "DTC ProRX Receiver",
-    "description": "Control DTC radio camera receivers",
+    "name": "vislink-lynx",
+    "longname": "VisLink Lynx Receiver",
+    "description": "Control VisLink radio camera receivers",
     "capabilities": [],
     "notes": "",
     "version": "1.0.0",
@@ -23,11 +23,10 @@
         "order": 0,
         "needsConfigured": true,
         "title": "",
-        "module": "dtc-prorx",
+        "module": "vislink-lynx",
         "description": "",
         "notes": "",
         "enabled": false,
-        "address": "",
-        "receiverCount": 4
+        "address": ""
     }
 }
