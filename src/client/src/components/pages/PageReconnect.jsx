@@ -13,8 +13,11 @@ export default function PageReconnect({ connection = false }) {
 
     return (
         <>
-            <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={!connection}>
-                <Grid container spacing={0} alignItems="center" justify="center" style={{ minHeight: "100vh" }}>
+            <Backdrop
+                sx={{ color: "#fff", backdropFilter: "blur(6px)", zIndex: (theme) => theme.zIndex.drawer + 2 }}
+                open={!connection}
+            >
+                <Grid container spacing={0} alignItems="center" justify="center" sx={{ minHeight: "100vh" }}>
                     <Grid item xs={12}>
                         <Grid
                             container

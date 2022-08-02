@@ -12,7 +12,49 @@ import useAsyncEffect from "use-async-effect";
 import { useWindowSize } from "@utils/WindowSize";
 import BugTimePicker from "@core/BugTimePicker";
 
-export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm", mockApiData = null }) {
+const CustomTooltip = ({ active, payload, label, receiverCount, units }) => {
+    // GH - moved this into separate section - and added receiverCount to the props.
+    // I don't know if this'll work - needs testing. Sorry!
+
+    if (active && payload && payload.length) {
+        let timestamp = payload[0].payload.timestamp;
+
+        const getTooltipValues = () => {
+            const lines = [
+                <div key="timestamp">
+                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                        TIME:
+                    </Box>
+                    {format(timestamp, "kk:mm:ss")}
+                </div>,
+            ];
+
+            for (let receiver in payload[0].payload) {
+                if (receiver !== "timestamp" && parseInt(receiver) <= parseInt(receiverCount)) {
+                    lines.push(
+                        <div key={receiver}>
+                            <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                                {receiver}:
+                            </Box>
+                            {` ${Math.round(payload[0].payload[receiver] * 100) / 100} ${units}`}
+                        </div>
+                    );
+                }
+            }
+            return lines;
+        };
+
+        return (
+            <Box sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}>
+                {getTooltipValues()}
+            </Box>
+        );
+    }
+
+    return null;
+};
+
+export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", mockApiData = null }) {
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
@@ -78,47 +120,6 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
         setXRange([newEnd - rangeSpan * 60000, newEnd]);
     };
 
-    const CustomTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            let timestamp = payload[0].payload.timestamp;
-
-            const getTooltipValues = () => {
-                const lines = [
-                    <div key="timestamp">
-                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                            TIME:
-                        </Box>
-                        {format(timestamp, "kk:mm:ss")}
-                    </div>,
-                ];
-
-                for (let receiver in payload[0].payload) {
-                    if (receiver !== "timestamp" && parseInt(receiver) <= parseInt(receiverCount)) {
-                        lines.push(
-                            <div key={receiver}>
-                                <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                                    {receiver}:
-                                </Box>
-                                {` ${Math.round(payload[0].payload[receiver] * 100) / 100} ${units}`}
-                            </div>
-                        );
-                    }
-                }
-                return lines;
-            };
-
-            return (
-                <Box
-                    sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}
-                >
-                    {getTooltipValues()}
-                </Box>
-            );
-        }
-
-        return null;
-    };
-
     const getSeries = () => {
         const series = [];
 
@@ -158,8 +159,8 @@ export default function BugTrafficChart({ receiverCount = 4, url, units = "dBm",
                         }}
                         width={80}
                     />
-                    {getSeries()}
-                    <Tooltip content={<CustomTooltip />} />
+                    {/* Here it is: the extra prop - GH */}
+                    <Tooltip content={<CustomTooltip receiverCount={receiverCount} units={units} />} />
                 </ComposedChart>
             </ResponsiveContainer>
             <Box

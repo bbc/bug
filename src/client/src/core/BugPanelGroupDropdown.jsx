@@ -7,13 +7,13 @@ import Paper from "@mui/material/Paper";
 
 const filter = createFilterOptions();
 
+const CustomPaper = (props) => {
+    return <Paper elevation={8} {...props} />;
+};
+
 export default function BugPanelGroupDropdown({ value, onChange, fullWidth = false, variant = "standard" }) {
     const panelList = useSelector((state) => state.panelList);
     const [inputValue, setInputValue] = React.useState(value);
-
-    const CustomPaper = (props) => {
-        return <Paper elevation={8} {...props} />;
-    };
 
     let panelListGroups = panelList.data ? _.uniq(panelList.data.map((a) => a.group)) : [];
     _.pull(panelListGroups, "");

@@ -127,8 +127,8 @@ const BugRouterButton = ({
                     borderColor: isWaitingForConfirmation ? "primary.main" : "rgba(136, 136, 136, 0.5)",
                     backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
                 },
-                "-webkit-touch-callout": "none !important",
-                "-webkit-user-select": "none !important",
+                WebkitTouchCallout: "none !important",
+                WebkitUserSelect: "none !important",
             }}
             variant="outlined"
             color="secondary"
@@ -161,9 +161,9 @@ const BugRouterButton = ({
                             position: "absolute",
                             right: "0px",
                             top: "0px",
-                            fontSize: "12px !important",
+                            fontSize: "14px !important",
                             margin: "4px",
-                            color: editMode ? "#fff" : "#212121",
+                            color: editMode ? "#fff" : "#ccc",
                         }}
                     />
                 )}

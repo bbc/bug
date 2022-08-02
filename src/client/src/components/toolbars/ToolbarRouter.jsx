@@ -29,7 +29,7 @@ const ToolbarRouter = (props) => {
         return null;
     }
 
-    const PanelToolbar = () => {
+    const renderPanelToolbar = () => {
         if (panelConfig.status !== "success") {
             return <></>;
         }
@@ -98,7 +98,7 @@ const ToolbarRouter = (props) => {
                     <Title>
                         <PageTitle />
                     </Title>
-                    <PanelToolbar />
+                    {renderPanelToolbar()}
                 </>
             );
     }

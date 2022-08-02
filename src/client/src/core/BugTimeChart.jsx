@@ -12,6 +12,50 @@ import useAsyncEffect from "use-async-effect";
 import { useWindowSize } from "@utils/WindowSize";
 import BugTimePicker from "@core/BugTimePicker";
 
+const CustomTooltip = ({
+    active,
+    payload,
+    units = { avg: "ms", min: "ms", max: "ms", stddev: "ms", packetLoss: "%" },
+}) => {
+    if (active && payload && payload.length > 0) {
+        let timestamp = payload[0].payload.timestamp;
+
+        const getTooltipValues = () => {
+            const lines = [
+                <div key="timestamp">
+                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                        TIME:
+                    </Box>
+                    {` ${format(parseInt(timestamp), "kk:mm")}`}
+                </div>,
+            ];
+
+            for (let series in payload[0].payload) {
+                if (series !== "timestamp") {
+                    lines.push(
+                        <div key={series}>
+                            <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                                {series.toUpperCase()}:
+                            </Box>
+                            {` ${Math.round(payload[0].payload[series] * 100) / 100}${units[series]}`}
+                        </div>
+                    );
+                }
+            }
+
+            return lines;
+        };
+
+        return (
+            <Box sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}>
+                {getTooltipValues()}
+            </Box>
+        );
+    }
+
+    return null;
+};
+
 export default function BugTimeChart({ url, units = "ms", mockApiData = null }) {
     const rangeSpan = 60;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
@@ -76,52 +120,6 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
             newEnd = Date.now();
         }
         setRange([newEnd - rangeSpan * 60000, newEnd]);
-    };
-
-    const CustomTooltip = ({
-        active,
-        payload,
-        units = { avg: "ms", min: "ms", max: "ms", stddev: "ms", packetLoss: "%" },
-    }) => {
-        if (active && payload && payload.length > 0) {
-            let timestamp = payload[0].payload.timestamp;
-
-            const getTooltipValues = () => {
-                const lines = [
-                    <div key="timestamp">
-                        <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                            TIME:
-                        </Box>
-                        {` ${format(parseInt(timestamp), "kk:mm")}`}
-                    </div>,
-                ];
-
-                for (let series in payload[0].payload) {
-                    if (series !== "timestamp") {
-                        lines.push(
-                            <div key={series}>
-                                <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
-                                    {series.toUpperCase()}:
-                                </Box>
-                                {` ${Math.round(payload[0].payload[series] * 100) / 100}${units[series]}`}
-                            </div>
-                        );
-                    }
-                }
-
-                return lines;
-            };
-
-            return (
-                <Box
-                    sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}
-                >
-                    {getTooltipValues()}
-                </Box>
-            );
-        }
-
-        return null;
     };
 
     const getSeries = () => {

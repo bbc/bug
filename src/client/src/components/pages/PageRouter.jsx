@@ -5,19 +5,19 @@ import NavMobile from "@components/NavMobile";
 import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+const NavSwitcher = ({ showMobile, showDesktop, children }) => {
+    if (showDesktop) {
+        return <NavDesktop>{children}</NavDesktop>;
+    }
+    if (showMobile) {
+        return <NavMobile>{children}</NavMobile>;
+    }
+    return <>Nope</>;
+};
+
 const PageRouter = () => {
     const showMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
     const showDesktop = useMediaQuery((theme) => theme.breakpoints.up("sm"));
-
-    const NavSwitcher = ({ showMobile, showDesktop, children }) => {
-        if (showDesktop) {
-            return <NavDesktop>{children}</NavDesktop>;
-        }
-        if (showMobile) {
-            return <NavMobile>{children}</NavMobile>;
-        }
-        return <>Nope</>;
-    };
 
     return React.useMemo(
         () => (

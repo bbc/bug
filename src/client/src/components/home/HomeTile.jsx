@@ -103,7 +103,7 @@ const HomeTile = ({ panel }) => {
         return null;
     }
 
-    const StatusItems = () => {
+    const renderStatusItems = () => {
         let itemsToRender = panel._status;
 
         // if we only have critical alerts, just show them
@@ -150,7 +150,7 @@ const HomeTile = ({ panel }) => {
                         title={panel.title}
                         subheader={panel.description ? panel.description : panel._module.description}
                     />
-                    {panel !== null && <StatusItems />}
+                    {panel !== null && renderStatusItems()}
                 </StyledCard>
             </StyledLink>
         </StyledGrid>

@@ -1,5 +1,6 @@
 import React from "react";
 import AxiosCommand from "@utils/AxiosCommand";
+import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugRouterButton from "@core/BugRouterButton";
@@ -25,6 +26,7 @@ export default function RouterButton({
     onEditIcon,
     groups,
     useDoubleClick = false,
+    selectedGroup = -1,
 }) {
     const { confirmDialog } = useBugConfirmDialog();
     const { customDialog } = useBugCustomDialog();
@@ -56,13 +58,12 @@ export default function RouterButton({
     };
 
     const handleRemoveClicked = async (event, item) => {
-        const url =
-            buttonType === "source"
-                ? `/container/${panelId}/${buttonType}s/${sourceGroup}/${button.index}`
-                : `/container/${panelId}/${buttonType}s/${destinationGroup}/${button.index}`;
+        const url = `/container/${panelId}/${buttonType}s/${selectedGroup}/${button.index}`;
 
-        if (!(await AxiosDelete(url))) {
-            sendAlert(`Failed to delete button`, { variant: "error" });
+        if (await AxiosDelete(url)) {
+            sendAlert(`Removed ${buttonType} button: ${button.label}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to remove ${buttonType} button: ${button.label}`, { variant: "error" });
         }
         onChange();
     };

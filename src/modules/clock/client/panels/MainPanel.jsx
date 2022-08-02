@@ -6,33 +6,32 @@ import { useSelector } from "react-redux";
 import Hidden from "@mui/material/Hidden";
 import Box from "@mui/material/Box";
 
-export default function MainPanel() {
+const Clock = ({ type, ...props }) => {
+    if (type === "digital") {
+        return <DigitalClock {...props} />;
+    }
+    return <AnalogueClock {...props} />;
+};
+
+const MainPanel = () => {
     const panelConfig = useSelector((state) => state.panelConfig);
-
-    const Clock = (props) => {
-        if (panelConfig.data.type === "digital") {
-            return <DigitalClock {...props} />;
-        }
-        return <AnalogueClock {...props} />;
-    };
-
     const renderClock = () => {
         return (
             <>
                 <Hidden only={["sm", "md", "lg", "xl"]}>
-                    <Clock size="xs" />
+                    <Clock type={panelConfig.data.type} size="xs" />
                 </Hidden>
                 <Hidden only={["xs", "md", "lg", "xl"]}>
-                    <Clock size="sm" />
+                    <Clock type={panelConfig.data.type} size="sm" />
                 </Hidden>
                 <Hidden only={["xs", "sm", "lg", "xl"]}>
-                    <Clock size="md" />
+                    <Clock type={panelConfig.data.type} size="md" />
                 </Hidden>
                 <Hidden only={["xs", "sm", "md", "xl"]}>
-                    <Clock size="lg" />
+                    <Clock type={panelConfig.data.type} size="lg" />
                 </Hidden>
                 <Hidden only={["xs", "sm", "md", "lg"]}>
-                    <Clock size="xl" />
+                    <Clock type={panelConfig.data.type} size="xl" />
                 </Hidden>
             </>
         );
@@ -64,4 +63,6 @@ export default function MainPanel() {
             <DateString />
         </Box>
     );
-}
+};
+
+export default MainPanel;
