@@ -14,11 +14,20 @@ let receiverCollection;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address"],
+    restartOn: ["address", "username", "password"],
 });
 
 const getReceiverStatus = async () => {
-    const response = await axios.get(`http://${workerData.address}:80/status.json`, { timeout: 10000 });
+    const options = { timeout: 10000 };
+    //Check if the receiver needs a username and password
+    if (workerData.username || workerData.password) {
+        options.auth = {
+            username: workerData.username,
+            password: workerData.password,
+        };
+    }
+
+    const response = await axios.get(`http://${workerData.address}:80/status.json`, options);
     if (response.data) {
         const entry = await receiverCollection.insertOne({
             timestamp: new Date(),

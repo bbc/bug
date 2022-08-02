@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
@@ -53,7 +54,7 @@ export default function ConfigPanel() {
                     <BugConfigFormTextField
                         name="address"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: false }}
                         fullWidth
                         error={errors?.address}
                         helperText={messages.address}
@@ -61,6 +62,32 @@ export default function ConfigPanel() {
                         supportsValidation={true}
                         onChange={(event) => validateServer(event, "address")}
                         label="IP Address"
+                    />
+                </Grid>
+
+                <Grid item xs={12} lg={6}>
+                    <BugConfigFormTextField
+                        name="username"
+                        control={control}
+                        rules={{ required: false }}
+                        fullWidth
+                        error={errors.username}
+                        helperText={messages.username}
+                        defaultValue={panelConfig.data.username}
+                        label="Username"
+                    />
+                </Grid>
+
+                <Grid item xs={12} lg={6}>
+                    <BugConfigFormPasswordTextField
+                        name="password"
+                        control={control}
+                        rules={{ required: false }}
+                        fullWidth
+                        error={errors.password}
+                        helperText={messages.password}
+                        defaultValue={panelConfig.data.password}
+                        label="Password"
                     />
                 </Grid>
 

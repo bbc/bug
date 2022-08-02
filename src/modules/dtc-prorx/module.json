@@ -28,6 +28,8 @@
         "notes": "",
         "enabled": false,
         "address": "",
+        "username": "",
+        "password": "",
         "receiverCount": 4
     }
 }
