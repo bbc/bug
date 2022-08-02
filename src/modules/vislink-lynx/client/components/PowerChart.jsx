@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import BugPowerChart from "@core/BugPowerChart";
 
-export default function TrafficChart({ receiverCount = 4, panelId, type = "snr" }) {
+export default function TrafficChart({ receiverCount = 4, panelId, type = "power" }) {
     return (
         <>
             <Grid
