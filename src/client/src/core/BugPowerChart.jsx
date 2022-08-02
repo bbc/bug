@@ -61,20 +61,20 @@ export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", m
     const windowSize = useWindowSize();
 
     const [enableAutoRefresh, setEnableAutoRefresh] = useState(true);
-    const [xRange, setXRange] = useState(initialRange);
+    const [range, setRange] = useState(initialRange);
     const [stats, setStats] = useState(mockApiData);
 
     const doAutoRefresh = useCallback(() => {
-        setXRange([Date.now() - rangeSpan * 60000, Date.now()]);
+        setRange([Date.now() - rangeSpan * 60000, Date.now()]);
         timer.current = setTimeout(doAutoRefresh, 5000);
     }, []);
 
     useAsyncEffect(async () => {
         if (url) {
-            const fetchedStats = await AxiosGet(`${url}/${xRange[0]}/${xRange[1]}`);
+            const fetchedStats = await AxiosGet(`${url}/${range[0]}/${range[1]}`);
             setStats(fetchedStats);
         }
-    }, [url, xRange]);
+    }, [url, range]);
 
     useEffect(() => {
         if (enableAutoRefresh) {
@@ -93,18 +93,18 @@ export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", m
 
     const handleBack = (mins) => {
         setEnableAutoRefresh(false);
-        setXRange([xRange[0] - mins * 60000, xRange[1] - mins * 60000]);
+        setRange([range[0] - mins * 60000, range[1] - mins * 60000]);
     };
 
     const handleForward = (mins) => {
-        let newEnd = xRange[1] + mins * 60000;
+        let newEnd = range[1] + mins * 60000;
         if (newEnd > Date.now()) {
             setEnableAutoRefresh(true);
             newEnd = Date.now();
         } else {
             setEnableAutoRefresh(false);
         }
-        setXRange([newEnd - rangeSpan * 60000, newEnd]);
+        setRange([newEnd - rangeSpan * 60000, newEnd]);
     };
 
     const handleLatest = () => {
@@ -117,7 +117,7 @@ export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", m
         if (newEnd > Date.now()) {
             newEnd = Date.now();
         }
-        setXRange([newEnd - rangeSpan * 60000, newEnd]);
+        setRange([newEnd - rangeSpan * 60000, newEnd]);
     };
 
     const getSeries = () => {
@@ -147,7 +147,7 @@ export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", m
                     <XAxis
                         dataKey="timestamp"
                         type="number"
-                        domain={xRange}
+                        domain={range}
                         tickCount={5}
                         tickFormatter={(value) => {
                             return format(value, "kk:mm");
@@ -159,6 +159,7 @@ export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", m
                         }}
                         width={80}
                     />
+                    {getSeries()}
                     {/* Here it is: the extra prop - GH */}
                     <Tooltip content={<CustomTooltip receiverCount={receiverCount} units={units} />} />
                 </ComposedChart>
@@ -191,7 +192,7 @@ export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", m
                     Latest
                 </Button>
 
-                <BugTimePicker value={xRange[1]} onChange={handleTimePickerChange} minutesStep={5} />
+                <BugTimePicker value={range[1]} onChange={handleTimePickerChange} minutesStep={5} />
 
                 <Button
                     sx={{ margin: "8px" }}

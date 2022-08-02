@@ -19,6 +19,8 @@ parentPort.postMessage({
 
 const getReceiverStatus = async () => {
     const response = await axios.get(`http://${workerData.address}:80/data.xml`, { timeout: 10000 });
+    let unitName = "";
+
     if (response.data) {
         const dataString = parser.xml2json(response.data, { compact: true, trim: true, spaces: 4 });
         const data = JSON.parse(dataString);
@@ -29,11 +31,14 @@ const getReceiverStatus = async () => {
         let videoLock = false;
 
         for (let parameter of data.data.parameter) {
+            if (parameter.name._text.includes("DB_L2174_WEB_TEXT")) {
+                unitName = parameter.value?._cdata;
+            }
             if (parameter.name._text.includes("DB_DEMOD_PWR_LEVEL_")) {
-                power.push(parseFloat(parameter.value?._cdata));
+                power.push(parameter.value?._cdata);
             }
             if (parameter.name._text.includes("DB_DEMOD_MER_")) {
-                snr.push(parseFloat(parameter.value?._cdata));
+                snr.push(parameter.value?._cdata);
             }
             if (parameter.name._text.includes("DB_DEMOD_PKT_ERR_RATE")) {
                 packetErrors = parseFloat(parameter.value?._cdata);
@@ -52,7 +57,7 @@ const getReceiverStatus = async () => {
 
         const entry = await receiverCollection.insertOne({
             timestamp: new Date(),
-            unitName: response.data.unitName,
+            unitName: unitName,
             snr: snr,
             power: power,
             decoders: [{ packetErrors: packetErrors, frequency: frequency, videoLock: videoLock }],

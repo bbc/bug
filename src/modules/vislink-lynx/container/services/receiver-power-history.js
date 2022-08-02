@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoCollection = require("@core/mongo-collection");
+const e = require("express");
 
 module.exports = async (startTime = null, endTime = null) => {
     try {
@@ -18,11 +19,13 @@ module.exports = async (startTime = null, endTime = null) => {
             .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
             .toArray();
 
-        history.map((item) => {
-            return {
-                timestamp: new Date(item.timestamp).getTime(),
-                power: item?.power,
-            };
+        history = history.map((item) => {
+            const datapoint = { timestamp: new Date(item.timestamp).getTime() };
+            for (let value in item.power) {
+                const receiverNumber = parseInt(value) + 1;
+                datapoint[receiverNumber.toString()] = item.power[value];
+            }
+            return datapoint;
         });
 
         return history;
