@@ -30,10 +30,10 @@ const getReceiverStatus = async () => {
 
         for (let parameter of data.data.parameter) {
             if (parameter.name._text.includes("DB_DEMOD_PWR_LEVEL_")) {
-                power.push(parameter.value?._cdata);
+                power.push(parseFloat(parameter.value?._cdata));
             }
             if (parameter.name._text.includes("DB_DEMOD_MER_")) {
-                snr.push(parameter.value?._cdata);
+                snr.push(parseFloat(parameter.value?._cdata));
             }
             if (parameter.name._text.includes("DB_DEMOD_PKT_ERR_RATE")) {
                 packetErrors = parseFloat(parameter.value?._cdata);
