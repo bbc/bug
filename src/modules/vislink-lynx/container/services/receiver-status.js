@@ -20,6 +20,17 @@ module.exports = async (decoder = 0) => {
         items: [recieverData.decoders[decoder].videoLock ? "Locked" : "No Video"],
     });
 
+    // Modulation Scheme
+    statusBlocks.push({
+        label: "Coding",
+        state: "inactive",
+        items: [
+            recieverData.decoders[decoder].modulationScheme
+                ? recieverData.decoders[decoder].modulationScheme
+                : "Not Set",
+        ],
+    });
+
     //Frequency
     statusBlocks.push({
         label: "Frequency",

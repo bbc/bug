@@ -29,6 +29,7 @@ const getReceiverStatus = async () => {
         let packetErrors = null;
         let frequency = null;
         let videoLock = false;
+        let modulationScheme = "";
 
         for (let parameter of data.data.parameter) {
             if (parameter.name._text.includes("DB_L2174_WEB_TEXT")) {
@@ -42,6 +43,9 @@ const getReceiverStatus = async () => {
             }
             if (parameter.name._text.includes("DB_DEMOD_PKT_ERR_RATE")) {
                 packetErrors = parseFloat(parameter.value?._cdata);
+            }
+            if (parameter.name._text.includes("DB_DEMOD_MOD_TYPE")) {
+                modulationScheme = parameter.value?._cdata;
             }
             if (parameter.name._text.includes("DB_L2174_FREQ1")) {
                 frequency = parseFloat(parameter.value?._cdata) * 1000;
@@ -60,7 +64,14 @@ const getReceiverStatus = async () => {
             unitName: unitName,
             snr: snr,
             power: power,
-            decoders: [{ packetErrors: packetErrors, frequency: frequency, videoLock: videoLock }],
+            decoders: [
+                {
+                    modulationScheme: modulationScheme,
+                    packetErrors: packetErrors,
+                    frequency: frequency,
+                    videoLock: videoLock,
+                },
+            ],
         });
     }
 };
