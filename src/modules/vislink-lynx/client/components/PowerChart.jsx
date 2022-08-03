@@ -16,7 +16,11 @@ export default function TrafficChart({ receiverCount = 4, panelId, type = "power
                     },
                 }}
             >
-                <BugPowerChart receiverCount={receiverCount} url={`/container/${panelId}/receiver/${type}`} />
+                <BugPowerChart
+                    yRange={[0, -90]}
+                    receiverCount={receiverCount}
+                    url={`/container/${panelId}/receiver/${type}`}
+                />
             </Grid>
         </>
     );

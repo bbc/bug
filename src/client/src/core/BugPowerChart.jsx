@@ -54,7 +54,13 @@ const CustomTooltip = ({ active, payload, label, receiverCount, units }) => {
     return null;
 };
 
-export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", mockApiData = null }) {
+export default function BugPowerChart({
+    yRange = [0, "auto"],
+    receiverCount = 4,
+    url,
+    units = "dBm",
+    mockApiData = null,
+}) {
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
@@ -154,6 +160,7 @@ export default function BugPowerChart({ receiverCount = 4, url, units = "dBm", m
                         }}
                     />
                     <YAxis
+                        domain={yRange}
                         tickFormatter={(value) => {
                             return `${value} ${units}`;
                         }}
