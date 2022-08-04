@@ -13,7 +13,7 @@ module.exports = async (panelId) => {
 
         if (!panel._dockerContainer._isRunning) {
             logger.info(`panel container not running. Couldn't push config.`);
-            return true;
+            return false;
         }
 
         const panelConfig = await panelConfigModel.get(panelId);
