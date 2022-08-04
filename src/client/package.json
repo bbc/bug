@@ -30,7 +30,7 @@
     "leaflet": "^1.8.0",
     "md5": "^2.3.0",
     "mdi-material-ui": "^6.22.1",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "notistack": "^1.0.6-next.3",
     "postcss": "^8.4.6",
     "react": "^17.0.2",
