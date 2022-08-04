@@ -18,6 +18,6 @@ module.exports = async (panelId, route) => {
         return false;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to evaulate public routes for panel with id ${panelId}`);
+        return false;
     }
 };
