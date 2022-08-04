@@ -1,0 +1,36 @@
+{
+    "name": "unifi-controller",
+    "longname": "Unifi Contoller",
+    "description": "Interact with a Unifi Controller",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-wifi",
+    "author": "Ryan McCartney",
+    "license": "GPLv3",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "unifi-controller",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "username": "",
+        "password": "",
+        "port": 8443,
+        "sites": []
+    }
+}

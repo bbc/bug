@@ -2,15 +2,21 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
-import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
+import { useApiPoller } from "@hooks/ApiPoller";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
+
+    const sites = useApiPoller({
+        url: `/container/${panelConfig.data?.id}/sites/list`,
+        interval: 10000,
+    });
 
     if (panelConfig.status === "loading") {
         return <BugLoading />;
@@ -20,9 +26,15 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+    const { handleSubmit, control, errors, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
+
+    let validatedSites = [];
+    if (sites.status === "success" && sites.data && sites.data.length > 0) {
+        console.log(sites.data);
+        validatedSites = sites.data;
+    }
 
     return (
         <>
@@ -48,11 +60,9 @@ export default function ConfigPanel() {
                         label="Description"
                     />
                 </Grid>
-
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormTextField
                         name="address"
@@ -62,9 +72,7 @@ export default function ConfigPanel() {
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
-                        supportsValidation
-                        onChange={(event) => validateServer(event, "address")}
-                        label="IP Address"
+                        label="Controller Address"
                     />
                 </Grid>
 
@@ -99,26 +107,30 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <BugConfigFormChipInput
-                        name="protectedInterfaces"
-                        label="Protected Interfaces"
+                    <BugConfigFormTextField
+                        name="port"
                         control={control}
-                        defaultValue={panelConfig.data.protectedInterfaces}
-                        sort={true}
-                        error={errors.protectedInterfaces}
-                        helperText="Specific interface name or wildcard eg: ether*"
+                        rules={{ required: true }}
+                        numeric
+                        min={1}
+                        max={12}
                         fullWidth
+                        error={errors.port}
+                        helperText={messages.port}
+                        defaultValue={panelConfig.data?.port}
+                        type="text"
+                        label="Port"
                     />
                 </Grid>
 
                 <Grid item xs={12}>
-                    <BugConfigFormChipInput
-                        name="excludedInterfaces"
-                        label="Excluded Interfaces"
+                    <BugConfigFormAutocomplete
+                        name="sites"
+                        label="Sites to Monitor"
                         control={control}
-                        defaultValue={panelConfig.data.excludedInterfaces}
-                        sort={true}
-                        error={errors.excludedInterfaces}
+                        defaultValue={panelConfig.data.sites}
+                        options={validatedSites}
+                        error={errors.sites}
                         fullWidth
                     />
                 </Grid>
