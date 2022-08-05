@@ -33,7 +33,10 @@ const getDevices = async () => {
 
                 siteDevices = siteDevices.map(async (item) => {
                     let connected = false;
-                    if (Date.now() / 1000 - item.last_seen < item.next_interval) {
+                    if (
+                        Date.now() / 1000 - item.last_seen < item.next_interval ||
+                        Date.now() / 1000 - item.last_seen < 30
+                    ) {
                         connected = true;
                     }
 
