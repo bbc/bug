@@ -3,15 +3,26 @@ import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import BugPowerIcon from "@core/BugPowerIcon";
 import SearchIcon from "@mui/icons-material/Search";
 import { useApiPoller } from "@hooks/ApiPoller";
 import AxiosGet from "@utils/AxiosGet";
+import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
+import BugLoading from "@core/BugLoading";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
 export default function DevicesTable({ panelId }) {
     const sendAlert = useAlert();
+    const panelConfig = useSelector((state) => state.panelConfig);
+    const { renameDialog } = useBugRenameDialog();
+
     const handleGotoClicked = (event, item) => {
-        window.open(`http://${item?.address}`);
+        window.open(
+            `https://${panelConfig.data.address}:${panelConfig.data.port}/manage/site/${item?.siteId}/devices/1/100`
+        );
     };
 
     const handleReboot = async (event, item) => {
@@ -27,6 +38,32 @@ export default function DevicesTable({ panelId }) {
             sendAlert(`Locating ${item.name}`, { variant: "success" });
         } else {
             sendAlert(`Failed to locate ${item.name}`, { variant: "error" });
+        }
+    };
+
+    const handleRenameClicked = async (event, item) => {
+        event.stopPropagation();
+
+        let result = await renameDialog({
+            title: "Rename Device",
+            defaultValue: item["name"],
+            confirmButtonText: "Rename",
+            allowBlank: true,
+        });
+
+        if (result === false) {
+            return;
+        }
+
+        //Default name (if none set) is serial number
+        if (result === "") {
+            result = item["serial"];
+        }
+
+        if (await AxiosPost(`/container/${panelId}/device/rename/${item.deviceId}`, { name: result })) {
+            sendAlert(`Renamed device to ${result}`, { broadcast: "true", variant: "success" });
+        } else {
+            sendAlert(`Failed to rename device to ${result}`, { variant: "error" });
         }
     };
 
@@ -46,9 +83,20 @@ export default function DevicesTable({ panelId }) {
         return "";
     };
 
+    if (panelConfig.status === "loading") {
+        return <BugLoading />;
+    }
+
     return (
         <BugApiTable
             columns={[
+                {
+                    sortable: false,
+                    noPadding: true,
+                    width: 44,
+                    field: "connected",
+                    content: (item) => <BugPowerIcon disabled={!item.connected} />,
+                },
                 {
                     sortable: true,
                     defaultSortDirection: "asc",
@@ -57,14 +105,35 @@ export default function DevicesTable({ panelId }) {
                     width: "30rem",
                     field: "name",
                     hideWidth: 200,
-                    content: (item) => item["name"],
+                    content: (item) => (
+                        <BugTableLinkButton
+                            disabled={item._protected}
+                            onClick={(event) => handleRenameClicked(event, item)}
+                        >
+                            {item.name}
+                        </BugTableLinkButton>
+                    ),
                 },
                 {
                     title: "IP Address",
-                    width: "30rem",
+                    width: "25rem",
                     field: "address",
                     sortable: false,
                     content: (item) => item["config_network"]["ip"],
+                },
+                {
+                    title: "Clients",
+                    width: "20rem",
+                    field: "clients",
+                    sortable: true,
+                    content: (item) => item["clientCount"],
+                },
+                {
+                    title: "Serial Number",
+                    width: "30rem",
+                    field: "serial",
+                    sortable: false,
+                    content: (item) => item["serial"],
                 },
                 {
                     title: "Site Name",

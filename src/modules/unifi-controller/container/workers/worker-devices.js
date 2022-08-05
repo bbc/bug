@@ -8,8 +8,9 @@ const mongoSaveArray = require("@core/mongo-savearray");
 const mongoCollection = require("@core/mongo-collection");
 const Unifi = require("node-unifi");
 
-const updateDelay = 10000;
+const updateDelay = 5000;
 let deviceCollection;
+let clientsCollection;
 let unifi;
 
 // Tell the manager the things you care about
@@ -30,12 +31,27 @@ const getDevices = async () => {
                 unifi.opts.site = site;
                 let siteDevices = await unifi.getAccessDevices();
 
-                siteDevices = siteDevices.map((item) => {
-                    return { ...{ siteId: site }, ...item };
+                siteDevices = siteDevices.map(async (item) => {
+                    let connected = false;
+                    if (Date.now() / 1000 - item.last_seen < item.next_interval) {
+                        connected = true;
+                    }
+
+                    //Calculate the number of clients connected to the device
+                    const clients = await clientsCollection.find({ deviceMac: item.mac }).toArray();
+                    item.clientCount = clients.length;
+
+                    delete item.next_interval;
+                    delete item.last_seen;
+                    delete item.device_id;
+
+                    devices.push({
+                        ...{ deviceId: item._id, siteId: site, connected: connected, timestamp: Date.now() },
+                        ...item,
+                    });
                 });
-                devices = devices.concat(devices, siteDevices);
             }
-            await mongoSaveArray(deviceCollection, devices, "_id");
+            await mongoSaveArray(deviceCollection, devices, "mac");
         }
     } else {
         console.log("worker-devices: Address, username or password has not been provided.");
@@ -47,6 +63,7 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
     // get the collection reference
     deviceCollection = await mongoCollection("devices");
+    clientsCollection = await mongoCollection("clients");
     deviceCollection.deleteMany({});
 
     unifi = await new Unifi.Controller({
