@@ -1,5 +1,5 @@
 {
-    "name": "magewell-pro-convert",
+    "name": "magewell-ndi-encoder",
     "main": "",
     "scripts": {
         "production": "node ./api/server",

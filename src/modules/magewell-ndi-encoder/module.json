@@ -1,7 +1,7 @@
 {
-    "name": "magewell-pro-convert",
-    "longname": "Magewell Pro Convert",
-    "description": "Control NDI Sources on Magewell Devices",
+    "name": "magewell-ndi-encoder",
+    "longname": "Magewell NDI Econder",
+    "description": "Control Magewell NDI Encoders",
     "capabilities": [
         "ndi"
     ],
@@ -26,12 +26,10 @@
         "order": 0,
         "needsConfigured": true,
         "title": "",
-        "module": "magewell-pro-convert",
+        "module": "magewell-ndi-encoder",
         "description": "",
         "notes": "",
         "enabled": false,
-        "address": "",
-        "username": "Admin",
-        "password": "Admin"
+        "devices": []
     }
 }
