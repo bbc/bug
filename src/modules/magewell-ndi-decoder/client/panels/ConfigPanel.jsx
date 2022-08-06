@@ -74,7 +74,7 @@ export default function ConfigPanel() {
                         label="Username"
                     />
                 </Grid>
-                <Grid item item xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                     <BugConfigFormPasswordTextField
                         name="password"
                         control={control}
