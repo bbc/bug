@@ -27,9 +27,11 @@ const getDeviceInfo = async () => {
             );
 
             let deviceData = await magewell.getSummary();
+            const ndiConfig = await magewell.getNDIConfig();
             const history = { timestamp: new Date() };
 
             if (deviceData) {
+                deviceData.ndi = { ...deviceData.ndi, ...ndiConfig };
                 deviceData.online = true;
                 deviceData = { ...deviceData, ...deviceData?.device };
                 deviceData.portSpeed = deviceData?.ethernet?.state;
@@ -38,6 +40,8 @@ const getDeviceInfo = async () => {
                 deviceData.input = deviceData["input-state"];
                 deviceData.firmwareVersion = deviceData["fw-version"];
                 deviceData.address = workerData.devices[deviceId].address;
+                deviceData.ndi.discoveryServer = deviceData.ndi["discovery-server"];
+                deviceData.ndi.groupName = deviceData.ndi["group-name"];
 
                 history.temperature = deviceData["core-temp"];
                 history.cpu = deviceData["cpu-usage"];
@@ -45,6 +49,8 @@ const getDeviceInfo = async () => {
                 history.videoBitrate = deviceData?.ndi["video-bit-rate"];
                 history.audioBitrate = deviceData?.ndi["audio-bit-rate"];
 
+                delete deviceData.ndi["discovery-server"];
+                delete deviceData.ndi["group-name"];
                 delete deviceData?.device;
                 delete deviceData?.rndis;
                 delete deviceData?.ethernet;

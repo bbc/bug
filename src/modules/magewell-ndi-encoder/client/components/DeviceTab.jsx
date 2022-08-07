@@ -144,7 +144,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                             name: "Discovery Server",
                             value: (
                                 <BugTableLinkButton onClick={(event) => handleRenameClicked(event, device.data)}>
-                                    {device?.data?.name}
+                                    {device?.data?.ndi?.discoveryServer}
                                 </BugTableLinkButton>
                             ),
                         },
@@ -152,7 +152,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                             name: "Group",
                             value: (
                                 <BugTableLinkButton onClick={(event) => handleRenameClicked(event, device.data)}>
-                                    {device?.data?.name}
+                                    {device?.data?.ndi?.groupName}
                                 </BugTableLinkButton>
                             ),
                         },

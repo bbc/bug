@@ -130,12 +130,15 @@ class Magewell {
     getProduct() {
         return this.fetchData("get-caps");
     }
+
     getNDIConfig() {
         return this.fetchData("get-ndi-config");
     }
+
     getVideoConfig() {
         return this.fetchData("get-video-config");
     }
+
     getSummary() {
         return this.fetchData("get-summary-info");
     }
