@@ -1,11 +1,11 @@
 {
   "id": "",
   "order": 0,
-  "needsConfigured": true,
+  "needsConfigured": false,
   "title": "",
   "module": "magewell-ndi-encoder",
   "description": "",
   "notes": "",
   "enabled": false,
-  "devices": []
+  "devices": {}
 }

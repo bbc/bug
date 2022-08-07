@@ -1,6 +1,5 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
@@ -49,41 +48,6 @@ export default function ConfigPanel() {
                 </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <BugConfigFormTextField
-                        name="address"
-                        control={control}
-                        rules={{ required: true }}
-                        fullWidth
-                        error={errors.address}
-                        helperText={messages.address}
-                        defaultValue={panelConfig.data.address}
-                        label="IP Address"
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <BugConfigFormTextField
-                        name="username"
-                        control={control}
-                        rules={{ required: true }}
-                        fullWidth
-                        error={errors.username}
-                        helperText={messages.username}
-                        defaultValue={panelConfig.data.username}
-                        label="Username"
-                    />
-                </Grid>
-                <Grid item item xs={12} md={6}>
-                    <BugConfigFormPasswordTextField
-                        name="password"
-                        control={control}
-                        rules={{ required: true }}
-                        fullWidth
-                        error={errors?.password}
-                        defaultValue={panelConfig.data.password}
-                        label="Password"
-                    />
                 </Grid>
             </BugConfigWrapper>
         </>

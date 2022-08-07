@@ -3,7 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const e = require("express");
 
-module.exports = async (startTime = null, endTime = null) => {
+module.exports = async (deviceId, startTime = null, endTime = null) => {
     try {
         if (endTime === null) {
             endTime = Date.now();
@@ -14,13 +14,15 @@ module.exports = async (startTime = null, endTime = null) => {
         }
 
         const networkCollection = await mongoCollection("network");
+        const device = await networkCollection.findOne({ deviceId: deviceId });
 
-        let history = await networkCollection
-            .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
-            .toArray();
+        let history = device.history.filter((item) => {
+            if (item?.timestamp >= startTime && item?.timestamp <= endTime) {
+                return item;
+            }
+        });
 
         history.map((item) => {
-            delete item._id;
             item.timestamp = new Date(item.timestamp).getTime();
             return item;
         });

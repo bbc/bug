@@ -1,56 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import AxiosCommand from "@utils/AxiosCommand";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useAlert } from "@utils/Snackbar";
 import { usePanelStatus } from "@hooks/PanelStatus";
-import { useSelector } from "react-redux";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import AddDialog from "./components/AddDialog";
 
 export default function Toolbar(props) {
     let toolbarProps = { ...props };
+    const [dialogOpen, setDialogOpen] = useState(false);
     const panelStatus = usePanelStatus();
-    const panelConfig = useSelector((state) => state.panelConfig);
-    const sendAlert = useAlert(props?.panelId);
-
     toolbarProps["onClick"] = null;
 
-    const handleReboot = async (event) => {
-        sendAlert(`Rebooting ${panelConfig.data.name}, please wait ...`, { broadcast: "true", variant: "info" });
-        if (await AxiosCommand(`/container/${props?.panelId}/device/reboot`)) {
-            sendAlert(`Restarted ${panelConfig.data.name}`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to reboot ${panelConfig.data.name}`, { variant: "error" });
-        }
+    const handleAddClick = () => {
+        setDialogOpen(true);
     };
 
-    const handleWebpageClicked = async (event) => {
-        const url = `http://${panelConfig.data.address}`;
-        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
-        if (newWindow) newWindow.opener = null;
-        event.stopPropagation();
-        event.preventDefault();
-    };
+    const buttons = () => (
+        <>
+            <Button onClick={handleAddClick} variant="outlined" color="primary" startIcon={<AddIcon />}>
+                Add Encoder
+            </Button>
+            <AddDialog panelId={props?.panelId} open={dialogOpen} dialogOpen={setDialogOpen} />
+        </>
+    );
 
-    const menuItems = () => [
-        <MenuItem onClick={handleWebpageClicked} key="launch">
-            <ListItemIcon>
-                <OpenInNewIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Goto Webpage" />
-        </MenuItem>,
-        <MenuItem onClick={handleReboot} key="reboot">
-            <ListItemIcon>
-                <PowerSettingsNewIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Reboot Device" />
-        </MenuItem>,
-    ];
-
-    const buttons = () => [];
+    const menuItems = () => [];
 
     toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = panelStatus.hasCritical ? null : menuItems();

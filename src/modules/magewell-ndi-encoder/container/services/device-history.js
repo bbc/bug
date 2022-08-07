@@ -3,7 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const e = require("express");
 
-module.exports = async (startTime = null, endTime = null) => {
+module.exports = async (deviceId, startTime = null, endTime = null) => {
     try {
         if (endTime === null) {
             endTime = Date.now();
@@ -13,26 +13,34 @@ module.exports = async (startTime = null, endTime = null) => {
             startTime = endTime - 60 * 5 * 1000; // 5 mins
         }
 
-        const deviceCollection = await mongoCollection("data");
+        const devicesCollection = await mongoCollection("devices");
+        const device = await devicesCollection.findOne({ deviceId: deviceId });
 
-        let history = await deviceCollection
-            .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
-            .toArray();
+        const history = device.history.filter((item) => {
+            if (item?.timestamp >= startTime && item?.timestamp <= endTime) {
+                return item;
+            }
+        });
 
         let dataPoints = {
-            videoJitter: [],
-            audioJitter: [],
+            timestamp: [],
+            videoBitrate: [],
+            audioBitrate: [],
             memory: [],
             cpu: [],
             temperature: [],
         };
 
-        for (let eachItem of history) {
-            dataPoints.videoJitter.push({ timestamp: eachItem.timestamp, value: eachItem.ndi["video-jitter"] });
-            dataPoints.audioJitter.push({ timestamp: eachItem.timestamp, value: eachItem.ndi["audio-jitter"] });
-            dataPoints.cpu.push({ timestamp: eachItem.timestamp, value: eachItem.device["cpu-usage"] });
-            dataPoints.memory.push({ timestamp: eachItem.timestamp, value: eachItem.device["memory-usage"] });
-            dataPoints.temperature.push({ timestamp: eachItem.timestamp, value: eachItem.device["core-temp"] });
+        if (history.length > 0) {
+            for (let item of history) {
+                for (let key in item) {
+                    try {
+                        dataPoints[key].push(item[key]);
+                    } catch {
+                        console.log(`device-history: ${key} not found in ${deviceId}`);
+                    }
+                }
+            }
         }
 
         return dataPoints;

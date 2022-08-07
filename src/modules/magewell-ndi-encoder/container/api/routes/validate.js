@@ -13,4 +13,24 @@ router.post(
     })
 );
 
+router.post(
+    "/username",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await validateAddress(req.body),
+        });
+    })
+);
+
+router.post(
+    "/password",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await validateAddress(req.body),
+        });
+    })
+);
+
 module.exports = router;

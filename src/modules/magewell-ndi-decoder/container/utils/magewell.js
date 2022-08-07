@@ -23,7 +23,7 @@ class Magewell {
         if (response.data.status === 0) {
             cookie = response.headers["set-cookie"];
         } else {
-            console.log("magewell-pro-convert: Device login failed");
+            console.log("magewell-ndi-decoder: Device login failed");
         }
         status = response.data.status;
     }
@@ -34,7 +34,7 @@ class Magewell {
                 method: "logout",
             },
         });
-        console.log("magewell-pro-convert: Device logged out");
+        console.log("magewell-ndi-decoder: Device logged out");
     }
 
     async fetchSources() {

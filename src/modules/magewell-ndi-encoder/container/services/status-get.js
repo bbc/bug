@@ -5,10 +5,10 @@ const statusCheckCollection = require("@core/status-checkcollection");
 module.exports = async () => {
     return [].concat(
         await statusCheckCollection({
-            collectionName: "sources",
-            message: ["There are no NDI sources for this device.", "Check the network or discovery server."],
+            collectionName: "devices",
+            message: ["Devices information out of date.", "Check device settings."],
             itemType: "warning",
-            timeoutSeconds: 30,
+            timeoutSeconds: 60,
         })
     );
 };

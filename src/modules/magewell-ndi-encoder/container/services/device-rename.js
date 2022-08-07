@@ -3,7 +3,7 @@
 const Magewell = require("@utils/magewell");
 const getConfig = require("@core/config-get");
 
-module.exports = async (deviceId) => {
+module.exports = async (deviceId, name) => {
     try {
         let status = false;
         const config = await getConfig();
@@ -11,7 +11,7 @@ module.exports = async (deviceId) => {
 
         if (device) {
             const magewell = new Magewell(device?.address, device?.username, device?.password);
-            status = await magewell.reboot();
+            status = await magewell.setName(name);
         }
         return status;
     } catch (error) {

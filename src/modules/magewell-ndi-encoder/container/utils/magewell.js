@@ -1,31 +1,40 @@
 const axios = require("axios");
 const md5 = require("md5");
 
-let cookie;
-let status;
-
 class Magewell {
-    constructor(address, username, password) {
+    constructor(address, username, password, timeout = 2000) {
+        this.cookie = null;
+        this.status = null;
         this.address = address;
         this.username = username;
         this.hash = md5(password);
+        this.timeout = timeout;
     }
 
     async login() {
-        const response = await axios.get(`http://${this.address}/mwapi`, {
-            params: {
-                method: "login",
-                id: this.username,
-                pass: this.hash,
-            },
-        });
-
-        if (response.data.status === 0) {
-            cookie = response.headers["set-cookie"];
-        } else {
-            console.log("magewell-pro-convert: Device login failed");
+        let response;
+        if (this.address && this.username && this.hash) {
+            try {
+                response = await axios.get(`http://${this.address}/mwapi`, {
+                    params: {
+                        method: "login",
+                        id: this.username,
+                        pass: this.hash,
+                    },
+                    timeout: this.timeout,
+                });
+                this.status = response.data.status;
+                if (!this.status === 0) {
+                    console.log(`magewell-api: Failed to log into ${this.address}`);
+                } else {
+                    this.cookie = response.headers["set-cookie"];
+                }
+            } catch {
+                this.status = false;
+                console.log(`magewell-api: Failed to log into ${this.address}`);
+            }
         }
-        status = response.data.status;
+        return this.status;
     }
 
     async logout() {
@@ -33,52 +42,63 @@ class Magewell {
             params: {
                 method: "logout",
             },
+            timeout: this.timeout,
         });
-        console.log("magewell-pro-convert: Device logged out");
+        console.log("magewell-api: Device logged out");
     }
 
     async fetchSources() {
-        if (status !== 0) {
+        if (this.status !== 0) {
             await this.login();
         }
 
-        const response = await axios.get(`http://${this.address}/mwapi`, {
-            headers: {
-                Cookie: cookie,
-            },
-            params: { method: "get-ndi-sources" },
-        });
+        try {
+            const response = await axios.get(`http://${this.address}/mwapi`, {
+                headers: {
+                    Cookie: this.cookie,
+                },
+                params: { method: "get-ndi-sources" },
+                timeout: this.timeout,
+            });
+            this.status = response.data.status;
+        } catch {
+            this.status = false;
+            console.log(`magewell-api: cannot fetch data from ${this.address}`);
+        }
 
-        status = response.data.status;
-        return response.data?.sources;
+        return this.status;
     }
 
     async fetchData(method) {
-        if (status !== 0) {
+        if (this.status !== 0) {
             await this.login();
         }
 
-        const response = await axios.get(`http://${this.address}/mwapi`, {
-            headers: {
-                Cookie: cookie,
-            },
-            params: { method: method },
-        });
+        try {
+            const response = await axios.get(`http://${this.address}/mwapi`, {
+                headers: {
+                    Cookie: this.cookie,
+                },
+                params: { method: method },
+                timeout: this.timeout,
+            });
 
-        status = response.data.status;
-        delete response.data.status;
+            this.status = response.data.status;
+            delete response.data.status;
 
-        const data = response?.data;
+            const data = response?.data;
 
-        if (typeof data === "object") {
-            return data;
+            if (typeof data === "object") {
+                return data;
+            }
+        } catch {
+            console.log(`magewell-api: cannot fetch data from ${this.address}`);
         }
-
         return null;
     }
 
     async setData(method, data) {
-        if (status !== 0) {
+        if (this.status !== 0) {
             await this.login();
         }
 
@@ -86,12 +106,13 @@ class Magewell {
 
         const response = await axios.get(`http://${this.address}/mwapi`, {
             headers: {
-                Cookie: cookie,
+                Cookie: this.cookie,
             },
             params: params,
+            timeout: this.timeout,
         });
 
-        status = response.data.status;
+        this.status = response.data.status;
         return response?.data;
     }
     getSources() {
@@ -129,6 +150,18 @@ class Magewell {
 
     setName(name) {
         return this.setData("set-eth-config", { name: name });
+    }
+
+    setSourceName(name) {
+        return this.setData("set-ndi-config", { "source-name": name });
+    }
+
+    setGroupName(name) {
+        return this.setData("set-ndi-config", { "group-name": name });
+    }
+
+    setDiscoveryServer(address) {
+        return this.setData("set-ndi-config", { "enable-discovery": true, "discovery-server": address });
     }
 }
 

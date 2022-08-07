@@ -4,9 +4,9 @@ const asyncHandler = require("express-async-handler");
 const networkHistory = require("@services/network-history");
 
 route.get(
-    "/history/:start/:end",
+    "/:deviceId/history/:start/:end",
     asyncHandler(async (req, res) => {
-        const result = await networkHistory(parseInt(req.params.start), parseInt(req.params.end));
+        const result = await networkHistory(req.params?.deviceId, parseInt(req.params.start), parseInt(req.params.end));
         res.json({
             status: result ? "success" : "failure",
             data: result,
