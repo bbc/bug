@@ -4,6 +4,8 @@ const asyncHandler = require("express-async-handler");
 const rebootDevice = require("@services/device-reboot");
 const renameDevice = require("@services/device-rename");
 const sourceName = require("@services/source-name");
+const sourceDiscovery = require("@services/source-discovery");
+const sourceGroup = require("@services/source-group");
 const deleteDevice = require("@services/device-delete");
 const addDevice = require("@services/device-add");
 const listDevice = require("@services/device-list");
@@ -96,6 +98,36 @@ route.put("/:deviceId/sourcename", async function (req, res) {
         res.json({
             status: "error",
             message: "Failed to set NDI source name for the device",
+        });
+    }
+});
+
+route.put("/:deviceId/discovery", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await sourceDiscovery(req.params?.deviceId, req.body?.address),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set NDI discovery server for the device",
+        });
+    }
+});
+
+route.put("/:deviceId/group", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await sourceGroup(req.params?.deviceId, req.body?.name),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set NDI group for the device",
         });
     }
 });

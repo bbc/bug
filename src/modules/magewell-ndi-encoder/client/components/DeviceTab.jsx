@@ -96,6 +96,65 @@ export default function DeviceTab({ panelId, deviceId }) {
         }
     };
 
+    const handleDiscoveryClicked = async (event, item) => {
+        event.stopPropagation();
+
+        let result = await renameDialog({
+            title: "NDI Discovery Server",
+            defaultValue: item?.ndi?.discoveryServer,
+            confirmButtonText: "Change",
+            allowBlank: true,
+        });
+
+        if (result === false) {
+            return;
+        }
+
+        if (await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/discovery`, { address: result })) {
+            sendAlert(`NDI Discovery Server for ${item?.name} set to ${result}`, {
+                broadcast: "true",
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to set NDI Discovery Server for ${item?.name} to ${result}`, {
+                broadcast: "true",
+                variant: "error",
+            });
+        }
+    };
+
+    const handleGroupClicked = async (event, item) => {
+        event.stopPropagation();
+
+        let result = await renameDialog({
+            title: "NDI Group",
+            defaultValue: item?.ndi?.groupName,
+            confirmButtonText: "Change",
+            allowBlank: true,
+        });
+
+        if (result === false) {
+            return;
+        }
+
+        //Default name (if none set) is "public"
+        if (result === "") {
+            result = "public";
+        }
+
+        if (await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/group`, { name: result })) {
+            sendAlert(`NDI group for ${item?.name} set to ${result}`, {
+                broadcast: "true",
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to NDI group for ${item?.name} to ${result}`, {
+                broadcast: "true",
+                variant: "error",
+            });
+        }
+    };
+
     if (device.status === "idle" || device.status === "loading") {
         return <BugLoading height="30vh" />;
     }
@@ -143,15 +202,17 @@ export default function DeviceTab({ panelId, deviceId }) {
                         {
                             name: "Discovery Server",
                             value: (
-                                <BugTableLinkButton onClick={(event) => handleRenameClicked(event, device.data)}>
-                                    {device?.data?.ndi?.discoveryServer}
+                                <BugTableLinkButton onClick={(event) => handleDiscoveryClicked(event, device.data)}>
+                                    {device?.data?.ndi?.discoveryServer
+                                        ? device?.data?.ndi?.discoveryServer
+                                        : "_____________________"}
                                 </BugTableLinkButton>
                             ),
                         },
                         {
                             name: "Group",
                             value: (
-                                <BugTableLinkButton onClick={(event) => handleRenameClicked(event, device.data)}>
+                                <BugTableLinkButton onClick={(event) => handleGroupClicked(event, device.data)}>
                                     {device?.data?.ndi?.groupName}
                                 </BugTableLinkButton>
                             ),

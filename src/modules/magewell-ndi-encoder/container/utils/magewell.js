@@ -164,7 +164,12 @@ class Magewell {
     }
 
     setDiscoveryServer(address) {
-        return this.setData("set-ndi-config", { "enable-discovery": true, "discovery-server": address });
+        const data = { "enable-discovery": false };
+        if (address) {
+            data["discovery-server"] = address;
+            data["discovery-discovery"] = true;
+        }
+        return this.setData("set-ndi-config", data);
     }
 }
 
