@@ -170,7 +170,7 @@ const Menu = ({ showGroups = true }) => {
         }
         if (panelList.status === "success") {
             if (roles.includes("user") || enabledStrategiesCount === 0) {
-                const panelsByGroup = panelListGroups(panelList.data);
+                const panelsByGroup = panelListGroups(panelList.data, true, user?.data?.panels);
                 return panelsByGroup.map((groups) => groupedMenuItems(groups));
             }
         } else {
@@ -258,7 +258,7 @@ const Menu = ({ showGroups = true }) => {
                                 </ListItem>
                             </List>
                             <MenuDivider />
-                            {renderPanelMenuItems(user?.data?.roles)}
+                            {renderPanelMenuItems(user?.data?.roles, user?.data?.panels)}
                             {enabledPanelList.length > 0 ? <MenuDivider /> : null}
 
                             <BugRestrictTo role="admin">

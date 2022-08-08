@@ -1,15 +1,19 @@
 export const defaultGroupText = "other";
 
-export default function panelListGroups(panelListData, hideDisabledGroups = true) {
+export default function panelListGroups(panelListData, hideDisabledGroups = true, panels = []) {
     // sort the panels into groups
     let panelsByGroup = {};
     for (let eachPanel of panelListData) {
+        console.log(eachPanel);
         if (eachPanel.enabled || !hideDisabledGroups) {
-            const group = eachPanel.group ? eachPanel.group : "";
-            if (!panelsByGroup[group]) {
-                panelsByGroup[group] = [];
+            //Check if user has access to any panels in group before bothering to render group name
+            if (panels.includes(eachPanel?.id) || panels.length === 0) {
+                const group = eachPanel.group ? eachPanel.group : "";
+                if (!panelsByGroup[group]) {
+                    panelsByGroup[group] = [];
+                }
+                panelsByGroup[group].push(eachPanel);
             }
-            panelsByGroup[group].push(eachPanel);
         }
     }
 
