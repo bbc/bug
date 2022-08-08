@@ -32,8 +32,8 @@ const getNetworkInfo = async () => {
             if (networkData) {
                 history = {
                     timestamp: new Date(),
-                    tx: networkData["tx-speed-kbps"],
-                    rx: networkData["rx-speed-kbps"],
+                    tx: networkData["tx-speed-kbps"] * 1000,
+                    rx: networkData["rx-speed-kbps"] * 1000,
                 };
 
                 networkData.timestamp = new Date();

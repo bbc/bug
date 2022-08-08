@@ -17,12 +17,12 @@ module.exports = async (deviceId, startTime = null, endTime = null) => {
         const device = await networkCollection.findOne({ deviceId: deviceId });
 
         let history = device.history.filter((item) => {
-            if (item?.timestamp >= startTime && item?.timestamp <= endTime) {
+            if (item?.timestamp >= new Date(startTime) && item?.timestamp <= new Date(endTime)) {
                 return item;
             }
         });
 
-        history.map((item) => {
+        history = history.map((item) => {
             item.timestamp = new Date(item.timestamp).getTime();
             return item;
         });
@@ -30,5 +30,6 @@ module.exports = async (deviceId, startTime = null, endTime = null) => {
         return history;
     } catch (error) {
         console.log(`network-history: ${error.stack || error.trace || error || error.message}`);
+        return [];
     }
 };

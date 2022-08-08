@@ -12,7 +12,7 @@ import useAsyncEffect from "use-async-effect";
 import { useWindowSize } from "@utils/WindowSize";
 import BugTimePicker from "@core/BugTimePicker";
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         let timestamp = payload[0].payload.timestamp;
         let tx = payload[0].payload.tx;
