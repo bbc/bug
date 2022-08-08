@@ -35,7 +35,7 @@ module.exports = async (deviceId, startTime = null, endTime = null) => {
             for (let item of history) {
                 for (let key in item) {
                     try {
-                        dataPoints[key].push(item[key]);
+                        dataPoints[key].push({ label: key, value: item[key] });
                     } catch {
                         console.log(`device-history: ${key} not found in ${deviceId}`);
                     }

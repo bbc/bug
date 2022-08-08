@@ -161,7 +161,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                             value: (
                                 <BugSparkCell
                                     height={30}
-                                    value={`${history?.data?.cpu[0]}%`}
+                                    value={`${history?.data?.cpu[0].value}%`}
                                     history={history?.data?.cpu}
                                 />
                             ),
@@ -171,7 +171,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                             value: (
                                 <BugSparkCell
                                     height={30}
-                                    value={`${history?.data?.memory[0]}%`}
+                                    value={`${history?.data?.memory[0].value}%`}
                                     history={history?.data?.memory}
                                 />
                             ),
@@ -181,7 +181,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                             value: (
                                 <BugSparkCell
                                     height={30}
-                                    value={`${history?.data?.temperature[0]}${"\u00b0"}C`}
+                                    value={`${history?.data?.temperature[0].value}${"\u00b0"}C`}
                                     history={history?.data?.temperature}
                                 />
                             ),
@@ -191,7 +191,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                             value: (
                                 <BugSparkCell
                                     height={30}
-                                    value={bitrateString(history?.data?.videoBitrate[0])}
+                                    value={bitrateString(history?.data?.videoBitrate[0].value)}
                                     history={history?.data?.videoBitrate}
                                 />
                             ),
@@ -201,7 +201,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                             value: (
                                 <BugSparkCell
                                     height={30}
-                                    value={bitrateString(history?.data?.audioBitrate[0])}
+                                    value={bitrateString(history?.data?.audioBitrate[0].value)}
                                     history={history?.data?.audioBitrate}
                                 />
                             ),
