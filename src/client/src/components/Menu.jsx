@@ -170,7 +170,12 @@ const Menu = ({ showGroups = true }) => {
         }
         if (panelList.status === "success") {
             if (roles.includes("user") || enabledStrategiesCount === 0) {
-                const panelsByGroup = panelListGroups(panelList.data, true, user?.data?.panels);
+                const panelsByGroup = panelListGroups(
+                    panelList.data,
+                    true,
+                    user?.data?.restrictPanels,
+                    user?.data?.panels
+                );
                 return panelsByGroup.map((groups) => groupedMenuItems(groups));
             }
         } else {
