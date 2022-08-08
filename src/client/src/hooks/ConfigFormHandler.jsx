@@ -4,7 +4,7 @@ import AxiosPost from "@utils/AxiosPost";
 import _ from "lodash";
 
 export function useConfigFormHandler({ panelId = null }) {
-    const { register, handleSubmit, control, formState, setError, getValues, clearErrors } = useForm();
+    const { register, handleSubmit, control, formState, setError, getValues, clearErrors, reset } = useForm();
     const [validatedFields, setValidatedFields] = React.useState({});
     const timer = React.useRef();
 
@@ -101,6 +101,7 @@ export function useConfigFormHandler({ panelId = null }) {
         control: control,
         errors: getErrors(),
         messages: getMessages(),
+        reset: reset,
         validateServer: validateServer,
     };
 }

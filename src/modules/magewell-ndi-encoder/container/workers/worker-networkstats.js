@@ -68,7 +68,6 @@ const main = async () => {
 
     // get the collection reference
     networkCollection = await mongoCollection("network");
-    networkCollection.deleteMany({});
 
     // and now create the index with ttl
     await mongoCreateIndex(networkCollection, "timestamp", { expireAfterSeconds: updateDelay * 4 });

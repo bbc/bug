@@ -17,6 +17,10 @@ parentPort.postMessage({
     restartOn: ["devices"],
 });
 
+const isEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+};
+
 const getDeviceInfo = async () => {
     if (workerData.devices) {
         for (let deviceId in workerData.devices) {
@@ -30,7 +34,7 @@ const getDeviceInfo = async () => {
             const ndiConfig = await magewell.getNDIConfig();
             const history = { timestamp: new Date() };
 
-            if (deviceData) {
+            if (!isEmpty(deviceData)) {
                 deviceData.ndi = { ...deviceData.ndi, ...ndiConfig };
                 deviceData.online = true;
                 deviceData = { ...deviceData, ...deviceData?.device };
@@ -92,7 +96,6 @@ const main = async () => {
 
     // get the collection reference
     devicesCollection = await mongoCollection("devices");
-    devicesCollection.deleteMany({});
 
     // and now create the index with ttl
     await mongoCreateIndex(devicesCollection, "timestamp", { expireAfterSeconds: updateDelay * 4 });

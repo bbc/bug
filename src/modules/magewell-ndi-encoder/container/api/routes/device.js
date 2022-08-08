@@ -8,6 +8,7 @@ const sourceDiscovery = require("@services/source-discovery");
 const sourceGroup = require("@services/source-group");
 const deleteDevice = require("@services/device-delete");
 const addDevice = require("@services/device-add");
+const editDevice = require("@services/device-edit");
 const listDevice = require("@services/device-list");
 const getDevice = require("@services/device-get");
 const getDeviceConfig = require("@services/device-config-get");
@@ -24,6 +25,21 @@ route.post("/", async function (req, res) {
         res.json({
             status: "error",
             message: "Failed to add the encoder",
+        });
+    }
+});
+
+route.put("/:deviceId", async function (req, res) {
+    try {
+        res.json({
+            status: "success",
+            data: await editDevice(req.params.deviceId, req.body),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to edit the encoder",
         });
     }
 });

@@ -12,42 +12,52 @@ import Grid from "@mui/material/Grid";
 import AxiosPut from "@utils/AxiosPut";
 import AxiosPost from "@utils/AxiosPost";
 
-const AddDialog = ({ panelId, defaultData, dialogOpen, index, open, title = "Add New Encoder" }) => {
+const AddDialog = ({ panelId, deviceId = null, defaultData, dialogOpen, open, title = "Add New Encoder" }) => {
     const [data, setDefault] = useState(defaultData);
     const sendAlert = useAlert();
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+    const { register, handleSubmit, control, errors, reset, validateServer, messages } = useConfigFormHandler({
         panelId: panelId,
     });
 
     const closeDialog = async () => {
-        await setDefault({});
+        await setDefault(null);
+        await reset(null);
         dialogOpen(false);
     };
     useEffect(() => {
-        setDefault(defaultData);
-    }, [defaultData]);
+        if (deviceId) {
+            setDefault(defaultData);
+        } else {
+            setDefault(null);
+            reset(null);
+        }
+    }, [defaultData, deviceId, open]);
 
     const onSubmit = async (form) => {
         //If new link
-        if (!data) {
+        if (!deviceId) {
             if (await AxiosPost(`/container/${panelId}/device`, form)) {
                 sendAlert(`Added Magewell Encoder at ${form.address}.`, { broadcast: "true", variant: "success" });
             } else {
                 sendAlert(`Failed to add magewell encoder at ${form.address}`, { variant: "error" });
             }
         } else {
-            onEdit(form, data?.id);
+            if (await AxiosPut(`/container/${panelId}/device/${deviceId}`, form)) {
+                sendAlert(`Updated Magewell Encoder at ${form.address}.`, { broadcast: "true", variant: "success" });
+            } else {
+                sendAlert(`Failed to update magewell encoder at ${form.address}`, { variant: "error" });
+            }
         }
-        setDefault({});
+
         closeDialog();
     };
 
     const getActionText = () => {
-        if (index) {
-            return "Edit Encoder";
+        if (deviceId) {
+            return "Edit";
         }
-        return "Add Encoder";
+        return "Add";
     };
     return (
         <Dialog open={open} onClose={closeDialog} style={{ minWidth: "50%" }}>
@@ -55,7 +65,7 @@ const AddDialog = ({ panelId, defaultData, dialogOpen, index, open, title = "Add
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={4}>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={12}>
                             <BugConfigFormTextField
                                 name="address"
                                 control={control}

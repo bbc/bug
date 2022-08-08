@@ -158,7 +158,7 @@ export default function DeviceTab({ panelId, deviceId }) {
     if (device.status === "idle" || device.status === "loading") {
         return <BugLoading height="30vh" />;
     }
-    if (device.status !== "success" || !device.data || !history.data) {
+    if (device.status !== "success" || !device.data || !history.data || !device.data.online) {
         return <BugNoData panelId={panelId} title="No device information found" showConfigButton={false} />;
     }
 
@@ -170,7 +170,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                         {
                             name: "Name",
                             value: (
-                                <BugTableLinkButton onClick={(event) => handleRenameClicked(event, device.data)}>
+                                <BugTableLinkButton onClick={(event) => handleRenameClicked(event, device?.data)}>
                                     {device?.data?.name}
                                 </BugTableLinkButton>
                             ),
@@ -178,7 +178,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                         {
                             name: "Address",
                             value: (
-                                <BugTableLinkButton onClick={(event) => handleAddressClicked(event, device.data)}>
+                                <BugTableLinkButton onClick={(event) => handleAddressClicked(event, device?.data)}>
                                     {device?.data?.address}
                                 </BugTableLinkButton>
                             ),
@@ -194,7 +194,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                         {
                             name: "NDI Source Name",
                             value: (
-                                <BugTableLinkButton onClick={(event) => handleNdiRenameClicked(event, device.data)}>
+                                <BugTableLinkButton onClick={(event) => handleNdiRenameClicked(event, device?.data)}>
                                     {device?.data?.ndi?.name}
                                 </BugTableLinkButton>
                             ),
@@ -202,7 +202,7 @@ export default function DeviceTab({ panelId, deviceId }) {
                         {
                             name: "Discovery Server",
                             value: (
-                                <BugTableLinkButton onClick={(event) => handleDiscoveryClicked(event, device.data)}>
+                                <BugTableLinkButton onClick={(event) => handleDiscoveryClicked(event, device?.data)}>
                                     {device?.data?.ndi?.discoveryServer
                                         ? device?.data?.ndi?.discoveryServer
                                         : "_____________________"}
@@ -269,7 +269,9 @@ export default function DeviceTab({ panelId, deviceId }) {
                         },
                         {
                             name: "Uptime",
-                            value: timeAgo.format(Date.now() - parseInt(device.data.uptime) * 1000),
+                            value: device.data.uptime
+                                ? timeAgo.format(Date.now() - parseInt(device.data.uptime) * 1000)
+                                : "Offline",
                         },
                         {
                             name: "Link Speed",
