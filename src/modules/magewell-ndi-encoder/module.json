@@ -1,6 +1,6 @@
 {
     "name": "magewell-ndi-encoder",
-    "longname": "Magewell NDI Econder",
+    "longname": "Magewell NDI Encoder",
     "description": "Control Magewell NDI Encoders",
     "capabilities": [
         "ndi"
