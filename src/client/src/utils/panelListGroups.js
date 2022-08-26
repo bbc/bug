@@ -4,7 +4,6 @@ export default function panelListGroups(panelListData, hideDisabledGroups = true
     // sort the panels into groups
     let panelsByGroup = {};
     for (let eachPanel of panelListData) {
-        console.log(eachPanel);
         if (eachPanel.enabled || !hideDisabledGroups) {
             //Check if user has access to any panels in group before bothering to render group name
             if (panels.includes(eachPanel?.id) || !restrictPanels) {
