@@ -84,12 +84,3 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
         }
     });
 };
-
-// const result = await ciscoSGSSH({
-//     host: "192.168.172.105",
-//     username: "cisco",
-//     password: "Facs165%",
-//     commands: [
-//         "sh interfaces configuration",
-//     ]
-// });
