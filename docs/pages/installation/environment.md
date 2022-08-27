@@ -7,7 +7,7 @@ has_children: true
 
 # Environment Variables
 
-You can set a range of enironment varaibles on the main BUG container to control it's behaviour. These are documented below.
+You can set a range of environment varaibles on the main BUG container to control it's behaviour. These are documented below.
 
 | Variable                  | Default                   | Type    | Description                                                                                         |
 | ------------------------- | ------------------------- | ------- | --------------------------------------------------------------------------------------------------- |
