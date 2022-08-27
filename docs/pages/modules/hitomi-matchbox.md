@@ -9,7 +9,7 @@ nav_order: 11
 
 Control of the Hitomi Matchbox ident generator
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -23,5 +23,4 @@ Control of the Hitomi Matchbox ident generator
   "enabled": false,
   "address": ""
 }
-```            
-
+```

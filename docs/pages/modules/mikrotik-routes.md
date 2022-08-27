@@ -9,7 +9,7 @@ nav_order: 17
 
 Allows selection of default route on Mikrotik routers
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -25,5 +25,4 @@ Allows selection of default route on Mikrotik routers
   "username": "bug",
   "password": ""
 }
-```            
-
+```

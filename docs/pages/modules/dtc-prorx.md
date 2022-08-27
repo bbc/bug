@@ -9,7 +9,7 @@ nav_order: 10
 
 Control DTC radio camera receivers
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -26,5 +26,4 @@ Control DTC radio camera receivers
   "password": "",
   "receiverCount": 4
 }
-```            
-
+```

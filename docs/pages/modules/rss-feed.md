@@ -9,7 +9,7 @@ nav_order: 23
 
 Show the latest posts from an RSS feed
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -23,5 +23,4 @@ Show the latest posts from an RSS feed
   "enabled": false,
   "address": ""
 }
-```            
-
+```

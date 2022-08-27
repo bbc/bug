@@ -9,7 +9,7 @@ nav_order: 6
 
 Polls API endpoint to retrieve codec information
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -23,5 +23,4 @@ Polls API endpoint to retrieve codec information
   "enabled": false,
   "url": ""
 }
-```            
-
+```

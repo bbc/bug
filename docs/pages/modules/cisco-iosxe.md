@@ -9,7 +9,7 @@ nav_order: 3
 
 Monitoring and control of Cisco IOS-XE based switches
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -28,5 +28,4 @@ Monitoring and control of Cisco IOS-XE based switches
   "protectedInterfaces": [],
   "dhcpSources": []
 }
-```            
-
+```

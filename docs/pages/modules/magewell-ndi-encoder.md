@@ -9,7 +9,7 @@ nav_order: 14
 
 Control Magewell NDI Encoders
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -23,5 +23,4 @@ Control Magewell NDI Encoders
   "enabled": false,
   "devices": {}
 }
-```            
-
+```

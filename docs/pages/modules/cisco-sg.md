@@ -9,7 +9,7 @@ nav_order: 4
 
 Monitoring and control of Cisco SG-series switches
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -28,5 +28,4 @@ Monitoring and control of Cisco SG-series switches
   "protectedInterfaces": [],
   "dhcpSources": []
 }
-```            
-
+```

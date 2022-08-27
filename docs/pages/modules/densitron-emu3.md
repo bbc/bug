@@ -9,7 +9,7 @@ nav_order: 8
 
 Monitoring and control of Densitron EMU3 MDUs
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -25,5 +25,4 @@ Monitoring and control of Densitron EMU3 MDUs
   "protectedOutputs": [],
   "outputNames": []
 }
-```            
-
+```

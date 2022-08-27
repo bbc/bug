@@ -9,7 +9,7 @@ nav_order: 2
 
 Control and monitor Blackmagic videohub devices
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -33,5 +33,4 @@ Control and monitor Blackmagic videohub devices
   "excludeSources": [],
   "excludeDestinations": []
 }
-```            
-
+```

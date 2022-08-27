@@ -9,7 +9,7 @@ nav_order: 22
 
 Monitor network devices
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -31,5 +31,4 @@ Monitor network devices
   },
   "edges": {}
 }
-```            
-
+```

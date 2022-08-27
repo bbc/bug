@@ -9,7 +9,7 @@ nav_order: 0
 
 Monitoring and control of Arista switches
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -28,5 +28,4 @@ Monitoring and control of Arista switches
   "protectedInterfaces": [],
   "dhcpSources": []
 }
-```            
-
+```

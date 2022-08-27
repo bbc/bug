@@ -9,7 +9,7 @@ nav_order: 31
 
 Basic control of VMs running on an XCP-ng hypervisor
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -27,5 +27,4 @@ Basic control of VMs running on an XCP-ng hypervisor
   "url": "",
   "xoUrl": ""
 }
-```            
-
+```

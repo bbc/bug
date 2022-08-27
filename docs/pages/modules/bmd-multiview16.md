@@ -9,7 +9,7 @@ nav_order: 1
 
 Configure Blackmagic multiviewers with auto labelling
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -28,5 +28,4 @@ Configure Blackmagic multiviewers with auto labelling
   "autoLabelIndex": {},
   "autoLayout": "none"
 }
-```            
-
+```

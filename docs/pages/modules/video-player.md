@@ -9,7 +9,7 @@ nav_order: 28
 
 HLS, DASH and Web Video Player
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -23,5 +23,4 @@ HLS, DASH and Web Video Player
   "description": "",
   "enabled": false
 }
-```            
-
+```

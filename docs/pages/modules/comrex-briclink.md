@@ -9,7 +9,7 @@ nav_order: 7
 
 Control of Comrex BRIC-Link and BRIC-Link II devices
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -26,5 +26,4 @@ Control of Comrex BRIC-Link and BRIC-Link II devices
   "password": "comrex",
   "port": "80"
 }
-```            
-
+```

@@ -9,7 +9,7 @@ nav_order: 20
 
 Control of Open Broadcast Systems' C-100 Encoders
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -27,5 +27,4 @@ Control of Open Broadcast Systems' C-100 Encoders
   "snmpCommunity": "public",
   "codecSource": ""
 }
-```            
-
+```

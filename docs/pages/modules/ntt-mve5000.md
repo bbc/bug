@@ -9,7 +9,7 @@ nav_order: 19
 
 Control of NTT MVE5000 encoders
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -26,5 +26,4 @@ Control of NTT MVE5000 encoders
   "snmpCommunity": "public",
   "codecSource": ""
 }
-```            
-
+```

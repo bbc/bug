@@ -9,7 +9,7 @@ nav_order: 13
 
 Control NDI Sources on Magewell Devices
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -25,5 +25,4 @@ Control NDI Sources on Magewell Devices
   "username": "Admin",
   "password": "Admin"
 }
-```            
-
+```

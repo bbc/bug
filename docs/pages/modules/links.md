@@ -9,7 +9,7 @@ nav_order: 12
 
 Link to other services
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -23,5 +23,4 @@ Link to other services
   "enabled": false,
   "links": []
 }
-```            
-
+```

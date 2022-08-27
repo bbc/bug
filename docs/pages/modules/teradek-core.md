@@ -9,7 +9,7 @@ nav_order: 25
 
 Control devices in the Teradek Core from BUG
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -27,5 +27,4 @@ Control devices in the Teradek Core from BUG
   "decoders": [],
   "password": ""
 }
-```            
-
+```

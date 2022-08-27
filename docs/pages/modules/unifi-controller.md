@@ -9,7 +9,7 @@ nav_order: 27
 
 Interact with a Unifi Controller
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -27,5 +27,4 @@ Interact with a Unifi Controller
   "port": 8443,
   "sites": []
 }
-```            
-
+```

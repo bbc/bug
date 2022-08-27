@@ -9,7 +9,7 @@ nav_order: 16
 
 Monitoring and control of mikrotik interfaces
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -31,5 +31,4 @@ Monitoring and control of mikrotik interfaces
     "eoip*"
   ]
 }
-```            
-
+```

@@ -9,7 +9,7 @@ nav_order: 24
 
 Run a speedtest.net test from your server
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -24,5 +24,4 @@ Run a speedtest.net test from your server
   "notes": "",
   "enabled": false
 }
-```            
-
+```

@@ -9,7 +9,7 @@ nav_order: 29
 
 Control VisLink radio camera receivers
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -23,5 +23,4 @@ Control VisLink radio camera receivers
   "enabled": false,
   "address": ""
 }
-```            
-
+```

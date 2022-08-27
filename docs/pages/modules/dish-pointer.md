@@ -9,7 +9,7 @@ nav_order: 9
 
 Get the Azimuth and Elevation to point a Satelite Dish
 
-# Default Configuration
+## Default Configuration
 
 ```
 {
@@ -26,5 +26,4 @@ Get the Azimuth and Elevation to point a Satelite Dish
   "description": "Satelite Dish Pointer",
   "enabled": false
 }
-```            
-
+```
