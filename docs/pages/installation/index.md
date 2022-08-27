@@ -27,7 +27,7 @@ Run BUG on a Raspberry Pi 4 to create a portable system, coupled with Raspberry 
 
 ### AWS or Virtualised
 
-Run BUG in EC2 or on a virtual machine for larger deployments or for higher levels of availability, in such a case it might be desirable to make BUG available publically and couple it with SSO options such as OIDC or SAML.
+Run BUG in EC2 or on a virtual machine for larger deployments or for higher levels of availability, in such a case it might be desirable to make BUG available publicly and couple it with SSO options such as OIDC or SAML.
 
 Note - When making BUG available on the internet you should take the necessary precautions to protect your infrastructure. You should use SSL certificates and reduce risk by placing BUG behind a reverse proxy.
 
