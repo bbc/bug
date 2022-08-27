@@ -9,7 +9,7 @@ Control and monitor a wide range of equipment from a single web interface.
 # Getting Started
 
 -   [Installation](./pages/installation) - Installation guide for any operating system
--   [Modules](./pages/modules) - A list of equipment that can be controlled and implemented fucntionality
+-   [Modules](./pages/modules) - A list of equipment that can be controlled and implemented functionality
 
 ## [Development](./pages/development)
 
