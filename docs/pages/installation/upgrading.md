@@ -9,7 +9,7 @@ has_children: true
 
 ## Web Interface
 
-You're BUG should automatically check for updates. You can see if any are avalible and update by going to the `settings` page and then `Software Updates`. Click the `Check for Updates` button followed by `Update` and BUG should update automatically!
+You're BUG should automatically check for updates. You can see if any are availible and update by going to the `settings` page and then `Software Updates`. Click the `Check for Updates` button followed by `Update` and BUG should update automatically!
 
 ## Command Line
 
@@ -25,7 +25,7 @@ Next, run the following command and Docker will determine which containers to re
 
 That's it - your BUG instance is up to date.
 
-## Running a Specific verion of bug
+## Running a Specific version of bug
 
 In you're `docker-compose.yml` file adjust the image line to reflect the specific version you wish to run rather than the default `latest`. See the snippet below.
 
