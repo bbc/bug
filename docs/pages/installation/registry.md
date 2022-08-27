@@ -7,7 +7,7 @@ nav_order: 2
 
 # Getting BUG from the BCN Repository
 
-For internal development builds within the BCN BUG is avalible from a Docker container registry within the BCN.
+For internal development builds within the BCN BUG is availible from a Docker container registry within the BCN.
 
 To access the repository you'll need to first be on the BCN and then modify you'r docker configuration to allow you to connect to the registry.
 
