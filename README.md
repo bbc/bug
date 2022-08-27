@@ -8,7 +8,7 @@ BUG provides management and control of network devices in broadcast environments
 
 This is the all new version 3.
 
-All the detailed information you'll need to get started is [bug.bbc.github.io](https://https://bug.locfacs.co.uk/).
+All the detailed information you'll need to get started is [bug.bbc.github.io](https://bug.locfacs.co.uk/).
 
 # Getting Started
 
