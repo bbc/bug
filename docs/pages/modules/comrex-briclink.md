@@ -1,0 +1,30 @@
+---
+layout: page
+title: Comrex BRIC-Link
+parent: Modules
+nav_order: 7
+---
+
+# Comrex BRIC-Link
+
+Control of Comrex BRIC-Link and BRIC-Link II devices
+
+# Default Configuration
+
+```
+{
+  "id": "",
+  "order": 0,
+  "needsConfigured": true,
+  "title": "",
+  "module": "comrex-briclink",
+  "description": "",
+  "notes": "",
+  "enabled": false,
+  "address": "",
+  "username": "bug",
+  "password": "comrex",
+  "port": "80"
+}
+```            
+
