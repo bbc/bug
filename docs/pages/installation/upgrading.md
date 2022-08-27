@@ -9,7 +9,7 @@ has_children: true
 
 ## Web Interface
 
-You're BUG should automatically check for updates. You can see if any are availible and update by going to the `settings` page and then `Software Updates`. Click the `Check for Updates` button followed by `Update` and BUG should update automatically!
+You're BUG should automatically check for updates. You can see if any are available and update by going to the `settings` page and then `Software Updates`. Click the `Check for Updates` button followed by `Update` and BUG should update automatically!
 
 ## Command Line
 
