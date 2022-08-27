@@ -1,0 +1,25 @@
+name: Version Bump
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    version:
+        runs-on: self-hosted
+        steps:
+            - name: "Documentation: Cleanup any previous job"
+              run: |
+                  ls -la ./
+                  rm -rf ./* || true
+                  rm -rf ./.??* || true
+                  ls -la ./
+            #Get the latest version of the repository
+            - name: Checkout
+              uses: actions/checkout@v3
+            #Check github pages docs for spelling errors
+            - name: "Documentation: Spell Check Documentation"
+              uses: codespell-project/actions-codespell@master
+              with:
+                  path: docs
