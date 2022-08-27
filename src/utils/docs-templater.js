@@ -35,6 +35,8 @@ nav_order: ${index}
 
 ${modules[index].description}
 
+![${modules[index].longname} Module Screenshot](/assets/images/screenshots/module-${modules[index].name}.png)
+
 ## Default Configuration
 
 ${"```\n" + JSON.stringify(modules[index].defaultconfig, null, 2) + "\n```"}            
