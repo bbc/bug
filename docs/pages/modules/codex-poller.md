@@ -9,7 +9,7 @@ nav_order: 2
 
 Internally we store all our encoder and decoder endpoints in a large database with a RestAPI - called codex.
 
-How the data is stored is irrelvant but by providing a list of codec data formatted in a particular way allows you to get a viewable list of all your endpoints.
+How the data is stored is irrelevant but by providing a list of codec data formatted in a particular way allows you to get a viewable list of all your endpoints.
 
 More useful than that is the ability to link this module with other 'codec' modules. Then rather than providing an IP address and port manually to each codec you can pick from a dropdown list available in the database.
 
