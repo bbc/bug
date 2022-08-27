@@ -15,7 +15,7 @@ Note - There's a different version for Intel and M1 based macs. You'll need to p
 
 ## Create Files
 
-1. Create a file called `docker-compose.yml`. You can create this file anywhere on your system but it's probably simpliest to put it in a new folder all of it's own.
+1. Create a file called `docker-compose.yml`. You can create this file anywhere on your system but it's probably simplest to put it in a new folder all of it's own.
 2. Copy the below code snippet into the file
 
 Note - This file describes where to get the docker containers needed to run BUG from and how to create them plumbing the right bits and pieces from your system into dockers such as ports and files.
@@ -83,7 +83,7 @@ services:
             - bug
 ```
 
-Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environmnet variables will mean they run with a sensible default
+Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environment variables will mean they run with a sensible default
 
 ## Start BUG
 

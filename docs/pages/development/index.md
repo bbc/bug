@@ -18,18 +18,18 @@ The development version has live mounts, runs `nodemon` and `create-react-app` m
 For development on your local machine with docker (recommended)
 
 1. To begin you'll need to install the [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-   and the latest LTS verion od [Node.js](https://nodejs.dev/download/) on your development machine.
+   and the latest LTS version od [Node.js](https://nodejs.dev/download/) on your development machine.
 2. Clone the BUG repository using `git clone https://github.com/bbc/bbcnews-bug`
 3. Change directory to the `./src` folder of the repository
 4. Run `npm ci`. To install all the backend dependencies locally
 5. Change directory to the `./src/client` folder of the repository
 6. Run `npm ci`. To install all the frontend dependencies locally
 7. Change directory to the root folder of the repository
-8. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become avalible.
-9. Get developing. If you're using the default ports, the web interface will be avalible on port 3000, the API on port 3101 and ta GUI view of the MongoDB database on port 3202.
+8. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become availible.
+9. Get developing. If you're using the default ports, the web interface will be availible on port 3000, the API on port 3101 and the GUI view of the MongoDB database on port 3202.
 
 You can change many of the port parameters, logging locations by setting environment variables in the `docker-compose.yml` file in the root directory.
 
-When developing in docker changes will automatically be relfected in docker using volume mounts and nodemon to reload. Please make sure to `npm install` on your local machine before spinning up the compose project.
+When developing in docker changes will automatically be reflected in docker using volume mounts and nodemon to reload. Please make sure to `npm install` on your local machine before spinning up the compose project.
 
-Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used for most of BUG's development. Other IDE's are avalible. However, Visual Studio Code paired with the official Docker extension found in the extension's store is really useful for outputing logs and visualising the orchestration.
+Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used for most of BUG's development. Other IDE's are availible. However, Visual Studio Code paired with the official Docker extension found in the extension's store is really useful for outputting logs and visualising the orchestration.
