@@ -9,6 +9,8 @@ nav_order: 24
 
 Run a speedtest.net test from your server
 
+![speedtest.net Module Screenshot](/assets/images/screenshots/module-speedtest-net.png)
+
 ## Default Configuration
 
 ```

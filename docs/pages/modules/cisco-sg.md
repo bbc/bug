@@ -9,6 +9,8 @@ nav_order: 4
 
 Monitoring and control of Cisco SG-series switches
 
+![Cisco SG Module Screenshot](/assets/images/screenshots/module-cisco-sg.png)
+
 ## Default Configuration
 
 ```
