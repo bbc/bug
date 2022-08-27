@@ -21,8 +21,8 @@ Control devices in the Teradek Core from BUG
   "description": "",
   "enabled": false,
   "address": "",
-  "organisation": "bbcnews",
-  "username": "location.facs@bbc.co.uk",
+  "organisation": "",
+  "username": "admin",
   "encoders": [],
   "decoders": [],
   "password": ""

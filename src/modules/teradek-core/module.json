@@ -28,8 +28,8 @@
         "description": "",
         "enabled": false,
         "address": "",
-        "organisation": "bbcnews",
-        "username": "location.facs@bbc.co.uk",
+        "organisation": "",
+        "username": "admin",
         "encoders": [],
         "decoders": [],
         "password": ""
