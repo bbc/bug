@@ -23,3 +23,5 @@ jobs:
               uses: codespell-project/actions-codespell@master
               with:
                   path: docs
+                  only_warn: 1
+
