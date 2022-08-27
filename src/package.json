@@ -10,7 +10,8 @@
         "production": "node bin/bug-prod",
         "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
         "test": "jest --forceExit --detectOpenHandles --maxWorkers=1",
-        "modulebuilder": "node modulebuilder/cli.mjs"
+        "modulebuilder": "node modulebuilder/cli.mjs",
+        "documentation": "node utils/docs-templater.js"
     },
     "nodemonConfig": {
         "ignore": [
