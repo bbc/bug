@@ -53,7 +53,7 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/bug/.config/chromiu
 
 6. Make the file executable `sudo chmod +x /home/bug/bug.sh`
 
-7. Allow the script to exectued after login `sudo mkdir /home/bug/.config/autostart && sudo nano /home/bug/.config/autostart/bug.desktop`. Then add the following infomration to the file.
+7. Allow the script to executed after login `sudo mkdir /home/bug/.config/autostart && sudo nano /home/bug/.config/autostart/bug.desktop`. Then add the following information to the file.
 
 ```bash
 [Desktop Entry]
