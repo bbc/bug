@@ -5,7 +5,7 @@ on:
     pull_request:
     
 jobs:
-    version:
+    codespell:
         runs-on: self-hosted
         steps:
             - name: "Documentation: Cleanup any previous job"
@@ -21,6 +21,9 @@ jobs:
             - name: "Documentation: Spell Check Documentation"
               uses: codespell-project/actions-codespell@master
               with:
+                  check_filenames: true
+                  check_hidden: true
                   path: docs
                   only_warn: 1
+                  ignore_words_list: aoto,daa,te
 
