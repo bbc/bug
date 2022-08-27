@@ -15,7 +15,7 @@ nav_order: 2
 
 ## Install Docker-Compose
 
-On Linux platforms docker engine is packaged seperately to other docker tools. Docker Compose is used to spin up the main BUG app and additional services together in a single command.
+On Linux platforms docker engine is packaged separately to other docker tools. Docker Compose is used to spin up the main BUG app and additional services together in a single command.
 
 1. Run this command to download the current stable release of Docker Compose:
 
@@ -106,7 +106,7 @@ services:
             - bug
 ```
 
-Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environmnet variables will mean they run with a sensible default
+Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environment variables will mean they run with a sensible default
 
 ## Start BUG
 
