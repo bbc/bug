@@ -7,7 +7,7 @@ nav_order: 2
 
 # NDI Discovery
 
--   See all NDI sources ascconciated with a discovery server
+-   See all NDI sources associated with a discovery server
 -   Organise by receive groups, IP address, name or port.
 -   Click IP address to navigate directly to device webpage
 
