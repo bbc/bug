@@ -35,7 +35,7 @@ nav_order: ${index}
 
 ${modules[index].description}
 
-# Default Configuration
+## Default Configuration
 
 ${"```\n" + JSON.stringify(modules[index].defaultconfig, null, 2) + "\n```"}            
 
