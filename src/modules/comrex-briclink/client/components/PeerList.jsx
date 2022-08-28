@@ -1,74 +1,111 @@
 import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
 import AxiosCommand from "@utils/AxiosCommand";
-import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
-import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
-import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
-import { useHistory } from "react-router-dom";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
-import { useApiPoller } from "@hooks/ApiPoller";
 import PowerOffIcon from "@mui/icons-material/PowerOff";
 import PowerIcon from "@mui/icons-material/Power";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
-import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import FolderIcon from "@mui/icons-material/Folder";
+import BackspaceIcon from "@mui/icons-material/Backspace";
+import CheckIcon from "@mui/icons-material/Check";
+import { useHistory } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AxiosDelete from "@utils/AxiosDelete";
 
-export default function PeerList({ panelId, stackId = null }) {
+export default function PeerList({ panelId }) {
     const sendAlert = useAlert(panelId);
-    const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
+    const history = useHistory();
 
-    // const vlans = useApiPoller({
-    //     url: `/container/${panelId}/peer/`,
-    //     interval: 5000,
-    // });
+    const handleEditClicked = async (event, item) => {
+        history.push(`/panel/${panelId}/connection/${item.id}`);
+    };
 
-    // const handleRenameClicked = async (event, item) => {
-    //     event.stopPropagation();
-    //     let result = await renameDialog({
-    //         title: "Edit interface name",
-    //         defaultValue: item["alias"],
-    //         placeholder: item["description"],
-    //         confirmButtonText: "Rename",
-    //         allowBlank: true,
-    //     });
-    //     if (result === false) {
-    //         return;
-    //     }
-    //     if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.interfaceId}/${result}`)) {
-    //         sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
-    //             broadcast: "true",
-    //             variant: "success",
-    //         });
-    //         doForceRefresh();
-    //     } else {
-    //         sendAlert(result ? `Failed to rename interface to ${result}` : "Failed to reset interface name", {
-    //             variant: "error",
-    //         });
-    //     }
-    // };
-
-    const connectionToggle = async (checked, item) => {
-        if (await AxiosCommand(`/container/${panelId}/peer/${checked ? `connect` : `disconnect`}/${item.id}`)) {
-            sendAlert(`Requested ${checked ? `connection` : `disconnection`} from ${item.name}`, {
+    const handleRenameClicked = async (event, item) => {
+        event.stopPropagation();
+        if (item._type === "folder" || item._type === "back") {
+            // we can't edit it - so we're just going to navigate
+            connectionToggle(true, item);
+            return;
+        }
+        let result = await renameDialog({
+            title: "Rename connection",
+            defaultValue: item["name"],
+            confirmButtonText: "Rename",
+            allowBlank: false,
+        });
+        if (result === false) {
+            return;
+        }
+        if (await AxiosCommand(`/container/${panelId}/peer/rename/${item.id}/${encodeURIComponent(result)}`)) {
+            sendAlert(`Renamed connection to ${result}`, {
+                broadcast: "true",
                 variant: "success",
             });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to request ${checked ? `connection` : `disconnection`} from ${item.name}`, {
+            sendAlert(`Failed to rename connection to ${result}`, {
                 variant: "error",
             });
+        }
+    };
+
+    const handleAutoConnectClicked = async (event, item) => {
+        const autoConnectId = item._autoConnectEnabled ? 0 : item.id;
+        if (await AxiosCommand(`/container/${panelId}/peer/autoconnect/${autoConnectId}`)) {
+            sendAlert(
+                `${item._autoConnectEnabled ? "Disabled" : "Enabled"} autoconnect${
+                    item._autoConnectEnabled ? "" : ` from ${item.name}`
+                }`,
+                {
+                    variant: "success",
+                }
+            );
+            doForceRefresh();
+        } else {
+            sendAlert(`Failed to ${item._autoConnectEnabled ? "disable" : "enabled"} autoconnect`, {
+                variant: "error",
+            });
+        }
+    };
+
+    const handleDeleteClicked = async (event, item) => {
+        if (await AxiosDelete(`/container/${panelId}/peer/${item.id}`)) {
+            sendAlert(`Deleted connection ${item.name}`, {
+                variant: "success",
+            });
+            doForceRefresh();
+        } else {
+            sendAlert(`Failed to delete connection ${item.name}`, {
+                variant: "error",
+            });
+        }
+    };
+
+    const connectionToggle = async (checked, item) => {
+        if (await AxiosCommand(`/container/${panelId}/peer/${checked ? `connect` : `disconnect`}/${item.id}`)) {
+            if (item._type !== "back" && item._type !== "folder") {
+                sendAlert(`Requested ${checked ? `connection` : `disconnection`} from ${item.name}`, {
+                    variant: "success",
+                });
+            }
+            doForceRefresh();
+        } else {
+            if (item._type !== "back" && item._type !== "folder") {
+                sendAlert(`Failed to request ${checked ? `connection` : `disconnection`} from ${item.name}`, {
+                    variant: "error",
+                });
+            }
         }
     };
 
@@ -84,195 +121,31 @@ export default function PeerList({ panelId, stackId = null }) {
         return connectionToggle(false, item);
     };
 
-    // const handleDetailsClicked = (event, item) => {
-    //     history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
-    // };
-
-    // const handleNeighborLinkClicked = (event, item) => {
-    //     event.stopPropagation();
-    //     history.push(`/panel/${panelId}/interface/${item.interfaceId}/neighbor`);
-    // };
-
-    // const handleDevicesLinkClicked = (event, item) => {
-    //     event.stopPropagation();
-    //     history.push(`/panel/${panelId}/interface/${item.interfaceId}/devices`);
-    // };
-
-    // const getVlanChangedMessage = (interfaceId, oldValues, newValues) => {
-    //     const oldTags = JSON.stringify(oldValues.taggedVlans);
-    //     const newTags = JSON.stringify(newValues.taggedVlans);
-
-    //     if (oldValues.taggedVlans.length !== newValues.taggedVlans.length) {
-    //         if (newValues.taggedVlans.length === 0) {
-    //             // changed from trunk to access port
-    //             return {
-    //                 start: `Changing interface ${interfaceId} to access mode`,
-    //                 success: `Changed interface ${interfaceId} to access VLAN ${newValues.untaggedVlan}`,
-    //                 error: `Failed to set interface ${interfaceId} to access mode`,
-    //             };
-    //         }
-
-    //         if (oldValues.taggedVlans.length === 0) {
-    //             // changed from access to trunk port
-    //             return {
-    //                 start: `Changing interface ${interfaceId} to trunk mode`,
-    //                 success: `Changed interface ${interfaceId} to trunk mode`,
-    //                 error: `Failed to set interface ${interfaceId} to trunk mode`,
-    //             };
-    //         }
-    //     }
-
-    //     if (newTags !== oldTags && oldValues.untaggedVlan !== newValues.untaggedVlan) {
-    //         // it's a complex one - both changed
-    //         return {
-    //             start: `Updating VLAN configurarion on ${interfaceId}`,
-    //             success: `Updated VLAN configurarion on ${interfaceId}`,
-    //             error: `Failed to update VLAN configurarion on ${interfaceId}`,
-    //         };
-    //     }
-
-    //     if (newTags !== oldTags) {
-    //         return {
-    //             start: `Changing VLAN trunk members on ${interfaceId}`,
-    //             success: `Changed VLAN trunk members on ${interfaceId}`,
-    //             error: `Failed to set VLAN trunk members on ${interfaceId}`,
-    //         };
-    //     }
-
-    //     if (oldValues.untaggedVlan !== newValues.untaggedVlan) {
-    //         // changed access vlan (untagged)
-    //         return {
-    //             start: `Changing untagged VLAN on ${interfaceId}`,
-    //             success: `Changed untagged VLAN on ${interfaceId} to ${newValues.untaggedVlan}`,
-    //             error: `Failed to set untagged VLAN on ${interfaceId}`,
-    //         };
-    //     }
-
-    //     return {
-    //         start: `Updating ${interfaceId}`,
-    //         success: `Updated ${interfaceId}`,
-    //         error: `Failed to update ${interfaceId}`,
-    //     };
-    // };
-
-    // const handleVlanChanged = async (event, value, item) => {
-    //     const messages = getVlanChangedMessage(
-    //         item.shortId,
-    //         { untaggedVlan: item["untagged-vlan"], taggedVlans: item["tagged-vlans"] },
-    //         value
-    //     );
-
-    //     if (value.taggedVlans.length > 0) {
-    //         // trunk selected
-    //         sendAlert(messages.start, { variant: "info" });
-    //         if (
-    //             await AxiosPost(`/container/${panelId}/interface/setvlantrunk/${item.interfaceId}`, {
-    //                 untaggedVlan: value.untaggedVlan,
-    //                 taggedVlans: value.taggedVlans,
-    //             })
-    //         ) {
-    //             doForceRefresh();
-    //             sendAlert(messages.success, { variant: "success" });
-    //         } else {
-    //             sendAlert(messages.error, { variant: "error" });
-    //         }
-    //     } else {
-    //         // access selected
-    //         sendAlert(messages.start, { variant: "info" });
-    //         if (
-    //             await AxiosCommand(
-    //                 `/container/${panelId}/interface/setvlanaccess/${item.interfaceId}/${value.untaggedVlan}`
-    //             )
-    //         ) {
-    //             doForceRefresh();
-    //             sendAlert(messages.success, { variant: "success" });
-    //         } else {
-    //             sendAlert(messages.error, { variant: "error" });
-    //         }
-    //     }
-    // };
-
-    // const interfaceToggle = async (checked, item) => {
-    //     if (
-    //         await AxiosCommand(`/container/${panelId}/interface/${checked ? `enable` : `disable`}/${item.interfaceId}`)
-    //     ) {
-    //         sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${item.description}`, { variant: "success" });
-    //         doForceRefresh();
-    //     } else {
-    //         sendAlert(`Failed to ${checked ? `enable` : `disable`} interface: ${item.description}`, {
-    //             variant: "error",
-    //         });
-    //     }
-    // };
-
-    // const handleSwitchChanged = (checked, item) => {
-    //     interfaceToggle(checked, item);
-    // };
-
-    // const handleEnableClicked = async (event, item) => {
-    //     return interfaceToggle(true, item);
-    // };
-
-    // const handleDisableClicked = async (event, item) => {
-    //     return interfaceToggle(false, item);
-    // };
-
-    // const handleProtectClicked = async (event, item) => {
-    //     if (
-    //         await AxiosCommand(
-    //             `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(
-    //                 item.longId
-    //             )}`
-    //         )
-    //     ) {
-    //         doForceRefresh();
-    //         sendAlert(`${item._protected ? "Unprotected" : "Protected"} interface: ${item.shortId}`, {
-    //             variant: "success",
-    //         });
-    //     } else {
-    //         sendAlert(`Failed to ${item._protected ? "unprotect" : "protect"} interface: ${item.shortId}`, {
-    //             variant: "error",
-    //         });
-    //     }
-    // };
-
-    // const getItemSubName = (item) => {
-    //     if (item?.lldp?.system_name) {
-    //         return (
-    //             <BugTableLinkButton color="secondary" onClick={(event) => handleNeighborLinkClicked(event, item)}>
-    //                 {item?.lldp?.system_name}
-    //             </BugTableLinkButton>
-    //         );
-    //     }
-    //     if (item?.fdb) {
-    //         let displayText = `${item?.fdb.length} device(s)`;
-    //         if (item?.fdb.length === 1) {
-    //             displayText = item?.fdb[0]?.comment ? item?.fdb[0]?.comment : item?.fdb[0]?.hostname;
-    //         }
-    //         return (
-    //             <BugTableLinkButton color="secondary" onClick={(event) => handleDevicesLinkClicked(event, item)}>
-    //                 {displayText}
-    //             </BugTableLinkButton>
-    //         );
-    //     }
-    //     return null;
-    // };
-
     return (
         <BugApiTable
             columns={[
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <BugPowerIcon disabled={!item._connected} />,
+                    content: (item) =>
+                        item._type !== "folder" &&
+                        item._type !== "back" && <BugPowerIcon disabled={!item._connected} />,
                 },
                 {
                     noPadding: true,
                     hideWidth: 600,
                     width: 70,
+                    align: "center",
                     content: (item) => {
+                        if (item._type === "folder") {
+                            return <FolderIcon sx={{ color: "primary.main" }} />;
+                        }
+                        if (item._type === "back") {
+                            return <BackspaceIcon sx={{ color: "primary.main" }} />;
+                        }
                         return (
                             <BugApiSwitch
+                                timeout={20000}
                                 checked={item._connected}
                                 onChange={(checked) => handleConnectedChanged(checked, item)}
                                 disabled={(!item._canConnect && !item._connected) || item._autoConnectEnabled}
@@ -285,6 +158,9 @@ export default function PeerList({ panelId, stackId = null }) {
                     hideWidth: 600,
                     width: 44,
                     content: (item) => {
+                        if (item._type === "folder" || item._type === "back") {
+                            return null;
+                        }
                         if (item._autoConnectEnabled) {
                             return <LockIcon sx={{ color: "primary.main" }} />;
                         }
@@ -299,7 +175,7 @@ export default function PeerList({ panelId, stackId = null }) {
                         <>
                             <BugTableLinkButton
                                 disabled={item._connected}
-                                // onClick={(event) => handleRenameClicked(event, item)}
+                                onClick={(event) => handleRenameClicked(event, item)}
                             >
                                 {item.name}
                             </BugTableLinkButton>
@@ -316,26 +192,38 @@ export default function PeerList({ panelId, stackId = null }) {
                 {
                     title: "Address",
                     hideWidth: 440,
-                    width: "25rem",
-                    content: (item) => {
-                        return item.addr;
-                    },
+                    width: "10rem",
+                    content: (item) => (item._type === "back" ? null : item.addr),
                 },
                 {
                     title: "State",
                     hideWidth: 640,
-                    minWidth: "8rem",
+                    width: "8rem",
                     content: (item) => {
-                        if (item._connected) {
-                            return <Box sx={{ color: "success.main" }}>CONNECTED</Box>;
+                        switch (item._state) {
+                            case "navigation":
+                                return null;
+                            case "connected":
+                                return <Box sx={{ color: "success.main" }}>CONNECTED</Box>;
+                            case "local_connect":
+                                return <Box sx={{ color: "success.main" }}>CONNECTING</Box>;
+                            case "idle":
+                                return <Box sx={{ color: "secondary.main" }}>IDLE</Box>;
+                            case "local_disconnect":
+                                return <Box sx={{ color: "secondary.main" }}>DISCONNECTED</Box>;
+                            case "busy":
+                                return <Box sx={{ color: "warning.main" }}>BUSY</Box>;
+                            case "error":
+                                return <Box sx={{ color: "error.main" }}>ERROR</Box>;
                         }
-                        return <Box sx={{ color: "secondary.main" }}>IDLE</Box>;
+                        return null;
                     },
                 },
                 {
                     title: "Codec",
                     hideWidth: 1200,
                     minWidth: "100px",
+                    width: "15rem",
                     content: (item) => (
                         <Box sx={{ color: "secondary.main" }}>
                             {item.rx_codec && <Box>RX: {item.rx_codec}</Box>}
@@ -347,9 +235,14 @@ export default function PeerList({ panelId, stackId = null }) {
             menuItems={[
                 {
                     title: "Edit",
-                    disabled: (item) => item._protected,
+                    disabled: (item) => item._protected || item._type === "folder" || item._type === "back",
                     icon: <EditIcon fontSize="small" />,
-                    // onClick: handleRenameClicked,
+                    onClick: handleEditClicked,
+                },
+                {
+                    title: "Delete",
+                    icon: <DeleteIcon fontSize="small" />,
+                    onClick: handleDeleteClicked,
                 },
                 {
                     title: "-",
@@ -366,15 +259,15 @@ export default function PeerList({ panelId, stackId = null }) {
                     icon: <PowerOffIcon fontSize="small" />,
                     onClick: handleDisconnectClicked,
                 },
-                // {
-                //     title: "-",
-                // },
-                // {
-                //     title: "Protect",
-                //     disabled: (item) => item._protected && !item._allowunprotect,
-                //     icon: (item) => (item._protected ? <CheckIcon fontSize="small" /> : null),
-                //     onClick: handleProtectClicked,
-                // },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Autoconnect",
+                    disabled: (item) => item._type === "folder" || item._type === "back",
+                    icon: (item) => (item._autoConnectEnabled ? <CheckIcon fontSize="small" /> : null),
+                    onClick: handleAutoConnectClicked,
+                },
             ]}
             apiUrl={`/container/${panelId}/peer/`}
             panelId={panelId}
@@ -390,7 +283,6 @@ export default function PeerList({ panelId, stackId = null }) {
             rowHeight="62px"
             sortable
             forceRefresh={forceRefresh}
-            // onRowClick={handleDetailsClicked}
         />
     );
 }

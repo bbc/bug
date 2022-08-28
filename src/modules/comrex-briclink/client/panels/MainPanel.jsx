@@ -1,10 +1,30 @@
 import React from "react";
-import PeerList from "../components/PeerList";
+import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
+import TabPeers from "./TabPeers";
+import TabStatistics from "./TabStatistics";
+import TabAudio from "./TabAudio";
+import TabProfiles from "./TabProfiles";
+import { useHistory } from "react-router-dom";
 
 export default function MainPanel({ panelId }) {
     return (
         <>
-            <PeerList panelId={panelId} />
+            <BugPanelTabbedForm
+                labels={["Connections", "Statistics", "Audio", "Profiles"]}
+                locations={[
+                    `/panel/${panelId}/display/connections`,
+                    `/panel/${panelId}/display/statistics`,
+                    `/panel/${panelId}/display/audio`,
+                    `/panel/${panelId}/display/profiles`,
+                ]}
+                content={[
+                    <TabPeers panelId={panelId} />,
+                    <TabStatistics panelId={panelId} />,
+                    <TabAudio panelId={panelId} />,
+                    <TabProfiles panelId={panelId} />,
+                ]}
+                contentProps={{ elevation: 0 }}
+            ></BugPanelTabbedForm>
         </>
     );
 }

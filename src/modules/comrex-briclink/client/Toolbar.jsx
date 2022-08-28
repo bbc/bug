@@ -6,10 +6,17 @@ import ListItemText from "@mui/material/ListItemText";
 import LaunchIcon from "@mui/icons-material/Launch";
 import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
+import AddIcon from "@mui/icons-material/Add";
+import { useLocation } from "react-router-dom";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 export default function Toolbar({ panelId, ...props }) {
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
+    const location = useLocation();
+
+    const isOnConnectionsPage = location.pathname.indexOf("connections") > -1;
 
     const handleLaunchClicked = async (event, item) => {
         if (panelConfig?.data?.address) {
@@ -21,11 +28,34 @@ export default function Toolbar({ panelId, ...props }) {
 
     let toolbarProps = { ...props };
 
-    const buttons = () => <></>;
+    const buttons = () => {
+        if (isOnConnectionsPage) {
+            return (
+                <Button
+                    component={Link}
+                    to={`/panel/${panelId}/connection`}
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                >
+                    Add
+                </Button>
+            );
+        }
+        return null;
+    };
 
     const menuItems = () => {
         return [
             <Divider key="divider1" />,
+            isOnConnectionsPage && (
+                <MenuItem key="add" component={Link} to={`/panel/${panelId}/connection`}>
+                    <ListItemIcon>
+                        <AddIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Connection" />
+                </MenuItem>
+            ),
             <MenuItem key="launch" onClick={handleLaunchClicked}>
                 <ListItemIcon>
                     <LaunchIcon fontSize="small" />

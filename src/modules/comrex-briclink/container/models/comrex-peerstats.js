@@ -9,6 +9,7 @@ exports.parse = function (xml) {
     let results = {};
     if (xml?.children?.[0]?.name === "peerStats" && xml?.children?.[0]?.children.length === 1) {
         const peer = xml?.children?.[0]?.children[0];
+        // console.log(peer);
         // copy the peer attributes
         results = {
             bufferDelay: parseInt(peer?.attributes?.bufferDelay),

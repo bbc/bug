@@ -15,6 +15,7 @@ class ComrexSocket extends EventEmitter {
         password = "comrex",
         commands = [],
         monitors = {},
+        debug = false,
     }) {
         super();
 
@@ -25,6 +26,7 @@ class ComrexSocket extends EventEmitter {
             password,
             commands,
             monitors,
+            debug,
         };
 
         this.socket = null;
@@ -51,6 +53,10 @@ class ComrexSocket extends EventEmitter {
             self.socket.on("data", async function (data) {
                 clearTimeout(timeoutTimer);
                 const sanitizedData = data.toString().replace("\u0000", "").trim();
+
+                if (self.opts.debug) {
+                    console.log(sanitizedData);
+                }
 
                 if (!self.loggedIn) {
                     const result = parseXml(sanitizedData);
@@ -104,7 +110,6 @@ class ComrexSocket extends EventEmitter {
                 while (!self.buffer.isFinished()) {
                     const bufferedData = self.buffer.handleData().trim();
                     try {
-                        // console.log(bufferedData);
                         self.emit("update", parseXml(bufferedData));
                     } catch (error) {
                         // console.log(bufferedData);

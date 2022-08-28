@@ -5,6 +5,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const comrexSocket = require("@utils/comrex-socket");
 const comrexProcessResults = require("@utils/comrex-processresults");
+const delay = require("delay");
 
 // Tell the manager the things you care about
 parentPort.postMessage({

@@ -28,17 +28,15 @@ export default function Toolbar(props) {
         }
 
         return (
-            <>
-                <Button
-                    component={Link}
-                    to={`/panel/${props.panelId}/lease`}
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<AddIcon />}
-                >
-                    Add
-                </Button>
-            </>
+            <Button
+                component={Link}
+                to={`/panel/${props.panelId}/lease`}
+                variant="outlined"
+                color="primary"
+                startIcon={<AddIcon />}
+            >
+                Add
+            </Button>
         );
     };
 
