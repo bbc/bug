@@ -6,6 +6,13 @@ exports.parse = function (xml) {
     //     <peer bufferDelay="184" bufferDelayAvg="194" bufferDesiredDelay="183" bufferMaxDelay="184" bufferMaxDev="183" bufferMinDelay="166" callTime="823" corrDownRate="0" corrDownRateAvg="0" corrUpRate="0" corrUpRateAvg="0" delayIn="370" delayOut="1430" effRxBitrate="100032" effTxBitrate="100032" frameLateRate="0" frameLateRateAvg="0" frameLossRate="0" frameLossRateAvg="0" id="1" insertRate="0" insertRateAvg="0" name="Loopback" newData="true" packetJitter="2" pktDupRate="0" pktDupRateAvg="0" pktOOORate="0" pktOOORateAvg="0" pktOutlierRate="0" pktOutlierRateAvg="0" pktRtxRate="0" pktRtxRateAvg="0" remoteLoss="0" remoteLossAvg="0" rtt="20" rxAvgOverhead="7754" rxAvgPayload="95434" rxOverhead="7301" rxPayload="92912" rxTotal="10369" txAvgOverhead="7754" txAvgPayload="95437" txOverhead="7301" txPayload="92912" txTotal="10376"/>
     // </peerStats>
 
+    const divideByTen = (value) => {
+        if (value !== undefined && !isNaN(value)) {
+            return parseInt(value) / 10;
+        }
+        return null;
+    };
+
     let results = {};
     if (xml?.children?.[0]?.name === "peerStats" && xml?.children?.[0]?.children.length === 1) {
         const peer = xml?.children?.[0]?.children[0];
@@ -14,23 +21,23 @@ exports.parse = function (xml) {
         results = {
             bufferDelay: parseInt(peer?.attributes?.bufferDelay),
             bufferDelayAvg: parseInt(peer?.attributes?.bufferDelayAvg),
-            bufferDesiredDelay: parseInt(peer?.attributes?.bufferDesiredDelay),
+            bufferDesiredDelay: divideByTen(peer?.attributes?.bufferDesiredDelay),
             bufferMaxDelay: parseInt(peer?.attributes?.bufferMaxDelay),
             bufferMaxDev: parseInt(peer?.attributes?.bufferMaxDev),
             bufferMinDelay: parseInt(peer?.attributes?.bufferMinDelay),
             callTime: parseInt(peer?.attributes?.callTime),
-            corrDownRate: parseInt(peer?.attributes?.corrDownRate),
-            corrDownRateAvg: parseInt(peer?.attributes?.corrDownRateAvg),
-            corrUpRate: parseInt(peer?.attributes?.corrUpRate),
-            corrUpRateAvg: parseInt(peer?.attributes?.corrUpRateAvg),
-            delayIn: parseInt(peer?.attributes?.delayIn),
-            delayOut: parseInt(peer?.attributes?.delayOut),
+            corrDownRate: divideByTen(peer?.attributes?.corrDownRate),
+            corrDownRateAvg: divideByTen(peer?.attributes?.corrDownRateAvg),
+            corrUpRate: divideByTen(peer?.attributes?.corrUpRate),
+            corrUpRateAvg: divideByTen(peer?.attributes?.corrUpRateAvg),
+            delayIn: divideByTen(peer?.attributes?.delayIn),
+            delayOut: divideByTen(peer?.attributes?.delayOut),
             effRxBitrate: parseInt(peer?.attributes?.effRxBitrate),
             effTxBitrate: parseInt(peer?.attributes?.effTxBitrate),
-            frameLateRate: parseInt(peer?.attributes?.frameLateRate),
-            frameLateRateAvg: parseInt(peer?.attributes?.frameLateRateAvg),
-            frameLossRate: parseInt(peer?.attributes?.frameLossRate),
-            frameLossRateAvg: parseInt(peer?.attributes?.frameLossRateAvg),
+            frameLateRate: divideByTen(peer?.attributes?.frameLateRate),
+            frameLateRateAvg: divideByTen(peer?.attributes?.frameLateRateAvg),
+            frameLossRate: divideByTen(peer?.attributes?.frameLossRate),
+            frameLossRateAvg: divideByTen(peer?.attributes?.frameLossRateAvg),
             id: parseInt(peer?.attributes?.id),
             insertRate: parseInt(peer?.attributes?.insertRate),
             insertRateAvg: parseInt(peer?.attributes?.insertRateAvg),
@@ -45,8 +52,8 @@ exports.parse = function (xml) {
             pktOutlierRateAvg: parseInt(peer?.attributes?.pktOutlierRateAvg),
             pktRtxRate: parseInt(peer?.attributes?.pktRtxRate),
             pktRtxRateAvg: parseInt(peer?.attributes?.pktRtxRateAvg),
-            remoteLoss: parseInt(peer?.attributes?.remoteLoss),
-            remoteLossAvg: parseInt(peer?.attributes?.remoteLossAvg),
+            remoteLoss: divideByTen(peer?.attributes?.remoteLoss),
+            remoteLossAvg: divideByTen(peer?.attributes?.remoteLossAvg),
             rtt: parseInt(peer?.attributes?.rtt),
             rxAvgOverhead: parseInt(peer?.attributes?.rxAvgOverhead),
             rxAvgPayload: parseInt(peer?.attributes?.rxAvgPayload),

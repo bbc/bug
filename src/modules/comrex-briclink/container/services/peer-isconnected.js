@@ -14,7 +14,6 @@ module.exports = async () => {
         peerList.filter((peer) => peer.chan_state === "Connected" || peer.chan_state === "Requesting call").length > 0;
 
     if (isAnyPeerConnected) {
-        console.log("peer connected");
         return true;
     } else {
         // we need to use mongoCollection rather than mongoSingle as otherwise we don't have access to the timestamp

@@ -23,7 +23,7 @@ export default function MainPanel({ panelId }) {
                     <TabAudio panelId={panelId} />,
                     <TabProfiles panelId={panelId} />,
                 ]}
-                contentProps={{ elevation: 0 }}
+                contentProps={{ elevation: 0, sx: { backgroundColor: "red" } }}
             ></BugPanelTabbedForm>
         </>
     );

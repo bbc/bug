@@ -8,7 +8,7 @@ module.exports = (bits, decimals) => {
     }
     const k = 1024;
     const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["b/s", "Kb/s", "Mb/s", "Gb/s", "Tb/s", "Pb/s"];
+    const sizes = ["b/s", "kb/s", "Mb/s", "Gb/s", "Tb/s", "Pb/s"];
 
     const i = Math.floor(Math.log(bits) / Math.log(k));
     const size = sizes[i] ? sizes[i] : sizes[0];

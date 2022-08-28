@@ -10,6 +10,7 @@ const comrexPeerStats = require("@models/comrex-peerstats");
 const comrexChannelStats = require("@models/comrex-channelstats");
 const comrexLevels = require("@models/comrex-levels");
 const comrexSystem = require("@models/comrex-system");
+const comrexAddhistory = require("@utils/comrex-addhistory");
 
 module.exports = async (result, resultFilter = null) => {
     // console.log(`comrex-processresults: got result for ${result?.children?.[0]?.name}`);
@@ -47,6 +48,17 @@ module.exports = async (result, resultFilter = null) => {
             const peerStats = comrexPeerStats.parse(result);
             if (peerStats) {
                 await mongoSingle.set("peerStats", peerStats, 30);
+                await comrexAddhistory("peerStats", peerStats, [
+                    "delayIn",
+                    "delayOut",
+                    "packetJitter",
+                    "bufferDesiredDelay",
+                    "bufferDelay",
+                    "frameLossRate",
+                    "remoteLoss",
+                    "corrUpRate",
+                    "corrDownRate",
+                ]);
             }
             break;
         case "levels":
