@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 
 export default function Toolbar({ panelId, ...props }) {
     const panelConfig = useSelector((state) => state.panelConfig);
-    const panel = useSelector((state) => state.panel);
     const location = useLocation();
 
     const isOnConnectionsPage = location.pathname.indexOf("connections") > -1;

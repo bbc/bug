@@ -4,7 +4,6 @@ import TabPeers from "./TabPeers";
 import TabStatistics from "./TabStatistics";
 import TabAudio from "./TabAudio";
 import TabProfiles from "./TabProfiles";
-import { useHistory } from "react-router-dom";
 
 export default function MainPanel({ panelId }) {
     return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar, AreaChart, Area, ComposedChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { Bar, ComposedChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Box from "@mui/material/Box";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { format } from "date-fns";
@@ -58,64 +58,62 @@ export default function DelayChart({ panelId }) {
     }
 
     return (
-        <Box
-            sx={{
-                margin: "16px",
-            }}
-        >
+        <>
             <Box
                 sx={{
                     fontSize: "0.875rem",
                     color: "rgba(255, 255, 255, 0.7)",
                     fontWeight: "500",
                     textTransform: "uppercase",
-                    marginTop: "1rem",
                     textAlign: "center",
+                    padding: "1rem",
                 }}
             >
                 Delay and Jitter
             </Box>
 
-            <ResponsiveContainer width="100%" height={200}>
-                <ComposedChart
-                    height={250}
-                    data={stats.data}
-                    margin={{
-                        top: 10,
-                        right: 0,
-                        bottom: 0,
-                        left: 10,
-                    }}
-                >
-                    <XAxis
-                        dataKey="timestamp"
-                        interval={80}
-                        scale="time"
-                        tickFormatter={(value) => {
-                            return timeAgo.format(parseInt(value));
+            <Box sx={{ margin: "8px", marginRight: "16px" }}>
+                <ResponsiveContainer width="100%" height={200}>
+                    <ComposedChart
+                        height={250}
+                        data={stats.data}
+                        margin={{
+                            top: 10,
+                            right: 0,
+                            bottom: 0,
+                            left: 10,
                         }}
-                        type="number"
-                        domain={range}
-                        dy={10}
-                    />
-                    <YAxis
-                        tickCount={7}
-                        tickFormatter={(value) => {
-                            return `${parseInt(value)} ms`;
-                        }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Bar isAnimationActive={false} stackId="a" dataKey="delayIn" fill="#245cb2" />
-                    <Bar isAnimationActive={false} stackId="a" dataKey="packetJitter" fill="#7ca0cb" />
-                    <Line
-                        strokeWidth={2}
-                        isAnimationActive={false}
-                        dataKey="bufferDesiredDelay"
-                        dot={false}
-                        stroke="#b5762a"
-                    />
-                </ComposedChart>
-            </ResponsiveContainer>
-        </Box>
+                    >
+                        <XAxis
+                            dataKey="timestamp"
+                            interval={80}
+                            scale="time"
+                            tickFormatter={(value) => {
+                                return timeAgo.format(parseInt(value));
+                            }}
+                            type="number"
+                            domain={range}
+                            dy={10}
+                        />
+                        <YAxis
+                            tickCount={7}
+                            tickFormatter={(value) => {
+                                return `${parseInt(value)} ms`;
+                            }}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Bar isAnimationActive={false} stackId="a" dataKey="delayIn" fill="#245cb2" />
+                        <Bar isAnimationActive={false} stackId="a" dataKey="packetJitter" fill="#7ca0cb" />
+                        <Line
+                            strokeWidth={2}
+                            isAnimationActive={false}
+                            dataKey="bufferDesiredDelay"
+                            dot={false}
+                            stroke="#b5762a"
+                        />
+                    </ComposedChart>
+                </ResponsiveContainer>
+            </Box>
+        </>
     );
 }

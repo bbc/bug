@@ -3,7 +3,6 @@ import React from "react";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import BugForm from "@core/BugForm";
-import BugTextField from "@core/BugTextField";
 import Grid from "@mui/material/Grid";
 import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
 import Button from "@mui/material/Button";
@@ -13,7 +12,6 @@ import AxiosGet from "@utils/AxiosGet";
 import AxiosDelete from "@utils/AxiosDelete";
 import BugLoading from "@core/BugLoading";
 import useAsyncEffect from "use-async-effect";
-import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import { useForm } from "react-hook-form";
 
@@ -73,7 +71,6 @@ export default function Peer({ panelId, peerId }) {
         return <BugLoading />;
     }
 
-    console.log(profileLabels);
     return (
         <>
             <BugForm onClose={handleCancelClicked}>

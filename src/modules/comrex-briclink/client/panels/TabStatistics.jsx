@@ -4,18 +4,25 @@ import DelayChart from "../components/DelayChart";
 import LossChart from "../components/LossChart";
 import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import BugCard from "@core/BugCard";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 export default function TabStatistics() {
+    const theme = useTheme();
     const params = useParams();
+    const isXLView = useMediaQuery(theme.breakpoints.up("xl"));
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={12} lg={12} xl={5}>
+            <Grid
+                item
+                xs={12}
+                lg={12}
+                xl={5}
+                sx={{
+                    borderRight: isXLView ? "4px solid #181818" : "",
+                }}
+            >
                 <Statistics panelId={params.panelId} />
             </Grid>
             <Grid item xs={12} lg={12} xl={7}>

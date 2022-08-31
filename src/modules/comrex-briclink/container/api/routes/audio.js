@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const statisticsHistory = require("@services/statistics-history");
-const statisticsList = require("@services/statistics-list");
+const audioHistory = require("@services/audio-history");
+const audioList = require("@services/audio-list");
 
 router.get("/", async function (req, res, next) {
     try {
-        const result = await statisticsList();
+        const result = await audioList();
         res.json({
             status: result ? "success" : "failure",
             data: result,
@@ -14,14 +14,14 @@ router.get("/", async function (req, res, next) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to retrieve statistics",
+            message: "Failed to retrieve audio levels",
         });
     }
 });
 
 router.get("/history", async function (req, res, next) {
     try {
-        const result = await statisticsHistory();
+        const result = await audioHistory();
         res.json({
             status: result ? "success" : "failure",
             data: result,
@@ -30,7 +30,7 @@ router.get("/history", async function (req, res, next) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to retrieve statistics history",
+            message: "Failed to retrieve audio history",
         });
     }
 });

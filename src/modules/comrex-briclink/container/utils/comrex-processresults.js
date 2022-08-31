@@ -65,6 +65,7 @@ module.exports = async (result, resultFilter = null) => {
             const levels = comrexLevels.parse(result);
             if (levels) {
                 await mongoSingle.set("levels", levels, 30);
+                await comrexAddhistory("levels", levels, ["output-left", "output-right", "input-left", "input-right"]);
             }
             break;
         case "sysOptions":

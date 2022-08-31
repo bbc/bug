@@ -179,11 +179,7 @@ export default function PeerList({ panelId }) {
                             >
                                 {item.name}
                             </BugTableLinkButton>
-                            <BugTableLinkButton
-                                disabled={item._connected}
-                                color="secondary"
-                                // onClick={(event) => handleNeighborLinkClicked(event, item)}
-                            >
+                            <BugTableLinkButton disabled={item._connected} color="secondary">
                                 {item._profileName}
                             </BugTableLinkButton>
                         </>

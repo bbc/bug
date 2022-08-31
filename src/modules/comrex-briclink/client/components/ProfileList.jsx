@@ -3,29 +3,17 @@ import BugApiSwitch from "@core/BugApiSwitch";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import BugTableLinkButton from "@core/BugTableLinkButton";
-import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
-import EditIcon from "@mui/icons-material/Edit";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import PowerOffIcon from "@mui/icons-material/PowerOff";
-import PowerIcon from "@mui/icons-material/Power";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
-import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import FolderIcon from "@mui/icons-material/Folder";
-import BackspaceIcon from "@mui/icons-material/Backspace";
-import CheckIcon from "@mui/icons-material/Check";
 import { useHistory } from "react-router-dom";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AxiosDelete from "@utils/AxiosDelete";
 
 export default function ProfileList({ panelId }) {
     const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
-    const history = useHistory();
 
     const handleDefaultChanged = async (checked, item) => {
         if (await AxiosCommand(`/container/${panelId}/profile/setdefault/${item.id}`)) {

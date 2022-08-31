@@ -12,10 +12,9 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
         interval: 5000,
     });
 
-    console.log(stats.data?.callTime);
-
     return (
         <BugDetailsCard
+            width="200px"
             elevation={0}
             items={[
                 { name: "Remote Unit", value: stats.data?.name ? stats.data?.name : "NOT CONNECTED" },

@@ -5,9 +5,5 @@ import { useParams } from "react-router-dom";
 export default function TabProfiles() {
     const params = useParams();
 
-    return (
-        <>
-            <ProfileList panelId={params.panelId} />
-        </>
-    );
+    return <ProfileList panelId={params.panelId} />;
 }

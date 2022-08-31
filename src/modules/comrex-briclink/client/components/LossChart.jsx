@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar, AreaChart, Area, ComposedChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { Bar, ComposedChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Box from "@mui/material/Box";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { format } from "date-fns";
@@ -58,11 +58,7 @@ export default function DelayChart({ panelId }) {
     }
 
     return (
-        <Box
-            sx={{
-                margin: "16px",
-            }}
-        >
+        <>
             <Box
                 sx={{
                     fontSize: "0.875rem",
@@ -70,46 +66,54 @@ export default function DelayChart({ panelId }) {
                     fontWeight: "500",
                     textTransform: "uppercase",
                     textAlign: "center",
+                    padding: "1rem",
                 }}
             >
                 Loss and Error Correction
             </Box>
-
-            <ResponsiveContainer width="100%" height={200}>
-                <ComposedChart
-                    height={250}
-                    data={stats.data}
-                    margin={{
-                        top: 10,
-                        right: 0,
-                        bottom: 0,
-                        left: 10,
-                    }}
-                >
-                    <XAxis
-                        dataKey="timestamp"
-                        interval={80}
-                        scale="time"
-                        tickFormatter={(value) => {
-                            return timeAgo.format(parseInt(value));
+            <Box sx={{ margin: "8px", marginRight: "16px" }}>
+                <ResponsiveContainer width="100%" height={200}>
+                    <ComposedChart
+                        height={250}
+                        data={stats.data}
+                        margin={{
+                            top: 10,
+                            right: 0,
+                            bottom: 0,
+                            left: 10,
                         }}
-                        type="number"
-                        domain={range}
-                        dy={10}
-                    />
-                    <YAxis
-                        type="number"
-                        domain={[0, 100]}
-                        tickCount={4}
-                        tickFormatter={(value) => {
-                            return `${parseInt(value)}%`;
-                        }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Bar isAnimationActive={false} dataKey="frameLossRate" fill="#dd3124" />
-                    <Line strokeWidth={3} isAnimationActive={false} dataKey="corrUpRate" dot={false} stroke="#1e1ba2" />
-                </ComposedChart>
-            </ResponsiveContainer>
-        </Box>
+                    >
+                        <XAxis
+                            dataKey="timestamp"
+                            interval={80}
+                            scale="time"
+                            tickFormatter={(value) => {
+                                return timeAgo.format(parseInt(value));
+                            }}
+                            type="number"
+                            domain={range}
+                            dy={10}
+                        />
+                        <YAxis
+                            type="number"
+                            domain={[0, 100]}
+                            tickCount={4}
+                            tickFormatter={(value) => {
+                                return `${parseInt(value)}%`;
+                            }}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Bar isAnimationActive={false} dataKey="frameLossRate" fill="#dd3124" />
+                        <Line
+                            strokeWidth={3}
+                            isAnimationActive={false}
+                            dataKey="corrUpRate"
+                            dot={false}
+                            stroke="#1e1ba2"
+                        />
+                    </ComposedChart>
+                </ResponsiveContainer>
+            </Box>
+        </>
     );
 }
