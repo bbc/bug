@@ -44,6 +44,7 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultTab]);
 
+    console.log(onClose);
     return (
         <>
             <div style={{ position: "relative" }}>
@@ -72,7 +73,7 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
                     )}
                     <Tabs
                         sx={{
-                            marginRight: "48px",
+                            marginRight: onClose ? "48px" : "0px",
                             "& .MuiButtonBase-root": {
                                 minHeight: "52px",
                             },
