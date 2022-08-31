@@ -49,6 +49,10 @@ export default function DelayChart({ panelId }) {
         setRange([Date.now() - 120000, Date.now()]);
     }, 1000);
 
+    React.useEffect(() => {
+        setRange([Date.now() - 120000, Date.now()]);
+    }, []);
+
     if (!stats?.data || stats?.data.length === 0) {
         return null;
     }
@@ -91,6 +95,7 @@ export default function DelayChart({ panelId }) {
                         }}
                         type="number"
                         domain={range}
+                        dy={10}
                     />
                     <YAxis
                         type="number"
