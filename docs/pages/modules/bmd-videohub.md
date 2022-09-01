@@ -9,7 +9,7 @@ nav_order: 2
 
 Control and monitor Blackmagic videohub devices
 
-![BMD Videohub Module Screenshot](/assets/images/screenshots/module-bmd-videohub.png)
+![Blackmagic Videohub Module Screenshot](/assets/images/screenshots/module-bmd-videohub.png)
 
 ## Default Configuration
 
