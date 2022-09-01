@@ -18,7 +18,7 @@ export default function AudioChain({ levels, history, type }) {
                     padding: "1rem",
                 }}
             >
-                {type === "output" ? "Send" : "Receive"}
+                {type === "output" ? "Receive" : "Send"}
             </Box>
             <Grid container>
                 <Grid sx={{ margin: "1rem", display: "flex" }}>

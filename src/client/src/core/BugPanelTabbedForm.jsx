@@ -44,7 +44,6 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultTab]);
 
-    console.log(onClose);
     return (
         <>
             <div style={{ position: "relative" }}>

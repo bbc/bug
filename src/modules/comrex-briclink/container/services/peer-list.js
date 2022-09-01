@@ -41,7 +41,7 @@ module.exports = async () => {
         /// not sure selecting a new profile name is working tyet .....
 
         const isConnected = peer.chan_state === "Connected";
-        const autoConnectEnabled = sysOptions.always_on_peer === peer.id;
+        const autoConnectEnabled = sysOptions?.always_on_peer === peer.id;
         if (peer.chan_state === "Connected" || peer.chan_state === "Requesting call") {
             connectedPeerIsVisible = true;
         }

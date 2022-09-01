@@ -11,9 +11,8 @@ const peerRouter = require("@routes/peer");
 const profileRouter = require("@routes/profile");
 const statisticsRouter = require("@routes/statistics");
 const audioRouter = require("@routes/audio");
-// const deviceRouter = require("@routes/device");
-// const validationRouter = require("@routes/validate");
-// const codecDbRouter = require("@routes/codecdb");
+const validationRouter = require("@routes/validate");
+const codecDbRouter = require("@routes/codecdb");
 
 let app = express();
 
@@ -35,9 +34,8 @@ app.use("/api/peer", peerRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/statistics", statisticsRouter);
 app.use("/api/audio", audioRouter);
-// app.use("/api/device", deviceRouter);
-// app.use("/api/validate", validationRouter);
-// app.use("/api/codecdb", codecDbRouter);
+app.use("/api/validate", validationRouter);
+app.use("/api/codecdb", codecDbRouter);
 
 app.use("*", defaultRouter);
 

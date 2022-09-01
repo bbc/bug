@@ -70,6 +70,7 @@ const BugTextField = ({
             disabled={disabled}
             helperText={helperText}
             {...props}
+            // I don't think this works...:
             inputProps={{ maxLength: maxLength }}
             onChange={handleChange}
             onBlur={handleBlur}

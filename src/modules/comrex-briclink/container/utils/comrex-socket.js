@@ -16,6 +16,7 @@ class ComrexSocket extends EventEmitter {
         commands = [],
         monitors = {},
         debug = false,
+        timeout = 2000,
     }) {
         super();
 
@@ -27,6 +28,7 @@ class ComrexSocket extends EventEmitter {
             commands,
             monitors,
             debug,
+            timeout,
         };
 
         this.socket = null;
@@ -41,17 +43,15 @@ class ComrexSocket extends EventEmitter {
         return new Promise((resolve, reject) => {
             const self = this;
             self.socket = new net.Socket();
-            let timeoutTimer = null;
 
-            self.socket.connect(self.opts.port, self.opts.host, function () {
-                console.log(`comrex-socket: connected to ${self.opts.host}:${self.opts.port}`);
-                clearTimeout(timeoutTimer);
-                self.loggedIn = false;
-                self.socket.write(`<login />${Char0}`);
+            self.socket.on("error", (err) => {
+                console.log(err);
+                console.log("comrex-socket: could not connect to device");
+                this.socket.destroy();
+                reject();
             });
 
             self.socket.on("data", async function (data) {
-                clearTimeout(timeoutTimer);
                 const sanitizedData = data.toString().replace("\u0000", "").trim();
 
                 if (self.opts.debug) {
@@ -61,6 +61,12 @@ class ComrexSocket extends EventEmitter {
                 if (!self.loggedIn) {
                     const result = parseXml(sanitizedData);
                     if (result.children?.[0]?.attributes?.challenge) {
+                        if (result.children?.[0]?.attributes?.["success"] === "false") {
+                            // we've tried, and failed to log in
+                            console.log("comrex-socket: failed to log in");
+                            reject();
+                            return;
+                        }
                         if (self.waitingForLoginResponse) {
                             // we didn't get a response last time - we'll delay by 10 seconds
                             await delay(10000);
@@ -112,40 +118,16 @@ class ComrexSocket extends EventEmitter {
                     try {
                         self.emit("update", parseXml(bufferedData));
                     } catch (error) {
-                        // console.log(bufferedData);
-                        // console.error(error);
+                        // do nothing
                     }
                 }
             });
 
-            self.socket.on("error", async function (err) {
-                clearTimeout(timeoutTimer);
-                if (err.code == "ENOTFOUND") {
-                    console.log("comrex-socket: ERROR no device found at this address");
-                    this.socket.destroy();
-                    reject();
-                }
-
-                if (err.code == "ECONNREFUSED") {
-                    console.log("comrex-socket: ERROR connection refused");
-                    this.socket.destroy();
-                    reject();
-                }
-
-                console.error(err);
-                reject();
+            self.socket.connect(self.opts.port, self.opts.host, function () {
+                console.log(`comrex-socket: connected to ${self.opts.host}:${self.opts.port}`);
+                self.loggedIn = false;
+                self.socket.write(`<login />${Char0}`);
             });
-
-            // Add a 'close' event handler for the socket socket
-            self.socket.on("close", function () {
-                console.log("comrex-socket: connection closed");
-            });
-
-            timeoutTimer = setTimeout(() => {
-                console.log("comrex-socket: connection exceeded timeout value");
-                this.socket.end();
-                reject();
-            }, 5000);
         });
     }
 

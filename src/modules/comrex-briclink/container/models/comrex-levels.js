@@ -6,12 +6,15 @@ exports.parse = function (xml) {
 
     const parseVal = (val, offsetValue = 0) => {
         if (val === "-inf") {
-            return -72 + offsetValue;
+            return 0;
         }
         if (val === "inf") {
-            return "inf";
+            return 72;
         }
-        return parseFloat(val) + offsetValue;
+        if (val < -72) {
+            return 0;
+        }
+        return parseFloat(val) + 72;
     };
 
     if (xml?.children?.[0]?.name === "levels") {
@@ -30,10 +33,10 @@ exports.parse = function (xml) {
             // "output-right": parseVal(levels?.tmrf),
             // "input-left": parseVal(levels?.rmlf),
             // "input-right": parseVal(levels?.rmrf),
-            "output-left": parseVal(levels?.tmlf, 72),
-            "output-right": parseVal(levels?.tmrf, 72),
-            "input-left": parseVal(levels?.rmlf, 72),
-            "input-right": parseVal(levels?.rmrf, 72),
+            "output-left": parseVal(levels?.tmlf),
+            "output-right": parseVal(levels?.tmrf),
+            "input-left": parseVal(levels?.rmlf),
+            "input-right": parseVal(levels?.rmrf),
         };
     }
     return false;

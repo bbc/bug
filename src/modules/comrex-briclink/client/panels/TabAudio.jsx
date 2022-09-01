@@ -20,9 +20,9 @@ export default function TabAudio() {
     if (levels.data && history.data) {
         return (
             <>
-                <AudioChain levels={levels} type="output" history={history} />
+                <AudioChain levels={levels} type="input" history={history} />
                 <Box sx={{ borderTop: "4px solid #181818" }}>
-                    <AudioChain levels={levels} type="input" history={history} />
+                    <AudioChain levels={levels} type="output" history={history} />
                 </Box>
             </>
         );

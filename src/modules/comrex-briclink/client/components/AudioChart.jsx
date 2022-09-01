@@ -1,5 +1,5 @@
 import React from "react";
-import { ComposedChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { ComposedChart, Line, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import Box from "@mui/material/Box";
 import { format } from "date-fns";
 import { useInterval } from "@hooks/Interval";

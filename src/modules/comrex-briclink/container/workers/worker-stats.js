@@ -6,6 +6,7 @@ const mongoDb = require("@core/mongo-db");
 const comrexSocket = require("@utils/comrex-socket");
 const comrexProcessResults = require("@utils/comrex-processresults");
 const delay = require("delay");
+const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -17,6 +18,13 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
+    // clear the db
+    await mongoSingle.clear("channelStats");
+    await mongoSingle.clear("peerStats");
+
+    // stagger the start
+    await delay(3000);
+
     // Kick things off
     console.log(`worker-stats: connecting to device at ${workerData.address}`);
 
@@ -27,6 +35,7 @@ const main = async () => {
             username: workerData.username,
             password: workerData.password,
             monitors: { channelStats: "true", peerStats: "true" },
+            source: "worker-stats",
         });
         device.on("update", (result) => comrexProcessResults(result, ["channelStats", "peerStats"]));
         await device.connect();

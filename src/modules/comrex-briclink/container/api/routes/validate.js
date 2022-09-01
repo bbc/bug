@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const validateAddress = require("@services/validate-address");
-const validateSnmp = require("@services/validate-snmp");
+const validateAuth = require("@services/validate-auth");
 const asyncHandler = require("express-async-handler");
 
 router.post(
@@ -15,11 +15,21 @@ router.post(
 );
 
 router.post(
-    "/snmpCommunity",
+    "/username",
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await validateSnmp(req.body),
+            data: await validateAuth(req.body),
+        });
+    })
+);
+
+router.post(
+    "/password",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await validateAuth(req.body),
         });
     })
 );

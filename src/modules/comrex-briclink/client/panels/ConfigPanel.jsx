@@ -8,6 +8,7 @@ import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -77,7 +78,9 @@ export default function ConfigPanel() {
                         helperText={messages.username}
                         defaultValue={panelConfig.data.username}
                         supportsValidation
-                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
+                        onChange={(event) =>
+                            validateServer(event, "username", ["address", "username", "password", "port"])
+                        }
                         label="Username"
                     />
                 </Grid>
@@ -92,12 +95,14 @@ export default function ConfigPanel() {
                         helperText={messages.password}
                         defaultValue={panelConfig.data.password}
                         supportsValidation
-                        onChange={(event) => validateServer(event, "username", ["address", "username"])}
+                        onChange={(event) =>
+                            validateServer(event, "username", ["address", "username", "password", "port"])
+                        }
                         label="Password"
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                     <BugConfigFormSelect
                         name="port"
                         control={control}
@@ -108,6 +113,60 @@ export default function ConfigPanel() {
                             { id: "80", label: "80 (v4 firmware)" },
                             { id: "8080", label: "8080 (v2/v3 firmware)" },
                         ]}
+                    />
+                </Grid>
+
+                <Grid item xs={6}>
+                    <BugConfigFormTextField
+                        name="delay"
+                        control={control}
+                        fullWidth
+                        error={errors.delay}
+                        defaultValue={panelConfig.data.delay === undefined ? 100 : panelConfig.data.delay}
+                        label="Maximum Delay"
+                        filter={/[^0-9]/}
+                        numeric
+                        min={0}
+                        max={2000}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">ms</InputAdornment>,
+                        }}
+                    />
+                </Grid>
+
+                <Grid item xs={6}>
+                    <BugConfigFormTextField
+                        name="jitter"
+                        control={control}
+                        fullWidth
+                        error={errors.delay}
+                        defaultValue={panelConfig.data.jitter === undefined ? 50 : panelConfig.data.jitter}
+                        label="Maximum Jitter"
+                        filter={/[^0-9]/}
+                        numeric
+                        min={0}
+                        max={500}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">ms</InputAdornment>,
+                        }}
+                    />
+                </Grid>
+
+                <Grid item xs={6}>
+                    <BugConfigFormTextField
+                        name="loss"
+                        control={control}
+                        fullWidth
+                        error={errors.delay}
+                        defaultValue={panelConfig.data.loss === undefined ? 5 : panelConfig.data.loss}
+                        label="Maximum Loss"
+                        filter={/[^0-9]/}
+                        numeric
+                        min={0}
+                        max={500}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                        }}
                     />
                 </Grid>
             </BugConfigWrapper>

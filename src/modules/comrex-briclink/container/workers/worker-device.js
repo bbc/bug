@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const comrexSocket = require("@utils/comrex-socket");
 const comrexProcessResults = require("@utils/comrex-processresults");
+const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -20,6 +21,11 @@ const main = async () => {
     // Kick things off
     console.log(`worker-device: connecting to device at ${workerData.address}`);
 
+    // clear the db
+    await mongoSingle.clear("peerList");
+    await mongoSingle.clear("codecList");
+    await mongoSingle.clear("profileList");
+
     try {
         const device = new comrexSocket({
             host: workerData.address,
@@ -27,6 +33,7 @@ const main = async () => {
             username: workerData.username,
             password: workerData.password,
             commands: ["getCodecList", "getProfileList", "getPeerList"],
+            source: "worker-device",
         });
         device.on("update", (result) =>
             comrexProcessResults(result, ["codecList", "peerList", "profileList", "currentEncoder", "sipProxy"])

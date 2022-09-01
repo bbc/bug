@@ -24,6 +24,9 @@
         "address": "",
         "username": "bug",
         "password": "comrex",
-        "port": "80"
+        "port": "80",
+        "delay": 100,
+        "jitter": 50,
+        "loss": 5
     }
 }
