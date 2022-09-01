@@ -9,6 +9,20 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
+const MongoDb = require("@core/mongo-db");
+
+const clear = async (name) => {
+    if (MongoDb.db) {
+        const collectionList = await MongoDb.db
+            .listCollections()
+            .map((collection) => collection.name)
+            .toArray();
+
+        if (collectionList && collectionList.includes(name)) {
+            await MongoDb.db.collection(name).drop();
+        }
+    }
+};
 
 const get = async (name) => {
     const collection = await mongoCollection(name);
@@ -43,4 +57,5 @@ const set = async (name, value, ttl = null) => {
 module.exports = {
     get: get,
     set: set,
+    clear: clear,
 };
