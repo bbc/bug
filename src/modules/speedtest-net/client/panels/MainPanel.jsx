@@ -4,6 +4,8 @@ import Grid from "@mui/material/Grid";
 import SpeedCard from "./../components/SpeedCard";
 import ResultsTable from "../components/ResultsTable";
 import { useApiPoller } from "@hooks/ApiPoller";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 export default function MainPanel() {
     const params = useParams();
@@ -15,7 +17,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid container spacing={4}>
+            <Grid container spacing={0}>
                 <SpeedCard
                     running={status.data?.running}
                     url={`/container/${params.panelId}/download/stats`}
@@ -31,7 +33,7 @@ export default function MainPanel() {
                     interval={500}
                 />
 
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ padding: "8px" }}>
                     <ResultsTable panelId={params.panelId} limit={10} />
                 </Grid>
             </Grid>

@@ -4,21 +4,14 @@
     "description": "Run a speedtest.net test from your server",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "mdi-speedometer",
     "author": "Ryan McCartney",
     "license": "GPLv3",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

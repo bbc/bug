@@ -6,6 +6,8 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { useApiPoller } from "@hooks/ApiPoller";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 export default function SpeedCard({
     running = true,
@@ -20,6 +22,8 @@ export default function SpeedCard({
         url: url,
         interval: interval,
     });
+    const theme = useTheme();
+    const isLGView = useMediaQuery(theme.breakpoints.up("lg"));
 
     const formatStats = (stats) => {
         if (stats) {
@@ -54,8 +58,8 @@ export default function SpeedCard({
 
     return (
         <>
-            <Grid item md={6} xs={12}>
-                <BugCard minHeight={240}>
+            <Grid item md={6} xs={12} sx={{ padding: "8px" }}>
+                <BugCard>
                     <CardHeader title={title} />
 
                     <CardContent>
@@ -71,9 +75,16 @@ export default function SpeedCard({
                                     transform: "translateX(-50%)",
                                 }}
                             >
-                                <Typography variant="h2" noWrap>
+                                <Typography
+                                    variant="h2"
+                                    sx={{
+                                        marginTop: "1.5rem",
+                                        fontSize: isLGView ? "3.75rem" : "2.5rem",
+                                    }}
+                                    noWrap
+                                >
                                     {getValue(stats.data)}
-                                </Typography>{" "}
+                                </Typography>
                             </div>
                         </div>
                     </CardContent>
