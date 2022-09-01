@@ -13,10 +13,14 @@ const BugConfigFormTextField = ({
     type = "text",
     rules,
     error,
+    filter = "",
     helperText,
     supportsValidation = false,
     variant = "standard",
-    inputProps = {},
+    InputProps = {},
+    numeric = false,
+    min = null,
+    max = null,
     ...props
 }) => {
     return (
@@ -36,6 +40,7 @@ const BugConfigFormTextField = ({
                                 value={value}
                                 label={label}
                                 fullWidth
+                                filter={filter}
                                 disabled={disabled}
                                 onChange={(event) => {
                                     onChange(event);
@@ -43,10 +48,13 @@ const BugConfigFormTextField = ({
                                         props.onChange(event);
                                     }
                                 }}
+                                numeric={numeric}
                                 variant={variant}
                                 error={error}
+                                min={min}
+                                max={max}
                                 helperText={helperText}
-                                inputProps={inputProps}
+                                InputProps={InputProps}
                                 type={type}
                             />
                         );
