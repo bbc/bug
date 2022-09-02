@@ -6,6 +6,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import BugPowerIcon from "@components/panels/PanelPowerIcon";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import Box from "@mui/material/Box";
 import { useAlert } from "@utils/Snackbar";
 import { Redirect } from "react-router";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
@@ -35,17 +36,6 @@ export default function PanelTableRow({ panel, showGroups }) {
         return <Redirect push to={{ pathname: redirectUrl }} />;
     }
 
-    const renderVersion = (upgradeable) => {
-        if (upgradeable) {
-            return (
-                <>
-                    <NewReleasesIcon />
-                    {panel._module.version}
-                </>
-            );
-        }
-        return panel._module.version;
-    };
     return (
         <TableRow
             key={panel.id}
@@ -103,7 +93,21 @@ export default function PanelTableRow({ panel, showGroups }) {
                     opacity: !panel.enabled || panel._isPending ? 0.3 : 1,
                 }}
             >
-                {renderVersion(panel?.upgradeable)}
+                <Box
+                    container
+                    sx={{
+                        flexDirection: "row",
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    {panel?.upgradeable && (
+                        <Box>
+                            <NewReleasesIcon />
+                        </Box>
+                    )}
+                    <Box sx={{ padding: "0.5rem" }}>{panel._module.version}</Box>
+                </Box>
             </TableCell>
             <TableCell sx={{ width: "2rem" }}>
                 <PanelDropdownMenu panel={panel} />
