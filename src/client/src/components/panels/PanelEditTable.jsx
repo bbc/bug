@@ -92,26 +92,27 @@ export default function PanelTable({ showGroups = true }) {
                 order += 1;
             }
         }
-        let success = true;
 
-        for (let eachItem of itemsToSave) {
-            success =
-                success &&
-                (await AxiosPut(`/api/panelconfig/${eachItem.id}`, {
-                    group: eachItem.group,
-                    order: eachItem.order,
-                }));
-        }
-
-        if (success) {
+        try {
+            await Promise.all(
+                itemsToSave.map(async (eachItem) => {
+                    const result = await AxiosPut(`/api/panelconfig/${eachItem.id}`, {
+                        group: eachItem.group,
+                        order: eachItem.order,
+                    });
+                    if (!result) {
+                        throw new Error("failed");
+                    }
+                })
+            );
+            // it's worked - redirect page to panels
             history.push(`/panels`);
-        } else {
+        } catch (error) {
             sendAlert(`Failed to save changes`, { variant: "error" });
         }
     };
 
     const updateGroupName = async (currentGroupName, newGroupName) => {
-        console.log(newGroupName);
         let clonedItemList = _.clone(itemList);
         for (let item of clonedItemList) {
             if (item.type === "group" && item.value === currentGroupName) {

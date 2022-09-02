@@ -32,8 +32,9 @@ module.exports = async (newConfig) => {
         if (!module.needsContainer) {
             return true;
         }
-        // push config to any running module and return result bool
-        return await panelConfigPush(newConfig?.id);
+        // push config to any running module
+        await panelConfigPush(newConfig?.id);
+        return true;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to set panel config to ${url}`);

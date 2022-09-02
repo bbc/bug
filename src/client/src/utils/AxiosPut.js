@@ -8,7 +8,7 @@ export default async function AxiosPut(url, data) {
             response = response?.data?.data;
             break;
         case "failure":
-            console.error("failed to fetch " + url);
+            console.error("failed to PUT " + url);
             response = null;
             break;
         case "error":

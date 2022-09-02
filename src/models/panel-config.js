@@ -39,7 +39,7 @@ exports.delete = async function (panelId) {
     }
 };
 
-exports.list = async function (panelId) {
+exports.list = async function () {
     const configFolder = path.join(__dirname, "..", "config", "panels");
 
     const panelArray = [];
@@ -61,7 +61,7 @@ exports.list = async function (panelId) {
                 }
             }
         } catch (error) {
-            logger.warning(`filename ${filename} - ${error.stack || error.trace || error || error.message}`);
+            logger.warning(`${error.stack || error.trace || error || error.message}`);
         }
     }
 
