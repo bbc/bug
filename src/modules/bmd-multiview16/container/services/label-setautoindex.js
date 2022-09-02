@@ -14,7 +14,7 @@ module.exports = async (inputIndex, routerIndex) => {
         config.autoLabelIndex = {};
     }
 
-    if (routerIndex) {
+    if (routerIndex !== undefined) {
         config.autoLabelIndex[inputIndex] = routerIndex;
     } else {
         if (config.autoLabelIndex[inputIndex] === undefined) {
