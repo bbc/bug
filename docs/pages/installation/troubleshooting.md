@@ -2,7 +2,7 @@
 layout: page
 title: Troubleshooting
 parent: Installation
-nav_order: 2
+nav_order: 7
 ---
 
 Help me! My BUG won't work.

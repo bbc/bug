@@ -2,7 +2,7 @@
 layout: page
 title: Linux
 parent: Installation
-nav_order: 2
+nav_order: 1
 ---
 
 # Linux

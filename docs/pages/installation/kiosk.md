@@ -2,7 +2,7 @@
 layout: page
 title: Kiosk Mode
 parent: Installation
-nav_order: 5
+nav_order: 9
 ---
 
 # Kiosk Mode

@@ -2,7 +2,7 @@
 layout: page
 title: Custom Registry
 parent: Installation
-nav_order: 2
+nav_order: 10
 ---
 
 # Getting BUG from the BCN Repository
