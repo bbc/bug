@@ -1,6 +1,6 @@
 {
     "name": "bug",
-    "version": "3.2.125",
+    "version": "3.2.126",
     "description": "Broadcast Universal Gateway",
     "main": "index.js",
     "directories": {
