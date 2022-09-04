@@ -19,7 +19,7 @@ jobs:
         runs-on: self-hosted
         strategy:
             matrix:
-                architecture: [linux/amd64]
+                architecture: [linux/arm/v7, linux/amd64]
         defaults:
             run:
                 working-directory: ./src
