@@ -23,7 +23,7 @@ Note - This file describes where to get the docker containers needed to run BUG 
 Note - You may find a text editor such as [Atom](https://atom.io/) makes the process of creating these configuration files easier.
 
 ```
-# BUG for Windows, Mac or Linux
+# BUG MacOS
 
 version: "3.8"
 

@@ -1,11 +1,15 @@
 ---
 layout: page
-title: Linux
+title: Raspberry Pi
 parent: Installation
 nav_order: 2
 ---
 
-# Linux
+# Raspberry Pi
+
+You can run BUG on a Raspberry Pi - we suggest using a version 4 for this. If you plan on running more than 5 or 6 panels it probably worth considering another method of hosting.
+
+The process for installation is largely the same as the [Linux guide](/pages/installation/linux.html). However, the `docker-compose.yml` file differs slightly owing to a lack of support for MongoDB on ARM processors.
 
 ## Install Docker
 
@@ -43,7 +47,7 @@ docker-compose --version
 Note - This describes where to get the docker containers needed to run BUG from and how to create them plumbing the right bits and pieces from your system into dockers such as ports and files.
 
 ```
-# BUG for Linux
+# BUG for Raspberry Pi
 
 version: "3.8"
 
@@ -99,7 +103,7 @@ services:
             WATCHTOWER_CLEANUP: "true"
             WATCHTOWER_LABEL_ENABLE: "true"
     mongo:
-        image: mongo:latest
+        image: arm64v8/mongo
         restart: unless-stopped
         container_name: bug-mongo
         networks:
