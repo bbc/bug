@@ -7,6 +7,8 @@ nav_order: 2
 
 # Windows
 
+Unfortunately, Docker for Windows has no support to pass through the Docker socket `/var/run/docker.sock:/var/run/docker.sock` used by BUG to control Docker on the host system itself.
+
 ## Install Docker
 
 1. Download and install docker desktop for windows, see the [official docker guide](https://docs.docker.com/desktop/windows/install/)
@@ -22,7 +24,7 @@ Note - This file describes where to get the docker containers needed to run BUG 
 Note - You may find a text editor such as [Notepad++](https://notepad-plus-plus.org/downloads/) makes the process of creating these configuration files easier.
 
 ```
-# BUG for Windows, Mac or Linux
+# BUG for Windows
 
 version: "3.8"
 
@@ -37,7 +39,6 @@ services:
         image: harbor.prod.bcn.bbc.co.uk/bug/app:latest
         restart: always
         volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
           - ./logs:/home/node/bug/logs
           - ./config/panels:/home/node/bug/config/panels
           - ./config/global:/home/node/bug/config/global
@@ -46,6 +47,7 @@ services:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
             DOCKER_NETWORK_NAME: bug
+            DOCKER_SOCKET_PATH: //./pipe/docker_engine
             BUG_CONTAINER: bug
             BUG_PORT: 80
             BUG_HOST: http://localhost
