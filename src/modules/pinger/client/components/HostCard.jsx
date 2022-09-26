@@ -25,7 +25,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
     };
 
     const getPingText = (time, alive) => {
-        let text = "inf";
+        let text = "failed";
         if (alive || time !== "unknown") {
             text = `${parseInt(time)}ms`;
         }
