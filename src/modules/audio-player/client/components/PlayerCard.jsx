@@ -4,30 +4,31 @@ import { CardActionArea } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import AudioPlayer from "./AudioPlayer";
-import IconButton from "@mui/material/IconButton";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
 import CardActions from "@mui/material/CardActions";
+import Slider from "@mui/material/Slider";
 
 import { Sparklines, SparklinesBars } from "react-sparklines";
 
 export default function PlayerCard({ panelId, title, description, image, playerId }) {
     const [playing, setPlaying] = useState(false);
+    const [volume, setVolume] = useState(50);
+
     const [bars, setBars] = useState([]);
 
-    const handlePlayPause = () => {
-        if (playing) {
+    const handleVolume = (event, newVolume) => {
+        setVolume(newVolume / 100);
+        if (newVolume === 0) {
             setPlaying(false);
         } else {
             setPlaying(true);
         }
     };
 
-    const getIcon = () => {
+    const togglePlayPause = () => {
         if (playing) {
-            return <PauseIcon />;
+            setPlaying(false);
         } else {
-            return <PlayArrowIcon />;
+            setPlaying(true);
         }
     };
 
@@ -46,9 +47,6 @@ export default function PlayerCard({ panelId, title, description, image, playerI
     return (
         <>
             <Card
-                onClick={() => {
-                    handlePlayPause();
-                }}
                 sx={{
                     borderRadius: "3px",
                     minWidth: 275,
@@ -74,18 +72,29 @@ export default function PlayerCard({ panelId, title, description, image, playerI
                                     position: "absolute",
                                 }}
                             >
-                                <Typography variant="h5" component="div">
-                                    {title}
-                                </Typography>
+                                <div onClick={togglePlayPause}>
+                                    <Typography variant="h5" component="div">
+                                        {title}
+                                    </Typography>
 
-                                <Typography variant="body2">{description}</Typography>
+                                    <Typography variant="body2">{description}</Typography>
 
-                                <AudioPlayer
-                                    playing={playing}
-                                    source={`/container/${panelId}/audio/${playerId}/playlist.m3u8`}
-                                />
-                                <CardActions style={{ width: "100%", textAlign: "right" }}>
-                                    <IconButton aria-label="play/pause">{getIcon()}</IconButton>
+                                    <AudioPlayer
+                                        volume={volume}
+                                        playing={playing}
+                                        source={`/container/${panelId}/audio/${playerId}/playlist.m3u8`}
+                                    />
+                                </div>
+                                <CardActions style={{ padding: 4, align: "center", width: "100%" }}>
+                                    <Slider
+                                        onChange={handleVolume}
+                                        defaultValue={volume}
+                                        step={10}
+                                        marks
+                                        min={0}
+                                        max={100}
+                                        color="secondary"
+                                    />
                                 </CardActions>
                             </div>
                         </div>
