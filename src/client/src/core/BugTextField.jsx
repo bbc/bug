@@ -12,44 +12,84 @@ const BugTextField = ({
     numeric = false,
     onChange,
     variant = "outlined",
+    sx = {},
+    value,
+    changeOnBlur = false,
     ...props
 }) => {
-    const handleChange = (event) => {
-        let eventCopy = Object.assign({}, event);
-        if (numeric) {
-            eventCopy.target.value = event.target.value.replace(/[^0-9]/, "");
-            if (eventCopy.target.value === "") {
-                eventCopy.target.value = min !== null ? min : 0;
-            }
-        }
-        onChange(eventCopy);
-    };
+    const [localValue, setLocalValue] = React.useState(value);
 
-    const handleBlur = (event) => {
-        let eventCopy = Object.assign({}, event);
-        let valueModified = false;
-        if (numeric && min !== undefined && event.target.value < min) {
-            eventCopy.target.value = min;
-            valueModified = true;
-        }
-        if (numeric && max !== undefined && event.target.value > max) {
-            eventCopy.target.value = max;
-            valueModified = true;
-        }
-        if (filter) {
-            if (typeof filter === "function") {
-                eventCopy.target.value = filter(event.target.value);
-            } else {
-                eventCopy.target.value = event.target.value.replace(filter, "");
+    React.useEffect(() => {
+        // update local value if prop changes
+        setLocalValue(value);
+    }, [value]);
+
+    const handleChange = (event) => {
+        // pull out the value from the event
+        let changedValue = event.target.value;
+
+        if (numeric) {
+            changedValue = changedValue.replace(/[^0-9]/, "");
+            if (changedValue === "") {
+                changedValue = min !== null ? min : 0;
             }
-            valueModified = true;
         }
-        if (valueModified && onChange !== undefined) {
+
+        // update the local value
+        setLocalValue(changedValue);
+
+        // if we're set to call change on every keystroke, call the event handler
+        if (typeof onChange === "function" && !changeOnBlur) {
+            // pop it back into the eventCopy
+            let eventCopy = Object.assign({}, event);
+            eventCopy.target.value = changedValue;
+            // call the event handler
             onChange(eventCopy);
         }
     };
 
-    const sx =
+    const handleBlur = (event) => {
+        // pull out the value from the event
+        let changedValue = event.target.value;
+
+        let valueModified = false;
+        if (numeric && min !== undefined && event.target.value < min) {
+            changedValue = min.toString();
+            valueModified = true;
+        }
+        if (numeric && max !== undefined && event.target.value > max) {
+            changedValue = max.toString();
+            valueModified = true;
+        }
+        if (filter) {
+            if (typeof filter === "function") {
+                changedValue = filter(changedValue);
+            } else {
+                changedValue = changedValue.replace(filter, "");
+            }
+            valueModified = true;
+        }
+        if (valueModified) {
+            // update the local value
+            setLocalValue(changedValue);
+        }
+
+        if (onChange !== undefined) {
+            // we have an onChange event handler defined
+            if (valueModified || changeOnBlur) {
+                // it's been modified (by the filter) or we're set to call onChange on a blur
+
+                // pop it back into the eventCopy
+                let eventCopy = Object.assign({}, event);
+                eventCopy.target.value = changedValue;
+
+                // call the event handler
+                onChange(eventCopy);
+            }
+        }
+    };
+
+    const localSx =
         variant === "outlined"
             ? {
                   backgroundColor: "rgba(255, 255, 255, 0.05)",
@@ -64,11 +104,12 @@ const BugTextField = ({
 
     return (
         <TextField
-            sx={sx}
+            sx={{ ...localSx, ...sx }}
             fullWidth={fullWidth}
             variant={variant}
             disabled={disabled}
             helperText={helperText}
+            value={localValue}
             {...props}
             // I don't think this works...:
             inputProps={{ maxLength: maxLength }}
