@@ -1,0 +1,31 @@
+{
+    "name": "tieline-merlin",
+    "longname": "Tieline Merlin",
+    "description": "Control and monitor Tieline Merlin codecs",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-transit-connection-variant",
+    "author": "Geoff House",
+    "license": "GPLv3",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "tieline-merlin",
+        "username": "admin",
+        "password": "password",
+        "address": "",
+        "showAdvanced": false,
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "url": "",
+        "codecSource": ""
+    }
+}
