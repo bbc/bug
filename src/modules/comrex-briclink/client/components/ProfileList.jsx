@@ -8,7 +8,6 @@ import BugNoData from "@core/BugNoData";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
-import { useHistory } from "react-router-dom";
 
 export default function ProfileList({ panelId }) {
     const sendAlert = useAlert(panelId);
