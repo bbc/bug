@@ -5,10 +5,10 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 
-export default function BugDetailsTable({ items, width = "15rem", gridLines = true }) {
+export default function BugDetailsTable({ items, width = "15rem", gridLines = true, sx = {} }) {
     return (
         <>
-            <TableContainer>
+            <TableContainer sx={{ ...sx }}>
                 <Table
                     aria-label="BUG details table"
                     sx={{
