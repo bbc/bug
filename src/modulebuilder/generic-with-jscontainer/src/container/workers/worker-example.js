@@ -21,7 +21,7 @@ const main = async () => {
     // Kick things off
     console.log(`worker-example: doing something ...`);
 
-    // use an infitite loop
+    // use an infinite loop
     while (true) {
         // do stuff here
 
