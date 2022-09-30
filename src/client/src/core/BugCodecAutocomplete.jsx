@@ -20,15 +20,17 @@ export default function BugCodecAutocomplete({
     React.useEffect(() => {
         const fetchOptions = async () => {
             const result = await AxiosGet(`${apiUrl}/${capability}`);
-            setOptions(
-                result.map((item) => ({
-                    id: item.id,
-                    label: item.name,
-                    device: item.device,
-                    address: item.address,
-                    port: item.port,
-                }))
-            );
+            if (result) {
+                setOptions(
+                    result.map((item) => ({
+                        id: item.id,
+                        label: item.name,
+                        device: item.device,
+                        address: item.address,
+                        port: item.port,
+                    }))
+                );
+            }
         };
 
         fetchOptions();
