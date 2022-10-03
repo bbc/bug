@@ -26,7 +26,7 @@ For development on your local machine with docker (recommended)
 1. Run `npm i`. To install all the backend dependencies locally
 1. Change directory to the `./src/client` folder of the repository
 1. Run `npm i`. To install all the frontend dependencies locally
-1. Change directory to the root folder of the repository
+1. Change directory to the root folder of the repository. This will be the same level as the `docker-compose.yml` file in the repository.
 1. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become available. You can view the live logs from the main BUG contrainer `bug` using the command `docker logs --tail 1000 -f bug`.
 1. Get developing. If you're using the default ports, the web interface will be available on port 3000, the API on port 3101 and the GUI view of the MongoDB database on port 3202.
 
@@ -39,3 +39,5 @@ Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used f
 ## Troubleshooting
 
 -   If you expirence errors during the `npm i` process using `npm i --legacy-peer-deps` may help.
+-   The `-d` in the command `docker compose -d` deatached the process fromt the terminal running the container in the background.
+-   If you're getting Docker related permission denied errors make sure you've run the Docker [post-installation stepsthese instructions](https://docs.docker.com/engine/install/linux-postinstall/) on Linux.
