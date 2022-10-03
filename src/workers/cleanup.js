@@ -27,8 +27,8 @@ const main = async () => {
         } catch (error) {
             logger.warning(`workers/cleanup: ${error.stack || error.trace || error || error.message}`);
         }
-        //Run every 5 minutes
-        await delay(300000);
+        //Run every 30 minutes
+        await delay(1800000);
     }
 };
 
