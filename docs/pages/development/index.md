@@ -19,8 +19,8 @@ Running BUG for production? You probably want [these instructions](/pages/instal
 
 For development on your local machine with docker (recommended)
 
-1. To begin you'll need to install the [Docker Desktop](https://www.docker.com/products/docker-desktop/) and the latest LTS version of [Node.js](https://nodejs.dev/download/) on your development machine. The BUG codebases is currently tested against `v16.17.x`.
-1. Check your Docker and Node.js installations are working using the commands `docker -v` and `node -v`. You should see some sensible version numbers.
+1. To begin you'll need to install the [Docker Desktop](https://www.docker.com/products/docker-desktop/) and the latest LTS version of [Node.js](https://nodejs.dev/en) on your development machine.
+1. Check your Docker and Node.js installations are working using the commands `docker -v` and `node -v`. You should see some sensible version numbers. At least `20.x.x` for Docker and at least `16.x.x` for Node.js.
 1. Next, clone the BUG repository using `git clone https://github.com/bbc/bbcnews-bug`
 1. Change directory to the `./src` folder of the repository
 1. Run `npm i`. To install all the backend dependencies locally
