@@ -1,5 +1,7 @@
 FROM node:16
 
+RUN deluser --remove-home node
+
 WORKDIR /home/node/bug
 COPY . .
 RUN npm install
