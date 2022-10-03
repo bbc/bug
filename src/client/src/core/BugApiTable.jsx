@@ -33,6 +33,7 @@ export default function BugApiTable({
     noData,
     rowHeight = null,
     forceRefresh,
+    refreshInterval = 2500,
 }) {
     const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
     const [sortField, setSortField] = React.useState(null);
@@ -87,7 +88,7 @@ export default function BugApiTable({
             filters: filters,
         },
         url: apiUrl,
-        interval: 2500,
+        interval: refreshInterval,
     });
 
     const handleSortClicked = (column) => {
