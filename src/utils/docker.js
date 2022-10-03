@@ -7,4 +7,6 @@ const socketPath = process.env.DOCKER_SOCKET_PATH || "/var/run/docker.sock";
 
 let docker = new Docker({ socketPath: socketPath });
 
+console.log(docker)
+
 module.exports = docker;
