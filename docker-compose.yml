@@ -15,6 +15,7 @@ services:
         container_name: bug
         build: "./src"
         restart: always
+        user: root
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ./src:/home/node/bug

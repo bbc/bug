@@ -42,3 +42,10 @@ Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used f
 -   The `-d` in the command `docker compose -d` deatached the process fromt the terminal running the container in the background.
 -   If you're getting Docker related permission denied errors make sure you've run the Docker [post-installation stepsthese instructions](https://docs.docker.com/engine/install/linux-postinstall/) on Linux.
 -   If you're developing on a linux OS you may see errors on the main bug container logs around file write persmission. This can be solved by giving the docker group read write permissions on the resposiotry directory.
+-   If using a linux machine for development it's sugested that [docker engine](https://docs.docker.com/engine/install/ubuntu/) is used rather than docker desktop.
+
+
+
+
+
+docker exec -it fdc06c3370c0de26cb0510a6acf98898b8beaf8cda058ae637a05069a7f329af bash
