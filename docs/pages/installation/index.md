@@ -13,7 +13,7 @@ Run BUG on any operating system and deploy a central interface with user managem
 
 You can see the full list on the [Modules Page](/pages/modules)
 
-Trying to run a BUG instance to develop new module? You probably want [these instructions](/pages/development.html) instead.
+Trying to run a BUG instance to develop new module? You probably want [these instructions](/pages/development) instead.
 
 ## Supported Operating Systems
 
