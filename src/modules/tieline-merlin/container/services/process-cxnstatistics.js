@@ -2,6 +2,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const ensureArray = require("@utils/ensure-array");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 const parseZeroInt = (val) => {
     if (!isNaN(val)) {
@@ -13,6 +14,8 @@ const parseZeroInt = (val) => {
 module.exports = async (data) => {
     if (data?.["cxn-stats"]) {
         const statisticsCollection = await mongoCollection("statistics");
+        // and now create the index with ttl
+        await mongoCreateIndex(statisticsCollection, "timestamp", { expireAfterSeconds: 30 });
 
         const dataArray = ensureArray(data?.["cxn-stats"]);
 
@@ -21,20 +24,12 @@ module.exports = async (data) => {
             const connectionHandle = eachData["_attributes"]["cxn-handle"];
             const groupId = eachData["_attributes"]["group-id"];
 
-            // update aggregation first
-            const aggregationArray = {
-                [`${connectionId}_loss`]: parseZeroInt(eachData["minute-stats"]["_attributes"]["loss"]),
-                [`${connectionId}_empty`]: parseZeroInt(eachData["minute-stats"]["_attributes"]["empty"]),
-                [`${connectionId}_late`]: parseZeroInt(eachData["minute-stats"]["_attributes"]["late"]),
-                [`${connectionId}_fec`]: parseZeroInt(eachData["minute-stats"]["_attributes"]["fec"]),
-            };
-            //TODO  // $this->aggregateStats($aggregationArray, "statistics", "stats_{$connectionId}");
-
             // then form the data to update db
             const statsArray = {
                 connectionId: connectionId,
                 connectionHandle: connectionHandle,
                 groupId: groupId,
+                type: "connection",
                 "stats-total": {
                     loss: parseZeroInt(eachData["total-stats"]["_attributes"]["loss"]),
                     empty: parseZeroInt(eachData["total-stats"]["_attributes"]["empty"]),

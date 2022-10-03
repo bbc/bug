@@ -1,6 +1,5 @@
 "use strict";
 
-const tielineApi = require("@utils/tieline-api");
 const ensureArray = require("@utils/ensure-array");
 const mongoCollection = require("@core/mongo-collection");
 

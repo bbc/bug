@@ -35,7 +35,6 @@ const main = async () => {
             console.log(`worker-programs: fetching get_program_handles ...`);
             // fetch the loaded programme
             const programListFromApi = await TielineApi.get("/api/get_program_handles");
-            console.log(`worker-programs: ... got get_program_handles`);
 
             if (programListFromApi && programListFromApi.result && programListFromApi.result["prog-prop"]) {
                 // pull out the handle and name from the result

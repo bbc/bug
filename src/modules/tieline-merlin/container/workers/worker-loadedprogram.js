@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const fetchLoadedProgram = require("@services/fetch-loadedprogram");
 const tielineApi = require("@utils/tieline-api");
+const mongoSingle = require("@core/mongo-single");
 
 // Tell the manager the things you care about
 // make sure you add an array of config fields in 'restartOn' - the worker will restart whenever these are updated
@@ -21,6 +22,9 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
+    // remove any previous values
+    await mongoSingle.set("loadedProgram", {}, 60);
+
     const TielineApi = new tielineApi({
         host: workerData.address,
         username: workerData.username,
@@ -33,13 +37,9 @@ const main = async () => {
     // use an infinite loop
     while (true) {
         try {
-            console.log(`worker-loadedprogram: requesting ... ${new Date()}`);
             await fetchLoadedProgram(TielineApi);
-            console.log(`worker-loadedprogram: ... got ${new Date()}`);
-
             // delay before doing it all again ...
             await delay(20000);
-            console.log(`worker-loadedprogram: ... finished delay ${new Date()}`);
         } catch (error) {
             console.log(`worker-loadedprogram: ${error}`);
             await delay(5000);

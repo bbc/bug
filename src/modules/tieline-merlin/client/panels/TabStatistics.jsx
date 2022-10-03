@@ -1,5 +1,5 @@
 import React from "react";
-// import PeerList from "../components/PeerList";
+import StatisticsList from "../components/StatisticsList";
 import { useParams } from "react-router-dom";
 
 export default function TabPeers() {
@@ -7,8 +7,7 @@ export default function TabPeers() {
 
     return (
         <>
-            Stats
-            {/* <PeerList panelId={params.panelId} /> */}
+            <StatisticsList panelId={params.panelId} />
         </>
     );
 }

@@ -1,3 +1,4 @@
--   make tieline-api a class, so that you set the host/user/pass once
--   check restart on
 -   codex integration
+-   audio meters and history
+-   config validation
+-   RX display (including caller ID)

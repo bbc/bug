@@ -14,22 +14,16 @@ import BugApiSelect from "@core/BugApiSelect";
 import { useSelector } from "react-redux";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import StateLabel from "./StateLabel";
+import GroupStats from "./GroupStats";
+import PollIcon from "@mui/icons-material/Poll";
+import LinkIcon from "@mui/icons-material/Link";
 
 export default function Group({ group, panelId, onChange }) {
     const [tabIndex, setTabIndex] = React.useState(0);
     const panelConfig = useSelector((state) => state.panelConfig);
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
     const sendAlert = useAlert();
-
-    const getChannelType = (channelCount) => {
-        if (channelCount === 2) {
-            return "Stereo";
-        }
-        if (channelCount === 1) {
-            return "Mono";
-        }
-        return "";
-    };
 
     const handleGroupConnect = async () => {
         const url = `/container/${panelId}/connection/connect/${encodeURIComponent(group.id)}`;
@@ -53,26 +47,6 @@ export default function Group({ group, panelId, onChange }) {
         setTabIndex(newIndex);
     };
 
-    const renderState = (state) => {
-        const stateColors = {
-            Connected: "success.main",
-            Disconnected: "secondary.main",
-            Idle: "primary.main",
-        };
-        return (
-            <Box
-                sx={{
-                    textTransform: "uppercase",
-                    opacity: 0.8,
-                    fontWeight: 500,
-                    color: stateColors[state] ? stateColors[state] : "secondary.main",
-                }}
-            >
-                {state}
-            </Box>
-        );
-    };
-
     const renderConnection = () => {
         const connection = group.connections.find((c) => c.index === tabIndex);
         if (!connection) {
@@ -83,14 +57,14 @@ export default function Group({ group, panelId, onChange }) {
                 <BugDetailsTable
                     sx={{
                         "& .MuiTableCell-root": {
-                            height: "4rem",
+                            height: "66px",
                         },
                     }}
                     width="8rem"
                     items={[
                         {
                             name: "Status",
-                            value: renderState(connection.state),
+                            value: <StateLabel state={connection.state} />,
                         },
                         panelConfig.data.codecSource && {
                             name: "Destination",
@@ -219,7 +193,7 @@ export default function Group({ group, panelId, onChange }) {
             <BugDetailsTable
                 sx={{
                     "& .MuiTableCell-root": {
-                        height: "4rem",
+                        height: "66px",
                     },
                 }}
                 width="8rem"
@@ -238,7 +212,6 @@ export default function Group({ group, panelId, onChange }) {
             <BugCard
                 sx={{
                     width: "33rem",
-                    // height: showAdvanced ? "438px" : "242px",
                 }}
             >
                 <CardHeader
@@ -258,11 +231,12 @@ export default function Group({ group, panelId, onChange }) {
                         borderBottom: "1px solid #181818",
                         height: "62.5px",
                     }}
-                    title={`${getChannelType(group._channelCount)} ${group.name}`}
+                    title={group["_title"]}
                 ></CardHeader>
                 <CardContent
                     sx={{
                         padding: 0,
+                        paddingLeft: "4px",
                         "&:last-child": {
                             paddingBottom: 0,
                         },
@@ -276,7 +250,12 @@ export default function Group({ group, panelId, onChange }) {
                             minHeight: 0,
                             borderBottom: "1px solid #181818",
                             "& .MuiTabs-indicator": {
-                                backgroundColor: group.connections[tabIndex]._connected ? "#ffffff" : "primary.main",
+                                backgroundColor: group.connections[tabIndex]?._connected
+                                    ? "success.main"
+                                    : "primary.main",
+                            },
+                            "& .MuiTab-labelIcon": {
+                                minHeight: "auto",
                             },
                         }}
                     >
@@ -285,25 +264,41 @@ export default function Group({ group, panelId, onChange }) {
                                 label={connection._tabName}
                                 key={index}
                                 sx={{
-                                    backgroundColor: connection._connected ? "success.main" : "background.main",
                                     "&.Mui-selected": {
-                                        color: connection._connected ? "#ffffff" : "primary.main",
+                                        color: connection._connected ? "success.main" : "primary.main",
                                     },
+                                    color: connection._connected ? "success.main" : "secondary.main",
+                                    "& .MuiTab-iconWrapper": {},
                                 }}
+                                icon={<LinkIcon />}
+                                iconPosition="start"
                             />
                         ))}
+                        <Tab
+                            sx={{
+                                "&.Mui-selected": {
+                                    color: "primary.main",
+                                },
+                                color: "secondary.main",
+                            }}
+                            label="Stats"
+                            value="stats"
+                            icon={<PollIcon />}
+                            iconPosition="start"
+                        />
                     </Tabs>
                     <Box
                         sx={{
-                            borderLeft: group.connections[tabIndex]._connected
+                            borderLeft: group.connections[tabIndex]?._connected
                                 ? "4px solid green"
                                 : "4px solid transparent",
-                            borderRight: group.connections[tabIndex]._connected
+                            borderRight: group.connections[tabIndex]?._connected
                                 ? "4px solid green"
                                 : "4px solid transparent",
                         }}
                     >
-                        {renderConnection()}
+                        {tabIndex !== "stats" && renderConnection()}
+                        {tabIndex === "stats" && <GroupStats group={group} panelId={panelId} />}
                     </Box>
                 </CardContent>
             </BugCard>

@@ -6,6 +6,16 @@ const mongoSingle = require("@core/mongo-single");
 module.exports = async (programPropertiesResult) => {
     const streamsConfig = await mongoSingle.get("streamsConfig");
 
+    const getChannelType = (channelCount) => {
+        if (channelCount === 2) {
+            return "Stereo";
+        }
+        if (channelCount === 1) {
+            return "Mono";
+        }
+        return "";
+    };
+
     const getChannelCount = (mixerId, encId) => {
         const stream = streamsConfig.find((stream) => stream?.id.toString() === mixerId.toString());
         if (stream) {
@@ -35,6 +45,7 @@ module.exports = async (programPropertiesResult) => {
         groupArray["decoderId"] = parseInt(eachGroup?.["decStreamId"]?.["_text"]);
         groupArray["_channelCount"] = getChannelCount(groupArray["mixer"], groupArray["encoderId"]);
         groupArray["connections"] = [];
+        groupArray["_title"] = `${getChannelType(groupArray["_channelCount"])} ${groupArray["name"]}`;
 
         let rxCount = 1;
         let txCount = 1;
