@@ -35,3 +35,7 @@ You can change many of the port parameters, logging locations by setting environ
 When developing in docker changes will automatically be reflected in docker using volume mounts and nodemon to reload. Please make sure to `npm install` on your local machine before spinning up the compose project.
 
 Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used for most of BUG's development. Other IDE's are available. However, Visual Studio Code paired with the official Docker extension found in the extension's store is really useful for outputting logs and visualising the orchestration.
+
+## Troubleshooting
+
+-   If you expirence errors during the `npm i` process using `npm i --legacy-peer-deps` may help.
