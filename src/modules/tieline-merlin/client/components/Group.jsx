@@ -208,12 +208,8 @@ export default function Group({ group, panelId, onChange }) {
     };
 
     return (
-        <Grid item>
-            <BugCard
-                sx={{
-                    width: "33rem",
-                }}
-            >
+        <Grid key={group.id} item xl={3} lg={4} md={6} xs={12}>
+            <BugCard>
                 <CardHeader
                     action={
                         group.connections.length > 1 && (
@@ -229,7 +225,6 @@ export default function Group({ group, panelId, onChange }) {
                     }
                     sx={{
                         borderBottom: "1px solid #181818",
-                        height: "62.5px",
                     }}
                     title={group["_title"]}
                 ></CardHeader>

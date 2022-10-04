@@ -11,9 +11,13 @@ const cleanup = async () => {
     logger.debug(`workers/cleanup: running image cleanup`);
     const images = await listImages();
     for (let image of images) {
-        const status = await deleteImage(image.tag);
-        if (status) {
-            logger.debug(`workers/cleanup: deleted ${image?.tag}`);
+        try {
+            let status = await deleteImage(image.tag);
+            if (status) {
+                logger.debug(`workers/cleanup: deleted ${image?.tag}`);
+            }
+        } catch (error) {
+            logger.debug(`workers/cleanup: did not delete ${image?.tag}`);
         }
     }
 
