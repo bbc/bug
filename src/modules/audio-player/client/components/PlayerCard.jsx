@@ -82,6 +82,7 @@ export default function PlayerCard({ panelId, title, description, image, playerI
                                     <AudioPlayer
                                         volume={volume}
                                         playing={playing}
+                                        title={title}
                                         source={`/container/${panelId}/audio/${playerId}/playlist.m3u8`}
                                     />
                                 </div>
