@@ -20,7 +20,7 @@ module.exports = async (imageId, force = false) => {
             });
         });
     } catch (error) {
-        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
+        logger.debug(`${error?.stack || error?.trace || error || error?.message}`);
         throw new Error(`Failed to delete docker image id ${imageId}`);
     }
 };

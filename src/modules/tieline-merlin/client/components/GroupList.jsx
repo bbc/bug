@@ -52,11 +52,6 @@ export default function GroupList({ panelId }) {
             container
             sx={{
                 backgroundColor: "background.default",
-                padding: "0px",
-                "&.MuiGrid-root>.MuiGrid-item": {
-                    paddingLeft: "4px",
-                    paddingTop: "4px",
-                },
             }}
         >
             {loadedProgram.data.groups &&

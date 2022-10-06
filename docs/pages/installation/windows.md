@@ -13,6 +13,15 @@ Unfortunately, Docker for Windows has no support to pass through the Docker sock
 
 1. Download and install docker desktop for windows, see the [official docker guide](https://docs.docker.com/desktop/windows/install/)
 
+## Install Docker
+
+Windows is not a file based OS like linux. As such in order for BUG to control Docker on your underlying host you'll need to use a TCP socket connection instead. To setup Docker Desktop on Windows 10 or 11 to accomplish this follow these steps;
+
+1. In case of Docker Desktop, expose the 2375 port through the Docker Desktop GUI checkbox.
+1. Start command prompt `cmd.exe` as an administrator and run the following command -
+   `netsh interface portproxy add v4tov4 listenport=2375 listenaddress=0.0.0.0 connectaddress=127.0.0.1 connectport=2375`
+1. Restart Docker Desktop.
+
 ## Create Files
 
 1. Create a file called `docker-compose.yml`. You can create this file anywhere on your system but it's probably simplest to put it in a new folder all of it's own.
@@ -47,7 +56,8 @@ services:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
             DOCKER_NETWORK_NAME: bug
-            DOCKER_SOCKET_PATH: //./pipe/docker_engine
+            DOCKER_HOST: "127.0.0.1"
+            DOCKER_PORT: 2375
             BUG_CONTAINER: bug
             BUG_PORT: 80
             BUG_HOST: http://localhost

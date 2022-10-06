@@ -1,10 +1,38 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import ReactPlayer from "react-player/lazy";
+import { useAlert } from "@utils/Snackbar";
 
-export default function AudioPlayer({ source, playing, volume }) {
+export default function AudioPlayer({ title, source, playing, volume }) {
+    const sendAlert = useAlert();
+    const player = useRef();
+
+    const handleError = (error) => {
+        if (playing) {
+            sendAlert(`Failed to play ${title}`, { broadcast: "false", variant: "error" });
+        }
+    };
+
+    //Restart Player to latest avalible time
+    useEffect(() => {
+        const setTime = async () => {
+            const duration = await player.current.getDuration();
+            console.log(duration);
+            player.current.seekTo(duration, "seconds");
+        };
+        setTime();
+    }, [playing]);
+
     return (
         <>
-            <ReactPlayer hidden controls={true} volume={volume} playing={playing} url={source} />
+            <ReactPlayer
+                ref={player}
+                hidden
+                onError={handleError}
+                controls={true}
+                volume={volume}
+                playing={playing}
+                url={source}
+            />
         </>
     );
 }

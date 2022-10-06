@@ -12,6 +12,10 @@ module.exports = async (player) => {
     }
 
     if (player.source && player.title) {
+        //Trim links
+        player.source = player.source.trim();
+        player.title = player.title.trim();
+
         const playerId = await uuidv4();
         config.players[playerId] = player;
     }
