@@ -9,7 +9,12 @@ module.exports = async () => {
     const connections = await connectionsCollection.find().toArray();
 
     // now fetch info about the currently loaded program
-    const loadedProgram = await mongoSingle.get("loadedProgram");
+    let loadedProgram = await mongoSingle.get("loadedProgram");
+
+    // if loadedProgram is empty, return null
+    if (Object.keys(loadedProgram).length === 0) {
+        return null;
+    }
 
     // now add connected state to any connections
     let deviceConnected = false;
@@ -26,8 +31,11 @@ module.exports = async () => {
             eachGroup["_connected"] = groupConnected;
             deviceConnected = deviceConnected && eachGroup["_connected"];
         }
+        loadedProgram["_connected"] = deviceConnected;
     }
-    loadedProgram["_connected"] = deviceConnected;
 
+    if (loadedProgram.length === 0) {
+        return null;
+    }
     return loadedProgram;
 };

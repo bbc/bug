@@ -22,7 +22,13 @@ export default function GroupList({ panelId }) {
         return <BugLoading height="30vh" />;
     }
     if (loadedProgram.status === "success" && !loadedProgram.data) {
-        return <BugNoData title="No connections found" showConfigButton={false} />;
+        return (
+            <BugNoData
+                title="No connections found"
+                message="Click to edit panel configuration"
+                showConfigButton={true}
+            />
+        );
     }
 
     const handleChange = async (groupId, connectionId, valueArray) => {
