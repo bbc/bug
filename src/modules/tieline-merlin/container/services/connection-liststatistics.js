@@ -19,9 +19,11 @@ module.exports = async (data) => {
     if (loadedProgram?.groups) {
         for (const eachGroup of loadedProgram?.groups) {
             for (const eachConnection of eachGroup?.connections) {
-                // find out whether it's connected
-                const activeConnection = connections.find((c) => c.handle === eachConnection.cxnHandle);
-                console.log(eachConnection);
+                // we're using the id as it works on TX and RX
+                const activeConnection = connections.find((c) => {
+                    return c.id === eachConnection.id;
+                });
+
                 const connectionStats = {
                     id: eachConnection.id,
                     name: eachConnection.name,
@@ -32,8 +34,8 @@ module.exports = async (data) => {
                     audioPort: eachConnection.audioPort,
                 };
                 if (activeConnection?.state === "Connected") {
-                    // find stats
-                    const fullStats = statisticsFromDb.find((s) => s.connectionHandle === eachConnection.cxnHandle);
+                    // find stats - we're using the id as it works on TX and RX
+                    const fullStats = statisticsFromDb.find((s) => s.connectionId === eachConnection.id);
                     if (fullStats) {
                         connectionStats["stats-10m"] = fullStats["stats-10m"];
                         connectionStats["stats-1m"] = fullStats["stats-1m"];

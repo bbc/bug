@@ -37,6 +37,9 @@ module.exports = class TielineApi {
             this.timeout
         );
         const resultText = await result.text();
+        if (resultText.indexOf("Bad Request") > -1) {
+            throw new Error(`tieline-api: bad request`);
+        }
         return convert.xml2js(resultText, { compact: true });
     }
 

@@ -22,7 +22,10 @@ module.exports = async () => {
         for (let eachGroup of loadedProgram.groups) {
             let groupConnected = true;
             for (let eachConnection of eachGroup.connections) {
-                const activeConnection = connections.find((c) => c.handle === eachConnection.cxnHandle);
+                const activeConnection = connections.find((c) => c.id === eachConnection.id);
+                eachConnection["localLinkQuality"] = activeConnection?.localLinkQuality;
+                eachConnection["remoteLinkQuality"] = activeConnection?.remoteLinkQuality;
+                eachConnection["_destination"] = activeConnection?.destination;
                 eachConnection["_connected"] = activeConnection?.state === "Connected";
                 eachConnection["_connecting"] = activeConnection?.state === "Connecting";
                 eachConnection["state"] = activeConnection?.state ? activeConnection?.state : "Idle";

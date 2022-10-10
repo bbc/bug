@@ -25,7 +25,6 @@ var HTTPDigest = (function () {
     //
     HTTPDigest.prototype.request = function (options, callback) {
         var self = this;
-        console.log(options);
         http.request(options, function (res) {
             self._handleResponse(options, res, callback);
         }).end();
@@ -95,7 +94,6 @@ var HTTPDigest = (function () {
     //
     HTTPDigest.prototype._parseChallenge = function parseChallenge(digest) {
         var prefix = "Digest ";
-        console.log(digest);
         var challenge = digest.substr(digest.indexOf(prefix) + prefix.length);
         var parts = challenge.split(",");
         var length = parts.length;

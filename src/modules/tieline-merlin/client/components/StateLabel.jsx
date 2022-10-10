@@ -1,22 +1,33 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import stateColor from "./stateColor";
 
-export default function StateLabel({ state }) {
-    const stateColors = {
-        Connected: "success.main",
-        Disconnected: "warning.main",
-        Idle: "secondary.main",
-    };
+export default function StateLabel({ state, txValue, rxValue }) {
+    const color = stateColor({ state, txValue, txValue });
+
     return (
         <Box
             sx={{
                 textTransform: "uppercase",
                 opacity: 0.8,
                 fontWeight: 500,
-                color: stateColors[state] ? stateColors[state] : "secondary.main",
+                display: "flex",
+                color: "secondary.main",
             }}
         >
-            {state}
+            <Box sx={{ color: color }}>{state}</Box>
+            {txValue > 0 && (
+                <Box sx={{ paddingLeft: "16px", display: "flex" }}>
+                    TX:
+                    <Box sx={{ color: color, marginLeft: "4px" }}>{txValue}%</Box>
+                </Box>
+            )}
+            {rxValue > 0 && (
+                <Box sx={{ paddingLeft: "8px", display: "flex" }}>
+                    RX:
+                    <Box sx={{ color: color, marginLeft: "4px" }}>{rxValue}%</Box>
+                </Box>
+            )}
         </Box>
     );
 }

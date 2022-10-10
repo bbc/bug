@@ -8,7 +8,6 @@ const fetchLoadedProgram = require("@services/fetch-loadedprogram");
 
 module.exports = async (TielineApi, data) => {
     for (const eachEvent of data) {
-        // console.log(eachEvent["_attributes"]["event"]);
         switch (eachEvent["_attributes"]["event"]) {
             case "statistics":
                 processCxnStatistics(eachEvent);
@@ -44,6 +43,12 @@ module.exports = async (TielineApi, data) => {
             case "prog-loaded":
                 // just loaded (or unloaded) a program
                 fetchLoadedProgram(TielineApi);
+                return;
+            case "prog-group-add-cxn":
+                fetchConnections(TielineApi);
+                return;
+            case "prog-group-remove-cxn":
+                fetchConnections(TielineApi);
                 return;
             default:
                 console.warn(`unhandled event: ${JSON.stringify(eachEvent)}`);

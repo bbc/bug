@@ -1,4 +1,2 @@
 -   codex integration
--   audio meters and history
 -   config validation
--   RX display (including caller ID)

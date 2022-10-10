@@ -51,7 +51,7 @@ export default function GroupStats({ group, panelId }) {
                             ? formatBps(parseInt(stats?.data?.["rx-bitrate"]))
                             : "",
                 },
-                showAdvanced && {
+                {
                     name: "Connected",
                     value: stats?.data?.["_time"],
                 },

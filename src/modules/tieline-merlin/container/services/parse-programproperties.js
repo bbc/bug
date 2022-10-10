@@ -5,6 +5,7 @@ const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (programPropertiesResult) => {
     const streamsConfig = await mongoSingle.get("streamsConfig");
+    const deviceConfig = await mongoSingle.get("device");
 
     const getChannelType = (channelCount) => {
         if (channelCount === 2) {
@@ -94,6 +95,15 @@ module.exports = async (programPropertiesResult) => {
                 connectionArray["transport"] = eachConnection?.["match"]?.["TRANSPORT"]?.["_text"];
                 connectionArray["sessionType"] = eachConnection?.["match"]?.["SESSION_TYPE"]?.["_text"];
                 connectionArray["audioPort"] = eachConnection?.["match"]?.["AUDIO_PORT"]?.["_text"];
+            }
+
+            if (
+                connectionArray["direction"] === "inbound" &&
+                connectionArray["sessionPort"] === undefined &&
+                deviceConfig["localSessionPort"]
+            ) {
+                // we'll use the device one - to show in the UI
+                connectionArray["sessionPort"] = deviceConfig["localSessionPort"];
             }
 
             groupArray["_hasMultiTx"] = txCount > 2;

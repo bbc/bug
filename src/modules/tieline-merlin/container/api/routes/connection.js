@@ -4,6 +4,8 @@ const connectionConnect = require("@services/connection-connect");
 const connectionDisconnect = require("@services/connection-disconnect");
 const asyncHandler = require("express-async-handler");
 const connectionListStatistics = require("@services/connection-liststatistics");
+const connectionList = require("@services/connection-list");
+const connectionGet = require("@services/connection-get");
 
 router.get(
     "/connect/:connectionId",
@@ -16,11 +18,11 @@ router.get(
 );
 
 router.get(
-    "/disconnect/:connectionHandle",
+    "/disconnect/:connectionId",
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await connectionDisconnect(req.params.connectionHandle),
+            data: await connectionDisconnect(req.params.connectionId),
         });
     })
 );
@@ -31,6 +33,26 @@ router.all(
         res.json({
             status: "success",
             data: await connectionListStatistics(),
+        });
+    })
+);
+
+router.all(
+    "/",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await connectionList(),
+        });
+    })
+);
+
+router.get(
+    "/:connectionId",
+    asyncHandler(async (req, res) => {
+        res.json({
+            status: "success",
+            data: await connectionGet(req.params.connectionId),
         });
     })
 );

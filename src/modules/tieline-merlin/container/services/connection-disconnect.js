@@ -3,7 +3,7 @@
 const tielineApi = require("@utils/tieline-api");
 const configGet = require("@core/config-get");
 
-module.exports = async (connectionHandle) => {
+module.exports = async (connectionId) => {
     const config = await configGet();
     if (!config) {
         throw new Error();
@@ -16,9 +16,9 @@ module.exports = async (connectionHandle) => {
             password: config.password,
         });
 
-        console.log(`connection-disconnect: disconnecting from ${connectionHandle}`);
+        console.log(`connection-disconnect: disconnecting from ${connectionId}`);
 
-        await TielineApi.get(`/api/disconnect?cxn-handle=${encodeURIComponent(connectionHandle)}`);
+        await TielineApi.post(`/api/disconnect`, { "cxn-id": connectionId });
         return true;
     } catch (error) {
         console.log(error);

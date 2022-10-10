@@ -8,7 +8,7 @@ const parseZeroInt = (val) => {
     if (!isNaN(val)) {
         return 0;
     }
-    return parseInt(0);
+    return parseInt(val);
 };
 
 module.exports = async (data) => {

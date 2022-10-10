@@ -42,7 +42,7 @@ const main = async () => {
         }
 
         // delay before doing it all again ...
-        await delay(20000);
+        await delay(10000);
     }
 };
 

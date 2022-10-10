@@ -37,7 +37,6 @@ const main = async () => {
     await TielineApiNotifications.get({
         path: "/api/notify",
         update: (data) => {
-            // console.log(data);
             eventsProcess(TielineApi, data);
         },
     });

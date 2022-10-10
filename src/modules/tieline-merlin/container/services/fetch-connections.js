@@ -39,16 +39,26 @@ module.exports = async (TielineApi) => {
 
         try {
             if (eachConnectionHandle) {
-                const stateResult = await TielineApi.get(`/api/get_cxn_status?cxn-handle=${eachConnectionHandle}`);
-
-                if (stateResult && stateResult?.["result"]?.["cxn-status"]?.["_attributes"]?.["cxn-id"]) {
-                    connectionArray["id"] = stateResult?.["result"]?.["cxn-status"]?.["_attributes"]?.["cxn-id"];
-                    connectionArray["state"] = stateResult?.["result"]?.["cxn-status"]?.["CXN_STATE"]?.["_text"];
+                const stateResult = await TielineApi.get(
+                    `/api/get_cxn_live_properties?cxn-handle=${encodeURIComponent(eachConnectionHandle)}`
+                );
+                if (stateResult && stateResult?.["result"]?.["cxn-live-prop"]?.["_attributes"]?.["cxn-id"]) {
+                    connectionArray["id"] = stateResult?.["result"]?.["cxn-live-prop"]?.["_attributes"]?.["cxn-id"];
+                    connectionArray["answering"] = parseNullInt(
+                        stateResult?.["result"]?.["cxn-live-prop"]?.["ANSWERING"]?.["_text"]
+                    );
+                    connectionArray["callerId"] = stateResult?.["result"]?.["cxn-live-prop"]?.["CALLER_ID"]?.["_text"];
+                    connectionArray["cxnBitrate"] = parseNullInt(
+                        stateResult?.["result"]?.["cxn-live-prop"]?.["CXN_BITRATE"]?.["_text"]
+                    );
+                    connectionArray["destination"] =
+                        stateResult?.["result"]?.["cxn-live-prop"]?.["DESTINATION"]?.["_text"];
+                    connectionArray["state"] = stateResult?.["result"]?.["cxn-live-prop"]?.["CXN_STATE"]?.["_text"];
                     connectionArray["localLinkQuality"] = parseNullInt(
-                        stateResult?.["result"]?.["cxn-status"]?.["LOCAL_LINK_QUALITY"]?.["_text"]
+                        stateResult?.["result"]?.["cxn-live-prop"]?.["LOCAL_LINK_QUALITY"]?.["_text"]
                     );
                     connectionArray["remoteLinkQuality"] = parseNullInt(
-                        stateResult?.["result"]?.["cxn-status"]?.["REMOTE_LINK_QUALITY"]?.["_text"]
+                        stateResult?.["result"]?.["cxn-live-prop"]?.["REMOTE_LINK_QUALITY"]?.["_text"]
                     );
 
                     connectionArray["timestamp"] = new Date();
@@ -59,7 +69,11 @@ module.exports = async (TielineApi) => {
                         { upsert: true }
                     );
                 } else {
-                    console.log("fetch-connections: ERROR - no connection handle!", stateResult);
+                    // remove it from the database
+                    console.log(
+                        `fetch-connections: connection handle ${eachConnectionHandle} not found - removing from db`
+                    );
+                    await connectionsCollection.deleteOne({ handle: eachConnectionHandle });
                 }
             }
         } catch (error) {

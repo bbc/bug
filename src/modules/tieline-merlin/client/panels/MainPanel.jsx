@@ -19,6 +19,9 @@ export default function MainPanel({ panelId }) {
                     <TabStatistics panelId={panelId} />,
                     <TabPrograms panelId={panelId} />,
                 ]}
+                contentProps={{
+                    elevation: 0,
+                }}
             ></BugPanelTabbedForm>
         </>
     );
