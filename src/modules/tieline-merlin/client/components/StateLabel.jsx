@@ -16,13 +16,13 @@ export default function StateLabel({ state, txValue, rxValue }) {
             }}
         >
             <Box sx={{ color: color }}>{state}</Box>
-            {txValue > 0 && (
+            {state === "Connected" && (
                 <Box sx={{ paddingLeft: "16px", display: "flex" }}>
                     TX:
                     <Box sx={{ color: color, marginLeft: "4px" }}>{txValue}%</Box>
                 </Box>
             )}
-            {rxValue > 0 && (
+            {state === "Connected" && (
                 <Box sx={{ paddingLeft: "8px", display: "flex" }}>
                     RX:
                     <Box sx={{ color: color, marginLeft: "4px" }}>{rxValue}%</Box>

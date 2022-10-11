@@ -2,6 +2,8 @@
 
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
+const statusCheckLinkQuality = require("@services/status-checklinkquality");
+const statusCheckAlarms = require("@services/status-checkalarms");
 
 module.exports = async () => {
     return [].concat(
@@ -17,6 +19,8 @@ module.exports = async () => {
             message: "Program information is out of date.",
             itemType: "warning",
             timeoutSeconds: 90,
-        })
+        }),
+        await statusCheckLinkQuality(),
+        await statusCheckAlarms()
     );
 };
