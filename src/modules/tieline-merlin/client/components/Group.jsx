@@ -142,12 +142,14 @@ export default function Group({ group, panelId, onChange }) {
                     </Tabs>
                     <Box
                         sx={{
-                            borderLeft: group.connections[tabIndex]?._connected
-                                ? `4px solid ${groupStateColor}`
-                                : "4px solid transparent",
-                            borderRight: group.connections[tabIndex]?._connected
-                                ? `4px solid ${groupStateColor}`
-                                : "4px solid transparent",
+                            borderLeft:
+                                group.connections[tabIndex]?.state !== "Idle"
+                                    ? `4px solid ${groupStateColor}`
+                                    : "4px solid transparent",
+                            borderRight:
+                                group.connections[tabIndex]?.state !== "Idle"
+                                    ? `4px solid ${groupStateColor}`
+                                    : "4px solid transparent",
                         }}
                     >
                         {tabIndex !== "stats" && renderConnection()}

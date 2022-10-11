@@ -4,6 +4,7 @@ const stateColor = ({ state, txValue, rxValue }) => {
     const theme = useTheme();
     const stateColors = {
         Connected: theme.palette.success.main,
+        Connecting: theme.palette.warning.main,
         Disconnected: theme.palette.warning.main,
         Idle: theme.palette.secondary.main,
     };
