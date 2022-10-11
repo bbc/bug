@@ -11,7 +11,7 @@ const programRouter = require("@routes/program");
 const destinationRouter = require("@routes/destination");
 const connectionRouter = require("@routes/connection");
 const groupRouter = require("@routes/group");
-// const statisticsRouter = require("@routes/statistics");
+const validationRouter = require("@routes/validate");
 
 let app = express();
 
@@ -33,7 +33,7 @@ app.use("/api/program", programRouter);
 app.use("/api/destination", destinationRouter);
 app.use("/api/connection", connectionRouter);
 app.use("/api/group", groupRouter);
-// app.use("/api/statistics", statisticsRouter);
+app.use("/api/validate", validationRouter);
 
 app.use("*", defaultRouter);
 
