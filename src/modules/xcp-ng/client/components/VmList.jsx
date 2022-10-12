@@ -23,6 +23,8 @@ import { useSelector } from "react-redux";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 export default function VmList({ panelId }) {
     const sendAlert = useAlert();
@@ -90,6 +92,14 @@ export default function VmList({ panelId }) {
             } else {
                 sendAlert(`Failed to update description on VM '${item.name_label}'`, { variant: "error" });
             }
+        }
+    };
+
+    const handlePowerSwitchChanged = async (checked, item) => {
+        if (checked) {
+            handleStartClicked(null, item);
+        } else {
+            handleCleanShutdownClicked(null, item);
         }
     };
 
@@ -170,7 +180,7 @@ export default function VmList({ panelId }) {
                         title: "Active",
                         sortable: false,
                         noPadding: true,
-                        // hideWidth: 440,
+                        hideWidth: 740,
                         width: 58,
                         field: "power_state",
                         filterType: "dropdown",
@@ -182,24 +192,37 @@ export default function VmList({ panelId }) {
                         content: (item) => <VmPowerIcon item={item} />,
                     },
                     {
-                        title: "Auto",
-                        sortable: false,
                         noPadding: true,
+                        sortable: false,
                         hideWidth: 540,
-                        width: 82,
+                        width: 70,
+                        align: "center",
                         content: (item) => {
                             return (
                                 <BugApiSwitch
-                                    checked={item._autoPower}
-                                    onChange={(checked) => handleAutoPowerClicked(null, item)}
+                                    timeout={20000}
+                                    checked={item.power_state === "Running" || item.power_state === "Stopping"}
+                                    onChange={(checked) => handlePowerSwitchChanged(checked, item)}
+                                    disabled={Object.keys(item.current_operations).length > 0}
                                 />
                             );
                         },
                     },
                     {
+                        noPadding: true,
+                        hideWidth: 1300,
+                        width: 44,
+                        content: (item) => {
+                            if (item._autoPower) {
+                                return <LockIcon sx={{ color: "primary.main" }} />;
+                            }
+                            return <LockOpenIcon sx={{ color: "#ffffff", opacity: 0.1 }} />;
+                        },
+                    },
+                    {
                         title: "State",
                         sortable: false,
-                        noPadding: true,
+                        // noPadding: true,
                         width: 90,
                         minWidth: 90,
                         noWrap: false,
@@ -207,7 +230,7 @@ export default function VmList({ panelId }) {
                     },
                     {
                         title: "Name",
-                        width: "50%",
+                        // width: "50%",
                         minWidth: 200,
                         noWrap: true,
                         sortable: true,
@@ -236,7 +259,7 @@ export default function VmList({ panelId }) {
                         minWidth: 160,
                         noWrap: true,
                         sortable: true,
-                        hideWidth: 970,
+                        hideWidth: 1210,
                         field: "_residentHost",
                         defaultSortDirection: "asc",
                         filterType: "text",
@@ -266,7 +289,7 @@ export default function VmList({ panelId }) {
                         title: "Address",
                         width: 140,
                         sortable: true,
-                        hideWidth: 500,
+                        hideWidth: 874,
                         field: "_ipv4",
                         defaultSortDirection: "asc",
                         filterType: "text",

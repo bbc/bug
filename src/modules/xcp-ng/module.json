@@ -4,7 +4,7 @@
     "description": "Basic control of VMs running on an XCP-ng hypervisor",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "Dvr",
     "author": "Geoff House",
     "license": "GPLv3",
