@@ -4,7 +4,7 @@
     "description": "Control of the Hitomi Matchbox ident generator",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "mdi-monitor-eye",
     "author": "Geoff House",
     "license": "GPLv3",

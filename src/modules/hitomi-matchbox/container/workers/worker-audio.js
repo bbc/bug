@@ -12,7 +12,7 @@ const hitomiApi = require("@utils/hitomi-api");
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: [],
+    restartOn: ["address"],
 });
 
 const main = async () => {
