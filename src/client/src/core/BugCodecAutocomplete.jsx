@@ -40,7 +40,7 @@ export default function BugCodecAutocomplete({
         // address and/or port has changed
         // we need to search the codec list for any matching values
         const codec = options.find((item) => {
-            return item.address === addressValue && item.port === portValue;
+            return item.address === addressValue && parseInt(item.port) === parseInt(portValue);
         });
         if (codec) {
             // we have a match
