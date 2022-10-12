@@ -12,6 +12,7 @@ const destinationRouter = require("@routes/destination");
 const connectionRouter = require("@routes/connection");
 const groupRouter = require("@routes/group");
 const validationRouter = require("@routes/validate");
+const codecDbRouter = require("@routes/codecdb");
 
 let app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/destination", destinationRouter);
 app.use("/api/connection", connectionRouter);
 app.use("/api/group", groupRouter);
 app.use("/api/validate", validationRouter);
+app.use("/api/codecdb", codecDbRouter);
 
 app.use("*", defaultRouter);
 
