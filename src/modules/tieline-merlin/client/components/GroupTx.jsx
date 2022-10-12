@@ -25,7 +25,14 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
     };
 
     return (
-        <>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
+            }}
+        >
             <BugDetailsTable
                 sx={{
                     "& .MuiTableCell-root": {
@@ -52,12 +59,13 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                                 portValue={connection.audioPort}
                                 apiUrl={`/container/${panelId}/codecdb`}
                                 capability="tieline"
-                                onChange={(e, codec) =>
+                                onChange={(e, codec) => {
+                                    console.log("change", codec.address, codec.port);
                                     onChange(group.id, connection.id, {
                                         destination: codec.address,
                                         audioPort: codec.port,
-                                    })
-                                }
+                                    });
+                                }}
                                 disabled={connection._connected || connection._connecting}
                             />
                         ),
@@ -166,6 +174,6 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                     Disconnect
                 </BugApiButton>
             </Box>
-        </>
+        </Box>
     );
 }

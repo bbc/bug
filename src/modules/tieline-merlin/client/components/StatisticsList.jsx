@@ -64,7 +64,7 @@ export default function StatisticsList({ panelId }) {
                     noWrap: true,
                     width: "150px",
                     minWidth: "150px",
-                    hideWidth: 626,
+                    hideWidth: 844,
                     title: "Destination",
                     content: (item) => (
                         <>
@@ -79,7 +79,7 @@ export default function StatisticsList({ panelId }) {
                 {
                     noWrap: true,
                     title: "State",
-                    content: (item) => <StateLabel state={item.state} />,
+                    content: (item) => <StateLabel state={item.state} showValues={false} />,
                 },
                 {
                     noWrap: true,
@@ -125,6 +125,7 @@ export default function StatisticsList({ panelId }) {
                 {
                     noWrap: true,
                     title: "FEC",
+                    hideWidth: 680,
                     content: (item) => (
                         <>
                             {formatStats(

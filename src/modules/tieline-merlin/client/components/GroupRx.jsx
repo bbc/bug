@@ -17,7 +17,14 @@ export default function GroupRx({ connection, panelId, showAdvanced }) {
     };
 
     return (
-        <>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                height: "100%",
+            }}
+        >
             <BugDetailsTable
                 sx={{
                     "& .MuiTableCell-root": {
@@ -72,10 +79,6 @@ export default function GroupRx({ connection, panelId, showAdvanced }) {
                             />
                         ),
                     },
-                    showAdvanced && {
-                        name: "",
-                        value: "",
-                    },
                 ]}
             />
             <Box
@@ -97,6 +100,6 @@ export default function GroupRx({ connection, panelId, showAdvanced }) {
                     Disconnect
                 </BugApiButton>
             </Box>
-        </>
+        </Box>
     );
 }

@@ -68,9 +68,14 @@ export default function Group({ group, panelId, onChange }) {
         rxValue: group.connections[tabIndex]?.localLinkQuality,
     });
 
+    let borderColor = "transparent";
+    if (group.connections[tabIndex]?.state && group.connections[tabIndex]?.state !== "Idle") {
+        borderColor = groupStateColor;
+    }
+
     return (
-        <Grid key={group.id} item xxl={3} lg={4} md={6} xs={12}>
-            <BugCard>
+        <Grid key={group.id} item xxl={4} lg={6} xs={12}>
+            <BugCard fullHeight>
                 <CardHeader
                     action={
                         group.connections.length > 1 && (
@@ -86,6 +91,7 @@ export default function Group({ group, panelId, onChange }) {
                     }
                     sx={{
                         borderBottom: "1px solid #181818",
+                        height: "68px",
                     }}
                     title={group["_title"]}
                 ></CardHeader>
@@ -96,6 +102,9 @@ export default function Group({ group, panelId, onChange }) {
                         "&:last-child": {
                             paddingBottom: 0,
                         },
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
                     }}
                 >
                     <Tabs
@@ -104,6 +113,7 @@ export default function Group({ group, panelId, onChange }) {
                         onChange={handleTabChange}
                         sx={{
                             minHeight: 0,
+                            height: "56px",
                             borderBottom: "1px solid #181818",
                             "& .MuiTabs-indicator": {
                                 backgroundColor: groupStateColor,
@@ -142,14 +152,9 @@ export default function Group({ group, panelId, onChange }) {
                     </Tabs>
                     <Box
                         sx={{
-                            borderLeft:
-                                group.connections[tabIndex]?.state !== "Idle"
-                                    ? `4px solid ${groupStateColor}`
-                                    : "4px solid transparent",
-                            borderRight:
-                                group.connections[tabIndex]?.state !== "Idle"
-                                    ? `4px solid ${groupStateColor}`
-                                    : "4px solid transparent",
+                            borderLeft: `4px solid ${borderColor}`,
+                            borderRight: `4px solid ${borderColor}`,
+                            flexGrow: 1,
                         }}
                     >
                         {tabIndex !== "stats" && renderConnection()}
