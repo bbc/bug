@@ -191,7 +191,7 @@ module.exports = class WorkerManager {
             workers[index].restart = true;
             workers[index].restarting = true;
             const state = await workers[index].worker.terminate();
-            console.log(`WorkerManager->restartWorder: ${workers[index]?.filename} terminated with code ${state}`);
+            console.log(`WorkerManager->restartWorker: ${workers[index]?.filename} terminated with code ${state}`);
         } else {
             //If worker doesn't exist create it
             this.createWorker(index);
