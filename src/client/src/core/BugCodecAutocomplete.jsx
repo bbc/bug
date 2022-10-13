@@ -6,16 +6,17 @@ import Box from "@mui/material/Box";
 import AxiosGet from "@utils/AxiosGet";
 
 export default function BugCodecAutocomplete({
-    addressValue,
-    portValue,
+    addressValue = "",
+    portValue = "",
     onChange,
     disabled = false,
     apiUrl = "",
     variant = "outlined",
     capability = "",
+    label = "Select Codec",
 }) {
     const [options, setOptions] = React.useState([]);
-    const [value, setValue] = React.useState(null);
+    const [value, setValue] = React.useState("");
 
     React.useEffect(() => {
         const fetchOptions = async () => {
@@ -42,12 +43,13 @@ export default function BugCodecAutocomplete({
         const codec = options.find((item) => {
             return item.address === addressValue && parseInt(item.port) === parseInt(portValue);
         });
+
         if (codec) {
             // we have a match
             setValue(codec);
         } else {
             // clear the value
-            setValue(null);
+            setValue("");
         }
     }, [addressValue, portValue, options]);
 
@@ -104,9 +106,10 @@ export default function BugCodecAutocomplete({
             renderInput={(params) => (
                 <TextField
                     {...params}
+                    label={label}
                     variant={variant}
                     sx={{
-                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                        backgroundColor: variant === "standard" ? "inherit" : "rgba(255, 255, 255, 0.05)",
                         "& .MuiInputBase-root": {
                             borderRadius: 0,
                         },
