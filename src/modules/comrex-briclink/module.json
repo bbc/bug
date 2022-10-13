@@ -1,7 +1,7 @@
 {
     "name": "comrex-briclink",
     "longname": "Comrex BRIC-Link",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Control of Comrex BRIC-Link and BRIC-Link II devices",
     "capabilities": [],
     "icon": "mdi-phone-settings",
@@ -27,6 +27,7 @@
         "port": "80",
         "delay": 100,
         "jitter": 50,
-        "loss": 5
+        "loss": 5,
+        "codecSource": ""
     }
 }

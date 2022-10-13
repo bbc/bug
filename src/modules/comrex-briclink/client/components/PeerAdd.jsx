@@ -10,6 +10,7 @@ import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
 import { useForm } from "react-hook-form";
+import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
 
 export default function PeerAdd({ panelId }) {
     const history = useHistory();
@@ -24,7 +25,7 @@ export default function PeerAdd({ panelId }) {
         history.goBack();
     };
 
-    const { handleSubmit, control, formState } = useForm();
+    const { handleSubmit, control, formState, setValue } = useForm();
 
     const getErrors = () => {
         const errors = {};
@@ -42,7 +43,7 @@ export default function PeerAdd({ panelId }) {
         const response = await AxiosPost(`/container/${panelId}/peer/add`, form);
         if (response) {
             sendAlert(`Connection has been added.`, { broadcast: "true", variant: "success" });
-            history.push(`/panel/${panelId}/connection/`);
+            history.push(`/panel/${panelId}/`);
         } else {
             sendAlert(`Connection could not be added.`, { variant: "warning" });
         }
@@ -64,12 +65,25 @@ export default function PeerAdd({ panelId }) {
                             }}
                         >
                             <Grid item xs={12}>
+                                <BugCodecAutocomplete
+                                    apiUrl={`/container/${panelId}/codecdb`}
+                                    capability="comrex"
+                                    variant="standard"
+                                    onChange={(event, codec) => {
+                                        setValue("name", codec.label);
+                                        setValue("addr", `${codec.address}:${codec.port}`);
+                                    }}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
                                 <BugConfigFormTextField
                                     name="name"
                                     control={control}
                                     rules={{ required: true }}
                                     fullWidth
                                     error={errors.name}
+                                    defaultValue=""
                                     label="Name"
                                 />
                             </Grid>
@@ -80,6 +94,7 @@ export default function PeerAdd({ panelId }) {
                                     rules={{ required: true }}
                                     fullWidth
                                     error={errors.addr}
+                                    defaultValue=""
                                     label="IP address and port"
                                 />
                             </Grid>

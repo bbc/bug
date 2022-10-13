@@ -9,6 +9,7 @@ import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import InputAdornment from "@mui/material/InputAdornment";
+import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -167,6 +168,19 @@ export default function ConfigPanel() {
                         InputProps={{
                             endAdornment: <InputAdornment position="end">%</InputAdornment>,
                         }}
+                    />
+                </Grid>
+
+                <Grid item xs={12} md={12}>
+                    <BugConfigFormPanelSelect
+                        name="codecSource"
+                        label="Codec Database Source"
+                        control={control}
+                        defaultValue={panelConfig.data.codecSource ?? ""}
+                        error={errors.codecSource}
+                        helperText="Select a source of codec information"
+                        fullWidth
+                        capability="codec-db"
                     />
                 </Grid>
             </BugConfigWrapper>
