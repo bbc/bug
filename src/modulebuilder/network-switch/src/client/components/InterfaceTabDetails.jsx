@@ -29,7 +29,7 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                         { name: "TX Rate", value: iface.data?.["tx-rate-text"] },
                         { name: "RX Rate", value: iface.data?.["rx-rate-text"] },
 
-                        { name: "Auto Negotiation", value: iface.data?.["admin-state"] ? "yes" : "no" },
+                        { name: "Auto Negotiation", value: iface.data?.["auto-negotiation"] ? "yes" : "no" },
                         { name: "Admin State", value: iface.data?.["admin-state"] ? "up" : "down" },
                         { name: "Link State", value: iface.data?.["link-state"] ? "up" : "down" },
 
