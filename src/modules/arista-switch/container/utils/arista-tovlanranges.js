@@ -13,7 +13,6 @@ module.exports = (vlanArray, allVlans) => {
         }
     }
     for (const eachVlan of vlanArray) {
-        console.log(eachVlan);
         if (eachVlan.toString().indexOf("-") > -1) {
             // it's a range
             const vlanRange = eachVlan.split("-");
