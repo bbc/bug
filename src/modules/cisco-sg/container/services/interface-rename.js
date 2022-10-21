@@ -34,7 +34,7 @@ module.exports = async (interfaceId, newName) => {
             console.log(`interface-rename: ${JSON.stringify(dbResult.result)}`);
             return true;
         } catch (error) {
-            console.log(`interface-disable: failed to update db`);
+            console.log(`interface-rename: failed to update db`);
             console.log(error);
             return false;
         }
