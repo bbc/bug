@@ -29,17 +29,20 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                         { name: "TX Rate", value: iface.data?.["tx-rate-text"] },
                         { name: "RX Rate", value: iface.data?.["rx-rate-text"] },
 
-                        { name: "Auto Negotiation", value: iface.data?.["admin-state"] ? "yes" : "no" },
-                        { name: "Admin State", value: iface.data?.["admin-state"] ? "up" : "down" },
-                        { name: "Link State", value: iface.data?.["link-state"] ? "up" : "down" },
+                        { name: "Auto Negotiation", value: iface.data?.["autoNegotiateActive"] ? "yes" : "no" },
+                        { name: "Admin State", value: iface.data?.["linkStatus"] !== "disabled" ? "up" : "down" },
+                        { name: "Link State", value: iface.data?.["linkStatus"] === "connected" ? "up" : "down" },
 
-                        { name: "Admin Speed", value: iface.data?.["admin-speed"] },
-                        { name: "Operational Speed", value: iface.data?.["operational-speed"] },
+                        { name: "Port Bandwidth", value: iface.data?.["bandwidthText"] },
 
-                        { name: "Untagged VLAN", value: iface.data?.["untagged-vlan"] },
+                        { name: "Untagged VLAN", value: iface.data?.["accessVlanId"] },
                         {
                             name: "Tagged VLANs",
-                            value: iface.data?.["tagged-vlans"] ? iface.data?.["tagged-vlans"].join(", ") : "",
+                            value: iface.data?.["trunkAllowedVlans"],
+                        },
+                        {
+                            name: "Native VLAN",
+                            value: iface.data?.["trunkingNativeVlanId"],
                         },
                     ]}
                 />
