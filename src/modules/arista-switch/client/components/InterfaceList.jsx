@@ -135,8 +135,6 @@ export default function InterfaceList({ panelId, stackId = null }) {
             value
         );
 
-        console.log(value);
-
         if (value.taggedVlans.length > 0) {
             // trunk selected
             sendAlert(messages.start, { variant: "info" });
