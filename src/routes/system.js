@@ -28,8 +28,8 @@ const systemSettingsUpdate = require("@services/system-settings-update");
  *        '200':
  *          description: Success
  */
-router.get("/hello", restrict.to(["admin", "user"]), function (req, res, next) {
-    const message = { data: "Good morning sunshine, the earth says hello." };
+router.get("/hello", function (req, res, next) {
+    const message = { data: "Good morning sunshine, the earth says hello.", status: "success" };
     hashResponse(res, req, message);
 });
 
