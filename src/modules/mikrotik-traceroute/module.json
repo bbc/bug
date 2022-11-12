@@ -1,0 +1,33 @@
+{
+    "name": "mikrotik-traceroute",
+    "longname": "Mikrotik Traceroute",
+    "description": "Run a Traceroute from your MikroTik Router",
+    "capabilities": [],
+    "version": "1.0.0",
+    "icon": "mdi-map-marker-path",
+    "author": "Ryan McCartney",
+    "needsContainer": true,
+    "license": "GPLv3",
+    "status": "stable",
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "mikrotik-traceroute",
+        "description": "",
+        "enabled": false,
+        "token": "",
+        "frequency": 300,
+        "traceroutes": {}
+    }
+}

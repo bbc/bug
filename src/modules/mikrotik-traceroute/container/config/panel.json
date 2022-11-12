@@ -1,0 +1,14 @@
+{
+    "id": "",
+    "order": 0,
+    "title": "",
+    "module": "mikrotik-interfaces",
+    "description": "",
+    "notes": "",
+    "enabled": true,
+    "address": "",
+    "username": "bug",
+    "password": "",
+    "protected_interfaces": [],
+    "excluded_interfaces": ["bridge", "vlan", "Loopback", "eoip"]
+}
