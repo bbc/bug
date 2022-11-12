@@ -31,6 +31,7 @@ const getFeed = async () => {
             feedItems.push(item);
         }
     }
+    await feedCollection.deleteMany({});
     await mongoSaveArray(feedCollection, feedItems, "title");
 };
 
