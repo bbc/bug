@@ -7,7 +7,7 @@
     "notes": "",
     "icon": "SettingsInputComponent",
     "author": "Geoff House",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "beta",
     "needsContainer": true,
     "protectedRoutes": [

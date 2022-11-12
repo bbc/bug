@@ -7,7 +7,7 @@
     "icon": "mdi-map-marker-path",
     "author": "Ryan McCartney",
     "needsContainer": true,
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "stable",
     "devmounts": [
         "api",

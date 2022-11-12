@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Geoff House",
-  "license": "GPLv3",
+  "license": "Apache-2.0",
   "devDependencies": {
     "nodemon": "^2.0.7"
   },

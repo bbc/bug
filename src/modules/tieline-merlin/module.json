@@ -7,11 +7,18 @@
     "version": "1.0.3",
     "icon": "mdi-transit-connection-variant",
     "author": "Geoff House",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "beta",
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,

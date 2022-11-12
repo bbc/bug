@@ -3,7 +3,10 @@
     "description": "Generic client-only module (no container)",
     "version": "1.0.0",
     "author": "Geoff House",
-    "files": ["module.json", "client/components/Example.jsx"],
+    "files": [
+        "module.json",
+        "client/components/Example.jsx"
+    ],
     "fields": [
         {
             "name": "name",
@@ -49,7 +52,7 @@
             "message": "Enter the license type",
             "type": "input",
             "required": "true",
-            "default": "GPLv3"
+            "default": "Apache-2.0"
         }
     ]
 }

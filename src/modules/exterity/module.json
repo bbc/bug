@@ -7,7 +7,7 @@
     "version": "1.0",
     "icon": "mdi-set-top-box",
     "author": "Ryan McCartney",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
     "devmounts": [
