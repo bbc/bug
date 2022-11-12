@@ -1,0 +1,54 @@
+{
+    "name": "onair-clock",
+    "main": "",
+    "scripts": {
+        "production": "node ./api/server",
+        "development": "nodemon ./api/server",
+        "test": "jest"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "./config/*"
+        ]
+    },
+    "author": "",
+    "license": "GPLv3",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "delay": "^5.0.0",
+        "express": "^4.17.1",
+        "express-async-handler": "^1.1.4",
+        "http-errors": "^1.8.0",
+        "md5": "^2.3.0",
+        "module-alias": "^2.2.2",
+        "mongodb": "^3.6.8",
+        "morgan": "^1.10.0",
+        "node-cache": "^5.1.2",
+        "package.json": "^2.0.1",
+        "path": "^0.12.7",
+        "ping": "^0.4.1",
+        "underscore": "^1.13.1"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "jest": "^26.6.0",
+        "nodemon": "^2.0.7",
+        "superagent": "^6.1.0",
+        "supertest": "^6.1.3"
+    },
+    "jest": {
+        "testEnvironment": "node",
+        "coveragePathIgnorePatterns": [
+            "./node_modules/"
+        ]
+    },
+    "_moduleAliases": {
+        "@root": ".",
+        "@core": "./core/",
+        "@routes": "./api/routes/",
+        "@api": "./api/",
+        "@services": "./services/",
+        "@utils": "./utils/"
+    }
+}
