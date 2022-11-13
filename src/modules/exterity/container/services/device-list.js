@@ -11,15 +11,16 @@ module.exports = async () => {
 
         let mergedDevices = [];
 
-        mergedDevices = devices.map((device) => {
+        mergedDevices = await devices.map((device) => {
+            delete device._id;
+            delete config.devices[device.deviceId].password;
             return {
                 ...device,
                 ...config.devices[device.deviceId],
-                ...{ data: device.data.slice(device.data.length - 1 - 50, device.data.length - 1) },
             };
         });
 
-        return await mergedDevices;
+        return mergedDevices;
     } catch (error) {
         return [];
     }

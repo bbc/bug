@@ -6,6 +6,8 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const modulePort = process.env.PORT;
 const axios = require("axios");
+const mongoCollection = require("@core/mongo-collection");
+const { execPath } = require("process");
 
 let devicesCollection;
 // Tell the manager the things you care about
@@ -20,28 +22,52 @@ const filteredResponse = (response) => {
     return {
         name: response?.name?.value,
         location: response?.location?.value,
-        address: response[IPAddress]?.value,
+        address: response["IPAddress"]?.value,
         currentChannel: response?.currentChannel?.value,
+        serialNumber: response?.serialNumber?.value,
+        version: response?.softwareVersion?.value,
+        volume: response?.volume?.value,
         timestamp: new Date(),
     };
 };
 
-const getDeviceData = async (deviceId, device) => {
+const getDeviceData = async (deviceId, device = {}) => {
     const options = { timeout: 10000 };
     //Check if the receiver needs a username and password
     if (device.username || device.password) {
         options.auth = {
-            username: device.username,
-            password: device.password,
+            username: device?.username,
+            password: device?.password,
         };
     }
 
-    const response = await axios.get(`http://${device.address}/cgi-bin/config.json.cgi`, options);
-    if (response.data) {
-        console.log(response.data);
+    let response = null;
+    try {
+        response = await axios.get(`http://${device.address}/cgi-bin/config.json.cgi`, options);
+    } catch (err) {
+        console.log(`worker-devices: failed to get data from ${deviceId}`);
+    }
+
+    if (response && response.data) {
         const data = await filteredResponse(response.data);
         data.deviceId = deviceId;
-        await devicesCollection.insertOne({ deviceId: deviceId }, panelStatus, { upsert: true });
+        data.online = true;
+        await devicesCollection.updateOne(
+            { deviceId: deviceId },
+            {
+                $set: data,
+            },
+            { upsert: true }
+        );
+    } else {
+        const data = { online: false };
+        await devicesCollection.updateOne(
+            { deviceId: deviceId },
+            {
+                $set: data,
+            },
+            { upsert: true }
+        );
     }
 };
 
@@ -56,8 +82,9 @@ const main = async () => {
     devicesCollection.deleteMany({});
 
     while (true) {
-        for (let device of workerData.devices) {
-            await getDeviceData(device);
+        for (let deviceId in workerData.devices) {
+            console.log(`worker-devices: getting data from ${deviceId}`);
+            await getDeviceData(deviceId, workerData.devices[deviceId]);
         }
         await delay(updateDelay);
     }

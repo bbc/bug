@@ -4,17 +4,35 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import BugLoading from "@core/BugLoading";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
+import { useApiPoller } from "@hooks/ApiPoller";
 
-const ChannelDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, channelId, open, title = "Add Channel" }) => {
+const ChannelDialog = ({
+    panelId,
+    defaultData,
+    onDismiss,
+    onCreate,
+    onEdit,
+    channelId,
+    open,
+    title = "Add Channel",
+}) => {
     const [data, setDefault] = useState(defaultData);
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const groups = useApiPoller({
+        url: `/container/${panelId}/channels/groups`,
+        interval: 30000,
+    });
 
     useEffect(() => {
         setDefault(defaultData);
@@ -36,6 +54,11 @@ const ChannelDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, channelId, o
         }
         return "Add Channel";
     };
+
+    if (groups.status === "loading" || groups.status === "idle") {
+        return <BugLoading />;
+    }
+
     return (
         <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -66,12 +89,27 @@ const ChannelDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, channelId, o
                             />
                         </Grid>
                         <Grid item xs={12}>
+                            <BugConfigFormSelect
+                                name="protocol"
+                                control={control}
+                                fullWidth
+                                error={errors?.protocol}
+                                defaultValue=""
+                                rules={{ required: true }}
+                                label="Protocol"
+                                options={[
+                                    { label: "RTP", id: "rtp" },
+                                    { label: "UDP", id: "udp" },
+                                ]}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
                             <BugConfigFormTextField
                                 name="address"
                                 control={control}
                                 rules={{ required: true }}
                                 fullWidth
-                                error={errors.address}
+                                error={errors?.address}
                                 defaultValue={data?.address}
                                 label="Address"
                             />
@@ -86,6 +124,18 @@ const ChannelDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, channelId, o
                                 type="number"
                                 defaultValue={data?.port}
                                 label="Port"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <BugConfigFormAutocomplete
+                                name="groups"
+                                label="Groups"
+                                control={control}
+                                defaultValue={data?.groups}
+                                options={groups?.data}
+                                error={errors?.groups}
+                                freeSolo={true}
+                                fullWidth
                             />
                         </Grid>
                     </Grid>
@@ -103,4 +153,4 @@ const ChannelDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, channelId, o
     );
 };
 
-export default ChannelDiaglog;
+export default ChannelDialog;

@@ -6,16 +6,24 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
+import { useApiPoller } from "@hooks/ApiPoller";
+import BugLoading from "@core/BugLoading";
 
-const DeviceDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, deviceId, open, title = "Add Device" }) => {
+const DeviceDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, panelId, deviceId, open, title = "Add Device" }) => {
     const [data, setDefault] = useState(defaultData);
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+    const groups = useApiPoller({
+        url: `/container/${panelId}/channels/groups`,
+        interval: 30000,
+    });
 
     useEffect(() => {
         setDefault(defaultData);
@@ -37,6 +45,11 @@ const DeviceDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, deviceId, ope
         }
         return "Add Device";
     };
+
+    if (groups.status === "loading" || groups.status === "idle") {
+        return <BugLoading />;
+    }
+
     return (
         <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -96,6 +109,18 @@ const DeviceDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, deviceId, ope
                                 error={errors?.password}
                                 defaultValue={data?.password}
                                 label="Password"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <BugConfigFormAutocomplete
+                                name="groups"
+                                label="Groups"
+                                control={control}
+                                defaultValue={data?.groups}
+                                options={groups?.data}
+                                error={errors?.groups}
+                                freeSolo={true}
+                                fullWidth
                             />
                         </Grid>
                     </Grid>

@@ -5,7 +5,6 @@ import ChannelButton from "./components/ChannelButton";
 import DeviceButton from "./components/DeviceButton";
 
 export default function Toolbar({ panelId, ...props }) {
-    const [openChannel, setOpenChannel] = useState(false);
     let toolbarProps = { ...props };
     const panelStatus = usePanelStatus();
     toolbarProps["onClick"] = null;

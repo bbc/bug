@@ -5,6 +5,7 @@ const route = express.Router();
 const channelAdd = require("@services/channel-add");
 const channelDetails = require("@services/channel-details");
 const channelList = require("@services/channel-list");
+const groupList = require("@services/group-list");
 const channelUpdate = require("@services/channel-update");
 const channelDelete = require("@services/channel-delete");
 
@@ -12,6 +13,28 @@ route.get(
     "/",
     asyncHandler(async (req, res) => {
         const results = await channelList();
+        hashResponse(res, req, {
+            status: results.length > 0 ? "success" : "failure",
+            data: results,
+        });
+    })
+);
+
+route.post(
+    "/list",
+    asyncHandler(async (req, res) => {
+        const results = await channelList();
+        hashResponse(res, req, {
+            status: results.length > 0 ? "success" : "failure",
+            data: results,
+        });
+    })
+);
+
+route.get(
+    "/groups",
+    asyncHandler(async (req, res) => {
+        const results = await groupList();
         hashResponse(res, req, {
             status: results.length > 0 ? "success" : "failure",
             data: results,

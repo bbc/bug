@@ -8,7 +8,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 
 import { useAlert } from "@utils/Snackbar";
 
-export default function ChannelButton({ open, panelId, channelId }) {
+export default function ChannelButton({ open = false, panelId, channelId }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const [dialogOpen, setDialogOpen] = useState(open);
@@ -55,6 +55,7 @@ export default function ChannelButton({ open, panelId, channelId }) {
                 channelId={channelId}
                 defaultData={panelConfig?.data?.channels[currentChannelId]}
                 open={dialogOpen}
+                panelId={panelId}
                 onDismiss={onDismiss}
                 onCreate={createChannel}
                 onEdit={updateChannel}

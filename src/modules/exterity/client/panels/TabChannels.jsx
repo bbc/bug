@@ -2,10 +2,14 @@ import React from "react";
 import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import BugDetailsTable from "@core/BugDetailsTable";
+import BugApiTable from "@core/BugApiTable";
+import EditIcon from "@mui/icons-material/Edit";
 import AxiosGet from "@utils/AxiosGet";
+import AxiosDelete from "@utils/AxiosDelete";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import { useAlert } from "@utils/Snackbar";
+import DeleteIcon from "@mui/icons-material/Delete";
+import BugChipDisplay from "@core/BugChipDisplay";
 
 export default function TabChannels({ panelId }) {
     const sendAlert = useAlert();
@@ -17,6 +21,18 @@ export default function TabChannels({ panelId }) {
         forceRefresh: forceRefresh,
     });
 
+    const handleDeleteClicked = async (event, item) => {
+        if (await AxiosDelete(`/container/${panelId}/channels/${item?.channelId}`)) {
+            sendAlert(`Deleted channel ${item?.name}.`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to delete ${item?.name}.`, { variant: "error" });
+        }
+    };
+
+    const handleEditClicked = async (event, item) => {};
+
     if (channels.status === "idle" || channels.status === "loading") {
         return <BugLoading height="30vh" />;
     }
@@ -26,7 +42,82 @@ export default function TabChannels({ panelId }) {
 
     return (
         <>
-            <BugDetailsTable items={[]} />
+            <BugApiTable
+                columns={[
+                    {
+                        title: "Number",
+                        sortable: false,
+                        noPadding: true,
+                        hideWidth: 300,
+                        width: 80,
+                        content: (item) => {
+                            return <>{item?.number}</>;
+                        },
+                    },
+                    {
+                        title: "Name",
+                        sortable: false,
+                        noPadding: true,
+                        hideWidth: 600,
+                        width: 82,
+                        content: (item) => {
+                            return <>{item?.title}</>;
+                        },
+                    },
+                    {
+                        title: "Protocol",
+                        sortable: false,
+                        noPadding: true,
+                        hideWidth: 600,
+                        width: 82,
+                        content: (item) => {
+                            return <>{item?.protocol}</>;
+                        },
+                    },
+                    {
+                        title: "Address",
+                        sortable: false,
+                        noPadding: true,
+                        hideWidth: 600,
+                        width: 82,
+                        content: (item) => {
+                            return <>{item?.address}</>;
+                        },
+                    },
+                    {
+                        title: "Port",
+                        sortable: false,
+                        noPadding: true,
+                        hideWidth: 600,
+                        width: 82,
+                        content: (item) => {
+                            return <>{item?.port}</>;
+                        },
+                    },
+                    {
+                        title: "Groups",
+                        sortable: false,
+                        noPadding: true,
+                        hideWidth: 600,
+                        width: 82,
+                        content: (item) => <BugChipDisplay options={item?.groups} />,
+                    },
+                ]}
+                menuItems={[
+                    {
+                        title: "Edit",
+                        icon: <EditIcon fontSize="small" />,
+                        onClick: handleEditClicked,
+                    },
+                    {
+                        title: "Delete",
+                        icon: <DeleteIcon fontSize="small" />,
+                        onClick: handleDeleteClicked,
+                    },
+                ]}
+                apiUrl={`/container/${panelId}/channels/list`}
+                noData={<BugNoData panelId={panelId} title="No channels found" showConfigButton={false} />}
+            />
         </>
     );
 }

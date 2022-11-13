@@ -8,7 +8,7 @@ import TvIcon from "@mui/icons-material/Tv";
 
 import { useAlert } from "@utils/Snackbar";
 
-export default function DeviceButton({ panelId, open, deviceId }) {
+export default function DeviceButton({ panelId, open = false, deviceId }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const [dialogOpen, setDialogOpen] = useState(open);
@@ -53,6 +53,7 @@ export default function DeviceButton({ panelId, open, deviceId }) {
             </Button>
             <DeviceDialog
                 deviceId={deviceId}
+                panelId={panelId}
                 defaultData={panelConfig?.data?.devices[currentDeviceId]}
                 open={dialogOpen}
                 onDismiss={onDismiss}
