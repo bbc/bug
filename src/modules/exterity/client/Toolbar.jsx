@@ -1,34 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { usePanelStatus } from "@hooks/PanelStatus";
+import ChannelButton from "./components/ChannelButton";
+import DeviceButton from "./components/DeviceButton";
 
 export default function Toolbar({ panelId, ...props }) {
+    const [openChannel, setOpenChannel] = useState(false);
     let toolbarProps = { ...props };
-
+    const panelStatus = usePanelStatus();
     toolbarProps["onClick"] = null;
 
-    const handleWebpageClicked = async (event) => {
-        const url = `./../container/${panelId}/clock/large`;
-        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
-        if (newWindow) newWindow.opener = null;
-        event.stopPropagation();
-        event.preventDefault();
-    };
+    const buttons = () => (
+        <>
+            <DeviceButton panelId={panelId}></DeviceButton>
+            <ChannelButton panelId={panelId}></ChannelButton>
+        </>
+    );
 
-    const menuItems = () => [
-        <MenuItem onClick={handleWebpageClicked} key="launch">
-            <ListItemIcon>
-                <OpenInNewIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Goto Webpage" />
-        </MenuItem>,
-    ];
-
-    toolbarProps["buttons"] = null;
-    toolbarProps["menuItems"] = menuItems();
+    toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
+    toolbarProps["menuItems"] = null;
     toolbarProps["onClick"] = null;
 
     return <BugToolbarWrapper {...toolbarProps} />;

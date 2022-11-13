@@ -6,7 +6,9 @@ const path = require("path");
 // load routes
 const statusRouter = require("@routes/status");
 const configRouter = require("@routes/config");
-const clockRouter = require("@routes/clock");
+const channelListRouter = require("@routes/channel-list");
+const channelsRouter = require("@routes/channels");
+const devicesRouter = require("@routes/devices");
 const defaultRouter = require("@routes/default");
 
 let app = express();
@@ -20,7 +22,9 @@ app.use("/api", express.static(path.join(__dirname, "..", "public")));
 
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
-app.use("/api/clock", clockRouter);
+app.use("/api/channel-list", channelListRouter);
+app.use("/api/channels", channelsRouter);
+app.use("/api/devices", devicesRouter);
 
 app.use("*", defaultRouter);
 

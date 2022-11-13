@@ -1,10 +1,11 @@
 {
   "id": "",
   "order": 0,
+  "needsConfigured": false,
   "title": "",
-  "module": "onair-clock",
-  "description": null,
-  "notes": null,
-  "enabled": true,
-  "header": "On Air Clock"
+  "module": "exterity",
+  "description": "Channel list server and device manger for exterity STBs",
+  "enabled": false,
+  "channels": {},
+  "devices": {}
 }

@@ -10,11 +10,14 @@ export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
             <Route exact path="/panel/:panelId">
-                <MainPanel />
+                <MainPanel {...props} />
+            </Route>
+            <Route exact path="/panel/:panelId/:tab">
+                <MainPanel {...props} />
             </Route>
             <BugRestrictTo role="admin">
                 <Route exact path="/panel/:panelId/config">
-                    <ConfigPanel />
+                    <ConfigPanel {...props} />
                 </Route>
             </BugRestrictTo>
         </BugModuleWrapper>

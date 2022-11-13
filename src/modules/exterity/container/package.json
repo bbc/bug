@@ -1,5 +1,5 @@
 {
-    "name": "onair-clock",
+    "name": "exterity",
     "main": "",
     "scripts": {
         "production": "node ./api/server",
@@ -27,7 +27,8 @@
         "package.json": "^2.0.1",
         "path": "^0.12.7",
         "ping": "^0.4.1",
-        "underscore": "^1.13.1"
+        "underscore": "^1.13.1",
+        "xml": "^1.0.1"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
