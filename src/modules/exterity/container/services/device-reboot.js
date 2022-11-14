@@ -1,8 +1,5 @@
 "use strict";
 
-const configGet = require("@core/config-get");
-const configPutViaCore = require("@core/config-putviacore");
-const mongoCollection = require("@core/mongo-collection");
 const exterity = require("@utils/exterity");
 
 module.exports = async (deviceId) => {

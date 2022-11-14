@@ -11,8 +11,8 @@ export default function Toolbar({ panelId, ...props }) {
 
     const buttons = () => (
         <>
-            <DeviceButton panelId={panelId}></DeviceButton>
             <ChannelButton panelId={panelId}></ChannelButton>
+            <DeviceButton panelId={panelId}></DeviceButton>
         </>
     );
 

@@ -47,7 +47,6 @@ export default function TabChannels({ panelId }) {
                     {
                         title: "Number",
                         sortable: false,
-                        noPadding: true,
                         hideWidth: 300,
                         width: 80,
                         content: (item) => {
@@ -57,7 +56,6 @@ export default function TabChannels({ panelId }) {
                     {
                         title: "Name",
                         sortable: false,
-                        noPadding: true,
                         hideWidth: 600,
                         width: 82,
                         content: (item) => {
@@ -67,7 +65,6 @@ export default function TabChannels({ panelId }) {
                     {
                         title: "Protocol",
                         sortable: false,
-                        noPadding: true,
                         hideWidth: 600,
                         width: 82,
                         content: (item) => {
@@ -77,7 +74,6 @@ export default function TabChannels({ panelId }) {
                     {
                         title: "Address",
                         sortable: false,
-                        noPadding: true,
                         hideWidth: 600,
                         width: 82,
                         content: (item) => {
@@ -87,7 +83,6 @@ export default function TabChannels({ panelId }) {
                     {
                         title: "Port",
                         sortable: false,
-                        noPadding: true,
                         hideWidth: 600,
                         width: 82,
                         content: (item) => {
@@ -97,7 +92,6 @@ export default function TabChannels({ panelId }) {
                     {
                         title: "Groups",
                         sortable: false,
-                        noPadding: true,
                         hideWidth: 600,
                         width: 82,
                         content: (item) => <BugChipDisplay options={item?.groups} />,

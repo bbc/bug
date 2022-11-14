@@ -8,7 +8,15 @@ module.exports = async () => {
         const config = await configGet();
 
         for (let channelId in config?.channels) {
-            channels.push({ ...config?.channels[channelId], ...{ channelId: channelId } });
+            channels.push({
+                ...config?.channels[channelId],
+                ...{ channelId: channelId },
+                ...{
+                    addressFull: `${config?.channels[channelId]?.protocol.toLowerCase()}://${
+                        config?.channels[channelId]?.address
+                    }:${config?.channels[channelId]?.port}`,
+                },
+            });
         }
 
         return channels;

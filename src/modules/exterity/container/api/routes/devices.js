@@ -8,6 +8,7 @@ const deviceList = require("@services/device-list");
 const deviceUpdate = require("@services/device-update");
 const deviceDelete = require("@services/device-delete");
 const deviceReboot = require("@services/device-reboot");
+const channelSet = require("@services/channel-set");
 
 route.get(
     "/",
@@ -38,6 +39,17 @@ route.get(
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,
+        });
+    })
+);
+
+route.get(
+    "/:deviceId/set/:channelId",
+    asyncHandler(async (req, res) => {
+        const result = await channelSet(req.params?.deviceId, req.params?.channelId);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
         });
     })
 );

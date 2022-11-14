@@ -13,26 +13,6 @@ const commonElements = (arr1, arr2) => {
     }
 };
 
-const readXML = async (filePath) => {
-    try {
-        const data = fs.readFileSync(filePath, "utf8");
-        return await convert.xml2json(data, { compact: true, spaces: 4 });
-    } catch (err) {
-        console.error(err);
-    }
-};
-
-const writeXml = async (filePath, data) => {
-    try {
-        const options = { compact: true, ignoreComment: true, spaces: 4 };
-        const xml = convert.json2xml(data, options);
-        fs.writeFileSync(filePath, xml);
-        // file written successfully
-    } catch (err) {
-        console.error(err);
-    }
-};
-
 const parseChannels = async (channels) => {
     const parsedChannels = {
         setup: {
@@ -46,7 +26,7 @@ const parseChannels = async (channels) => {
     };
 
     for (let channel of channels) {
-        if (output.protocol === "RTP" || output.protocol === "UDP") {
+        if (channel.protocol === "rtp") {
             parsedChannels.setup["channel-list"].channel.push({
                 _attributes: {
                     number: channel?.number,
@@ -54,7 +34,7 @@ const parseChannels = async (channels) => {
                 multicast: {
                     _attributes: {
                         ip: channel.address,
-                        port: output.port,
+                        port: channel.port,
                     },
                 },
                 dvb: {
@@ -86,10 +66,9 @@ module.exports = async (deviceId) => {
         }
 
         const parsedChannels = await parseChannels(channelList);
-        console.log(parseChannels);
 
         //Final conversion to XML
-        const xml = await convert.json2xml(data, options);
+        const xml = await convert.json2xml(parsedChannels, options);
 
         return xml;
     } catch (error) {
