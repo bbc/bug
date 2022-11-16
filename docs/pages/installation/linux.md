@@ -9,7 +9,7 @@ nav_order: 1
 
 ## Install Docker
 
-1. Download and install the docker engine for your variation of linux. We quite like ubuntu [Docker Install Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+1. Download and install the docker engine for your flavour of linux. We quite like Ubuntu [Docker Install Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 
 2. Follow these post-installation steps so that you don't need to run docker as root [Docker Post-Installaiton Steps](https://docs.docker.com/engine/install/linux-postinstall/)
 
@@ -37,10 +37,9 @@ docker-compose --version
 
 ## Create Files
 
-1. Create a file called `docker-compose.yml`
-2. Copy the below code snippet into the file
+1. Create a file called `docker-compose.yml`. You can create this file anywhere on your filesystem but it's probably best to put it in a well-known location - something like `/opt/bug`.
 
-Note - This describes where to get the docker containers needed to run BUG from and how to create them plumbing the right bits and pieces from your system into dockers such as ports and files.
+2. Copy the below code snippet into the file:
 
 ```
 # BUG for Linux
@@ -106,12 +105,28 @@ services:
             - bug
 ```
 
-Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environment variables will mean they run with a sensible default
+Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going.
 
 ## Start BUG
 
 1. Finally, we can now start BUG from the terminal by running `docker-compose up -d` from the directory containing the `docker-compose.yml` file.
 
-Note - This command hands over the contents of the `docker-compose.yml` file to Docker Desktop which launches the containers as described in the file. You'll need to run this command from the directory containing the `docker-compose.yml`
+2. BUG should now be available on [http://localhost](http://localhost)
 
-2. BUG should now be available on [http://localhost](http://localhost). Using `docker ps` can help you verify this.
+3. You can double check BUG is running by typing `docker ps` into your terminal. Hopefully you'll see something that looks like this;
+
+![docker ps](/assets/images/screenshots/docker-ps.png)
+
+## BUG Folder Structure
+
+All config and logs for BUG are stored outside of the docker container in a subfolder of the folder containing your docker-compose.yml file:
+Your BUG folder structure should look like this:
+
+```
+.
+├── `docker-compose.yml`.       # Docker Compose file created in step 2
+├── config                      # A folder to hold all the BUG configuration
+│   ├── panels                  # Each inviduals panel's configuration can be viewed here
+│   └── global                  # Global configuration can be viewed here
+└── logs                        # You can find all the logs here
+```

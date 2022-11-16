@@ -15,15 +15,11 @@ Note - There's a different version for Intel and M1 based macs. You'll need to p
 
 ## Create Files
 
-1. Create a file called `docker-compose.yml`. You can create this file anywhere on your system but it's probably simplest to put it in a new folder all of it's own.
-2. Copy the below code snippet into the file
-
-Note - This file describes where to get the docker containers needed to run BUG from and how to create them plumbing the right bits and pieces from your system into dockers such as ports and files.
-
-Note - You may find a text editor such as [Atom](https://atom.io/) makes the process of creating these configuration files easier.
+1. Create a file called `docker-compose.yml`. You can create this file anywhere on your system but it's probably simplest to put it in a new folder all of its own.
+2. Copy the below code snippet into the file:
 
 ```
-# BUG MacOS
+# BUG for macOS
 
 version: "3.8"
 
@@ -83,13 +79,11 @@ services:
             - bug
 ```
 
-Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going. Not providing environment variables will mean they run with a sensible default
+Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going.
 
 ## Start BUG
 
 1. Finally, we can now start BUG from the terminal by running `docker compose up -d` from the directory containing the `docker-compose.yml` file.
-
-Note - This command hands over the contents of the `docker-compose.yml` file to Docker Desktop which launches the containers as described in the file. You'll need to run this command from the directory containing the `docker-compose.yml`,
 
 2. BUG should now be available on [http://localhost](http://localhost)
 
@@ -99,7 +93,8 @@ Note - This command hands over the contents of the `docker-compose.yml` file to 
 
 ## BUG Folder Structure
 
-When running you're BUG folder structure should look like this;
+All config and logs for BUG are stored outside of the docker container in a subfolder of the folder containing your docker-compose.yml file:
+Your BUG folder structure should look like this:
 
 ```
 .

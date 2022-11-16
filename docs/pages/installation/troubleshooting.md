@@ -11,8 +11,4 @@ So you've installed BUG - it doesn't work and now you're here. Here are a few co
 
 ## Q: Can't see BUG in my web browser
 
-A: What's the `port` for the `bug-app` say when you type in `docker ps` to the terminal? You'll only be able to access BUG from this port
-
-## Q: Linux: How do I start BUG in fullscreen browser on startup?
-
-A: See [this guide](/pages/installation/kiosk.html) on setting up kiosk mode
+A: Check the `port` for the `bug-app` when you type in `docker ps` to the terminal? You'll only be able to access BUG from this port.
