@@ -17,7 +17,6 @@ module.exports = async (deviceId, command) => {
 
         const response = await axios.get(`http://${device.address}/${command}`, options);
         if (response.status === 200) {
-            console.log(response.data);
             return response.data;
         } else {
             return false;

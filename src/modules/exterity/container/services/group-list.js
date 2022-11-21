@@ -14,7 +14,16 @@ module.exports = async () => {
                 }
             }
         }
-        return group;
+
+        for (let deviceId in config.devices) {
+            for (let group of config.devices[deviceId].groups) {
+                if (!groups.includes(group)) {
+                    groups.push(group);
+                }
+            }
+        }
+
+        return groups;
     } catch (error) {
         return [];
     }

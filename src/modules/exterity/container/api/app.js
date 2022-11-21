@@ -10,6 +10,7 @@ const configRouter = require("@routes/config");
 const channelListRouter = require("@routes/channel-list");
 const channelsRouter = require("@routes/channels");
 const devicesRouter = require("@routes/devices");
+const groupsRouter = require("@routes/groups");
 const defaultRouter = require("@routes/default");
 
 let app = express();
@@ -31,6 +32,8 @@ app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/channel-list", channelListRouter);
 app.use("/api/channels", channelsRouter);
+app.use("/api/groups", groupsRouter);
+
 app.use("/api/devices", devicesRouter);
 
 app.use("*", defaultRouter);

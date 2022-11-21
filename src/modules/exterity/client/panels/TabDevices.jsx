@@ -1,5 +1,6 @@
 import React from "react";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { useHistory } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import BugApiTable from "@core/BugApiTable";
@@ -16,16 +17,11 @@ import BugApiAutocomplete from "@core/BugApiAutocomplete";
 
 export default function TabDevices({ panelId }) {
     const sendAlert = useAlert();
+    const history = useHistory();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
 
-    const devices = useApiPoller({
-        url: `/container/${panelId}/devices`,
-        interval: 5000,
-        forceRefresh: forceRefresh,
-    });
-
     const channels = useApiPoller({
-        url: `/container/${panelId}/channels`,
+        url: `/container/${panelId}/channels/list`,
         interval: 5000,
         forceRefresh: forceRefresh,
     });
@@ -74,7 +70,9 @@ export default function TabDevices({ panelId }) {
         }
     };
 
-    const handleEditClicked = async (event, item) => {};
+    const handleEditClicked = (event, item) => {
+        history.push(`/panel/${panelId}/devices/${item.deviceId}`);
+    };
 
     const handleRebootClicked = async (event, item) => {
         if (await AxiosGet(`/container/${panelId}/devices/${item?.deviceId}/reboot`)) {
@@ -86,16 +84,8 @@ export default function TabDevices({ panelId }) {
         }
     };
 
-    if (
-        devices.status === "idle" ||
-        devices.status === "loading" ||
-        channels.status === "idle" ||
-        channels.status === "loading"
-    ) {
+    if (channels.status === "idle" || channels.status === "loading") {
         return <BugLoading height="30vh" />;
-    }
-    if (devices.status === "success" && !devices.data) {
-        return <BugNoData title="No devices found, please add some" showConfigButton={false} />;
     }
 
     return (
@@ -121,7 +111,7 @@ export default function TabDevices({ panelId }) {
                         title: "Location",
                         sortable: false,
                         hideWidth: 600,
-                        width: 82,
+                        width: 70,
                         content: (item) => {
                             return <>{item?.location}</>;
                         },
@@ -139,7 +129,7 @@ export default function TabDevices({ panelId }) {
                         title: "Channel",
                         sortable: false,
                         hideWidth: 500,
-                        width: 82,
+                        width: 140,
                         content: (item) => {
                             return (
                                 <BugApiAutocomplete
@@ -155,7 +145,7 @@ export default function TabDevices({ panelId }) {
                         title: "Groups",
                         sortable: false,
                         hideWidth: 300,
-                        width: 82,
+                        width: 90,
                         content: (item) => <BugChipDisplay options={item?.groups} />,
                     },
                 ]}

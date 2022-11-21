@@ -7,7 +7,8 @@ const mongoDb = require("@core/mongo-db");
 const modulePort = process.env.PORT;
 const axios = require("axios");
 const mongoCollection = require("@core/mongo-collection");
-const { execPath } = require("process");
+const getChannelListUrl = require("@utils/getChannelListUrl");
+const setChannelListUrl = require("@services/channel-list-set");
 
 let devicesCollection;
 // Tell the manager the things you care about
@@ -28,6 +29,8 @@ const filteredResponse = (response) => {
         version: response?.softwareVersion?.value,
         volume: response?.volume?.value,
         timestamp: new Date(),
+        channelListUrl: response?.xmlChannelListUrl?.value,
+        channelListType: response?.channelListType?.value,
     };
 };
 
@@ -50,6 +53,11 @@ const getDeviceData = async (deviceId, device = {}) => {
 
     if (response && response.data) {
         const data = await filteredResponse(response.data);
+        const channelListUrl = await getChannelListUrl(deviceId);
+        if (channelListUrl !== data.channelListUrl || data?.channelListType !== "xml") {
+            const response = await setChannelListUrl(deviceId);
+        }
+
         data.deviceId = deviceId;
         data.online = true;
         await devicesCollection.updateOne(

@@ -30,7 +30,7 @@ const ChannelDialog = ({
     } = useForm();
 
     const groups = useApiPoller({
-        url: `/container/${panelId}/channels/groups`,
+        url: `/container/${panelId}/groups`,
         interval: 30000,
     });
 
