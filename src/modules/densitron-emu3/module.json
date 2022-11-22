@@ -9,7 +9,7 @@
     "version": "2.0.0",
     "icon": "mdi-power-plug-outline",
     "author": "Geoff House",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
     "devmounts": [

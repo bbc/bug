@@ -1,6 +1,7 @@
 const { Server } = require("socket.io");
 const logger = require("@utils/logger")(module);
 
+const containerHandler = require("@sockets/container");
 const panelListHandler = require("@sockets/panel-list");
 const panelConfigHandler = require("@sockets/panel-config");
 const panelHandler = require("@sockets/panel");
@@ -38,11 +39,16 @@ const bugSocket = (server) => {
     const panelListNamespace = io.of("/panelList");
     const panelConfigNamespace = io.of("/panelConfig");
     const panelNamespace = io.of("/panel");
+    const containerNamespace = io.of("/container");
     const alertNamespace = io.of("/alert");
     const bugNamespace = io.of("/bug");
     const strategiesNamespace = io.of("/strategies");
     const userNamespace = io.of("/user");
     const systemNamespace = io.of("/system");
+
+    containerNamespace.on("connection", (socket) => {
+        containerHandler(containerNamespace, socket);
+    });
 
     panelListNamespace.on("connection", (socket) => {
         panelListHandler(panelListNamespace, socket);

@@ -59,7 +59,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
     const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
 
-    if (dbOutputLabels && dbOutputRouting && dbInputLabels && dbOutputLocks) {
+    if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
         for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels["data"])) {
             const intIndex = parseInt(eachIndex);
             const selectedSource = dbOutputRouting["data"][eachIndex];
@@ -70,7 +70,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
             let isLocalLocked = false;
             let isRemoteLocked = false;
 
-            if (dbOutputLocks["data"][eachIndex]) {
+            if (dbOutputLocks && dbOutputLocks["data"][eachIndex]) {
                 isLocalLocked = dbOutputLocks["data"][eachIndex] == "O";
                 isRemoteLocked = dbOutputLocks["data"][eachIndex] == "L";
             }

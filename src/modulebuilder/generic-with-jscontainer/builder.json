@@ -3,7 +3,11 @@
     "description": "Generic module with NodeJS backend container",
     "version": "1.0.0",
     "author": "Geoff House",
-    "files": ["module.json", "container/package.json", "client/components/ExampleList.jsx"],
+    "files": [
+        "module.json",
+        "container/package.json",
+        "client/components/ExampleList.jsx"
+    ],
     "fields": [
         {
             "name": "name",
@@ -49,7 +53,7 @@
             "message": "Enter the license type",
             "type": "input",
             "required": "true",
-            "default": "GPLv3"
+            "default": "Apache-2.0"
         }
     ]
 }

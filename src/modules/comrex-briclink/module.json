@@ -7,10 +7,18 @@
     "icon": "mdi-phone-settings",
     "notes": "",
     "author": "Geoff House",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers", "utils", "models"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils",
+        "models"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "status": "stable",
     "defaultconfig": {
         "id": "",

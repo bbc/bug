@@ -2,16 +2,25 @@
     "name": "bmd-multiview16",
     "longname": "Blackmagic MultiView 16",
     "description": "Configure Blackmagic multiviewers with auto labelling",
-    "capabilities": ["video-multiview"],
+    "capabilities": [
+        "video-multiview"
+    ],
     "notes": "",
     "version": "1.0.1",
     "icon": "mdi-view-quilt",
     "author": "Geoff House",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": ["api", "utils", "services", "workers"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "utils",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,

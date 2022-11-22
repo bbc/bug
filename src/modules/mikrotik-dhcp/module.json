@@ -10,7 +10,7 @@
     "icon": "mdi-clipboard-list",
     "author": "Geoff House",
     "needsContainer": true,
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "stable",
     "devmounts": [
         "api",

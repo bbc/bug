@@ -1,6 +1,6 @@
 {
     "name": "bug",
-    "version": "3.2.149",
+    "version": "3.2.152",
     "description": "Broadcast Universal Gateway",
     "main": "index.js",
     "directories": {
@@ -25,7 +25,7 @@
         "url": "git+https://github.com/bbc/bbcnews-bug.git"
     },
     "author": "Geoff House",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/bbc/bbcnews-bug/issues"
     },
@@ -69,6 +69,7 @@
         "path": "^0.12.7",
         "serve-favicon": "^2.5.0",
         "socket.io": "^4.5.1",
+        "socket.io-client": "^4.5.3",
         "swagger-jsdoc": "^6.2.1",
         "swagger-ui-express": "^4.4.0",
         "systeminformation": "^5.11.16",

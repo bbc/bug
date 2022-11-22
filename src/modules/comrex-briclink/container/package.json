@@ -12,7 +12,7 @@
         ]
     },
     "author": "",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "dependencies": {
         "@rgrove/parse-xml": "^3.0.0",
         "axios": "^0.26.0",

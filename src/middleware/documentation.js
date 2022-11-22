@@ -20,7 +20,7 @@ const swaggerOptions = {
             version: "0.1.0",
             description: "This is a simple CRUD API application made with Express and documented with Swagger",
             license: {
-                name: "GPLv3",
+                name: "Apache-2.0",
                 url: "https://www.gnu.org/licenses/gpl-3.0.en.html",
             },
             contact: {

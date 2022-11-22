@@ -7,7 +7,7 @@
     "version": "1.0.2",
     "icon": "Schedule",
     "author": "Ryan McCartney",
-    "license": "GPLv3",
+    "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
     "devmounts": [
