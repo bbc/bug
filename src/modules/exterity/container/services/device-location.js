@@ -2,10 +2,11 @@
 
 const exterity = require("@utils/exterity");
 
-module.exports = async (deviceId) => {
+module.exports = async (deviceId, location) => {
     const status = await exterity(
         deviceId,
-        `/cgi-bin/config.json.cgi?factoryReset=no&reboot=yes&callback=updatePageComplete`
+        `/cgi-bin/config.json.cgi?location=${location}&callback=updatePageComplete`
     );
+
     return status;
 };

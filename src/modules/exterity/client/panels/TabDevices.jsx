@@ -6,6 +6,7 @@ import BugNoData from "@core/BugNoData";
 import BugApiTable from "@core/BugApiTable";
 import EditIcon from "@mui/icons-material/Edit";
 import AxiosGet from "@utils/AxiosGet";
+import AxiosPost from "@utils/AxiosPost";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import { useAlert } from "@utils/Snackbar";
@@ -14,11 +15,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import BugPowerIcon from "@core/BugPowerIcon";
 import BugChipDisplay from "@core/BugChipDisplay";
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
 
 export default function TabDevices({ panelId }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
+    const { renameDialog } = useBugRenameDialog();
 
     const channels = useApiPoller({
         url: `/container/${panelId}/channels/list`,
@@ -70,8 +75,68 @@ export default function TabDevices({ panelId }) {
         }
     };
 
+    const handleNameClicked = async (event, item) => {
+        event.stopPropagation();
+        let result = await renameDialog({
+            title: "Edit Device Name",
+            defaultValue: item?.name,
+            placeholder: item?.serialNumber,
+            confirmButtonText: "Rename",
+            allowBlank: true,
+        });
+        if (result === false) {
+            return;
+        }
+
+        const response = AxiosPost(`/container/${panelId}/device/name/${item.deviceId}`, { name: result });
+        if (response.status === "success") {
+            sendAlert(result ? `Renamed device to ${result}` : "Reset device name", {
+                broadcast: "true",
+                variant: "success",
+            });
+            doForceRefresh();
+        } else {
+            sendAlert(result ? `Failed to rename device to ${result}` : "Failed to reset device name", {
+                variant: "error",
+            });
+        }
+    };
+
+    const handleLocationClicked = async (event, item) => {
+        event.stopPropagation();
+        let result = await renameDialog({
+            title: "Edit Location Name",
+            defaultValue: item?.location,
+            placeholder: "Office",
+            confirmButtonText: "Set",
+            allowBlank: true,
+        });
+
+        if (result === false) {
+            return;
+        }
+
+        const response = AxiosPost(`/container/${panelId}/device/location/${item.deviceId}`, { location: result });
+        if (response.status === "success") {
+            sendAlert(result ? `Set device location to ${result}` : "Reset device location", {
+                broadcast: "true",
+                variant: "success",
+            });
+            doForceRefresh();
+        } else {
+            sendAlert(result ? `Failed to set device location to ${result}` : "Failed to reset device location", {
+                variant: "error",
+            });
+        }
+    };
+
     const handleEditClicked = (event, item) => {
         history.push(`/panel/${panelId}/devices/${item.deviceId}`);
+    };
+
+    const handleVolumeClicked = async (event, item) => {
+        event.stopPropagation();
+        console.log("Voume Clicked");
     };
 
     const handleRebootClicked = async (event, item) => {
@@ -103,18 +168,26 @@ export default function TabDevices({ panelId }) {
                         sortable: false,
                         hideWidth: 600,
                         width: 82,
-                        content: (item) => {
-                            return <>{item?.title}</>;
-                        },
+                        content: (item) => (
+                            <>
+                                <BugTableLinkButton onClick={(event) => handleNameClicked(event, item)}>
+                                    {item?.name}
+                                </BugTableLinkButton>
+                            </>
+                        ),
                     },
                     {
                         title: "Location",
                         sortable: false,
                         hideWidth: 600,
                         width: 70,
-                        content: (item) => {
-                            return <>{item?.location}</>;
-                        },
+                        content: (item) => (
+                            <>
+                                <BugTableLinkButton onClick={(event) => handleLocationClicked(event, item)}>
+                                    {item?.location}
+                                </BugTableLinkButton>
+                            </>
+                        ),
                     },
                     {
                         title: "Serial Number",
@@ -159,6 +232,11 @@ export default function TabDevices({ panelId }) {
                         title: "Delete",
                         icon: <DeleteIcon fontSize="small" />,
                         onClick: handleDeleteClicked,
+                    },
+                    {
+                        title: "Volume",
+                        icon: <VolumeUpIcon fontSize="small" />,
+                        onClick: handleVolumeClicked,
                     },
                     {
                         title: "Reboot",

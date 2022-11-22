@@ -14,6 +14,9 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </Route>
+            <Route exact path="/panel/:panelId/config">
+                <ConfigPanel {...props} />
+            </Route>
             <Route exact path="/panel/:panelId/:tab">
                 <MainPanel {...props} />
             </Route>
@@ -23,11 +26,6 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId/devices/:deviceId">
                 <DevicePanel {...props} />
             </Route>
-            <BugRestrictTo role="admin">
-                <Route exact path="/panel/:panelId/config">
-                    <ConfigPanel {...props} />
-                </Route>
-            </BugRestrictTo>
         </BugModuleWrapper>
     );
 }

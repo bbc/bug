@@ -58,28 +58,6 @@ const DeviceDiaglog = ({ defaultData, onDismiss, onCreate, onEdit, panelId, devi
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
                             <BugConfigFormTextField
-                                name="title"
-                                control={control}
-                                rules={{ required: true }}
-                                fullWidth
-                                error={errors.title}
-                                defaultValue={data?.title}
-                                label="Title"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <BugConfigFormTextField
-                                name="location"
-                                control={control}
-                                rules={{ required: false }}
-                                fullWidth
-                                error={errors.location}
-                                defaultValue={data?.location}
-                                label="Location"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <BugConfigFormTextField
                                 name="address"
                                 control={control}
                                 rules={{ required: true }}
