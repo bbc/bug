@@ -88,7 +88,7 @@ export default function TabDevices({ panelId }) {
             return;
         }
 
-        const response = AxiosPost(`/container/${panelId}/device/name/${item.deviceId}`, { name: result });
+        const response = AxiosPost(`/container/${panelId}/devices/name/${item.deviceId}`, { name: result });
         if (response.status === "success") {
             sendAlert(result ? `Renamed device to ${result}` : "Reset device name", {
                 broadcast: "true",
@@ -116,7 +116,7 @@ export default function TabDevices({ panelId }) {
             return;
         }
 
-        const response = AxiosPost(`/container/${panelId}/device/location/${item.deviceId}`, { location: result });
+        const response = AxiosPost(`/container/${panelId}/devices/location/${item.deviceId}`, { location: result });
         if (response.status === "success") {
             sendAlert(result ? `Set device location to ${result}` : "Reset device location", {
                 broadcast: "true",
