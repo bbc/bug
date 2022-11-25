@@ -9,7 +9,7 @@
  * 0.0.3 18/06/2021 - Restart workers and access to collection (RM)
  */
 
-const { Worker, isMainThread, workerData } = require("worker_threads");
+const { Worker, isMainThread, workerData, SHARE_ENV } = require("worker_threads");
 const configGet = require("@core/config-get");
 const path = require("path");
 const fs = require("fs");
@@ -25,6 +25,7 @@ module.exports = class WorkerManager {
         this.folder = folder || path.join(__dirname, "..", "workers");
         this.setup();
         this.options = {
+            env: SHARE_ENV,
             execArgv: [...process.execArgv, "--unhandled-rejections=strict"],
         };
     }
