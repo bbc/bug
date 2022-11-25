@@ -8,9 +8,13 @@ module.exports = async (deviceId, channelId) => {
     const channel = config?.channels[channelId];
 
     const fullAddress = `${channel?.protocol.toLowerCase()}://${channel?.address}:${channel?.port}`;
-    const status = await exterity(
-        deviceId,
-        `cgi-bin/config.json.cgi?currentChannel=${encodeURI(fullAddress)}&callback=updatePageComplete&jparam=c`
-    );
+
+    const status = await exterity(deviceId, {
+        params: {
+            currentChannel: fullAddress,
+        },
+        action: "apply_playback",
+    });
+
     return status;
 };

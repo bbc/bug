@@ -26,27 +26,25 @@ const parseChannels = async (channels) => {
     };
 
     for (let channel of channels) {
-        if (channel.protocol === "rtp") {
-            parsedChannels.setup["channel-list"].channel.push({
+        parsedChannels.setup["channel-list"].channel.push({
+            _attributes: {
+                number: channel?.number,
+            },
+            multicast: {
                 _attributes: {
-                    number: channel?.number,
+                    ip: channel.address,
+                    port: channel.port,
                 },
-                multicast: {
-                    _attributes: {
-                        ip: channel.address,
-                        port: channel.port,
-                    },
+            },
+            dvb: {
+                _attributes: {
+                    sid: "1",
                 },
-                dvb: {
-                    _attributes: {
-                        sid: "1",
-                    },
-                },
-                name: {
-                    _text: channel?.title,
-                },
-            });
-        }
+            },
+            name: {
+                _text: channel?.title,
+            },
+        });
     }
 
     return parsedChannels;
@@ -69,7 +67,6 @@ module.exports = async (deviceId) => {
 
         //Final conversion to XML
         const xml = await convert.json2xml(parsedChannels, options);
-
         return xml;
     } catch (error) {
         console.log(`channel-list-get: ${error.stack || error.trace || error || error.message}`);

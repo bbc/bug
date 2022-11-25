@@ -5,11 +5,11 @@ const hashResponse = require("@core/hash-response");
 
 const makeChannelList = require("@services/channel-list-make");
 const setChannelList = require("@services/channel-list-set");
-const checkDeviceAddress = require("@service/device-address-check");
+const checkDeviceAddress = require("@services/device-address-check");
 
 route.all("", async function (req, res) {
     checkDeviceAddress(req);
-    const channelList = await makeChannelList(req.query.deviceId);
+    const channelList = await makeChannelList(req.query?.deviceId);
     res.type("application/xml");
     res.set("Content-Type", "text/xml");
     res.send(channelList);

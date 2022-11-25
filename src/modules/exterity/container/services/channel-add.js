@@ -14,7 +14,6 @@ module.exports = async (channel) => {
     if (channel && channel.address) {
         const channelId = await uuidv4();
         config.channels[channelId] = channel;
-        console.log(config);
     }
 
     return await configPutViaCore(config);

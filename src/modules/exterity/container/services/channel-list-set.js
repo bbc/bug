@@ -6,13 +6,20 @@ const getChannelListUrl = require("@utils/getChannelListUrl");
 
 module.exports = async (deviceId) => {
     const config = await configGet();
-    const status = false;
+    let status = false;
     if (config.devices[deviceId]) {
         const channelListingUrl = await getChannelListUrl(deviceId);
-        status = await exterity(
-            deviceId,
-            `cgi-bin/config.json.cgi?xmlChannelListRefresh=1&xmlChannelListUrl=${channelListingUrl}&channelListType=xml&callback=updatePageComplete`
-        );
+        status = await exterity(deviceId, {
+            params: {
+                SAPListener: "off",
+                SSM_Uri: false,
+                group_switch: "all",
+                rStaticChannels: "on",
+                staticChannels: "off",
+                xmlChannelListRefresh: "1",
+                xmlChannelListUrl: channelListingUrl,
+            },
+        });
     }
     return status;
 };

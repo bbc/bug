@@ -5,10 +5,10 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const modulePort = process.env.PORT;
-const axios = require("axios");
 const mongoCollection = require("@core/mongo-collection");
 const getChannelListUrl = require("@utils/getChannelListUrl");
 const setChannelListUrl = require("@services/channel-list-set");
+const http = require("http");
 
 let devicesCollection;
 // Tell the manager the things you care about
@@ -21,41 +21,87 @@ let updateDelay = 5000;
 
 const filteredResponse = (response) => {
     return {
-        name: response?.name?.value,
-        location: response?.location?.value,
-        address: response["IPAddress"]?.value,
-        currentChannel: response?.currentChannel?.value,
-        serialNumber: response?.serialNumber?.value,
-        version: response?.softwareVersion?.value,
-        volume: response?.volume?.value,
         timestamp: new Date(),
-        channelListUrl: response?.xmlChannelListUrl?.value,
-        channelListType: response?.channelListType?.value,
+        name: response?.Name,
+        location: response?.Location,
+        address: response?.IPAddress,
+        currentChannel: response?.currentChannel,
+        serialNumber: response?.serialNumber,
+        version: response?.SoftwareVersion,
+        model: response?.tv,
+        channelListUrl: response?.xmlChannelListUrl,
+        channelListType: response?.rStaticChannelsl,
+        volume: response?.receivervolume,
+        mute: response?.mute,
     };
 };
 
-const getDeviceData = async (deviceId, device = {}) => {
-    const options = { timeout: 10000 };
-    //Check if the receiver needs a username and password
-    if (device.username || device.password) {
-        options.auth = {
-            username: device?.username,
-            password: device?.password,
+//Exterity boxes return LFCR invalid chars in responses so commands always throw expections. Manually parse the repsonse using HTTP
+const getExterityData = (device) => {
+    return new Promise(function (resolve, reject) {
+        const options = {
+            insecureHTTPParser: true,
         };
-    }
 
+        const params = {
+            currentMode: true,
+            receivervolume: true,
+            mute: true,
+            audioOptions: true,
+            currentChannel: true,
+            serialNumber: true,
+            IPAddress: true,
+            Location: true,
+            Name: true,
+            SoftwareVersion: true,
+            tv: true,
+            xmlChannelListUrl: true,
+            rStaticChannelsl: true,
+        };
+
+        if (device.username || device.password) {
+            options.auth = `${device?.username}:${device?.password}`;
+        }
+
+        options.host = `${device.address}`;
+        options.path = `/cgi-bin/json_xfer?${new URLSearchParams(params)}`;
+
+        const callback = (response) => {
+            let str = "";
+
+            response.on("data", function (chunk) {
+                str += chunk;
+            });
+            response.on("end", function () {
+                const jsonData = JSON.parse(str.trim());
+                resolve(jsonData);
+            });
+        };
+
+        try {
+            http.request(options, callback).end();
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+const getDeviceData = async (deviceId, device = {}) => {
     let response = null;
+
     try {
-        response = await axios.get(`http://${device.address}/cgi-bin/config.json.cgi`, options);
+        response = await getExterityData(device);
     } catch (err) {
         console.log(`worker-devices: failed to get data from ${deviceId}`);
     }
 
-    if (response && response.data) {
-        const data = await filteredResponse(response.data);
+    if (response) {
+        const data = await filteredResponse(response);
         const channelListUrl = await getChannelListUrl(deviceId);
-        if (channelListUrl !== data.channelListUrl || data?.channelListType !== "xml") {
-            const response = await setChannelListUrl(deviceId);
+
+        if (channelListUrl !== data.channelListUrl || data?.channelListType === false) {
+            const status = await setChannelListUrl(deviceId);
+            console.log(`worker-devices: Updated channel list to ${channelListUrl}`);
         }
 
         data.deviceId = deviceId;
@@ -87,11 +133,11 @@ const main = async () => {
     devicesCollection = await mongoCollection("devices");
 
     // remove previous values
-    devicesCollection.deleteMany({});
+    //devicesCollection.deleteMany({});
 
     while (true) {
         for (let deviceId in workerData.devices) {
-            console.log(`worker-devices: getting data from ${deviceId}`);
+            //console.log(`worker-devices: getting data from ${deviceId}`);
             await getDeviceData(deviceId, workerData.devices[deviceId]);
         }
         await delay(updateDelay);

@@ -16,6 +16,7 @@ module.exports = async (configObject) => {
         const bugCoreHost = process.env.BUG_CONTAINER || "bug";
         const networkName = process.env.DOCKER_NETWORK_NAME || "bug";
         const moduleHome = process.env.MODULE_HOME || "/home/node/module";
+        const bugHost = process.env.BUG_HOST || "127.0.0.1";
 
         let containerOptions = {
             Image: configObject.module + ":latest",
@@ -25,6 +26,8 @@ module.exports = async (configObject) => {
                 `PANEL_ID=${configObject.id}`,
                 `CORE_PORT=${bugCorePort}`,
                 `CORE_HOST=${bugCoreHost}`,
+                `BUG_HOST=${bugHost}`,
+                `BUG_PORT=${bugCorePort}`,
             ],
             Hostname: configObject.id,
             name: configObject.id,

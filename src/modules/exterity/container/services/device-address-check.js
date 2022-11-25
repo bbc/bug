@@ -5,7 +5,7 @@ const configPutViaCore = require("@core/config-putviacore");
 
 module.exports = async (req) => {
     const config = await configGet();
-    console.log(req);
+    const deviceId = req.params?.deviceId;
 
     if (!config) {
         return false;
@@ -15,11 +15,14 @@ module.exports = async (req) => {
         return false;
     }
 
-    const deviceAddress = req.address;
+    const deviceAddress = req.ip.split(":")[3];
     const configAddress = config?.devices[req.params?.deviceId]?.address;
 
+    console.log(deviceAddress);
+
     if (configAddress !== deviceAddress) {
-        config.devices[deviceId]?.address = deviceAddress;
+        config.devices[deviceId].address = deviceAddress;
+        console.log(`device-address-check: ${req.params?.deviceId} address was updated to ${deviceAddress}`);
         return await configPutViaCore(config);
     }
 

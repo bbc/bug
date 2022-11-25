@@ -88,8 +88,8 @@ export default function TabDevices({ panelId }) {
             return;
         }
 
-        const response = AxiosPost(`/container/${panelId}/devices/name/${item.deviceId}`, { name: result });
-        if (response.status === "success") {
+        const response = await AxiosPost(`/container/${panelId}/devices/${item.deviceId}/name`, { name: result });
+        if (response) {
             sendAlert(result ? `Renamed device to ${result}` : "Reset device name", {
                 broadcast: "true",
                 variant: "success",
@@ -116,8 +116,11 @@ export default function TabDevices({ panelId }) {
             return;
         }
 
-        const response = AxiosPost(`/container/${panelId}/devices/location/${item.deviceId}`, { location: result });
-        if (response.status === "success") {
+        const response = await AxiosPost(`/container/${panelId}/devices/${item.deviceId}/location`, {
+            location: result,
+        });
+
+        if (response) {
             sendAlert(result ? `Set device location to ${result}` : "Reset device location", {
                 broadcast: "true",
                 variant: "success",
@@ -136,7 +139,7 @@ export default function TabDevices({ panelId }) {
 
     const handleVolumeClicked = async (event, item) => {
         event.stopPropagation();
-        console.log("Voume Clicked");
+        console.log("Volume Clicked");
     };
 
     const handleRebootClicked = async (event, item) => {
@@ -188,6 +191,15 @@ export default function TabDevices({ panelId }) {
                                 </BugTableLinkButton>
                             </>
                         ),
+                    },
+                    {
+                        title: "IP Address",
+                        sortable: false,
+                        hideWidth: 500,
+                        width: 82,
+                        content: (item) => {
+                            return <>{item?.address}</>;
+                        },
                     },
                     {
                         title: "Serial Number",
