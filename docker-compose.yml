@@ -28,7 +28,7 @@ services:
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
             BUG_PORT: 3101
-            BUG_HOST: "127.0.0.1"
+            BUG_HOST: "172.24.40.14"
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_REGISTRY_FQDN: harbor.prod.bcn.bbc.co.uk

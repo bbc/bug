@@ -211,6 +211,15 @@ export default function TabDevices({ panelId }) {
                         },
                     },
                     {
+                        title: "TV Type",
+                        sortable: false,
+                        hideWidth: 500,
+                        width: 82,
+                        content: (item) => {
+                            return <>{item?.model}</>;
+                        },
+                    },
+                    {
                         title: "Channel",
                         sortable: false,
                         hideWidth: 500,

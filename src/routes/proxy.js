@@ -48,6 +48,7 @@ router.use(
                 responseType: "stream",
                 headers: {
                     "Content-Type": "application/json",
+                    "X-Forwarded-For": req?.ip,
                 },
             };
 

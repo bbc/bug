@@ -8,7 +8,7 @@ const setChannelList = require("@services/channel-list-set");
 const checkDeviceAddress = require("@services/device-address-check");
 
 route.all("", async function (req, res) {
-    checkDeviceAddress(req);
+    //checkDeviceAddress(req);
     const channelList = await makeChannelList(req.query?.deviceId);
     res.type("application/xml");
     res.set("Content-Type", "text/xml");

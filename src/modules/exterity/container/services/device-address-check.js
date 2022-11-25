@@ -5,7 +5,7 @@ const configPutViaCore = require("@core/config-putviacore");
 
 module.exports = async (req) => {
     const config = await configGet();
-    const deviceId = req.params?.deviceId;
+    const deviceId = req.query?.deviceId;
 
     if (!config) {
         return false;
@@ -15,6 +15,7 @@ module.exports = async (req) => {
         return false;
     }
 
+    console.log(req.get("X-Forwarded-For"));
     const deviceAddress = req.ip.split(":")[3];
     const configAddress = config?.devices[req.params?.deviceId]?.address;
 

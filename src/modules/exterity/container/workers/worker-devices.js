@@ -17,9 +17,32 @@ parentPort.postMessage({
     restartOn: ["devices"],
 });
 
-let updateDelay = 5000;
+let updateDelay = 3000;
 
 const filteredResponse = (response) => {
+    const modelLookup = {
+        CDT: "IBM",
+        DEL: "Dell",
+        DLL: "Dell",
+        FDT: "Fujitsu",
+        FUJ: "Fujitsu",
+        GSM: "LG",
+        HCE: "Hitachi",
+        HIT: "Hitachi",
+        HTC: "Hitachi",
+        MDO: "Panasonic",
+        MEE: "Mistubishi",
+        PHL: "Philips",
+        SAM: "Samsung",
+        SAN: "Sanyo",
+        SHP: "Sharp",
+        SNY: "Sony",
+        SON: "Sony",
+        SSE: "Samsung",
+    };
+
+    const modelName = modelLookup[response?.tv?.manufacturer] || "Unknown";
+
     return {
         timestamp: new Date(),
         name: response?.Name,
@@ -28,11 +51,12 @@ const filteredResponse = (response) => {
         currentChannel: response?.currentChannel,
         serialNumber: response?.serialNumber,
         version: response?.SoftwareVersion,
-        model: response?.tv,
+        model: modelName,
         channelListUrl: response?.xmlChannelListUrl,
         channelListType: response?.rStaticChannelsl,
         volume: response?.receivervolume,
         mute: response?.mute,
+        uptime: response?.upTime,
     };
 };
 
@@ -41,6 +65,7 @@ const getExterityData = (device) => {
     return new Promise(function (resolve, reject) {
         const options = {
             insecureHTTPParser: true,
+            timeout: 3000,
         };
 
         const params = {
@@ -57,6 +82,7 @@ const getExterityData = (device) => {
             tv: true,
             xmlChannelListUrl: true,
             rStaticChannelsl: true,
+            upTime: true,
         };
 
         if (device.username || device.password) {
@@ -79,7 +105,17 @@ const getExterityData = (device) => {
         };
 
         try {
-            http.request(options, callback).end();
+            const request = http.request(options, callback);
+
+            request.on("timeout", () => {
+                reject(err);
+            });
+
+            request.on("error", function (err) {
+                reject(err);
+            });
+
+            request.end();
         } catch (err) {
             reject(err);
         }
