@@ -134,7 +134,7 @@ export default function TabDevices({ panelId }) {
     };
 
     const handleEditClicked = (event, item) => {
-        history.push(`/panel/${panelId}/devices/${item.deviceId}`);
+        history.push(`/panel/${panelId}/devices/edit/${item.deviceId}`);
     };
 
     const handleVolumeClicked = async (event, item) => {

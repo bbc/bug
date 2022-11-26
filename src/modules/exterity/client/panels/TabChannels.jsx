@@ -23,7 +23,7 @@ export default function TabChannels({ panelId }) {
     };
 
     const handleEditClicked = (event, item) => {
-        history.push(`/panel/${panelId}/channels/${item.channelId}`);
+        history.push(`/panel/${panelId}/channels/edit/${item.channelId}`);
     };
 
     return (

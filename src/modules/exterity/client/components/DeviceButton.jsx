@@ -1,65 +1,20 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import DeviceDialog from "./DeviceDialog";
-import AxiosPut from "@utils/AxiosPut";
-import AxiosPost from "@utils/AxiosPost";
+import React from "react";
 import Button from "@mui/material/Button";
 import TvIcon from "@mui/icons-material/Tv";
+import { Link } from "react-router-dom";
 
-import { useAlert } from "@utils/Snackbar";
-
-export default function DeviceButton({ panelId, open = false, deviceId }) {
-    const sendAlert = useAlert();
-    const panelConfig = useSelector((state) => state.panelConfig);
-    const [dialogOpen, setDialogOpen] = useState(open);
-    const [currentDeviceId, setCurrentDeviceId] = useState(null);
-
-    const createDevice = async (device) => {
-        const response = await AxiosPost(`/container/${panelId}/devices`, device);
-        if (response) {
-            sendAlert(`Created device ${device.title}`, { variant: "success" });
-        } else {
-            sendAlert(`Could not create device ${device.title}`, { variant: "error" });
-        }
-        setCurrentDeviceId(null);
-    };
-
-    const updateDevice = async (device, deviceId) => {
-        setCurrentDeviceId(null);
-        const response = await AxiosPut(`/container/${panelId}/devices/${deviceId}`, device);
-        if (response) {
-            sendAlert(`Updated device ${device.title}`, { variant: "success" });
-        } else {
-            sendAlert(`Could not update device ${device.title}`, { variant: "error" });
-        }
-    };
-
-    const onDismiss = () => {
-        setDialogOpen(false);
-        setCurrentDeviceId(null);
-    };
-
+export default function DeviceButton({ panelId }) {
     return (
         <>
             <Button
-                onClick={() => {
-                    setDialogOpen(true);
-                }}
+                component={Link}
+                to={`/panel/${panelId}/devices/add`}
                 variant="outlined"
                 color="primary"
                 startIcon={<TvIcon />}
             >
                 Add Device
             </Button>
-            <DeviceDialog
-                deviceId={deviceId}
-                panelId={panelId}
-                defaultData={panelConfig?.data?.devices[currentDeviceId]}
-                open={dialogOpen}
-                onDismiss={onDismiss}
-                onCreate={createDevice}
-                onEdit={updateDevice}
-            />
         </>
     );
 }

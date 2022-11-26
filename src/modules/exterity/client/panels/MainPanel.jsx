@@ -8,7 +8,7 @@ export default function MainPanel({ panelId }) {
         <>
             <BugPanelTabbedForm
                 labels={["Channels", "Devices"]}
-                locations={[`/panel/${panelId}/channels`, `/panel/${panelId}/devices`]}
+                locations={[`/panel/${panelId}/display/channels`, `/panel/${panelId}/display/devices`]}
                 content={[<TabChannels panelId={panelId} />, <TabDevices panelId={panelId} />]}
                 contentProps={{ elevation: 0 }}
             ></BugPanelTabbedForm>
