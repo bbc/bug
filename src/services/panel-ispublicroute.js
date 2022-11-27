@@ -13,8 +13,7 @@ module.exports = async (panelId, route) => {
             const panel = await panelGet(panelId);
 
             if (Array.isArray(panel._module?.publicRoutes)) {
-                for (let publicRoute in panel._module?.publicRoutes) {
-                    console.log(publicRoute);
+                for (let publicRoute of panel._module?.publicRoutes) {
                     const isMatch = wcmatch(publicRoute);
                     if (isMatch(route)) {
                         logger.debug(`Public route accessed - ${panelId}/${route}`);

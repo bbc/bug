@@ -7,18 +7,18 @@ const makeChannelList = require("@services/channel-list-make");
 const setChannelList = require("@services/channel-list-set");
 const checkDeviceAddress = require("@services/device-address-check");
 
-route.all("", async function (req, res) {
+route.all("/:deviceId", async function (req, res) {
     //checkDeviceAddress(req);
-    const channelList = await makeChannelList(req.query?.deviceId);
+    const channelList = await makeChannelList(req.params?.deviceId);
     res.type("application/xml");
     res.set("Content-Type", "text/xml");
     res.send(channelList);
 });
 
 route.post(
-    "/set/:channelId",
+    "/set/:deviceId",
     asyncHandler(async (req, res) => {
-        const results = await setChannelList(req.params?.channelId);
+        const results = await setChannelList(req.params?.deviceId);
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,

@@ -4,6 +4,6 @@ const bugPort = process.env.BUG_PORT || "80";
 
 module.exports = async (deviceId) => {
     const config = await configGet();
-    const channelListingUrl = `http://${bugHost}:${bugPort}/container/${config?.id}/channel-list/?deviceId=${deviceId}.xml`;
+    const channelListingUrl = `http://${bugHost}:${bugPort}/container/${config?.id}/channel-list/${deviceId}.xml`;
     return channelListingUrl;
 };
