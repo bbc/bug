@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useHistory } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
@@ -16,14 +16,65 @@ import BugPowerIcon from "@core/BugPowerIcon";
 import BugChipDisplay from "@core/BugChipDisplay";
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import Slider from "@mui/material/Slider";
+import Stack from "@mui/material/Stack";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 
 export default function TabDevices({ panelId }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
     const { renameDialog } = useBugRenameDialog();
+
+    const { customDialog } = useBugCustomDialog();
+
+    const VolumeDialog = ({ open, device, onDismiss }) => {
+        const [mute, setMute] = useState(device?.mute);
+        const [volume, setVolume] = useState(device?.volume);
+
+        const handleVolume = async (item, value) => {
+            setVolume(parseInt(value));
+            setMute(false);
+            const response = await AxiosPost(`/container/${panelId}/devices/${device?.deviceId}/volume`, {
+                volume: parseInt(value),
+            });
+        };
+        const handleMute = async (item, value) => {
+            setMute(!mute);
+            const response = await AxiosPost(`/container/${panelId}/devices/${device?.deviceId}/mute`, { mute: !mute });
+        };
+
+        const getIcon = () => {
+            if (mute) {
+                return <VolumeOffIcon />;
+            }
+            return <VolumeUpIcon />;
+        };
+
+        return (
+            <Dialog fullWidth maxWidth="sm" open={open} onClose={onDismiss}>
+                <DialogTitle>Volume</DialogTitle>
+                <DialogContent>
+                    <Stack spacing={2} direction="row" sx={{ mb: 2 }} alignItems="center">
+                        <Slider value={volume} step={1} min={0} max={40} onChange={handleVolume} aria-label="Volume" />
+                        <IconButton onClick={handleMute}>{getIcon()}</IconButton>
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onDismiss}>Close</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    };
 
     const channels = useApiPoller({
         url: `/container/${panelId}/channels/list`,
@@ -139,7 +190,9 @@ export default function TabDevices({ panelId }) {
 
     const handleVolumeClicked = async (event, item) => {
         event.stopPropagation();
-        console.log("Volume Clicked");
+        const result = customDialog({
+            dialog: <VolumeDialog device={item} />,
+        });
     };
 
     const handleRebootClicked = async (event, item) => {

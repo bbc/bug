@@ -10,6 +10,8 @@ const deviceDelete = require("@services/device-delete");
 const deviceReboot = require("@services/device-reboot");
 const deviceRename = require("@services/device-rename");
 const deviceLocation = require("@services/device-location");
+const deviceVolume = require("@services/device-volume");
+const deviceMute = require("@services/device-mute");
 const channelSet = require("@services/channel-set");
 
 route.get(
@@ -82,6 +84,28 @@ route.post(
     "/:deviceId/location",
     asyncHandler(async (req, res) => {
         const results = await deviceLocation(req.params?.deviceId, req.body?.location);
+        hashResponse(res, req, {
+            status: results ? "success" : "failure",
+            data: results,
+        });
+    })
+);
+
+route.post(
+    "/:deviceId/volume",
+    asyncHandler(async (req, res) => {
+        const results = await deviceVolume(req.params?.deviceId, req.body?.volume);
+        hashResponse(res, req, {
+            status: results ? "success" : "failure",
+            data: results,
+        });
+    })
+);
+
+route.post(
+    "/:deviceId/mute",
+    asyncHandler(async (req, res) => {
+        const results = await deviceMute(req.params?.deviceId, req.body?.mute);
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,
