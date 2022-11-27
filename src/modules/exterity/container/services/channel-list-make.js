@@ -50,8 +50,9 @@ const parseChannels = async (channels) => {
     return parsedChannels;
 };
 
-module.exports = async (deviceId) => {
+module.exports = async (deviceIdXml) => {
     try {
+        const deviceId = deviceIdXml.split(".")[0];
         const config = await configGet();
         const device = config?.devices[deviceId];
         const channels = config?.channels;
