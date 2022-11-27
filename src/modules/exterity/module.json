@@ -20,7 +20,7 @@
         "config"
     ],
     "publicRoutes": [
-        "/channel-list"
+        "/channel-list/*"
     ],
     "defaultconfig": {
         "id": "",

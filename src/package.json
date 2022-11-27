@@ -75,6 +75,7 @@
         "systeminformation": "^5.11.16",
         "tar": "^6.1.11",
         "uuid": "^8.3.2",
+        "wildcard-match": "^5.1.2",
         "winston": "^3.7.2",
         "winston-daily-rotate-file": "^4.7.1",
         "winston-mongodb": "^5.0.7"
