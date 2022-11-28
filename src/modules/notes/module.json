@@ -1,0 +1,30 @@
+{
+    "name": "notes",
+    "longname": "Notes",
+    "description": "A scribble pad - write your thoughts or a novel",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-note-edit-outline",
+    "author": "Ryan McCartney",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "needsContainer": true,
+    "protectedRoutes": [
+        "config"
+    ],
+    "devmounts": [
+        "api",
+        "services"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": false,
+        "title": "",
+        "module": "notes",
+        "description": "",
+        "enabled": false,
+        "notes": {}
+    }
+}

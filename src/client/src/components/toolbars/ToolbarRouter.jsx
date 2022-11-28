@@ -35,7 +35,7 @@ const ToolbarRouter = (props) => {
         }
 
         if (Toolbars["modules"][panelConfig?.data?.module]) {
-            console.log("change this commenty line in development to force a refresh of the Toolbar logic above");
+            console.log("change this comment in development to force a refresh of the Toolbar logic above");
             const Toolbar = Toolbars["modules"][panelConfig.data.module]["client"]["Toolbar"];
             return <Toolbar panelId={panelConfig.data.id} />;
         }
