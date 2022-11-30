@@ -1,17 +1,18 @@
 import React from "react";
 import Link from "@mui/material/Link";
 
-export default function BugTableLinkButton({ children, disabled = false, onClick, color = "primary" }) {
+export default function BugTableLinkButton({ sx = {}, children, disabled = false, onClick, color = "primary" }) {
     const colorValue = `${color}.main`;
 
     return (
         <Link
             disabled={disabled}
             sx={{
+                color: colorValue,
+                ...sx,
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 overflow: "hidden",
-                color: colorValue,
                 fontFamily: "fontFamily",
                 fontSize: "0.875rem",
                 lineHeight: 1.43,
