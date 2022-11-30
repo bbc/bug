@@ -141,7 +141,7 @@ export default function InterfaceList({ panelId }) {
                     },
                 },
                 {
-                    sortable: "true",
+                    sortable: true,
                     minWidth: "4rem",
                     noWrap: true,
                     field: "default-name",
@@ -149,7 +149,7 @@ export default function InterfaceList({ panelId }) {
                     content: (item) => <>{item["default-name"]}</>,
                 },
                 {
-                    sortable: "true",
+                    sortable: true,
                     minWidth: "15rem",
                     noWrap: true,
                     field: "name",
@@ -192,7 +192,7 @@ export default function InterfaceList({ panelId }) {
                     },
                 },
                 {
-                    sortable: "true",
+                    sortable: true,
                     title: "MAC Address",
                     width: "10rem",
                     field: "mac-address",
