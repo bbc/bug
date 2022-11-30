@@ -2,7 +2,7 @@ import React from "react";
 import Switch from "@mui/material/Switch";
 import useSounds from "@hooks/Sounds";
 
-export default function BugApiSwitch({ checked, disabled = false, onChange, timeout = 5000, ...props }) {
+export default function BugApiSwitch({ checked, color, disabled = false, onChange, timeout = 5000, ...props }) {
     const [isActive, setIsActive] = React.useState(false);
     const [localChecked, setLocalChecked] = React.useState(checked);
     const timer = React.useRef();
@@ -42,6 +42,7 @@ export default function BugApiSwitch({ checked, disabled = false, onChange, time
 
     return (
         <Switch
+            color={color}
             checked={localChecked === true}
             disabled={isActive || disabled}
             onChange={handleChanged}
