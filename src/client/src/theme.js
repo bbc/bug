@@ -319,7 +319,7 @@ const theme = (selectedTheme = "dark") => {
             MuiSwitch: {
                 styleOverrides: {
                     root: {
-                        "& .Mui-checked.Mui-disabled": {
+                        "& .Mui-checked.Mui-primary.Mui-disabled": {
                             color: "#204260 !important",
                         },
                     },
