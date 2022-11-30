@@ -13,7 +13,7 @@ export default function BugCodecAutocomplete({
     apiUrl = "",
     variant = "outlined",
     capability = "",
-    label = "Select Codec",
+    label = "Codec Name",
 }) {
     const [options, setOptions] = React.useState([]);
     const [value, setValue] = React.useState("");
@@ -106,7 +106,7 @@ export default function BugCodecAutocomplete({
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label={label}
+                    placeholder={label}
                     variant={variant}
                     sx={{
                         backgroundColor: variant === "standard" ? "inherit" : "rgba(255, 255, 255, 0.05)",
