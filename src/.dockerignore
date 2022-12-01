@@ -4,6 +4,7 @@
 **/LICENSE
 **/.vscode
 **/npm-debug.log
+**/.log.gz
 **/coverage
 **/.env
 **/.editorconfig
