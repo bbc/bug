@@ -50,7 +50,7 @@ export default function NoteCard({ note, noteId, panelId }) {
                     borderRadius: "3px",
                     minWidth: "30vw",
                     minheight: "30vw",
-                    margin: "4px",
+                    margin: "2px",
                 }}
                 variant="outlined"
                 color="secondary"
