@@ -7,7 +7,7 @@
         "doc": "docs"
     },
     "scripts": {
-        "production": "node --max-old-space-size=1024 bin/bug-prod",
+        "production": "node bin/bug-prod",
         "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
         "test": "jest --forceExit --detectOpenHandles --maxWorkers=1",
         "modulebuilder": "node modulebuilder/cli.mjs",
