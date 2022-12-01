@@ -16,7 +16,7 @@ module.exports = async (configObject) => {
         const bugCoreHost = process.env.BUG_CONTAINER || "bug";
         const networkName = process.env.DOCKER_NETWORK_NAME || "bug";
         const moduleHome = process.env.MODULE_HOME || "/home/node/module";
-        const moduleMemory = process.env.MODULE_MEMORY || 100; //Max Memory in MB
+        const moduleMemory = process.env.MODULE_MEMORY || 200; //Max Memory in MB
         const bugHost = process.env.BUG_HOST || "127.0.0.1";
 
         let containerOptions = {
