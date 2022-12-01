@@ -28,6 +28,7 @@ module.exports = async (configObject) => {
                 `CORE_HOST=${bugCoreHost}`,
                 `BUG_HOST=${bugHost}`,
                 `BUG_PORT=${bugCorePort}`,
+                `NODE_OPTIONS="--max-old-space-size=42"`,
             ],
             Hostname: configObject.id,
             name: configObject.id,
@@ -40,6 +41,7 @@ module.exports = async (configObject) => {
                 Mounts: [],
                 RestartPolicy: { name: "unless-stopped" },
                 NetworkMode: networkName,
+                Memory: 50000000,
             },
         };
         if (nodeEnv === "development") {
