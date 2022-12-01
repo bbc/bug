@@ -41,7 +41,7 @@ module.exports = async (configObject) => {
                 Mounts: [],
                 RestartPolicy: { name: "unless-stopped" },
                 NetworkMode: networkName,
-                Memory: 50000000,
+                Memory: 52428800,
             },
         };
         if (nodeEnv === "development") {
