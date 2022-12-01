@@ -52,6 +52,12 @@ const loggerInstance = winston.createLogger({
             maxSize: "100m",
             maxFiles: "1d",
         }),
+        new winston.transports.Console({
+            level: logLevel,
+            handleExceptions: true,
+            colorize: true,
+            format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
+        }),
         new winston.transports.MongoDB({
             level: logLevel,
             db: `${url}/${databaseName}`,
@@ -66,17 +72,6 @@ const loggerInstance = winston.createLogger({
         }),
     ],
 });
-
-if (process.env.NODE_ENV !== "production") {
-    loggerInstance.add(
-        new winston.transports.Console({
-            level: logLevel,
-            handleExceptions: true,
-            colorize: true,
-            format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
-        })
-    );
-}
 
 const logger = (module) => {
     const filename = path.basename(module.filename);
