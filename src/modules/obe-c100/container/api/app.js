@@ -17,6 +17,11 @@ const inputRouter = require("@routes/input");
 const validationRouter = require("@routes/validate");
 const codecDbRouter = require("@routes/codecdb");
 
+const getHeapSize = require("@core/heap-size");
+
+//Print the heap size
+getHeapSize(console);
+
 let app = express();
 
 const workers = function (req, res, next) {

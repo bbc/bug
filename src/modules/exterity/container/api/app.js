@@ -13,6 +13,11 @@ const devicesRouter = require("@routes/devices");
 const groupsRouter = require("@routes/groups");
 const defaultRouter = require("@routes/default");
 
+const getHeapSize = require("@core/heap-size");
+
+//Print the heap size
+getHeapSize(console);
+
 let app = express();
 
 const workers = function (req, res, next) {

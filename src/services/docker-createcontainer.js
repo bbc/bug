@@ -16,6 +16,7 @@ module.exports = async (configObject) => {
         const bugCoreHost = process.env.BUG_CONTAINER || "bug";
         const networkName = process.env.DOCKER_NETWORK_NAME || "bug";
         const moduleHome = process.env.MODULE_HOME || "/home/node/module";
+        const moduleMemory = process.env.MODULE_MEMORY || 100; //Max Memory in MB
         const bugHost = process.env.BUG_HOST || "127.0.0.1";
 
         let containerOptions = {
@@ -28,7 +29,7 @@ module.exports = async (configObject) => {
                 `CORE_HOST=${bugCoreHost}`,
                 `BUG_HOST=${bugHost}`,
                 `BUG_PORT=${bugCorePort}`,
-                `NODE_OPTIONS="--max-old-space-size=100"`,
+                `NODE_OPTIONS="--max-old-space-size=${moduleMemory}"`,
             ],
             Hostname: configObject.id,
             name: configObject.id,
@@ -41,7 +42,7 @@ module.exports = async (configObject) => {
                 Mounts: [],
                 RestartPolicy: { name: "unless-stopped" },
                 NetworkMode: networkName,
-                Memory: 104857600,
+                Memory: parseInt(moduleMemory * 1024 * 1024),
             },
         };
         if (nodeEnv === "development") {

@@ -13,6 +13,11 @@ const defaultRouter = require("@routes/default");
 const validationRouter = require("@routes/validate");
 const capabilitiesRouter = require("@routes/capabilities");
 
+const getHeapSize = require("@core/heap-size");
+
+//Print the heap size
+getHeapSize(console);
+
 let app = express();
 
 const workers = function (req, res, next) {
