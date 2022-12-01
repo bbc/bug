@@ -15,6 +15,8 @@ The BUG image itself is around 300MB. You'll need 2GB of storage space free on y
 
 BUG itself requires 1GB of free RAM. Each container uses a maximum of 50MB of RAM, budget accordingly.
 
+Note - If you're building a development build of BUG you'll require at least 4GB of RAM.
+
 # CPU
 
 ## Archictecture
