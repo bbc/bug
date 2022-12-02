@@ -21,7 +21,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
                 src: ["/", corePath],
             },
             {
-                t: [moduleName, `${moduleName}:${module.version}`],
+                t: [`${moduleName}:${module.version}`],
                 labels: {
                     "uk.co.bbc.bug.module.version": `${module.version}`,
                     "uk.co.bbc.bug.module.name": `${module.name}`,
