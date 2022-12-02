@@ -9,7 +9,7 @@ Some guidelines for the specification of hardware needed to run BUG.
 
 # Disk Space
 
-The BUG image itself is around 300MB. You'll need 2GB of storage space free on your hard-drive to run BUG with another 200MB for every adaitional panel you add.
+The BUG image itself is around 300MB. You'll need 2GB of storage space free on your hard-drive to run BUG with another 100MB for every adaitional panel you add. Some modules, have high memory requirements. For exmapled the Cisco SG module. If this is the cause it is defined as an optional feild `memory` in the `module.json` definition file.
 
 # Memory
 
