@@ -15,7 +15,7 @@ The BUG image itself is around 300MB. You'll need 2GB of storage space free on y
 
 BUG itself requires 1GB of free RAM. Each container uses around of 100MB of RAM, you should budget accordingly.
 
-Some modules, have higher memory requirements. For exmapled the Cisco-SG module which requires 250MB. When this is the cause it is defined as an optional feild `memory` in the `module.json` definition file.
+Some modules, have higher memory requirements. For exmapled the Cisco-SG module which requires 250MB. When this is the cause it is defined as an optional feild `memory` in the `module.json` definition file. This additonal memory requirement is down to the number of workers these modules run. Each additional worker requires approximately 10MB of memory.
 
 Note - If you're building a development build of BUG you'll require at least 4GB of RAM in order to `create-react-app` to complie the development build.
 
