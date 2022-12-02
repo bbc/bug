@@ -16,10 +16,10 @@ const groupsRouter = require("@routes/groups");
 const validationRouter = require("@routes/validate");
 const capabilitiesRouter = require("@routes/capabilities");
 
-const getHeapSize = require("@core/heap-size");
+const heapInfo = require("@core/heap-info");
 
 //Print the heap size
-getHeapSize(console);
+heapInfo(console);
 
 let app = express();
 

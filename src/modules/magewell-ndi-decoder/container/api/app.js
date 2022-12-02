@@ -12,10 +12,10 @@ const deviceRouter = require("@routes/device");
 const defaultRouter = require("@routes/default");
 const validationRouter = require("@routes/validate");
 
-const getHeapSize = require("@core/heap-size");
+const heapInfo = require("@core/heap-info");
 
 //Print the heap size
-getHeapSize(console);
+heapInfo(console);
 
 let app = express();
 

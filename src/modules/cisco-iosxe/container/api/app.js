@@ -13,10 +13,10 @@ const validationRouter = require("@routes/validate");
 const interfaceRouter = require("@routes/interface");
 const vlanRouter = require("@routes/vlan");
 
-const getHeapSize = require("@core/heap-size");
+const heapInfo = require("@core/heap-info");
 
 //Print the heap size
-getHeapSize(console);
+heapInfo(console);
 
 let app = express();
 

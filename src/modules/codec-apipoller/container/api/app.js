@@ -10,10 +10,10 @@ const statusRouter = require("./routes/status");
 const codecRouter = require("@routes/codec");
 const capabilitiesRouter = require("@routes/capabilities");
 
-const getHeapSize = require("@core/heap-size");
+const heapInfo = require("@core/heap-info");
 
 //Print the heap size
-getHeapSize(console);
+heapInfo(console);
 
 let app = express();
 

@@ -9,10 +9,10 @@ const configRouter = require("@routes/config");
 const clockRouter = require("@routes/clock");
 const defaultRouter = require("@routes/default");
 
-const getHeapSize = require("@core/heap-size");
+const heapInfo = require("@core/heap-info");
 
 //Print the heap size
-getHeapSize(console);
+heapInfo(console);
 
 let app = express();
 

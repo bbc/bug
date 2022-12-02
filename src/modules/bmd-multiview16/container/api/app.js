@@ -14,10 +14,10 @@ const layoutRouter = require("@routes/layout");
 const destinationRouter = require("@routes/destination");
 const labelRouter = require("@routes/label");
 
-const getHeapSize = require("@core/heap-size");
+const heapInfo = require("@core/heap-info");
 
 //Print the heap size
-getHeapSize(console);
+heapInfo(console);
 
 let app = express();
 
