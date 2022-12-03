@@ -8,14 +8,20 @@ import TextViewer from "./TextViewer";
 import AxiosPut from "@utils/AxiosPut";
 import Typography from "@mui/material/Typography";
 import { formatDistanceToNow } from "date-fns";
+import { useAlert } from "@utils/Snackbar";
 
 export default function NoteCard({ note, noteId, panelId }) {
     const [edit, setEdit] = useState(false);
+    const sendAlert = useAlert();
 
     const handleNoteUpdate = async (data) => {
-        const response = await AxiosPut(`/container/${panelId}/notes/${noteId}`, { data: data });
-        if (response) {
+        if (await AxiosPut(`/container/${panelId}/notes/${noteId}`, { data: data })) {
+            sendAlert(`Updated note`, {
+                variant: "success",
+            });
             setEdit(false);
+        } else {
+            sendAlert(`Failed to update note`, { variant: "error" });
         }
     };
 

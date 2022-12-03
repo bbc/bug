@@ -4,14 +4,21 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import AxiosPost from "@utils/AxiosPost";
 import { usePanelStatus } from "@hooks/PanelStatus";
+import { useAlert } from "@utils/Snackbar";
 
 export default function Toolbar({ panelId, ...props }) {
     let toolbarProps = { ...props };
+    const sendAlert = useAlert();
     const panelStatus = usePanelStatus();
 
     const handleAdd = async () => {
-        console.log("Add Note");
-        const response = await AxiosPost(`/container/${panelId}/notes`);
+        if (await AxiosPost(`/container/${panelId}/notes`)) {
+            sendAlert(`Added a new note`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to add a new note`, { variant: "error" });
+        }
     };
 
     const buttons = () => (
