@@ -27,7 +27,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Masonry columns={2} spacing={2}>
+            <Masonry columns={2} spacing={1}>
                 {getNotesCards(panelConfig.data.notes)}
             </Masonry>
         </>
