@@ -10,7 +10,7 @@ module.exports = async (formData) => {
                 {
                     state: true,
                     field: "address",
-                    message: "Device is reachable and connecting OK",
+                    message: "Address is reachable",
                 },
             ]);
         } else {
@@ -18,7 +18,7 @@ module.exports = async (formData) => {
                 {
                     state: false,
                     field: "address",
-                    message: "Device is not reachable",
+                    message: "Address is not reachable",
                 },
             ]);
         }

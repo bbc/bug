@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import FeedCard from "./../components/FeedCard";
-import Grid from "@mui/material/Grid";
+import Masonry from "@mui/lab/Masonry";
 
 export default function MainPanel() {
     const params = useParams();
@@ -16,13 +16,7 @@ export default function MainPanel() {
     const getCards = (items) => {
         const cards = [];
         for (let item of items) {
-            cards.push(
-                <>
-                    <Grid item lg={6} xs={12}>
-                        <FeedCard key={item._id} item={item} />
-                    </Grid>
-                </>
-            );
+            cards.push(<FeedCard key={item._id} item={item} />);
         }
         return cards;
     };
@@ -33,9 +27,9 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid container spacing={2}>
+            <Masonry columns={2} spacing={1}>
                 {getCards(items.data)}
-            </Grid>
+            </Masonry>
         </>
     );
 }
