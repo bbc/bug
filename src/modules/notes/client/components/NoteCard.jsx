@@ -6,9 +6,7 @@ import Button from "@mui/material/Button";
 import TextEditor from "./TextEditor";
 import TextViewer from "./TextViewer";
 import AxiosPut from "@utils/AxiosPut";
-import AxiosDelete from "@utils/AxiosDelete";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import { formatDistanceToNow } from "date-fns";
 
 export default function NoteCard({ note, noteId, panelId }) {
@@ -21,13 +19,17 @@ export default function NoteCard({ note, noteId, panelId }) {
         }
     };
 
-    const handleNoteDelete = async (data) => {
-        const response = await AxiosDelete(`/container/${panelId}/notes/${noteId}`);
-    };
-
     const getEditor = () => {
         if (edit) {
-            return <TextEditor data={note?.data} onSave={handleNoteUpdate} />;
+            return (
+                <TextEditor
+                    panelId={panelId}
+                    color={note?.color}
+                    noteId={noteId}
+                    data={note?.data}
+                    onSave={handleNoteUpdate}
+                />
+            );
         }
         return <TextViewer data={note?.data} />;
     };
@@ -41,6 +43,19 @@ export default function NoteCard({ note, noteId, panelId }) {
                 });
             }
         }
+        return " ";
+    };
+
+    const getEditButton = () => {
+        if (!edit) {
+            return (
+                <CardActionArea>
+                    <Button onClick={() => setEdit(true)} size="small" color="primary">
+                        Edit
+                    </Button>
+                </CardActionArea>
+            );
+        }
     };
 
     return (
@@ -51,9 +66,14 @@ export default function NoteCard({ note, noteId, panelId }) {
                     minWidth: "30vw",
                     minheight: "30vw",
                     margin: "2px",
+                    backgroundColor: () => {
+                        if (note?.color) {
+                            return note?.color;
+                        }
+                        return "secondary";
+                    },
                 }}
                 variant="outlined"
-                color="secondary"
             >
                 <CardContent>
                     {getEditor()}
@@ -62,17 +82,7 @@ export default function NoteCard({ note, noteId, panelId }) {
                     </Typography>
                 </CardContent>
 
-                <CardActionArea>
-                    <Stack direction="row" spacing={2}>
-                        <Button onClick={() => setEdit(true)} size="small" color="primary">
-                            Edit
-                        </Button>
-
-                        <Button onClick={handleNoteDelete} size="small" color="primary">
-                            Delete
-                        </Button>
-                    </Stack>
-                </CardActionArea>
+                {getEditButton()}
             </Card>
         </>
     );

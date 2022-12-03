@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
 import NoteCard from "./../components/NoteCard";
-import Grid from "@mui/material/Grid";
+import Masonry from "@mui/lab/Masonry";
 import { useSelector } from "react-redux";
 
 export default function MainPanel() {
@@ -12,11 +12,7 @@ export default function MainPanel() {
     const getNotesCards = (notes) => {
         const cards = [];
         for (let noteId in notes) {
-            cards.push(
-                <Grid key={noteId} item lg={6} xs={12}>
-                    <NoteCard panelId={params?.panelId} noteId={noteId} note={notes[noteId]} />
-                </Grid>
-            );
+            cards.push(<NoteCard key={noteId} panelId={params?.panelId} noteId={noteId} note={notes[noteId]} />);
         }
         return cards;
     };
@@ -31,9 +27,9 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid container spacing={1}>
+            <Masonry columns={2} spacing={2}>
                 {getNotesCards(panelConfig.data.notes)}
-            </Grid>
+            </Masonry>
         </>
     );
 }

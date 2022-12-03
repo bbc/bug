@@ -1,11 +1,13 @@
 import React from "react";
 import MUIRichTextEditor from "mui-rte";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AxiosDelete from "@utils/AxiosDelete";
 
 const defaultChange = (data) => {
     console.log(data);
 };
 
-export default function TextEditor({ data, onSave = { defaultChange } }) {
+export default function TextEditor({ data, onSave = { defaultChange }, panelId, noteId }) {
     return (
         <>
             <MUIRichTextEditor
@@ -27,7 +29,19 @@ export default function TextEditor({ data, onSave = { defaultChange } }) {
                     "redo",
                     "bulletList",
                     "numberList",
+                    "color",
+                    "delete",
                     "save",
+                ]}
+                customControls={[
+                    {
+                        name: "delete",
+                        icon: <DeleteIcon />,
+                        type: "callback",
+                        onClick: async (editorState, name, anchor) => {
+                            const response = await AxiosDelete(`/container/${panelId}/notes/${noteId}`);
+                        },
+                    },
                 ]}
             />
         </>
