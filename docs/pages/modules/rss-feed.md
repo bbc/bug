@@ -2,12 +2,14 @@
 layout: page
 title: RSS Feed Display
 parent: Modules
-nav_order: 23
+nav_order: 28
 ---
 
 # RSS Feed Display
 
 Show the latest posts from an RSS feed
+
+![RSS Feed Display Module Screenshot](/assets/images/screenshots/module-rss-feed.png)
 
 ## Default Configuration
 
@@ -23,4 +25,5 @@ Show the latest posts from an RSS feed
   "enabled": false,
   "address": ""
 }
-```
+```            
+
