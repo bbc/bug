@@ -9,13 +9,25 @@ import AxiosPut from "@utils/AxiosPut";
 import Typography from "@mui/material/Typography";
 import { formatDistanceToNow } from "date-fns";
 import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import Stack from "@mui/material/Stack";
+import getGravatarUrl from "@utils/getGravatarUrl";
 
-export default function NoteCard({ note, noteId, panelId }) {
+export default function NoteCard({ user, note, noteId, panelId }) {
     const [edit, setEdit] = useState(false);
     const sendAlert = useAlert();
+    const currentUser = useSelector((state) => state.user);
 
     const handleNoteUpdate = async (data) => {
-        if (await AxiosPut(`/container/${panelId}/notes/${noteId}`, { data: data })) {
+        const request = { data: data, user: null };
+
+        if (currentUser) {
+            request.user = currentUser?.data?.id;
+        }
+
+        if (await AxiosPut(`/container/${panelId}/notes/${noteId}`, request)) {
             sendAlert(`Updated note`, {
                 variant: "success",
             });
@@ -43,13 +55,28 @@ export default function NoteCard({ note, noteId, panelId }) {
     const getTime = () => {
         if (note.lastUpdated) {
             {
-                return formatDistanceToNow(new Date(note?.lastUpdated), {
-                    includeSeconds: true,
-                    addSuffix: true,
-                });
+                return (
+                    <>
+                        last edited{" "}
+                        {formatDistanceToNow(new Date(note?.lastUpdated), {
+                            includeSeconds: true,
+                            addSuffix: true,
+                        })}
+                    </>
+                );
             }
         }
         return " ";
+    };
+
+    const getAvatar = () => {
+        if (user) {
+            return (
+                <Tooltip title={user?.name}>
+                    <Avatar sx={{ width: 24, height: 24 }} alt={user?.name} src={getGravatarUrl(user?.email)} />
+                </Tooltip>
+            );
+        }
     };
 
     const getEditButton = () => {
@@ -83,11 +110,13 @@ export default function NoteCard({ note, noteId, panelId }) {
             >
                 <CardContent>
                     {getEditor()}
-                    <Typography textAlign="right" variant="caption">
-                        {getTime()}
-                    </Typography>
+                    <Stack direction="row-reverse" spacing={1}>
+                        {getAvatar()}
+                        <Typography textAlign="right" variant="caption">
+                            {getTime()}
+                        </Typography>
+                    </Stack>
                 </CardContent>
-
                 {getEditButton()}
             </Card>
         </>
