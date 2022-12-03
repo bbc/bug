@@ -102,7 +102,7 @@ export default function EditPanel() {
                 onCreate={createHost}
                 onEdit={updateHost}
             />
-            <Grid container spacing={1}>
+            <Grid container alignItems="stretch" spacing={1}>
                 {getHostCards(panelConfig.data.hosts)}
                 <Grid item key={"addDialog"} xl={3} lg={4} md={6} xs={12}>
                     <AddCard handleClick={onClickAdd} />

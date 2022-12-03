@@ -7,17 +7,29 @@ module.exports = async () => {
     try {
         const config = await configGet();
         const hostsCollection = await mongoCollection("hosts");
-        const hosts = await hostsCollection.find().toArray();
+        const mergedHosts = [];
+        const hosts = {};
 
-        let mergedHosts = [];
+        for (let item of await hostsCollection.find().toArray()) {
+            hosts[item?.hostId] = item;
+        }
 
-        mergedHosts = hosts.map((host) => {
-            return {
-                ...host,
-                ...config.hosts[host.hostId],
-                ...{ data: host.data.slice(host.data.length - 1 - 50, host.data.length - 1) },
-            };
-        });
+        for (let hostId in config?.hosts) {
+            if (hosts?.[hostId]) {
+                mergedHosts.push({
+                    ...hosts?.[hostId],
+                    ...config.hosts[hostId],
+                    ...{
+                        data: hosts?.[hostId].data.slice(
+                            hosts?.[hostId]?.data.length - 1 - 50,
+                            hosts?.[hostId]?.data.length - 1
+                        ),
+                    },
+                });
+            } else {
+                mergedHosts.push(config.hosts[hostId]);
+            }
+        }
 
         return await mergedHosts;
     } catch (error) {

@@ -13,7 +13,8 @@ module.exports = async (host) => {
 
     if (host.host && host.title) {
         const hostId = await uuidv4();
-        config.hosts[hostId] = host;
+        const position = { x: Math.random() * 1500, y: Math.random() * 1500 };
+        config.hosts[hostId] = { ...host, ...{ position: position } };
     }
 
     return await configPutViaCore(config);

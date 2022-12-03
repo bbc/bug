@@ -10,7 +10,7 @@ import HostCard from "./../components/HostCard";
 import AxiosPut from "@utils/AxiosPut";
 
 const reactFlowStyle = {
-    "& react-flow__node-default": { stroke: "red", padding: 0, width: "auto" },
+    "& reactFlow__nodeDefault": { stroke: "red", padding: 0, width: "auto" },
 };
 
 function FlowDiagram({ hosts, edgesData, panelId }) {
@@ -48,16 +48,11 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
     useEffect(() => {
         if (hosts?.length > 0) {
             const nodes = hosts.map((host) => {
-                let position = host?.position;
-                if (!position) {
-                    position = { x: Math.random() * 1500, y: Math.random() * 1500 };
-                }
-
                 return {
                     type: "input",
                     id: host.hostId,
                     data: { label: <HostCard {...host} /> },
-                    position: position,
+                    position: host?.position,
                 };
             });
             setNodes(nodes);
@@ -108,12 +103,12 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
 export default function MapPanel({ panelId }) {
     const hosts = useApiPoller({
         url: `/container/${panelId}/hosts/`,
-        interval: 10000,
+        interval: 3000,
     });
 
     const edges = useApiPoller({
         url: `/container/${panelId}/edges/`,
-        interval: 10000,
+        interval: 3000,
     });
 
     if (
@@ -124,5 +119,6 @@ export default function MapPanel({ panelId }) {
     ) {
         return <BugLoading />;
     }
+
     return <FlowDiagram panelId={panelId} hosts={hosts.data} edgesData={edges.data} />;
 }

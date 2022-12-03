@@ -3,12 +3,13 @@ import { useHistory, useParams } from "react-router-dom";
 import Card from "@mui/material/Card";
 import { CardActionArea } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { formatDistanceToNow } from "date-fns";
 
-export default function HostCard({ title, description, alive, host, hostId, lastPinged, data }) {
+export default function HostCard({ title, description, alive, host, hostId, lastPinged, data = [] }) {
     const params = useParams();
     const history = useHistory();
     const label = "avg";
@@ -16,6 +17,8 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
     if (!alive) {
         cardColor = "error";
+    } else if (data.length === 0) {
+        cardColor = "primary";
     } else if (data[data.length - 1]?.packetLoss > 0) {
         cardColor = "warning";
     }
@@ -25,11 +28,22 @@ export default function HostCard({ title, description, alive, host, hostId, last
     };
 
     const getPingText = (time, alive) => {
-        let text = "failed";
-        if (alive || time !== "unknown") {
-            text = `${parseInt(time)}ms`;
+        if (!time) {
+            return "waiting";
         }
-        return text;
+        if (alive || time !== "unknown") {
+            return `${parseInt(time)}ms`;
+        }
+        return "failed";
+    };
+
+    const getTime = (lastPinged) => {
+        if (lastPinged) {
+            return `last seen ${formatDistanceToNow(new Date(lastPinged), {
+                includeSeconds: true,
+                addSuffix: true,
+            })}`;
+        }
     };
 
     const formatStats = (data) => {
@@ -61,6 +75,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
                 sx={{
                     borderRadius: "3px",
                     minWidth: 275,
+                    height: "100%",
                     backgroundColor: `${cardColor}.secondary`,
                     "&:hover": {
                         background: `${cardColor}.hover`,
@@ -71,19 +86,8 @@ export default function HostCard({ title, description, alive, host, hostId, last
                 <CardActionArea sx={{ padding: 0 }}>
                     <CardContent sx={{ width: "100%", padding: "0.2em" }}>
                         <div style={{ margin: "auto", position: "relative" }}>
-                            <Sparklines data={formatStats(data)} limit={50} style={{ opacity: 0.7 }} min={0}>
-                                <SparklinesLine style={{ fill: "none" }} color="#333333" />
-                            </Sparklines>
-                            <div
-                                style={{
-                                    padding: "1em",
-                                    top: 0,
-                                    left: 0,
-                                    width: "100%",
-                                    height: "100%",
-                                    position: "absolute",
-                                }}
-                            >
+                            <Box sx={{ m: 1 }}>
+                                …
                                 <Grid container>
                                     <Grid width={"50%"} key={1} item xs={0}>
                                         <Typography variant="h4" component="div">
@@ -94,16 +98,26 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
                                     <Grid width={"50%"} alignItems="flex-end" justify="flex-end" key={0} item xs={0}>
                                         <Typography sx={{ textAlign: "right" }} variant="h4" component="div">
-                                            {getPingText(data[data.length - 1]?.avg, alive)}
+                                            {getPingText(data?.time, alive)}
                                         </Typography>
                                         <Typography sx={{ textAlign: "right" }} variant="body2">
-                                            {formatDistanceToNow(new Date(lastPinged), {
-                                                includeSeconds: true,
-                                                addSuffix: true,
-                                            })}
+                                            {getTime(lastPinged)}
                                         </Typography>
                                     </Grid>
                                 </Grid>
+                            </Box>
+                            <div
+                                style={{
+                                    top: 0,
+                                    left: 0,
+                                    width: "100%",
+                                    height: "100%",
+                                    position: "absolute",
+                                }}
+                            >
+                                <Sparklines data={formatStats(data)} limit={50} style={{ opacity: 0.7 }} min={0}>
+                                    <SparklinesLine style={{ fill: "none" }} color="#333333" />
+                                </Sparklines>
                             </div>
                         </div>
                     </CardContent>

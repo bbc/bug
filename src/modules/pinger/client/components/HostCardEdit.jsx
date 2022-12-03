@@ -26,6 +26,7 @@ export default function HostCard({ handleDelete, handleEdit, host, hostId }) {
                 sx={{
                     borderRadius: "3px",
                     minWidth: 275,
+                    height: "100%",
                     margin: "4px",
                 }}
                 variant="outlined"
