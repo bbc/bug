@@ -4,8 +4,6 @@ const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
 
 module.exports = async (hostId, newHost) => {
-    console.log(newHost);
-
     let config = await configGet();
 
     if (!config) {
@@ -22,6 +20,5 @@ module.exports = async (hostId, newHost) => {
 
     config.hosts[hostId] = { ...config.hosts[hostId], ...newHost };
 
-    console.log(config.hosts[hostId]);
     return await configPutViaCore(config);
 };
