@@ -2,8 +2,8 @@ import React from "react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import Box from "@mui/material/Box";
 
-export default function BugSparkCell({ height = "100%", history, value }) {
-    if (!history || history.every((item) => item.value === 0)) {
+export default function BugSparkCell({ height = "100%", history, value, showEmpty = false }) {
+    if (!showEmpty && (!history || history.every((item) => item.value === 0))) {
         return null;
     }
 
