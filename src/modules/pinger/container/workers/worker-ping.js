@@ -1,11 +1,10 @@
 "use strict";
 
 const { parentPort, workerData } = require("worker_threads");
-const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const modulePort = process.env.PORT;
 const ping = require("ping");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 let hostsCollection;
 // Tell the manager the things you care about
@@ -44,6 +43,8 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
     hostsCollection = await mongoDb.db.collection("hosts");
 
+    await mongoCreateIndex(hostsCollection, "timestamp", { expireAfterSeconds: workerData.frequency * 10 });
+
     while (true) {
         const hosts = await hostsCollection.find({}).toArray();
 
@@ -53,26 +54,33 @@ const main = async () => {
             for (let hostId in workerData.hosts) {
                 const host = workerData.hosts[hostId];
 
+                //console.log(`Pinging ${host.host}`);
+
                 //const host = workerData.hosts.hostId;
                 const exisitingHost = findHost(hosts, hostId);
 
                 if (!exisitingHost || exisitingHost.lastPinged < new Date() - workerData.frequency * 1000) {
                     const response = await ping.promise.probe(host.host, {
-                        timeout: 10,
-                        extra: ["-c", "5"],
+                        timeout: 1,
+                        extra: ["-c", "2"],
                     });
 
                     //console.log(`Pinged ${host.host}`);
+
                     //Add database entry
                     const query = { host: host?.host };
+                    const currentEntry = await hostsCollection.findOne(query);
                     const update = {
                         $set: {
-                            ...host,
-                            ...{
-                                lastPinged: new Date(),
-                                alive: response?.alive,
-                                hostId: hostId,
-                            },
+                            timestamp: new Date(),
+                            lastPinged: response?.alive ? new Date() : currentEntry?.lastPinged,
+                            lastOutage: response?.alive ? currentEntry?.lastOutage : new Date(),
+                            lastOutageDuration: response?.alive
+                                ? currentEntry?.lastOutageDuration
+                                : new Date() - new Date(currentEntry?.lastPinged),
+                            time: response?.avg,
+                            alive: response?.alive,
+                            hostId: hostId,
                         },
                         $push: {
                             data: {

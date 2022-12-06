@@ -7,6 +7,7 @@
     "icon": "mdi-phone-settings",
     "notes": "",
     "author": "Geoff House",
+    "memory": 150,
     "license": "Apache-2.0",
     "needsContainer": true,
     "devmounts": [

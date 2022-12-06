@@ -28,6 +28,7 @@ const getFeed = async () => {
         for (let item of feed.items) {
             item.published = new Date(item.published);
             item.created = new Date(item.created);
+            item.timestamp = new Date();
             feedItems.push(item);
         }
     }

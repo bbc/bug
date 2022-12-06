@@ -11,7 +11,7 @@ module.exports = async (filepath) => {
 
         const filename = path.join(filepath, "Dockerfile");
         const fileArray = [
-            "FROM node:16",
+            "FROM node:16-alpine",
             `WORKDIR ${moduleHome}`,
             `COPY . .`,
             `RUN npm install`,

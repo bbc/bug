@@ -7,6 +7,10 @@ const logger = require("@utils/logger")(module);
 const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const WorkerManager = require("@core/WorkerManager");
+const heapInfo = require("@core/heap-info");
+
+//Print the heap size
+heapInfo(logger);
 
 //Start Core Workers
 const manager = new WorkerManager(undefined, false);

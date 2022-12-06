@@ -10,6 +10,11 @@ const statusRouter = require("@routes/status");
 // add your own routers here:
 // const exampleRouter = require("@routes/example");
 
+const heapInfo = require("@core/heap-info");
+
+//Print the heap size
+heapInfo(console);
+
 let app = express();
 
 const workers = function (req, res, next) {

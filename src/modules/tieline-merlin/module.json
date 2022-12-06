@@ -7,6 +7,7 @@
     "version": "1.0.3",
     "icon": "mdi-transit-connection-variant",
     "author": "Geoff House",
+    "memory": 200,
     "license": "Apache-2.0",
     "status": "beta",
     "needsContainer": true,

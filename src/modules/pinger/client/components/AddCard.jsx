@@ -17,6 +17,7 @@ export default function AddCard({ handleClick }) {
                     borderStyle: "dashed",
                     borderRadius: "3px",
                     minWidth: 275,
+                    height: "100%",
                     margin: "4px",
                 }}
                 variant="outlined"

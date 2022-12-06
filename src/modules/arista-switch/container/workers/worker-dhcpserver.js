@@ -21,26 +21,28 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
-    let dhcpLeases = [];
+    while (true) {
+        let dhcpLeases = [];
 
-    // loop through each dhcp source and fetch the list
-    for (const dhcpSource of workerData?.dhcpSources) {
-        const url = `http://${dhcpSource}:${modulePort}/api/capabilities/dhcp-server`;
-        try {
-            // make the request
-            const response = await axios.get(url);
-            if (response?.data?.status === "success" && Array.isArray(response?.data?.data)) {
-                dhcpLeases = dhcpLeases.concat(response.data.data);
+        // loop through each dhcp source and fetch the list
+        for (const dhcpSource of workerData?.dhcpSources) {
+            const url = `http://${dhcpSource}:${modulePort}/api/capabilities/dhcp-server`;
+            try {
+                // make the request
+                const response = await axios.get(url);
+                if (response?.data?.status === "success" && Array.isArray(response?.data?.data)) {
+                    dhcpLeases = dhcpLeases.concat(response.data.data);
+                }
+            } catch (error) {
+                console.log(`worker-dhcpserver: ${error.stack || error.trace || error || error.message}`);
             }
-        } catch (error) {
-            console.log(`worker-dhcpserver: ${error.stack || error.trace || error || error.message}`);
         }
+
+        await mongoSingle.set("leases", dhcpLeases, 60);
+
+        // every 30 seconds
+        await delay(30000);
     }
-
-    await mongoSingle.set("leases", dhcpLeases, 60);
-
-    // every 30 seconds
-    await delay(30000);
 };
 
 main();

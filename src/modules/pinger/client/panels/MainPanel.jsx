@@ -9,7 +9,7 @@ export default function MainPanel() {
     const params = useParams();
     const hosts = useApiPoller({
         url: `/container/${params?.panelId}/hosts/`,
-        interval: 5000,
+        interval: 3000,
     });
 
     const getHostCards = (hosts) => {
@@ -30,7 +30,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid container spacing={1}>
+            <Grid alignItems="stretch" container spacing={1}>
                 {getHostCards(hosts.data)}
             </Grid>
         </>

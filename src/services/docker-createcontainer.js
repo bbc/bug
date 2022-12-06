@@ -6,9 +6,12 @@ const docker = require("@utils/docker");
 const path = require("path");
 const dockerGetSourceFolder = require("@services/docker-getsourcefolder");
 const moduleDevMounts = require("@services/module-getdevmounts");
+const moduleGet = require("@services/module-get");
 
 module.exports = async (configObject) => {
     try {
+        const module = await moduleGet(configObject?.module);
+
         logger.info(`creating container for panel id ${configObject.id}`);
 
         const modulePort = process.env.MODULE_PORT || "3200";
@@ -16,10 +19,11 @@ module.exports = async (configObject) => {
         const bugCoreHost = process.env.BUG_CONTAINER || "bug";
         const networkName = process.env.DOCKER_NETWORK_NAME || "bug";
         const moduleHome = process.env.MODULE_HOME || "/home/node/module";
+        const moduleMemory = module?.memory || process.env.MODULE_MEMORY || 100; //Max Memory in MB
         const bugHost = process.env.BUG_HOST || "127.0.0.1";
 
         let containerOptions = {
-            Image: configObject.module + ":latest",
+            Image: `${configObject.module}:${module?.version}`,
             Cmd: ["npm", "run", nodeEnv],
             Env: [
                 `PORT=${modulePort}`,
@@ -28,6 +32,7 @@ module.exports = async (configObject) => {
                 `CORE_HOST=${bugCoreHost}`,
                 `BUG_HOST=${bugHost}`,
                 `BUG_PORT=${bugCorePort}`,
+                `NODE_OPTIONS="--max-old-space-size=${moduleMemory}"`,
             ],
             Hostname: configObject.id,
             name: configObject.id,
@@ -40,6 +45,7 @@ module.exports = async (configObject) => {
                 Mounts: [],
                 RestartPolicy: { name: "unless-stopped" },
                 NetworkMode: networkName,
+                Memory: parseInt(moduleMemory * 1024 * 1024),
             },
         };
         if (nodeEnv === "development") {

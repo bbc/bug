@@ -11,6 +11,7 @@
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "stable",
+    "memory": 220,
     "needsContainer": true,
     "devmounts": [
         "api",

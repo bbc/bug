@@ -6,28 +6,48 @@ import Button from "@mui/material/Button";
 import TextEditor from "./TextEditor";
 import TextViewer from "./TextViewer";
 import AxiosPut from "@utils/AxiosPut";
-import AxiosDelete from "@utils/AxiosDelete";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import { formatDistanceToNow } from "date-fns";
+import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import Stack from "@mui/material/Stack";
+import getGravatarUrl from "@utils/getGravatarUrl";
 
-export default function NoteCard({ note, noteId, panelId }) {
+export default function NoteCard({ user, note, noteId, panelId }) {
     const [edit, setEdit] = useState(false);
+    const sendAlert = useAlert();
+    const currentUser = useSelector((state) => state.user);
 
     const handleNoteUpdate = async (data) => {
-        const response = await AxiosPut(`/container/${panelId}/notes/${noteId}`, { data: data });
-        if (response) {
-            setEdit(false);
-        }
-    };
+        const request = { data: data, user: null };
 
-    const handleNoteDelete = async (data) => {
-        const response = await AxiosDelete(`/container/${panelId}/notes/${noteId}`);
+        if (currentUser) {
+            request.user = currentUser?.data?.id;
+        }
+
+        if (await AxiosPut(`/container/${panelId}/notes/${noteId}`, request)) {
+            sendAlert(`Updated note`, {
+                variant: "success",
+            });
+            setEdit(false);
+        } else {
+            sendAlert(`Failed to update note`, { variant: "error" });
+        }
     };
 
     const getEditor = () => {
         if (edit) {
-            return <TextEditor data={note?.data} onSave={handleNoteUpdate} />;
+            return (
+                <TextEditor
+                    panelId={panelId}
+                    color={note?.color}
+                    noteId={noteId}
+                    data={note?.data}
+                    onSave={handleNoteUpdate}
+                />
+            );
         }
         return <TextViewer data={note?.data} />;
     };
@@ -35,11 +55,39 @@ export default function NoteCard({ note, noteId, panelId }) {
     const getTime = () => {
         if (note.lastUpdated) {
             {
-                return formatDistanceToNow(new Date(note?.lastUpdated), {
-                    includeSeconds: true,
-                    addSuffix: true,
-                });
+                return (
+                    <>
+                        last edited{" "}
+                        {formatDistanceToNow(new Date(note?.lastUpdated), {
+                            includeSeconds: true,
+                            addSuffix: true,
+                        })}
+                    </>
+                );
             }
+        }
+        return " ";
+    };
+
+    const getAvatar = () => {
+        if (user) {
+            return (
+                <Tooltip title={user?.name}>
+                    <Avatar sx={{ width: 24, height: 24 }} alt={user?.name} src={getGravatarUrl(user?.email)} />
+                </Tooltip>
+            );
+        }
+    };
+
+    const getEditButton = () => {
+        if (!edit) {
+            return (
+                <CardActionArea>
+                    <Button onClick={() => setEdit(true)} size="small" color="primary">
+                        Edit
+                    </Button>
+                </CardActionArea>
+            );
         }
     };
 
@@ -50,29 +98,26 @@ export default function NoteCard({ note, noteId, panelId }) {
                     borderRadius: "3px",
                     minWidth: "30vw",
                     minheight: "30vw",
-                    margin: "4px",
+                    margin: "2px",
+                    backgroundColor: () => {
+                        if (note?.color) {
+                            return note?.color;
+                        }
+                        return "secondary";
+                    },
                 }}
                 variant="outlined"
-                color="secondary"
             >
                 <CardContent>
                     {getEditor()}
-                    <Typography textAlign="right" variant="caption">
-                        {getTime()}
-                    </Typography>
-                </CardContent>
-
-                <CardActionArea>
-                    <Stack direction="row" spacing={2}>
-                        <Button onClick={() => setEdit(true)} size="small" color="primary">
-                            Edit
-                        </Button>
-
-                        <Button onClick={handleNoteDelete} size="small" color="primary">
-                            Delete
-                        </Button>
+                    <Stack direction="row-reverse" spacing={1}>
+                        {getAvatar()}
+                        <Typography textAlign="right" variant="caption">
+                            {getTime()}
+                        </Typography>
                     </Stack>
-                </CardActionArea>
+                </CardContent>
+                {getEditButton()}
             </Card>
         </>
     );

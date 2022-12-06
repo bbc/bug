@@ -8,6 +8,11 @@ const configRouter = require("@routes/config");
 const notesRouter = require("@routes/notes");
 const defaultRouter = require("@routes/default");
 
+const heapInfo = require("@core/heap-info");
+
+//Print the heap size
+heapInfo(console);
+
 let app = express();
 
 app.set("json spaces", 2);

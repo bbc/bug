@@ -10,6 +10,11 @@ const receiverRouter = require("@routes/receiver");
 const defaultRouter = require("@routes/default");
 const validationRouter = require("@routes/validate");
 
+const heapInfo = require("@core/heap-info");
+
+//Print the heap size
+heapInfo(console);
+
 let app = express();
 
 const workers = function (req, res, next) {

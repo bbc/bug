@@ -14,6 +14,11 @@ module.exports = async (hostId, newHost) => {
         return false;
     }
 
+    if (!config.hosts[hostId].hasOwnProperty("position") && !newHost.hasOwnProperty("position")) {
+        newHost.position = { x: Math.random() * 1500, y: Math.random() * 1500 };
+    }
+
     config.hosts[hostId] = { ...config.hosts[hostId], ...newHost };
+
     return await configPutViaCore(config);
 };

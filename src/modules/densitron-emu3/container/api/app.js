@@ -3,6 +3,11 @@ const express = require("express");
 const workerStore = require("@core/worker-store");
 
 // Define the Express application
+const heapInfo = require("@core/heap-info");
+
+//Print the heap size
+heapInfo(console);
+
 let app = express();
 app.set("json spaces", 2);
 
