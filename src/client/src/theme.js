@@ -55,7 +55,7 @@ const theme = (selectedTheme = "dark") => {
                 },
 
                 text: {
-                    primary: "#ffffff",
+                    primary: "rgba(255, 255, 255, 0.7)",
                 },
 
                 menu: {
