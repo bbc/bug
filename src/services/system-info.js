@@ -7,6 +7,7 @@ const updateVersion = require("@services/system-update-version");
 const systemIp = require("@services/system-ip");
 const systemUptime = require("@services/system-uptime");
 const systemGitInfo = require("@services/system-git-info");
+const dockerInfo = require("@services/docker-info");
 
 const filename = path.join(__dirname, "..", "package.json");
 
@@ -22,19 +23,24 @@ module.exports = async () => {
     try {
         const NpmPackage = await getPackage();
         const updates = await updateVersion();
-
+        const dockerInfoResult = await dockerInfo();
         const response = {
             data: {
                 ip: await systemIp(),
                 uptime: await systemUptime(),
                 git: await systemGitInfo(),
-                version: NpmPackage?.version,
+                npmVersion: NpmPackage?.version,
+                nodeVersion: process.version,
                 updates: updates,
+                dockerVersion: dockerInfoResult?.ServerVersion,
+                dockerOs: dockerInfoResult?.OperatingSystem,
+                kernelVersion: dockerInfoResult?.KernelVersion,
+                architecture: dockerInfoResult?.Architecture,
             },
         };
         return response;
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed retrieve global bug settings.`);
+        throw new Error(`Failed to retrieve bug system info.`);
     }
 };

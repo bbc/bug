@@ -13,6 +13,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import InfoIcon from "@mui/icons-material/Info";
 import ReceiptIcon from "@mui/icons-material/Receipt";
+import DvrIcon from "@mui/icons-material/Dvr";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
@@ -56,6 +57,16 @@ export default function PageSystem() {
                     <ListItemText
                         primary="About BUG"
                         secondary="Links to documentation, help and more information about BUG"
+                    />
+                    <NavIcon />
+                </ListItem>
+                <ListItem button component={Link} to={`/system/info`}>
+                    <ListItemIcon>
+                        <DvrIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                        primary="System Information"
+                        secondary="Application details, versions and information"
                     />
                     <NavIcon />
                 </ListItem>
@@ -113,11 +124,11 @@ export default function PageSystem() {
                     <ListItemText primary="Software" secondary="View and install available software updates" />
                     <NavIcon />
                 </ListItem>
-                <ListItem button component={Link} to={`/system/info`}>
+                <ListItem button component={Link} to={`/system/health`}>
                     <ListItemIcon>
                         <InfoIcon />
                     </ListItemIcon>
-                    <ListItemText primary="System Information" secondary="CPU, RAM and disk information" />
+                    <ListItemText primary="System Health" secondary="CPU, RAM and disk information" />
                     <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/logs`}>

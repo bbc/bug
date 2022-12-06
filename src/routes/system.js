@@ -7,10 +7,11 @@ const systemRestore = require("@services/system-restore");
 const systemLogs = require("@services/system-logs");
 const systemLogsPaginated = require("@services/system-logs-paginated");
 const systemContainers = require("@services/system-containers");
-const systemStats = require("@services/system-stats");
+const systemInfo = require("@services/system-info");
 const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
-const systemInfo = require("@services/system-info");
+const systemHostHealth = require("@services/system-hosthealth");
+const systemContainerHealth = require("@services/system-containerhealth");
 const systemUpdate = require("@services/system-update-apply");
 const systemUpdateCache = require("@services/system-update-cache");
 const systemSettingsGet = require("@services/system-settings-get");
@@ -52,9 +53,9 @@ router.get("/containers", restrict.to(["admin", "user"]), async function (req, r
 
 /**
  * @swagger
- * /system/stats:
+ * /system/hosthealth:
  *   get:
- *     description: Returns the underlying system statistics
+ *     description: Returns host health metrics
  *     tags: [system]
  *     produces:
  *       - application/json
@@ -62,9 +63,24 @@ router.get("/containers", restrict.to(["admin", "user"]), async function (req, r
  *       '200':
  *         description: Success
  */
-router.get("/stats", restrict.to(["admin", "user"]), async function (req, res, next) {
-    const stats = await systemStats();
-    hashResponse(res, req, stats);
+router.get("/hosthealth", restrict.to(["admin", "user"]), async function (req, res, next) {
+    hashResponse(res, req, await systemHostHealth());
+});
+
+/**
+ * @swagger
+ * /system/containerhealth:
+ *   post:
+ *     description: Returns container health metrics
+ *     tags: [system]
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       '200':
+ *         description: Success
+ */
+router.all("/containerhealth", restrict.to(["admin", "user"]), async function (req, res, next) {
+    hashResponse(res, req, await systemContainerHealth(req.body.sortField, req.body.sortDirection, req.body.filters));
 });
 
 /**

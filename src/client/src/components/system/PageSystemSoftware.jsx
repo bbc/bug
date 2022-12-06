@@ -41,14 +41,28 @@ export default function PageSystemBackup() {
 
         if (info.data?.updates?.newVersion && !info.data.git.development) {
             return (
-                <Button onClick={onUpdate} underline="none" variant="outlined" color="primary" disableElevation>
+                <Button
+                    onClick={onUpdate}
+                    underline="none"
+                    variant="outlined"
+                    color="primary"
+                    disableElevation
+                    disabled={info.data.git.development}
+                >
                     Update BUG
                 </Button>
             );
         }
 
         return (
-            <Button onClick={onCheckUpdate} underline="none" variant="outlined" color="primary" disableElevation>
+            <Button
+                onClick={onCheckUpdate}
+                underline="none"
+                variant="outlined"
+                color="primary"
+                disableElevation
+                disabled={info.data.git.development}
+            >
                 Check for Updates
             </Button>
         );
@@ -109,46 +123,61 @@ export default function PageSystemBackup() {
 
     return (
         <>
-            <Grid container spacing={4}>
+            <Grid container spacing={1}>
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
-                        title="System Version"
+                        sx={{
+                            marginBottom: 0,
+                        }}
+                        title="Application Information"
                         width="12rem"
                         items={[
                             {
                                 name: "Current Version",
                                 value: (
-                                    <BugTableLinkButton
-                                        onClick={(event) =>
-                                            openWebpage(
-                                                event,
-                                                `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.version}`
-                                            )
-                                        }
-                                        color="secondary"
-                                    >
-                                        {info.data?.version}
-                                    </BugTableLinkButton>
+                                    <>
+                                        {info.data.git.development ? (
+                                            "N/A - development build"
+                                        ) : (
+                                            <BugTableLinkButton
+                                                onClick={(event) =>
+                                                    openWebpage(
+                                                        event,
+                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.version}`
+                                                    )
+                                                }
+                                                color="secondary"
+                                            >
+                                                {info.data?.version}
+                                            </BugTableLinkButton>
+                                        )}
+                                    </>
                                 ),
                             },
                             {
                                 name: "Available Version",
                                 value: (
                                     <>
-                                        {info.data?.updates?.newVersion ? (
-                                            <BugTableLinkButton
-                                                onClick={(event) =>
-                                                    openWebpage(
-                                                        event,
-                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates?.version}`
-                                                    )
-                                                }
-                                                color="secondary"
-                                            >
-                                                {info.data?.updates?.version}
-                                            </BugTableLinkButton>
+                                        {info.data.git.development ? (
+                                            "N/A - development build"
                                         ) : (
-                                            "BUG is up to date"
+                                            <>
+                                                {info.data?.updates?.newVersion ? (
+                                                    <BugTableLinkButton
+                                                        onClick={(event) =>
+                                                            openWebpage(
+                                                                event,
+                                                                `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates?.version}`
+                                                            )
+                                                        }
+                                                        color="secondary"
+                                                    >
+                                                        {info.data?.updates?.version}
+                                                    </BugTableLinkButton>
+                                                ) : (
+                                                    "BUG is up to date"
+                                                )}
+                                            </>
                                         )}
                                     </>
                                 ),
@@ -158,7 +187,7 @@ export default function PageSystemBackup() {
                                 value: (
                                     <>
                                         {info.data.git.development ? (
-                                            "Development Build"
+                                            "N/A - development build"
                                         ) : (
                                             <BugTableLinkButton
                                                 onClick={(event) =>
@@ -180,7 +209,7 @@ export default function PageSystemBackup() {
                                 value: (
                                     <>
                                         {info.data.git.development ? (
-                                            "N/A"
+                                            "N/A - development build"
                                         ) : (
                                             <BugTableLinkButton
                                                 onClick={(event) =>
@@ -203,8 +232,11 @@ export default function PageSystemBackup() {
 
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
-                        title="System Update"
+                        title="Application Upgrades"
                         width="12rem"
+                        sx={{
+                            marginBottom: 0,
+                        }}
                         items={[
                             {
                                 name: "Last Checked",
@@ -220,8 +252,11 @@ export default function PageSystemBackup() {
 
                 <Grid item lg={6} xs={12}>
                     <BugDetailsCard
-                        title="Developer"
+                        title="Developer Information"
                         width="12rem"
+                        sx={{
+                            marginBottom: 0,
+                        }}
                         items={[
                             {
                                 name: "Documentation",

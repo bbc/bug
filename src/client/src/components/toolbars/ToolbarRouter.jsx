@@ -7,6 +7,7 @@ import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
 import UsersToolbar from "@components/toolbars/UsersToolbar";
 import SecurityToolbar from "@components/toolbars/SecurityToolbar";
 import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
+import SystemToolbar from "@components/toolbars/SystemToolbar";
 import Box from "@mui/material/Box";
 import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
 
@@ -60,6 +61,15 @@ const ToolbarRouter = (props) => {
                         <PageTitle />
                     </Title>
                     <PanelsEditToolbar />
+                </>
+            );
+        case "/system":
+            return (
+                <>
+                    <Title>
+                        <PageTitle />
+                    </Title>
+                    <SystemToolbar />
                 </>
             );
         case "/system/users":

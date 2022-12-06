@@ -281,7 +281,7 @@ export default function UserEdit({ userId = null }) {
                                             }}
                                             defaultValue={user?.restrictPanels}
                                             fullWidth
-                                            helperText="Enabling allows access to specific panels to be restricted"
+                                            helperText="Controls which panels are available to this user"
                                         />
                                     </Grid>
 

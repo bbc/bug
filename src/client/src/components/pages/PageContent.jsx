@@ -6,10 +6,12 @@ import PageSystemUserEdit from "@components/system/PageSystemUserEdit";
 import PageSystemSecurity from "@components/system/PageSystemSecurity";
 import PageSystemSecurityStrategy from "@components/system/PageSystemSecurityStrategy";
 import PageSystemSoftware from "@components/system/PageSystemSoftware";
-import PageSystemInfo from "@components/system/PageSystemInfo";
+import PageSystemHealth from "@components/system/PageSystemHealth";
 import PageSystemLogs from "@components/system/PageSystemLogs";
 import PageSystemAbout from "@components/system/PageSystemAbout";
 import PageSystemBackup from "@components/system/PageSystemBackup";
+import PageSystemInformation from "@components/system/PageSystemInformation";
+
 import { Redirect } from "react-router";
 import BugLoading from "@core/BugLoading";
 import BugScrollbars from "@core/BugScrollbars";
@@ -153,10 +155,10 @@ const PageContent = () => {
                                 </StyledPageContent>
                             </Route>
 
-                            <Route exact path="/system/info">
+                            <Route exact path="/system/health">
                                 <StyledPageContent>
                                     <BugScrollbars>
-                                        <PageSystemInfo />
+                                        <PageSystemHealth />
                                     </BugScrollbars>
                                 </StyledPageContent>
                             </Route>
@@ -206,6 +208,14 @@ const PageContent = () => {
                             <StyledPageContent>
                                 <BugScrollbars>
                                     <PageSystemAbout />
+                                </BugScrollbars>
+                            </StyledPageContent>
+                        </Route>
+
+                        <Route exact path="/system/info">
+                            <StyledPageContent>
+                                <BugScrollbars>
+                                    <PageSystemInformation />
                                 </BugScrollbars>
                             </StyledPageContent>
                         </Route>

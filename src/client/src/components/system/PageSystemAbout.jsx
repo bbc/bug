@@ -1,137 +1,152 @@
-import React, { useEffect } from "react";
-import { useAlert } from "@utils/Snackbar";
+import React from "react";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import { useDispatch } from "react-redux";
-import pageTitleSlice from "@redux/pageTitleSlice";
-import Button from "@mui/material/Button";
 import AxiosGet from "@utils/AxiosGet";
-import BugDetailsCard from "@core/BugDetailsCard";
-import { useApiPoller } from "@hooks/ApiPoller";
-import BugLoading from "@core/BugLoading";
-import TimeAgo from "javascript-time-ago";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import BugRestrictTo from "@core/BugRestrictTo";
+import BugStatusLabel from "@core/BugStatusLabel";
+import BugCard from "@core/BugCard";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Paper from "@mui/material/Paper";
+import Link from "@mui/material/Link";
+import { faBug } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
+import pageTitleSlice from "@redux/pageTitleSlice";
 
-export default function PageSystemBackup() {
-    const sendAlert = useAlert();
+export default function PageSystemAbout() {
     const dispatch = useDispatch();
-    const timeAgo = new TimeAgo("en-GB");
+    const [modules, setModules] = React.useState(null);
 
-    const info = useApiPoller({
-        url: `/api/system/info`,
-        interval: 5000,
-    });
+    React.useEffect(() => {
+        const fetchModules = async () => {
+            const moduleResult = await AxiosGet("/api/module");
+            setModules(moduleResult);
+        };
+        fetchModules();
+    }, []);
 
-    const openWebpage = async (event, url) => {
-        if (!url.inlude("http")) {
-            url = `http://${url}`;
-        }
-        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
-        if (newWindow) newWindow.opener = null;
-        event.stopPropagation();
-        event.preventDefault();
-    };
-
-    const bugIpAddressButton = () => {
-        return (
-            <BugTableLinkButton onClick={(event) => openWebpage(event, info.data.ip)} color="secondary">
-                {info.data.ip}
-            </BugTableLinkButton>
-        );
-    };
-
-    const onShutdown = async () => {
-        sendAlert(`System shutdown initiated`, { broadcast: "true", variant: "success" });
-        AxiosGet("/api/bug/shutdown");
-    };
-
-    const onReboot = async () => {
-        sendAlert(`System reboot initiated`, { broadcast: "true", variant: "success" });
-        AxiosGet("/api/bug/reboot");
-    };
-
-    const onRefresh = async () => {
-        window.location.reload();
-    };
-
-    useEffect(() => {
+    React.useEffect(() => {
         dispatch(pageTitleSlice.actions.set("About BUG"));
     }, [dispatch]);
 
-    if (info.status === "loading" || info.status === "idle") {
-        return <BugLoading />;
-    }
-
     return (
         <>
-            <Grid container spacing={4}>
-                <BugRestrictTo role="admin">
-                    <Grid item lg={6} xs={12}>
-                        <BugDetailsCard
-                            title="Server Controls"
-                            width="10rem"
-                            items={[
-                                {
-                                    name: "Shutdown",
-                                    value: (
-                                        <Button
-                                            onClick={onShutdown}
-                                            underline="none"
-                                            variant="outlined"
-                                            color="primary"
-                                            disableElevation
-                                        >
-                                            Shutdown
-                                        </Button>
-                                    ),
-                                },
-                                {
-                                    name: "Reboot",
-                                    value: (
-                                        <Button
-                                            onClick={onReboot}
-                                            underline="none"
-                                            variant="outlined"
-                                            color="primary"
-                                            disableElevation
-                                        >
-                                            Reboot
-                                        </Button>
-                                    ),
-                                },
-                                {
-                                    name: "Refresh Page",
-                                    value: (
-                                        <Button
-                                            onClick={onRefresh}
-                                            underline="none"
-                                            variant="outlined"
-                                            color="primary"
-                                            disableElevation
-                                        >
-                                            Refresh
-                                        </Button>
-                                    ),
-                                },
-                            ]}
-                        />
-                    </Grid>
-                </BugRestrictTo>
-                <Grid item lg={6} xs={12}>
-                    <BugDetailsCard
-                        title="Server Infomation"
-                        width="10rem"
-                        items={[
-                            { name: "IP Address", value: bugIpAddressButton() },
-                            { name: "Uptime", value: timeAgo.format(Date.now() - parseInt(info.data?.uptime) * 1000) },
-                            { name: "Current Version", value: info.data.version },
-                            {
-                                name: "Update Needed",
-                                value: info.data?.upToDate ? "Yes" : "Up to Date",
-                            },
-                        ]}
-                    />
+            <Grid
+                container
+                spacing={1}
+                sx={{
+                    justifyContent: "center",
+                }}
+            >
+                <Grid
+                    item
+                    sx={{
+                        maxWidth: "792px",
+                    }}
+                >
+                    <BugCard>
+                        <CardHeader component={Paper} square elevation={1} title="About BUG" />
+                        <CardContent>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        "& .fa-bug": {
+                                            fontSize: "180px",
+                                            padding: "1rem",
+                                            paddingRight: "2rem",
+                                            color: "primary.main",
+                                        },
+                                    }}
+                                >
+                                    <FontAwesomeIcon size="lg" icon={faBug} />
+                                </Box>
+                                <Box>
+                                    <p>
+                                        BUG is a modular web application which controls and monitors a wide range of
+                                        broadcast equipment.
+                                    </p>
+                                    <p>
+                                        It was originally developed at the BBC by Geoff House (
+                                        <Link href="https://github.com/geoffhouse">github.com/geoffhouse</Link>) and
+                                        Ryan McCartney (
+                                        <Link href="https://github.com/ryanmccartney">github.com/ryanmccartney</Link>)
+                                        and is now available as a fully open-sourced product.
+                                    </p>
+
+                                    <p>
+                                        Bug is released under the Apache 2.0 licence:
+                                        <br />
+                                        <Link href="https://www.apache.org/licenses/LICENSE-2.0">
+                                            https://www.apache.org/licenses/LICENSE-2.0
+                                        </Link>
+                                    </p>
+
+                                    <p>
+                                        For more information, or to report a bug please visit
+                                        <br />
+                                        <Link href="https://github.com/bbc/bbcnews-bug">
+                                            github.com/bbc/bbcnews-bug
+                                        </Link>
+                                    </p>
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </BugCard>
                 </Grid>
+                {modules && (
+                    <Grid
+                        item
+                        sx={{
+                            maxWidth: "800px",
+                        }}
+                    >
+                        <BugCard>
+                            <CardHeader component={Paper} square elevation={1} title="Available Modules" />
+                            <CardContent sx={{ padding: 0, paddingBottom: "0 !important" }}>
+                                <TableContainer>
+                                    <Table>
+                                        <TableBody>
+                                            {modules &&
+                                                modules.map((module) => (
+                                                    <TableRow key={module.name}>
+                                                        <TableCell sx={{ fontWeight: 500 }}>
+                                                            {module.longname}
+                                                        </TableCell>
+                                                        <TableCell sx={{ opacity: 0.5 }}>
+                                                            {module.description}
+                                                        </TableCell>
+                                                        <TableCell>{module.version}</TableCell>
+                                                        <TableCell>
+                                                            <BugStatusLabel
+                                                                color={
+                                                                    module.status === "stable"
+                                                                        ? "success.main"
+                                                                        : "warning.main"
+                                                                }
+                                                            >
+                                                                {module.status}
+                                                            </BugStatusLabel>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </CardContent>
+                        </BugCard>
+                    </Grid>
+                )}
             </Grid>
         </>
     );

@@ -39,7 +39,7 @@ export default function PageSystemBackup() {
         const response = await AxiosPut(`/api/system/settings`, form);
         if (!response?.error) {
             dispatch(settingsSlice.actions.success({ data: form }));
-            sendAlert(`BUG Settings have been updated`, {
+            sendAlert(`BUG settings have been updated`, {
                 broadcast: "true",
                 variant: "success",
             });
@@ -131,7 +131,7 @@ export default function PageSystemBackup() {
                             <Grid item xs={12}>
                                 <BugConfigFormAutocomplete
                                     name="moduleStatus"
-                                    label="Module Status"
+                                    label="Filter Modules"
                                     control={control}
                                     defaultValue={settings.data.moduleStatus ? settings.data.moduleStatus : []}
                                     options={[
@@ -139,7 +139,7 @@ export default function PageSystemBackup() {
                                         { id: "beta", label: "Beta" },
                                     ]}
                                     fullWidth
-                                    helperText="What should be development status of a module before letting a user add it."
+                                    helperText="Filter available modules by status tag"
                                 />
                             </Grid>
 

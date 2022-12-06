@@ -94,7 +94,6 @@ export default function PanelTableRow({ panel, showGroups }) {
                 }}
             >
                 <Box
-                    container
                     sx={{
                         flexDirection: "row",
                         display: "flex",
