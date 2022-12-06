@@ -32,6 +32,7 @@ function BugDetailsCard({
     closable = false,
     onClose,
     collapsed = false,
+    sx = {},
     ...props
 }) {
     const [expanded, setExpanded] = React.useState(!collapsed);
@@ -71,6 +72,7 @@ function BugDetailsCard({
                 color: "text.secondary",
                 position: "relative",
                 marginBottom: "8px",
+                ...sx,
             }}
             {...props}
         >
