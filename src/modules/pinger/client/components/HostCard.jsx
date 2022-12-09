@@ -9,15 +9,23 @@ import Grid from "@mui/material/Grid";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { formatDistanceToNow } from "date-fns";
 import { useLongPress } from "use-long-press";
+import { useAlert } from "@utils/Snackbar";
+import AxiosGet from "@utils/AxiosGet";
 
 export default function HostCard({ title, time, description, acknowledged, alive, hostId, lastPinged, data = [] }) {
     const params = useParams();
     const history = useHistory();
+    const sendAlert = useAlert();
     const label = "avg";
     let cardColor = "success";
 
-    const bind = useLongPress((event) => {
-        console.log("Acknowledged");
+    const bind = useLongPress(async (event) => {
+        const response = await AxiosGet(`/container/${params?.panelId}/hosts/${hostId}/acknowledge`);
+        if (response) {
+            sendAlert(`Acknowledged ${title}`, { variant: "info" });
+        } else {
+            sendAlert(`Could not acknowledge ${title}`, { variant: "error" });
+        }
     });
 
     if (data.length === 0 || acknowledged) {

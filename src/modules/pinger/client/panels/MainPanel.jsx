@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
+import BugNoData from "@core/BugNoData";
 import HostCard from "./../components/HostCard";
 import Grid from "@mui/material/Grid";
 import { useApiPoller } from "@hooks/ApiPoller";
@@ -26,6 +27,16 @@ export default function MainPanel() {
 
     if (hosts.status === "loading" || hosts.status === "idle") {
         return <BugLoading />;
+    }
+
+    if (hosts.status !== "success") {
+        return (
+            <BugNoData
+                panelId={params?.panelId}
+                title="No hosts found. Try adding some to monitor."
+                showConfigButton={false}
+            />
+        );
     }
 
     return (

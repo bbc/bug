@@ -8,6 +8,7 @@ const hostList = require("@services/host-list");
 const hostUpdate = require("@services/host-update");
 const hostDelete = require("@services/host-delete");
 const getPingHistory = require("@services/host-ping-history");
+const hostAcknowledge = require("@services/host-acknowledge");
 
 route.get(
     "/",
@@ -24,6 +25,17 @@ route.get(
     "/:hostId",
     asyncHandler(async (req, res) => {
         const results = await hostDetails(req.params?.hostId);
+        hashResponse(res, req, {
+            status: results ? "success" : "failure",
+            data: results,
+        });
+    })
+);
+
+route.get(
+    "/:hostId/acknowledge",
+    asyncHandler(async (req, res) => {
+        const results = await hostAcknowledge(req.params?.hostId);
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,

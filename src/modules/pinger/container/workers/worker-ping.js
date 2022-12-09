@@ -102,7 +102,7 @@ const main = async () => {
                                 attachments: [
                                     {
                                         title: `:x: ${host?.title}`,
-                                        text: `<http://${bugHost}:${bugPort}/${workerData?.id}|${host?.host}> is no longer reachable.`,
+                                        text: `<http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${host?.host}> is no longer reachable.`,
                                         color: `#f44336`,
                                     },
                                 ],
@@ -113,8 +113,8 @@ const main = async () => {
                             webhook.send({
                                 attachments: [
                                     {
-                                        title: `:white_tick: ${host?.title}`,
-                                        text: `<http://${bugHost}:${bugPort}/${workerData?.id}|${
+                                        title: `:large_green_circle: ${host?.title}`,
+                                        text: `<http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${
                                             host?.host
                                         }> is online. ${getOutageString(exisitingHost?.lastPinged)}`,
                                         color: `#4caf50`,
