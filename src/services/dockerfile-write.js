@@ -14,6 +14,7 @@ module.exports = async (filepath) => {
             "FROM node:16-alpine",
             `WORKDIR ${moduleHome}`,
             `COPY . .`,
+            `RUN apk add iputils`, //Added due to issue - https://github.com/danielzzz/node-ping/issues/89
             `RUN npm install`,
             `CMD ["npm","run","${nodeEnv}"]`,
         ];
