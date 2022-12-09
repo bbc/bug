@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
 import HostCard from "./../components/HostCard";

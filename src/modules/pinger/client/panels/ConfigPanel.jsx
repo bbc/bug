@@ -62,6 +62,17 @@ export default function ConfigPanel() {
                         label="Frequency of Pings"
                     />
                 </Grid>
+
+                <Grid item xs={12}>
+                    <BugConfigFormTextField
+                        name="webhook"
+                        control={control}
+                        fullWidth
+                        error={errors.webhook}
+                        defaultValue={panelConfig.data.webhook}
+                        label="Slack Webhook"
+                    />
+                </Grid>
             </BugConfigWrapper>
         </>
     );
