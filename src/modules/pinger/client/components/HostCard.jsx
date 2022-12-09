@@ -8,17 +8,22 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { formatDistanceToNow } from "date-fns";
+import { useLongPress } from "use-long-press";
 
-export default function HostCard({ title, description, alive, host, hostId, lastPinged, data = [] }) {
+export default function HostCard({ title, time, description, acknowledged, alive, hostId, lastPinged, data = [] }) {
     const params = useParams();
     const history = useHistory();
     const label = "avg";
     let cardColor = "success";
 
-    if (!alive) {
-        cardColor = "error";
-    } else if (data.length === 0) {
+    const bind = useLongPress((event) => {
+        console.log("Acknowledged");
+    });
+
+    if (data.length === 0 || acknowledged) {
         cardColor = "primary";
+    } else if (!alive) {
+        cardColor = "error";
     } else if (data[data.length - 1]?.packetLoss > 0) {
         cardColor = "warning";
     }
@@ -28,7 +33,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
     };
 
     const getPingText = (time, alive) => {
-        if (!time) {
+        if (!time && !lastPinged) {
             return "waiting";
         }
         if (alive || time !== "unknown") {
@@ -72,6 +77,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
         <>
             <Card
                 onClick={handleClick}
+                {...bind()}
                 sx={{
                     borderRadius: "3px",
                     minWidth: 275,
@@ -87,7 +93,6 @@ export default function HostCard({ title, description, alive, host, hostId, last
                     <CardContent sx={{ width: "100%", padding: "0.2em" }}>
                         <div style={{ margin: "auto", position: "relative" }}>
                             <Box sx={{ m: 1 }}>
-                                …
                                 <Grid container>
                                     <Grid width={"50%"} key={1} item xs={0}>
                                         <Typography variant="h4" component="div">
@@ -98,7 +103,7 @@ export default function HostCard({ title, description, alive, host, hostId, last
 
                                     <Grid width={"50%"} alignItems="flex-end" justify="flex-end" key={0} item xs={0}>
                                         <Typography sx={{ textAlign: "right" }} variant="h4" component="div">
-                                            {getPingText(data?.time, alive)}
+                                            {getPingText(time, alive)}
                                         </Typography>
                                         <Typography sx={{ textAlign: "right" }} variant="body2">
                                             {getTime(lastPinged)}
