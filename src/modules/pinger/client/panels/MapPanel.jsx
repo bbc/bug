@@ -30,10 +30,6 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
         }
     };
 
-    const edgeDelete = async (edge) => {
-        console.log("edgeDelete", edge);
-    };
-
     const isAnimated = (sourceId, targetId) => {
         for (let host of hosts) {
             if (host.hostId === sourceId || host.hostId === targetId) {
@@ -58,6 +54,10 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
             setNodes(nodes);
         }
     }, [hosts]);
+
+    useEffect(() => {
+        AxiosPut(`/container/${panelId}/edges`, { edges: edges });
+    }, [edges]);
 
     useEffect(() => {
         if (edgesData) {
@@ -85,8 +85,6 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
                 onNodeDragStop={(event, node) => {
                     updateHostPositsion(node?.id, node?.position);
                 }}
-                onEdgeUpdateEnd={(event, edge) => {}}
-                onEdgesDelete={edgeDelete}
                 onConnect={onConnect}
                 onInit={onInit}
                 style={reactFlowStyle}

@@ -5,7 +5,7 @@ const route = express.Router();
 const edgeAdd = require("@services/edge-add");
 const edgeDetails = require("@services/edge-details");
 const edgeList = require("@services/edge-list");
-const edgeUpdate = require("@services/edge-update");
+const edgesUpdate = require("@services/edges-update");
 const edgeDelete = require("@services/edge-delete");
 
 route.get(
@@ -31,9 +31,9 @@ route.get(
 );
 
 route.put(
-    "/:edgeId",
+    "/",
     asyncHandler(async (req, res) => {
-        const results = await edgeUpdate(req.params?.edgeId, req.body);
+        const results = await edgesUpdate(req.body?.edges);
         hashResponse(res, req, {
             status: results ? "success" : "failure",
             data: results,
