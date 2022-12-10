@@ -10,7 +10,7 @@ import BugNoData from "@core/BugNoData";
 import CloseIcon from "@mui/icons-material/Close";
 import BugTimeChart from "@core/BugTimeChart";
 
-export default function HostDetails() {
+export default function HostPanel() {
     const { panelId, hostId } = useParams();
     const panelConfig = useSelector((state) => state.panelConfig);
     const history = useHistory();

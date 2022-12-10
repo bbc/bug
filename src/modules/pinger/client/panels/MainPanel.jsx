@@ -18,7 +18,7 @@ export default function MainPanel() {
         for (let host of hosts) {
             cards.push(
                 <Grid key={host?.hostId} item xl={3} lg={4} md={6} xs={12}>
-                    <HostCard {...host} />
+                    <HostCard panelId={params?.panelId} {...host} />
                 </Grid>
             );
         }

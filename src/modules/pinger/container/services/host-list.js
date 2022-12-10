@@ -33,6 +33,7 @@ module.exports = async () => {
 
         return await mergedHosts;
     } catch (error) {
+        console.log(error);
         return [];
     }
 };

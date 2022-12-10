@@ -12,17 +12,24 @@ module.exports = async (hostId) => {
     const hostsCollection = await mongoCollection("hosts");
 
     if (config && config.hosts[hostId]) {
+        //Get current entry
+        const host = await hostsCollection.findOne({ hostId: hostId });
+        let acknowledged = true;
+        if (host?.acknowledged) {
+            acknowledged = false;
+        }
+
         //Update database entry
         const query = { hostId: hostId };
         const update = {
             $set: {
                 timestamp: new Date(),
-                acknowledged: true,
+                acknowledged: acknowledged,
             },
         };
         const options = { upsert: true };
 
-        if (config?.webhook) {
+        if (config?.webhook && acknowledged) {
             const webhook = new IncomingWebhook(config?.webhook);
 
             webhook.send({
@@ -36,7 +43,9 @@ module.exports = async (hostId) => {
             });
         }
 
-        return await hostsCollection.updateOne(query, update, options);
+        await hostsCollection.updateOne(query, update, options);
+
+        return { acknowledged: acknowledged };
     }
 
     return false;

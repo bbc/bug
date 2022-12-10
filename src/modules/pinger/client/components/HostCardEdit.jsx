@@ -4,16 +4,16 @@ import { Typography, Button, Card, CardContent, CardActionArea, CardActions } fr
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-export default function HostCard({ handleDelete, handleEdit, host, hostId }) {
+export default function HostCard({ panelId, handleDelete, host, hostId }) {
     const params = useParams();
     const history = useHistory();
-    console.log(host);
+
     const handleClick = (event) => {
-        history.push(`/panel/${params.panelId}/host/${hostId}`);
+        history.push(`/panel/${panelId}/host/${hostId}`);
     };
 
     const handleEditClick = (event) => {
-        handleEdit(hostId);
+        history.push(`/panel/${panelId}/host/${hostId}/edit`);
     };
 
     const handleDeleteClick = (event) => {

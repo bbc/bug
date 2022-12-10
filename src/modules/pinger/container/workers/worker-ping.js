@@ -109,7 +109,11 @@ const main = async () => {
                             });
 
                             //Send device is back online message
-                        } else if (response?.alive && !exisitingHost?.alive) {
+                        } else if (
+                            response?.alive &&
+                            !exisitingHost?.alive &&
+                            exisitingHost?.lastPinged !== undefined
+                        ) {
                             webhook.send({
                                 attachments: [
                                     {
