@@ -1,30 +1,43 @@
 import React from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Card from "@mui/material/Card";
-import { CardActionArea } from "@mui/material";
+import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import AxiosGet from "@utils/AxiosGet";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { formatDistanceToNow } from "date-fns";
 import { useLongPress } from "use-long-press";
 import { useAlert } from "@utils/Snackbar";
-import AxiosGet from "@utils/AxiosGet";
 
-export default function HostCard({ title, time, description, acknowledged, alive, hostId, lastPinged, data = [] }) {
-    const params = useParams();
+export default function HostCard({
+    panelId,
+    title,
+    time,
+    description,
+    acknowledged,
+    alive,
+    hostId,
+    lastPinged,
+    data = [],
+}) {
     const history = useHistory();
     const sendAlert = useAlert();
     const label = "avg";
     let cardColor = "success";
 
     const bind = useLongPress(async (event) => {
-        const response = await AxiosGet(`/container/${params?.panelId}/hosts/${hostId}/acknowledge`);
-        if (response) {
-            sendAlert(`Acknowledged ${title}`, { variant: "info" });
-        } else {
-            sendAlert(`Could not acknowledge ${title}`, { variant: "error" });
+        if (!alive) {
+            const response = await AxiosGet(`/container/${panelId}/hosts/${hostId}/acknowledge`);
+            if (response && response.acknowledged) {
+                sendAlert(`Acknowledged ${title}`, { variant: "info" });
+            } else if (response && !response.acknowledged) {
+                sendAlert(`Unacknowledged ${title}`, { variant: "info" });
+            } else {
+                sendAlert(`Could not acknowledge ${title}`, { variant: "error" });
+            }
         }
     });
 
@@ -37,7 +50,7 @@ export default function HostCard({ title, time, description, acknowledged, alive
     }
 
     const handleClick = (event) => {
-        history.push(`/panel/${params.panelId}/host/${hostId}`);
+        history.push(`/panel/${panelId}/host/${hostId}`);
     };
 
     const getPingText = (time, alive) => {
