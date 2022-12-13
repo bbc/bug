@@ -2,7 +2,7 @@
 layout: home
 ---
 
-**BUG** - Broadcast User Gateway
+**BUG** - Broadcast Universal Gateway
 
 Control and monitor a wide range of equipment from a single web interface.
 
