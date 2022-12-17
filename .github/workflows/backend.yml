@@ -1,0 +1,35 @@
+# .github/workflows/backend.yml
+name: BUG Backend
+
+on:
+    push:
+        branches:
+            - "**"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+    pull_request:
+        branches:
+            - "main"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+
+jobs:
+    backend:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [16]
+        defaults:
+            run:
+                working-directory: ./src
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              name: Backend Install & Test using Node.js ${{ matrix.node-version }}
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: npm ci
+            - run: npm test
+            - run: npm run build --if-present

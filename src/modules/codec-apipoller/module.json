@@ -1,0 +1,34 @@
+{
+    "name": "codec-apipoller",
+    "longname": "Codec API-Poller",
+    "description": "Polls API endpoint to retrieve codec information",
+    "capabilities": [
+        "codec-db"
+    ],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-cloud-braces",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "codec-apipoller",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "url": ""
+    }
+}

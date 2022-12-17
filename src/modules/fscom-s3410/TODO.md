@@ -1,0 +1,4 @@
+-   setting VLAN access port using SNMP doesn't work
+-   haven't tried setting VLAN trunk members
+-   VLAN port mode SNMP is read-only
+-   No LLDP yet

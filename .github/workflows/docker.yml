@@ -1,0 +1,88 @@
+# .github/workflows/docker.yml
+name: BUG Deploy
+
+env:
+    regsitry: "ghcr.io"
+
+on:
+    push:
+        branches:
+            - main
+        tags:
+            - "v*"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+
+jobs:
+    docker:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                architecture: [linux/amd64]
+        defaults:
+            run:
+                working-directory: ./src
+        steps:
+            #Get the latest version of the repository
+            - name: Checkout
+              uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+            #Get Current and DateTime for Build
+            - name: Set current date and time as an environment variable
+              run: echo "timestamp=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+            - name: Print current date and time
+              run: echo ${{ env.timestamp }}
+            #Get the package.json version
+            - uses: martinbeentjes/npm-get-version-action@master
+              name: Get Backend Version
+              id: backend-version
+              with:
+                  path: ./src
+            - uses: martinbeentjes/npm-get-version-action@master
+              name: Get Frontend Version
+              id: frontend-version
+              with:
+                  path: ./src/client
+            - name: Print Current Versions
+              run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and frontend version ${{ steps.frontend-version.outputs.current-version }}
+            #Docker Buildx Setup
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v2
+            - name: Set up Docker Buildx
+              id: buildx
+              uses: docker/setup-buildx-action@v2
+              with:
+                  buildkitd-flags: --debug
+            - name: List available platforms
+              run: echo ${{ steps.buildx.outputs.platforms }}
+            #Docker Registry Login
+            - name: Login to GHCR Registry
+              uses: docker/login-action@v2
+              with:
+                  registry: ${{ env.regsitry }}
+                  username: ${{ secrets.GH_USER }}
+                  password: ${{ secrets.GH_TOKEN }}
+                  logout: false
+            #Docker Build Image and Push to Registry
+            - name: Build and push to registry
+              uses: docker/build-push-action@v3
+              with:
+                  context: "./src"
+                  platforms: ${{ matrix.architecture}}
+                  push: ${{ github.event_name != 'pull_request' }}
+                  tags: |
+                      ${{env.regsitry}}/bbc/bug:latest
+                      ${{env.regsitry}}/bbc/bug:${{steps.backend-version.outputs.current-version}}
+                  outputs: type=registry
+                  labels: |
+                      author=${{github.actor}}
+                      version=${{steps.backend-version.outputs.current-version}}
+                      org.opencontainers.image.licenses=Apache-2.0
+                      org.opencontainers.image.source=${{github.server_url}}/${{github.repository}}
+                      uk.co.bbc.bug.build.timestamp=${{env.timestamp}}
+                      uk.co.bbc.bug.build.number=${{github.run_number}}
+                      uk.co.bbc.bug.build.id=${{github.run_id}}
+                      uk.co.bbc.bug.build.branch=${{github.ref_name}}
+                      uk.co.bbc.bug.build.commit=${{github.sha}}
+                      uk.co.bbc.bug.build.repository=${{github.server_url}}/${{github.repository}}

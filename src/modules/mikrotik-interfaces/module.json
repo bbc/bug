@@ -1,0 +1,41 @@
+{
+    "name": "mikrotik-interfaces",
+    "longname": "Mikrotik Interfaces",
+    "description": "Monitoring and control of mikrotik interfaces",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-router",
+    "author": "Geoff House",
+    "needsContainer": true,
+    "license": "Apache-2.0",
+    "status": "stable",
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "mikrotik-interfaces",
+        "description": "",
+        "enabled": false,
+        "address": "",
+        "username": "bug",
+        "password": "",
+        "protectedInterfaces": [],
+        "excludedInterfaces": [
+            "bridge*",
+            "vlan*",
+            "Loopback*",
+            "eoip*"
+        ]
+    }
+}

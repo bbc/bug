@@ -1,0 +1,58 @@
+{
+    "name": "generic-no-container",
+    "description": "Generic client-only module (no container)",
+    "version": "1.0.0",
+    "author": "Geoff House",
+    "files": [
+        "module.json",
+        "client/components/Example.jsx"
+    ],
+    "fields": [
+        {
+            "name": "name",
+            "message": "Enter a module name (lower case - no spaces)",
+            "type": "input",
+            "required": "true",
+            "default": "my-module-name"
+        },
+        {
+            "name": "longname",
+            "message": "Enter a long module name",
+            "type": "input",
+            "required": "true",
+            "default": "My Module Name"
+        },
+        {
+            "name": "description",
+            "message": "Enter a description (usually a single sentence)",
+            "type": "input",
+            "required": "false"
+        },
+        {
+            "name": "notes",
+            "message": "Enter any optional notes",
+            "type": "input"
+        },
+        {
+            "name": "icon",
+            "message": "Enter an kebab-case icon name (either https://materialdesignicons.com/ or https://mui.com/material-ui/material-icons/) ",
+            "type": "input",
+            "required": "true",
+            "default": "abc-icon"
+        },
+        {
+            "name": "author",
+            "message": "Enter the author name",
+            "type": "input",
+            "required": "true",
+            "default": "Your Name"
+        },
+        {
+            "name": "license",
+            "message": "Enter the license type",
+            "type": "input",
+            "required": "true",
+            "default": "Apache-2.0"
+        }
+    ]
+}

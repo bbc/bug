@@ -1,0 +1,25 @@
+{
+    "name": "clock",
+    "longname": "Clock",
+    "description": "Digital and Analogue Clocks",
+    "capabilities": [],
+    "version": "1.0.0",
+    "icon": "Schedule",
+    "author": "Ryan McCartney",
+    "needsContainer": false,
+    "protectedRoutes": [
+        "config"
+    ],
+    "license": "Apache-2.0",
+    "status": "stable",
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "order": 0,
+        "title": "Clock",
+        "module": "clock",
+        "type": "digital",
+        "description": "Tick Tock",
+        "enabled": false
+    }
+}

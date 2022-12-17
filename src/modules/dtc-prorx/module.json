@@ -1,0 +1,35 @@
+{
+    "name": "dtc-prorx",
+    "longname": "DTC ProRX Receiver",
+    "description": "Control DTC radio camera receivers",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-radio-tower",
+    "author": "Ryan McCartney",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "dtc-prorx",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "username": "",
+        "password": "",
+        "receiverCount": 4
+    }
+}

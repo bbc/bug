@@ -1,0 +1,85 @@
+# NAME: docker-compose.yml
+# AUTH: Ryan McCartney <ryan.mccartney@bbc.co.uk>
+# DATE: 04/03/2021
+# DESC: Defines Docker services for Bug
+
+version: "3.8"
+
+networks:
+    bug:
+        name: bug
+        driver: bridge
+
+services:
+    app:
+        container_name: bug
+        build: "./src"
+        restart: always
+        user: root
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./src:/home/node/bug
+        environment:
+            MODULE_PORT: 3200
+            MODULE_HOME: /home/node/module
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CONTAINER: bug-watchtower
+            MONGO_CONTAINER: bug-mongo
+            DOCKER_NETWORK_NAME: bug
+            BUG_CONTAINER: bug
+            BUG_PORT: 3101
+            BUG_HOST: "127.0.0.1"
+            BUG_LOG_FOLDER: logs
+            BUG_LOG_NAME: bug
+            BUG_REGISTRY_FQDN: ghcr.io/bbc
+            BUG_UPDATE_CHECK: "false"
+            PORT: 3000
+            NODE_ENV: development
+            SESSION_SECRET: aSecretForYourSessions
+        depends_on:
+            - mongo
+        networks:
+            - bug
+        ports:
+            - 3000:3000
+            - 3101:3101
+    mongo:
+        image: mongo:latest
+        restart: unless-stopped
+        container_name: bug-mongo
+        networks:
+            - bug
+        ports:
+            - 27017:27017
+    watchtower:
+        container_name: bug-watchtower
+        image: containrrr/watchtower
+        restart: unless-stopped
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - bug
+        ports:
+            - 8080:8080
+        environment:
+            WATCHTOWER_DEBUG: "true"
+            WATCHTOWER_HTTP_API_UPDATE: "true"
+            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
+            WATCHTOWER_CLEANUP: "true"
+            WATCHTOWER_LABEL_ENABLE: "true"
+    mongo-web:
+        image: mongo-express
+        container_name: bug-mongo-express
+        restart: unless-stopped
+        ports:
+            - 3202:8081
+        environment:
+            ME_CONFIG_OPTIONS_EDITORTHEME: "ambiance"
+            ME_CONFIG_MONGODB_SERVER: "bug-mongo"
+            ME_CONFIG_BASICAUTH_USERNAME: admin
+            ME_CONFIG_BASICAUTH_PASSWORD: bugdev
+        hostname: mongo-web
+        networks:
+            - bug
+        depends_on:
+            - mongo

@@ -1,0 +1,38 @@
+{
+    "name": "tsl-mdu",
+    "longname": "TSL MDU",
+    "description": "Monitoring and control of TSL MDUs",
+    "capabilities": [
+        "power-control"
+    ],
+    "notes": "",
+    "version": "2.0.0",
+    "icon": "mdi-power-plug-outline",
+    "author": "Ryan McCartney",
+    "license": "Apache-2.0",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "utils",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "order": 0,
+        "title": "",
+        "module": "tsl-mdu",
+        "model": "tsl-mdu-12-pm",
+        "description": "",
+        "enabled": false,
+        "address": "",
+        "username": "root",
+        "password": "telsys",
+        "protectedOutputs": []
+    }
+}

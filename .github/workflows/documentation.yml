@@ -1,0 +1,22 @@
+name: Documentation
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    codespell:
+        runs-on: ubuntu-latest
+        steps:
+            #Get the latest version of the repository
+            - name: Checkout
+              uses: actions/checkout@v3
+            #Check github pages docs for spelling errors
+            - name: "Documentation: Spell Check Documentation"
+              uses: codespell-project/actions-codespell@master
+              with:
+                  check_filenames: true
+                  check_hidden: true
+                  path: docs
+                  only_warn: 1
+                  ignore_words_list: aoto,daa,te

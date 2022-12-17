@@ -1,0 +1,38 @@
+{
+    "name": "fscom-s3410",
+    "longname": "FS.com S3410 Switch",
+    "description": "Control FS.com S3410 Switches",
+    "capabilities": [
+        "network-switch"
+    ],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "SettingsEthernet",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "fscom-s3410",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "snmpCommunity": "public",
+        "protectedInterfaces": [],
+        "dhcpSources": []
+    }
+}

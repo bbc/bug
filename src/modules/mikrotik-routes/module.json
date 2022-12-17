@@ -1,0 +1,28 @@
+{
+    "name": "mikrotik-routes",
+    "longname": "Mikrotik Routes",
+    "version": "1.0.0",
+    "description": "Allows selection of default route on Mikrotik routers",
+    "capabilities": [],
+    "notes": "",
+    "icon": "SettingsInputComponent",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "order": 0,
+        "title": "",
+        "module": "mikrotik-routes",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "username": "bug",
+        "password": ""
+    }
+}

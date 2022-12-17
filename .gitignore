@@ -1,0 +1,50 @@
+
+# NPM
+node_modules
+
+#Logs
+/src/logs/*
+!/src/logs/.gitkeep
+
+#Backup Data
+/src/data/*
+!/src/data/.gitkeep
+
+# Panel Configs
+/src/config/panels/*.json
+!/src/config/panels/.gitkeep
+
+# Global Config
+/src/config/global/*.json
+!/src/config/global/.gitkeep
+
+# Module Dockerfiles
+Dockerfile*
+!/src/Dockerfile
+
+# Global Environment Files
+.env.development
+.env.test
+.env.production
+
+# Client
+src/client/.pnp
+.pnp.js
+
+# Testing
+src/client/coverage
+src/routes/logs
+
+# Client Production Build
+/src/client/build/*
+!/src/client/build/.gitkeep
+
+# Storybook
+src/client/storybook-static
+
+# misc
+._*
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

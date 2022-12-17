@@ -1,0 +1,40 @@
+{
+    "name": "cisco-iosxe",
+    "longname": "Cisco IOS-XE Switch",
+    "version": "1.0.0",
+    "description": "Monitoring and control of Cisco IOS-XE based switches",
+    "capabilities": [
+        "network-switch"
+    ],
+    "icon": "SettingsEthernet",
+    "notes": "",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "cisco-iosxe",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "username": "bug",
+        "password": "",
+        "snmpCommunity": "public",
+        "protectedInterfaces": [],
+        "dhcpSources": []
+    }
+}

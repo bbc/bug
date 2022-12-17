@@ -1,0 +1,37 @@
+{
+    "name": "magewell-ndi-decoder",
+    "longname": "Magewell NDI Decoder",
+    "description": "Control NDI Sources on Magewell Devices",
+    "capabilities": [
+        "ndi"
+    ],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-video-wireless",
+    "author": "Ryan McCartney",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "utils",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "magewell-ndi-decoder",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "username": "Admin",
+        "password": "Admin"
+    }
+}

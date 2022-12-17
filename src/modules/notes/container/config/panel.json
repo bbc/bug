@@ -1,0 +1,10 @@
+{
+  "id": "",
+  "order": 0,
+  "title": "",
+  "module": "rss-feed",
+  "description": null,
+  "notes": null,
+  "enabled": true,
+  "address": "http://feeds.bbci.co.uk/news/rss.xml"
+}

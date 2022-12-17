@@ -1,0 +1,32 @@
+{
+    "name": "ndi-discovery",
+    "longname": "NDI Discovery",
+    "description": "Get a list of NDI sources on a network from your nearest discovery server",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-order-alphabetical-ascending",
+    "author": "Ryan McCartney",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "ndi-discovery",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": ""
+    }
+}
