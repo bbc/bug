@@ -7,6 +7,11 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import useSounds from "@hooks/Sounds";
+import { styled } from "@mui/material/styles";
+
+const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+    color: theme.palette.text.primary,
+}));
 
 export default function BugItemMenu({ item, menuItems }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -83,7 +88,7 @@ export default function BugItemMenu({ item, menuItems }) {
                                 <ListItemIcon disabled={parseDisabled(menuItem.disabled)}>
                                     {getIcon(menuItem.icon)}
                                 </ListItemIcon>
-                                <ListItemText primary={menuItem.title} />
+                                <StyledListItemText primary={menuItem.title} />
                             </MenuItem>
                         );
                     }

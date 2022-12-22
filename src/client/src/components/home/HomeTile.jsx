@@ -8,16 +8,12 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
-import { styled } from "@mui/material/styles";
 import BugRestrictTo from "@core/BugRestrictTo";
+import { styled } from "@mui/material/styles";
 
-const StyledCardHeader = styled(CardHeader)({
+const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
     padding: "8px 0px",
-    "&:hover": {
-        background: "#333",
-    },
     "& .MuiCardHeader-title": {
-        color: "rgba(255, 255, 255, 1)",
         fontSize: "1.1rem",
         fontWeight: "500",
         textTransform: "none",
@@ -26,7 +22,6 @@ const StyledCardHeader = styled(CardHeader)({
         whiteSpace: "nowrap",
     },
     "& .MuiCardHeader-subheader": {
-        color: "rgba(255, 255, 255, 0.4)",
         fontSize: "0.9rem",
         overflow: "hidden",
         textOverflow: "ellipsis",
@@ -44,30 +39,18 @@ const StyledCardHeader = styled(CardHeader)({
         minWidth: "0px",
         flexShrink: 1,
     },
-});
+}));
 
-const StyledCard = styled(Card)({
-    backgroundColor: "#262626",
-    "&:hover": {
-        background: "#333",
-    },
+const StyledCard = styled(Card)(({ theme }) => ({
     "& .MuiBadge-badge": {
         "@media (min-width:601px)": {
             display: "none",
         },
     },
-});
-
-const StyledBugDynamicIcon = styled(BugDynamicIcon)(({ theme }) => ({
-    color: theme.palette.primary.main,
 }));
 
 const StyledLink = styled(Link)({
-    color: "#cccccc",
     textDecoration: "none",
-    "&:hover": {
-        color: "#fff",
-    },
 });
 
 const StyledCardContent = styled(CardContent)({
@@ -139,7 +122,7 @@ const HomeTile = ({ panel }) => {
                                     horizontal: "right",
                                 }}
                             >
-                                <StyledBugDynamicIcon iconName={panel._module.icon} />
+                                <BugDynamicIcon iconName={panel._module.icon} />
                             </BadgeWrapper>
                         }
                         action={

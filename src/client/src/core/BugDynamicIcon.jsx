@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Icons from "@mui/icons-material/";
 import * as MDIIcons from "mdi-material-ui";
+import { useTheme } from "@mui/material/styles";
 
 function upperFirst(string) {
     return string.slice(0, 1).toUpperCase() + string.slice(1, string.length);
@@ -20,7 +21,13 @@ function fixIconNames(string) {
     return name;
 }
 
-export default function BugDynamicIcon({ iconName, color = "#ffffff" }) {
+export default function BugDynamicIcon({ iconName, color }) {
+    const theme = useTheme();
+
+    if (!color) {
+        color = theme.palette.text.primary;
+    }
+
     const isMDI = (name) => {
         if (name.split("-")[0] === "mdi") {
             return true;

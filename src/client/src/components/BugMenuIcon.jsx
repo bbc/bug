@@ -8,8 +8,10 @@ import ListItemText from "@mui/material/ListItemText";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import useSounds from "@hooks/Sounds";
+import { useTheme } from "@mui/material/styles";
 
 const BugMenuIcon = () => {
+    const theme = useTheme();
     const [info, setInfo] = useState();
     const click = useSounds("/sounds/switch-on.mp3");
 
@@ -20,7 +22,7 @@ const BugMenuIcon = () => {
     return (
         <ListItem button component={Link} onClick={click} to={`/system/about`}>
             <ListItemIcon sx={{ padding: "2px" }}>
-                <FontAwesomeIcon size="lg" icon={faBug} />
+                <FontAwesomeIcon color={theme.palette.text.primary} size="lg" icon={faBug} />
             </ListItemIcon>
             <ListItemText
                 primary="Bug"

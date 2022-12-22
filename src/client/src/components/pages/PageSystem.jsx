@@ -4,20 +4,13 @@ import pageTitleSlice from "@redux/pageTitleSlice";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import PeopleIcon from "@mui/icons-material/People";
-import SettingsIcon from "@mui/icons-material/Settings";
-import SecurityIcon from "@mui/icons-material/Security";
-import SystemUpdateAltIcon from "@mui/icons-material/SystemUpdateAlt";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import InfoIcon from "@mui/icons-material/Info";
-import ReceiptIcon from "@mui/icons-material/Receipt";
-import DvrIcon from "@mui/icons-material/Dvr";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
-import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import { useTheme } from "@mui/material/styles";
+
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 const StyledList = styled(List)(({ theme }) => ({
@@ -36,12 +29,13 @@ const NavIcon = () => (
             minWidth: "auto",
         }}
     >
-        <ChevronRightIcon />
+        <BugDynamicIcon iconName={"ChevronRight"} />
     </ListItemIcon>
 );
 
 export default function PageSystem() {
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     useEffect(() => {
         dispatch(pageTitleSlice.actions.set("System"));
@@ -52,7 +46,7 @@ export default function PageSystem() {
             <StyledList>
                 <ListItem button component={Link} to={`/system/about`}>
                     <ListItemIcon>
-                        <FontAwesomeIcon size="lg" icon={faBug} />
+                        <FontAwesomeIcon color={theme.palette.text.primary} size="lg" icon={faBug} />
                     </ListItemIcon>
                     <ListItemText
                         primary="About BUG"
@@ -62,7 +56,7 @@ export default function PageSystem() {
                 </ListItem>
                 <ListItem button component={Link} to={`/system/info`}>
                     <ListItemIcon>
-                        <DvrIcon />
+                        <BugDynamicIcon iconName={"Dvr"} />
                     </ListItemIcon>
                     <ListItemText
                         primary="System Information"
@@ -74,14 +68,14 @@ export default function PageSystem() {
             <StyledList>
                 <ListItem button component={Link} to={`/system/configuration`}>
                     <ListItemIcon>
-                        <SettingsIcon />
+                        <BugDynamicIcon iconName={"Settings"} />
                     </ListItemIcon>
                     <ListItemText primary="Global Configuration" secondary="Configure global settings and options" />
                     <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/panels`}>
                     <ListItemIcon>
-                        <DashboardIcon />
+                        <BugDynamicIcon iconName={"Dashboard"} />
                     </ListItemIcon>
                     <ListItemText primary="Panels" secondary="Configure and maintain the panels on this BUG" />
                     <NavIcon />
@@ -90,7 +84,7 @@ export default function PageSystem() {
             <StyledList>
                 <ListItem button component={Link} to={`/system/users`}>
                     <ListItemIcon>
-                        <PeopleIcon />
+                        <BugDynamicIcon iconName={"People"} />
                     </ListItemIcon>
                     <ListItemText
                         primary="Users"
@@ -100,7 +94,7 @@ export default function PageSystem() {
                 </ListItem>
                 <ListItem button component={Link} to={`/system/security`}>
                     <ListItemIcon>
-                        <SecurityIcon />
+                        <BugDynamicIcon iconName={"Security"} />
                     </ListItemIcon>
                     <ListItemText primary="Security" secondary="Configure authentication methods and options" />
                     <NavIcon />
@@ -109,7 +103,7 @@ export default function PageSystem() {
             <StyledList>
                 <ListItem button component={Link} to={`/system/backup`}>
                     <ListItemIcon>
-                        <SettingsBackupRestoreIcon />
+                        <BugDynamicIcon iconName={"SettingsBackupRestore"} />
                     </ListItemIcon>
                     <ListItemText
                         primary="Backup & Restore"
@@ -119,21 +113,21 @@ export default function PageSystem() {
                 </ListItem>
                 <ListItem button component={Link} to={`/system/software`}>
                     <ListItemIcon>
-                        <SystemUpdateAltIcon />
+                        <BugDynamicIcon iconName={"SystemUpdateAlt"} />
                     </ListItemIcon>
                     <ListItemText primary="Software" secondary="View and install available software updates" />
                     <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/health`}>
                     <ListItemIcon>
-                        <InfoIcon />
+                        <BugDynamicIcon iconName={"Info"} />
                     </ListItemIcon>
                     <ListItemText primary="System Health" secondary="CPU, RAM and disk information" />
                     <NavIcon />
                 </ListItem>
                 <ListItem button component={Link} to={`/system/logs`}>
                     <ListItemIcon>
-                        <ReceiptIcon />
+                        <BugDynamicIcon iconName={"Receipt"} />
                     </ListItemIcon>
                     <ListItemText primary="Logs" secondary="View application and module logs" />
                     <NavIcon />

@@ -14,8 +14,8 @@ const theme = (selectedTheme = "dark") => {
                 },
 
                 secondary: {
-                    main: "#888888",
-                    hover: "#777777",
+                    main: "#212121",
+                    hover: "#3a3a3a",
                 },
 
                 tertiary: {
@@ -56,6 +56,7 @@ const theme = (selectedTheme = "dark") => {
 
                 text: {
                     primary: "rgba(255, 255, 255, 0.7)",
+                    secondary: "rgba(255, 255, 255, 0.5)",
                 },
 
                 menu: {
@@ -77,12 +78,12 @@ const theme = (selectedTheme = "dark") => {
 
             primary: {
                 main: "rgba(0, 0, 0, 0.87)",
-                hover: "#2e6da4",
+                hover: "#3e97e0",
             },
 
             secondary: {
-                main: "rgba(0, 0, 0, 0.6)",
-                hover: "#777777",
+                main: "#5e5e5e",
+                hover: "#aaaaaa",
             },
 
             tertiary: {
@@ -107,7 +108,7 @@ const theme = (selectedTheme = "dark") => {
             },
 
             appbar: {
-                default: "#2c4a62",
+                default: "#3e97e0",
             },
 
             background: {
@@ -122,15 +123,16 @@ const theme = (selectedTheme = "dark") => {
             },
 
             text: {
-                primary: "rgba(0, 0, 0, 0.87)",
+                primary: "#212121",
+                secondary: "2e6da4",
             },
 
             menu: {
-                main: "#163550",
+                main: "#3e97e0",
             },
 
             default: {
-                main: "#ffffff",
+                main: "#212121",
             },
 
             info: {
@@ -150,6 +152,13 @@ const theme = (selectedTheme = "dark") => {
             },
         },
         components: {
+            MuiSvgIcon: {
+                styleOverrides: {
+                    root: {
+                        fill: "text.primary",
+                    },
+                },
+            },
             MuiPaper: {
                 styleOverrides: {
                     root: {
@@ -176,7 +185,7 @@ const theme = (selectedTheme = "dark") => {
                 styleOverrides: {
                     root: {
                         "& .MuiTableCell-head": {
-                            backgroundColor: "#212121",
+                            backgroundColor: "appbar.default",
                         },
                     },
                 },
@@ -184,7 +193,6 @@ const theme = (selectedTheme = "dark") => {
             MuiMenuItem: {
                 styleOverrides: {
                     root: {
-                        color: "#ffffff",
                         height: 41,
                     },
                 },
@@ -193,7 +201,6 @@ const theme = (selectedTheme = "dark") => {
                 styleOverrides: {
                     primary: {
                         fontSize: "0.875rem",
-                        color: "#ffffff",
                     },
                 },
             },
@@ -210,16 +217,20 @@ const theme = (selectedTheme = "dark") => {
                     root: {
                         justifyContent: "flex-end",
                         borderTopWidth: 1,
-                        borderTopColor: "#181818",
+                        borderTopColor: "background.default",
                         borderTopStyle: "solid",
                         padding: "16px",
-                        backgroundColor: "#212121",
+                        backgroundColor: "secondary.default",
+                        hover: "secondary.hover",
                     },
                     title: {
                         fontSize: "0.875rem",
-                        color: "rgba(255, 255, 255, 0.7)",
+                        color: "text.primary",
                         fontWeight: 500,
                         textTransform: "uppercase",
+                    },
+                    subheader: {
+                        color: "text.secondary",
                     },
                 },
             },
@@ -348,7 +359,7 @@ const theme = (selectedTheme = "dark") => {
                         },
                     },
                     paper: {
-                        backgroundColor: "#212121",
+                        backgroundColor: "appbar.default",
                     },
                     option: {
                         height: 41,

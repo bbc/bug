@@ -6,9 +6,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import HomeIcon from "@mui/icons-material/Home";
-import SettingsIcon from "@mui/icons-material/Settings";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import BugLoading from "@core/BugLoading";
 import BugMenuIcon from "@components/BugMenuIcon";
@@ -257,7 +254,7 @@ const Menu = ({ showGroups = true }) => {
                                     }}
                                 >
                                     <ListItemIcon>
-                                        <HomeIcon />
+                                        <BugDynamicIcon iconName={"Home"} />
                                     </ListItemIcon>
                                     <ListItemText primary="Home" />
                                 </ListItem>
@@ -279,7 +276,7 @@ const Menu = ({ showGroups = true }) => {
                                         }}
                                     >
                                         <ListItemIcon>
-                                            <SettingsIcon />
+                                            <BugDynamicIcon iconName={"Settings"} />
                                         </ListItemIcon>
                                         <ListItemText primary="System" />
                                     </ListItem>
@@ -294,7 +291,7 @@ const Menu = ({ showGroups = true }) => {
                                         }}
                                     >
                                         <ListItemIcon>
-                                            <DashboardIcon />
+                                            <BugDynamicIcon iconName={"Dashboard"} />
                                         </ListItemIcon>
                                         <ListItemText primary="Panels" />
                                     </ListItem>
