@@ -12,15 +12,16 @@ module.exports = async (hostId) => {
     const hostsCollection = await mongoCollection("hosts");
 
     if (config && config.hosts[hostId]) {
+        const query = { hostId: hostId };
+
         //Get current entry
-        const host = await hostsCollection.findOne({ hostId: hostId });
+        const host = await hostsCollection.findOne(query);
         let acknowledged = true;
         if (host?.acknowledged) {
             acknowledged = false;
         }
 
         //Update database entry
-        const query = { hostId: hostId };
         const update = {
             $set: {
                 timestamp: new Date(),
