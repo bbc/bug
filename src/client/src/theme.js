@@ -39,14 +39,10 @@ const theme = (selectedTheme = "dark") => {
                     hover: "rgb(55,55,55)",
                 },
 
-                appbar: {
-                    default: "#212121",
-                },
-
                 background: {
                     default: "#181818",
                     paper: "#262626",
-                    hover: "#333",
+                    hover: "#333333",
                 },
 
                 success: {
@@ -64,7 +60,7 @@ const theme = (selectedTheme = "dark") => {
                 },
 
                 default: {
-                    main: "#ffffff",
+                    main: "#ededed",
                 },
 
                 info: {
@@ -77,13 +73,13 @@ const theme = (selectedTheme = "dark") => {
             mode: "light",
 
             primary: {
-                main: "rgba(0, 0, 0, 0.87)",
-                hover: "#3e97e0",
+                main: "#2f73aa",
+                hover: "#3687c4",
             },
 
             secondary: {
-                main: "#5e5e5e",
-                hover: "#aaaaaa",
+                main: "#bebebe",
+                hover: "#c8d0d7",
             },
 
             tertiary: {
@@ -107,13 +103,9 @@ const theme = (selectedTheme = "dark") => {
                 hover: "rgb(55,55,55)",
             },
 
-            appbar: {
-                default: "#3e97e0",
-            },
-
             background: {
-                default: "#fff",
-                paper: "#fff",
+                default: "#efefef",
+                paper: "#dddddd",
                 hover: "#333",
             },
 
@@ -128,7 +120,7 @@ const theme = (selectedTheme = "dark") => {
             },
 
             menu: {
-                main: "#3e97e0",
+                main: "#2f73aa",
             },
 
             default: {
@@ -140,6 +132,7 @@ const theme = (selectedTheme = "dark") => {
             },
         };
     };
+
     return createTheme({
         breakpoints: {
             values: {
@@ -152,13 +145,6 @@ const theme = (selectedTheme = "dark") => {
             },
         },
         components: {
-            MuiSvgIcon: {
-                styleOverrides: {
-                    root: {
-                        fill: "text.primary",
-                    },
-                },
-            },
             MuiPaper: {
                 styleOverrides: {
                     root: {
@@ -170,23 +156,15 @@ const theme = (selectedTheme = "dark") => {
             MuiTableCell: {
                 styleOverrides: {
                     root: {
+                        borderColor: getPalette(selectedTheme).background.default,
+                        borderBottomStyle: "solid",
+                        borderBottomWidth: "1px",
                         padding: "8px 12px",
-                        borderBottom: "1px solid #181818",
                     },
                     head: {
                         textTransform: "uppercase",
-                        color: "rgba(255, 255, 255, 0.5)",
                         fontSize: "0.875rem",
                         padding: "12px 12px",
-                    },
-                },
-            },
-            MuiTableHead: {
-                styleOverrides: {
-                    root: {
-                        "& .MuiTableCell-head": {
-                            backgroundColor: "appbar.default",
-                        },
                     },
                 },
             },
@@ -208,7 +186,7 @@ const theme = (selectedTheme = "dark") => {
                 styleOverrides: {
                     root: {
                         minWidth: 44,
-                        color: "#ffffff",
+                        color: getPalette(selectedTheme).text.primary,
                     },
                 },
             },
@@ -216,21 +194,19 @@ const theme = (selectedTheme = "dark") => {
                 styleOverrides: {
                     root: {
                         justifyContent: "flex-end",
-                        borderTopWidth: 1,
-                        borderTopColor: "background.default",
-                        borderTopStyle: "solid",
+                        marginTop: 1,
                         padding: "16px",
-                        backgroundColor: "secondary.default",
-                        hover: "secondary.hover",
+                        "&:hover": {
+                            backgroundColor: getPalette(selectedTheme).secondary.hover,
+                        },
                     },
                     title: {
                         fontSize: "0.875rem",
-                        color: "text.primary",
                         fontWeight: 500,
                         textTransform: "uppercase",
                     },
                     subheader: {
-                        color: "text.secondary",
+                        color: getPalette(selectedTheme).text.secondary,
                     },
                 },
             },
@@ -258,8 +234,10 @@ const theme = (selectedTheme = "dark") => {
                     },
                     root: {
                         "& .MuiButton-outlinedPrimary": {
-                            color: "rgba(255, 255, 255, 0.8)",
-                            border: "1px solid rgba(255, 255, 255, 0.3)",
+                            color: getPalette(selectedTheme).text.primary,
+                            borderColor: getPalette(selectedTheme).text.primary,
+                            borderBottomStyle: "solid",
+                            borderBottomWidth: "1px",
                             marginLeft: "0.5rem",
                         },
                         "& .MuiButton-containedPrimary": {
@@ -322,7 +300,7 @@ const theme = (selectedTheme = "dark") => {
                             marginBottom: 2,
                         },
                         "&.MuiMenuItem-root.Mui-selected": {
-                            backgroundColor: "#163550",
+                            backgroundColor: getPalette(selectedTheme).text.secondary,
                         },
                     },
                 },
@@ -352,14 +330,6 @@ const theme = (selectedTheme = "dark") => {
                         "& .MuiOutlinedInput-root": {
                             padding: "6.5px",
                         },
-                    },
-                    listbox: {
-                        "& .MuiAutocomplete-option.Mui-focused": {
-                            backgroundColor: "#163550 !important",
-                        },
-                    },
-                    paper: {
-                        backgroundColor: "appbar.default",
                     },
                     option: {
                         height: 41,
@@ -397,14 +367,6 @@ const theme = (selectedTheme = "dark") => {
                         "& .MuiAlert-icon": {
                             color: "#fff",
                         },
-                    },
-                },
-            },
-            MuiDialogContent: {
-                styleOverrides: {
-                    root: {
-                        // padding: 8,
-                        // overflowY: "visible"
                     },
                 },
             },

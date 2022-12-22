@@ -217,7 +217,7 @@ export default function PageLogin() {
                             >
                                 <Tabs
                                     sx={{
-                                        backgroundColor: "appbar.default",
+                                        backgroundColor: "menu.main",
                                     }}
                                     value={tabIndex}
                                     indicatorColor="primary"

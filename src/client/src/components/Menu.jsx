@@ -27,7 +27,7 @@ const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;
 let firstRun = true;
 
-const MenuDivider = () => <Divider sx={{ backgroundColor: "#181818", margin: 0 }} />;
+const MenuDivider = () => <Divider sx={{ backgroundColor: "background.default", margin: 0 }} />;
 
 const Menu = ({ showGroups = true }) => {
     const panelList = useSelector((state) => state.panelList);

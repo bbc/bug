@@ -23,7 +23,7 @@ export default function SettingsHandler() {
         });
 
         system.on("settings", (result) => {
-            // console.log(`${system.id}: system - settings event`, result);
+            console.log(`${system.id}: system - settings event`, result);
             dispatch(settingsSlice.actions[result["status"]](result));
         });
 

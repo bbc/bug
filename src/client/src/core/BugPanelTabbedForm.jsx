@@ -51,7 +51,7 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
                     sx={{
                         width: "100%",
                         position: "absolute",
-                        backgroundColor: "appbar.default",
+                        backgroundColor: "menu.main",
                     }}
                 >
                     {onClose && (

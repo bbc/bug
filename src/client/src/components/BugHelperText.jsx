@@ -5,7 +5,7 @@ const BugHelperText = ({ children }) => {
     return (
         <Box
             sx={{
-                color: "rgba(255, 255, 255, 0.7)",
+                color: "text.primary",
                 margin: "0",
                 fontSize: "0.75rem",
                 marginTop: "3px",

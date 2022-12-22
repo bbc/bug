@@ -4,16 +4,19 @@ import { Controller } from "react-hook-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import BugHelperText from "@components/BugHelperText";
+import { useTheme } from "@mui/material/styles";
 
 const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, rules, helperText, ...props }) => {
+    const theme = useTheme();
+
     return (
         <>
             <FormControl
                 {...props}
                 sx={{
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.7)",
+                    borderBottom: `1px solid ${theme.palette.secondary.main}`,
                     "&:hover": {
-                        borderBottom: "1px solid #fff",
+                        borderBottom: `2px solid ${theme.palette.secondary.main}`,
                     },
                 }}
             >
@@ -22,7 +25,7 @@ const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, rules, 
                         <FormControlLabel
                             sx={{
                                 "& .MuiTypography-root": {
-                                    color: "rgba(255, 255, 255, 1)",
+                                    color: "text.primary",
                                     fontSize: "0.875rem",
                                     fontWeight: "400",
                                 },

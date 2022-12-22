@@ -17,7 +17,7 @@ const StyledList = styled(List)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     maxWidth: "550px",
     "& .MuiListItem-root": {
-        borderBottom: "1px solid #121212",
+        borderBottom: `1px solid ${theme.palette.background.default}`,
     },
     padding: "0px",
     margin: "8px auto",
