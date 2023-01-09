@@ -14,6 +14,7 @@ export default {
                 It's fully customisable and also features drag-and-drop capabilities.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     argTypes: {
@@ -114,6 +115,16 @@ export default {
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

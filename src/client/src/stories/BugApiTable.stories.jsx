@@ -39,59 +39,23 @@ export default {
             action: "rowClicked",
             description: "The function to call when a row is clicked. Passes event/item as arguments",
         },
+        apiUrl: {
+            type: { name: "string", required: true },
+            description: "The URL of the API to call. Must support POST and filtering/sorting if required",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+            control: {
+                disable: true,
+            },
+        },
         columns: {
             type: { name: "data", required: true },
             description: "An array of column definitions - see **BugApiTableColumn** for details",
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: "[]" },
-            },
-            control: {
-                disable: true,
-            },
-        },
-        menuItems: {
-            type: "data",
-            description: "An array of menu items to be shown via the context menu - see **BugMenuItems** for details",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-            control: {
-                disable: true,
-            },
-        },
-        sortable: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the table is sortable",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-            control: {
-                disable: true,
-            },
-        },
-        filterable: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the table is filterable",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-            control: {
-                disable: true,
-            },
-        },
-        defaultSortIndex: {
-            type: { name: "number" },
-            description: "The index of the column to sort by default",
-            defaultValue: 0,
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: 0 },
             },
             control: {
                 disable: true,
@@ -109,6 +73,40 @@ export default {
                 disable: true,
             },
         },
+        defaultSortIndex: {
+            type: { name: "number" },
+            description: "The index of the column to sort by default",
+            defaultValue: 0,
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: 0 },
+            },
+            control: {
+                disable: true,
+            },
+        },
+        filterable: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether the table is filterable",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+            control: {
+                disable: true,
+            },
+        },
+        forceRefresh: {
+            type: "number",
+            description: "Change the value of this to force a refresh of the table data source",
+            table: {
+                type: { summary: "number" },
+            },
+            control: {
+                disable: true,
+            },
+        },
         hideHeader: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -118,14 +116,37 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        showNavArrow: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to show a nav arrow on the right of each row to indicate that navigation is possible",
+        highlightColor: {
+            options: ["primary.main", "secondary.main", "error.main", "success.main"],
+            defaultValue: "primary.main",
+            description: "The color to use for the text in the control - see MaterialUI for options",
+            control: { type: "select" },
             table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                type: { summary: "string" },
+                defaultValue: { summary: "primary.main" },
             },
+        },
+        highlightRow: {
+            type: { name: "function" },
+            description:
+                "A function which passes the item and expects a boolean response - whether or not to highlight the row.",
+            table: {
+                type: { summary: "function" },
+            },
+        },
+        menuItems: {
+            type: "data",
+            description: "An array of menu items to be shown via the context menu - see **BugMenuItems** for details",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "[]" },
+            },
+            control: {
+                disable: true,
+            },
+        },
+        mockApiData: {
+            table: { disable: true },
         },
         noData: {
             type: "data",
@@ -133,6 +154,17 @@ export default {
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: "null" },
+            },
+            control: {
+                disable: true,
+            },
+        },
+        refreshInterval: {
+            type: { name: "number", required: false },
+            description: "How often to poll the API endpoint in ms",
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: "2500" },
             },
             control: {
                 disable: true,
@@ -146,28 +178,35 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        apiUrl: {
-            type: { name: "string", required: true },
-            description: "The URL of the API to call. Must support POST and filtering/sorting if required",
+        showNavArrow: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether to show a nav arrow on the right of each row to indicate that navigation is possible",
             table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        sortable: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether the table is sortable",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
             },
             control: {
                 disable: true,
             },
         },
-        mockApiData: {
-            table: { disable: true },
-        },
-        forceRefresh: {
-            type: "number",
-            description: "Change the value of this to force a refresh of the table data source",
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
             table: {
-                type: { summary: "number" },
-            },
-            control: {
-                disable: true,
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

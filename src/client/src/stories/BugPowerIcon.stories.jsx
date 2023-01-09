@@ -15,6 +15,15 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "6rem" }}>{Story()}</div>],
 
     argTypes: {
+        color: {
+            control: "color",
+            defaultValue: "primary.main",
+            description: "The icon colour when enabled - see MaterialUI for options",
+            table: {
+                type: { summary: "color" },
+                defaultValue: { summary: "primary.main" },
+            },
+        },
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -22,6 +31,16 @@ export default {
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

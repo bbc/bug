@@ -9,27 +9,19 @@ export default {
                 component: `A gauge control which can be used in a BUG module to display temperature, disk space, etc.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
-        title: {
-            type: { name: "string" },
-            defaultValue: "Bug Gauge",
-            description: "Title to be displayed at the top of the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "" },
-            },
-        },
-        value: {
-            type: { name: "number" },
-            description: "Value of the gauge",
-            defaultValue: 50,
+        decimalPlaces: {
+            type: "number",
+            description: "The number of decimal places to be displayed",
+            defaultValue: 2,
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: 0 },
+                defaultValue: { summary: 2 },
             },
             control: {
                 type: "number",
@@ -47,6 +39,25 @@ export default {
                 type: "number",
             },
         },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
+        title: {
+            type: { name: "string" },
+            defaultValue: "Bug Gauge",
+            description: "Title to be displayed at the top of the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "" },
+            },
+        },
         unit: {
             type: { name: "string" },
             description: "The unit string to be displayed after the value, eg. %",
@@ -56,13 +67,13 @@ export default {
                 defaultValue: { summary: "%" },
             },
         },
-        decimalPlaces: {
-            type: "number",
-            description: "The number of decimal places to be displayed",
-            defaultValue: 2,
+        value: {
+            type: { name: "number" },
+            description: "Value of the gauge",
+            defaultValue: 50,
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: 2 },
+                defaultValue: { summary: 0 },
             },
             control: {
                 type: "number",

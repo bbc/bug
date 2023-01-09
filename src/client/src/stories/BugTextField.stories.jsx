@@ -15,6 +15,15 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
 
     argTypes: {
+        changeOnBlur: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether to wait until the control loses focus before emitting a changed event",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -55,7 +64,7 @@ export default {
         max: {
             type: { name: "number" },
             defaultValue: null,
-            description: "Enforces a maximum value for the control (NOTE - only works with 'numeric' is enabled)",
+            description: "Enforces a maximum value for the control (NOTE - only works if 'numeric' is enabled)",
             table: {
                 type: { summary: "number" },
                 defaultValue: { summary: null },
@@ -73,7 +82,7 @@ export default {
         min: {
             type: { name: "number" },
             defaultValue: null,
-            description: "Enforces a minimum value for the control (NOTE - only works with 'numeric' is enabled)",
+            description: "Enforces a minimum value for the control (NOTE - only works if 'numeric' is enabled)",
             table: {
                 type: { summary: "number" },
                 defaultValue: { summary: null },
@@ -99,6 +108,25 @@ export default {
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
+        type: {
+            type: { name: "string", required: false },
+            defaultValue: "text",
+            description: "HTML5 input type",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "text" },
             },
         },
         variant: {

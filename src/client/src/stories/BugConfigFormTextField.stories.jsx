@@ -68,10 +68,67 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        error: {
+            type: { name: "boolean", required: false },
+            defaultValue: false,
+            description:
+                "This is usually handled by the parent BugForm but can also be set manually. Change the helperText to add additional error information.",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        filter: {
+            type: { name: "string", required: false },
+            defaultValue: null,
+            description:
+                "Can either be a callback function (which is passed a value) or a regular expression which removes the specified characters.",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
         fullWidth: {
             type: { name: "boolean" },
             defaultValue: true,
             description: "Expands the control to fill available horizontal space",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        helperText: {
+            type: { name: "string", required: false },
+            defaultValue: "Tell me something interesting",
+            description: "Optional helper text to be shown below the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
+        max: {
+            type: { name: "number" },
+            defaultValue: null,
+            description: "Enforces a maximum value for the control (NOTE - only works if 'numeric' is enabled)",
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: null },
+            },
+        },
+        min: {
+            type: { name: "number" },
+            defaultValue: null,
+            description: "Enforces a minimum value for the control (NOTE - only works if 'numeric' is enabled)",
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: null },
+            },
+        },
+        numeric: {
+            type: { name: "boolean", required: false },
+            defaultValue: false,
+            description:
+                "Enables support for min/max rules, and enforces only numerical values when control loses focus",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
@@ -87,25 +144,6 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        error: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description:
-                "This is usually handled by the parent BugForm but can also be set manually. Change the helperText to add additional error information.",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        helperText: {
-            type: { name: "string", required: false },
-            defaultValue: "Tell me something interesting",
-            description: "Optional helper text to be shown below the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
         supportsValidation: {
             type: { name: "boolean", required: false },
             defaultValue: false,
@@ -116,32 +154,23 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        numeric: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
             description:
-                "Enables support for min/max rules, and enforces only numerical values when control loses focus",
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
             table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
-        min: {
-            type: { name: "number" },
-            defaultValue: null,
-            description: "Enforces a minimum value for the control (NOTE - only works with 'numeric' is enabled)",
+        type: {
+            type: { name: "string", required: false },
+            defaultValue: "text",
+            description: "HTML5 input type",
             table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
-            },
-        },
-        max: {
-            type: { name: "number" },
-            defaultValue: null,
-            description: "Enforces a maximum value for the control (NOTE - only works with 'numeric' is enabled)",
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
+                type: { summary: "string" },
+                defaultValue: { summary: "text" },
             },
         },
         variant: {
@@ -152,6 +181,15 @@ export default {
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "standard" },
+            },
+        },
+        InputProps: {
+            type: { name: "data" },
+            defaultValue: {},
+            description: "Optional React props object to be passed to the Input control",
+            table: {
+                type: { summary: "object" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

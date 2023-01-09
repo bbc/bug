@@ -110,6 +110,16 @@ export default {
         mockApiData: {
             table: { disable: true },
         },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
     },
 };
 
@@ -125,10 +135,8 @@ export const MyBugConfigFormMultiPanelSelect = (args) => {
                         <BugConfigFormMultiPanelSelect
                             name={args.name}
                             control={control}
-                            defaultValue={args.defaultValue}
                             label={args.label}
                             error={args.error}
-                            fullWidth
                             options={args.options}
                             defaultValue={args.defaultValue}
                             helperText={args.helperText}

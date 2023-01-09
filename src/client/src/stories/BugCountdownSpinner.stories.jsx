@@ -9,6 +9,7 @@ export default {
                 component: `A circular progress icon which counts down over a specified duration.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
     argTypes: {
         color: {
@@ -28,6 +29,16 @@ export default {
             table: {
                 type: { summary: "number" },
                 defaultValue: { summary: 5000 },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

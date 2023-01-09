@@ -9,6 +9,7 @@ export default {
                 component: `A control which adds audio levels to either side of an image`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
@@ -21,6 +22,16 @@ export default {
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "" },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
         leftLevel: {

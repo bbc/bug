@@ -14,6 +14,7 @@ export default {
                 This component also exports <BugForm.Header>, <BugForm.Body> and <BugForm.Actions>`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],

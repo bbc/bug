@@ -9,6 +9,7 @@ export default {
                 component: `A placeholder control to use when a BugAutoComplete control is loading`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],

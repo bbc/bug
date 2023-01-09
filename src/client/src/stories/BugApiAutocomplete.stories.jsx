@@ -23,6 +23,7 @@ export default {
                 </>
             ),
         },
+        controls: { sort: "requiredFirst" },
     },
     argTypes: {
         onChange: { action: "changed" },

@@ -9,6 +9,7 @@ export default {
                 component: `A spinning icon to be displayed when items are loading.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
     argTypes: {
         height: {
@@ -18,6 +19,16 @@ export default {
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "100vh" },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

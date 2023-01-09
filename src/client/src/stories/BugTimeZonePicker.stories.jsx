@@ -46,6 +46,16 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
         value: {
             type: { name: "data", required: false },
             defaultValue: "(UTC) Edinburgh, London",

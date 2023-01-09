@@ -10,33 +10,53 @@ export default {
                     Can optionally redirect user to panel config page if panelId property is provided.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
     argTypes: {
-        title: {
-            type: { name: "string" },
-            defaultValue: "No data found",
-            description: "Main text to be displayed in the alert",
-            control: {
-                type: "text",
-            },
-        },
         message: {
             type: { name: "string" },
             defaultValue: "",
             description: "Additional message to be displayed",
-            control: {
-                type: "text",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "" },
             },
         },
         panelId: {
             type: { name: "string" },
             description: "Pass in a valid panel id to be used to navigate to the config page",
             defaultValue: "",
+            control: {
+                disable: true,
+            },
         },
         showConfigButton: {
             type: { name: "boolean" },
-            control: { type: "boolean" },
             defaultValue: true,
+            description: "Whether to show the 'configure' action button",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: true },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
+        title: {
+            type: { name: "string" },
+            defaultValue: "No data found",
+            description: "Main text to be displayed in the alert",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "" },
+            },
         },
     },
 };

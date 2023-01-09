@@ -50,6 +50,16 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
         timeout: {
             type: { name: "number" },
             description: "Duration to wait (in milliseconds) before reverting to previous state",

@@ -14,6 +14,7 @@ export default {
                 See https://mui.com/components/cards/ for more details`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
@@ -28,6 +29,25 @@ export default {
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
+            },
+        },
+        fullHeight: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether to expand height of card to fill siblings in the same row",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

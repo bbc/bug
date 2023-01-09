@@ -9,6 +9,7 @@ export default {
                 component: `A control for displaying content such as tags<br />`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],

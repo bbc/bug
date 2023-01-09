@@ -170,6 +170,17 @@ export default {
                 category: "Filtering",
             },
         },
+        textAlign: {
+            type: { name: "string" },
+            description: "A valid HTML text-align value",
+            control: {
+                disable: true,
+            },
+            table: {
+                defaultValue: { summary: "start" },
+                category: "Layout",
+            },
+        },
     },
 };
 

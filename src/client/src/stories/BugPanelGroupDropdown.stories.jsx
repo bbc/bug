@@ -16,7 +16,15 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
 
     argTypes: {
-        variant: { table: { disable: true } },
+        fullWidth: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Expands the control to fill available horizontal space",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
         onChange: {
             type: { name: "function", required: true },
             defaultValue: {},
@@ -29,13 +37,14 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        fullWidth: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Expands the control to fill available horizontal space",
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
             table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
         value: {
@@ -47,6 +56,7 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        variant: { table: { disable: true } },
     },
 };
 

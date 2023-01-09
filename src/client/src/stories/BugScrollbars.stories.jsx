@@ -11,6 +11,7 @@ export default {
                 See https://github.com/RobPethick/react-custom-scrollbars-2 for more info.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", width: "200px", height: "200px" }}>{Story()}</div>],

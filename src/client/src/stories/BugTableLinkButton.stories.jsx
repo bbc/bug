@@ -24,6 +24,16 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        color: {
+            options: ["primary", "secondary"],
+            description: "The color type to display (primary, secondary)",
+            defaultValue: "primary",
+            control: { type: "select" },
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "primary" },
+            },
+        },
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -45,14 +55,14 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        color: {
-            options: ["primary", "secondary"],
-            description: "The color type to display (primary, secondary)",
-            defaultValue: "primary",
-            control: { type: "select" },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
             table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "primary" },
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

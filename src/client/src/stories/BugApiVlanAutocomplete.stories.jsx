@@ -12,9 +12,22 @@ export default {
                     Can be used with a simple array of strings, or with a custom object with a label and value properties.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
     argTypes: {
-        onChange: { action: "changed" },
+        onChange: {
+            type: { name: "function", required: true },
+            defaultValue: null,
+            description:
+                "This is called when the selection is changed. Passes event and an object containing untagged and tagged vlan results",
+            control: {
+                disable: true,
+            },
+            table: {
+                type: { summary: "function" },
+                defaultValue: { summary: null },
+            },
+        },
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -32,6 +45,16 @@ export default {
                 defaultValue: { summary: "[]" },
             },
         },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
         timeout: {
             type: { name: "number" },
             description: "Duration to wait (in seconds) before reverting to previous state",
@@ -40,7 +63,6 @@ export default {
                 defaultValue: { summary: 8000 },
             },
         },
-
         taggedValue: {
             type: { name: "data" },
             description: "An numerical array of tagged vlan IDs",

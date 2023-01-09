@@ -18,13 +18,13 @@ export default {
     ],
 
     argTypes: {
-        width: {
-            type: { name: "string", required: false },
-            defaultValue: "10rem",
-            description: "The width of the card - can be in any valid CSS unit",
+        gridLines: {
+            type: { name: "boolean", required: false },
+            defaultValue: true,
+            description: "Whether to show grid lines between each row",
             table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "10rem" },
+                type: { summary: "boolean" },
+                defaultValue: { summary: true },
             },
         },
         items: {
@@ -40,13 +40,23 @@ export default {
                 defaultValue: { summary: "[]" },
             },
         },
-        gridLines: {
-            type: { name: "boolean", required: false },
-            defaultValue: true,
-            description: "Whether to show grid lines between each row",
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
             table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: true },
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
+        width: {
+            type: { name: "string", required: false },
+            defaultValue: "10rem",
+            description: "The width of the card - can be in any valid CSS unit",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "10rem" },
             },
         },
     },

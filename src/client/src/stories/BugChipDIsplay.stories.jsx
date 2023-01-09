@@ -9,11 +9,23 @@ export default {
                 component: `A control for displaying content such as tags<br />`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
+        avatar: {
+            type: { name: "data" },
+            description: "An optional element containing an avatar image to display",
+            control: {
+                disable: true,
+            },
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: null },
+            },
+        },
         options: {
             type: { name: "data", required: true },
             description: "An array of strings to display inside the control",
@@ -21,6 +33,16 @@ export default {
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
     },

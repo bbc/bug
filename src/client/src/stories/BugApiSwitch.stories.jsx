@@ -11,6 +11,7 @@ export default {
                 If the value hasn't changed within the timeout period the control is re-enabled and the previous state loaded.`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
@@ -26,6 +27,17 @@ export default {
                 defaultValue: { summary: false },
             },
         },
+        color: {
+            options: ["primary", "secondary", "default"],
+            defaultValue: "primary",
+            description: "The color to pass to the Switch control - see MaterialUI for options",
+            control: { type: "select" },
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "primary" },
+            },
+        },
+
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -33,6 +45,16 @@ export default {
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
         timeout: {

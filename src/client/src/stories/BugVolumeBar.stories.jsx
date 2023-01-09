@@ -9,11 +9,21 @@ export default {
                 component: `A control which displays audio levels in a vertical bar`,
             },
         },
+        controls: { sort: "requiredFirst" },
     },
 
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
+        height: {
+            type: { name: "string", required: false },
+            defaultValue: "100px",
+            description: "The height of the control - can be in any valid CSS unit",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "100px" },
+            },
+        },
         max: {
             type: { name: "number", required: false },
             description: "The maximum level of the audio meter",
@@ -32,6 +42,16 @@ export default {
                 defaultValue: { summary: 0 },
             },
         },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
         value: {
             type: { name: "number", required: true },
             description: "The volume level of the audio meter",
@@ -48,15 +68,6 @@ export default {
             table: {
                 type: { summary: "number" },
                 defaultValue: { summary: "6px" },
-            },
-        },
-        height: {
-            type: { name: "string", required: false },
-            defaultValue: "100px",
-            description: "The height of the control - can be in any valid CSS unit",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "100px" },
             },
         },
     },

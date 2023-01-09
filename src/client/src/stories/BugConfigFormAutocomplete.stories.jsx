@@ -22,10 +22,60 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
 
     argTypes: {
-        name: {
-            type: { name: "string", required: true },
-            defaultValue: "control-name",
-            description: "Field name to use for this control eg 'tags' or 'categories'",
+        control: {
+            type: { name: "data", required: true },
+            defaultValue: {},
+            description: "This should be passed from the parent BugForm",
+            control: {
+                disable: true,
+            },
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: null },
+            },
+        },
+        defaultValue: {
+            type: { name: "data", required: false },
+            defaultValue: ["zebra"],
+            description:
+                "The selected value when the control is loaded. Can be an array of strings or objects with id and label properties.",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: null },
+            },
+        },
+        error: {
+            type: { name: "boolean", required: false },
+            defaultValue: false,
+            description:
+                "This is usually handled by the parent BugForm but can also be set manually. Change the helperText to add additional error information.",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        freeSolo: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether to allow 'free' text input",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        fullWidth: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Expands the control to fill available horizontal space",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        helperText: {
+            type: { name: "string", required: false },
+            defaultValue: "Select a number of animals",
+            description: "Optional helper text to be shown below the control",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
@@ -40,35 +90,22 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        helperText: {
-            type: { name: "string", required: false },
-            defaultValue: "Select a number of animals",
-            description: "Optional helper text to be shown below the control",
+        name: {
+            type: { name: "string", required: true },
+            defaultValue: "control-name",
+            description: "Field name to use for this control eg 'tags' or 'categories'",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
             },
         },
-        control: {
+        options: {
             type: { name: "data", required: true },
-            defaultValue: {},
-            description: "This should be passed from the parent BugForm",
-            control: {
-                disable: true,
-            },
+            description: "An array of available values to be selected",
+            defaultValue: ["zebra", "caterpillar", "horse"],
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: null },
-            },
-        },
-        error: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description:
-                "This is usually handled by the parent BugForm but can also be set manually. Change the helperText to add additional error information.",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
             },
         },
         rules: {
@@ -91,41 +128,14 @@ export default {
                 defaultValue: { summary: false },
             },
         },
-        defaultValue: {
-            type: { name: "data", required: false },
-            defaultValue: ["zebra"],
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
             description:
-                "The selected value when the control is loaded. Can be an array of strings or objects with id and label properties.",
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
             table: {
                 type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        options: {
-            type: { name: "data", required: true },
-            description: "An array of available values to be selected",
-            defaultValue: ["zebra", "caterpillar", "horse"],
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        freeSolo: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to allow 'free' text input",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        fullWidth: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Expands the control to fill available horizontal space",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "{}" },
             },
         },
     },
@@ -145,7 +155,6 @@ export const MyBugConfigFormAutocomplete = (args) => {
                             label={args.label}
                             error={args.error}
                             control={control}
-                            fullWidth
                             freeSolo={args.freeSolo}
                             sort={args.sort}
                             options={args.options}

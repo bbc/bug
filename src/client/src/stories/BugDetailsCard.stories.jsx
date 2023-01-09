@@ -16,46 +16,6 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
-        title: {
-            type: { name: "string", required: true },
-            defaultValue: "My Details Card",
-            description: "Text to show at the top of the card",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        width: {
-            type: { name: "string", required: false },
-            defaultValue: "10rem",
-            description: "The width of the card - can be in any valid CSS unit",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "10rem" },
-            },
-        },
-        items: {
-            type: { name: "data", required: true },
-            defaultValue: [
-                { name: "Voltage 1", value: "12.3 V" },
-                { name: "Voltage 2", value: "12.3 V" },
-            ],
-            description:
-                "An array of objects with name and value properties to display in the card. The value can be a string, or a React component",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-        },
-        collapsible: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description: "Whether the card can be collapsed. Cannot be used with the collapsible prop.",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
         closable: {
             type: { name: "boolean", required: false },
             defaultValue: false,
@@ -73,6 +33,56 @@ export default {
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
+            },
+        },
+        collapsible: {
+            type: { name: "boolean", required: false },
+            defaultValue: false,
+            description: "Whether the card can be collapsed. Cannot be used with the collapsible prop.",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
+        items: {
+            type: { name: "data", required: true },
+            defaultValue: [
+                { name: "Voltage 1", value: "12.3 V" },
+                { name: "Voltage 2", value: "12.3 V" },
+            ],
+            description:
+                "An array of objects with name and value properties to display in the card. The value can be a string, or a React component",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "[]" },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
+        title: {
+            type: { name: "string", required: true },
+            defaultValue: "My Details Card",
+            description: "Text to show at the top of the card",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
+        width: {
+            type: { name: "string", required: false },
+            defaultValue: "10rem",
+            description: "The width of the card - can be in any valid CSS unit",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "10rem" },
             },
         },
     },

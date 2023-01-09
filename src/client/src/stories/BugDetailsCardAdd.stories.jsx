@@ -16,13 +16,14 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
-        width: {
-            type: { name: "string", required: false },
-            defaultValue: "10rem",
-            description: "The width of the card - can be in any valid CSS unit",
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
             table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "10rem" },
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
             },
         },
         onAdd: {
@@ -32,6 +33,15 @@ export default {
             table: {
                 type: { summary: "function" },
                 defaultValue: { summary: null },
+            },
+        },
+        width: {
+            type: { name: "string", required: false },
+            defaultValue: "10rem",
+            description: "The width of the card - can be in any valid CSS unit",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "10rem" },
             },
         },
     },
