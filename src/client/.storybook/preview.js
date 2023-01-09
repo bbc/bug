@@ -16,7 +16,7 @@ export const decorators = [
                 <BugCustomDialogProvider>
                     <BugRenameDialogProvider>
                         <StyledEngineProvider injectFirst>
-                            <ThemeProvider theme={theme}>
+                            <ThemeProvider theme={theme()}>
                                 <Router>
                                     <Story />
                                 </Router>
@@ -41,8 +41,8 @@ export const decorators = [
                     backgroundColor: "#181818",
                 }}
             >
-                <MUIThemeProvider theme={theme}>
-                    <ThemeProvider theme={theme}>
+                <MUIThemeProvider theme={theme()}>
+                    <ThemeProvider theme={theme()}>
                         <>
                             <Story />
                         </>
