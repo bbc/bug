@@ -31,7 +31,6 @@ export default function UserEdit({ userId = null }) {
         handleSubmit,
         formState: { errors },
     } = useForm({});
-    const inputRef = React.useRef();
     const blankPassword = user !== null ? "*".repeat(user.passwordLength) : "";
     const { confirmDialog } = useBugConfirmDialog();
     const currentUser = useSelector((state) => state.user);
@@ -294,7 +293,6 @@ export default function UserEdit({ userId = null }) {
                                         fullWidth
                                         autoComplete="off"
                                         defaultValue={blankPassword}
-                                        inputRef={inputRef}
                                         type="password"
                                         label="Password (optional)"
                                         filter={(value) => {
