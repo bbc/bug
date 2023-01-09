@@ -7,7 +7,7 @@ nav_order: 2
 
 # Status Handling
 
-Modules should implement a status endpoint. This is used by Bug core to generate the coloured Alerts on the home page and toolbar.
+Modules should implement a status endpoint. This is used by Bug core to generate the coloured alerts on the home page and toolbar.
 
 It should be located at
 `/container/yourpanelid/status`
@@ -15,27 +15,33 @@ and have the following response:
 
 When working:
 
+```
+[]
+```
+
 When there are problems:
 
 ```
-{
-  "status": "success",
-  "data": [
-    {
-      "key": "staleleasesdata",
-      "message": [
-        "There is no recent router data for this device.",
-        "Check your connection and authentication settings."
-      ],
-      "type": "critical",
-      "timestamp": 1638349987832,
-      "flags": [
-        "restartPanel",
-        "configurePanel"
-      ]
-    }
-  ]
-}
+[
+  {
+    "status": "success",
+    "data": [
+      {
+        "key": "staleleasesdata",
+        "message": [
+          "There is no recent router data for this device.",
+          "Check your connection and authentication settings."
+        ],
+        "type": "critical",
+        "timestamp": 1638349987832,
+        "flags": [
+          "restartPanel",
+          "configurePanel"
+        ]
+      }
+    ]
+  }
+]
 ```
 
 The following fields should be included:

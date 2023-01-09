@@ -10,7 +10,7 @@ BUG's project structure is documented here - what types of files are in each fol
 ## /src/routes
 
 -   should contain route logic
--   if request params are needed, they should be taken out here
+-   if request params are needed, they should be extracted and passed from here
 -   no req or resp should be passed to services
 -   should return http error codes if problem
 -   no logging?
