@@ -8,6 +8,8 @@ nav_order: 1
 
 **Broadcast Universal Gateway**
 
+[![Backend](https://github.com/bbc/bug/actions/workflows/backend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/backend.yml) [![Frontend](https://github.com/bbc/bug/actions/workflows/frontend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/frontend.yml) [![BUG Deploy](https://github.com/bbc/bug/actions/workflows/docker.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/docker.yml) [![Documentation](https://github.com/bbc/bug/actions/workflows/documentation.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/documentation.yml)
+
 Control and monitor a wide range of equipment from a single web interface.
 
 You can run BUG on a server within your network. A single web page then allows you to add panels that control equipment. Examples include, network switches, video and audio codecs, video matrixes and many more.
