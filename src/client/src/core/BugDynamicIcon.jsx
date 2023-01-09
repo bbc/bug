@@ -53,5 +53,5 @@ export default function BugDynamicIcon({ sx = {}, iconName, color }) {
             }
         }
         return <Icon sx={sx} style={color ? { color: color } : {}} />;
-    }, [color, iconName]);
+    }, [color, iconName, sx]);
 }
