@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "@mui/material/Card";
 
-export default function BugCard({ minHeight = "auto", fullHeight = false, children, ...props }) {
+export default function BugCard({ sx = {}, fullHeight = false, children }) {
     const fullHeightProps = fullHeight
         ? {
               height: "100%",
@@ -13,14 +13,14 @@ export default function BugCard({ minHeight = "auto", fullHeight = false, childr
     return (
         <Card
             sx={{
-                minHeight: minHeight,
+                minHeight: "auto",
                 minWidth: 300,
                 textAlign: "left",
                 color: "text.secondary",
                 position: "relative",
                 ...fullHeightProps,
+                ...sx,
             }}
-            {...props}
         >
             {children}
         </Card>

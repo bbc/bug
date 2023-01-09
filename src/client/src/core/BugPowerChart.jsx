@@ -60,6 +60,7 @@ export default function BugPowerChart({
     url,
     units = "dBm",
     mockApiData = null,
+    sx = {},
 }) {
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
@@ -146,6 +147,7 @@ export default function BugPowerChart({
                 "& .recharts-legend-item": {
                     marginLeft: "16px",
                 },
+                ...sx,
             }}
         >
             <ResponsiveContainer width="100%" height={chartHeight}>

@@ -21,7 +21,7 @@ function fixIconNames(string) {
     return name;
 }
 
-export default function BugDynamicIcon({ iconName, color }) {
+export default function BugDynamicIcon({ sx = {}, iconName, color }) {
     const theme = useTheme();
 
     if (!color) {
@@ -52,6 +52,6 @@ export default function BugDynamicIcon({ iconName, color }) {
                 return null;
             }
         }
-        return <Icon style={color ? { color: color } : {}} />;
+        return <Icon sx={sx} style={color ? { color: color } : {}} />;
     }, [color, iconName]);
 }

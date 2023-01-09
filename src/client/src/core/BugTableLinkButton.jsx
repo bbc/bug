@@ -9,7 +9,6 @@ export default function BugTableLinkButton({ sx = {}, children, disabled = false
             disabled={disabled}
             sx={{
                 color: colorValue,
-                ...sx,
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 overflow: "hidden",
@@ -25,6 +24,7 @@ export default function BugTableLinkButton({ sx = {}, children, disabled = false
                 "&:hover": {
                     textDecoration: disabled ? "none" : "underline",
                 },
+                ...sx,
             }}
             component="button"
             onClick={onClick}

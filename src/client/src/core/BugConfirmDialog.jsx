@@ -13,6 +13,7 @@ const BugConfirmDialog = ({
     onConfirm,
     onDismiss,
     confirmButtonText = "Confirm",
+    sx = {},
 }) => {
     const getMessage = () => {
         if (Array.isArray(message)) {
@@ -27,7 +28,7 @@ const BugConfirmDialog = ({
 
     return (
         open && (
-            <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
+            <Dialog sx={sx} open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>{getMessage()}</DialogContent>
                 <DialogActions>

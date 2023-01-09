@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 
-export default function BugVolumeBar({ max = 100, min = 0, value, width = "6px", height = "100px" }) {
+export default function BugVolumeBar({ max = 100, min = 0, value, width = "6px", height = "100px", sx = {} }) {
     const valueHeight = ((value - min) / (max - min)) * 100;
     return (
         <Box
@@ -13,6 +13,7 @@ export default function BugVolumeBar({ max = 100, min = 0, value, width = "6px",
                 flexDirection: "column",
                 justifyContent: "flex-end",
                 backgroundColor: "#01480180",
+                ...sx,
             }}
         >
             <Box

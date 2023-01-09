@@ -26,13 +26,14 @@ const BugRouterButton = ({
     iconColor = null,
     item,
     locked = false,
-    menuItems,
+    menuItems = [],
     number,
     onClick,
     primaryLabel,
     secondaryLabel,
     selected,
     useDoubleClick = false,
+    sx = {},
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: id,
@@ -129,6 +130,7 @@ const BugRouterButton = ({
                 },
                 WebkitTouchCallout: "none !important",
                 WebkitUserSelect: "none !important",
+                ...sx,
             }}
             variant="outlined"
             color="secondary"

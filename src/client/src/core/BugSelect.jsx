@@ -10,6 +10,7 @@ const BugSelect = ({
     options = [],
     onChange,
     value,
+    sx = {},
     ...props
 }) => {
     return (
@@ -34,6 +35,7 @@ const BugSelect = ({
                 "& .MuiSelect-select:focus": {
                     backgroundColor: "inherit",
                 },
+                ...sx,
             }}
         >
             {options &&

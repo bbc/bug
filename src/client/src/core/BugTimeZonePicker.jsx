@@ -2,9 +2,10 @@ import React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
-export default function BugTimeZonePicker({ helperText, label, onChange, value, variant = "outlined" }) {
+export default function BugTimeZonePicker({ helperText, label, onChange, value, variant = "outlined", sx = {} }) {
     return (
         <Autocomplete
+            sx={sx}
             onChange={onChange}
             autoHighlight={true}
             value={value?.label}

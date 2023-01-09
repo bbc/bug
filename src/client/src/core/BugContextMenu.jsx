@@ -36,6 +36,10 @@ export default function BugContextMenu({ item, menuItems, anchorEl, onClose }) {
         return icon;
     };
 
+    if (menuItems) {
+        return null;
+    }
+
     return (
         <div>
             <Menu anchorEl={anchorEl} open={open} onClose={onClose}>

@@ -13,6 +13,7 @@ export default function BugRouterGroupButton({
     onClick,
     primaryLabel,
     selected = false,
+    sx = {},
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
 
@@ -60,6 +61,7 @@ export default function BugRouterGroupButton({
                     "&:hover": {
                         backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
                     },
+                    ...sx,
                 }}
                 onClick={onClick}
                 variant="outlined"

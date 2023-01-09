@@ -22,20 +22,21 @@ export default function BugApiTable({
     apiUrl,
     mockApiData = null,
     columns = [],
-    onRowClick,
-    menuItems,
-    sortable,
-    filterable,
-    defaultSortIndex = 0,
     defaultSortDirection = "asc",
-    hideHeader = false,
-    showNavArrow = false,
-    noData,
-    rowHeight = null,
+    defaultSortIndex = 0,
+    filterable,
     forceRefresh,
-    refreshInterval = 2500,
-    highlightRow = null,
+    hideHeader = false,
     highlightColor = "primary.main",
+    highlightRow = null,
+    menuItems,
+    noData,
+    onRowClick,
+    refreshInterval = 2500,
+    rowHeight = null,
+    showNavArrow = false,
+    sortable,
+    sx = {},
 }) {
     const [sortDirection, setSortDirection] = React.useState(defaultSortDirection);
     const [sortField, setSortField] = React.useState(null);
@@ -91,6 +92,7 @@ export default function BugApiTable({
         },
         url: apiUrl,
         interval: refreshInterval,
+        forceRefresh: forceRefresh,
     });
 
     const handleSortClicked = (column) => {
@@ -118,130 +120,128 @@ export default function BugApiTable({
 
     return (
         <>
-            <div>
-                <TableContainer component={Paper} square>
-                    <Table aria-label="Bug table">
-                        {!hideHeader && (
-                            <TableHead>
-                                <TableRow key="1">
-                                    {columns?.map((column, index) => (
-                                        <BugApiTableCell
-                                            sx={{ padding: "12px" }}
-                                            key={index}
-                                            column={column}
-                                            index={index}
-                                            onClick={() => handleSortClicked(column)}
-                                        >
-                                            {column.sortable && sortable ? (
-                                                <TableSortLabel
-                                                    sx={{
-                                                        overflow: "hidden",
-                                                        textOverflow: "ellipsis",
-                                                        whiteSpace: "nowrap",
-                                                    }}
-                                                    active={sortField === column.field}
-                                                    direction={
-                                                        sortField === column.field
-                                                            ? sortDirection
-                                                            : column.defaultSortDirection
-                                                    }
-                                                    onClick={() => handleSortClicked(column)}
-                                                >
-                                                    {column.title}
-                                                </TableSortLabel>
-                                            ) : (
-                                                column.title
-                                            )}
-                                        </BugApiTableCell>
-                                    ))}
-
-                                    {filterable && (
-                                        <TableCell key="filter" sx={{ width: "2rem", padding: "0px" }}>
-                                            <IconButton aria-label="filter list" onClick={handleFilterClicked}>
-                                                <FilterListIcon
-                                                    sx={{
-                                                        opacity: showFilters ? 1 : 0.5,
-                                                        color: showFilters ? highlightColor : "inherit",
-                                                    }}
-                                                />
-                                            </IconButton>
-                                        </TableCell>
-                                    )}
-                                    {menuItems && !filterable && <TableCell key="blank"></TableCell>}
-                                </TableRow>
-                                {showFilters && filterable && (
-                                    <BugApiTableFilters
-                                        columns={columns}
-                                        filters={filters}
-                                        onChange={(value) => handleFiltersChanged(value)}
-                                        onClose={() => handleFilterClicked()}
-                                    />
-                                )}
-                            </TableHead>
-                        )}
-                        <TableBody>
-                            {pollData &&
-                                pollData?.data?.map((item, index) => {
-                                    const highlightThisRow = highlightRow && highlightRow(item);
-                                    return (
-                                        <TableRow
-                                            hover={typeof onRowClick === "function"}
-                                            sx={{
-                                                cursor: onRowClick !== undefined ? "pointer" : "auto",
-                                                height: rowHeight ? `${rowHeight}` : "auto",
-                                                backgroundColor: highlightThisRow ? "success.main" : "transparent",
-                                            }}
-                                            key={index}
-                                            onClick={(event) => {
-                                                if (typeof onRowClick === "function") {
-                                                    onRowClick(event, item);
+            <TableContainer sx={sx} component={Paper} square>
+                <Table aria-label="Bug table">
+                    {!hideHeader && (
+                        <TableHead>
+                            <TableRow key="1">
+                                {columns?.map((column, index) => (
+                                    <BugApiTableCell
+                                        sx={{ padding: "12px" }}
+                                        key={index}
+                                        column={column}
+                                        index={index}
+                                        onClick={() => handleSortClicked(column)}
+                                    >
+                                        {column.sortable && sortable ? (
+                                            <TableSortLabel
+                                                sx={{
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                                active={sortField === column.field}
+                                                direction={
+                                                    sortField === column.field
+                                                        ? sortDirection
+                                                        : column.defaultSortDirection
                                                 }
-                                            }}
-                                        >
-                                            {columns.map((column, index) => (
-                                                <BugApiTableCell
-                                                    key={index}
-                                                    column={column}
-                                                    index={index}
-                                                    sx={{ verticalAlign: "middle" }}
-                                                >
-                                                    {column.content(item)}
-                                                </BugApiTableCell>
-                                            ))}
-                                            {!menuItems && !showNavArrow && filterable && (
-                                                <TableCell key="placeholder">&nbsp;</TableCell>
-                                            )}
-                                            {menuItems && (
-                                                <TableCell
-                                                    key="menu"
-                                                    sx={{
-                                                        width: "2rem",
-                                                        paddingLeft: "0px",
-                                                        paddingRight: "4px",
-                                                    }}
-                                                >
-                                                    <BugItemMenu item={item} menuItems={menuItems} />
-                                                </TableCell>
-                                            )}
-                                            {showNavArrow && !menuItems && (
-                                                <TableCell
-                                                    key="nav"
-                                                    sx={{
-                                                        width: "2rem",
-                                                        paddingLeft: "0px",
-                                                        paddingRight: "4px",
-                                                    }}
-                                                >
-                                                    <ChevronRightIcon />
-                                                </TableCell>
-                                            )}
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
+                                                onClick={() => handleSortClicked(column)}
+                                            >
+                                                {column.title}
+                                            </TableSortLabel>
+                                        ) : (
+                                            column.title
+                                        )}
+                                    </BugApiTableCell>
+                                ))}
+
+                                {filterable && (
+                                    <TableCell key="filter" sx={{ width: "2rem", padding: "0px" }}>
+                                        <IconButton aria-label="filter list" onClick={handleFilterClicked}>
+                                            <FilterListIcon
+                                                sx={{
+                                                    opacity: showFilters ? 1 : 0.5,
+                                                    color: showFilters ? highlightColor : "inherit",
+                                                }}
+                                            />
+                                        </IconButton>
+                                    </TableCell>
+                                )}
+                                {menuItems && !filterable && <TableCell key="blank"></TableCell>}
+                            </TableRow>
+                            {showFilters && filterable && (
+                                <BugApiTableFilters
+                                    columns={columns}
+                                    filters={filters}
+                                    onChange={(value) => handleFiltersChanged(value)}
+                                    onClose={() => handleFilterClicked()}
+                                />
+                            )}
+                        </TableHead>
+                    )}
+                    <TableBody>
+                        {pollData &&
+                            pollData?.data?.map((item, index) => {
+                                const highlightThisRow = highlightRow && highlightRow(item);
+                                return (
+                                    <TableRow
+                                        hover={typeof onRowClick === "function"}
+                                        sx={{
+                                            cursor: onRowClick !== undefined ? "pointer" : "auto",
+                                            height: rowHeight ? `${rowHeight}` : "auto",
+                                            backgroundColor: highlightThisRow ? "success.main" : "transparent",
+                                        }}
+                                        key={index}
+                                        onClick={(event) => {
+                                            if (typeof onRowClick === "function") {
+                                                onRowClick(event, item);
+                                            }
+                                        }}
+                                    >
+                                        {columns.map((column, index) => (
+                                            <BugApiTableCell
+                                                key={index}
+                                                column={column}
+                                                index={index}
+                                                sx={{ verticalAlign: "middle" }}
+                                            >
+                                                {column.content(item)}
+                                            </BugApiTableCell>
+                                        ))}
+                                        {!menuItems && !showNavArrow && filterable && (
+                                            <TableCell key="placeholder">&nbsp;</TableCell>
+                                        )}
+                                        {menuItems && (
+                                            <TableCell
+                                                key="menu"
+                                                sx={{
+                                                    width: "2rem",
+                                                    paddingLeft: "0px",
+                                                    paddingRight: "4px",
+                                                }}
+                                            >
+                                                <BugItemMenu item={item} menuItems={menuItems} />
+                                            </TableCell>
+                                        )}
+                                        {showNavArrow && !menuItems && (
+                                            <TableCell
+                                                key="nav"
+                                                sx={{
+                                                    width: "2rem",
+                                                    paddingLeft: "0px",
+                                                    paddingRight: "4px",
+                                                }}
+                                            >
+                                                <ChevronRightIcon />
+                                            </TableCell>
+                                        )}
+                                    </TableRow>
+                                );
+                            })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </>
     );
 }

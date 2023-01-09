@@ -9,18 +9,19 @@ const BugConfigFormTextField = ({
     control,
     disabled = false,
     defaultValue,
-    fullWidth = false,
-    type = "text",
-    rules,
     error,
     filter = "",
+    fullWidth = false,
     helperText,
+    max = null,
+    min = null,
+    numeric = false,
+    rules,
+    type = "text",
     supportsValidation = false,
     variant = "standard",
     InputProps = {},
-    numeric = false,
-    min = null,
-    max = null,
+    sx = {},
     ...props
 }) => {
     return (
@@ -37,6 +38,7 @@ const BugConfigFormTextField = ({
                     render={({ field: { onChange, value } }) => {
                         return (
                             <BugTextField
+                                sx={sx}
                                 value={value}
                                 label={label}
                                 fullWidth

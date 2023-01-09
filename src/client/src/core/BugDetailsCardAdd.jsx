@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function BugDetailsCard({ width, onAdd, ...props }) {
+export default function BugDetailsCard({ width, sx = {}, onAdd, ...props }) {
     return (
         <Card
             sx={{
@@ -13,6 +13,7 @@ export default function BugDetailsCard({ width, onAdd, ...props }) {
                 position: "relative",
                 marginBottom: "8px",
                 padding: "8px",
+                ...sx,
             }}
             {...props}
         >

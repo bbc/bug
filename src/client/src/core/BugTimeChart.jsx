@@ -56,7 +56,7 @@ const CustomTooltip = ({
     return null;
 };
 
-export default function BugTimeChart({ url, units = "ms", mockApiData = null }) {
+export default function BugTimeChart({ url, units = "ms", mockApiData = null, sx = {} }) {
     const rangeSpan = 60;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
@@ -146,6 +146,7 @@ export default function BugTimeChart({ url, units = "ms", mockApiData = null }) 
                 "& .recharts-legend-item": {
                     marginLeft: "16px",
                 },
+                ...sx,
             }}
         >
             <ResponsiveContainer width="100%" height={chartHeight}>

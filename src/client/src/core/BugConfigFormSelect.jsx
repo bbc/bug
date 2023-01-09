@@ -15,6 +15,7 @@ const BugConfigFormSelect = ({
     label,
     name,
     rules,
+    sx = {},
     ...props
 }) => {
     return (
@@ -37,6 +38,7 @@ const BugConfigFormSelect = ({
                                     "& .MuiSelect-select:focus": {
                                         backgroundColor: "inherit",
                                     },
+                                    ...sx,
                                 }}
                             >
                                 {options &&

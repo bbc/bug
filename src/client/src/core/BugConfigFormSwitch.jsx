@@ -6,7 +6,7 @@ import Switch from "@mui/material/Switch";
 import BugHelperText from "@components/BugHelperText";
 import { useTheme } from "@mui/material/styles";
 
-const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, rules, helperText, ...props }) => {
+const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, rules, helperText, sx = {}, ...props }) => {
     const theme = useTheme();
 
     return (
@@ -29,6 +29,7 @@ const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, rules, 
                                     fontSize: "0.875rem",
                                     fontWeight: "400",
                                 },
+                                ...sx,
                             }}
                             control={<Switch color="primary" onChange={onChange} checked={value} />}
                             label={label}

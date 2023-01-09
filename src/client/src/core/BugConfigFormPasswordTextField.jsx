@@ -16,6 +16,7 @@ const BugConfigFormPasswordTextField = ({
     variant = "standard",
     allowShowPassword = true,
     type = "text",
+    sx = {},
     ...props
 }) => {
     return (
@@ -32,6 +33,7 @@ const BugConfigFormPasswordTextField = ({
                     render={({ field: { onChange, value } }) => {
                         return (
                             <BugPasswordTextField
+                                sx={sx}
                                 value={value}
                                 label={label}
                                 fullWidth

@@ -6,7 +6,13 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useHistory } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-export default function BugNoData({ title = "No data found", message = "", panelId, showConfigButton = true }) {
+export default function BugNoData({
+    title = "No data found",
+    message = "",
+    panelId,
+    showConfigButton = true,
+    sx = {},
+}) {
     const history = useHistory();
 
     const handleConfig = (event) => {
@@ -18,6 +24,7 @@ export default function BugNoData({ title = "No data found", message = "", panel
             sx={{
                 display: "flex",
                 justifyContent: "center",
+                ...sx,
             }}
         >
             <Alert

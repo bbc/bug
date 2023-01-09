@@ -2,7 +2,7 @@ import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 
-export default function BugLoading({ height = "100vh" }) {
+export default function BugLoading({ height = "100vh", sx = {} }) {
     return (
         <Grid
             container
@@ -12,6 +12,7 @@ export default function BugLoading({ height = "100vh" }) {
                 alignItems: "center",
                 justifyContent: "center",
                 minHeight: height,
+                ...sx,
             }}
         >
             <Grid item xs={3}>

@@ -12,11 +12,11 @@ const StyledTextField = styled(TextField)({
     },
 });
 
-export default function BugTimePicker({ onChange, value, variant = "filled", ...props }) {
+export default function BugTimePicker({ onChange, value, variant = "filled", sx = {}, ...props }) {
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <TimePicker
-                sx={{}}
+                sx={sx}
                 ampm={false}
                 value={value}
                 onChange={onChange}

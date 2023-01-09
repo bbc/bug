@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 
-export default function BugConfigFormDeleteButton({ ...props }) {
+export default function BugConfigFormDeleteButton({ sx = {}, ...props }) {
     return (
         <>
             <Button
@@ -12,6 +12,7 @@ export default function BugConfigFormDeleteButton({ ...props }) {
                     "&:hover": {
                         backgroundColor: "error.hover",
                     },
+                    ...sx,
                 }}
                 disableElevation
                 {...props}

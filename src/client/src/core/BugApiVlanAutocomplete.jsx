@@ -15,6 +15,7 @@ const BugApiVlanAutocomplete = ({
     onChange,
     timeout = 8000,
     disabled = false,
+    sx = {},
 }) => {
     const [isActive, setIsActive] = React.useState(false);
     const [localTaggedValue, setLocalTaggedValue] = React.useState(taggedValue);
@@ -110,6 +111,7 @@ const BugApiVlanAutocomplete = ({
             sx={{
                 display: "flex",
                 width: "100%",
+                ...sx,
             }}
         >
             <BugApiAutocomplete

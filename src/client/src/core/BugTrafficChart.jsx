@@ -44,7 +44,7 @@ const CustomTooltip = ({ active, payload }) => {
     return null;
 };
 
-export default function BugTrafficChart({ url, mockApiData = null }) {
+export default function BugTrafficChart({ url, mockApiData = null, sx = {} }) {
     const rangeSpan = 10;
     const initialRange = [Date.now() - rangeSpan * 60000, Date.now()];
     const timer = useRef();
@@ -118,6 +118,7 @@ export default function BugTrafficChart({ url, mockApiData = null }) {
                 "& .recharts-legend-item": {
                     marginLeft: "16px",
                 },
+                ...sx,
             }}
         >
             <ResponsiveContainer width="100%" height={chartHeight}>

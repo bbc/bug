@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 
-export default function BugStatusLabel({ sx, color = "primary.main", children }) {
+export default function BugStatusLabel({ sx = {}, color = "primary.main", children }) {
     return (
         <Box
             sx={{

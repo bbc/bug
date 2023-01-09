@@ -16,7 +16,15 @@ const TabPanel = ({ children, value, index }) => {
     );
 };
 
-export default function BugPanelTabbedForm({ labels, content, locations, onClose, defaultTab = 0, contentProps = {} }) {
+export default function BugPanelTabbedForm({
+    labels,
+    content,
+    locations,
+    onClose,
+    defaultTab = 0,
+    contentProps = {},
+    sx = {},
+}) {
     const [tabIndex, setTabIndex] = React.useState(false);
     const history = useHistory();
     const location = useLocation();
@@ -45,7 +53,7 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
     }, [defaultTab]);
 
     return (
-        <>
+        <Box sx={sx}>
             <div style={{ position: "relative" }}>
                 <Box
                     sx={{
@@ -107,6 +115,6 @@ export default function BugPanelTabbedForm({ labels, content, locations, onClose
                       ))
                     : null}
             </BugCard>
-        </>
+        </Box>
     );
 }

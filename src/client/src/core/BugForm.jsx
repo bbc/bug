@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useHotkeys } from "react-hotkeys-hook";
 
-const BugForm = ({ onClose, children, iconButtons = [] }) => {
+const BugForm = ({ sx = {}, onClose, children, iconButtons = [] }) => {
     useHotkeys("esc", onClose);
 
     return (
@@ -21,6 +21,7 @@ const BugForm = ({ onClose, children, iconButtons = [] }) => {
                 position: "relative",
                 maxWidth: "550px",
                 margin: "auto",
+                ...sx,
             }}
         >
             <Box

@@ -32,6 +32,7 @@ const BugRenameDialog = ({
     placeholder = null,
     textFieldProps = {},
     title = "Rename",
+    sx = {},
 }) => {
     const [value, setValue] = React.useState("");
     const inputRef = React.useRef();
@@ -51,7 +52,7 @@ const BugRenameDialog = ({
     };
 
     return (
-        <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
+        <Dialog sx={sx} open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <DialogTitle>{title}</DialogTitle>
             <form onSubmit={handeFormSubmit}>
                 <DialogContent>

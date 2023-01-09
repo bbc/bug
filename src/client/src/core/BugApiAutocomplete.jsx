@@ -18,6 +18,7 @@ export default React.memo(
         renderOption,
         style,
         getOptionLabel,
+        sx = {},
     }) {
         const [isActive, setIsActive] = React.useState(false);
         const [localValue, setLocalValue] = React.useState(value);
@@ -121,6 +122,7 @@ export default React.memo(
                         }}
                     />
                 )}
+                sx={sx}
             />
         );
     },

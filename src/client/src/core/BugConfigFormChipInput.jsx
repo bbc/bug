@@ -17,6 +17,7 @@ const BugConfigFormChipInput = ({
     variant,
     freeSolo,
     helperText,
+    sx = {},
     ...props
 }) => {
     if (sort && defaultValue) {
@@ -31,6 +32,7 @@ const BugConfigFormChipInput = ({
                     render={({ field: { onChange, onBlur, value } }) => {
                         return (
                             <Autocomplete
+                                sx={sx}
                                 multiple
                                 filterSelectedOptions
                                 options={options ? options : []}

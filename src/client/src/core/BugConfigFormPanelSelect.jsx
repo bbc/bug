@@ -14,6 +14,7 @@ const BugConfigFormPanelSelect = ({
     helperText,
     capability,
     mockApiData = null,
+    sx = {},
 }) => {
     const panels = useApiPoller({
         mockApiData: mockApiData,
@@ -34,6 +35,7 @@ const BugConfigFormPanelSelect = ({
 
     return (
         <BugConfigFormSelect
+            sx={sx}
             control={control}
             defaultValue={defaultValue}
             disabled={disabled}

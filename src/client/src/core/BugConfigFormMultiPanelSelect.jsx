@@ -16,6 +16,7 @@ const BugConfigFormMultiPanelSelect = ({
     helperText,
     capability,
     mockApiData = null,
+    sx = {},
     ...props
 }) => {
     const panels = useApiPoller({
@@ -52,6 +53,7 @@ const BugConfigFormMultiPanelSelect = ({
                     render={({ field: { onChange, onBlur, value } }) => {
                         return (
                             <Autocomplete
+                                sx={sx}
                                 multiple
                                 filterSelectedOptions
                                 options={options}

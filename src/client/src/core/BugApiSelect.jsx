@@ -10,6 +10,7 @@ export default function BugApiSelect({
     value,
     variant = "standard",
     timeout = 5000,
+    sx = {},
 }) {
     const [isActive, setIsActive] = React.useState(false);
     const [localValue, setLocalValue] = React.useState(value);
@@ -53,6 +54,7 @@ export default function BugApiSelect({
             renderItem={renderItem}
             value={value}
             variant={variant}
+            sx={sx}
         />
     );
 }

@@ -7,35 +7,41 @@ import AxiosGet from "@utils/AxiosGet";
 
 export default function BugCodecAutocomplete({
     addressValue = "",
-    portValue = "",
-    onChange,
-    disabled = false,
     apiUrl = "",
-    variant = "outlined",
     capability = "",
+    disabled = false,
     label = "Codec Name",
+    mockApiData = null,
+    onChange,
+    portValue = "",
+    variant = "outlined",
+    sx = {},
 }) {
     const [options, setOptions] = React.useState([]);
     const [value, setValue] = React.useState("");
 
     React.useEffect(() => {
-        const fetchOptions = async () => {
-            const result = await AxiosGet(`${apiUrl}/${capability}`);
-            if (result) {
-                setOptions(
-                    result.map((item) => ({
-                        id: item.id,
-                        label: item.name,
-                        device: item.device,
-                        address: item.address,
-                        port: item.port,
-                    }))
-                );
-            }
-        };
+        if (mockApiData) {
+            setOptions(mockApiData);
+        } else {
+            const fetchOptions = async () => {
+                const result = await AxiosGet(`${apiUrl}/${capability}`);
+                if (result) {
+                    setOptions(
+                        result.map((item) => ({
+                            id: item.id,
+                            label: item.name,
+                            device: item.device,
+                            address: item.address,
+                            port: item.port,
+                        }))
+                    );
+                }
+            };
 
-        fetchOptions();
-    }, [apiUrl, capability]);
+            fetchOptions();
+        }
+    }, [apiUrl, capability, mockApiData]);
 
     React.useEffect(() => {
         // address and/or port has changed
@@ -65,6 +71,7 @@ export default function BugCodecAutocomplete({
 
     return (
         <Autocomplete
+            sx={sx}
             disabled={disabled}
             value={value}
             options={options ? options : []}

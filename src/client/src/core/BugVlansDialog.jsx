@@ -13,7 +13,7 @@ import Switch from "@mui/material/Switch";
 import Checkbox from "@mui/material/Checkbox";
 import BugScrollbars from "@core/BugScrollbars";
 
-export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDismiss, onConfirm }) {
+export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDismiss, onConfirm, sx = {} }) {
     const [localUntaggedVlan, setLocalUntaggedVlan] = React.useState(untaggedVlan);
     const [localTaggedVlans, setLocalTaggedVlans] = React.useState(taggedVlans);
 
@@ -37,7 +37,7 @@ export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDis
     };
 
     return (
-        <Dialog open onClose={onDismiss} maxWidth={false}>
+        <Dialog sx={sx} open onClose={onDismiss} maxWidth={false}>
             <form
                 onSubmit={(event) => {
                     event.preventDefault();

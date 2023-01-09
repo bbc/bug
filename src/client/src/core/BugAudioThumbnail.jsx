@@ -2,7 +2,7 @@ import React from "react";
 import BugVolumeBar from "@core/BugVolumeBar";
 import Box from "@mui/material/Box";
 
-export default function BugAudioThumbnail({ src, leftLevel, rightLevel, min, max }) {
+export default function BugAudioThumbnail({ src, leftLevel, rightLevel, min, max, sx = {} }) {
     return (
         <Box
             sx={{
@@ -22,6 +22,7 @@ export default function BugAudioThumbnail({ src, leftLevel, rightLevel, min, max
                         width: 128,
                     },
                 },
+                ...sx,
             }}
         >
             <BugVolumeBar min={min} max={max} value={leftLevel} />

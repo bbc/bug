@@ -15,6 +15,7 @@ const BugTextField = ({
     sx = {},
     value,
     changeOnBlur = false,
+    type = "text",
     ...props
 }) => {
     const [localValue, setLocalValue] = React.useState(value);
@@ -89,22 +90,22 @@ const BugTextField = ({
         }
     };
 
-    const localSx =
-        variant === "outlined"
-            ? {
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  "& .MuiInputBase-root": {
-                      borderRadius: 0,
-                  },
-                  "& .MuiInputBase-input": {
-                      padding: "14px",
-                  },
-              }
-            : {};
-
     return (
         <TextField
-            sx={{ ...localSx, ...sx }}
+            sx={
+                variant === "outlined"
+                    ? {
+                          backgroundColor: "rgba(255, 255, 255, 0.05)",
+                          "& .MuiInputBase-root": {
+                              borderRadius: 0,
+                          },
+                          "& .MuiInputBase-input": {
+                              padding: "14px",
+                          },
+                          ...sx,
+                      }
+                    : sx
+            }
             fullWidth={fullWidth}
             variant={variant}
             disabled={disabled}
@@ -115,6 +116,7 @@ const BugTextField = ({
             inputProps={{ maxLength: maxLength }}
             onChange={handleChange}
             onBlur={handleBlur}
+            type={type}
         />
     );
 };

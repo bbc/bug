@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import ScaleText from "react-scale-text";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-export default function BugStatusBlock({ items, label, state }) {
+export default function BugStatusBlock({ items, label, state, sx = {} }) {
     const stateColors = {
         success: "#05990c",
         warning: "#d07111",
@@ -15,7 +15,7 @@ export default function BugStatusBlock({ items, label, state }) {
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
     return (
-        <Box sx={{ padding: "4px", display: "inline-block", verticalAlign: "top" }}>
+        <Box sx={{ padding: "4px", display: "inline-block", verticalAlign: "top", ...sx }}>
             <Box
                 sx={{
                     textTransform: "uppercase",

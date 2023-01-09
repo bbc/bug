@@ -16,6 +16,7 @@ const BugConfigFormAutocomplete = ({
     freeSolo,
     helperText,
     fullWidth = false,
+    sx = {},
     ...props
 }) => {
     // we use this bit of code to work out if we're dealing with an array of objects.
@@ -52,6 +53,7 @@ const BugConfigFormAutocomplete = ({
                     render={({ field: { onChange, onBlur, value } }) => {
                         return (
                             <Autocomplete
+                                sx={sx}
                                 multiple
                                 filterSelectedOptions
                                 options={options}
