@@ -135,10 +135,7 @@ export default function RouteList({ panelId }) {
                     width: 44,
                     field: "active",
                     content: (item) => (
-                        <BugPowerIcon
-                            activeColor={item.defaultActive ? "#ffffff" : "primary.main"}
-                            disabled={!item.active}
-                        />
+                        <BugPowerIcon color={item.defaultActive ? "#ffffff" : "primary.main"} disabled={!item.active} />
                     ),
                 },
                 {
