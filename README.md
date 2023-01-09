@@ -1,4 +1,4 @@
-[![Backend](https://github.com/bbc/bug/actions/workflows/backend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/backend.yml) [![Frontend](https://github.com/bbc/bug/actions/workflows/frontend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/frontend.yml) [![BUG Deploy](https://github.com/bbc/bug/actions/workflows/docker.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/docker.yml) [![Documentation](https://github.com/bbc/bug/actions/workflows/pages.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/pages.yml)
+[![Backend](https://github.com/bbc/bug/actions/workflows/backend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/backend.yml) [![Frontend](https://github.com/bbc/bug/actions/workflows/frontend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/frontend.yml) [![BUG Deploy](https://github.com/bbc/bug/actions/workflows/docker.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/docker.yml) [![Documentation](https://github.com/bbc/bug/actions/workflows/documentation.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/documentation.yml)
 
 # BUG (Broadcast Universal Gateway)
 
