@@ -1,6 +1,5 @@
 const express = require("express");
 const createError = require("http-errors");
-const bodyParser = require("body-parser");
 const workerStore = require("@core/worker-store");
 
 // load routes
@@ -29,7 +28,6 @@ app.use(workers);
 app.set("json spaces", 2);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);

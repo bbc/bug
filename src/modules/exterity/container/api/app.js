@@ -1,7 +1,6 @@
 const express = require("express");
 const workerStore = require("@core/worker-store");
 const createError = require("http-errors");
-const bodyParser = require("body-parser");
 const path = require("path");
 
 // load routes
@@ -29,7 +28,6 @@ app.use(workers);
 app.set("json spaces", 2);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 app.use("/api", express.static(path.join(__dirname, "..", "public")));
 

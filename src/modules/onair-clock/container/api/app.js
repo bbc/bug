@@ -1,6 +1,5 @@
 const express = require("express");
 const createError = require("http-errors");
-const bodyParser = require("body-parser");
 const path = require("path");
 
 // load routes
@@ -19,7 +18,6 @@ let app = express();
 app.set("json spaces", 2);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 app.use("/api", express.static(path.join(__dirname, "..", "public")));
 
