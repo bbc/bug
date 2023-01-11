@@ -27,15 +27,15 @@ export default function RouteList({ panelId }) {
 
     const getStatus = (item) => {
         if (item.defaultActive) {
-            return <BugStatusLabel color="#ffffff">Active</BugStatusLabel>;
+            return <BugStatusLabel color="text.highlight">Active</BugStatusLabel>;
         }
         if (item.disabled) {
-            return <BugStatusLabel color="secondary.main">Inactive</BugStatusLabel>;
+            return <BugStatusLabel color="text.secondary">Inactive</BugStatusLabel>;
         }
         if (item.active) {
             return <BugStatusLabel color="success.main">Active</BugStatusLabel>;
         }
-        return <BugStatusLabel color="primary.main">Pending</BugStatusLabel>;
+        return <BugStatusLabel color="text.primary">Pending</BugStatusLabel>;
     };
 
     const getItemName = (item) => {
@@ -173,7 +173,7 @@ export default function RouteList({ panelId }) {
                                 <BugTableLinkButton
                                     onClick={(event) => handleCommentClicked(event, item)}
                                     sx={{
-                                        color: "#ffffff",
+                                        color: "text.primary",
                                     }}
                                 >
                                     {getItemName(item)}
@@ -181,7 +181,7 @@ export default function RouteList({ panelId }) {
                                 <BugStatusLabel
                                     sx={{
                                         opacity: item.defaultActive ? 0.5 : 0.8,
-                                        color: item.defaultActive ? "default.main" : "secondary.main",
+                                        color: item.defaultActive ? "text.action" : "text.secondary",
                                     }}
                                 >
                                     {item?.["dst-address"]}

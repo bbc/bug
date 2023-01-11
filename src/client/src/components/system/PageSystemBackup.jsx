@@ -61,7 +61,7 @@ export default function PageSystemBackup() {
                         <CardHeader component={Paper} square elevation={1} title="Backup" />
                         <CardContent>
                             You can download the entire configuration of this BUG as a single, compressed file.
-                            <div style={{ marginTop: 16 }}>
+                            <Box sx={{ marginTop: "16px" }}>
                                 <Button
                                     component={Link}
                                     href={`/api/system/backup`}
@@ -73,7 +73,7 @@ export default function PageSystemBackup() {
                                 >
                                     Download
                                 </Button>
-                            </div>
+                            </Box>
                         </CardContent>
                     </BugCard>
                 </Grid>

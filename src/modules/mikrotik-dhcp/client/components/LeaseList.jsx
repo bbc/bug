@@ -204,7 +204,7 @@ export default function LeaseList({ panelId }) {
                                     {item.comment && (
                                         <BugTableLinkButton
                                             onClick={(event) => handleCommentClicked(event, item)}
-                                            color="secondary"
+                                            color="text.secondary"
                                         >
                                             {item.comment}
                                         </BugTableLinkButton>
@@ -221,7 +221,10 @@ export default function LeaseList({ panelId }) {
                         defaultSortDirection: "asc",
                         filterType: "text",
                         content: (item) => (
-                            <BugTableLinkButton color="primary" onClick={(event) => handleLinkClicked(event, item)}>
+                            <BugTableLinkButton
+                                color="text.primary"
+                                onClick={(event) => handleLinkClicked(event, item)}
+                            >
                                 {item.address}
                             </BugTableLinkButton>
                         ),

@@ -2,7 +2,7 @@ import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useInterval } from "@hooks/Interval";
 
-export default function BugCountdownSpinner({ color = "primary", sx = {}, duration = 5000 }) {
+export default function BugCountdownSpinner({ sx = {}, duration = 5000 }) {
     const [value, setValue] = React.useState(100);
 
     if (duration < 100) {
@@ -28,7 +28,7 @@ export default function BugCountdownSpinner({ color = "primary", sx = {}, durati
     return (
         <CircularProgress
             sx={{
-                color: `${color}.main`,
+                color: "primary.main",
                 ...sx,
             }}
             variant="determinate"

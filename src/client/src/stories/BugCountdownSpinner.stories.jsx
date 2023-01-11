@@ -12,16 +12,6 @@ export default {
         controls: { sort: "requiredFirst" },
     },
     argTypes: {
-        color: {
-            options: ["primary", "secondary"],
-            description: "The color type to display (primary, secondary)",
-            defaultValue: "primary",
-            control: { type: "select" },
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "primary" },
-            },
-        },
         duration: {
             type: { name: "number" },
             description: "Duration over which the progress should count down",

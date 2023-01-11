@@ -48,7 +48,6 @@ export default function BugApiSwitch({
         }, timeout);
     };
 
-    console.log(color);
     return (
         <Switch
             color={color}

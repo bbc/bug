@@ -37,7 +37,6 @@ export default function LinkCard({ handleDelete, handleEdit, link, index }) {
                     margin: "4px",
                 }}
                 variant="outlined"
-                color="secondary"
             >
                 <CardActionArea onClick={handleClick}>
                     <CardContent>

@@ -54,7 +54,6 @@ export default function PlayerCard({ panelId, title, description, image, playerI
                     display: "flex",
                 }}
                 variant="outlined"
-                color="secondary"
             >
                 <CardActionArea sx={{ padding: 0 }}>
                     <CardContent sx={{ width: "100%", padding: "0.2em" }}>

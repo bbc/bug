@@ -99,12 +99,7 @@ export default function NoteCard({ user, note, noteId, panelId }) {
                     minWidth: "30vw",
                     minheight: "30vw",
                     margin: "2px",
-                    backgroundColor: () => {
-                        if (note?.color) {
-                            return note?.color;
-                        }
-                        return "secondary";
-                    },
+                    backgroundColor: note?.color ? note?.color : "background.paper",
                 }}
                 variant="outlined"
             >
