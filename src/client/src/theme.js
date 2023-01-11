@@ -51,8 +51,10 @@ const theme = (selectedTheme = "dark") => {
                 },
 
                 text: {
-                    primary: "rgba(255, 255, 255, 0.7)",
+                    highlight: "#ffffff",
+                    primary: "rgba(255, 255, 255, 0.9)",
                     secondary: "rgba(255, 255, 255, 0.5)",
+                    action: "#337ab7",
                 },
 
                 menu: {
@@ -115,8 +117,10 @@ const theme = (selectedTheme = "dark") => {
             },
 
             text: {
+                highlight: "#111111",
                 primary: "#212121",
-                secondary: "2e6da4",
+                secondary: "#2e6da4",
+                action: "#2f73aa",
             },
 
             menu: {
@@ -204,6 +208,7 @@ const theme = (selectedTheme = "dark") => {
                         fontSize: "0.875rem",
                         fontWeight: 500,
                         textTransform: "uppercase",
+                        color: getPalette(selectedTheme).text.primary,
                     },
                     subheader: {
                         color: getPalette(selectedTheme).text.secondary,
