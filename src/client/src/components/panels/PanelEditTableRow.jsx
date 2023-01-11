@@ -22,11 +22,8 @@ export default function PanelEditTableRow({ id, panel }) {
     };
 
     if (isDragging) {
-        style.backgroundColor = "#337ab7";
-        style.boxShadow = "0px 0px 30px 5px #202020";
+        style.boxShadow = "0px 0px 30px 5px rgba(10,10,10,0.3)";
     }
-
-    const opacity = isDragging ? 1 : 0.5;
 
     return (
         <TableRow
@@ -36,7 +33,7 @@ export default function PanelEditTableRow({ id, panel }) {
             {...attributes}
             {...listeners}
             key={id}
-            sx={{ height: "65px", cursor: "move", backgroundColor: "#262626" }}
+            sx={{ height: "65px", cursor: "move", backgroundColor: "background.paper" }}
         >
             <TableCell sx={{ textAlign: "center" }}>
                 <BugDragIcon />
@@ -50,15 +47,15 @@ export default function PanelEditTableRow({ id, panel }) {
             >
                 <PanelPowerIcon panel={panel} />
             </TableCell>
-            <TableCell sx={{ textAlign: "center", opacity: opacity }}>
+            <TableCell sx={{ textAlign: "center" }}>
                 <BugApiSwitch checked={panel.enabled} disabled />
             </TableCell>
-            <TableCell sx={{ width: "50%", opacity: opacity }}>
+            <TableCell sx={{ width: "50%" }}>
                 <div>{panel.title}</div>
                 <PanelRowState panel={panel} />
             </TableCell>
-            <TableCell sx={{ width: "50%", opacity: opacity }}>{panel._module.longname}</TableCell>
-            <TableCell sx={{ width: "48px", opacity: opacity }}>
+            <TableCell sx={{ width: "50%" }}>{panel._module.longname}</TableCell>
+            <TableCell sx={{ width: "48px" }}>
                 <MoreVertIcon />
             </TableCell>
         </TableRow>

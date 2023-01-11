@@ -19,7 +19,7 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
             <Grid
                 container
                 sx={{
-                    backgroundColor: "#181818",
+                    backgroundColor: "background.default",
                     flexDirection: "column",
                     justifyContent: "space-between",
                     alignItems: "flex-start",
@@ -53,9 +53,10 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
                     <TableContainer
                         component={Paper}
                         square
+                        elevation={0}
                         sx={{
                             borderTopWidth: "1px",
-                            borderTopColor: "#181818",
+                            borderTopColor: "border.light",
                             borderTopStyle: "solid",
                         }}
                     >

@@ -35,22 +35,17 @@ const HomeAddPanel = () => {
             <Button
                 component={Link}
                 sx={{
-                    color: "#cccccc",
                     textDecoration: "none",
-                    "&:hover": {
-                        color: "#fff",
-                    },
                 }}
                 to={`/panels/add`}
             >
                 <Card
                     sx={{
-                        border: "2px dashed #262626",
+                        borderWidth: "2px",
+                        borderStyle: "dashed",
+                        borderColor: "border.light",
                         boxShadow: "none",
-                        backgroundColor: "#181818",
-                        "&:hover": {
-                            background: "#333",
-                        },
+                        backgroundColor: "background.default",
                         "& .MuiBadge-badge": {
                             "@media (min-width:601px)": {
                                 display: "none",
@@ -64,15 +59,12 @@ const HomeAddPanel = () => {
                         subheader="Click to create your first panel"
                         sx={{
                             minWidth: "22rem",
-                            backgroundColor: "#181818",
+                            backgroundColor: "background.default",
                             borderWidth: 0,
                             padding: "8px 8px 8px 0px",
-                            "&:hover": {
-                                background: "#333",
-                            },
                             "& .MuiCardHeader-title": {
                                 fontFamily: "fontFamily",
-                                color: "rgba(255, 255, 255, 1)",
+                                color: "text.primary",
                                 fontSize: "1.1rem",
                                 fontWeight: "500",
                                 textTransform: "none",
@@ -81,7 +73,7 @@ const HomeAddPanel = () => {
                                 whiteSpace: "nowrap",
                             },
                             "& .MuiCardHeader-subheader": {
-                                color: "rgba(255, 255, 255, 0.4)",
+                                color: "text.secondary",
                                 fontSize: "0.9rem",
                                 overflow: "hidden",
                                 textTransform: "none",

@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
+import Paper from "@mui/material/Paper";
 
 export default function BugCard({ sx = {}, fullHeight = false, children }) {
     const fullHeightProps = fullHeight
@@ -12,6 +13,9 @@ export default function BugCard({ sx = {}, fullHeight = false, children }) {
         : {};
     return (
         <Card
+            component={Paper}
+            square
+            elevation={0}
             sx={{
                 minHeight: "auto",
                 minWidth: 300,

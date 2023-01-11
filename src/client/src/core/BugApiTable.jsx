@@ -120,7 +120,7 @@ export default function BugApiTable({
 
     return (
         <>
-            <TableContainer sx={sx} component={Paper} square>
+            <TableContainer sx={sx} component={Paper} square elevation={0}>
                 <Table aria-label="Bug table">
                     {!hideHeader && (
                         <TableHead>

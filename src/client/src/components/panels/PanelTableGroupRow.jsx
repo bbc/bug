@@ -12,7 +12,7 @@ export default function PanelTableGroupRow({ title }) {
             <TableCell
                 sx={{
                     borderTop: "1px solid rgba(255, 255, 255, 0.12)",
-                    backgroundColor: "#212121",
+                    backgroundColor: "background.accent",
                     fontSize: "0.875rem",
                     fontWeight: 500,
                     textTransform: "uppercase",

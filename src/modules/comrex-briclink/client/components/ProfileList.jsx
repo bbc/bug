@@ -84,9 +84,9 @@ export default function ProfileList({ panelId }) {
                     hideWidth: 640,
                     content: (item) => (
                         <>
-                            <Box sx={{ color: "#ffffff" }}>{item?.local?.codec?.name}</Box>
+                            <Box sx={{ color: "text.primary" }}>{item?.local?.codec?.name}</Box>
                             {item?.local?.codec?.bitrate && (
-                                <Box sx={{ color: "secondary.main" }}>{item?.local?.codec?.bitrate} bps</Box>
+                                <Box sx={{ color: "text.secondary" }}>{item?.local?.codec?.bitrate} bps</Box>
                             )}
                         </>
                     ),
@@ -96,12 +96,12 @@ export default function ProfileList({ panelId }) {
                     hideWidth: 640,
                     content: (item) => (
                         <>
-                            <Box sx={{ color: "#ffffff" }}>
+                            <Box sx={{ color: "text.primary" }}>
                                 {item?.remote?.codec?.name === "!follow"
                                     ? item?.local?.codec?.name
                                     : item?.remote?.codec?.name}
                             </Box>
-                            <Box sx={{ color: "secondary.main" }}>
+                            <Box sx={{ color: "text.secondary" }}>
                                 {item?.remote?.codec?.bitrate && (
                                     <>
                                         {item?.remote?.codec?.name === "!follow"

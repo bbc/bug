@@ -313,8 +313,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                                     <Box
                                         sx={{
                                             textAlign: "center",
-                                            opacity: item?.["auto-negotiation"] ? 0.3 : 1,
-                                            color: item?.["auto-negotiation"] ? "#ffffff" : "primary.main",
+                                            color: item?.["auto-negotiation"] ? "text.secondary" : "primary.main",
                                         }}
                                     >
                                         {item?.["auto-negotiation"] ? `auto` : `fixed`}

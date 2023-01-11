@@ -211,10 +211,9 @@ export default function InterfaceList({ panelId }) {
                                     <Box
                                         sx={{
                                             textAlign: "center",
-                                            opacity: item?.linkstats?.["auto-negotiation"] === "done" ? 0.3 : 1,
                                             color:
                                                 item?.linkstats?.["auto-negotiation"] === "done"
-                                                    ? "#ffffff"
+                                                    ? "text.secondary"
                                                     : "primary.main",
                                         }}
                                     >

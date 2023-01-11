@@ -164,7 +164,7 @@ export default function PeerList({ panelId }) {
                         if (item._autoConnectEnabled) {
                             return <LockIcon sx={{ color: "primary.main" }} />;
                         }
-                        return <LockOpenIcon sx={{ color: "#ffffff", opacity: 0.1 }} />;
+                        return <LockOpenIcon sx={{ color: "text.primary", opacity: 0.1 }} />;
                     },
                 },
                 {

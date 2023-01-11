@@ -16,7 +16,6 @@ export default function PanelEditTableGroupLabel({ group, onChange, placeholder,
     const style = {
         transform: transformString,
         zIndex: 1,
-        backgroundColor: "#212121",
         transition,
     };
 
@@ -35,7 +34,7 @@ export default function PanelEditTableGroupLabel({ group, onChange, placeholder,
             sx={{
                 height: "48px",
                 cursor: "move",
-                backgroundColor: "#212121",
+                backgroundColor: "background.accent",
             }}
         >
             <TableCell sx={{ textAlign: "center" }}>
