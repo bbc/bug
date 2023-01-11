@@ -5,12 +5,12 @@ import Box from "@mui/material/Box";
 const State = ({ state, children }) => {
     const stateColors = {
         running: "success.main",
-        idle: "secondary.main",
-        empty: "primary.main",
-        stopping: "primary.main",
-        starting: "primary.main",
-        restarting: "primary.main",
-        building: "primary.main",
+        idle: "text.secondary",
+        empty: "text.primary",
+        stopping: "text.primary",
+        starting: "text.primary",
+        restarting: "text.primary",
+        building: "text.primary",
         error: "error.main",
         warning: "warning.main",
         active: "success.main",

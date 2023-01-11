@@ -30,7 +30,7 @@ export default function HostCard({ panelId, handleDelete, host, hostId }) {
                     margin: "4px",
                 }}
                 variant="outlined"
-                color="secondary"
+                color="background.paper"
             >
                 <CardActionArea onClick={handleClick}>
                     <CardContent>

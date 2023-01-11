@@ -20,7 +20,6 @@ export default function AddCard({ handleClick }) {
                     margin: "4px",
                 }}
                 variant="outlined"
-                color="secondary"
             >
                 <CardActionArea>
                     <CardContent sx={{ alignItems: "center" }}>

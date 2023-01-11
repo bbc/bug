@@ -21,7 +21,6 @@ export default function PlayerCardEdit({ handleDelete, handleEdit, player, playe
                     margin: "4px",
                 }}
                 variant="outlined"
-                color="secondary"
             >
                 <CardActionArea>
                     <CardContent>

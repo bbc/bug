@@ -165,7 +165,7 @@ export default function InterfaceList({ panelId }) {
                                         {item.comment}
                                     </BugTableLinkButton>
                                     <BugTableLinkButton
-                                        color="secondary"
+                                        color="text.secondary"
                                         onClick={(event) => handleLldpClicked(event, item)}
                                     >
                                         {getItemNeighbor(item)}
@@ -182,7 +182,7 @@ export default function InterfaceList({ panelId }) {
                                     {item.name}
                                 </BugTableLinkButton>
                                 <BugTableLinkButton
-                                    color="secondary"
+                                    color="text.secondary"
                                     onClick={(event) => handleLldpClicked(event, item)}
                                 >
                                     {getItemNeighbor(item)}
