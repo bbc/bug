@@ -146,7 +146,7 @@ export default function PageSystemBackup() {
                                                         `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.version}`
                                                     )
                                                 }
-                                                color="text.secondary"
+                                                sx={{ color: "text.secondary" }}
                                             >
                                                 {info.data?.version}
                                             </BugTableLinkButton>
@@ -170,7 +170,7 @@ export default function PageSystemBackup() {
                                                                 `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates?.version}`
                                                             )
                                                         }
-                                                        color="secondary"
+                                                        sx={{ color: "text.secondary" }}
                                                     >
                                                         {info.data?.updates?.version}
                                                     </BugTableLinkButton>
@@ -196,7 +196,7 @@ export default function PageSystemBackup() {
                                                         `https://github.com/${info.data?.git.repository}/commit/${info.data?.git.commit}`
                                                     )
                                                 }
-                                                color="text.secondary"
+                                                sx={{ color: "text.secondary" }}
                                             >
                                                 {info.data?.git.commit}
                                             </BugTableLinkButton>
@@ -218,7 +218,7 @@ export default function PageSystemBackup() {
                                                         `https://github.com/${info.data?.git.repository}/actions/runs/${info.data?.git.buildId}`
                                                     )
                                                 }
-                                                color="text.secondary"
+                                                sx={{ color: "text.secondary" }}
                                             >
                                                 {info.data?.git.buildNumber}
                                             </BugTableLinkButton>
@@ -263,7 +263,7 @@ export default function PageSystemBackup() {
                                 value: (
                                     <BugTableLinkButton
                                         onClick={(event) => openWebpage(event, `https://bbc.github.io/bug`)}
-                                        color="text.secondary"
+                                        sx={{ color: "text.secondary" }}
                                     >
                                         bug.bbc.pages.github.io
                                     </BugTableLinkButton>
@@ -274,7 +274,7 @@ export default function PageSystemBackup() {
                                 value: (
                                     <BugTableLinkButton
                                         onClick={(event) => openWebpage(event, `/documentation`)}
-                                        color="text.secondary"
+                                        sx={{ color: "text.secondary" }}
                                     >
                                         /documentation
                                     </BugTableLinkButton>

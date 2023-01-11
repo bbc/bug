@@ -106,7 +106,7 @@ export default function TabLabels({ panelId }) {
                             title: "Multiview Label",
                             content: (item) => (
                                 <BugTableLinkButton
-                                    color="text.primary"
+                                    sx={{ color: "text.primary" }}
                                     disabled={item.autoLabelEnabled}
                                     onClick={(event) => handleLabelClicked(event, item)}
                                 >

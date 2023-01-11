@@ -15,7 +15,7 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "6rem" }}>{Story()}</div>],
 
     argTypes: {
-        color: {
+        activeColor: {
             control: "color",
             defaultValue: "primary.main",
             description: "The icon colour when enabled - see MaterialUI for options",

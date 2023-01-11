@@ -16,7 +16,11 @@ export default function SystemHealthHost() {
                         return (
                             <>
                                 <Box>{item.name}</Box>
-                                <BugStatusLabel color={item.type === "panel" ? "text.primary" : "text.secondary"}>
+                                <BugStatusLabel
+                                    sx={{
+                                        color: item.type === "panel" ? "text.primary" : "text.secondary",
+                                    }}
+                                >
                                     {item.module}
                                 </BugStatusLabel>
                             </>

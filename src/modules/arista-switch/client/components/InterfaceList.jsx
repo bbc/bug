@@ -214,7 +214,10 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const getItemSubName = (item) => {
         if (item?.lldp?.name) {
             return (
-                <BugTableLinkButton color="text.secondary" onClick={(event) => handleNeighborLinkClicked(event, item)}>
+                <BugTableLinkButton
+                    sx={{ color: "text.secondary" }}
+                    onClick={(event) => handleNeighborLinkClicked(event, item)}
+                >
                     {item?.lldp?.name}
                 </BugTableLinkButton>
             );
@@ -225,7 +228,10 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 displayText = item?.fdb[0]?.comment ? item?.fdb[0]?.comment : item?.fdb[0]?.hostname;
             }
             return (
-                <BugTableLinkButton color="text.secondary" onClick={(event) => handleDevicesLinkClicked(event, item)}>
+                <BugTableLinkButton
+                    sx={{ color: "text.secondary" }}
+                    onClick={(event) => handleDevicesLinkClicked(event, item)}
+                >
                     {displayText}
                 </BugTableLinkButton>
             );

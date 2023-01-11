@@ -179,7 +179,7 @@ export default function PeerList({ panelId }) {
                             >
                                 {item.name}
                             </BugTableLinkButton>
-                            <BugTableLinkButton disabled={item._connected} color="text.secondary">
+                            <BugTableLinkButton disabled={item._connected} sx={{ color: "text.secondary" }}>
                                 {item._profileName}
                             </BugTableLinkButton>
                         </>
