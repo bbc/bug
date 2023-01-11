@@ -20,7 +20,9 @@ export default function TabStatistics() {
                 lg={12}
                 xl={5}
                 sx={{
-                    borderRight: isXLView ? "4px solid #181818" : "",
+                    borderRightWidth: isXLView ? "4px" : "0px",
+                    borderRightStyle: "solid",
+                    borderRightColor: "border.light",
                 }}
             >
                 <Statistics panelId={params.panelId} />

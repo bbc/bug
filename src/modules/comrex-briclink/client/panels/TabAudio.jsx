@@ -21,7 +21,13 @@ export default function TabAudio() {
         return (
             <>
                 <AudioChain levels={levels} type="input" history={history} />
-                <Box sx={{ borderTop: "4px solid #181818" }}>
+                <Box
+                    sx={{
+                        borderTopWidth: "4px",
+                        borderTopStyle: "solid",
+                        borderTopColor: "border.light",
+                    }}
+                >
                     <AudioChain levels={levels} type="output" history={history} />
                 </Box>
             </>

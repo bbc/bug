@@ -19,7 +19,7 @@ export default function SecurityTable() {
 
     return (
         <>
-            <TableContainer component={Paper} square>
+            <TableContainer component={Paper} square elevation={0}>
                 <Table>
                     <TableHead
                         sx={{

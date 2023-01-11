@@ -10,7 +10,7 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
             <Grid
                 container
                 sx={{
-                    backgroundColor: "#181818",
+                    backgroundColor: "background.default",
                     flexDirection: "column",
                     justifyContent: "space-between",
                     alignItems: "flex-start",

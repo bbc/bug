@@ -59,7 +59,7 @@ const Header = ({ children }) => {
         <CardHeader
             component={Paper}
             square
-            elevation={1}
+            elevation={0}
             sx={{
                 padding: "16px",
             }}

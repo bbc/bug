@@ -55,7 +55,7 @@ export default {
 
 export const MyBugCard = (args) => (
     <BugCard {...args}>
-        <CardHeader component={Paper} square elevation={1} title="Example Card" />
+        <CardHeader component={Paper} square elevation={0} title="Example Card" />
         <CardContent>This is the card content. It can contain a variety of components.</CardContent>
     </BugCard>
 );

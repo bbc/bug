@@ -7,7 +7,6 @@ import BugStatusLabel from "@core/BugStatusLabel";
 import BugCard from "@core/BugCard";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -50,7 +49,14 @@ export default function PageSystemAbout() {
                     }}
                 >
                     <BugCard>
-                        <CardHeader component={Paper} square elevation={1} title="About BUG" />
+                        <CardHeader
+                            sx={{
+                                borderBottomWidth: "1px",
+                                borderBottomColor: "border.light",
+                                borderBottomStyle: "solid",
+                            }}
+                            title="About BUG"
+                        />
                         <CardContent>
                             <Box
                                 sx={{
@@ -110,7 +116,14 @@ export default function PageSystemAbout() {
                         }}
                     >
                         <BugCard>
-                            <CardHeader component={Paper} square elevation={1} title="Available Modules" />
+                            <CardHeader
+                                sx={{
+                                    borderBottomWidth: "1px",
+                                    borderBottomColor: "border.light",
+                                    borderBottomStyle: "solid",
+                                }}
+                                title="Available Modules"
+                            />
                             <CardContent sx={{ padding: 0, paddingBottom: "0 !important" }}>
                                 <TableContainer>
                                     <Table>

@@ -16,7 +16,9 @@ export default function BugDetailsTable({ items, width = "15rem", gridLines = tr
                             borderBottomWidth: "0px",
                         },
                         "& .MuiTableRow-root:not(:last-child) .MuiTableCell-root": {
-                            borderBottom: gridLines ? "1px solid #181818" : "none",
+                            borderBottomWidth: gridLines ? "1px" : "0px",
+                            borderBottomStyle: gridLines ? "solid" : "none",
+                            borderBottomColor: "border.light",
                         },
                     }}
                 >

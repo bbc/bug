@@ -90,7 +90,9 @@ export default function Group({ group, panelId, onChange }) {
                         )
                     }
                     sx={{
-                        borderBottom: "1px solid #181818",
+                        borderBottomWidth: "1px",
+                        borderBottomStyle: "solid",
+                        borderBottomColor: "border.light",
                         height: "68px",
                     }}
                     title={group["_title"]}
@@ -114,7 +116,9 @@ export default function Group({ group, panelId, onChange }) {
                         sx={{
                             minHeight: 0,
                             height: "56px",
-                            borderBottom: "1px solid #181818",
+                            borderBottomWidth: "1px",
+                            borderBottomStyle: "solid",
+                            borderBottomColor: "border.light",
                             "& .MuiTabs-indicator": {
                                 backgroundColor: groupStateColor,
                             },

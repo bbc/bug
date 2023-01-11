@@ -142,7 +142,7 @@ export default function PanelTable({ showGroups = true }) {
 
         return (
             <>
-                <TableContainer component={Paper} square>
+                <TableContainer component={Paper} square elevation={0}>
                     <Table aria-label="simple table">
                         <TableHead
                             sx={{

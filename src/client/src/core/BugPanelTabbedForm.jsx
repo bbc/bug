@@ -59,7 +59,7 @@ export default function BugPanelTabbedForm({
                     sx={{
                         width: "100%",
                         position: "absolute",
-                        backgroundColor: "menu.main",
+                        backgroundColor: "background.accent",
                     }}
                 >
                     {onClose && (
@@ -69,7 +69,7 @@ export default function BugPanelTabbedForm({
                                 position: "absolute",
                                 right: "0px",
                                 top: "0px",
-                                color: "rgba(255, 255, 255, 0.7)",
+                                color: "text.secondary",
                                 padding: "16px",
                                 zIndex: 1,
                             }}

@@ -14,7 +14,7 @@ export default function AudioChain({ levels, history, type }) {
                     fontWeight: "500",
                     textTransform: "uppercase",
                     textAlign: "center",
-                    backgroundColor: "#212121",
+                    backgroundColor: "background.accent",
                     padding: "1rem",
                 }}
             >

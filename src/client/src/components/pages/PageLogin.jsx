@@ -101,7 +101,7 @@ export default function PageLogin() {
 
     return (
         <>
-            <div style={{ height: "100%", width: "100%", overflow: "auto" }} sx={{ backgroundColor: "#ff0000" }}>
+            <div style={{ height: "100%", width: "100%", overflow: "auto" }}>
                 <Card
                     sx={{
                         margin: "auto",

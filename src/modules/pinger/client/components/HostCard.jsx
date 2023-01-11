@@ -142,7 +142,7 @@ export default function HostCard({
                                 }}
                             >
                                 <Sparklines data={formatStats(data)} limit={50} style={{ opacity: 0.7 }} min={0}>
-                                    <SparklinesLine style={{ fill: "none" }} color="#333333" />
+                                    <SparklinesLine style={{ fill: "none" }} color="background.hover" />
                                 </Sparklines>
                             </div>
                         </div>

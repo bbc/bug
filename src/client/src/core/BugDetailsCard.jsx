@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "@mui/material/Card";
+import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
 import BugDetailsTable from "@core/BugDetailsTable";
@@ -66,6 +67,9 @@ function BugDetailsCard({
 
     return (
         <Card
+            component={Paper}
+            square
+            elevation={0}
             sx={{
                 minWidth: 300,
                 textAlign: "left",
@@ -81,11 +85,13 @@ function BugDetailsCard({
                     sx={{
                         "& .MuiCardHeader-title": {
                             fontWeight: 500,
-                            color: "#ffffff",
+                            color: "text.primary",
                         },
                         height: "50px",
                         padding: "8px 16px",
-                        borderBottom: "1px solid #181818",
+                        borderBottomWidth: "1px",
+                        borderBottomStyle: "solid",
+                        borderBottomColor: "border.light",
                     }}
                     title={title}
                     action={getAction()}

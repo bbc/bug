@@ -15,7 +15,6 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
     return (
         <BugDetailsCard
             width="200px"
-            elevation={0}
             items={[
                 { name: "Remote Unit", value: stats.data?.name ? stats.data?.name : "NOT CONNECTED" },
                 {

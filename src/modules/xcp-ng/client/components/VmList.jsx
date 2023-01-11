@@ -216,7 +216,7 @@ export default function VmList({ panelId }) {
                             if (item._autoPower) {
                                 return <LockIcon sx={{ color: "primary.main" }} />;
                             }
-                            return <LockOpenIcon sx={{ color: "#ffffff", opacity: 0.1 }} />;
+                            return <LockOpenIcon sx={{ color: "text.primary", opacity: 0.1 }} />;
                         },
                     },
                     {

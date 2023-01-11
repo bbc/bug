@@ -92,7 +92,7 @@ export default function InterfaceTabDevices({ panelId, interfaceId }) {
                                         whiteSpace: "nowrap",
                                         textOverflow: "ellipsis",
                                         overflow: "hidden",
-                                        color: "#ffffff",
+                                        color: "text.primary",
                                         fontFamily: "fontFamily",
                                         fontSize: "0.875rem",
                                         lineHeight: 1.43,

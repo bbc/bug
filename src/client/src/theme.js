@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import { alpha } from "@mui/material";
 const defaultTheme = createTheme();
 const selectedFont = "Roboto";
 
@@ -14,8 +15,8 @@ const theme = (selectedTheme = "dark") => {
                 },
 
                 secondary: {
-                    main: "#212121",
-                    hover: "#3a3a3a",
+                    main: "#4e4e4e",
+                    hover: "#3d3d3d",
                 },
 
                 tertiary: {
@@ -41,6 +42,7 @@ const theme = (selectedTheme = "dark") => {
 
                 background: {
                     default: "#181818",
+                    accent: "#212121",
                     paper: "#262626",
                     hover: "#333333",
                 },
@@ -53,8 +55,12 @@ const theme = (selectedTheme = "dark") => {
                 text: {
                     highlight: "#ffffff",
                     primary: "rgba(255, 255, 255, 0.9)",
-                    secondary: "rgba(255, 255, 255, 0.5)",
+                    secondary: "rgba(255, 255, 255, 0.45)",
                     action: "#337ab7",
+                },
+
+                border: {
+                    light: "#181818",
                 },
 
                 menu: {
@@ -107,6 +113,7 @@ const theme = (selectedTheme = "dark") => {
 
             background: {
                 default: "#efefef",
+                accent: "#c2cad0",
                 paper: "#dddddd",
                 hover: "#333",
             },
@@ -119,12 +126,16 @@ const theme = (selectedTheme = "dark") => {
             text: {
                 highlight: "#111111",
                 primary: "#212121",
-                secondary: "#2e6da4",
+                secondary: "rgb(123 123 123)",
                 action: "#2f73aa",
             },
 
+            border: {
+                light: "#bcbcbc",
+            },
+
             menu: {
-                main: "#2f73aa",
+                main: "#1b4e78",
             },
 
             default: {
@@ -169,6 +180,7 @@ const theme = (selectedTheme = "dark") => {
                         textTransform: "uppercase",
                         fontSize: "0.875rem",
                         padding: "12px 12px",
+                        backgroundColor: getPalette(selectedTheme).background.accent,
                     },
                 },
             },
@@ -200,9 +212,10 @@ const theme = (selectedTheme = "dark") => {
                         justifyContent: "flex-end",
                         marginTop: 1,
                         padding: "16px",
-                        "&:hover": {
-                            backgroundColor: getPalette(selectedTheme).secondary.hover,
-                        },
+                        backgroundColor: getPalette(selectedTheme).background.accent,
+                        // "&:hover": {
+                        //     backgroundColor: getPalette(selectedTheme).secondary.hover,
+                        // },
                     },
                     title: {
                         fontSize: "0.875rem",
@@ -227,6 +240,9 @@ const theme = (selectedTheme = "dark") => {
                     root: {
                         padding: "16px 12px",
                     },
+                    textColorPrimary: {
+                        color: getPalette(selectedTheme).text.primary,
+                    },
                 },
             },
             MuiToolbar: {
@@ -240,13 +256,13 @@ const theme = (selectedTheme = "dark") => {
                     root: {
                         "& .MuiButton-outlinedPrimary": {
                             color: getPalette(selectedTheme).text.primary,
-                            borderColor: getPalette(selectedTheme).text.primary,
+                            borderColor: alpha(getPalette(selectedTheme).text.primary, 0.3),
                             borderBottomStyle: "solid",
                             borderBottomWidth: "1px",
                             marginLeft: "0.5rem",
                         },
                         "& .MuiButton-containedPrimary": {
-                            color: "rgba(255, 255, 255, 0.8)",
+                            color: getPalette(selectedTheme).text.primary,
                             marginLeft: "0.5rem",
                         },
                     },
@@ -297,6 +313,11 @@ const theme = (selectedTheme = "dark") => {
                     },
                 },
             },
+            MuiButton: {
+                defaultProps: {
+                    disableElevation: true,
+                },
+            },
             MuiButtonBase: {
                 styleOverrides: {
                     root: {
@@ -305,7 +326,7 @@ const theme = (selectedTheme = "dark") => {
                             marginBottom: 2,
                         },
                         "&.MuiMenuItem-root.Mui-selected": {
-                            backgroundColor: getPalette(selectedTheme).text.secondary,
+                            backgroundColor: getPalette(selectedTheme).secondary.main,
                         },
                     },
                 },
