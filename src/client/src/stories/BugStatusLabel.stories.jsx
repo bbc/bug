@@ -24,16 +24,6 @@ export default {
                 defaultValue: { summary: "" },
             },
         },
-        color: {
-            options: ["primary.main", "secondary.main", "error.main", "success.main"],
-            defaultValue: "success.main",
-            description: "The color to use for the text in the control - see MaterialUI for options",
-            control: { type: "select" },
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "primary.main" },
-            },
-        },
         sx: {
             type: { name: "data" },
             defaultValue: {},

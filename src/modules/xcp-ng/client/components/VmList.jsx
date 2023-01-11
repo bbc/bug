@@ -245,7 +245,7 @@ export default function VmList({ panelId }) {
                                     </BugTableLinkButton>
                                     <BugTableLinkButton
                                         onClick={(event) => handleDescriptionClicked(event, item)}
-                                        color="text.secondary"
+                                        sx={{ color: "text.secondary" }}
                                     >
                                         {item["name_description"]}
                                     </BugTableLinkButton>

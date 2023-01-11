@@ -24,16 +24,6 @@ export default {
                 defaultValue: { summary: null },
             },
         },
-        color: {
-            options: ["primary", "secondary"],
-            description: "The color type to display (primary, secondary)",
-            defaultValue: "primary",
-            control: { type: "select" },
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "primary" },
-            },
-        },
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
