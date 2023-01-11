@@ -12,6 +12,7 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
     const results = [];
 
     const parseResponse = (command, response) => {
+        console.log(command, response);
         if (preCommands.includes(command)) {
             return;
         }
@@ -71,8 +72,11 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
             onEnd: () => {
                 resolve(results);
             },
-            onError: () => {
-                reject();
+            onError: (err) => {
+                reject(err);
+            },
+            onCommandTimeout: function (command, response, stream, connection) {
+                reject(response);
             },
         });
 

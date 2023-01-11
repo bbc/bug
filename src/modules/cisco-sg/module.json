@@ -1,11 +1,9 @@
 {
     "name": "cisco-sg",
     "longname": "Cisco SG Switch",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Monitoring and control of Cisco SG-series switches",
-    "capabilities": [
-        "network-switch"
-    ],
+    "capabilities": ["network-switch"],
     "icon": "SettingsEthernet",
     "notes": "",
     "author": "Geoff House",
@@ -13,15 +11,8 @@
     "status": "stable",
     "memory": 220,
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

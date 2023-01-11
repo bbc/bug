@@ -11,10 +11,10 @@ module.exports = async () => {
     const images = await dockerListImages();
     const settings = await settingsModel.get();
 
-    //Filter out the modules according to user set beta/stable
+    // filter out the modules according to user set beta/stable
     let moduleList = await moduleConfig.list();
 
-    //Handle feild not being avalible in settings
+    // handle field not being avalible in settings
     if (settings?.moduleStatus) {
         moduleList = moduleList.filter((module) => {
             let statusMatch = false;

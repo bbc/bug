@@ -13,7 +13,9 @@ module.exports = async () => {
         password: config.password,
         timeout: 20000,
         commands: ["write memory"],
+        debug: true,
     });
+    console.log(result);
     if (result && result.length === 1 && result[0].indexOf("Copy succeeded") > -1) {
         console.log("device-save: success");
     } else {
