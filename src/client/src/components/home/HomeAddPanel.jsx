@@ -43,7 +43,7 @@ const HomeAddPanel = () => {
                     sx={{
                         borderWidth: "2px",
                         borderStyle: "dashed",
-                        borderColor: "border.light",
+                        borderColor: "border.medium",
                         boxShadow: "none",
                         backgroundColor: "background.default",
                         "& .MuiBadge-badge": {
