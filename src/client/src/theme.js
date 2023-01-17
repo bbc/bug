@@ -61,6 +61,8 @@ const theme = (selectedTheme = "dark") => {
 
                 border: {
                     light: "#181818",
+                    medium: "#3c3c3c",
+                    heavy: "#a2a2a2",
                 },
 
                 menu: {
@@ -131,7 +133,9 @@ const theme = (selectedTheme = "dark") => {
             },
 
             border: {
-                light: "#bcbcbc",
+                light: "#c5c5c5",
+                medium: "#bcbcbc",
+                heavy: "#878787",
             },
 
             menu: {
