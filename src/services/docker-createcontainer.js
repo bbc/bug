@@ -21,6 +21,7 @@ module.exports = async (configObject) => {
         const moduleHome = process.env.MODULE_HOME || "/home/node/module";
         const moduleMemory = module?.memory || process.env.MODULE_MEMORY || 100; //Max Memory in MB
         const bugHost = process.env.BUG_HOST || "127.0.0.1";
+        const nodeEnv = process.env.NODE_ENV || "production";
 
         let containerOptions = {
             Image: `${configObject.module}:${module?.version}`,
@@ -31,6 +32,7 @@ module.exports = async (configObject) => {
                 `CORE_PORT=${bugCorePort}`,
                 `CORE_HOST=${bugCoreHost}`,
                 `BUG_HOST=${bugHost}`,
+                `NODE_ENV=${nodeEnv}`,
                 `BUG_PORT=${bugCorePort}`,
                 `NODE_OPTIONS="--max-old-space-size=${moduleMemory}"`,
             ],
