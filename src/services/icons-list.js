@@ -66,7 +66,7 @@ module.exports = async (variant = null) => {
     }
 
     // cache the result for 10 minutes
-    // cacheStore.set(cacheKey, icons, 1); //TODO
+    cacheStore.set(cacheKey, icons, 1);
 
     // now filter by variant
     icons = icons.filter((icon) => icon.variant === variant);
