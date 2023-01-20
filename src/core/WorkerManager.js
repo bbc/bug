@@ -36,11 +36,11 @@ module.exports = class WorkerManager {
 
         if (this.isModule && config) {
             if (config.needsConfigured) {
-                console.log(`WorkerManager->setup: Panel on first run and needs so not starting workers...`);
+                console.log(`WorkerManager->setup: Panel on first run and needs config so not starting workers...`);
             }
             await this.createWorkers();
         } else if (!this.isModule) {
-            //Start workers without needing a confif - as this only applies to modules
+            //Start workers without needing a config - as this only applies to modules
             console.log(
                 `WorkerManager->setup: Starting workers. They're not part of a Module and don't have a config.`
             );
@@ -206,7 +206,7 @@ module.exports = class WorkerManager {
             if (this.needsUpdated(oldConfig, newConfig, workers[index].restartKeys)) {
                 await this.restartWorker(index);
             } else {
-                console.log(`WorkerManager->pushConfig: ${workers[index]?.filename} doesn't need restarted.`);
+                console.log(`WorkerManager->pushConfig: ${workers[index]?.filename} doesn't need to be restarted.`);
             }
         }
     }
