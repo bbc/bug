@@ -256,10 +256,22 @@ module.exports = class SnmpAwait {
                     type: snmp.ObjectType.OctetString,
                     value: value.toString(),
                 };
+            case "octetstring":
+                return {
+                    oid: oid,
+                    type: snmp.ObjectType.OctetString,
+                    value: value,
+                };
             case "number":
                 return {
                     oid: oid,
                     type: snmp.ObjectType.Integer,
+                    value: parseInt(value),
+                };
+            case "gauge":
+                return {
+                    oid: oid,
+                    type: snmp.ObjectType.Gauge,
                     value: parseInt(value),
                 };
             default:
