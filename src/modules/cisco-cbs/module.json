@@ -1,0 +1,32 @@
+{
+    "name": "cisco-cbs",
+    "longname": "Cisco CBS Switch",
+    "version": "1.0.1",
+    "description": "Monitoring and control of Cisco CBS-series small business switches",
+    "capabilities": ["network-switch"],
+    "icon": "SettingsEthernet",
+    "notes": "",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "memory": 220,
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "cisco-cbs",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "username": "bug",
+        "password": "",
+        "snmpCommunity": "public",
+        "protectedInterfaces": [],
+        "dhcpSources": []
+    }
+}
