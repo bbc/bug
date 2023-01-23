@@ -24,7 +24,7 @@ module.exports = async (capability) => {
         }
 
         const panelConfig = await panelConfigModel.list();
-        const validPanels = panelConfig.filter((panel) => validModuleNames.includes(panel.module));
+        const validPanels = panelConfig.filter((panel) => validModuleNames.includes(panel.module) && panel.enabled);
 
         cacheStore.set(cacheKey, validPanels, 20);
 
