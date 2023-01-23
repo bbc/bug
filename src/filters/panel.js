@@ -67,6 +67,9 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         _buildStatus: panelBuildStatus,
         _status: thisStatus ? thisStatus?.statusItems : [],
         upgradeable: upgradeable,
+        _active: moduleConfig.needsContainer
+            ? containerInfo._isRunning && panelConfig["enabled"]
+            : panelConfig["enabled"],
     };
 };
 
