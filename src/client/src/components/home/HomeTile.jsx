@@ -10,6 +10,7 @@ import CardContent from "@mui/material/CardContent";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import BugRestrictTo from "@core/BugRestrictTo";
 import { styled } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
     padding: "8px 0px",
@@ -89,10 +90,22 @@ const HomeTile = ({ panel }) => {
     const renderStatusItems = () => {
         let itemsToRender = panel._status;
 
-        // if we only have critical alerts, just show them
-        const criticalStatusOnly = panel._status && panel._status.filter((x) => x.type === "critical");
-        if (criticalStatusOnly.length > 0) {
-            itemsToRender = criticalStatusOnly;
+        if (panel._dockerContainer._isBuilding) {
+            itemsToRender = [
+                {
+                    key: "building",
+                    type: "info",
+                    message: "Panel is building - please wait",
+                    flags: [],
+                    panel: null,
+                },
+            ];
+        } else {
+            // if we only have critical alerts, just show them
+            const criticalStatusOnly = panel._status && panel._status.filter((x) => x.type === "critical");
+            if (criticalStatusOnly.length > 0) {
+                itemsToRender = criticalStatusOnly;
+            }
         }
 
         // otherwise, show everything
@@ -122,7 +135,11 @@ const HomeTile = ({ panel }) => {
                                     horizontal: "right",
                                 }}
                             >
-                                <BugDynamicIcon iconName={panel._module.icon} />
+                                {panel?._dockerContainer?._isBuilding ? (
+                                    <CircularProgress size={24} />
+                                ) : (
+                                    <BugDynamicIcon iconName={panel._module.icon} />
+                                )}
                             </BadgeWrapper>
                         }
                         action={
