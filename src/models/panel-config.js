@@ -18,6 +18,16 @@ exports.get = async function (panelId) {
     }
 };
 
+exports.getChangedDate = async function (panelId) {
+    try {
+        const filename = path.join(__dirname, "..", "config", "panels", `${panelId}.json`);
+        const stats = await fs.stat(filename);
+        return stats.mtime;
+    } catch (error) {
+        logger.warning(`panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
+    }
+};
+
 exports.set = async function (panelConfig) {
     try {
         const filename = path.join(__dirname, "..", "config", "panels", `${panelConfig.id}.json`);
