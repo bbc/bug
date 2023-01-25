@@ -10,6 +10,7 @@ const moduleConfigModel = require("@models/module-config");
 const axios = require("axios");
 const StatusItem = require("@core/StatusItem");
 const mongoCollection = require("@core/mongo-collection");
+const dockerContainer = require("@models/docker-container");
 
 const modulePort = process.env.MODULE_PORT || 3200;
 const databaseName = process.env.BUG_CONTAINER || "bug";
@@ -32,44 +33,87 @@ const fetch = async () => {
                     statusItems: [],
                 };
 
-                // check needsConfigured first ...
-                if (eachPanelConfig.needsConfigured) {
-                    panelStatus.statusItems.push(
-                        new StatusItem({
-                            key: "panelnotconfigured",
-                            message: [
-                                "Panel has not yet been configured for use",
-                                "Please configure the panel with the required fields",
-                            ],
-                            type: "critical",
-                            flags: ["configurePanel"],
-                        })
-                    );
-                } else {
-                    // find the module config for this panel
-                    const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
+                if (eachPanelConfig.enabled) {
+                    // check if panel has just started
+                    const containerInfo = await dockerContainer.get(eachPanelConfig.id);
+                    const startedInLast10Secs = startedInLastNSeconds(containerInfo?.status, 20);
 
-                    if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
-                        const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
-                        try {
-                            let response = await axios.get(url);
-                            if (response.data.status === "success") {
-                                panelStatus.statusItems = panelStatus.statusItems.concat(response.data.data);
-                            } else {
-                                throw new Error();
+                    // check if panelconfig has just been updated
+                    const lastChanged = await panelConfigModel.getChangedDate(eachPanelConfig.id);
+                    const configChangedInLast10Secs = lastChanged > Date.now() - 10000;
+
+                    const maskStatusItems = startedInLast10Secs || configChangedInLast10Secs;
+
+                    // check needsConfigured first ...
+                    if (eachPanelConfig.needsConfigured) {
+                        panelStatus.statusItems.push(
+                            new StatusItem({
+                                key: "panelnotconfigured",
+                                message: [
+                                    "Panel has not yet been configured for use",
+                                    "Please configure the panel with the required fields",
+                                ],
+                                type: "critical",
+                                flags: ["configurePanel"],
+                            })
+                        );
+                    } else {
+                        // find the module config for this panel
+                        const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
+
+                        if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
+                            const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
+                            try {
+                                let response = await axios.get(url);
+
+                                if (response.data.status === "success") {
+                                    if (maskStatusItems) {
+                                        // check if we have any status items to filter out
+                                        // if we have, then we'll add an info status to tell the user
+                                        // otherwise do nothing
+
+                                        const hasStatusItemsToMask =
+                                            response.data.data.filter((s) =>
+                                                ["warning", "critical", "error"].includes(s.type)
+                                            ).length > 0;
+
+                                        // now add any other non-error status items
+                                        panelStatus.statusItems = panelStatus.statusItems.concat(
+                                            response.data.data.filter(
+                                                (s) => !["warning", "critical", "error"].includes(s.type)
+                                            )
+                                        );
+
+                                        if (hasStatusItemsToMask) {
+                                            panelStatus.statusItems.push(
+                                                new StatusItem({
+                                                    key: "ignoreerrors",
+                                                    message: ["Panel starting - please wait"],
+                                                    type: "info",
+                                                    flags: [],
+                                                })
+                                            );
+                                        }
+                                    } else {
+                                        // no need to suppress - just add the results
+                                        panelStatus.statusItems = panelStatus.statusItems.concat(response.data.data);
+                                    }
+                                } else {
+                                    throw new Error();
+                                }
+                            } catch (error) {
+                                panelStatus.statusItems.push(
+                                    new StatusItem({
+                                        key: "panelnotreachable",
+                                        message: [
+                                            "Panel container is not reachable.",
+                                            "There may be more information in the container logs",
+                                        ],
+                                        type: "critical",
+                                        flags: ["restartPanel", "viewPanelLogs"],
+                                    })
+                                );
                             }
-                        } catch (error) {
-                            panelStatus.statusItems.push(
-                                new StatusItem({
-                                    key: "panelnotreachable",
-                                    message: [
-                                        "Panel container is not reachable.",
-                                        "There may be more information in the container logs",
-                                    ],
-                                    type: "critical",
-                                    flags: ["restartPanel", "viewPanelLogs"],
-                                })
-                            );
                         }
                     }
                 }
@@ -101,3 +145,23 @@ const main = async () => {
 };
 
 main();
+
+const startedInLastNSeconds = (status, seconds) => {
+    if (!status) {
+        return false;
+    }
+    if (seconds === 1 && status.indexOf("Less than a second") > -1) {
+        return true;
+    }
+    if (status.indexOf(" second") > -1) {
+        const statusArray = status.split(" ");
+        if (statusArray.length === 3) {
+            if (!isNaN(statusArray[1])) {
+                if (parseInt(statusArray[1]) < seconds + 1) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+};
