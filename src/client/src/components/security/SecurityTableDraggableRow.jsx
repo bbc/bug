@@ -4,7 +4,7 @@ import TableRow from "@mui/material/TableRow";
 import BugDragIcon from "@core/BugDragIcon";
 import { useSortable } from "@dnd-kit/sortable";
 
-export default function SecurityTableRow({ strategy, index }) {
+export default function SecurityTableDraggableRow({ strategy, index }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: strategy.type });
 
     let transformString = null;
