@@ -16,11 +16,13 @@ import { useBugRenameDialog } from "@core/BugRenameDialog";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 
 export default function InterfaceList({ panelId }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
+    const [forceRefresh, doForceRefresh] = useForceRefresh();
 
     const handleRenameClicked = async (event, item) => {
         event.stopPropagation();
@@ -40,6 +42,7 @@ export default function InterfaceList({ panelId }) {
         }
         if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.id}/${result}`)) {
             sendAlert(`Renamed interface to ${result}`, { broadcast: "true", variant: "success" });
+            doForceRefresh();
         } else {
             sendAlert(`Failed to rename interface to ${result}`, { variant: "error" });
         }
@@ -62,6 +65,7 @@ export default function InterfaceList({ panelId }) {
                 broadcast: "true",
                 variant: "success",
             });
+            doForceRefresh();
         } else {
             sendAlert(`Failed to set comment on interface ${item.name}`, { variant: "error" });
         }
@@ -76,6 +80,7 @@ export default function InterfaceList({ panelId }) {
         const commandText = checked ? "Enabled" : "Disabled";
         if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceName}`)) {
             sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
+            doForceRefresh();
         } else {
             sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
         }
@@ -87,6 +92,7 @@ export default function InterfaceList({ panelId }) {
 
         if (await AxiosCommand(`/container/${panelId}/interface/${command}/${item.name}`)) {
             sendAlert(`${commandAction} interface: ${item.name}`, { variant: "success" });
+            doForceRefresh();
         } else {
             sendAlert(`Failed to ${command} interface: ${item.name}`, { variant: "error" });
         }
@@ -309,6 +315,7 @@ export default function InterfaceList({ panelId }) {
             rowHeight="62px"
             sortable
             onRowClick={handleDetailsClicked}
+            forceRefresh={forceRefresh}
         />
     );
 }
