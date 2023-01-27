@@ -28,13 +28,7 @@
         "notes": "",
         "enabled": false,
         "frequency": 30,
-        "hosts": {
-            "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed": {
-                "title": "Google",
-                "description": "Is the internet up?",
-                "host": "8.8.8.8"
-            }
-        },
+        "hosts": {},
         "edges": {}
     }
 }
