@@ -53,7 +53,6 @@ jobs:
               run: | # Install npm packages and build the Storybook files
                   npm install --legacy-peer-deps
                   npm run build-storybook
-                  npm run deploy-storybook
 
     # Build Jekyll Documentation
     pages:
