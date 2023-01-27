@@ -39,8 +39,8 @@ src/routes/logs
 /src/client/build/*
 !/src/client/build/.gitkeep
 
-# Storybook
-src/client/storybook-static
+# Storybook Static Files
+docs/assets/storybook
 
 # misc
 ._*
