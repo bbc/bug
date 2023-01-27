@@ -88,7 +88,8 @@
         "test": "react-app-rewired test --watchAll=false",
         "eject": "react-app-rewired eject",
         "storybook": "start-storybook -p 3303",
-        "build-storybook": "build-storybook --output-dir ./../../docs/assets/storybook"
+        "build-storybook": "build-storybook --output-dir ./../../docs/assets/storybook",
+        "deploy-storybook": "storybook-to-ghpages --existing-output-dir ./../../docs/assets/storybook -out=./_site"
     },
     "eslintConfig": {
         "extends": [
