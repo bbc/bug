@@ -38,25 +38,9 @@ jobs:
                   only_warn: 1
                   ignore_words_list: aoto,daa,te
 
-    # Build job
-    pages:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-            - name: Setup Pages
-              uses: actions/configure-pages@v2
-            - name: Build with Jekyll
-              uses: actions/jekyll-build-pages@v1
-              with:
-                  source: ./docs
-                  destination: ./_site
-            - name: Upload artifact
-              uses: actions/upload-pages-artifact@v1
-
+    # Build Storybook Static Files
     storybook:
         runs-on: ubuntu-latest
-        needs: pages
         defaults:
             run:
                 working-directory: ./src/client
@@ -70,13 +54,30 @@ jobs:
                   npm install --legacy-peer-deps
                   npm run build-storybook
 
+    # Build Jekyll Documentation
+    pages:
+        runs-on: ubuntu-latest
+        needs: storybook
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Setup Pages
+              uses: actions/configure-pages@v2
+            - name: Build with Jekyll
+              uses: actions/jekyll-build-pages@v1
+              with:
+                  source: ./docs
+                  destination: ./_site
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v1
+
     # Deployment job
     deploy:
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
         runs-on: ubuntu-latest
-        needs: storybook
+        needs: pages
         steps:
             - name: Deploy to GitHub Pages
               id: deployment
