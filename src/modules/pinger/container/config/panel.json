@@ -1,10 +1,13 @@
 {
   "id": "",
   "order": 0,
+  "needsConfigured": true,
   "title": "",
-  "module": "rss-feed",
-  "description": null,
-  "notes": null,
-  "enabled": true,
-  "address": "http://feeds.bbci.co.uk/news/rss.xml"
+  "module": "pinger",
+  "description": "",
+  "notes": "",
+  "enabled": false,
+  "frequency": 30,
+  "hosts": {},
+  "edges": {}
 }

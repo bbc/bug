@@ -5,7 +5,7 @@ on:
     # Runs on pushes targeting the default branch
     push:
         branches: ["main"]
-
+        paths: ["docs/**", "src/client/src/components/**"]
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
 
@@ -38,9 +38,26 @@ jobs:
                   only_warn: 1
                   ignore_words_list: aoto,daa,te
 
-    # Build job
-    build:
+    # Build Storybook Static Files
+    storybook:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./src/client
+        steps:
+            - name: Checkout 🛎️
+              uses: actions/checkout@v3
+              with:
+                  persist-credentials: false
+            - name: Install and Build 🔧
+              run: | # Install npm packages and build the Storybook files
+                  npm install --legacy-peer-deps
+                  npm run build-storybook
+
+    # Build Jekyll Documentation
+    pages:
+        runs-on: ubuntu-latest
+        needs: storybook
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -60,7 +77,7 @@ jobs:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
         runs-on: ubuntu-latest
-        needs: build
+        needs: pages
         steps:
             - name: Deploy to GitHub Pages
               id: deployment

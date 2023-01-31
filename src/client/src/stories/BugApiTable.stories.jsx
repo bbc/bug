@@ -8,7 +8,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { action } from "@storybook/addon-actions";
-import { ArgsTable } from "@storybook/addon-docs";
+import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
 
 export default {
     title: "BUG Core/API Controls/BugApiTable",
