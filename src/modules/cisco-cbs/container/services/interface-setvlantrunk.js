@@ -33,8 +33,6 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             taggedVlans.push(untaggedVlan);
         }
 
-        console.log("taggedVlans", taggedVlans);
-
         // summarise this into a list of vlans - it's used to update the db
         const vlanArray = ciscoCBSVlanArray(vlans, taggedVlans);
         console.log(
@@ -45,8 +43,6 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
 
         // encode the vlan array back into a hex string
         const writeValues = ciscoCBSVlanList.encode(taggedVlans, 1024, "");
-
-        console.log("writeValues", writeValues);
 
         // write it back
         for (const [index, value] of writeValues.entries()) {

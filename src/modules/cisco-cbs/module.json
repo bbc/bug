@@ -1,7 +1,7 @@
 {
     "name": "cisco-cbs",
     "longname": "Cisco CBS Switch",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Monitoring and control of Cisco CBS-series small business switches",
     "capabilities": ["network-switch"],
     "icon": "SettingsEthernet",
