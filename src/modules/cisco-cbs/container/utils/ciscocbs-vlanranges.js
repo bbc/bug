@@ -3,6 +3,10 @@
 module.exports = (allVlans, vlanArray) => {
     const individualVlans = new Array(4094);
 
+    if (vlanArray.length === 4094) {
+        return ["1-4094"];
+    }
+
     for (const eachVlan of vlanArray) {
         if (eachVlan === "1-4094") {
             // look - let's just return all the vlans - it's easier
