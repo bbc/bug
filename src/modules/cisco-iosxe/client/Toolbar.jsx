@@ -3,7 +3,6 @@ import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useApiPoller } from "@hooks/ApiPoller";
 import SaveIcon from "@mui/icons-material/Save";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
@@ -15,15 +14,6 @@ import { useSelector } from "react-redux";
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
-    const panel = useSelector((state) => state.panel);
-
-    const pending = useApiPoller({
-        url: `/container/${panelId}/pending/`,
-        interval: 1000,
-    });
-
-    const isPending = pending.status === "success" && pending.data;
-    const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
     const handleLaunchClicked = async (event, item) => {
         if (panelConfig?.data?.address) {
@@ -53,14 +43,7 @@ export default function Toolbar({ panelId, ...props }) {
 
     const buttons = () => (
         <>
-            <BugApiButton
-                disabled={!isPending || hasCritical}
-                variant="outlined"
-                color={isPending ? "warning" : "primary"}
-                onClick={handleSave}
-                timeout={20000}
-                icon={<SaveIcon />}
-            >
+            <BugApiButton variant="outlined" color="primary" onClick={handleSave} timeout={20000} icon={<SaveIcon />}>
                 Save
             </BugApiButton>
         </>
@@ -68,7 +51,7 @@ export default function Toolbar({ panelId, ...props }) {
 
     const menuItems = () => {
         return [
-            <MenuItem key="save" disabled={!isPending} onClick={handleSave}>
+            <MenuItem key="save" onClick={handleSave}>
                 <ListItemIcon>
                     <SaveIcon fontSize="small" />
                 </ListItemIcon>

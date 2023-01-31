@@ -6,7 +6,6 @@ const workerStore = require("@core/worker-store");
 const statusRouter = require("@routes/status");
 const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
-const pendingRouter = require("@routes/pending");
 const deviceRouter = require("@routes/device");
 const validationRouter = require("@routes/validate");
 const interfaceRouter = require("@routes/interface");
@@ -34,7 +33,6 @@ app.use("/api/status", statusRouter);
 app.use("/api/config", configRouter);
 app.use("/api/interface", interfaceRouter);
 app.use("/api/vlan", vlanRouter);
-app.use("/api/pending", pendingRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/validate", validationRouter);
 

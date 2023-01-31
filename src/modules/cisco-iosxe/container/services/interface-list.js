@@ -4,6 +4,8 @@ const mongoCollection = require("@core/mongo-collection");
 const matchAnyRegex = require("@core/regex-matchany");
 const wildcard = require("wildcard-regex");
 const configGet = require("@core/config-get");
+const ciscoIOSXEExpandVlanRanges = require("@utils/ciscoiosxe-expandvlanranges");
+const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     const config = await configGet();
@@ -42,7 +44,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
         eachInterface["_protected"] = matchAnyRegex(protectedRegexArray, [
             eachInterface.description,
             eachInterface.shortId,
-            eachInterface.longId,
+            eachInterface.interfaceId,
         ]);
 
         // this boolean helps the UI know whether the interface can be directly removed from the protected interfaces
@@ -50,8 +52,21 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
         eachInterface["_allowunprotect"] =
             config.protectedInterfaces &&
             config.protectedInterfaces.find((loopInterface, index) => {
-                return loopInterface == eachInterface.longId;
+                return loopInterface == eachInterface.interfaceId;
             }) !== undefined;
+    }
+
+    const vlans = await mongoSingle.get("vlans");
+    const availableVlanArray = vlans && vlans.map((eachVlan) => eachVlan.id);
+
+    if (vlans) {
+        // expand any '1-4094' entries
+        for (let eachInterface of interfaces) {
+            eachInterface["tagged-vlans"] = ciscoIOSXEExpandVlanRanges(
+                eachInterface["tagged-vlans"],
+                availableVlanArray
+            );
+        }
     }
 
     return interfaces;

@@ -26,16 +26,14 @@ const main = async () => {
     // and now create the index with ttl
     await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 90 });
 
-    // // remove previous values
-    // interfacesCollection.deleteMany({});
-    //TODO
+    // remove previous values
+    interfacesCollection.deleteMany({});
 
     // Kick things off
     console.log(`worker-interfaces: connecting to device at ${workerData.address}`);
 
     const data = {
-        // fields: "interface-type;oper-status;name;description;speed;phys-address;admin-status;statistics/in-octets;statistics/out-octets",
-        fields: "interface-type;name;speed;phys-address;oper-status",
+        fields: "interface-type;name;speed;phys-address;oper-status;if-index",
     };
 
     while (true) {
@@ -64,6 +62,7 @@ const main = async () => {
                             interfaceId: eachInterface["name"],
                             type: portArray?.["label"],
                             shortId: `${shortName}${portArray["idArray"].join("/")}`,
+                            portIndex: portArray["idArray"].join("/"),
                             shortName: shortName,
                             interfaceIndex: eachInterface["if-index"],
                             device: portArray.device,

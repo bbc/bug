@@ -25,8 +25,8 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                     items={[
                         { name: "Name", value: iface.data?.lldp?.system_name },
                         { name: "Description", value: iface.data?.lldp?.system_description },
-                        { name: "Remote Port", value: iface.data?.lldp?.port_description },
-                        { name: "Local Port", value: iface.data?.lldp?.port_id },
+                        { name: "Port ID", value: iface.data?.lldp?.port_id },
+                        { name: "Port Description", value: iface.data?.lldp?.port_description },
                         { name: "Remote MAC Address", value: iface.data?.lldp?.chassis_id },
                     ]}
                 />

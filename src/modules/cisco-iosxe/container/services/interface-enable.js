@@ -1,39 +1,40 @@
 "use strict";
 
-const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
+const ciscoIOSXEApi = require("@utils/ciscoiosxe-api");
 
 module.exports = async (interfaceId) => {
-    // const config = await configGet();
-    // // create new snmp session
-    // const snmpAwait = new SnmpAwait({
-    //     host: config.address,
-    //     community: config.snmpCommunity,
-    // });
-    // console.log(`interface-enable: disabling interface ${interfaceId} ...`);
-    // const result = await snmpAwait.set({
-    //     oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,
-    //     value: 1,
-    // });
-    // // we're done with the SNMP session
-    // snmpAwait.close();
-    // if (result) {
-    //     console.log(`interface-enable: success - updating DB`);
-    //     try {
-    //         const interfacesCollection = await mongoCollection("interfaces");
-    //         const dbResult = await interfacesCollection.updateOne(
-    //             { interfaceId: parseInt(interfaceId) },
-    //             { $set: { "admin-state": true } }
-    //         );
-    //         console.log(`interface-enable: ${JSON.stringify(dbResult.result)}`);
-    //         return true;
-    //     } catch (error) {
-    //         console.log(`interface-enable: failed to update db`);
-    //         console.log(error);
-    //         return false;
-    //     }
-    // }
-    // console.log(`interface-enable: failed to disable interface ${interfaceId}`);
-    // return false;
+    const config = await configGet();
+
+    const result = await ciscoIOSXEApi.update({
+        host: config["address"],
+        path: `/restconf/data/ietf-interfaces:interfaces/interface=${encodeURIComponent(interfaceId)}`,
+        data: {
+            "ietf-interfaces:interface": {
+                enabled: true,
+            },
+        },
+        timeout: 5000,
+        username: config["username"],
+        password: config["password"],
+    });
+    if (result) {
+        console.log(`interface-enable: success - updating DB`);
+        try {
+            const interfacesCollection = await mongoCollection("interfaces");
+            const dbResult = await interfacesCollection.updateOne(
+                { interfaceId: interfaceId },
+                { $set: { "admin-status": "if-state-up" } }
+            );
+            console.log(`interface-enable: ${JSON.stringify(dbResult.result)}`);
+            return true;
+        } catch (error) {
+            console.log(`interface-enable: failed to update db`);
+            console.log(error);
+            return false;
+        }
+    }
+    console.log(`interface-enable: failed to enable interface ${interfaceId} to ${newName}`);
+    return false;
 };

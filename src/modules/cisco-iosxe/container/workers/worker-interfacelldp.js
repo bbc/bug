@@ -1,23 +1,17 @@
 "use strict";
 
-const { parentPort, workerData, threadId } = require("worker_threads");
+const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const chunk = require("@core/chunk");
-const SnmpAwait = require("@core/snmp-await");
+const ciscoIOSXEApi = require("@utils/ciscoiosxe-api");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmpCommunity"],
-});
-
-// create new snmp session
-const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
+    restartOn: ["address", "username", "password"],
 });
 
 const parseHexString = (hexString) => {
@@ -26,77 +20,73 @@ const parseHexString = (hexString) => {
     if (/^[a-zA-Z0-9\/]+$/.test(string)) {
         return string;
     }
-    // otherwise, it's probably a MAC address
-    const chunks = chunk(hexString.toString("hex"), 2);
+    // cisco chassis IDs usually look like this: c4ad.3413.8fb2
+    const dotArray = hexString.split(".");
+    if (dotArray.length !== 3) {
+        return string;
+    }
+    let chunks = [];
+    for (let eachDot of dotArray) {
+        for (let eachChunk of chunk(eachDot, 2)) {
+            chunks.push(eachChunk);
+        }
+    }
     return chunks.join(":");
 };
 
 const main = async () => {
-    await delay(999999);
+    // stagger start of script ...
+    await delay(4000);
 
-    // // stagger start of script ...
-    // await delay(4000);
+    // Connect to the db
+    await mongoDb.connect(workerData.id);
 
-    // // Connect to the db
-    // await mongoDb.connect(workerData.id);
+    // get the collection reference
+    const interfacesCollection = await mongoCollection("interfaces");
 
-    // // get the collection reference
-    // const interfacesCollection = await mongoCollection("interfaces");
+    // Kick things off
+    console.log(`worker-interfacelldp: connecting to device at ${workerData.address}`);
 
-    // // Kick things off
-    // console.log(`worker-interfacelldp: connecting to device at ${workerData.address}`);
+    const data = {
+        fields: "if-name;lldp-neighbor-details",
+    };
 
-    // while (true) {
-    //     // fetch list of LLDP neighbors
-    //     const lldpInfo = await snmpAwait.subtree({
-    //         oid: "1.0.8802.1.1.2.1.4.1.1",
-    //         timeout: 30000,
-    //         raw: true,
-    //     });
+    while (true) {
+        const result = await ciscoIOSXEApi.get({
+            host: workerData["address"],
+            path: "/restconf/data/Cisco-IOS-XE-lldp-oper:lldp-entries/lldp-intf-details",
+            timeout: 5000,
+            username: workerData["username"],
+            password: workerData["password"],
+        });
 
-    //     const needles = {
-    //         "1.0.8802.1.1.2.1.4.1.1.5.0": "chassis_id",
-    //         "1.0.8802.1.1.2.1.4.1.1.7.0": "port_id",
-    //         "1.0.8802.1.1.2.1.4.1.1.8.0": "port_description",
-    //         "1.0.8802.1.1.2.1.4.1.1.9.0": "system_name",
-    //         "1.0.8802.1.1.2.1.4.1.1.10.0": "system_description",
-    //     };
+        for (const eachInterface of result?.["Cisco-IOS-XE-lldp-oper:lldp-intf-details"]) {
+            if (eachInterface["lldp-neighbor-details"] && eachInterface["lldp-neighbor-details"].length > 0) {
+                // just use the first one - no idea why there's more than one ...
+                const neighbor = eachInterface["lldp-neighbor-details"][0];
+                const lldpObject = {
+                    chassis_id: parseHexString(neighbor["chassis-id"]),
+                    port_id: neighbor["port-id"],
+                    port_description: neighbor["port-desc"],
+                    system_name: neighbor["system-name"],
+                    system_description: neighbor["system-desc"],
+                };
 
-    //     const lldpByInterface = [];
+                await interfacesCollection.updateOne(
+                    { interfaceId: eachInterface["if-name"] },
+                    {
+                        $set: {
+                            lldp: lldpObject,
+                        },
+                    },
+                    { upsert: false }
+                );
+            }
+        }
 
-    //     Object.entries(lldpInfo).forEach(([oid, value]) => {
-    //         for (const [needleOid, needleValue] of Object.entries(needles)) {
-    //             if (oid.indexOf(needleOid) === 0) {
-    //                 const oidArray = oid.split(".");
-    //                 const interfaceId = parseInt(oidArray[oidArray.length - 2]);
-
-    //                 if (!lldpByInterface[interfaceId]) {
-    //                     lldpByInterface[interfaceId] = {};
-    //                 }
-    //                 if (needleValue === "chassis_id" || needleValue === "port_id") {
-    //                     lldpByInterface[interfaceId][needleValue] = parseHexString(value);
-    //                 } else {
-    //                     lldpByInterface[interfaceId][needleValue] = value.toString();
-    //                 }
-    //             }
-    //         }
-    //     });
-
-    //     lldpByInterface.forEach(async (lldpObject, eachIndex) => {
-    //         await interfacesCollection.updateOne(
-    //             { interfaceId: parseInt(eachIndex) },
-    //             {
-    //                 $set: {
-    //                     lldp: lldpObject,
-    //                 },
-    //             },
-    //             { upsert: false }
-    //         );
-    //     });
-
-    //     // every 30 seconds
-    //     await delay(30000);
-    // }
+        // every 30 seconds
+        await delay(30000);
+    }
 };
 
 main();

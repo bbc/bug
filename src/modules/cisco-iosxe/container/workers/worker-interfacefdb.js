@@ -1,100 +1,90 @@
 "use strict";
 
-const { parentPort, workerData, threadId } = require("worker_threads");
+const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const SnmpAwait = require("@core/snmp-await");
 const mongoSingle = require("@core/mongo-single");
+const ciscoIOSXEApi = require("@utils/ciscoiosxe-api");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "snmpCommunity", "dhcpSources"],
-});
-
-// create new snmp session
-const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
+    restartOn: ["address", "username", "password"],
 });
 
 const main = async () => {
-    await delay(999999);
+    // stagger start of script ...
+    await delay(2000);
 
-    // // stagger start of script ...
-    // await delay(2000);
+    // Connect to the db
+    await mongoDb.connect(workerData.id);
 
-    // // Connect to the db
-    // await mongoDb.connect(workerData.id);
+    // get the collection reference
+    const interfacesCollection = await mongoCollection("interfaces");
 
-    // // get the collection reference
-    // const interfacesCollection = await mongoCollection("interfaces");
+    // Kick things off
+    console.log(`worker-interfacefdb: connecting to device at ${workerData.address}`);
 
-    // // Kick things off
-    // console.log(`worker-interfacefdb: connecting to device at ${workerData.address}`);
+    while (true) {
+        // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
+        // more details to the user
+        const leases = await mongoSingle.get("leases");
+        const leasesByMac = {};
+        if (leases) {
+            for (const lease of leases) {
+                leasesByMac[lease.mac] = lease;
+            }
+        }
 
-    // while (true) {
-    //     // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
-    //     // more details to the user
-    //     const leases = await mongoSingle.get("leases");
-    //     const leasesByMac = {};
-    //     if (leases) {
-    //         for (const lease of leases) {
-    //             leasesByMac[lease.mac] = lease;
-    //         }
-    //     }
+        const result = await ciscoIOSXEApi.get({
+            host: workerData["address"],
+            path: "/restconf/data/Cisco-IOS-XE-matm-oper:matm-oper-data/matm-table",
+            timeout: 5000,
+            username: workerData["username"],
+            password: workerData["password"],
+        });
 
-    //     // fetch list of FDB (forwarding database) entries
-    //     const fbpOid = `1.3.6.1.2.1.17.4.3.1.2`;
-    //     const fdbList = await snmpAwait.subtree({
-    //         oid: `1.3.6.1.2.1.17.4.3.1.2`,
-    //         timeout: 30000,
-    //     });
+        const fdbByInterface = {};
+        for (const eachTable of result?.["Cisco-IOS-XE-matm-oper:matm-table"]) {
+            if (eachTable["table-type"] === "mat-vlan") {
+                if (eachTable?.["matm-mac-entry"]) {
+                    for (const eachEntry of eachTable?.["matm-mac-entry"]) {
+                        const mac = eachEntry["mac"].toUpperCase();
+                        if (!fdbByInterface[eachEntry["port"]]) {
+                            fdbByInterface[eachEntry["port"]] = [];
+                        }
+                        if (leasesByMac[mac]) {
+                            fdbByInterface[eachEntry["port"]].push(leasesByMac[mac]);
+                        } else {
+                            fdbByInterface[eachEntry["port"]].push({
+                                mac: mac,
+                            });
+                        }
+                    }
+                }
+            }
+        }
 
-    //     const fdbByInterface = [];
-    //     for (let [eachOid, interfaceId] of Object.entries(fdbList)) {
-    //         if (eachOid.indexOf(fbpOid) === 0) {
-    //             // interfaceId is an integer - convert it first
-    //             interfaceId = parseInt(interfaceId);
+        for (const [eachIndex, fdbArray] of Object.entries(fdbByInterface)) {
+            // ignore VLANs (they start with 'Vl')
+            if (eachIndex.indexOf("Vl") !== 0) {
+                await interfacesCollection.updateOne(
+                    { shortId: eachIndex },
+                    {
+                        $set: {
+                            fdb: fdbArray,
+                        },
+                    },
+                    { upsert: false }
+                );
+            }
+        }
 
-    //             // the MAC address is formed from the last part of the OID
-    //             // eg 1.3.6.1.2.17.4.3.1.2.0.1.192.34.4.195
-    //             //                         ^^^^^^^^^^^^^^^^
-    //             const macString = eachOid.substring(fbpOid.length + 1);
-    //             const mac = snmpAwait.oidToMac(macString);
-
-    //             // initialise the fdb object if it doesn't exist
-    //             if (!fdbByInterface[interfaceId]) {
-    //                 fdbByInterface[interfaceId] = [];
-    //             }
-
-    //             // get info from the leases db
-    //             if (leasesByMac[mac]) {
-    //                 fdbByInterface[interfaceId].push(leasesByMac[mac]);
-    //             } else {
-    //                 fdbByInterface[interfaceId].push({
-    //                     mac: mac,
-    //                 });
-    //             }
-    //         }
-    //     }
-    //     fdbByInterface.forEach(async (fdbArray, eachIndex) => {
-    //         await interfacesCollection.updateOne(
-    //             { interfaceId: eachIndex },
-    //             {
-    //                 $set: {
-    //                     fdb: fdbArray,
-    //                 },
-    //             },
-    //             { upsert: false }
-    //         );
-    //     });
-
-    //     // every 20 seconds
-    //     await delay(20000);
-    // }
+        // every 20 seconds
+        await delay(20000);
+    }
 };
 
 main();
