@@ -36,15 +36,19 @@ export default function InterfaceList({ panelId, stackId = null }) {
         event.stopPropagation();
         let result = await renameDialog({
             title: "Edit interface name",
-            defaultValue: item["alias"],
-            placeholder: item["description"],
+            defaultValue: item["description"],
+            placeholder: item["interfaceId"],
             confirmButtonText: "Rename",
             allowBlank: true,
         });
         if (result === false) {
             return;
         }
-        if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.interfaceId}/${result}`)) {
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${result}`
+            )
+        ) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
                 broadcast: "true",
                 variant: "success",
@@ -58,17 +62,17 @@ export default function InterfaceList({ panelId, stackId = null }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
+        history.push(`/panel/${panelId}/interface/${encodeURIComponent(item.interfaceId)}`);
     };
 
     const handleNeighborLinkClicked = (event, item) => {
         event.stopPropagation();
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}/neighbor`);
+        history.push(`/panel/${panelId}/interface/${encodeURIComponent(item.interfaceId)}/neighbor`);
     };
 
     const handleDevicesLinkClicked = (event, item) => {
         event.stopPropagation();
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}/devices`);
+        history.push(`/panel/${panelId}/interface/${encodeURIComponent(item.interfaceId)}/devices`);
     };
 
     const getVlanChangedMessage = (interfaceId, oldValues, newValues) => {
@@ -139,10 +143,13 @@ export default function InterfaceList({ panelId, stackId = null }) {
             // trunk selected
             sendAlert(messages.start, { variant: "info" });
             if (
-                await AxiosPost(`/container/${panelId}/interface/setvlantrunk/${item.interfaceId}`, {
-                    untaggedVlan: value.untaggedVlan,
-                    taggedVlans: value.taggedVlans,
-                })
+                await AxiosPost(
+                    `/container/${panelId}/interface/setvlantrunk/${encodeURIComponent(item.interfaceId)}`,
+                    {
+                        untaggedVlan: value.untaggedVlan,
+                        taggedVlans: value.taggedVlans,
+                    }
+                )
             ) {
                 doForceRefresh();
                 sendAlert(messages.success, { variant: "success" });
@@ -154,7 +161,9 @@ export default function InterfaceList({ panelId, stackId = null }) {
             sendAlert(messages.start, { variant: "info" });
             if (
                 await AxiosCommand(
-                    `/container/${panelId}/interface/setvlanaccess/${item.interfaceId}/${value.untaggedVlan}`
+                    `/container/${panelId}/interface/setvlanaccess/${encodeURIComponent(item.interfaceId)}/${
+                        value.untaggedVlan
+                    }`
                 )
             ) {
                 doForceRefresh();
@@ -167,12 +176,16 @@ export default function InterfaceList({ panelId, stackId = null }) {
 
     const interfaceToggle = async (checked, item) => {
         if (
-            await AxiosCommand(`/container/${panelId}/interface/${checked ? `enable` : `disable`}/${item.interfaceId}`)
+            await AxiosCommand(
+                `/container/${panelId}/interface/${checked ? `enable` : `disable`}/${encodeURIComponent(
+                    item.interfaceId
+                )}`
+            )
         ) {
-            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${item.description}`, { variant: "success" });
+            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${item.shortId}`, { variant: "success" });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to ${checked ? `enable` : `disable`} interface: ${item.description}`, {
+            sendAlert(`Failed to ${checked ? `enable` : `disable`} interface: ${item.shortId}`, {
                 variant: "error",
             });
         }
@@ -194,7 +207,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
         if (
             await AxiosCommand(
                 `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(
-                    item.longId
+                    item.interfaceId
                 )}`
             )
         ) {
@@ -279,7 +292,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                                 disabled={item._protected}
                                 onClick={(event) => handleRenameClicked(event, item)}
                             >
-                                {item.alias ? item.alias : item.description}
+                                {item.description ? item.description : item.interfaceId}
                             </BugTableLinkButton>
                             {getItemSubName(item)}
                         </>
@@ -295,7 +308,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                         }
                         return (
                             <BugApiVlanAutocomplete
-                                disabled={item._protected}
+                                disabled={item._protected || item?.["tagged-vlans"] === null}
                                 options={vlans?.data}
                                 taggedValue={item?.["tagged-vlans"]}
                                 untaggedValue={item?.["untagged-vlan"]}
@@ -313,15 +326,15 @@ export default function InterfaceList({ panelId, stackId = null }) {
                             return (
                                 <>
                                     <Box sx={{ textAlign: "center" }}>{item?.["admin-speed"]}</Box>
-                                    {/* <Box
+                                    <Box
                                         sx={{
                                             textAlign: "center",
-                                            opacity: item?.["auto-negotiation"] ? 0.3 : 1,
-                                            color: item?.["auto-negotiation"] ? "#ffffff" : "primary.main",
+                                            opacity: item?.["auto-negotiate"] ? 0.3 : 1,
+                                            color: item?.["auto-negotiate"] ? "#ffffff" : "primary.main",
                                         }}
                                     >
-                                        {item?.["auto-negotiation"] ? `auto` : `fixed`}
-                                    </Box> */}
+                                        {item?.["auto-negotiate"] ? `auto` : `fixed`}
+                                    </Box>
                                 </>
                             );
                         }
@@ -362,13 +375,13 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     title: "Enable",
-                    disabled: (item) => item["admin-state"] || item._protected,
+                    disabled: (item) => item["admin-status"] === "if-state-up" || item._protected,
                     icon: <ToggleOnIcon fontSize="small" />,
                     onClick: handleEnableClicked,
                 },
                 {
                     title: "Disable",
-                    disabled: (item) => !item["admin-state"] || item._protected,
+                    disabled: (item) => item["admin-status"] !== "if-state-up" || item._protected,
                     icon: <ToggleOffIcon fontSize="small" />,
                     onClick: handleDisableClicked,
                 },

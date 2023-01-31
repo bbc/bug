@@ -6,7 +6,7 @@ const sortHandlers = require("@core/sort-handlers");
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, interfaceId) => {
     const dbInterfaces = await mongoCollection("interfaces");
 
-    const iface = await dbInterfaces.findOne({ interfaceId: parseInt(interfaceId) });
+    const iface = await dbInterfaces.findOne({ interfaceId: interfaceId });
     if (!iface || !iface.fdb || !Array.isArray(iface.fdb)) {
         return [];
     }

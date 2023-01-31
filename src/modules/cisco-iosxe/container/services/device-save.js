@@ -1,22 +1,25 @@
 "use strict";
 
-// const ciscoSGSSH = require("@utils/ciscosg-ssh");
 const configGet = require("@core/config-get");
+const ciscoIOSXEApi = require("@utils/ciscoiosxe-api");
 
 module.exports = async () => {
-    // const config = await configGet();
-    // console.log("device-save: saving device config ...");
-    // const result = await ciscoSGSSH({
-    //     host: config.address,
-    //     username: config.username,
-    //     password: config.password,
-    //     timeout: 20000,
-    //     commands: ["write memory"],
-    // });
-    // if (result && result.length === 1 && result[0].indexOf("Copy succeeded") > -1) {
-    //     console.log("device-save: success");
-    // } else {
-    //     console.log("device-save: failed");
-    //     console.log(result);
-    // }
+    const config = await configGet();
+    console.log("device-save: saving device config ...");
+
+    const result = await ciscoIOSXEApi.create({
+        host: config["address"],
+        path: `/restconf/operations/cisco-ia:save-config/`,
+        data: null,
+        timeout: 5000,
+        username: config["username"],
+        password: config["password"],
+    });
+
+    if (result?.["cisco-ia:output"]?.result.indexOf("successful") > -1) {
+        console.log("device-save: success");
+    } else {
+        console.log("device-save: failed");
+        console.log(result);
+    }
 };
