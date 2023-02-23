@@ -14,7 +14,7 @@ All the detailed information you'll need to get started is [bbc.github.io/bug](h
 
 ## Production
 
-See the [BUG Documentation](https:/bbc.github.io/bug/pages/installation/) for more detailed information on setting up a production version of BUG.
+See the [BUG Documentation](https://bbc.github.io/bug/pages/installation/) for more detailed information on setting up a production version of BUG.
 
 ## Development
 
