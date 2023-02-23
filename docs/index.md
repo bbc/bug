@@ -28,8 +28,8 @@ We welcome [development](./pages/development) of additional modules for BUG. A m
 An instance of a module is a panel. Multiple panels of the same type can co-exist in BUG. Learn more about [developing](./pages/development) your own below;
 
 -   [Architecture](./pages/architecture.html)
--   [Project Layout](/pages/development/layout.html)
--   [Coding Style](/pages/development/style.html)
+-   [Project Layout](./pages/development/layout.html)
+-   [Coding Style](./pages/development/style.html)
 
 # Open Source
 
