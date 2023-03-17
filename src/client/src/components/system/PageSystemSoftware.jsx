@@ -265,7 +265,7 @@ export default function PageSystemBackup() {
                                         onClick={(event) => openWebpage(event, `https://bbc.github.io/bug`)}
                                         sx={{ color: "text.secondary" }}
                                     >
-                                        bug.bbc.pages.github.io
+                                        bbc.github.io/bug
                                     </BugTableLinkButton>
                                 ),
                             },
