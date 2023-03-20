@@ -31,7 +31,7 @@
         "html-webpack-plugin": "^5.5.0",
         "http-proxy-middleware": "^1.1.0",
         "javascript-time-ago": "^2.3.10",
-        "leaflet": "^1.8.0",
+        "leaflet": "^1.9.3",
         "md5": "^2.3.0",
         "mdi-material-ui": "^6.22.1",
         "moment": "^2.29.2",
