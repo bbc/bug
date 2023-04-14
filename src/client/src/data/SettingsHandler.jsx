@@ -23,12 +23,12 @@ export default function SettingsHandler() {
         });
 
         system.on("settings", (result) => {
-            console.log(`${system.id}: system - settings event`, result);
+            //console.log(`${system.id}: system - settings event`, result);
             dispatch(settingsSlice.actions[result["status"]](result));
         });
 
         system.on("disconnect", () => {
-            console.log(`${system.id}: system - disconnected`);
+            //console.log(`${system.id}: system - disconnected`);
             setConnection(false);
         });
 
