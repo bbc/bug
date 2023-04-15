@@ -1,8 +1,9 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
@@ -13,8 +14,8 @@ import { useApiPoller } from "@hooks/ApiPoller";
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 
-    const sites = useApiPoller({
-        url: `/container/${panelConfig.data?.id}/sites/list`,
+    const domains = useApiPoller({
+        url: `/container/${panelConfig.data?.id}/domain/list`,
         interval: 10000,
     });
 
@@ -26,14 +27,14 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { handleSubmit, control, errors, messages } = useConfigFormHandler({
+    let validatedDomains = [];
+    if (domains.status === "success" && domains.data && domains.data.length > 0) {
+        validatedDomains = domains.data;
+    }
+
+    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
-
-    let validatedSites = [];
-    if (sites.status === "success" && sites.data && sites.data.length > 0) {
-        validatedSites = sites.data;
-    }
 
     return (
         <>
@@ -62,7 +63,7 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
                         name="address"
                         control={control}
@@ -71,65 +72,80 @@ export default function ConfigPanel() {
                         error={errors.address}
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
-                        label="Controller Address"
-                    />
-                </Grid>
-
-                <Grid item xs={12} lg={6}>
-                    <BugConfigFormTextField
-                        name="username"
-                        control={control}
-                        rules={{ required: true }}
-                        fullWidth
-                        error={errors.username}
-                        helperText={messages.username}
-                        defaultValue={panelConfig.data.username}
                         supportsValidation
-                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
-                        label="Username"
+                        onChange={(event) => validateServer(event, "address", ["port"])}
+                        label="IP Address"
                     />
                 </Grid>
-
-                <Grid item xs={12} lg={6}>
-                    <BugConfigFormPasswordTextField
-                        name="password"
-                        control={control}
-                        rules={{ required: true }}
-                        fullWidth
-                        error={errors.password}
-                        helperText={messages.password}
-                        defaultValue={panelConfig.data.password}
-                        supportsValidation
-                        onChange={(event) => validateServer(event, "username", ["address", "username"])}
-                        label="Password"
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
                         name="port"
                         control={control}
                         rules={{ required: true }}
                         numeric
                         min={1}
-                        max={12}
+                        max={65535}
                         fullWidth
                         error={errors.port}
                         helperText={messages.port}
-                        defaultValue={panelConfig.data?.port}
+                        defaultValue={panelConfig.data.port}
+                        supportsValidation
+                        onChange={(event) => validateServer(event, "port", ["address"])}
                         type="text"
-                        label="Port"
+                        label="Device Port"
                     />
                 </Grid>
-
+                <Grid item xs={12}>
+                    <BugConfigFormTextField
+                        name="apiKey"
+                        control={control}
+                        rules={{ required: true }}
+                        fullWidth
+                        error={errors.apiKey}
+                        helperText={messages.apiKey}
+                        defaultValue={panelConfig.data.apiKey}
+                        label="API Key"
+                    />
+                </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormAutocomplete
-                        name="sites"
-                        label="Sites to Monitor"
+                        name="domain"
+                        label="Router Domain"
                         control={control}
-                        defaultValue={panelConfig.data.sites}
-                        options={validatedSites}
-                        error={errors.sites}
+                        defaultValue={panelConfig.data.domain}
+                        options={validatedDomains}
+                        error={errors.domain}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BugConfigFormSwitch
+                        name="useTake"
+                        label="Require confirmation click to take"
+                        control={control}
+                        defaultValue={panelConfig.data.useTake}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
+                        name="excludeSources"
+                        label="Excluded Sources (0-based)"
+                        control={control}
+                        defaultValue={panelConfig.data.excludeSources}
+                        sort={true}
+                        error={errors.excludeSources}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
+                        name="excludeDestinations"
+                        label="Excluded Destinations (0-based)"
+                        control={control}
+                        defaultValue={panelConfig.data.excludeDestinations}
+                        sort={true}
+                        error={errors.excludeDestinations}
                         fullWidth
                     />
                 </Grid>
