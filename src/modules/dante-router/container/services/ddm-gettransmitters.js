@@ -3,7 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 
-module.exports = async (destinationIndex = null, groupIndex = null, showExcluded = false) => {
+module.exports = async (receiverIndex = null, groupIndex = null, showExcluded = false) => {
     let config;
     try {
         config = await configGet();
@@ -11,24 +11,24 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
             throw new Error();
         }
     } catch (error) {
-        console.log(`ddm-getsources: failed to fetch config`);
+        console.log(`ddm-gettransmitters: failed to fetch config`);
         return false;
     }
 
-    const icons = config.sourceIcons ? config.sourceIcons : [];
-    const iconColors = config.sourceIconColors ? config.sourceIconColors : [];
+    const icons = config.transmitterIcons ? config.transmitterIcons : [];
+    const iconColors = config.transmitterIconColors ? config.transmitterIconColors : [];
 
     const dataCollection = await mongoCollection("data");
 
     const outputArray = {
         groups: [],
-        sources: [],
+        transmitters: [],
     };
 
     // add groups first
     groupIndex = groupIndex < 0 ? null : groupIndex;
 
-    const groups = config["sourceGroups"] ?? [];
+    const groups = config["transmitterGroups"] ?? [];
     if (groups.length > 0 && groupIndex === null) {
         groupIndex = 0;
     }
@@ -45,20 +45,20 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
         });
     });
 
-    // then calculate valid sources for this group
-    const validSources = groups[groupIndex] ? groups[groupIndex]["value"] : [];
+    // then calculate valid transmitters for this group
+    const validTransmitters = groups[groupIndex] ? groups[groupIndex]["value"] : [];
 
-    // calculate excluded sources too
+    // calculate excluded transmitters too
     // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
-    const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
+    const excludedTransmitters = config["excludeTransmitters"] ? config["excludeTransmitters"] : [];
 
     // get get the existing data from the db
     const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
 
-    let selectedSourceIndex = null;
-    if (destinationIndex !== null) {
-        if (dbOutputRouting && dbOutputRouting["data"][destinationIndex] !== null) {
-            selectedSourceIndex = parseInt(dbOutputRouting["data"][destinationIndex]);
+    let selectedTransmitterIndex = null;
+    if (receiverIndex !== null) {
+        if (dbOutputRouting && dbOutputRouting["data"][receiverIndex] !== null) {
+            selectedTransmitterIndex = parseInt(dbOutputRouting["data"][receiverIndex]);
         }
     }
 
@@ -66,21 +66,21 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     if (dbInputLabels) {
         for (const [eachIndex, eachValue] of Object.entries(dbInputLabels["data"])) {
             const intIndex = parseInt(eachIndex);
-            // check it's not excluded or if it's a selected source - in which case we'll show it anyway
-            const isExcluded = excludedSources.includes(intIndex.toString());
-            const isSelected = selectedSourceIndex === intIndex;
-            const isInGroup = groupIndex === null || validSources.includes(intIndex);
+            // check it's not excluded or if it's a selected transmitter - in which case we'll show it anyway
+            const isExcluded = excludedTransmitters.includes(intIndex.toString());
+            const isSelected = selectedTransmitterIndex === intIndex;
+            const isInGroup = groupIndex === null || validTransmitters.includes(intIndex);
 
-            // set new order field - if in group then use the validsources index, otherwise the normal one
+            // set new order field - if in group then use the validtransmitters index, otherwise the normal one
             let order;
             if (groupIndex !== null) {
-                order = validSources.indexOf(intIndex);
+                order = validTransmitters.indexOf(intIndex);
             } else {
                 order = intIndex;
             }
 
             if (isInGroup && (!isExcluded || showExcluded)) {
-                outputArray["sources"].push({
+                outputArray["transmitters"].push({
                     index: intIndex,
                     label: eachValue,
                     selected: isSelected,
@@ -93,7 +93,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
         }
 
         // sort by order field
-        outputArray["sources"].sort((a, b) => (a.order > b.order ? 1 : -1));
+        outputArray["transmitters"].sort((a, b) => (a.order > b.order ? 1 : -1));
     }
 
     return outputArray;

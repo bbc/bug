@@ -32,7 +32,7 @@ route.post("/seticon/:index", async function (req, res, next) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to get sources",
+            message: "Failed to get receivers",
         });
     }
 });
