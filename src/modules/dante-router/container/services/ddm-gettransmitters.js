@@ -18,7 +18,7 @@ module.exports = async (receiverIndex = null, groupIndex = null, showExcluded = 
     const icons = config.transmitterIcons ? config.transmitterIcons : [];
     const iconColors = config.transmitterIconColors ? config.transmitterIconColors : [];
 
-    const dataCollection = await mongoCollection("data");
+    const transmittersCollection = await mongoCollection("transmitters");
 
     const outputArray = {
         groups: [],
@@ -48,48 +48,24 @@ module.exports = async (receiverIndex = null, groupIndex = null, showExcluded = 
     // then calculate valid transmitters for this group
     const validTransmitters = groups[groupIndex] ? groups[groupIndex]["value"] : [];
 
-    // calculate excluded transmitters too
-    // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
-    const excludedTransmitters = config["excludeTransmitters"] ? config["excludeTransmitters"] : [];
+    // get get the existing receivers from the db
+    const transmitters = await transmittersCollection.find().toArray();
 
-    // get get the existing data from the db
-    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
-
-    let selectedTransmitterIndex = null;
-    if (receiverIndex !== null) {
-        if (dbOutputRouting && dbOutputRouting["data"][receiverIndex] !== null) {
-            selectedTransmitterIndex = parseInt(dbOutputRouting["data"][receiverIndex]);
-        }
-    }
-
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-    if (dbInputLabels) {
-        for (const [eachIndex, eachValue] of Object.entries(dbInputLabels["data"])) {
-            const intIndex = parseInt(eachIndex);
-            // check it's not excluded or if it's a selected transmitter - in which case we'll show it anyway
-            const isExcluded = excludedTransmitters.includes(intIndex.toString());
-            const isSelected = selectedTransmitterIndex === intIndex;
-            const isInGroup = groupIndex === null || validTransmitters.includes(intIndex);
-
-            // set new order field - if in group then use the validtransmitters index, otherwise the normal one
-            let order;
-            if (groupIndex !== null) {
-                order = validTransmitters.indexOf(intIndex);
-            } else {
-                order = intIndex;
-            }
-
-            if (isInGroup && (!isExcluded || showExcluded)) {
-                outputArray["transmitters"].push({
-                    index: intIndex,
-                    label: eachValue,
-                    selected: isSelected,
-                    hidden: isExcluded,
-                    order: order,
-                    icon: icons[intIndex] ? icons[intIndex] : null,
-                    iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
-                });
-            }
+    if (transmitters) {
+        for (let transmitter of transmitters) {
+            outputArray["transmitters"].push({
+                id: transmitter.id,
+                index: transmitter.index,
+                label: `${transmitter.device} ${transmitter.name}`,
+                status: transmitter.status,
+                //indexText: indexText,
+                //order: order,
+                //isLocked: isLocalLocked || isRemoteLocked,
+                //isLocalLocked: isLocalLocked,
+                //isRemoteLocked: isRemoteLocked,
+                //icon: icons[intIndex] ? icons[intIndex] : null,
+                //iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
+            });
         }
 
         // sort by order field

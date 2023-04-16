@@ -53,19 +53,19 @@ export default function Router({ panelId, editMode = false, transmitterGroup = 0
         setSelectedReceiver(receiverIndex);
     };
 
-    const handleTransmitterButtonClicked = async (transmitterIndex) => {
+    const handleTransmitterButtonClicked = async (transmitterId) => {
         if (editMode) {
             return;
         }
 
-        let transmitter = transmitterButtons.data.transmitters.filter((x) => x.index === transmitterIndex);
-        let receiver = receiverButtons.data.receivers.filter((x) => x.index === selectedReceiver);
+        let transmitter = transmitterButtons.data.transmitters.filter((x) => x.id === transmitterId);
+        let receiver = receiverButtons.data.receivers.filter((x) => x.id === selectedReceiver);
 
         if (transmitter.length !== 1 || receiver.length !== 1) {
             return;
         }
 
-        if (await AxiosCommand(`/container/${panelId}/route/${selectedReceiver}/${transmitterIndex}`)) {
+        if (await AxiosCommand(`/container/${panelId}/route/${selectedReceiver}/${transmitterId}`)) {
             sendAlert(`Successfully routed '${transmitter[0].label}' to '${receiver[0].label}'`, {
                 broadcast: "true",
                 variant: "success",
@@ -126,7 +126,7 @@ export default function Router({ panelId, editMode = false, transmitterGroup = 0
 
         let receiverLocked = false;
         if (receiverButtons.status === "success" && selectedReceiver !== null) {
-            const selectedReceiverObject = receiverButtons.data.receivers.find((x) => x.index === selectedReceiver);
+            const selectedReceiverObject = receiverButtons.data.receivers.find((x) => x.id === selectedReceiver);
             receiverLocked = selectedReceiverObject && selectedReceiverObject.isLocked;
         }
 

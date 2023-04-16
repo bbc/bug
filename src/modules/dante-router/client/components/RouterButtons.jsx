@@ -59,7 +59,7 @@ export default function Router({
             color: color,
             icon: icon,
         };
-        const url = `/container/${panelId}/${buttonType}s/seticon/${button.index}`;
+        const url = `/container/${panelId}/${buttonType}s/seticon/${button.id}`;
 
         if (await AxiosPost(url, postData)) {
             onChange();
@@ -75,8 +75,8 @@ export default function Router({
         const overId = over?.id?.split(":")[1];
 
         if (activeId !== overId) {
-            const oldIndex = localButtons.findIndex((button) => button.index === parseInt(activeId));
-            const newIndex = localButtons.findIndex((button) => button.index === parseInt(overId));
+            const oldIndex = localButtons.findIndex((button) => button.id === parseInt(activeId));
+            const newIndex = localButtons.findIndex((button) => button.id === parseInt(overId));
             const newButtons = arrayMove(localButtons, oldIndex, newIndex);
 
             const buttonIndices = newButtons.map((group) => group.index);
@@ -102,10 +102,10 @@ export default function Router({
             {localButtons.map((button) => (
                 <RouterButton
                     panelId={panelId}
-                    key={button.index}
-                    selected={buttonType === "transmitter" ? button.selected : selectedReceiver === button.index}
+                    key={button.id}
+                    selected={buttonType === "transmitter" ? button.selected : selectedReceiver === button.id}
                     button={button}
-                    onClick={() => onClick(button.index)}
+                    onClick={() => onClick(button.id)}
                     onEditIcon={() => handleEditIcon(button)}
                     onChange={onChange}
                     editMode={editMode}
