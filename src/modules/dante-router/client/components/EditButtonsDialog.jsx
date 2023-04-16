@@ -47,21 +47,23 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
 
     // fetch list of all buttons
     useAsyncEffect(async () => {
-        const url = groupType === "source" ? `/container/${panelId}/sources/` : `/container/${panelId}/destinations/`;
+        const url =
+            groupType === "transmitter" ? `/container/${panelId}/transmitters/` : `/container/${panelId}/receivers/`;
         setButtons(await AxiosGet(url));
     }, []);
 
     // fetch list of selected buttons
     useAsyncEffect(async () => {
         const url =
-            groupType === "source"
-                ? `/container/${panelId}/sources/-1/${groupIndex}`
-                : `/container/${panelId}/destinations/${groupIndex}`;
-        const rawSelectedButtons = await AxiosPost(url, { showExcluded: true });
+            groupType === "transmitter"
+                ? `/container/${panelId}/transmitters/-1/${groupIndex}`
+                : `/container/${panelId}/receivers/${groupIndex}`;
+        const rawSelectedButtons = await AxiosPost(url);
         const filteredSelectedButtons = [];
         for (let eachButton of rawSelectedButtons[`${groupType}s`]) {
             filteredSelectedButtons.push({
                 index: eachButton.index,
+                id: eachButton.id,
                 label: eachButton.label,
                 hidden: eachButton.hidden,
             });
@@ -83,16 +85,16 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
         }
     };
 
-    const handleToggle = (event, buttonIndex, buttonLabel) => {
-        const selected = selectedButtons.filter((button) => button.index === buttonIndex).length > 0;
+    const handleToggle = (event, buttonId, buttonLabel) => {
+        const selected = selectedButtons.filter((button) => button.id === buttonId).length > 0;
         if (selected) {
             // remove from array
-            setSelectedButtons(selectedButtons.filter((button) => button.index !== buttonIndex));
+            setSelectedButtons(selectedButtons.filter((button) => button.id !== buttonId));
         } else {
             // push to end
             const localButtons = _.clone(selectedButtons);
             localButtons.push({
-                index: buttonIndex,
+                id: buttonId,
                 label: buttonLabel,
             });
             setSelectedButtons(localButtons);
@@ -100,12 +102,12 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
         // event.stopPropagation();
     };
 
-    const removeButton = (buttonIndex) => {
-        setSelectedButtons(selectedButtons.filter((button) => button.index !== buttonIndex));
+    const removeButton = (buttonId) => {
+        setSelectedButtons(selectedButtons.filter((button) => button.id !== buttonId));
     };
 
     const handleSubmit = async () => {
-        const buttonIndexArray = selectedButtons.map((button) => button.index);
+        const buttonIndexArray = selectedButtons.map((button) => button.id);
         const postData = {
             buttons: buttonIndexArray,
         };
@@ -118,12 +120,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
     const handleSelectAll = (event) => {
         if (selectedButtons.length === 0) {
             // select all
-            const newSelectedButtons = buttons.map((button, index) => {
-                return {
-                    index: index,
-                    label: button,
-                };
-            });
+            const newSelectedButtons = buttons;
             setSelectedButtons(newSelectedButtons);
         } else {
             // remove all
@@ -138,7 +135,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                     backgroundColor: "#303030",
                     borderRadius: "3px",
                     margin: "0.5rem",
-                    minWidth: "18rem",
+                    minWidth: "22rem",
                     display: "flex",
                     flexDirection: "column",
                 }}
@@ -180,7 +177,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                 <BugScrollbars>
                     <Box
                         sx={{
-                            minHeight: "18rem",
+                            minHeight: "22rem",
                             maxHeight: "50vh",
                         }}
                     >
@@ -204,10 +201,10 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                                             paddingLeft: "8px",
                                             paddingRight: "8px",
                                         }}
-                                        key={index}
+                                        key={button.id}
                                         role="listitem"
                                         button
-                                        onClick={(event) => handleToggle(event, index, button)}
+                                        onClick={(event) => handleToggle(event, button.id, button)}
                                     >
                                         <ListItemIcon>
                                             <Checkbox
@@ -228,9 +225,9 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                                                 opacity: 0.3,
                                             }}
                                         >
-                                            {index + 1}
+                                            {button.index}
                                         </Box>
-                                        <ListItemText primary={button} />
+                                        <ListItemText primary={`${button.device} - ${button.name}`} />
                                     </ListItem>
                                 );
                             })}
@@ -245,12 +242,12 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
         return (
             <Box
                 sx={{
-                    minHeight: "18rem",
+                    minHeight: "22rem",
                     maxHeight: "50vh",
                     backgroundColor: "#303030",
                     borderRadius: "3px",
                     margin: "0.5rem",
-                    minWidth: "18rem",
+                    minWidth: "22rem",
                     display: "flex",
                     flexDirection: "column",
                 }}
@@ -286,11 +283,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                                     strategy={verticalListSortingStrategy}
                                 >
                                     {selectedButtons.map((button) => (
-                                        <EditButtonsDragItem
-                                            button={button}
-                                            onRemove={removeButton}
-                                            key={button.index}
-                                        />
+                                        <EditButtonsDragItem button={button} onRemove={removeButton} key={button.id} />
                                     ))}
                                 </SortableContext>
                             </DndContext>

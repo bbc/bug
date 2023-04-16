@@ -82,8 +82,7 @@ export default function RouterButton({
                 if (
                     !(await confirmDialog({
                         title: "Unlock Destination",
-                        message:
-                            "This destination has been locked by another user. Are you sure you want to unlock it?",
+                        message: "This receiver has been locked by another user. Are you sure you want to unlock it?",
                         confirmButtonText: "Unlock",
                     }))
                 ) {
@@ -93,7 +92,7 @@ export default function RouterButton({
             }
         }
 
-        if (await AxiosCommand(`/container/${panelId}/destinations/${action}/${button.id}`)) {
+        if (await AxiosCommand(`/container/${panelId}/receivers/${action}/${button.id}`)) {
             sendAlert(`${actionLong} ${buttonType} ${button.index}`, {
                 variant: "success",
             });
@@ -133,7 +132,7 @@ export default function RouterButton({
             icon={button.icon}
             iconColor={button.iconColor}
             primaryLabel={button.label}
-            secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
+            secondaryLabel={buttonType === "transmitter" ? "" : button.transmitterLabel}
             number={button.index}
             selected={selected}
             disabled={disabled}
@@ -169,7 +168,7 @@ export default function RouterButton({
                 },
                 {
                     title: "Lock",
-                    disabled: buttonType !== "destination",
+                    disabled: buttonType !== "receiver",
                     icon: (item) => (item.isLocked ? <CheckIcon fontSize="small" /> : null),
                     onClick: handleLockClicked,
                 },
