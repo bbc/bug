@@ -24,7 +24,7 @@ route.post("/seticon/:index", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await buttonSetIcon("source", req.params?.index, req.body?.icon, req.body?.color),
+            data: await buttonSetIcon("transmitter", req.params?.index, req.body?.icon, req.body?.color),
         });
     } catch (error) {
         console.log(error);
@@ -35,11 +35,11 @@ route.post("/seticon/:index", async function (req, res, next) {
     }
 });
 
-route.get("/:destination?/:group?", async function (req, res, next) {
+route.get("/:receiver?/:group?", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await ddmGetTransmitters(req.params?.destination, req.params?.group),
+            data: await ddmGetTransmitters(req.params?.receiver, req.params?.group),
         });
     } catch (error) {
         console.log(error);
@@ -50,12 +50,12 @@ route.get("/:destination?/:group?", async function (req, res, next) {
     }
 });
 
-route.post("/:destination?/:group?", async function (req, res, next) {
+route.post("/:receiver?/:group?", async function (req, res, next) {
     try {
         res.json({
             status: "success",
             data: await ddmGetTransmitters(
-                req.params?.destination,
+                req.params?.receiver,
                 req.params?.group,
                 req.body.showExcluded ? true : false
             ),
@@ -73,7 +73,7 @@ route.delete("/:groupIndex/:index", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await buttonRemove("source", req.params?.groupIndex, req.params?.index),
+            data: await buttonRemove("transmitter", req.params?.groupIndex, req.params?.index),
         });
     } catch (error) {
         console.log(error);

@@ -32,8 +32,8 @@ export default function GroupButtons({
     groupType,
     buttons,
     onChange,
-    destinationGroup = 0,
-    sourceGroup = 0,
+    recevierGroup = 0,
+    transmitterGroup = 0,
 }) {
     const sendAlert = useAlert();
     const history = useHistory();
@@ -56,13 +56,13 @@ export default function GroupButtons({
     const handleGroupButtonClicked = (groupIndex) => {
         const editText = editMode ? "/edit" : "";
         const pathItems = window.location.pathname.split("/");
-        const sourceIndex = pathItems[3] ? pathItems[3] : 0;
-        const destinationIndex = pathItems[4] ? pathItems[4] : 0;
+        const transmitterIndex = pathItems[3] ? pathItems[3] : 0;
+        const recevierIndex = pathItems[4] ? pathItems[4] : 0;
 
-        if (groupType === "source") {
-            history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationIndex}`);
+        if (groupType === "transmitter") {
+            history.push(`/panel/${panelId}${editText}/${groupIndex}/${recevierIndex}`);
         } else {
-            history.push(`/panel/${panelId}${editText}/${sourceIndex}/${groupIndex}`);
+            history.push(`/panel/${panelId}${editText}/${transmitterIndex}/${groupIndex}`);
         }
     };
 
@@ -100,10 +100,10 @@ export default function GroupButtons({
                 sendAlert(`Failed to save new group ordering`, { variant: "error" });
             }
             const editText = editMode ? "/edit" : "";
-            if (groupType === "source") {
-                history.push(`/panel/${panelId}${editText}/${newIndex}/${destinationGroup}`);
+            if (groupType === "transmitter") {
+                history.push(`/panel/${panelId}${editText}/${newIndex}/${recevierGroup}`);
             } else {
-                history.push(`/panel/${panelId}${editText}/${sourceGroup}/${newIndex}`);
+                history.push(`/panel/${panelId}${editText}/${transmitterGroup}/${newIndex}`);
             }
         }
     };

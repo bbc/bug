@@ -23,7 +23,7 @@ export default function Router({
     editMode = false,
     buttonType,
     buttons,
-    selectedDestination,
+    selectedReceiver,
     onClick,
     onChange,
     disabled = false,
@@ -31,8 +31,8 @@ export default function Router({
 }) {
     const sendAlert = useAlert();
     const params = useParams();
-    const sourceGroup = params.sourceGroup ?? 0;
-    const destinationGroup = params.destinationGroup ?? 0;
+    const transmitterGroup = params.transmitterGroup ?? 0;
+    const receiverGroup = params.receiverGroup ?? 0;
     const [localButtons, setLocalButtons] = React.useState(null);
     const [editIconDialogButton, setEditIconDialogButton] = React.useState(null);
 
@@ -83,9 +83,9 @@ export default function Router({
             setLocalButtons(newButtons);
 
             const url =
-                buttonType === "source"
-                    ? `/container/${panelId}/groups/set/${buttonType}/${sourceGroup}`
-                    : `/container/${panelId}/groups/set/${buttonType}/${destinationGroup}`;
+                buttonType === "trasnmitter"
+                    ? `/container/${panelId}/groups/set/${buttonType}/${transmitterGroup}`
+                    : `/container/${panelId}/groups/set/${buttonType}/${receiverGroup}`;
 
             if (
                 !(await AxiosPost(url, {
@@ -103,14 +103,14 @@ export default function Router({
                 <RouterButton
                     panelId={panelId}
                     key={button.index}
-                    selected={buttonType === "source" ? button.selected : selectedDestination === button.index}
+                    selected={buttonType === "transmitter" ? button.selected : selectedReceiver === button.index}
                     button={button}
                     onClick={() => onClick(button.index)}
                     onEditIcon={() => handleEditIcon(button)}
                     onChange={onChange}
                     editMode={editMode}
                     buttonType={buttonType}
-                    selectedGroup={buttonType === "source" ? sourceGroup : destinationGroup}
+                    selectedGroup={buttonType === "transmitter" ? transmitterGroup : receiverGroup}
                     disabled={disabled}
                     groups={buttons.data.groups}
                     useDoubleClick={useDoubleClick}

@@ -12,12 +12,12 @@
   "domainId": "",
   "port": "80",
   "useTake": false,
-  "sourceGroups": [],
-  "destinationGroups": [],
-  "sourceIconColors": [],
-  "destinationIconColors": [],
-  "sourceIcons": [],
-  "destinationIcons": [],
-  "excludeSources": [],
-  "excludeDestinations": []
+  "transmitterGroups": [],
+  "receiverGroups": [],
+  "transmitterIconColors": [],
+  "recevierIconColors": [],
+  "transmitterIcons": [],
+  "receiverIcons": [],
+  "excludeTransmitters": [],
+  "excludeReceivers": []
 }
