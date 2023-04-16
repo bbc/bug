@@ -127,28 +127,6 @@ export default function ConfigPanel() {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <BugConfigFormChipInput
-                        name="excludeSources"
-                        label="Excluded Sources (0-based)"
-                        control={control}
-                        defaultValue={panelConfig.data.excludeSources}
-                        sort={true}
-                        error={errors.excludeSources}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <BugConfigFormChipInput
-                        name="excludeDestinations"
-                        label="Excluded Destinations (0-based)"
-                        control={control}
-                        defaultValue={panelConfig.data.excludeDestinations}
-                        sort={true}
-                        error={errors.excludeDestinations}
-                        fullWidth
-                    />
-                </Grid>
             </BugConfigWrapper>
         </>
     );

@@ -16,7 +16,7 @@ let receiversCollection;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "port", "apiKey"],
+    restartOn: ["address", "port", "apiKey", "domain"],
 });
 
 const isArray = (a) => {
@@ -33,7 +33,7 @@ const main = async () => {
     receiversCollection = await mongoCollection("receivers");
 
     // Kick things off
-    console.log(`worker-ddm: connecting to domain manger at ${workerData.address}:${workerData.port}`);
+    console.log(`worker-ddm: connecting to domain manger at ${workerData.address}`);
 
     while (true) {
         // poll occasionally
@@ -99,6 +99,7 @@ const main = async () => {
                         for (let txChannel of deivce?.txChannels) {
                             txChannel.timestamp = new Date();
                             txChannel.domain = domain.name;
+                            txChannel.device = deivce.name;
                             transmittersItems.push(txChannel);
                         }
                     }
@@ -118,6 +119,7 @@ const main = async () => {
                         for (let rxChannel of deivce?.rxChannels) {
                             rxChannel.timestamp = new Date();
                             rxChannel.domain = domain.name;
+                            rxChannel.device = deivce.name;
                             receiversItems.push(rxChannel);
                         }
                     }

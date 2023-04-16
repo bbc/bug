@@ -39,7 +39,7 @@ export default function RouterButton({
             defaultValue: button.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${result}`)) {
+            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.id}/${buttonType}/${result}`)) {
                 sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
             } else {
                 sendAlert(`Failed to rename ${buttonType}: ${result}`, { variant: "error" });
@@ -49,16 +49,16 @@ export default function RouterButton({
     };
 
     const handleClearClicked = async (event, item) => {
-        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/-`)) {
-            sendAlert(`Cleared button label for ${buttonType} ${button.index + 1}`, { variant: "success" });
+        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.id}/${buttonType}/-`)) {
+            sendAlert(`Cleared button label for ${buttonType} ${button.id}`, { variant: "success" });
         } else {
-            sendAlert(`Failed to clear label for ${buttonType} ${button.index + 1}`, { variant: "error" });
+            sendAlert(`Failed to clear label for ${buttonType} ${button.index}`, { variant: "error" });
         }
         onChange();
     };
 
     const handleRemoveClicked = async (event, item) => {
-        const url = `/container/${panelId}/${buttonType}s/${selectedGroup}/${button.index}`;
+        const url = `/container/${panelId}/${buttonType}s/${selectedGroup}/${button.id}`;
 
         if (await AxiosDelete(url)) {
             sendAlert(`Removed ${buttonType} button: ${button.label}`, { variant: "success" });
@@ -93,12 +93,12 @@ export default function RouterButton({
             }
         }
 
-        if (await AxiosCommand(`/container/${panelId}/destinations/${action}/${button.index}`)) {
-            sendAlert(`${actionLong} ${buttonType} ${button.index + 1}`, {
+        if (await AxiosCommand(`/container/${panelId}/destinations/${action}/${button.id}`)) {
+            sendAlert(`${actionLong} ${buttonType} ${button.index}`, {
                 variant: "success",
             });
         } else {
-            sendAlert(`Failed to ${action} ${buttonType} ${button.index + 1}`, {
+            sendAlert(`Failed to ${action} ${buttonType} ${button.id}`, {
                 variant: "error",
             });
         }
@@ -111,9 +111,7 @@ export default function RouterButton({
         });
         if (groupIndexes !== false) {
             if (
-                await AxiosCommand(
-                    `/container/${panelId}/groups/addbutton/${buttonType}/${groupIndexes}/${button.index}`
-                )
+                await AxiosCommand(`/container/${panelId}/groups/addbutton/${buttonType}/${groupIndexes}/${button.id}`)
             ) {
                 sendAlert(`Added button to group(s) '${groupIndexes.join(",")}'`, { variant: "success" });
                 onChange();
@@ -128,7 +126,7 @@ export default function RouterButton({
     };
     return (
         <BugRouterButton
-            id={`${buttonType}:${button.index}`}
+            id={`${buttonType}:${button.id}`}
             draggable
             onClick={handleClick}
             item={button}
@@ -136,7 +134,7 @@ export default function RouterButton({
             iconColor={button.iconColor}
             primaryLabel={button.label}
             secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
-            number={button.index + 1}
+            number={button.index}
             selected={selected}
             disabled={disabled}
             editMode={editMode}

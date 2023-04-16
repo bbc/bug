@@ -37,8 +37,6 @@
         "transmitterIconColors": [],
         "recevierIconColors": [],
         "transmitterIcons": [],
-        "receiverIcons": [],
-        "excludeTransmitters": [],
-        "excludeReceivers": []
+        "receiverIcons": []
     }
 }
