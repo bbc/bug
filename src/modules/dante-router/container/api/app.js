@@ -39,7 +39,7 @@ app.use("/api/route", routeRouter);
 app.use("/api", labelRouter);
 app.use("/api", lockRouter);
 app.use("/api/transmitters", transmittersRouter);
-app.use("/api/receviers", receiversRouter);
+app.use("/api/receivers", receiversRouter);
 app.use("/api/groups", groupsRouter);
 app.use("/api/domain", domainRouter);
 app.use("/api/validate", validationRouter);

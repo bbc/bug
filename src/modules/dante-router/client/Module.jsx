@@ -13,13 +13,13 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </Route>
-            <Route exact path="/panel/:panelId/:sourceGroup/:destinationGroup">
+            <Route exact path="/panel/:panelId/:transmitterGroup/:receiverGroup">
                 <MainPanel {...props} />
             </Route>
             <Route exact path="/panel/:panelId/edit">
                 <EditPanel {...props} />
             </Route>
-            <Route exact path="/panel/:panelId/edit/:sourceGroup/:destinationGroup">
+            <Route exact path="/panel/:panelId/edit/:transmitterGroup/:receiverGroup">
                 <EditPanel {...props} />
             </Route>
             <BugRestrictTo role="admin">

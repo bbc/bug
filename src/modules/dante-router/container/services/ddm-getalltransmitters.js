@@ -15,12 +15,8 @@ module.exports = async () => {
         return false;
     }
 
-    const dataCollection = await mongoCollection("domain");
+    const transmittersCollection = await mongoCollection("transmitters");
+    const transmittersLabels = await transmittersCollection.find().toArray();
 
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-    if (dbInputLabels) {
-        return Object.values(dbInputLabels["data"]);
-    }
-
-    return null;
+    return transmittersLabels;
 };

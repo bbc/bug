@@ -10,6 +10,8 @@ const ddm = require("@services/ddm-request");
 
 const updateDelay = 3000;
 let domainsCollection;
+let transmittersCollection;
+let receiversCollection;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -27,6 +29,8 @@ const main = async () => {
 
     // get the collection reference
     domainsCollection = await mongoCollection("domains");
+    transmittersCollection = await mongoCollection("transmitters");
+    receiversCollection = await mongoCollection("receivers");
 
     // Kick things off
     console.log(`worker-ddm: connecting to domain manger at ${workerData.address}:${workerData.port}`);
@@ -84,7 +88,45 @@ const main = async () => {
         }
 
         domainsCollection.deleteMany({});
-        await mongoSaveArray(domainsCollection, response?.domains, "name");
+        await mongoSaveArray(domainsCollection, domainsItems, "name");
+
+        const transmittersItems = [];
+
+        if (isArray(response?.domains)) {
+            for (let domain of response?.domains) {
+                if (workerData.domain.includes(domain.name)) {
+                    for (let deivce of domain?.devices) {
+                        for (let txChannel of deivce?.txChannels) {
+                            txChannel.timestamp = new Date();
+                            txChannel.domain = domain.name;
+                            transmittersItems.push(txChannel);
+                        }
+                    }
+                }
+            }
+        }
+
+        transmittersCollection.deleteMany({});
+        await mongoSaveArray(transmittersCollection, transmittersItems, "id");
+
+        const receiversItems = [];
+
+        if (isArray(response?.domains)) {
+            for (let domain of response?.domains) {
+                if (workerData.domain.includes(domain.name)) {
+                    for (let deivce of domain?.devices) {
+                        for (let rxChannel of deivce?.rxChannels) {
+                            rxChannel.timestamp = new Date();
+                            rxChannel.domain = domain.name;
+                            receiversItems.push(rxChannel);
+                        }
+                    }
+                }
+            }
+        }
+
+        receiversCollection.deleteMany({});
+        await mongoSaveArray(receiversCollection, receiversItems, "id");
 
         await delay(updateDelay);
     }

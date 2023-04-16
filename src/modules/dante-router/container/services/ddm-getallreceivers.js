@@ -15,12 +15,10 @@ module.exports = async () => {
         return false;
     }
 
-    const domainCollection = await mongoCollection("domain");
-    console.log(config);
-    const dbOutputLabels = await domainCollection.findOne({ name: config.domain });
-    if (dbOutputLabels) {
-        return Object.values(dbOutputLabels["data"]);
-    }
+    const receviersCollection = await mongoCollection("receivers");
+    const receiverLabels = await receviersCollection.find().toArray();
 
-    return null;
+    console.log(receiverLabels);
+
+    return receiverLabels;
 };

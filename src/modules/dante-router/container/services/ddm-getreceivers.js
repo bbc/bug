@@ -11,24 +11,24 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`ddm-getdestinations: failed to fetch config`);
+        console.log(`ddm-getreceivers: failed to fetch config`);
         return false;
     }
 
-    const icons = config.destinationIcons ? config.destinationIcons : [];
-    const iconColors = config.destinationIconColors ? config.destinationIconColors : [];
+    const icons = config.receiverIcons ? config.receiverIcons : [];
+    const iconColors = config.receiverIconColors ? config.receiverIconColors : [];
 
     const dataCollection = await mongoCollection("data");
 
     const outputArray = {
         groups: [],
-        destinations: [],
+        receivers: [],
     };
 
     // add groups first
     groupIndex = groupIndex < 0 ? null : groupIndex;
 
-    const groups = config["destinationGroups"] ?? [];
+    const groups = config["receiverGroups"] ?? [];
     if (groups.length > 0 && groupIndex === null) {
         groupIndex = 0;
     }
@@ -46,12 +46,12 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
         });
     });
 
-    // then calculate valid sources for this group
-    const validDestinations = groups[groupIndex] ? groups[groupIndex]["value"] : [];
+    // then calculate valid transmitters for this group
+    const validReceivers = groups[groupIndex] ? groups[groupIndex]["value"] : [];
 
-    // calculate excluded sources too
+    // calculate excluded transmitters too
     // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
-    const excludedDestinations = config["excludeDestinations"] ? config["excludeDestinations"] : [];
+    const excludedReceivers = config["excludeReceivers"] ? config["excludeReceivers"] : [];
 
     // get get the existing data from the db
     const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
@@ -62,10 +62,10 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
         for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels["data"])) {
             const intIndex = parseInt(eachIndex);
-            const selectedSource = dbOutputRouting["data"][eachIndex];
-            const selectedSourceLabel = dbInputLabels.data[selectedSource];
-            const isExcluded = excludedDestinations.includes(intIndex.toString());
-            const isInGroup = groupIndex === null || validDestinations.includes(intIndex);
+            const selectedTransmitter = dbOutputRouting["data"][eachIndex];
+            const selectedTransmitterLabel = dbInputLabels.data[selectedTransmitter];
+            const isExcluded = excludedReceivers.includes(intIndex.toString());
+            const isInGroup = groupIndex === null || validReceivers.includes(intIndex);
 
             let isLocalLocked = false;
             let isRemoteLocked = false;
@@ -77,20 +77,20 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
 
             const indexText = config["showNumber"] === false ? "" : intIndex + 1;
 
-            // set new order field - if in group then use the validsources index, otherwise the normal one
+            // set new order field - if in group then use the validtransmitters index, otherwise the normal one
             let order;
             if (groupIndex !== null) {
-                order = validDestinations.indexOf(intIndex);
+                order = validReceivers.indexOf(intIndex);
             } else {
                 order = intIndex;
             }
 
             if (isInGroup && (!isExcluded || showExcluded)) {
-                outputArray["destinations"].push({
+                outputArray["receivers"].push({
                     index: intIndex,
                     label: eachValue,
-                    sourceIndex: parseInt(selectedSource),
-                    sourceLabel: selectedSourceLabel,
+                    transmitterIndex: parseInt(selectedTransmitter),
+                    transmitterLabel: selectedTransmitterLabel,
                     indexText: indexText,
                     hidden: isExcluded,
                     order: order,
@@ -104,7 +104,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
         }
 
         // sort by order field
-        outputArray["destinations"].sort((a, b) => (a.order > b.order ? 1 : -1));
+        outputArray["receivers"].sort((a, b) => (a.order > b.order ? 1 : -1));
     }
     return outputArray;
 };
