@@ -9,6 +9,18 @@ nav_order: 3
 
 Monitoring and control of Cisco IOS-XE based switches
 
+You'll need RESTConf on your IoS device to use this module. Use the follow commands to enable it on supported hardware.
+
+```
+conf t
+!
+username admin privilege 15 secret admin
+!
+ip http secure-server
+!
+restconf
+```
+
 ## Default Configuration
 
 ```
