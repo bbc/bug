@@ -15,6 +15,7 @@ const panelListByCapability = require("@services/panel-listbycapability");
 const hashResponse = require("@core/hash-response");
 const panelSetGroup = require("@services/panel-setgroup");
 const restrict = require("@middleware/restrict");
+const logger = require("@utils/logger")(module);
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -191,7 +192,12 @@ router.get(
     "/build/:moduleName",
     restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
-        const result = await panelStart(req.params.moduleName);
+        let result;
+        try {
+            result = await panelStart(req.params.moduleName);
+        } catch (error) {
+            logger.warning(error);
+        }
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: "Successfully built module",

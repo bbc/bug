@@ -1,0 +1,42 @@
+{
+    "name": "dante-router",
+    "longname": "Dante Router",
+    "description": "Control and route dante in conjuction with Dante Domain Controller",
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-matrix",
+    "author": "Ryan McCartney",
+    "memory": 50,
+    "license": "Apache-2.0",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "dante-router",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "apiKey": "",
+        "domainId": "",
+        "port": "80",
+        "useTake": false,
+        "transmitterGroups": [],
+        "receiverGroups": [],
+        "transmitterIconColors": [],
+        "recevierIconColors": [],
+        "transmitterIcons": [],
+        "receiverIcons": []
+    }
+}
