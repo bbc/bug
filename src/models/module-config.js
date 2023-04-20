@@ -14,6 +14,7 @@ exports.list = async function () {
 
     // check the cache first
     let moduleArray = cacheStore.get(cacheKey);
+
     if (!moduleArray) {
         let files;
         try {
@@ -23,7 +24,7 @@ exports.list = async function () {
         }
 
         moduleArray = [];
-        for (var i in files) {
+        for (let i in files) {
             if (!files[i].startsWith(".")) {
                 try {
                     let filename = path.join(modulesFolder, files[i], "module.json");

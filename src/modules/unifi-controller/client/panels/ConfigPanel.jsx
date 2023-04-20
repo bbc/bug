@@ -32,7 +32,6 @@ export default function ConfigPanel() {
 
     let validatedSites = [];
     if (sites.status === "success" && sites.data && sites.data.length > 0) {
-        console.log(sites.data);
         validatedSites = sites.data;
     }
 

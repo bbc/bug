@@ -5,6 +5,7 @@
     "capabilities": [
         "video-router"
     ],
+    "memory": 50,
     "notes": "",
     "version": "1.2.1",
     "icon": "mdi-matrix",
