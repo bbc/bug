@@ -36,7 +36,7 @@ const main = async () => {
     console.log(`worker-interfacevlans: connecting to device at ${workerData.address}`);
 
     const data = {
-        fields: "name;switchport-config/switchport/Cisco-IOS-XE-switch:mode;switchport-config/switchport/Cisco-IOS-XE-switch:access",
+        fields: "name;switchport-config/switchport/Cisco-IOS-XE-switch:mode;switchport-config/switchport/Cisco-IOS-XE-switch:access;switchport/Cisco-IOS-XE-switch:mode;switchport/Cisco-IOS-XE-switch:access",
     };
 
     while (true) {
@@ -55,18 +55,20 @@ const main = async () => {
                 username: workerData["username"],
                 password: workerData["password"],
             });
-
             for (const eachInterface of result?.[`Cisco-IOS-XE-native:${eachType}`]) {
                 const key = eachType + eachInterface?.["name"];
-                const switchPort = eachInterface?.["switchport-config"]?.["switchport"];
-                if (switchPort) {
-                    if (getFirstKey(switchPort["Cisco-IOS-XE-switch:mode"]) === "trunk") {
-                        portModes[key] = "trunk";
-                    } else if (switchPort["Cisco-IOS-XE-switch:access"]) {
-                        portModes[key] = "access";
-                    }
+
+                // sometimes restconf embeds the 'switchport' node within a 'switchport-config' node. It's not clear why ...
+                let switchPort = eachInterface?.["switchport-config"]?.["switchport"];
+                if (!switchPort) {
+                    switchPort = eachInterface?.["switchport"];
                 }
-                if (!portModes[key]) {
+
+                if (switchPort && getFirstKey(switchPort["Cisco-IOS-XE-switch:mode"]) === "trunk") {
+                    portModes[key] = "trunk";
+                } else if (switchPort?.["Cisco-IOS-XE-switch:access"]) {
+                    portModes[key] = "access";
+                } else {
                     portModes[key] = "unknown";
                 }
             }

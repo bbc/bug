@@ -8,7 +8,8 @@ exports.get = async function ({ path, host, username, password, data = {}, timeo
     const url = `https://${host}:443${path}?${encodedData}`;
 
     if (debug) {
-        console.log(url);
+        console.log(`url: ${url}`);
+        console.log(`data: ${JSON.stringify(data)}`);
     }
 
     const instance = axios.create({
@@ -38,7 +39,8 @@ exports.update = async function ({ path, host, username, password, data = {}, ti
     const url = `https://${host}:443${path}`;
 
     if (debug) {
-        console.log(url);
+        console.log(`url: ${url}`);
+        console.log(`data: ${JSON.stringify(data)}`);
     }
 
     const instance = axios.create({
