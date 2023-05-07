@@ -32,14 +32,16 @@ export default function PagePanel(props) {
             return <BugLoading />;
         }
 
-        if (Modules["modules"][moduleName]) {
-            const Module = Modules["modules"][moduleName]["client"]["Module"];
-            // we only include pathname here to trigger a re-render if the URL changes
-            return <Module panelId={panelId} pathname={location.pathname} />;
-        } else {
-            console.error(`Module name ${moduleName} not found in code`);
-            console.log(Modules["modules"]);
-        }
+        try {
+            if (Modules["modules"][moduleName]) {
+                const Module = Modules["modules"][moduleName]["client"]["Module"];
+                // we only include pathname here to trigger a re-render if the URL changes
+                return <Module panelId={panelId} pathname={location.pathname} />;
+            } else {
+                console.error(`Module name ${moduleName} not found in code`);
+                console.log(Modules["modules"]);
+            }
+        } catch (error) {}
         // the panel doesn't exist - we'll just dump back to the home page
         return <Redirect push to={{ pathname: "/" }} />;
     }, [panelConfig.status, panelId, moduleName, location.pathname]);
