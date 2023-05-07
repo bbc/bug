@@ -9,6 +9,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import BugCountdownSpinner from "@core/BugCountdownSpinner";
 import { useLongPress } from "use-long-press";
 import BugContextMenu from "@core/BugContextMenu";
+import { useTheme } from "@mui/material/styles";
 
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
     fontSize: "2rem",
@@ -40,6 +41,7 @@ const BugRouterButton = ({
     });
     const timer = React.useRef();
     const [contextMenuAnchorEl, setContextMenuAnchorEl] = React.useState(null);
+    const theme = useTheme();
 
     const bind = useLongPress((event) => {
         setContextMenuAnchorEl(event.target);
@@ -130,10 +132,10 @@ const BugRouterButton = ({
                 },
                 WebkitTouchCallout: "none !important",
                 WebkitUserSelect: "none !important",
+                color: "text.primary",
                 ...sx,
             }}
             variant="outlined"
-            color="secondary"
             onClick={handleClick}
             {...bind()}
             onContextMenu={(e) => {
