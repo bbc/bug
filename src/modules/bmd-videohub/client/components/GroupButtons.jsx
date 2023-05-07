@@ -74,8 +74,8 @@ export default function GroupButtons({
         });
         if (result !== false) {
             if (await AxiosPost(`/container/${panelId}/groups/${groupType}/${result}`)) {
-                onChange();
                 sendAlert(`Added group: ${result}`, { variant: "success" });
+                onChange();
             } else {
                 sendAlert(`Failed to add group: ${result}`, { variant: "error" });
             }
