@@ -197,7 +197,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                     destinationGroup: destinationGroup,
                     groupType: "destination",
                     buttons: destinationButtons,
-                    onChange: () => setSourceForceRefresh(),
+                    onChange: () => setDestinationForceRefresh(),
                 })}
                 <Box
                     sx={{

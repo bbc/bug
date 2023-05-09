@@ -1,9 +1,5 @@
 import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import { usePanelStatus } from "@hooks/PanelStatus";
 
 export default function Toolbar({ panelId, ...props }) {
