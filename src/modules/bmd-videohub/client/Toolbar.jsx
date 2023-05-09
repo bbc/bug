@@ -13,12 +13,14 @@ import CheckIcon from "@mui/icons-material/Check";
 import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
 import AxiosPut from "@utils/AxiosPut";
+import { useHistory } from "react-router-dom";
 
 export default function Toolbar({ panelId, ...props }) {
     const toolbarProps = { ...props };
     const location = useLocation();
     const panelStatus = usePanelStatus();
     const panelConfig = useSelector((state) => state.panelConfig);
+    const history = useHistory();
 
     if (!panelStatus) {
         return null;
@@ -32,26 +34,32 @@ export default function Toolbar({ panelId, ...props }) {
         });
     };
 
+    const handleEditClicked = (event, item) => {
+        const params = getParams(5);
+        history.push(`/panel/${panelId}/edit/${params}`);
+    };
+
+    const handleDoneClicked = (event, item) => {
+        const params = getParams(6);
+        history.push(`/panel/${panelId}/${params}`);
+    };
+
+    const getParams = (matchCount) => {
+        const urlParts = location.pathname.split("/");
+        if (urlParts.length === matchCount) {
+            return urlParts.slice(-2).join("/");
+        }
+        return "";
+    };
+
     const buttons = () => (
         <>
             {editMode ? (
-                <Button
-                    component={Link}
-                    to={`/panel/${panelId}`}
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<DoneIcon />}
-                >
+                <Button variant="outlined" color="primary" startIcon={<DoneIcon />} onClick={handleDoneClicked}>
                     Done
                 </Button>
             ) : (
-                <Button
-                    component={Link}
-                    to={`/panel/${panelId}/edit`}
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<EditIcon />}
-                >
+                <Button variant="outlined" color="primary" startIcon={<EditIcon />} onClick={handleEditClicked}>
                     Edit
                 </Button>
             )}
