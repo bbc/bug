@@ -1,0 +1,3 @@
+-   use proper api version in api calls
+-   only SD/HD resolutions are currently supported
+-   only integer bitrates are currently supported
