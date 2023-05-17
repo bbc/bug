@@ -5,18 +5,17 @@ import MpegEncoderVideo from "./MpegEncoderVideo";
 import MpegEncoderService from "./MpegEncoderService";
 import MpegEncoderTest from "./MpegEncoderTest";
 import MpegEncoderAudio from "./MpegEncoderAudio";
-import MpegEncoderMux from "./MpegEncoderMux";
 import MpegEncoderOutput from "./MpegEncoderOutput";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import useAsyncEffect from "use-async-effect";
 import { useSelector } from "react-redux";
 import { useAlert } from "@utils/Snackbar";
-import AxiosDelete from "@utils/AxiosDelete";
 import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
 import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
-import { unflatten } from "flat";
-import deepmerge from "deepmerge";
+import { useApiPoller } from "@hooks/ApiPoller";
+import output from "../templates/output";
+import { v4 as uuidv4 } from "uuid";
 
 export default function MpegEncoder({ panelId, serviceId }) {
     const [codecdata, setCodecdata] = React.useState({});
@@ -27,6 +26,16 @@ export default function MpegEncoder({ panelId, serviceId }) {
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
     const showCodecDropdown = panelConfig && panelConfig.data.codecSource;
 
+    const audioProfiles = useApiPoller({
+        url: `/container/${panelId}/mpegencodeprofile/audio`,
+        interval: 20000,
+    });
+
+    const ipInterfaces = useApiPoller({
+        url: `/container/${panelId}/chassis/ipinterfaces`,
+        interval: 22000,
+    });
+
     usePanelToolbarEvent("refresh", () => {
         refreshCodecdata();
     });
@@ -36,84 +45,82 @@ export default function MpegEncoder({ panelId, serviceId }) {
     }, [panelId]);
 
     const refreshCodecdata = async () => {
-        setCodecdata(await AxiosGet(`/container/${panelId}/encoderservice/${encodeURIComponent(serviceId)}`));
+        setCodecdata(await AxiosGet(`/container/${panelId}/mpegencoderservice/${encodeURIComponent(serviceId)}`));
     };
 
     const onChange = (modifiedCodecData) => {
         // the way we do this is to pass the full codecdata to the control, then receive it back on a change
         // this way we can make large specific changes to the data without any dependencies
         setCodecdata(modifiedCodecData);
-        console.log(JSON.stringify(modifiedCodecData.videoProfile.value, null, 2));
-        // timer.current = setTimeout(() => {
-        //     updateBackend(values, arrayName, index);
-        // }, 200);
+        timer.current = setTimeout(() => {
+            updateBackend(modifiedCodecData);
+        }, 400);
     };
-    // const onChange = (values) => {
-    //     // console.log(codecdata);
-    //     // console.log(values);
-    //     let codecdataClone = deepmerge(codecdata, unflatten(values));
-    //     console.log(JSON.stringify(codecdataClone.videoProfile.value, null, 2));
-    //     setCodecdata(codecdataClone);
-    //     // clearTimeout(timer.current);
-    //     // let codecdataClone = { ...codecdata };
-    //     // if (arrayName !== null && index !== null) {
-    //     //     codecdataClone[arrayName][index] = { ...codecdataClone[arrayName][index], ...values };
-    //     // } else {
-    //     //     codecdataClone = { ...codecdataClone, ...values };
-    //     // }
-    //     // setMpegEncoderdata(codecdataClone);
-    //     // timer.current = setTimeout(() => {
-    //     //     updateBackend(values, arrayName, index);
-    //     // }, 200);
-    // };
 
     const onAudioClose = async (index) => {
-        // if (codecdata?.audio?.length === 1) {
-        //     return;
-        // }
-        // if (await AxiosDelete(`/container/${panelId}/audio/${index}`)) {
-        //     refreshCodecdata();
-        // }
+        const modifiedCodecData = { ...codecdata };
+        modifiedCodecData.encoderService.value.audios.splice(index, 1);
+        onChange(modifiedCodecData);
     };
 
-    const onOutputClose = async (index) => {
-        // if (codecdata?.outputs?.length === 1) {
-        //     return;
-        // }
-        // if (await AxiosDelete(`/container/${panelId}/output/${index}`)) {
-        //     refreshCodecdata();
-        // }
-    };
+    const onOutputClose = async (index) => {};
 
     const onAudioAdd = async () => {
-        // if (codecdata?.audio?.length === 8) {
-        //     return;
-        // }
-        // if (await AxiosPost(`/container/${panelId}/audio/`)) {
-        //     refreshCodecdata();
-        // }
+        const clonedCodecData = { ...codecdata };
+        clonedCodecData.encoderService.value.audios.push({
+            main: {
+                uid: 0,
+                source: {
+                    embedded: {
+                        codec: "PCM",
+                        channel: clonedCodecData.encoderService.value.audios.length * 2 + 1,
+                        dolbyEProgNum: {},
+                        channelMode: { value: "STEREO" },
+                        channelMapping: { value: "LR" },
+                        audioEssenceId: {},
+                    },
+                },
+                numAuPerPes: {},
+                lipSyncAdjustment: {},
+                levelAdjustment: {},
+                loudness: {},
+                passthrough: false,
+                profile: { id: { value: "5dd9b4ab-5f1d-48d2-9600-8b25a79d1246" }, cpy: {} },
+                destination: { ts: { language: "eng", pid: 201, audioType: "UNDEFINED" } },
+            },
+            backup: {},
+        });
+
+        onChange(clonedCodecData);
     };
 
     const onOutputAdd = async () => {
-        // if (codecdata?.outputs?.length === 8) {
-        //     return;
-        // }
-        // if (await AxiosPost(`/container/${panelId}/output/`)) {
-        //     refreshCodecdata();
-        // }
+        const d1InterfaceId = ipInterfaces.data.find((i) => i.name === "D1")?.id;
+        const clonedCodecData = { ...codecdata };
+
+        const newOutput = output({
+            key: uuidv4(),
+            label: `${codecdata?.encoderService?.value?.output?.ts?.serviceName}-output-${
+                codecdata.outputs.length + 1
+            }`,
+            interfaceId: d1InterfaceId,
+            sourceId: codecdata.inputServiceKey,
+            slot: codecdata?.ipOutputCards?.[0],
+        });
+
+        clonedCodecData.outputs.push(newOutput);
+        console.log(newOutput);
+        onChange(clonedCodecData);
     };
 
-    const updateBackend = async (values, arrayName, index) => {
-        // // and send to backend to persist
-        // let url = `/container/${panelId}/localdata/`;
-        // if (arrayName && index !== null) {
-        //     url += `${arrayName}/${index}/`;
-        // }
-        // if (!(await AxiosPost(url, values))) {
-        //     sendAlert(`Changes could not be saved`, { variant: "error" });
-        // } else {
-        //     refreshCodecdata();
-        // }
+    const updateBackend = async (codecdata) => {
+        // and send to backend to persist
+        let url = `/container/${encodeURIComponent(panelId)}/localdata/${encodeURIComponent(serviceId)}`;
+        if (!(await AxiosPost(url, codecdata))) {
+            sendAlert(`Changes could not be saved`, { variant: "error" });
+        } else {
+            refreshCodecdata();
+        }
     };
 
     if (!codecdata || Object.keys(codecdata).length === 0) {
@@ -145,8 +152,6 @@ export default function MpegEncoder({ panelId, serviceId }) {
                             panelId={panelId}
                             serviceId={serviceId}
                         />
-                    </Grid>
-                    <Grid item xs={12} xl={6}>
                         <MpegEncoderVideo
                             codecdata={codecdata}
                             onChange={onChange}
@@ -154,37 +159,40 @@ export default function MpegEncoder({ panelId, serviceId }) {
                             panelId={panelId}
                             serviceId={serviceId}
                         />
-                        {/* <MpegEncoderMux codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} /> */}
-                        {/* {codecdata &&
-                            codecdata.audio.map((audio, index) => (
+                    </Grid>
+                    <Grid item xs={12} xl={6}>
+                        {codecdata &&
+                            codecdata.encoderService.value.audios.map((audio, index) => (
                                 <MpegEncoderAudio
                                     key={index}
-                                    audioData={audio}
-                                    audioIndex={index}
-                                    onChange={(values) => onChange(values, "audio", index)}
+                                    codecdata={codecdata}
+                                    index={index}
+                                    onChange={onChange}
+                                    audioProfiles={audioProfiles?.data}
                                     onClose={onAudioClose}
                                     showAdvanced={showAdvanced}
                                 />
-                            ))} */}
-                        {/* <BugDetailsCardAdd onAdd={onAudioAdd} /> */}
+                            ))}
+                        <BugDetailsCardAdd onAdd={onAudioAdd} />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12} md={6} xl={4}>
-                {/* {codecdata &&
+                {codecdata &&
                     codecdata.outputs.map((output, index) => (
                         <MpegEncoderOutput
                             key={index}
-                            outputData={output}
-                            outputIndex={index}
-                            onChange={(values) => onChange(values, "outputs", index)}
+                            codecdata={codecdata}
+                            index={index}
+                            onChange={onChange}
                             onClose={onOutputClose}
                             showAdvanced={showAdvanced}
                             panelId={panelId}
                             showCodecDropdown={showCodecDropdown}
+                            ipInterfaces={ipInterfaces.data}
                         />
                     ))}
-                <BugDetailsCardAdd onAdd={onOutputAdd} /> */}
+                <BugDetailsCardAdd onAdd={onOutputAdd} />
             </Grid>
         </Grid>
     );

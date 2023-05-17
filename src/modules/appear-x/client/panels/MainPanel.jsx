@@ -1,5 +1,5 @@
 import React from "react";
-import EncoderServicesList from "../components/EncoderServicesList";
+import MpegEncoderServicesList from "../components/MpegEncoderServicesList";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import AxiosGet from "@utils/AxiosGet";
 import useAsyncEffect from "use-async-effect";
@@ -22,12 +22,12 @@ export default function MainPanel({ panelId }) {
 
     if (features.includes("encoder")) {
         tabLabels.push("MPEG Encoders");
-        tabLocations.push(`/panel/${panelId}/display/encoders`);
-        tabContent.push(<EncoderServicesList panelId={panelId} />);
+        tabLocations.push(`/panel/${panelId}/display/mpegencoders`);
+        tabContent.push(<MpegEncoderServicesList panelId={panelId} />);
     }
     if (features.includes("decoder")) {
         tabLabels.push("MPEG Decoders");
-        tabLocations.push(`/panel/${panelId}/display/decoders`);
+        tabLocations.push(`/panel/${panelId}/display/mpegdecoders`);
         tabContent.push(<>MPEG Decoders</>);
     }
     if (features.includes("encoder-j2k")) {

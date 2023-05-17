@@ -9,12 +9,12 @@ import deepmerge from "deepmerge";
 
 export default function MpegEncoderService({ codecdata, onChange, showAdvanced, panelId, serviceId }) {
     const videoProfiles = useApiPoller({
-        url: `/container/${panelId}/encodeprofile/video`,
+        url: `/container/${panelId}/mpegencodeprofile/video`,
         interval: 20000,
     });
 
     const colorProfiles = useApiPoller({
-        url: `/container/${panelId}/encodeprofile/color`,
+        url: `/container/${panelId}/mpegencodeprofile/color`,
         interval: 20000,
     });
 
@@ -97,6 +97,19 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                                     { id: "TEST_GENERATOR", label: "Test Generator" },
                                 ]}
                             ></BugSelect>
+                        ),
+                    },
+                    {
+                        name: "Test Enabled",
+                        value: (
+                            <Switch
+                                checked={codecdata?.testGeneratorProfile.value.enable}
+                                onChange={(event) =>
+                                    setMultiCodecData({
+                                        "testGeneratorProfile.value.enable": event.target.checked,
+                                    })
+                                }
+                            />
                         ),
                     },
                 ]}

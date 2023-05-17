@@ -3,11 +3,11 @@
 const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
-    const encoderColorProfiles = await mongoSingle.get("encodeColorProfiles");
+    const mpegEncodeAudioProfiles = await mongoSingle.get("mpegEncodeAudioProfiles");
 
     return (
-        encoderColorProfiles &&
-        encoderColorProfiles
+        mpegEncodeAudioProfiles &&
+        mpegEncodeAudioProfiles
             .map((profile) => {
                 return {
                     id: profile.key,

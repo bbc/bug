@@ -5,7 +5,7 @@ const mongoSingle = require("@core/mongo-single");
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     // fetch video profiles
 
-    const encoderVideoProfiles = await mongoSingle.get("encodeVideoProfiles");
+    const mpegEncodeVideoProfiles = await mongoSingle.get("mpegEncodeVideoProfiles");
 
     const parseResolution = (profile) => {
         try {
@@ -20,8 +20,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
     };
 
     return (
-        encoderVideoProfiles &&
-        encoderVideoProfiles
+        mpegEncodeVideoProfiles &&
+        mpegEncodeVideoProfiles
             .map((profile) => {
                 return {
                     id: profile.key,

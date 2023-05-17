@@ -11,7 +11,7 @@ const appearXApi = require("@utils/appearx-api");
 // make sure you add an array of config fields in 'restartOn' - the worker will restart whenever these are updated
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: [],
+    restartOn: ["address", "username", "password"],
 });
 
 const main = async () => {
@@ -19,9 +19,9 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     const XApi = new appearXApi({
-        host: "1.2.3.4",
-        username: "admin",
-        password: "password",
+        host: workerData.address,
+        username: workerData.username,
+        password: workerData.password,
     });
 
     await XApi.connect();

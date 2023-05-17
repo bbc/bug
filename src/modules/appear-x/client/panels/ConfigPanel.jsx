@@ -45,6 +45,7 @@ export default function ConfigPanel() {
                         error={errors.description}
                         defaultValue={panelConfig.data.description}
                         label="Description"
+                        helperText={`Choose a value between `}
                     />
                 </Grid>
                 <Grid item xs={12}>

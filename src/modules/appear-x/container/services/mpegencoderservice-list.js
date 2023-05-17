@@ -2,7 +2,7 @@
 
 const mongoSingle = require("@core/mongo-single");
 const formatBitrate = require("@utils/format-bitrate");
-const encodeVideoProfileList = require("@services/encodevideoprofile-list");
+const mpegEncodeVideoProfileList = require("@services/mpegencodevideoprofile-list");
 const configGet = require("@core/config-get");
 const getConnectorIndex = require("@utils/connectorindex-get");
 
@@ -13,13 +13,13 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
     }
 
     // fetch video profiles
-    const encodeVideoProfiles = await encodeVideoProfileList();
+    const mpegEncodeVideoProfiles = await mpegEncodeVideoProfileList();
 
     // fetch ip outputs
-    const ipOutputs = await mongoSingle.get("ipOutputs");
+    const mpegIpOutputs = await mongoSingle.get("mpegIpOutputs");
 
     // fetch ip input services
-    const ipInputServices = await mongoSingle.get("inputServices");
+    const mpegInputServices = await mongoSingle.get("mpegInputServices");
 
     const getChromaSampling = (value) => {
         try {
@@ -31,7 +31,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
     };
 
     const filterVideoProfile = (videoProfileId) => {
-        const profile = encodeVideoProfiles && encodeVideoProfiles.find((profile) => profile.id === videoProfileId);
+        const profile =
+            mpegEncodeVideoProfiles && mpegEncodeVideoProfiles.find((profile) => profile.id === videoProfileId);
         if (profile) {
             return {
                 label: profile?.label,
@@ -48,18 +49,18 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         return null;
     };
 
-    const dbEncoderServices = await mongoSingle.get("encoderServices");
+    const mpegEncoderServices = await mongoSingle.get("mpegEncoderServices");
     return (
-        dbEncoderServices &&
-        dbEncoderServices
+        mpegEncoderServices &&
+        mpegEncoderServices
             .map((es) => {
                 const connectorIndex = getConnectorIndex(es);
 
                 // apparently this is the only way to do this. Eugh.
-                const inputServiceKey = `${es?.value?.slot}:${connectorIndex + 1}`;
+                const inputServiceKey = `${es?.value?.slot}:${connectorIndex}`;
 
                 // check input services
-                const matchingInputService = ipInputServices.find((is) => is.value.name === inputServiceKey);
+                const matchingInputService = mpegInputServices.find((is) => is.value.name === inputServiceKey);
 
                 // check outputs
                 let outputs = [];
@@ -70,12 +71,14 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                     );
 
                     // find any IP outputs which have been created from this DVB service
-                    outputs = ipOutputs.filter((ipo) => {
-                        return (
-                            ipo.value.outputSettings.tsWhitelistMode.dvbMode.source.multiplex[0].service.source ===
-                            dvbService.key
-                        );
-                    });
+                    outputs =
+                        mpegIpOutputs &&
+                        mpegIpOutputs.filter((ipo) => {
+                            return (
+                                ipo.value.outputSettings.tsWhitelistMode.dvbMode.source.multiplex[0].service.source ===
+                                dvbService.key
+                            );
+                        });
                 }
 
                 return {
@@ -87,9 +90,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                     connectorIndex: connectorIndex,
                     inputServiceKey: inputServiceKey,
                     slot: es?.value?.slot,
-                    slotPort: `Slot ${es?.value?.slot} / Port ${
-                        es?.value?.video?.source?.sdi?.connectors.split("_")[1]
-                    }`,
+                    slotPort: `${es?.value?.slot} / ${es?.value?.video?.source?.sdi?.connectors.split("_")[1]}`,
                     videoProfileId: es?.value?.video?.profile?.id,
                     videoProfile: filterVideoProfile(es?.value?.video?.profile?.id),
                     audios:
