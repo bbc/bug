@@ -188,6 +188,14 @@ const theme = (selectedTheme = "dark") => {
                     },
                 },
             },
+            MuiDialogTitle: {
+                styleOverrides: {
+                    root: {
+                        fontSize: "1rem",
+                        textTransform: "uppercase",
+                    },
+                },
+            },
             MuiMenuItem: {
                 styleOverrides: {
                     root: {
