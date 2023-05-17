@@ -12,7 +12,6 @@ import { useHistory } from "react-router-dom";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugApiSelect from "@core/BugApiSelect";
-import { useApiPoller } from "@hooks/ApiPoller";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";
@@ -32,20 +31,6 @@ export default function EncoderServicesList({ panelId }) {
     useInterval(() => {
         doForceRefresh();
     }, 5000);
-
-    const videoProfiles = useApiPoller({
-        url: `/container/${panelId}/encodeprofile/video`,
-        interval: 20000,
-    });
-
-    const mappedVideoProfiles =
-        videoProfiles.data &&
-        videoProfiles.data.map((profile) => {
-            return {
-                id: profile.id,
-                label: profile.label,
-            };
-        });
 
     const getLatencyLabel = (item) => {
         switch (item?.videoProfile?.latency) {
@@ -72,7 +57,9 @@ export default function EncoderServicesList({ panelId }) {
             return;
         }
         if (
-            await AxiosCommand(`/container/${panelId}/encoderservice/rename/${item.id}/${encodeURIComponent(result)}`)
+            await AxiosCommand(
+                `/container/${panelId}/mpegencoderservice/rename/${item.id}/${encodeURIComponent(result)}`
+            )
         ) {
             sendAlert(result ? `Renamed service to ${result}` : "Reset service name", {
                 broadcast: "true",
@@ -87,6 +74,7 @@ export default function EncoderServicesList({ panelId }) {
     };
 
     const handleBitrateClicked = async (event, item) => {
+        event.stopPropagation();
         const result = await customDialog({
             dialog: <BitrateDialog item={item} />,
         });
@@ -95,7 +83,7 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/encodeprofile/video/setbitrate/${item.videoProfileId}/${encodeURIComponent(
+                `/container/${panelId}/mpegencodeprofile/video/setbitrate/${item.videoProfileId}/${encodeURIComponent(
                     result
                 )}`
             )
@@ -113,6 +101,7 @@ export default function EncoderServicesList({ panelId }) {
     };
 
     const handleLatencyClicked = async (event, item) => {
+        event.stopPropagation();
         const result = await customDialog({
             dialog: <LatencyDialog item={item} />,
         });
@@ -121,7 +110,7 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/encodeprofile/video/setlatency/${item.videoProfileId}/${encodeURIComponent(
+                `/container/${panelId}/mpegencodeprofile/video/setlatency/${item.videoProfileId}/${encodeURIComponent(
                     result
                 )}`
             )
@@ -139,6 +128,7 @@ export default function EncoderServicesList({ panelId }) {
     };
 
     const handleColorClicked = async (event, item) => {
+        event.stopPropagation();
         const result = await customDialog({
             dialog: <ColorDialog item={item} />,
         });
@@ -147,7 +137,7 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/encodeprofile/video/setcolor/${item.videoProfileId}/${encodeURIComponent(
+                `/container/${panelId}/mpegencodeprofile/video/setcolor/${item.videoProfileId}/${encodeURIComponent(
                     result.bitDepth
                 )}/${encodeURIComponent(result.chromaSampling)}`
             )
@@ -169,7 +159,9 @@ export default function EncoderServicesList({ panelId }) {
     };
 
     const serviceToggle = async (checked, item) => {
-        if (await AxiosCommand(`/container/${panelId}/encoderservice/${checked ? `enable` : `disable`}/${item.id}`)) {
+        if (
+            await AxiosCommand(`/container/${panelId}/mpegencoderservice/${checked ? `enable` : `disable`}/${item.id}`)
+        ) {
             sendAlert(`${checked ? `Enabled` : `Disabled`} service: ${item.serviceName}`, { variant: "success" });
             doForceRefresh();
         } else {
@@ -213,7 +205,7 @@ export default function EncoderServicesList({ panelId }) {
     const handleProfileChanged = async (event, item) => {
         if (
             await AxiosCommand(
-                `/container/${panelId}/encoderservice/setvideoprofile/${encodeURIComponent(
+                `/container/${panelId}/mpegencoderservice/setvideoprofile/${encodeURIComponent(
                     item.id
                 )}/${encodeURIComponent(event.target.value)}`
             )
@@ -273,7 +265,7 @@ export default function EncoderServicesList({ panelId }) {
                 {
                     minWidth: "100px",
                     noWrap: true,
-                    title: "Label",
+                    title: "Name",
                     content: (item) => {
                         if (item.label) {
                             return (
@@ -307,22 +299,6 @@ export default function EncoderServicesList({ panelId }) {
                     noWrap: true,
                     title: "Slot/port",
                     content: (item) => item.slotPort,
-                },
-                {
-                    title: "Video Profile",
-                    hideWidth: 1680,
-                    width: "12rem",
-                    content: (item) => {
-                        return (
-                            <BugApiSelect
-                                disabled={item._protected}
-                                options={mappedVideoProfiles ? mappedVideoProfiles : []}
-                                value={item?.videoProfileId}
-                                variant="outlined"
-                                onChange={(event) => handleProfileChanged(event, item)}
-                            />
-                        );
-                    },
                 },
                 {
                     minWidth: "90px",
@@ -451,7 +427,7 @@ export default function EncoderServicesList({ panelId }) {
                     onClick: handleProtectClicked,
                 },
             ]}
-            apiUrl={`/container/${panelId}/encoderservice`}
+            apiUrl={`/container/${panelId}/mpegencoderservice`}
             panelId={panelId}
             hideHeader={false}
             noData={

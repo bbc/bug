@@ -12,10 +12,10 @@ module.exports = async (serviceId) => {
         config.protectedServices = [];
     }
     if (config.protectedServices.includes(serviceId)) {
-        console.log(`encoderservice-protect: service ${serviceId} already protected`);
+        console.log(`mpegencoderservice-protect: service ${serviceId} already protected`);
         return false;
     }
-    console.log(`encoderservice-protect: protecting service ${serviceId}`);
+    console.log(`mpegencoderservice-protect: protecting service ${serviceId}`);
     config.protectedServices.push(serviceId);
     return await configPutViaCore(config);
 };

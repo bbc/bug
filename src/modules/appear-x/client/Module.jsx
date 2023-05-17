@@ -3,7 +3,7 @@ import BugModuleWrapper from "@core/BugModuleWrapper";
 import { Route } from "react-router-dom";
 
 const MainPanel = React.lazy(() => import("./panels/MainPanel"));
-const EncoderPanel = React.lazy(() => import("./panels/EncoderPanel"));
+const MpegEncoderPanel = React.lazy(() => import("./panels/MpegEncoderPanel"));
 const ConfigPanel = React.lazy(() => import("./panels/ConfigPanel"));
 
 export default function Module(props) {
@@ -16,7 +16,7 @@ export default function Module(props) {
                 <MainPanel {...props} />
             </Route>
             <Route exact path="/panel/:panelId/mpegencoder/:serviceId">
-                <EncoderPanel {...props} />
+                <MpegEncoderPanel {...props} />
             </Route>
             <Route exact path="/panel/:panelId/config">
                 <ConfigPanel {...props} />

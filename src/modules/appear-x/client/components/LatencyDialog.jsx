@@ -21,7 +21,6 @@ export default function LatencyDialog({ open, item, onDismiss, onConfirm }) {
                 <Grid container spacing={4} sx={{ width: "24rem", marginTop: "-22px" }}>
                     <Grid item xs={12}>
                         <BugSelect
-                            label="Video Latency"
                             value={latency}
                             options={[
                                 { id: "NORMAL", label: "Normal" },

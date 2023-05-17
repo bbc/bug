@@ -36,9 +36,9 @@ module.exports = class AppearXAPI {
             this.token = response?.data?.result?.accessToken;
             return true;
         } catch (error) {
-            console.log("-------------------------HEY");
-            console.log(error);
-            console.log("-------------------------HEY");
+            // console.log("-------------------------HEY");
+            console.log(error.response);
+            // console.log("-------------------------HEY");
             return false;
         }
     };
@@ -64,12 +64,11 @@ module.exports = class AppearXAPI {
             console.log(`appearx-api: connected OK to AppearX API at ${url}`);
             this.token = response?.data?.result?.accessToken;
         } catch (error) {
-            console.log(`appearx-api: failed to connect to AppearX API at ${url}`);
-            // console.log(error);
+            console.log(`appearx-api: failed to connect to AppearX API at ${url}: ${error.message}`);
             return false;
         }
         if (!this.token) {
-            throw new Error("Failed to connect to AppearX API");
+            throw new Error("Failed to connect to AppearX API - no valid toket returned");
         }
         return true;
     };
@@ -91,10 +90,13 @@ module.exports = class AppearXAPI {
             });
             return response?.data?.result;
         } catch (error) {
-            console.log("-------------------------HEY");
-            console.log(error);
-            console.log("-------------------------HEY");
+            if (error?.response?.data?.error?.message) {
+                console.log(`appearx-api: failed to POST - ${error.response.data.error.message}`);
+            } else {
+                console.log(error?.response?.data);
+            }
+            console.log(JSON.stringify(jsonBody));
+            return false;
         }
-        return null;
     };
 };

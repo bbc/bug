@@ -3,7 +3,7 @@
 const appearXApi = require("@utils/appearx-api");
 const configGet = require("@core/config-get");
 
-module.exports = async (encoderService) => {
+module.exports = async (testGeneratorProfile) => {
     try {
         const config = await configGet();
         if (!config) {
@@ -18,18 +18,20 @@ module.exports = async (encoderService) => {
         });
 
         if (await XApi.connect()) {
+            console.log(`mpegencoderservice-update: updating service id ${testGeneratorProfile.key}`);
             // post value to device
             return await XApi.post({
                 path: "mmi/service_encoderpool/api/jsonrpc",
-                method: "Xger:2.31/coderService/SetCoderServices",
+                method: "Xger:2.31/testGeneratorProfile/SetTestGeneratorProfiles",
                 params: {
-                    data: [encoderService],
+                    data: [testGeneratorProfile],
                 },
-                id: "SetEncoderServices",
+                id: "SetTestGeneratorProfiles",
             });
         }
     } catch (error) {
         console.log(error);
+        console.log(JSON.stringify(testGeneratorProfile, null, 2));
         return false;
     }
 };

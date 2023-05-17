@@ -7,10 +7,11 @@ const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
 const statusRouter = require("@routes/status");
 const serviceRouter = require("@routes/service");
-const encoderServiceRouter = require("@routes/encoderservice");
-const encodeProfileRouter = require("@routes/encodeprofile");
+const mpegEncoderServiceRouter = require("@routes/mpegencoderservice");
+const mpegEncodeProfileRouter = require("@routes/mpegencodeprofile");
 const thumbRouter = require("@routes/thumb");
 const chassisRouter = require("@routes/chassis");
+const localdataRouter = require("@routes/localdata");
 
 const heapInfo = require("@core/heap-info");
 
@@ -33,10 +34,11 @@ app.use(express.json());
 app.use("/api/config", configRouter);
 app.use("/api/status", statusRouter);
 app.use("/api/service", serviceRouter);
-app.use("/api/encoderservice", encoderServiceRouter);
-app.use("/api/encodeprofile", encodeProfileRouter);
+app.use("/api/mpegencoderservice", mpegEncoderServiceRouter);
+app.use("/api/mpegencodeprofile", mpegEncodeProfileRouter);
 app.use("/api/thumb", thumbRouter);
 app.use("/api/chassis", chassisRouter);
+app.use("/api/localdata", localdataRouter);
 
 app.use("*", defaultRouter);
 

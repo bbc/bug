@@ -27,7 +27,7 @@ export default function BitrateDialog({ open, item, onDismiss, onConfirm }) {
 
     return (
         <Dialog maxWidth="sm" open={open} onClose={onDismiss}>
-            <DialogTitle>Bitrate</DialogTitle>
+            <DialogTitle>Bitrate: {item?.videoProfile?.label}</DialogTitle>
             <DialogContent>
                 <BugTextField
                     numeric
