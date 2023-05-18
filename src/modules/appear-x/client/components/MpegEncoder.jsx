@@ -63,8 +63,6 @@ export default function MpegEncoder({ panelId, serviceId }) {
         onChange(modifiedCodecData);
     };
 
-    const onOutputClose = async (index) => {};
-
     const onAudioAdd = async () => {
         const clonedCodecData = { ...codecdata };
         clonedCodecData.encoderService.value.audios.push({
@@ -94,6 +92,12 @@ export default function MpegEncoder({ panelId, serviceId }) {
         onChange(clonedCodecData);
     };
 
+    const onOutputClose = async (index) => {
+        const clonedCodecData = { ...codecdata };
+        clonedCodecData.outputs.splice(index, 1);
+        onChange(clonedCodecData);
+    };
+
     const onOutputAdd = async () => {
         const d1InterfaceId = ipInterfaces.data.find((i) => i.name === "D1")?.id;
         const clonedCodecData = { ...codecdata };
@@ -109,7 +113,6 @@ export default function MpegEncoder({ panelId, serviceId }) {
         });
 
         clonedCodecData.outputs.push(newOutput);
-        console.log(newOutput);
         onChange(clonedCodecData);
     };
 

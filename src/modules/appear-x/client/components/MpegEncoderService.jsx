@@ -22,6 +22,10 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
         onChange(deepmerge(codecdata, unflatten(values)));
     };
 
+    const slotPort = `Slot ${codecdata?.encoderService?.value?.slot} / Port ${
+        codecdata?.encoderService?.value?.video?.source?.sdi?.connectors.split("_")[1]
+    }`;
+
     return (
         <>
             <BugDetailsCard
@@ -41,7 +45,7 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                     },
                     {
                         name: "Slot/Port",
-                        value: <BugTextField disabled value={codecdata?.encoderService._slotPort}></BugTextField>,
+                        value: <BugTextField disabled value={slotPort}></BugTextField>,
                     },
                     {
                         name: "Name",

@@ -2,6 +2,7 @@
 
 const appearXApi = require("@utils/appearx-api");
 const configGet = require("@core/config-get");
+const dbItemUpdate = require("@utils/dbitem-update");
 
 module.exports = async (encoderService) => {
     try {

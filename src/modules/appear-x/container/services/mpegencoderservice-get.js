@@ -1,8 +1,9 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
-const getConnectorIndex = require("@utils/connectorindex-get");
 const localdataGet = require("@services/localdata-get");
+const inputServiceKeyGet = require("./inputservicekey-get");
+const ipOutputsFilter = require("./ipoutputs-filter");
 
 module.exports = async (serviceId) => {
     // check localdata first (because we may have unsaved changes)
@@ -33,21 +34,9 @@ module.exports = async (serviceId) => {
     returnObject.encoderService = allEncoderServices && allEncoderServices.find((e) => e.key === serviceId);
 
     if (returnObject.encoderService) {
-        // add helper text
-        returnObject.encoderService._slotPort = `Slot ${returnObject.encoderService?.value?.slot} / Port ${
-            returnObject.encoderService?.value?.video?.source?.sdi?.connectors.split("_")[1]
-        }`;
-
         // fetch stuff from the database
-        const mpegIpOutputs = await mongoSingle.get("mpegIpOutputs");
-        const mpegInputServices = await mongoSingle.get("mpegInputServices");
         const mpegEncodeVideoProfiles = await mongoSingle.get("mpegEncodeVideoProfiles");
         const mpegEncodeTestGeneratorProfiles = await mongoSingle.get("mpegEncodeTestGeneratorProfiles");
-
-        const connectorIndex = getConnectorIndex(returnObject.encoderService);
-
-        // apparently this is the only way to do this. Eugh.
-        const inputServiceKey = `${returnObject.encoderService?.value?.slot}:${connectorIndex}`;
 
         // get video profile
         returnObject.videoProfile =
@@ -63,23 +52,11 @@ module.exports = async (serviceId) => {
                 (profile) => profile.key === returnObject.encoderService?.value?.testGenerator?.value.profile?.id
             );
 
-        // get outputs
-        // get input services first - so we can use it to find outputs
-        const inputService = mpegInputServices.find((is) => is.value.name === inputServiceKey);
-        if (inputService) {
-            // the matchingInputService contains two items - one of which is the autofirst - so we select the other one
-            const dvbService = inputService.value.sources.find((s) => s.value.name !== "Auto First Service");
+        // fetch the guid of the matching input service
+        returnObject.inputServiceKey = await inputServiceKeyGet(returnObject.encoderService);
 
-            returnObject.inputServiceKey = dvbService?.key;
-
-            // find any IP outputs which have been created from this DVB service
-            returnObject.outputs = mpegIpOutputs.filter((ipo) => {
-                return (
-                    ipo.value.outputSettings.tsWhitelistMode.dvbMode.source.multiplex[0].service.source ===
-                    dvbService.key
-                );
-            });
-        }
+        // and now use that to fetch any matching outputs
+        returnObject.outputs = await ipOutputsFilter(returnObject.inputServiceKey);
     }
 
     return returnObject;
