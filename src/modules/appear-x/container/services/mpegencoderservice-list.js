@@ -60,7 +60,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                 const inputServiceKey = `${es?.value?.slot}:${connectorIndex}`;
 
                 // check input services
-                const matchingInputService = mpegInputServices.find((is) => is.value.name === inputServiceKey);
+                const matchingInputService =
+                    mpegInputServices && mpegInputServices.find((is) => is.value.name === inputServiceKey);
 
                 // check outputs
                 let outputs = [];
@@ -116,37 +117,39 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                     additionalLatency: es?.value?.additionalLatency?.value,
                     testGeneratorProfileId: es?.value?.testGenerator?.value?.profile?.id,
                     testGeneratorEnabled: es?.value?.testGenerator?.value?.enable === true,
-                    outputs: outputs.map((o) => {
-                        const returnedOutput = {
-                            isRtp: o.value.transportSettings.udp.settings.rtp,
-                            interfaces: [],
-                        };
-                        if ("cloned" in o.value.transportSettings.udp.output) {
-                            returnedOutput.interfaces = [
-                                {
-                                    interfaceId: o.value.transportSettings.udp.output.cloned.a.interfaceId,
-                                    address: o.value.transportSettings.udp.output.cloned.a.destination.address,
-                                    port: o.value.transportSettings.udp.output.cloned.a.destination.port,
-                                    isRtp: o.value.transportSettings.udp.settings.rtp,
-                                },
-                                {
-                                    interfaceId: o.value.transportSettings.udp.output.cloned.b.interfaceId,
-                                    address: o.value.transportSettings.udp.output.cloned.b.destination.address,
-                                    port: o.value.transportSettings.udp.output.cloned.b.destination.port,
-                                    isRtp: o.value.transportSettings.udp.settings.rtp,
-                                },
-                            ];
-                        } else {
-                            returnedOutput.interfaces = [
-                                {
-                                    interfaceId: o.value.transportSettings.udp.output.single.interfaceId,
-                                    address: o.value.transportSettings.udp.output.single.destination.address,
-                                    port: o.value.transportSettings.udp.output.single.destination.port,
-                                },
-                            ];
-                        }
-                        return returnedOutput;
-                    }),
+                    outputs: outputs
+                        .filter((o) => o.value.enabled)
+                        .map((o) => {
+                            const returnedOutput = {
+                                isRtp: o.value.transportSettings.udp.settings.rtp,
+                                interfaces: [],
+                            };
+                            if ("cloned" in o.value.transportSettings.udp.output) {
+                                returnedOutput.interfaces = [
+                                    {
+                                        interfaceId: o.value.transportSettings.udp.output.cloned.a.interfaceId,
+                                        address: o.value.transportSettings.udp.output.cloned.a.destination.address,
+                                        port: o.value.transportSettings.udp.output.cloned.a.destination.port,
+                                        isRtp: o.value.transportSettings.udp.settings.rtp,
+                                    },
+                                    {
+                                        interfaceId: o.value.transportSettings.udp.output.cloned.b.interfaceId,
+                                        address: o.value.transportSettings.udp.output.cloned.b.destination.address,
+                                        port: o.value.transportSettings.udp.output.cloned.b.destination.port,
+                                        isRtp: o.value.transportSettings.udp.settings.rtp,
+                                    },
+                                ];
+                            } else {
+                                returnedOutput.interfaces = [
+                                    {
+                                        interfaceId: o.value.transportSettings.udp.output.single.interfaceId,
+                                        address: o.value.transportSettings.udp.output.single.destination.address,
+                                        port: o.value.transportSettings.udp.output.single.destination.port,
+                                    },
+                                ];
+                            }
+                            return returnedOutput;
+                        }),
                     _protected: config?.protectedServices?.includes(es?.key),
                 };
             })

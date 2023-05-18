@@ -227,7 +227,7 @@ export default function MpegEncoderOutput({
         <>
             <BugDetailsCard
                 closable
-                onClose={() => onClose(outputIndex)}
+                onClose={() => onClose(index)}
                 title={`Output ${index + 1}`}
                 width="11rem"
                 items={[

@@ -20,6 +20,8 @@ import { useInterval } from "@hooks/Interval";
 import BitrateDialog from "./BitrateDialog";
 import ColorDialog from "./ColorDialog";
 import LatencyDialog from "./LatencyDialog";
+import ShareIcon from "@mui/icons-material/Share";
+import LinearScaleIcon from "@mui/icons-material/LinearScale";
 
 export default function EncoderServicesList({ panelId }) {
     const sendAlert = useAlert();
@@ -263,7 +265,7 @@ export default function EncoderServicesList({ panelId }) {
                     },
                 },
                 {
-                    minWidth: "100px",
+                    minWidth: "140px",
                     noWrap: true,
                     title: "Name",
                     content: (item) => {
@@ -293,15 +295,15 @@ export default function EncoderServicesList({ panelId }) {
                     },
                 },
                 {
-                    minWidth: "8rem",
+                    minWidth: "6rem",
                     hideWidth: 1334,
-                    width: "8rem",
+                    width: "6rem",
                     noWrap: true,
                     title: "Slot/port",
                     content: (item) => item.slotPort,
                 },
                 {
-                    minWidth: "90px",
+                    minWidth: "70px",
                     noWrap: true,
                     hideWidth: 920,
                     title: "Bitrate",
@@ -378,16 +380,34 @@ export default function EncoderServicesList({ panelId }) {
                         if (item.outputs.length === 0) {
                             return null;
                         }
-                        if (item.outputs.length === 1) {
-                            return item.outputs[0].interfaces.map((i) => (
+                        return item.outputs.map((o) => (
+                            <Box sx={{ display: "flex", padding: "4px" }}>
+                                {o.interfaces.length === 2 ? (
+                                    <Box sx={{ display: "flex", alignItems: "center", padding: "4px", width: "32px" }}>
+                                        <ShareIcon sx={{ color: "primary.main" }} />
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            padding: "0px",
+                                            width: "32px",
+                                        }}
+                                    >
+                                        <LinearScaleIcon sx={{ color: "primary.main", fontSize: "1.2rem" }} />
+                                    </Box>
+                                )}
                                 <Box>
-                                    {item.outputs[0].isRtp ? "rtp://" : "udp://"}
-                                    {i.address}:{i.port}
+                                    {o.interfaces.map((i) => (
+                                        <Box>
+                                            {i.address}:{i.port}
+                                        </Box>
+                                    ))}
                                 </Box>
-                            ));
-                        }
-
-                        return <>{item.outputs.length} Output(s)</>;
+                            </Box>
+                        ));
                     },
                 },
             ]}

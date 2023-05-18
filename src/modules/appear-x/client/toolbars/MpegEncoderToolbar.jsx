@@ -64,11 +64,11 @@ export default function Toolbar({ panelId, ...props }) {
         if (
             await AxiosCommand(`/container/${panelId}/mpegencoderservice/save/${encodeURIComponent(params.serviceId)}`)
         ) {
-            triggerPanelEvent("refresh");
             sendAlert("Saved service config", {
                 broadcast: "true",
                 variant: "success",
             });
+            history.push(`/panel/${panelId}/display/mpegencoders/`);
         } else {
             sendAlert("Failed to save service config", {
                 variant: "error",

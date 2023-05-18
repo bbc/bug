@@ -1,5 +1,4 @@
 export default function output(data) {
-    console.log(data);
     return {
         slot: data?.slot,
         key: data?.key,

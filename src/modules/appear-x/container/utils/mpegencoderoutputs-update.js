@@ -2,8 +2,11 @@
 
 const appearXApi = require("@utils/appearx-api");
 const configGet = require("@core/config-get");
+const mongoSingle = require("@core/mongo-single");
+const inputServiceKeyGet = require("@services/inputservicekey-get");
+const ipOutputsFilter = require("@services/ipoutputs-filter");
 
-module.exports = async (outputs) => {
+module.exports = async (encoderService, outputs) => {
     try {
         const config = await configGet();
         if (!config) {
@@ -29,6 +32,28 @@ module.exports = async (outputs) => {
                 outputsBySlot[eachOutput["slot"]].push(eachOutput);
             }
 
+            // so ... this is a little more complex than I first thought. We need to compare this updated list to the existing, and
+            // pathologically delete any missing outputs. Any new ones will just get created by the POST update request
+
+            // fetch the guid of the matching input service
+            const inputServiceKey = await inputServiceKeyGet(encoderService);
+
+            // and now use that to fetch any matching outputs
+            const existingOutputs = await ipOutputsFilter(inputServiceKey);
+
+            const outputIdsToDelete = [];
+            const outputIdsToDeleteByCard = {};
+            for (const eachOutput of existingOutputs) {
+                if (!outputs.find((o) => o.key === eachOutput.key)) {
+                    if (!outputIdsToDeleteByCard[eachOutput["slot"]]) {
+                        outputIdsToDeleteByCard[eachOutput["slot"]] = [];
+                    }
+                    outputIdsToDeleteByCard[eachOutput["slot"]].push(eachOutput.key);
+                    outputIdsToDelete.push(eachOutput.key);
+                }
+            }
+
+            // update/add outputs
             for (const [cardIndex, eachObject] of Object.entries(outputsBySlot)) {
                 console.log(`mpegencoderoutputs-update: updating outputs on card ${cardIndex}`);
 
@@ -51,7 +76,29 @@ module.exports = async (outputs) => {
                     return false;
                 }
             }
-            return true;
+
+            // delete any remaining
+            for (const [cardIndex, outputIdArray] of Object.entries(outputIdsToDeleteByCard)) {
+                console.log(
+                    `mpegencoderoutputs-update: deleting ${outputIdArray.length} output(s) on card ${cardIndex}`
+                );
+
+                // post value to device
+                if (
+                    !(await XApi.post({
+                        path: `board/${cardIndex}/api/jsonrpc`,
+                        method: "ipGateway:1.31/output/DeleteOutputs",
+                        params: {
+                            ids: outputIdArray,
+                        },
+                        id: "DeleteOutputs",
+                    }))
+                ) {
+                    return false;
+                }
+            }
+
+            return outputIdsToDelete;
         }
     } catch (error) {
         console.log(error);
