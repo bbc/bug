@@ -31,13 +31,14 @@ export default function BugDetailsTable({ items, width = "15rem", gridLines = tr
                             return (
                                 <TableRow key={index}>
                                     <TableCell
-                                        variant="head"
                                         sx={{
                                             width: width,
                                             position: "relative",
                                             "@media (max-width:512px)": {
                                                 width: "10rem",
                                             },
+                                            textTransform: "uppercase",
+                                            color: "text.secondary",
                                         }}
                                     >
                                         {row.name}
