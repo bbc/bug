@@ -1,0 +1,7 @@
+-   use proper api version in api calls
+-   only SD/HD resolutions are currently supported
+-   only integer bitrates are currently supported
+-   only supports ipv4
+-   is flatten/merge too slow?
+-   we don't support multiple IP cards when creating outputs (yet)
+-   audio add profile id is hardcoded

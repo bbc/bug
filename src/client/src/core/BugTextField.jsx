@@ -95,7 +95,6 @@ const BugTextField = ({
             sx={
                 variant === "outlined"
                     ? {
-                          backgroundColor: "rgba(255, 255, 255, 0.05)",
                           "& .MuiInputBase-root": {
                               borderRadius: 0,
                           },
