@@ -429,6 +429,7 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
                         name: "Bitrate",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 numeric
                                 min={bitrates.min}
                                 max={bitrates.max}

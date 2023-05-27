@@ -303,6 +303,7 @@ export default function MpegEncoderOutput({
                                     })
                                 }
                                 filter={/[^0-9]/}
+                                changeOnBlur
                                 numeric
                                 min={1}
                                 max={255}
@@ -320,6 +321,7 @@ export default function MpegEncoderOutput({
                                     })
                                 }
                                 filter={/[^0-9]/}
+                                changeOnBlur
                                 numeric
                                 min={1}
                                 max={255}
@@ -385,11 +387,13 @@ export default function MpegEncoderOutput({
                         name: "Port",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.value?.transportSettings?.udp?.output?.single?.destination?.port}
                                 onChange={(event) =>
                                     updateOutput((output) => {
-                                        output.value.transportSettings.udp.output.single.destination.port =
-                                            event.target.value;
+                                        output.value.transportSettings.udp.output.single.destination.port = parseInt(
+                                            event.target.value
+                                        );
                                     })
                                 }
                                 filter={/[^0-9]/}
@@ -446,6 +450,7 @@ export default function MpegEncoderOutput({
                                             event.target.value;
                                     })
                                 }
+                                changeOnBlur
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1024}
@@ -501,6 +506,7 @@ export default function MpegEncoderOutput({
                                     })
                                 }
                                 filter={/[^0-9]/}
+                                changeOnBlur
                                 numeric
                                 min={1024}
                                 max={65531}
