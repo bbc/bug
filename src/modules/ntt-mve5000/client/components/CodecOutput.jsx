@@ -73,6 +73,7 @@ export default function CodecVideo({
                         name: "IP Address",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.[`outputs_${outputIndex}_StreamIpv4DstAddress`]}
                                 onChange={(event) =>
                                     onChange({ [`outputs_${outputIndex}_StreamIpv4DstAddress`]: event.target.value })
@@ -84,6 +85,7 @@ export default function CodecVideo({
                         name: "Port",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.[`outputs_${outputIndex}_StreamPortNumber`]}
                                 onChange={(event) =>
                                     onChange({
@@ -101,6 +103,7 @@ export default function CodecVideo({
                         name: "TTL",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.[`outputs_${outputIndex}_StreamOutputIpv4Ttl`]}
                                 onChange={(event) =>
                                     onChange({
@@ -176,6 +179,7 @@ export default function CodecVideo({
                         name: "FEC Columns",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.[`outputs_${outputIndex}_StreamErrFecColumnNumber`]}
                                 onChange={(event) =>
                                     onChange({
@@ -195,6 +199,7 @@ export default function CodecVideo({
                         name: "FEC Rows",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.[`outputs_${outputIndex}_StreamErrFecRowNumber`]}
                                 onChange={(event) =>
                                     onChange({

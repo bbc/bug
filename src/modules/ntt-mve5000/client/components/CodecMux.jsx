@@ -14,6 +14,7 @@ export default function CodecMux({ codecdata, onChange }) {
                         name: "TS Bitrate",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.EncTsRate}
                                 onChange={(event) => onChange({ EncTsRate: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}

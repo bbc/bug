@@ -65,6 +65,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         name: "Buffer size",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.videoBufferSize}
                                 onChange={(event) => handleChange({ videoBufferSize: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -81,6 +82,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         name: "Keyframe interval",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.videoKeyframeInterval}
                                 onChange={(event) =>
                                     handleChange({
