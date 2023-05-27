@@ -29,7 +29,7 @@ const BugTextField = ({
         // pull out the value from the event
         let changedValue = event.target.value;
 
-        if (numeric) {
+        if (numeric && !changeOnBlur) {
             changedValue = changedValue.replace(/[^0-9]/, "");
             if (changedValue === "") {
                 changedValue = min !== null ? min : 0;
@@ -54,11 +54,14 @@ const BugTextField = ({
         let changedValue = event.target.value;
 
         let valueModified = false;
-        if (numeric && min !== undefined && event.target.value < min) {
+
+        if (numeric && Number.isNaN(parseInt(event.target.value))) {
             changedValue = min.toString();
             valueModified = true;
-        }
-        if (numeric && max !== undefined && event.target.value > max) {
+        } else if (numeric && min !== undefined && event.target.value < min) {
+            changedValue = min.toString();
+            valueModified = true;
+        } else if (numeric && max !== undefined && event.target.value > max) {
             changedValue = max.toString();
             valueModified = true;
         }
