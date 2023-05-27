@@ -169,6 +169,7 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                                 </TableCell>
 
                                                 <TableCell>
+                                                    changeOnBlur={false}
                                                     <BugTextField
                                                         value={
                                                             devicedata?.video?.videoGeneration?.[

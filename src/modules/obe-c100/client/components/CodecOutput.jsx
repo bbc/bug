@@ -83,6 +83,7 @@ export default function CodecOutput({
                         name: "IP Address",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.outputIP}
                                 onChange={(event) => handleChange({ outputIP: event.target.value })}
                                 // filter={/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/}
@@ -93,6 +94,7 @@ export default function CodecOutput({
                         name: "Port",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.outputPort}
                                 onChange={(event) => handleChange({ outputPort: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -106,6 +108,7 @@ export default function CodecOutput({
                         name: "TTL",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.outputTTL}
                                 onChange={(event) => handleChange({ outputTTL: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -145,6 +148,7 @@ export default function CodecOutput({
                         name: "FEC Columns",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.outputFecColumns}
                                 onChange={(event) => handleChange({ outputFecColumns: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -158,6 +162,7 @@ export default function CodecOutput({
                         name: "FEC Rows",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.outputFecRows}
                                 onChange={(event) => handleChange({ outputFecRows: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
@@ -182,6 +187,7 @@ export default function CodecOutput({
                         name: "Duplicate Stream Delay",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 disabled={outputData?.outputDupDelay === 0}
                                 value={outputData?.outputDupDelay}
                                 onChange={(event) => handleChange({ outputDupDelay: parseInt(event.target.value) })}
@@ -199,6 +205,7 @@ export default function CodecOutput({
                         name: "RIST/ARQ Buffer",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.outputARQBuffer}
                                 onChange={(event) => handleChange({ outputARQBuffer: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}

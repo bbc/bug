@@ -115,6 +115,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         name: "Upper Text",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 onChange={(event) => onChange({ InputSuperimposeUpperText: event.target.value })}
                                 value={codecdata?.InputSuperimposeUpperText}
                             />
@@ -124,6 +125,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         name: "Lower Text",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 onChange={(event) => onChange({ InputSuperimposeLowerText: event.target.value })}
                                 value={codecdata?.InputSuperimposeLowerText}
                             />
