@@ -248,6 +248,7 @@ export default function MpegEncoderOutput({
                         name: "Name",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.value?.label}
                                 onChange={(event) =>
                                     updateOutput((output) => {
@@ -373,6 +374,7 @@ export default function MpegEncoderOutput({
                         name: "IP Address",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={outputData?.value?.transportSettings?.udp?.output?.single?.destination?.address}
                                 onChange={(event) =>
                                     updateOutput((output) => {
@@ -427,6 +429,7 @@ export default function MpegEncoderOutput({
                         name: <IndentedName>IP Address</IndentedName>,
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={
                                     outputData?.value?.transportSettings?.udp?.output?.cloned?.a?.destination?.address
                                 }
@@ -482,6 +485,7 @@ export default function MpegEncoderOutput({
                         name: <IndentedName>IP Address</IndentedName>,
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={
                                     outputData?.value?.transportSettings?.udp?.output?.cloned?.b?.destination?.address
                                 }

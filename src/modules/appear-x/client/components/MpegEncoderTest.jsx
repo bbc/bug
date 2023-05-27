@@ -4,8 +4,6 @@ import BugSelect from "@core/BugSelect";
 import BugColorPicker from "@core/BugColorPicker";
 import Switch from "@mui/material/Switch";
 import rgbHex from "rgb-hex";
-import { unflatten } from "flat";
-import deepmerge from "deepmerge";
 
 export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, panelId, serviceId }) {
     const hexColor = rgbHex(
@@ -14,8 +12,10 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
         codecdata?.testGeneratorProfile.value.testGenVariant.testGenerator.box.color.blue
     );
 
-    const setMultiCodecData = (values) => {
-        onChange(deepmerge(codecdata, unflatten(values)));
+    const updateOutput = (callback) => {
+        const clonedCodecData = { ...codecdata };
+        callback(clonedCodecData);
+        onChange(clonedCodecData);
     };
 
     return (
@@ -33,9 +33,9 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
                                         codecdata?.testGeneratorProfile.value.testGenVariant.testGenerator.testTone
                                     }
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.testTone":
-                                                event.target.checked,
+                                        updateOutput((codecdata) => {
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.testTone =
+                                                event.target.checked;
                                         })
                                     }
                                 />
@@ -49,9 +49,9 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
                                         codecdata?.testGeneratorProfile.value.testGenVariant.testGenerator.testPattern
                                     }
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.testPattern":
-                                                event.target.value,
+                                        updateOutput((codecdata) => {
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.testPattern =
+                                                event.target.value;
                                         })
                                     }
                                     options={[
@@ -69,9 +69,9 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
                                         codecdata?.testGeneratorProfile.value.testGenVariant.testGenerator.text.enable
                                     }
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.text.enable":
-                                                event.target.checked,
+                                        updateOutput((codecdata) => {
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.text.enable =
+                                                event.target.checked;
                                         })
                                     }
                                 />
@@ -85,9 +85,9 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
                                         codecdata?.testGeneratorProfile.value.testGenVariant.testGenerator.text.position
                                     }
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.text.position":
-                                                event.target.value,
+                                        updateOutput((codecdata) => {
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.text.position =
+                                                event.target.value;
                                         })
                                     }
                                     options={[
@@ -107,9 +107,9 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
                                             .backgroundType
                                     }
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.text.backgroundType":
-                                                event.target.value,
+                                        updateOutput((codecdata) => {
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.text.backgroundType =
+                                                event.target.value;
                                         })
                                     }
                                     options={[
@@ -127,9 +127,9 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
                                         codecdata?.testGeneratorProfile.value.testGenVariant.testGenerator.box.enable
                                     }
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.box.enable":
-                                                event.target.checked,
+                                        updateOutput((codecdata) => {
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.box.enable =
+                                                event.target.checked;
                                         })
                                     }
                                 />
@@ -141,13 +141,13 @@ export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, pan
                                 <BugColorPicker
                                     color={`#${hexColor}`}
                                     onColorChange={(result) => {
-                                        setMultiCodecData({
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.box.color.red":
-                                                result.rgb.r,
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.box.color.green":
-                                                result.rgb.g,
-                                            "testGeneratorProfile.value.testGenVariant.testGenerator.box.color.blue":
-                                                result.rgb.b,
+                                        updateOutput((codecdata) => {
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.box.color.red =
+                                                result.rgb.r;
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.box.color.green =
+                                                result.rgb.g;
+                                            codecdata.testGeneratorProfile.value.testGenVariant.testGenerator.box.color.blue =
+                                                result.rgb.b;
                                         });
                                     }}
                                 ></BugColorPicker>

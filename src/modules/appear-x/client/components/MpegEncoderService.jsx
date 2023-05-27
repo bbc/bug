@@ -4,8 +4,6 @@ import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
 import Switch from "@mui/material/Switch";
 import { useApiPoller } from "@hooks/ApiPoller";
-import { unflatten } from "flat";
-import deepmerge from "deepmerge";
 
 export default function MpegEncoderService({ codecdata, onChange, showAdvanced, panelId, serviceId }) {
     const videoProfiles = useApiPoller({
@@ -18,8 +16,10 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
         interval: 20000,
     });
 
-    const setMultiCodecData = (values) => {
-        onChange(deepmerge(codecdata, unflatten(values)));
+    const updateOutput = (callback) => {
+        const clonedCodecData = { ...codecdata };
+        callback(clonedCodecData);
+        onChange(clonedCodecData);
     };
 
     const slotPort = `Slot ${codecdata?.encoderService?.value?.slot} / Port ${
@@ -38,7 +38,9 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                             <Switch
                                 checked={codecdata?.encoderService.value.enabled}
                                 onChange={(event) =>
-                                    setMultiCodecData({ "encoderService.value.enabled": event.target.checked })
+                                    updateOutput((codecdata) => {
+                                        codecdata.encoderService.value.enabled = event.target.checked;
+                                    })
                                 }
                             />
                         ),
@@ -51,10 +53,13 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                         name: "Name",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.encoderService.value.label}
                                 placeholder={codecdata?.encoderService?.value?.output?.ts?.serviceName}
                                 onChange={(event) =>
-                                    setMultiCodecData({ "encoderService.value.label": event.target.value })
+                                    updateOutput((codecdata) => {
+                                        codecdata.encoderService.value.label = event.target.value;
+                                    })
                                 }
                             ></BugTextField>
                         ),
@@ -65,7 +70,9 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                             <BugSelect
                                 value={codecdata?.encoderService?.value?.video?.profile?.id}
                                 onChange={(event) =>
-                                    setMultiCodecData({ "encoderService.value.video.profile.id": event.target.value })
+                                    updateOutput((codecdata) => {
+                                        codecdata.encoderService.value.video.profile.id = event.target.value;
+                                    })
                                 }
                                 options={videoProfiles?.data ? videoProfiles.data : []}
                             ></BugSelect>
@@ -77,8 +84,8 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                             <BugSelect
                                 value={codecdata?.encoderService?.value?.color?.value?.profile?.id}
                                 onChange={(event) =>
-                                    setMultiCodecData({
-                                        "encoderService.value.color.value.profile.id": event.target.value,
+                                    updateOutput((codecdata) => {
+                                        codecdata.encoderService.value.color.value.profile.id = event.target.value;
                                     })
                                 }
                                 options={colorProfiles?.data ? colorProfiles.data : []}
@@ -92,7 +99,9 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                             <BugSelect
                                 value={codecdata?.encoderService.value.signalLoss}
                                 onChange={(event) =>
-                                    setMultiCodecData({ "encoderService.value.signalLoss": event.target.value })
+                                    updateOutput((codecdata) => {
+                                        codecdata.encoderService.value.signalLoss = event.target.value;
+                                    })
                                 }
                                 options={[
                                     { id: "COLOR_BAR", label: "Color Bar" },
@@ -109,8 +118,8 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                             <Switch
                                 checked={codecdata?.testGeneratorProfile.value.enable}
                                 onChange={(event) =>
-                                    setMultiCodecData({
-                                        "testGeneratorProfile.value.enable": event.target.checked,
+                                    updateOutput((codecdata) => {
+                                        codecdata.testGeneratorProfile.value.enable = event.target.checked;
                                     })
                                 }
                             />
