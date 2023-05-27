@@ -2,24 +2,22 @@ import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
-import Switch from "@mui/material/Switch";
 import Box from "@mui/material/Box";
-import { unflatten } from "flat";
-import deepmerge from "deepmerge";
 import InputAdornment from "@mui/material/InputAdornment";
 
 export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, panelId, serviceId }) {
-    const setMultiCodecData = (values) => {
-        onChange(deepmerge(codecdata, unflatten(values)));
+    const updateCodecData = (callback) => {
+        const clonedCodecData = { ...codecdata };
+        callback(clonedCodecData);
+        onChange(clonedCodecData);
     };
 
     const setLatency = (latency) => {
-        const fieldsToSend = {
-            "videoProfile.value.latency": latency,
-            "videoProfile.value.gop.structure": getGopStucture(latency),
-            "videoProfile.value.gop.maxBframes": getMaxBframes(latency),
-        };
-        setMultiCodecData(fieldsToSend);
+        updateCodecData((codecdata) => {
+            codecdata.videoProfile.value.latency = latency;
+            codecdata.videoProfile.value.gop.structure = getGopStucture(latency);
+            codecdata.videoProfile.value.gop.maxBframes = getMaxBframes(latency);
+        });
     };
 
     const getGopStucture = (latency) => {
@@ -41,36 +39,34 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
     };
 
     const setFrameRate = (frameRate) => {
-        const fieldsToSend = {
-            "videoProfile.value.resolution.fps": frameRate,
-        };
-
-        if (frameRate === "FPS_25") {
-            fieldsToSend["videoProfile.value.resolution.scan"] = "INTERLACED";
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_1080";
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1920";
-        } else if (frameRate === "FPS_29_97") {
-            fieldsToSend["videoProfile.value.resolution.scan"] = "INTERLACED";
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_1080";
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1920";
-        } else if (frameRate === "FPS_30") {
-            fieldsToSend["videoProfile.value.resolution.scan"] = "PROGRESSIVE";
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_1080";
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1920";
-        } else if (frameRate === "FPS_50") {
-            fieldsToSend["videoProfile.value.resolution.scan"] = "PROGRESSIVE";
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_1080";
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1920";
-        } else if (frameRate === "FPS_59_94") {
-            fieldsToSend["videoProfile.value.resolution.scan"] = "PROGRESSIVE";
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_1080";
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1920";
-        } else if (frameRate === "FPS_60") {
-            fieldsToSend["videoProfile.value.resolution.scan"] = "PROGRESSIVE";
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_1080";
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1920";
-        }
-        setMultiCodecData(fieldsToSend);
+        updateCodecData((codecdata) => {
+            codecdata.videoProfile.value.resolution.fps = frameRate;
+            if (frameRate === "FPS_25") {
+                codecdata.videoProfile.value.resolution.scan = "INTERLACED";
+                codecdata.videoProfile.value.resolution.vertical = "V_1080";
+                codecdata.videoProfile.value.resolution.horizontal = "H_1920";
+            } else if (frameRate === "FPS_29_97") {
+                codecdata.videoProfile.value.resolution.scan = "INTERLACED";
+                codecdata.videoProfile.value.resolution.vertical = "V_1080";
+                codecdata.videoProfile.value.resolution.horizontal = "H_1920";
+            } else if (frameRate === "FPS_30") {
+                codecdata.videoProfile.value.resolution.scan = "PROGRESSIVE";
+                codecdata.videoProfile.value.resolution.vertical = "V_1080";
+                codecdata.videoProfile.value.resolution.horizontal = "H_1920";
+            } else if (frameRate === "FPS_50") {
+                codecdata.videoProfile.value.resolution.scan = "PROGRESSIVE";
+                codecdata.videoProfile.value.resolution.vertical = "V_1080";
+                codecdata.videoProfile.value.resolution.horizontal = "H_1920";
+            } else if (frameRate === "FPS_59_94") {
+                codecdata.videoProfile.value.resolution.scan = "PROGRESSIVE";
+                codecdata.videoProfile.value.resolution.vertical = "V_1080";
+                codecdata.videoProfile.value.resolution.horizontal = "H_1920";
+            } else if (frameRate === "FPS_60") {
+                codecdata.videoProfile.value.resolution.scan = "PROGRESSIVE";
+                codecdata.videoProfile.value.resolution.vertical = "V_1080";
+                codecdata.videoProfile.value.resolution.horizontal = "H_1920";
+            }
+        });
     };
 
     const getVerticalResolutions = () => {
@@ -89,21 +85,20 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
     };
 
     const setVerticalResolution = (resolution) => {
-        const fieldsToSend = {
-            "videoProfile.value.resolution.vertical": resolution,
-        };
+        updateCodecData((codecdata) => {
+            codecdata.videoProfile.value.resolution.vertical = resolution;
 
-        if (resolution === "V_1080") {
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1920";
-        } else if (resolution === "V_720") {
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_1280";
-        } else if (resolution === "V_576") {
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_720";
-        } else if (resolution === "V_480") {
-            fieldsToSend["videoProfile.value.resolution.horizontal"] = "H_720";
-        }
-        fieldsToSend["videoProfile.value.resolution.scan"] = getScanningMode();
-        setMultiCodecData(fieldsToSend);
+            if (resolution === "V_1080") {
+                codecdata.videoProfile.value.resolution.horizontal = "H_1920";
+            } else if (resolution === "V_720") {
+                codecdata.videoProfile.value.resolution.horizontal = "H_1280";
+            } else if (resolution === "V_576") {
+                codecdata.videoProfile.value.resolution.horizontal = "H_720";
+            } else if (resolution === "V_480") {
+                codecdata.videoProfile.value.resolution.horizontal = "H_720";
+            }
+            codecdata.videoProfile.value.resolution.scan = getScanningMode();
+        });
     };
 
     const getBitrates = (verticalResolution, codec, scan) => {
@@ -195,23 +190,22 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
     };
 
     const setHorizontalResolution = (resolution) => {
-        const fieldsToSend = {
-            "videoProfile.value.resolution.horizontal": resolution,
-        };
+        updateCodecData((codecdata) => {
+            codecdata.videoProfile.value.resolution.horizontal = resolution;
 
-        if (resolution === "H_1920") {
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_1080";
-        } else if (resolution === "H_1280") {
-            fieldsToSend["videoProfile.value.resolution.vertical"] = "V_720";
-        } else if (resolution === "H_720") {
-            if (codecdata.videoProfile.value.resolution.fps === "FPS_25") {
-                fieldsToSend["videoProfile.value.resolution.vertical"] = "V_576";
-            } else if (codecdata.videoProfile.value.resolution.fps === "FPS_29_97") {
-                fieldsToSend["videoProfile.value.resolution.vertical"] = "V_480";
+            if (resolution === "H_1920") {
+                codecdata.videoProfile.value.resolution.vertical = "V_1080";
+            } else if (resolution === "H_1280") {
+                codecdata.videoProfile.value.resolution.vertical = "V_720";
+            } else if (resolution === "H_720") {
+                if (codecdata.videoProfile.value.resolution.fps === "FPS_25") {
+                    codecdata.videoProfile.value.resolution.vertical = "V_576";
+                } else if (codecdata.videoProfile.value.resolution.fps === "FPS_29_97") {
+                    codecdata.videoProfile.value.resolution.vertical = "V_480";
+                }
             }
-        }
-        fieldsToSend["videoProfile.value.resolution.scan"] = getScanningMode();
-        setMultiCodecData(fieldsToSend);
+            codecdata.videoProfile.value.resolution.scan = getScanningMode();
+        });
     };
 
     const getScanningModes = () => {
@@ -304,92 +298,87 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
     };
 
     const setChromaSampling = (chromaSampling) => {
-        const fieldsToSend = {
-            "videoProfile.value.resolution.chromaSampling": chromaSampling,
-        };
-
-        if (codecdata.videoProfile.value.codec === "AVC") {
-            fieldsToSend["videoProfile.value.cparams.avc.profile"] = getAvcProfile(
-                chromaSampling,
-                codecdata.videoProfile.value.bitDepth
-            );
-        } else if (codecdata.videoProfile.value.codec === "HEVC") {
-            fieldsToSend["videoProfile.value.cparams.hevc.profile"] = getHevcProfile(
-                chromaSampling,
-                codecdata.videoProfile.value.bitDepth
-            );
-        }
-        setMultiCodecData(fieldsToSend);
+        updateCodecData((clonedCodecdata) => {
+            clonedCodecdata.videoProfile.value.resolution.chromaSampling = chromaSampling;
+            if (codecdata.videoProfile.value.codec === "AVC") {
+                clonedCodecdata.videoProfile.value.cparams.avc.profile = getAvcProfile(
+                    chromaSampling,
+                    codecdata.videoProfile.value.bitDepth
+                );
+            } else if (codecdata.videoProfile.value.codec === "HEVC") {
+                clonedCodecdata.videoProfile.value.cparams.hevc.profile = getHevcProfile(
+                    chromaSampling,
+                    codecdata.videoProfile.value.bitDepth
+                );
+            }
+        });
     };
 
     const setBitDepth = (bitDepth) => {
-        const fieldsToSend = {
-            "videoProfile.value.bitDepth": bitDepth,
-        };
-        if (codecdata.videoProfile.value.codec === "AVC") {
-            fieldsToSend["videoProfile.value.cparams.avc.profile"] = getAvcProfile(
-                codecdata.videoProfile.value.resolution.chromaSampling,
-                bitDepth
-            );
-        } else if (codecdata.videoProfile.value.codec === "HEVC") {
-            fieldsToSend["videoProfile.value.cparams.hevc.profile"] = getHevcProfile(
-                codecdata.videoProfile.value.resolution.chromaSampling,
-                bitDepth
-            );
-        }
-        setMultiCodecData(fieldsToSend);
+        updateCodecData((codecdata) => {
+            codecdata.videoProfile.value.bitDepth = bitDepth;
+            if (codecdata.videoProfile.value.codec === "AVC") {
+                codecdata.videoProfile.value.cparams.avc.profile = getAvcProfile(
+                    codecdata.videoProfile.value.resolution.chromaSampling,
+                    bitDepth
+                );
+            } else if (codecdata.videoProfile.value.codec === "HEVC") {
+                codecdata.videoProfile.value.cparams.hevc.profile = getHevcProfile(
+                    codecdata.videoProfile.value.resolution.chromaSampling,
+                    bitDepth
+                );
+            }
+        });
     };
 
     const setCodec = (codec) => {
-        // so this one's a little more complex so we'll clone the object and modifiy it ourselves
-        const modifiedCodecData = { ...codecdata };
+        updateCodecData((codecdata) => {
+            codecdata.videoProfile.value.codec = codec;
 
-        modifiedCodecData.videoProfile.value.codec = codec;
-
-        // so ... AVC has to create a cparams section
-        if (codec === "AVC") {
-            modifiedCodecData.videoProfile.value.cparams = {
-                avc: {
-                    profile: getAvcProfile(
-                        codecdata.videoProfile.value.resolution.chromaSampling,
-                        codecdata.videoProfile.value.bitDepth
-                    ),
-                    level: "AUTO",
-                    codingMode: "FRAME",
-                    idrFrequency: 4,
-                    cabac: false,
-                },
-            };
-            modifiedCodecData.videoProfile.value.gop = {
-                size: 64,
-                gopMode: "Static",
-                structure: getGopStucture(codecdata.videoProfile.value.latency),
-                maxBframes: getMaxBframes(codecdata.videoProfile.value.latency),
-                ldb: false,
-                hierarchical: false,
-            };
-        } else if (codec === "HEVC") {
-            modifiedCodecData.videoProfile.value.cparams = {
-                hevc: {
-                    profile: getHevcProfile(
-                        codecdata.videoProfile.value.resolution.chromaSampling,
-                        codecdata.videoProfile.value.bitDepth
-                    ),
-                    level: "AUTO",
-                    tier: "High",
-                    idrFrequency: 0,
-                },
-            };
-            modifiedCodecData.videoProfile.value.gop = {
-                size: 64,
-                gopMode: "Static",
-                structure: getGopStucture(codecdata.videoProfile.value.latency),
-                maxBframes: getMaxBframes(codecdata.videoProfile.value.latency),
-                ldb: false,
-                hierarchical: false,
-            };
-        }
-        onChange(modifiedCodecData);
+            // so ... AVC has to create a cparams section
+            if (codec === "AVC") {
+                codecdata.videoProfile.value.cparams = {
+                    avc: {
+                        profile: getAvcProfile(
+                            codecdata.videoProfile.value.resolution.chromaSampling,
+                            codecdata.videoProfile.value.bitDepth
+                        ),
+                        level: "AUTO",
+                        codingMode: "FRAME",
+                        idrFrequency: 4,
+                        cabac: false,
+                    },
+                };
+                codecdata.videoProfile.value.gop = {
+                    size: 64,
+                    gopMode: "Static",
+                    structure: getGopStucture(codecdata.videoProfile.value.latency),
+                    maxBframes: getMaxBframes(codecdata.videoProfile.value.latency),
+                    ldb: false,
+                    hierarchical: false,
+                };
+            } else if (codec === "HEVC") {
+                codecdata.videoProfile.value.cparams = {
+                    hevc: {
+                        profile: getHevcProfile(
+                            codecdata.videoProfile.value.resolution.chromaSampling,
+                            codecdata.videoProfile.value.bitDepth
+                        ),
+                        level: "AUTO",
+                        tier: "High",
+                        idrFrequency: 0,
+                    },
+                };
+                codecdata.videoProfile.value.gop = {
+                    size: 64,
+                    gopMode: "Static",
+                    structure: getGopStucture(codecdata.videoProfile.value.latency),
+                    maxBframes: getMaxBframes(codecdata.videoProfile.value.latency),
+                    ldb: false,
+                    hierarchical: false,
+                };
+            }
+        });
     };
 
     const bitrates = getBitrates(
@@ -436,8 +425,8 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
                                 fullWidth
                                 value={codecdata?.videoProfile?.value?.bitrate / 1000000}
                                 onChange={(event) =>
-                                    setMultiCodecData({
-                                        "videoProfile.value.bitrate": parseFloat(event.target.value) * 1000000,
+                                    updateCodecData((codecdata) => {
+                                        codecdata.videoProfile.value.bitrate = parseFloat(event.target.value) * 1000000;
                                     })
                                 }
                                 type="text"
@@ -468,8 +457,8 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
                                     value={codecdata?.videoProfile?.value?.cparams.avc.profile}
                                     options={getAvcProfiles()}
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "videoProfile.value.cparams.avc.profile": event.target.value,
+                                        updateCodecData((codecdata) => {
+                                            codecdata.videoProfile.value.cparams.avc.profile = event.target.value;
                                         })
                                     }
                                 ></BugSelect>
@@ -483,8 +472,8 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
                                     value={codecdata?.videoProfile?.value?.cparams.hevc.profile}
                                     options={getHevcProfiles()}
                                     onChange={(event) =>
-                                        setMultiCodecData({
-                                            "videoProfile.value.cparams.hevc.profile": event.target.value,
+                                        updateCodecData((codecdata) => {
+                                            codecdata.videoProfile.value.cparams.hevc.profile = event.target.value;
                                         })
                                     }
                                 ></BugSelect>
@@ -532,7 +521,9 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
                                 value={codecdata?.videoProfile?.value?.resolution.scan}
                                 options={getScanningModes()}
                                 onChange={(event) =>
-                                    setMultiCodecData({ "videoProfile.value.resolution.scan": event.target.value })
+                                    updateCodecData((codecdata) => {
+                                        codecdata.videoProfile.value.resolution.scan = event.target.value;
+                                    })
                                 }
                             ></BugSelect>
                         ),
