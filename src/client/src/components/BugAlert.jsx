@@ -21,7 +21,7 @@ const StyledButton = styled(Button)({
     marginRight: "1rem",
 });
 
-export default function BugAlert({ type, message, flags = [], panel, square = false, width = null }) {
+export default function BugAlert({ title = null, type, message, flags = [], panel, square = false, width = null }) {
     const history = useHistory();
     const sendAlert = useAlert();
 
@@ -29,7 +29,7 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
         critical: "Critical Error",
         warning: "Warning",
         info: "Info",
-        error: "Error",
+        error: "Er2ror",
     };
 
     const mappedSeverity = {
@@ -128,7 +128,7 @@ export default function BugAlert({ type, message, flags = [], panel, square = fa
             }}
             severity={mappedSeverity[type]}
         >
-            <AlertTitle>{titles[type]}</AlertTitle>
+            <AlertTitle>{title ? title : titles[type]}</AlertTitle>
             {renderMessage()}
             {renderControls()}
         </Alert>
