@@ -25,11 +25,11 @@ router.all("/", async function (req, res, next) {
     }
 });
 
-router.get("/status/:serviceId", async function (req, res, next) {
+router.get("/status/:panelId/:serviceId", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await mpegEncoderServiceStatusGet(req.params.serviceId),
+            data: await mpegEncoderServiceStatusGet(req.params.panelId, req.params.serviceId),
         });
     } catch (error) {
         console.log(error);
