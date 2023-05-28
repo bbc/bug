@@ -204,25 +204,6 @@ export default function EncoderServicesList({ panelId }) {
         }
     };
 
-    const handleProfileChanged = async (event, item) => {
-        if (
-            await AxiosCommand(
-                `/container/${panelId}/mpegencoderservice/setvideoprofile/${encodeURIComponent(
-                    item.id
-                )}/${encodeURIComponent(event.target.value)}`
-            )
-        ) {
-            doForceRefresh();
-            sendAlert(`Changed video profile of service: ${item.serviceName}`, {
-                variant: "success",
-            });
-        } else {
-            sendAlert(`Failed to change video profile of service: ${item.serviceName}`, {
-                variant: "error",
-            });
-        }
-    };
-
     return (
         <BugApiTable
             columns={[
