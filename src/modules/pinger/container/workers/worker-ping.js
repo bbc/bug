@@ -102,7 +102,7 @@ const main = async () => {
                                 attachments: [
                                     {
                                         title: `:x: ${host?.title}`,
-                                        text: `<http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${host?.host}> is no longer reachable.`,
+                                        text: `${host?.title} at <http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${host?.host}> is no longer reachable.`,
                                         color: `#f44336`,
                                     },
                                 ],
