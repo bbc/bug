@@ -23,6 +23,7 @@ export default function BugStatusBlockContainer({ items, sx = {} }) {
                             state={statusItem.state}
                             key={index}
                             items={statusItem.items}
+                            image={statusItem.image}
                         />
                     ))}
             </Box>

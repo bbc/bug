@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import ScaleText from "react-scale-text";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-export default function BugStatusBlock({ items, label, state, sx = {} }) {
+export default function BugStatusBlock({ items, label, state, sx = {}, image }) {
     const stateColors = {
         success: "#05990c",
         warning: "#d07111",
@@ -13,6 +13,20 @@ export default function BugStatusBlock({ items, label, state, sx = {} }) {
     };
 
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+
+    if (image) {
+        return (
+            <Box sx={{ marginTop: "32px", padding: "4px", display: "inline-block", verticalAlign: "top", ...sx }}>
+                <img
+                    style={{
+                        height: isSmall ? "90px" : "120px",
+                    }}
+                    src={image}
+                    alt=""
+                />
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{ padding: "4px", display: "inline-block", verticalAlign: "top", ...sx }}>
@@ -29,7 +43,7 @@ export default function BugStatusBlock({ items, label, state, sx = {} }) {
                     whiteSpace: "nowrap",
                 }}
             >
-                {label}
+                {label}&nbsp;
             </Box>
             <Box
                 sx={{
