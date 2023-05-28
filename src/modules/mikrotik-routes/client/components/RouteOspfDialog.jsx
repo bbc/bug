@@ -30,6 +30,7 @@ export default function RouteFilterDialog({ item, open, onDismiss, onConfirm }) 
                 <DialogContent>
                     <Alert severity="info">{messageText}</Alert>
                     <BugTextField
+                        changeOnBlur={false}
                         inputRef={inputRef}
                         fullWidth
                         sx={{

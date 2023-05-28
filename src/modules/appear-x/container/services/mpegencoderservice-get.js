@@ -5,13 +5,14 @@ const localdataGet = require("@services/localdata-get");
 const inputServiceKeyGet = require("./inputservicekey-get");
 const ipOutputsFilter = require("./ipoutputs-filter");
 
-module.exports = async (serviceId) => {
-    // check localdata first (because we may have unsaved changes)
-    const localdata = await localdataGet(serviceId);
-    if (localdata) {
-        return localdata;
+module.exports = async (serviceId, useLocalData = true) => {
+    if (useLocalData) {
+        // check localdata first (because we may have unsaved changes)
+        const localdata = await localdataGet(serviceId);
+        if (localdata) {
+            return localdata;
+        }
     }
-
     // get cards which do ip outputs (for when we want to add an output)
     const chassisInfo = await mongoSingle.get("chassisInfo");
     const ipOutputCards =

@@ -38,6 +38,7 @@ const BugConfigFormTextField = ({
                     render={({ field: { onChange, value } }) => {
                         return (
                             <BugTextField
+                                changeOnBlur={false}
                                 sx={sx}
                                 value={value}
                                 label={label}
