@@ -361,8 +361,8 @@ export default function EncoderServicesList({ panelId }) {
                         if (item.outputs.length === 0) {
                             return null;
                         }
-                        return item.outputs.map((o) => (
-                            <Box sx={{ display: "flex", padding: "4px" }}>
+                        return item.outputs.map((o, index) => (
+                            <Box key={index} sx={{ display: "flex", padding: "4px" }}>
                                 {o.interfaces.length === 2 ? (
                                     <Box sx={{ display: "flex", alignItems: "center", padding: "4px", width: "32px" }}>
                                         <ShareIcon sx={{ color: "primary.main" }} />
@@ -381,8 +381,8 @@ export default function EncoderServicesList({ panelId }) {
                                     </Box>
                                 )}
                                 <Box>
-                                    {o.interfaces.map((i) => (
-                                        <Box>
+                                    {o.interfaces.map((i, index) => (
+                                        <Box key={index}>
                                             {i.address}:{i.port}
                                         </Box>
                                     ))}
