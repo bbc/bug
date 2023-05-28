@@ -7,6 +7,7 @@ const mpegEncoderServiceList = require("@services/mpegencoderservice-list");
 const mpegEncoderServiceGet = require("@services/mpegencoderservice-get");
 const mpegEncoderServiceSave = require("@services/mpegencoderservice-save");
 const mpegEncoderServiceSetVideoProfile = require("@services/mpegencoderservice-setvideoprofile");
+const mpegEncoderServiceStatusGet = require("@services/mpegencoderservicestatus-get");
 const asyncHandler = require("express-async-handler");
 
 router.all("/", async function (req, res, next) {
@@ -20,6 +21,21 @@ router.all("/", async function (req, res, next) {
         res.json({
             status: "error",
             message: "Failed to get encoder service list",
+        });
+    }
+});
+
+router.get("/status/:serviceId", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await mpegEncoderServiceStatusGet(req.params.serviceId),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to get encoder service status",
         });
     }
 });
