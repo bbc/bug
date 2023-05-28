@@ -47,6 +47,7 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                         name: "Name",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.obeEncoderName}
                                 onChange={(event) => onChange({ obeEncoderName: event.target.value })}
                             ></BugTextField>

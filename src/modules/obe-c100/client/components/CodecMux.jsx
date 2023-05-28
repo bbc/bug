@@ -15,6 +15,7 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                         name: "TS Bitrate",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 value={codecdata?.muxRate ? parseInt(codecdata?.muxRate) / 1000 : 0}
                                 onChange={(event) => onChange({ muxRate: parseInt(event.target.value) * 1000 })}
                                 filter={/[^0-9]/}
@@ -31,6 +32,7 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                         name: "Service Name",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 maxLength={64}
                                 value={codecdata?.muxDvbServiceName}
                                 onChange={(event) => onChange({ muxDvbServiceName: event.target.value })}
@@ -41,6 +43,7 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                         name: "Provider Name",
                         value: (
                             <BugTextField
+                                changeOnBlur
                                 maxLength={64}
                                 value={codecdata?.muxDvbProviderName}
                                 onChange={(event) => onChange({ muxDvbProviderName: event.target.value })}

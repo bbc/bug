@@ -2,6 +2,10 @@
 -   only SD/HD resolutions are currently supported
 -   only integer bitrates are currently supported
 -   only supports ipv4
--   is flatten/merge too slow?
 -   we don't support multiple IP cards when creating outputs (yet)
 -   audio add profile id is hardcoded
+-   add j2k encoder tab
+-   add j2k decoder tab
+-   add ability to change LED color
+-   add protectedservices feature
+-   use a hashed id to ignore localdata when device changes

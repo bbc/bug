@@ -17,6 +17,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 1",
                             value: (
                                 <BugTextField
+                                    changeOnBlur
                                     onChange={(event) => onChange({ inputBarsLine1: event.target.value })}
                                     value={codecdata?.inputBarsLine1}
                                 />
@@ -26,6 +27,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 2",
                             value: (
                                 <BugTextField
+                                    changeOnBlur
                                     onChange={(event) => onChange({ inputBarsLine2: event.target.value })}
                                     value={codecdata?.inputBarsLine2}
                                 />
@@ -35,6 +37,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 3",
                             value: (
                                 <BugTextField
+                                    changeOnBlur
                                     onChange={(event) => onChange({ inputBarsLine3: event.target.value })}
                                     value={codecdata?.inputBarsLine3}
                                 />
@@ -44,6 +47,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Bars Line 4",
                             value: (
                                 <BugTextField
+                                    changeOnBlur
                                     onChange={(event) => onChange({ inputBarsLine4: event.target.value })}
                                     value={codecdata?.inputBarsLine4}
                                 />
@@ -62,6 +66,7 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             name: "Clapper Interval",
                             value: (
                                 <BugTextField
+                                    changeOnBlur
                                     value={codecdata?.inputClapperInterval}
                                     onChange={(event) =>
                                         onChange({ inputClapperInterval: parseInt(event.target.value) })

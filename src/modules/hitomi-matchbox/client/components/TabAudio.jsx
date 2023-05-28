@@ -194,6 +194,7 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
 
                                                 <TableCell>
                                                     <BugTextField
+                                                        changeOnBlur={false}
                                                         value={devicedata?.audio?.[`identText${rowIndex}`]}
                                                         onChange={(event) =>
                                                             onChange({
@@ -263,6 +264,7 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
                                 name: `Intro #${rowIndex + 1}`,
                                 value: (
                                     <BugTextField
+                                        changeOnBlur={false}
                                         value={devicedata?.audio?.[`identIntro${rowIndex + 1}`]}
                                         onChange={(event) =>
                                             onChange({

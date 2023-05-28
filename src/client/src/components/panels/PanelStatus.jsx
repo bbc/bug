@@ -6,6 +6,7 @@ export default function PanelStatus({ statusItems, panel }) {
         <div>
             {statusItems.map((eachItem) => (
                 <BugAlert
+                    title={eachItem.title}
                     key={eachItem.key}
                     type={eachItem.type}
                     message={eachItem.message}

@@ -30,6 +30,7 @@ export default function BitrateDialog({ open, item, onDismiss, onConfirm }) {
             <DialogTitle>Bitrate: {item?.videoProfile?.label}</DialogTitle>
             <DialogContent>
                 <BugTextField
+                    changeOnBlur
                     numeric
                     min={min}
                     max={max}

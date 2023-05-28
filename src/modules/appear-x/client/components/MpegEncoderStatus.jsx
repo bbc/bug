@@ -5,8 +5,10 @@ import BugStatusBlockContainer from "@core/BugStatusBlockContainer";
 
 export default function CodecStatus({ panelId, serviceId }) {
     const codecstatus = useApiPoller({
-        url: `/container/${panelId}/mpegencoderstatus/${encodeURIComponent(serviceId)}`,
-        interval: 5000,
+        url: `/container/${panelId}/mpegencoderservice/status/${encodeURIComponent(panelId)}/${encodeURIComponent(
+            serviceId
+        )}`,
+        interval: 2000,
     });
 
     if (codecstatus.status === "loading" || codecstatus.status === "idle") {

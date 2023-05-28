@@ -57,6 +57,7 @@ const BugRenameDialog = ({
             <form onSubmit={handeFormSubmit}>
                 <DialogContent>
                     <BugTextField
+                        changeOnBlur={false}
                         inputRef={inputRef}
                         sx={{
                             width: "26rem",
