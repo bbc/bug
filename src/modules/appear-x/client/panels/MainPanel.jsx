@@ -10,13 +10,12 @@ export default function MainPanel({ panelId }) {
         url: `/container/${panelId}/chassis/features`,
         interval: 2000,
     });
-    console.log(features);
 
-    if (features.status === "loading") {
+    if (features.status === "loading" || !features.data) {
         return <BugLoading height="30vh" />;
     }
 
-    if (!features.data || features.data.length === 0) {
+    if (features.data.length === 0) {
         return <BugNoData title="No codec channels found" showConfigButton={false} />;
     }
     const tabLabels = [];

@@ -15,17 +15,17 @@ import CheckIcon from "@mui/icons-material/Check";
 import AxiosPut from "@utils/AxiosPut";
 import UndoIcon from "@mui/icons-material/Undo";
 import Button from "@mui/material/Button";
-import { usePanelToolbarEventTrigger } from "@hooks/PanelToolbarEvent";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { usePanelToolbarEventTrigger } from "@hooks/PanelToolbarEvent";
 
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
-    const triggerPanelEvent = usePanelToolbarEventTrigger();
     const params = useParams();
     const history = useHistory();
+    const triggerPanelEvent = usePanelToolbarEventTrigger();
 
     const pending = useApiPoller({
         url: `/container/${panelId}/localdata/checkpending/${encodeURIComponent(params.serviceId)}`,
@@ -44,16 +44,12 @@ export default function Toolbar({ panelId, ...props }) {
     };
 
     const handleCancelClicked = async (event, item) => {
-        if (isPending) {
-            if (await AxiosCommand(`/container/${panelId}/localdata/revert/${encodeURIComponent(params.serviceId)}`)) {
-                history.push(`/panel/${panelId}/display/mpegencoders/`);
-            } else {
-                sendAlert("Failed to revert service config", {
-                    variant: "error",
-                });
-            }
+        if (await AxiosCommand(`/container/${panelId}/localdata/revert/${encodeURIComponent(params.serviceId)}`)) {
+            triggerPanelEvent("refresh");
         } else {
-            history.push(`/panel/${panelId}/display/mpegencoders/`);
+            sendAlert("Failed to revert service config", {
+                variant: "error",
+            });
         }
     };
 
@@ -64,11 +60,11 @@ export default function Toolbar({ panelId, ...props }) {
         if (
             await AxiosCommand(`/container/${panelId}/mpegencoderservice/save/${encodeURIComponent(params.serviceId)}`)
         ) {
+            triggerPanelEvent("refresh");
             sendAlert("Saved service config", {
                 broadcast: "true",
                 variant: "success",
             });
-            history.push(`/panel/${panelId}/display/mpegencoders/`);
         } else {
             sendAlert("Failed to save service config", {
                 variant: "error",
@@ -97,8 +93,14 @@ export default function Toolbar({ panelId, ...props }) {
             >
                 Save
             </BugApiButton>
-            <Button key="cancel_button" variant="outlined" color="primary" onClick={handleCancelClicked}>
-                {isPending ? "Cancel" : "Close"}
+            <Button
+                key="cancel_button"
+                disabled={!isPending || hasCritical}
+                variant="outlined"
+                color="primary"
+                onClick={handleCancelClicked}
+            >
+                Cancel
             </Button>
         </>
     );

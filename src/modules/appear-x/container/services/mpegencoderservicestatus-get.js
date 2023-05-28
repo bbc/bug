@@ -3,8 +3,9 @@
 const mongoSingle = require("@core/mongo-single");
 const formatBps = require("@core/format-bps");
 const mpegEncoderServiceGet = require("@services/mpegencoderservice-get");
+const getConnectorIndex = require("@utils/connectorindex-get");
 
-module.exports = async (serviceId) => {
+module.exports = async (panelId, serviceId) => {
     const statusBlocks = [];
 
     const sdiVideoModes = {
@@ -45,7 +46,7 @@ module.exports = async (serviceId) => {
     const serviceStatuses = await mongoSingle.get("mpegEncoderServiceStatus");
     const serviceStatus = serviceStatuses && serviceStatuses.find((s) => s.key === serviceId);
 
-    if (!mpegEncoderService || !serviceStatus) {
+    if (!mpegEncoderService) {
         return [];
     }
 
@@ -59,11 +60,18 @@ module.exports = async (serviceId) => {
         ].join("");
     };
 
+    const connectorIndex = getConnectorIndex(mpegEncoderService?.encoderService);
+    statusBlocks.push({
+        image: `/container/${panelId}/thumb/${
+            mpegEncoderService?.encoderService?.value?.slot
+        }/${connectorIndex}?${new Date().getTime()}`,
+    });
+
     //TODO make this work for Quad-link
     statusBlocks.push({
         label: "Input",
-        state: serviceStatus.value.sdi[0]?.value.videoLockInput ? "success" : "inactive",
-        items: ["SDI", sdiVideoModes[serviceStatus.value.sdi[0]?.value.videoMode]],
+        state: serviceStatus?.value?.sdi[0]?.value?.videoLockInput ? "success" : "inactive",
+        items: serviceStatus ? ["SDI", sdiVideoModes[serviceStatus.value.sdi[0]?.value.videoMode]] : ["Unknown"],
     });
 
     // encode format
