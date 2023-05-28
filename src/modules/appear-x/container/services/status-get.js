@@ -1,16 +1,17 @@
 "use strict";
 
-// const statusCheckCollection = require("@core/status-checkcollection");
+const statusCheckMongoSingle = require("@core/status-checkmongosingle");
+const statusCheckAlarms = require("./status-checkalarms");
 
 module.exports = async () => {
-    return [];
-    // return [].concat(
-    // await statusCheckCollection({
-    //     collectionName: "myCollection",
-    //     message: ["There is no recent wibble data for this device."],
-    //     itemType: "critical",
-    //     timeoutSeconds: 1200,
-    //     flags: ["restartPanel", "configurePanel"],
-    // })
-    // );
+    return [].concat(
+        await statusCheckMongoSingle({
+            collectionName: "chassisInfo",
+            message: ["There is no recent chassis data for this device.", "Check your settings."],
+            itemType: "critical",
+            timeoutSeconds: 60,
+            flags: ["restartPanel", "configurePanel"],
+        }),
+        await statusCheckAlarms()
+    );
 };

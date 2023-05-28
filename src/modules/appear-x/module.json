@@ -25,6 +25,14 @@
         "password": "",
         "enabled": false,
         "url": "",
-        "protectedServices": []
+        "protectedServices": [],
+        "ignoredAlarms": [
+            "Freeze",
+            "No input bitrate",
+            "No video detected",
+            "No audio detected",
+            "Video PID missing",
+            "PID missing on input"
+        ]
     }
 }

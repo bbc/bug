@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -91,6 +92,18 @@ export default function ConfigPanel() {
                         supportsValidation
                         onChange={(event) => validateServer(event, "password", ["address", "username"])}
                         label="Password"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
+                        name="ignoredAlarms"
+                        label="Alarms to ignore"
+                        control={control}
+                        defaultValue={panelConfig.data.ignoredAlarms}
+                        sort={true}
+                        error={errors.ignoredAlarms}
+                        helperText="Use phrases or words - partial matches is ok"
+                        fullWidth
                     />
                 </Grid>
             </BugConfigWrapper>
