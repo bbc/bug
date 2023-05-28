@@ -2,7 +2,6 @@
 
 const appearXApi = require("@utils/appearx-api");
 const configGet = require("@core/config-get");
-const mongoSingle = require("@core/mongo-single");
 const inputServiceKeyGet = require("@services/inputservicekey-get");
 const ipOutputsFilter = require("@services/ipoutputs-filter");
 
