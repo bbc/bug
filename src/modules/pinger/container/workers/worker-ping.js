@@ -102,7 +102,7 @@ const main = async () => {
                                 attachments: [
                                     {
                                         title: `:x: ${host?.title}`,
-                                        text: `${host?.title} at <http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${host?.host}> is no longer reachable.`,
+                                        text: `${host?.title} (<http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${host?.host}>) is no longer reachable.`,
                                         color: `#f44336`,
                                     },
                                 ],
@@ -118,9 +118,11 @@ const main = async () => {
                                 attachments: [
                                     {
                                         title: `:large_green_circle: ${host?.title}`,
-                                        text: `<http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${
-                                            host?.host
-                                        }> is online. ${getOutageString(exisitingHost?.lastPinged)}`,
+                                        text: `${host?.title}  (<http://${bugHost}:${bugPort}/panel/${
+                                            workerData?.id
+                                        }/host/${hostId}|${host?.host}>) is online. ${getOutageString(
+                                            exisitingHost?.lastPinged
+                                        )}`,
                                         color: `#4caf50`,
                                     },
                                 ],

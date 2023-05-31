@@ -4,7 +4,7 @@
     "description": "Monitor network devices",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "mdi-lan",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
