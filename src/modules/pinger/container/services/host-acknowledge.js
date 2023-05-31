@@ -37,7 +37,7 @@ module.exports = async (hostId) => {
                 attachments: [
                     {
                         title: `:large_blue_circle: ${config?.hosts[hostId]?.title}`,
-                        text: `<http://${bugHost}:${bugPort}/panel/${config?.id}/host/${hostId}|${config?.hosts[hostId]?.host}> has been acknowledged.`,
+                        text: `${host?.title} (<http://${bugHost}:${bugPort}/panel/${config?.id}/host/${hostId}|${config?.hosts[hostId]?.host}>) has been acknowledged.`,
                         color: `#2196f3`,
                     },
                 ],
