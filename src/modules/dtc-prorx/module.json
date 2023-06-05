@@ -4,7 +4,7 @@
     "description": "Control DTC radio camera receivers",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "mdi-radio-tower",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
