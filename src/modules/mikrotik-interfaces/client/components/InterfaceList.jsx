@@ -40,7 +40,7 @@ export default function InterfaceList({ panelId }) {
         if (result === "") {
             result = item["default-name"];
         }
-        if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.id}/${result}`)) {
+        if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.id}/${encodeURIComponent(result)}`)) {
             sendAlert(`Renamed interface to ${result}`, { broadcast: "true", variant: "success" });
             doForceRefresh();
         } else {

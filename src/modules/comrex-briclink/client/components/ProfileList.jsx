@@ -38,7 +38,7 @@ export default function ProfileList({ panelId }) {
         if (result === false) {
             return;
         }
-        if (await AxiosCommand(`/container/${panelId}/profile/rename/${item.id}/${encodeURIComponent(result)}`)) {
+        if (await AxiosCommand(`/container/${panelId}/profile/rename/${encodeURIComponent(item.id)}/${encodeURIComponent(result)}`)) {
             sendAlert(`Renamed profile to ${result}`, {
                 broadcast: "true",
                 variant: "success",

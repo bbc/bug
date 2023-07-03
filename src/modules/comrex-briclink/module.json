@@ -1,7 +1,7 @@
 {
     "name": "comrex-briclink",
     "longname": "Comrex BRIC-Link",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Control of Comrex BRIC-Link and BRIC-Link II devices",
     "capabilities": [],
     "icon": "mdi-phone-settings",

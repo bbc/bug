@@ -6,7 +6,7 @@
         "network-switch"
     ],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "SettingsEthernet",
     "author": "Geoff House",
     "license": "Apache-2.0",

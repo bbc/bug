@@ -44,7 +44,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
         if (result === false) {
             return;
         }
-        if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.interfaceId}/${result}`)) {
+        if (await AxiosCommand(`/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(result)}`)) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
                 broadcast: true,
                 variant: "success",
