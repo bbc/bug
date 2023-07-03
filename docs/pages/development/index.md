@@ -13,7 +13,7 @@ First off you'll need to get a development instance up and running. Both product
 
 The development version has live mount and runs `nodemon` and `create-react-app` meaning the app reloads on each file save for both the frontend and backend. You develop on your development machine's filesystem and the files are mounted into the running bug container.
 
-Running BUG for production? You probably want [these instructions](/pages/installation) instead.
+Running BUG for production? You probably want [these instructions](/bug/pages/installation) instead.
 
 ## Installation
 

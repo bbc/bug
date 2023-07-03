@@ -17,9 +17,9 @@ Trying to run a BUG instance to develop a new module? You probably want [these i
 
 ## Supported Operating Systems
 
--   [Windows](/pages/installation/windows.html)
--   [MacOS](/pages/installation/mac.html)
--   [Linux](/pages/installation/linux.html)
+-   [Windows](/bug/pages/installation/windows.html)
+-   [MacOS](/bug/pages/installation/mac.html)
+-   [Linux](/bug/pages/installation/linux.html)
 
 ## Install Environments
 
@@ -52,4 +52,4 @@ For each piece of equipment you want to control you'll need to create a panel:
 
 # Troubleshooting
 
--   [Troubleshooting](/pages/installation/troubleshooting.html)
+-   [Troubleshooting](/bug/pages/installation/troubleshooting.html)
