@@ -39,7 +39,7 @@ export default function RouterButton({
             defaultValue: button.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.id}/${buttonType}/${result}`)) {
+            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.id}/${encodeURIComponent(buttonType)}/${encodeURIComponent(result)}`)) {
                 sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
             } else {
                 sendAlert(`Failed to rename ${buttonType}: ${result}`, { variant: "error" });

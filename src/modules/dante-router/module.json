@@ -3,7 +3,7 @@
     "longname": "Dante Router",
     "description": "Control and route dante in conjuction with Dante Domain Controller",
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "mdi-matrix",
     "author": "Ryan McCartney",
     "memory": 50,

@@ -18,7 +18,7 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
             defaultValue: group.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/groups/rename/${groupType}/${group.label}/${result}`)) {
+            if (await AxiosCommand(`/container/${panelId}/groups/rename/${groupType}/${encodeURIComponent(group.label)}/${encodeURIComponent(result)}`)) {
                 sendAlert(`Renamed group: ${group.label} -> ${result}`, { variant: "success" });
             } else {
                 sendAlert(`Failed to rename group: ${group.label}`, { variant: "error" });
