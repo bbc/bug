@@ -17,6 +17,15 @@ export default {
     decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
 
     argTypes: {
+        image: {
+            type: { name: "string", required: false },
+            defaultValue: "",
+            description: "If set, renders an image from the provided src url. No other fields will be rendered",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "" },
+            },
+        },
         items: {
             type: { name: "data", required: true },
             defaultValue: ["100", "Mbps"],
@@ -36,7 +45,7 @@ export default {
             },
         },
         state: {
-            type: { name: "string", required: false },
+            type: { name: "string", required: true },
             defaultValue: "success",
             description: "",
             table: {
