@@ -26,7 +26,7 @@ Each module is then allocated its own container, an isolated environment to carr
 
 # Principles
 
--   [Overview ](/pages/architecture/overview.html)
+-   [Overview ](/bug/pages/architecture/overview.html)
 
 *   Mobile first
 *   It's not mission critical
