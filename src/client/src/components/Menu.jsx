@@ -35,7 +35,7 @@ const Menu = ({ showGroups = true }) => {
     const user = useSelector((state) => state.user);
     const strategies = useSelector((state) => state.strategies);
     const settings = useSelector((state) => state.settings);
-    const enabledPanelList = panelList.data.filter((item) => item.enabled === true);
+    const activePanelList = panelList.data.filter((item) => item._active);
     const location = useLocation();
     const [expanded, setExpanded] = React.useState(false);
     const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
@@ -168,7 +168,7 @@ const Menu = ({ showGroups = true }) => {
         if (panelList.status === "success") {
             if (roles.includes("user") || enabledStrategiesCount === 0) {
                 const panelsByGroup = panelListGroups(
-                    panelList.data,
+                    activePanelList,
                     true,
                     user?.data?.restrictPanels,
                     user?.data?.panels
@@ -224,8 +224,8 @@ const Menu = ({ showGroups = true }) => {
         }
     };
 
-    soundNotifications(enabledPanelList);
-    setNotifications(enabledPanelList);
+    soundNotifications(activePanelList);
+    setNotifications(activePanelList);
 
     //TODO move enabledStrategiesCount into redux user slice
     return (
@@ -261,7 +261,7 @@ const Menu = ({ showGroups = true }) => {
                             </List>
                             <MenuDivider />
                             {renderPanelMenuItems(user?.data?.roles, user?.data?.panels)}
-                            {enabledPanelList.length > 0 ? <MenuDivider /> : null}
+                            {activePanelList.length > 0 ? <MenuDivider /> : null}
 
                             <BugRestrictTo role="admin">
                                 <List disablePadding>
