@@ -62,7 +62,8 @@ const HomeTiles = () => {
             return <BugLoading />;
         }
         if (panelList.status === "success") {
-            const panelsByGroup = panelListGroups(panelList.data);
+            const activePanelList = panelList.data.filter((p) => p._active);
+            const panelsByGroup = panelListGroups(activePanelList);
             if (panelsByGroup.length === 0) {
                 return (
                     <BugRestrictTo role="admin">
@@ -73,7 +74,7 @@ const HomeTiles = () => {
             if (panelsByGroup.length === 1) {
                 return (
                     <BugRestrictTo role="user">
-                        <Tiles panels={panelList.data} />
+                        <Tiles panels={activePanelList} />
                     </BugRestrictTo>
                 );
             } else {
