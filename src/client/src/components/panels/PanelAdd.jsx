@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import AxiosPost from "@utils/AxiosPost";
+import AxiosCommand from "@utils/AxiosCommand";
 import { useDispatch } from "react-redux";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import AxiosGet from "@utils/AxiosGet";
@@ -35,12 +35,12 @@ export default function PanelAdd(props) {
 
     const onSubmit = async (form) => {
         setLoading(true);
-        const response = await AxiosPost(`/api/panel`, form);
-        if (!response?.error) {
+        const response = await AxiosCommand(`/api/panel`, form);
+        if (response === null) {
+            sendAlert(`${form?.title} could not be added.`, { variant: "warning" });
+        } else {
             sendAlert(`${form?.title} has been added.`, { broadcast: "true", variant: "success" });
             history.goBack();
-        } else {
-            sendAlert(`${form?.title} could not be added.`, { variant: "warning" });
         }
         setLoading(false);
     };
