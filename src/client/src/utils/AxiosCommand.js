@@ -1,8 +1,13 @@
 import axios from "axios";
 
-export default async function AxiosCommand(url) {
+export default async function AxiosCommand(url, data = null) {
     try {
-        const response = await axios.get(url);
+        let response;
+        if (data) {
+            response = await axios.post(url, data);
+        } else {
+            response = await axios.get(url);
+        }
 
         switch (response.data?.status) {
             case "success":
