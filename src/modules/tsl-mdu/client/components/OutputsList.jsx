@@ -14,11 +14,13 @@ import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import TimerIcon from "@mui/icons-material/Timer";
 import AxiosCommand from "@utils/AxiosCommand";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 
 export default function OutputsList({ panelId }) {
     const history = useHistory();
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
+    const [forceRefresh, doForceRefresh] = useForceRefresh();
 
     const handleRenameClicked = async (event, item) => {
         event.stopPropagation();
@@ -33,6 +35,7 @@ export default function OutputsList({ panelId }) {
                 sendAlert(`Renamed output ${item.number} to '${result}'`, {
                     variant: "success",
                 });
+                doForceRefresh();
             } else {
                 sendAlert(`Failed to rename output`, { variant: "error" });
             }
@@ -57,6 +60,7 @@ export default function OutputsList({ panelId }) {
                 sendAlert(`Set output ${item.number} delay to ${result} seconds`, {
                     variant: "success",
                 });
+                doForceRefresh();
             } else {
                 sendAlert(`Failed to change output delay`, { variant: "error" });
             }
@@ -209,6 +213,7 @@ export default function OutputsList({ panelId }) {
                 apiUrl={`/container/${panelId}/output/`}
                 onRowClick={handleDetailsClicked}
                 noData={<BugNoData panelId={panelId} title="No power outputs found" showConfigButton={false} />}
+                forceRefresh={forceRefresh}
             />
         </>
     );
