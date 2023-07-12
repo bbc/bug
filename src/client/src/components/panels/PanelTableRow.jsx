@@ -35,6 +35,14 @@ export default function PanelTableRow({ panel, showGroups }) {
     if (redirectUrl) {
         return <Redirect push to={{ pathname: redirectUrl }} />;
     }
+    let rowOpacity = 1;
+    if (
+        (!panel._active || panel._isPending) &&
+        panel?._dockerContainer?._status !== "building" &&
+        panel?._dockerContainer?._status !== "starting"
+    ) {
+        rowOpacity = 0.3;
+    }
 
     return (
         <TableRow
@@ -55,11 +63,18 @@ export default function PanelTableRow({ panel, showGroups }) {
                 <BugPowerIcon panel={panel} />
             </TableCell>
             <TableCell sx={{ width: "4rem" }} style={{ textAlign: "center" }}>
-                <BugApiSwitch checked={panel._active} onChange={(checked) => handleEnabledChanged(checked, panel.id)} />
+                <BugApiSwitch
+                    disabled={
+                        panel?._dockerContainer?._status === "building" ||
+                        panel?._dockerContainer?._status === "starting"
+                    }
+                    checked={panel._active}
+                    onChange={(checked) => handleEnabledChanged(checked, panel.id)}
+                />
             </TableCell>
             <TableCell
                 sx={{
-                    opacity: !panel._active || panel._isPending ? 0.3 : 1,
+                    opacity: rowOpacity,
                 }}
             >
                 {panel.title}
@@ -70,7 +85,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                     "@media (max-width:1024px)": {
                         display: "none",
                     },
-                    opacity: !panel._active || panel._isPending ? 0.3 : 1,
+                    opacity: rowOpacity,
                 }}
             >
                 {panel.description}
@@ -80,7 +95,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                     "@media (max-width:512px)": {
                         display: "none",
                     },
-                    opacity: !panel._active || panel._isPending ? 0.3 : 1,
+                    opacity: rowOpacity,
                 }}
             >
                 {panel._module.longname}
@@ -90,7 +105,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                     "@media (max-width:250px)": {
                         display: "none",
                     },
-                    opacity: !panel._active || panel._isPending ? 0.3 : 1,
+                    opacity: rowOpacity,
                 }}
             >
                 <Box
