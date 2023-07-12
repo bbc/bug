@@ -6,9 +6,9 @@ const stateColor = ({ state, txValue, rxValue }) => {
         Connected: theme.palette.success.main,
         Connecting: theme.palette.warning.main,
         Disconnected: theme.palette.warning.main,
-        Idle: theme.palette.secondary.main,
+        Idle: theme.palette.text.action,
     };
-    let color = stateColors[state] ? stateColors[state] : theme.palette.secondary.main;
+    let color = stateColors[state] ? stateColors[state] : theme.palette.text.secondary;
     if (state === "Connected") {
         if (txValue < 5 || rxValue < 5) {
             color = theme.palette.error.main;
