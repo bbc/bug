@@ -19,6 +19,7 @@ export default function BugTableLinkButton({ sx = {}, children, disabled = false
                 margin: "1px 0px",
                 opacity: disabled ? 0.4 : 1,
                 textDecoration: "none",
+                cursor: disabled ? "default" : "pointer",
                 "&:hover": {
                     textDecoration: disabled ? "none" : "underline",
                 },
