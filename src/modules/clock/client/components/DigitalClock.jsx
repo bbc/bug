@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 export default function DigitalClock({ size }) {
     const [time, setTime] = useState("hh:mm:ss");
@@ -36,9 +36,5 @@ export default function DigitalClock({ size }) {
         xl: 200,
     };
 
-    return (
-        <>
-            <div style={{ fontFamily: "monospace", fontSize: fontSizes[size] }}>{time}</div>
-        </>
-    );
+    return <Box sx={{ color: "text.primary", fontFamily: "monospace", fontSize: fontSizes[size] }}>{time}</Box>;
 }

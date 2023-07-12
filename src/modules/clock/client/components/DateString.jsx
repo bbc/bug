@@ -39,6 +39,7 @@ export default function DateString(props) {
     return (
         <Box
             sx={{
+                color: "text.primary",
                 fontSize: "40px",
                 "@media (max-width:1280px)": {
                     fontSize: "30px",
