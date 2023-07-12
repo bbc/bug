@@ -1,0 +1,39 @@
+{
+    "name": "tieline-gateway",
+    "longname": "Tieline Gateway",
+    "description": "Control and monitor Tieline Gateway codecs",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.1",
+    "icon": "mdi-transit-connection-variant",
+    "author": "Geoff House",
+    "memory": 200,
+    "license": "Apache-2.0",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "tieline-gateway",
+        "username": "admin",
+        "password": "password",
+        "address": "",
+        "showAdvanced": false,
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "url": "",
+        "codecSource": ""
+    }
+}
