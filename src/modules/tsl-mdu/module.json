@@ -6,11 +6,11 @@
         "power-control"
     ],
     "notes": "",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "icon": "mdi-power-plug-outline",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
-    "status": "beta",
+    "status": "stable",
     "needsContainer": true,
     "devmounts": [
         "api",
