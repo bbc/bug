@@ -132,6 +132,7 @@ export default function Group({ group, panelId, onChange }) {
                                 label={connection._tabName}
                                 key={index}
                                 sx={{
+                                    color: "text.secondary",
                                     "&.Mui-selected": {
                                         color: groupStateColor,
                                     },
@@ -144,9 +145,9 @@ export default function Group({ group, panelId, onChange }) {
                         <Tab
                             sx={{
                                 "&.Mui-selected": {
-                                    color: "primary.main",
+                                    color: "text.action",
                                 },
-                                color: "secondary.main",
+                                color: "text.secondary",
                             }}
                             label="Stats"
                             value="stats"
