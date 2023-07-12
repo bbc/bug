@@ -6,6 +6,7 @@ const moduleGet = require("@services/module-get");
 const logger = require("@utils/logger")(module);
 const panelStart = require("@services/panel-start");
 const key = require("@utils/key");
+const panelGetLastIndex = require("@services/panel-getlastindex");
 
 module.exports = async (panelConfig) => {
     try {
@@ -14,7 +15,7 @@ module.exports = async (panelConfig) => {
             panelConfig.id = await id();
         }
 
-        //Create an API key for the panel
+        // create an API key for the panel
         panelConfig.key = await key();
 
         // merge config passed with default module config
@@ -26,6 +27,9 @@ module.exports = async (panelConfig) => {
 
         // make sure it's enabled (we do this now - it's a thing)
         panelConfig.enabled = true;
+
+        // add the panel after the last current item (in this group)
+        panelConfig.order = await panelGetLastIndex(panelConfig.group);
 
         // and save it to a file
         if (!(await panelConfigModel.set(panelConfig))) {
