@@ -1,5 +1,5 @@
 {
-    "name": "cisco-sg",
+    "name": "cisco-cbs",
     "main": "",
     "scripts": {
         "production": "node ./api/server",

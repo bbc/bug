@@ -1,5 +1,5 @@
 {
-    "name": "magewell-ndi-encoder",
+    "name": "magewell-ndi-decoder",
     "main": "",
     "scripts": {
         "production": "node ./api/server",
