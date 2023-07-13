@@ -4,9 +4,8 @@ const leaseDelete = require("./mikrotik-leasedelete");
 const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (leaseId) => {
-
     // delete from device
-    if (!await leaseDelete(leaseId)) {
+    if (!(await leaseDelete(leaseId))) {
         console.log(`lease-delete: deleted lease ${leaseId} from device`);
         return false;
     }
@@ -14,7 +13,7 @@ module.exports = async (leaseId) => {
     // now delete from db
     const dbLeases = await mongoCollection("leases");
     try {
-        await dbLeases.deleteOne({ "id": leaseId });
+        await dbLeases.deleteOne({ id: leaseId });
         console.log(`lease-delete: deleted lease ${leaseId} from db`);
     } catch (error) {
         return false;

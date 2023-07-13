@@ -70,6 +70,12 @@ export default function Lease({ panelId, leaseId }) {
     const errors = getErrors();
 
     const onSubmit = async (form) => {
+        // overwrite DHCP server ID with label (cos that's what it needs!)
+        const matchingServer = servers.find((s) => s.id === form.server);
+        if (matchingServer) {
+            form.server = matchingServer.label;
+        }
+
         const response = await AxiosPut(`/container/${panelId}/lease/${leaseId}`, form);
         if (response) {
             sendAlert(`Lease has been updated.`, { broadcast: "true", variant: "success" });
@@ -131,20 +137,6 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Comment"
                                 />
                             </Grid>
-                            {addressLists && (
-                                <Grid item xs={12}>
-                                    <BugConfigFormAutocomplete
-                                        name="address-lists"
-                                        label="Address Lists"
-                                        control={control}
-                                        defaultValue={lease["address-lists"]}
-                                        error={errors["address-lists"]}
-                                        fullWidth
-                                        sort
-                                        options={addressLists}
-                                    />
-                                </Grid>
-                            )}
                             <Grid item xs={12}>
                                 <BugConfigFormTextField
                                     name="mac-address"
@@ -210,7 +202,7 @@ export default function Lease({ panelId, leaseId }) {
                                         control={control}
                                         fullWidth
                                         label="DHCP Server"
-                                        defaultValue={lease.server}
+                                        defaultValue={servers.find((s) => s.label === lease.server).id}
                                         options={servers}
                                     />
                                 </Grid>
