@@ -1,5 +1,5 @@
 {
-    "name": "tieline-merlin",
+    "name": "tieline-gateway",
     "main": "",
     "scripts": {
         "production": "node ./api/server",

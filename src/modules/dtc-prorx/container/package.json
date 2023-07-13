@@ -1,5 +1,5 @@
 {
-    "name": "ndi-discovery",
+    "name": "dtc-prorx",
     "main": "",
     "scripts": {
         "production": "node ./api/server",

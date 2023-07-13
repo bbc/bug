@@ -1,5 +1,5 @@
 {
-    "name": "example-switch",
+    "name": "fscom-s3410",
     "main": "",
     "scripts": {
         "production": "node ./api/server",
