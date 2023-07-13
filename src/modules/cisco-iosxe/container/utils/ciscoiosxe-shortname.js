@@ -2,6 +2,7 @@
 
 module.exports = (interfaceLabel) => {
     const speeds = {
+        AppGigabitEthernet: "AppGi",
         FastEthernet: "Fa",
         FiftyGigabitEthernet: "Fi",
         FortyGigabitEthernet: "Fo",

@@ -57,20 +57,22 @@ const main = async () => {
 
                     const portArray = ciscoIOSXESplitPort(eachInterface["name"]);
                     if (portArray?.port > 0) {
-                        const shortName = ciscoIOSXEShortName(portArray?.label);
-                        interfaces.push({
-                            interfaceId: eachInterface["name"],
-                            type: portArray?.["label"],
-                            shortId: `${shortName}${portArray["idArray"].join("/")}`,
-                            portIndex: portArray["idArray"].join("/"),
-                            shortName: shortName,
-                            interfaceIndex: eachInterface["if-index"],
-                            device: portArray.device,
-                            slot: portArray.slot,
-                            port: portArray.port,
-                            "mac-address": eachInterface["phys-address"],
-                            timestamp: new Date(),
-                        });
+                        if (portArray?.label !== "AppGigabitEthernet") {
+                            const shortName = ciscoIOSXEShortName(portArray?.label);
+                            interfaces.push({
+                                interfaceId: eachInterface["name"],
+                                type: portArray?.["label"],
+                                shortId: `${shortName}${portArray["idArray"].join("/")}`,
+                                portIndex: portArray["idArray"].join("/"),
+                                shortName: shortName,
+                                interfaceIndex: eachInterface["if-index"],
+                                device: portArray.device,
+                                slot: portArray.slot,
+                                port: portArray.port,
+                                "mac-address": eachInterface["phys-address"],
+                                timestamp: new Date(),
+                            });
+                        }
                     }
                 }
             }
