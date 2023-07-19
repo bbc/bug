@@ -1,6 +1,6 @@
 import React from "react";
 import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
-import ErrorIcon from "@mui/icons-material/Error";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 export default function StatusIcon({ status }) {
     if (status === "connected") {
@@ -16,11 +16,12 @@ export default function StatusIcon({ status }) {
     }
     if (status === "errdisabled") {
         return (
-            <ErrorIcon
+            <ErrorOutlineIcon
                 sx={{
                     color: "error.main",
                     display: "block",
                     margin: "auto",
+                    paddingLeft: "1px",
                 }}
             />
         );
