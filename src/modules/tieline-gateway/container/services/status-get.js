@@ -14,12 +14,6 @@ module.exports = async () => {
             timeoutSeconds: 1200,
             flags: ["restartPanel", "configurePanel"],
         }),
-        await statusCheckCollection({
-            collectionName: "programList",
-            message: "Program information is out of date.",
-            itemType: "warning",
-            timeoutSeconds: 90,
-        }),
         await statusCheckLinkQuality(),
         await statusCheckAlarms()
     );
