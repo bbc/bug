@@ -40,6 +40,13 @@ const convertPortSpeed = (speed) => {
     }
 };
 
+const parseReason = (reason) => {
+    if (reason.indexOf("port-err-") === 0) {
+        return reason.split("-")[2];
+    }
+    return reason;
+};
+
 const main = async () => {
     // wait 5 seconds
     await delay(5000);
@@ -54,7 +61,7 @@ const main = async () => {
     console.log(`worker-interfacedetails: connecting to device at ${workerData.address}`);
 
     const data = {
-        fields: "interface-type;oper-status;name;description;speed;admin-status;ether-state/auto-negotiate;ether-state/media-type",
+        fields: "interface-type;oper-status;name;description;speed;admin-status;ether-state/auto-negotiate;ether-state/media-type;intf-ext-state/error-type;intf-ext-state/port-error-reason",
     };
 
     while (true) {
@@ -69,16 +76,21 @@ const main = async () => {
 
         for (const eachInterface of result?.["Cisco-IOS-XE-interfaces-oper:interface"]) {
             if (eachInterface["interface-type"] === "iana-iftype-ethernet-csmacd") {
+                const operStatus =
+                    eachInterface?.["intf-ext-state"]?.["error-type"] === "port-error-disable"
+                        ? "err-disable"
+                        : eachInterface["oper-status"];
                 await interfacesCollection.updateOne(
                     { interfaceId: eachInterface["name"] },
                     {
                         $set: {
                             description: eachInterface["description"],
-                            "oper-status": eachInterface["oper-status"],
+                            "oper-status": operStatus,
                             "admin-status": eachInterface["admin-status"],
                             "admin-speed": convertPortSpeed(parseInt(eachInterface["speed"])),
                             "auto-negotiate": eachInterface["ether-state"]?.["auto-negotiate"],
                             "media-type": eachInterface["ether-state"]?.["media-type"],
+                            "error-reason": parseReason(eachInterface?.["intf-ext-state"]?.["port-error-reason"]),
                         },
                     },
                     { upsert: false }

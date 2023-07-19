@@ -5,7 +5,7 @@ import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
-import BugPowerIcon from "@core/BugPowerIcon";
+import StatusIcon from "./StatusIcon";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
@@ -44,7 +44,13 @@ export default function InterfaceList({ panelId, stackId = null }) {
         if (result === false) {
             return;
         }
-        if (await AxiosCommand(`/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(result)}`)) {
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(
+                    result
+                )}`
+            )
+        ) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
                 broadcast: "true",
                 variant: "success",
@@ -251,7 +257,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <BugPowerIcon disabled={item["oper-status"] !== "if-oper-state-ready"} />,
+                    content: (item) => <StatusIcon status={item?.["oper-status"]} />,
                 },
                 {
                     noPadding: true,
