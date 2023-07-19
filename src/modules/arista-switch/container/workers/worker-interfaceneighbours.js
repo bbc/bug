@@ -5,7 +5,6 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const chunk = require("@core/chunk");
 const aristaApi = require("@utils/arista-api");
 const mongoSingle = require("@core/mongo-single");
 const parseHex = require("@utils/arista-parsehex");
@@ -18,29 +17,74 @@ parentPort.postMessage({
 
 const main = async () => {
     // stagger start of script ...
-    await delay(4000);
+    await delay(2000);
 
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
-    // get the list of leases
-    const leases = await mongoSingle.get("leases");
-    const leasesByMac = {};
-    if (leases) {
-        for (const lease of leases) {
-            leasesByMac[lease.mac] = lease;
-        }
-    }
-
     // get the collection reference
     const interfacesCollection = await mongoCollection("interfaces");
 
-    // Kick things off
-    console.log(`worker-interfacelldp: connecting to device at ${workerData.address}`);
+    // // Kick things off
+    console.log(`worker-interfaceneighbours: connecting to device at ${workerData.address}`);
 
     while (true) {
         // fetch list of LLDP neighbors
         const result = await aristaApi({
+            host: workerData.address,
+            protocol: "https",
+            port: 443,
+            username: workerData.username,
+            password: workerData.password,
+            commands: ["show arp"],
+        });
+
+        // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
+        // more details to the user
+        const leases = await mongoSingle.get("leases");
+        const leasesByMac = {};
+        if (leases) {
+            for (const lease of leases) {
+                leasesByMac[lease.mac] = lease;
+            }
+        }
+
+        // we'll do FDB first ...
+        const fdbByInterface = {};
+        if (result) {
+            for (const eachArp of result.ipV4Neighbors) {
+                const mac = parseHex(eachArp.hwAddress).toUpperCase();
+                const interfaceArray = eachArp.interface.split(", ");
+                for (const eachInterface of interfaceArray) {
+                    if (!fdbByInterface[eachInterface]) {
+                        fdbByInterface[eachInterface] = [];
+                    }
+                    if (leasesByMac[mac]) {
+                        fdbByInterface[eachInterface].push(leasesByMac[mac]);
+                    } else {
+                        fdbByInterface[eachInterface].push({
+                            mac: mac,
+                        });
+                    }
+                }
+            }
+        }
+
+        // and update the DB
+        for (let [interfaceId, fdbArray] of Object.entries(fdbByInterface)) {
+            await interfacesCollection.updateOne(
+                { interfaceId: interfaceId },
+                {
+                    $set: {
+                        fdb: fdbArray,
+                    },
+                },
+                { upsert: false }
+            );
+        }
+
+        // now do LLDP neighbours
+        const lldpResult = await aristaApi({
             host: workerData.address,
             protocol: "https",
             port: 443,
@@ -51,8 +95,8 @@ const main = async () => {
 
         const lldpByInterface = {};
 
-        if (result) {
-            for (const eachNeighbor of result.lldpNeighbors) {
+        if (lldpResult) {
+            for (const eachNeighbor of lldpResult.lldpNeighbors) {
                 const interfaceId = eachNeighbor.port;
                 if (!lldpByInterface[interfaceId]) {
                     lldpByInterface[interfaceId] = {};
@@ -72,6 +116,7 @@ const main = async () => {
             }
         }
 
+        // .. and update the DB
         for (let [interfaceId, lldpObject] of Object.entries(lldpByInterface)) {
             await interfacesCollection.updateOne(
                 { interfaceId: interfaceId },
@@ -84,8 +129,8 @@ const main = async () => {
             );
         }
 
-        // every 30 seconds
-        await delay(30000);
+        // every 20 seconds
+        await delay(20000);
     }
 };
 

@@ -162,8 +162,8 @@ const BugApiVlanAutocomplete = ({
             {isTrunk && (
                 <IconButton
                     sx={{
-                        width: 54,
-                        height: 54,
+                        width: 48,
+                        height: 48,
                     }}
                     disabled={disabled || isActive}
                     aria-label="Edit Trunks"

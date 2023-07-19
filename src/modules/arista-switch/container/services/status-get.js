@@ -2,6 +2,7 @@
 
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckPending = require("@services/status-checkpending");
+const statusCheckInterfaces = require("@services/status-checkinterfaces");
 
 module.exports = async () => {
     return [].concat(
@@ -24,6 +25,7 @@ module.exports = async () => {
             itemType: "warning",
             timeoutSeconds: 150,
         }),
-        await statusCheckPending()
+        await statusCheckPending(),
+        await statusCheckInterfaces()
     );
 };

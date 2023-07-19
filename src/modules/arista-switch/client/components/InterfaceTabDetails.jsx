@@ -23,16 +23,14 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
             <Grid item xs={12}>
                 <BugDetailsTable
                     items={[
-                        { name: "Description", value: iface.data?.description },
-                        { name: "Alias", value: iface.data?.alias },
                         { name: "Interface ID", value: iface.data?.longId },
+                        { name: "Description", value: iface.data?.description },
                         { name: "TX Rate", value: iface.data?.["tx-rate-text"] },
                         { name: "RX Rate", value: iface.data?.["rx-rate-text"] },
 
                         { name: "Auto Negotiation", value: iface.data?.["autoNegotiateActive"] ? "yes" : "no" },
-                        { name: "Admin State", value: iface.data?.["linkStatus"] !== "disabled" ? "up" : "down" },
-                        { name: "Link State", value: iface.data?.["linkStatus"] === "connected" ? "up" : "down" },
-
+                        { name: "Link Status", value: iface.data?.linkStatus },
+                        { name: "Interface Type", value: iface.data?.interfaceType },
                         { name: "Port Bandwidth", value: iface.data?.["bandwidthText"] },
 
                         { name: "Untagged VLAN", value: iface.data?.["accessVlanId"] },
