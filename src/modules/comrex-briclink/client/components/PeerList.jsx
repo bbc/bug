@@ -204,9 +204,9 @@ export default function PeerList({ panelId }) {
                             case "local_connect":
                                 return <Box sx={{ color: "success.main" }}>CONNECTING</Box>;
                             case "idle":
-                                return <Box sx={{ color: "secondary.main" }}>IDLE</Box>;
+                                return <Box sx={{ color: "text.secondary" }}>IDLE</Box>;
                             case "local_disconnect":
-                                return <Box sx={{ color: "secondary.main" }}>DISCONNECTED</Box>;
+                                return <Box sx={{ color: "text.secondary" }}>DISCONNECTED</Box>;
                             case "busy":
                                 return <Box sx={{ color: "warning.main" }}>BUSY</Box>;
                             case "error":
@@ -221,7 +221,7 @@ export default function PeerList({ panelId }) {
                     minWidth: "100px",
                     width: "15rem",
                     content: (item) => (
-                        <Box sx={{ color: "secondary.main" }}>
+                        <Box sx={{ color: "text.secondary" }}>
                             {item.rx_codec && <Box>RX: {item.rx_codec}</Box>}
                             {item._tx_codec && <Box>TX: {item._tx_codec}</Box>}
                         </Box>

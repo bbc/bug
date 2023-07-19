@@ -12,7 +12,7 @@ export default function StateLabel({ state, txValue, rxValue, showValues = true 
                 opacity: 0.8,
                 fontWeight: 500,
                 display: "flex",
-                color: "secondary.main",
+                color: "text.secondary",
             }}
         >
             <Box sx={{ color: color }}>{state}</Box>
