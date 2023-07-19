@@ -7,7 +7,7 @@ export default function BugAutocompletePlaceholder({ sx, value }) {
         <Autocomplete
             disabled={true}
             value={value}
-            options={[{ value }]}
+            options={[value]}
             renderInput={(params) => <TextField {...params} variant="outlined" />}
             sx={sx}
         />
