@@ -2,7 +2,8 @@
 
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckPending = require("@services/status-checkpending");
-const statusCheckInterfaces = require("@services/status-checkinterfaces");
+const statusCheckInterfaceStatus = require("@services/status-checkinterfacestatus");
+const statusCheckSfps = require("@services/status-checksfps");
 
 module.exports = async () => {
     return [].concat(
@@ -26,6 +27,7 @@ module.exports = async () => {
             timeoutSeconds: 150,
         }),
         await statusCheckPending(),
-        await statusCheckInterfaces()
+        await statusCheckInterfaceStatus(),
+        await statusCheckSfps()
     );
 };

@@ -18,7 +18,7 @@ export default function StatusIcon({ status }) {
         return (
             <ErrorOutlineIcon
                 sx={{
-                    color: "error.main",
+                    color: "warning.main",
                     display: "block",
                     margin: "auto",
                     paddingLeft: "1px",

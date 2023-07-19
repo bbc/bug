@@ -321,7 +321,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     content: (item) => {
                         switch (item.interfaceType) {
                             case "Unknown":
-                                return <Box sx={{ color: "error.main" }}>UNKNOWN</Box>;
+                                return <Box sx={{ color: "warning.main" }}>UNKNOWN</Box>;
                             case "Not Present":
                                 return "";
                             default:
