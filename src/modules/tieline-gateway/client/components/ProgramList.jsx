@@ -91,14 +91,7 @@ export default function ProgramList({ panelId }) {
             apiUrl={`/container/${panelId}/program/`}
             panelId={panelId}
             hideHeader={false}
-            noData={
-                <BugNoData
-                    panelId={panelId}
-                    title="No programs found"
-                    message="Click to edit panel configuration"
-                    showConfigButton={true}
-                />
-            }
+            noData={<BugNoData panelId={panelId} title="No programs found" showConfigButton={false} />}
             rowHeight="62px"
             sortable
             forceRefresh={forceRefresh}
