@@ -70,6 +70,7 @@ export default function PanelAdd(props) {
                             <Grid item xs={12}>
                                 <BugConfigFormTextField
                                     name="title"
+                                    defaultValue=""
                                     control={control}
                                     fullWidth
                                     error={errors?.title}
@@ -81,6 +82,7 @@ export default function PanelAdd(props) {
                             <Grid item xs={12}>
                                 <BugConfigFormTextField
                                     name="description"
+                                    defaultValue=""
                                     control={control}
                                     fullWidth
                                     error={errors?.description}
