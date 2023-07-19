@@ -36,9 +36,12 @@ const main = async () => {
             // fetch the loaded programme
             const programListFromApi = await TielineApi.get("/api/get_program_handles");
 
-            if (programListFromApi && programListFromApi.result && programListFromApi.result["prog-prop"]) {
+            if (programListFromApi && programListFromApi?.result && programListFromApi?.result?.["prog-prop"]) {
                 // pull out the handle and name from the result
-                const programList = programListFromApi.result["prog-prop"].map((program, index) => {
+                const progs = programListFromApi?.result?.["prog-prop"];
+                const programsToMap = Array.isArray(progs) ? progs : [progs];
+
+                const programList = programsToMap.map((program, index) => {
                     return {
                         index: index,
                         handle: program?.["_attributes"]?.["prog-handle"],
