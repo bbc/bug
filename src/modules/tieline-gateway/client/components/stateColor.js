@@ -5,7 +5,8 @@ const stateColor = ({ state, txValue, rxValue }) => {
     const stateColors = {
         Connected: theme.palette.success.main,
         Connecting: theme.palette.warning.main,
-        Disconnected: theme.palette.warning.main,
+        Disconnecting: theme.palette.warning.main,
+        Disconnected: theme.palette.error.main,
         Idle: theme.palette.text.action,
     };
     let color = stateColors[state] ? stateColors[state] : theme.palette.text.secondary;
