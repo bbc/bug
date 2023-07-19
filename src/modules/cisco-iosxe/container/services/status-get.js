@@ -1,7 +1,7 @@
 "use strict";
 
 const statusCheckCollection = require("@core/status-checkcollection");
-// const statusCheckPending = require("@services/status-checkpending");
+const statusCheckErrors = require("@services/status-checkerrors");
 
 module.exports = async () => {
     return [].concat(
@@ -17,7 +17,7 @@ module.exports = async () => {
             message: "VLAN information is out of date.",
             itemType: "warning",
             timeoutSeconds: 90,
-        })
-        // await statusCheckPending()
+        }),
+        await statusCheckErrors()
     );
 };
