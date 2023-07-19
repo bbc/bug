@@ -44,7 +44,13 @@ export default function InterfaceList({ panelId, stackId = null }) {
         if (result === false) {
             return;
         }
-        if (await AxiosCommand(`/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(result)}`)) {
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(
+                    result
+                )}`
+            )
+        ) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
                 broadcast: "true",
                 variant: "success",
@@ -307,9 +313,26 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     },
                 },
                 {
+                    minWidth: "8rem",
+                    hideWidth: 1300,
+                    width: "10rem",
+                    noWrap: true,
+                    title: "Type",
+                    content: (item) => {
+                        switch (item.interfaceType) {
+                            case "Unknown":
+                                return <Box sx={{ color: "error.main" }}>UNKNOWN</Box>;
+                            case "Not Present":
+                                return "";
+                            default:
+                                return <Box sx={{ color: "text.secondary" }}>{item.interfaceType}</Box>;
+                        }
+                    },
+                },
+                {
                     title: "Speed",
                     width: "5rem",
-                    hideWidth: 640,
+                    hideWidth: 799,
                     content: (item) => {
                         if (item?.bandwidthText) {
                             return (
