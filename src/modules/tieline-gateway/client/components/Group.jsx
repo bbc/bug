@@ -127,21 +127,26 @@ export default function Group({ group, panelId, onChange }) {
                             },
                         }}
                     >
-                        {group.connections.map((connection, index) => (
-                            <Tab
-                                label={connection._tabName}
-                                key={index}
-                                sx={{
-                                    color: "text.secondary",
-                                    "&.Mui-selected": {
-                                        color: groupStateColor,
-                                    },
-                                    "& .MuiTab-iconWrapper": {},
-                                }}
-                                icon={<LinkIcon />}
-                                iconPosition="start"
-                            />
-                        ))}
+                        {group.connections.map((connection, index) => {
+                            const connectionColor = stateColor({
+                                state: group.connections[index]?.state,
+                                txValue: group.connections[index]?.remoteLinkQuality,
+                                rxValue: group.connections[index]?.localLinkQuality,
+                            });
+                            console.log(index, connectionColor);
+                            return (
+                                <Tab
+                                    label={connection._tabName}
+                                    key={index}
+                                    sx={{
+                                        color: `${connectionColor} !important`,
+                                        "& .MuiTab-iconWrapper": {},
+                                    }}
+                                    icon={<LinkIcon />}
+                                    iconPosition="start"
+                                />
+                            );
+                        })}
                         <Tab
                             sx={{
                                 "&.Mui-selected": {
