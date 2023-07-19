@@ -21,7 +21,8 @@ module.exports = async () => {
                 const activeConnection = connections.find((c) => {
                     return c.id === eachConnection.id;
                 });
-                if (activeConnection && activeConnection.state !== "Idle") {
+
+                if (activeConnection && activeConnection.state === "Connected") {
                     const directionArray = [];
 
                     if (activeConnection.remoteLinkQuality < 95) {
