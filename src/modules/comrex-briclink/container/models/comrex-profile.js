@@ -45,6 +45,8 @@ exports.parseList = function (xml) {
         for (const profile of xml?.children?.[0]?.children) {
             // copy the profile attributes
             const parsedProfile = {
+                local: {},
+                remote: {},
                 ...profile.attributes,
                 default: profile?.attributes?.default === "true",
                 id: parseInt(profile?.attributes?.id),
