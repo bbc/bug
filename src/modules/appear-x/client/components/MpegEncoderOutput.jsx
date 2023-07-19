@@ -449,8 +449,9 @@ export default function MpegEncoderOutput({
                                 value={outputData?.value?.transportSettings?.udp?.output?.cloned?.a?.destination?.port}
                                 onChange={(event) =>
                                     updateOutput((output) => {
-                                        output.value.transportSettings.udp.output.cloned.a.destination.port =
-                                            event.target.value;
+                                        output.value.transportSettings.udp.output.cloned.a.destination.port = parseInt(
+                                            event.target.value
+                                        );
                                     })
                                 }
                                 changeOnBlur
@@ -505,8 +506,9 @@ export default function MpegEncoderOutput({
                                 value={outputData?.value?.transportSettings?.udp?.output?.cloned?.b?.destination?.port}
                                 onChange={(event) =>
                                     updateOutput((output) => {
-                                        output.value.transportSettings.udp.output.cloned.b.destination.port =
-                                            event.target.value;
+                                        output.value.transportSettings.udp.output.cloned.b.destination.port = parseInt(
+                                            event.target.value
+                                        );
                                     })
                                 }
                                 filter={/[^0-9]/}
