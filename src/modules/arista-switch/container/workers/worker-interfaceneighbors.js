@@ -26,7 +26,7 @@ const main = async () => {
     const interfacesCollection = await mongoCollection("interfaces");
 
     // // Kick things off
-    console.log(`worker-interfaceneighbours: connecting to device at ${workerData.address}`);
+    console.log(`worker-interfaceneighbors: connecting to device at ${workerData.address}`);
 
     while (true) {
         // fetch list of LLDP neighbors

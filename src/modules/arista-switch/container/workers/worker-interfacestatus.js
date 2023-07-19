@@ -4,11 +4,8 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const mongoCollection = require("@core/mongo-collection");
-const chunk = require("@core/chunk");
 const aristaApi = require("@utils/arista-api");
 const mongoSingle = require("@core/mongo-single");
-const parseHex = require("@utils/arista-parsehex");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -22,9 +19,6 @@ const main = async () => {
 
     // Connect to the db
     await mongoDb.connect(workerData.id);
-
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
 
     // Kick things off
     console.log(`worker-interfacestatus: connecting to device at ${workerData.address}`);
@@ -47,19 +41,6 @@ const main = async () => {
                 interfaceStatuses.push({
                     key: `intStatus${interfaceId}`,
                     message: `${interfaceId} is in an error-disabled state due to ${eachInterface.causes.join(", ")}`,
-                    type: "warning",
-                    flags: [],
-                });
-            }
-        }
-
-        // fetch list of interfaces which have an 'unknown' SFP
-        const interfaces = await interfacesCollection.find({ interfaceType: "Unknown" }).toArray();
-        if (interfaces) {
-            for (const eachInterface of interfaces) {
-                interfaceStatuses.push({
-                    key: `intType${eachInterface.interfaceId}`,
-                    message: `The SFP type of ${eachInterface.interfaceId} is 'Unknown'`,
                     type: "warning",
                     flags: [],
                 });
