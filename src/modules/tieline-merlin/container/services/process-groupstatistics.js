@@ -5,7 +5,7 @@ const ensureArray = require("@utils/ensure-array");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
 const parseZeroInt = (val) => {
-    if (!isNaN(val)) {
+    if (isNaN(val)) {
         return 0;
     }
     return parseInt(val);
