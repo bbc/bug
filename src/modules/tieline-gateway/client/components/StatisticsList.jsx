@@ -19,20 +19,29 @@ export default function StatisticsList({ panelId }) {
         textAlign: "center",
     }));
 
+    const formatStat = (value) => {
+        if (value === undefined) {
+            return <Box sx={{ color: "text.secondary" }}>-</Box>;
+        } else if (parseInt(value) > 0) {
+            return <Box>{value}</Box>;
+        }
+        return <Box sx={{ color: "text.secondary" }}>0</Box>;
+    };
+
     const formatStats = (stats1m, stats10m, statsTotal) => {
         return (
             <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Box sx={{ margin: "0 4px" }}>
                     <StatsLabel>1 min</StatsLabel>
-                    <StatsValue>{stats1m !== undefined ? stats1m : "-"}</StatsValue>
+                    <StatsValue>{formatStat(stats1m)}</StatsValue>
                 </Box>
                 <Box sx={{ margin: "0 4px" }}>
                     <StatsLabel>10 min</StatsLabel>
-                    <StatsValue>{stats10m !== undefined ? stats10m : "-"}</StatsValue>
+                    <StatsValue>{formatStat(stats10m)}</StatsValue>
                 </Box>
                 <Box sx={{ margin: "0 4px" }}>
                     <StatsLabel>Total</StatsLabel>
-                    <StatsValue>{statsTotal !== undefined ? statsTotal : "-"}</StatsValue>
+                    <StatsValue>{formatStat(statsTotal)}</StatsValue>
                 </Box>
             </Box>
         );
@@ -51,14 +60,19 @@ export default function StatisticsList({ panelId }) {
                     width: "60px",
                     minWidth: "60px",
                     noWrap: true,
-                    title: "Name",
+                    title: "ID",
                     content: (item) => item?._tabName,
                 },
                 {
                     width: "130px",
-                    title: "Group",
+                    title: "Connection",
                     hideWidth: 1080,
-                    content: (item) => item?._group,
+                    content: (item) => (
+                        <Box>
+                            <Box>{item?._group}</Box>
+                            <Box sx={{ color: "text.secondary" }}>{item?.via}</Box>
+                        </Box>
+                    ),
                 },
                 {
                     noWrap: true,
