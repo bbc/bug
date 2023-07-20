@@ -68,6 +68,13 @@ export default function Group({ group, panelId, onChange }) {
         rxValue: group.connections[tabIndex]?.localLinkQuality,
     });
 
+    const groupStateIndicatorColor = stateColor({
+        state: group.connections[tabIndex]?.state,
+        txValue: group.connections[tabIndex]?.remoteLinkQuality,
+        rxValue: group.connections[tabIndex]?.localLinkQuality,
+        idleColor: "action",
+    });
+
     let borderColor = "transparent";
     if (group.connections[tabIndex]?.state && group.connections[tabIndex]?.state !== "Idle") {
         borderColor = groupStateColor;
@@ -120,28 +127,35 @@ export default function Group({ group, panelId, onChange }) {
                             borderBottomStyle: "solid",
                             borderBottomColor: "border.light",
                             "& .MuiTabs-indicator": {
-                                backgroundColor: groupStateColor,
+                                backgroundColor: groupStateIndicatorColor,
                             },
                             "& .MuiTab-labelIcon": {
                                 minHeight: "auto",
                             },
                         }}
                     >
-                        {group.connections.map((connection, index) => (
-                            <Tab
-                                label={connection._tabName}
-                                key={index}
-                                sx={{
-                                    color: "text.secondary",
-                                    "&.Mui-selected": {
-                                        color: groupStateColor,
-                                    },
-                                    "& .MuiTab-iconWrapper": {},
-                                }}
-                                icon={<LinkIcon />}
-                                iconPosition="start"
-                            />
-                        ))}
+                        {group.connections.map((connection, index) => {
+                            const connectionColor = stateColor({
+                                state: group.connections[index]?.state,
+                                txValue: group.connections[index]?.remoteLinkQuality,
+                                rxValue: group.connections[index]?.localLinkQuality,
+                            });
+                            return (
+                                <Tab
+                                    label={connection._tabName}
+                                    key={index}
+                                    sx={{
+                                        color: connectionColor,
+                                        "&.Mui-selected": {
+                                            color: connectionColor,
+                                        },
+                                        "& .MuiTab-iconWrapper": {},
+                                    }}
+                                    icon={<LinkIcon />}
+                                    iconPosition="start"
+                                />
+                            );
+                        })}
                         <Tab
                             sx={{
                                 "&.Mui-selected": {
