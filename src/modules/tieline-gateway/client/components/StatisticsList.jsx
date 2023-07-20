@@ -19,29 +19,29 @@ export default function StatisticsList({ panelId }) {
         textAlign: "center",
     }));
 
-    const formatStat = (value) => {
+    const formatStat = (value, activeColor) => {
         if (value === undefined) {
             return <Box sx={{ color: "text.secondary" }}>-</Box>;
         } else if (parseInt(value) > 0) {
-            return <Box>{value}</Box>;
+            return <Box sx={{ fontWeight: 500, color: activeColor }}>{value}</Box>;
         }
         return <Box sx={{ color: "text.secondary" }}>0</Box>;
     };
 
-    const formatStats = (stats1m, stats10m, statsTotal) => {
+    const formatStats = (stats1m, stats10m, statsTotal, activeColor = "text.primary") => {
         return (
             <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Box sx={{ margin: "0 4px" }}>
                     <StatsLabel>1 min</StatsLabel>
-                    <StatsValue>{formatStat(stats1m)}</StatsValue>
+                    <StatsValue>{formatStat(stats1m, activeColor)}</StatsValue>
                 </Box>
                 <Box sx={{ margin: "0 4px" }}>
                     <StatsLabel>10 min</StatsLabel>
-                    <StatsValue>{formatStat(stats10m)}</StatsValue>
+                    <StatsValue>{formatStat(stats10m, activeColor)}</StatsValue>
                 </Box>
                 <Box sx={{ margin: "0 4px" }}>
                     <StatsLabel>Total</StatsLabel>
-                    <StatsValue>{formatStat(statsTotal)}</StatsValue>
+                    <StatsValue>{formatStat(statsTotal, activeColor)}</StatsValue>
                 </Box>
             </Box>
         );
@@ -54,24 +54,22 @@ export default function StatisticsList({ panelId }) {
                     noPadding: true,
                     hideWidth: 700,
                     width: 44,
-                    content: (item) => <BugPowerIcon disabled={item.state !== "Connected"} />,
+                    content: (item) =>
+                        item.type === "connection" && <BugPowerIcon disabled={item.state !== "Connected"} />,
                 },
                 {
-                    width: "60px",
-                    minWidth: "60px",
-                    noWrap: true,
-                    title: "ID",
-                    content: (item) => item?._tabName,
-                },
-                {
-                    width: "130px",
+                    width: "190px",
                     title: "Connection",
                     hideWidth: 1080,
                     content: (item) => (
-                        <Box>
-                            <Box>{item?._group}</Box>
-                            <Box sx={{ color: "text.secondary" }}>{item?.via}</Box>
-                        </Box>
+                        <>
+                            {item.type === "group" && <Box sx={{ fontWeight: 500 }}>{item?.name}</Box>}
+                            {item.type === "connection" && (
+                                <Box sx={{ color: "text.secondary" }}>
+                                    {item?._tabName} - {item?.via}
+                                </Box>
+                            )}
+                        </>
                     ),
                 },
                 {
@@ -103,7 +101,8 @@ export default function StatisticsList({ panelId }) {
                             {formatStats(
                                 item["stats-1m"]?.["loss"],
                                 item["stats-10m"]?.["loss"],
-                                item["stats-total"]?.["loss"]
+                                item["stats-total"]?.["loss"],
+                                item.type === "group" ? "error.main" : "text.primary"
                             )}
                         </>
                     ),
@@ -117,7 +116,8 @@ export default function StatisticsList({ panelId }) {
                             {formatStats(
                                 item["stats-1m"]?.["empty"],
                                 item["stats-10m"]?.["empty"],
-                                item["stats-total"]?.["empty"]
+                                item["stats-total"]?.["empty"],
+                                item.type === "group" ? "error.main" : "text.primary"
                             )}
                         </>
                     ),
@@ -131,7 +131,8 @@ export default function StatisticsList({ panelId }) {
                             {formatStats(
                                 item["stats-1m"]?.["late"],
                                 item["stats-10m"]?.["late"],
-                                item["stats-total"]?.["late"]
+                                item["stats-total"]?.["late"],
+                                item.type === "group" ? "error.main" : "text.primary"
                             )}
                         </>
                     ),
@@ -145,7 +146,8 @@ export default function StatisticsList({ panelId }) {
                             {formatStats(
                                 item["stats-1m"]?.["fec"],
                                 item["stats-10m"]?.["fec"],
-                                item["stats-total"]?.["fec"]
+                                item["stats-total"]?.["fec"],
+                                item.type === "group" ? "error.main" : "text.primary"
                             )}
                         </>
                     ),
