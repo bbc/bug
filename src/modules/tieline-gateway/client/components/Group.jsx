@@ -68,6 +68,13 @@ export default function Group({ group, panelId, onChange }) {
         rxValue: group.connections[tabIndex]?.localLinkQuality,
     });
 
+    const groupStateIndicatorColor = stateColor({
+        state: group.connections[tabIndex]?.state,
+        txValue: group.connections[tabIndex]?.remoteLinkQuality,
+        rxValue: group.connections[tabIndex]?.localLinkQuality,
+        idleColor: "action",
+    });
+
     let borderColor = "transparent";
     if (group.connections[tabIndex]?.state && group.connections[tabIndex]?.state !== "Idle") {
         borderColor = groupStateColor;
@@ -120,7 +127,7 @@ export default function Group({ group, panelId, onChange }) {
                             borderBottomStyle: "solid",
                             borderBottomColor: "border.light",
                             "& .MuiTabs-indicator": {
-                                backgroundColor: groupStateColor,
+                                backgroundColor: groupStateIndicatorColor,
                             },
                             "& .MuiTab-labelIcon": {
                                 minHeight: "auto",
@@ -133,13 +140,15 @@ export default function Group({ group, panelId, onChange }) {
                                 txValue: group.connections[index]?.remoteLinkQuality,
                                 rxValue: group.connections[index]?.localLinkQuality,
                             });
-                            console.log(index, connectionColor);
                             return (
                                 <Tab
                                     label={connection._tabName}
                                     key={index}
                                     sx={{
-                                        color: `${connectionColor} !important`,
+                                        color: connectionColor,
+                                        "&.Mui-selected": {
+                                            color: connectionColor,
+                                        },
                                         "& .MuiTab-iconWrapper": {},
                                     }}
                                     icon={<LinkIcon />}

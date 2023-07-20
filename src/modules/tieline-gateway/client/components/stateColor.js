@@ -1,13 +1,13 @@
 import { useTheme } from "@emotion/react";
 
-const stateColor = ({ state, txValue, rxValue }) => {
+const stateColor = ({ state, txValue, rxValue, idleColor = "secondary" }) => {
     const theme = useTheme();
     const stateColors = {
-        Connected: theme.palette.success.main,
-        Connecting: theme.palette.warning.main,
-        Disconnecting: theme.palette.warning.main,
-        Disconnected: theme.palette.error.main,
-        Idle: theme.palette.text.action,
+        Connected: `${theme.palette.success.main} !important`,
+        Connecting: `${theme.palette.warning.main} !important`,
+        Disconnecting: `${theme.palette.warning.main} !important`,
+        Disconnected: `${theme.palette.error.main} !important`,
+        Idle: `${theme.palette.text[idleColor]} !important`,
     };
     let color = stateColors[state] ? stateColors[state] : theme.palette.text.secondary;
     if (state === "Connected") {
