@@ -19,9 +19,20 @@ module.exports = async (data) => {
     if (loadedProgram?.groups) {
         for (const eachGroup of loadedProgram?.groups) {
             // add group first
-            const activeGroupConnection = connections.find((c) => {
-                return c.id === eachConnection.id;
+            const activeGroupStats = statisticsFromDb.find((c) => {
+                return c.id === eachGroup.id;
             });
+
+            if (activeGroupStats) {
+                statisticsArray.push({
+                    id: activeGroupStats.id,
+                    type: "group",
+                    name: eachGroup._title,
+                    "stats-10m": activeGroupStats["ten-minutes-aggregate"],
+                    "stats-1m": activeGroupStats["minute-aggregate"],
+                    "stats-total": activeGroupStats["total-aggregate"],
+                });
+            }
 
             for (const eachConnection of eachGroup?.connections) {
                 // we're using the id as it works on TX and RX
@@ -31,6 +42,7 @@ module.exports = async (data) => {
 
                 const connectionStats = {
                     id: eachConnection.id,
+                    type: "connection",
                     name: eachConnection.name,
                     _tabName: eachConnection._tabName,
                     state: activeConnection ? activeConnection.state : "Idle",
