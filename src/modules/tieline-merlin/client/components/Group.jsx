@@ -68,12 +68,15 @@ export default function Group({ group, panelId, onChange }) {
         rxValue: group.connections[tabIndex]?.localLinkQuality,
     });
 
-    const groupStateIndicatorColor = stateColor({
-        state: group.connections[tabIndex]?.state,
-        txValue: group.connections[tabIndex]?.remoteLinkQuality,
-        rxValue: group.connections[tabIndex]?.localLinkQuality,
-        idleColor: "action",
-    });
+    const groupStateIndicatorColor =
+        tabIndex === "stats"
+            ? "text.action"
+            : stateColor({
+                  state: group.connections[tabIndex]?.state,
+                  txValue: group.connections[tabIndex]?.remoteLinkQuality,
+                  rxValue: group.connections[tabIndex]?.localLinkQuality,
+                  idleColor: "action",
+              });
 
     let borderColor = "transparent";
     if (group.connections[tabIndex]?.state && group.connections[tabIndex]?.state !== "Idle") {
@@ -140,6 +143,12 @@ export default function Group({ group, panelId, onChange }) {
                                 txValue: group.connections[index]?.remoteLinkQuality,
                                 rxValue: group.connections[index]?.localLinkQuality,
                             });
+                            const selectedConnectionColor = stateColor({
+                                state: group.connections[index]?.state,
+                                txValue: group.connections[index]?.remoteLinkQuality,
+                                rxValue: group.connections[index]?.localLinkQuality,
+                                idleColor: "action",
+                            });
                             return (
                                 <Tab
                                     label={connection._tabName}
@@ -147,7 +156,7 @@ export default function Group({ group, panelId, onChange }) {
                                     sx={{
                                         color: connectionColor,
                                         "&.Mui-selected": {
-                                            color: connectionColor,
+                                            color: selectedConnectionColor,
                                         },
                                         "& .MuiTab-iconWrapper": {},
                                     }}
