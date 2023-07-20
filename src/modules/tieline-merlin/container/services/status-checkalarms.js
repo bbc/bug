@@ -9,14 +9,16 @@ module.exports = async () => {
 
     const statusItems = [];
 
-    for (const eachAlarm of alarms) {
-        statusItems.push(
-            new StatusItem({
-                key: `${eachAlarm.id}${eachAlarm.key}`,
-                message: [eachAlarm.title],
-                type: eachAlarm.level === "CRITICAL" ? "error" : "warning",
-            })
-        );
+    if (alarms) {
+        for (const eachAlarm of alarms) {
+            statusItems.push(
+                new StatusItem({
+                    key: `${eachAlarm.id}${eachAlarm.key}`,
+                    message: [eachAlarm.title],
+                    type: eachAlarm.level === "CRITICAL" ? "error" : "warning",
+                })
+            );
+        }
     }
     return statusItems;
 };
