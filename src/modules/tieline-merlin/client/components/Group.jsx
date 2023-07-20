@@ -29,6 +29,12 @@ export default function Group({ group, panelId, onChange }) {
         await AxiosCommand(url);
     };
 
+    const handleGroupDisconnect = async () => {
+        const url = `/container/${panelId}/connection/disconnect/${encodeURIComponent(group.id)}`;
+        sendAlert(`Requested disconnection`, { variant: "info" });
+        await AxiosCommand(url);
+    };
+
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex);
     };
@@ -88,16 +94,18 @@ export default function Group({ group, panelId, onChange }) {
             <BugCard fullHeight>
                 <CardHeader
                     action={
-                        group.connections.length > 1 && (
-                            <BugApiButton
-                                onClick={handleGroupConnect}
-                                variant="outlined"
-                                color="primary"
-                                disabled={group._connected}
-                            >
-                                Connect All
-                            </BugApiButton>
-                        )
+                        <>
+                            {group.connections.length > 1 && !group._connected && (
+                                <BugApiButton onClick={handleGroupConnect} variant="outlined" color="success">
+                                    Connect All
+                                </BugApiButton>
+                            )}
+                            {group.connections.length > 1 && group._connected && (
+                                <BugApiButton onClick={handleGroupDisconnect} variant="outlined" color="error">
+                                    Disonnect All
+                                </BugApiButton>
+                            )}
+                        </>
                     }
                     sx={{
                         borderBottomWidth: "1px",

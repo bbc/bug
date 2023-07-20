@@ -75,7 +75,7 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                         value: (
                             <BugTextField
                                 fullWidth
-                                value={connection.destination}
+                                value={connection.destination ? connection.destination : ""}
                                 onChange={(e) => onChange(group.id, connection.id, { destination: e.target.value })}
                                 type="text"
                                 variant="outlined"
@@ -130,8 +130,8 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                                     { id: "Primary", label: "Primary" },
                                     { id: "Secondary", label: "Secondary" },
                                     { id: "Tertiary", label: "Tertiary" },
-                                    { id: "ETH1", label: "ETH1" },
-                                    { id: "ETH2", label: "ETH2" },
+                                    { id: "LAN1", label: "LAN1" },
+                                    { id: "LAN2", label: "LAN2" },
                                     { id: "Wi-Fi", label: "Wi-Fi" },
                                     { id: "Fuse-IP", label: "Fuse-IP" },
                                     { id: "VLAN1", label: "VLAN1" },
@@ -157,7 +157,7 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                 <BugApiButton
                     onClick={(e) => handleConnect(connection)}
                     variant="contained"
-                    color="primary"
+                    color="success"
                     disabled={connection._connected || connection._connecting}
                 >
                     Connect
@@ -168,7 +168,7 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                     }}
                     onClick={(e) => handleDisconnect(connection)}
                     variant="contained"
-                    color="primary"
+                    color="error"
                     disabled={!connection._connected && !connection._connecting}
                 >
                     Disconnect

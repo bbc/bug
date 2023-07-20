@@ -157,7 +157,7 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                 <BugApiButton
                     onClick={(e) => handleConnect(connection)}
                     variant="contained"
-                    color="primary"
+                    color="success"
                     disabled={connection._connected || connection._connecting}
                 >
                     Connect
@@ -168,7 +168,7 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                     }}
                     onClick={(e) => handleDisconnect(connection)}
                     variant="contained"
-                    color="primary"
+                    color="error"
                     disabled={!connection._connected && !connection._connecting}
                 >
                     Disconnect
