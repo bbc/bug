@@ -18,16 +18,16 @@ const MainPanel = () => {
     const renderClock = () => {
         return (
             <>
-                <Hidden only={["sm", "md", "lg", "xl"]}>
+                <Hidden only={["sm", "md", "lg", "xl", "xxl"]}>
                     <Clock type={panelConfig.data.type} size="xs" />
                 </Hidden>
-                <Hidden only={["xs", "md", "lg", "xl"]}>
+                <Hidden only={["xs", "md", "lg", "xl", "xxl"]}>
                     <Clock type={panelConfig.data.type} size="sm" />
                 </Hidden>
-                <Hidden only={["xs", "sm", "lg", "xl"]}>
+                <Hidden only={["xs", "sm", "lg", "xl", "xxl"]}>
                     <Clock type={panelConfig.data.type} size="md" />
                 </Hidden>
-                <Hidden only={["xs", "sm", "md", "xl"]}>
+                <Hidden only={["xs", "sm", "md", "xl", "xxl"]}>
                     <Clock type={panelConfig.data.type} size="lg" />
                 </Hidden>
                 <Hidden only={["xs", "sm", "md", "lg"]}>
