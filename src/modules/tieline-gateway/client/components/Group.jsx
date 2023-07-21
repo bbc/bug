@@ -24,13 +24,13 @@ export default function Group({ group, panelId, onChange }) {
     const sendAlert = useAlert();
 
     const handleGroupConnect = async () => {
-        const url = `/container/${panelId}/connection/connect/${encodeURIComponent(group.id)}`;
+        const url = `/container/${panelId}/group/connect/${encodeURIComponent(group.id)}`;
         sendAlert(`Requested connection`, { variant: "info" });
         await AxiosCommand(url);
     };
 
     const handleGroupDisconnect = async () => {
-        const url = `/container/${panelId}/connection/disconnect/${encodeURIComponent(group.id)}`;
+        const url = `/container/${panelId}/group/disconnect/${encodeURIComponent(group.id)}`;
         sendAlert(`Requested disconnection`, { variant: "info" });
         await AxiosCommand(url);
     };
@@ -95,12 +95,12 @@ export default function Group({ group, panelId, onChange }) {
                 <CardHeader
                     action={
                         <>
-                            {group.connections.length > 1 && !group._connected && (
+                            {group.connections.length > 1 && !group._anyconnected && (
                                 <BugApiButton onClick={handleGroupConnect} variant="outlined" color="success">
                                     Connect All
                                 </BugApiButton>
                             )}
-                            {group.connections.length > 1 && group._connected && (
+                            {group._anyconnected && (
                                 <BugApiButton onClick={handleGroupDisconnect} variant="outlined" color="error">
                                     Disonnect All
                                 </BugApiButton>

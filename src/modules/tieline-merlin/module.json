@@ -4,7 +4,7 @@
     "description": "Control and monitor Tieline Merlin codecs",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icon": "mdi-transit-connection-variant",
     "author": "Geoff House",
     "memory": 200,
