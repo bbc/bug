@@ -46,7 +46,7 @@ module.exports = class TielineApi {
     async post(path, data) {
         const client = new DigestFetch(this.username, this.password);
         const url = `http://${this.host}${path}`;
-        console.log(`tieline-api: POST request to API at ${url}`);
+        console.log(`tieline-api: POST request to API at ${url} with data ${JSON.stringify(data)}`);
 
         // convert body to xml
         let xmlData;
