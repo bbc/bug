@@ -12,7 +12,7 @@ module.exports = async () => {
     let loadedProgram = await mongoSingle.get("loadedProgram");
 
     // if loadedProgram is empty, return null
-    if (Object.keys(loadedProgram).length === 0) {
+    if (!loadedProgram || Object.keys(loadedProgram).length === 0) {
         return null;
     }
 
@@ -21,6 +21,7 @@ module.exports = async () => {
     if (loadedProgram.groups) {
         for (let eachGroup of loadedProgram.groups) {
             let groupConnected = true;
+            let groupAnyConnected = false;
             for (let eachConnection of eachGroup.connections) {
                 const activeConnection = connections.find((c) => c.id === eachConnection.id);
                 eachConnection["localLinkQuality"] = activeConnection?.localLinkQuality;
@@ -30,8 +31,10 @@ module.exports = async () => {
                 eachConnection["_connecting"] = activeConnection?.state === "Connecting";
                 eachConnection["state"] = activeConnection?.state ? activeConnection?.state : "Idle";
                 groupConnected = groupConnected && eachConnection["_connected"];
+                groupAnyConnected = groupAnyConnected || eachConnection["_connected"];
             }
             eachGroup["_connected"] = groupConnected;
+            eachGroup["_anyconnected"] = groupAnyConnected;
             deviceConnected = deviceConnected && eachGroup["_connected"];
         }
         loadedProgram["_connected"] = deviceConnected;

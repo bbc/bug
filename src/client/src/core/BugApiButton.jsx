@@ -48,7 +48,7 @@ export default function BugApiButton({
         }
         return isActive ? <CircularProgress size={20} /> : icon;
     };
-    console.log(color);
+
     return (
         <Button
             color={color}

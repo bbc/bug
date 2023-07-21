@@ -44,6 +44,8 @@ module.exports = async (TielineApi) => {
                 );
                 if (stateResult && stateResult?.["result"]?.["cxn-live-prop"]?.["_attributes"]?.["cxn-id"]) {
                     connectionArray["id"] = stateResult?.["result"]?.["cxn-live-prop"]?.["_attributes"]?.["cxn-id"];
+                    connectionArray["groupId"] =
+                        stateResult?.["result"]?.["cxn-live-prop"]?.["_attributes"]?.["group-id"];
                     connectionArray["answering"] = parseNullInt(
                         stateResult?.["result"]?.["cxn-live-prop"]?.["ANSWERING"]?.["_text"]
                     );
