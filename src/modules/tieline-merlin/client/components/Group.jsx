@@ -102,7 +102,7 @@ export default function Group({ group, panelId, onChange }) {
                             )}
                             {group.connections.length > 1 && group._connected && (
                                 <BugApiButton onClick={handleGroupDisconnect} variant="outlined" color="error">
-                                    Disonnect All
+                                    Disconnect All
                                 </BugApiButton>
                             )}
                         </>
