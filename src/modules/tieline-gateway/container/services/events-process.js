@@ -50,6 +50,12 @@ module.exports = async (TielineApi, data) => {
             case "prog-group-remove-cxn":
                 fetchConnections(TielineApi);
                 return;
+            case "digest-change":
+                // do nothing
+                return;
+            case "ref-level-changed":
+                // do nothing
+                return;
             default:
                 console.warn(`unhandled event: ${JSON.stringify(eachEvent)}`);
                 return;

@@ -11,7 +11,6 @@ module.exports = async (formData) => {
         });
 
         const result = await TielineApi.get("/api/version");
-        console.log(result);
         if (result?.["result"]?.["HTTP_API_VERSION"]?.["_text"]) {
             return new validationResult([
                 {
