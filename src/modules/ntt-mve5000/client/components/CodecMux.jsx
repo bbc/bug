@@ -19,7 +19,7 @@ export default function CodecMux({ codecdata, onChange }) {
                                 onChange={(event) => onChange({ EncTsRate: parseInt(event.target.value) })}
                                 filter={/[^0-9]/}
                                 numeric
-                                min={3200}
+                                min={1300}
                                 max={50000}
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">kbps</InputAdornment>,
