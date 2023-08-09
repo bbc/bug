@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
+const logger = require("@core/logger")(module);
 const videohub = require("@utils/videohub-promise");
 
 const updateDelay = 2000;
@@ -60,7 +61,7 @@ const main = async () => {
     dataCollection.deleteMany({});
 
     // Kick things off
-    console.log(`worker-videohub: connecting to device at ${workerData.address}:${workerData.port}`);
+    logger.info(`worker-videohub: connecting to device at ${workerData.address}:${workerData.port}`);
 
     let router;
     try {
@@ -73,10 +74,10 @@ const main = async () => {
     }
 
     router.on("update", saveResult);
-    console.log("worker-videohub: attempting connection ... ");
+    logger.debug("worker-videohub: attempting connection ... ");
 
     await router.connect();
-    console.log("worker-videohub: waiting for events ...");
+    logger.debug("worker-videohub: waiting for events ...");
 
     let statusDumpTime = Date.now();
     let statusDumpFields = [

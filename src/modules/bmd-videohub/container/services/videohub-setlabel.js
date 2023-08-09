@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
+const logger = require("@core/logger")(module);
 
 module.exports = async (index, type, label) => {
     if (type === "source") {
@@ -13,7 +14,7 @@ module.exports = async (index, type, label) => {
     }
 
     if (!["input", "output"].includes(type)) {
-        console.log(`videohub-setlabel: invalid type '${type}'`);
+        logger.error(`videohub-setlabel: invalid type '${type}'`);
         return false;
     }
 
@@ -28,7 +29,7 @@ module.exports = async (index, type, label) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-setlabel: failed to fetch config`);
+        logger.error(`videohub-setlabel: failed to fetch config`);
         return false;
     }
 
@@ -41,7 +42,7 @@ module.exports = async (index, type, label) => {
         await router.send(field, command);
         return true;
     } catch (error) {
-        console.log("videohub-setlabel: ", error);
+        logger.error("videohub-setlabel: ", error);
         return false;
     }
 };

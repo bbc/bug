@@ -2,13 +2,14 @@
 
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
+const logger = require("@core/logger")(module);
 
 module.exports = async (params) => {
     // params should contain a single array, with an object for each label to set:
     // { "labels: [ { "type": "output", "index": 0, "label": "Output 1" }, { ... } ] }
 
     if (!params.labels) {
-        console.log(`videohub-setlabels: invalid array passed to method`);
+        logger.warning(`videohub-setlabels: invalid array passed to method`);
         return false;
     }
 
@@ -19,7 +20,7 @@ module.exports = async (params) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-setlabels: failed to fetch config`);
+        logger.error(`videohub-setlabels: failed to fetch config`);
         return false;
     }
 
@@ -30,10 +31,9 @@ module.exports = async (params) => {
         try {
             const field = eachLabel.type == "output" ? "OUTPUT LABELS" : "INPUT LABELS";
             const command = `${eachLabel.index} ${eachLabel.label}`;
-            console.log(field, command);
             await router.send(field, command);
         } catch (error) {
-            console.log("videohub-setlabels: ", error);
+            logger.error("videohub-setlabels: ", error);
             return false;
         }
     }

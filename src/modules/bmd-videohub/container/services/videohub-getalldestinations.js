@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     let config;
@@ -11,7 +12,7 @@ module.exports = async () => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-getalldestinations: failed to fetch config`);
+        logger.error(`videohub-getalldestinations: failed to fetch config`);
         return false;
     }
 

@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
+const logger = require("@core/logger")(module);
 
 module.exports = async (destinatonIndex, sourceIndex) => {
     let config;
@@ -11,7 +12,7 @@ module.exports = async (destinatonIndex, sourceIndex) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-route: failed to fetch config`);
+        logger.error(`videohub-route: failed to fetch config`);
         return false;
     }
 
@@ -21,7 +22,7 @@ module.exports = async (destinatonIndex, sourceIndex) => {
         await router.send("VIDEO OUTPUT ROUTING", `${destinatonIndex} ${sourceIndex}`);
         return true;
     } catch (error) {
-        console.log("videohub-route: ", error);
+        logger.error("videohub-route: ", error);
         return false;
     }
 };

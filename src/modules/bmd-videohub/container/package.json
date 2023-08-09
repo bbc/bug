@@ -27,7 +27,8 @@
         "package.json": "^2.0.1",
         "path": "^0.12.7",
         "ping": "^0.4.1",
-        "underscore": "^1.13.1"
+        "underscore": "^1.13.1",
+        "winston": "^3.10.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

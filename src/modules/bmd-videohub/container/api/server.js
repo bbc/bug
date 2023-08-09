@@ -1,18 +1,20 @@
 "use strict";
 
 const register = require("module-alias/register");
+const logger = require("@core/logger")(module);
 const mongoDb = require("@core/mongo-db");
 const app = require("./app");
 
 const port = process.env.PORT || 3200;
-const myPanelId = process.env.PANEL_ID;
+const panelId = process.env.PANEL_ID;
+const moduleName = process.env.MODULE;
 
 const serve = async () => {
     try {
-        await mongoDb.connect(myPanelId);
+        await mongoDb.connect(panelId);
 
         app.listen(port, () => {
-            console.log("api listening on port " + port.toString());
+            logger.info(`${moduleName} API listening on port ${port.toString()}`);
         });
     } catch (error) {
         throw error;
