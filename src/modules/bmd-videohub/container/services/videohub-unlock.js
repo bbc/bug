@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
+const logger = require("@core/logger")(module);
 
 module.exports = async (index) => {
     let config;
@@ -11,7 +12,7 @@ module.exports = async (index) => {
             throw new Error();
         }
     } catch (error) {
-        console.log(`videohub-unlock: failed to fetch config`);
+        logger.error(`videohub-unlock: failed to fetch config`);
         return false;
     }
 
@@ -24,7 +25,7 @@ module.exports = async (index) => {
         await router.send(field, command);
         return true;
     } catch (error) {
-        console.log("videohub-unlock: ", error);
+        logger.error("videohub-unlock: ", error);
         return false;
     }
 };

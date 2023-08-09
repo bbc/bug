@@ -29,6 +29,7 @@ module.exports = async (configObject) => {
             Env: [
                 `PORT=${modulePort}`,
                 `PANEL_ID=${configObject.id}`,
+                `MODULE=${configObject.module}`,
                 `CORE_PORT=${bugCorePort}`,
                 `CORE_HOST=${bugCoreHost}`,
                 `BUG_HOST=${bugHost}`,

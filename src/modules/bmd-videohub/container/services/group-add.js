@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@core/logger")(module);
 
 module.exports = async (type, groupName) => {
     const config = await configGet();
@@ -16,7 +17,7 @@ module.exports = async (type, groupName) => {
 
     for (let eachGroup of config[groupVar]) {
         if (eachGroup["name"].toLowerCase() === groupName.toLowerCase()) {
-            console.log(`group-add: group ${groupName} already exists`);
+            logger.error(`group-add: group ${groupName} already exists`);
             return false;
         }
     }
