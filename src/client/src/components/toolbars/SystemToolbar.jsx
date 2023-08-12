@@ -29,7 +29,11 @@ export default function SystemToolbar(props) {
 
     const handleCleanup = async () => {
         sendAlert(`Cleaning up system`, { broadcast: "true", variant: "success" });
-        AxiosGet("/api/system/cleanup");
+
+        const status = await AxiosGet("/api/system/cleanup");
+        if (status) {
+            sendAlert(`Cleanup successful`, { broadcast: "true", variant: "success" });
+        }
     };
 
     const handleOpenMenuClick = (event) => {
