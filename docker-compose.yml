@@ -27,6 +27,7 @@ services:
             MONGO_CONTAINER: bug-mongo
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
+            CLEANUP: 2
             BUG_PORT: 3101
             BUG_HOST: "127.0.0.1"
             BUG_LOG_FOLDER: logs
@@ -65,7 +66,6 @@ services:
             WATCHTOWER_DEBUG: "true"
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CLEANUP: "true"
             WATCHTOWER_LABEL_ENABLE: "true"
     mongo-web:
         image: mongo-express

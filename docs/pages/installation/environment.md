@@ -25,5 +25,6 @@ You can set a range of environment variables on the main BUG container to contro
 | BUG_LOG_NAME              | bug                    | STRING  |                                                                                                                     |
 | BUG_REGISTRY_FQDN         | ghcr.io/bbc            | STRING  | Where to get new BUG containers from - if not set uses DockerHub.                                                   |
 | PORT                      | 3000                   | INTEGER | Create-React-App port for development purposes only                                                                 |
+| CLEANUP                   | 2                      | INTEGER | The hour of the day in 24-hour clock format that BUG core runs a cleanup of unused docker resources on the system   |
 | NODE_ENV                  | development            | STRING  |                                                                                                                     |
 | SESSION_SECRET:           | aSecretForYourSessions | STRING  | CHANGE THIS - Passport.js global session secrets. Keeps your users safe                                             |
