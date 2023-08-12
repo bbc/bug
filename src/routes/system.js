@@ -16,6 +16,7 @@ const systemUpdate = require("@services/system-update-apply");
 const systemUpdateCache = require("@services/system-update-cache");
 const systemSettingsGet = require("@services/system-settings-get");
 const systemSettingsUpdate = require("@services/system-settings-update");
+const dockerCleanup = require("@services/docker-cleanup");
 
 /**
  * @swagger
@@ -32,6 +33,26 @@ const systemSettingsUpdate = require("@services/system-settings-update");
 router.get("/hello", function (req, res, next) {
     const message = { data: "Good morning sunshine, the earth says hello.", status: "success" };
     hashResponse(res, req, message);
+});
+
+/**
+ * @swagger
+ * /system/cleanup:
+ *    get:
+ *      description: Cleans up unused images, containers volumes and other system junk.
+ *      tags: [system]
+ *      produces:
+ *        - application/json
+ *      responses:
+ *        '200':
+ *          description: Success
+ */
+router.get("/cleanup", restrict.to(["admin", "user"]), async function (req, res, next) {
+    const data = await dockerCleanup();
+    hashResponse(res, req, {
+        status: data ? "success" : "failure",
+        data: data,
+    });
 });
 
 /**
