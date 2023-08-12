@@ -1,12 +1,9 @@
 "use strict";
 
-const matrix = require("@utils/matrix");
+const probel = require("probel-swp-08");
 
 module.exports = async (address, port) => {
-    const router = new matrix({
-        host: address,
-        port: port,
-    });
+    const router = new probel(address, { port: port });
 
     await router.connect();
 
