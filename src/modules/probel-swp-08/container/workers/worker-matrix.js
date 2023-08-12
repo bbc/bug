@@ -6,8 +6,8 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
+const probel = require("probel-swp-08");
 const logger = require("@core/logger")(module);
-const matrix = require("@utils/matrix");
 
 const updateDelay = 2000;
 let dataCollection;
@@ -16,7 +16,7 @@ let lastSeen = null;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "port"],
+    restartOn: ["address", "port", "extended"],
 });
 
 const saveResult = async (newResults) => {
@@ -47,6 +47,8 @@ const saveResult = async (newResults) => {
     }
 };
 
+const crosspointEvent = () => {};
+
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
@@ -65,51 +67,25 @@ const main = async () => {
 
     let router;
     try {
-        router = new matrix({
-            host: workerData.address,
-            port: workerData.port,
-        });
+        router = new Probel(workerData.address, { port: workerData.port, extended: workerData.extended });
+        router.on("crosspoint", crosspointEvent);
+
+        const rotuerState = await router.getState();
     } catch (error) {
         throw error;
     }
 
-    router.on("update", saveResult);
-    logger.debug("worker-matrix: attempting connection ... ");
-
-    await router.connect();
-    logger.debug("worker-matrix: waiting for events ...");
-
-    let statusDumpTime = Date.now();
-    let statusDumpFields = [
-        "MATRIX DEVICE",
-        "INPUT LABELS",
-        "OUTPUT LABELS",
-        "VIDEO OUTPUT LOCKS",
-        "VIDEO OUTPUT ROUTING",
-        "ALARM STATUS",
-    ];
     while (true) {
+        if (workerData.desinationNames.length < 1) {
+            const desinationNames = await router.getDestinationNames();
+        }
+
+        if (workerData.sourceNames.length < 1) {
+            const sourceNames = await router.getSourceNames();
+        }
+
         // poll occasionally
         await delay(updateDelay);
-
-        // every 30 seconds we re-request all the blocks
-        if (statusDumpTime + 30 * 1000 < Date.now()) {
-            statusDumpTime = Date.now();
-            for (let eachField of statusDumpFields) {
-                await router.send(eachField);
-            }
-        } else {
-            // otherwise we just request an 'ack' to keep the database timestamp fresh
-            await router.send("PING");
-        }
-
-        if (!lastSeen) {
-            // it didn't work
-            throw new Error("No response from device");
-        }
-        if (Date.now() - lastSeen > 1000 * 10) {
-            throw new Error("Device not seen in 10 seconds");
-        }
     }
 };
 

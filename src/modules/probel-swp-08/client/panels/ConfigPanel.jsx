@@ -85,6 +85,15 @@ export default function ConfigPanel() {
                 </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormSwitch
+                        name="extended"
+                        label="Extened Commands"
+                        control={control}
+                        defaultValue={panelConfig.data.extended}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BugConfigFormSwitch
                         name="useTake"
                         label="Require confirmation click to take"
                         control={control}
