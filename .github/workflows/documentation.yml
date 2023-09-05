@@ -27,7 +27,7 @@ jobs:
         steps:
             #Get the latest version of the repository
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             #Check github pages docs for spelling errors
             - name: "Documentation: Spell Check Documentation"
               uses: codespell-project/actions-codespell@master
@@ -46,7 +46,7 @@ jobs:
                 working-directory: ./src/client
         steps:
             - name: Checkout 🛎️
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   persist-credentials: false
             - name: Install and Build 🔧
@@ -60,7 +60,7 @@ jobs:
         needs: storybook
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - name: Setup Pages
               uses: actions/configure-pages@v2
             - name: Build with Jekyll
