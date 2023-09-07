@@ -22,10 +22,10 @@ For development on your local machine with docker (recommended)
 1. To begin you'll need to install the [Docker Desktop](https://www.docker.com/products/docker-desktop/) and the latest LTS version of [Node.js](https://nodejs.dev/en) on your development machine.
 1. Check your Docker and Node.js installations are working using the commands `docker -v` and `node -v`. You should see some sensible version numbers. At least `20.x.x` for Docker and at least `16.x.x` for Node.js.
 1. Next, clone the BUG repository using `git clone https://github.com/bbc/bug`
-1. Change directory to the `./src` folder of the repository
-1. Run `npm i`. To install all the backend dependencies locally
-1. Change directory to the `./src/client` folder of the repository
-1. Run `npm i`. To install all the frontend dependencies locally
+1. Change directory to the `./src` folder of the repository.
+1. Run `npm i`. This installs all the backend dependencies locally.
+1. Change directory to the `./src/client` folder.
+1. Run `npm i --legacy-peer-deps` to install all the frontend dependencies locally.
 1. Change directory to the root folder of the repository. This will be the same level as the `docker-compose.yml` file in the repository.
 1. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become available. You can view the live logs from the main BUG contrainer `bug` using the command `docker logs --tail 1000 -f bug`.
 1. Get developing. If you're using the default ports, the web interface will be available on port 3000, the API on port 3101 and the GUI view of the MongoDB database on port 3202.
