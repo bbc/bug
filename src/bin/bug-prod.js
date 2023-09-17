@@ -8,6 +8,7 @@ const http = require("http");
 const mongoDb = require("@core/mongo-db");
 const WorkerManager = require("@core/WorkerManager");
 const heapInfo = require("@core/heap-info");
+const cleanup = require("@utils/cleanup");
 
 //Print the heap size
 heapInfo(logger);

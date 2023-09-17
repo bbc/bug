@@ -1,0 +1,51 @@
+{
+    "name": "probel-swp-08",
+    "longname": "Generic Probel Matrix",
+    "description": "Control matrices that use the probel-swp-08 protocol",
+    "capabilities": [
+        "video-router"
+    ],
+    "memory": 50,
+    "notes": "",
+    "version": "0.1.0",
+    "icon": "mdi-matrix",
+    "author": "Ryan McCartney",
+    "license": "Apache-2.0",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": [
+        "api",
+        "utils",
+        "services",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "probel-swp-08",
+        "description": "",
+        "notes": "",
+        "sources": 72,
+        "destinations": 72,
+        "enabled": false,
+        "address": "",
+        "port": "8910",
+        "useTake": false,
+        "sourceGroups": [],
+        "sourceNames": [],
+        "destinationGroups": [],
+        "sourceIconColors": [],
+        "destinationIconColors": [],
+        "destinationNames": [],
+        "destinationLocks": [],
+        "sourceIcons": [],
+        "destinationIcons": [],
+        "excludeSources": [],
+        "excludeDestinations": []
+    }
+}
