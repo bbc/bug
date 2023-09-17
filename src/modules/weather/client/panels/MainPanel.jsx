@@ -3,7 +3,7 @@ import Weather from "../components/Weather";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 
-export default function MainPanel() {
+export default function MainPanel({ panelId }) {
     const panelConfig = useSelector((state) => state.panelConfig);
 
     if (panelConfig.status === "loading") {
@@ -16,7 +16,7 @@ export default function MainPanel() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Weather {...panelConfig?.data} />
+            <Weather panelId={panelId} {...panelConfig?.data} />
         </Box>
     );
 }
