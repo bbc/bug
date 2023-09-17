@@ -1,6 +1,6 @@
 {
     "name": "bug",
-    "version": "3.0.48",
+    "version": "3.0.50",
     "description": "Broadcast Universal Gateway",
     "main": "index.js",
     "directories": {
@@ -61,6 +61,7 @@
         "morgan": "^1.10.0",
         "nanoid": "^3.3.4",
         "node-cache": "^5.1.2",
+        "node-schedule": "^2.1.1",
         "openapi-types": "^10.0.0",
         "passport": "^0.5.3",
         "passport-http-header-strategy": "^1.1.0",

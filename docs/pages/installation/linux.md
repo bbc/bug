@@ -84,6 +84,11 @@ services:
             - bug
         ports:
             - 80:80
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: 1
     watchtower:
         container_name: bug-watchtower
         image: containrrr/watchtower
@@ -92,6 +97,11 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
         networks:
             - bug
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: 1
         environment:
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
@@ -101,6 +111,11 @@ services:
         image: mongo:latest
         restart: unless-stopped
         container_name: bug-mongo
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: 1
         networks:
             - bug
 ```

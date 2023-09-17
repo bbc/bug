@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import AxiosGet from "@utils/AxiosGet";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import { useAlert } from "@utils/Snackbar";
 import BugRestrictTo from "@core/BugRestrictTo";
 
@@ -24,6 +25,15 @@ export default function SystemToolbar(props) {
     const handleRestart = async () => {
         sendAlert(`Application restarting`, { broadcast: "true", variant: "success" });
         AxiosGet("/api/bug/restart");
+    };
+
+    const handleCleanup = async () => {
+        sendAlert(`Cleaning up system`, { broadcast: "true", variant: "success" });
+
+        const status = await AxiosGet("/api/system/cleanup");
+        if (status) {
+            sendAlert(`Cleanup successful`, { broadcast: "true", variant: "success" });
+        }
     };
 
     const handleOpenMenuClick = (event) => {
@@ -61,6 +71,12 @@ export default function SystemToolbar(props) {
                             <PowerSettingsNewIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="Shutdown" />
+                    </MenuItem>
+                    <MenuItem onClick={handleCleanup}>
+                        <ListItemIcon>
+                            <CleaningServicesIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Cleanup" />
                     </MenuItem>
                 </Menu>
             </BugRestrictTo>
