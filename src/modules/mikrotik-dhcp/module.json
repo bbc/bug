@@ -2,25 +2,16 @@
     "name": "mikrotik-dhcp",
     "longname": "Mikrotik DHCP",
     "description": "View and manage DHCP leases on Mikrotik routers",
-    "capabilities": [
-        "dhcp-server"
-    ],
+    "capabilities": ["dhcp-server"],
     "notes": "",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "mdi-clipboard-list",
     "author": "Geoff House",
     "needsContainer": true,
     "license": "Apache-2.0",
     "status": "stable",
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,
