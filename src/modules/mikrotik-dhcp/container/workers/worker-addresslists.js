@@ -26,6 +26,9 @@ const main = async () => {
     // update ttl
     await mongoCreateIndex(addressListsCollection, "timestamp", { expireAfterSeconds: 60 });
 
+    // remove previous values
+    await addressListsCollection.deleteMany({});
+
     const conn = new RosApi({
         host: workerData.address,
         user: workerData.username,

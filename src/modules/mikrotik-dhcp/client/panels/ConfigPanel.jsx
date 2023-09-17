@@ -52,7 +52,7 @@ export default function ConfigPanel() {
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
                         name="address"
                         control={control}
