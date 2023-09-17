@@ -27,7 +27,7 @@ const set = async ({ host, category = "", value = "", field = "" }) => {
                   field
               )}&value=${encodeURIComponent(value)}`;
 
-        console.log(url);
+        console.log(`hitomi-api: setting value: ${url}`);
         const response = await axios.get(url);
         if (response && response?.data) {
             console.error(`ERROR: ${response.data}`);
