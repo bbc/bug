@@ -27,6 +27,15 @@ export default function PanelDropdownMenu({ panel }) {
     const open = Boolean(anchorEl);
     const { renameDialog } = useBugRenameDialog();
     const { confirmDialog } = useBugConfirmDialog();
+    const needsContainer = panel?._module.needsContainer ?? true;
+    const hideRestart = !needsContainer;
+    const hideUpgrade = !needsContainer;
+    const disableEnable = panel?.enabled || panel?._dockerContainer._isBuilding;
+    const disableDisable = !panel?.enabled || panel?._dockerContainer._isBuilding;
+    const disableRestart = !needsContainer;
+    const disableUpgrade = !panel?.upgradeable;
+    const disableDelete = panel?._dockerContainer._isBuilding;
+    const disableConfig = !panel?.enabled || panel?._dockerContainer._isBuilding;
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -39,16 +48,6 @@ export default function PanelDropdownMenu({ panel }) {
         event.stopPropagation();
         event.preventDefault();
     };
-
-    const needsContainer = panel?._module.needsContainer ?? true;
-    const hideRestart = !needsContainer;
-    const hideUpgrade = !needsContainer;
-    const disableEnable = panel?.enabled || panel?._dockerContainer._isBuilding;
-    const disableDisable = !panel?.enabled || panel?._dockerContainer._isBuilding;
-    const disableRestart = !needsContainer;
-    const disableUpgrade = !panel?.upgradeable;
-    const disableDelete = panel?._dockerContainer._isBuilding;
-    const disableConfig = !panel?.enabled || panel?._dockerContainer._isBuilding;
 
     const handleEnable = async (event) => {
         setAnchorEl(null);
@@ -88,18 +87,30 @@ export default function PanelDropdownMenu({ panel }) {
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();
-        sendAlert(
-            `Upgrading panel: ${panel?.title} - from ${panel?._dockerContainer?.version} to ${panel?._module?.version}`,
-            {
-                broadcast: "true",
-                variant: "info",
-            }
-        );
 
-        if (await AxiosCommand(`/api/module/rebuild/${panel?._module.name}`)) {
-            sendAlert(`Upgraded panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to upgrade panel: ${panel?.title}`, { variant: "error" });
+        const result = await confirmDialog({
+            title: "Upgrade module?",
+            message: [
+                `This will stop and upgrade all instances of '${panel?._module?.longname}'.`,
+                "You will need to restart each container once upgraded. Continue?",
+            ],
+            confirmButtonText: "Upgrade",
+        });
+
+        if (result !== false) {
+            sendAlert(
+                `Upgrading panel: ${panel?.title} - from ${panel?._dockerContainer?.version} to ${panel?._module?.version}`,
+                {
+                    broadcast: "true",
+                    variant: "info",
+                }
+            );
+
+            if (await AxiosCommand(`/api/module/rebuild/${panel?._module.name}`)) {
+                sendAlert(`Upgraded panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
+            } else {
+                sendAlert(`Failed to upgrade panel: ${panel?.title}`, { variant: "error" });
+            }
         }
     };
 
