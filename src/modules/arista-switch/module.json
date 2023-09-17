@@ -1,11 +1,9 @@
 {
     "name": "arista-switch",
     "longname": "Arista Switch",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Monitoring and control of Arista switches",
-    "capabilities": [
-        "network-switch"
-    ],
+    "capabilities": ["network-switch"],
     "icon": "SettingsEthernet",
     "notes": "",
     "author": "Geoff House",
@@ -13,15 +11,8 @@
     "memory": 220,
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

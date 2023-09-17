@@ -87,7 +87,7 @@ const main = async () => {
             }
         }
 
-        domainsCollection.deleteMany({});
+        await domainsCollection.deleteMany({});
         await mongoSaveArray(domainsCollection, domainsItems, "name");
 
         const transmittersItems = [];
@@ -107,7 +107,7 @@ const main = async () => {
             }
         }
 
-        transmittersCollection.deleteMany({});
+        await transmittersCollection.deleteMany({});
         await mongoSaveArray(transmittersCollection, transmittersItems, "id");
 
         const receiversItems = [];
@@ -127,7 +127,7 @@ const main = async () => {
             }
         }
 
-        receiversCollection.deleteMany({});
+        await receiversCollection.deleteMany({});
         await mongoSaveArray(receiversCollection, receiversItems, "id");
 
         await delay(updateDelay);
