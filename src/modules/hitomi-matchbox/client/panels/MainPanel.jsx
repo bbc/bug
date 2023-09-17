@@ -70,28 +70,45 @@ export default function MainPanel({ panelId }) {
         }
     };
 
+    if (!devicedata) {
+        return <BugLoading />;
+    }
+    const content = [];
+    const locations = [];
+    const labels = [];
+
+    if (
+        devicedata?.video?.videoGeneration?.multiOutEnable === "true" ||
+        devicedata?.video?.videoGeneration?.multiOutEnable === "1"
+    ) {
+        for (let a = 1; a < 5; a++) {
+            labels.push(`Output ${a}`);
+            locations.push(`/panel/${panelId}/output${a}`);
+            content.push(<TabOutput panelId={panelId} devicedata={devicedata} videoIndex={a} onChange={onChange} />);
+        }
+    } else {
+        labels.push(`Output`);
+        locations.push(`/panel/${panelId}/output1`);
+        content.push(<TabOutput panelId={panelId} devicedata={devicedata} videoIndex={1} onChange={onChange} />);
+    }
+    labels.push("Video");
+    labels.push("Audio");
+    labels.push("System");
+
+    locations.push(`/panel/${panelId}/video`);
+    locations.push(`/panel/${panelId}/audio`);
+    locations.push(`/panel/${panelId}/system`);
+
+    content.push(<TabVideo panelId={panelId} devicedata={devicedata} onChange={onChange} />);
+    content.push(<TabAudio panelId={panelId} devicedata={devicedata} onChange={onChange} />);
+    content.push(<TabSystem panelId={panelId} devicedata={devicedata} />);
+
     return (
-        <>
-            {devicedata ? (
-                <BugPanelTabbedForm
-                    labels={["Output 1", "Video", "Audio", "System"]}
-                    locations={[
-                        `/panel/${panelId}/output1`,
-                        `/panel/${panelId}/video`,
-                        `/panel/${panelId}/audio`,
-                        `/panel/${panelId}/system`,
-                    ]}
-                    content={[
-                        <TabOutput panelId={panelId} devicedata={devicedata} videoIndex={1} onChange={onChange} />,
-                        <TabVideo panelId={panelId} devicedata={devicedata} onChange={onChange} />,
-                        <TabAudio panelId={panelId} devicedata={devicedata} onChange={onChange} />,
-                        <TabSystem panelId={panelId} devicedata={devicedata} />,
-                    ]}
-                    contentProps={{ elevation: 0, sx: { backgroundColor: "inherit" } }}
-                ></BugPanelTabbedForm>
-            ) : (
-                <BugLoading />
-            )}
-        </>
+        <BugPanelTabbedForm
+            labels={labels}
+            locations={locations}
+            content={content}
+            contentProps={{ elevation: 0, sx: { backgroundColor: "inherit" } }}
+        ></BugPanelTabbedForm>
     );
 }

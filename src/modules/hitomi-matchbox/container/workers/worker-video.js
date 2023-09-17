@@ -15,19 +15,32 @@ parentPort.postMessage({
     restartOn: ["address"],
 });
 
+let apiMenu = "video1";
+
 const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
+
+    await mongoSingle.clear("video");
+    await mongoSingle.clear("logoList");
 
     // Kick things off
     console.log(`worker-video: connecting to device ...`);
 
     while (true) {
-        const result = await hitomiApi.get({
+        let result = await hitomiApi.get({
             host: workerData.address,
             apiFunction: "updateStatus",
-            apiMenu: "video1",
+            apiMenu: apiMenu,
         });
+        if (!result && apiMenu === "video1") {
+            apiMenu = "video";
+            result = await hitomiApi.get({
+                host: workerData.address,
+                apiFunction: "updateStatus",
+                apiMenu: apiMenu,
+            });
+        }
         if (result) {
             const values = hitomiParseValues(result);
             await mongoSingle.set("video", values, 60);
