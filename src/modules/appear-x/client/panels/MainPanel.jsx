@@ -1,5 +1,6 @@
 import React from "react";
 import MpegEncoderServicesList from "../components/MpegEncoderServicesList";
+import MpegDecoderServicesList from "../components/MpegDecoderServicesList";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import BugLoading from "@core/BugLoading";
 import { useApiPoller } from "@hooks/ApiPoller";
@@ -30,7 +31,7 @@ export default function MainPanel({ panelId }) {
     if (features.data.includes("decoder")) {
         tabLabels.push("MPEG Decoders");
         tabLocations.push(`/panel/${panelId}/display/mpegdecoders`);
-        tabContent.push(<>MPEG Decoders</>);
+        tabContent.push(<MpegDecoderServicesList panelId={panelId} />);
     }
     if (features.data.includes("encoder-j2k")) {
         tabLabels.push("J2K Encoders");

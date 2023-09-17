@@ -11,6 +11,7 @@
     "status": "beta",
     "needsContainer": true,
     "devmounts": ["api", "services", "workers", "utils"],
+    "memory": 200,
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
