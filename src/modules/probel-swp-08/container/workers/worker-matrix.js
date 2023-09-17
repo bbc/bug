@@ -6,12 +6,13 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
+const putviacore = require("@core/config-putviacore");
 const probel = require("probel-swp-08");
-const logger = require("@core/logger")(module);
 
 const updateDelay = 2000;
 let dataCollection;
 let lastSeen = null;
+let matrix = 0;
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -19,32 +20,29 @@ parentPort.postMessage({
     restartOn: ["address", "port", "extended"],
 });
 
-const saveResult = async (newResults) => {
-    lastSeen = Date.now();
-    for (let newResult of newResults) {
-        if (newResult && newResult["title"]) {
-            // fetch previous result
-            let existingData = await dataCollection.findOne({
-                title: newResult["title"],
-            });
-            if (!existingData) {
-                existingData = {
-                    title: newResult["title"],
-                    data: {},
-                };
+const saveResult = async (routerState) => {
+    const destinationState = [];
+
+    const sourceArray = [];
+
+    for (const [key1, value1] of Object.entries(routerState[matrix])) {
+        console.log(key1);
+        for (const [key2, value2] of Object.entries(value1)) {
+            if (!destinationState[key2 - 1]) {
+                destinationState[key2 - 1] = [];
             }
-
-            // update values
-            for (const [index, value] of Object.entries(newResult["data"])) {
-                existingData["data"][index] = value;
-            }
-
-            // add timestamp
-            existingData.timestamp = new Date();
-
-            await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
+            const newDestinationSate = destinationState[key2 - 1];
+            newDestinationSate.push(value2);
+            destinationState[key2 - 1] = newDestinationSate;
         }
     }
+
+    lastSeen = Date.now();
+    // for (let newResult of newResults) {
+    //     if (newResult && newResult["title"]) {
+    //         await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
+    //     }
+    // }
 };
 
 const crosspointEvent = () => {};
@@ -63,25 +61,44 @@ const main = async () => {
     dataCollection.deleteMany({});
 
     // Kick things off
-    logger.info(`worker-matrix: connecting to device at ${workerData.address}:${workerData.port}`);
+    console.log(`worker-matrix: connecting to device at ${workerData.address}:${workerData.port}`);
 
     let router;
     try {
-        router = new Probel(workerData.address, { port: workerData.port, extended: workerData.extended });
+        router = new probel(workerData.address, {
+            port: workerData.port,
+            sources: workerData.sources,
+            desinations: workerData.desinations,
+        });
         router.on("crosspoint", crosspointEvent);
 
         const rotuerState = await router.getState();
+        await saveResult(rotuerState);
     } catch (error) {
         throw error;
     }
 
     while (true) {
-        if (workerData.desinationNames.length < 1) {
-            const desinationNames = await router.getDestinationNames();
+        if (!workerData.destinationNames || workerData.destinationNames.length < 1) {
+            const destinationNames = await router.getDestinationNames();
+
+            const destinationArray = [];
+            for (const [key, value] of Object.entries(destinationNames)) {
+                destinationArray.push(value);
+            }
+
+            await putviacore({ ...workerData, ...{ destinationNames: destinationArray } });
         }
 
-        if (workerData.sourceNames.length < 1) {
+        if (!workerData.sourceNames || workerData.sourceNames.length < 1) {
             const sourceNames = await router.getSourceNames();
+
+            const sourceArray = [];
+            for (const [key, value] of Object.entries(sourceNames)) {
+                sourceArray.push(value);
+            }
+
+            await putviacore({ ...workerData, ...{ sourceNames: sourceArray } });
         }
 
         // poll occasionally
