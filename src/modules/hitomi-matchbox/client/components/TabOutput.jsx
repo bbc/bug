@@ -11,8 +11,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import BugTextField from "@core/BugTextField";
+import BugNoData from "@core/BugNoData";
 
 export default function TabOutput({ devicedata, panelId, videoIndex, onChange }) {
+    if (!devicedata?.video) {
+        return <BugNoData title="No current data found" showConfigButton={true} panelId={panelId} />;
+    }
     return (
         <>
             <Grid
@@ -169,8 +173,8 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                                 </TableCell>
 
                                                 <TableCell>
-                                                    changeOnBlur={false}
                                                     <BugTextField
+                                                        changeOnBlur={false}
                                                         value={
                                                             devicedata?.video?.videoGeneration?.[
                                                                 `vidIdentTextCh${rowId}`

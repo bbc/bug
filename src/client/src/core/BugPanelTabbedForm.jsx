@@ -36,6 +36,10 @@ export default function BugPanelTabbedForm({
         }
     };
 
+    if (tabIndex >= content.length) {
+        setTabIndex(0);
+    }
+
     useHotkeys("esc", onClose);
 
     React.useEffect(() => {
