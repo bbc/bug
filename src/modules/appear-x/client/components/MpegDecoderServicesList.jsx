@@ -248,7 +248,7 @@ export default function EncoderServicesList({ panelId }) {
                 {
                     minWidth: "140px",
                     noWrap: true,
-                    title: "Name",
+                    title: "Decoder Name",
                     content: (item) => {
                         if (item.label) {
                             return (
@@ -276,6 +276,52 @@ export default function EncoderServicesList({ panelId }) {
                     },
                 },
                 {
+                    minWidth: "180px",
+                    width: "200px",
+                    noWrap: true,
+                    hideWidth: 770,
+                    title: "IP Inputs",
+                    content: (item) => {
+                        return (
+                            item?.input.interfaces && (
+                                <Box sx={{ display: "flex", padding: "4px" }}>
+                                    <Box>
+                                        {item?.input.interfaces.map((i, index) => (
+                                            <Box key={index} sx={{ textAlign: "right" }}>
+                                                {i.address}:{i.port}
+                                            </Box>
+                                        ))}
+                                    </Box>
+                                    {item?.input.interfaces.length === 2 ? (
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                padding: "4px",
+                                                width: "32px",
+                                            }}
+                                        >
+                                            <ShareIcon sx={{ color: "primary.main", transform: "rotate(180deg)" }} />
+                                        </Box>
+                                    ) : (
+                                        <Box
+                                            sx={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                padding: "0px",
+                                                width: "32px",
+                                            }}
+                                        >
+                                            <LinearScaleIcon sx={{ color: "primary.main", fontSize: "1.2rem" }} />
+                                        </Box>
+                                    )}
+                                </Box>
+                            )
+                        );
+                    },
+                },
+                {
                     minWidth: "6rem",
                     hideWidth: 1334,
                     width: "6rem",
@@ -295,22 +341,6 @@ export default function EncoderServicesList({ panelId }) {
                                 onClick={(event) => handleBitrateClicked(event, item)}
                             >
                                 {item?.videoProfile?.bitrateText}
-                            </BugTableLinkButton>
-                        </>
-                    ),
-                },
-                {
-                    minWidth: "120px",
-                    noWrap: true,
-                    hideWidth: 1210,
-                    title: "Color Depth",
-                    content: (item) => (
-                        <>
-                            <BugTableLinkButton
-                                disabled={item._protected}
-                                onClick={(event) => handleColorClicked(event, item)}
-                            >
-                                {item?.videoProfile?.bitDepth} bit / {item?.videoProfile?._chromaSampling}
                             </BugTableLinkButton>
                         </>
                     ),
@@ -341,55 +371,9 @@ export default function EncoderServicesList({ panelId }) {
                 {
                     minWidth: "70px",
                     noWrap: true,
-                    hideWidth: 1540,
-                    title: "Codec",
-                    content: (item) => item?.videoProfile?.codec,
-                },
-                {
-                    minWidth: "70px",
-                    noWrap: true,
                     hideWidth: 990,
                     title: "Audio",
                     content: (item) => (item?.audios.length ? item?.audios.length : ""),
-                },
-                {
-                    minWidth: "180px",
-                    noWrap: true,
-                    hideWidth: 770,
-                    title: "Outputs",
-                    content: (item) => {
-                        if (item?.outputs?.length === 0) {
-                            return null;
-                        }
-                        return item?.outputs?.map((o, index) => (
-                            <Box key={index} sx={{ display: "flex", padding: "4px" }}>
-                                {o.interfaces.length === 2 ? (
-                                    <Box sx={{ display: "flex", alignItems: "center", padding: "4px", width: "32px" }}>
-                                        <ShareIcon sx={{ color: "primary.main" }} />
-                                    </Box>
-                                ) : (
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            padding: "0px",
-                                            width: "32px",
-                                        }}
-                                    >
-                                        <LinearScaleIcon sx={{ color: "primary.main", fontSize: "1.2rem" }} />
-                                    </Box>
-                                )}
-                                <Box>
-                                    {o.interfaces.map((i, index) => (
-                                        <Box key={index}>
-                                            {i.address}:{i.port}
-                                        </Box>
-                                    ))}
-                                </Box>
-                            </Box>
-                        ));
-                    },
                 },
             ]}
             menuItems={[
@@ -428,7 +412,7 @@ export default function EncoderServicesList({ panelId }) {
                     onClick: handleProtectClicked,
                 },
             ]}
-            apiUrl={`/container/${panelId}/mpegencoderservice`}
+            apiUrl={`/container/${panelId}/mpegdecoderservice`}
             panelId={panelId}
             hideHeader={false}
             noData={

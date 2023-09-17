@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoSingle = require("@core/mongo-single");
 const appearXApi = require("@utils/appearx-api");
+const mongoCollection = require("@core/mongo-collection");
 
 // Tell the manager the things you care about
 // make sure you add an array of config fields in 'restartOn' - the worker will restart whenever these are updated
@@ -23,6 +24,10 @@ const main = async () => {
         username: workerData.username,
         password: workerData.password,
     });
+
+    // clear any localdata
+    //TODO const localdataCollection = await mongoCollection("localdata");
+    //TODO await localdataCollection.deleteMany({});
 
     await XApi.connect();
 
