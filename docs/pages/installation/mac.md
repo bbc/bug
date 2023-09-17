@@ -19,7 +19,7 @@ Note - There's a different version for Intel and M1 based macs. You'll need to p
 2. Copy the below code snippet into the file:
 
 ```
-# BUG for macOS
+# BUG for Linux
 
 version: "3.8"
 
@@ -32,6 +32,8 @@ services:
     app:
         container_name: bug
         image: ghcr.io/bbc/bug:latest
+        extra_hosts:
+          - "host.docker.internal:host-gateway"
         restart: always
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
@@ -59,13 +61,24 @@ services:
             - bug
         ports:
             - 80:80
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: 1
     watchtower:
         container_name: bug-watchtower
         image: containrrr/watchtower
+        restart: always
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
         networks:
             - bug
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: 1
         environment:
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
@@ -75,6 +88,11 @@ services:
         image: mongo:latest
         restart: unless-stopped
         container_name: bug-mongo
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: 1
         networks:
             - bug
 ```
