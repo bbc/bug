@@ -49,6 +49,10 @@ module.exports = async (configObject) => {
                 RestartPolicy: { name: "unless-stopped" },
                 NetworkMode: networkName,
                 Memory: parseInt(moduleMemory * 1024 * 1024),
+                LogConfig: {
+                    Type: "json-file",
+                    Config: { "max-size": "10m", "max-file": "1" },
+                },
             },
         };
         if (nodeEnv === "development") {
