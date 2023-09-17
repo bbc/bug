@@ -83,15 +83,41 @@ export default function ConfigPanel() {
                         label="Device Port"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <BugConfigFormSwitch
-                        name="extended"
-                        label="Extened Commands"
+
+                <Grid item xs={12} md={6}>
+                    <BugConfigFormTextField
+                        name="sources"
                         control={control}
-                        defaultValue={panelConfig.data.extended}
+                        rules={{ required: true }}
+                        numeric
+                        min={1}
+                        max={65535}
                         fullWidth
+                        error={errors.sources}
+                        helperText={messages.sources}
+                        defaultValue={panelConfig.data.sources}
+                        type="text"
+                        label="Sources"
                     />
                 </Grid>
+
+                <Grid item xs={12} md={6}>
+                    <BugConfigFormTextField
+                        name="destinations"
+                        control={control}
+                        rules={{ required: true }}
+                        numeric
+                        min={1}
+                        max={65535}
+                        fullWidth
+                        error={errors.destinations}
+                        helperText={messages.destinations}
+                        defaultValue={panelConfig.data.destinations}
+                        type="text"
+                        label="Destinations"
+                    />
+                </Grid>
+
                 <Grid item xs={12}>
                     <BugConfigFormSwitch
                         name="useTake"
