@@ -1,5 +1,7 @@
 import React from "react";
 import ReactWeather, { useOpenWeather } from "react-open-weather";
+import BugLoading from "@core/BugLoading";
+import BugNoData from "@core/BugNoData";
 
 const customStyles = {
     gradientStart: "#153550",
@@ -20,18 +22,18 @@ const customStyles = {
     forecastIconColor: "#FFF",
 };
 
-export default function Weather(props) {
+export default function Weather({ length, label, panelId, openweather_key, latitude, longitude, units }) {
     const { data, isLoading, errorMessage } = useOpenWeather({
-        key: props?.openweather_key,
-        lat: props?.latitude,
-        lon: props?.longitude,
+        key: openweather_key,
+        lat: latitude,
+        lon: longitude,
         lang: "en",
-        unit: props?.units,
+        unit: units,
     });
 
     const isForecast = () => {
         let status = true;
-        if (props.length === "today") {
+        if (length === "today") {
             status = false;
         }
         return status;
@@ -39,26 +41,39 @@ export default function Weather(props) {
 
     const getLabels = () => {
         let labels = { temperature: "°C", windSpeed: "km/h" };
-        if (props?.units === "imperial") {
+        if (units === "imperial") {
             labels = { temperature: "F", windSpeed: "Mph" };
-        } else if (props?.units === "standard") {
+        } else if (units === "standard") {
             labels = { temperature: "K", windSpeed: "km/h" };
         }
         return labels;
     };
 
-    const renderWeather = () => (
+    if (isLoading) {
+        return <BugLoading />;
+    }
+
+    if (errorMessage) {
+        return (
+            <BugNoData
+                panelId={panelId}
+                title="No weather data"
+                message="Click to edit panel configuration"
+                showConfigButton={true}
+            />
+        );
+    }
+
+    return (
         <ReactWeather
             theme={customStyles}
             isLoading={isLoading}
             errorMessage={errorMessage}
             data={data}
             lang="en"
-            locationLabel={props?.label}
+            locationLabel={label}
             unitsLabels={getLabels()}
             showForecast={isForecast()}
         />
     );
-
-    return <>{renderWeather()}</>;
 }
