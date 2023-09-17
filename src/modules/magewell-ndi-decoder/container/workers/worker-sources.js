@@ -40,7 +40,7 @@ const main = async () => {
 
     // get the collection reference
     sourceCollection = await mongoCollection("sources");
-    sourceCollection.deleteMany({});
+    await sourceCollection.deleteMany({});
 
     while (true) {
         await writeSources();

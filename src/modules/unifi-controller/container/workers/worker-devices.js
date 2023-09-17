@@ -67,7 +67,7 @@ const main = async () => {
     // get the collection reference
     deviceCollection = await mongoCollection("devices");
     clientsCollection = await mongoCollection("clients");
-    deviceCollection.deleteMany({});
+    await deviceCollection.deleteMany({});
 
     unifi = await new Unifi.Controller({
         host: workerData.address,

@@ -41,7 +41,7 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
     // get the collection reference
     siteCollection = await mongoCollection("sites");
-    siteCollection.deleteMany({});
+    await siteCollection.deleteMany({});
 
     unifi = await new Unifi.Controller({ host: workerData.address, port: workerData.port, sslverify: false });
 

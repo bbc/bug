@@ -36,7 +36,7 @@ const main = async () => {
 
     // get the collection reference
     networkCollection = await mongoCollection("network");
-    networkCollection.deleteMany({});
+    await networkCollection.deleteMany({});
 
     while (true) {
         await writeNetworkStats();

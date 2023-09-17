@@ -4,20 +4,14 @@
     "description": "Get a list of NDI sources on a network from your nearest discovery server",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "mdi-order-alphabetical-ascending",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,
