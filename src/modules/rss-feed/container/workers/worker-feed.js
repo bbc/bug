@@ -42,7 +42,7 @@ const main = async () => {
 
     // get the collection reference
     feedCollection = await mongoCollection("feed");
-    feedCollection.deleteMany({});
+    await feedCollection.deleteMany({});
 
     while (true) {
         await getFeed();

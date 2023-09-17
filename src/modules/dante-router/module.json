@@ -3,21 +3,15 @@
     "longname": "Dante Router",
     "description": "Control and route dante in conjuction with Dante Domain Controller",
     "notes": "",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "mdi-matrix",
     "author": "Ryan McCartney",
     "memory": 50,
     "license": "Apache-2.0",
     "status": "beta",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

@@ -58,7 +58,7 @@ const main = async () => {
     await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 60 });
 
     // remove previous values
-    dataCollection.deleteMany({});
+    await dataCollection.deleteMany({});
 
     // Kick things off
     logger.info(`worker-videohub: connecting to device at ${workerData.address}:${workerData.port}`);
