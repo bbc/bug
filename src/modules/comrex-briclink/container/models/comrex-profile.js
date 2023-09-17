@@ -65,8 +65,8 @@ exports.parseList = function (xml) {
             }
 
             // parse the codec details
-            parsedProfile.local.codec = parseCodecParameters(parsedProfile["local"]?.["codec"]);
-            parsedProfile.remote.codec = parseCodecParameters(parsedProfile["remote"]?.["codec"]);
+            parsedProfile?.local?.codec = parseCodecParameters(parsedProfile["local"]?.["codec"]);
+            parsedProfile?.remote?.codec = parseCodecParameters(parsedProfile["remote"]?.["codec"]);
 
             // we're done - add it to the array
             results.push(parsedProfile);

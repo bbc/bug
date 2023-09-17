@@ -1,7 +1,7 @@
 {
     "name": "comrex-briclink",
     "longname": "Comrex BRIC-Link",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Control of Comrex BRIC-Link and BRIC-Link II devices",
     "capabilities": [],
     "icon": "mdi-phone-settings",
@@ -10,16 +10,8 @@
     "memory": 150,
     "license": "Apache-2.0",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils",
-        "models"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils", "models"],
+    "protectedRoutes": ["config"],
     "status": "stable",
     "defaultconfig": {
         "id": "",
