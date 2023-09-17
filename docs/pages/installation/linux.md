@@ -88,7 +88,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
     watchtower:
         container_name: bug-watchtower
         image: containrrr/watchtower
@@ -101,7 +101,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
         environment:
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
@@ -115,7 +115,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
         networks:
             - bug
 ```

@@ -56,7 +56,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
@@ -87,7 +87,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
         environment:
             WATCHTOWER_HTTP_API_UPDATE: "true"
             WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
@@ -105,7 +105,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
         networks:
             - bug
 ```

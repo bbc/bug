@@ -48,7 +48,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
 
     mongo:
         image: mongo:latest
@@ -62,7 +62,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
 
     watchtower:
         container_name: bug-watchtower
@@ -78,7 +78,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
         environment:
             WATCHTOWER_DEBUG: "true"
             WATCHTOWER_HTTP_API_UPDATE: "true"
@@ -94,7 +94,7 @@ services:
             driver: "json-file"
             options:
                 max-size: "10m"
-                max-file: 1
+                max-file: "1"
         environment:
             ME_CONFIG_OPTIONS_EDITORTHEME: "ambiance"
             ME_CONFIG_MONGODB_SERVER: "bug-mongo"
