@@ -33,7 +33,7 @@ const main = async () => {
 
     // get the collection reference
     dataCollection = await mongoCollection("data");
-    dataCollection.deleteMany({});
+    await dataCollection.deleteMany({});
 
     // and now create the index with ttl
     await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 600 });

@@ -5,7 +5,7 @@ const register = require("module-alias/register");
 const delay = require("delay");
 const mongoDb = require("@core/mongo-db");
 const Net = require("net");
-const parser = require('p3x-xml2json');
+const parser = require("p3x-xml2json");
 const mongoSaveArray = require("@core/mongo-savearray");
 const mongoCollection = require("@core/mongo-collection");
 const fs = require("fs");
@@ -88,7 +88,7 @@ const main = async () => {
 
     // get the collection reference
     sourceCollection = await mongoCollection("sources");
-    sourceCollection.deleteMany({});
+    await sourceCollection.deleteMany({});
 
     while (true) {
         await getSources();

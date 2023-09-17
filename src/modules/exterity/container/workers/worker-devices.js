@@ -169,7 +169,7 @@ const main = async () => {
     devicesCollection = await mongoCollection("devices");
 
     // remove previous values
-    //devicesCollection.deleteMany({});
+    devicesCollection.deleteMany({});
 
     while (true) {
         for (let deviceId in workerData.devices) {
