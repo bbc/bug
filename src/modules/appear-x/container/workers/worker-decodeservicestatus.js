@@ -25,7 +25,7 @@ const main = async () => {
     });
 
     // wait for service info to be populated
-    await delay(4000);
+    await delay(4500);
 
     await XApi.connect();
 
@@ -33,28 +33,37 @@ const main = async () => {
         await XApi.refreshSession();
 
         // fetch list of services
-        const mpegEncoderServices = await mongoSingle.get("mpegEncoderServices");
+        const mpegDecoderServices = await mongoSingle.get("mpegDecoderServices");
 
         //TODO  and others? J2K?
 
-        const mpegEncoderServiceIds =
-            mpegEncoderServices &&
-            mpegEncoderServices.map((e) => {
-                return {
-                    id: e.key,
-                    slot: e.value.slot,
-                };
-            });
+        const serviceIdsBySlot = {};
 
-        if (mpegEncoderServices && mpegEncoderServices.length > 0) {
-            // now fetch service status
-            const mpegEncoderServiceStatus = await XApi.post({
-                path: "mmi/service_encoderpool/api/jsonrpc",
-                method: "Xger:2.31/serviceStatus/GetServiceStatus",
-                params: { query: mpegEncoderServiceIds },
-            });
-            await mongoSingle.set("mpegEncoderServiceStatus", mpegEncoderServiceStatus.data, 60);
+        if (mpegDecoderServices) {
+            for (let eachService of mpegDecoderServices) {
+                if (!serviceIdsBySlot[eachService.value.slot]) {
+                    serviceIdsBySlot[eachService.value.slot] = [];
+                }
+                serviceIdsBySlot[eachService.value.slot].push({
+                    id: eachService.key,
+                    slot: eachService.value.slot,
+                });
+            }
         }
+
+        let results = [];
+        for (const [eachSlot, serviceIds] of Object.entries(serviceIdsBySlot)) {
+            // now fetch service status
+            const mpegDecoderServiceStatus = await XApi.post({
+                path: "mmi/service_decoderpool/api/jsonrpc",
+                method: "Xger:2.42/serviceStatus/GetServiceStatus",
+                params: {
+                    query: serviceIds,
+                },
+            });
+            results = results.concat(mpegDecoderServiceStatus.data);
+        }
+        await mongoSingle.set("mpegDecoderServiceStatus", results, 60);
 
         // delay before doing it all again ...
         await delay(2000);
