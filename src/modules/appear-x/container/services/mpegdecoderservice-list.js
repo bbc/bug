@@ -13,6 +13,20 @@ const parseZeroInt = (val) => {
     return parseInt(val);
 };
 
+const parseResolution = (es) => {
+    // the Appear UI doesn't do this, it'll just show something like 0x0p50, but that's ugly
+    if (!es?.hSize && !es?.vSize) {
+        return null;
+    }
+    try {
+        const scan = es?.scan?.value === "INTERLACED" ? "i" : "p";
+        const fps = es?.framerate?.value.split("_")[1];
+        return `${es?.hSize}x${es?.vSize}${scan}${fps}`;
+    } catch (error) {
+        return null;
+    }
+};
+
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     const config = await configGet();
     if (!config) {
@@ -31,6 +45,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
     // fetch ip input status
     const ipInputStatuses = await mongoSingle.get("ipInputStatus");
 
+    // fetch service status
+    const decoderServiceStatuses = await mongoSingle.get("mpegDecoderServiceStatus");
+
     const filterVideoProfile = (videoProfileId) => {
         const profile =
             mpegDecodeVideoProfiles && mpegDecodeVideoProfiles.find((profile) => profile.id === videoProfileId);
@@ -41,6 +58,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                 latency: profile?.latency,
                 codec: profile?.codec,
                 bitrate: profile?.bitrate,
+                followInput: profile?.resolution.followInput,
                 bitrateText: formatBitrate(profile?.bitrate),
                 _resolution: profile._resolution,
             };
@@ -75,6 +93,10 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                 // we can also use it to get the input status
                 const ipInputStatus = ipInputStatuses && ipInputStatuses.find((ips) => ips?.key === inputService?.key);
 
+                // also the decoder service status
+                const decoderServiceStatus =
+                    decoderServiceStatuses && decoderServiceStatuses.find((dss) => dss.key === ds.key);
+
                 const ipInputInterfaces = [];
                 if ("seamless" in ipInput.value.transportSettings.udp.input) {
                     ipInputInterfaces.push({
@@ -93,11 +115,11 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                     });
                 } else {
                     ipInputInterfaces.push({
-                        interfaceId: o.value.transportSettings.udp.input.single.interfaceId,
-                        address: o.value.transportSettings.udp.input.single.destination.address,
-                        port: o.value.transportSettings.udp.input.single.destination.port,
-                        hasFec: o.value.transportSettings.udp.input.single.fec,
-                        isRtp: o.value.transportSettings.udp.input.single.rtp,
+                        interfaceId: ipInput.value.transportSettings.udp.input.single.interfaceId,
+                        address: ipInput.value.transportSettings.udp.input.single.destination.address,
+                        port: ipInput.value.transportSettings.udp.input.single.destination.port,
+                        hasFec: ipInput.value.transportSettings.udp.input.single.fec,
+                        isRtp: ipInput.value.transportSettings.udp.input.single.rtp,
                     });
                 }
 
@@ -146,6 +168,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                                 bitrate: parseZeroInt(
                                     ipInputStatus?.value?.seamlessStatus?.value?.portA?.value?.bitrate
                                 ),
+                                _bitrateText: formatBitrate(
+                                    parseZeroInt(ipInputStatus?.value?.seamlessStatus?.value?.portA?.value?.bitrate)
+                                ),
                                 sequenceErrors: parseZeroInt(
                                     ipInputStatus?.value?.seamlessStatus?.value?.portA?.value?.sequenceErrors
                                 ),
@@ -156,6 +181,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                                 bitrate: parseZeroInt(
                                     ipInputStatus?.value?.seamlessStatus?.value?.portB?.value?.bitrate
                                 ),
+                                _bitrateText: formatBitrate(
+                                    parseZeroInt(ipInputStatus?.value?.seamlessStatus?.value?.portB?.value?.bitrate)
+                                ),
                                 sequenceErrors: parseZeroInt(
                                     ipInputStatus?.value?.seamlessStatus?.value?.portB?.value?.sequenceErrors
                                 ),
@@ -163,6 +191,15 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                                     ipInputStatus?.value?.ipSourceAddressStatus?.seamless?.b?.value?.sourceIpAddress,
                             },
                         ],
+                        bitrates: {
+                            totalFlowBitrate: parseZeroInt(ipInputStatus?.value?.bitrates?.value?.totalFlowBitrate),
+                            _totalFlowBitrateText: formatBitrate(
+                                parseZeroInt(ipInputStatus?.value?.bitrates?.value?.totalFlowBitrate)
+                            ),
+                            totalFlowWithoutFecBitrate: parseZeroInt(
+                                ipInputStatus?.value?.bitrates?.value?.totalFlowWithoutFecBitrate
+                            ),
+                        },
                         dejitterStatus: {
                             mode: ipInputStatus?.value?.dejitterStatus?.value?.mode,
                             maxJitter: ipInputStatus?.value?.dejitterStatus?.value?.maxJitter,
@@ -170,6 +207,18 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                         },
                     },
 
+                    serviceStatus: {
+                        bitRate: parseInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.bitRate),
+                        _bitrateText: formatBitrate(
+                            parseInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.bitRate)
+                        ),
+                        ccError: parseInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.ccError),
+                        valid: decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.es?.valid,
+                        _resolution: parseResolution(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.es),
+                        codec: decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.es?.codec,
+                        bitDepth: decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.es?.bitDepth,
+                        chroma: decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.es?.chroma,
+                    },
                     // signalLoss: ds?.value?.signalLoss,
                     // lock: ds?.value?.lock?.source === true,
                     _protected: config?.protectedServices?.includes(ds?.key),

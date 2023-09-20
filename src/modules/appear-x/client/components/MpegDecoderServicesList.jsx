@@ -22,6 +22,7 @@ import ColorDialog from "./ColorDialog";
 import LatencyDialog from "./LatencyDialog";
 import ShareIcon from "@mui/icons-material/Share";
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import BugPowerIcon from "@core/BugPowerIcon";
 
 export default function EncoderServicesList({ panelId }) {
     const sendAlert = useAlert();
@@ -208,6 +209,11 @@ export default function EncoderServicesList({ panelId }) {
         <BugApiTable
             columns={[
                 {
+                    noPadding: true,
+                    width: 44,
+                    content: (item) => <BugPowerIcon disabled={!item.inputStatus.hasBitrate} />,
+                },
+                {
                     minWidth: "112px",
                     width: "112px",
                     noWrap: true,
@@ -248,40 +254,85 @@ export default function EncoderServicesList({ panelId }) {
                 {
                     minWidth: "140px",
                     noWrap: true,
-                    title: "Decoder Name",
+                    title: "Decoder",
                     content: (item) => {
-                        if (item.label) {
-                            return (
-                                <>
-                                    <BugTableLinkButton
-                                        disabled={item._protected}
-                                        onClick={(event) => handleRenameClicked(event, item)}
-                                    >
-                                        {item.label}
-                                    </BugTableLinkButton>
-                                    <BugTableLinkButton disabled>{item.serviceName}</BugTableLinkButton>
-                                </>
-                            );
-                        }
                         return (
                             <>
                                 <BugTableLinkButton
                                     disabled={item._protected}
                                     onClick={(event) => handleRenameClicked(event, item)}
                                 >
-                                    {item.serviceName}
+                                    {item.label}
                                 </BugTableLinkButton>
+                                <BugTableLinkButton disabled>{item?.inputStatus?.serviceName}</BugTableLinkButton>
                             </>
                         );
                     },
                 },
                 {
-                    minWidth: "180px",
-                    width: "200px",
+                    minWidth: "6rem",
+                    noWrap: true,
+                    hideWidth: 770,
+                    title: "TS BITRATE",
+                    content: (item) => {
+                        return (
+                            <Box sx={{ display: "flex", padding: "4px" }}>
+                                <Box>
+                                    {item?.inputStatus?.seamlessStatus ? (
+                                        item?.inputStatus.seamlessInterfaces.map((i, index) => (
+                                            <Box key={index} sx={{ textAlign: "right" }}>
+                                                {i._bitrateText}
+                                            </Box>
+                                        ))
+                                    ) : (
+                                        <Box>
+                                            {item?.inputStatus?.bitrates?.totalFlowBitrate
+                                                ? item?.inputStatus?.bitrates?._totalFlowBitrateText
+                                                : ""}
+                                        </Box>
+                                    )}
+                                </Box>
+                            </Box>
+                        );
+                    },
+                },
+                {
+                    minWidth: "6rem",
+                    noWrap: true,
+                    hideWidth: 770,
+                    title: "SEQ ERRORS",
+                    content: (item) => {
+                        return (
+                            <Box sx={{ display: "flex", padding: "4px" }}>
+                                <Box>
+                                    {item?.inputStatus?.seamlessStatus
+                                        ? item?.inputStatus.seamlessInterfaces.map((i, index) => (
+                                              <Box key={index} sx={{ textAlign: "right" }}>
+                                                  {i.sequenceErrors}
+                                              </Box>
+                                          ))
+                                        : ""}
+                                </Box>
+                            </Box>
+                        );
+                    },
+                },
+                {
+                    minWidth: "10rem",
                     noWrap: true,
                     hideWidth: 770,
                     title: "IP Inputs",
                     content: (item) => {
+                        let iconColor = "text.secondary";
+                        if (item?.inputStatus?.hasBitrate) {
+                            if (item?.input?.interfaces.length > 1) {
+                                // seamless
+                                iconColor = item?.inputStatus?.seamlessStatus ? "text.action" : "error.main";
+                            } else {
+                                // single stream
+                                iconColor = "text.action";
+                            }
+                        }
                         return (
                             item?.input.interfaces && (
                                 <Box sx={{ display: "flex", padding: "4px" }}>
@@ -301,7 +352,13 @@ export default function EncoderServicesList({ panelId }) {
                                                 width: "32px",
                                             }}
                                         >
-                                            <ShareIcon sx={{ color: "primary.main", transform: "rotate(180deg)" }} />
+                                            <ShareIcon
+                                                sx={{
+                                                    color: iconColor,
+                                                    transform: "rotate(180deg)",
+                                                    opacity: iconColor === "text.secondary" ? 0.2 : 1,
+                                                }}
+                                            />
                                         </Box>
                                     ) : (
                                         <Box
@@ -313,7 +370,13 @@ export default function EncoderServicesList({ panelId }) {
                                                 width: "32px",
                                             }}
                                         >
-                                            <LinearScaleIcon sx={{ color: "primary.main", fontSize: "1.2rem" }} />
+                                            <LinearScaleIcon
+                                                sx={{
+                                                    color: iconColor,
+                                                    opacity: iconColor === "text.secondary" ? 0.2 : 1,
+                                                    fontSize: "1.2rem",
+                                                }}
+                                            />
                                         </Box>
                                     )}
                                 </Box>
@@ -323,27 +386,74 @@ export default function EncoderServicesList({ panelId }) {
                 },
                 {
                     minWidth: "6rem",
-                    hideWidth: 1334,
-                    width: "6rem",
                     noWrap: true,
-                    title: "Slot/port",
-                    content: (item) => item.slotPort,
+                    hideWidth: 1470,
+                    title: "FEC",
+                    content: (item) => {
+                        if (!item?.inputStatus?.fecStatus?.fecEnabled || !item?.inputStatus?.fecStatus?.fecReceived) {
+                            // it's disabled or missing - nothing we can do
+                            return null;
+                        }
+                        return (
+                            <>
+                                <Box
+                                    sx={{
+                                        textAlign: "center",
+                                        color: "text.action",
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    <Box>{`LEVEL ${item?.inputStatus?.fecStatus?.fecType}`}</Box>
+                                    <Box>{`${item?.inputStatus?.fecStatus?.fecColumns}x${item?.inputStatus?.fecStatus?.fecRows}`}</Box>
+                                </Box>
+                            </>
+                        );
+                    },
                 },
                 {
-                    minWidth: "70px",
+                    minWidth: "8rem",
+                    hideWidth: 1334,
                     noWrap: true,
-                    hideWidth: 920,
-                    title: "Bitrate",
+                    title: "Errors",
                     content: (item) => (
                         <>
-                            <BugTableLinkButton
-                                disabled={item._protected}
-                                onClick={(event) => handleBitrateClicked(event, item)}
-                            >
-                                {item?.videoProfile?.bitrateText}
-                            </BugTableLinkButton>
+                            <Box sx={{ display: "flex" }}>
+                                <Box
+                                    sx={{
+                                        textAlign: "right",
+                                        width: "42px",
+                                        paddingRight: "6px",
+                                        color: "text.secondary",
+                                    }}
+                                >
+                                    RTP
+                                </Box>
+                                <Box>{item.inputStatus.rtpErrors}</Box>
+                            </Box>
+                            <Box sx={{ display: "flex" }}>
+                                <Box
+                                    sx={{
+                                        textAlign: "right",
+                                        width: "42px",
+                                        paddingRight: "6px",
+                                        color: "text.secondary",
+                                    }}
+                                >
+                                    CC
+                                </Box>
+                                <Box>{item.serviceStatus.ccError}</Box>
+                            </Box>
                         </>
                     ),
+                },
+                {
+                    minWidth: "7rem",
+                    hideWidth: 1334,
+                    width: "7rem",
+                    noWrap: true,
+                    title: "Video Bitrate",
+                    content: (item) =>
+                        parseInt(item.serviceStatus._bitrateText) === 0 ? "" : item.serviceStatus._bitrateText,
                 },
                 {
                     minWidth: "100px",
@@ -366,7 +476,25 @@ export default function EncoderServicesList({ panelId }) {
                     noWrap: true,
                     hideWidth: 1470,
                     title: "Resolution",
-                    content: (item) => item?.videoProfile?._resolution,
+                    content: (item) => {
+                        const outputColor =
+                            item?.videoProfile?.followInput ||
+                            item?.serviceStatus?._resolution === item?.videoProfile?._resolution
+                                ? "text.action"
+                                : "error.main";
+                        return (
+                            <>
+                                <Box
+                                    sx={{
+                                        color: "text.action",
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    {item?.serviceStatus?._resolution}
+                                </Box>
+                            </>
+                        );
+                    },
                 },
                 {
                     minWidth: "70px",
@@ -374,6 +502,13 @@ export default function EncoderServicesList({ panelId }) {
                     hideWidth: 990,
                     title: "Audio",
                     content: (item) => (item?.audios.length ? item?.audios.length : ""),
+                },
+                {
+                    minWidth: "6rem",
+                    hideWidth: 1334,
+                    noWrap: true,
+                    title: "Slot/port",
+                    content: (item) => item.slotPort,
                 },
             ]}
             menuItems={[

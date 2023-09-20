@@ -72,7 +72,12 @@ const main = async () => {
             path: "mmi/service_encoderpool/api/jsonrpc",
             method: "Xger:2.31/coderService/GetCoderServices",
         });
-        await mongoSingle.set("mpegEncoderServices", mpegEncoderServices?.data, 60);
+        // I think this is a bug. With no encoder card, this call returns a number of decode services!
+        // So we fix it by removing all the services which aren't ENCODER - GH
+        await mongoSingle.set(
+            "mpegEncoderServices",
+            mpegEncoderServices?.data.filter((e) => e.value.coderType === "ENCODER", 60)
+        );
 
         // delay before doing it all again ...
         await delay(6000);
