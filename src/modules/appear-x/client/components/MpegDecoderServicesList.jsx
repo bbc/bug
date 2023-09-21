@@ -17,14 +17,12 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
 import { useInterval } from "@hooks/Interval";
-import BitrateDialog from "./BitrateDialog";
-import ColorDialog from "./ColorDialog";
 import LatencyDialog from "./LatencyDialog";
 import ShareIcon from "@mui/icons-material/Share";
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import BugPowerIcon from "@core/BugPowerIcon";
 
-export default function EncoderServicesList({ panelId }) {
+export default function DncoderServicesList({ panelId }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const { renameDialog } = useBugRenameDialog();
@@ -50,9 +48,9 @@ export default function EncoderServicesList({ panelId }) {
     const handleRenameClicked = async (event, item) => {
         event.stopPropagation();
         let result = await renameDialog({
-            title: "Edit service name",
+            title: "Edit decoder label",
             defaultValue: item.label,
-            placeholder: item.serviceName,
+            placeholder: item.input.label,
             confirmButtonText: "Rename",
             allowBlank: true,
         });
@@ -61,43 +59,16 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/mpegencoderservice/rename/${item.id}/${encodeURIComponent(result)}`
+                `/container/${panelId}/mpegdecoderservice/rename/${item.id}/${encodeURIComponent(result)}`
             )
         ) {
-            sendAlert(result ? `Renamed service to ${result}` : "Reset service name", {
+            sendAlert(result ? `Renamed decoder to ${result}` : "Reset decoder label", {
                 broadcast: "true",
                 variant: "success",
             });
             doForceRefresh();
         } else {
-            sendAlert(result ? `Failed to rename service to ${result}` : "Failed to reset service name", {
-                variant: "error",
-            });
-        }
-    };
-
-    const handleBitrateClicked = async (event, item) => {
-        event.stopPropagation();
-        const result = await customDialog({
-            dialog: <BitrateDialog item={item} />,
-        });
-        if (result === false) {
-            return;
-        }
-        if (
-            await AxiosCommand(
-                `/container/${panelId}/mpegencodeprofile/video/setbitrate/${item.videoProfileId}/${encodeURIComponent(
-                    result
-                )}`
-            )
-        ) {
-            sendAlert(`Updated bitrate`, {
-                broadcast: "true",
-                variant: "success",
-            });
-            doForceRefresh();
-        } else {
-            sendAlert(`Failed to update bitrate`, {
+            sendAlert(result ? `Failed to rename decoder to ${result}` : "Failed to reset decoder label", {
                 variant: "error",
             });
         }
@@ -113,7 +84,7 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/mpegencodeprofile/video/setlatency/${item.videoProfileId}/${encodeURIComponent(
+                `/container/${panelId}/mpegdecodeprofile/video/setlatency/${item.videoProfileId}/${encodeURIComponent(
                     result
                 )}`
             )
@@ -130,47 +101,25 @@ export default function EncoderServicesList({ panelId }) {
         }
     };
 
-    const handleColorClicked = async (event, item) => {
-        event.stopPropagation();
-        const result = await customDialog({
-            dialog: <ColorDialog item={item} />,
-        });
-        if (result === false) {
-            return;
-        }
-        if (
-            await AxiosCommand(
-                `/container/${panelId}/mpegencodeprofile/video/setcolor/${item.videoProfileId}/${encodeURIComponent(
-                    result.bitDepth
-                )}/${encodeURIComponent(result.chromaSampling)}`
-            )
-        ) {
-            sendAlert(`Updated color depth`, {
-                broadcast: "true",
-                variant: "success",
-            });
-            doForceRefresh();
-        } else {
-            sendAlert(`Failed to update color depth`, {
-                variant: "error",
-            });
-        }
-    };
-
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/mpegencoder/${item.id}`);
+        history.push(`/panel/${panelId}/mpegdecoder/${item.id}`);
     };
 
     const serviceToggle = async (checked, item) => {
         if (
-            await AxiosCommand(`/container/${panelId}/mpegencoderservice/${checked ? `enable` : `disable`}/${item.id}`)
+            await AxiosCommand(`/container/${panelId}/mpegdecoderservice/${checked ? `enable` : `disable`}/${item.id}`)
         ) {
-            sendAlert(`${checked ? `Enabled` : `Disabled`} service: ${item.serviceName}`, { variant: "success" });
+            sendAlert(`${checked ? `Enabled` : `Disabled`} service: ${item.label ? item.label : item.input.label}`, {
+                variant: "success",
+            });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to ${checked ? `enable` : `disable`} service: ${item.serviceName}`, {
-                variant: "error",
-            });
+            sendAlert(
+                `Failed to ${checked ? `enable` : `disable`} service: ${item.label ? item.label : item.input.label}`,
+                {
+                    variant: "error",
+                }
+            );
         }
     };
 
@@ -195,13 +144,23 @@ export default function EncoderServicesList({ panelId }) {
             )
         ) {
             doForceRefresh();
-            sendAlert(`${item._protected ? "Unprotected" : "Protected"} service: ${item.serviceName}`, {
-                variant: "success",
-            });
+            sendAlert(
+                `${item._protected ? "Unprotected" : "Protected"} service: ${
+                    item.label ? item.label : item.input.label
+                }`,
+                {
+                    variant: "success",
+                }
+            );
         } else {
-            sendAlert(`Failed to ${item._protected ? "unprotect" : "protect"} service: ${item.serviceName}`, {
-                variant: "error",
-            });
+            sendAlert(
+                `Failed to ${item._protected ? "unprotect" : "protect"} service: ${
+                    item.label ? item.label : item.input.label
+                }`,
+                {
+                    variant: "error",
+                }
+            );
         }
     };
 
@@ -262,7 +221,7 @@ export default function EncoderServicesList({ panelId }) {
                                     disabled={item._protected}
                                     onClick={(event) => handleRenameClicked(event, item)}
                                 >
-                                    {item.label}
+                                    {item.label ? item.label : item.input.label}
                                 </BugTableLinkButton>
                                 <BugTableLinkButton disabled>{item?.inputStatus?.serviceName}</BugTableLinkButton>
                             </>
@@ -553,7 +512,7 @@ export default function EncoderServicesList({ panelId }) {
             noData={
                 <BugNoData
                     panelId={panelId}
-                    title="No encoder services found"
+                    title="No decoder services found"
                     message="Click to edit panel configuration"
                     showConfigButton={true}
                 />

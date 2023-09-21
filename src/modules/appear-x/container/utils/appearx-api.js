@@ -36,13 +36,11 @@ module.exports = class AppearXAPI {
             this.token = response?.data?.result?.accessToken;
             return true;
         } catch (error) {
-            if (response.data.error.message.indexOf("Invalid token") > -1) {
+            if (error?.response?.data?.error?.message.indexOf("Invalid token") > -1) {
                 console.log(`appearx-api: token invalid, attempting connection`);
                 return await this.connect();
             }
-            // console.log("-------------------------HEY");
-            console.log(error.response);
-            // console.log("-------------------------HEY");
+            console.log(`appearx-api:`, error.response);
             return false;
         }
     };
@@ -96,9 +94,8 @@ module.exports = class AppearXAPI {
         } catch (error) {
             if (error?.response?.data?.error?.message) {
                 console.log(`appearx-api: failed to POST to ${url} - ${error.response.data.error.message}`);
-                // console.log(error);
             } else {
-                console.log(error?.response?.data);
+                console.log(`appearx-api:`, error?.response?.data);
             }
             console.log(JSON.stringify(jsonBody));
             return false;

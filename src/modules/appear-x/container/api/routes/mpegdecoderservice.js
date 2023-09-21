@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-// const mpegDecoderServiceDisable = require("@services/mpegdecoderservice-disable");
-// const mpegDecoderServiceEnable = require("@services/mpegdecoderservice-enable");
-// const mpegDecoderServiceRename = require("@services/mpegdecoderservice-rename");
+const mpegDecoderServiceDisable = require("@services/mpegdecoderservice-disable");
+const mpegDecoderServiceEnable = require("@services/mpegdecoderservice-enable");
+const mpegDecoderServiceRename = require("@services/mpegdecoderservice-rename");
 const mpegDecoderServiceList = require("@services/mpegdecoderservice-list");
 // const mpegDecoderServiceGet = require("@services/mpegdecoderservice-get");
 // const mpegDecoderServiceSave = require("@services/mpegdecoderservice-save");
-// const mpegDecoderServiceSetVideoProfile = require("@services/mpegdecoderservice-setvideoprofile");
+const mpegDecoderServiceSetVideoProfile = require("@services/mpegdecoderservice-setvideoprofile");
 // const mpegDecoderServiceStatusGet = require("@services/mpegdecoderservicestatus-get");
 const asyncHandler = require("express-async-handler");
 
@@ -40,49 +40,49 @@ router.all("/", async function (req, res, next) {
 //     }
 // });
 
-// router.get(
-//     "/disable/:serviceId",
-//     asyncHandler(async (req, res) => {
-//         const result = await mpegDecoderServiceDisable(req.params.serviceId);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/disable/:serviceId",
+    asyncHandler(async (req, res) => {
+        const result = await mpegDecoderServiceDisable(req.params.serviceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-// router.get(
-//     "/enable/:serviceId",
-//     asyncHandler(async (req, res) => {
-//         const result = await mpegDecoderServiceEnable(req.params.serviceId);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/enable/:serviceId",
+    asyncHandler(async (req, res) => {
+        const result = await mpegDecoderServiceEnable(req.params.serviceId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-// router.get(
-//     "/rename/:serviceId/:serviceName?",
-//     asyncHandler(async (req, res) => {
-//         const result = await mpegDecoderServiceRename(req?.params?.serviceId, req?.params?.serviceName);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/rename/:serviceId/:serviceName?",
+    asyncHandler(async (req, res) => {
+        const result = await mpegDecoderServiceRename(req?.params?.serviceId, req?.params?.serviceName);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
-// router.get(
-//     "/setvideoprofile/:serviceId/:profileId",
-//     asyncHandler(async (req, res) => {
-//         const result = await mpegDecoderServiceSetVideoProfile(req?.params?.serviceId, req?.params?.profileId);
-//         res.json({
-//             status: result ? "success" : "failure",
-//             data: result,
-//         });
-//     })
-// );
+router.get(
+    "/setvideoprofile/:serviceId/:profileId",
+    asyncHandler(async (req, res) => {
+        const result = await mpegDecoderServiceSetVideoProfile(req?.params?.serviceId, req?.params?.profileId);
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
 
 // router.get(
 //     "/:serviceId",

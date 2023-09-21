@@ -16,3 +16,6 @@ allow configuring of source IPs? Maybe only in config page
 allow changing of decoder input (autofirst, ip input etc)
 after device has been unavailable, it won't connect as there's a bearer token error - needs a restart - I think I've fixed this but needs testing
 Need to show if configured audio doesn't match source stream
+
+-   need to think about how we change into/out of ultra low for encodes
+-   audios in list should say 1 of 2 etc

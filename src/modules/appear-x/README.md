@@ -1,0 +1,2 @@
+-   IP inputs should have default names - decoders will have temporary names
+-   encoders use service names as default

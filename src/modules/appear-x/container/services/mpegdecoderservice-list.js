@@ -98,28 +98,28 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                     decoderServiceStatuses && decoderServiceStatuses.find((dss) => dss.key === ds.key);
 
                 const ipInputInterfaces = [];
-                if ("seamless" in ipInput.value.transportSettings.udp.input) {
+                if ("seamless" in ipInput?.value?.transportSettings?.udp?.input) {
                     ipInputInterfaces.push({
-                        interfaceId: ipInput.value.transportSettings.udp.input.seamless.a.interfaceId,
-                        address: ipInput.value.transportSettings.udp.input.seamless.a.destination.address,
-                        port: ipInput.value.transportSettings.udp.input.seamless.a.destination.port,
-                        hasFec: ipInput.value.transportSettings.udp.input.seamless.a.fec,
-                        isRtp: ipInput.value.transportSettings.udp.input.seamless.a.rtp,
+                        interfaceId: ipInput?.value?.transportSettings.udp?.input?.seamless?.a?.interfaceId,
+                        address: ipInput?.value?.transportSettings?.udp?.input?.seamless?.a?.destination?.address,
+                        port: ipInput?.value?.transportSettings?.udp?.input?.seamless?.a?.destination?.port,
+                        hasFec: ipInput?.value?.transportSettings?.udp?.input?.seamless?.a?.fec,
+                        isRtp: ipInput?.value?.transportSettings?.udp?.input?.seamless?.a?.rtp,
                     });
                     ipInputInterfaces.push({
-                        interfaceId: ipInput.value.transportSettings.udp.input.seamless.b.interfaceId,
-                        address: ipInput.value.transportSettings.udp.input.seamless.b.destination.address,
-                        port: ipInput.value.transportSettings.udp.input.seamless.b.destination.port,
-                        hasFec: ipInput.value.transportSettings.udp.input.seamless.b.fec,
-                        isRtp: ipInput.value.transportSettings.udp.input.seamless.b.rtp,
+                        interfaceId: ipInput?.value?.transportSettings?.udp?.input?.seamless?.b?.interfaceId,
+                        address: ipInput?.value?.transportSettings?.udp?.input?.seamless?.b?.destination?.address,
+                        port: ipInput?.value?.transportSettings?.udp?.input?.seamless?.b?.destination?.port,
+                        hasFec: ipInput?.value?.transportSettings?.udp?.input?.seamless?.b?.fec,
+                        isRtp: ipInput?.value?.transportSettings?.udp?.input?.seamless?.b?.rtp,
                     });
                 } else {
                     ipInputInterfaces.push({
-                        interfaceId: ipInput.value.transportSettings.udp.input.single.interfaceId,
-                        address: ipInput.value.transportSettings.udp.input.single.destination.address,
-                        port: ipInput.value.transportSettings.udp.input.single.destination.port,
-                        hasFec: ipInput.value.transportSettings.udp.input.single.fec,
-                        isRtp: ipInput.value.transportSettings.udp.input.single.rtp,
+                        interfaceId: ipInput?.value?.transportSettings?.udp?.input?.single?.interfaceId,
+                        address: ipInput?.value?.transportSettings?.udp?.input?.single?.destination?.address,
+                        port: ipInput?.value?.transportSettings?.udp?.input?.single?.destination?.port,
+                        hasFec: ipInput?.value?.transportSettings?.udp?.input?.single?.fec,
+                        isRtp: ipInput?.value?.transportSettings?.udp?.input?.single?.rtp,
                     });
                 }
 
@@ -145,8 +145,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                             };
                         }),
                     input: {
-                        label: ipInput.value.label,
-                        enabled: ipInput.value.enabled,
+                        label: ipInput?.value?.label,
+                        enabled: ipInput?.value?.enabled,
                         interfaces: ipInputInterfaces,
                         dejitterBuffer: ipInput?.value?.analyzeMode?.value?.dvbMode?.dejitter?.value?.bufferSize,
                     },
@@ -208,9 +208,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                     },
 
                     serviceStatus: {
-                        bitRate: parseInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.bitRate),
+                        bitRate: parseZeroInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.bitRate),
                         _bitrateText: formatBitrate(
-                            parseInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.bitRate)
+                            parseZeroInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.bitRate)
                         ),
                         ccError: parseInt(decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.ccError),
                         valid: decoderServiceStatus?.value?.video?.value?.input?.input?.ts?.es?.valid,
