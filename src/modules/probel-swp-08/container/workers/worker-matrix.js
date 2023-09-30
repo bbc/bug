@@ -6,7 +6,6 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
-const putviacore = require("@core/config-putviacore");
 const probel = require("probel-swp-08");
 
 const updateDelay = 2000;
@@ -79,28 +78,6 @@ const main = async () => {
     }
 
     while (true) {
-        if (!workerData.destinationNames || workerData.destinationNames.length < 1) {
-            const destinationNames = await router.getDestinationNames();
-
-            const destinationArray = [];
-            for (const [key, value] of Object.entries(destinationNames)) {
-                destinationArray.push(value);
-            }
-
-            await putviacore({ ...workerData, ...{ destinationNames: destinationArray } });
-        }
-
-        if (!workerData.sourceNames || workerData.sourceNames.length < 1) {
-            const sourceNames = await router.getSourceNames();
-
-            const sourceArray = [];
-            for (const [key, value] of Object.entries(sourceNames)) {
-                sourceArray.push(value);
-            }
-
-            await putviacore({ ...workerData, ...{ sourceNames: sourceArray } });
-        }
-
         // poll occasionally
         await delay(updateDelay);
     }

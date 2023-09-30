@@ -4,6 +4,7 @@ const matrixSetLabels = require("@services/matrix-setlabels");
 const matrixGetLabels = require("@services/matrix-getlabels");
 const matrixGetInputLabel = require("@services/matrix-getinputlabel");
 const matrixGetOutputLabel = require("@services/matrix-getoutputlabel");
+const matrixGetDatabaseLabels = require("@services/matrix-getdatabaselabels");
 const route = express.Router();
 
 route.get("/label/", async function (req, res, next) {
@@ -77,6 +78,21 @@ route.post("/setmultiplelabels", async function (req, res, next) {
         res.json({
             status: "error",
             message: "Failed to set label",
+        });
+    }
+});
+
+route.get("/databaselabels", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await matrixGetDatabaseLabels(),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to get database labels from matrix",
         });
     }
 });
