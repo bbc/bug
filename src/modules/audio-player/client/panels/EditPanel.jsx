@@ -67,25 +67,6 @@ export default function EditPanel() {
         setCurrentPlayerId(null);
     };
 
-    const getPlayerCards = (players) => {
-        const cards = [];
-        if (Object.keys(players).length !== 0) {
-            for (let playerId in players) {
-                cards.push(
-                    <Grid item key={playerId} xl={3} lg={4} md={6} xs={12}>
-                        <PlayerCardEdit
-                            handleDelete={deletePlayer}
-                            handleEdit={onClickEdit}
-                            player={players[playerId]}
-                            playerId={playerId}
-                        />
-                    </Grid>
-                );
-            }
-        }
-        return cards;
-    };
-
     if (panelConfig.status === "loading") {
         return <BugLoading />;
     }
@@ -104,9 +85,19 @@ export default function EditPanel() {
                 onCreate={createPlayer}
                 onEdit={updatePlayer}
             />
-            <Grid container spacing={1}>
-                {getPlayerCards(panelConfig.data.players)}
-                <Grid item key={"addDialog"} xl={3} lg={4} md={6} xs={12}>
+            <Grid container spacing={1} sx={{ padding: "8px" }}>
+                {panelConfig.data.players &&
+                    Object.keys(panelConfig.data.players).map((playerId) => (
+                        <Grid item key={playerId} xl={3} lg={4} md={6} xs={12}>
+                            <PlayerCardEdit
+                                handleDelete={deletePlayer}
+                                handleEdit={onClickEdit}
+                                player={panelConfig.data.players[playerId]}
+                                playerId={playerId}
+                            />
+                        </Grid>
+                    ))}
+                <Grid item xl={3} lg={4} md={6} xs={12}>
                     <AddCard handleClick={onClickAdd} />
                 </Grid>
             </Grid>
