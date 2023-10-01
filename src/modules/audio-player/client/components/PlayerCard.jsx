@@ -1,35 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
 import { CardActionArea } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import AudioPlayer from "./AudioPlayer";
 import CardActions from "@mui/material/CardActions";
 import Slider from "@mui/material/Slider";
-
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import { useTheme } from "@mui/material/styles";
 import { Sparklines, SparklinesBars } from "react-sparklines";
 
-export default function PlayerCard({ panelId, title, description, image, playerId }) {
+export default function PlayerCard({ panelId, player }) {
     const [playing, setPlaying] = useState(false);
     const [volume, setVolume] = useState(50);
-
+    const theme = useTheme();
     const [bars, setBars] = useState([]);
 
     const handleVolume = (event, newVolume) => {
         setVolume(newVolume / 100);
-        if (newVolume === 0) {
-            setPlaying(false);
-        } else {
-            setPlaying(true);
-        }
+        setPlaying(newVolume !== 0);
     };
 
     const togglePlayPause = () => {
-        if (playing) {
-            setPlaying(false);
-        } else {
-            setPlaying(true);
-        }
+        setPlaying(!playing);
     };
 
     useEffect(() => {
@@ -44,63 +39,75 @@ export default function PlayerCard({ panelId, title, description, image, playerI
 
         return () => clearInterval(intervalId);
     });
+
     return (
-        <>
-            <Card
-                sx={{
-                    borderRadius: "3px",
-                    minWidth: 275,
-                    margin: "4px",
-                    display: "flex",
-                }}
-                variant="outlined"
-            >
-                <CardActionArea sx={{ padding: 0 }}>
-                    <CardContent sx={{ width: "100%", padding: "0.2em" }}>
-                        <div style={{ margin: "auto", position: "relative" }}>
-                            <Sparklines data={bars} limit={15} style={{ opacity: 0.2 }} min={0}>
-                                <SparklinesBars color="#333333" />
-                            </Sparklines>
-                            <div
-                                style={{
-                                    padding: "1em",
-                                    top: 0,
-                                    left: 0,
-                                    width: "100%",
-                                    height: "100%",
-                                    position: "absolute",
-                                }}
-                            >
-                                <div onClick={togglePlayPause}>
+        <Card
+            sx={{
+                height: "7rem",
+                borderRadius: "3px",
+                minWidth: 275,
+                margin: "4px",
+                display: "flex",
+                borderColor: playing ? "success.main" : "secondary.main",
+                backgroundColor: playing ? "success.secondary" : "background.paper",
+            }}
+            variant="outlined"
+        >
+            <CardActionArea sx={{ padding: 0 }}>
+                <CardContent sx={{ padding: "0.2em" }}>
+                    <Grid>
+                        <Sparklines data={bars} limit={15} style={{ padding: "12px", opacity: 0.2 }} min={0}>
+                            <SparklinesBars style={{ fill: theme.palette.background.default }} />
+                        </Sparklines>
+                        <Grid
+                            sx={{
+                                padding: "1em",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                position: "absolute",
+                            }}
+                        >
+                            <Grid onClick={togglePlayPause} sx={{ display: "flex" }}>
+                                <Grid sx={{ width: "100%" }}>
                                     <Typography variant="h5" component="div">
-                                        {title}
+                                        {player.title}
                                     </Typography>
 
-                                    <Typography variant="body2">{description}</Typography>
-
-                                    <AudioPlayer
-                                        volume={volume}
-                                        playing={playing}
-                                        title={title}
-                                        source={`/container/${panelId}/audio/${playerId}/playlist.m3u8`}
-                                    />
-                                </div>
-                                <CardActions style={{ padding: 4, align: "center", width: "100%" }}>
-                                    <Slider
-                                        onChange={handleVolume}
-                                        defaultValue={volume}
-                                        step={10}
-                                        marks
-                                        min={0}
-                                        max={100}
-                                        color="secondary"
-                                    />
-                                </CardActions>
-                            </div>
-                        </div>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-        </>
+                                    <Typography variant="body2" sx={{ height: "1rem" }}>
+                                        {player.description}
+                                    </Typography>
+                                </Grid>
+                                <AudioPlayer
+                                    volume={volume}
+                                    playing={playing}
+                                    title={player.title}
+                                    source={`/container/${panelId}/audio/${player.id}/playlist.m3u8`}
+                                />
+                                <Grid>
+                                    {playing ? (
+                                        <PauseIcon sx={{ fontSize: "3rem !important" }} />
+                                    ) : (
+                                        <PlayArrowIcon sx={{ fontSize: "3rem !important" }} />
+                                    )}
+                                </Grid>
+                            </Grid>
+                            <CardActions style={{ padding: 1, marginTop: "8px", align: "center", width: "100%" }}>
+                                <Slider
+                                    onChange={handleVolume}
+                                    defaultValue={volume}
+                                    step={10}
+                                    marks
+                                    min={0}
+                                    max={100}
+                                    color={playing ? "default" : "secondary"}
+                                />
+                            </CardActions>
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </CardActionArea>
+        </Card>
     );
 }

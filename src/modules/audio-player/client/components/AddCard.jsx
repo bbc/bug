@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 import { CardActionArea } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import AddIcon from "@mui/icons-material/Add";
-import Stack from "@mui/material/Stack";
 
 export default function AddCard({ handleClick }) {
     const handleAddClick = () => {
@@ -18,14 +17,21 @@ export default function AddCard({ handleClick }) {
                     borderRadius: "3px",
                     minWidth: 275,
                     margin: "4px",
+                    height: "7rem",
                 }}
                 variant="outlined"
             >
                 <CardActionArea>
-                    <CardContent sx={{ alignItems: "center" }}>
-                        <Stack direction="row" alignItems="center" gap={1}>
-                            <AddIcon fontSize={"large"} />
-                        </Stack>
+                    <CardContent
+                        sx={{
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                            height: "7rem",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <AddIcon fontSize={"large"} />
                     </CardContent>
                 </CardActionArea>
             </Card>
