@@ -5,10 +5,12 @@ import PlayerCardEdit from "../components/PlayerCardEdit";
 import AddCard from "../components/AddCard";
 import Grid from "@mui/material/Grid";
 import { useSelector } from "react-redux";
-import AddDialog from "./../components/AddDialog";
+import AddDialog from "../components/AddDialog";
+import EditDialog from "../components/EditDialog";
 import AxiosPut from "@utils/AxiosPut";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosPost from "@utils/AxiosPost";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
 
 import { useAlert } from "@utils/Snackbar";
 
@@ -16,8 +18,7 @@ export default function EditPanel() {
     const params = useParams();
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [currentPlayerId, setCurrentPlayerId] = useState(null);
+    const { customDialog } = useBugCustomDialog();
 
     const deletePlayer = async (playerId) => {
         const response = await AxiosDelete(`/container/${params?.panelId}/players/${playerId}`);
@@ -28,62 +29,32 @@ export default function EditPanel() {
         }
     };
 
-    const createPlayer = async (player) => {
-        const response = await AxiosPost(`/container/${params?.panelId}/players`, player);
-        if (response) {
-            sendAlert(`Created player ${player.title}`, { variant: "success" });
-        } else {
-            sendAlert(`Could not create player ${player.title}`, { variant: "error" });
-        }
-        setCurrentPlayerId(null);
-    };
-
-    const updatePlayer = async (player, playerId) => {
-        setCurrentPlayerId(null);
-        const response = await AxiosPut(`/container/${params?.panelId}/players/${playerId}`, player);
-        if (response) {
-            sendAlert(`Updated player ${player.title}`, { variant: "success" });
-        } else {
-            sendAlert(`Could not update player ${player.title}`, { variant: "error" });
-        }
-    };
-
-    const onClickAdd = (playerId) => {
-        setCurrentPlayerId(null);
-        setDialogOpen(true);
-    };
-
-    const onClickEdit = (playerId) => {
-        if (playerId) {
-            setCurrentPlayerId(playerId);
-        } else {
-            setCurrentPlayerId(null);
-        }
-        setDialogOpen(true);
-    };
-
-    const onDismiss = () => {
-        setDialogOpen(false);
-        setCurrentPlayerId(null);
-    };
-
-    const getPlayerCards = (players) => {
-        const cards = [];
-        if (Object.keys(players).length !== 0) {
-            for (let playerId in players) {
-                cards.push(
-                    <Grid item key={playerId} xl={3} lg={4} md={6} xs={12}>
-                        <PlayerCardEdit
-                            handleDelete={deletePlayer}
-                            handleEdit={onClickEdit}
-                            player={players[playerId]}
-                            playerId={playerId}
-                        />
-                    </Grid>
-                );
+    const onClickAdd = async () => {
+        const result = await customDialog({
+            dialog: <AddDialog />,
+        });
+        if (result !== false) {
+            const response = await AxiosPost(`/container/${params?.panelId}/players`, result);
+            if (response) {
+                sendAlert(`Created player ${result.title}`, { variant: "success" });
+            } else {
+                sendAlert(`Could not create player ${result.title}`, { variant: "error" });
             }
         }
-        return cards;
+    };
+
+    const onClickEdit = async (player) => {
+        const result = await customDialog({
+            dialog: <EditDialog item={player} />,
+        });
+        if (result !== false) {
+            const response = await AxiosPut(`/container/${params?.panelId}/players/${result.id}`, result);
+            if (response) {
+                sendAlert(`Updated player ${result.title}`, { variant: "success" });
+            } else {
+                sendAlert(`Could not update player ${result.title}`, { variant: "error" });
+            }
+        }
     };
 
     if (panelConfig.status === "loading") {
@@ -94,19 +65,25 @@ export default function EditPanel() {
         return null;
     }
 
+    const sortedPlayers = Object.keys(panelConfig?.data?.players)
+        .map((key) => {
+            return { id: key, ...panelConfig?.data?.players[key] };
+        })
+        .sort((a, b) => a?.title.localeCompare(b?.label, "en", { sensitivity: "base" }));
+
     return (
         <>
-            <AddDialog
-                playerId={currentPlayerId}
-                defaultData={panelConfig?.data?.players[currentPlayerId]}
-                open={dialogOpen}
-                onDismiss={onDismiss}
-                onCreate={createPlayer}
-                onEdit={updatePlayer}
-            />
-            <Grid container spacing={1}>
-                {getPlayerCards(panelConfig.data.players)}
-                <Grid item key={"addDialog"} xl={3} lg={4} md={6} xs={12}>
+            <Grid container spacing={1} sx={{ padding: "8px" }}>
+                {sortedPlayers.map((player) => (
+                    <Grid item key={player.id} xl={3} lg={4} md={6} xs={12}>
+                        <PlayerCardEdit
+                            handleDelete={deletePlayer}
+                            handleEdit={() => onClickEdit(player)}
+                            player={player}
+                        />
+                    </Grid>
+                ))}
+                <Grid item xl={3} lg={4} md={6} xs={12}>
                     <AddCard handleClick={onClickAdd} />
                 </Grid>
             </Grid>
