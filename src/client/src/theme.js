@@ -55,7 +55,7 @@ const theme = (selectedTheme = "dark") => {
                 text: {
                     highlight: "#ffffff",
                     primary: "rgba(255, 255, 255, 0.9)",
-                    secondary: "rgba(255, 255, 255, 0.45)",
+                    secondary: "rgba(255, 255, 255, 0.35)",
                     action: "#337ab7",
                 },
 
