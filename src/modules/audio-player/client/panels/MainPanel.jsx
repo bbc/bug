@@ -16,15 +16,21 @@ export default function MainPanel() {
         return <BugLoading />;
     }
 
+    const sortedPlayers = Object.keys(players.data)
+        .map((key) => {
+            return { id: key, ...players.data[key] };
+        })
+        .sort((a, b) => a?.title.localeCompare(b?.label, "en", { sensitivity: "base" }));
+
+    console.log(sortedPlayers);
     return (
         <>
             <Grid container spacing={1} sx={{ padding: "8px" }}>
-                {players.data &&
-                    Object.keys(players.data).map((playerId) => (
-                        <Grid key={playerId} item xl={3} lg={4} md={6} xs={12}>
-                            <PlayerCard playerId={playerId} panelId={panelId} {...players.data[playerId]} />
-                        </Grid>
-                    ))}
+                {sortedPlayers.map((player) => (
+                    <Grid key={player.id} item xl={3} lg={4} md={6} xs={12}>
+                        <PlayerCard panelId={panelId} player={player} />
+                    </Grid>
+                ))}
             </Grid>
         </>
     );
