@@ -12,7 +12,7 @@ import PauseIcon from "@mui/icons-material/Pause";
 import { useTheme } from "@mui/material/styles";
 import { Sparklines, SparklinesBars } from "react-sparklines";
 
-export default function PlayerCard({ panelId, title, description, image, playerId }) {
+export default function PlayerCard({ panelId, player }) {
     const [playing, setPlaying] = useState(false);
     const [volume, setVolume] = useState(50);
     const theme = useTheme();
@@ -72,18 +72,18 @@ export default function PlayerCard({ panelId, title, description, image, playerI
                             <Grid onClick={togglePlayPause} sx={{ display: "flex" }}>
                                 <Grid sx={{ width: "100%" }}>
                                     <Typography variant="h5" component="div">
-                                        {title}
+                                        {player.title}
                                     </Typography>
 
                                     <Typography variant="body2" sx={{ height: "1rem" }}>
-                                        {description}
+                                        {player.description}
                                     </Typography>
                                 </Grid>
                                 <AudioPlayer
                                     volume={volume}
                                     playing={playing}
-                                    title={title}
-                                    source={`/container/${panelId}/audio/${playerId}/playlist.m3u8`}
+                                    title={player.title}
+                                    source={`/container/${panelId}/audio/${player.id}/playlist.m3u8`}
                                 />
                                 <Grid>
                                     {playing ? (

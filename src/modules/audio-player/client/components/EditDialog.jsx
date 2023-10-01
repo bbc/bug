@@ -8,21 +8,22 @@ import Box from "@mui/material/Box";
 import BugTextField from "@core/BugTextField";
 
 export default function AddDialog({ opn, item, onDismiss, onConfirm }) {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [source, setSource] = useState("");
+    const [title, setTitle] = useState(item.title);
+    const [description, setDescription] = useState(item.description);
+    const [source, setSource] = useState(item.source);
 
     const handleSubmit = async (event) => {
         onConfirm(event, {
             title,
             description,
             source,
+            id: item.id,
         });
     };
 
     return (
         <Dialog open onClose={onDismiss} style={{ minWidth: "50%" }}>
-            <DialogTitle>Add Player</DialogTitle>
+            <DialogTitle>Edit Player</DialogTitle>
             <DialogContent sx={{ paddingTop: 0 }}>
                 <Box sx={{ paddingBottom: "1rem" }}>
                     <BugTextField
@@ -69,7 +70,7 @@ export default function AddDialog({ opn, item, onDismiss, onConfirm }) {
                     Cancel
                 </Button>
                 <Button disabled={!title || !source} type="submit" onClick={handleSubmit} color="primary" autoFocus>
-                    Add
+                    Update
                 </Button>
             </DialogActions>
         </Dialog>
