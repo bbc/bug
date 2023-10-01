@@ -12,11 +12,10 @@ export default function AudioPlayer({ title, source, playing, volume }) {
         }
     };
 
-    //Restart Player to latest avalible time
+    // restart Player to latest available time
     useEffect(() => {
         const setTime = async () => {
             const duration = await player.current.getDuration();
-            console.log(duration);
             player.current.seekTo(duration, "seconds");
         };
         setTime();
