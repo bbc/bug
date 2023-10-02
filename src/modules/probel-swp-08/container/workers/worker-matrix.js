@@ -17,6 +17,7 @@ parentPort.postMessage({
     restartOn: ["address", "port", "extended"],
 });
 
+//Update all crosspoint info in the collection when the worker is started
 const processTallies = async (routerState) => {
     let entries = [];
 
@@ -47,6 +48,7 @@ const processTallies = async (routerState) => {
     }
 };
 
+//Update collection when a crosspoint change message is received
 const crosspointEvent = async (data) => {
     const matrix = Object.keys(data);
     const level = Object.keys(data[matrix[0]]);
