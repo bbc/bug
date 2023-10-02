@@ -1,7 +1,9 @@
 "use strict";
 
 const configGet = require("@core/config-get");
+const configPutViaCore = require("@core/config-putviacore");
 const logger = require("@core/logger")(module);
+const globalMatrix = require("@utils/matrix");
 
 module.exports = async () => {
     let labels;
@@ -19,7 +21,10 @@ module.exports = async () => {
     }
 
     // Get Destination Labels and Parse
-    const destinationNames = await router.getDestinationNames();
+
+    const matrix = await globalMatrix();
+
+    const destinationNames = await matrix.getDestinationNames();
 
     const destinationArray = [];
     for (const [key, value] of Object.entries(destinationNames)) {
@@ -27,7 +32,7 @@ module.exports = async () => {
     }
 
     // Get Source Labels and Parse
-    const sourceNames = await router.getSourceNames();
+    const sourceNames = await matrix.getSourceNames();
 
     const sourceArray = [];
     for (const [key, value] of Object.entries(sourceNames)) {
@@ -36,7 +41,7 @@ module.exports = async () => {
 
     // Append new labels to config and push it as the new config
     labels = { destinationNames: destinationArray, sourceNames: sourceArray };
-    await putviacore({ ...workerData, ...labels });
+    await configPutViaCore({ ...config, ...labels });
 
     return labels;
 };

@@ -82,7 +82,7 @@ route.post("/setmultiplelabels", async function (req, res, next) {
     }
 });
 
-route.get("/databaselabels", async function (req, res, next) {
+route.get("/databaselabels/", async function (req, res, next) {
     try {
         res.json({
             status: "success",
