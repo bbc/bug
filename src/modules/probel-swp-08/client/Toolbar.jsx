@@ -10,9 +10,11 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CheckIcon from "@mui/icons-material/Check";
+import LabelIcon from "@mui/icons-material/Label";
 import Divider from "@mui/material/Divider";
 import { useSelector } from "react-redux";
 import AxiosPut from "@utils/AxiosPut";
+import AxiosCommand from "@utils/AxiosCommand";
 import { useHistory } from "react-router-dom";
 
 export default function Toolbar({ panelId, ...props }) {
@@ -27,6 +29,10 @@ export default function Toolbar({ panelId, ...props }) {
     }
 
     const editMode = location.pathname.indexOf("/edit") > -1;
+
+    const handleOverwriteLabels = async (event, item) => {
+        await AxiosCommand(`/container/${panelId}/databaselabels`);
+    };
 
     const handleUseTakeClicked = async (event, item) => {
         await AxiosPut(`/api/panelconfig/${panelId}`, {
@@ -72,6 +78,12 @@ export default function Toolbar({ panelId, ...props }) {
             <MenuItem key="usetake" onClick={handleUseTakeClicked}>
                 <ListItemIcon>{panelConfig?.data?.useTake ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
                 <ListItemText primary="Confirm Take" />
+            </MenuItem>,
+            <MenuItem key="overwriteLabels" onClick={handleOverwriteLabels}>
+                <ListItemIcon>
+                    <LabelIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Overwrite Labels" />
             </MenuItem>,
         ];
     };

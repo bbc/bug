@@ -1,32 +1,39 @@
 "use strict";
 
-const logger = require("@core/logger");
-const probel = require("probel-swp-08");
+const logger = require("@core/logger")(module);
+const Probel = require("probel-swp-08");
 const configGet = require("@core/config-get");
 
 let matrix;
 
+const getMatrix = async () => {
+    // Get Current Config
+    const config = await configGet();
+
+    if (!config) {
+        throw new Error("No config to create matrix conneciton with");
+    }
+
+    try {
+        logger.info("Establish conntection to matrix and distribute global connection");
+        matrix = new Probel(config?.address, {
+            port: config?.port,
+            sources: config?.sources,
+            destinations: config?.destinations,
+            levels: config?.levels,
+            extended: config?.extended,
+        });
+    } catch (error) {
+        logger.error(`Could not connect to matrix - ${config?.address}:${config?.port}`);
+        logger.debug(error);
+    }
+};
+
+getMatrix();
+
 module.exports = async () => {
     if (!matrix) {
-        try {
-            // Get Current Config
-            const config = await configGet();
-
-            if (!config) {
-                throw new Error("No config to create matrix conneciton with");
-            }
-
-            logger.info("Establish conntection to matrix and distribute global connection");
-
-            const sourceTotal = 1560;
-            const destinationTotal = 360;
-            const levelTotal = 17;
-
-            matrix = new Probel(config?.address, config?.port, config?.sources, config?.destinations, config?.levels);
-        } catch (error) {
-            logger.error(`Could not connect to matrix - ${host}:${port}`);
-            logger.debug(error);
-        }
+        await getMatrix();
     }
     return matrix;
 };

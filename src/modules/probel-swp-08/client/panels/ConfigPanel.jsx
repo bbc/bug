@@ -71,7 +71,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         numeric
-                        min={1}
+                        min={0}
                         max={65535}
                         fullWidth
                         error={errors.port}
@@ -88,9 +88,8 @@ export default function ConfigPanel() {
                     <BugConfigFormTextField
                         name="sources"
                         control={control}
-                        rules={{ required: true }}
                         numeric
-                        min={1}
+                        min={0}
                         max={65535}
                         fullWidth
                         error={errors.sources}
@@ -105,7 +104,6 @@ export default function ConfigPanel() {
                     <BugConfigFormTextField
                         name="destinations"
                         control={control}
-                        rules={{ required: true }}
                         numeric
                         min={1}
                         max={65535}
@@ -115,6 +113,16 @@ export default function ConfigPanel() {
                         defaultValue={panelConfig.data.destinations}
                         type="text"
                         label="Destinations"
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <BugConfigFormSwitch
+                        name="extended"
+                        label="Use Probel Extended Commands"
+                        control={control}
+                        defaultValue={panelConfig.data.extended}
+                        fullWidth
                     />
                 </Grid>
 
