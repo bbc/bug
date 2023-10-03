@@ -57,11 +57,11 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     const crosspoints = await dataCollection.find().toArray();
     let selectedSourceIndex = null;
 
-    // for (let item of crosspoints) {
-    //     if (parseInt(item?.destination) - 1 === destinationIndex) {
-    //         selectedSourceIndex = parseInt(item.levels["1"]);
-    //     }
-    // }
+    for (let item of crosspoints) {
+        if (parseInt(item?.destination) - 1 === destinationIndex) {
+            selectedSourceIndex = parseInt(item.levels["1"]);
+        }
+    }
 
     const sourceNames = config?.sourceNames;
 
@@ -71,7 +71,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
             const intIndex = parseInt(index);
 
             // check it's not excluded or if it's a selected source - in which case we'll show it anyway
-            const isExcluded = excludedSources.includes(intIndex.toString());
+            const isExcluded = excludedSources.includes(index.toString());
             const isSelected = selectedSourceIndex === intIndex;
             const isInGroup = groupIndex === null || validSources.includes(intIndex);
 
