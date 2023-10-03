@@ -14,7 +14,7 @@ let dataCollection;
 // Tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "port", "extended"],
+    restartOn: ["address", "port", "extended", "sources", "destinations"],
 });
 
 //Update all crosspoint info in the collection when the worker is started
@@ -33,7 +33,7 @@ const processTallies = async (routerState) => {
                     entries[parseInt(destination) - 1] = { destination: destination, levels: {} };
                 }
                 entries[parseInt(destination) - 1]["levels"][level] = routerState[matrix][level][destination];
-                entries[parseInt(destination) - 1]["lastSeen"] = Date.now();
+                entries[parseInt(destination) - 1]["timestamp"] = Date.now();
             }
         }
     }

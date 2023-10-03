@@ -6,22 +6,17 @@ const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     let config;
+    let destinations;
     try {
         config = await configGet();
+        destinations = config.destinationNames;
         if (!config) {
             throw new Error();
         }
     } catch (error) {
         logger.error(`matrix-getalldestinations: failed to fetch config`);
-        return false;
+        return null;
     }
 
-    const dataCollection = await mongoCollection("data");
-
-    const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
-    if (dbOutputLabels) {
-        return Object.values(dbOutputLabels["data"]);
-    }
-
-    return null;
+    return destinations;
 };

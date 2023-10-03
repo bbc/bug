@@ -54,19 +54,22 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
-    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
-
+    const dbOutputRouting = await dataCollection.find().toArray();
     let selectedSourceIndex = null;
-    if (destinationIndex !== null) {
-        if (dbOutputRouting && dbOutputRouting["data"][destinationIndex] !== null) {
-            selectedSourceIndex = parseInt(dbOutputRouting["data"][destinationIndex]);
+
+    for (let item of dbOutputRouting) {
+        if (parseInt(item?.destination) - 1 === destinationIndex) {
+            selectedSourceIndex = parseInt(item.levels["1"]);
         }
     }
 
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-    if (dbInputLabels) {
-        for (const [eachIndex, eachValue] of Object.entries(dbInputLabels["data"])) {
-            const intIndex = parseInt(eachIndex);
+    const sourceNames = config?.sourceNames;
+
+    if (Array.isArray(sourceNames)) {
+        for (let index in sourceNames) {
+            const sourceName = sourceNames[index];
+            const intIndex = parseInt(index);
+
             // check it's not excluded or if it's a selected source - in which case we'll show it anyway
             const isExcluded = excludedSources.includes(intIndex.toString());
             const isSelected = selectedSourceIndex === intIndex;
@@ -83,7 +86,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
             if (isInGroup && (!isExcluded || showExcluded)) {
                 outputArray["sources"].push({
                     index: intIndex,
-                    label: eachValue,
+                    label: sourceName,
                     selected: isSelected,
                     hidden: isExcluded,
                     order: order,

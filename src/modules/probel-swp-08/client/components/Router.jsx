@@ -34,7 +34,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/${selectedDestination === null ? -1 : selectedDestination}/${sourceGroup}`,
-        interval: editMode ? 5000 : 500,
+        interval: editMode ? 5000 : 1000,
         forceRefresh: sourceForceRefresh,
     });
 

@@ -6,22 +6,17 @@ const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     let config;
+    let sources;
     try {
         config = await configGet();
+        sources = config.sourceNames;
         if (!config) {
             throw new Error();
         }
     } catch (error) {
         logger.error(`matrix-getallsources: failed to fetch config`);
-        return false;
+        return null;
     }
 
-    const dataCollection = await mongoCollection("data");
-
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-    if (dbInputLabels) {
-        return Object.values(dbInputLabels["data"]);
-    }
-
-    return null;
+    return sources;
 };
