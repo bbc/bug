@@ -26,7 +26,7 @@
         "package.json": "^2.0.1",
         "path": "^0.12.7",
         "ping": "^0.4.1",
-        "probel-swp-08": "^0.0.19",
+        "probel-swp-08": "^0.0.20",
         "underscore": "^1.13.1",
         "winston": "^3.10.0"
     },
