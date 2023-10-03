@@ -1,27 +1,33 @@
 "use strict";
 
-const probel = require("probel-swp-08");
+const ping = require("ping");
 
 module.exports = async (address, port) => {
-    const router = new probel(address, { port: port });
-
-    await router.connect();
-
-    return new Promise((resolve, reject) => {
-        router.on("update", () => {
-            resolve(true);
-        });
-
-        let count = 0;
-        const setTimer = () => {
-            if (count < 5) {
-                count += 1;
-                router.send("PING");
-                setTimeout(setTimer, 200);
-            } else {
-                resolve(false);
-            }
-        };
-        setTimer();
-    });
+    try {
+        let res = await ping.promise.probe(address);
+        if (res.alive) {
+            return new validationResult([
+                {
+                    state: true,
+                    field: "address",
+                    message: "Matrix is reachable",
+                },
+            ]);
+        }
+        return new validationResult([
+            {
+                state: false,
+                field: "address",
+                message: "Matrix is not reachable",
+            },
+        ]);
+    } catch (error) {
+        return new validationResult([
+            {
+                state: false,
+                field: "address",
+                message: "Address is not valid",
+            },
+        ]);
+    }
 };
