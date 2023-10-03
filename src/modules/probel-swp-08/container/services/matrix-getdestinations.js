@@ -67,11 +67,12 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
         crosspoints.length > 0
     ) {
         for (const index in destinationNames) {
-            const selectedSource = parseInt(crosspoints[index].levels["1"]) - 1;
+            const intIndex = parseInt(index);
+            const selectedSource = parseInt(crosspoints[intIndex].levels["1"]) - 1;
             const selectedSourceLabel = sourceNames[selectedSource];
 
-            const isExcluded = excludedDestinations.includes(index.toString());
-            const isInGroup = groupIndex === null || validDestinations.includes(index);
+            const isExcluded = excludedDestinations.includes(intIndex.toString());
+            const isInGroup = groupIndex === null || validDestinations.includes(intIndex);
 
             let isLocalLocked = false;
             let isRemoteLocked = false;
@@ -81,20 +82,20 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
             //     isRemoteLocked = dbOutputLocks["data"][eachIndex] == "L";
             // }
 
-            const indexText = config["showNumber"] === false ? "" : index + 1;
+            const indexText = config["showNumber"] === false ? "" : intIndex + 1;
 
             // set new order field - if in group then use the validsources index, otherwise the normal one
             let order;
             if (groupIndex !== null) {
-                order = validDestinations.indexOf(index);
+                order = validDestinations.indexOf(intIndex);
             } else {
-                order = index;
+                order = intIndex;
             }
 
             if (isInGroup && (!isExcluded || showExcluded)) {
                 outputArray["destinations"].push({
-                    index: index,
-                    label: destinationNames[index],
+                    index: intIndex,
+                    label: destinationNames[intIndex],
                     sourceIndex: parseInt(selectedSource),
                     sourceLabel: selectedSourceLabel,
                     indexText: indexText,
@@ -103,8 +104,8 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
                     isLocked: isLocalLocked || isRemoteLocked,
                     isLocalLocked: isLocalLocked,
                     isRemoteLocked: isRemoteLocked,
-                    icon: icons[index] ? icons[index] : null,
-                    iconColor: iconColors[index] ? iconColors[index] : "#ffffff",
+                    icon: icons[intIndex] ? icons[intIndex] : null,
+                    iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
                 });
             }
         }

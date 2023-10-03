@@ -5,9 +5,14 @@ const logger = require("@core/logger")(module);
 
 module.exports = async (destinatonIndex, sourceIndex) => {
     try {
+        const destinationInt = parseInt(destinatonIndex) + 1;
+        const sourceInt = parseInt(sourceIndex) + 1;
         const matrix = await globalMatrix();
-        const status = await matrix.routeAllLevels(sourceIndex + 1, destinatonIndex + 1);
-        logger.info(`Routed Source #${sourceIndex + 1} to Destination #${destinatonIndex + 1} on all levels.`);
+
+        const status = await matrix.routeAllLevels(sourceInt, destinationInt);
+        if (status) {
+            logger.info(`Routed Source #${sourceInt} to Destination #${destinationInt} on all levels.`);
+        }
         return status;
     } catch (error) {
         logger.error("matrix-route: ", error);
