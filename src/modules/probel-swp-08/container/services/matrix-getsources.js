@@ -54,14 +54,14 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
-    const dbOutputRouting = await dataCollection.find().toArray();
+    const crosspoints = await dataCollection.find().toArray();
     let selectedSourceIndex = null;
 
-    for (let item of dbOutputRouting) {
-        if (parseInt(item?.destination) - 1 === destinationIndex) {
-            selectedSourceIndex = parseInt(item.levels["1"]);
-        }
-    }
+    // for (let item of crosspoints) {
+    //     if (parseInt(item?.destination) - 1 === destinationIndex) {
+    //         selectedSourceIndex = parseInt(item.levels["1"]);
+    //     }
+    // }
 
     const sourceNames = config?.sourceNames;
 
