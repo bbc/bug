@@ -25,8 +25,8 @@
         "node-cache": "^5.1.2",
         "package.json": "^2.0.1",
         "path": "^0.12.7",
-        "ping": "^0.4.1",
-        "probel-swp-08": "^0.0.20",
+        "ping": "^0.4.4",
+        "probel-swp-08": "^0.0.22",
         "underscore": "^1.13.1",
         "winston": "^3.10.0"
     },
