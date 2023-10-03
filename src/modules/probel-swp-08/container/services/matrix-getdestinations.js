@@ -55,41 +55,46 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     const excludedDestinations = config["excludeDestinations"] ? config["excludeDestinations"] : [];
 
     // get get the existing data from the db
-    const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
-    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-    const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
 
-    if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
-        for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels["data"])) {
-            const intIndex = parseInt(eachIndex);
-            const selectedSource = dbOutputRouting["data"][eachIndex];
-            const selectedSourceLabel = dbInputLabels.data[selectedSource];
-            const isExcluded = excludedDestinations.includes(intIndex.toString());
-            const isInGroup = groupIndex === null || validDestinations.includes(intIndex);
+    const sourceNames = config?.sourceNames;
+    const destinationNames = config?.destinationNames;
+    const crosspoints = await dataCollection.find().toArray();
+
+    if (
+        Array.isArray(sourceNames) &&
+        Array.isArray(destinationNames) &&
+        Array.isArray(crosspoints) &&
+        crosspoints.length > 0
+    ) {
+        for (const index in destinationNames) {
+            const selectedSource = parseInt(crosspoints[index].levels["1"]) - 1;
+            const selectedSourceLabel = sourceNames[selectedSource];
+
+            const isExcluded = excludedDestinations.includes(index.toString());
+            const isInGroup = groupIndex === null || validDestinations.includes(index);
 
             let isLocalLocked = false;
             let isRemoteLocked = false;
 
-            if (dbOutputLocks && dbOutputLocks["data"][eachIndex]) {
-                isLocalLocked = dbOutputLocks["data"][eachIndex] == "O";
-                isRemoteLocked = dbOutputLocks["data"][eachIndex] == "L";
-            }
+            // if (dbOutputLocks && dbOutputLocks["data"][eachIndex]) {
+            //     isLocalLocked = dbOutputLocks["data"][eachIndex] == "O";
+            //     isRemoteLocked = dbOutputLocks["data"][eachIndex] == "L";
+            // }
 
-            const indexText = config["showNumber"] === false ? "" : intIndex + 1;
+            const indexText = config["showNumber"] === false ? "" : index + 1;
 
             // set new order field - if in group then use the validsources index, otherwise the normal one
             let order;
             if (groupIndex !== null) {
-                order = validDestinations.indexOf(intIndex);
+                order = validDestinations.indexOf(index);
             } else {
-                order = intIndex;
+                order = index;
             }
 
             if (isInGroup && (!isExcluded || showExcluded)) {
                 outputArray["destinations"].push({
-                    index: intIndex,
-                    label: eachValue,
+                    index: index,
+                    label: destinationNames[index],
                     sourceIndex: parseInt(selectedSource),
                     sourceLabel: selectedSourceLabel,
                     indexText: indexText,
@@ -98,8 +103,8 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
                     isLocked: isLocalLocked || isRemoteLocked,
                     isLocalLocked: isLocalLocked,
                     isRemoteLocked: isRemoteLocked,
-                    icon: icons[intIndex] ? icons[intIndex] : null,
-                    iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
+                    icon: icons[index] ? icons[index] : null,
+                    iconColor: iconColors[index] ? iconColors[index] : "#ffffff",
                 });
             }
         }
