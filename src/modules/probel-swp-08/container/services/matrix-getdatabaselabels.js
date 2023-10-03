@@ -30,7 +30,7 @@ module.exports = async () => {
     for (const [key, value] of Object.entries(destinationNames)) {
         destinationArray.push(value);
     }
-
+z
     // Get Source Labels and Parse
     const sourceNames = await matrix.getSourceNames();
 
