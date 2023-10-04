@@ -8,7 +8,7 @@ module.exports = async () => {
             collectionName: "data",
             message: ["There is no recent router data for this device.", "Check your connection or address details."],
             itemType: "critical",
-            timeoutSeconds: 300,
+            timeoutSeconds: 3000,
             flags: ["restartPanel", "configurePanel"],
         })
     );
