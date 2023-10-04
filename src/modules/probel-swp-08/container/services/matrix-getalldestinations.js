@@ -1,22 +1,30 @@
 "use strict";
 
 const configGet = require("@core/config-get");
-const mongoCollection = require("@core/mongo-collection");
-const logger = require("@core/logger")(module);
+const mongoSingle = require("@core/mongo-single");
 
 module.exports = async () => {
-    let config;
-    let destinations;
-    try {
-        config = await configGet();
-        destinations = config.destinationNames;
-        if (!config) {
-            throw new Error();
-        }
-    } catch (error) {
-        logger.error(`matrix-getalldestinations: failed to fetch config`);
-        return null;
+    const config = await configGet();
+    if (!config) {
+        throw new Error();
     }
 
-    return destinations;
+    // first get size of matrix
+    const matrixSize = await mongoSingle.get("matrixSize");
+
+    if (matrixSize?.destinations) {
+        const destinationLabels = [];
+
+        for (let i = 0; i < matrixSize?.destinations + 1; i++) {
+            destinationLabels.push((i + 1).toString());
+        }
+
+        // merge any custom labels over the top
+        config.destinationNames.forEach(function (eachLabel, index) {
+            destinationLabels[index] = eachLabel;
+        });
+        return destinationLabels;
+    }
+
+    return config.destinationNames;
 };
