@@ -11,14 +11,14 @@ const Probel = require("probel-swp-08");
 const updateDelay = 2000;
 let dataCollection;
 
-// Tell the manager the things you care about
+// tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "port", "extended", "sources", "destinations"],
 });
 
-//Update all crosspoint info in the collection when the worker is started
 const processTallies = async (routerState) => {
+    // update all crosspoint info in the collection when the worker is started
     let entries = [];
 
     const matrix = Object.keys(routerState);
@@ -30,7 +30,7 @@ const processTallies = async (routerState) => {
         if (Array.isArray(destinations)) {
             for (let destination of destinations) {
                 if (!entries[parseInt(destination) - 1]) {
-                    entries[parseInt(destination) - 1] = { destination: destination, levels: {} };
+                    entries[parseInt(destination) - 1] = { destination: parseInt(destination), levels: {} };
                 }
                 entries[parseInt(destination) - 1]["levels"][level] = routerState[matrix][level][destination];
                 entries[parseInt(destination) - 1]["timestamp"] = Date.now();
@@ -48,8 +48,8 @@ const processTallies = async (routerState) => {
     }
 };
 
-//Update collection when a crosspoint change message is received
 const crosspointEvent = async (data) => {
+    // update collection when a crosspoint change message is received
     const matrix = Object.keys(data);
     const level = Object.keys(data[matrix[0]]);
     const destination = Object.keys(data[matrix[0]][level[0]]);
