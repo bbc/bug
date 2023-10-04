@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
+const matrixGetAllSources = require("./matrix-getallsources");
 
 module.exports = async (destinationIndex = null, groupIndex = null, showExcluded = false) => {
     let config;
@@ -18,6 +19,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
 
     const icons = config.sourceIcons ? config.sourceIcons : [];
     const iconColors = config.sourceIconColors ? config.sourceIconColors : [];
+    const sourceNames = await matrixGetAllSources();
 
     const dataCollection = await mongoCollection("data");
 
@@ -54,16 +56,10 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
-    const crosspoints = await dataCollection.find().toArray();
-    let selectedSourceIndex = null;
+    const crosspoints = await dataCollection.findOne({ destination: parseInt(destinationIndex) });
 
-    for (let item of crosspoints) {
-        if (parseInt(item?.destination) - 1 === destinationIndex) {
-            selectedSourceIndex = parseInt(item.levels["1"]);
-        }
-    }
-
-    const sourceNames = config?.sourceNames;
+    // we'll just use the first one for the moment
+    const selectedSourceIndex = crosspoints?.levels?.[1];
 
     if (Array.isArray(sourceNames)) {
         for (let index in sourceNames) {

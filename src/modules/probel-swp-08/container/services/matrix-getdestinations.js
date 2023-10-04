@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
+const matrixGetAllDestinations = require("./matrix-getalldestinations");
 
 module.exports = async (groupIndex = null, showExcluded = false) => {
     let config;
@@ -18,6 +19,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
 
     const icons = config.destinationIcons ? config.destinationIcons : [];
     const iconColors = config.destinationIconColors ? config.destinationIconColors : [];
+    const destinationNames = await matrixGetAllDestinations();
 
     const dataCollection = await mongoCollection("data");
 
@@ -57,7 +59,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     // get get the existing data from the db
 
     const sourceNames = config?.sourceNames;
-    const destinationNames = config?.destinationNames;
+    // const destinationNames = config?.destinationNames;
     const crosspoints = await dataCollection.find().toArray();
 
     if (
@@ -68,7 +70,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     ) {
         for (const index in destinationNames) {
             const intIndex = parseInt(index);
-            const selectedSource = parseInt(crosspoints[intIndex].levels["1"]) - 1;
+            const selectedSource = parseInt(crosspoints?.[intIndex]?.levels["1"]) - 1;
             const selectedSourceLabel = sourceNames[selectedSource];
 
             const isExcluded = excludedDestinations.includes(intIndex.toString());
