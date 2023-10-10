@@ -1,0 +1,2 @@
+-   confirm label overwrite if any labels in config only
+-   displaying current source for a destination is limited to video level only
