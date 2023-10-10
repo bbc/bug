@@ -135,7 +135,7 @@ export default function RouterButton({
             icon={button.icon}
             iconColor={button.iconColor}
             primaryLabel={button.label}
-            secondaryLabel={buttonType === "source" ? "" : button.sourceLabel}
+            secondaryLabel={buttonType === "source" ? "" : button.sourceLabel ? button.sourceLabel : "-"}
             number={button.index + 1}
             selected={selected}
             disabled={disabled}
