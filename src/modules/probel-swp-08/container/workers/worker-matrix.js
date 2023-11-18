@@ -60,9 +60,6 @@ const crosspointEvent = async (data) => {
         $set: { [`levels.${level}`]: source + 1, timestamp: Date.now() },
     };
     const options = { upsert: true };
-
-    console.log(update);
-
     const status = await dataCollection.updateOne(query, update, options);
 };
 
