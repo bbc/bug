@@ -1,5 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
@@ -83,7 +84,6 @@ export default function ConfigPanel() {
                         label="Device Port"
                     />
                 </Grid>
-
                 <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
                         name="sources"
@@ -99,7 +99,6 @@ export default function ConfigPanel() {
                         label="Sources"
                     />
                 </Grid>
-
                 <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
                         name="destinations"
@@ -115,7 +114,22 @@ export default function ConfigPanel() {
                         label="Destinations"
                     />
                 </Grid>
-
+                <Grid item xs={12}>
+                    <BugConfigFormSelect
+                        name="chars"
+                        control={control}
+                        fullWidth
+                        label="Label Length"
+                        defaultValue={panelConfig.data.chars}
+                        options={[
+                            { id: 4, label: "4 Letters" },
+                            { id: 8, label: "8 Letters" },
+                            { id: 12, label: "12 Letters" },
+                            { id: 16, label: "16 Letters" },
+                            { id: 32, label: "32 Letters" },
+                        ]}
+                    />
+                </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormSwitch
                         name="extended"
@@ -125,7 +139,6 @@ export default function ConfigPanel() {
                         fullWidth
                     />
                 </Grid>
-
                 <Grid item xs={12}>
                     <BugConfigFormSwitch
                         name="useTake"

@@ -34,6 +34,7 @@ const main = async () => {
             port: workerData?.port,
             extended: workerData?.extended,
             levels: workerData?.levels,
+            chars: parseInt(workerData?.chars),
         });
 
         let previousSize = {};

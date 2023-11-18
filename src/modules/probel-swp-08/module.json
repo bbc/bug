@@ -1,13 +1,13 @@
 {
     "name": "probel-swp-08",
-    "longname": "Probel SWP8 Matrix",
-    "description": "Control matrices that use the probel-swp-08 protocol",
+    "longname": "Probel SWP-08 Matrix",
+    "description": "Control matrices that use the Probel SWP-08 protocol",
     "capabilities": [
         "video-router"
     ],
     "memory": 100,
     "notes": "",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "icon": "mdi-matrix",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
@@ -29,6 +29,7 @@
         "title": "",
         "module": "probel-swp-08",
         "description": "",
+        "chars": 8,
         "notes": "",
         "sources": 0,
         "destinations": 0,
