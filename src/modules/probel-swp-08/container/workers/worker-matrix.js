@@ -52,18 +52,18 @@ const crosspointEvent = async (data) => {
     // update collection when a crosspoint change message is received
     const matrix = Object.keys(data);
     const level = Object.keys(data[matrix[0]]);
-    const destination = Object.keys(data[matrix[0]][level[0]]);
-    const source = data[matrix[0]][level[0]][destination[0]];
+    const destination = parseInt(Object.keys(data[matrix[0]][level[0]])[0]);
+    const source = data[matrix[0]][level[0]][destination];
 
-    const entry = { levels: {} };
-    entry.levels[level] = source;
-
-    const query = { destination: destination };
+    const query = { destination: destination + 1 };
     const update = {
-        $set: entry,
+        $set: { [`levels.${level}`]: source + 1, timestamp: Date.now() },
     };
     const options = { upsert: true };
-    await dataCollection.updateOne(query, update, options);
+
+    console.log(update);
+
+    const status = await dataCollection.updateOne(query, update, options);
 };
 
 const main = async () => {
