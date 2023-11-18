@@ -14,7 +14,7 @@ let dataCollection;
 // tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "port", "extended", "sources", "destinations"],
+    restartOn: ["address", "port", "extended", "sources", "destinations", "chars"],
 });
 
 const processTallies = async (routerState) => {
@@ -90,6 +90,7 @@ const main = async () => {
             desinations: workerData?.desinations,
             extended: workerData?.extended,
             levels: workerData?.levels,
+            chars: parseInt(workerData?.chars),
         });
 
         router.on("crosspoint", crosspointEvent);
