@@ -4,10 +4,9 @@ import BugNoData from "@core/BugNoData";
 import BugLoading from "@core/BugLoading";
 import BugApiTable from "@core/BugApiTable";
 import BugChipDisplay from "@core/BugChipDisplay";
-import Avatar from "@mui/material/Avatar";
+import BugAvatar from "@core/BugAvatar";
 import { useSelector } from "react-redux";
 import { useApiPoller } from "@hooks/ApiPoller";
-import getGravatarUrl from "@utils/getGravatarUrl";
 
 export default function LogTable({ panelId, level, interval }) {
     const panelFilter = useSelector((state) =>
@@ -119,12 +118,7 @@ export default function LogTable({ panelId, level, interval }) {
                 content: (item) => {
                     if (item.meta.userId) {
                         const user = getUser(item.meta.userId);
-                        return (
-                            <BugChipDisplay
-                                avatar={<Avatar alt={user?.name} src={getGravatarUrl(user?.email)} />}
-                                options={[user?.name]}
-                            />
-                        );
+                        return <BugChipDisplay avatar={<BugAvatar {...user} />} options={[user?.name]} />;
                     }
                 },
             });
