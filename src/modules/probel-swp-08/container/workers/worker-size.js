@@ -22,7 +22,7 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     // Kick things off
-    console.log(`worker-matrix: connecting to device at ${workerData.address}:${workerData.port}`);
+    console.log(`worker-size: connecting to device at ${workerData.address}:${workerData.port}`);
 
     let router;
     // start checking it every 500ms
