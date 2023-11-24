@@ -10,10 +10,9 @@ import Typography from "@mui/material/Typography";
 import { formatDistanceToNow } from "date-fns";
 import { useAlert } from "@utils/Snackbar";
 import { useSelector } from "react-redux";
-import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import Stack from "@mui/material/Stack";
-import getGravatarUrl from "@utils/getGravatarUrl";
+import BugAvatar from "@core/BugAvatar";
 
 export default function NoteCard({ user, note, noteId, panelId }) {
     const [edit, setEdit] = useState(false);
@@ -73,7 +72,7 @@ export default function NoteCard({ user, note, noteId, panelId }) {
         if (user) {
             return (
                 <Tooltip title={user?.name}>
-                    <Avatar sx={{ width: 24, height: 24 }} alt={user?.name} src={getGravatarUrl(user?.email)} />
+                    <BugAvatar {...user} />
                 </Tooltip>
             );
         }

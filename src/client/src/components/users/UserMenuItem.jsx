@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,7 +12,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
 import useSounds from "@hooks/Sounds";
-import getGravatarUrl from "@utils/getGravatarUrl";
+import BugAvatar from "@core/BugAvatar";
 
 const UserMenuItem = () => {
     const dispatch = useDispatch();
@@ -58,17 +57,6 @@ const UserMenuItem = () => {
         history.push(`/login`);
     };
 
-    const getInitials = (name) => {
-        if (name) {
-            let initials = "";
-            for (let word of name?.split(" ")) {
-                initials += word.charAt(0);
-            }
-            return initials.toUpperCase();
-        }
-        return null;
-    };
-
     const getName = (name) => {
         if (name) {
             return name;
@@ -107,9 +95,7 @@ const UserMenuItem = () => {
         <>
             <ListItem button onClick={handleOpenMenuClick}>
                 <ListItemIcon sx={{ padding: "1px" }}>
-                    <Avatar src={getGravatarUrl(user?.data?.email)} sx={{ width: "24px", height: "24px" }}>
-                        {getInitials(user?.data?.name)}
-                    </Avatar>
+                    <BugAvatar {...user.data} />
                 </ListItemIcon>
                 <ListItemText primary={getName(user?.data?.name)} />
             </ListItem>
