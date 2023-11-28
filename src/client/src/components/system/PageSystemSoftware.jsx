@@ -137,18 +137,18 @@ export default function PageSystemBackup() {
                                 value: (
                                     <>
                                         {info.data.git.development ? (
-                                            "N/A - development build"
+                                            "Development Build"
                                         ) : (
                                             <BugTableLinkButton
                                                 onClick={(event) =>
                                                     openWebpage(
                                                         event,
-                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.version}`
+                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.npmVersion}`
                                                     )
                                                 }
                                                 sx={{ color: "text.secondary" }}
                                             >
-                                                {info.data?.version}
+                                                {info.data?.npmVersion}
                                             </BugTableLinkButton>
                                         )}
                                     </>
