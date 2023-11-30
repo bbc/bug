@@ -22,7 +22,7 @@ jobs:
             - name: "Backend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
                   PACKAGEJSON_DIR: "src"
               with:
                   commit-message: "CI: bumps backend version to {{version}}"
@@ -37,7 +37,7 @@ jobs:
             - name: "Frontend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
                   PACKAGEJSON_DIR: "src/client"
               with:
                   bump-policy: "ignore"
