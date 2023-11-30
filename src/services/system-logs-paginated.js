@@ -27,7 +27,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, p
 
         const logs = await logsModel.pagination(
             dbFilters,
-            { feild: sortField, direction: sortDirection },
+            { field: sortField, direction: sortDirection },
             pageNumber,
             numberPerPage
         );

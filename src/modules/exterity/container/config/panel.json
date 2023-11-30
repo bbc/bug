@@ -4,7 +4,7 @@
   "needsConfigured": false,
   "title": "",
   "module": "exterity",
-  "description": "Channel list server and device manger for exterity STBs",
+  "description": "Channel list server and device manager for exterity STBs",
   "enabled": false,
   "channels": {},
   "devices": {}

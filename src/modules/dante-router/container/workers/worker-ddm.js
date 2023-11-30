@@ -33,7 +33,7 @@ const main = async () => {
     receiversCollection = await mongoCollection("receivers");
 
     // Kick things off
-    console.log(`worker-ddm: connecting to domain manger at ${workerData.address}`);
+    console.log(`worker-ddm: connecting to domain manager at ${workerData.address}`);
 
     while (true) {
         // poll occasionally
