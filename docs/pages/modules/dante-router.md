@@ -7,6 +7,9 @@ nav_order: 10
 
 # Dante Router
 
+Beta
+{: .label .label-purple }
+
 Control and route dante in conjuction with Dante Domain Controller
 
 Dante Domain Manager subscription required. Minium versio 1.5.0.

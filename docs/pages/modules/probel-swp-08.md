@@ -7,6 +7,9 @@ nav_order: 31
 
 # Generic Probel Matrix
 
+Stable
+{: .label .label-green }
+
 Control matrices that use the probel-swp-08 protocol
 
 ![Generic Probel Matrix Module Screenshot](/bug/assets/images/screenshots/module-probel-swp-08.png)
@@ -39,5 +42,4 @@ Control matrices that use the probel-swp-08 protocol
   "excludeSources": [],
   "excludeDestinations": []
 }
-```            
-
+```

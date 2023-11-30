@@ -7,6 +7,9 @@ nav_order: 7
 
 # Comrex BRIC-Link
 
+Stable
+{: .label .label-green }
+
 Control of Comrex BRIC-Link and BRIC-Link II devices
 
 ## Default Configuration

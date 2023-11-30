@@ -7,6 +7,9 @@ nav_order: 22
 
 # Pinger
 
+Stable
+{: .label .label-green }
+
 Monitor network devices
 
 ## Default Configuration

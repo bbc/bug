@@ -7,6 +7,9 @@ nav_order: 0
 
 # Arista Switch
 
+Stable
+{: .label .label-green }
+
 Monitoring and control of Arista switches
 
 ## Default Configuration

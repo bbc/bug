@@ -7,6 +7,9 @@ nav_order: 9
 
 # Satelite Dish Pointer
 
+Stable
+{: .label .label-green }
+
 Get the Azimuth and Elevation to point a Satelite Dish
 
 ![Dish Pointer Module Screenshot](/bug/assets/images/screenshots/module-dish-pointer.png)

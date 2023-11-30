@@ -7,6 +7,9 @@ nav_order: 10
 
 # DTC ProRX Receiver
 
+Stable
+{: .label .label-green }
+
 Control DTC radio camera receivers
 
 ## Default Configuration

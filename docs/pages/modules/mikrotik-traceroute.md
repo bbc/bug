@@ -7,6 +7,9 @@ nav_order: 21
 
 # Mikrotik Traceroute
 
+Beta
+{: .label .label-purple }
+
 Run a Traceroute from your MikroTik Router
 
 ![Mikrotik Traceroute Module Screenshot](/bug/assets/images/screenshots/module-mikrotik-traceroute.png)

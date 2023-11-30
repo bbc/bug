@@ -7,6 +7,9 @@ nav_order: 19
 
 # NTT MVE5000
 
+Stable
+{: .label .label-green }
+
 Control of NTT MVE5000 encoders
 
 ## Default Configuration

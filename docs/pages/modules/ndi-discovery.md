@@ -7,6 +7,9 @@ nav_order: 2
 
 # NDI Discovery
 
+Stable
+{: .label .label-green }
+
 -   See all NDI sources associated with a discovery server
 -   Organise by receive groups, IP address, name or port.
 -   Click IP address to navigate directly to device webpage

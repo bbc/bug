@@ -7,6 +7,9 @@ nav_order: 16
 
 # Mikrotik Interfaces
 
+Stable
+{: .label .label-green }
+
 Monitoring and control of mikrotik interfaces
 
 ## Default Configuration

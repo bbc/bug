@@ -7,6 +7,9 @@ nav_order: 2
 
 # Weather
 
+Stable
+{: .label .label-green }
+
 -   See one day or 5 day weather forecast
 -   Set location of forecast
 -   Set units in imperial, metric or scientific notation

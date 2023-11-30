@@ -7,6 +7,9 @@ nav_order: 13
 
 # Magewell NDI Decoder
 
+Stable
+{: .label .label-green }
+
 Control NDI Sources on Magewell Devices
 
 ## Default Configuration

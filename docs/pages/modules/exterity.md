@@ -7,6 +7,9 @@ nav_order: 12
 
 # Exterity STB
 
+Stable
+{: .label .label-green }
+
 Channel list server and device manager for exterity STBs
 
 ![Exterity STB Module Screenshot](/bug/assets/images/screenshots/module-exterity.png)

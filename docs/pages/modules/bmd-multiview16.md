@@ -7,6 +7,9 @@ nav_order: 1
 
 # Blackmagic MultiView 16
 
+Stable
+{: .label .label-green }
+
 Configure Blackmagic multiviewers with auto labelling
 
 ## Default Configuration

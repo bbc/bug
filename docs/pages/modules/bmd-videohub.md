@@ -7,6 +7,9 @@ nav_order: 2
 
 # Blackmagic Videohub
 
+Stable
+{: .label .label-green }
+
 Control and monitor Blackmagic videohub devices
 
 ![Blackmagic Videohub Module Screenshot](/bug/assets/images/screenshots/module-bmd-videohub.png)
