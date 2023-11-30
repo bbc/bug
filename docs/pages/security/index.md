@@ -7,7 +7,12 @@ has_children: true
 
 # Security
 
-BUG provides a number of authentication methods for security. Under the hood these use `passport.js`. It is not recommended that you would ever expose a instance of BUG to the internet directly. Security is provided to prevent mishaps, accidental switching or unauthorized control of equipment.
+{: .important-title }
+> Notice
+>
+> It is not recommended to expose BUG directly on the internet.
+
+BUG provides a number of authentication methods for security. Under the hood these use `passport.js`. It is not recommended that you would ever expose an instance of BUG to the internet directly. Security is provided to prevent mishaps, accidental switching or unauthorized control of equipment.
 
 You can access the security menu from `/system/security`.
 
