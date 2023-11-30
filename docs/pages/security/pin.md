@@ -2,7 +2,7 @@
 layout: page
 title: Pin
 parent: Security
-nav_order: 1
+nav_order: 2
 ---
 
 # Pin
