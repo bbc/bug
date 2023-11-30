@@ -44,12 +44,6 @@ For each piece of equipment you want to control you'll need to create a panel:
 3. Give your panel a recognisable name and description and select the type of module.
 4. Click `add` and wait for your brand new panel to start. You'll see it appear in the toolbar on the right.
 
-## Configuring Panels
-
-## Updating Panels
-
-## Security
-
 # Troubleshooting
 
 -   [Troubleshooting](/bug/pages/installation/troubleshooting.html)
