@@ -4,5 +4,4 @@ logo: "/assets/images/logo.png"
 color_scheme: bug
 description: Broadcast Universal Gateway
 show_downloads: true
-footer_content: "BUG was created in <a href="https://bbc.co.uk/news">BBC News</a>, by <a href="https://github.com/geoffhouse">Geoff House</a> and <a href="https://github.com/ryanmccartney">Ryan McCartney</a>."
-
+footer_content: "BUG was created in <a href='https://bbc.co.uk/news'>BBC News</a>, by <a href='https://github.com/geoffhouse'>Geoff House</a> and <a href='https://github.com/ryanmccartney'>Ryan McCartney</a>."
