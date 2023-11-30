@@ -15,4 +15,4 @@ A: Check the `port` for the `bug-app` when you type in `docker ps` to the termin
 
 ## Q: I'm trying to run a totally fresh install of BUG
 
-A: The following docker commands may help, although use with caution. `docker kill $(docker ps -q)`, kills all running containers on your system. `docker rm $(docker ps -a -q)` removes these containers. `docker rmi $(docker images -q)` removes all images on your host syste,s
+A: The following docker commands may help, although use with caution. `docker kill $(docker ps -q)`, kills all running containers on your system. `docker rm $(docker ps -a -q)` removes these containers. `docker rmi $(docker images -q)` removes all images on your host system

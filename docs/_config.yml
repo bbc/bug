@@ -1,6 +1,8 @@
-remote_theme: pmarsceill/just-the-docs
+remote_theme: just-the-docs/just-the-docs
 title: BBC BUG
 logo: "/assets/images/logo.png"
-color_scheme: dark
+color_scheme: bug
 description: Broadcast Universal Gateway
 show_downloads: true
+footer_content: "BUG was created in <a href="https://bbc.co.uk/news">BBC News</a>, by <a href="https://github.com/geoffhouse">Geoff House</a> and <a href="https://github.com/ryanmccartney">Ryan McCartney</a>."
+

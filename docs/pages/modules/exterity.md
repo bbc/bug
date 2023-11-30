@@ -7,7 +7,7 @@ nav_order: 12
 
 # Exterity STB
 
-Channel list server and device manger for exterity STBs
+Channel list server and device manager for exterity STBs
 
 ![Exterity STB Module Screenshot](/bug/assets/images/screenshots/module-exterity.png)
 
@@ -22,7 +22,7 @@ Add a channel list using multicast address and then add exterity devices. Channe
   "needsConfigured": false,
   "title": "",
   "module": "exterity",
-  "description": "Channel list server and device manger for exterity STBs",
+  "description": "Channel list server and device manager for exterity STBs",
   "enabled": false,
   "channels": {},
   "devices": {}

@@ -27,7 +27,7 @@ For development on your local machine with docker (recommended)
 1. Change directory to the `./src/client` folder.
 1. Run `npm i --legacy-peer-deps` to install all the frontend dependencies locally.
 1. Change directory to the root folder of the repository. This will be the same level as the `docker-compose.yml` file in the repository.
-1. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become available. You can view the live logs from the main BUG contrainer `bug` using the command `docker logs --tail 1000 -f bug`.
+1. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become available. You can view the live logs from the main BUG container `bug` using the command `docker logs --tail 1000 -f bug`.
 1. Get developing. If you're using the default ports, the web interface will be available on port 3000, the API on port 3101 and the GUI view of the MongoDB database on port 3202.
 
 You can change many of the port parameters and logging locations by setting environment variables in the `docker-compose.yml` file in the root directory.
@@ -41,5 +41,5 @@ Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used f
 -   If you experience errors during the `npm i` process using `npm i --legacy-peer-deps` may help.
 -   The `-d` in the command `docker compose -d` deataches the process from the terminal running the container in the background.
 -   If you're getting Docker related 'permission denied' errors, make sure you've run the Docker [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/) on Linux.
--   If you're developing on a linux OS you may see errors on the main bug container logs regarding file write persmission. This can be solved by giving the docker group read write permissions on the respository directory.
+-   If you're developing on a linux OS you may see errors on the main bug container logs regarding file write permission. This can be solved by giving the docker group read write permissions on the repository directory.
 -   If using a linux machine for development it's suggested that [docker engine](https://docs.docker.com/engine/install/ubuntu/) is used rather than docker desktop.
