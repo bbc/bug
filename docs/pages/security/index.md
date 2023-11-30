@@ -8,7 +8,7 @@ has_children: true
 # Security
 
 {: .important-title }
-> Notice
+> Important
 >
 > It is not recommended to expose BUG directly on the internet.
 
