@@ -21,7 +21,7 @@ exports.get = async function (filter) {
 
 exports.pagination = async function (
     filter = {},
-    sort = { feild: "timestamp", direction: "asc" },
+    sort = { field: "timestamp", direction: "asc" },
     pageNumber = 1,
     nPerPage = 25
 ) {
@@ -29,7 +29,7 @@ exports.pagination = async function (
         const logsCollection = await mongoCollection("logs");
 
         const sortObject = {};
-        sortObject[sort.feild] = sort.direction === "asc" ? 1 : -1;
+        sortObject[sort.field] = sort.direction === "asc" ? 1 : -1;
 
         if (logsCollection) {
             const result = await logsCollection

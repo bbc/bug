@@ -1,7 +1,7 @@
 {
     "name": "exterity",
     "longname": "Exterity STB",
-    "description": "Channel list server and device manger for exterity STBs",
+    "description": "Channel list server and device manager for exterity STBs",
     "capabilities": [],
     "notes": "",
     "version": "1.0.1",
@@ -10,16 +10,25 @@
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": ["api", "services", "utils", "workers"],
-    "protectedRoutes": ["config"],
-    "publicRoutes": ["/channel-list/*"],
+    "devmounts": [
+        "api",
+        "services",
+        "utils",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "publicRoutes": [
+        "/channel-list/*"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
         "needsConfigured": false,
         "title": "",
         "module": "exterity",
-        "description": "Channel list server and device manger for exterity STBs",
+        "description": "Channel list server and device manager for exterity STBs",
         "enabled": false,
         "channels": {},
         "devices": {}
