@@ -1,6 +1,7 @@
 remote_theme: just-the-docs/just-the-docs
 title: BBC BUG
 logo: "/assets/images/logo.png"
+favicon_ico: "/assets/images/favicon.ico"
 color_scheme: bug
 description: Broadcast Universal Gateway
 show_downloads: true
