@@ -7,6 +7,9 @@ nav_order: 2
 
 # TSL MDU
 
+Stable
+{: .label .label-green }
+
 Control 1U Mains Distribution strips inside BUG.
 
 -   Turn on and off outputs

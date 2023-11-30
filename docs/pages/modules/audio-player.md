@@ -7,6 +7,9 @@ nav_order: 1
 
 # Audio Player
 
+Stable
+{: .label .label-green }
+
 Audio Player
 
 ![Audio Player Module Screenshot](/bug/assets/images/screenshots/module-audio-player.png)

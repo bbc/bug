@@ -7,6 +7,9 @@ nav_order: 14
 
 # Magewell NDI Encoder
 
+Stable
+{: .label .label-green }
+
 Control Magewell NDI Encoders
 
 ## Default Configuration

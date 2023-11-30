@@ -7,6 +7,9 @@ nav_order: 29
 
 # VisLink Lynx Receiver
 
+Stable
+{: .label .label-green }
+
 Control VisLink radio camera receivers
 
 ## Default Configuration

@@ -7,6 +7,9 @@ nav_order: 24
 
 # Speedtest.net
 
+Stable
+{: .label .label-green }
+
 Run a speedtest.net test from your server
 
 ![speedtest.net Module Screenshot](/bug/assets/images/screenshots/module-speedtest-net.png)

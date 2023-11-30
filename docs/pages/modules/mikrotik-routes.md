@@ -7,6 +7,9 @@ nav_order: 17
 
 # Mikrotik Routes
 
+Stable
+{: .label .label-green }
+
 Allows selection of default route on Mikrotik routers
 
 ## Default Configuration

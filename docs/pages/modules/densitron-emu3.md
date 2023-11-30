@@ -7,6 +7,9 @@ nav_order: 8
 
 # Densitron EMU3 MDU
 
+Stable
+{: .label .label-green }
+
 Monitoring and control of Densitron EMU3 MDUs
 
 ## Default Configuration

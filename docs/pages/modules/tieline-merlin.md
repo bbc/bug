@@ -7,6 +7,9 @@ nav_order: 27
 
 # Tieline Merlin
 
+Stable
+{: .label .label-green }
+
 Control and monitor Tieline Merlin codecs
 
 ![Tieline Merlin Module Screenshot](/bug/assets/images/screenshots/module-tieline-merlin.png)

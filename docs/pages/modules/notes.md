@@ -7,6 +7,9 @@ nav_order: 23
 
 # Notes
 
+Stable
+{: .label .label-green }
+
 A scribble pad - write your thoughts or a novel. A place to store technical information. Format your notes with a simple editor, add titles, underline, bold and italics.
 
 ![Notes Module Screenshot](/bug/assets/images/screenshots/module-notes.png)

@@ -7,6 +7,9 @@ nav_order: 4
 
 # Cisco CBS Switch
 
+Stable
+{: .label .label-green }
+
 Monitoring and control of Cisco CBS-series small business switches
 
 ![Cisco CBS Switch Module Screenshot](/bug/assets/images/screenshots/module-cisco-cbs.png)
@@ -30,5 +33,4 @@ Monitoring and control of Cisco CBS-series small business switches
   "protectedInterfaces": [],
   "dhcpSources": []
 }
-```            
-
+```

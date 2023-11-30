@@ -7,6 +7,9 @@ nav_order: 28
 
 # Video Player
 
+Stable
+{: .label .label-green }
+
 HLS, DASH and Web Video Player
 
 ## Default Configuration

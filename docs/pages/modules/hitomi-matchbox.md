@@ -7,6 +7,9 @@ nav_order: 11
 
 # Hitomi Matchbox
 
+Stable
+{: .label .label-green }
+
 Control of the Hitomi Matchbox ident generator
 
 ## Default Configuration

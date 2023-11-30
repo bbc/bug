@@ -7,6 +7,9 @@ nav_order: 3
 
 # Cisco IOS-XE Switch
 
+Stable
+{: .label .label-green }
+
 Monitoring and control of Cisco IOS-XE based switches
 
 You'll need RESTConf on your IoS device to use this module. Use the follow commands to enable it on supported hardware.

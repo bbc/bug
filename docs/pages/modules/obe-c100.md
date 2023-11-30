@@ -7,6 +7,9 @@ nav_order: 20
 
 # OBE C-100
 
+Stable
+{: .label .label-green }
+
 Control of Open Broadcast Systems' C-100 Encoders
 
 ## Default Configuration

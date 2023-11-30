@@ -7,6 +7,9 @@ nav_order: 2
 
 # Clock
 
+Stable
+{: .label .label-green }
+
 -   Digital or ye olde analogue clock
 -   Set timezone
 

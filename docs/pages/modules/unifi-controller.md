@@ -7,6 +7,9 @@ nav_order: 27
 
 # Unifi Contoller
 
+Stable
+{: .label .label-green }
+
 Interact with a Unifi Controller
 
 ## Default Configuration

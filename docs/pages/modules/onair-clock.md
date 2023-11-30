@@ -7,6 +7,9 @@ nav_order: 21
 
 # On-Air Clock
 
+Beta
+{: .label .label-purple }
+
 HTML Based On Air clock for rendering with OBS or CasparCG
 
 ## Default Configuration

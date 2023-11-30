@@ -7,6 +7,9 @@ nav_order: 4
 
 # Cisco SG Switch
 
+Stable
+{: .label .label-green }
+
 Monitoring and control of Cisco SG-series switches
 
 ![Cisco SG Module Screenshot](/bug/assets/images/screenshots/module-cisco-sg.png)

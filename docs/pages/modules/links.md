@@ -7,6 +7,9 @@ nav_order: 12
 
 # Links
 
+Stable
+{: .label .label-green }
+
 Link to other services
 
 ## Default Configuration

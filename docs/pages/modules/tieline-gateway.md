@@ -7,6 +7,9 @@ nav_order: 34
 
 # Tieline Gateway
 
+Stable
+{: .label .label-green }
+
 Control and monitor Tieline Gateway codecs
 
 ![Tieline Gateway Module Screenshot](/bug/assets/images/screenshots/module-tieline-gateway.png)
@@ -30,5 +33,4 @@ Control and monitor Tieline Gateway codecs
   "url": "",
   "codecSource": ""
 }
-```            
-
+```

@@ -7,6 +7,9 @@ nav_order: 0
 
 # Appear X
 
+Stable
+{: .label .label-green }
+
 Control of Appear X10/X20 codec chassis
 
 ![Appear X Module Screenshot](/bug/assets/images/screenshots/module-appear-x.png)

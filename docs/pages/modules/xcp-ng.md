@@ -7,6 +7,9 @@ nav_order: 31
 
 # XCP-ng
 
+Stable
+{: .label .label-green }
+
 Basic control of VMs running on an XCP-ng hypervisor
 
 ## Default Configuration

@@ -7,6 +7,9 @@ nav_order: 28
 
 # RSS Feed Display
 
+Stable
+{: .label .label-green }
+
 Show the latest posts from an RSS feed
 
 ![RSS Feed Display Module Screenshot](/bug/assets/images/screenshots/module-rss-feed.png)
