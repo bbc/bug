@@ -2,7 +2,7 @@
 layout: page
 title: DTC ProRX Receiver
 parent: Modules
-nav_order: 10
+nav_order: 15
 ---
 
 # DTC ProRX Receiver

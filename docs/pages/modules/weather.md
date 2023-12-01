@@ -2,7 +2,7 @@
 layout: page
 title: Weather
 parent: Modules
-nav_order: 2
+nav_order: 41
 ---
 
 # Weather

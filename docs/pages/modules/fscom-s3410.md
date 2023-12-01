@@ -2,7 +2,7 @@
 layout: page
 title: FS.com S3410 Switch
 parent: Modules
-nav_order: 13
+nav_order: 17
 ---
 
 # FS.com S3410 Switch

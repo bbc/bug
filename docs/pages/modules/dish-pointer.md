@@ -2,7 +2,7 @@
 layout: page
 title: Satelite Dish Pointer
 parent: Modules
-nav_order: 9
+nav_order: 14
 ---
 
 # Satelite Dish Pointer

@@ -2,7 +2,7 @@
 layout: page
 title: Speedtest.net
 parent: Modules
-nav_order: 24
+nav_order: 34
 ---
 
 # Speedtest.net

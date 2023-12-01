@@ -2,7 +2,7 @@
 layout: page
 title: Densitron EMU3 MDU
 parent: Modules
-nav_order: 8
+nav_order: 13
 ---
 
 # Densitron EMU3 MDU

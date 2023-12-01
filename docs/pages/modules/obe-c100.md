@@ -2,7 +2,7 @@
 layout: page
 title: OBE C-100
 parent: Modules
-nav_order: 20
+nav_order: 29
 ---
 
 # OBE C-100

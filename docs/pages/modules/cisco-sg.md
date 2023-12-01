@@ -2,7 +2,7 @@
 layout: page
 title: Cisco SG Switch
 parent: Modules
-nav_order: 4
+nav_order: 8
 ---
 
 # Cisco SG Switch
