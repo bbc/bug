@@ -2,15 +2,17 @@
 layout: page
 title: Arista Switch
 parent: Modules
-nav_order: 0
+nav_order: 2
 ---
 
 # Arista Switch
 
-Stable
+STABLE
 {: .label .label-green }
 
 Monitoring and control of Arista switches
+
+![Arista Switch Module Screenshot](/bug/assets/images/screenshots/module-arista-switch.png)
 
 ## Default Configuration
 

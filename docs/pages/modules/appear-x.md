@@ -2,7 +2,7 @@
 layout: page
 title: Appear X
 parent: Modules
-nav_order: 0
+nav_order: 1
 ---
 
 # Appear X
@@ -40,5 +40,4 @@ Control of Appear X10/X20 codec chassis
     "PID missing on input"
   ]
 }
-```            
-
+```

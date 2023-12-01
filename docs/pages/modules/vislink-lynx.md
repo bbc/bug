@@ -2,7 +2,7 @@
 layout: page
 title: VisLink Lynx Receiver
 parent: Modules
-nav_order: 29
+nav_order: 40
 ---
 
 # VisLink Lynx Receiver

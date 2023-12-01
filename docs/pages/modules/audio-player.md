@@ -2,7 +2,7 @@
 layout: page
 title: Audio Player
 parent: Modules
-nav_order: 1
+nav_order: 3
 ---
 
 # Audio Player

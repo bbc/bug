@@ -2,7 +2,7 @@
 layout: page
 title: Video Player
 parent: Modules
-nav_order: 28
+nav_order: 39
 ---
 
 # Video Player

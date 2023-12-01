@@ -2,7 +2,7 @@
 layout: page
 title: Magewell NDI Encoder
 parent: Modules
-nav_order: 14
+nav_order: 21
 ---
 
 # Magewell NDI Encoder

@@ -2,7 +2,7 @@
 layout: page
 title: Comrex BRIC-Link
 parent: Modules
-nav_order: 7
+nav_order: 11
 ---
 
 # Comrex BRIC-Link

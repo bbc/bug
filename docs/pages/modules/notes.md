@@ -2,7 +2,7 @@
 layout: page
 title: Notes
 parent: Modules
-nav_order: 23
+nav_order: 27
 ---
 
 # Notes

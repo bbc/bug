@@ -2,7 +2,7 @@
 layout: page
 title: Blackmagic Videohub
 parent: Modules
-nav_order: 2
+nav_order: 5
 ---
 
 # Blackmagic Videohub
