@@ -1,4 +1,4 @@
-FROM node:16.19-alpine
+FROM node:20-alpine
 
 RUN deluser --remove-home node
 

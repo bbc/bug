@@ -11,7 +11,7 @@ module.exports = async (filepath) => {
 
         const filename = path.join(filepath, "Dockerfile");
         const fileArray = [
-            "FROM node:16.19-alpine",
+            "FROM node:20-alpine",
             `WORKDIR ${moduleHome}`,
             `COPY . .`,
             `RUN apk add iputils`, //Added due to issue - https://github.com/danielzzz/node-ping/issues/89
