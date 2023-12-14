@@ -3,9 +3,6 @@
 const speedTest = require("@phanmn/speedtest-net");
 const mongoCollection = require("@core/mongo-collection");
 
-let downloadProgress = 0;
-let uploadProgress = 0;
-
 module.exports = async () => {
     try {
         const downloadCollection = await mongoCollection("download-stats");

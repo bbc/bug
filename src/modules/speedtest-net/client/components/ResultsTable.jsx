@@ -53,7 +53,7 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         minWidth: 60,
                         content: (item) => {
                             if (item.download?.bandwidth) {
-                                return `${Math.round((item.download?.bandwidth / 10000000) * 100) / 100}Mb/s`;
+                                return `${Math.round((item.download?.bandwidth / 100000) * 100) / 100}Mb/s`;
                             }
                         },
                     },
@@ -63,7 +63,7 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         minWidth: 60,
                         content: (item) => {
                             if (item.upload?.bandwidth) {
-                                return `${Math.round((item.upload?.bandwidth / 10000000) * 100) / 100}Mb/s`;
+                                return `${Math.round((item.upload?.bandwidth / 100000) * 100) / 100}Mb/s`;
                             }
                         },
                     },
