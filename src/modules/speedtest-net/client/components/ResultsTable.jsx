@@ -52,8 +52,8 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         noWrap: true,
                         minWidth: 60,
                         content: (item) => {
-                            if (item.speeds?.download) {
-                                return `${Math.round(item.speeds?.download * 100) / 100}Mb/s`;
+                            if (item.download?.bandwidth) {
+                                return `${Math.round((item.download?.bandwidth / 10000000) * 100) / 100}Mb/s`;
                             }
                         },
                     },
@@ -62,8 +62,8 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         noWrap: true,
                         minWidth: 60,
                         content: (item) => {
-                            if (item.speeds?.upload) {
-                                return `${Math.round(item.speeds?.upload * 100) / 100}Mb/s`;
+                            if (item.upload?.bandwidth) {
+                                return `${Math.round((item.upload?.bandwidth / 10000000) * 100) / 100}Mb/s`;
                             }
                         },
                     },
@@ -73,8 +73,8 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         minWidth: 60,
                         hideWidth: 600,
                         content: (item) => {
-                            if (item.server?.ping) {
-                                return `${Math.round(item.server?.ping)}ms`;
+                            if (item.ping?.latency) {
+                                return `${Math.round(item.ping?.latency)}ms`;
                             }
                         },
                     },
@@ -84,8 +84,8 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         minWidth: 80,
                         hideWidth: 600,
                         content: (item) => {
-                            if (item.client?.ip) {
-                                return item.client?.ip;
+                            if (item.interface?.externalIp) {
+                                return item.interface?.externalIp;
                             }
                         },
                     },
@@ -95,8 +95,8 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         minWidth: 80,
                         hideWidth: 600,
                         content: (item) => {
-                            if (item.client?.isp) {
-                                return item.client?.isp;
+                            if (item?.isp) {
+                                return item?.isp;
                             }
                         },
                     },
@@ -106,8 +106,8 @@ export default function ResultsTable({ panelId, limit = 10 }) {
                         minWidth: 80,
                         hideWidth: 600,
                         content: (item) => {
-                            if (item.server?.sponsor) {
-                                return item.server?.sponsor;
+                            if (item.server?.name) {
+                                return item.server?.name;
                             }
                         },
                     },

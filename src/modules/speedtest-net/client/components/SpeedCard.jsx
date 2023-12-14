@@ -50,7 +50,7 @@ export default function SpeedCard({
     const getValue = (stats = []) => {
         if (stats) {
             if (stats.length > 0) {
-                return `${Math.round(stats[stats.length - 1][label] * 10) / 10}${units}`;
+                return `${Math.round((stats[stats.length - 1][label] / 10000000) * 10) / 10}${units}`;
             }
         }
         return "";
