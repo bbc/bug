@@ -159,7 +159,7 @@ export default function PageSystemBackup() {
                                 value: (
                                     <>
                                         {info.data.git.development ? (
-                                            "N/A - development build"
+                                            "Development Build"
                                         ) : (
                                             <>
                                                 {info.data?.updates?.newVersion ? (
@@ -187,7 +187,7 @@ export default function PageSystemBackup() {
                                 value: (
                                     <>
                                         {info.data.git.development ? (
-                                            "N/A - development build"
+                                            "Development Build"
                                         ) : (
                                             <BugTableLinkButton
                                                 onClick={(event) =>
@@ -209,7 +209,7 @@ export default function PageSystemBackup() {
                                 value: (
                                     <>
                                         {info.data.git.development ? (
-                                            "N/A - development build"
+                                            "Development Build"
                                         ) : (
                                             <BugTableLinkButton
                                                 onClick={(event) =>

@@ -1,6 +1,6 @@
 "use strict";
 
-const speedtest = require("speedtest-net");
+const speedTest = require("@phanmn/speedtest-net");
 const mongoCollection = require("@core/mongo-collection");
 
 let downloadProgress = 0;
@@ -12,33 +12,36 @@ module.exports = async () => {
         const uploadCollection = await mongoCollection("upload-stats");
         const testCollection = await mongoCollection("test-results");
 
-        //Reset collections and counters for new test
-        downloadProgress = 0;
-        uploadProgress = 0;
+        const progressEvent = (data) => {
+            if (data.type === "download") {
+                downloadCollection.insertOne({
+                    timestamp: new Date(),
+                    speed: data.download.bandwidth,
+                    progress: data.download.progress,
+                });
+            }
+
+            if (data.type === "upload") {
+                uploadCollection.insertOne({
+                    timestamp: new Date(),
+                    speed: data.upload.bandwidth,
+                    progress: data.upload.progress,
+                });
+            }
+        };
+
         await downloadCollection.deleteMany({});
         await uploadCollection.deleteMany({});
         const testResultsEntry = await testCollection.insertOne({ timestamp: new Date(), running: true });
 
-        const test = speedtest({ log: true });
-        test.on("data", (data) => {
-            testCollection.updateOne({ _id: testResultsEntry.insertedId }, { $set: { running: false, ...data } });
+        const testResults = await speedTest({
+            progress: progressEvent,
+            log: true,
+            acceptGdpr: true,
+            acceptLicense: true,
         });
 
-        test.on("downloadspeedprogress", (speed) => {
-            downloadCollection.insertOne({ timestamp: new Date(), speed: speed, progress: downloadProgress });
-        });
-
-        test.on("uploadspeedprogress", (speed) => {
-            uploadCollection.insertOne({ timestamp: new Date(), speed: speed, progress: uploadProgress });
-        });
-
-        test.on("downloadprogress", (progress) => {
-            downloadProgress = progress;
-        });
-
-        test.on("uploadprogress", (progress) => {
-            uploadProgress = progress;
-        });
+        testCollection.updateOne({ _id: testResultsEntry.insertedId }, { $set: { running: false, ...testResults } });
     } catch (error) {
         console.log(error);
         return { error: error };

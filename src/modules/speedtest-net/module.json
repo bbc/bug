@@ -1,10 +1,10 @@
 {
     "name": "speedtest-net",
     "longname": "Speedtest.net",
-    "description": "Run a speedtest.net test from your server",
+    "description": "Speedtest.net test from your server to determine upload and download speed",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "icon": "mdi-speedometer",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
