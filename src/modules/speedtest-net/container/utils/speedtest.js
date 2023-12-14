@@ -25,6 +25,10 @@ module.exports = async () => {
                     progress: data.upload.progress,
                 });
             }
+
+            if (data.type === "log") {
+                console.log(data?.message);
+            }
         };
 
         await downloadCollection.deleteMany({});
@@ -33,7 +37,7 @@ module.exports = async () => {
 
         const testResults = await speedTest({
             progress: progressEvent,
-            log: true,
+            verbosity: 2,
             acceptGdpr: true,
             acceptLicense: true,
         });
