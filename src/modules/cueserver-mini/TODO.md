@@ -1,0 +1,13 @@
+-   add group
+-   delete group
+-   edit group
+-   delete cue
+-   add cue
+-   edit cue
+-   confirmation dialog for update cue - save from which playback and warn when multiple playbacks running
+-   add shortcuts page with customisable buttons which can hold commands
+-   add stage page with ability to flash each light
+-   add shortcuts for 0%, 30%, 50%, 80%, 100% on groups rows
+-   if group has word 'RGB' in it - use color dialog instead
+-   name cues with dialog and fade times
+-   do we need to track currently selected playback? Maybe not - would make more sense
