@@ -4,6 +4,7 @@ const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckPending = require("@services/status-checkpending");
 const statusCheckInterfaceStatus = require("@services/status-checkinterfacestatus");
 const statusCheckSfps = require("@services/status-checksfps");
+const statusCheckPower = require("@services/status-checkpower");
 
 module.exports = async () => {
     return [].concat(
@@ -28,6 +29,7 @@ module.exports = async () => {
         }),
         await statusCheckPending(),
         await statusCheckInterfaceStatus(),
-        await statusCheckSfps()
+        await statusCheckSfps(),
+        await statusCheckPower()
     );
 };
