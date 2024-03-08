@@ -22,7 +22,7 @@ const main = async () => {
 
     while (true) {
         try {
-            const result = await aristaApi({
+            const systemResult = await aristaApi({
                 host: workerData.address,
                 protocol: "https",
                 port: 443,
@@ -31,7 +31,18 @@ const main = async () => {
                 commands: ["show version"],
             });
 
-            await mongoSingle.set("system", result, 120);
+            await mongoSingle.set("system", systemResult, 120);
+
+            const powerResult = await aristaApi({
+                host: workerData.address,
+                protocol: "https",
+                port: 443,
+                username: workerData.username,
+                password: workerData.password,
+                commands: ["show system environment power"],
+            });
+
+            await mongoSingle.set("power", powerResult?.["powerSupplies"], 120);
         } catch (error) {}
         await delay(10000);
     }
