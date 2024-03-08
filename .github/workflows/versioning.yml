@@ -10,6 +10,7 @@ permissions:
     deployments: write
     pull-requests: write
     statuses: write
+    contents: write
 jobs:
     version:
         runs-on: ubuntu-latest
