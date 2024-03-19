@@ -8,9 +8,10 @@ import BugCard from "@core/BugCard";
 import { useHistory, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-const TabPanel = ({ children, value, index, sx = {} }) => {
+const TabPanel = ({ children, value, index, fullHeight }) => {
+    const hidden = value !== index;
     return (
-        <BugCard sx={sx} role="tabpanel" hidden={value !== index}>
+        <BugCard sx={{ height: !hidden && fullHeight ? "100%" : "auto" }} role="tabpanel" hidden={hidden}>
             {value === index && <>{children}</>}
         </BugCard>
     );
@@ -114,12 +115,7 @@ export default function BugPanelTabbedForm({
             <BugCard sx={{ height: fullHeight ? "100%" : "auto" }} {...contentProps}>
                 {content
                     ? content.map((content, index) => (
-                          <TabPanel
-                              sx={{ height: fullHeight ? "100%" : "auto" }}
-                              key={index}
-                              value={tabIndex}
-                              index={index}
-                          >
+                          <TabPanel fullHeight={fullHeight} key={index} value={tabIndex} index={index}>
                               {content}
                           </TabPanel>
                       ))
