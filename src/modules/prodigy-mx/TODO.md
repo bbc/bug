@@ -1,0 +1,7 @@
+-   add excluded sources?
+-   cache groups
+-   add connection timeout
+-   add edit buttons (nothing yet)
+-   auto detection of modules is done - but needs testing!
+-   add port to config
+-   add 'park' source which is -1

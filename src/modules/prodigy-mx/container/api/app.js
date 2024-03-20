@@ -6,8 +6,10 @@ const workerStore = require("@core/worker-store");
 const configRouter = require("@routes/config");
 const defaultRouter = require("@routes/default");
 const statusRouter = require("@routes/status");
-// add your own routers here:
-// const exampleRouter = require("@routes/example");
+const sourceRouter = require("@routes/source");
+const destinationRouter = require("@routes/destination");
+const deviceRouter = require("@routes/device");
+const moduleRouter = require("@routes/module");
 
 const heapInfo = require("@core/heap-info");
 
@@ -29,8 +31,10 @@ app.use(express.json());
 
 app.use("/api/config", configRouter);
 app.use("/api/status", statusRouter);
-// add your own url routes, using your router:
-// app.use("/api/example", exampleRouter);
+app.use("/api/source", sourceRouter);
+app.use("/api/destination", destinationRouter);
+app.use("/api/device", deviceRouter);
+app.use("/api/module", moduleRouter);
 
 app.use("*", defaultRouter);
 
