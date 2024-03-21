@@ -75,24 +75,26 @@ export default function BugItemMenu({ item, menuItems }) {
                 <MoreVertIcon />
             </IconButton>
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                {menuItems.map((menuItem, index) => {
-                    if (menuItem.title === "-") {
-                        return <Divider key={index} />;
-                    } else {
-                        return (
-                            <MenuItem
-                                onClick={(event) => handleMenuItemClicked(event, menuItem)}
-                                key={index}
-                                disabled={parseDisabled(menuItem.disabled)}
-                            >
-                                <ListItemIcon disabled={parseDisabled(menuItem.disabled)}>
-                                    {getIcon(menuItem.icon)}
-                                </ListItemIcon>
-                                <StyledListItemText primary={menuItem.title} />
-                            </MenuItem>
-                        );
-                    }
-                })}
+                {menuItems
+                    .filter((menuItem) => menuItem !== null)
+                    .map((menuItem, index) => {
+                        if (menuItem.title === "-") {
+                            return <Divider key={index} />;
+                        } else {
+                            return (
+                                <MenuItem
+                                    onClick={(event) => handleMenuItemClicked(event, menuItem)}
+                                    key={index}
+                                    disabled={parseDisabled(menuItem.disabled)}
+                                >
+                                    <ListItemIcon disabled={parseDisabled(menuItem.disabled)}>
+                                        {getIcon(menuItem.icon)}
+                                    </ListItemIcon>
+                                    <StyledListItemText primary={menuItem.title} />
+                                </MenuItem>
+                            );
+                        }
+                    })}
             </Menu>
         </div>
     );
