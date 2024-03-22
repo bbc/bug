@@ -1,5 +1,7 @@
 "use strict";
 const mongoSingle = require("@core/mongo-single");
+const configGet = require("@core/config-get");
+
 const range = (start, length) => Array.from({ length: length }, (_, i) => start + i);
 
 // Module type code
@@ -40,8 +42,9 @@ const range = (start, length) => Array.from({ length: length }, (_, i) => start 
 const moduleMadi = (labelIndex, startIndex) => {
     return [0, 1, 2, 3].map((groupIndex) => {
         return {
-            name: `NET${labelIndex + 1} / MADI${groupIndex + 1}`,
-            value: range(startIndex + 64 * groupIndex, 64),
+            label: `NET${labelIndex + 1} / MADI${groupIndex + 1}`,
+            value: [], //TODO range(startIndex + 64 * groupIndex, 64),
+            fixed: true,
         };
     });
 };
@@ -50,8 +53,9 @@ const moduleMadi = (labelIndex, startIndex) => {
 const moduleNetwork = (labelIndex, startIndex) => {
     return [
         {
-            name: `NET${labelIndex + 1} / DANTE`,
-            value: range(startIndex, 128),
+            label: `NET${labelIndex + 1} / DANTE`,
+            value: [], //TODO range(startIndex, 128),
+            fixed: true,
         },
     ];
 };
@@ -59,6 +63,19 @@ const moduleNetwork = (labelIndex, startIndex) => {
 module.exports = async (type = "source") => {
     const status = await mongoSingle.get("status");
 
+    let config;
+    try {
+        config = await configGet();
+        if (!config) {
+            throw new Error();
+        }
+    } catch (error) {
+        logger.error(`destination-list: failed to fetch config`);
+        return false;
+    }
+
+    const customLabels = config?.[`${type}Labels`] ?? [];
+    const customGroups = config?.[`${type}Groups`] ?? [];
     let groups = [];
 
     for (let moduleIndex = 0; moduleIndex < 6; moduleIndex++) {
@@ -88,24 +105,51 @@ module.exports = async (type = "source") => {
 
     // then the built in ports
     groups.push({
-        name: `MADI 1`,
-        value: range(1536, 64),
+        label: `MADI 1`,
+        value: [], //TODO range(1536, 64),
+        fixed: true,
     });
 
     groups.push({
-        name: `MADI 2`,
-        value: range(1600, 64),
+        label: `MADI 2`,
+        value: [], //TODO range(1600, 64),
+        fixed: true,
     });
 
     if (type === "destination") {
         groups.push({
-            name: `Phones 1`,
+            label: `Phones 1`,
             value: range(1664, 2),
+            fixed: true,
         });
 
         groups.push({
-            name: `Phones 2`,
+            label: `Phones 2`,
             value: range(1666, 2),
+            fixed: true,
+        });
+    }
+
+    // then overwrite labels with custom labels from config
+    groups = groups.map((group, index) => {
+        return {
+            ...group,
+            defaultLabel: group["label"],
+            label: customLabels?.[index] ?? group["label"],
+            index: index,
+        };
+    });
+
+    // store the number of items
+    const groupCount = groups.length;
+
+    // lastly add any extra custom groups
+    for (const [groupIndex, group] of Object.entries(customGroups)) {
+        groups.push({
+            ...group,
+            defaultLabel: "",
+            fixed: false,
+            index: parseInt(groupIndex) + groupCount,
         });
     }
 

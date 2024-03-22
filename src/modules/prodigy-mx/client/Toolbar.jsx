@@ -1,17 +1,92 @@
 import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
+import Button from "@mui/material/Button";
+import EditIcon from "@mui/icons-material/Edit";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import DoneIcon from "@mui/icons-material/Done";
 import { usePanelStatus } from "@hooks/PanelStatus";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import CheckIcon from "@mui/icons-material/Check";
+import Divider from "@mui/material/Divider";
+import { useSelector } from "react-redux";
+import AxiosPut from "@utils/AxiosPut";
+import { useHistory } from "react-router-dom";
 
 export default function Toolbar({ panelId, ...props }) {
     const toolbarProps = { ...props };
+    const location = useLocation();
     const panelStatus = usePanelStatus();
+    const panelConfig = useSelector((state) => state.panelConfig);
+    const history = useHistory();
 
     if (!panelStatus) {
         return null;
     }
 
-    const buttons = () => {};
-    const menuItems = () => {};
+    const editMode = location.pathname.indexOf("/edit") > -1;
+
+    const handleUseTakeClicked = async (event, item) => {
+        await AxiosPut(`/api/panelconfig/${panelId}`, {
+            useTake: !panelConfig?.data?.useTake,
+        });
+    };
+
+    const handleEditClicked = (event, item) => {
+        const urlParts = location.pathname.split("/");
+        if (urlParts.length === 3) {
+            history.push(`/panel/${panelId}/edit`);
+        } else if (urlParts.length === 5) {
+            history.push(`/panel/${panelId}/edit/${urlParts.slice(-2).join("/")}`);
+        } else if (urlParts.length === 7) {
+            history.push(`/panel/${panelId}/edit/${urlParts.slice(-4).join("/")}`);
+        }
+    };
+
+    const handleDoneClicked = (event, item) => {
+        const urlParts = location.pathname.split("/");
+        if (urlParts.length === 4) {
+            history.push(`/panel/${panelId}/`);
+        } else if (urlParts.length === 6) {
+            history.push(`/panel/${panelId}/${urlParts.slice(-2).join("/")}`);
+        } else if (urlParts.length === 8) {
+            history.push(`/panel/${panelId}/${urlParts.slice(-4).join("/")}`);
+        }
+    };
+
+    const getParams = (matchCount) => {
+        const urlParts = location.pathname.split("/");
+        if (urlParts.length === matchCount) {
+            return urlParts.slice(-2).join("/");
+        }
+        return "";
+    };
+
+    const buttons = () => (
+        <>
+            {editMode ? (
+                <Button variant="outlined" color="primary" startIcon={<DoneIcon />} onClick={handleDoneClicked}>
+                    Done
+                </Button>
+            ) : (
+                <Button variant="outlined" color="primary" startIcon={<EditIcon />} onClick={handleEditClicked}>
+                    Edit
+                </Button>
+            )}
+        </>
+    );
+
+    const menuItems = () => {
+        return [
+            <Divider key="divider1" />,
+            <MenuItem key="usetake" onClick={handleUseTakeClicked}>
+                <ListItemIcon>{panelConfig?.data?.useTake ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
+                <ListItemText primary="Confirm Take" />
+            </MenuItem>,
+        ];
+    };
 
     toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
     toolbarProps["menuItems"] = menuItems();

@@ -30,7 +30,6 @@ const main = async () => {
     });
 
     prodigy.on("update", async (result) => {
-        console.log(result);
         if (!gotDataDump) {
             gotDataDump = true;
             console.log(`worker-device: device sent first data dump OK`);

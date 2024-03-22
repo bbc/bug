@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import BugScrollbars from "@core/BugScrollbars";
 import { useForceRefresh } from "@hooks/ForceRefresh";
+import { useParams } from "react-router-dom";
 
 const SectionHeader = styled("div")({
     fontSize: "0.875rem",
@@ -31,6 +32,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
     const [destinationForceRefresh, setDestinationForceRefresh] = useForceRefresh();
     const panelConfig = useSelector((state) => state.panelConfig);
     const useDoubleClick = panelConfig && panelConfig.data.useTake;
+    const params = useParams();
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/source/${selectedDestination === null ? -1 : selectedDestination}/${sourceGroup}`,

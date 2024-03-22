@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
-const groupsList = require("@services/groups-list");
+const groupList = require("@services/group-list");
 const configGet = require("@core/config-get");
 
 module.exports = async (groupIndex = null, showExcluded = false) => {
@@ -19,24 +19,18 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     // const icons = config.destinationIcons ? config.destinationIcons : [];
     // const iconColors = config.destinationIconColors ? config.destinationIconColors : [];
 
-    // const dataCollection = await mongoCollection("data");
-
     const outputArray = {
         groups: [],
         destinations: [],
     };
 
-    // add groups first
-    // groupIndex = groupIndex < 0 ? null : groupIndex;
-
-    const groups = await groupsList("destination");
+    const groups = await groupList("destination");
 
     // add groups to output array
     groups.forEach((eachGroup, eachIndex) => {
         outputArray["groups"].push({
-            label: eachGroup["name"],
+            ...eachGroup,
             selected: eachIndex === parseInt(groupIndex),
-            index: eachIndex,
         });
     });
 
@@ -52,7 +46,6 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     const inputLabels = await mongoSingle.get("input_labels");
     const routing = await mongoSingle.get("routing");
 
-    // console.log(routing[1538]);
     if (outputLabels && routing && inputLabels) {
         outputArray["destinations"] = outputLabels
             .filter((labelItem, index) => validDestinations.includes(index))
@@ -75,48 +68,6 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
                 };
             });
     }
-    // for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels["data"])) {
-    //     const intIndex = parseInt(eachIndex);
-    //     const selectedSource = dbOutputRouting["data"][eachIndex];
-    //     // const selectedSourceLabel = dbInputLabels.data[selectedSource];
-    //     // const isExcluded = excludedDestinations.includes(intIndex.toString());
-    //     const isInGroup = groupIndex === null || validDestinations.includes(intIndex);
-
-    //     // let isLocalLocked = false;
-    //     // let isRemoteLocked = false;
-
-    //     // if (dbOutputLocks && dbOutputLocks["data"][eachIndex]) {
-    //     //     isLocalLocked = dbOutputLocks["data"][eachIndex] == "O";
-    //     //     isRemoteLocked = dbOutputLocks["data"][eachIndex] == "L";
-    //     // }
-
-    //     const indexText = config["showNumber"] === false ? "" : intIndex + 1;
-
-    //     // set new order field - if in group then use the validsources index, otherwise the normal one
-    //     let order;
-    //     if (groupIndex !== null) {
-    //         order = validDestinations.indexOf(intIndex);
-    //     } else {
-    //         order = intIndex;
-    //     }
-
-    //     if (isInGroup && (!isExcluded || showExcluded)) {
-    //         outputArray["destinations"].push({
-    //             // index: intIndex,
-    //             // label: eachValue,
-    //             // sourceIndex: parseInt(selectedSource),
-    //             // sourceLabel: selectedSourceLabel,
-    //             // indexText: indexText,
-    //             // hidden: isExcluded,
-    //             // order: order,
-    //             // isLocked: isLocalLocked || isRemoteLocked,
-    //             // isLocalLocked: isLocalLocked,
-    //             // isRemoteLocked: isRemoteLocked,
-    //             // icon: icons[intIndex] ? icons[intIndex] : null,
-    //             // iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
-    //         });
-    //     }
-    // }
 
     // sort by order field
     outputArray["destinations"].sort((a, b) => (a.order > b.order ? 1 : -1));

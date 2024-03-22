@@ -4,7 +4,7 @@ import TabRouter from "../components/TabRouter";
 import TabModules from "../components/TabModules";
 import TabDevice from "../components/TabDevice";
 
-export default function MainPanel({ panelId }) {
+export default function MainPanel({ panelId, editMode }) {
     return (
         <>
             <BugPanelTabbedForm
@@ -21,7 +21,7 @@ export default function MainPanel({ panelId }) {
                     `/panel/${panelId}/display/device`,
                 ]}
                 content={[
-                    <TabRouter panelId={panelId} />,
+                    <TabRouter editMode={editMode} panelId={panelId} />,
                     <TabModules panelId={panelId} />,
                     <TabDevice panelId={panelId} />,
                 ]}

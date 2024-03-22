@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
-const groupsList = require("@services/groups-list");
+const groupList = require("@services/group-list");
 const configGet = require("@core/config-get");
 
 module.exports = async (destinationIndex = null, groupIndex = 0) => {
@@ -19,24 +19,18 @@ module.exports = async (destinationIndex = null, groupIndex = 0) => {
     // const icons = config.sourceIcons ? config.sourceIcons : [];
     // const iconColors = config.sourceIconColors ? config.sourceIconColors : [];
 
-    // const dataCollection = await mongoCollection("data");
-
     const outputArray = {
         groups: [],
         sources: [],
     };
 
-    // add groups first
-    // groupIndex = groupIndex < 0 ? null : groupIndex;
-
-    const groups = await groupsList("source");
+    const groups = await groupList("source");
 
     // add groups to output array
     groups.forEach((eachGroup, eachIndex) => {
         outputArray["groups"].push({
-            label: eachGroup["name"],
+            ...eachGroup,
             selected: eachIndex === parseInt(groupIndex),
-            index: eachIndex,
         });
     });
 
