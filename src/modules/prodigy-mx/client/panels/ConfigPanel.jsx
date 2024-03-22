@@ -49,7 +49,7 @@ export default function ConfigPanel() {
                 <Grid item xs={12}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
-                <Grid item xs={12} md={12}>
+                <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
                         name="address"
                         control={control}
@@ -59,8 +59,26 @@ export default function ConfigPanel() {
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
                         supportsValidation
-                        onChange={(event) => validateServer(event, "address")}
+                        onChange={(event) => validateServer(event, "address", ["port"])}
                         label="IP Address"
+                    />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <BugConfigFormTextField
+                        name="port"
+                        control={control}
+                        rules={{ required: true }}
+                        numeric
+                        min={1}
+                        max={65535}
+                        fullWidth
+                        error={errors.port}
+                        helperText={messages.port}
+                        defaultValue={panelConfig.data.port}
+                        supportsValidation
+                        onChange={(event) => validateServer(event, "port", ["address"])}
+                        type="text"
+                        label="Device Port"
                     />
                 </Grid>
             </BugConfigWrapper>
