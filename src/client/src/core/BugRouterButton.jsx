@@ -208,7 +208,7 @@ const BugRouterButton = ({
                             <Box
                                 sx={{
                                     color: "#303030",
-                                    fontSize: "28px",
+                                    fontSize: number.toString().length > 3 ? "22px" : "28px",
                                     fontWeight: 300,
                                     "@media (max-width:800px)": {
                                         fontSize: "20px",
