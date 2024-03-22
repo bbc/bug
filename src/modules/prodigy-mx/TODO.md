@@ -1,3 +1,2 @@
 -   auto detection of modules is done - but needs testing!
--   validate config params
 -   spinner while edit buttons dialog loads
