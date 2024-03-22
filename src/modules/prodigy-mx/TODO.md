@@ -1,14 +1,3 @@
--   add excluded sources?
--   cache groups
--   add connection timeout
--   add edit buttons (nothing yet)
 -   auto detection of modules is done - but needs testing!
--   add port to config
--   add 'park' source which is -1
--   renaming of groups
--   device tab
--   status checks
 -   validate config params
--   temp/fan checks
--   add 'reset group names' to toolbar menu
--   GOT TO ... rename sourceLabels and sourceGroups
+-   spinner while edit buttons dialog loads

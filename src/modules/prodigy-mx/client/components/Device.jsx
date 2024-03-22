@@ -32,11 +32,34 @@ export default function Device({ panelId }) {
         return <BugNoData title="Health information not found" showConfigButton={false} />;
     }
 
+    const psuStates = ["Not active", "OK", "In an error state", "Not stable"];
+
+    let healthItems = [
+        { name: "CPU Temperature", value: `${health.data.cpu_temp} °C` },
+        { name: "Power", value: `${health.data.power} W` },
+        { name: "Current", value: `${health.data.imain} A` },
+        { name: "Temperature 1", value: `${health.data.temp1} °C` },
+        { name: "Temperature 2", value: `${health.data.temp2} °C` },
+        { name: "Fan 1 speed", value: `${health.data.tach1_rpm} RPM` },
+        { name: "Fan 2 speed", value: `${health.data.tach2_rpm} RPM` },
+    ];
+
+    healthItems = healthItems.concat(
+        health.data.psu.map((eachPsu, index) => {
+            return { name: `Power Supply ${index + 1}`, value: psuStates[eachPsu] };
+        })
+    );
+
     return (
-        <Grid container spacing={0.5} sx={{ backgroundColor: "background.default", height: "100%" }}>
-            <Grid item xs={12} md={6}>
+        <Grid
+            container
+            spacing={0.5}
+            sx={{ backgroundColor: "background.default", height: "100%", alignContent: "start" }}
+        >
+            <Grid item sm={12} md={6}>
                 <BugDetailsCard
-                    width="18rem"
+                    sx={{ marginBottom: 0 }}
+                    width="14rem"
                     title={`Device Information`}
                     items={[
                         { name: "Model", value: device.data.model },
@@ -48,18 +71,8 @@ export default function Device({ panelId }) {
                     ]}
                 />
             </Grid>
-            <Grid item xs={12} md={6}>
-                <BugDetailsCard
-                    width="18rem"
-                    title={`Device Health`}
-                    items={[
-                        { name: "CPU Temperature", value: `${health.data.cpu_temp} °C` },
-                        { name: "Power", value: `${health.data.power} V` },
-                        { name: "Temperature 1", value: `${health.data.temp1} °C` },
-                        { name: "Temperature 2", value: `${health.data.temp2} °C` },
-                        { name: "Temperature Local", value: `${health.data.temp_local} °C` },
-                    ]}
-                />
+            <Grid item sm={12} md={6}>
+                <BugDetailsCard width="14rem" title={`Device Health`} items={healthItems} />
             </Grid>
         </Grid>
     );
