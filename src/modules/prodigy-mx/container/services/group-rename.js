@@ -4,18 +4,12 @@ const configPutViaCore = require("@core/config-putviacore");
 const groupList = require("@services/group-list");
 
 module.exports = async (type, index, newGroupName) => {
-    let config;
-    try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
-        }
-    } catch (error) {
-        logger.error(`group-rename: failed to fetch config`);
+    const config = await configGet();
+    if (!config) {
         return false;
     }
 
-    const groups = await groupList();
+    const groups = await groupList(type);
     const fixedCount = groups.filter((group) => group.fixed).length;
 
     if (index < fixedCount) {

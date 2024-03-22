@@ -28,6 +28,7 @@ export default function Router({
     onChange,
     disabled = false,
     useDoubleClick = false,
+    fixed = false,
 }) {
     const sendAlert = useAlert();
     const params = useParams();
@@ -59,7 +60,7 @@ export default function Router({
             color: color,
             icon: icon,
         };
-        const url = `/container/${panelId}/${buttonType}s/seticon/${button.index}`;
+        const url = `/container/${panelId}/${buttonType}/seticon/${button.index}`;
 
         if (await AxiosPost(url, postData)) {
             onChange();
@@ -84,8 +85,8 @@ export default function Router({
 
             const url =
                 buttonType === "source"
-                    ? `/container/${panelId}/groups/set/${buttonType}/${sourceGroup}`
-                    : `/container/${panelId}/groups/set/${buttonType}/${destinationGroup}`;
+                    ? `/container/${panelId}/group/set/${buttonType}/${sourceGroup}`
+                    : `/container/${panelId}/group/set/${buttonType}/${destinationGroup}`;
 
             if (
                 !(await AxiosPost(url, {
@@ -97,7 +98,7 @@ export default function Router({
         }
     };
 
-    const renderButtons = () => (
+    const Buttons = () => (
         <>
             {localButtons.map((button) => (
                 <RouterButton
@@ -119,6 +120,22 @@ export default function Router({
         </>
     );
 
+    const DragDrop = ({ children }) => {
+        if (fixed) {
+            return children;
+        }
+        return (
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext
+                    items={localButtons.map((button) => `${buttonType}:${button.index}`)}
+                    strategy={rectSortingStrategy}
+                >
+                    {children}
+                </SortableContext>
+            </DndContext>
+        );
+    };
+
     if (!localButtons) {
         return <BugLoading />;
     }
@@ -135,14 +152,9 @@ export default function Router({
                         },
                     }}
                 >
-                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                        <SortableContext
-                            items={localButtons.map((button) => `${buttonType}:${button.index}`)}
-                            strategy={rectSortingStrategy}
-                        >
-                            {renderButtons()}
-                        </SortableContext>
-                    </DndContext>
+                    <DragDrop>
+                        <Buttons />
+                    </DragDrop>
                 </Box>
                 {editIconDialogButton !== null && (
                     <BugEditIconDialog
@@ -169,7 +181,7 @@ export default function Router({
                     },
                 }}
             >
-                {renderButtons()}
+                <Buttons />
             </Box>
         </>
     );

@@ -21,16 +21,10 @@ module.exports = async (type, groupName) => {
         }
     }
 
-    // we need to make sure we don't us the built-in groups
-    const minValues = {
-        source: 6,
-        destination: 8,
-    };
-
-    let newIndex = config[groupVar].length > minValues[type] ? config[groupVar].length : minValues[type];
-    config[groupVar][newIndex] = {
+    config[groupVar].push({
         label: groupName,
         value: [],
-    };
+    });
+
     return await configPutViaCore(config);
 };

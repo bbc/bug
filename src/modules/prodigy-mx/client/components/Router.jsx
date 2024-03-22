@@ -32,7 +32,6 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
     const [destinationForceRefresh, setDestinationForceRefresh] = useForceRefresh();
     const panelConfig = useSelector((state) => state.panelConfig);
     const useDoubleClick = panelConfig && panelConfig.data.useTake;
-    const params = useParams();
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/source/${selectedDestination === null ? -1 : selectedDestination}/${sourceGroup}`,
@@ -45,6 +44,10 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         interval: 5000,
         forceRefresh: destinationForceRefresh,
     });
+
+    // get the 'fixed' values for the currently selected grouos]
+    const sourceFixed = sourceButtons?.data?.groups[sourceGroup]?.fixed;
+    const destinationFixed = destinationButtons?.data?.groups[destinationGroup]?.fixed;
 
     const handleDestinationButtonClicked = (destinationIndex) => {
         if (editMode) {
@@ -166,6 +169,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             useDoubleClick={useDoubleClick}
                             onChange={() => setSourceForceRefresh()}
                             disabled={destinationLocked}
+                            fixed={sourceFixed}
                         />
                     </BugScrollbars>
                 </Box>
@@ -216,6 +220,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             buttons={destinationButtons}
                             onClick={handleDestinationButtonClicked}
                             onChange={() => setDestinationForceRefresh()}
+                            fixed={destinationFixed}
                         />
                     </BugScrollbars>
                 </Box>

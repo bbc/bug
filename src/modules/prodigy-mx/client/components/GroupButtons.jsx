@@ -10,22 +10,6 @@ import Box from "@mui/material/Box";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 
-import {
-    DndContext,
-    closestCenter,
-    KeyboardSensor,
-    PointerSensor,
-    TouchSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
-import {
-    arrayMove,
-    SortableContext,
-    sortableKeyboardCoordinates,
-    horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
-
 export default function GroupButtons({
     panelId,
     editMode = false,
@@ -41,20 +25,9 @@ export default function GroupButtons({
     const { renameDialog } = useBugRenameDialog();
     const { customDialog } = useBugCustomDialog();
 
-    console.log("1source", sourceGroup);
-    console.log("1destination", destinationGroup);
-
     useEffect(() => {
         setLocalButtons(buttons.data.groups);
     }, [buttons]);
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        }),
-        useSensor(TouchSensor)
-    );
 
     const handleGroupButtonClicked = (groupIndex) => {
         const editText = editMode ? "/edit" : "";
@@ -82,32 +55,6 @@ export default function GroupButtons({
         }
     };
 
-    const handleDragEnd = async (event) => {
-        const { active, over } = event;
-
-        const oldIndex = active?.id?.split(":")[2];
-        const newIndex = over?.id?.split(":")[2];
-
-        if (oldIndex !== newIndex) {
-            const newGroups = arrayMove(localButtons, oldIndex, newIndex);
-            const groupNamesInOrder = newGroups.map((group) => group.label);
-            setLocalButtons(newGroups);
-            if (
-                !(await AxiosPost(`/container/${panelId}/groups/reorder/${groupType}`, {
-                    groups: groupNamesInOrder,
-                }))
-            ) {
-                sendAlert(`Failed to save new group ordering`, { variant: "error" });
-            }
-            const editText = editMode ? "/edit" : "";
-            if (groupType === "source") {
-                history.push(`/panel/${panelId}${editText}/${newIndex}/${destinationGroup}`);
-            } else {
-                history.push(`/panel/${panelId}${editText}/${sourceGroup}/${newIndex}`);
-            }
-        }
-    };
-
     const handleEditButtonsClicked = async (event, item) => {
         const result = await customDialog({
             dialog: <EditButtonsDialog panelId={panelId} groupType={groupType} groupIndex={item.index} />,
@@ -118,8 +65,16 @@ export default function GroupButtons({
         }
     };
 
-    const GroupButtons = () => (
-        <>
+    if (!localButtons) {
+        return <BugLoading />;
+    }
+
+    return (
+        <Box
+            sx={{
+                whiteSpace: "nowrap",
+            }}
+        >
             {localButtons.map((group) => (
                 <GroupButton
                     key={group.index}
@@ -133,35 +88,6 @@ export default function GroupButtons({
                 />
             ))}
             {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
-        </>
-    );
-
-    if (!localButtons) {
-        return <BugLoading />;
-    }
-
-    if (editMode) {
-        return (
-            <Box>
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                    <SortableContext
-                        items={localButtons.map((button) => `group:${groupType}:${button.index}`)}
-                        strategy={horizontalListSortingStrategy}
-                    >
-                        <GroupButtons />
-                    </SortableContext>
-                </DndContext>
-            </Box>
-        );
-    }
-
-    return (
-        <Box
-            sx={{
-                whiteSpace: "nowrap",
-            }}
-        >
-            <GroupButtons />
         </Box>
     );
 }

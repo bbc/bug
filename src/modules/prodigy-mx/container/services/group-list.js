@@ -43,7 +43,7 @@ const moduleMadi = (labelIndex, startIndex) => {
     return [0, 1, 2, 3].map((groupIndex) => {
         return {
             label: `NET${labelIndex + 1} / MADI${groupIndex + 1}`,
-            value: [], //TODO range(startIndex + 64 * groupIndex, 64),
+            value: range(startIndex + 64 * groupIndex, 64),
             fixed: true,
         };
     });
@@ -54,7 +54,7 @@ const moduleNetwork = (labelIndex, startIndex) => {
     return [
         {
             label: `NET${labelIndex + 1} / DANTE`,
-            value: [], //TODO range(startIndex, 128),
+            value: range(startIndex, 128),
             fixed: true,
         },
     ];
@@ -106,13 +106,13 @@ module.exports = async (type = "source") => {
     // then the built in ports
     groups.push({
         label: `MADI 1`,
-        value: [], //TODO range(1536, 64),
+        value: range(1536, 64),
         fixed: true,
     });
 
     groups.push({
         label: `MADI 2`,
-        value: [], //TODO range(1600, 64),
+        value: range(1600, 64),
         fixed: true,
     });
 

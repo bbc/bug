@@ -40,11 +40,13 @@ module.exports = async (obj, payload) => {
 
         prodigy.on("ack", (result) => {
             if (seq === result["seq"]) {
+                console.log(`prodigy-command: command seq ${seq} acknowledged ok`);
                 clearTimeout(timer);
                 resolve(true);
             }
         });
 
+        console.log(`prodigy-command: sending command ${JSON.stringify(data)}`);
         prodigy.send(JSON.stringify(data));
     });
 };
