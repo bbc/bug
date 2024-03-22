@@ -8,8 +8,8 @@ export default function MainPanel(props) {
         <>
             <Router
                 panelId={panelId}
-                sourceGroup={sourceGroup ? sourceGroup : 0}
-                destinationGroup={destinationGroup ? destinationGroup : 0}
+                sourceGroup={sourceGroup ? parseInt(sourceGroup) : 0}
+                destinationGroup={destinationGroup ? parseInt(destinationGroup) : 0}
             />
         </>
     );

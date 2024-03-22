@@ -7,7 +7,7 @@ export default function BugStatusLabel({ sx = {}, children }) {
             sx={{
                 color: "primary.main",
                 textTransform: "uppercase",
-                opacity: "0.8",
+                opacity: "0.9",
                 fontSize: "0.8rem",
                 fontWeight: "500",
                 ...sx,
