@@ -19,6 +19,14 @@ parentPort.postMessage({
 });
 
 let gotDataDump = false;
+let aliveTimer;
+
+const keepAlive = () => {
+    clearTimeout(aliveTimer);
+    aliveTimer = setTimeout(() => {
+        throw new Error("worker-device: no data on connection for 10 seconds");
+    }, 10000);
+};
 
 const main = async () => {
     // Connect to the db
@@ -26,10 +34,15 @@ const main = async () => {
 
     const prodigy = new prodigyPromise({
         host: workerData.address,
-        port: 5003,
+        port: workerData.port || 5003,
+    });
+
+    prodigy.on("ack", async () => {
+        keepAlive();
     });
 
     prodigy.on("update", async (result) => {
+        keepAlive();
         if (!gotDataDump) {
             gotDataDump = true;
             console.log(`worker-device: device sent first data dump OK`);
@@ -52,11 +65,15 @@ const main = async () => {
     console.log("worker-device: waiting for events ...");
     // use an infinite loop
     while (true) {
-        // delay before doing it all again ...
-        await delay(30000);
+        // keep the connection going ...
+        for (let count = 1; count < 9; count++) {
+            prodigy.send(JSON.stringify({ type: "cmd", payload: "ping" }));
+            await delay(5000);
+        }
 
-        // get everything
+        // then every 45 seconds get everything
         prodigy.send(JSON.stringify({ type: "get" }));
+        await delay(5000);
     }
 };
 

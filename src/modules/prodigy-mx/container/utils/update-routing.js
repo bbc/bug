@@ -3,7 +3,7 @@
 const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (deviceData) => {
-    if (deviceData?.["settings"]) {
+    if (deviceData?.["settings"]?.["easy_routing"]) {
         let existingRouting = await mongoSingle.get("routing");
         if (!existingRouting) {
             existingRouting = [];

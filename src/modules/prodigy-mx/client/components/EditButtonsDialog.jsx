@@ -35,8 +35,8 @@ import {
 } from "@dnd-kit/sortable";
 
 export default function EditButtonsDialog({ open, panelId, onDismiss, groupType, onConfirm, groupIndex }) {
-    const [buttons, setButtons] = React.useState(null);
-    const [selectedButtons, setSelectedButtons] = React.useState(null);
+    const [buttons, setButtons] = React.useState([]);
+    const [selectedButtons, setSelectedButtons] = React.useState([]);
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -47,7 +47,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
 
     // fetch list of all buttons
     useAsyncEffect(async () => {
-        const url = groupType === "source" ? `/container/${panelId}/sources/` : `/container/${panelId}/destinations/`;
+        const url = groupType === "source" ? `/container/${panelId}/source/` : `/container/${panelId}/destination/`;
         setButtons(await AxiosGet(url));
     }, []);
 
@@ -55,17 +55,16 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
     useAsyncEffect(async () => {
         const url =
             groupType === "source"
-                ? `/container/${panelId}/sources/-1/${groupIndex}`
-                : `/container/${panelId}/destinations/${groupIndex}`;
-        const rawSelectedButtons = await AxiosPost(url, { showExcluded: true });
-        const filteredSelectedButtons = [];
-        for (let eachButton of rawSelectedButtons[`${groupType}s`]) {
-            filteredSelectedButtons.push({
+                ? `/container/${panelId}/source/-1/${groupIndex}`
+                : `/container/${panelId}/destination/${groupIndex}`;
+        const rawSelectedButtons = await AxiosGet(url);
+        const filteredSelectedButtons = rawSelectedButtons?.[`${groupType}s`].map((eachButton) => {
+            return {
                 index: eachButton.index,
                 label: eachButton.label,
                 hidden: eachButton.hidden,
-            });
-        }
+            };
+        });
         setSelectedButtons(filteredSelectedButtons);
     }, []);
 
@@ -109,7 +108,8 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
         const postData = {
             buttons: buttonIndexArray,
         };
-        const url = `/container/${panelId}/groups/set/${groupType}/${groupIndex}`;
+        const url = `/container/${panelId}/group/set/${groupType}/${groupIndex}`;
+        console.log(url);
         if (await AxiosPost(url, postData)) {
             onConfirm();
         }
@@ -195,45 +195,46 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                                 event.stopPropagation();
                             }}
                         >
-                            {buttons.map((button, index) => {
-                                return (
-                                    <ListItem
-                                        sx={{
-                                            borderBottom: "1px solid #282828",
-                                            height: "51px",
-                                            paddingLeft: "8px",
-                                            paddingRight: "8px",
-                                        }}
-                                        key={index}
-                                        role="listitem"
-                                        button
-                                        onClick={(event) => handleToggle(event, index, button)}
-                                    >
-                                        <ListItemIcon>
-                                            <Checkbox
-                                                checked={
-                                                    selectedButtons.filter((button) => button.index === index).length >
-                                                    0
-                                                }
-                                                tabIndex={-1}
-                                                disableRipple
-                                            />
-                                        </ListItemIcon>
-                                        <Box
+                            {buttons &&
+                                buttons.map((button, index) => {
+                                    return (
+                                        <ListItem
                                             sx={{
-                                                fontSize: "17px",
-                                                marginTop: "1px",
+                                                borderBottom: "1px solid #282828",
+                                                height: "51px",
+                                                paddingLeft: "8px",
                                                 paddingRight: "8px",
-                                                fontWeight: 900,
-                                                opacity: 0.3,
                                             }}
+                                            key={index}
+                                            role="listitem"
+                                            button
+                                            onClick={(event) => handleToggle(event, index, button)}
                                         >
-                                            {index + 1}
-                                        </Box>
-                                        <ListItemText primary={button} />
-                                    </ListItem>
-                                );
-                            })}
+                                            <ListItemIcon>
+                                                <Checkbox
+                                                    checked={
+                                                        selectedButtons.filter((button) => button.index === index)
+                                                            .length > 0
+                                                    }
+                                                    tabIndex={-1}
+                                                    disableRipple
+                                                />
+                                            </ListItemIcon>
+                                            <Box
+                                                sx={{
+                                                    fontSize: "17px",
+                                                    marginTop: "1px",
+                                                    paddingRight: "8px",
+                                                    fontWeight: 900,
+                                                    opacity: 0.3,
+                                                }}
+                                            >
+                                                {index + 1}
+                                            </Box>
+                                            <ListItemText primary={button} />
+                                        </ListItem>
+                                    );
+                                })}
                         </List>
                     </Box>
                 </BugScrollbars>

@@ -11,8 +11,6 @@ import BackspaceIcon from "@mui/icons-material/Backspace";
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import AddGroupDialog from "./AddGroupDialog";
-import CheckIcon from "@mui/icons-material/Check";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 export default function RouterButton({
     panelId,
@@ -28,7 +26,6 @@ export default function RouterButton({
     useDoubleClick = false,
     selectedGroup = -1,
 }) {
-    const { confirmDialog } = useBugConfirmDialog();
     const { customDialog } = useBugCustomDialog();
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
@@ -39,7 +36,7 @@ export default function RouterButton({
             defaultValue: button.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${result}`)) {
+            if (await AxiosCommand(`/container/${panelId}/${buttonType}/setlabel/${button.index}/${result}`)) {
                 sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
             } else {
                 sendAlert(`Failed to rename ${buttonType}: ${result}`, { variant: "error" });
@@ -49,7 +46,7 @@ export default function RouterButton({
     };
 
     const handleClearClicked = async (event, item) => {
-        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/-`)) {
+        if (await AxiosCommand(`/container/${panelId}/${buttonType}/setlabel/${button.index}/-`)) {
             sendAlert(`Cleared button label for ${buttonType} ${button.index + 1}`, { variant: "success" });
         } else {
             sendAlert(`Failed to clear label for ${buttonType} ${button.index + 1}`, { variant: "error" });
@@ -58,7 +55,7 @@ export default function RouterButton({
     };
 
     const handleRemoveClicked = async (event, item) => {
-        const url = `/container/${panelId}/${buttonType}s/${selectedGroup}/${button.index}`;
+        const url = `/container/${panelId}/group/button/${buttonType}/${selectedGroup}/${button.index}`;
 
         if (await AxiosDelete(url)) {
             sendAlert(`Removed ${buttonType} button: ${button.label}`, { variant: "success" });
@@ -68,51 +65,14 @@ export default function RouterButton({
         onChange();
     };
 
-    const handleLockClicked = async (event, item) => {
-        let action = "lock";
-        let actionLong = "Locked";
-
-        if (button.isLocked) {
-            action = "unlock";
-            actionLong = "Unlocked";
-
-            if (button.isRemoteLocked) {
-                // we're unlocking and we need to check ...
-                action = "forceunlock";
-                if (
-                    !(await confirmDialog({
-                        title: "Unlock Destination",
-                        message:
-                            "This destination has been locked by another user. Are you sure you want to unlock it?",
-                        confirmButtonText: "Unlock",
-                    }))
-                ) {
-                    // they've changed their mind ...
-                    return false;
-                }
-            }
-        }
-
-        if (await AxiosCommand(`/container/${panelId}/destinations/${action}/${button.index}`)) {
-            sendAlert(`${actionLong} ${buttonType} ${button.index + 1}`, {
-                variant: "success",
-            });
-        } else {
-            sendAlert(`Failed to ${action} ${buttonType} ${button.index + 1}`, {
-                variant: "error",
-            });
-        }
-        onChange();
-    };
-
     const handleAddGroupClicked = async (event) => {
         const groupIndexes = await customDialog({
-            dialog: <AddGroupDialog groups={groups} />,
+            dialog: <AddGroupDialog groups={groups.filter((group) => group.fixed === false)} />,
         });
         if (groupIndexes !== false) {
             if (
                 await AxiosCommand(
-                    `/container/${panelId}/groups/addbutton/${buttonType}/${groupIndexes}/${button.index}`
+                    `/container/${panelId}/group/addbutton/${buttonType}/${groupIndexes}/${button.index}`
                 )
             ) {
                 sendAlert(`Added button to group(s) '${groupIndexes.join(",")}'`, { variant: "success" });
@@ -126,6 +86,7 @@ export default function RouterButton({
     const handleClick = (event) => {
         onClick(event);
     };
+
     return (
         <BugRouterButton
             id={`${buttonType}:${button.index}`}
@@ -143,11 +104,13 @@ export default function RouterButton({
             locked={button.isLocked}
             menuItems={[
                 {
+                    disabled: button.index === -1,
                     title: "Rename",
                     icon: <EditIcon fontSize="small" />,
                     onClick: handleRenameClicked,
                 },
                 {
+                    disabled: button.index === -1,
                     title: "Clear Label",
                     icon: <BackspaceIcon fontSize="small" />,
                     onClick: handleClearClicked,
@@ -164,25 +127,16 @@ export default function RouterButton({
                     title: "Remove",
                     icon: <RemoveCircleIcon fontSize="small" />,
                     onClick: handleRemoveClicked,
-                    disabled: groups.length === 0,
+                    disabled: button.fixed,
                 },
                 {
                     title: "-",
                 },
                 {
-                    title: "Lock",
-                    disabled: buttonType !== "destination",
-                    icon: (item) => (item.isLocked ? <CheckIcon fontSize="small" /> : null),
-                    onClick: handleLockClicked,
-                },
-                {
-                    title: "-",
-                },
-                {
+                    disabled: button.index === -1,
                     title: "Add to Group",
                     icon: <AddIcon fontSize="small" />,
                     onClick: handleAddGroupClicked,
-                    disabled: groups.length === 0,
                 },
             ]}
             useDoubleClick={useDoubleClick}
