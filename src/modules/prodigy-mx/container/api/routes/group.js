@@ -5,7 +5,7 @@ const groupDelete = require("@services/group-delete");
 const groupAdd = require("@services/group-add");
 const groupList = require("@services/group-list");
 
-router.get("/:tyoe", async function (req, res, next) {
+router.get("/:type", async function (req, res, next) {
     try {
         res.json({
             status: "success",
