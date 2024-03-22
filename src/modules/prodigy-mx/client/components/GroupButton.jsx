@@ -7,6 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import BallotIcon from "@mui/icons-material/Ballot";
 import EditIcon from "@mui/icons-material/Edit";
 import AxiosDelete from "@utils/AxiosDelete";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 export default function GroupButton({ panelId, group, onClick, groupType, editMode = false, onChange, onEditButtons }) {
     const sendAlert = useAlert();
@@ -33,6 +34,19 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
             }
             onChange();
         }
+    };
+
+    const handleResetNameClicked = async (event, item) => {
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/group/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(group.index)}`
+            )
+        ) {
+            sendAlert(`Renamed group: ${group.label}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to rename group: ${group.label}`, { variant: "error" });
+        }
+        onChange();
     };
 
     const handleDeleteClicked = async (event, item) => {
@@ -63,6 +77,12 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
                     },
                     {
                         title: "-",
+                    },
+                    {
+                        title: "Reset Name",
+                        disabled: !group.fixed,
+                        icon: <RestartAltIcon fontSize="small" />,
+                        onClick: handleResetNameClicked,
                     },
                     {
                         title: "Rename",
