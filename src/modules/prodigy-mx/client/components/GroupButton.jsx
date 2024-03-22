@@ -15,10 +15,18 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
     const handleRenameClicked = async (event, item) => {
         const result = await renameDialog({
             title: "Rename group",
-            defaultValue: group.label,
+            defaultValue: group.label === group.defaultLabel ? "" : group.label,
+            placeholder: group.defaultLabel,
+            allowBlank: group.fixed,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/groups/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(group.label)}/${encodeURIComponent(result)}`)) {
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/group/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(
+                        group.index
+                    )}/${encodeURIComponent(result)}`
+                )
+            ) {
                 sendAlert(`Renamed group: ${group.label} -> ${result}`, { variant: "success" });
             } else {
                 sendAlert(`Failed to rename group: ${group.label}`, { variant: "error" });
@@ -28,7 +36,7 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
     };
 
     const handleDeleteClicked = async (event, item) => {
-        if (await AxiosDelete(`/container/${panelId}/groups/${groupType}/${group.label}`)) {
+        if (await AxiosDelete(`/container/${panelId}/group/${groupType}/${group.index}`)) {
             sendAlert(`Deleted group: ${group.label}`, { variant: "success" });
         } else {
             sendAlert(`Failed to delete group: ${group.label}`, { variant: "error" });
@@ -48,6 +56,7 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
                 editMode={editMode}
                 menuItems={[
                     {
+                        disabled: group.fixed,
                         title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
                         icon: <BallotIcon fontSize="small" />,
                         onClick: onEditButtons,
@@ -62,6 +71,7 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
                     },
                     {
                         title: "Delete",
+                        disabled: group.fixed,
                         icon: <DeleteIcon fontSize="small" />,
                         onClick: handleDeleteClicked,
                     },

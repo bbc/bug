@@ -32,14 +32,17 @@ export default function GroupButtons({
     groupType,
     buttons,
     onChange,
-    destinationGroup = 0,
-    sourceGroup = 0,
+    destinationGroup,
+    sourceGroup,
 }) {
     const sendAlert = useAlert();
     const history = useHistory();
     const [localButtons, setLocalButtons] = useState(null);
     const { renameDialog } = useBugRenameDialog();
     const { customDialog } = useBugCustomDialog();
+
+    console.log("1source", sourceGroup);
+    console.log("1destination", destinationGroup);
 
     useEffect(() => {
         setLocalButtons(buttons.data.groups);
@@ -55,14 +58,11 @@ export default function GroupButtons({
 
     const handleGroupButtonClicked = (groupIndex) => {
         const editText = editMode ? "/edit" : "";
-        const pathItems = window.location.pathname.split("/");
-        const sourceIndex = pathItems[5] ? pathItems[5] : 0;
-        const destinationIndex = pathItems[6] ? pathItems[6] : 0;
 
         if (groupType === "source") {
-            history.push(`/panel/${panelId}/display/router${editText}/${groupIndex}/${destinationIndex}`);
+            history.push(`/panel/${panelId}${editText}/display/router/${groupIndex}/${destinationGroup}`);
         } else {
-            history.push(`/panel/${panelId}/display/router${editText}/${sourceIndex}/${groupIndex}`);
+            history.push(`/panel/${panelId}${editText}/display/router/${sourceGroup}/${groupIndex}`);
         }
     };
 
@@ -73,7 +73,7 @@ export default function GroupButtons({
             confirmButtonText: "Add",
         });
         if (result !== false) {
-            if (await AxiosPost(`/container/${panelId}/groups/${groupType}/${result}`)) {
+            if (await AxiosPost(`/container/${panelId}/group/${groupType}/${result}`)) {
                 sendAlert(`Added group: ${result}`, { variant: "success" });
                 onChange();
             } else {
@@ -118,25 +118,23 @@ export default function GroupButtons({
         }
     };
 
-    const renderGroupButtons = () => {
-        return (
-            <>
-                {localButtons.map((group) => (
-                    <GroupButton
-                        key={group.index}
-                        group={group}
-                        onClick={() => handleGroupButtonClicked(group.index)}
-                        editMode={editMode}
-                        panelId={panelId}
-                        groupType={groupType}
-                        onChange={onChange}
-                        onEditButtons={handleEditButtonsClicked}
-                    />
-                ))}
-                {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
-            </>
-        );
-    };
+    const GroupButtons = () => (
+        <>
+            {localButtons.map((group) => (
+                <GroupButton
+                    key={group.index}
+                    group={group}
+                    onClick={() => handleGroupButtonClicked(group.index)}
+                    editMode={editMode}
+                    panelId={panelId}
+                    groupType={groupType}
+                    onChange={onChange}
+                    onEditButtons={handleEditButtonsClicked}
+                />
+            ))}
+            {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
+        </>
+    );
 
     if (!localButtons) {
         return <BugLoading />;
@@ -150,7 +148,7 @@ export default function GroupButtons({
                         items={localButtons.map((button) => `group:${groupType}:${button.index}`)}
                         strategy={horizontalListSortingStrategy}
                     >
-                        {renderGroupButtons()}
+                        <GroupButtons />
                     </SortableContext>
                 </DndContext>
             </Box>
@@ -163,7 +161,7 @@ export default function GroupButtons({
                 whiteSpace: "nowrap",
             }}
         >
-            {renderGroupButtons()}
+            <GroupButtons />
         </Box>
     );
 }
