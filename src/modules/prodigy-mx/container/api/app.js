@@ -11,6 +11,7 @@ const destinationRouter = require("@routes/destination");
 const deviceRouter = require("@routes/device");
 const moduleRouter = require("@routes/module");
 const groupRouter = require("@routes/group");
+const healthRouter = require("@routes/health");
 
 const heapInfo = require("@core/heap-info");
 
@@ -37,6 +38,7 @@ app.use("/api/destination", destinationRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/module", moduleRouter);
 app.use("/api/group", groupRouter);
+app.use("/api/health", healthRouter);
 
 app.use("*", defaultRouter);
 
