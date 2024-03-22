@@ -8,9 +8,10 @@ import BugCard from "@core/BugCard";
 import { useHistory, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-const TabPanel = ({ children, value, index }) => {
+const TabPanel = ({ children, value, index, fullHeight }) => {
+    const hidden = value !== index;
     return (
-        <BugCard role="tabpanel" hidden={value !== index}>
+        <BugCard sx={{ height: !hidden && fullHeight ? "100%" : "auto" }} role="tabpanel" hidden={hidden}>
             {value === index && <>{children}</>}
         </BugCard>
     );
@@ -24,6 +25,7 @@ export default function BugPanelTabbedForm({
     defaultTab = 0,
     contentProps = {},
     sx = {},
+    fullHeight = false,
 }) {
     const [tabIndex, setTabIndex] = React.useState(false);
     const history = useHistory();
@@ -110,10 +112,10 @@ export default function BugPanelTabbedForm({
                     className={`tabSpacer`}
                 />
             </div>
-            <BugCard {...contentProps}>
+            <BugCard sx={{ height: fullHeight ? "100%" : "auto" }} {...contentProps}>
                 {content
                     ? content.map((content, index) => (
-                          <TabPanel key={index} value={tabIndex} index={index}>
+                          <TabPanel fullHeight={fullHeight} key={index} value={tabIndex} index={index}>
                               {content}
                           </TabPanel>
                       ))
