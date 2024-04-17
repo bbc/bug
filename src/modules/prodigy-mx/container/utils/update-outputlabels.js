@@ -11,7 +11,7 @@ module.exports = async (deviceData) => {
         for (let eachItem of deviceData["settings"]["output_labels"]) {
             existingOutputLabels[eachItem[0]] = eachItem;
         }
-        return await mongoSingle.set("output_labels", existingOutputLabels, 60);
+        return await mongoSingle.set("output_labels", existingOutputLabels);
     }
     return false;
 };

@@ -11,7 +11,7 @@ module.exports = async (deviceData) => {
         for (let eachItem of deviceData["settings"]["easy_routing"]) {
             existingRouting[eachItem[0]] = eachItem;
         }
-        return await mongoSingle.set("routing", existingRouting, 60);
+        return await mongoSingle.set("routing", existingRouting);
     }
     return false;
 };

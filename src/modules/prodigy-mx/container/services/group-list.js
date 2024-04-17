@@ -25,6 +25,7 @@ const range = (start, length) => Array.from({ length: length }, (_, i) => start 
 // 18: RAV.SRC.IO
 // 19: DANTE.SRC.IO
 // 20: SG.SRC.IO
+// 28: MADI4.SRC.IO
 // 32: AN8.I (ESS)
 // 33: AN8.O (ESS)
 // 34: MIC8.LINE.I (ESS)
@@ -80,16 +81,10 @@ module.exports = async (type = "source") => {
 
     for (let moduleIndex = 0; moduleIndex < 6; moduleIndex++) {
         const moduleType = status?.module_type?.[moduleIndex];
-        const net = status?.net?.[moduleIndex];
 
-        // only for online cards
-        if (net?.online) {
-            switch (moduleType.deviceType) {
-                case "SC.IO mm": {
-                    groups = groups.concat(moduleMadi(moduleIndex, moduleIndex * 256));
-                    break;
-                }
-                case "SC.IO sm": {
+        try {
+            switch (moduleType?.["name"]) {
+                case "MADI4.SRC.IO": {
                     groups = groups.concat(moduleMadi(moduleIndex, moduleIndex * 256));
                     break;
                 }
@@ -100,6 +95,8 @@ module.exports = async (type = "source") => {
                 default:
                     break;
             }
+        } catch (error) {
+            console.log(`group-list: ERROR`, moduleIndex, status?.module_type);
         }
     }
 

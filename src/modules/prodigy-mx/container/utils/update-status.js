@@ -27,7 +27,7 @@ module.exports = async (deviceData) => {
             deviceData?.["status"]?.["net_module_state"]
         );
         status["warnings"] = deviceData?.["status"]?.["warnings"];
-        return await mongoSingle.set("status", status, 60);
+        return await mongoSingle.set("status", status);
     }
     return false;
 };
