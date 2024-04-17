@@ -53,12 +53,14 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
             .map((labelItem) => {
                 const sourceIndex = routing[labelItem[0]][1];
                 const labelIndex = labelItem[0];
+
+                // console.log(sourceIndex, inputLabels[sourceIndex]?.[1]);
                 return {
                     index: labelIndex,
                     label: labelItem[1],
                     fixed: buttonsFixed,
                     sourceIndex: sourceIndex,
-                    sourceLabel: sourceIndex > -1 ? inputLabels[sourceIndex][1] : "",
+                    sourceLabel: sourceIndex > -1 ? inputLabels[sourceIndex]?.[1] : "",
                     indexText: config["showNumber"] === false ? "" : labelIndex + 1,
                     order: groupIndex !== null ? validDestinations.indexOf(labelIndex) : labelIndex,
                     icon: icons[labelIndex] ? icons[labelIndex] : null,

@@ -8,7 +8,7 @@ module.exports = async () => {
 
     const health = await mongoSingle.get("health");
     if (health) {
-        if (health.cpu_temp > health.temp_thres) {
+        if (health?.cpu_temp > health?.temp_thres) {
             statusItems.push(
                 new StatusItem({
                     key: `cputemp`,
@@ -18,7 +18,7 @@ module.exports = async () => {
             );
         }
 
-        if (health.temp1 > health.temp_thres) {
+        if (health?.temp1 > health?.temp_thres) {
             statusItems.push(
                 new StatusItem({
                     key: `temp1`,
@@ -28,7 +28,7 @@ module.exports = async () => {
             );
         }
 
-        if (health.temp2 > health.temp_thres) {
+        if (health?.temp2 > health?.temp_thres) {
             statusItems.push(
                 new StatusItem({
                     key: `temp2`,
@@ -38,7 +38,7 @@ module.exports = async () => {
             );
         }
 
-        for (const [index, eachPsu] of health.psu.entries()) {
+        for (const [index, eachPsu] of health?.psu?.entries()) {
             const psuStates = ["not active", "OK", "in an error state", "not stable"];
 
             if (eachPsu !== 1) {
