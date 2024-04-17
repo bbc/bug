@@ -58,46 +58,43 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
         onChange();
     };
 
-    return React.useMemo(
-        () => (
-            <BugRouterGroupButton
-                id={`group:${groupType}:${group.index}`}
-                draggable
-                onClick={onClick}
-                item={group}
-                primaryLabel={group.label}
-                selected={group.selected}
-                editMode={editMode}
-                menuItems={[
-                    {
-                        disabled: group.fixed,
-                        title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
-                        icon: <BallotIcon fontSize="small" />,
-                        onClick: onEditButtons,
-                    },
-                    {
-                        title: "-",
-                    },
-                    {
-                        title: "Reset Name",
-                        disabled: !group.fixed,
-                        icon: <RestartAltIcon fontSize="small" />,
-                        onClick: handleResetNameClicked,
-                    },
-                    {
-                        title: "Rename",
-                        icon: <EditIcon fontSize="small" />,
-                        onClick: handleRenameClicked,
-                    },
-                    {
-                        title: "Delete",
-                        disabled: group.fixed,
-                        icon: <DeleteIcon fontSize="small" />,
-                        onClick: handleDeleteClicked,
-                    },
-                ]}
-            />
-        ),
-        [group.label, group.selected, editMode]
+    return (
+        <BugRouterGroupButton
+            id={`group:${groupType}:${group.index}`}
+            draggable
+            onClick={onClick}
+            item={group}
+            primaryLabel={group.label}
+            selected={group.selected}
+            editMode={editMode}
+            menuItems={[
+                {
+                    disabled: group.fixed,
+                    title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
+                    icon: <BallotIcon fontSize="small" />,
+                    onClick: onEditButtons,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Reset Name",
+                    disabled: !group.fixed,
+                    icon: <RestartAltIcon fontSize="small" />,
+                    onClick: handleResetNameClicked,
+                },
+                {
+                    title: "Rename",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleRenameClicked,
+                },
+                {
+                    title: "Delete",
+                    disabled: group.fixed,
+                    icon: <DeleteIcon fontSize="small" />,
+                    onClick: handleDeleteClicked,
+                },
+            ]}
+        />
     );
 }
