@@ -9,6 +9,7 @@ import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import BugConfigFormMultiPanelSelect from "@core/BugConfigFormMultiPanelSelect";
+import InputAdornment from "@mui/material/InputAdornment";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -110,6 +111,24 @@ export default function ConfigPanel() {
                         supportsValidation
                         onChange={(event) => validateServer(event, "snmpCommunity", ["address"])}
                         label="SNMP Community String"
+                    />
+                </Grid>
+
+                <Grid item xs={6}>
+                    <BugConfigFormTextField
+                        name="timeout"
+                        control={control}
+                        fullWidth
+                        error={errors.timeout}
+                        defaultValue={panelConfig.data.timeout === undefined ? 5 : panelConfig.data.timeout}
+                        label="Default timeout"
+                        filter={/[^0-9]/}
+                        numeric
+                        min={1000}
+                        max={60000}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">ms</InputAdornment>,
+                        }}
                     />
                 </Grid>
 

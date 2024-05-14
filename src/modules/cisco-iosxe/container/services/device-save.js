@@ -11,7 +11,7 @@ module.exports = async () => {
         host: config["address"],
         path: `/restconf/operations/cisco-ia:save-config/`,
         data: null,
-        timeout: 5000,
+        timeout: config["timeout"],
         username: config["username"],
         password: config["password"],
     });

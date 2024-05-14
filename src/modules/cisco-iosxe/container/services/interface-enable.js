@@ -15,7 +15,7 @@ module.exports = async (interfaceId) => {
                 enabled: true,
             },
         },
-        timeout: 5000,
+        timeout: config["timeout"],
         username: config["username"],
         password: config["password"],
     });

@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const ciscoIOSXEApi = require("@utils/ciscoiosxe-api");
+const { SlowBuffer } = require("buffer");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -41,7 +42,7 @@ const convertPortSpeed = (speed) => {
 };
 
 const parseReason = (reason) => {
-    if (reason.indexOf("port-err-") === 0) {
+    if (reason?.indexOf("port-err-") === 0) {
         return reason.split("-")[2];
     }
     return reason;
@@ -69,7 +70,7 @@ const main = async () => {
             host: workerData["address"],
             path: "/restconf/data/Cisco-IOS-XE-interfaces-oper:interfaces/interface",
             data: data,
-            timeout: 5000,
+            timeout: parseInt(workerData["timeout"] ? workerData["timeout"] : 5000),
             username: workerData["username"],
             password: workerData["password"],
         });

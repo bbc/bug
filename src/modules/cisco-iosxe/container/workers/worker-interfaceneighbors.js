@@ -62,7 +62,7 @@ const main = async () => {
         const result = await ciscoIOSXEApi.get({
             host: workerData["address"],
             path: "/restconf/data/Cisco-IOS-XE-matm-oper:matm-oper-data/matm-table",
-            timeout: 5000,
+            timeout: parseInt(workerData["timeout"] ? workerData["timeout"] : 5000),
             username: workerData["username"],
             password: workerData["password"],
         });
@@ -107,7 +107,7 @@ const main = async () => {
         const lldpResult = await ciscoIOSXEApi.get({
             host: workerData["address"],
             path: "/restconf/data/Cisco-IOS-XE-lldp-oper:lldp-entries/lldp-intf-details",
-            timeout: 5000,
+            timeout: parseInt(workerData["timeout"] ? workerData["timeout"] : 5000),
             username: workerData["username"],
             password: workerData["password"],
         });

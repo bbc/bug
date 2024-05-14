@@ -43,7 +43,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
                 },
             },
         },
-        timeout: 5000,
+        timeout: config["timeout"],
         username: config["username"],
         password: config["password"],
     });

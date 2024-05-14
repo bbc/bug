@@ -14,6 +14,10 @@ module.exports = async (interfaceId, newName) => {
         console.log(`interface-rename: interface ${interfaceId} not found`);
         return false;
     }
+
+    // cisco can't set an empty description
+    const nonEmptyNewName = newName.trim() ? newName.trim() : ".";
+
     const result = await ciscoIOSXEApi.update({
         host: config["address"],
         path: `/restconf/data/Cisco-IOS-XE-native:native/interface/${dbInterface.type}=${encodeURIComponent(
@@ -21,19 +25,20 @@ module.exports = async (interfaceId, newName) => {
         )}`,
         data: {
             [dbInterface.type]: {
-                description: newName,
+                description: nonEmptyNewName,
             },
         },
-        timeout: 5000,
+        timeout: config["timeout"],
         username: config["username"],
         password: config["password"],
+        debug: true,
     });
     if (result) {
         console.log(`interface-rename: success - updating DB`);
         try {
             const dbResult = await interfacesCollection.updateOne(
                 { interfaceId: interfaceId },
-                { $set: { description: newName } }
+                { $set: { description: nonEmptyNewName } }
             );
             console.log(`interface-rename: ${JSON.stringify(dbResult.result)}`);
             return true;
