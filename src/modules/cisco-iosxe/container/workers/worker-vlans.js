@@ -29,7 +29,7 @@ const main = async () => {
             host: workerData["address"],
             path: "/restconf/data/Cisco-IOS-XE-vlan-oper:vlans/vlan",
             data: data,
-            timeout: 5000,
+            timeout: parseInt(workerData["timeout"] ? workerData["timeout"] : 5000),
             username: workerData["username"],
             password: workerData["password"],
         });

@@ -36,7 +36,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
         event.stopPropagation();
         let result = await renameDialog({
             title: "Edit interface name",
-            defaultValue: item["description"],
+            defaultValue: item["description"] === "." ? "" : item["description"],
             placeholder: item["interfaceId"],
             confirmButtonText: "Rename",
             allowBlank: true,
@@ -288,17 +288,23 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     minWidth: "150px",
                     noWrap: true,
                     title: "Name",
-                    content: (item) => (
-                        <>
-                            <BugTableLinkButton
-                                disabled={item._protected}
-                                onClick={(event) => handleRenameClicked(event, item)}
-                            >
-                                {item.description ? item.description : item.interfaceId}
-                            </BugTableLinkButton>
-                            {getItemSubName(item)}
-                        </>
-                    ),
+                    content: (item) => {
+                        return (
+                            <>
+                                <BugTableLinkButton
+                                    disabled={item._protected}
+                                    onClick={(event) => handleRenameClicked(event, item)}
+                                >
+                                    {item.description
+                                        ? item.description === "."
+                                            ? item.interfaceId
+                                            : item.description
+                                        : item.interfaceId}
+                                </BugTableLinkButton>
+                                {getItemSubName(item)}
+                            </>
+                        );
+                    },
                 },
                 {
                     title: "VLAN",
