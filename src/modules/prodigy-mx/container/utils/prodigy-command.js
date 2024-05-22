@@ -35,13 +35,15 @@ module.exports = async (obj, payload) => {
 
         let timer = setTimeout(() => {
             console.log("prodigy-command: timed out after 5 seconds");
+            prodigy.disconnect();
             reject();
-        }, 2000);
+        }, 5000);
 
         prodigy.on("ack", (result) => {
             if (seq === result["seq"]) {
                 console.log(`prodigy-command: command seq ${seq} acknowledged ok`);
                 clearTimeout(timer);
+                prodigy.disconnect();
                 resolve(true);
             }
         });
