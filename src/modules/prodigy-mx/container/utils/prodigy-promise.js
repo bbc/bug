@@ -84,6 +84,10 @@ Router.prototype.connect = function () {
     });
 };
 
+Router.prototype.disconnect = function (log = false) {
+    this.socket.end();
+};
+
 Router.prototype.send = function (command, log = false) {
     const instance = this;
 
