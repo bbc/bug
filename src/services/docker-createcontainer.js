@@ -9,8 +9,9 @@ const moduleDevMounts = require("@services/module-getdevmounts");
 const moduleGet = require("@services/module-get");
 
 module.exports = async (configObject) => {
+    let module;
     try {
-        const module = await moduleGet(configObject?.module);
+        module = await moduleGet(configObject?.module);
 
         logger.info(`creating container for panel id ${configObject.id}`);
 
@@ -79,6 +80,7 @@ module.exports = async (configObject) => {
             }
             containerOptions["HostConfig"]["Mounts"] = mounts;
         }
+
         let container = await docker.createContainer(containerOptions);
 
         logger.info(`container id ${container.id} created OK`);
