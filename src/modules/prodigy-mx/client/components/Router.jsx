@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import BugScrollbars from "@core/BugScrollbars";
 import { useForceRefresh } from "@hooks/ForceRefresh";
-import { useParams } from "react-router-dom";
 
 const SectionHeader = styled("div")({
     fontSize: "0.875rem",
@@ -88,6 +87,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
             return (
                 <Box
                     sx={{
+                        height: "72px",
                         width: "100%",
                         padding: "8px 8px 0px 8px",
                         "@media (max-width:800px)": {
@@ -95,7 +95,9 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         },
                     }}
                 >
-                    <GroupButtons {...props} />
+                    <BugScrollbars>
+                        <GroupButtons {...props} />
+                    </BugScrollbars>
                 </Box>
             );
         }
