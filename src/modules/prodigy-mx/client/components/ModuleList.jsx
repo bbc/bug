@@ -62,7 +62,7 @@ export default function ModuleList({ panelId }) {
                 apiUrl={`/container/${panelId}/module/`}
                 panelId={panelId}
                 hideHeader={false}
-                noData={<BugNoData panelId={panelId} title="No modules found" showConfigButton={true} />}
+                noData={<BugNoData panelId={panelId} title="No modules found" showConfigButton={false} />}
                 rowHeight="62px"
             />
         </Box>

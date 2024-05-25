@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import BugScrollbars from "@core/BugScrollbars";
 import { useForceRefresh } from "@hooks/ForceRefresh";
+import BugNoData from "@core/BugNoData";
 
 const SectionHeader = styled("div")({
     fontSize: "0.875rem",
@@ -229,6 +230,10 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
             </Box>
         );
     };
+
+    if (!sourceButtons?.data?.groups || !destinationButtons?.data?.groups) {
+        return <BugNoData title="Device router data not found" showConfigButton={false} />;
+    }
 
     return (
         <Box
