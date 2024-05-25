@@ -4,7 +4,7 @@
     "description": "Control of the Prodigy MX audio router",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "icon": "Grid4x4",
     "author": "Geoff House",
     "license": "Apache-2.0",

@@ -127,6 +127,14 @@ module.exports = async (type = "source") => {
         });
     }
 
+    if (type === "source") {
+        groups.push({
+            label: `Test`,
+            value: range(1666, 6),
+            fixed: true,
+        });
+    }
+
     // then overwrite labels with custom labels from config
     groups = groups.map((group, index) => {
         return {

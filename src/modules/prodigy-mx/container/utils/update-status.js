@@ -4,8 +4,11 @@ const mongoSingle = require("@core/mongo-single");
 
 const updateItem = (existingItemFromDb, valuesArray) => {
     let existingItem = existingItemFromDb ?? [];
-    for (let eachItem of valuesArray) {
-        existingItem[eachItem[0]] = eachItem[1];
+
+    if (valuesArray) {
+        for (let eachItem of valuesArray) {
+            existingItem[eachItem[0]] = eachItem[1];
+        }
     }
     return existingItem;
 };

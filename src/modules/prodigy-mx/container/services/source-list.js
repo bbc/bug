@@ -51,6 +51,7 @@ module.exports = async (destinationIndex = null, groupIndex = 0) => {
     }
 
     const inputLabels = await mongoSingle.get("input_labels");
+
     if (inputLabels) {
         outputArray["sources"] = inputLabels
             .filter((labelItem, index) => validSources.includes(index))
@@ -80,6 +81,5 @@ module.exports = async (destinationIndex = null, groupIndex = 0) => {
         // sort by order field
         outputArray["sources"].sort((a, b) => (a.order > b.order ? 1 : -1));
     }
-
     return outputArray;
 };
