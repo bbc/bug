@@ -66,6 +66,7 @@ export default function MpegEncoderAudio({ onChange, codecdata, index, audioProf
                                 value={codecValue}
                                 options={[
                                     { id: "PCM", label: "PCM" },
+                                    { id: "PCM:P", label: "PCM Passthrough" },
                                     { id: "DOLBY_E:P", label: "Dolby E Passthrough" },
                                     { id: "DOLBY_E", label: "Dolby E Decode" },
                                     { id: "AC3:P", label: "Dolby Digital Passthrough" },
