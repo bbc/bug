@@ -4,7 +4,7 @@
     "description": "Control of Appear X10/X20 codec chassis",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "icon": "SmartButton",
     "author": "Geoff House",
     "license": "Apache-2.0",
