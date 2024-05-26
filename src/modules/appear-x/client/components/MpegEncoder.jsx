@@ -165,7 +165,7 @@ export default function MpegEncoder({ panelId, serviceId }) {
                     </Grid>
                     <Grid item xs={12} xl={6}>
                         {codecdata &&
-                            codecdata.encoderService.value.audios.map((audio, index) => (
+                            codecdata?.encoderService?.value?.audios?.map((audio, index) => (
                                 <MpegEncoderAudio
                                     key={index}
                                     codecdata={codecdata}
