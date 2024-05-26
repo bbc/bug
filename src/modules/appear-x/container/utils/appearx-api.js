@@ -36,9 +36,7 @@ module.exports = class AppearXAPI {
             this.token = response?.data?.result?.accessToken;
             return true;
         } catch (error) {
-            // console.log("-------------------------HEY");
             console.log(error.response);
-            // console.log("-------------------------HEY");
             return false;
         }
     };

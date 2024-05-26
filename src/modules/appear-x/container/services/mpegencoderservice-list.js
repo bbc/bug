@@ -65,21 +65,17 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
 
                 // check outputs
                 let outputs = [];
-                if (matchingInputService) {
-                    // the matchingInputService contains two items - one of which is the autofirst - so we select the other one
-                    const dvbService = matchingInputService.value.sources.find(
-                        (s) => s.value.name !== "Auto First Service"
-                    );
-
-                    // find any IP outputs which have been created from this DVB service
-                    outputs =
-                        mpegIpOutputs &&
-                        mpegIpOutputs.filter((ipo) => {
+                if (matchingInputService && mpegIpOutputs) {
+                    for (let eachService of matchingInputService.value.sources) {
+                        // find any IP outputs which have been created from this DVB service
+                        let matchingOutputs = mpegIpOutputs.filter((ipo) => {
                             return (
                                 ipo.value.outputSettings.tsWhitelistMode.dvbMode.source.multiplex[0].service.source ===
-                                dvbService.key
+                                eachService.key
                             );
                         });
+                        outputs = outputs.concat(matchingOutputs);
+                    }
                 }
 
                 return {
