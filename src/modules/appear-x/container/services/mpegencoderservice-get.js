@@ -2,7 +2,7 @@
 
 const mongoSingle = require("@core/mongo-single");
 const localdataGet = require("@services/localdata-get");
-const inputServiceKeyGet = require("./inputservicekey-get");
+const inputServiceKeysGet = require("./inputservicekeys-get");
 const ipOutputsFilter = require("./ipoutputs-filter");
 
 module.exports = async (serviceId, useLocalData = true) => {
@@ -50,14 +50,14 @@ module.exports = async (serviceId, useLocalData = true) => {
         returnObject.testGeneratorProfile =
             mpegEncodeTestGeneratorProfiles &&
             mpegEncodeTestGeneratorProfiles.find(
-                (profile) => profile.key === returnObject.encoderService?.value?.testGenerator?.value.profile?.id
+                (profile) => profile.key === returnObject.encoderService?.value?.testGenerator?.value?.profile?.id
             );
 
         // fetch the guid of the matching input service
-        returnObject.inputServiceKey = await inputServiceKeyGet(returnObject.encoderService);
+        returnObject.inputServiceKeys = await inputServiceKeysGet(returnObject.encoderService);
 
         // and now use that to fetch any matching outputs
-        returnObject.outputs = await ipOutputsFilter(returnObject.inputServiceKey);
+        returnObject.outputs = await ipOutputsFilter(returnObject.inputServiceKeys);
     }
 
     return returnObject;

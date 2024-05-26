@@ -14,12 +14,6 @@ module.exports = async (encoderService) => {
 
     // get input services first - so we can use it to find outputs
     const inputService = mpegInputServices && mpegInputServices.find((is) => is.value.name === inputServiceKey);
-    if (inputService) {
-        // the matchingInputService contains two items - one of which is the autofirst - so we select the other one
-        const dvbService = inputService.value.sources.find((s) => s.value.name !== "Auto First Service");
 
-        return dvbService?.key;
-    }
-
-    return null;
+    return inputService.value.sources.map((is) => is.key);
 };

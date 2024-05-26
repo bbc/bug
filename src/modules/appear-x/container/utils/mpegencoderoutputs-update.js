@@ -2,7 +2,7 @@
 
 const appearXApi = require("@utils/appearx-api");
 const configGet = require("@core/config-get");
-const inputServiceKeyGet = require("@services/inputservicekey-get");
+const inputServiceKeysGet = require("@services/inputservicekeys-get");
 const ipOutputsFilter = require("@services/ipoutputs-filter");
 
 module.exports = async (encoderService, outputs) => {
@@ -35,10 +35,10 @@ module.exports = async (encoderService, outputs) => {
             // pathologically delete any missing outputs. Any new ones will just get created by the POST update request
 
             // fetch the guid of the matching input service
-            const inputServiceKey = await inputServiceKeyGet(encoderService);
+            const inputServiceKeys = await inputServiceKeysGet(encoderService);
 
             // and now use that to fetch any matching outputs
-            const existingOutputs = await ipOutputsFilter(inputServiceKey);
+            const existingOutputs = await ipOutputsFilter(inputServiceKeys);
 
             const outputIdsToDelete = [];
             const outputIdsToDeleteByCard = {};
