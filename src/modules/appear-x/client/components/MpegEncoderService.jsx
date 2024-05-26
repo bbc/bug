@@ -116,7 +116,8 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                         name: "Test Enabled",
                         value: (
                             <Switch
-                                checked={codecdata?.testGeneratorProfile.value.enable}
+                                checked={codecdata?.testGeneratorProfile?.value?.enable}
+                                disabled={!codecdata?.testGeneratorProfile}
                                 onChange={(event) =>
                                     updateOutput((codecdata) => {
                                         codecdata.testGeneratorProfile.value.enable = event.target.checked;
