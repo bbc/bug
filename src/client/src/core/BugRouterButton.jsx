@@ -27,6 +27,7 @@ const BugRouterButton = ({
     iconColor = null,
     item,
     locked = false,
+    leftIcon = null,
     menuItems = [],
     number,
     onClick,
@@ -170,6 +171,19 @@ const BugRouterButton = ({
                             color: editMode ? "#fff" : "#ccc",
                         }}
                     />
+                )}
+                {leftIcon && (
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            left: "0px",
+                            top: "0px",
+                            margin: "4px",
+                            color: editMode ? "#fff" : "#ccc",
+                        }}
+                    >
+                        {leftIcon}
+                    </Box>
                 )}
                 <Box
                     sx={{
