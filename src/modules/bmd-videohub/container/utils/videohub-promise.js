@@ -2,7 +2,6 @@
 const net = require("net");
 const util = require("util");
 const events = require("events");
-const _ = require("underscore");
 const parser = require("./videohub-parser");
 
 module.exports = Router;
@@ -50,10 +49,15 @@ Router.prototype.send = function (field, command) {
         try {
             let message = `${field}:\n`;
             if (command) {
-                message += `${command}\n\n`;
+                if (Array.isArray(command)) {
+                    message += `${command.join("\n")}\n\n`;
+                } else {
+                    message += `${command}\n\n`;
+                }
             } else {
                 message += `\n`;
             }
+
             instance.socket.write(message, () => {
                 setTimeout(() => {
                     resolve();

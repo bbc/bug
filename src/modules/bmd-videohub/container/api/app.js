@@ -14,6 +14,7 @@ const destinationsRouter = require("@routes/destinations");
 const groupsRouter = require("@routes/groups");
 const validationRouter = require("@routes/validate");
 const capabilitiesRouter = require("@routes/capabilities");
+const quadRouter = require("@routes/quad");
 
 const heapInfo = require("@core/heap-info");
 
@@ -43,6 +44,7 @@ app.use("/api/destinations", destinationsRouter);
 app.use("/api/groups", groupsRouter);
 app.use("/api/validate", validationRouter);
 app.use("/api/capabilities", capabilitiesRouter);
+app.use("/api/quad", quadRouter);
 
 app.use("*", defaultRouter);
 

@@ -55,14 +55,11 @@ export default function GroupButtons({
 
     const handleGroupButtonClicked = (groupIndex) => {
         const editText = editMode ? "/edit" : "";
-        const pathItems = window.location.pathname.split("/");
-        const sourceIndex = pathItems[3] ? pathItems[3] : 0;
-        const destinationIndex = pathItems[4] ? pathItems[4] : 0;
 
         if (groupType === "source") {
-            history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationIndex}`);
+            history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationGroup}`);
         } else {
-            history.push(`/panel/${panelId}${editText}/${sourceIndex}/${groupIndex}`);
+            history.push(`/panel/${panelId}${editText}/${sourceGroup}/${groupIndex}`);
         }
     };
 
@@ -118,25 +115,23 @@ export default function GroupButtons({
         }
     };
 
-    const renderGroupButtons = () => {
-        return (
-            <>
-                {localButtons.map((group) => (
-                    <GroupButton
-                        key={group.index}
-                        group={group}
-                        onClick={() => handleGroupButtonClicked(group.index)}
-                        editMode={editMode}
-                        panelId={panelId}
-                        groupType={groupType}
-                        onChange={onChange}
-                        onEditButtons={handleEditButtonsClicked}
-                    />
-                ))}
-                {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
-            </>
-        );
-    };
+    const GroupButtons = () => (
+        <>
+            {localButtons.map((group) => (
+                <GroupButton
+                    key={group.index}
+                    group={group}
+                    onClick={() => handleGroupButtonClicked(group.index)}
+                    editMode={editMode}
+                    panelId={panelId}
+                    groupType={groupType}
+                    onChange={onChange}
+                    onEditButtons={handleEditButtonsClicked}
+                />
+            ))}
+            {editMode && <AddGroupButton onClick={handleAddGroupClicked} />}
+        </>
+    );
 
     if (!localButtons) {
         return <BugLoading />;
@@ -150,7 +145,7 @@ export default function GroupButtons({
                         items={localButtons.map((button) => `group:${groupType}:${button.index}`)}
                         strategy={horizontalListSortingStrategy}
                     >
-                        {renderGroupButtons()}
+                        <GroupButtons />
                     </SortableContext>
                 </DndContext>
             </Box>
@@ -163,7 +158,7 @@ export default function GroupButtons({
                 whiteSpace: "nowrap",
             }}
         >
-            {renderGroupButtons()}
+            <GroupButtons />
         </Box>
     );
 }

@@ -18,6 +18,8 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
 
     const icons = config.sourceIcons ? config.sourceIcons : [];
     const iconColors = config.sourceIconColors ? config.sourceIconColors : [];
+    const sourceQuads = config.sourceQuads ? config.sourceQuads : [];
+    const destinationQuads = config.destinationQuads ? config.destinationQuads : [];
 
     const dataCollection = await mongoCollection("data");
 
@@ -58,8 +60,18 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
 
     let selectedSourceIndex = null;
     if (destinationIndex !== null) {
-        if (dbOutputRouting && dbOutputRouting["data"][destinationIndex] !== null) {
-            selectedSourceIndex = parseInt(dbOutputRouting["data"][destinationIndex]);
+        // save the selected source index for the currently selected destination
+        if (dbOutputRouting?.["data"]?.[destinationIndex] !== null) {
+            selectedSourceIndex = parseInt(dbOutputRouting?.["data"]?.[destinationIndex]);
+        }
+
+        if (destinationQuads?.[destinationIndex] === true) {
+            // it's a quad destination, so we need to check that the following 3 sources match the following 3 destinations
+            for (let a = 1; a < 4; a++) {
+                if (parseInt(dbOutputRouting?.["data"]?.[parseInt(destinationIndex) + a]) !== selectedSourceIndex + a) {
+                    selectedSourceIndex = null;
+                }
+            }
         }
     }
 
@@ -87,6 +99,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
                     selected: isSelected,
                     hidden: isExcluded,
                     order: order,
+                    isQuad: sourceQuads?.[intIndex] === true,
                     icon: icons[intIndex] ? icons[intIndex] : null,
                     iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
                 });

@@ -18,6 +18,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
 
     const icons = config.destinationIcons ? config.destinationIcons : [];
     const iconColors = config.destinationIconColors ? config.destinationIconColors : [];
+    const quads = config.destinationQuads ? config.destinationQuads : [];
 
     const dataCollection = await mongoCollection("data");
 
@@ -98,6 +99,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
                     isLocked: isLocalLocked || isRemoteLocked,
                     isLocalLocked: isLocalLocked,
                     isRemoteLocked: isRemoteLocked,
+                    isQuad: quads?.[intIndex] === true,
                     icon: icons[intIndex] ? icons[intIndex] : null,
                     iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
                 });
