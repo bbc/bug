@@ -13,6 +13,7 @@ import { useBugCustomDialog } from "@core/BugCustomDialog";
 import AddGroupDialog from "./AddGroupDialog";
 import CheckIcon from "@mui/icons-material/Check";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import GridViewIcon from "@mui/icons-material/GridView";
 
 export default function RouterButton({
     panelId,
@@ -105,6 +106,23 @@ export default function RouterButton({
         onChange();
     };
 
+    const handleQuadClicked = async (event, item) => {
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/quad/${button.isQuad ? `unset` : `set`}/${button.index}/${buttonType}`
+            )
+        ) {
+            sendAlert(`${button.isQuad ? `Unset` : `Set`} quad mode on ${buttonType} ${button.index + 1}`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to ${button.isQuad ? `unset` : `set`} quad mode on ${buttonType} ${button.index + 1}`, {
+                variant: "error",
+            });
+        }
+        onChange();
+    };
+
     const handleAddGroupClicked = async (event) => {
         const groupIndexes = await customDialog({
             dialog: <AddGroupDialog groups={groups} />,
@@ -126,6 +144,7 @@ export default function RouterButton({
     const handleClick = (event) => {
         onClick(event);
     };
+
     return (
         <BugRouterButton
             id={`${buttonType}:${button.index}`}
@@ -141,6 +160,15 @@ export default function RouterButton({
             disabled={disabled}
             editMode={editMode}
             locked={button.isLocked}
+            leftIcon={
+                button.isQuad ? (
+                    <GridViewIcon
+                        sx={{
+                            fontSize: "14px !important",
+                        }}
+                    />
+                ) : null
+            }
             menuItems={[
                 {
                     title: "Rename",
@@ -174,6 +202,12 @@ export default function RouterButton({
                     disabled: buttonType !== "destination",
                     icon: (item) => (item.isLocked ? <CheckIcon fontSize="small" /> : null),
                     onClick: handleLockClicked,
+                },
+                {
+                    title: "Quad",
+                    disabled: button.index % 4 !== 0,
+                    icon: (item) => (item.isQuad ? <CheckIcon fontSize="small" /> : null),
+                    onClick: handleQuadClicked,
                 },
                 {
                     title: "-",

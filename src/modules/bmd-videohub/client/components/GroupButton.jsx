@@ -18,7 +18,13 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
             defaultValue: group.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/groups/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(group.label)}/${encodeURIComponent(result)}`)) {
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/groups/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(
+                        group.label
+                    )}/${encodeURIComponent(result)}`
+                )
+            ) {
                 sendAlert(`Renamed group: ${group.label} -> ${result}`, { variant: "success" });
             } else {
                 sendAlert(`Failed to rename group: ${group.label}`, { variant: "error" });
@@ -36,38 +42,35 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
         onChange();
     };
 
-    return React.useMemo(
-        () => (
-            <BugRouterGroupButton
-                id={`group:${groupType}:${group.index}`}
-                draggable
-                onClick={onClick}
-                item={group}
-                primaryLabel={group.label}
-                selected={group.selected}
-                editMode={editMode}
-                menuItems={[
-                    {
-                        title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
-                        icon: <BallotIcon fontSize="small" />,
-                        onClick: onEditButtons,
-                    },
-                    {
-                        title: "-",
-                    },
-                    {
-                        title: "Rename",
-                        icon: <EditIcon fontSize="small" />,
-                        onClick: handleRenameClicked,
-                    },
-                    {
-                        title: "Delete",
-                        icon: <DeleteIcon fontSize="small" />,
-                        onClick: handleDeleteClicked,
-                    },
-                ]}
-            />
-        ),
-        [group.label, group.selected, editMode]
+    return (
+        <BugRouterGroupButton
+            id={`group:${groupType}:${group.index}`}
+            draggable
+            onClick={onClick}
+            item={group}
+            primaryLabel={group.label}
+            selected={group.selected}
+            editMode={editMode}
+            menuItems={[
+                {
+                    title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
+                    icon: <BallotIcon fontSize="small" />,
+                    onClick: onEditButtons,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Rename",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleRenameClicked,
+                },
+                {
+                    title: "Delete",
+                    icon: <DeleteIcon fontSize="small" />,
+                    onClick: handleDeleteClicked,
+                },
+            ]}
+        />
     );
 }
