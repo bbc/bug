@@ -28,6 +28,6 @@
         "snmpCommunity": "public",
         "protectedInterfaces": [],
         "dhcpSources": [],
-        "timeout": 5
+        "timeout": 5000
     }
 }
