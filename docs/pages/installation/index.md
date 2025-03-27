@@ -11,9 +11,9 @@ BUG allows you to control equipment in a production or broadcast setting from a 
 
 You can run BUG on any compatible operating system and deploy a central interface with user management and audit trails that allow you to control a range of equipment.
 
-A full list of supported modules is available on the [Modules Page](/pages/modules)
+A full list of supported modules is available on the [Modules Page](/bug/pages/modules)
 
-Trying to run a BUG instance to develop a new module? You probably want [these instructions](/pages/development) instead.
+Trying to run a BUG instance to develop a new module? You probably want [these instructions](/bug/pages/development) instead.
 
 ## Supported Operating Systems
 
