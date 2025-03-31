@@ -1,20 +1,17 @@
-import React, { useState } from "react";
-import Drawer from "@mui/material/Drawer";
-import AppBar from "@mui/material/AppBar";
-import MuiToolbar from "@mui/material/Toolbar";
-import Toolbar from "@components/toolbars/ToolbarRouter";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@components/Menu";
+import Toolbar from "@components/toolbars/ToolbarRouter";
+import MenuIcon from "@mui/icons-material/Menu";
+import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import useSounds from "@hooks/Sounds";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import MuiToolbar from "@mui/material/Toolbar";
+import React, { useState } from "react";
 
 const NavMobile = (props) => {
     const [open, setOpen] = useState(false);
-    const menuSound = useSounds("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
-        menuSound();
         setOpen(!open);
     };
 
