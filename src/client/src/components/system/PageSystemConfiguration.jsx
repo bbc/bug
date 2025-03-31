@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import LoadingOverlay from "@components/LoadingOverlay";
-import AxiosPut from "@utils/AxiosPut";
-import pageTitleSlice from "@redux/pageTitleSlice";
-import settingsSlice from "@redux/settingsSlice";
-import { useAlert } from "@utils/Snackbar";
-import BugLoading from "@core/BugLoading";
-import BugForm from "@core/BugForm";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
 import Button from "@mui/material/Button";
-import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
-import { useForm } from "react-hook-form";
 import Grid from "@mui/material/Grid";
+import pageTitleSlice from "@redux/pageTitleSlice";
+import settingsSlice from "@redux/settingsSlice";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
@@ -140,17 +138,6 @@ export default function PageSystemBackup() {
                                     ]}
                                     fullWidth
                                     helperText="Filter available modules by status tag"
-                                />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <BugConfigFormSwitch
-                                    name="sound"
-                                    control={control}
-                                    label="Enable Sounds"
-                                    defaultValue={settings?.data?.sound}
-                                    fullWidth
-                                    helperText="Enable tactile sounds"
                                 />
                             </Grid>
                         </Grid>

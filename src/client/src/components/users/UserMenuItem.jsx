@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import BugAvatar from "@core/BugAvatar";
+import EditIcon from "@mui/icons-material/Edit";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import EditIcon from "@mui/icons-material/Edit";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import AxiosPost from "@utils/AxiosPost";
 import userSlice from "@redux/userSlice";
-import useSounds from "@hooks/Sounds";
-import BugAvatar from "@core/BugAvatar";
+import AxiosPost from "@utils/AxiosPost";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const UserMenuItem = () => {
     const dispatch = useDispatch();
@@ -20,10 +18,8 @@ const UserMenuItem = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const history = useHistory();
     const open = Boolean(anchorEl);
-    const click = useSounds("/sounds/switch-on.mp3");
 
     const handleOpenMenuClick = (event) => {
-        click();
         if (user?.status === "success") {
             setAnchorEl(event.currentTarget);
         } else {
@@ -33,19 +29,16 @@ const UserMenuItem = () => {
     };
 
     const handleClose = () => {
-        click();
         setAnchorEl(null);
     };
 
     const handleEdit = (event) => {
-        click();
         history.push(`/system/user/${user?.data?.id}`);
         handleClose();
         event.stopPropagation();
     };
 
     const handleLogout = (event) => {
-        click();
         handleClose();
         logout();
         event.stopPropagation();

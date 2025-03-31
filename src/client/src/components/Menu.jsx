@@ -1,31 +1,28 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import BadgeWrapper from "@components/BadgeWrapper";
+import BugMenuIcon from "@components/BugMenuIcon";
+import UserMenuItem from "@components/users/UserMenuItem";
+import BugDynamicIcon from "@core/BugDynamicIcon";
+import BugLoading from "@core/BugLoading";
+import BugRestrictTo from "@core/BugRestrictTo";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import BugDynamicIcon from "@core/BugDynamicIcon";
-import BugLoading from "@core/BugLoading";
-import BugMenuIcon from "@components/BugMenuIcon";
-import UserMenuItem from "@components/users/UserMenuItem";
-import BadgeWrapper from "@components/BadgeWrapper";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 import FaviconNotification from "@utils/FaviconNotification";
-import useSounds from "@hooks/Sounds";
-import BugRestrictTo from "@core/BugRestrictTo";
+import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 
 const faviconNotification = new FaviconNotification();
 let notificationsCount = 0;
-let firstRun = true;
 
 const MenuDivider = () => <Divider sx={{ backgroundColor: "background.default", margin: 0 }} />;
 
@@ -39,9 +36,6 @@ const Menu = ({ showGroups = true }) => {
     const location = useLocation();
     const [expanded, setExpanded] = React.useState(false);
     const enabledStrategiesCount = strategies.data.filter((eachStrategy) => eachStrategy.enabled).length;
-
-    const click = useSounds("/sounds/switch-off.mp3");
-    const notification = useSounds("/sounds/notification.mp3");
 
     const getSelectedGroup = () => {
         // this is used to expand the groups when the page is loaded with a panel already open
@@ -73,7 +67,7 @@ const Menu = ({ showGroups = true }) => {
         const isSelected = panel.status === "success" && menuPanel.id === panel.data.id;
         return (
             <BugRestrictTo key={menuPanel.id} panel={menuPanel?.id}>
-                <ListItem button component={Link} onClick={click} to={`/panel/${menuPanel.id}`} selected={isSelected}>
+                <ListItem button component={Link} to={`/panel/${menuPanel.id}`} selected={isSelected}>
                     <ListItemIcon>
                         <BadgeWrapper panel={menuPanel}>
                             <BugDynamicIcon iconName={menuPanel._module.icon} />
@@ -129,10 +123,6 @@ const Menu = ({ showGroups = true }) => {
                             },
                         }}
                         expandIcon={expanded === groupArrayItem.group ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
-                        onClick={(event) => {
-                            click();
-                            event.stopPropagation();
-                        }}
                     >
                         {groupArrayItem.group}
                     </AccordionSummary>
@@ -208,19 +198,10 @@ const Menu = ({ showGroups = true }) => {
     };
 
     const soundNotifications = (panels) => {
-        const previousNotificationCount = notificationsCount;
         notificationsCount = 0;
 
         for (let panel of panels) {
             notificationsCount += panel._status.length;
-        }
-
-        if (!firstRun) {
-            if (notificationsCount > previousNotificationCount) {
-                notification();
-            }
-        } else {
-            firstRun = false;
         }
     };
 
@@ -249,7 +230,6 @@ const Menu = ({ showGroups = true }) => {
                                     to="/"
                                     selected={location.pathname === "/"}
                                     onClick={() => {
-                                        click();
                                         setExpanded(false);
                                     }}
                                 >
@@ -271,7 +251,6 @@ const Menu = ({ showGroups = true }) => {
                                         to="/system"
                                         selected={location.pathname.startsWith("/system")}
                                         onClick={() => {
-                                            click();
                                             setExpanded(false);
                                         }}
                                     >
@@ -286,7 +265,6 @@ const Menu = ({ showGroups = true }) => {
                                         to="/panels"
                                         selected={location.pathname.startsWith("/panels")}
                                         onClick={() => {
-                                            click();
                                             setExpanded(false);
                                         }}
                                     >

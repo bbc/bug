@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import Drawer from "@mui/material/Drawer";
-import AppBar from "@mui/material/AppBar";
-import MuiToolbar from "@mui/material/Toolbar";
+import Menu from "@components/Menu";
 import Toolbar from "@components/toolbars/ToolbarRouter";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
+import BugScrollbars from "@core/BugScrollbars";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import Menu from "@components/Menu";
-import BugScrollbars from "@core/BugScrollbars";
-import useSounds from "@hooks/Sounds";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
+import MuiToolbar from "@mui/material/Toolbar";
+import React, { useEffect, useState } from "react";
 
 const fullMenuWidth = 1024;
 
@@ -27,10 +26,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const NavDesktop = (props) => {
     const [open, setOpen] = useState(false);
-    const menuSound = useSounds("/sounds/menu-open.mp3");
 
     const handleDrawerToggle = () => {
-        menuSound();
         setOpen(!open);
     };
 

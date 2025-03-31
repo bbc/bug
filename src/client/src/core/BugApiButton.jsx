@@ -1,7 +1,6 @@
-import React from "react";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-// import useSounds from "@hooks/Sounds";
+import React from "react";
 
 export default function BugApiButton({
     disabled,
@@ -15,8 +14,6 @@ export default function BugApiButton({
 }) {
     const [isActive, setIsActive] = React.useState(false);
     const timer = React.useRef();
-    // *** browser complains about updating non-mounted component if this line is enabled :( - GH
-    // const click = useSounds("/sounds/switch-off.mp3");
 
     React.useEffect(() => {
         if (isActive && disabled) {
@@ -27,7 +24,6 @@ export default function BugApiButton({
     }, [disabled, isActive]);
 
     const handleClick = (event) => {
-        // click();
         clearTimeout(timer.current);
 
         // disabled the button and shows the spinner

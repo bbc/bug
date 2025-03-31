@@ -1,13 +1,12 @@
-import React from "react";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import useSounds from "@hooks/Sounds";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
+import React from "react";
 
 const StyledListItemText = styled(ListItemText)(({ theme }) => ({
     color: theme.palette.text.primary,
@@ -16,17 +15,14 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
 export default function BugItemMenu({ item, menuItems }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const click = useSounds("/sounds/switch-on.mp3");
 
     const handleOpenMenuClick = (event) => {
-        click();
         setAnchorEl(event.currentTarget);
         event.stopPropagation();
         event.preventDefault();
     };
 
     const handleClose = (event) => {
-        click();
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();
