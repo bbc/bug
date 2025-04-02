@@ -51,6 +51,9 @@ export default function BugApiSwitch({
             checked={localChecked === true}
             disabled={isActive || disabled}
             onChange={handleChanged}
+            onClick={(event) => {
+                event.stopPropagation();
+            }}
             sx={sx}
             {...props}
         />

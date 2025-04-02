@@ -1,17 +1,17 @@
-import React from "react";
+import BugScrollbars from "@core/BugScrollbars";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import Switch from "@mui/material/Switch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Switch from "@mui/material/Switch";
-import Checkbox from "@mui/material/Checkbox";
-import BugScrollbars from "@core/BugScrollbars";
+import React from "react";
 
 export default function BugVlansDialog({ untaggedVlan, taggedVlans, vlans, onDismiss, onConfirm, sx = {} }) {
     const [localUntaggedVlan, setLocalUntaggedVlan] = React.useState(untaggedVlan);
