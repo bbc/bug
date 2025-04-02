@@ -1,15 +1,14 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Button from "@mui/material/Button";
-import { alpha } from "@mui/material/styles";
 import ReplayIcon from "@mui/icons-material/Replay";
 import SettingsIcon from "@mui/icons-material/Settings";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { alpha, styled } from "@mui/material/styles";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 
 const StyledButton = styled(Button)({
     borderColor: "#ccc",
@@ -29,7 +28,7 @@ export default function BugAlert({ title = null, type, message, flags = [], pane
         critical: "Critical Error",
         warning: "Warning",
         info: "Info",
-        error: "Er2ror",
+        error: "Error",
     };
 
     const mappedSeverity = {
