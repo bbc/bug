@@ -1,7 +1,7 @@
-import { useSnackbar } from "notistack";
-import { useSelector } from "react-redux";
-import React, { useEffect } from "react";
 import io from "@utils/io";
+import { useSnackbar } from "notistack";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const alert = io("/alert");
 
@@ -43,6 +43,7 @@ export const useAlert = () => {
             panelId: panelConfig?.data?.id,
             options: options,
         });
+        delete options.broadcast;
         enqueueSnackbar(message, options);
     };
 
