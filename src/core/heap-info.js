@@ -2,7 +2,7 @@
 
 /**
  * core/heap-info.js
- * Get's the heap size in MB for debug.
+ * Gets the heap size in MB for debug.
  * 0.0.1 01/12/2022 - Created first version (RM2)
  */
 

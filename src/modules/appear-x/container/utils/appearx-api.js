@@ -66,7 +66,7 @@ module.exports = class AppearXAPI {
             return false;
         }
         if (!this.token) {
-            throw new Error("Failed to connect to AppearX API - no valid toket returned");
+            throw new Error("Failed to connect to AppearX API - no valid token returned");
         }
         return true;
     };
