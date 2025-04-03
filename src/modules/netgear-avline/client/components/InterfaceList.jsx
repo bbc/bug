@@ -3,6 +3,7 @@ import BugApiTable from "@core/BugApiTable";
 import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
 import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
 import BugNoData from "@core/BugNoData";
+import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
@@ -19,7 +20,6 @@ import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import StatusIcon from "./StatusIcon";
 
 export default function InterfaceList({ panelId, stackId = null }) {
     const sendAlert = useAlert();
@@ -46,13 +46,11 @@ export default function InterfaceList({ panelId, stackId = null }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(
-                    result
-                )}`
+                `/container/${panelId}/interface/rename/${encodeURIComponent(item.port)}/${encodeURIComponent(result)}`
             )
         ) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
-                broadcast: "true",
+                broadcast: true,
                 variant: "success",
             });
             doForceRefresh();
@@ -64,17 +62,17 @@ export default function InterfaceList({ panelId, stackId = null }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
+        history.push(`/panel/${panelId}/interface/${item.port}`);
     };
 
     const handleNeighborLinkClicked = (event, item) => {
         event.stopPropagation();
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}/neighbor`);
+        history.push(`/panel/${panelId}/interface/${item.port}/neighbor`);
     };
 
     const handleDevicesLinkClicked = (event, item) => {
         event.stopPropagation();
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}/devices`);
+        history.push(`/panel/${panelId}/interface/${item.port}/devices`);
     };
 
     const getVlanChangedMessage = (interfaceId, oldValues, newValues) => {
@@ -136,8 +134,8 @@ export default function InterfaceList({ panelId, stackId = null }) {
 
     const handleVlanChanged = async (event, value, item) => {
         const messages = getVlanChangedMessage(
-            item.shortId,
-            { untaggedVlan: item["_untaggedVlan"], taggedVlans: item["_taggedVlans"] },
+            item.longId,
+            { untaggedVlan: item["untagged-vlan"], taggedVlans: item["tagged-vlans"] },
             value
         );
 
@@ -145,7 +143,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
             // trunk selected
             sendAlert(messages.start, { variant: "info" });
             if (
-                await AxiosPost(`/container/${panelId}/interface/setvlantrunk/${item.interfaceId}`, {
+                await AxiosPost(`/container/${panelId}/interface/setvlantrunk/${item.port}`, {
                     untaggedVlan: value.untaggedVlan,
                     taggedVlans: value.taggedVlans,
                 })
@@ -159,9 +157,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
             // access selected
             sendAlert(messages.start, { variant: "info" });
             if (
-                await AxiosCommand(
-                    `/container/${panelId}/interface/setvlanaccess/${item.interfaceId}/${value.untaggedVlan}`
-                )
+                await AxiosCommand(`/container/${panelId}/interface/setvlanaccess/${item.port}/${value.untaggedVlan}`)
             ) {
                 doForceRefresh();
                 sendAlert(messages.success, { variant: "success" });
@@ -173,9 +169,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
 
     const interfaceToggle = async (checked, item) => {
         const description = item.description ? item.description : item.longId;
-        if (
-            await AxiosCommand(`/container/${panelId}/interface/${checked ? `enable` : `disable`}/${item.interfaceId}`)
-        ) {
+        if (await AxiosCommand(`/container/${panelId}/interface/${checked ? `enable` : `disable`}/${item.port}`)) {
             sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${description}`, { variant: "success" });
             doForceRefresh();
         } else {
@@ -244,30 +238,26 @@ export default function InterfaceList({ panelId, stackId = null }) {
         }
         return null;
     };
+
     return (
         <BugApiTable
             columns={[
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <StatusIcon status={item.linkStatus} />,
+                    content: (item) => <BugPowerIcon disabled={item.status === 1} />,
                 },
                 {
                     noPadding: true,
                     hideWidth: 600,
                     width: 70,
-                    content: (item) => {
-                        if (item.linkStatus === undefined) {
-                            return <BugApiSwitch disabled={true} />;
-                        }
-                        return (
-                            <BugApiSwitch
-                                checked={item.linkStatus !== "disabled"}
-                                onChange={(checked) => handleSwitchChanged(checked, item)}
-                                disabled={item._protected}
-                            />
-                        );
-                    },
+                    content: (item) => (
+                        <BugApiSwitch
+                            checked={item.adminMode}
+                            onChange={(checked) => handleSwitchChanged(checked, item)}
+                            disabled={item._protected}
+                        />
+                    ),
                 },
                 {
                     minWidth: "5rem",
@@ -298,41 +288,29 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     hideWidth: 440,
                     width: "25rem",
                     content: (item) => {
-                        if (item?._taggedVlans === undefined || item?._untaggedVlan === undefined) {
+                        if (item?.["tagged-vlans"] === undefined || item?.["untagged-vlan"] === undefined) {
                             return <BugAutocompletePlaceholder value="Loading ..." />;
                         }
+                        const availableVlans = vlans?.data;
+                        //?.filter((v) => v.id !== item?.["untagged-vlan"]);
+
+                        //console.log(availableVlans);
                         return (
                             <BugApiVlanAutocomplete
                                 disabled={item._protected}
-                                options={vlans?.data}
-                                taggedValue={item?._taggedVlans}
-                                untaggedValue={item?._untaggedVlan}
+                                options={availableVlans}
+                                taggedValue={item?.["tagged-vlans"]}
+                                untaggedValue={item?.["untagged-vlan"]}
                                 onChange={(event, value) => handleVlanChanged(event, value, item)}
+                                maxVlan={4093}
                             />
                         );
                     },
                 },
                 {
-                    minWidth: "8rem",
-                    hideWidth: 1300,
-                    width: "10rem",
-                    noWrap: true,
-                    title: "Type",
-                    content: (item) => {
-                        switch (item.interfaceType) {
-                            case "Unknown":
-                                return <Box sx={{ color: "warning.main" }}>UNKNOWN</Box>;
-                            case "Not Present":
-                                return "";
-                            default:
-                                return <Box sx={{ color: "text.secondary" }}>{item.interfaceType}</Box>;
-                        }
-                    },
-                },
-                {
                     title: "Speed",
                     width: "5rem",
-                    hideWidth: 799,
+                    hideWidth: 640,
                     content: (item) => {
                         if (item?.bandwidthText) {
                             return (
@@ -386,13 +364,13 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     title: "Enable",
-                    disabled: (item) => item["admin-state"] || item._protected,
+                    disabled: (item) => item.adminMode || item._protected,
                     icon: <ToggleOnIcon fontSize="small" />,
                     onClick: handleEnableClicked,
                 },
                 {
                     title: "Disable",
-                    disabled: (item) => !item["admin-state"] || item._protected,
+                    disabled: (item) => !item.adminMode || item._protected,
                     icon: <ToggleOffIcon fontSize="small" />,
                     onClick: handleDisableClicked,
                 },

@@ -16,6 +16,7 @@ const BugApiVlanAutocomplete = ({
     timeout = 8000,
     disabled = false,
     sx = {},
+    maxVlan = 4094,
 }) => {
     const [isActive, setIsActive] = React.useState(false);
     const [localTaggedValue, setLocalTaggedValue] = React.useState(taggedValue);
@@ -39,7 +40,7 @@ const BugApiVlanAutocomplete = ({
         if (value.id === -1) {
             onChange(event, {
                 untaggedVlan: 1,
-                taggedVlans: ["1-4094"],
+                taggedVlans: [`1-${maxVlan}`],
             });
         } else {
             onChange(event, {
@@ -51,6 +52,8 @@ const BugApiVlanAutocomplete = ({
 
     const handleEditClicked = async (event) => {
         event.stopPropagation();
+
+        // const filteredTaggedVlans = taggedValue.filter((v) => v !== untaggedValue);
 
         const result = await customDialog({
             dialog: <BugVlansDialog untaggedVlan={untaggedValue} taggedVlans={taggedValue} vlans={options} />,
@@ -93,7 +96,7 @@ const BugApiVlanAutocomplete = ({
         if (taggedValue?.length === options?.length) {
             trunkLabel = `Trunk - All VLANs`;
         } else {
-            trunkLabel = `Trunk - ${convertToRange(taggedValue)}`;
+            trunkLabel = `Trunk - ${convertToRange(taggedValue.filter((v) => v !== untaggedValue))}`;
         }
         value = {
             id: -1,

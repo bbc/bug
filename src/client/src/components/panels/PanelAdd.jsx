@@ -1,19 +1,19 @@
-import { useHistory } from "react-router-dom";
+import LoadingOverlay from "@components/LoadingOverlay";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import pageTitleSlice from "@redux/pageTitleSlice";
+import AxiosCommand from "@utils/AxiosCommand";
+import AxiosGet from "@utils/AxiosGet";
+import { useAlert } from "@utils/Snackbar";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import AxiosCommand from "@utils/AxiosCommand";
 import { useDispatch } from "react-redux";
-import pageTitleSlice from "@redux/pageTitleSlice";
-import AxiosGet from "@utils/AxiosGet";
+import { useHistory } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
-import BugForm from "@core/BugForm";
-import LoadingOverlay from "@components/LoadingOverlay";
-import { useAlert } from "@utils/Snackbar";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
 
 export default function PanelAdd(props) {
     const history = useHistory();

@@ -1,25 +1,25 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
+import BugApiTable from "@core/BugApiTable";
+import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
+import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
+import BugNoData from "@core/BugNoData";
+import BugPowerIcon from "@core/BugPowerIcon";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugSparkCell from "@core/BugSparkCell";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import Box from "@mui/material/Box";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-import BugSparkCell from "@core/BugSparkCell";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import BugPowerIcon from "@core/BugPowerIcon";
-import BugApiTable from "@core/BugApiTable";
-import BugNoData from "@core/BugNoData";
-import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
-import CheckIcon from "@mui/icons-material/Check";
-import EditIcon from "@mui/icons-material/Edit";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
-import { useApiPoller } from "@hooks/ApiPoller";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import { useForceRefresh } from "@hooks/ForceRefresh";
-import Box from "@mui/material/Box";
-import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
 
 export default function InterfaceList({ panelId, stackId = null }) {
     const sendAlert = useAlert();
@@ -44,7 +44,13 @@ export default function InterfaceList({ panelId, stackId = null }) {
         if (result === false) {
             return;
         }
-        if (await AxiosCommand(`/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(result)}`)) {
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(
+                    result
+                )}`
+            )
+        ) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
                 broadcast: "true",
                 variant: "success",
@@ -98,9 +104,9 @@ export default function InterfaceList({ panelId, stackId = null }) {
         if (newTags !== oldTags && oldValues.untaggedVlan !== newValues.untaggedVlan) {
             // it's a complex one - both changed
             return {
-                start: `Updating VLAN configurarion on ${interfaceId}`,
-                success: `Updated VLAN configurarion on ${interfaceId}`,
-                error: `Failed to update VLAN configurarion on ${interfaceId}`,
+                start: `Updating VLAN configuration on ${interfaceId}`,
+                success: `Updated VLAN configuration on ${interfaceId}`,
+                error: `Failed to update VLAN configuration on ${interfaceId}`,
             };
         }
 
