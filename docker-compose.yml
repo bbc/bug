@@ -14,7 +14,7 @@ services:
     app:
         container_name: bug
         build: "./src"
-        restart: always
+        restart: unless-stopped
         user: root
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock

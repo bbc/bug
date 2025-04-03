@@ -6,7 +6,7 @@ const aristaApi = require("@utils/arista-api");
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     const config = await configGet();
-    console.log(`interface-setvlantrunk: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
+
     const interfaceCollection = await mongoCollection("interfaces");
     const iface = await interfaceCollection.findOne({ interfaceId: interfaceId });
     if (!iface) {
@@ -20,7 +20,6 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         taggedVlans = "ALL";
     }
 
-    console.log("taggedVlans", taggedVlans);
     const commands = [
         "enable",
         "configure",
@@ -29,6 +28,8 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         "switchport mode trunk",
         `switchport trunk native vlan ${untaggedVlan}`,
     ];
+
+    console.log(`interface-setvlantrunk: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
 
     if (taggedVlans !== "ALL") {
         commands.push(`switchport trunk allowed vlan ${taggedVlans.join(",")}`);
