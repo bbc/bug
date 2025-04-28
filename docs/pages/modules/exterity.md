@@ -2,7 +2,7 @@
 layout: page
 title: Exterity STB
 parent: Modules
-nav_order: 16
+nav_order: 17
 ---
 
 # Exterity STB

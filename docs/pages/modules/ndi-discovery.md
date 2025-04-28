@@ -2,7 +2,7 @@
 layout: page
 title: NDI Discovery
 parent: Modules
-nav_order: 26
+nav_order: 27
 ---
 
 # NDI Discovery

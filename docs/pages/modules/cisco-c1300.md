@@ -1,28 +1,28 @@
 ---
 layout: page
-title: Cisco CBS Switch
+title: Cisco C1300 Switch
 parent: Modules
-nav_order: 7
+nav_order: 6
 ---
 
-# Cisco CBS Switch
+# Cisco C1300 Switch
 
-Stable
+STABLE
 {: .label .label-green }
 
-Monitoring and control of Cisco CBS-series small business switches
+Monitoring and control of Cisco C1300 series switches
 
-![Cisco CBS Switch Module Screenshot](/bug/assets/images/screenshots/module-cisco-cbs.png)
+![Cisco C1300 Switch Module Screenshot](/bug/assets/images/screenshots/module-cisco-c1300.png)
 
 ## Default Configuration
 
-```
+```json
 {
   "id": "",
   "order": 0,
   "needsConfigured": true,
   "title": "",
-  "module": "cisco-cbs",
+  "module": "cisco-c1300",
   "description": "",
   "notes": "",
   "enabled": false,
@@ -33,4 +33,5 @@ Monitoring and control of Cisco CBS-series small business switches
   "protectedInterfaces": [],
   "dhcpSources": []
 }
-```
+```            
+

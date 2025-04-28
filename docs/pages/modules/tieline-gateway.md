@@ -2,7 +2,7 @@
 layout: page
 title: Tieline Gateway
 parent: Modules
-nav_order: 35
+nav_order: 38
 ---
 
 # Tieline Gateway

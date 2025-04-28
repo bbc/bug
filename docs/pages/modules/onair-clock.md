@@ -2,7 +2,7 @@
 layout: page
 title: On-Air Clock
 parent: Modules
-nav_order: 30
+nav_order: 32
 ---
 
 # On-Air Clock

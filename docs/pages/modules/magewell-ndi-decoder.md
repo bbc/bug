@@ -2,7 +2,7 @@
 layout: page
 title: Magewell NDI Decoder
 parent: Modules
-nav_order: 20
+nav_order: 21
 ---
 
 # Magewell NDI Decoder

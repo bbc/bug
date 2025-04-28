@@ -2,7 +2,7 @@
 layout: page
 title: Cisco IOS-XE Switch
 parent: Modules
-nav_order: 7
+nav_order: 8
 ---
 
 # Cisco IOS-XE Switch
