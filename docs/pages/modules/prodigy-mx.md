@@ -1,45 +1,44 @@
 ---
 layout: page
-title: Generic Probel Matrix
+title: Prodigy.MX
 parent: Modules
-nav_order: 34
+nav_order: 341
 ---
 
-# Generic Probel Matrix
+# Prodigy.MX
 
-Stable
-{: .label .label-green }
+BETA
+{: .label .label-purple }
 
-Control matrices that use the probel-swp-08 protocol
+Control of the Prodigy MX audio router
 
-![Generic Probel Matrix Module Screenshot](/bug/assets/images/screenshots/module-probel-swp-08.png)
+![Prodigy.MX Module Screenshot](/bug/assets/images/screenshots/module-prodigy-mx.png)
 
 ## Default Configuration
 
-```
+```json
 {
   "id": "",
   "order": 0,
   "needsConfigured": true,
   "title": "",
-  "module": "probel-swp-08",
+  "module": "prodigy-mx",
   "description": "",
   "notes": "",
-  "extended": true,
   "enabled": false,
   "address": "",
-  "port": "8910",
+  "port": "5003",
   "useTake": false,
   "sourceGroups": [],
-  "sourceNames": [],
   "destinationGroups": [],
+  "sourceLabels": [],
+  "destinationLabels": [],
   "sourceIconColors": [],
   "destinationIconColors": [],
-  "destinationNames": [],
-  "destinationLocks": [],
   "sourceIcons": [],
   "destinationIcons": [],
   "excludeSources": [],
   "excludeDestinations": []
 }
-```
+```            
+

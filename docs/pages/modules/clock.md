@@ -2,7 +2,7 @@
 layout: page
 title: Clock
 parent: Modules
-nav_order: 9
+nav_order: 10
 ---
 
 # Clock
