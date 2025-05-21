@@ -1,0 +1,1 @@
+-   detect slot for socket
