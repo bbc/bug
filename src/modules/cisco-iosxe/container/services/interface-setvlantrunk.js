@@ -7,6 +7,11 @@ const ciscoIOSXEApi = require("@utils/ciscoiosxe-api");
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     const config = await configGet();
 
+    // we have to add the untagged vlan to the tagged vlans (it's a thing...)
+    if (!taggedVlans.includes(untaggedVlan)) {
+        taggedVlans.push(untaggedVlan);
+    }
+
     // fetch interface details
     const interfacesCollection = await mongoCollection("interfaces");
     const dbInterface = await interfacesCollection.findOne({ interfaceId: interfaceId });
