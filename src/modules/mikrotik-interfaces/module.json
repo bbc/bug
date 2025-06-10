@@ -4,7 +4,7 @@
     "description": "Monitoring and control of mikrotik interfaces",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "icon": "mdi-router",
     "author": "Geoff House",
     "needsContainer": true,
