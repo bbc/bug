@@ -81,6 +81,15 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        maxVlan: {
+            type: { name: "number" },
+            description: "The maximum VLAN that can be set (usually 4094 or 4093)",
+            defaultValue: 4094,
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: null },
+            },
+        },
     },
 };
 

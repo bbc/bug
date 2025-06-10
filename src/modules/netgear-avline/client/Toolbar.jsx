@@ -2,22 +2,30 @@ import BugApiButton from "@core/BugApiButton";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import LaunchIcon from "@mui/icons-material/Launch";
 import SaveIcon from "@mui/icons-material/Save";
+import TerminalIcon from "@mui/icons-material/Terminal";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import React from "react";
 import { useSelector } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
 
-    const handleLaunchClicked = async (event, item) => {
+    const handleUILaunchClicked = async (event, item) => {
         if (panelConfig?.data?.address) {
             const url = `http://${panelConfig.data.address}`;
+            const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+            if (newWindow) newWindow.opener = null;
+        }
+    };
+
+    const handleTerminalLaunchClicked = async (event, item) => {
+        if (panelConfig?.data?.address) {
+            const url = `http://${panelConfig.data.address}:8081`;
             const newWindow = window.open(url, "_blank", "noopener,noreferrer");
             if (newWindow) newWindow.opener = null;
         }
@@ -58,11 +66,17 @@ export default function Toolbar({ panelId, ...props }) {
                 <ListItemText primary="Save Changes" />
             </MenuItem>,
             <Divider key="divider" />,
-            <MenuItem key="launch" onClick={handleLaunchClicked}>
+            <MenuItem key="launch" onClick={handleUILaunchClicked}>
                 <ListItemIcon>
                     <LaunchIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary="Launch device webpage" />
+                <ListItemText primary="Launch device UI" />
+            </MenuItem>,
+            <MenuItem key="launch" onClick={handleTerminalLaunchClicked}>
+                <ListItemIcon>
+                    <TerminalIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Launch device terminal" />
             </MenuItem>,
         ];
     };
