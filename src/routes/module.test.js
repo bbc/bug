@@ -19,13 +19,16 @@ const fetchExampleModuleName = async () => {
 };
 
 describe("Test the '/api/module/' endpoint", () => {
-    test("Test the '/' getall route", async () => {
+
+    //TODO - Mock list images service so this can be a valid test
+    test.skip("Test the '/' getall route", async () => {
         const exampleModuleName = await fetchExampleModuleName();
         const response = await request(system).get("/api/module/");
-
-        //TODO - Mock list images service so this can be a valid test
-        expect(response.statusCode).toBe(500);
-        expect(response.body.message).toContain("Failed to list images");
+        expect(response.statusCode).toBe(200);
+        expect(response.body.status).toBe("success");
+        expect(response.body.data).toBeArray();
+        expect(response.body.data.length).toBeGreaterThan(0);
+        expect(response.body.data[0].name).toEqual(exampleModuleName);
     });
 
     test("Test the '/{moduleName}' route", async () => {
@@ -45,22 +48,4 @@ describe("Test the '/api/module/' endpoint", () => {
         ]);
         expect(response.body.data.name).toEqual(exampleModuleName);
     });
-
-    // not sure if we can test these ...
-    //
-    // test("Test the '/build/{moduleName}' route", async () => {
-    //     const exampleModuleName = await fetchExampleModuleName();
-    //     const response = await request(system).get(`/api/module/build/${exampleModuleName}`);
-    //     expect(response.statusCode).toBe(200);
-    //     expect(response.body.status).toBe("success");
-    //     
-    // });
-
-    // test("Test the '/rebuild/{moduleName}' route", async () => {
-    //     const exampleModuleName = await fetchExampleModuleName();
-    //     const response = await request(system).get(`/api/module/rebuild/${exampleModuleName}`);
-    //     expect(response.statusCode).toBe(200);
-    //     expect(response.body.status).toBe("success");
-    //     
-    // });
 });
