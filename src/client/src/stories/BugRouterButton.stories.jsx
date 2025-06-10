@@ -59,6 +59,16 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        lefticon: {
+            type: { name: "string" },
+            description:
+                "Optional small indicator icon to be displayed in the top left of the button. Can be MUI or Material Display icon",
+            defaultValue: "",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
         iconColor: {
             control: "color",
             description: "The color of the icon to be displayed in the button.",
