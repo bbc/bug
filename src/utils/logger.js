@@ -39,38 +39,43 @@ const customLogFormat = winston.format.combine(
 
 winston.addColors(customLevels.colors);
 
+const transports = [
+    new winston.transports.DailyRotateFile({
+        level: logLevel,
+        format: customLogFormat,
+        filename: path.join(logFolder, logName + "-%DATE%.log"),
+        datePattern: "YYYY-MM-DD",
+        zippedArchive: true,
+        maxSize: "100m",
+        maxFiles: "1d",
+    }),
+    new winston.transports.Console({
+        level: logLevel,
+        handleExceptions: true,
+        colorize: true,
+        format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
+    })
+]
+
+if (!process.env.JEST_WORKER_ID) {
+    transports.push(new winston.transports.MongoDB({
+        level: logLevel,
+        db: `${url}/${databaseName}`,
+        options: {
+            poolSize: 2,
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+        },
+        collection: "logs",
+        tryReconnect: true,
+        cappedMax: 10000,
+    }))
+}
+
 const loggerInstance = winston.createLogger({
     levels: customLevels.levels,
     handleExceptions: false,
-    transports: [
-        new winston.transports.DailyRotateFile({
-            level: logLevel,
-            format: customLogFormat,
-            filename: path.join(logFolder, logName + "-%DATE%.log"),
-            datePattern: "YYYY-MM-DD",
-            zippedArchive: true,
-            maxSize: "100m",
-            maxFiles: "1d",
-        }),
-        new winston.transports.Console({
-            level: logLevel,
-            handleExceptions: true,
-            colorize: true,
-            format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
-        }),
-        new winston.transports.MongoDB({
-            level: logLevel,
-            db: `${url}/${databaseName}`,
-            options: {
-                poolSize: 2,
-                useUnifiedTopology: true,
-                useNewUrlParser: true,
-            },
-            collection: "logs",
-            tryReconnect: true,
-            cappedMax: 10000,
-        }),
-    ],
+    transports: transports
 });
 
 const logger = (module) => {
@@ -93,7 +98,7 @@ const getLogLevel = async () => {
         const settings = await readJson(filename);
         settingsLogLevel = settings?.logLevel;
     } catch (error) {
-        console.log(error);
+        console.log(`Can't reading log level from global settings file - /config/global/settings.json`);
         settingsLogLevel = process.env.BUG_LOG_LEVEL || "debug";
     }
     return settingsLogLevel.toLowerCase();

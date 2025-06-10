@@ -12,7 +12,7 @@ const testPanel = {
 afterAll(async () => {
     try {
         await panelDelete(testPanel.id);
-    } catch (error) {}
+    } catch (error) { }
     await new Promise((resolve) => setTimeout(() => resolve(), 500));
 });
 
@@ -20,29 +20,29 @@ beforeAll(async () => {
     // remove any previous tests
     try {
         await panelDelete(testPanel.id);
-    } catch (error) {}
+    } catch (error) { }
 });
 
 describe("Test the '/api/panel/' endpoint", () => {
-    test(`Test the '/' POST route to create an example ${testPanel.module} panel`, async (done) => {
+    test(`Test the '/' POST route to create an example ${testPanel.module} panel`, async () => {
         const response = await request(system)
             .post("/api/panel/")
             .send(testPanel)
             .set("Content-Type", "application/json");
         expect(response.statusCode).toBe(200);
-        done();
+
     });
 
-    test("Test the '/' GET route", async (done) => {
+    test("Test the '/' GET route", async () => {
         const response = await request(system).get("/api/panel/");
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeArray();
         expect(response.body.data.length).toBeGreaterThan(0);
-        done();
+
     });
 
-    test("Test the '/{panelId}' GET route with the test panel", async (done) => {
+    test("Test the '/{panelId}' GET route with the test panel", async () => {
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
@@ -61,75 +61,74 @@ describe("Test the '/api/panel/' endpoint", () => {
         expect(response.body.data._dockerContainer._isBuilt).toBeFalse();
         expect(response.body.data._dockerContainer._status).toEqual("active");
         expect(response.body.data._buildStatus).toBeNil();
-        done();
+
     });
 
-    test("Test the '/start/{panelId}' GET route with the test panel", async (done) => {
+    test("Test the '/start/{panelId}' GET route with the test panel", async () => {
         const response = await request(system).get(`/api/panel/start/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        done();
+
     });
 
-    test("Test the '/stop/{panelId}' GET route with the test panel", async (done) => {
+    test("Test the '/stop/{panelId}' GET route with the test panel", async () => {
         const response = await request(system).get(`/api/panel/stop/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        done();
+
     });
 
-    test("Test the '/group/{panelId}' GET route to set the group with the test panel", async (done) => {
+    test("Test the '/group/{panelId}' GET route to set the group with the test panel", async () => {
         const response = await request(system).get(`/api/panel/group/${testPanel.id}/newTestGroup`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        done();
+
     });
 
-    test("Check the panel for the new group", async (done) => {
+    test("Check the panel for the new group", async () => {
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeObject();
         expect(response.body.data.group).toEqual("newTestGroup");
-        done();
+
     });
 
-    test("Test the '/disable/{panelId}' GET route with the test panel", async (done) => {
+    test("Test the '/disable/{panelId}' GET route with the test panel", async () => {
         const response = await request(system).get(`/api/panel/disable/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        done();
+
     });
 
-    test("Check the panel is disabled", async (done) => {
+    test("Check the panel is disabled", async () => {
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeObject();
         expect(response.body.data.enabled).toBeFalse();
-        done();
+
     });
 
-    test("Test the '/enable/{panelId}' GET route with the test panel", async (done) => {
+    test("Test the '/enable/{panelId}' GET route with the test panel", async () => {
         const response = await request(system).get(`/api/panel/enable/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        done();
+
     });
 
-    test("Check the panel is enabled", async (done) => {
+    test("Check the panel is enabled", async () => {
         const response = await request(system).get(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeObject();
         expect(response.body.data.enabled).toBeTrue();
-        done();
+
     });
 
-    test("Test the '/{panelId}' DELETE route with the test panel", async (done) => {
+    test("Test the '/{panelId}' DELETE route with the test panel", async () => {
         const response = await request(system).delete(`/api/panel/${testPanel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        done();
     });
 });
