@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const delay = require("delay");
 
 module.exports = async (NetgearApi, interfacesCollection) => {
 
@@ -11,7 +12,6 @@ module.exports = async (NetgearApi, interfacesCollection) => {
     const interfaces = await interfacesCollection.find().toArray();
 
     for (let eachInterface of interfaces) {
-
         const fieldsToUpdate = {};
 
         const result = await NetgearApi.get({ path: `dot1q_sw_port_config?interface=${eachInterface.port}` });
@@ -27,6 +27,10 @@ module.exports = async (NetgearApi, interfacesCollection) => {
                 fieldsToUpdate["untagged-vlan"] = result.dot1q_sw_port_config?.nativeVlan;
                 fieldsToUpdate["tagged-vlans"] = result.dot1q_sw_port_config?.allowedVlanList?.filter((v) => availableVlans.includes(parseInt(v))).map((v) => parseInt(v));
             }
+            else if (result.dot1q_sw_port_config.configMode === "general") {
+                fieldsToUpdate["untagged-vlan"] = result.dot1q_sw_port_config?.nativeVlan;
+                fieldsToUpdate["tagged-vlans"] = result.dot1q_sw_port_config?.allowedVlanList?.filter((v) => availableVlans.includes(parseInt(v))).map((v) => parseInt(v));
+            }
 
         }
 
@@ -37,6 +41,8 @@ module.exports = async (NetgearApi, interfacesCollection) => {
             },
             { $set: fieldsToUpdate }
         );
+
+        await delay(5000);
 
     }
 }
