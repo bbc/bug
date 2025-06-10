@@ -48,9 +48,9 @@ module.exports = async (port, untaggedVlan = 1, taggedVlans = []) => {
     // pull out the keys we need
     const newConfig = {
         dot1q_sw_port_config: {
-            accessVlan: portConfig.dot1q_sw_port_config.accessVlan,
+            accessVlan: untaggedVlan,
             allowedVlanList: expandedVlans,
-            configMode: "trunk",
+            configMode: "general",
             nativeVlan: untaggedVlan,
         }
     }
@@ -69,7 +69,7 @@ module.exports = async (port, untaggedVlan = 1, taggedVlans = []) => {
             const interfacesCollection = await mongoCollection("interfaces");
             const dbResult = await interfacesCollection.updateOne(
                 { port: parseInt(port) },
-                { $set: { "tagged-vlans": filteredVlans, configMode: "trunk", "untagged-vlan": portConfig.dot1q_sw_port_config.accessVlan } }
+                { $set: { "tagged-vlans": filteredVlans, configMode: "general", "untagged-vlan": untaggedVlan } }
             );
             console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
             return true;

@@ -96,7 +96,7 @@ module.exports = class NetgearAPI {
         try {
             const response = await axios.get(url, {
                 httpsAgent: this.agent,
-                timeout: 5000,
+                timeout: 6000,
                 headers: { Authorization: `Bearer ${token}` },
             });
 
