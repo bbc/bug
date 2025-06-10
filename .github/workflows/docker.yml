@@ -1,5 +1,8 @@
 # .github/workflows/docker.yml
 name: BUG Deploy
+permissions:
+    contents: read
+    packages: write
 
 env:
     regsitry: "ghcr.io"
