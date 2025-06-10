@@ -85,10 +85,10 @@
         "winston-mongodb": "^5.0.7"
     },
     "devDependencies": {
-        "jest": "^27.5.1",
-        "jest-extended": "^2.0.0",
-        "nodemon": "^2.0.16",
-        "supertest": "^6.2.3"
+        "jest": "^30.0.0",
+        "jest-extended": "^6.0.0",
+        "nodemon": "^3.1.10",
+        "supertest": "^7.1.1"
     },
     "_moduleAliases": {
         "@root": ".",
