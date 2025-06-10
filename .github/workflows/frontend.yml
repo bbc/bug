@@ -1,5 +1,8 @@
 # .github/workflows/frontend.yml
 name: BUG Frontend
+permissions:
+    contents: read
+    packages: write
 
 on:
     push:

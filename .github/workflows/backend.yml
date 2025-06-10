@@ -1,5 +1,8 @@
 # .github/workflows/backend.yml
 name: BUG Backend
+permissions:
+    contents: read
+    packages: write
 
 on:
     push:
