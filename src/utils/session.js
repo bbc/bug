@@ -10,10 +10,13 @@ const mongoContainer = process.env.MONGO_CONTAINER || "mongo";
 const mongoPort = process.env.MONGO_PORT || "27017";
 const url = `mongodb://${mongoContainer}:${mongoPort}`;
 
-const store = new MongoDBStore({
-    uri: `${url}/${databaseName}`,
-    collection: "sessions",
-});
+let store;
+if (!process.env.JEST_WORKER_ID) {
+    store = new MongoDBStore({
+        uri: `${url}/${databaseName}`,
+        collection: "sessions",
+    });
+}
 
 const bugSession = () => {
     return session({
