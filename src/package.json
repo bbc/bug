@@ -48,6 +48,7 @@
         "express": "^4.18.1",
         "express-async-handler": "^1.2.0",
         "express-fileupload": "^1.4.0",
+        "express-rate-limit": "^7.5.0",
         "express-session": "^1.17.3",
         "fs-extra": "^10.1.0",
         "glob": "^8.0.3",

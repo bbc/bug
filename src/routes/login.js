@@ -1,6 +1,7 @@
 "use strict";
 
 const router = require("express").Router();
+const rateLimit = require("express-rate-limit");
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 const passport = require("passport");
@@ -43,7 +44,17 @@ const passportStrategies = require("@utils/passportStrategies");
  *         schema:
  *           type: object
  */
-router.post("/", async (req, res, next) => {
+
+const loginRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: {
+        status: "failure",
+        message: "Too many login attempts. Please try again later.",
+    },
+});
+
+router.post("/", loginRateLimiter, async (req, res, next) => {
     const strategies = await strategyList();
     const configuredStrategies = [];
 
