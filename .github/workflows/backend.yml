@@ -21,7 +21,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [16]
+                node-version: [20]
         defaults:
             run:
                 working-directory: ./src
