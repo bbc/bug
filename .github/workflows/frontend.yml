@@ -2,8 +2,6 @@
 name: BUG Frontend
 permissions:
     contents: read
-    packages: write
-
 on:
     push:
         branches:

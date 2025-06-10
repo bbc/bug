@@ -64,8 +64,8 @@ jobs:
               uses: docker/login-action@v2
               with:
                   registry: ${{ env.regsitry }}
-                  username: ${{ secrets.GH_USER }}
-                  password: ${{ secrets.GH_TOKEN }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
                   logout: false
             #Docker Build Image and Push to Registry
             - name: Build and push to registry
