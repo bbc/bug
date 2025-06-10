@@ -29,8 +29,8 @@ jobs:
         steps:
             #Get the latest version of the repository
             - name: Checkout
-              uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
+              uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
             #Get Current and DateTime for Build
             - name: Set current date and time as an environment variable
               run: echo "timestamp=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
