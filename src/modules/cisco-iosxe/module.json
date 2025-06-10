@@ -1,7 +1,7 @@
 {
     "name": "cisco-iosxe",
     "longname": "Cisco IOS-XE Switch",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Monitoring and control of Cisco IOS-XE based switches",
     "capabilities": ["network-switch"],
     "icon": "SettingsEthernet",
