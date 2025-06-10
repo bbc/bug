@@ -8,7 +8,7 @@ module.exports = async ({ host, username, password, timeout = 5000 }) => {
         if (!host.includes("http://") || !host.includes("https://")) {
             host = "http://" + host;
         }
-        console.log(`${username}:${password}`);
+        console.log(`Attempting authentication for user: ${username}`);
         response = await axios.get(host, {
             timeout: timeout,
             auth: {
