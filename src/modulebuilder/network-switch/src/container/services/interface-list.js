@@ -4,7 +4,6 @@ const mongoCollection = require("@core/mongo-collection");
 const matchAnyRegex = require("@core/regex-matchany");
 const wildcard = require("wildcard-regex");
 const configGet = require("@core/config-get");
-const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     const config = await configGet();
