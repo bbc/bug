@@ -72,7 +72,7 @@ class ComrexSocket extends EventEmitter {
                             await delay(10000);
                         }
                         console.log(
-                            `comrex-socket: logging in with credentials: ${self.opts.username} / ${self.opts.password}`
+                            `comrex-socket: attempting to log in with provided credentials`
                         );
 
                         // this is what comrex require to log into the device
