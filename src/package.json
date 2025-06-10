@@ -1,6 +1,6 @@
 {
     "name": "bug",
-    "version": "3.0.91",
+    "version": "3.0.103",
     "description": "Broadcast Universal Gateway",
     "main": "index.js",
     "directories": {
@@ -85,10 +85,10 @@
         "winston-mongodb": "^5.0.7"
     },
     "devDependencies": {
-        "jest": "^27.5.1",
-        "jest-extended": "^2.0.0",
-        "nodemon": "^2.0.16",
-        "supertest": "^6.2.3"
+        "jest": "^30.0.0",
+        "jest-extended": "^6.0.0",
+        "nodemon": "^3.1.10",
+        "supertest": "^7.1.1"
     },
     "_moduleAliases": {
         "@root": ".",
@@ -108,6 +108,7 @@
         "testEnvironment": "node",
         "testPathIgnorePatterns": [
             "./node_modules/",
+            "./modulebuilder/",
             "./modules/",
             "./client/",
             "./routes/icons.test.js"
