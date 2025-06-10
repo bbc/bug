@@ -6,11 +6,11 @@ afterAll(async () => {
 });
 
 describe("Test the '/api/bug/quote' route", () => {
-    test("Test the '/quote' response status", async (done) => {
+    test("Test the '/quote' response status", async () => {
         const response = await request(system).get("/api/bug/quote");
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).not.toBe("");
-        done();
+
     });
 });

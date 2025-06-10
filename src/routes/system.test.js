@@ -6,10 +6,10 @@ afterAll(async () => {
 });
 
 describe("Test the '/api/system/' endpoint", () => {
-    test("Test the '/hello' GET route", async (done) => {
+    test("Test the '/hello' GET route", async () => {
         const response = await request(system).get("/api/system/hello");
         expect(response.statusCode).toBe(200);
         expect(response.body.data).toEqual("Good morning sunshine, the earth says hello.");
-        done();
+
     });
 });

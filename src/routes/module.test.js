@@ -19,18 +19,20 @@ const fetchExampleModuleName = async () => {
 };
 
 describe("Test the '/api/module/' endpoint", () => {
-    test("Test the '/' getall route", async (done) => {
+    test("Test the '/' getall route", async () => {
         const exampleModuleName = await fetchExampleModuleName();
         const response = await request(system).get("/api/module/");
+
+        console.log(response.body)
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeArray();
         expect(response.body.data.length).toBeGreaterThan(0);
         expect(response.body.data[0].name).toEqual(exampleModuleName);
-        done();
+
     });
 
-    test("Test the '/{moduleName}' route", async (done) => {
+    test("Test the '/{moduleName}' route", async () => {
         const exampleModuleName = await fetchExampleModuleName();
         const response = await request(system).get(`/api/module/${exampleModuleName}`);
         expect(response.statusCode).toBe(200);
@@ -46,24 +48,23 @@ describe("Test the '/api/module/' endpoint", () => {
             "defaultconfig",
         ]);
         expect(response.body.data.name).toEqual(exampleModuleName);
-        done();
     });
 
     // not sure if we can test these ...
     //
-    // test("Test the '/build/{moduleName}' route", async (done) => {
+    // test("Test the '/build/{moduleName}' route", async () => {
     //     const exampleModuleName = await fetchExampleModuleName();
     //     const response = await request(system).get(`/api/module/build/${exampleModuleName}`);
     //     expect(response.statusCode).toBe(200);
     //     expect(response.body.status).toBe("success");
-    //     done();
+    //     
     // });
 
-    // test("Test the '/rebuild/{moduleName}' route", async (done) => {
+    // test("Test the '/rebuild/{moduleName}' route", async () => {
     //     const exampleModuleName = await fetchExampleModuleName();
     //     const response = await request(system).get(`/api/module/rebuild/${exampleModuleName}`);
     //     expect(response.statusCode).toBe(200);
     //     expect(response.body.status).toBe("success");
-    //     done();
+    //     
     // });
 });
