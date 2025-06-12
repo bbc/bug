@@ -1,5 +1,5 @@
-import Box from "@material-ui/core/Box";
-import { Title, Subtitle, Description, ArgsTable, PRIMARY_STORY } from "@storybook/addon-docs";
+import { Box } from "@mui/material";
+import { ArgsTable, Description, PRIMARY_STORY, Subtitle, Title } from "@storybook/addon-docs";
 
 export default {
     title: "BUG Core/API Controls/BugApiTableColumn",

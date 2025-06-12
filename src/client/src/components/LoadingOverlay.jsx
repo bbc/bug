@@ -1,6 +1,5 @@
-import React from "react";
+import { Backdrop } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import Backdrop from "@material-ui/core/Backdrop";
 import Grid from "@mui/material/Grid";
 
 export default function LoadingOverlay(props) {

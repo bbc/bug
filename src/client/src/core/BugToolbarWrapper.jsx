@@ -1,31 +1,30 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
+import BadgeWrapper from "@components/BadgeWrapper";
+import BugToolbarIcon from "@components/BugToolbarIcon";
+import PanelStatus from "@components/panels/PanelStatus";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import BugRestrictTo from "@core/BugRestrictTo";
+import BugToolbarLogsButton from "@core/BugToolbarLogsButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ReplayIcon from "@mui/icons-material/Replay";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import { Hidden } from "@material-ui/core";
-import BadgeWrapper from "@components/BadgeWrapper";
-import PanelStatus from "@components/panels/PanelStatus";
-import SettingsIcon from "@mui/icons-material/Settings";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useSelector } from "react-redux";
+import { Box } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Popover from "@mui/material/Popover";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
-import ReplayIcon from "@mui/icons-material/Replay";
-import { useHistory } from "react-router-dom";
-import BugToolbarIcon from "@components/BugToolbarIcon";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
-import BugToolbarLogsButton from "@core/BugToolbarLogsButton";
-import BugRestrictTo from "@core/BugRestrictTo";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
 /*
  * this has optional properties:
@@ -224,7 +223,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                         </BugToolbarIcon>
                     </>
                 )}
-                <Hidden xsDown>{buttons ? buttons : null}</Hidden>
+                <Box sx={{ display: { xs: "none", sm: "block" } }}>{buttons ? buttons : null}</Box>
                 {getToolbar(user?.data?.roles, menuItems)}
             </>
         );
