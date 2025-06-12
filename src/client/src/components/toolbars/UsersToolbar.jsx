@@ -1,14 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import AddIcon from "@mui/icons-material/Add";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Hidden } from "@material-ui/core";
-import AddIcon from "@mui/icons-material/Add";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function UsersToolbar(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,11 +24,11 @@ export default function UsersToolbar(props) {
 
     return (
         <>
-            <Hidden xsDown>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <Button component={Link} to={`/system/user`} variant="outlined" color="primary" startIcon={<AddIcon />}>
                     Add
                 </Button>
-            </Hidden>
+            </Box>
             <IconButton
                 sx={{
                     marginLeft: "0.5rem",

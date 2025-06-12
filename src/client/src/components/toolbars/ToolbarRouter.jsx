@@ -1,14 +1,13 @@
-import React from "react";
 import PageTitle from "@components/PageTitle";
+import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
+import PanelsToolbar from "@components/toolbars/PanelsToolbar";
+import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
+import SecurityToolbar from "@components/toolbars/SecurityToolbar";
+import SystemToolbar from "@components/toolbars/SystemToolbar";
+import UsersToolbar from "@components/toolbars/UsersToolbar";
+import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import PanelsToolbar from "@components/toolbars/PanelsToolbar";
-import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
-import UsersToolbar from "@components/toolbars/UsersToolbar";
-import SecurityToolbar from "@components/toolbars/SecurityToolbar";
-import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
-import SystemToolbar from "@components/toolbars/SystemToolbar";
-import Box from "@mui/material/Box";
 import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
 
 const Title = ({ children }) => (
