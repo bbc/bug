@@ -1,22 +1,11 @@
-import React, { useEffect } from "react";
-import RouterButton from "./RouterButton";
-import { useParams } from "react-router-dom";
-import { useAlert } from "@utils/Snackbar";
-import BugLoading from "@core/BugLoading";
 import BugEditIconDialog from "@core/BugEditIconDialog";
-import AxiosPost from "@utils/AxiosPost";
+import BugLoading from "@core/BugLoading";
 import Box from "@mui/material/Box";
-
-import {
-    DndContext,
-    closestCenter,
-    KeyboardSensor,
-    PointerSensor,
-    TouchSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from "@dnd-kit/sortable";
+import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import RouterButton from "./RouterButton";
 
 export default function Router({
     panelId,
@@ -28,6 +17,7 @@ export default function Router({
     onChange,
     disabled = false,
     useDoubleClick = false,
+    fixed = false,
 }) {
     const sendAlert = useAlert();
     const params = useParams();
@@ -39,14 +29,6 @@ export default function Router({
     useEffect(() => {
         setLocalButtons(buttons.data[`${buttonType}s`]);
     }, [buttons]);
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        }),
-        useSensor(TouchSensor)
-    );
 
     const handleEditIcon = (button) => {
         setEditIconDialogButton(button);
@@ -68,36 +50,7 @@ export default function Router({
         }
     };
 
-    const handleDragEnd = async (event) => {
-        const { active, over } = event;
-
-        const activeId = active?.id?.split(":")[1];
-        const overId = over?.id?.split(":")[1];
-
-        if (activeId !== overId) {
-            const oldIndex = localButtons.findIndex((button) => button.index === parseInt(activeId));
-            const newIndex = localButtons.findIndex((button) => button.index === parseInt(overId));
-            const newButtons = arrayMove(localButtons, oldIndex, newIndex);
-
-            const buttonIndices = newButtons.map((group) => group.index);
-            setLocalButtons(newButtons);
-
-            const url =
-                buttonType === "source"
-                    ? `/container/${panelId}/groups/set/${buttonType}/${sourceGroup}`
-                    : `/container/${panelId}/groups/set/${buttonType}/${destinationGroup}`;
-
-            if (
-                !(await AxiosPost(url, {
-                    buttons: buttonIndices,
-                }))
-            ) {
-                sendAlert(`Failed to save button orders`, { variant: "error" });
-            }
-        }
-    };
-
-    const renderButtons = () => (
+    const Buttons = () => (
         <>
             {localButtons.map((button) => (
                 <RouterButton
@@ -123,54 +76,29 @@ export default function Router({
         return <BugLoading />;
     }
 
-    if (editMode) {
-        return (
-            <>
-                <Box
-                    sx={{
-                        padding: "0px 8px",
-                        marginBottom: "8px",
-                        "@media (max-width:800px)": {
-                            padding: "0px 4px",
-                        },
-                    }}
-                >
-                    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                        <SortableContext
-                            items={localButtons.map((button) => `${buttonType}:${button.index}`)}
-                            strategy={rectSortingStrategy}
-                        >
-                            {renderButtons()}
-                        </SortableContext>
-                    </DndContext>
-                </Box>
-                {editIconDialogButton !== null && (
-                    <BugEditIconDialog
-                        icon={editIconDialogButton.icon}
-                        color={editIconDialogButton.color}
-                        onCancel={() => setEditIconDialogButton(null)}
-                        onSubmit={(icon, color) => handleEditIconSubmitted(icon, color, editIconDialogButton)}
-                        panelId={panelId}
-                        buttonType={buttonType}
-                    />
-                )}
-            </>
-        );
-    }
-
     return (
         <>
             <Box
                 sx={{
                     padding: "0px 8px",
                     marginBottom: "8px",
-                    ["@media (max-width:800px)"]: {
+                    "@media (max-width:800px)": {
                         padding: "0px 4px",
                     },
                 }}
             >
-                {renderButtons()}
+                <Buttons />
             </Box>
+            {editMode && editIconDialogButton !== null && (
+                <BugEditIconDialog
+                    icon={editIconDialogButton.icon}
+                    color={editIconDialogButton.color}
+                    onCancel={() => setEditIconDialogButton(null)}
+                    onSubmit={(icon, color) => handleEditIconSubmitted(icon, color, editIconDialogButton)}
+                    panelId={panelId}
+                    buttonType={buttonType}
+                />
+            )}
         </>
     );
 }

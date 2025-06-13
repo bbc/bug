@@ -19,10 +19,13 @@ module.exports = async (destinatonIndex, sourceIndex) => {
 
     const routesCollection = await mongoCollection("routes");
 
-    const destinationInt = parseInt(destinatonIndex) + config.idOffset;
-    const sourceInt = parseInt(sourceIndex) + config.idOffset;
+    const destinationInt = parseInt(destinatonIndex);
+    const sourceInt = parseInt(sourceIndex);
+
     const matrix = await globalMatrix();
-    const status = await matrix.routeAllLevels(sourceInt, destinationInt);
+
+    // oh my life. Ryan's SW08 module assumed everything is 1-based. AGGGGHHHHH
+    const status = await matrix.routeAllLevels(sourceInt + 1, destinationInt + 1);
     if (status === 1) {
         logger.info(`Routed Source #${sourceInt} to Destination #${destinationInt} on all levels`);
 

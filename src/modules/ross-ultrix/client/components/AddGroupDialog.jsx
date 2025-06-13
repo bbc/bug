@@ -13,7 +13,7 @@ export default function AddGroupDialog({ onDismiss, onConfirm, groups }) {
 
     const modifiedGroups = groups.map((group) => {
         return {
-            id: group.index,
+            id: group.id,
             label: group.label,
         };
     });
