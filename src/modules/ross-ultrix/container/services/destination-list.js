@@ -6,6 +6,7 @@ const logger = require("@core/logger")(module);
 const destinationListAll = require("./destination-listall");
 const sourceListAll = require("./source-listall");
 const destinationGroupList = require("./destinationgroup-list");
+const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (groupIndex = 0, showExcluded = false) => {
     let config;
@@ -19,10 +20,11 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
         return false;
     }
 
+    const destinations = await mongoSingle.get("destinations");
+    const sources = await mongoSingle.get("sources");
+
     const icons = config.destinationIcons ? config.destinationIcons : [];
     const iconColors = config.destinationIconColors ? config.destinationIconColors : [];
-    const destinationNames = await destinationListAll();
-    const sourceNames = await sourceListAll();
     const groups = await destinationGroupList();
 
     // get routes
@@ -51,7 +53,7 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
 
     groups[groupIndex]?.["value"].forEach((destinationIndex, order) => {
         const selectedSource = crosspoints?.[destinationIndex]?.levels["0"];
-        const selectedSourceLabel = sourceNames[selectedSource];
+        const selectedSourceLabel = sources?.[selectedSource]?.name;
 
         const isExcluded = excludedDestinations.includes(destinationIndex?.toString());
 
@@ -60,14 +62,17 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
         if (!isExcluded || showExcluded) {
             outputArray["destinations"].push({
                 index: destinationIndex,
-                label: destinationNames[destinationIndex],
+                label: destinations?.[destinationIndex]?.name,
+                description: destinations?.[destinationIndex]?.description,
                 fixed: buttonsFixed,
                 sourceIndex: parseInt(selectedSource),
                 sourceLabel: selectedSourceLabel,
                 indexText: indexText,
                 hidden: isExcluded,
                 order: order,
+                isLocked: config.destinationLocks?.[destinationIndex] ?? false,
                 icon: icons[destinationIndex] ? icons[destinationIndex] : null,
+
                 iconColor: iconColors[destinationIndex] ? iconColors[destinationIndex] : "#ffffff",
             });
         }
