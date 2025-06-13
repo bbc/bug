@@ -1,6 +1,8 @@
 const express = require("express");
-const matrixGetDestinations = require("@services/matrix-getdestinations");
-const matrixGetAllDestinations = require("@services/matrix-getalldestinations");
+const destinationList = require("@services/destination-list");
+const destinationRename = require("@services/destination-rename");
+const destinationListAll = require("@services/destination-listall");
+const destinationGroupList = require("@services/destinationgroup-list");
 const buttonRemove = require("@services/button-remove");
 const buttonSetIcon = require("@services/button-seticon");
 const route = express.Router();
@@ -9,13 +11,28 @@ route.get("/", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await matrixGetAllDestinations(),
+            data: await destinationListAll(),
         });
     } catch (error) {
         console.log(error);
         res.json({
             status: "error",
             message: "Failed to get destinations",
+        });
+    }
+});
+
+route.get("/groups", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await destinationGroupList(),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to get destination groups",
         });
     }
 });
@@ -30,7 +47,7 @@ route.post("/seticon/:index", async function (req, res, next) {
         console.log(error);
         res.json({
             status: "error",
-            message: "Failed to get sources",
+            message: "Failed to get destinations",
         });
     }
 });
@@ -39,7 +56,7 @@ route.get("/:groupIndex", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await matrixGetDestinations(req.params?.groupIndex),
+            data: await destinationList(req.params?.groupIndex),
         });
     } catch (error) {
         console.log(error);
@@ -54,7 +71,7 @@ route.post("/:groupIndex", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await matrixGetDestinations(req.params?.groupIndex, req.body.showExcluded ? true : false),
+            data: await destinationList(req.params?.groupIndex, req.body.showExcluded ? true : false),
         });
     } catch (error) {
         console.log(error);
@@ -65,11 +82,26 @@ route.post("/:groupIndex", async function (req, res, next) {
     }
 });
 
-route.delete("/:groupIndex/:index", async function (req, res, next) {
+route.get("/setlabel/:buttonIndex/:label?", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await buttonRemove("destination", req.params?.groupIndex, req.params?.index),
+            data: await destinationRename(parseInt(req.params?.buttonIndex), req.params?.label),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set label",
+        });
+    }
+});
+
+route.delete("/:groupId/:name", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await buttonRemove("destination", parseInt(req.params?.groupId), req.params?.index),
         });
     } catch (error) {
         console.log(error);

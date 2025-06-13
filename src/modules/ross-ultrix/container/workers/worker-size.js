@@ -6,7 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
-const Probel = require("probel-swp-08");
+const Probel = require("@utils/probel-swp-08/index");
 const mongoSingle = require("@core/mongo-single");
 
 const updateDelay = 2000;
@@ -18,52 +18,55 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+    await delay(99999);
+    // // Connect to the db
+    // await mongoDb.connect(workerData.id);
 
-    // Kick things off
-    console.log(`worker-size: connecting to device at ${workerData.address}:${workerData.port}`);
+    // // Kick things off
+    // console.log(`worker-size: connecting to device at ${workerData.address}:${workerData.port}`);
 
-    await mongoSingle.clear("matrixSize");
+    // await mongoSingle.clear("matrixSize");
 
-    let router;
-    // start checking it every 500ms
-    let backoffDelay = 500;
+    // let router;
+    // // start checking it every 500ms
+    // let backoffDelay = 500;
 
-    // sadly there's no easy way to get the size of the matrix, unless we just wait to see if the value doesn't change
-    try {
-        router = new Probel(workerData.address, {
-            port: workerData?.port,
-            extended: workerData?.extended,
-            levels: workerData?.levels,
-            chars: parseInt(workerData?.chars),
-        });
+    // // sadly there's no easy way to get the size of the matrix, unless we just wait to see if the value doesn't change
+    // try {
+    //     router = new Probel(workerData.address, {
+    //         port: workerData?.port,
+    //         extended: workerData?.extended,
+    //         levels: workerData?.levels,
+    //         chars: parseInt(workerData?.chars),
+    //     });
 
-        let previousSize = {};
-        let countCheck = 0;
+    //     let previousSize = {};
+    //     let countCheck = 0;
 
-        while (true) {
-            const size = await router.getSize();
-            if (previousSize?.source === size.source && previousSize?.destinations === size.destinations) {
-                countCheck += 1;
-            } else {
-                countCheck = 0;
-            }
-            previousSize = { ...size };
+    //     while (true) {
+    //         const size = await router.getSize();
 
-            // if it's been the same the last 5 times we can slow down
-            if (countCheck > 5) {
-                backoffDelay = 30000;
+    //         console.log(size);
+    //         if (previousSize?.source === size.source && previousSize?.destinations === size.destinations) {
+    //             countCheck += 1;
+    //         } else {
+    //             countCheck = 0;
+    //         }
+    //         previousSize = { ...size };
 
-                // and update the db
-                await mongoSingle.set("matrixSize", size);
-            }
+    //         // if it's been the same the last 5 times we can slow down
+    //         if (countCheck > 5) {
+    //             backoffDelay = 30000;
 
-            await delay(backoffDelay);
-        }
-    } catch (error) {
-        throw error;
-    }
+    //             // and update the db
+    //             await mongoSingle.set("matrixSize", size);
+    //         }
+
+    //         await delay(backoffDelay);
+    //     }
+    // } catch (error) {
+    //     throw error;
+    // }
 };
 
 main();

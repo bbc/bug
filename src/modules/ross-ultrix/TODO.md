@@ -1,1 +1,7 @@
 -   detect slot for socket
+-   icons
+-   description label
+-   snmp alarms
+-   make sure labels are unique
+-   add locks
+-   config show all

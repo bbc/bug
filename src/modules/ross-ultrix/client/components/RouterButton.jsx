@@ -1,18 +1,17 @@
-import React from "react";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugRouterButton from "@core/BugRouterButton";
+import AddIcon from "@mui/icons-material/Add";
+import BackspaceIcon from "@mui/icons-material/Backspace";
+import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
+import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import BugRouterButton from "@core/BugRouterButton";
-import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import BackspaceIcon from "@mui/icons-material/Backspace";
-import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
-import { useBugCustomDialog } from "@core/BugCustomDialog";
 import AddGroupDialog from "./AddGroupDialog";
-import CheckIcon from "@mui/icons-material/Check";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 export default function RouterButton({
     panelId,
@@ -39,7 +38,11 @@ export default function RouterButton({
             defaultValue: button.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/${result}`)) {
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/${buttonType}s/setlabel/${button.index}/${encodeURIComponent(result)}`
+                )
+            ) {
                 sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
             } else {
                 sendAlert(`Failed to rename ${buttonType}: ${result}`, { variant: "error" });
@@ -49,16 +52,22 @@ export default function RouterButton({
     };
 
     const handleClearClicked = async (event, item) => {
-        if (await AxiosCommand(`/container/${panelId}/setlabel/${button.index}/${buttonType}/-`)) {
-            sendAlert(`Cleared button label for ${buttonType} ${button.index + 1}`, { variant: "success" });
+        const defaultLabel = `${buttonType} ${button.index}`;
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/${buttonType}s/setlabel/${button.index}/${encodeURIComponent(defaultLabel)}`
+            )
+        ) {
+            sendAlert(`Cleared button label for ${buttonType} ${button.index}`, { variant: "success" });
         } else {
-            sendAlert(`Failed to clear label for ${buttonType} ${button.index + 1}`, { variant: "error" });
+            sendAlert(`Failed to clear label for ${buttonType} ${button.index}`, { variant: "error" });
         }
         onChange();
     };
 
     const handleRemoveClicked = async (event, item) => {
-        const url = `/container/${panelId}/${buttonType}s/${selectedGroup}/${button.index}`;
+        const groupId = groups[selectedGroup]?.id;
+        const url = `/container/${panelId}/${buttonType}s/${groupId}/${encodeURIComponent(button.label)}`;
 
         if (await AxiosDelete(url)) {
             sendAlert(`Removed ${buttonType} button: ${button.label}`, { variant: "success" });
@@ -106,16 +115,15 @@ export default function RouterButton({
     };
 
     const handleAddGroupClicked = async (event) => {
-        const groupIndexes = await customDialog({
-            dialog: <AddGroupDialog groups={groups} />,
+        console.log(groups);
+        const groupIds = await customDialog({
+            dialog: <AddGroupDialog groups={groups.filter((group) => group.fixed === false)} />,
         });
-        if (groupIndexes !== false) {
+        if (groupIds !== false) {
             if (
-                await AxiosCommand(
-                    `/container/${panelId}/groups/addbutton/${buttonType}/${groupIndexes}/${button.index}`
-                )
+                await AxiosCommand(`/container/${panelId}/groups/addbuttons/${buttonType}/${groupIds}/${button.index}`)
             ) {
-                sendAlert(`Added button to group(s) '${groupIndexes.join(",")}'`, { variant: "success" });
+                sendAlert(`Added button to group(s) '${groupIds.join(",")}'`, { variant: "success" });
                 onChange();
             } else {
                 sendAlert(`Failed to add button to group(s)`, { variant: "error" });
@@ -126,6 +134,7 @@ export default function RouterButton({
     const handleClick = (event) => {
         onClick(event);
     };
+
     return (
         <BugRouterButton
             id={`${buttonType}:${button.index}`}
@@ -164,7 +173,7 @@ export default function RouterButton({
                     title: "Remove",
                     icon: <RemoveCircleIcon fontSize="small" />,
                     onClick: handleRemoveClicked,
-                    disabled: groups.length === 0,
+                    disabled: button.fixed,
                 },
                 {
                     title: "-",

@@ -1,15 +1,15 @@
-import React from "react";
 import BugLoading from "@core/BugLoading";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
+import BugScrollbars from "@core/BugScrollbars";
 import { useApiPoller } from "@hooks/ApiPoller";
-import GroupButtons from "./GroupButtons";
-import RouterButtons from "./RouterButtons";
-import { useSelector } from "react-redux";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import BugScrollbars from "@core/BugScrollbars";
-import { useForceRefresh } from "@hooks/ForceRefresh";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useSelector } from "react-redux";
+import GroupButtons from "./GroupButtons";
+import RouterButtons from "./RouterButtons";
 
 const SectionHeader = styled("div")({
     fontSize: "0.875rem",
@@ -43,6 +43,10 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         interval: 5000,
         forceRefresh: destinationForceRefresh,
     });
+
+    // get the 'fixed' values for the currently selected grouos]
+    const sourceFixed = sourceButtons?.data?.groups[sourceGroup]?.fixed;
+    const destinationFixed = destinationButtons?.data?.groups[destinationGroup]?.fixed;
 
     const handleDestinationButtonClicked = (destinationIndex) => {
         if (editMode) {
@@ -164,6 +168,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             useDoubleClick={useDoubleClick}
                             onChange={() => setSourceForceRefresh()}
                             disabled={destinationLocked}
+                            fixed={sourceFixed}
                         />
                     </BugScrollbars>
                 </Box>
@@ -214,6 +219,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             buttons={destinationButtons}
                             onClick={handleDestinationButtonClicked}
                             onChange={() => setDestinationForceRefresh()}
+                            fixed={destinationFixed}
                         />
                     </BugScrollbars>
                 </Box>

@@ -6,7 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
-const Probel = require("probel-swp-08");
+const Probel = require("@utils/probel-swp-08/index");
 const mongoSingle = require("@core/mongo-single");
 
 let routesCollection;
@@ -14,7 +14,7 @@ let routesCollection;
 // tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
-    restartOn: ["address", "port", "extended", "sources", "destinations", "chars", "idOffset"],
+    restartOn: ["address", "port", "extended", "sources", "destinations", "chars"],
 });
 
 const crosspointEvent = async (routes) => {
@@ -25,7 +25,7 @@ const crosspointEvent = async (routes) => {
     // update collection when a crosspoint change message is received
     const matrix = Object.keys(routes);
     const level = Object.keys(routes[matrix[0]])[0];
-    const zeroLevelInt = parseInt(Object.keys(routes[matrix[0]])[0]) - workerData.idOffset;
+    const zeroLevelInt = parseInt(Object.keys(routes[matrix[0]])[0]);
     const destination = parseInt(Object.keys(routes[matrix[0]][level])[0]);
     const source = routes[matrix[0]][level][destination];
 
@@ -54,12 +54,12 @@ const fetchRoutes = async (router) => {
             const destinations = Object.keys(routerState[matrix[0]][level]);
             if (Array.isArray(destinations)) {
                 for (let destination of destinations) {
-                    if (!entries[parseInt(destination) - workerData.idOffset]) {
-                        entries[parseInt(destination) - workerData.idOffset] = { destination: parseInt(destination) - workerData.idOffset, levels: {} };
+                    if (!entries[parseInt(destination)]) {
+                        entries[parseInt(destination)] = { destination: parseInt(destination), levels: {} };
                     }
                     // AGGGHHH the destination is ALWAYS zero based. FFS Ross!
-                    entries[parseInt(destination) - workerData.idOffset]["levels"][level - workerData.idOffset] = routerState[matrix][level][destination];
-                    entries[parseInt(destination) - workerData.idOffset]["timestamp"] = Date.now();
+                    entries[parseInt(destination)]["levels"][level] = routerState[matrix][level][destination];
+                    entries[parseInt(destination)]["timestamp"] = Date.now();
                 }
             }
         }
@@ -75,29 +75,8 @@ const fetchRoutes = async (router) => {
     }
 }
 
-const fetchSourceNames = async (router) => {
-    const sourceNames = await router.getSourceNames();
-    if (sourceNames.message) {
-        console.log(`worker-swp08: error fetching source names: ${sourceNames?.message}`);
-    }
-    else {
-        console.log("set sources ok");
-        await mongoSingle.set("sourceNames", Object.values(sourceNames), 600);
-    }
-}
-
-const fetchDestinationNames = async (router) => {
-    const destinationNames = await router.getDestinationNames();
-    if (destinationNames.message) {
-        console.log(`worker-swp08: error fetching destination names: ${destinationNames?.message}`);
-    }
-    else {
-        console.log("set destinations ok");
-        await mongoSingle.set("destinationNames", Object.values(destinationNames), 600);
-    }
-}
-
 const main = async () => {
+    await delay(99999);
 
     await delay(1000);
 
@@ -112,8 +91,6 @@ const main = async () => {
 
     // remove previous values
     //TODO routesCollection.deleteMany({});
-    // await mongoSingle.clear("sourceNames");
-    // await mongoSingle.clear("destinationNames");
 
     // kick things off
     console.log(`worker-swp08: connecting to device at ${workerData.address}:${workerData.port}`);
@@ -146,10 +123,6 @@ const main = async () => {
         await delay(5000);
 
         while (true) {
-            await fetchSourceNames(router);
-            await delay(1000);
-            await fetchDestinationNames(router);
-            await delay(1000);
             await fetchRoutes(router);
             await delay(1000);
         }

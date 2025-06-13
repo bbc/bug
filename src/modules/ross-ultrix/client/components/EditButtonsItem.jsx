@@ -1,27 +1,10 @@
-import React from "react";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import { useSortable } from "@dnd-kit/sortable";
 import Box from "@mui/material/Box";
-import BugDragIcon from "@core/BugDragIcon";
+import IconButton from "@mui/material/IconButton";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
-export default function EditButtonsDragItem({ button, onRemove }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: `button:${button.index}` });
-
-    let transformString = null;
-
-    if (transform?.y) {
-        transformString = `translateY(${Math.round(transform?.y)}px)`;
-    }
-
-    const style = {
-        transform: transformString,
-        transition,
-    };
-
+export default function EditButtonsItem({ button, onRemove }) {
     return (
         <ListItem
             sx={{
@@ -34,19 +17,7 @@ export default function EditButtonsDragItem({ button, onRemove }) {
             key={button.index}
             role="listitem"
             button
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
         >
-            <ListItemIcon
-                sx={{
-                    minWidth: "32px",
-                    padding: "4px",
-                }}
-            >
-                <BugDragIcon />
-            </ListItemIcon>
             <Box
                 sx={{
                     paddingRight: "8px",
