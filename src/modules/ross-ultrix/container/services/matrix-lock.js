@@ -10,8 +10,8 @@ module.exports = async (index) => {
         return false;
     }
 
-    logger.info(`Unlocking destination index ${index}`);
-    config.destinationLocks[index] = false;
+    logger.info(`Locking destination index ${index}`);
+    config.destinationLocks[index] = true;
     await configPutViaCore(config);
     return true;
 };

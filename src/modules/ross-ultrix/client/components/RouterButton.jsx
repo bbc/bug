@@ -84,22 +84,6 @@ export default function RouterButton({
         if (button.isLocked) {
             action = "unlock";
             actionLong = "Unlocked";
-
-            if (button.isRemoteLocked) {
-                // we're unlocking and we need to check ...
-                action = "forceunlock";
-                if (
-                    !(await confirmDialog({
-                        title: "Unlock Destination",
-                        message:
-                            "This destination has been locked by another user. Are you sure you want to unlock it?",
-                        confirmButtonText: "Unlock",
-                    }))
-                ) {
-                    // they've changed their mind ...
-                    return false;
-                }
-            }
         }
 
         if (await AxiosCommand(`/container/${panelId}/destinations/${action}/${button.index}`)) {
@@ -145,6 +129,7 @@ export default function RouterButton({
             iconColor={button.iconColor}
             primaryLabel={button.label}
             secondaryLabel={buttonType === "source" ? "" : button.sourceLabel ? button.sourceLabel : "-"}
+            tertiaryLabel={button.description}
             number={button.index + 1}
             selected={selected}
             disabled={disabled}
