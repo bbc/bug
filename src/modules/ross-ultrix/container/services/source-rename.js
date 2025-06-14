@@ -5,15 +5,9 @@ const logger = require("@core/logger")(module);
 const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (sourceIndex, name = "") => {
-    let config;
-    try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
-        }
-    } catch (error) {
-        logger.error(`source-rename: failed to fetch config`);
-        return false;
+    const config = await configGet();
+    if (!config) {
+        throw new Error();
     }
 
     // fetch the existing data first
@@ -21,7 +15,12 @@ module.exports = async (sourceIndex, name = "") => {
     const match = sourcesRaw.find((r) => r.uiId === sourceIndex);
     if (!match) {
         logger.error(`source-rename: failed to find source index ${sourceIndex}`);
-        return false;
+        throw new Error()
+    }
+
+    if (sourcesRaw.find((r) => r.uiId !== sourceIndex && r.name === name)) {
+        logger.error(`source-rename: source name ${name} already exists`);
+        throw new Error()
     }
 
     match.name = name;
@@ -39,7 +38,7 @@ module.exports = async (sourceIndex, name = "") => {
     // write it back
     if (!await ultrixWebApi.post("source/update", config, JSON.stringify([match]))) {
         logger.error(`source-rename: failed to update source label`);
-        return false;
+        throw new Error()
     }
 
     // update the db
