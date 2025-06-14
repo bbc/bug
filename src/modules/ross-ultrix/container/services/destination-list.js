@@ -3,8 +3,6 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
-const destinationListAll = require("./destination-listall");
-const sourceListAll = require("./source-listall");
 const destinationGroupList = require("./destinationgroup-list");
 const mongoSingle = require("@core/mongo-single");
 

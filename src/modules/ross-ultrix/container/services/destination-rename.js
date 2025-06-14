@@ -5,23 +5,22 @@ const logger = require("@core/logger")(module);
 const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (destinationIndex, name = "") => {
-    let config;
-    try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
-        }
-    } catch (error) {
-        logger.error(`destination-rename: failed to fetch config`);
-        return false;
+    const config = await configGet();
+    if (!config) {
+        throw new Error();
     }
 
     // fetch the existing data first
-    const destinationsRaw = await mongoSingle.get("sourcesRaw");
+    const destinationsRaw = await mongoSingle.get("destinationsRaw");
     const match = destinationsRaw.find((r) => r.uiId === destinationIndex);
     if (!match) {
         logger.error(`destination-rename: failed to find destination index ${destinationIndex}`);
-        return false;
+        throw new Error()
+    }
+
+    if (destinationsRaw.find((r) => r.uiId !== destinationIndex && r.name === name)) {
+        logger.error(`destination-rename: destination name ${name} already exists`);
+        throw new Error()
     }
 
     match.name = name;
@@ -39,7 +38,7 @@ module.exports = async (destinationIndex, name = "") => {
     // write it back
     if (!await ultrixWebApi.post("destination/update", config, JSON.stringify([match]))) {
         logger.error(`destination-rename: failed to update destination label`);
-        return false;
+        throw new Error()
     }
 
     // update the db
