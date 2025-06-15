@@ -1,6 +1,7 @@
 const express = require("express");
 const sourceList = require("@services/source-list");
 const sourceRename = require("@services/source-rename");
+const sourceSetDescription = require("@services/source-setdescription");
 const sourceListAll = require("@services/source-listall");
 const sourceGroupList = require("@services/sourcegroup-list");
 const buttonRemove = require("@services/button-remove");
@@ -86,7 +87,22 @@ route.post("/:destination?/:group?", async function (req, res, next) {
     }
 });
 
-route.get("/setlabel/:buttonIndex/:label?", async function (req, res, next) {
+route.get("/setdescription/:buttonIndex/:description?", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await sourceSetDescription(parseInt(req.params?.buttonIndex), req.params?.description),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set description",
+        });
+    }
+});
+
+route.get("/setname/:buttonIndex/:label?", async function (req, res, next) {
     try {
         res.json({
             status: "success",

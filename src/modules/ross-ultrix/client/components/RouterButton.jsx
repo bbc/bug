@@ -5,6 +5,7 @@ import BugRouterButton from "@core/BugRouterButton";
 import AddIcon from "@mui/icons-material/Add";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import CheckIcon from "@mui/icons-material/Check";
+import DescriptionIcon from "@mui/icons-material/Description";
 import EditIcon from "@mui/icons-material/Edit";
 import FilterTiltShiftIcon from "@mui/icons-material/FilterTiltShift";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
@@ -32,7 +33,7 @@ export default function RouterButton({
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
-    const handleRenameClicked = async (event, item) => {
+    const handleEditNameClicked = async (event, item) => {
         const result = await renameDialog({
             title: `Rename ${buttonType}`,
             defaultValue: button.label,
@@ -40,7 +41,7 @@ export default function RouterButton({
         if (result !== false) {
             if (
                 await AxiosCommand(
-                    `/container/${panelId}/${buttonType}s/setlabel/${button.index}/${encodeURIComponent(result)}`
+                    `/container/${panelId}/${buttonType}s/setname/${button.index}/${encodeURIComponent(result)}`
                 )
             ) {
                 sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
@@ -51,11 +52,31 @@ export default function RouterButton({
         }
     };
 
+    const handleEditDescriptionClicked = async (event, item) => {
+        const result = await renameDialog({
+            title: `Edit ${buttonType} description`,
+            defaultValue: button.description,
+        });
+        if (result !== false) {
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/${buttonType}s/setdescription/${button.index}/${encodeURIComponent(result)}`
+                )
+            ) {
+                sendAlert(`Changed description for ${buttonType}: ${button.label} -> ${result}`, {
+                    variant: "success",
+                });
+            } else {
+                sendAlert(`Failed to change description for ${buttonType}: ${result}`, { variant: "error" });
+            }
+            onChange();
+        }
+    };
     const handleClearClicked = async (event, item) => {
         const defaultLabel = `${buttonType} ${button.index}`;
         if (
             await AxiosCommand(
-                `/container/${panelId}/${buttonType}s/setlabel/${button.index}/${encodeURIComponent(defaultLabel)}`
+                `/container/${panelId}/${buttonType}s/setname/${button.index}/${encodeURIComponent(defaultLabel)}`
             )
         ) {
             sendAlert(`Cleared button label for ${buttonType} ${button.index}`, { variant: "success" });
@@ -136,9 +157,14 @@ export default function RouterButton({
             locked={button.isLocked}
             menuItems={[
                 {
-                    title: "Rename",
+                    title: "Edit Name",
                     icon: <EditIcon fontSize="small" />,
-                    onClick: handleRenameClicked,
+                    onClick: handleEditNameClicked,
+                },
+                {
+                    title: "Edit Description",
+                    icon: <DescriptionIcon fontSize="small" />,
+                    onClick: handleEditDescriptionClicked,
                 },
                 {
                     title: "Clear Label",
