@@ -196,13 +196,16 @@ const BugRouterButton = ({
                             justifyContent: "center",
                             alignItems: "center",
                             height: "15%",
-                            color: "#2a2a2a",
+                            color: editMode ? "text.primary" : selected ? "#303030" : "primary.main",
                             "@media (max-width:800px)": {
                                 display: "none",
                             },
                             textTransform: "uppercase",
                             paddingTop: "4px",
                             fontSize: "12px",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
                         }}
                     >
                         {tertiaryLabel}
@@ -221,6 +224,7 @@ const BugRouterButton = ({
                         "@media (max-width:600px)": {
                             display: "none",
                         },
+                        paddingBottom: tertiaryLabel ? "4px" : 0,
                     }}
                 >
                     <Box

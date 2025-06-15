@@ -1,6 +1,7 @@
 const express = require("express");
 const destinationList = require("@services/destination-list");
 const destinationRename = require("@services/destination-rename");
+const destinationSetDescription = require("@services/destination-setdescription");
 const destinationListAll = require("@services/destination-listall");
 const destinationGroupList = require("@services/destinationgroup-list");
 const buttonRemove = require("@services/button-remove");
@@ -114,7 +115,7 @@ route.post("/:groupIndex", async function (req, res, next) {
     }
 });
 
-route.get("/setlabel/:buttonIndex/:label?", async function (req, res, next) {
+route.get("/setname/:buttonIndex/:label?", async function (req, res, next) {
     try {
         res.json({
             status: "success",
@@ -125,6 +126,21 @@ route.get("/setlabel/:buttonIndex/:label?", async function (req, res, next) {
         res.json({
             status: "error",
             message: "Failed to set label",
+        });
+    }
+});
+
+route.get("/setdescription/:buttonIndex/:description?", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await destinationSetDescription(parseInt(req.params?.buttonIndex), req.params?.description),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set description",
         });
     }
 });
