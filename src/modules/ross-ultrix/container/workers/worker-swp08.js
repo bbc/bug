@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
 const Probel = require("@utils/probel-swp-08/index");
+const fetchRoutes = require("@utils/fetch-routes");
 const mongoSingle = require("@core/mongo-single");
 
 let routesCollection;
@@ -18,6 +19,7 @@ parentPort.postMessage({
 });
 
 const crosspointEvent = async (routes) => {
+    // console.log(routes);
     // well this is crazy.
     // this event uses zero-based indexes no matter what.
     // except for the levels
@@ -28,60 +30,44 @@ const crosspointEvent = async (routes) => {
     const zeroLevelInt = parseInt(Object.keys(routes[matrix[0]])[0]);
     const destination = parseInt(Object.keys(routes[matrix[0]][level])[0]);
     const source = routes[matrix[0]][level][destination];
-
     const query = { destination: destination };
     const update = {
         $set: { [`levels.${zeroLevelInt}`]: source, timestamp: Date.now() },
     };
     const options = { upsert: true };
-    // console.log(query, update, options);
     await routesCollection.updateOne(query, update, options);
 };
 
-const fetchRoutes = async (router) => {
-    const routerState = await router.getState();
-    if (routerState.message) {
-        console.log(`worker-swp08: error fetching routes: ${routerState?.message}`);
+const fetchMatrixSize = async () => {
+    // we'll use the db to get the matrix size
+
+    const sources = await mongoSingle.get("sources");
+    const destinations = await mongoSingle.get("destinations");
+
+    if (!sources || !destinations) {
+        console.log(`worker-swp08: no source or destination names yet - waiting`);
+        await delay(1000);
+        return;
     }
-    else {
-        console.log("set routes ok");
-        let entries = [];
 
-        const matrix = Object.keys(routerState);
-        const levels = Object.keys(routerState[matrix[0]]);
-
-        for (let level of levels) {
-            const destinations = Object.keys(routerState[matrix[0]][level]);
-            if (Array.isArray(destinations)) {
-                for (let destination of destinations) {
-                    if (!entries[parseInt(destination)]) {
-                        entries[parseInt(destination)] = { destination: parseInt(destination), levels: {} };
-                    }
-                    // AGGGHHH the destination is ALWAYS zero based. FFS Ross!
-                    entries[parseInt(destination)]["levels"][level] = routerState[matrix][level][destination];
-                    entries[parseInt(destination)]["timestamp"] = Date.now();
-                }
-            }
-        }
-
-        for (let entry of entries) {
-            const query = { destination: entry?.destination };
-            const update = {
-                $set: entry,
-            };
-            const options = { upsert: true };
-            await routesCollection.updateOne(query, update, options);
-        }
+    const levels = sources[0].audioLevelCount + sources[0].videoLevelCount;
+    return {
+        sources: sources.length,
+        destinations: destinations.length,
+        levels: levels.length
     }
 }
 
 const main = async () => {
-    await delay(99999);
-
     await delay(1000);
 
     // connect to the db
     await mongoDb.connect(workerData.id);
+
+    let matrixSize;
+    while (!matrixSize) {
+        matrixSize = await fetchMatrixSize();
+    }
 
     // get the collection reference
     routesCollection = await mongoCollection("routes");
@@ -90,47 +76,29 @@ const main = async () => {
     await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 120 });
 
     // remove previous values
-    //TODO routesCollection.deleteMany({});
+    routesCollection.deleteMany({});
 
     // kick things off
     console.log(`worker-swp08: connecting to device at ${workerData.address}:${workerData.port}`);
 
-    // wait for matrix size
-    let matrixSize;
-    while (!matrixSize) {
-        matrixSize = await mongoSingle.get("matrixSize");
-        if (!matrixSize) {
-            console.log(`worker-swp08: waiting for matrix size`);
-            await delay(1000);
-        }
-    }
-
     let router;
-    try {
-        router = new Probel(workerData.address, {
-            port: workerData?.port,
-            sources: workerData?.sources,
-            desinations: workerData?.desinations,
-            extended: true,
-            levels: workerData?.levels,
-            chars: 32,
-            // log: console.log
-        });
+    router = new Probel(workerData.address, {
+        port: workerData?.port,
+        sources: matrixSize.sources,
+        desinations: matrixSize.destinations,
+        extended: true,
+        levels: matrixSize.levels,
+        chars: 32,
+    });
 
-        // update db on crosspoint change
-        router.on("crosspoint", crosspointEvent);
+    // update db on crosspoint change
+    router.on("crosspoint", crosspointEvent);
 
+    while (true) {
+        await fetchRoutes(router, routesCollection);
         await delay(5000);
-
-        while (true) {
-            await fetchRoutes(router);
-            await delay(1000);
-        }
-
-    } catch (error) {
-        console.log(error);
-        throw error;
     }
+
 };
 
 main();

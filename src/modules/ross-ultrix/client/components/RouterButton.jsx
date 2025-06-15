@@ -99,7 +99,6 @@ export default function RouterButton({
     };
 
     const handleAddGroupClicked = async (event) => {
-        console.log(groups);
         const groupIds = await customDialog({
             dialog: <AddGroupDialog groups={groups.filter((group) => group.fixed === false)} />,
         });
