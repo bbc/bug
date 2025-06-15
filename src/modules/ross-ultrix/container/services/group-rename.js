@@ -1,11 +1,19 @@
 "use strict";
 
+const ultrixWebApi = require("@utils/ultrix-webapi");
 const configGet = require("@core/config-get");
-const configPutViaCore = require("@core/config-putviacore");
+const fetchGroups = require("@utils/fetch-groups");
+const logger = require("@core/logger")(module);
 
-module.exports = async (type, groupName, newGroupName) => {
-    const config = await configGet();
-    if (!config) {
+module.exports = async (groupId, newGroupName) => {
+    let config;
+    try {
+        config = await configGet();
+        if (!config) {
+            throw new Error();
+        }
+    } catch (error) {
+        logger.error(`group-rename: failed to fetch config`);
         return false;
     }
 
@@ -13,33 +21,8 @@ module.exports = async (type, groupName, newGroupName) => {
         return false;
     }
 
-    const groupVar = `${type}Groups`;
-    if (!config[groupVar]) {
-        return false;
-    }
-
-    // check it's in the array
-    const groupExistsCheck = config[groupVar].filter(
-        (group) => !group.name.localeCompare(groupName, "en", { sensitivity: "base" })
-    );
-    if (groupExistsCheck.length === 0) {
-        return false;
-    }
-
-    // check new group doesn't already exist
-    const newGroupCheck = config[groupVar].filter(
-        (group) => !group.name.localeCompare(newGroupName, "en", { sensitivity: "base" })
-    );
-    if (newGroupCheck.length > 0) {
-        return false;
-    }
-
-    config[groupVar] = config[groupVar].map((eachGroup) => {
-        if (!eachGroup["name"].localeCompare(groupName, "en", { sensitivity: "base" })) {
-            eachGroup["name"] = newGroupName;
-        }
-        return eachGroup;
-    });
-
-    return await configPutViaCore(config);
+    const path = `groupcategory/rename?name=${newGroupName}&id=${groupId}`
+    logger.info(`group-rename: calling '${path}'`);
+    await ultrixWebApi.get(path, config)
+    await fetchGroups(config);
 };

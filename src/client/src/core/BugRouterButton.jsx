@@ -1,15 +1,14 @@
-import React from "react";
-import BugDynamicIcon from "@core/BugDynamicIcon";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import BugItemMenu from "@components/BugItemMenu";
+import BugContextMenu from "@core/BugContextMenu";
+import BugCountdownSpinner from "@core/BugCountdownSpinner";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import LockIcon from "@mui/icons-material/Lock";
-import BugCountdownSpinner from "@core/BugCountdownSpinner";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import React from "react";
 import { useLongPress } from "use-long-press";
-import BugContextMenu from "@core/BugContextMenu";
-import { useTheme } from "@mui/material/styles";
 
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
     fontSize: "2rem",
@@ -33,6 +32,7 @@ const BugRouterButton = ({
     onClick,
     primaryLabel,
     secondaryLabel,
+    tertiaryLabel,
     selected,
     useDoubleClick = false,
     sx = {},
@@ -42,7 +42,6 @@ const BugRouterButton = ({
     });
     const timer = React.useRef();
     const [contextMenuAnchorEl, setContextMenuAnchorEl] = React.useState(null);
-    const theme = useTheme();
 
     const bind = useLongPress((event) => {
         setContextMenuAnchorEl(event.target);
@@ -96,6 +95,11 @@ const BugRouterButton = ({
             return onClick();
         }
     };
+
+    let fontSize = number.toString().length > 3 ? 22 : 28;
+    if (tertiaryLabel) {
+        fontSize -= 8;
+    }
 
     return (
         <Button
@@ -185,26 +189,50 @@ const BugRouterButton = ({
                         {leftIcon}
                     </Box>
                 )}
+                {tertiaryLabel && (
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "15%",
+                            color: editMode ? "text.primary" : selected ? "#303030" : "primary.main",
+                            "@media (max-width:800px)": {
+                                display: "none",
+                            },
+                            textTransform: "uppercase",
+                            paddingTop: "4px",
+                            fontSize: "12px",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                        }}
+                    >
+                        {tertiaryLabel}
+                    </Box>
+                )}
+
                 <Box
                     sx={{
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        height: "65%",
+                        height: tertiaryLabel ? "50%" : "65%",
                         "@media (max-width:800px)": {
                             height: "56%",
                         },
                         "@media (max-width:600px)": {
                             display: "none",
                         },
+                        paddingBottom: tertiaryLabel ? "4px" : 0,
                     }}
                 >
                     <Box
                         sx={{
                             border: "2px solid #3a3a3a",
                             borderRadius: "100%",
-                            height: "64px",
-                            width: "64px",
+                            height: tertiaryLabel ? "48px" : "64px",
+                            width: tertiaryLabel ? "48px" : "64px",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -222,7 +250,7 @@ const BugRouterButton = ({
                             <Box
                                 sx={{
                                     color: "#303030",
-                                    fontSize: number.toString().length > 3 ? "22px" : "28px",
+                                    fontSize: `${fontSize}px`,
                                     fontWeight: 300,
                                     "@media (max-width:800px)": {
                                         fontSize: "20px",

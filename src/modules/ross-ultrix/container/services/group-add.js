@@ -1,30 +1,25 @@
 "use strict";
 
+const ultrixWebApi = require("@utils/ultrix-webapi");
 const configGet = require("@core/config-get");
-const configPutViaCore = require("@core/config-putviacore");
 const logger = require("@core/logger")(module);
+const fetchGroups = require("@utils/fetch-groups");
 
-module.exports = async (type, groupName) => {
-    const config = await configGet();
-    if (!config) {
+module.exports = async (groupName) => {
+
+    let config;
+    try {
+        config = await configGet();
+        if (!config) {
+            throw new Error();
+        }
+    } catch (error) {
+        logger.error(`group-add: failed to fetch config`);
         return false;
     }
+    const path = `groupcategory/add?name=${encodeURIComponent(groupName)}&parentId=1`;
+    await ultrixWebApi.get(path, config)
+    await fetchGroups(config);
 
-    const groupVar = `${type}Groups`;
-    if (!config[groupVar]) {
-        config[groupVar] = [];
-    }
-
-    for (let eachGroup of config[groupVar]) {
-        if (eachGroup["name"].toLowerCase() === groupName.toLowerCase()) {
-            logger.error(`group-add: group ${groupName} already exists`);
-            return false;
-        }
-    }
-
-    config[groupVar].push({
-        name: groupName,
-        value: [],
-    });
-    return await configPutViaCore(config);
+    return true;
 };
