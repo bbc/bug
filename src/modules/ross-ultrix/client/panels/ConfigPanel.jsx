@@ -80,75 +80,25 @@ export default function ConfigPanel() {
                         supportsValidation
                         onChange={(event) => validateServer(event, "port", ["address"])}
                         type="text"
-                        label="Device Port"
+                        label="Ultrix SWP08 Port"
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <BugConfigFormTextField
-                        name="sources"
+                        name="uiPort"
                         control={control}
+                        rules={{ required: true }}
                         numeric
                         min={0}
                         max={65535}
                         fullWidth
-                        error={errors.sources}
-                        helperText={messages.sources}
-                        defaultValue={panelConfig.data.sources}
+                        error={errors.uiPort}
+                        helperText={messages.uiPort}
+                        defaultValue={panelConfig.data.uiPort}
+                        supportsValidation
+                        onChange={(event) => validateServer(event, "uiPort", ["address"])}
                         type="text"
-                        label="Sources"
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <BugConfigFormTextField
-                        name="destinations"
-                        control={control}
-                        numeric
-                        min={1}
-                        max={65535}
-                        fullWidth
-                        error={errors.destinations}
-                        helperText={messages.destinations}
-                        defaultValue={panelConfig.data.destinations}
-                        type="text"
-                        label="Destinations"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <BugConfigFormSelect
-                        name="chars"
-                        control={control}
-                        fullWidth
-                        label="Label Length"
-                        defaultValue={panelConfig.data.chars}
-                        options={[
-                            { id: 4, label: "4 Letters" },
-                            { id: 8, label: "8 Letters" },
-                            { id: 12, label: "12 Letters" },
-                            { id: 16, label: "16 Letters" },
-                            { id: 32, label: "32 Letters" },
-                        ]}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <BugConfigFormSelect
-                        name="idOffset"
-                        control={control}
-                        fullWidth
-                        label="Starting ID Offset (0/1)"
-                        defaultValue={panelConfig.data.idOffset}
-                        options={[
-                            { id: 0, label: "0 (Current)" },
-                            { id: 1, label: "1 (Legacy)" },
-                        ]}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <BugConfigFormSwitch
-                        name="extended"
-                        label="Use Probel Extended Commands"
-                        control={control}
-                        defaultValue={panelConfig.data.extended}
-                        fullWidth
+                        label="Ultrix Web Port"
                     />
                 </Grid>
                 <Grid item xs={12}>

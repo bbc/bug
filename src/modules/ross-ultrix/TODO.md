@@ -1,1 +1,3 @@
 -   detect slot for socket
+-   snmp alarms
+-   config show all

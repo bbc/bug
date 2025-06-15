@@ -71,7 +71,7 @@ module.exports = async (type = "source") => {
             throw new Error();
         }
     } catch (error) {
-        logger.error(`destination-list: failed to fetch config`);
+        logger.error(`group-list: failed to fetch config`);
         return false;
     }
 

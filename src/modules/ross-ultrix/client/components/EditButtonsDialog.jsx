@@ -1,49 +1,26 @@
-import React from "react";
+import BugScrollbars from "@core/BugScrollbars";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
 import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
-import CircularProgress from "@mui/material/CircularProgress";
-import EditButtonsDragItem from "./EditButtonsDragItem";
-import _ from "lodash";
 import AxiosPost from "@utils/AxiosPost";
-import Box from "@mui/material/Box";
-import BugScrollbars from "@core/BugScrollbars";
+import _ from "lodash";
+import React from "react";
+import useAsyncEffect from "use-async-effect";
+import EditButtonsItem from "./EditButtonsItem";
 
-import {
-    DndContext,
-    closestCenter,
-    KeyboardSensor,
-    PointerSensor,
-    TouchSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
-import {
-    arrayMove,
-    SortableContext,
-    sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-
-export default function EditButtonsDialog({ open, panelId, onDismiss, groupType, onConfirm, groupIndex }) {
+export default function EditButtonsDialog({ open, panelId, onDismiss, groupType, onConfirm, groupIndex, groupId }) {
     const [buttons, setButtons] = React.useState(null);
     const [selectedButtons, setSelectedButtons] = React.useState(null);
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        }),
-        useSensor(TouchSensor)
-    );
 
     // fetch list of all buttons
     useAsyncEffect(async () => {
@@ -69,20 +46,6 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
         setSelectedButtons(filteredSelectedButtons);
     }, []);
 
-    const handleDragEnd = async ({ active, over }) => {
-        if (active.id !== over.id) {
-            const overId = over.id.split(":")[1];
-            const activeId = active.id.split(":")[1];
-
-            const oldIndex = selectedButtons.findIndex((button) => button.index === parseInt(activeId));
-            const newIndex = selectedButtons.findIndex((button) => button.index === parseInt(overId));
-
-            const newButtons = arrayMove(selectedButtons, oldIndex, newIndex);
-
-            setSelectedButtons(newButtons);
-        }
-    };
-
     const handleToggle = (event, buttonIndex, buttonLabel) => {
         const selected = selectedButtons.filter((button) => button.index === buttonIndex).length > 0;
         if (selected) {
@@ -95,6 +58,11 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                 index: buttonIndex,
                 label: buttonLabel,
             });
+
+            // then sort by label
+            localButtons.sort((a, b) => a.label.localeCompare(b.label));
+
+            // then save it to the state
             setSelectedButtons(localButtons);
         }
         // event.stopPropagation();
@@ -109,7 +77,7 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
         const postData = {
             buttons: buttonIndexArray,
         };
-        const url = `/container/${panelId}/groups/set/${groupType}/${groupIndex}`;
+        const url = `/container/${panelId}/groups/set/${groupType}/${groupId}`;
         if (await AxiosPost(url, postData)) {
             onConfirm();
         }
@@ -158,7 +126,6 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                         onClick={handleSelectAll}
                         sx={{
                             padding: "4px",
-                            // fontWeight: 500,
                         }}
                     >
                         <ListItemIcon
@@ -280,20 +247,9 @@ export default function EditButtonsDialog({ open, panelId, onDismiss, groupType,
                                 event.stopPropagation();
                             }}
                         >
-                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                                <SortableContext
-                                    items={selectedButtons.map((button) => `button:${button.index}`)}
-                                    strategy={verticalListSortingStrategy}
-                                >
-                                    {selectedButtons.map((button) => (
-                                        <EditButtonsDragItem
-                                            button={button}
-                                            onRemove={removeButton}
-                                            key={button.index}
-                                        />
-                                    ))}
-                                </SortableContext>
-                            </DndContext>
+                            {selectedButtons.map((button) => (
+                                <EditButtonsItem button={button} onRemove={removeButton} key={button.index} />
+                            ))}
                         </List>
                     </Box>
                 </BugScrollbars>
