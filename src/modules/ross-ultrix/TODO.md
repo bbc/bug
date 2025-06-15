@@ -1,4 +1,3 @@
 -   detect slot for socket
 -   snmp alarms
 -   config show all
--   odd response from swp08 worker

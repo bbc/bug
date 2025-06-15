@@ -48,7 +48,7 @@ module.exports = async (destinationIndex = null, groupIndex = 0, showExcluded = 
     const crosspoints = await routesCollection.findOne({ destination: parseInt(destinationIndex) });
 
     // we'll just use the first one for the moment
-    const selectedSourceIndex = crosspoints?.levels?.[0];
+    const selectedSourceIndex = crosspoints?.levels?.[1];
 
     groups[groupIndex]?.["value"].forEach((sourceIndex, order) => {
 

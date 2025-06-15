@@ -50,7 +50,7 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
     const buttonsFixed = groups[groupIndex]?.fixed ?? false;
 
     groups[groupIndex]?.["value"].forEach((destinationIndex, order) => {
-        const selectedSource = crosspoints?.[destinationIndex]?.levels["0"];
+        const selectedSource = crosspoints?.[destinationIndex]?.levels["1"];
         const selectedSourceLabel = sources?.[selectedSource]?.name;
 
         const isExcluded = excludedDestinations.includes(destinationIndex?.toString());
