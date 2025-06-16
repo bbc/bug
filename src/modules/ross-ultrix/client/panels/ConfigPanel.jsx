@@ -1,6 +1,5 @@
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
@@ -61,7 +60,7 @@ export default function ConfigPanel() {
                         helperText={messages.address}
                         defaultValue={panelConfig.data.address}
                         supportsValidation
-                        onChange={(event) => validateServer(event, "address", ["port"])}
+                        onChange={(event) => validateServer(event, "address", ["port", "uiPort"])}
                         label="IP Address"
                     />
                 </Grid>

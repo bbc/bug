@@ -18,9 +18,9 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
-    //TODO await mongoSingle.clear("destinations");
-    // await mongoSingle.clear("sources");
-    // await mongoSingle.clear("groups");
+    await mongoSingle.clear("destinations");
+    await mongoSingle.clear("sources");
+    await mongoSingle.clear("groups");
 
     while (true) {
         await fetchDestinations(workerData);
