@@ -1,7 +1,7 @@
 "use strict";
 
 const logger = require("@core/logger")(module);
-const Probel = require("@utils/probel-swp-08/index");
+const Probel = require("probel-swp-08");
 
 module.exports = async (address, port) => {
 
