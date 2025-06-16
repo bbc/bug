@@ -17,11 +17,8 @@ const getMatrix = async () => {
         logger.info("matrix: establish connection to matrix and distribute global connection");
         matrix = new Probel(config?.address, {
             port: config?.port,
-            sources: config?.sources,
-            destinations: config?.destinations,
-            levels: config?.levels,
-            extended: config?.extended,
-            chars: parseInt(config?.chars),
+            extended: true,
+            chars: 32,
         });
     } catch (error) {
         logger.error(`matrix: could not connect to matrix - ${config?.address}:${config?.port}`);
