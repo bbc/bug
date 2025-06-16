@@ -6,7 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
-const Probel = require("@utils/probel-swp-08/index");
+const Probel = require("probel-swp-08");
 const fetchRoutes = require("@utils/fetch-routes");
 const mongoSingle = require("@core/mongo-single");
 

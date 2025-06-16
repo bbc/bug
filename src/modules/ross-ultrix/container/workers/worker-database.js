@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const fetchDestinations = require("@utils/fetch-destinations");
 const fetchSources = require("@utils/fetch-sources");
 const fetchGroups = require("@utils/fetch-groups");
+const mongoSingle = require("@core/mongo-single");
 
 // tell the manager the things you care about
 parentPort.postMessage({
