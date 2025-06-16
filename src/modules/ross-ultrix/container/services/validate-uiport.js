@@ -1,13 +1,13 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
-const matrixTestProbel = require("@services/matrix-testprobel");
+const matrixTestUi = require("@services/matrix-testui");
 
 module.exports = async (formData) => {
-    if (await matrixTestProbel(formData.address, formData.port)) {
+    if (await matrixTestUi(formData.address, formData.uiPort)) {
         return new validationResult([
             {
                 state: true,
-                field: "port",
+                field: "uiPort",
                 message: "Connected OK",
             },
         ]);
@@ -15,7 +15,7 @@ module.exports = async (formData) => {
     return new validationResult([
         {
             state: false,
-            field: "port",
+            field: "uiPort",
             message: "Failed to connect",
         },
     ]);
