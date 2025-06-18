@@ -3,12 +3,16 @@ const ultrixWebApi = require("@utils/ultrix-webapi");
 const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
 const mongoSingle = require("@core/mongo-single");
+const fetchSources = require("@utils/fetch-sources");
 
 module.exports = async (sourceIndex, name = "") => {
     const config = await configGet();
     if (!config) {
         throw new Error();
     }
+
+    // we need to fetch destinations from the device first - in case it hasn't updated recently
+    await fetchSources(config);
 
     // fetch the existing data first
     const sourcesRaw = await mongoSingle.get("sourcesRaw");

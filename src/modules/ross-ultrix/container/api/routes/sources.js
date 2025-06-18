@@ -53,6 +53,21 @@ route.post("/seticon/:index", async function (req, res, next) {
     }
 });
 
+route.get("/setdescription/:buttonIndex/:description?", async function (req, res, next) {
+    try {
+        res.json({
+            status: "success",
+            data: await sourceSetDescription(parseInt(req.params?.buttonIndex), req.params?.description),
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Failed to set description",
+        });
+    }
+});
+
 route.get("/:destination?/:group?", async function (req, res, next) {
     try {
         res.json({
@@ -83,21 +98,6 @@ route.post("/:destination?/:group?", async function (req, res, next) {
         res.json({
             status: "error",
             message: "Failed to get sources",
-        });
-    }
-});
-
-route.get("/setdescription/:buttonIndex/:description?", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await sourceSetDescription(parseInt(req.params?.buttonIndex), req.params?.description),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to set description",
         });
     }
 });
