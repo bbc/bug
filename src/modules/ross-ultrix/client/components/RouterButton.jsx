@@ -72,16 +72,26 @@ export default function RouterButton({
             onChange();
         }
     };
-    const handleClearClicked = async (event, item) => {
-        const defaultLabel = `${buttonType} ${button.index}`;
+
+    const handleClearNameClicked = async (event, item) => {
+        const defaultLabel = `${buttonType === "source" ? "SRC" : "DEST"} ${button.index + 1}`;
         if (
             await AxiosCommand(
                 `/container/${panelId}/${buttonType}s/setname/${button.index}/${encodeURIComponent(defaultLabel)}`
             )
         ) {
-            sendAlert(`Cleared button label for ${buttonType} ${button.index}`, { variant: "success" });
+            sendAlert(`Cleared button name for ${buttonType} ${button.index}`, { variant: "success" });
         } else {
-            sendAlert(`Failed to clear label for ${buttonType} ${button.index}`, { variant: "error" });
+            sendAlert(`Failed to clear name for ${buttonType} ${button.index}`, { variant: "error" });
+        }
+        onChange();
+    };
+
+    const handleClearDescriptionClicked = async (event, item) => {
+        if (await AxiosCommand(`/container/${panelId}/${buttonType}s/setdescription/${button.index}/`)) {
+            sendAlert(`Cleared button description for ${buttonType} ${button.index}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to clear description for ${buttonType} ${button.index}`, { variant: "error" });
         }
         onChange();
     };
@@ -167,9 +177,17 @@ export default function RouterButton({
                     onClick: handleEditDescriptionClicked,
                 },
                 {
-                    title: "Clear Label",
+                    title: "-",
+                },
+                {
+                    title: "Clear Name",
                     icon: <BackspaceIcon fontSize="small" />,
-                    onClick: handleClearClicked,
+                    onClick: handleClearNameClicked,
+                },
+                {
+                    title: "Clear Description",
+                    icon: <BackspaceIcon fontSize="small" />,
+                    onClick: handleClearDescriptionClicked,
                 },
                 {
                     title: "-",
