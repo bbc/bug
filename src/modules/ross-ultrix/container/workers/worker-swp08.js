@@ -14,12 +14,11 @@ let routesCollection;
 
 // tell the manager the things you care about
 parentPort.postMessage({
-    restartDelay: 10000,
+    restartDelay: 5000,
     restartOn: ["address", "port", "extended", "sources", "destinations", "chars"],
 });
 
 const crosspointEvent = async (routes) => {
-    // console.log(routes);
     // well this is crazy.
     // this event uses zero-based indexes no matter what.
     // except for the levels
@@ -51,10 +50,11 @@ const fetchMatrixSize = async () => {
     }
 
     const levels = sources[0].audioLevelCount + sources[0].videoLevelCount;
+
     return {
         sources: sources.length,
         destinations: destinations.length,
-        levels: levels.length
+        levels: levels,
     }
 }
 
@@ -73,13 +73,13 @@ const main = async () => {
     routesCollection = await mongoCollection("routes");
 
     // and now create the index with ttl
-    await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 120 });
+    await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 480 });
 
     // remove previous values
     routesCollection.deleteMany({});
 
     // kick things off
-    console.log(`worker-swp08: connecting to device at ${workerData.address}:${workerData.port}`);
+    console.log(`worker-swp08: connecting to device at ${workerData.address}:${workerData.port} with ${matrixSize.sources} source(s), ${matrixSize.destinations} destination(s) and ${matrixSize.levels} level(s)`);
 
     let router;
     router = new Probel(workerData.address, {
