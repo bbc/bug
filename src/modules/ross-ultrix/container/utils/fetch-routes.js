@@ -23,15 +23,17 @@ module.exports = async (router, routesCollection) => {
             const destinations = Object.keys(routerState[matrix[0]][level]);
             if (Array.isArray(destinations)) {
                 for (let destination of destinations) {
-                    // destinations are all zero-based ... but not here. AGGGGHHHHH!
-                    const destinationZero = parseInt(destination) - 1;
+                    if (routerState[matrix]?.[level]?.[destination] !== undefined) {
+                        // destinations are all zero-based ... but not here. AGGGGHHHHH!
+                        const destinationZero = parseInt(destination) - 1;
 
-                    if (!routes[destinationZero]) {
-                        routes[destinationZero] = { destination: destinationZero, levels: {} };
+                        if (!routes[destinationZero]) {
+                            routes[destinationZero] = { destination: destinationZero, levels: {} };
+                        }
+                        // now we've guaranteed the levels key is there we can populate it
+                        routes[destinationZero]["levels"][intLevel] = routerState[matrix]?.[level]?.[destination];
+                        routes[destinationZero]["timestamp"] = Date.now();
                     }
-                    // now we've guaranteed the levels key is there we can populate it
-                    routes[destinationZero]["levels"][intLevel] = routerState[matrix]?.[level]?.[destination];
-                    routes[destinationZero]["timestamp"] = Date.now();
                 }
             }
         }
@@ -50,5 +52,3 @@ module.exports = async (router, routesCollection) => {
         }
     }
 };
-
-
