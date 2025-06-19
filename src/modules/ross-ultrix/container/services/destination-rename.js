@@ -3,7 +3,6 @@ const ultrixWebApi = require("@utils/ultrix-webapi");
 const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
 const mongoSingle = require("@core/mongo-single");
-const fetchDestinations = require("@utils/fetch-destinations");
 
 module.exports = async (destinationIndex, name = "") => {
     const config = await configGet();
@@ -11,19 +10,11 @@ module.exports = async (destinationIndex, name = "") => {
         throw new Error();
     }
 
-    // we need to fetch destinations from the device first - in case it hasn't updated recently
-    await fetchDestinations(config);
-
     // fetch the existing data first
     const destinationsRaw = await mongoSingle.get("destinationsRaw");
     const match = destinationsRaw.find((r) => r.uiId === destinationIndex);
     if (!match) {
         logger.error(`destination-rename: failed to find destination index ${destinationIndex}`);
-        throw new Error()
-    }
-
-    if (destinationsRaw.find((r) => r.uiId !== destinationIndex && r.name === name)) {
-        logger.error(`destination-rename: destination name ${name} already exists`);
         throw new Error()
     }
 

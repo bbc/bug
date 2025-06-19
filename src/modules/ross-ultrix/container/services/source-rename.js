@@ -3,7 +3,6 @@ const ultrixWebApi = require("@utils/ultrix-webapi");
 const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
 const mongoSingle = require("@core/mongo-single");
-const fetchSources = require("@utils/fetch-sources");
 
 module.exports = async (sourceIndex, name = "") => {
     const config = await configGet();
@@ -11,19 +10,11 @@ module.exports = async (sourceIndex, name = "") => {
         throw new Error();
     }
 
-    // we need to fetch destinations from the device first - in case it hasn't updated recently
-    await fetchSources(config);
-
     // fetch the existing data first
     const sourcesRaw = await mongoSingle.get("sourcesRaw");
     const match = sourcesRaw.find((r) => r.uiId === sourceIndex);
     if (!match) {
         logger.error(`source-rename: failed to find source index ${sourceIndex}`);
-        throw new Error()
-    }
-
-    if (sourcesRaw.find((r) => r.uiId !== sourceIndex && r.name === name)) {
-        logger.error(`source-rename: source name ${name} already exists`);
         throw new Error()
     }
 
