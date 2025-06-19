@@ -96,7 +96,7 @@ const BugApiVlanAutocomplete = ({
         if (taggedValue?.length === options?.length) {
             trunkLabel = `Trunk - All VLANs`;
         } else {
-            trunkLabel = `Trunk - ${convertToRange(taggedValue.filter((v) => v !== untaggedValue))}`;
+            trunkLabel = `Trunk - ${convertToRange(taggedValue?.filter((v) => v !== untaggedValue))}`;
         }
         value = {
             id: -1,
