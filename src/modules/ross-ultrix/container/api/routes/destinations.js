@@ -149,7 +149,7 @@ route.delete("/:groupId/:name", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await buttonRemove("destination", parseInt(req.params?.groupId), req.params?.index),
+            data: await buttonRemove("destination", parseInt(req.params?.groupId), req.params?.name),
         });
     } catch (error) {
         console.log(error);
