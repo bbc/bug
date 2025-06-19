@@ -73,7 +73,7 @@ const main = async () => {
     routesCollection = await mongoCollection("routes");
 
     // and now create the index with ttl
-    await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 480 });
+    // await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 480 });
 
     // remove previous values
     routesCollection.deleteMany({});
