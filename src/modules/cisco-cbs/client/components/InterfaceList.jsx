@@ -3,6 +3,7 @@ import BugApiTable from "@core/BugApiTable";
 import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
 import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
 import BugNoData from "@core/BugNoData";
+import BugPoeIcon from "@core/BugPoeIcon";
 import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
@@ -18,7 +19,6 @@ import Box from "@mui/material/Box";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-import React from "react";
 import { useHistory } from "react-router-dom";
 
 export default function InterfaceList({ panelId, stackId = null }) {
@@ -196,6 +196,20 @@ export default function InterfaceList({ panelId, stackId = null }) {
         return interfaceToggle(false, item);
     };
 
+    const handlePoeClicked = async (event, item) => {
+        const action = item?.["poe-admin-enable"] ? "disable" : "enable";
+        if (await AxiosCommand(`/container/${panelId}/interface/${action}poe/${item.interfaceId}`)) {
+            doForceRefresh();
+            sendAlert(`${action === "disable" ? "Disabled" : "Enabled"} POE for interface: ${item.shortId}`, {
+                variant: "success",
+            });
+        } else {
+            sendAlert(`Failed to ${action} POE for interface: ${item.shortId}`, {
+                variant: "error",
+            });
+        }
+    };
+
     const handleProtectClicked = async (event, item) => {
         if (
             await AxiosCommand(
@@ -249,6 +263,22 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     noPadding: true,
                     width: 44,
                     content: (item) => <BugPowerIcon disabled={!item["link-state"]} />,
+                },
+                {
+                    noPadding: true,
+                    width: 44,
+                    content: (item) => {
+                        if (!item?.["poe-available"]) {
+                            return null;
+                        }
+                        return (
+                            <BugPoeIcon
+                                disabled={!item?.["poe-admin-enable"]}
+                                active={item?.["poe-operational-status"]}
+                                error={item?.["poe-error"]}
+                            />
+                        );
+                    },
                 },
                 {
                     noPadding: true,
@@ -379,6 +409,12 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 },
                 {
                     title: "-",
+                },
+                {
+                    title: "POE",
+                    disabled: (item) => !item?.["poe-available"],
+                    icon: (item) => (item?.["poe-admin-enable"] ? <CheckIcon fontSize="small" /> : null),
+                    onClick: handlePoeClicked,
                 },
                 {
                     title: "Protect",

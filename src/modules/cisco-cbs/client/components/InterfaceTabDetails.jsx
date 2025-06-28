@@ -1,9 +1,8 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import { useApiPoller } from "@hooks/ApiPoller";
-import BugLoading from "@core/BugLoading";
 import BugDetailsTable from "@core/BugDetailsTable";
+import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
+import { useApiPoller } from "@hooks/ApiPoller";
+import Grid from "@mui/material/Grid";
 
 export default function InterfaceTabDetails({ panelId, interfaceId }) {
     const iface = useApiPoller({
@@ -35,6 +34,12 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
 
                         { name: "Admin Speed", value: iface.data?.["admin-speed"] },
                         { name: "Operational Speed", value: iface.data?.["operational-speed"] },
+
+                        { name: "POE Available", value: iface.data?.["poe-available"] ? "yes" : "no" },
+                        { name: "POE Status", value: iface.data?.["poe-operational-status"] ? "on" : "off" },
+                        { name: "POE Type", value: iface.data?.["poe-description"] },
+                        { name: "POE Power", value: `${iface.data?.["poe-power"] / 1000} W` },
+                        { name: "POE Description", value: iface.data?.["poe-port-status-description"] },
 
                         { name: "Untagged VLAN", value: iface.data?.["untagged-vlan"] },
                         {
