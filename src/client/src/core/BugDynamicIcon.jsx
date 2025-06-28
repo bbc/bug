@@ -1,7 +1,7 @@
-import * as React from "react";
 import * as Icons from "@mui/icons-material/";
-import * as MDIIcons from "mdi-material-ui";
 import { useTheme } from "@mui/material/styles";
+import * as MDIIcons from "mdi-material-ui";
+import * as React from "react";
 
 function upperFirst(string) {
     return string.slice(0, 1).toUpperCase() + string.slice(1, string.length);

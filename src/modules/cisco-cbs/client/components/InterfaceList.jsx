@@ -2,9 +2,9 @@ import BugApiSwitch from "@core/BugApiSwitch";
 import BugApiTable from "@core/BugApiTable";
 import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
 import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
+import BugNetworkIcon from "@core/BugNetworkIcon";
 import BugNoData from "@core/BugNoData";
 import BugPoeIcon from "@core/BugPoeIcon";
-import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
@@ -262,7 +262,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <BugPowerIcon disabled={!item["link-state"]} />,
+                    content: (item) => <BugNetworkIcon disabled={!item["link-state"]} />,
                 },
                 {
                     noPadding: true,

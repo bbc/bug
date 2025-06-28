@@ -2,8 +2,8 @@ import BugApiSwitch from "@core/BugApiSwitch";
 import BugApiTable from "@core/BugApiTable";
 import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
 import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
+import BugNetworkIcon from "@core/BugNetworkIcon";
 import BugNoData from "@core/BugNoData";
-import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
@@ -18,7 +18,6 @@ import Box from "@mui/material/Box";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-import React from "react";
 import { useHistory } from "react-router-dom";
 
 export default function InterfaceList({ panelId, stackId = null }) {
@@ -252,7 +251,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                 {
                     noPadding: true,
                     width: 44,
-                    content: (item) => <BugPowerIcon disabled={item.linkStatus !== "connected"} />,
+                    content: (item) => <BugNetworkIcon disabled={item.linkStatus !== "connected"} />,
                 },
                 {
                     noPadding: true,

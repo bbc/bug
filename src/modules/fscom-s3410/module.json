@@ -4,7 +4,7 @@
     "description": "Control FS.com S3410 Switches",
     "capabilities": ["network-switch"],
     "notes": "",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "icon": "SettingsEthernet",
     "author": "Geoff House",
     "license": "Apache-2.0",

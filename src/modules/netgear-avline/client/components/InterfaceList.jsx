@@ -18,7 +18,6 @@ import Box from "@mui/material/Box";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-import React from "react";
 import { useHistory } from "react-router-dom";
 
 export default function InterfaceList({ panelId, stackId = null }) {

@@ -1,8 +1,9 @@
-import PowerSettingsNew from "@mui/icons-material/PowerSettingsNew";
+import { Box } from "@mui/material";
+import { Lan } from "mdi-material-ui";
 
-export default function BugPowerIcon({ disabled = false, sx = {}, activeColor = "primary.main" }) {
+export default function BugNetworkIcon({ disabled = false, sx = {}, activeColor = "primary.main" }) {
     return (
-        <PowerSettingsNew
+        <Box
             sx={{
                 color: disabled ? "#ffffff" : activeColor,
                 opacity: disabled ? 0.1 : 1,
@@ -10,6 +11,8 @@ export default function BugPowerIcon({ disabled = false, sx = {}, activeColor = 
                 margin: "auto",
                 ...sx,
             }}
-        />
+        >
+            <Lan />
+        </Box>
     );
 }
