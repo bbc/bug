@@ -10,6 +10,6 @@ module.exports = async (interfaceId) => {
 
     const dbInterfaces = await mongoCollection("interfaces");
     const interfaceResult = await dbInterfaces.findOne({ interfaceId: parseInt(interfaceId) });
-    interfaceResult["tagged-vlans"] = ciscoCBSExpandVlanRanges(interfaceResult["tagged-vlans"], availableVlanArray);
+    interfaceResult["tagged-vlans"] = ciscoCBSExpandVlanRanges(interfaceResult?.["tagged-vlans"], availableVlanArray);
     return interfaceResult;
 };
