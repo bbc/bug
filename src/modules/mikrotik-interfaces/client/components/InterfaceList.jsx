@@ -1,22 +1,21 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
-import Box from "@mui/material/Box";
-import BugSparkCell from "@core/BugSparkCell";
-import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
-import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
-import CheckIcon from "@mui/icons-material/Check";
-import EditIcon from "@mui/icons-material/Edit";
-import CommentIcon from "@mui/icons-material/Comment";
-import { useHistory } from "react-router-dom";
+import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useForceRefresh } from "@hooks/ForceRefresh";
+import CheckIcon from "@mui/icons-material/Check";
+import CommentIcon from "@mui/icons-material/Comment";
+import EditIcon from "@mui/icons-material/Edit";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import Box from "@mui/material/Box";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import { useHistory } from "react-router-dom";
 
 export default function InterfaceList({ panelId }) {
     const sendAlert = useAlert();
