@@ -11,6 +11,7 @@ const interfaceUnprotect = require("@services/interface-unprotect");
 const interfaceSetVlanTrunk = require("@services/interface-setvlantrunk");
 const interfaceSetVlanAccess = require("@services/interface-setvlanaccess");
 const interfaceRename = require("@services/interface-rename");
+const interfacePoe = require("@services/interface-poe");
 const asyncHandler = require("express-async-handler");
 
 router.all(
@@ -85,6 +86,28 @@ router.get(
     "/rename/:interfaceId/",
     asyncHandler(async (req, res) => {
         const result = await interfaceRename(req.params.interfaceId, "");
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/enablepoe/:interfaceId/",
+    asyncHandler(async (req, res) => {
+        const result = await interfacePoe(req.params.interfaceId, "enable");
+        res.json({
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/disablepoe/:interfaceId/",
+    asyncHandler(async (req, res) => {
+        const result = await interfacePoe(req.params.interfaceId, "disable");
         res.json({
             status: result ? "success" : "failure",
             data: result,

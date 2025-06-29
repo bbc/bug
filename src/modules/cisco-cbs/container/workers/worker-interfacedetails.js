@@ -94,6 +94,9 @@ const convertPoePortType = (value) => {
 }
 
 const main = async () => {
+    // stagger start of script ...
+    await delay(4000);
+
     // Connect to the db
     await mongoDb.connect(workerData.id);
 

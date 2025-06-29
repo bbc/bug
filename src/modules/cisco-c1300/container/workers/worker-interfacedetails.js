@@ -51,6 +51,48 @@ const convertOperationalPortSpeed = (speed) => {
     }
 };
 
+// From the SNMP MIB files:
+// 1 - none: no PoE, unknown type;
+// 2 - PoE: Standard AF PoE
+// 3 - PoE Plus: Standard AT PoE
+// 4 - 60 W: 60W poe port
+// 5 - PoE BT-type3: 802.3BT standard, type 3
+// 6 - PoE BT-type4: 802.3BT standard, type 4
+
+const convertPoeDescription = (value) => {
+    switch (value) {
+        case 1:
+            return "None";
+        case 2:
+            return "802.3af PoE";
+        case 3:
+            return "802.at PoE+";
+        case 4:
+            return "60W PoE";
+        case 5:
+            return "802.3bt Type 3"
+        case 6:
+            return "802.3bt Type 4"
+        default:
+            return "";
+    }
+};
+
+const convertPoePortType = (value) => {
+    switch (value) {
+        case 1:
+            return false
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            return true;
+        default:
+            return false
+    }
+}
+
 const main = async () => {
     // stagger start of script ...
     await delay(4000);
@@ -91,6 +133,36 @@ const main = async () => {
                 oid: "1.3.6.1.2.1.31.1.1.1.15",
             });
 
+            const pethPsePortAdminEnable = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.2.1.105.1.1.1.3.1",
+            });
+
+            const rlPethPsePortOperStatus = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.4.1.9.6.1.101.108.1.1.11.1",
+            });
+
+            const rlPethPsePortSupportPoeType = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.4.1.9.6.1.101.108.1.1.13.1",
+            });
+
+            const rlPethPsePortOutputPower = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.4.1.9.6.1.101.108.1.1.5.1",
+            });
+
+            const rlPethPsePortStatusDescription = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.4.1.9.6.1.101.108.1.1.8.1",
+            });
+
+            const rlPethPsePortStatus = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.4.1.9.6.1.101.108.1.1.7.1",
+            });
+
             for (let eachInterface of interfaces) {
                 const alias = ifAliases[`1.3.6.1.2.1.31.1.1.1.18.${eachInterface.interfaceId}`];
                 const autoNegotiationState =
@@ -102,6 +174,18 @@ const main = async () => {
                     ifOperationalPortSpeed[`1.3.6.1.2.1.31.1.1.1.15.${eachInterface.interfaceId}`]
                 );
 
+                const poeAdminEnable =
+                    pethPsePortAdminEnable[`1.3.6.1.2.1.105.1.1.1.3.1.${eachInterface.interfaceId}`] === 1
+
+                const poeOperStatus =
+                    rlPethPsePortOperStatus[`1.3.6.1.4.1.9.6.1.101.108.1.1.11.1.${eachInterface.interfaceId}`] === 1
+
+                const poeAvailable = convertPoePortType(rlPethPsePortSupportPoeType[`1.3.6.1.4.1.9.6.1.101.108.1.1.13.1.${eachInterface.interfaceId}`]);
+                const poeDescription = convertPoeDescription(rlPethPsePortSupportPoeType[`1.3.6.1.4.1.9.6.1.101.108.1.1.13.1.${eachInterface.interfaceId}`]);
+                const poePower = rlPethPsePortOutputPower[`1.3.6.1.4.1.9.6.1.101.108.1.1.5.1.${eachInterface.interfaceId}`] ?? 0;
+                const poePortStatusDescription = rlPethPsePortStatusDescription[`1.3.6.1.4.1.9.6.1.101.108.1.1.8.1.${eachInterface.interfaceId}`] ?? "";
+                const poePortError = rlPethPsePortStatus[`1.3.6.1.4.1.9.6.1.101.108.1.1.7.1.${eachInterface.interfaceId}`] === 9
+
                 await interfacesCollection.updateOne(
                     { interfaceId: eachInterface.interfaceId },
                     {
@@ -110,6 +194,13 @@ const main = async () => {
                             "auto-negotiation": autoNegotiationState,
                             "admin-speed": adminPortSpeed,
                             "operational-speed": operationalPortSpeed,
+                            "poe-admin-enable": poeAdminEnable,
+                            "poe-operational-status": poeOperStatus,
+                            "poe-available": poeAvailable,
+                            "poe-description": poeDescription,
+                            "poe-power": poePower,
+                            "poe-port-status-description": poePortStatusDescription,
+                            "poe-error": poePortError
                         },
                     },
                     { upsert: false }

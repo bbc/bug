@@ -1,7 +1,7 @@
 {
     "name": "cisco-c1300",
     "longname": "Cisco C1300 Switch",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Monitoring and control of Cisco C1300 series switches",
     "capabilities": ["network-switch"],
     "icon": "SettingsEthernet",
