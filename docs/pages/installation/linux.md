@@ -11,7 +11,7 @@ nav_order: 1
 
 1. Download and install the docker engine for your flavour of linux. We quite like Ubuntu [Docker Install Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 
-2. Follow these post-installation steps so that you don't need to run docker as root [Docker Post-Installaiton Steps](https://docs.docker.com/engine/install/linux-postinstall/)
+2. Follow these post-installation steps so that you don't need to run docker as root [Docker Post-Installation Steps](https://docs.docker.com/engine/install/linux-postinstall/)
 
 ## Install Docker-Compose
 
