@@ -143,7 +143,7 @@ export default function PageSystemBackup() {
                                                 onClick={(event) =>
                                                     openWebpage(
                                                         event,
-                                                        `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.npmVersion}`
+                                                        `${info.data?.git.repository}/releases/tag/v${info.data?.npmVersion}`
                                                     )
                                                 }
                                                 sx={{ color: "text.secondary" }}
@@ -167,7 +167,7 @@ export default function PageSystemBackup() {
                                                         onClick={(event) =>
                                                             openWebpage(
                                                                 event,
-                                                                `https://github.com/${info.data?.git.repository}/releases/tag/v${info.data?.updates?.version}`
+                                                                `${info.data?.git.repository}/releases/tag/v${info.data?.updates?.version}`
                                                             )
                                                         }
                                                         sx={{ color: "text.secondary" }}
@@ -193,7 +193,7 @@ export default function PageSystemBackup() {
                                                 onClick={(event) =>
                                                     openWebpage(
                                                         event,
-                                                        `https://github.com/${info.data?.git.repository}/commit/${info.data?.git.commit}`
+                                                        `${info.data?.git.repository}/commit/${info.data?.git.commit}`
                                                     )
                                                 }
                                                 sx={{ color: "text.secondary" }}
@@ -215,7 +215,7 @@ export default function PageSystemBackup() {
                                                 onClick={(event) =>
                                                     openWebpage(
                                                         event,
-                                                        `https://github.com/${info.data?.git.repository}/actions/runs/${info.data?.git.buildId}`
+                                                        `${info.data?.git.repository}/actions/runs/${info.data?.git.buildId}`
                                                     )
                                                 }
                                                 sx={{ color: "text.secondary" }}
