@@ -26,7 +26,7 @@ jobs:
             run:
                 working-directory: ./src/client
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: actions/setup-node@v4
               name: Frontend Build & Test using Node.js ${{ matrix.node-version }}
               with:
