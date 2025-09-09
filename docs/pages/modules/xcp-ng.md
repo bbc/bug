@@ -2,7 +2,7 @@
 layout: page
 title: XCP-ng
 parent: Modules
-nav_order: 45
+nav_order: 46
 ---
 
 # XCP-ng

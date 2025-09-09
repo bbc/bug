@@ -2,7 +2,7 @@
 layout: page
 title: RSS Feed Display
 parent: Modules
-nav_order: 36
+nav_order: 37
 ---
 
 # RSS Feed Display
