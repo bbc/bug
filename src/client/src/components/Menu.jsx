@@ -22,7 +22,6 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 const faviconNotification = new FaviconNotification();
-let notificationsCount = 0;
 
 const MenuDivider = () => <Divider sx={{ backgroundColor: "background.default", margin: 0 }} />;
 
@@ -197,15 +196,6 @@ const Menu = ({ showGroups = true }) => {
         faviconNotification.set(notificationCount);
     };
 
-    const soundNotifications = (panels) => {
-        notificationsCount = 0;
-
-        for (let panel of panels) {
-            notificationsCount += panel._status.length;
-        }
-    };
-
-    soundNotifications(activePanelList);
     setNotifications(activePanelList);
 
     //TODO move enabledStrategiesCount into redux user slice
