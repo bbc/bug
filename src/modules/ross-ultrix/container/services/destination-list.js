@@ -50,8 +50,23 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
     const buttonsFixed = groups[groupIndex]?.fixed ?? false;
 
     groups[groupIndex]?.["value"].forEach((destinationIndex, order) => {
-        const selectedSource = crosspoints?.[destinationIndex]?.levels["1"];
-        const selectedSourceLabel = sources?.[selectedSource]?.name;
+
+        // pull out all sources routed across all levels
+        let sourceLabel = undefined;
+        let sourceIndex = undefined;
+
+        if (crosspoints?.[destinationIndex]?.levels) {
+            const uniqueSources = [...new Set(Object.values(crosspoints?.[destinationIndex]?.levels))];
+
+            if (uniqueSources.length > 1) {
+                sourceIndex = -1;
+                sourceLabel = "** MULTIPLE **";
+            }
+            else if (uniqueSources.length === 1) {
+                sourceIndex = uniqueSources[0];
+                sourceLabel = sources?.[sourceIndex]?.name;
+            }
+        }
 
         const isExcluded = excludedDestinations.includes(destinationIndex?.toString());
 
@@ -63,8 +78,8 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
                 label: destinations?.[destinationIndex]?.name,
                 description: destinations?.[destinationIndex]?.description,
                 fixed: buttonsFixed,
-                sourceIndex: parseInt(selectedSource),
-                sourceLabel: selectedSourceLabel,
+                sourceIndex: sourceIndex,
+                sourceLabel: sourceLabel,
                 indexText: indexText,
                 hidden: isExcluded,
                 order: order,

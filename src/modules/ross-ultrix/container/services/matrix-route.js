@@ -25,8 +25,12 @@ module.exports = async (destinatonIndex, sourceIndex) => {
     const matrix = await globalMatrix();
 
     // oh my life. Ryan's SW08 module assumed everything is 1-based. AGGGGHHHHH
-    const status = await matrix.routeAllLevels(sourceInt + 1, destinationInt + 1);
-    if (status === 1) {
+
+    // also ... it sometimes doesn't work, so we're going to do it twice. :(
+    const status1 = await matrix.routeAllLevels(sourceInt + 1, destinationInt + 1);
+    const status2 = await matrix.routeAllLevels(sourceInt + 1, destinationInt + 1);
+
+    if (status1 === 1 || status2 === 1) {
         logger.info(`Routed Source #${sourceInt} to Destination #${destinationInt} on all levels`);
 
         // now update db
