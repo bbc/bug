@@ -47,14 +47,16 @@ module.exports = async (destinationIndex = null, groupIndex = 0, showExcluded = 
     // get get existing routes from the db
     const crosspoints = await routesCollection.findOne({ destination: parseInt(destinationIndex) });
 
-    // we'll just use the first one for the moment
-    const selectedSourceIndex = crosspoints?.levels?.[1];
+    let selectedSources = [];
+    if (crosspoints?.levels) {
+        selectedSources = Object.values(crosspoints?.levels) ?? [];
+    }
 
     groups[groupIndex]?.["value"].forEach((sourceIndex, order) => {
 
         // check it's not excluded or if it's a selected source - in which case we'll show it anyway
         const isExcluded = excludedSources.includes(sourceIndex?.toString());
-        const isSelected = selectedSourceIndex === sourceIndex;
+        const isSelected = selectedSources.includes(sourceIndex);
         if (!isExcluded || showExcluded) {
             outputArray["sources"].push({
                 index: sourceIndex,
