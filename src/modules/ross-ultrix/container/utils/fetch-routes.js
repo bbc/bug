@@ -1,5 +1,6 @@
 "use strict";
-const mongoSingle = require("@core/mongo-single");
+
+const delay = require("delay");
 
 module.exports = async (router, routesCollection) => {
 
@@ -9,6 +10,9 @@ module.exports = async (router, routesCollection) => {
 
     if (routerState.message) {
         console.log(`fetch-routes: error fetching routes: ${routerState?.message}`);
+        // this happens a lot - we'll wait before exiting the worker
+        await delay(10000);
+        throw new Error(`Error fetching routes: ${routerState?.message}`);
     }
     else {
         let routes = [];
