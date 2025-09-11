@@ -74,6 +74,6 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
                 ]}
             />
         ),
-        [group.label, group.selected, editMode]
+        [group.label, group.selected, editMode, onClick]
     );
 }

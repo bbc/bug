@@ -79,7 +79,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
     };
 
-    const scrollableGroupButtons = (props) => {
+    const ScrollableGroupButtons = (props) => {
         if (props?.buttons?.data?.groups?.length === 0 && !editMode) {
             return false;
         }
@@ -117,7 +117,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         );
     };
 
-    const renderSources = () => {
+    const RenderSources = () => {
         if (sourceButtons.status === "loading" || sourceButtons.status === "idle" || !sourceButtons.data) {
             return <BugLoading />;
         }
@@ -141,16 +141,16 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
             >
                 <SectionHeader>Sources</SectionHeader>
 
-                {scrollableGroupButtons({
-                    panelId: panelId,
-                    editMode: editMode,
-                    groupType: "source",
-                    selectedDestination: selectedDestination,
-                    sourceGroup: sourceGroup,
-                    destinationGroup: destinationGroup,
-                    buttons: sourceButtons,
-                    onChange: () => setSourceForceRefresh(),
-                })}
+                <ScrollableGroupButtons
+                    panelId={panelId}
+                    editMode={editMode}
+                    groupType="source"
+                    selectedDestination={selectedDestination}
+                    sourceGroup={sourceGroup}
+                    destinationGroup={destinationGroup}
+                    buttons={sourceButtons}
+                    onChange={() => setSourceForceRefresh()}
+                />
                 <Box
                     sx={{
                         width: "100%",
@@ -176,7 +176,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         );
     };
 
-    const renderDestinations = () => {
+    const RenderDestinations = () => {
         if (
             destinationButtons.status === "loading" ||
             destinationButtons.status === "idle" ||
@@ -195,15 +195,15 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 }}
             >
                 <SectionHeader>Destinations</SectionHeader>
-                {scrollableGroupButtons({
-                    panelId: panelId,
-                    editMode: editMode,
-                    sourceGroup: sourceGroup,
-                    destinationGroup: destinationGroup,
-                    groupType: "destination",
-                    buttons: destinationButtons,
-                    onChange: () => setDestinationForceRefresh(),
-                })}
+                <ScrollableGroupButtons
+                    panelId={panelId}
+                    editMode={editMode}
+                    groupType="destination"
+                    sourceGroup={sourceGroup}
+                    destinationGroup={destinationGroup}
+                    buttons={sourceButtons}
+                    onChange={() => setDestinationForceRefresh()}
+                />
                 <Box
                     sx={{
                         width: "100%",
@@ -245,7 +245,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         marginBottom: "2px",
                     }}
                 >
-                    {renderSources()}
+                    <RenderSources />
                 </Box>
                 <Box
                     sx={{
@@ -257,7 +257,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         marginTop: "2px",
                     }}
                 >
-                    {renderDestinations()}
+                    <RenderDestinations />
                 </Box>
             </Box>
         </>
