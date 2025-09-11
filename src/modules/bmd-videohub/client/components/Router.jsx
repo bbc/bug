@@ -1,15 +1,15 @@
-import React from "react";
 import BugLoading from "@core/BugLoading";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
+import BugScrollbars from "@core/BugScrollbars";
 import { useApiPoller } from "@hooks/ApiPoller";
-import GroupButtons from "./GroupButtons";
-import RouterButtons from "./RouterButtons";
-import { useSelector } from "react-redux";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import BugScrollbars from "@core/BugScrollbars";
-import { useForceRefresh } from "@hooks/ForceRefresh";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useSelector } from "react-redux";
+import GroupButtons from "./GroupButtons";
+import RouterButtons from "./RouterButtons";
 
 const SectionHeader = styled("div")({
     fontSize: "0.875rem",
@@ -113,7 +113,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         );
     };
 
-    const renderSources = () => {
+    const RenderSources = () => {
         if (sourceButtons.status === "loading" || sourceButtons.status === "idle" || !sourceButtons.data) {
             return <BugLoading />;
         }
@@ -171,7 +171,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         );
     };
 
-    const renderDestinations = () => {
+    const RenderDestinations = () => {
         if (
             destinationButtons.status === "loading" ||
             destinationButtons.status === "idle" ||
@@ -239,7 +239,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         marginBottom: "2px",
                     }}
                 >
-                    {renderSources()}
+                    <RenderSources />
                 </Box>
                 <Box
                     sx={{
@@ -251,7 +251,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         marginTop: "2px",
                     }}
                 >
-                    {renderDestinations()}
+                    <RenderDestinations />
                 </Box>
             </Box>
         </>

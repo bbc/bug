@@ -1,0 +1,50 @@
+name: Update module version and changelog
+
+on:
+    workflow_dispatch:
+    push:
+        paths:
+            - "src/modules/**"
+        branches:
+            - main
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+
+jobs:
+    update-modules:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20"
+
+            - name: Detect changed modules
+              id: changes
+              run: |
+                  echo "CHANGED_MODULES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^src/modules/' | cut -d '/' -f3 | sort -u | tr '\n' ' ')" >> $GITHUB_ENV
+
+            - name: Update module.json and changelog
+              run: |
+                  for module in $CHANGED_MODULES; do
+                    MODULE_PATH="src/modules/$module"
+                    MODULE_JSON="$MODULE_PATH/module.json"
+                    CHANGELOG="$MODULE_PATH/CHANGELOG.md"
+
+                    # Extract current build number
+                    BUILD=$(jq '.build' "$MODULE_JSON")
+                    NEW_BUILD=$((BUILD + 1))
+
+                    # Update module.json
+                    jq ".build = $NEW_BUILD" "$MODULE_JSON" > "$MODULE_JSON.tmp" && mv "$MODULE_JSON.tmp" "$MODULE_JSON"
+
+                    # Append to changelog
+                    echo "## Build $NEW_BUILD" >> "$CHANGELOG"
+                    echo "- ${GITHUB_COMMIT_MESSAGE}" >> "$CHANGELOG"
+                  done
+              env:
+                  GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
