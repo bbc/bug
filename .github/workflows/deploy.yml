@@ -1,13 +1,16 @@
 name: BUG Deploy
 env:
-    registry: "ghcr.io"
+    regsitry: "ghcr.io"
 
-# run only once module versions and changelogs have been updated
 on:
-    workflow_run:
-        workflows: ["Update module version and changelog"]
-        types:
-            - completed
+    push:
+        branches:
+            - main
+        tags:
+            - "v*"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
 
 jobs:
     docker:
@@ -15,7 +18,6 @@ jobs:
         permissions:
             contents: read
             packages: write
-
         defaults:
             run:
                 working-directory: ./src
@@ -25,7 +27,7 @@ jobs:
               uses: actions/checkout@v4
             - uses: actions/setup-node@v4
 
-            # get current date and time for Build
+            # get current date and time for build
             - name: Set current date and time as an environment variable
               run: echo "timestamp=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
             - name: Print current date and time
@@ -37,13 +39,11 @@ jobs:
               id: backend-version
               with:
                   path: ./src
-
             - uses: martinbeentjes/npm-get-version-action@master
               name: Get Frontend Version
               id: frontend-version
               with:
                   path: ./src/client
-
             - name: Print Current Versions
               run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and frontend version ${{ steps.frontend-version.outputs.current-version }}
 
@@ -62,7 +62,7 @@ jobs:
             - name: Login to GHCR Registry
               uses: docker/login-action@v3
               with:
-                  registry: ${{ env.registry }}
+                  registry: ${{ env.regsitry }}
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
                   logout: false
@@ -75,8 +75,8 @@ jobs:
                   platforms: linux/amd64,linux/arm64
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: |
-                      ${{env.registry}}/${{ github.repository_owner }}/bug:latest
-                      ${{env.registry}}/${{ github.repository_owner }}/bug:${{steps.backend-version.outputs.current-version}}
+                      ${{env.regsitry}}/${{ github.repository_owner }}/bug:latest
+                      ${{env.regsitry}}/${{ github.repository_owner }}/bug:${{steps.backend-version.outputs.current-version}}
                   outputs: type=registry
                   labels: |
                       author=${{github.actor}}
