@@ -24,7 +24,7 @@ jobs:
         steps:
             # get the latest version of the repository
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
             - uses: actions/setup-node@v4
 
             # get current date and time for build
