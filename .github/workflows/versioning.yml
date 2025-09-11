@@ -20,10 +20,10 @@ jobs:
                   rm -rf ./* || true
                   rm -rf ./.??* || true
                   ls -la ./
-            #Get the latest version of the repository
+            # get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v4
-            #Bump the backend version
+            # bump the backend version
             - name: "Backend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:
@@ -38,7 +38,7 @@ jobs:
                   major-wording: "Major:"
                   rc-wording: "RELEASE,alpha"
                   tag-prefix: "v"
-            #Bump the frontend version
+            # bump the frontend version
             - name: "Frontend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
               env:

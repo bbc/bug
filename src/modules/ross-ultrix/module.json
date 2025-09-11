@@ -5,7 +5,7 @@
     "capabilities": ["video-router"],
     "memory": 100,
     "notes": "",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "icon": "mdi-matrix",
     "author": "Geoff House",
     "license": "Apache-2.0",
