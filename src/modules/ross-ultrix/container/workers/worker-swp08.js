@@ -78,25 +78,32 @@ const main = async () => {
     // remove previous values
     routesCollection.deleteMany({});
 
-    // kick things off
-    console.log(`worker-swp08: connecting to device at ${workerData.address}:${workerData.port} with ${matrixSize.sources} source(s), ${matrixSize.destinations} destination(s) and ${matrixSize.levels} level(s)`);
+    try {
 
-    let router;
-    router = new Probel(workerData.address, {
-        port: workerData?.port,
-        sources: matrixSize.sources,
-        desinations: matrixSize.destinations,
-        extended: true,
-        levels: matrixSize.levels,
-        chars: 32,
-    });
+        // kick things off
+        console.log(`worker-swp08: connecting to device at ${workerData.address}:${workerData.port} with ${matrixSize.sources} source(s), ${matrixSize.destinations} destination(s) and ${matrixSize.levels} level(s)`);
 
-    // update db on crosspoint change
-    router.on("crosspoint", crosspointEvent);
+        let router;
+        router = new Probel(workerData.address, {
+            port: workerData?.port,
+            sources: matrixSize.sources,
+            desinations: matrixSize.destinations,
+            extended: true,
+            levels: matrixSize.levels,
+            chars: 32,
+        });
 
-    while (true) {
-        await fetchRoutes(router, routesCollection);
-        await delay(5000);
+        // update db on crosspoint change
+        router.on("crosspoint", crosspointEvent);
+
+        while (true) {
+            await fetchRoutes(router, routesCollection);
+            await delay(5000);
+        }
+
+    } catch (error) {
+        console.log(error);
+        console.log(`worker-swp08: restarting swp08 poller after error`);
     }
 
 };
