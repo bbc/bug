@@ -4,12 +4,10 @@
     "description": "HLS, DASH and Web Video Player",
     "capabilities": [],
     "version": "1.0.0",
-    "icon": "mdi-play-box-outline",
+    "icon": "mdiPlayBoxOutline",
     "author": "Ryan McCartney",
     "needsContainer": false,
-    "protectedRoutes": [
-        "config"
-    ],
+    "protectedRoutes": ["config"],
     "license": "Apache-2.0",
     "status": "stable",
     "defaultconfig": {

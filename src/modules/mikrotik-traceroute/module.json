@@ -4,20 +4,13 @@
     "description": "Run a Traceroute from your MikroTik Router",
     "capabilities": [],
     "version": "1.0.0",
-    "icon": "mdi-map-marker-path",
+    "icon": "mdiMapMarkerPath",
     "author": "Ryan McCartney",
     "needsContainer": true,
     "license": "Apache-2.0",
     "status": "stable",
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

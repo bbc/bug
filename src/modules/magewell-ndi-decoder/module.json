@@ -5,7 +5,7 @@
     "capabilities": ["ndi"],
     "notes": "",
     "version": "1.0.1",
-    "icon": "mdi-video-wireless",
+    "icon": "mdiVideoWireless",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",

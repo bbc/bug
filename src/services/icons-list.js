@@ -52,12 +52,7 @@ module.exports = async (variant = null) => {
             path.join(__dirname, "..", "client", "node_modules", "@mui", "icons-material")
         );
 
-        const mdiIcons = await fetchIcons(
-            path.join(__dirname, "..", "client", "node_modules", "mdi-material-ui"),
-            "mdi"
-        );
-
-        icons = [...muiIcons, ...mdiIcons];
+        icons = [...muiIcons];
 
         icons = icons.filter((icon) => !iconsSettings.ignoreIcons.includes(icon.id));
 

@@ -1,5 +1,5 @@
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import { Box } from "@mui/material";
-import { Lan } from "mdi-material-ui";
 
 export default function BugNetworkIcon({ disabled = false, sx = {}, activeColor = "primary.main" }) {
     return (
@@ -12,7 +12,7 @@ export default function BugNetworkIcon({ disabled = false, sx = {}, activeColor 
                 ...sx,
             }}
         >
-            <Lan />
+            <BugDynamicIcon iconName="mdiLan" />
         </Box>
     );
 }

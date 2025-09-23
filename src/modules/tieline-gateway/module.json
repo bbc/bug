@@ -5,21 +5,14 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.2",
-    "icon": "mdi-transit-connection-variant",
+    "icon": "mdiTransitConnectionVariant",
     "author": "Geoff House",
     "memory": 200,
     "license": "Apache-2.0",
     "status": "beta",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

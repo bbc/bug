@@ -2,25 +2,16 @@
     "name": "densitron-emu3",
     "longname": "Densitron EMU3 MDU",
     "description": "Monitoring and control of Densitron EMU3 MDUs",
-    "capabilities": [
-        "power-control"
-    ],
+    "capabilities": ["power-control"],
     "notes": "",
     "version": "2.0.0",
-    "icon": "mdi-power-plug-outline",
+    "icon": "mdiPowerPlugOutline",
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "utils",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "utils", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,
