@@ -4,22 +4,14 @@
     "version": "1.0.9",
     "description": "Control of Comrex BRIC-Link and BRIC-Link II devices",
     "capabilities": [],
-    "icon": "mdi-phone-settings",
+    "icon": "mdiPhoneSettings",
     "notes": "",
     "author": "Geoff House",
     "memory": 150,
     "license": "Apache-2.0",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils",
-        "models"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils", "models"],
+    "protectedRoutes": ["config"],
     "status": "stable",
     "defaultconfig": {
         "id": "",

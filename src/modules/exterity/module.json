@@ -5,23 +5,14 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.1",
-    "icon": "mdi-set-top-box",
+    "icon": "mdiSetTopBox",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "utils",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
-    "publicRoutes": [
-        "/channel-list/*"
-    ],
+    "devmounts": ["api", "services", "utils", "workers"],
+    "protectedRoutes": ["config"],
+    "publicRoutes": ["/channel-list/*"],
     "defaultconfig": {
         "id": "",
         "order": 0,

@@ -3,8 +3,6 @@
 # DATE: 04/03/2021
 # DESC: Defines Docker services for Bug
 
-version: "3.8"
-
 networks:
     bug:
         name: bug

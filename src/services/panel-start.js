@@ -13,6 +13,12 @@ const panelConfigPush = require("@services/panelconfig-push");
 
 module.exports = async (panelId) => {
     const updateProgress = (progress) => {
+        if (progress === -1) {
+            // the build has failed - we just need to clear it
+            panelBuildStatusModel.setError(panelId, "Failed to build image");
+            panelBuildStatusModel.setProgress(panelId, 100);
+            return;
+        }
         try {
             // progress is a percentage value, but we need to start at 10% and finish at 90%.
             progress = progress * 0.8 + 10;

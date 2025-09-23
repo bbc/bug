@@ -1,13 +1,12 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
-import { useSelector } from "react-redux";
-import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
+import Grid from "@mui/material/Grid";
+import { useSelector } from "react-redux";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);

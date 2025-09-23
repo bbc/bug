@@ -5,7 +5,7 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.0",
-    "icon": "mdi-link",
+    "icon": "mdiLink",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",

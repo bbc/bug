@@ -32,8 +32,10 @@ module.exports = async (moduleName, updateProgressCallback) => {
         if (!(await dockerFileWrite(modulePath))) {
             throw new Error(`Failed to write dockerfile to '${modulePath}'`);
         }
+        logger.info(`written building new image for ${matchedModule.name}`);
 
         // and build the module
+        logger.info(`building new image for ${matchedModule.name}`);
         return await dockerBuildModule(moduleName, updateProgressCallback);
     } catch (error) {
         logger.warning(`${error.stack || error.trace || error || error.message}`);

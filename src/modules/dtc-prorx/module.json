@@ -5,19 +5,13 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.1",
-    "icon": "mdi-radio-tower",
+    "icon": "mdiRadioTower",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

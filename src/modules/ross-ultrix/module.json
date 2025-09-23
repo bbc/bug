@@ -6,7 +6,7 @@
     "memory": 100,
     "notes": "",
     "version": "0.1.10",
-    "icon": "mdi-matrix",
+    "icon": "mdiMatrix",
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "beta",

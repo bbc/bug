@@ -4,12 +4,10 @@
     "description": "Get the Azimuth and Elevation to point a Satelite Dish",
     "capabilities": [],
     "version": "1.0.0",
-    "icon": "mdi-satellite-uplink",
+    "icon": "mdiSatelliteUplink",
     "author": "Ryan McCartney",
     "needsContainer": false,
-    "protectedRoutes": [
-        "config"
-    ],
+    "protectedRoutes": ["config"],
     "license": "Apache-2.0",
     "status": "stable",
     "defaultconfig": {

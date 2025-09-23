@@ -5,7 +5,7 @@
     "capabilities": ["dhcp-server"],
     "notes": "",
     "version": "1.0.2",
-    "icon": "mdi-clipboard-list",
+    "icon": "mdiClipboardList",
     "author": "Geoff House",
     "needsContainer": true,
     "license": "Apache-2.0",

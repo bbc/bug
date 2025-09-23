@@ -5,7 +5,7 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.2",
-    "icon": "mdi-monitor-eye",
+    "icon": "mdiMonitorEye",
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "beta",

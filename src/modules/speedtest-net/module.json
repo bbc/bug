@@ -5,20 +5,13 @@
     "capabilities": [],
     "notes": "",
     "version": "2.0.0",
-    "icon": "mdi-speedometer",
+    "icon": "mdiSpeedometer",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

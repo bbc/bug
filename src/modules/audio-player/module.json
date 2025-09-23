@@ -5,7 +5,7 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.1",
-    "icon": "mdi-speaker",
+    "icon": "mdiSpeaker",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",

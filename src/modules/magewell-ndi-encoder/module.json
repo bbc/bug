@@ -2,25 +2,16 @@
     "name": "magewell-ndi-encoder",
     "longname": "Magewell NDI Encoder",
     "description": "Control Magewell NDI Encoders",
-    "capabilities": [
-        "ndi"
-    ],
+    "capabilities": ["ndi"],
     "notes": "",
     "version": "1.0.0",
-    "icon": "mdi-video-wireless",
+    "icon": "mdiVideoWireless",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "utils",
-        "services",
-        "workers"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "utils", "services", "workers"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

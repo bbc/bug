@@ -4,7 +4,7 @@
     "description": "Control and route dante in conjuction with Dante Domain Controller",
     "notes": "",
     "version": "1.0.2",
-    "icon": "mdi-matrix",
+    "icon": "mdiMatrix",
     "author": "Ryan McCartney",
     "memory": 50,
     "license": "Apache-2.0",
