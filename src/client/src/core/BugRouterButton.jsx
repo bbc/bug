@@ -101,6 +101,43 @@ const BugRouterButton = ({
         fontSize -= 8;
     }
 
+    const SecondaryLabel = ({ content }) => {
+        if (React.isValidElement(content)) {
+            // JSX element
+            return content;
+        }
+
+        if (typeof content === "function") {
+            // Component type (function or class)
+            const Component = content;
+            return <Component />;
+        }
+
+        if (typeof content === "string") {
+            return (
+                <Box
+                    sx={{
+                        fontWeight: 500,
+                        fontSize: "0.7rem",
+                        opacity: 0.6,
+                        textOverflow: "ellipsis",
+                        width: "100%",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textAlign: "center",
+                        "@media (max-width:800px)": {
+                            fontSize: 10,
+                        },
+                    }}
+                >
+                    {content}
+                </Box>
+            );
+        }
+
+        return null;
+    };
+
     return (
         <Button
             ref={setNodeRef}
@@ -285,25 +322,7 @@ const BugRouterButton = ({
                         },
                     }}
                 >
-                    {editMode ? null : (
-                        <Box
-                            sx={{
-                                fontWeight: 500,
-                                fontSize: "0.7rem",
-                                opacity: 0.6,
-                                textOverflow: "ellipsis",
-                                width: "100%",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textAlign: "center",
-                                "@media (max-width:800px)": {
-                                    fontSize: 10,
-                                },
-                            }}
-                        >
-                            {secondaryLabel}
-                        </Box>
-                    )}
+                    {editMode ? null : <SecondaryLabel content={secondaryLabel} />}
                     <Box
                         sx={{
                             textOverflow: "ellipsis",
