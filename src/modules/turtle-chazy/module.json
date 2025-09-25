@@ -1,0 +1,28 @@
+{
+    "name": "turtle-chazy",
+    "longname": "Turtle Chazy Control",
+    "description": "Turtle Chazy Dante Controller",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdiTurtle",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "beta",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "turtle-chazy",
+        "description": "",
+        "notes": "",
+        "address": "",
+        "useTake": false,
+        "enabled": false,
+        "url": ""
+    }
+}
