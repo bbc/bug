@@ -74,7 +74,7 @@ export default function GroupButtons({
     return (
         <Box
             sx={{
-                whiteSpace: "nowrap",
+                whiteSpace: editMode ? "normal" : "nowrap",
             }}
         >
             {localButtons.map((group) => {
