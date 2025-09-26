@@ -1,12 +1,11 @@
-import { useParams, useLocation } from "react-router-dom";
-import React from "react";
 import BugLoading from "@core/BugLoading";
-import { useSelector } from "react-redux";
 import { usePanelConfig } from "@data/PanelConfigHandler";
-import { Redirect } from "react-router";
-import * as Modules from "../../../../modules/*/client/Module.jsx";
-import { useDispatch } from "react-redux";
 import panelDataSlice from "@redux/panelDataSlice";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router";
+import { useLocation, useParams } from "react-router-dom";
+import * as Modules from "../../../../modules/*/client/Module.jsx";
 
 export default function PagePanel(props) {
     const params = useParams();
@@ -27,7 +26,7 @@ export default function PagePanel(props) {
 
     // we memoize this as we don't care if the panelconfig has changed in here - just the status or id
     return React.useMemo(() => {
-        console.log("changed this comment line in development to force a refresh of the Module include above");
+        console.log("changed this co4mmewnt line in development to force a refresh of the Module include above");
         if (panelConfig.status !== "success") {
             return <BugLoading />;
         }

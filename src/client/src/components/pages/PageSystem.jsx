@@ -1,16 +1,15 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import pageTitleSlice from "@redux/pageTitleSlice";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { useTheme } from "@mui/material/styles";
+import ListItemText from "@mui/material/ListItemText";
+import { styled, useTheme } from "@mui/material/styles";
+import pageTitleSlice from "@redux/pageTitleSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 
 const StyledList = styled(List)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -28,7 +27,7 @@ const NavIcon = () => (
             minWidth: "auto",
         }}
     >
-        <BugDynamicIcon iconName={"ChevronRight"} />
+        <BugDynamicIcon iconName="ChevronRight" />
     </ListItemIcon>
 );
 
