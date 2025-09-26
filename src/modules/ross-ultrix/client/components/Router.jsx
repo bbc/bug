@@ -79,7 +79,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
     };
 
-    const ScrollableGroupButtons = (props) => {
+    const scrollableGroupButtons = (props) => {
         if (props?.buttons?.data?.groups?.length === 0 && !editMode) {
             return false;
         }
@@ -141,16 +141,17 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
             >
                 <SectionHeader>Sources</SectionHeader>
 
-                <ScrollableGroupButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    groupType="source"
-                    selectedDestination={selectedDestination}
-                    sourceGroup={sourceGroup}
-                    destinationGroup={destinationGroup}
-                    buttons={sourceButtons}
-                    onChange={() => setSourceForceRefresh()}
-                />
+                {scrollableGroupButtons({
+                    panelId: panelId,
+                    editMode: editMode,
+                    groupType: "source",
+                    selectedDestination: selectedDestination,
+                    sourceGroup: sourceGroup,
+                    destinationGroup: destinationGroup,
+                    buttons: sourceButtons,
+                    onChange: () => setSourceForceRefresh(),
+                })}
+
                 <Box
                     sx={{
                         width: "100%",
@@ -195,15 +196,15 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                 }}
             >
                 <SectionHeader>Destinations</SectionHeader>
-                <ScrollableGroupButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    groupType="destination"
-                    sourceGroup={sourceGroup}
-                    destinationGroup={destinationGroup}
-                    buttons={destinationButtons}
-                    onChange={() => setDestinationForceRefresh()}
-                />
+                {scrollableGroupButtons({
+                    panelId: panelId,
+                    editMode: editMode,
+                    groupType: "destination",
+                    sourceGroup: sourceGroup,
+                    destinationGroup: destinationGroup,
+                    buttons: destinationButtons,
+                    onChange: () => setDestinationForceRefresh(),
+                })}
                 <Box
                     sx={{
                         width: "100%",
