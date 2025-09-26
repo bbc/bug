@@ -76,7 +76,7 @@ const main = async () => {
     // await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 480 });
 
     // remove previous values
-    routesCollection.deleteMany({});
+    // routesCollection.deleteMany({});
 
     while (true) {
         try {
