@@ -111,6 +111,28 @@ export default function ConfigPanel() {
                 </Grid>
                 <Grid item xs={12}>
                     <BugConfigFormChipInput
+                        name="limitSourceGroups"
+                        label="Source groups to show"
+                        control={control}
+                        defaultValue={panelConfig.data.limitSourceGroups}
+                        sort={true}
+                        error={errors.limitSourceGroups}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
+                        name="limitDestinationGroups"
+                        label="Destination groups to show"
+                        control={control}
+                        defaultValue={panelConfig.data.limitDestinationGroups}
+                        sort={true}
+                        error={errors.limitDestinationGroups}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <BugConfigFormChipInput
                         name="excludeSources"
                         label="Excluded Sources (0-based)"
                         control={control}
