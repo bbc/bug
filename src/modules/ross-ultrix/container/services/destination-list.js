@@ -6,7 +6,7 @@ const logger = require("@core/logger")(module);
 const destinationGroupList = require("./destinationgroup-list");
 const mongoSingle = require("@core/mongo-single");
 
-module.exports = async (groupIndex = 0, showExcluded = false) => {
+module.exports = async (groupIndex = -1, showExcluded = false) => {
     let config;
     try {
         config = await configGet();
@@ -29,8 +29,23 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
     const routesCollection = await mongoCollection("routes");
     const crosspoints = await routesCollection.find().toArray();
 
+    // check limited groups
+    const limitDestinationGroups = config.limitDestinationGroups.sort((a, b) => {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+
+    let filteredGroups;
+    if (limitDestinationGroups.length > 0) {
+        filteredGroups = groups.filter((g) =>
+            limitDestinationGroups.some((label) => label.toLowerCase() === g.label.toLowerCase())
+        );
+    }
+    else {
+        filteredGroups = groups;
+    }
+
     const outputArray = {
-        groups: groups.map((g) => {
+        groups: filteredGroups.map((g) => {
             return {
                 label: g.label,
                 index: g.index,
@@ -43,56 +58,63 @@ module.exports = async (groupIndex = 0, showExcluded = false) => {
         destinations: [],
     };
 
-    // calculate excluded sources
-    // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
-    const excludedDestinations = config["excludeDestinations"] ? config["excludeDestinations"] : [];
+    // check that selected group is in the filteredGroups
+    if (filteredGroups.some(
+        (l) => l.label.toLowerCase() === groups[groupIndex].label.toLowerCase()
+    )) {
 
-    const buttonsFixed = groups[groupIndex]?.fixed ?? false;
+        // calculate excluded sources
+        // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
+        const excludedDestinations = config["excludeDestinations"] ? config["excludeDestinations"] : [];
 
-    groups[groupIndex]?.["value"].forEach((destinationIndex, order) => {
+        const buttonsFixed = groups[groupIndex]?.fixed ?? false;
 
-        // pull out all sources routed across all levels
-        let sourceLabel = undefined;
-        let sourceIndex = undefined;
+        console.log(`showing group index ${groupIndex}`);
 
-        if (crosspoints?.[destinationIndex]?.levels) {
-            const uniqueSources = [...new Set(Object.values(crosspoints?.[destinationIndex]?.levels))];
+        groups[groupIndex]?.["value"].forEach((destinationIndex, order) => {
 
-            if (uniqueSources.length > 1) {
-                sourceIndex = -1;
-                sourceLabel = "** MULTIPLE **";
+            // pull out all sources routed across all levels
+            let sourceLabel = undefined;
+            let sourceIndex = undefined;
+
+            if (crosspoints?.[destinationIndex]?.levels) {
+                const uniqueSources = [...new Set(Object.values(crosspoints?.[destinationIndex]?.levels))];
+
+                if (uniqueSources.length > 1) {
+                    sourceIndex = -1;
+                    sourceLabel = "** MULTIPLE **";
+                }
+                else if (uniqueSources.length === 1) {
+                    sourceIndex = uniqueSources[0];
+                    sourceLabel = sources?.[sourceIndex]?.name;
+                }
             }
-            else if (uniqueSources.length === 1) {
-                sourceIndex = uniqueSources[0];
-                sourceLabel = sources?.[sourceIndex]?.name;
+
+            const isExcluded = excludedDestinations.includes(destinationIndex?.toString());
+
+            const indexText = config["showNumber"] === false ? "" : destinationIndex + 1;
+
+            if (!isExcluded || showExcluded) {
+                outputArray["destinations"].push({
+                    index: destinationIndex,
+                    label: destinations?.[destinationIndex]?.name,
+                    description: destinations?.[destinationIndex]?.description,
+                    fixed: buttonsFixed,
+                    sourceIndex: sourceIndex,
+                    sourceLabel: sourceLabel,
+                    indexText: indexText,
+                    hidden: isExcluded,
+                    order: order,
+                    isLocked: config.destinationLocks?.[destinationIndex] ?? false,
+                    icon: icons[destinationIndex] ? icons[destinationIndex] : null,
+
+                    iconColor: iconColors[destinationIndex] ? iconColors[destinationIndex] : "#ffffff",
+                });
             }
-        }
+        });
 
-        const isExcluded = excludedDestinations.includes(destinationIndex?.toString());
-
-        const indexText = config["showNumber"] === false ? "" : destinationIndex + 1;
-
-        if (!isExcluded || showExcluded) {
-            outputArray["destinations"].push({
-                index: destinationIndex,
-                label: destinations?.[destinationIndex]?.name,
-                description: destinations?.[destinationIndex]?.description,
-                fixed: buttonsFixed,
-                sourceIndex: sourceIndex,
-                sourceLabel: sourceLabel,
-                indexText: indexText,
-                hidden: isExcluded,
-                order: order,
-                isLocked: config.destinationLocks?.[destinationIndex] ?? false,
-                icon: icons[destinationIndex] ? icons[destinationIndex] : null,
-
-                iconColor: iconColors[destinationIndex] ? iconColors[destinationIndex] : "#ffffff",
-            });
-        }
-    });
-
-    // sort by order field
-    outputArray["destinations"].sort((a, b) => (a.order > b.order ? 1 : -1));
-
+        // sort by order field
+        outputArray["destinations"].sort((a, b) => (a.order > b.order ? 1 : -1));
+    }
     return outputArray;
 };
