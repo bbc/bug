@@ -117,7 +117,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         );
     };
 
-    const RenderSources = () => {
+    const renderSources = () => {
         if (sourceButtons.status === "loading" || sourceButtons.status === "idle" || !sourceButtons.data) {
             return <BugLoading />;
         }
@@ -176,7 +176,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         );
     };
 
-    const RenderDestinations = () => {
+    const renderDestinations = () => {
         if (
             destinationButtons.status === "loading" ||
             destinationButtons.status === "idle" ||
@@ -245,7 +245,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         marginBottom: "2px",
                     }}
                 >
-                    <RenderSources />
+                    {renderSources()}
                 </Box>
                 <Box
                     sx={{
@@ -257,7 +257,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                         marginTop: "2px",
                     }}
                 >
-                    <RenderDestinations />
+                    {renderDestinations()}
                 </Box>
             </Box>
         </>
