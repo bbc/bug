@@ -53,7 +53,7 @@ module.exports = async (destinationIndex = null, groupIndex = 0, showExcluded = 
         sources: [],
     };
     // check that selected group is in the filteredGroups
-    if (filteredGroups.some(
+    if (filteredGroups?.some(
         (l) => l.label.toLowerCase() === groups[groupIndex].label.toLowerCase()
     )) {
 

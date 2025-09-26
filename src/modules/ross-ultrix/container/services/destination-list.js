@@ -59,7 +59,7 @@ module.exports = async (groupIndex = -1, showExcluded = false) => {
     };
 
     // check that selected group is in the filteredGroups
-    if (filteredGroups.some(
+    if (filteredGroups?.some(
         (l) => l.label.toLowerCase() === groups[groupIndex].label.toLowerCase()
     )) {
 
