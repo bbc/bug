@@ -8,7 +8,6 @@ import DeviceButton from "./DeviceButton";
 
 export default function DeviceButtons({
     panelId,
-    editMode = false,
     groupType,
     buttons,
     onChange,
@@ -25,12 +24,16 @@ export default function DeviceButtons({
     }, [buttons]);
 
     const handleDeviceButtonClicked = (groupName) => {
-        const editText = editMode ? "/edit" : "";
-
         if (groupType === "source") {
-            history.push(`/panel/${panelId}${editText}/${encodeURIComponent(groupName)}/${destinationGroup}`);
+            history.push(
+                `/panel/${panelId}/route/${encodeURIComponent(groupName)}/${encodeURIComponent(destinationGroup)}`
+            );
         } else {
-            history.push(`/panel/${panelId}${editText}/${sourceGroup}/${encodeURIComponent(groupName)}`);
+            history.push(
+                `/panel/${panelId}/route/${encodeURIComponent(sourceGroup ? sourceGroup : "-")}/${encodeURIComponent(
+                    groupName
+                )}`
+            );
         }
     };
 
@@ -51,7 +54,6 @@ export default function DeviceButtons({
                     key={group.index}
                     group={group}
                     onClick={() => handleDeviceButtonClicked(group.label)}
-                    editMode={editMode}
                     panelId={panelId}
                     groupType={groupType}
                     onChange={onChange}
@@ -63,10 +65,6 @@ export default function DeviceButtons({
 
     if (!localButtons) {
         return <BugLoading />;
-    }
-
-    if (editMode) {
-        return <DeviceButtons />;
     }
 
     return (

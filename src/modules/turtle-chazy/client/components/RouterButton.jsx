@@ -2,7 +2,6 @@ import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugRouterButton from "@core/BugRouterButton";
 import GridViewIcon from "@mui/icons-material/GridView";
-import WarningIcon from "@mui/icons-material/Warning";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useAlert } from "@utils/Snackbar";
@@ -91,91 +90,44 @@ export default function RouterButton({
         if (buttonType === "source") {
             return null;
         }
-        if (!button.sourceDevice) {
-            return "-";
-        }
-        if (button.sourceChannel) {
-            return (
-                <Box
+
+        const faultyRoute = button.sourceDevice && !button.sourceChannel;
+        return (
+            <Box
+                sx={{
+                    width: "118px",
+                    overflow: "hidden",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <Typography
                     sx={{
-                        display: "flex",
-                        width: "118px",
+                        whiteSpace: "nowrap",
                         overflow: "hidden",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        fontWeight: 500,
+                        fontSize: "0.7rem",
+                        opacity: 0.6,
+                        textOverflow: "ellipsis",
+                        color: faultyRoute ? "warning.main" : "text.primary",
                     }}
                 >
-                    <Typography
-                        sx={{
-                            textAlign: "right",
-                            // maxWidth: "50%",
-                            flex: 1,
-                            // minWidth: 0,
-                            // maxWidth: "100%",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            fontWeight: 500,
-                            fontSize: "0.7rem",
-                            opacity: 0.6,
-                            textOverflow: "ellipsis",
-                            marginRight: "4px",
-                        }}
-                    >
-                        {button.sourceDevice}
-                    </Typography>
-                    <Typography
-                        sx={{
-                            textAlign: "left",
-                            // maxWidth: "50%",
-                            flex: 1,
-                            flexShrink: 0,
-                            whiteSpace: "nowrap",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            fontWeight: 500,
-                            fontSize: "0.7rem",
-                            opacity: 0.6,
-                            textOverflow: "ellipsis",
-                            // maxWidth: "70%",
-                        }}
-                    >
-                        {button.sourceChannel}
-                    </Typography>
-                </Box>
-            );
-        } else {
-            return (
-                <Box
+                    {button.sourceDevice ? button.sourceDevice : "-"}
+                </Typography>
+                <Typography
                     sx={{
-                        display: "flex",
-                        width: "118px",
+                        whiteSpace: "nowrap",
                         overflow: "hidden",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        fontWeight: 300,
+                        fontSize: "0.7rem",
+                        opacity: 0.6,
+                        textOverflow: "ellipsis",
                     }}
                 >
-                    <WarningIcon
-                        color="warning"
-                        sx={{
-                            fontSize: "14px",
-                            marginRight: "4px",
-                        }}
-                    />
-                    <Box
-                        sx={{
-                            fontWeight: 500,
-                            fontSize: "0.7rem",
-                            opacity: 0.6,
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                        }}
-                    >
-                        {button.sourceDevice}
-                    </Box>
-                </Box>
-            );
-        }
+                    {button.sourceChannel ? button.sourceChannel : "-"}
+                </Typography>
+            </Box>
+        );
     };
 
     return (
@@ -188,11 +140,13 @@ export default function RouterButton({
             iconColor={button.iconColor}
             primaryLabel={button.label}
             secondaryLabel={secondaryLabel()}
-            number={button.index + 1}
+            number={button.index}
             selected={selected}
             disabled={disabled}
             editMode={editMode}
             locked={button.isLocked}
+            wide
+            iconSize={buttonType === "source" ? "normal" : "small"}
             leftIcon={
                 button.isQuad ? (
                     <GridViewIcon

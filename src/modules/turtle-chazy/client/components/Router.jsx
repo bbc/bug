@@ -24,7 +24,7 @@ const SectionHeader = styled("div")({
     },
 });
 
-export default function Router({ panelId, editMode = false, sourceGroup = "", destinationGroup = "" }) {
+export default function Router({ panelId, editMode = false, sourceGroup = "-", destinationGroup = "-" }) {
     const sendAlert = useAlert();
     const [selectedDestinationIndex, setSelectedDestinationIndex] = React.useState(null);
     const [sourceForceRefresh, setSourceForceRefresh] = useForceRefresh();
@@ -33,15 +33,18 @@ export default function Router({ panelId, editMode = false, sourceGroup = "", de
     const useDoubleClick = panelConfig && panelConfig.data.useTake;
 
     const sourceButtons = useApiPoller({
-        url: `/container/${panelId}/sources/${sourceGroup ?? ""}/${destinationGroup ?? ""}/${
-            selectedDestinationIndex ?? -1
-        }`,
+        url: `/container/${panelId}/sources/`,
+        postData: {
+            sourceDevice: sourceGroup,
+            destinationDevice: destinationGroup,
+            destinationIndex: selectedDestinationIndex,
+        },
         interval: editMode ? 5000 : 2000,
         forceRefresh: sourceForceRefresh,
     });
 
     const destinationButtons = useApiPoller({
-        url: `/container/${panelId}/destinations/${destinationGroup ?? ""}`,
+        url: `/container/${panelId}/destinations/${destinationGroup ?? "-"}`,
         interval: 5000,
         forceRefresh: destinationForceRefresh,
     });
@@ -80,7 +83,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = "", de
         sendAlert(`Failed to route '${source.label}' to '${destination.label}'`, { variant: "error" });
     };
 
-    const ScrollableGroupButtons = (props) => {
+    const scrollableGroupButtons = (props) => {
         if (props?.buttons?.data?.groups?.length === 0 && !editMode) {
             return false;
         }
@@ -142,16 +145,16 @@ export default function Router({ panelId, editMode = false, sourceGroup = "", de
             >
                 <SectionHeader>Sources</SectionHeader>
 
-                <ScrollableGroupButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    groupType="source"
-                    selectedDestinationIndex={selectedDestinationIndex}
-                    sourceGroup={sourceGroup}
-                    destinationGroup={destinationGroup}
-                    buttons={sourceButtons}
-                    onChange={() => setSourceForceRefresh()}
-                />
+                {scrollableGroupButtons({
+                    panelId: panelId,
+                    editMode: editMode,
+                    groupType: "source",
+                    selectedDestinationIndex: selectedDestinationIndex,
+                    sourceGroup: sourceGroup,
+                    destinationGroup: destinationGroup,
+                    buttons: sourceButtons,
+                    onChange: () => setSourceForceRefresh(),
+                })}
 
                 <Box
                     sx={{
@@ -197,15 +200,15 @@ export default function Router({ panelId, editMode = false, sourceGroup = "", de
             >
                 <SectionHeader>Destinations</SectionHeader>
 
-                <ScrollableGroupButtons
-                    panelId={panelId}
-                    editMode={editMode}
-                    groupType="destination"
-                    sourceGroup={sourceGroup}
-                    destinationGroup={destinationGroup}
-                    buttons={destinationButtons}
-                    onChange={() => setDestinationForceRefresh()}
-                />
+                {scrollableGroupButtons({
+                    panelId: panelId,
+                    editMode: editMode,
+                    groupType: "destination",
+                    sourceGroup: sourceGroup,
+                    destinationGroup: destinationGroup,
+                    buttons: destinationButtons,
+                    onChange: () => setDestinationForceRefresh(),
+                })}
 
                 <Box
                     sx={{

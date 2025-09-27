@@ -58,6 +58,7 @@ export default function DeviceButton({
             primaryLabel={group.label}
             selected={group.selected}
             editMode={editMode}
+            wide
             menuItems={[
                 {
                     title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,

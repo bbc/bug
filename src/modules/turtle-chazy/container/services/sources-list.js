@@ -23,10 +23,10 @@ module.exports = async (sourceDevice = null, destinationDevice = null, destinati
     const sourcesCollection = await mongoCollection("sources");
     const routesCollection = await mongoCollection("routes");
 
-    const devices = await devicesCollection.find().sort({ name: 1 }).toArray();
+    const devices = await devicesCollection.find().collation({ locale: "en", strength: 2 }).sort({ name: 1 }).toArray();
 
     // if sourceDevice isn't set, use the first device
-    if (!sourceDevice) {
+    if (!sourceDevice || sourceDevice === "-") {
         sourceDevice = devices[0]?.name;
     }
     const source = await sourcesCollection.findOne({ deviceId: sourceDevice });

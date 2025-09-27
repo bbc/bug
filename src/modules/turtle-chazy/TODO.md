@@ -1,3 +1,4 @@
 -   channel rename - make sure unique - if not just use channel number
 -   do we want source name on the destination button? Or index?
 -   add edit/rename
+-   add clear route

@@ -3,11 +3,12 @@ const sourcesList = require("@services/sources-list");
 // const buttonSetIcon = require("@services/button-seticon");
 const route = express.Router();
 
-route.get("/:sourceDevice?/:destinationDevice?/:destinationIndex?", async function (req, res, next) {
+// route.post("/:sourceDevice/:destinationDevice/:destinationIndex?", async function (req, res, next) {
+route.post("/", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await sourcesList(req.params?.sourceDevice, req.params?.destinationDevice, parseInt(req.params?.destinationIndex)),
+            data: await sourcesList(req.body?.sourceDevice, req.body?.destinationDevice, parseInt(req.body?.destinationIndex)),
         });
     } catch (error) {
         console.log(error);
