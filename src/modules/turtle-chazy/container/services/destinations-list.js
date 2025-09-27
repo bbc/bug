@@ -23,7 +23,7 @@ module.exports = async (destinationDevice = null) => {
     const routesCollection = await mongoCollection("routes");
     const destinationsCollection = await mongoCollection("destinations");
 
-    const devices = await devicesCollection.find().sort({ name: 1 }).toArray();
+    const devices = await devicesCollection.find().collation({ locale: "en", strength: 2 }).sort({ name: 1 }).toArray();
 
     // if destinationDevice isn't set, use the first device
     if (!destinationDevice) {
@@ -35,8 +35,10 @@ module.exports = async (destinationDevice = null) => {
     const routesDocument = await routesCollection.findOne({ deviceId: destinationDevice });
 
     const mappedRoutes = []
-    for (let eachRoute of routesDocument.routes) {
-        mappedRoutes[eachRoute.destinationIndex] = eachRoute;
+    if (routesDocument?.routes) {
+        for (let eachRoute of routesDocument.routes) {
+            mappedRoutes[eachRoute.destinationIndex] = eachRoute;
+        }
     }
 
     const outputArray = {
