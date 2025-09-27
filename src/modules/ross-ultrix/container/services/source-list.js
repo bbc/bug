@@ -25,9 +25,9 @@ module.exports = async (destinationIndex = null, groupIndex = 0, showExcluded = 
     const routesCollection = await mongoCollection("routes");
 
     // check limited groups
-    const limitSourceGroups = config.limitSourceGroups.sort((a, b) => {
+    const limitSourceGroups = config?.limitSourceGroups?.sort((a, b) => {
         return a.toLowerCase().localeCompare(b.toLowerCase());
-    });
+    }) ?? [];
 
     let filteredGroups;
     if (limitSourceGroups.length > 0) {
