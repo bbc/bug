@@ -33,9 +33,11 @@ const BugRouterButton = ({
     primaryLabel,
     secondaryLabel,
     tertiaryLabel,
+    iconSize = "medium",
     selected,
     useDoubleClick = false,
     sx = {},
+    wide = false,
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: id,
@@ -46,6 +48,8 @@ const BugRouterButton = ({
     const bind = useLongPress((event) => {
         setContextMenuAnchorEl(event.target);
     });
+
+    const multiLineSecondary = Array.isArray(secondaryLabel) && secondaryLabel.length === 2;
 
     let style = {
         transform: "",
@@ -96,8 +100,13 @@ const BugRouterButton = ({
         }
     };
 
-    let fontSize = number.toString().length > 3 ? 22 : 28;
+    // if tertiary label is set, we should reduce the size of the icon
     if (tertiaryLabel) {
+        iconSize = "small";
+    }
+
+    let fontSize = number.toString().length > 3 ? 22 : 28;
+    if (iconSize === "small") {
         fontSize -= 8;
     }
 
@@ -148,7 +157,7 @@ const BugRouterButton = ({
                 borderColor: isWaitingForConfirmation ? "primary.main" : "rgba(136, 136, 136, 0.5)",
                 backgroundColor: editMode ? "none" : selected ? "primary.main" : "tertiary.main",
                 margin: "4px",
-                width: "128px",
+                width: wide ? "160px" : "128px",
                 height: "128px",
                 "@media (max-width:800px)": {
                     height: "80px",
@@ -254,22 +263,22 @@ const BugRouterButton = ({
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        height: tertiaryLabel ? "50%" : "65%",
+                        height: iconSize === "small" ? "50%" : "65%",
                         "@media (max-width:800px)": {
                             height: "56%",
                         },
                         "@media (max-width:600px)": {
                             display: "none",
                         },
-                        paddingBottom: tertiaryLabel ? "4px" : 0,
+                        paddingBottom: iconSize === "small" ? "4px" : 0,
                     }}
                 >
                     <Box
                         sx={{
                             border: "2px solid #3a3a3a",
                             borderRadius: "100%",
-                            height: tertiaryLabel ? "48px" : "64px",
-                            width: tertiaryLabel ? "48px" : "64px",
+                            height: iconSize === "small" ? "48px" : "64px",
+                            width: iconSize === "small" ? "48px" : "64px",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -307,7 +316,7 @@ const BugRouterButton = ({
                         display: "flex",
                         justifyContent: editMode ? "space-between" : "center",
                         alignItems: "center",
-                        height: "35%",
+                        height: iconSize === "small" ? "50%" : "35%",
                         flexDirection: editMode ? "row" : "column",
                         borderBottomLeftRadius: 5,
                         borderBottomRightRadius: 5,

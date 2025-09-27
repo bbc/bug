@@ -1,8 +1,7 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 export default function BugRouterGroupButton({
     draggable = false,
@@ -14,6 +13,7 @@ export default function BugRouterGroupButton({
     primaryLabel,
     selected = false,
     sx = {},
+    wide = false,
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
 
@@ -47,7 +47,7 @@ export default function BugRouterGroupButton({
                     margin: "4px",
                     flexDirection: "row",
                     justifyContent: editMode ? "space-between" : "center",
-                    width: "128px",
+                    width: wide ? "160px" : "128px",
                     height: "48px",
                     "@media (max-width:800px)": {
                         height: "36px",
