@@ -45,8 +45,8 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
     });
 
     // get the 'fixed' values for the currently selected grouos]
-    const sourceFixed = sourceButtons?.data?.groups[sourceGroup]?.fixed;
-    const destinationFixed = destinationButtons?.data?.groups[destinationGroup]?.fixed;
+    const sourceFixed = sourceButtons?.data?.groups?.[sourceGroup]?.fixed;
+    const destinationFixed = destinationButtons?.data?.groups?.[destinationGroup]?.fixed;
 
     const handleDestinationButtonClicked = (destinationIndex) => {
         if (editMode) {
