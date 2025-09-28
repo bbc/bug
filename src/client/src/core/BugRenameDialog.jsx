@@ -1,13 +1,13 @@
-import React from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import BugTextField from "./BugTextField";
-import InputAdornment from "@mui/material/InputAdornment";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import React from "react";
+import BugTextField from "./BugTextField";
 
 /*
 USAGE:
@@ -120,6 +120,7 @@ const BugRenameDialogProvider = ({ children }) => {
         placeholder,
         allowBlank,
         textFieldProps,
+        sx,
     }) => {
         setDialogOpen(true);
         setDialogConfig({
@@ -131,6 +132,7 @@ const BugRenameDialogProvider = ({ children }) => {
             placeholder,
             allowBlank,
             textFieldProps,
+            sx,
         });
     };
 
@@ -161,6 +163,7 @@ const BugRenameDialogProvider = ({ children }) => {
                 confirmButtonText={dialogConfig?.confirmButtonText}
                 defaultValue={dialogConfig.defaultValue}
                 textFieldProps={dialogConfig?.textFieldProps}
+                sx={dialogConfig?.sx}
             />
             {children}
         </BugRenameDialogContext.Provider>

@@ -7,7 +7,7 @@ export default function panelListGroups(panelListData, hideDisabledGroups = true
         if (eachPanel.enabled || !hideDisabledGroups) {
             //Check if user has access to any panels in group before bothering to render group name
             if (panels.includes(eachPanel?.id) || !restrictPanels) {
-                const group = eachPanel.group ? eachPanel.group : "";
+                const group = eachPanel.group ? eachPanel.group.toUpperCase() : "";
                 if (!panelsByGroup[group]) {
                     panelsByGroup[group] = [];
                 }

@@ -1,24 +1,24 @@
-import React from "react";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import ClearAllIcon from "@mui/icons-material/ClearAll";
+import DeleteIcon from "@mui/icons-material/Delete";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import ReplayIcon from "@mui/icons-material/Replay";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ReplayIcon from "@mui/icons-material/Replay";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import SettingsIcon from "@mui/icons-material/Settings";
-import ClearAllIcon from "@mui/icons-material/ClearAll";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import NewReleasesIcon from "@mui/icons-material/NewReleases";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 
 export default function PanelDropdownMenu({ panel }) {
     const sendAlert = useAlert();
@@ -145,14 +145,19 @@ export default function PanelDropdownMenu({ panel }) {
         event.preventDefault();
         const result = await renameDialog({
             title: "Change panel group",
-            defaultValue: panel?.group,
+            defaultValue: panel?.group.toUpperCase(),
             confirmButtonText: "Change",
             filter: (char) => char.replace(":", ""),
             allowBlank: true,
+            sx: {
+                "& .MuiInputBase-input": {
+                    textTransform: "uppercase",
+                },
+            },
         });
 
         if (result !== false) {
-            if (await AxiosCommand(`/api/panel/group/${panel?.id}/${result}`)) {
+            if (await AxiosCommand(`/api/panel/group/${panel?.id}/${result.toLowerCase()}`)) {
                 sendAlert(`Updated group for panel ${panel?.title}`, { broadcast: "true", variant: "success" });
             } else {
                 sendAlert(`Failed to change group for panel: ${panel?.title}`, { variant: "error" });
