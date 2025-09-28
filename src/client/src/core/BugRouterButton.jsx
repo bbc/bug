@@ -204,10 +204,12 @@ const BugRouterButton = ({
             <Box
                 className="MuiButton-label"
                 sx={{
+                    height: "100%",
                     width: "100%",
                     "@media (max-width:600px)": {
                         padding: "4px",
                     },
+                    display: "flex",
                 }}
             >
                 {locked && (
@@ -263,7 +265,7 @@ const BugRouterButton = ({
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        height: iconSize === "small" ? "50%" : "65%",
+                        height: iconSize === "small" ? "42%" : "65%",
                         "@media (max-width:800px)": {
                             height: "56%",
                         },
@@ -310,13 +312,13 @@ const BugRouterButton = ({
                 </Box>
                 <Box
                     sx={{
+                        flexGrow: 1,
                         boxSizing: "border-box",
                         width: "100%",
                         backgroundColor: "#333",
                         display: "flex",
                         justifyContent: editMode ? "space-between" : "center",
                         alignItems: "center",
-                        height: iconSize === "small" ? "50%" : "35%",
                         flexDirection: editMode ? "row" : "column",
                         borderBottomLeftRadius: 5,
                         borderBottomRightRadius: 5,

@@ -14,6 +14,15 @@ export default {
     },
 
     argTypes: {
+        wide: {
+            type: { name: "boolean" },
+            defaultValue: false,
+            description: "Whether to use the 'wide' variant of the button",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
+            },
+        },
         disabled: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -53,7 +62,7 @@ export default {
         icon: {
             type: { name: "string" },
             description: "An icon to be displayed in the button. Can be MUI or Material Display icon",
-            defaultValue: "mdi-bugle",
+            defaultValue: "",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: null },
@@ -143,6 +152,15 @@ export default {
                 defaultValue: { summary: null },
             },
         },
+        tertiaryLabel: {
+            type: { name: "string" },
+            description: "Text to show at the top of the button - often used for destination descriptions",
+            defaultValue: "button 1",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: null },
+            },
+        },
         selected: {
             type: { name: "boolean" },
             defaultValue: false,
@@ -160,6 +178,16 @@ export default {
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: "{}" },
+            },
+        },
+        iconSize: {
+            options: ["medium", "small"],
+            description: "The size of the icon to display.",
+            defaultValue: "medium",
+            control: { type: "select" },
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "medium" },
             },
         },
         useDoubleClick: {
