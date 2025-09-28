@@ -1,5 +1,6 @@
-import React from "react";
 import BugModuleWrapper from "@core/BugModuleWrapper";
+import BugRestrictTo from "@core/BugRestrictTo";
+import React from "react";
 import { Route } from "react-router-dom";
 
 const MainPanel = React.lazy(() => import("./panels/MainPanel"));
@@ -11,9 +12,11 @@ export default function Module(props) {
             <Route exact path="/panel/:panelId">
                 <MainPanel {...props} />
             </Route>
-            <Route exact path="/panel/:panelId/config">
-                <ConfigPanel {...props} />
-            </Route>
+            <BugRestrictTo role="admin">
+                <Route exact path="/panel/:panelId/config">
+                    <ConfigPanel />
+                </Route>
+            </BugRestrictTo>
         </BugModuleWrapper>
     );
 }
