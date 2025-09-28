@@ -1,7 +1,6 @@
-import React from "react";
-import { Switch, Route } from "react-router-dom";
-import MpegEncoderToolbar from "./toolbars/MpegEncoderToolbar";
+import { Route, Switch } from "react-router-dom";
 import ListToolbar from "./toolbars/ListToolbar";
+import MpegEncoderToolbar from "./toolbars/MpegEncoderToolbar";
 
 export default function Toolbar(props) {
     return (
