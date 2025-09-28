@@ -1,9 +1,9 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { useSelector } from "react-redux";
-import _ from "lodash";
 import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import _ from "lodash";
+import React from "react";
+import { useSelector } from "react-redux";
 
 const filter = createFilterOptions();
 
@@ -15,12 +15,12 @@ export default function BugPanelGroupDropdown({ value, onChange, fullWidth = fal
     const panelList = useSelector((state) => state.panelList);
     const [inputValue, setInputValue] = React.useState(value);
 
-    let panelListGroups = panelList.data ? _.uniq(panelList.data.map((a) => a.group)) : [];
+    let panelListGroups = panelList.data ? _.uniq(panelList.data.map((a) => a.group.toUpperCase())) : [];
     _.pull(panelListGroups, "");
 
     return (
         <Autocomplete
-            sx={sx}
+            sx={{ ...sx }}
             value={value}
             defaultValue={value}
             onChange={(event, newValue) => {
@@ -33,13 +33,15 @@ export default function BugPanelGroupDropdown({ value, onChange, fullWidth = fal
             onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
                 if (onChange) {
-                    onChange(newInputValue ? newInputValue : "");
+                    onChange(newInputValue ? newInputValue.toLowerCase() : "");
                 }
-                event.stopPropagation();
+
+                if (event) {
+                    event.stopPropagation();
+                }
             }}
             filterOptions={(options, params) => {
-                const filtered = filter(options, params);
-                return filtered;
+                return filter(options, params);
             }}
             selectOnFocus
             fullWidth={fullWidth}
@@ -48,7 +50,18 @@ export default function BugPanelGroupDropdown({ value, onChange, fullWidth = fal
             handleHomeEndKeys
             options={panelListGroups}
             freeSolo
-            renderInput={(params) => <TextField variant={variant} {...params} label="Panel group" />}
+            renderInput={(params) => (
+                <TextField
+                    variant={variant}
+                    {...params}
+                    label="Panel group"
+                    sx={{
+                        "& .MuiInputBase-input": {
+                            textTransform: "uppercase",
+                        },
+                    }}
+                />
+            )}
         />
     );
 }
