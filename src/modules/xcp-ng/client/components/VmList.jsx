@@ -1,30 +1,29 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import VmPowerIcon from "./VmPowerIcon";
-import VmPowerState from "./VmPowerState";
-import AxiosCommand from "@utils/AxiosCommand";
-import AxiosDelete from "@utils/AxiosDelete";
-import { useAlert } from "@utils/Snackbar";
 import BugApiTable from "@core/BugApiTable";
 import BugChipDisplay from "@core/BugChipDisplay";
-import CommentIcon from "@mui/icons-material/Comment";
-import EditIcon from "@mui/icons-material/Edit";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import BugNoData from "@core/BugNoData";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugTableLinkButton from "@core/BugTableLinkButton";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import StopIcon from "@mui/icons-material/Stop";
-import PowerIcon from "@mui/icons-material/Power";
-import CachedIcon from "@mui/icons-material/Cached";
 import BoltIcon from "@mui/icons-material/Bolt";
-import MemoryIcon from "@mui/icons-material/Memory";
-import LaunchIcon from "@mui/icons-material/Launch";
-import { useSelector } from "react-redux";
+import CachedIcon from "@mui/icons-material/Cached";
 import CheckIcon from "@mui/icons-material/Check";
+import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import EditIcon from "@mui/icons-material/Edit";
+import LaunchIcon from "@mui/icons-material/Launch";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import MemoryIcon from "@mui/icons-material/Memory";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PowerIcon from "@mui/icons-material/Power";
+import StopIcon from "@mui/icons-material/Stop";
+import AxiosCommand from "@utils/AxiosCommand";
+import AxiosDelete from "@utils/AxiosDelete";
+import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
+import VmPowerIcon from "./VmPowerIcon";
+import VmPowerState from "./VmPowerState";
 
 export default function VmList({ panelId }) {
     const sendAlert = useAlert();
@@ -409,7 +408,7 @@ export default function VmList({ panelId }) {
                         disabled: (item) => !item.allowed_operations.includes("destroy"),
                     },
                 ]}
-                defaultSortIndex={3}
+                defaultSortIndex={4}
                 apiUrl={`/container/${panelId}/vm`}
                 sortable
                 rowHeight="58px"
