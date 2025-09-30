@@ -10,7 +10,8 @@ const getMatrix = async () => {
     // get current config
     const config = await configGet();
     if (!config) {
-        throw new Error("matrix: no config with which to create matrix connection");
+        console.log("matrix: no config with which to create matrix connection");
+        return false;
     }
 
     try {
