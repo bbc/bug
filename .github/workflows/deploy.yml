@@ -25,7 +25,7 @@ jobs:
             # get the latest version of the repository
             - name: Checkout
               uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v6
 
             # get current date and time for build
             - name: Set current date and time as an environment variable
