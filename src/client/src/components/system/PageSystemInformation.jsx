@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import Grid from "@mui/material/Grid";
-import { useDispatch } from "react-redux";
-import pageTitleSlice from "@redux/pageTitleSlice";
 import BugDetailsCard from "@core/BugDetailsCard";
-import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
+import { useApiPoller } from "@hooks/ApiPoller";
+import Grid from "@mui/material/Grid";
+import pageTitleSlice from "@redux/pageTitleSlice";
 import TimeAgo from "javascript-time-ago";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function PageServerInformation() {
     const dispatch = useDispatch();
@@ -32,7 +32,7 @@ export default function PageServerInformation() {
                     justifyContent: "center",
                 }}
             >
-                <Grid item lg={6} xs={12}>
+                <Grid item lg={8} xs={12}>
                     <BugDetailsCard
                         title="System Infomation"
                         width="14rem"

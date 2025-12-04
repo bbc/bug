@@ -32,8 +32,14 @@ export default function PageSystemBackup() {
 
     return (
         <>
-            <Grid container spacing={1}>
-                <Grid item lg={6} xs={12}>
+            <Grid
+                container
+                spacing={1}
+                sx={{
+                    justifyContent: "center",
+                }}
+            >
+                <Grid item lg={8} xs={12}>
                     <BugDetailsCard
                         sx={{
                             marginBottom: 0,
@@ -133,40 +139,6 @@ export default function PageSystemBackup() {
                                             </BugTableLinkButton>
                                         )}
                                     </>
-                                ),
-                            },
-                        ]}
-                    />
-                </Grid>
-
-                <Grid item lg={6} xs={12}>
-                    <BugDetailsCard
-                        title="Developer Information"
-                        width="12rem"
-                        sx={{
-                            marginBottom: 0,
-                        }}
-                        items={[
-                            {
-                                name: "Documentation",
-                                value: (
-                                    <BugTableLinkButton
-                                        onClick={(event) => openWebpage(event, `https://bbc.github.io/bug`)}
-                                        sx={{ color: "text.secondary" }}
-                                    >
-                                        bbc.github.io/bug
-                                    </BugTableLinkButton>
-                                ),
-                            },
-                            {
-                                name: "API Documentation",
-                                value: (
-                                    <BugTableLinkButton
-                                        onClick={(event) => openWebpage(event, `/documentation`)}
-                                        sx={{ color: "text.secondary" }}
-                                    >
-                                        /documentation
-                                    </BugTableLinkButton>
                                 ),
                             },
                         ]}
