@@ -49,8 +49,6 @@ const BugRouterButton = ({
         setContextMenuAnchorEl(event.target);
     });
 
-    const multiLineSecondary = Array.isArray(secondaryLabel) && secondaryLabel.length === 2;
-
     let style = {
         transform: "",
         transition,

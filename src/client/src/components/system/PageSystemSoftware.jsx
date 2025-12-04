@@ -1,106 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useAlert } from "@utils/Snackbar";
-import Grid from "@mui/material/Grid";
-import { useDispatch } from "react-redux";
-import pageTitleSlice from "@redux/pageTitleSlice";
-import Button from "@mui/material/Button";
-import AxiosGet from "@utils/AxiosGet";
 import BugDetailsCard from "@core/BugDetailsCard";
-import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
-import TimeAgo from "javascript-time-ago";
 import BugTableLinkButton from "@core/BugTableLinkButton";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useApiPoller } from "@hooks/ApiPoller";
+import Grid from "@mui/material/Grid";
+import pageTitleSlice from "@redux/pageTitleSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function PageSystemBackup() {
-    const sendAlert = useAlert();
     const dispatch = useDispatch();
-    const [updating, setUpdating] = useState(false);
-    const timeAgo = new TimeAgo("en-GB");
 
     const info = useApiPoller({
         url: `/api/system/info`,
         interval: 3000,
     });
-
-    const getButton = () => {
-        if (updating) {
-            return (
-                <Button
-                    startIcon={<CircularProgress size={25} />}
-                    onClick={onCancelUpdate}
-                    underline="none"
-                    variant="outlined"
-                    color="primary"
-                    disableElevation
-                >
-                    Updating...
-                </Button>
-            );
-        }
-
-        if (info.data?.updates?.newVersion && !info.data.git.development) {
-            return (
-                <Button
-                    onClick={onUpdate}
-                    underline="none"
-                    variant="outlined"
-                    color="primary"
-                    disableElevation
-                    disabled={info.data.git.development}
-                >
-                    Update BUG
-                </Button>
-            );
-        }
-
-        return (
-            <Button
-                onClick={onCheckUpdate}
-                underline="none"
-                variant="outlined"
-                color="primary"
-                disableElevation
-                disabled={info.data.git.development}
-            >
-                Check for Updates
-            </Button>
-        );
-    };
-
-    const onCancelUpdate = () => {
-        setUpdating(false);
-    };
-
-    const onUpdate = async () => {
-        setUpdating(true);
-        const response = await AxiosGet(`/api/system/update`);
-
-        if (response.updating) {
-            sendAlert(`Updating BUG to version ${info.data?.updates?.version}`, {
-                broadcast: "true",
-                variant: "success",
-            });
-        } else {
-            sendAlert(`Failed to apply BUG update.}`, {
-                variant: "error",
-            });
-            setUpdating(false);
-        }
-    };
-
-    const onCheckUpdate = async () => {
-        const response = await AxiosGet(`/api/system/updatecheck`);
-        if (response?.newVersion) {
-            sendAlert(`There's a new version of BUG avalible ${response.data.version}.`, { variant: "success" });
-        }
-        if (!response?.newVersion) {
-            sendAlert(`You're using the latest version of BUG.`, { variant: "success" });
-        }
-        if (!response) {
-            sendAlert(`Failed to check for system updates.`, { variant: "error" });
-        }
-    };
 
     const openWebpage = async (event, url) => {
         const newWindow = window.open(url, "_blank", "noopener,noreferrer");
@@ -110,16 +23,12 @@ export default function PageSystemBackup() {
     };
 
     useEffect(() => {
-        dispatch(pageTitleSlice.actions.set("System Updates"));
+        dispatch(pageTitleSlice.actions.set("System Software"));
     }, [dispatch]);
 
     if (info.status === "idle") {
         return <BugLoading />;
     }
-
-    const lastChecked = info.data?.updates?.checkTime
-        ? timeAgo.format(Date.parse(info.data?.updates?.checkTime))
-        : "Never";
 
     return (
         <>
@@ -225,26 +134,6 @@ export default function PageSystemBackup() {
                                         )}
                                     </>
                                 ),
-                            },
-                        ]}
-                    />
-                </Grid>
-
-                <Grid item lg={6} xs={12}>
-                    <BugDetailsCard
-                        title="Application Upgrades"
-                        width="12rem"
-                        sx={{
-                            marginBottom: 0,
-                        }}
-                        items={[
-                            {
-                                name: "Last Checked",
-                                value: lastChecked,
-                            },
-                            {
-                                name: "",
-                                value: getButton(),
                             },
                         ]}
                     />

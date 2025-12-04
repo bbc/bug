@@ -26,7 +26,6 @@ services:
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
             BUG_REGISTRY_FQDN: ghcr.io/bbc
-            BUG_UPDATE_CHECK: "false"
             PORT: 3000
             NODE_ENV: development
             SESSION_SECRET: aSecretForYourSessions
@@ -56,45 +55,3 @@ services:
             options:
                 max-size: "10m"
                 max-file: "1"
-
-    watchtower:
-        container_name: bug-watchtower
-        image: containrrr/watchtower
-        restart: unless-stopped
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        networks:
-            - bug
-        ports:
-            - 8080:8080
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-        environment:
-            WATCHTOWER_DEBUG: "true"
-            WATCHTOWER_HTTP_API_UPDATE: "true"
-            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_LABEL_ENABLE: "true"
-    mongo-web:
-        image: mongo-express
-        container_name: bug-mongo-express
-        restart: unless-stopped
-        ports:
-            - 3202:8081
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-        environment:
-            ME_CONFIG_OPTIONS_EDITORTHEME: "ambiance"
-            ME_CONFIG_MONGODB_SERVER: "bug-mongo"
-            ME_CONFIG_BASICAUTH_USERNAME: admin
-            ME_CONFIG_BASICAUTH_PASSWORD: bugdev
-        hostname: mongo-web
-        networks:
-            - bug
-        depends_on:
-            - mongo
