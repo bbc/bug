@@ -10,7 +10,7 @@ import pageTitleSlice from "@redux/pageTitleSlice";
 import settingsSlice from "@redux/settingsSlice";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -69,7 +69,7 @@ export default function PageSystemBackup() {
             {renderLoading()}
             <BugForm onClose={handleCancel}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <BugForm.Header onClose={handleCancel}>Edit Settings</BugForm.Header>
+                    <BugForm.Header onClose={handleCancel}>Global Configuration</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>

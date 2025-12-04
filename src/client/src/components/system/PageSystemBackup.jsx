@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useAlert } from "@utils/Snackbar";
-import Grid from "@mui/material/Grid";
-import { useDispatch } from "react-redux";
-import pageTitleSlice from "@redux/pageTitleSlice";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
 import LoadingOverlay from "@components/LoadingOverlay";
-import AxiosPost from "@utils/AxiosPost";
 import BugCard from "@core/BugCard";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Grid from "@mui/material/Grid";
 import Input from "@mui/material/Input";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import pageTitleSlice from "@redux/pageTitleSlice";
+import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
@@ -55,8 +55,14 @@ export default function PageSystemBackup() {
     return (
         <>
             {renderLoading()}
-            <Grid container spacing={1}>
-                <Grid item lg={6} xs={12}>
+            <Grid
+                container
+                spacing={1}
+                sx={{
+                    justifyContent: "center",
+                }}
+            >
+                <Grid item lg={8} xs={12}>
                     <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Backup" />
                         <CardContent>
@@ -78,7 +84,7 @@ export default function PageSystemBackup() {
                     </BugCard>
                 </Grid>
 
-                <Grid item lg={6} xs={12}>
+                <Grid item lg={8} xs={12}>
                     <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Restore" />
                         <CardContent>

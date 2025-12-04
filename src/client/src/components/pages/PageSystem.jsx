@@ -1,8 +1,9 @@
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DnsIcon from "@mui/icons-material/Dns";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { styled, useTheme } from "@mui/material/styles";
@@ -42,7 +43,7 @@ export default function PageSystem() {
     return (
         <>
             <StyledList>
-                <ListItem button component={Link} to={`/system/about`}>
+                <ListItemButton component={Link} to={`/system/about`}>
                     <ListItemIcon>
                         <FontAwesomeIcon color={theme.palette.text.primary} size="lg" icon={faBug} />
                     </ListItemIcon>
@@ -51,8 +52,8 @@ export default function PageSystem() {
                         secondary="Links to documentation, help and more information about BUG"
                     />
                     <NavIcon />
-                </ListItem>
-                <ListItem button component={Link} to={`/system/info`}>
+                </ListItemButton>
+                <ListItemButton component={Link} to={`/system/info`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"Dvr"} />
                     </ListItemIcon>
@@ -61,26 +62,33 @@ export default function PageSystem() {
                         secondary="Application details, versions and information"
                     />
                     <NavIcon />
-                </ListItem>
+                </ListItemButton>
+                <ListItemButton component={Link} to={`/system/modules`}>
+                    <ListItemIcon>
+                        <DnsIcon color={theme.palette.text.primary} size="lg" />
+                    </ListItemIcon>
+                    <ListItemText primary="Modules" secondary="List of available modules" />
+                    <NavIcon />
+                </ListItemButton>
             </StyledList>
             <StyledList>
-                <ListItem button component={Link} to={`/system/configuration`}>
+                <ListItemButton component={Link} to={`/system/configuration`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"Settings"} />
                     </ListItemIcon>
                     <ListItemText primary="Global Configuration" secondary="Configure global settings and options" />
                     <NavIcon />
-                </ListItem>
-                <ListItem button component={Link} to={`/panels`}>
+                </ListItemButton>
+                <ListItemButton component={Link} to={`/panels`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"Dashboard"} />
                     </ListItemIcon>
                     <ListItemText primary="Panels" secondary="Configure and maintain the panels on this BUG" />
                     <NavIcon />
-                </ListItem>
+                </ListItemButton>
             </StyledList>
             <StyledList>
-                <ListItem button component={Link} to={`/system/users`}>
+                <ListItemButton component={Link} to={`/system/users`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"People"} />
                     </ListItemIcon>
@@ -89,17 +97,17 @@ export default function PageSystem() {
                         secondary="Manage usernames and passwords for access to this server"
                     />
                     <NavIcon />
-                </ListItem>
-                <ListItem button component={Link} to={`/system/security`}>
+                </ListItemButton>
+                <ListItemButton component={Link} to={`/system/security`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"Security"} />
                     </ListItemIcon>
                     <ListItemText primary="Security" secondary="Configure authentication methods and options" />
                     <NavIcon />
-                </ListItem>
+                </ListItemButton>
             </StyledList>
             <StyledList>
-                <ListItem button component={Link} to={`/system/backup`}>
+                <ListItemButton component={Link} to={`/system/backup`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"SettingsBackupRestore"} />
                     </ListItemIcon>
@@ -108,28 +116,28 @@ export default function PageSystem() {
                         secondary="Download a complete backup or restore from file"
                     />
                     <NavIcon />
-                </ListItem>
-                <ListItem button component={Link} to={`/system/software`}>
+                </ListItemButton>
+                <ListItemButton component={Link} to={`/system/software`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"SystemUpdateAlt"} />
                     </ListItemIcon>
                     <ListItemText primary="Software" secondary="View and install available software updates" />
                     <NavIcon />
-                </ListItem>
-                <ListItem button component={Link} to={`/system/health`}>
+                </ListItemButton>
+                <ListItemButton component={Link} to={`/system/health`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"Info"} />
                     </ListItemIcon>
                     <ListItemText primary="System Health" secondary="CPU, RAM and disk information" />
                     <NavIcon />
-                </ListItem>
-                <ListItem button component={Link} to={`/system/logs`}>
+                </ListItemButton>
+                <ListItemButton component={Link} to={`/system/logs`}>
                     <ListItemIcon>
                         <BugDynamicIcon iconName={"Receipt"} />
                     </ListItemIcon>
                     <ListItemText primary="Logs" secondary="View application and module logs" />
                     <NavIcon />
-                </ListItem>
+                </ListItemButton>
             </StyledList>
         </>
     );

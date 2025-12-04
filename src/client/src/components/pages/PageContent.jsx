@@ -1,23 +1,23 @@
-import React, { Suspense, lazy } from "react";
-import { Switch, Route } from "react-router-dom";
+import PageSystemAbout from "@components/system/PageSystemAbout";
+import PageSystemBackup from "@components/system/PageSystemBackup";
 import PageSystemConfiguration from "@components/system/PageSystemConfiguration";
-import PageSystemUsers from "@components/system/PageSystemUsers";
-import PageSystemUserEdit from "@components/system/PageSystemUserEdit";
+import PageSystemHealth from "@components/system/PageSystemHealth";
+import PageSystemInformation from "@components/system/PageSystemInformation";
+import PageSystemLogs from "@components/system/PageSystemLogs";
+import PageSystemModules from "@components/system/PageSystemModules";
 import PageSystemSecurity from "@components/system/PageSystemSecurity";
 import PageSystemSecurityStrategy from "@components/system/PageSystemSecurityStrategy";
 import PageSystemSoftware from "@components/system/PageSystemSoftware";
-import PageSystemHealth from "@components/system/PageSystemHealth";
-import PageSystemLogs from "@components/system/PageSystemLogs";
-import PageSystemAbout from "@components/system/PageSystemAbout";
-import PageSystemBackup from "@components/system/PageSystemBackup";
-import PageSystemInformation from "@components/system/PageSystemInformation";
-
-import { Redirect } from "react-router";
+import PageSystemUserEdit from "@components/system/PageSystemUserEdit";
+import PageSystemUsers from "@components/system/PageSystemUsers";
 import BugLoading from "@core/BugLoading";
-import BugScrollbars from "@core/BugScrollbars";
 import BugRestrictTo from "@core/BugRestrictTo";
-import { styled } from "@mui/material/styles";
+import BugScrollbars from "@core/BugScrollbars";
 import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+import { Suspense, lazy } from "react";
+import { Redirect } from "react-router";
+import { Route, Switch } from "react-router-dom";
 
 //Page Lazy Loads
 const PageHome = lazy(() => import("./PageHome"));
@@ -208,6 +208,14 @@ const PageContent = () => {
                             <StyledPageContent>
                                 <BugScrollbars>
                                     <PageSystemAbout />
+                                </BugScrollbars>
+                            </StyledPageContent>
+                        </Route>
+
+                        <Route exact path="/system/modules">
+                            <StyledPageContent>
+                                <BugScrollbars>
+                                    <PageSystemModules />
                                 </BugScrollbars>
                             </StyledPageContent>
                         </Route>
