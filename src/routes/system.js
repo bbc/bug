@@ -13,7 +13,6 @@ const restrict = require("@middleware/restrict");
 const systemHostHealth = require("@services/system-hosthealth");
 const systemContainerHealth = require("@services/system-containerhealth");
 const systemUpdate = require("@services/system-update-apply");
-const systemUpdateCache = require("@services/system-update-cache");
 const systemSettingsGet = require("@services/system-settings-get");
 const systemSettingsUpdate = require("@services/system-settings-update");
 const dockerCleanup = require("@services/docker-cleanup");
@@ -161,26 +160,6 @@ router.get("/update", async function (req, res, next) {
     hashResponse(res, req, {
         ...result,
         status: result.error ? "failure" : "success",
-    });
-});
-
-/**
- * @swagger
- * /system/updatecheck:
- *   get:
- *     description: Check for BUG updates
- *     tags: [system]
- *     produces:
- *       - application/json
- *     responses:
- *       '200':
- *         description: Success
- */
-router.get("/updatecheck", async function (req, res, next) {
-    const result = await systemUpdateCache();
-    hashResponse(res, req, {
-        status: result ? "success" : "failure",
-        data: result?.data,
     });
 });
 
