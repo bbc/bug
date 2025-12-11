@@ -1,10 +1,23 @@
-import React from "react";
-import { useParams } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
-import NoteCard from "./../components/NoteCard";
-import Masonry from "@mui/lab/Masonry";
-import { useSelector } from "react-redux";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { styled } from "@mui/material/styles";
+import Masonry from "react-masonry-css";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import NoteCard from "./../components/NoteCard";
+
+const StyledMasonry = styled(Masonry)(({ theme }) => ({
+    display: "flex",
+    marginLeft: `-${theme.spacing(1)}`,
+    width: "auto",
+    "& .my-masonry-grid_column": {
+        paddingLeft: theme.spacing(1),
+        backgroundClip: "padding-box",
+        "& > *": {
+            marginBottom: theme.spacing(1),
+        },
+    },
+}));
 
 export default function MainPanel() {
     const params = useParams();
@@ -17,23 +30,15 @@ export default function MainPanel() {
 
     const getUser = (userId) => {
         if (Array.isArray(users.data)) {
-            for (let user of users.data) {
-                if (userId === user.id) {
-                    return user;
-                }
-            }
+            return users.data.find((user) => user.id === userId);
         }
     };
 
     const getNotesCards = (notes) => {
-        const cards = [];
-        for (let noteId in notes) {
+        return Object.keys(notes).map((noteId) => {
             const user = getUser(notes?.[noteId]?.user);
-            cards.push(
-                <NoteCard key={noteId} user={user} panelId={params?.panelId} noteId={noteId} note={notes[noteId]} />
-            );
-        }
-        return cards;
+            return <NoteCard key={noteId} user={user} panelId={params?.panelId} noteId={noteId} note={notes[noteId]} />;
+        });
     };
 
     if (panelConfig.status === "loading" || users.status === "loading") {
@@ -44,11 +49,20 @@ export default function MainPanel() {
         return null;
     }
 
+    const breakpointColumnsObj = {
+        default: 2,
+        1200: 2,
+        800: 1,
+        500: 1,
+    };
+
     return (
-        <>
-            <Masonry columns={2} spacing={1}>
-                {getNotesCards(panelConfig.data.notes)}
-            </Masonry>
-        </>
+        <StyledMasonry
+            breakpointCols={breakpointColumnsObj}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+        >
+            {getNotesCards(panelConfig.data.notes)}
+        </StyledMasonry>
     );
 }

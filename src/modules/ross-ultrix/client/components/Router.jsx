@@ -11,18 +11,18 @@ import { useSelector } from "react-redux";
 import GroupButtons from "./GroupButtons";
 import RouterButtons from "./RouterButtons";
 
-const SectionHeader = styled("div")({
+const SectionHeader = styled("div")(({ theme }) => ({
     fontSize: "0.875rem",
     fontWeight: 500,
     textTransform: "uppercase",
     padding: "12px",
     backgroundColor: "#212121",
-    "@media (max-width:800px)": {
+    [theme.breakpoints.down(800)]: {
         fontSize: "12px",
         backgroundColor: "inherit",
         padding: "6px 6px 2px 6px",
     },
-});
+}));
 
 export default function Router({ panelId, editMode = false, sourceGroup = 0, destinationGroup = 0 }) {
     const sendAlert = useAlert();
