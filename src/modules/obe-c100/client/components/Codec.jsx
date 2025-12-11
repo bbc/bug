@@ -1,20 +1,20 @@
-import React from "react";
+import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
 import BugLoading from "@core/BugLoading";
+import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
 import Grid from "@mui/material/Grid";
-import CodecVideo from "./CodecVideo";
-import CodecInput from "./CodecInput";
-import CodecTest from "./CodecTest";
-import CodecAudio from "./CodecAudio";
-import CodecMux from "./CodecMux";
-import CodecOutput from "./CodecOutput";
+import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
-import useAsyncEffect from "use-async-effect";
-import { useSelector } from "react-redux";
 import { useAlert } from "@utils/Snackbar";
-import AxiosDelete from "@utils/AxiosDelete";
-import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
-import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
+import React from "react";
+import { useSelector } from "react-redux";
+import useAsyncEffect from "use-async-effect";
+import CodecAudio from "./CodecAudio";
+import CodecInput from "./CodecInput";
+import CodecMux from "./CodecMux";
+import CodecOutput from "./CodecOutput";
+import CodecTest from "./CodecTest";
+import CodecVideo from "./CodecVideo";
 
 export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
@@ -114,9 +114,9 @@ export default function Codec({ panelId }) {
                 padding: "4px",
             }}
         >
-            <Grid item xs={12} md={6} xl={8}>
+            <Grid item size={{ xs: 12, md: 6, xl: 8 }}>
                 <Grid container spacing={1}>
-                    <Grid item xs={12} xl={6}>
+                    <Grid item size={{ xs: 12, xl: 6 }}>
                         <CodecInput
                             codecdata={codecdata}
                             onChange={onChange}
@@ -126,7 +126,7 @@ export default function Codec({ panelId }) {
                         <CodecTest codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                         <CodecVideo codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                     </Grid>
-                    <Grid item xs={12} xl={6}>
+                    <Grid item size={{ xs: 12, xl: 6 }}>
                         <CodecMux codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                         {codecdata &&
                             codecdata.audio.map((audio, index) => (
@@ -143,7 +143,7 @@ export default function Codec({ panelId }) {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} md={6} xl={4}>
+            <Grid item size={{ xs: 12, md: 6, xl: 4 }}>
                 {codecdata &&
                     codecdata.outputs.map((output, index) => (
                         <CodecOutput

@@ -1,15 +1,14 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
 import { useAlert } from "@utils/Snackbar";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-import Grid from "@mui/material/Grid";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugForm from "@core/BugForm";
-import Button from "@mui/material/Button";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 import AxiosPost from "@utils/AxiosPost";
 import AxiosPut from "@utils/AxiosPut";
@@ -79,7 +78,7 @@ export default function HostCard({ panelId, hostId }) {
                     <BugForm.Header onClose={handleCancelClicked}>{getVerb()} Host</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     control={control}
@@ -90,7 +89,7 @@ export default function HostCard({ panelId, hostId }) {
                                     label="Title"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="description"
                                     control={control}
@@ -101,7 +100,7 @@ export default function HostCard({ panelId, hostId }) {
                                     label="Description"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="host"
                                     control={control}

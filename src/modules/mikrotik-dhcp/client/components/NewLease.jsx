@@ -1,17 +1,17 @@
-import { useHistory } from "react-router-dom";
-import React from "react";
-import { useAlert } from "@utils/Snackbar";
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
-import useAsyncEffect from "use-async-effect";
-import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
-import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
 import { useForm } from "react-hook-form";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import { useHistory } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function Lease({ panelId, leaseId }) {
     const history = useHistory();
@@ -100,7 +100,7 @@ export default function Lease({ panelId, leaseId }) {
                                 },
                             }}
                         >
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 {servers && (
                                     <BugConfigFormSelect
                                         name="server"
@@ -113,7 +113,7 @@ export default function Lease({ panelId, leaseId }) {
                                     />
                                 )}
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -123,7 +123,7 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="comment"
                                     control={control}
@@ -132,7 +132,7 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Comment"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="mac-address"
                                     control={control}
@@ -143,7 +143,7 @@ export default function Lease({ panelId, leaseId }) {
                                     label="MAC Address"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormSwitch
                                     name="enabled"
                                     label="Enabled"
@@ -153,7 +153,7 @@ export default function Lease({ panelId, leaseId }) {
                                 />
                             </Grid>
                             {addressLists && (
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormAutocomplete
                                         name="address-lists"
                                         label="Address Lists"

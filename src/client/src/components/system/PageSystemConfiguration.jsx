@@ -72,7 +72,7 @@ export default function PageSystemBackup() {
                     <BugForm.Header onClose={handleCancel}>Global Configuration</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     control={control}
@@ -84,7 +84,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="description"
                                     control={control}
@@ -95,7 +95,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormSelect
                                     name="theme"
                                     control={control}
@@ -109,7 +109,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormSelect
                                     name="logLevel"
                                     control={control}
@@ -126,7 +126,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="moduleStatus"
                                     label="Filter Modules"

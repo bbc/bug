@@ -14,7 +14,7 @@ export default function PanelRestarting() {
             }}
         >
             <h3>Panel is restarting ...</h3>
-            <Grid item xs={3}>
+            <Grid item size={{ xs: 3 }}>
                 <Box position="relative" display="inline-flex">
                     <Box
                         sx={{

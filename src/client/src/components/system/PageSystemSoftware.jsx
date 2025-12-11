@@ -39,7 +39,7 @@ export default function PageSystemBackup() {
                     justifyContent: "center",
                 }}
             >
-                <Grid item lg={8} xs={12}>
+                <Grid item size={{ xs: 12, lg: 8 }}>
                     <BugDetailsCard
                         sx={{
                             marginBottom: 0,

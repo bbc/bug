@@ -1,16 +1,15 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import AxiosGet from "@utils/AxiosGet";
-import { Sparklines, SparklinesLine } from "react-sparklines";
-import { formatDistanceToNow } from "date-fns";
-import { useLongPress } from "use-long-press";
 import { useAlert } from "@utils/Snackbar";
+import { formatDistanceToNow } from "date-fns";
+import { useHistory } from "react-router-dom";
+import { Sparklines, SparklinesLine } from "react-sparklines";
+import { useLongPress } from "use-long-press";
 
 export default function HostCard({
     panelId,
@@ -115,14 +114,21 @@ export default function HostCard({
                         <div style={{ margin: "auto", position: "relative" }}>
                             <Box sx={{ m: 1 }}>
                                 <Grid container>
-                                    <Grid width={"50%"} key={1} item xs={0}>
+                                    <Grid width={"50%"} key={1} item size={{ xs: 0 }}>
                                         <Typography variant="h4" component="div">
                                             {title}
                                         </Typography>
                                         <Typography variant="body2">{description}</Typography>
                                     </Grid>
 
-                                    <Grid width={"50%"} alignItems="flex-end" justify="flex-end" key={0} item xs={0}>
+                                    <Grid
+                                        width={"50%"}
+                                        alignItems="flex-end"
+                                        justify="flex-end"
+                                        key={0}
+                                        item
+                                        size={{ xs: 0 }}
+                                    >
                                         <Typography sx={{ textAlign: "right" }} variant="h4" component="div">
                                             {getPingText(time, alive)}
                                         </Typography>

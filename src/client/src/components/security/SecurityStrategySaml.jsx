@@ -1,15 +1,14 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 
 export default function SecurityStrategySaml({ strategy, register, errors, control }) {
     return (
         <>
             <Grid container spacing={4}>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="name"
                         control={control}
@@ -21,7 +20,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <TextField
                         variant="standard"
                         fullWidth
@@ -32,7 +31,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="description"
                         control={control}
@@ -43,7 +42,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormSwitch
                         name="enabled"
                         label="Enable this security type"
@@ -54,7 +53,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormSelect
                         name="sessionLength"
                         control={control}
@@ -76,7 +75,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="loginPath"
                         control={control}
@@ -86,7 +85,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="entryPoint"
                         control={control}
@@ -96,7 +95,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="issuer"
                         control={control}
@@ -106,7 +105,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="identifierFormat"
                         control={control}
@@ -116,7 +115,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="profileField"
                         control={control}
@@ -127,7 +126,7 @@ export default function SecurityStrategySaml({ strategy, register, errors, contr
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormSelect
                         name="matchField"
                         control={control}

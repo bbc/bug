@@ -1,21 +1,21 @@
-import React from "react";
+import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
 import BugLoading from "@core/BugLoading";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
 import Grid from "@mui/material/Grid";
-import MpegEncoderVideo from "./MpegEncoderVideo";
-import MpegEncoderService from "./MpegEncoderService";
-import MpegEncoderTest from "./MpegEncoderTest";
-import MpegEncoderAudio from "./MpegEncoderAudio";
-import MpegEncoderOutput from "./MpegEncoderOutput";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
-import useAsyncEffect from "use-async-effect";
-import { useSelector } from "react-redux";
 import { useAlert } from "@utils/Snackbar";
-import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
-import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
-import { useApiPoller } from "@hooks/ApiPoller";
-import output from "../templates/output";
+import React from "react";
+import { useSelector } from "react-redux";
+import useAsyncEffect from "use-async-effect";
 import { v4 as uuidv4 } from "uuid";
+import output from "../templates/output";
+import MpegEncoderAudio from "./MpegEncoderAudio";
+import MpegEncoderOutput from "./MpegEncoderOutput";
+import MpegEncoderService from "./MpegEncoderService";
+import MpegEncoderTest from "./MpegEncoderTest";
+import MpegEncoderVideo from "./MpegEncoderVideo";
 
 export default function MpegEncoder({ panelId, serviceId }) {
     const [codecdata, setCodecdata] = React.useState({});
@@ -138,9 +138,9 @@ export default function MpegEncoder({ panelId, serviceId }) {
                 padding: "4px",
             }}
         >
-            <Grid item xs={12} md={6} xl={8}>
+            <Grid item size={{ xs: 12, md: 6, xl: 8 }}>
                 <Grid container spacing={1}>
-                    <Grid item xs={12} xl={6}>
+                    <Grid item size={{ xs: 12, xl: 6 }}>
                         <MpegEncoderService
                             codecdata={codecdata}
                             onChange={onChange}
@@ -163,7 +163,7 @@ export default function MpegEncoder({ panelId, serviceId }) {
                             serviceId={serviceId}
                         />
                     </Grid>
-                    <Grid item xs={12} xl={6}>
+                    <Grid item size={{ xs: 12, xl: 6 }}>
                         {codecdata &&
                             codecdata?.encoderService?.value?.audios?.map((audio, index) => (
                                 <MpegEncoderAudio
@@ -180,7 +180,7 @@ export default function MpegEncoder({ panelId, serviceId }) {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} md={6} xl={4}>
+            <Grid item size={{ xs: 12, md: 6, xl: 4 }}>
                 {codecdata &&
                     codecdata.outputs.map((output, index) => (
                         <MpegEncoderOutput

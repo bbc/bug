@@ -1,21 +1,20 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { useAlert } from "@utils/Snackbar";
-import { useForm } from "react-hook-form";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useHistory, useParams } from "react-router-dom";
 
 import AxiosPut from "@utils/AxiosPut";
 
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
-import BugLoading from "@core/BugLoading";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import AxiosGet from "@utils/AxiosGet";
+import useAsyncEffect from "use-async-effect";
 
 export default function DevicePanel({ panelId }) {
     const { deviceId } = useParams();
@@ -72,7 +71,7 @@ export default function DevicePanel({ panelId }) {
                     <BugForm.Header onClose={handleCancelClicked}>Edit Device</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -83,7 +82,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid item size={{ md: 6, xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="username"
                                     control={control}
@@ -94,7 +93,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Username"
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid item size={{ md: 6, xs: 12 }}>
                                 <BugConfigFormPasswordTextField
                                     name="password"
                                     control={control}
@@ -105,7 +104,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Password"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="groups"
                                     label="Groups"

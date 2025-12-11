@@ -1,9 +1,8 @@
-import React from "react";
-import { useParams } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
-import PlayerCard from "../components/PlayerCard";
-import Grid from "@mui/material/Grid";
 import { useApiPoller } from "@hooks/ApiPoller";
+import Grid from "@mui/material/Grid";
+import { useParams } from "react-router-dom";
+import PlayerCard from "../components/PlayerCard";
 
 export default function MainPanel() {
     const { panelId } = useParams();
@@ -27,7 +26,7 @@ export default function MainPanel() {
         <>
             <Grid container spacing={1} sx={{ padding: "8px" }}>
                 {sortedPlayers.map((player) => (
-                    <Grid key={player.id} item xl={3} lg={4} md={6} xs={12}>
+                    <Grid key={player.id} item size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                         <PlayerCard panelId={panelId} player={player} />
                     </Grid>
                 ))}

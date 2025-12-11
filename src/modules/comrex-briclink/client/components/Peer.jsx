@@ -1,19 +1,19 @@
-import { useHistory } from "react-router-dom";
-import React from "react";
+import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import AxiosDelete from "@utils/AxiosDelete";
+import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
-import AxiosGet from "@utils/AxiosGet";
-import AxiosDelete from "@utils/AxiosDelete";
-import BugLoading from "@core/BugLoading";
-import useAsyncEffect from "use-async-effect";
-import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function Peer({ panelId, peerId }) {
     const history = useHistory();
@@ -86,7 +86,7 @@ export default function Peer({ panelId, peerId }) {
                                 },
                             }}
                         >
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="name"
                                     control={control}
@@ -97,7 +97,7 @@ export default function Peer({ panelId, peerId }) {
                                     label="Name"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="addr"
                                     control={control}
@@ -108,7 +108,7 @@ export default function Peer({ panelId, peerId }) {
                                 />
                             </Grid>
                             {profileLabels && (
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormSelect
                                         name="profile"
                                         label="Profile"
@@ -120,7 +120,7 @@ export default function Peer({ panelId, peerId }) {
                                     />
                                 </Grid>
                             )}
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormSwitch
                                     name="use_xlock"
                                     label="Use crosslock"

@@ -1,7 +1,7 @@
 import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
-import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
+import { useForm } from "react-hook-form";
 
 export default {
     title: "BUG Core/Forms/BugConfigFormChipInput",
@@ -148,7 +148,7 @@ export const MyBugConfigFormChipInput = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid item size={{ xs: 12 }}>
                         <BugConfigFormChipInput
                             name={args.name}
                             label={args.label}
@@ -178,7 +178,7 @@ MyBugConfigFormChipInput.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item xs={12}>
+            <Grid item size={{ xs: 12 }}>
                 <BugConfigFormChipInput
                     name="control-name"
                     label="My Control Name"

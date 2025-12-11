@@ -1,21 +1,20 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { useAlert } from "@utils/Snackbar";
-import { useForm } from "react-hook-form";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useHistory, useParams } from "react-router-dom";
 
 import AxiosPut from "@utils/AxiosPut";
 
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
-import BugLoading from "@core/BugLoading";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import AxiosGet from "@utils/AxiosGet";
+import useAsyncEffect from "use-async-effect";
 
 export default function ChannelPanel({ panelId }) {
     const { channelId } = useParams();
@@ -72,7 +71,7 @@ export default function ChannelPanel({ panelId }) {
                     <BugForm.Header onClose={handleCancelClicked}>Edit Channel</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     control={control}
@@ -83,7 +82,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Title"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="number"
                                     control={control}
@@ -95,7 +94,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Number"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormSelect
                                     name="protocol"
                                     control={control}
@@ -110,7 +109,7 @@ export default function ChannelPanel({ panelId }) {
                                     ]}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -121,7 +120,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="port"
                                     control={control}
@@ -133,7 +132,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Port"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="groups"
                                     label="Groups"

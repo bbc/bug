@@ -1,7 +1,7 @@
 import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
-import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
 import Grid from "@mui/material/Grid";
+import { useForm } from "react-hook-form";
 
 export default {
     title: "BUG Core/Forms/BugConfigFormPanelSelect",
@@ -131,7 +131,7 @@ export const MyBugConfigFormPanelSelect = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid item size={{ xs: 12 }}>
                         <BugConfigFormPanelSelect
                             name={args.name}
                             control={control}
@@ -182,7 +182,7 @@ MyBugConfigFormPanelSelect.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item xs={12}>
+            <Grid item size={{ xs: 12 }}>
                 <BugConfigFormPanelSelect
                     name="control-name"
                     label="Select Panels"

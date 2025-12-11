@@ -1,14 +1,13 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { useApiPoller } from "@hooks/ApiPoller";
+import BugApiSelect from "@core/BugApiSelect";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import BugApiSelect from "@core/BugApiSelect";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import { useForceRefresh } from "@hooks/ForceRefresh";
 
 export default function TabLayout({ panelId }) {
     const sendAlert = useAlert();
@@ -98,7 +97,7 @@ export default function TabLayout({ panelId }) {
                     {layout.data.map((row, rowIndex) => {
                         return row.map((col, colIndex) => {
                             return (
-                                <Grid item key={`${colIndex}-${rowIndex}`} xs={12 / layout.data.length}>
+                                <Grid item key={`${colIndex}-${rowIndex}`} size={{ xs: 12 / layout.data.length }}>
                                     <Box sx={{ padding: "16px", backgroundColor: "background.paper" }}>
                                         <BugApiSelect
                                             value={col.inputIndex}

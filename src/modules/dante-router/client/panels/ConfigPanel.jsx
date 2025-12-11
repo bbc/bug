@@ -1,15 +1,13 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
-import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
-import { useSelector } from "react-redux";
-import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
-import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
+import Grid from "@mui/material/Grid";
+import { useSelector } from "react-redux";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -39,7 +37,7 @@ export default function ConfigPanel() {
     return (
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="title"
                         control={control}
@@ -50,7 +48,7 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="description"
                         control={control}
@@ -60,10 +58,10 @@ export default function ConfigPanel() {
                         label="Description"
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item size={{ xs: 12, md: 6 }}>
                     <BugConfigFormTextField
                         name="address"
                         control={control}
@@ -77,7 +75,7 @@ export default function ConfigPanel() {
                         label="IP Address"
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item size={{ xs: 12, md: 6 }}>
                     <BugConfigFormTextField
                         name="port"
                         control={control}
@@ -95,7 +93,7 @@ export default function ConfigPanel() {
                         label="Device Port"
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="apiKey"
                         control={control}
@@ -107,7 +105,7 @@ export default function ConfigPanel() {
                         label="API Key"
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormAutocomplete
                         name="domain"
                         label="Router Domain"
@@ -118,7 +116,7 @@ export default function ConfigPanel() {
                         fullWidth
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormSwitch
                         name="useTake"
                         label="Require confirmation click to take"
