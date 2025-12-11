@@ -15,11 +15,11 @@ import { Link } from "react-router-dom";
 const StyledList = styled(List)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     maxWidth: "550px",
-    "& .MuiListItem-root": {
-        borderBottom: `1px solid ${theme.palette.background.default}`,
-    },
     padding: "0px",
     margin: "8px auto",
+    "& .MuiListItemButton-root": {
+        borderBottom: `1px solid ${theme.palette.background.default}`,
+    },
 }));
 
 const NavIcon = () => (
