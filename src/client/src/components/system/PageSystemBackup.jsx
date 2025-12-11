@@ -62,7 +62,7 @@ export default function PageSystemBackup() {
                     justifyContent: "center",
                 }}
             >
-                <Grid item lg={8} xs={12}>
+                <Grid item size={{ xs: 12, lg: 8 }}>
                     <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Backup" />
                         <CardContent>
@@ -84,7 +84,7 @@ export default function PageSystemBackup() {
                     </BugCard>
                 </Grid>
 
-                <Grid item lg={8} xs={12}>
+                <Grid item size={{ xs: 12, lg: 8 }}>
                     <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Restore" />
                         <CardContent>
@@ -92,7 +92,7 @@ export default function PageSystemBackup() {
                             <div style={{ marginTop: 16 }}>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Grid container spacing={4}>
-                                        <Grid item lg={6} xs={12}>
+                                        <Grid item size={{ xs: 12, lg: 6 }}>
                                             <Box
                                                 sx={{
                                                     display: "flex",
@@ -137,7 +137,7 @@ export default function PageSystemBackup() {
                                                 </Box>
                                             </Box>
                                         </Grid>
-                                        <Grid item lg={6} xs={12}>
+                                        <Grid item size={{ xs: 12, lg: 6 }}>
                                             <Button
                                                 type="submit"
                                                 color="primary"

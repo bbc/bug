@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import CardActionArea from "@mui/material/CardActionArea";
 import BackspaceIcon from "@mui/icons-material/Backspace";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
 export default function PinLogin({ handleLogin }) {
     const [pin, setPin] = useState("");
@@ -32,7 +32,7 @@ export default function PinLogin({ handleLogin }) {
         const numberList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
         for (let number of numberList) {
             numbers.push(
-                <Grid key={number} item xs={4}>
+                <Grid key={number} item size={{ xs: 4 }}>
                     <Card
                         onClick={(event) => {
                             handlePress(number.toString());
@@ -62,7 +62,7 @@ export default function PinLogin({ handleLogin }) {
         return (
             <Grid container spacing={2} justify="flex-end" alignItems="center">
                 {numbers}
-                <Grid item xs={4}>
+                <Grid item size={{ xs: 4 }}>
                     <Card onClick={handleDelete} variant="outlined">
                         <CardActionArea>
                             <Typography
@@ -99,7 +99,7 @@ export default function PinLogin({ handleLogin }) {
                     },
                 }}
             >
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <TextField
                         sx={{
                             paddingTop: "16px",
@@ -127,7 +127,7 @@ export default function PinLogin({ handleLogin }) {
                 </Grid>
                 <Grid
                     item
-                    xs={12}
+                    size={{ xs: 12 }}
                     sx={{
                         marginBottom: "16px",
                         "@media (max-height:400px) and (max-width:800px)": {

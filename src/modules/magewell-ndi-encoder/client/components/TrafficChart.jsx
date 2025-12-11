@@ -1,13 +1,12 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
 import BugTrafficChart from "@core/BugTrafficChart";
+import Grid from "@mui/material/Grid";
 
 export default function TrafficChart({ panelId, deviceId }) {
     return (
         <>
             <Grid
                 item
-                xs={12}
+                size={{ xs: 12 }}
                 sx={{
                     padding: "2rem 1rem 1rem 1rem",
                     minHeight: "400px",

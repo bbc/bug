@@ -1,4 +1,3 @@
-import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 
@@ -15,7 +14,7 @@ export default function BugLoading({ height = "100vh", sx = {} }) {
                 ...sx,
             }}
         >
-            <Grid item xs={3}>
+            <Grid item size={{ xs: 3 }}>
                 <CircularProgress />
             </Grid>
         </Grid>

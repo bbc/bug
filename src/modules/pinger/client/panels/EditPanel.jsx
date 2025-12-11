@@ -1,12 +1,11 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useAlert } from "@utils/Snackbar";
 import BugLoading from "@core/BugLoading";
 import Grid from "@mui/material/Grid";
 import AxiosDelete from "@utils/AxiosDelete";
-import HostCardEdit from "../components/HostCardEdit";
+import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import AddCard from "../components/AddCard";
+import HostCardEdit from "../components/HostCardEdit";
 
 export default function EditPanel() {
     const params = useParams();
@@ -26,7 +25,7 @@ export default function EditPanel() {
         const cards = [];
         for (let hostId in hosts) {
             cards.push(
-                <Grid item key={hostId} xl={3} lg={4} md={6} xs={12}>
+                <Grid item key={hostId} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                     <HostCardEdit
                         handleDelete={deleteHost}
                         host={hosts[hostId]}
@@ -51,7 +50,7 @@ export default function EditPanel() {
         <>
             <Grid container alignItems="stretch" spacing={1}>
                 {getHostCards(panelConfig.data.hosts)}
-                <Grid item key={"addDialog"} xl={3} lg={4} md={6} xs={12}>
+                <Grid item key={"addDialog"} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                     <AddCard panelId={params?.panelId} />
                 </Grid>
             </Grid>

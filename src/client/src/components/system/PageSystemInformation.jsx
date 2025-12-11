@@ -32,7 +32,7 @@ export default function PageServerInformation() {
                     justifyContent: "center",
                 }}
             >
-                <Grid item lg={8} xs={12}>
+                <Grid item size={{ xs: 12, lg: 8 }}>
                     <BugDetailsCard
                         title="System Infomation"
                         width="14rem"

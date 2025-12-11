@@ -1,11 +1,11 @@
-import React from "react";
+import BugSelect from "@core/BugSelect";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import Button from "@mui/material/Button";
-import BugSelect from "@core/BugSelect";
+import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
+import React from "react";
 
 export default function LatencyDialog({ open, item, onDismiss, onConfirm }) {
     const [latency, setLatency] = React.useState(item?.videoProfile?.latency);
@@ -19,7 +19,7 @@ export default function LatencyDialog({ open, item, onDismiss, onConfirm }) {
             <DialogTitle>Latency: {item?.videoProfile?.label}</DialogTitle>
             <DialogContent>
                 <Grid container spacing={4} sx={{ width: "24rem", marginTop: "-22px" }}>
-                    <Grid item xs={12}>
+                    <Grid item size={{ xs: 12 }}>
                         <BugSelect
                             value={latency}
                             options={[

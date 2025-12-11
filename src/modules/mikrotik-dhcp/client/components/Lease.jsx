@@ -1,21 +1,21 @@
-import { useHistory } from "react-router-dom";
-import React from "react";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
+import BugTextField from "@core/BugTextField";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import AxiosDelete from "@utils/AxiosDelete";
+import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import BugForm from "@core/BugForm";
-import BugTextField from "@core/BugTextField";
-import Grid from "@mui/material/Grid";
-import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
-import AxiosGet from "@utils/AxiosGet";
-import AxiosDelete from "@utils/AxiosDelete";
-import BugLoading from "@core/BugLoading";
-import useAsyncEffect from "use-async-effect";
-import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
-import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function Lease({ panelId, leaseId }) {
     const history = useHistory();
@@ -104,7 +104,7 @@ export default function Lease({ panelId, leaseId }) {
                                 },
                             }}
                         >
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -116,7 +116,7 @@ export default function Lease({ panelId, leaseId }) {
                                 />
                             </Grid>
                             {lease["host-name"] && (
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugTextField
                                         disabled
                                         fullWidth
@@ -127,7 +127,7 @@ export default function Lease({ panelId, leaseId }) {
                                     />
                                 </Grid>
                             )}
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="comment"
                                     control={control}
@@ -137,7 +137,7 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Comment"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="mac-address"
                                     control={control}
@@ -149,7 +149,7 @@ export default function Lease({ panelId, leaseId }) {
                                 />
                             </Grid>
                             {lease["manufacturer"] && (
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugTextField
                                         disabled
                                         fullWidth
@@ -160,7 +160,7 @@ export default function Lease({ panelId, leaseId }) {
                                     />
                                 </Grid>
                             )}
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugTextField
                                     disabled
                                     fullWidth
@@ -170,7 +170,7 @@ export default function Lease({ panelId, leaseId }) {
                                     variant="standard"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormSwitch
                                     name="enabled"
                                     label="Enabled"
@@ -181,7 +181,7 @@ export default function Lease({ panelId, leaseId }) {
                                 />
                             </Grid>
                             {addressLists && (
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormAutocomplete
                                         name="address-lists"
                                         label="Address Lists"
@@ -196,7 +196,7 @@ export default function Lease({ panelId, leaseId }) {
                             )}
 
                             {servers && lease && (
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormSelect
                                         name="server"
                                         control={control}

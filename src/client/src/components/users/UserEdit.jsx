@@ -179,7 +179,7 @@ export default function UserEdit({ userId = null }) {
     const getPanelSelectionInput = () => {
         if (restrictPanels) {
             return (
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormChipInput
                         name="panels"
                         label="Panels"
@@ -205,7 +205,7 @@ export default function UserEdit({ userId = null }) {
                         </BugForm.Header>
                         <BugForm.Body>
                             <Grid container spacing={4}>
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormTextField
                                         name="name"
                                         control={control}
@@ -218,7 +218,7 @@ export default function UserEdit({ userId = null }) {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormTextField
                                         name="username"
                                         control={control}
@@ -231,7 +231,7 @@ export default function UserEdit({ userId = null }) {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormSwitch
                                         name="enabled"
                                         label="Enable user"
@@ -247,7 +247,7 @@ export default function UserEdit({ userId = null }) {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormTextField
                                         name="email"
                                         control={control}
@@ -259,7 +259,7 @@ export default function UserEdit({ userId = null }) {
                                     />
                                 </Grid>
                                 <BugRestrictTo role="admin">
-                                    <Grid item xs={12}>
+                                    <Grid item size={{ xs: 12 }}>
                                         <BugConfigFormChipInput
                                             name="roles"
                                             label="Roles"
@@ -270,7 +270,7 @@ export default function UserEdit({ userId = null }) {
                                         />
                                     </Grid>
 
-                                    <Grid item xs={12}>
+                                    <Grid item size={{ xs: 12 }}>
                                         <BugConfigFormSwitch
                                             name="restrictPanels"
                                             label="Restrict Panels"
@@ -286,7 +286,7 @@ export default function UserEdit({ userId = null }) {
 
                                     {getPanelSelectionInput()}
                                 </BugRestrictTo>
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormTextField
                                         name="password"
                                         control={control}
@@ -302,7 +302,7 @@ export default function UserEdit({ userId = null }) {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item size={{ xs: 12 }}>
                                     <BugConfigFormPasswordTextField
                                         name="pin"
                                         variant="standard"

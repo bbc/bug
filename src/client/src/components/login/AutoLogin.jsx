@@ -1,8 +1,7 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import { useForm } from "react-hook-form";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import { useForm } from "react-hook-form";
 
 export default function AutoLogin({ handleLogin }) {
     const { handleSubmit } = useForm({});
@@ -23,7 +22,7 @@ export default function AutoLogin({ handleLogin }) {
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
-                    <Grid item xs={12}>
+                    <Grid item size={{ xs: 12 }}>
                         <Button
                             fullWidth
                             type="submit"

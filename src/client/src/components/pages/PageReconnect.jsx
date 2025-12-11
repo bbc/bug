@@ -1,10 +1,9 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
+import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Backdrop from "@mui/material/Backdrop";
 
 export default function PageReconnect({ connection = false }) {
     const handleReloadClicked = () => {
@@ -18,7 +17,7 @@ export default function PageReconnect({ connection = false }) {
                 open={!connection}
             >
                 <Grid container spacing={0} alignItems="center" justify="center" sx={{ minHeight: "100vh" }}>
-                    <Grid item xs={12}>
+                    <Grid item size={{ xs: 12 }}>
                         <Grid
                             container
                             spacing={0}
@@ -48,7 +47,7 @@ export default function PageReconnect({ connection = false }) {
                             </Typography>
                             <Grid
                                 item
-                                xs={3}
+                                size={{ xs: 3 }}
                                 sx={{
                                     margin: "16px",
                                 }}

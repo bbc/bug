@@ -19,7 +19,7 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
 
     return (
         <>
-            <Grid item xs={12}>
+            <Grid item size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         { name: "Description", value: iface.data?.description },

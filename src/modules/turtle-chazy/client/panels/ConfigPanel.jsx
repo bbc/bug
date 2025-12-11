@@ -25,7 +25,7 @@ export default function ConfigPanel() {
     return (
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="title"
                         control={control}
@@ -36,7 +36,7 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="description"
                         control={control}
@@ -46,7 +46,7 @@ export default function ConfigPanel() {
                         label="Description"
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item size={{ xs: 12, md: 6 }}>
                     <BugConfigFormTextField
                         name="address"
                         control={control}
@@ -60,10 +60,10 @@ export default function ConfigPanel() {
                         label="IP Address"
                     />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item size={{ xs: 12, md: 6 }}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormSwitch
                         name="useTake"
                         label="Require confirmation click to take"

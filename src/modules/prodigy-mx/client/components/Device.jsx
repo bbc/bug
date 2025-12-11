@@ -1,9 +1,8 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import { useApiPoller } from "@hooks/ApiPoller";
-import BugLoading from "@core/BugLoading";
 import BugDetailsCard from "@core/BugDetailsCard";
+import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
+import { useApiPoller } from "@hooks/ApiPoller";
+import Grid from "@mui/material/Grid";
 
 export default function Device({ panelId }) {
     const device = useApiPoller({
@@ -56,7 +55,7 @@ export default function Device({ panelId }) {
             spacing={0.5}
             sx={{ backgroundColor: "background.default", height: "100%", alignContent: "start" }}
         >
-            <Grid item sm={12} md={6}>
+            <Grid item size={{ sm: 12, md: 6 }}>
                 <BugDetailsCard
                     sx={{ marginBottom: 0 }}
                     width="14rem"
@@ -71,7 +70,7 @@ export default function Device({ panelId }) {
                     ]}
                 />
             </Grid>
-            <Grid item sm={12} md={6}>
+            <Grid item size={{ sm: 12, md: 6 }}>
                 <BugDetailsCard width="14rem" title={`Device Health`} items={healthItems} />
             </Grid>
         </Grid>

@@ -1,12 +1,12 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import { useForm } from "react-hook-form";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
-import TextField from "@mui/material/TextField";
 import BugLoading from "@core/BugLoading";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import AxiosGet from "@utils/AxiosGet";
+import React from "react";
+import { useForm } from "react-hook-form";
+import useAsyncEffect from "use-async-effect";
 
 export default function LocalLogin({ handleLogin }) {
     const { handleSubmit } = useForm({});
@@ -36,11 +36,11 @@ export default function LocalLogin({ handleLogin }) {
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
-                    <Grid item xs={12}>
+                    <Grid item size={{ xs: 12 }}>
                         <TextField disabled value={user ? user : "No user ID found"} variant="outlined" fullWidth />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid item size={{ xs: 12 }}>
                         <Button
                             fullWidth
                             type="submit"

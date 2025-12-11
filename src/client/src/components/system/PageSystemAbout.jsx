@@ -40,8 +40,7 @@ export default function PageSystemAbout() {
                     sx={{
                         maxWidth: "792px",
                     }}
-                    lg={8}
-                    xs={12}
+                    size={{ lg: 8, xs: 12 }}
                 >
                     <BugCard>
                         <CardHeader
@@ -103,7 +102,7 @@ export default function PageSystemAbout() {
                         </CardContent>
                     </BugCard>
                 </Grid>
-                <Grid item lg={8} xs={12}>
+                <Grid item size={{ xs: 12, lg: 8 }}>
                     <BugDetailsCard
                         title="Developer Information"
                         width="12rem"

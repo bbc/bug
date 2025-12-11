@@ -9,7 +9,7 @@ import pageTitleSlice from "@redux/pageTitleSlice";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosGet from "@utils/AxiosGet";
 import { useAlert } from "@utils/Snackbar";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -67,7 +67,7 @@ export default function PanelAdd(props) {
                     <BugForm.Header onClose={handleCancel}>Add a new panel</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     defaultValue=""
@@ -79,7 +79,7 @@ export default function PanelAdd(props) {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="description"
                                     defaultValue=""
@@ -90,11 +90,11 @@ export default function PanelAdd(props) {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid item size={{ xs: 12, md: 6 }}>
                                 <BugConfigFormPanelGroup name="group" control={control} defaultValue="" />
                             </Grid>
 
-                            <Grid item xs={12} md={6}>
+                            <Grid item size={{ xs: 12, md: 6 }}>
                                 <BugConfigFormSelect
                                     name="module"
                                     control={control}

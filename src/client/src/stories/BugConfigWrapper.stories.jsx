@@ -1,5 +1,5 @@
+import { ArgsTable, Description, PRIMARY_STORY, Subtitle, Title } from "@storybook/addon-docs";
 import { Source } from "@storybook/addon-docs/blocks";
-import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
 
 export default {
     title: "BUG Core/Wrappers/BugConfigWrapper",
@@ -36,7 +36,7 @@ export default function ConfigPanel() {
     return (
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
-                <Grid item xs={12}>
+                <Grid item size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="title"
                         control={control}
