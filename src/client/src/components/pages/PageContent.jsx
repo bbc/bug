@@ -27,27 +27,27 @@ const PagePanelsAdd = lazy(() => import("./PagePanelsAdd"));
 const PagePanelsEdit = lazy(() => import("./PagePanelsEdit"));
 const PageSystem = lazy(() => import("./PageSystem"));
 
-const StyledPageContent = styled("div")({
+const StyledPageContent = styled("div")(({ theme }) => ({
     height: "100%",
     padding: "4px",
-    "@media (max-width:600px)": {
-        padding: "0px",
+    [theme.breakpoints.down(600)]: {
+        padding: 0,
     },
-});
+}));
 
-const StyledHomePageContent = styled("div")({
+const StyledHomePageContent = styled("div")(({ theme }) => ({
     height: "100%",
-    padding: "8px",
-    "@media (max-width:1200px)": {
-        padding: "4px",
+    padding: 8,
+    [theme.breakpoints.down(1200)]: {
+        padding: 4,
     },
-    "@media (max-width:1024px)": {
-        padding: "2px",
+    [theme.breakpoints.down(1024)]: {
+        padding: 2,
     },
-    "@media (max-width:600px)": {
-        padding: "0px",
+    [theme.breakpoints.down(600)]: {
+        padding: 0,
     },
-});
+}));
 
 const PageContent = () => {
     return (

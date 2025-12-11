@@ -9,7 +9,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import MuiToolbar from "@mui/material/Toolbar";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const fullMenuWidth = 1024;
 
@@ -19,7 +19,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
     alignItems: "center",
     padding: theme.spacing(0, 1),
     minHeight: "64px",
-    "@media (max-width:800px)": {
+    "@media (max-width: 800px)": {
         minHeight: "52px",
     },
 }));

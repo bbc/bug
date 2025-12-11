@@ -1,28 +1,28 @@
-import React from "react";
 import BugLoading from "@core/BugLoading";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
+import BugScrollbars from "@core/BugScrollbars";
 import { useApiPoller } from "@hooks/ApiPoller";
-import GroupButtons from "./GroupButtons";
-import RouterButtons from "./RouterButtons";
-import { useSelector } from "react-redux";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import BugScrollbars from "@core/BugScrollbars";
-import { useForceRefresh } from "@hooks/ForceRefresh";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useSelector } from "react-redux";
+import GroupButtons from "./GroupButtons";
+import RouterButtons from "./RouterButtons";
 
-const SectionHeader = styled("div")({
+const SectionHeader = styled("div")(({ theme }) => ({
     fontSize: "0.875rem",
     fontWeight: 500,
     textTransform: "uppercase",
     padding: "12px",
     backgroundColor: "#212121",
-    "@media (max-width:800px)": {
+    [theme.breakpoints.down(800)]: {
         fontSize: "12px",
         backgroundColor: "inherit",
         padding: "6px 6px 2px 6px",
     },
-});
+}));
 
 export default function Router({ panelId, editMode = false, sourceGroup = 0, destinationGroup = 0 }) {
     const sendAlert = useAlert();

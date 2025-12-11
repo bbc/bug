@@ -1,10 +1,9 @@
-import React from "react";
 import BugApiTable from "@core/BugApiTable";
+import BugNoData from "@core/BugNoData";
 import BugPowerIcon from "@core/BugPowerIcon";
-import StateLabel from "./StateLabel";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import BugNoData from "@core/BugNoData";
+import StateLabel from "./StateLabel";
 
 export default function StatisticsList({ panelId }) {
     const StatsLabel = styled("div")(({ theme }) => ({
@@ -12,6 +11,7 @@ export default function StatisticsList({ panelId }) {
         color: theme.palette.primary.main,
         width: "3rem",
     }));
+
     const StatsValue = styled("div")(({ theme }) => ({
         display: "inline-block",
         padding: "0 4px",
