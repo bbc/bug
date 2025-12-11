@@ -1,2 +1,0 @@
--   make all user names lower-case
--   documentation page not workgng
