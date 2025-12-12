@@ -18,6 +18,7 @@ export default function BugTimePicker({ onChange, value, variant = "filled", sx 
                 ampm={false}
                 value={value}
                 onChange={onChange}
+                enableAccessibleFieldDOMStructure={false}
                 slots={{
                     textField: StyledTextField,
                 }}
