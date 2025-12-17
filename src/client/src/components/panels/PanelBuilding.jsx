@@ -1,4 +1,3 @@
-import ProgressCounter from "@components/ProgressCounter";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 
 const CircularProgressWithLabel = ({ value }) => {
@@ -25,7 +24,7 @@ const CircularProgressWithLabel = ({ value }) => {
                             fontSize: "2rem",
                         }}
                     >
-                        <ProgressCounter value={Math.round(value)} />%
+                        {Math.round(value)}%
                     </Typography>
                 )}
             </Box>
