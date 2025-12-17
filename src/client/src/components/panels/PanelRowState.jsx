@@ -41,7 +41,7 @@ export default function PanelRowState({ panel }) {
         case "building":
             return (
                 <State state="building">
-                    {panel._buildStatus.text} - {panel._buildStatus.progress}% complete
+                    {panel._buildStatus.text} - {Math.round(panel._buildStatus.progress)}% complete
                 </State>
             );
         case "error":
