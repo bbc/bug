@@ -1,8 +1,6 @@
-import React from "react";
-import Button from "@mui/material/Button";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
-
 export default function ChannelButton({ panelId }) {
     return (
         <>

@@ -1,20 +1,22 @@
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CancelIcon from "@mui/icons-material/Cancel";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import FormControl from "@mui/material/FormControl";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    IconButton,
+    InputAdornment,
+    MenuItem,
+    TextField,
+    Tooltip,
+} from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import React, { useMemo } from "react";
@@ -146,7 +148,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                                 height: "100%",
                             }}
                         >
-                            <Grid item size={{ xs: 3 }}>
+                            <Grid size={{ xs: 3 }}>
                                 <CircularProgress disableShrink />
                             </Grid>
                         </Grid>

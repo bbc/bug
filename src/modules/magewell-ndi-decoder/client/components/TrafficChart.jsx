@@ -1,11 +1,10 @@
 import BugTrafficChart from "@core/BugTrafficChart";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 
 export default function TrafficChart({ panelId }) {
     return (
         <>
             <Grid
-                item
                 size={{ xs: 12 }}
                 sx={{
                     padding: "2rem 1rem 1rem 1rem",

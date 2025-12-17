@@ -5,7 +5,7 @@ import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import TimeAgo from "javascript-time-ago";
@@ -55,7 +55,7 @@ export default function DeviceTab({ panelId }) {
 
     return (
         <>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         {

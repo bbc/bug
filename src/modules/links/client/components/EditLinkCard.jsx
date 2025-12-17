@@ -1,12 +1,11 @@
-import React from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { Typography, Button, Card, CardContent, CardActionArea, CardActions } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { Button, Card, CardActionArea, CardActions, CardContent, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function LinkCard({ handleDelete, handleEdit, link, index }) {
     const params = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
         if (link?.behaviour === "new") {
@@ -16,7 +15,7 @@ export default function LinkCard({ handleDelete, handleEdit, link, index }) {
             window.open(link?.url, "_self");
         }
         if (link?.behaviour === "inside") {
-            history.push(`/panel/${params.panelId}/link/${link?.index}`);
+            navigate(`/panel/${params.panelId}/link/${link?.index}`);
         }
     };
 

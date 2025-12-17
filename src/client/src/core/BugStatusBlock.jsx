@@ -1,8 +1,6 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import ScaleText from "react-scale-text";
+import { Box } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
+import ScaleText from "react-scale-text";
 export default function BugStatusBlock({ items, label, state, sx = {}, image }) {
     const stateColors = {
         success: "#05990c",

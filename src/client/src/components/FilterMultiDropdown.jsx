@@ -1,8 +1,4 @@
-import React from "react";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
+import { Checkbox, ListItemText, MenuItem, Select } from "@mui/material";
 
 export default function FilterMultiDropdown({ value = [], onChange, options }) {
     return (

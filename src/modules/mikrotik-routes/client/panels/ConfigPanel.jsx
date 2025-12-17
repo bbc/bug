@@ -4,7 +4,7 @@ import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export default function ConfigPanel() {
@@ -25,7 +25,7 @@ export default function ConfigPanel() {
     return (
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
-                <Grid item size={{ xs: 12 }}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="title"
                         control={control}
@@ -36,7 +36,7 @@ export default function ConfigPanel() {
                         label="Panel Title"
                     />
                 </Grid>
-                <Grid item size={{ xs: 12 }}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="description"
                         control={control}
@@ -47,11 +47,11 @@ export default function ConfigPanel() {
                     />
                 </Grid>
 
-                <Grid item size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12, md: 6 }}>
                     <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
                 </Grid>
 
-                <Grid item size={{ xs: 12 }}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="address"
                         control={control}
@@ -66,7 +66,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
 
-                <Grid item size={{ xs: 12, lg: 6 }}>
+                <Grid size={{ xs: 12, lg: 6 }}>
                     <BugConfigFormTextField
                         name="username"
                         control={control}
@@ -81,7 +81,7 @@ export default function ConfigPanel() {
                     />
                 </Grid>
 
-                <Grid item size={{ xs: 12, lg: 6 }}>
+                <Grid size={{ xs: 12, lg: 6 }}>
                     <BugConfigFormPasswordTextField
                         name="password"
                         control={control}

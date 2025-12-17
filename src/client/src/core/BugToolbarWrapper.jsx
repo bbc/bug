@@ -11,21 +11,13 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import { Box } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Popover from "@mui/material/Popover";
+import { Box, Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Popover } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 /*
  * this has optional properties:
  * - buttons - which can take buttons with links to show on the toolbar
@@ -44,7 +36,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
     const statusItemCount = panel.data._status ? panel.data._status.length : 0;
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { confirmDialog } = useBugConfirmDialog();
 
     useEffect(() => {
@@ -77,7 +69,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                 broadcast: "true",
                 variant: "success",
             });
-            history.push("/");
+            navigate("/");
         } else {
             sendAlert(`Failed to disable panel: ${panel.data.title}`, {
                 variant: "error",
@@ -112,7 +104,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
 
         if (result !== false) {
             if (await AxiosDelete(`/api/panel/${panel.data.id}`)) {
-                history.push("/");
+                navigate("/");
                 sendAlert(`Deleted panel: ${panel.data.title}`, { broadcast: "true", variant: "success" });
             } else {
                 sendAlert(`Failed to delete panel: ${panel.data.title}`, { variant: "error" });
@@ -183,11 +175,11 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
             );
         }
 
-        return null;
+        return <></>;
     };
 
     if (panel.status === "loading") {
-        return null;
+        return <></>;
     }
     if (panel.status === "success") {
         return (
@@ -228,5 +220,5 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
             </>
         );
     }
-    return null;
+    return <></>;
 }

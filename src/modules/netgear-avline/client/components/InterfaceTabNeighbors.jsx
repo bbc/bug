@@ -2,7 +2,7 @@ import BugDetailsTable from "@core/BugDetailsTable";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 
 export default function InterfaceTabNeighbors({ panelId, interfaceId }) {
     const iface = useApiPoller({
@@ -19,7 +19,7 @@ export default function InterfaceTabNeighbors({ panelId, interfaceId }) {
 
     return (
         <>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         { name: "Remote Port Description", value: iface.data?.lldp?.remotePortDesc },

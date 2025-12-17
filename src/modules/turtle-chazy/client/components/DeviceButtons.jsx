@@ -1,11 +1,10 @@
 import BugLoading from "@core/BugLoading";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { useAlert } from "@utils/Snackbar";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DeviceButton from "./DeviceButton";
-
 export default function DeviceButtons({
     panelId,
     groupType,
@@ -15,7 +14,7 @@ export default function DeviceButtons({
     sourceGroup = 0,
 }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [localButtons, setLocalButtons] = useState(null);
     const { renameDialog } = useBugRenameDialog();
 
@@ -25,11 +24,11 @@ export default function DeviceButtons({
 
     const handleDeviceButtonClicked = (groupName) => {
         if (groupType === "source") {
-            history.push(
+            navigate(
                 `/panel/${panelId}/route/${encodeURIComponent(groupName)}/${encodeURIComponent(destinationGroup)}`
             );
         } else {
-            history.push(
+            navigate(
                 `/panel/${panelId}/route/${encodeURIComponent(sourceGroup ? sourceGroup : "-")}/${encodeURIComponent(
                     groupName
                 )}`

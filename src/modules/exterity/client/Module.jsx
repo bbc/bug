@@ -1,7 +1,7 @@
-import React from "react";
 import BugModuleWrapper from "@core/BugModuleWrapper";
 import BugRestrictTo from "@core/BugRestrictTo";
-import { Route } from "react-router-dom";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 
 const MainPanel = React.lazy(() => import("./panels/MainPanel"));
 const ConfigPanel = React.lazy(() => import("./panels/ConfigPanel"));
@@ -13,29 +13,22 @@ const DeviceAddPanel = React.lazy(() => import("./panels/DeviceAddPanel"));
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
-            <Route exact path="/panel/:panelId">
-                <MainPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/display/:tab">
-                <MainPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/channels/edit/:channelId">
-                <ChannelEditPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/devices/edit/:deviceId">
-                <DeviceEditPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/channels/add">
-                <ChannelAddPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/devices/add">
-                <DeviceAddPanel {...props} />
-            </Route>
-            <BugRestrictTo role="admin">
-                <Route exact path="/panel/:panelId/config">
-                    <ConfigPanel {...props} />
-                </Route>
-            </BugRestrictTo>
+            <Routes>
+                <Route index element={<MainPanel {...props} />} />
+                <Route path="/display/:tab" element={<MainPanel {...props} />} />
+                <Route path="/channels/edit/:channelId" element={<ChannelEditPanel {...props} />} />
+                <Route path="/devices/edit/:deviceId" element={<DeviceEditPanel {...props} />} />
+                <Route path="/channels/add" element={<ChannelAddPanel {...props} />} />
+                <Route path="/devices/add" element={<DeviceAddPanel {...props} />} />
+                <Route
+                    path="config"
+                    element={
+                        <BugRestrictTo role="admin">
+                            <ConfigPanel {...props} />
+                        </BugRestrictTo>
+                    }
+                />
+            </Routes>
         </BugModuleWrapper>
     );
 }

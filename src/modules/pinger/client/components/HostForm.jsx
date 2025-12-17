@@ -1,20 +1,17 @@
-import { useAlert } from "@utils/Snackbar";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugForm from "@core/BugForm";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-
+import { Button, Grid } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
 import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function HostCard({ panelId, hostId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
     const {
@@ -31,14 +28,14 @@ export default function HostCard({ panelId, hostId }) {
     };
 
     const handleCancelClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const createHost = async (host) => {
         const response = await AxiosPost(`/container/${panelId}/hosts`, host);
         if (response) {
             sendAlert(`Created host ${host.title}`, { variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Could not create host ${host.title}`, { variant: "error" });
         }
@@ -48,7 +45,7 @@ export default function HostCard({ panelId, hostId }) {
         const response = await AxiosPut(`/container/${panelId}/hosts/${hostId}`, host);
         if (response) {
             sendAlert(`Updated host ${host.title}`, { variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Could not update host ${host.title}`, { variant: "error" });
         }
@@ -78,7 +75,7 @@ export default function HostCard({ panelId, hostId }) {
                     <BugForm.Header onClose={handleCancelClicked}>{getVerb()} Host</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item size={{ xs: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     control={control}
@@ -89,7 +86,7 @@ export default function HostCard({ panelId, hostId }) {
                                     label="Title"
                                 />
                             </Grid>
-                            <Grid item size={{ xs: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="description"
                                     control={control}
@@ -100,7 +97,7 @@ export default function HostCard({ panelId, hostId }) {
                                     label="Description"
                                 />
                             </Grid>
-                            <Grid item size={{ xs: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="host"
                                     control={control}

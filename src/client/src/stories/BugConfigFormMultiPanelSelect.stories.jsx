@@ -1,6 +1,6 @@
 import BugConfigFormMultiPanelSelect from "@core/BugConfigFormMultiPanelSelect";
 import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default {
@@ -131,7 +131,7 @@ export const MyBugConfigFormMultiPanelSelect = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormMultiPanelSelect
                             name={args.name}
                             control={control}
@@ -182,7 +182,7 @@ MyBugConfigFormMultiPanelSelect.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormMultiPanelSelect
                     name="control-name"
                     label="Select Panels"

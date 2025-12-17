@@ -1,6 +1,4 @@
-import React from "react";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
+import { TableCell, TableRow } from "@mui/material";
 
 export default function PanelTableGroupRow({ title }) {
     return (

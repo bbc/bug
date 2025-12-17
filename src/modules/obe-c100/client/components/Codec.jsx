@@ -1,7 +1,7 @@
 import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
 import BugLoading from "@core/BugLoading";
 import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
@@ -114,9 +114,9 @@ export default function Codec({ panelId }) {
                 padding: "4px",
             }}
         >
-            <Grid item size={{ xs: 12, md: 6, xl: 8 }}>
+            <Grid size={{ xs: 12, md: 6, xl: 8 }}>
                 <Grid container spacing={1}>
-                    <Grid item size={{ xs: 12, xl: 6 }}>
+                    <Grid size={{ xs: 12, xl: 6 }}>
                         <CodecInput
                             codecdata={codecdata}
                             onChange={onChange}
@@ -126,7 +126,7 @@ export default function Codec({ panelId }) {
                         <CodecTest codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                         <CodecVideo codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                     </Grid>
-                    <Grid item size={{ xs: 12, xl: 6 }}>
+                    <Grid size={{ xs: 12, xl: 6 }}>
                         <CodecMux codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                         {codecdata &&
                             codecdata.audio.map((audio, index) => (
@@ -143,7 +143,7 @@ export default function Codec({ panelId }) {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item size={{ xs: 12, md: 6, xl: 4 }}>
+            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
                 {codecdata &&
                     codecdata.outputs.map((output, index) => (
                         <CodecOutput

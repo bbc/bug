@@ -1,9 +1,4 @@
-import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
+import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 
 export default function BugDetailsTable({ items, width = "15rem", gridLines = true, sx = {} }) {
     return (

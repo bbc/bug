@@ -1,8 +1,7 @@
 import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugForm from "@core/BugForm";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import { Button, Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default {
@@ -55,7 +54,7 @@ export const MyBugConfigFormDeleteButton = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormTextField name="title" control={control} fullWidth label="Title" />
                     </Grid>
                 </Grid>
@@ -83,7 +82,7 @@ MyBugConfigFormDeleteButton.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormTextField name="title" control={control} fullWidth label="Title" />
             </Grid>
         </Grid>

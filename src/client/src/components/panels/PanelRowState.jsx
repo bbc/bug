@@ -1,7 +1,5 @@
-import React from "react";
 import ProgressCounter from "@components/ProgressCounter";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 const State = ({ state, children }) => {
     const stateColors = {
         running: "success.main",

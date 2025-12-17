@@ -1,11 +1,6 @@
-import React from "react";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Button from "@mui/material/Button";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useHistory } from "react-router-dom";
-import Box from "@mui/material/Box";
-
+import { Alert, AlertTitle, Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 export default function BugNoData({
     title = "No data found",
     message = "",
@@ -13,10 +8,10 @@ export default function BugNoData({
     showConfigButton = true,
     sx = {},
 }) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleConfig = (event) => {
-        history.push(`/panel/${panelId}/config`);
+        navigate(`/panel/${panelId}/config`);
     };
 
     return (

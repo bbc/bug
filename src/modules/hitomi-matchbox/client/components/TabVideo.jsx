@@ -1,8 +1,6 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import Switch from "@mui/material/Switch";
-import Grid from "@mui/material/Grid";
+import { Grid, Switch } from "@mui/material";
 
 export default function TabOutput({ devicedata, panelId, videoIndex, onChange }) {
     const is4k = devicedata?.video?.videoGeneration.opFormat4K !== undefined;

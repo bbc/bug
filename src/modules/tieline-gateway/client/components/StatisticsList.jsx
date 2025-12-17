@@ -1,10 +1,9 @@
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
 import BugPowerIcon from "@core/BugPowerIcon";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import StateLabel from "./StateLabel";
-
 export default function StatisticsList({ panelId }) {
     const StatsLabel = styled("div")(({ theme }) => ({
         display: "inline-block",

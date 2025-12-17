@@ -1,13 +1,7 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
-
 const StyledListItemText = styled(ListItemText)(({ theme }) => ({
     color: theme.palette.text.primary,
 }));

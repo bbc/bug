@@ -1,7 +1,7 @@
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugLoading from "@core/BugLoading";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import TimeAgo from "javascript-time-ago";
 import { useEffect } from "react";
@@ -32,7 +32,7 @@ export default function PageServerInformation() {
                     justifyContent: "center",
                 }}
             >
-                <Grid item size={{ xs: 12, lg: 8 }}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                     <BugDetailsCard
                         title="System Infomation"
                         width="14rem"

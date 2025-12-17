@@ -1,7 +1,6 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugTextField from "@core/BugTextField";
-import InputAdornment from "@mui/material/InputAdornment";
+import { InputAdornment } from "@mui/material";
 
 export default function CodecMux({ codecdata, onChange }) {
     return (

@@ -1,9 +1,6 @@
-import React from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import { Controller } from "react-hook-form";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { Autocomplete, FormControl, TextField } from "@mui/material";
+import { Controller } from "react-hook-form";
 
 const BugConfigFormMultiPanelSelect = ({
     name,

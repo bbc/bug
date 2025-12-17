@@ -1,5 +1,5 @@
+import { ArgsTable, Description, PRIMARY_STORY, Subtitle, Title } from "@storybook/addon-docs";
 import { Source } from "@storybook/addon-docs/blocks";
-import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
 
 export default {
     title: "BUG Core/Wrappers/BugModuleWrapper",
@@ -25,26 +25,18 @@ import MainPanel from "./panels/MainPanel";
 import ConfigPanel from "./panels/ConfigPanel";
 import EditPanel from "./panels/EditPanel";
 import BugModuleWrapper from "@core/BugModuleWrapper";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
-            <Route exact path="/panel/:panelId">
-                <MainPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/:sourceGroup/:destinationGroup">
-                <MainPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/edit">
-                <EditPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/edit/:sourceGroup/:destinationGroup">
-                <EditPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/config">
-                <ConfigPanel {...props} />
-            </Route>
+            <Routes>
+                <Route index element={<MainPanel {...props} />} />
+                <Route path="/:sourceGroup/:destinationGroup" element={<MainPanel {...props} />} />
+                <Route path="/edit" element={<EditPanel {...props} />} />
+                <Route path="/edit/:sourceGroup/:destinationGroup" element={<EditPanel {...props} />} />
+                <Route path="/config" element={<ConfigPanel {...props} />} />
+            </Routes>
         </BugModuleWrapper>
     );
 }

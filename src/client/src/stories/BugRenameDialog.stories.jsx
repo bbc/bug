@@ -1,9 +1,6 @@
+import BugRenameDialog, { useBugRenameDialog } from "@core/BugRenameDialog";
+import { Box, Button } from "@mui/material";
 import React from "react";
-import BugRenameDialog from "@core/BugRenameDialog";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-
 export default {
     title: "BUG Core/Dialogs/BugRenameDialog",
     component: BugRenameDialog,
@@ -156,8 +153,8 @@ MyBugRenameDialog.parameters = {
         source: {
             code: `
 import React from "react";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import {Button} from "@mui/material";;
+import {Box} from "@mui/material";;
 import BugRenameDialog from "@core/BugRenameDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 

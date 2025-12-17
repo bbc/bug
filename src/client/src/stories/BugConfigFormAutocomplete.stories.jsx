@@ -1,6 +1,6 @@
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default {
@@ -149,7 +149,7 @@ export const MyBugConfigFormAutocomplete = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormAutocomplete
                             name={args.name}
                             label={args.label}
@@ -179,7 +179,7 @@ MyBugConfigFormAutocomplete.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormAutocomplete
                     name="control-name"
                     label="My Control Name"

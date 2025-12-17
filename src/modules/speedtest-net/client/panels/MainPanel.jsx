@@ -1,5 +1,5 @@
 import { useApiPoller } from "@hooks/ApiPoller";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import ResultsTable from "../components/ResultsTable";
 import SpeedCard from "./../components/SpeedCard";
@@ -30,7 +30,7 @@ export default function MainPanel() {
                     interval={500}
                 />
 
-                <Grid item size={{ xs: 12 }} sx={{ padding: "8px" }}>
+                <Grid size={{ xs: 12 }} sx={{ padding: "8px" }}>
                     <ResultsTable panelId={params.panelId} limit={10} />
                 </Grid>
             </Grid>

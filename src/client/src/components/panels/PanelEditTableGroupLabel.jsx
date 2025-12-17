@@ -1,9 +1,7 @@
-import React from "react";
 import BugDragIcon from "@core/BugDragIcon";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import BugTextField from "@core/BugTextField";
 import { useSortable } from "@dnd-kit/sortable";
+import { TableCell, TableRow } from "@mui/material";
 
 export default function PanelEditTableGroupLabel({ group, onChange, placeholder, id, passedKey }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });

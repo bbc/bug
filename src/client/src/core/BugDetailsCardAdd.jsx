@@ -1,8 +1,5 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
-
+import { Card, IconButton } from "@mui/material";
 export default function BugDetailsCard({ width, sx = {}, onAdd, ...props }) {
     return (
         <Card

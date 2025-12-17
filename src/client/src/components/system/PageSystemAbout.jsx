@@ -3,11 +3,7 @@ import BugDetailsCard from "@core/BugDetailsCard";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Box from "@mui/material/Box";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
+import { Box, CardContent, CardHeader, Grid, Link } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -36,7 +32,6 @@ export default function PageSystemAbout() {
                 }}
             >
                 <Grid
-                    item
                     sx={{
                         maxWidth: "792px",
                     }}
@@ -102,7 +97,7 @@ export default function PageSystemAbout() {
                         </CardContent>
                     </BugCard>
                 </Grid>
-                <Grid item size={{ xs: 12, lg: 8 }}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                     <BugDetailsCard
                         title="Developer Information"
                         width="12rem"

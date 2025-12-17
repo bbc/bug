@@ -1,11 +1,6 @@
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -43,7 +38,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={4}>
-                        <Grid item size={{ xs: 12 }}>
+                        <Grid size={{ xs: 12 }}>
                             <BugConfigFormTextField
                                 name="title"
                                 control={control}
@@ -54,7 +49,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                                 label="Title"
                             />
                         </Grid>
-                        <Grid item size={{ xs: 12 }}>
+                        <Grid size={{ xs: 12 }}>
                             <BugConfigFormTextField
                                 name="description"
                                 control={control}
@@ -65,7 +60,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                                 label="Description"
                             />
                         </Grid>
-                        <Grid item size={{ xs: 12 }}>
+                        <Grid size={{ xs: 12 }}>
                             <BugConfigFormTextField
                                 name="url"
                                 control={control}
@@ -77,7 +72,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                             />
                         </Grid>
 
-                        <Grid item size={{ xs: 12 }}>
+                        <Grid size={{ xs: 12 }}>
                             <BugConfigFormSelect
                                 name="behaviour"
                                 control={control}

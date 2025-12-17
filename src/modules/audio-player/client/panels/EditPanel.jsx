@@ -1,6 +1,6 @@
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugLoading from "@core/BugLoading";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosPost from "@utils/AxiosPost";
 import AxiosPut from "@utils/AxiosPut";
@@ -74,7 +74,7 @@ export default function EditPanel() {
         <>
             <Grid container spacing={1} sx={{ padding: "8px" }}>
                 {sortedPlayers.map((player) => (
-                    <Grid item key={player.id} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
+                    <Grid key={player.id} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                         <PlayerCardEdit
                             handleDelete={deletePlayer}
                             handleEdit={() => onClickEdit(player)}
@@ -82,7 +82,7 @@ export default function EditPanel() {
                         />
                     </Grid>
                 ))}
-                <Grid item size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
+                <Grid size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                     <AddCard handleClick={onClickAdd} />
                 </Grid>
             </Grid>

@@ -1,5 +1,5 @@
 import BugLoading from "@core/BugLoading";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import { useState } from "react";
@@ -69,7 +69,7 @@ export default function EditPanel() {
         const cards = [];
         for (let index in links) {
             cards.push(
-                <Grid item key={index} size={{ lg: 6, xs: 12 }}>
+                <Grid key={index} size={{ lg: 6, xs: 12 }}>
                     <EditLinkCard handleDelete={deleteLink} handleEdit={onClickAdd} link={links[index]} index={index} />
                 </Grid>
             );
@@ -97,7 +97,7 @@ export default function EditPanel() {
             />
             <Grid container spacing={1}>
                 {getLinkCards(panelConfig.data.links)}
-                <Grid item size={{ xs: 12, lg: 6 }}>
+                <Grid size={{ xs: 12, lg: 6 }}>
                     <AddCard handleClick={onClickAdd} />
                 </Grid>
             </Grid>

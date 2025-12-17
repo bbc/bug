@@ -5,8 +5,7 @@ import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useForceRefresh } from "@hooks/ForceRefresh";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+import { Grid, TextField } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 
@@ -93,7 +92,7 @@ export default function TabLabels({ panelId }) {
     });
     return (
         <>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugApiTable
                     columns={[
                         {

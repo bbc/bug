@@ -3,11 +3,7 @@ import CollapsibleBugAlert from "@components/CollapsibleBugAlert";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import BugRestrictTo from "@core/BugRestrictTo";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
+import { Card, CardContent, CardHeader, CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 
@@ -122,7 +118,7 @@ const HomeTile = ({ panel }) => {
     };
 
     return (
-        <StyledGrid item key={panel.id} sx={{ width: "100%" }}>
+        <StyledGrid key={panel.id} sx={{ width: "100%" }}>
             <StyledLink key={panel.id} to={`/panel/${panel.id}`}>
                 <StyledCard>
                     <StyledCardHeader

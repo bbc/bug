@@ -1,20 +1,20 @@
-import React, { useState } from "react";
 import BugApiTable from "@core/BugApiTable";
+import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import BugPowerIcon from "@core/BugPowerIcon";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import BugPowerIcon from "@core/BugPowerIcon";
-import AxiosPut from "@utils/AxiosPut";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AxiosPost from "@utils/AxiosPost";
+import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import { useSelector } from "react-redux";
-import BugLoading from "@core/BugLoading";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import { useHistory } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import AddDialog from "./AddDialog";
 
 export default function DevicesTable({ panelId }) {
@@ -25,7 +25,7 @@ export default function DevicesTable({ panelId }) {
 
     const { renameDialog } = useBugRenameDialog();
     const timeAgo = new TimeAgo("en-GB");
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleGotoClicked = (event, item) => {
         console.log(item);
@@ -122,7 +122,7 @@ export default function DevicesTable({ panelId }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/device/${item.deviceId}`);
+        navigate(`/panel/${panelId}/device/${item.deviceId}`);
     };
 
     if (panelConfig.status === "loading") {
