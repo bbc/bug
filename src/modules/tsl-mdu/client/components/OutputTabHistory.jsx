@@ -1,11 +1,9 @@
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 
 export default function OutputTabHistory({ output, panelId }) {
     return (
         <>
-            <Grid item size={{ xs: 12 }}>
-                History Data
-            </Grid>
+            <Grid size={{ xs: 12 }}>History Data</Grid>
         </>
     );
 }

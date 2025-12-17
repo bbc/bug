@@ -5,11 +5,7 @@ import BugNoData from "@core/BugNoData";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugTimeZonePicker from "@core/BugTimeZonePicker";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import Input from "@mui/material/Input";
-import Switch from "@mui/material/Switch";
+import { Box, Button, Grid, Input, Switch } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import { useState } from "react";
@@ -117,7 +113,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         {

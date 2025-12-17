@@ -1,6 +1,4 @@
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
+import { Box, CircularProgress, Grid } from "@mui/material";
 
 export default function PanelRestarting() {
     return (
@@ -14,7 +12,7 @@ export default function PanelRestarting() {
             }}
         >
             <h3>Panel is restarting ...</h3>
-            <Grid item size={{ xs: 3 }}>
+            <Grid size={{ xs: 3 }}>
                 <Box position="relative" display="inline-flex">
                     <Box
                         sx={{

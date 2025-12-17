@@ -1,19 +1,12 @@
-import React, { useState } from "react";
-import Card from "@mui/material/Card";
-import { CardActionArea } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
+import BugAvatar from "@core/BugAvatar";
+import { Button, Card, CardActionArea, CardContent, Stack, Tooltip, Typography } from "@mui/material";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import { formatDistanceToNow } from "date-fns";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import TextEditor from "./TextEditor";
 import TextViewer from "./TextViewer";
-import AxiosPut from "@utils/AxiosPut";
-import Typography from "@mui/material/Typography";
-import { formatDistanceToNow } from "date-fns";
-import { useAlert } from "@utils/Snackbar";
-import { useSelector } from "react-redux";
-import Tooltip from "@mui/material/Tooltip";
-import Stack from "@mui/material/Stack";
-import BugAvatar from "@core/BugAvatar";
-
 export default function NoteCard({ user, note, noteId, panelId }) {
     const [edit, setEdit] = useState(false);
     const sendAlert = useAlert();

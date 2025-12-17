@@ -1,19 +1,17 @@
-import { useApiPoller } from "@hooks/ApiPoller";
-import { useAlert } from "@utils/Snackbar";
-import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
-
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugForm from "@core/BugForm";
 import BugLoading from "@core/BugLoading";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Button, Grid } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export default function DevicePanel({ panelId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const sendAlert = useAlert();
 
     const groups = useApiPoller({
@@ -22,7 +20,7 @@ export default function DevicePanel({ panelId }) {
     });
 
     const handleCancelClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const { handleSubmit, control, formState } = useForm();
@@ -43,7 +41,7 @@ export default function DevicePanel({ panelId }) {
         const response = await AxiosPost(`/container/${panelId}/devices`, form);
         if (response) {
             sendAlert(`Device has been added.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Device could not be added.`, { variant: "warning" });
         }
@@ -60,7 +58,7 @@ export default function DevicePanel({ panelId }) {
                     <BugForm.Header onClose={handleCancelClicked}>Add Device</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item size={{ xs: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -70,7 +68,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item size={{ md: 6, xs: 12 }}>
+                            <Grid size={{ md: 6, xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="username"
                                     control={control}
@@ -80,7 +78,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Username"
                                 />
                             </Grid>
-                            <Grid item size={{ md: 6, xs: 12 }}>
+                            <Grid size={{ md: 6, xs: 12 }}>
                                 <BugConfigFormPasswordTextField
                                     name="password"
                                     control={control}
@@ -90,7 +88,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Password"
                                 />
                             </Grid>
-                            <Grid item size={{ xs: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="groups"
                                     label="Groups"

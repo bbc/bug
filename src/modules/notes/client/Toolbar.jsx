@@ -1,11 +1,9 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import AxiosPost from "@utils/AxiosPost";
 import { usePanelStatus } from "@hooks/PanelStatus";
+import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
+import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-
 export default function Toolbar({ panelId, ...props }) {
     let toolbarProps = { ...props };
     const sendAlert = useAlert();

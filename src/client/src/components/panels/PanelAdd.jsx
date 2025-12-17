@@ -3,8 +3,7 @@ import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugForm from "@core/BugForm";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import { Button, Grid } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosGet from "@utils/AxiosGet";
@@ -12,11 +11,11 @@ import { useAlert } from "@utils/Snackbar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 
 export default function PanelAdd(props) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [moduleList, setModuleList] = useState([]);
     const sendAlert = useAlert();
@@ -40,13 +39,13 @@ export default function PanelAdd(props) {
             sendAlert(`${form?.title} could not be added.`, { variant: "warning" });
         } else {
             sendAlert(`${form?.title} has been added.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         }
         setLoading(false);
     };
 
     const handleCancel = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const getModuleOptions = () => {
@@ -67,7 +66,7 @@ export default function PanelAdd(props) {
                     <BugForm.Header onClose={handleCancel}>Add a new panel</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item size={{ xs: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     defaultValue=""
@@ -79,7 +78,7 @@ export default function PanelAdd(props) {
                                 />
                             </Grid>
 
-                            <Grid item size={{ xs: 12 }}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="description"
                                     defaultValue=""
@@ -90,11 +89,11 @@ export default function PanelAdd(props) {
                                 />
                             </Grid>
 
-                            <Grid item size={{ xs: 12, md: 6 }}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <BugConfigFormPanelGroup name="group" control={control} defaultValue="" />
                             </Grid>
 
-                            <Grid item size={{ xs: 12, md: 6 }}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <BugConfigFormSelect
                                     name="module"
                                     control={control}

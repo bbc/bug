@@ -1,8 +1,6 @@
-import React from "react";
-import { PieChart, Pie, Cell } from "recharts";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import useDimensions from "react-cool-dimensions";
-
+import { Cell, Pie, PieChart } from "recharts";
 export default function BugGauge({ max = 100, value, title = "", unit = "%", decimalPlaces = 2, sx = {} }) {
     const { observe, width, height } = useDimensions({
         onResize: ({ observe, unobserve }) => {

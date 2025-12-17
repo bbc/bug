@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useParams } from "react-router-dom";
@@ -14,7 +14,6 @@ export default function TabStatistics() {
     return (
         <Grid container spacing={1}>
             <Grid
-                item
                 size={{ xs: 12, lg: 12, xl: 5 }}
                 sx={{
                     borderRightWidth: isXLView ? "4px" : "0px",
@@ -24,12 +23,12 @@ export default function TabStatistics() {
             >
                 <Statistics panelId={params.panelId} />
             </Grid>
-            <Grid item size={{ xs: 12, lg: 12, xl: 7 }}>
+            <Grid size={{ xs: 12, lg: 12, xl: 7 }}>
                 <Grid container spacing={1} sx={{ marginBottom: "8px" }}>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <DelayChart panelId={params.panelId} />
                     </Grid>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <LossChart panelId={params.panelId} />
                     </Grid>
                 </Grid>

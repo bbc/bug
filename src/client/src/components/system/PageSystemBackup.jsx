@@ -1,13 +1,6 @@
 import LoadingOverlay from "@components/LoadingOverlay";
 import BugCard from "@core/BugCard";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Grid from "@mui/material/Grid";
-import Input from "@mui/material/Input";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
+import { Box, Button, CardContent, CardHeader, Grid, Input, Link, Paper } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
@@ -62,7 +55,7 @@ export default function PageSystemBackup() {
                     justifyContent: "center",
                 }}
             >
-                <Grid item size={{ xs: 12, lg: 8 }}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                     <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Backup" />
                         <CardContent>
@@ -84,7 +77,7 @@ export default function PageSystemBackup() {
                     </BugCard>
                 </Grid>
 
-                <Grid item size={{ xs: 12, lg: 8 }}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                     <BugCard>
                         <CardHeader component={Paper} square elevation={1} title="Restore" />
                         <CardContent>
@@ -92,7 +85,7 @@ export default function PageSystemBackup() {
                             <div style={{ marginTop: 16 }}>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Grid container spacing={4}>
-                                        <Grid item size={{ xs: 12, lg: 6 }}>
+                                        <Grid size={{ xs: 12, lg: 6 }}>
                                             <Box
                                                 sx={{
                                                     display: "flex",
@@ -137,7 +130,7 @@ export default function PageSystemBackup() {
                                                 </Box>
                                             </Box>
                                         </Grid>
-                                        <Grid item size={{ xs: 12, lg: 6 }}>
+                                        <Grid size={{ xs: 12, lg: 6 }}>
                                             <Button
                                                 type="submit"
                                                 color="primary"

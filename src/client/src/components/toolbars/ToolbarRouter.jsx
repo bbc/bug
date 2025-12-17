@@ -5,11 +5,10 @@ import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
 import SecurityToolbar from "@components/toolbars/SecurityToolbar";
 import SystemToolbar from "@components/toolbars/SystemToolbar";
 import UsersToolbar from "@components/toolbars/UsersToolbar";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
-
 const Title = ({ children }) => (
     <Box
         sx={{

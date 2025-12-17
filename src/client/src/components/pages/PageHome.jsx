@@ -1,7 +1,6 @@
 import BugQuote from "@components/BugQuote";
 import HomeTiles from "@components/home/HomeTiles";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import { Box, Grid } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -18,7 +17,7 @@ export default function PageHome() {
             <HomeTiles />
 
             <Grid container>
-                <Grid item size={{ xs: 12 }}>
+                <Grid size={{ xs: 12 }}>
                     <Box
                         sx={{
                             position: "relative",

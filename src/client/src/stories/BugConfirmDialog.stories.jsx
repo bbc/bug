@@ -1,9 +1,6 @@
+import BugConfirmDialog, { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { Box, Button } from "@mui/material";
 import React from "react";
-import BugConfirmDialog from "@core/BugConfirmDialog";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
-
 export default {
     title: "BUG Core/Dialogs/BugConfirmDialog",
     component: BugConfirmDialog,
@@ -96,8 +93,8 @@ MyBugConfirmDialog.parameters = {
         source: {
             code: `
 import React from "react";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import {Button} from "@mui/material";;
+import {Box} from "@mui/material";;
 import BugConfirmDialog from "@core/BugConfirmDialog";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 

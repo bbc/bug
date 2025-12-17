@@ -1,5 +1,4 @@
-import React from "react";
-import Link from "@mui/material/Link";
+import { Link } from "@mui/material";
 
 export default function BugTableLinkButton({ sx = {}, children, disabled = false, onClick }) {
     return (

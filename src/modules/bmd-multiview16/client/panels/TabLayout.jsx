@@ -3,9 +3,7 @@ import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useForceRefresh } from "@hooks/ForceRefresh";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import { Box, Button, Grid } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 
@@ -97,7 +95,7 @@ export default function TabLayout({ panelId }) {
                     {layout.data.map((row, rowIndex) => {
                         return row.map((col, colIndex) => {
                             return (
-                                <Grid item key={`${colIndex}-${rowIndex}`} size={{ xs: 12 / layout.data.length }}>
+                                <Grid key={`${colIndex}-${rowIndex}`} size={{ xs: 12 / layout.data.length }}>
                                     <Box sx={{ padding: "16px", backgroundColor: "background.paper" }}>
                                         <BugApiSelect
                                             value={col.inputIndex}

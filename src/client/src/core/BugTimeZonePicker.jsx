@@ -1,6 +1,4 @@
-import React from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
+import { Autocomplete, TextField } from "@mui/material";
 import timezonesJSON from "timezones.json";
 
 export default function BugTimeZonePicker({ helperText, label, onChange, value, variant = "outlined", sx = {} }) {

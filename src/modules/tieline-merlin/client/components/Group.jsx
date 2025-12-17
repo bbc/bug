@@ -2,12 +2,7 @@ import BugApiButton from "@core/BugApiButton";
 import BugCard from "@core/BugCard";
 import LinkIcon from "@mui/icons-material/Link";
 import PollIcon from "@mui/icons-material/Poll";
-import Box from "@mui/material/Box";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Grid from "@mui/material/Grid";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
+import { Box, CardContent, CardHeader, Grid, Tab, Tabs } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import React from "react";
@@ -90,7 +85,7 @@ export default function Group({ group, panelId, onChange }) {
     }
 
     return (
-        <Grid key={group.id} item size={{ xxl: 4, lg: 6, xs: 12 }}>
+        <Grid key={group.id} size={{ xxl: 4, lg: 6, xs: 12 }}>
             <BugCard fullHeight>
                 <CardHeader
                     action={

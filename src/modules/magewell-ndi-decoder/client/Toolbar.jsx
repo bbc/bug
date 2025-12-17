@@ -1,14 +1,11 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import AxiosCommand from "@utils/AxiosCommand";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useAlert } from "@utils/Snackbar";
 import { usePanelStatus } from "@hooks/PanelStatus";
-import { useSelector } from "react-redux";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
 
 export default function Toolbar(props) {
     let toolbarProps = { ...props };

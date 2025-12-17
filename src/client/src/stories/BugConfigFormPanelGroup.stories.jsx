@@ -1,6 +1,6 @@
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default {
@@ -62,7 +62,7 @@ export const MyBugConfigFormPanelGroup = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormPanelGroup name={args.name} control={control} defaultValue={args.defaultValue} />
                     </Grid>
                 </Grid>
@@ -81,7 +81,7 @@ MyBugConfigFormPanelGroup.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormPanelGroup
                     name="control-name"
                     control={control}

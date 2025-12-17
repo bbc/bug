@@ -2,7 +2,7 @@ import BugLoading from "@core/BugLoading";
 import BugScrollbars from "@core/BugScrollbars";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useForceRefresh } from "@hooks/ForceRefresh";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
@@ -10,7 +10,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import DeviceButtons from "./DeviceButtons";
 import RouterButtons from "./RouterButtons";
-
 const SectionHeader = styled("div")(({ theme }) => ({
     fontSize: "0.875rem",
     fontWeight: 500,

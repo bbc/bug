@@ -1,13 +1,6 @@
 import BugCard from "@core/BugCard";
 import BugStatusLabel from "@core/BugStatusLabel";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Grid from "@mui/material/Grid";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
+import { CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import AxiosGet from "@utils/AxiosGet";
 import React from "react";
@@ -39,7 +32,7 @@ export default function PageSystemAbout() {
                 }}
             >
                 {modules && (
-                    <Grid item size={{ xs: 12, lg: 8 }}>
+                    <Grid size={{ xs: 12, lg: 8 }}>
                         <BugCard>
                             <CardHeader
                                 sx={{

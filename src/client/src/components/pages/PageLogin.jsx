@@ -6,14 +6,7 @@ import PinLogin from "@components/login/PinLogin";
 import ProxyLogin from "@components/login/ProxyLogin";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Fade from "@mui/material/Fade";
-import Grid from "@mui/material/Grid";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
+import { Alert, Box, Card, CardContent, Fade, Grid, Tab, Tabs } from "@mui/material";
 import userSlice from "@redux/userSlice";
 import AxiosGet from "@utils/AxiosGet";
 import axios from "axios";
@@ -154,7 +147,6 @@ export default function PageLogin() {
                             }}
                         >
                             <Grid
-                                item
                                 sx={{
                                     "@media (max-height:400px) and (max-width:800px)": {
                                         margin: "16px",
@@ -206,7 +198,6 @@ export default function PageLogin() {
                                 </Box>
                             </Grid>
                             <Grid
-                                item
                                 sx={{
                                     width: "100%",
                                     "@media (max-height:400px) and (max-width:800px)": {
@@ -237,7 +228,7 @@ export default function PageLogin() {
                                 ))}
                                 {alert && (
                                     <Fade in={alert !== null}>
-                                        <Grid item size={{ xs: 12 }}>
+                                        <Grid size={{ xs: 12 }}>
                                             <Alert severity="error">{alert}</Alert>
                                         </Grid>
                                     </Fade>

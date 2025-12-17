@@ -1,6 +1,6 @@
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default {
@@ -108,7 +108,7 @@ export const MyBugConfigFormSwitch = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormSwitch
                             name={args.name}
                             control={control}
@@ -135,7 +135,7 @@ MyBugConfigFormSwitch.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormSwitch
                     name="control-name"
                     control={control}

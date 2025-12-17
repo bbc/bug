@@ -1,9 +1,8 @@
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import AnalogueClock from "../components/AnalogueClock";
 import DateString from "../components/DateString";
 import DigitalClock from "../components/DigitalClock";
-
 const Clock = ({ type, ...props }) => {
     return type === "digital" ? <DigitalClock {...props} /> : <AnalogueClock {...props} />;
 };

@@ -6,15 +6,17 @@ import BugLoading from "@core/BugLoading";
 import BugRestrictTo from "@core/BugRestrictTo";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Divider,
+    Grid,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+} from "@mui/material";
 import FaviconNotification from "@utils/FaviconNotification";
 import panelListGroups, { defaultGroupText } from "@utils/panelListGroups";
 import React, { useEffect } from "react";
@@ -170,7 +172,7 @@ const Menu = ({ showGroups = true }) => {
                 height: "100%",
             }}
         >
-            <Grid item style={{ width: "100%" }}>
+            <Grid style={{ width: "100%" }}>
                 {(user?.data || enabledStrategiesCount === 0) && (
                     <>
                         <List disablePadding>
@@ -219,7 +221,7 @@ const Menu = ({ showGroups = true }) => {
                     </>
                 )}
             </Grid>
-            <Grid item style={{ width: "100%" }}>
+            <Grid style={{ width: "100%" }}>
                 <List>
                     <UserMenuItem />
                     <BugMenuIcon />

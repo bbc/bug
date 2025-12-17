@@ -1,5 +1,5 @@
 import BugLoading from "@core/BugLoading";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
 import { useSelector } from "react-redux";
@@ -25,7 +25,7 @@ export default function EditPanel() {
         const cards = [];
         for (let hostId in hosts) {
             cards.push(
-                <Grid item key={hostId} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
+                <Grid key={hostId} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                     <HostCardEdit
                         handleDelete={deleteHost}
                         host={hosts[hostId]}
@@ -50,7 +50,7 @@ export default function EditPanel() {
         <>
             <Grid container alignItems="stretch" spacing={1}>
                 {getHostCards(panelConfig.data.hosts)}
-                <Grid item key={"addDialog"} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
+                <Grid key={"addDialog"} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                     <AddCard panelId={params?.panelId} />
                 </Grid>
             </Grid>

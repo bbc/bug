@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import Popover from "@mui/material/Popover";
-import { TwitterPicker } from "react-color";
 import ColorizeIcon from "@mui/icons-material/Colorize";
-
+import { Button, IconButton, Popover } from "@mui/material";
+import { useState } from "react";
+import { TwitterPicker } from "react-color";
 export default function BugColorPicker({ onColorChange, color }) {
     const [isOpen, setIsOpen] = useState(false);
     const [statusEl, setStatusEl] = useState(null);

@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import { CardActionArea } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import AudioPlayer from "./AudioPlayer";
-import CardActions from "@mui/material/CardActions";
-import Slider from "@mui/material/Slider";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { Card, CardActionArea, CardActions, CardContent, Grid, Slider, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 import { Sparklines, SparklinesBars } from "react-sparklines";
+import AudioPlayer from "./AudioPlayer";
 
 export default function PlayerCard({ panelId, player }) {
     const [playing, setPlaying] = useState(false);

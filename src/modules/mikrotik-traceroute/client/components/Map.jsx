@@ -1,12 +1,10 @@
-import React, { useRef, useMemo, useState, useEffect } from "react";
-import * as ReactDOMServer from "react-dom/server";
-import { MapContainer, TileLayer, Popup, Polyline, Marker } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import Typography from "@mui/material/Typography";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { Avatar, Typography } from "@mui/material";
 import Leaflet from "leaflet";
-import Avatar from "@mui/material/Avatar";
-import AxiosPut from "@utils/AxiosPut";
+import "leaflet/dist/leaflet.css";
+import { useEffect, useMemo, useRef, useState } from "react";
+import * as ReactDOMServer from "react-dom/server";
+import { MapContainer, Marker, Polyline, Popup, TileLayer } from "react-leaflet";
 import hex from "text-hex";
 
 export default function Map({ panelId }) {

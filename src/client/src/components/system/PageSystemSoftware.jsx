@@ -2,7 +2,7 @@ import BugDetailsCard from "@core/BugDetailsCard";
 import BugLoading from "@core/BugLoading";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -39,7 +39,7 @@ export default function PageSystemBackup() {
                     justifyContent: "center",
                 }}
             >
-                <Grid item size={{ xs: 12, lg: 8 }}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                     <BugDetailsCard
                         sx={{
                             marginBottom: 0,

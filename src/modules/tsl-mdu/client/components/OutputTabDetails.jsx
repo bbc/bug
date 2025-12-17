@@ -1,10 +1,10 @@
 import BugDetailsTable from "@core/BugDetailsTable";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 
 export default function OutputTabDetails({ output, panelId }) {
     return (
         <>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         {

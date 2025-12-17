@@ -1,31 +1,28 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
-import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugApiTable from "@core/BugApiTable";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugNoData from "@core/BugNoData";
-import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import { useInterval } from "@hooks/Interval";
 import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
-import { useHistory } from "react-router-dom";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import { useBugCustomDialog } from "@core/BugCustomDialog";
-import BugApiSelect from "@core/BugApiSelect";
+import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import ShareIcon from "@mui/icons-material/Share";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import { useForceRefresh } from "@hooks/ForceRefresh";
-import Box from "@mui/material/Box";
-import { useInterval } from "@hooks/Interval";
+import { Box } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import { useNavigate } from "react-router-dom";
 import BitrateDialog from "./BitrateDialog";
 import ColorDialog from "./ColorDialog";
 import LatencyDialog from "./LatencyDialog";
-import ShareIcon from "@mui/icons-material/Share";
-import LinearScaleIcon from "@mui/icons-material/LinearScale";
-
 export default function EncoderServicesList({ panelId }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { renameDialog } = useBugRenameDialog();
     const { customDialog } = useBugCustomDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
@@ -157,7 +154,7 @@ export default function EncoderServicesList({ panelId }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/mpegencoder/${item.id}`);
+        navigate(`/panel/${panelId}/mpegencoder/${item.id}`);
     };
 
     const serviceToggle = async (checked, item) => {

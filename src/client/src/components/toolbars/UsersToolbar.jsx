@@ -1,15 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { Box } from "@mui/material";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { Box, Button, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-
 export default function UsersToolbar(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);

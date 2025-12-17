@@ -1,12 +1,7 @@
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
@@ -65,7 +60,7 @@ const AddDialog = ({ panelId, deviceId = null, defaultData, dialogOpen, open, ti
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={4}>
-                        <Grid item size={{ xs: 12, md: 12 }}>
+                        <Grid size={{ xs: 12, md: 12 }}>
                             <BugConfigFormTextField
                                 name="address"
                                 control={control}
@@ -79,7 +74,7 @@ const AddDialog = ({ panelId, deviceId = null, defaultData, dialogOpen, open, ti
                                 label="IP Address"
                             />
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <BugConfigFormTextField
                                 name="username"
                                 control={control}
@@ -91,7 +86,7 @@ const AddDialog = ({ panelId, deviceId = null, defaultData, dialogOpen, open, ti
                                 label="Username"
                             />
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <BugConfigFormPasswordTextField
                                 name="password"
                                 control={control}

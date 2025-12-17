@@ -1,6 +1,4 @@
-import React from "react";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 export default function BugVolumeBar({ max = 100, min = 0, value, width = "6px", height = "100px", sx = {} }) {
     const valueHeight = ((value - min) / (max - min)) * 100;
     return (

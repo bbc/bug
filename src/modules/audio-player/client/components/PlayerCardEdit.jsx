@@ -1,9 +1,6 @@
-import React from "react";
-import { Typography, Button, Card, CardContent, CardActionArea, CardActions } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import Box from "@mui/material/Box";
-
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 export default function PlayerCardEdit({ handleDelete, handleEdit, player, playerId }) {
     const handleEditClick = (event) => {
         handleEdit(playerId);

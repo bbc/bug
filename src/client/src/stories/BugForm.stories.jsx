@@ -1,8 +1,6 @@
 import BugForm from "@core/BugForm";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
 import CodeIcon from "@mui/icons-material/Code";
-
+import { Button, IconButton } from "@mui/material";
 export default {
     title: "BUG Core/Wrappers/BugForm",
     component: "div",
@@ -85,8 +83,8 @@ MyBugForm.parameters = {
         source: {
             code: `
 import BugForm from "@core/BugForm";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
+import {IconButton} from "@mui/material";;
+import {Button} from "@mui/material";;
 import CodeIcon from "@mui/icons-material/Code";
 
 <BugForm

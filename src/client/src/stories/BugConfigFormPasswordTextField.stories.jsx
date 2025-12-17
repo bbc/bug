@@ -1,6 +1,6 @@
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default {
@@ -160,7 +160,7 @@ export const MyBugConfigFormPasswordTextField = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormPasswordTextField
                             name={args.name}
                             label={args.label}
@@ -191,7 +191,7 @@ MyBugConfigFormPasswordTextField.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormPasswordTextField
                     name="control-name"
                     control={control}

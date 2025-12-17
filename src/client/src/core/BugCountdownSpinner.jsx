@@ -1,6 +1,6 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useInterval } from "@hooks/Interval";
+import { CircularProgress } from "@mui/material";
+import React from "react";
 
 export default function BugCountdownSpinner({ sx = {}, duration = 5000 }) {
     const [value, setValue] = React.useState(100);

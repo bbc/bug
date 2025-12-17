@@ -1,7 +1,5 @@
-import React from "react";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import stateColor from "./stateColor";
-
 export default function StateLabel({ state, txValue, rxValue, showValues = true }) {
     const color = stateColor({ state, txValue, txValue });
 

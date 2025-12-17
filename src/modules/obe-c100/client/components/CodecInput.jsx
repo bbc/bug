@@ -1,14 +1,11 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
-import Switch from "@mui/material/Switch";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import { useAlert } from "@utils/Snackbar";
+import { Box, IconButton, Switch } from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
-
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
 export default function CodecInput({ codecdata, onChange, showAdvanced, panelId }) {
     const sendAlert = useAlert();
     const [isDetecting, setIsDetecting] = React.useState(false);

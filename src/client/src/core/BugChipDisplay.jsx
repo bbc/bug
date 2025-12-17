@@ -1,6 +1,5 @@
-import React from "react";
+import { Box } from "@mui/material";
 import Chip from "@mui/material/Chip";
-import Box from "@mui/material/Box";
 
 export default function BugChipDisplay({ sx = {}, options, avatar = undefined }) {
     if (!options) {

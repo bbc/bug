@@ -1,6 +1,6 @@
 import BugLoading from "@core/BugLoading";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import PlayerCard from "../components/PlayerCard";
 
@@ -21,12 +21,11 @@ export default function MainPanel() {
         })
         .sort((a, b) => a?.title.localeCompare(b?.label, "en", { sensitivity: "base" }));
 
-    console.log(sortedPlayers);
     return (
         <>
             <Grid container spacing={1} sx={{ padding: "8px" }}>
                 {sortedPlayers.map((player) => (
-                    <Grid key={player.id} item size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
+                    <Grid key={player.id} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                         <PlayerCard panelId={panelId} player={player} />
                     </Grid>
                 ))}

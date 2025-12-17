@@ -1,5 +1,5 @@
 import BugLoading from "@core/BugLoading";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import LinkCard from "./../components/LinkCard";
@@ -12,7 +12,7 @@ export default function MainPanel() {
         const cards = [];
         for (let index in links) {
             cards.push(
-                <Grid key={index} item size={{ lg: 6, xs: 12 }}>
+                <Grid key={index} size={{ lg: 6, xs: 12 }}>
                     <LinkCard {...{ ...{ index: index }, ...links[index] }} />
                 </Grid>
             );

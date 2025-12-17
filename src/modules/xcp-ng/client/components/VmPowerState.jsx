@@ -1,6 +1,4 @@
-import React from "react";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 export default function PanelPowerState({ item }) {
     const operationLabels = {
         migrate_send: "Migrating",

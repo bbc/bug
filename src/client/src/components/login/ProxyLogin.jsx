@@ -1,8 +1,5 @@
 import BugLoading from "@core/BugLoading";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -36,11 +33,11 @@ export default function LocalLogin({ handleLogin }) {
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <TextField disabled value={user ? user : "No user ID found"} variant="outlined" fullWidth />
                     </Grid>
 
-                    <Grid item size={{ xs: 12 }}>
+                    <Grid size={{ xs: 12 }}>
                         <Button
                             fullWidth
                             type="submit"
