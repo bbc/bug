@@ -66,7 +66,7 @@ export default function PageSystemAbout() {
                                 >
                                     <FontAwesomeIcon size="lg" icon={faBug} />
                                 </Box>
-                                <Box>
+                                <Box sx={{ color: "text.primary" }}>
                                     <p>
                                         BUG is a modular web application which controls and monitors a wide range of
                                         broadcast equipment.
@@ -97,7 +97,12 @@ export default function PageSystemAbout() {
                         </CardContent>
                     </BugCard>
                 </Grid>
-                <Grid size={{ xs: 12, lg: 8 }}>
+                <Grid
+                    sx={{
+                        maxWidth: "792px",
+                    }}
+                    size={{ lg: 8, xs: 12 }}
+                >
                     <BugDetailsCard
                         title="Developer Information"
                         width="12rem"
@@ -110,7 +115,7 @@ export default function PageSystemAbout() {
                                 value: (
                                     <BugTableLinkButton
                                         onClick={(event) => openWebpage(event, `https://bbc.github.io/bug`)}
-                                        sx={{ color: "text.secondary" }}
+                                        sx={{ color: "text.primary" }}
                                     >
                                         bbc.github.io/bug
                                     </BugTableLinkButton>
@@ -121,7 +126,7 @@ export default function PageSystemAbout() {
                                 value: (
                                     <BugTableLinkButton
                                         onClick={(event) => openWebpage(event, `/documentation`)}
-                                        sx={{ color: "text.secondary" }}
+                                        sx={{ color: "text.primary" }}
                                     >
                                         /documentation
                                     </BugTableLinkButton>
