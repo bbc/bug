@@ -1,5 +1,5 @@
 import BugAvatar from "@core/BugAvatar";
-import { Button, Card, CardActionArea, CardContent, Stack, Tooltip, Typography } from "@mui/material";
+import { Button, Card, CardContent, Stack, Tooltip, Typography } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import { formatDistanceToNow } from "date-fns";
@@ -74,11 +74,9 @@ export default function NoteCard({ user, note, noteId, panelId }) {
     const getEditButton = () => {
         if (!edit) {
             return (
-                <CardActionArea>
-                    <Button onClick={() => setEdit(true)} size="small" color="primary">
-                        Edit
-                    </Button>
-                </CardActionArea>
+                <Button onClick={() => setEdit(true)} size="small" color="primary">
+                    Edit
+                </Button>
             );
         }
     };
