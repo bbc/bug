@@ -22,7 +22,7 @@ export default function Toolbar({ panelId, ...props }) {
     const buttons = () => (
         <>
             <Button onClick={handleAdd} variant="outlined" color="primary" startIcon={<AddIcon />}>
-                New Note
+                Add Note
             </Button>
         </>
     );

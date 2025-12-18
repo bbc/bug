@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import NoteCard from "./../components/NoteCard";
 
 const StyledMasonry = styled(Masonry)(({ theme }) => ({
+    padding: "4px",
     display: "flex",
     marginLeft: `-${theme.spacing(1)}`,
     width: "auto",
@@ -34,13 +35,6 @@ export default function MainPanel() {
         }
     };
 
-    const getNotesCards = (notes) => {
-        return Object.keys(notes).map((noteId) => {
-            const user = getUser(notes?.[noteId]?.user);
-            return <NoteCard key={noteId} user={user} panelId={params?.panelId} noteId={noteId} note={notes[noteId]} />;
-        });
-    };
-
     if (panelConfig.status === "loading" || users.status === "loading") {
         return <BugLoading />;
     }
@@ -56,13 +50,31 @@ export default function MainPanel() {
         500: 1,
     };
 
+    const notes = Object.keys(panelConfig.data.notes).map((noteId) => {
+        const user = panelConfig.data.notes?.[noteId]?.user ? getUser(panelConfig.data.notes?.[noteId]?.user) : null;
+        return {
+            noteId,
+            ...panelConfig.data.notes[noteId],
+            user: user,
+        };
+    });
+    notes.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+
     return (
         <StyledMasonry
             breakpointCols={breakpointColumnsObj}
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
         >
-            {getNotesCards(panelConfig.data.notes)}
+            {notes.map((note) => (
+                <NoteCard
+                    key={note.noteId}
+                    user={note.user}
+                    panelId={params?.panelId}
+                    noteId={note.noteId}
+                    note={note}
+                />
+            ))}
         </StyledMasonry>
     );
 }
