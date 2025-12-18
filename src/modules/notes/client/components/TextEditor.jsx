@@ -1,28 +1,22 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, Stack } from "@mui/material";
-import AxiosDelete from "@utils/AxiosDelete";
-import { useAlert } from "@utils/Snackbar";
-import { useRef } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { Stack } from "@mui/material";
+import { forwardRef, useImperativeHandle, useRef } from "react";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
-export default function TextEditor({ data, onSave, panelId, noteId }) {
+const TextEditor = forwardRef(({ data }, ref) => {
     const quillRef = useRef(null);
-    const sendAlert = useAlert();
 
-    const handleSave = () => {
-        const editor = quillRef.current.getEditor();
-        const value = editor.root.innerHTML;
-        if (onSave) onSave(value);
-    };
-
-    const handleDelete = async () => {
-        if (await AxiosDelete(`/container/${panelId}/notes/${noteId}`)) {
-            sendAlert(`Deleted note`, { variant: "success" });
-        } else {
-            sendAlert(`Failed to delete note`, { variant: "error" });
-        }
-    };
+    // Expose methods to parent
+    useImperativeHandle(ref, () => ({
+        getContent: () => {
+            const editor = quillRef.current.getEditor();
+            return editor.root.innerHTML;
+        },
+        setContent: (value) => {
+            const editor = quillRef.current.getEditor();
+            editor.root.innerHTML = value;
+        },
+    }));
 
     const modules = {
         toolbar: [
@@ -35,16 +29,18 @@ export default function TextEditor({ data, onSave, panelId, noteId }) {
     };
 
     return (
-        <Stack spacing={1}>
+        <Stack
+            spacing={1}
+            sx={{
+                ".ql-toolbar": { borderRadius: "4px 4px 0 0" },
+                ".ql-container": { borderRadius: "0 0 4px 4px" },
+                ".ql-container.ql-snow": { border: "1px solid #3c3c3c" },
+                ".ql-toolbar.ql-snow": { border: "1px solid #3c3c3c", borderBottom: "none" },
+            }}
+        >
             <ReactQuill ref={quillRef} theme="snow" defaultValue={data} modules={modules} />
-            <Stack direction="row" spacing={1}>
-                <Button variant="contained" color="primary" onClick={handleSave}>
-                    Save
-                </Button>
-                <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={handleDelete}>
-                    Delete
-                </Button>
-            </Stack>
         </Stack>
     );
-}
+});
+
+export default TextEditor;
