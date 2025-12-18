@@ -211,7 +211,7 @@ export default function UserEdit({ userId = null }) {
                                         rules={{ required: true }}
                                         fullWidth
                                         variant="standard"
-                                        defaultValue={user.name}
+                                        defaultValue={user.name ?? ""}
                                         error={errors?.name}
                                         label="Name"
                                     />
@@ -251,7 +251,7 @@ export default function UserEdit({ userId = null }) {
                                         name="email"
                                         control={control}
                                         fullWidth
-                                        defaultValue={user.email}
+                                        defaultValue={user.email ?? ""}
                                         error={errors?.email}
                                         type="email"
                                         label="Email address"
