@@ -16,7 +16,6 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-
     // stagger start of script ...
     await delay(2000);
 

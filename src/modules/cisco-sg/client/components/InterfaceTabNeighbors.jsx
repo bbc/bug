@@ -24,10 +24,22 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                 <BugDetailsTable
                     items={[
                         { name: "Name", value: iface.data?.lldp?.system_name },
-                        { name: "Description", value: iface.data?.lldp?.system_description },
-                        { name: "Remote Port", value: iface.data?.lldp?.port_description },
-                        { name: "Local Port", value: iface.data?.lldp?.port_id },
-                        { name: "Remote MAC Address", value: iface.data?.lldp?.chassis_id },
+                        {
+                            name: "Description",
+                            value: iface.data?.lldp?.system_description,
+                        },
+                        {
+                            name: "Remote Port",
+                            value: iface.data?.lldp?.port_description,
+                        },
+                        {
+                            name: "Local Port",
+                            value: iface.data?.lldp?.port_id,
+                        },
+                        {
+                            name: "Remote MAC Address",
+                            value: iface.data?.lldp?.chassis_id,
+                        },
                     ]}
                 />
             </Grid>

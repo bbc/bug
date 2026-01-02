@@ -124,17 +124,30 @@ export default function PageSystemAbout() {
                                 }}
                                 title="Available Modules"
                             />
-                            <CardContent sx={{ padding: 0, paddingBottom: "0 !important" }}>
+                            <CardContent
+                                sx={{
+                                    padding: 0,
+                                    paddingBottom: "0 !important",
+                                }}
+                            >
                                 <TableContainer>
                                     <Table>
                                         <TableBody>
                                             {modules &&
                                                 modules.map((module) => (
                                                     <TableRow key={module.name}>
-                                                        <TableCell sx={{ fontWeight: 500 }}>
+                                                        <TableCell
+                                                            sx={{
+                                                                fontWeight: 500,
+                                                            }}
+                                                        >
                                                             {module.longname}
                                                         </TableCell>
-                                                        <TableCell sx={{ opacity: 0.5 }}>
+                                                        <TableCell
+                                                            sx={{
+                                                                opacity: 0.5,
+                                                            }}
+                                                        >
                                                             {module.description}
                                                         </TableCell>
                                                         <TableCell>{module.version}</TableCell>

@@ -13,10 +13,7 @@ module.exports = function (config, env) {
     const overriddenConfig = override(
         removeModuleScopePlugin(),
         disableEsLint(),
-        babelInclude([
-            path.resolve("src"),
-            path.resolve("../modules"),
-        ]),
+        babelInclude([path.resolve("src"), path.resolve("../modules")]),
         addWebpackAlias({
             "@modules": path.resolve("../modules"),
             "@components": path.resolve("src/components"),

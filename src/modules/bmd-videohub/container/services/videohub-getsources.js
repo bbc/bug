@@ -56,7 +56,9 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
-    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
+    const dbOutputRouting = await dataCollection.findOne({
+        title: "video_output_routing",
+    });
 
     let selectedSourceIndex = null;
     if (destinationIndex !== null) {
@@ -75,7 +77,9 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
         }
     }
 
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
+    const dbInputLabels = await dataCollection.findOne({
+        title: "input_labels",
+    });
     if (dbInputLabels) {
         for (const [eachIndex, eachValue] of Object.entries(dbInputLabels["data"])) {
             const intIndex = parseInt(eachIndex);

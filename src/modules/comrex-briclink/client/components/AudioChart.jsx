@@ -9,21 +9,45 @@ const CustomTooltip = ({ active, payload, type }) => {
     if (active && payload && payload.length) {
         let timestamp = payload[0].payload.timestamp;
         return (
-            <Box sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}>
+            <Box
+                sx={{
+                    padding: "0.5rem",
+                    backgroundColor: "background.default",
+                    color: "rgba(255, 255, 255, 0.5)",
+                }}
+            >
                 <div>
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         TIME:
                     </Box>
                     {format(timestamp, "kk:mm:ss")}
                 </div>
                 <div>
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         LEFT:
                     </Box>
                     {payload[0].payload[`${type}-left`]}
                 </div>
                 <div>
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         RIGHT:
                     </Box>
                     {payload[0].payload[`${type}-right`]}

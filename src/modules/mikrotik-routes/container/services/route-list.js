@@ -44,7 +44,10 @@ module.exports = async (sortField = "dst-address", sortDirection = "asc", filter
 
     // add defaultactive flag
     routes = routes.map((route) => {
-        return { ...route, defaultActive: route.active && route?.["dst-address"] === "0.0.0.0/0" };
+        return {
+            ...route,
+            defaultActive: route.active && route?.["dst-address"] === "0.0.0.0/0",
+        };
     });
 
     return routes;

@@ -19,14 +19,19 @@ module.exports = async (port, newName) => {
     console.log(`interface-disable: disabling interface ${port}`);
 
     // fetch existing config
-    const portConfig = await NetgearApi.get({ path: `swcfg_port?portid=${port}` });
+    const portConfig = await NetgearApi.get({
+        path: `swcfg_port?portid=${port}`,
+    });
 
     // replace value
     portConfig.switchPortConfig.adminMode = false;
     delete portConfig.resp;
 
     // save it back
-    const result = await NetgearApi.post({ path: `swcfg_port?portid=${port}`, params: portConfig });
+    const result = await NetgearApi.post({
+        path: `swcfg_port?portid=${port}`,
+        params: portConfig,
+    });
 
     if (result?.resp?.status === "success") {
         console.log(`interface-disable: success - updating DB`);

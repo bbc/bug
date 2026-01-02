@@ -24,7 +24,9 @@ const main = async () => {
     const leasesCollection = await mongoCollection("leases");
 
     // update ttl
-    await mongoCreateIndex(leasesCollection, "timestamp", { expireAfterSeconds: 20 });
+    await mongoCreateIndex(leasesCollection, "timestamp", {
+        expireAfterSeconds: 20,
+    });
 
     // remove previous values
     await leasesCollection.deleteMany({});

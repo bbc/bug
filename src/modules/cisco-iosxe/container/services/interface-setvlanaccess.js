@@ -9,16 +9,16 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
 
     // fetch interface details
     const interfacesCollection = await mongoCollection("interfaces");
-    const dbInterface = await interfacesCollection.findOne({ interfaceId: interfaceId });
+    const dbInterface = await interfacesCollection.findOne({
+        interfaceId: interfaceId,
+    });
     if (!dbInterface) {
         console.log(`interface-setvlanaccess: interface ${interfaceId} not found`);
         return false;
     }
     const result = await ciscoIOSXEApi.update({
         host: config["address"],
-        path: `/restconf/data/Cisco-IOS-XE-native:native/interface/${dbInterface.type}=${encodeURIComponent(
-            dbInterface.portIndex
-        )}`,
+        path: `/restconf/data/Cisco-IOS-XE-native:native/interface/${dbInterface.type}=${encodeURIComponent(dbInterface.portIndex)}`,
         data: {
             [dbInterface.type]: {
                 "switchport-config": {
@@ -45,7 +45,12 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             // update db
             const dbResult = await interfacesCollection.updateOne(
                 { interfaceId: interfaceId },
-                { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
+                {
+                    $set: {
+                        "untagged-vlan": parseInt(untaggedVlan),
+                        "tagged-vlans": [],
+                    },
+                }
             );
             console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
             return true;

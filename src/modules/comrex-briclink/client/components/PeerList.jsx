@@ -64,9 +64,7 @@ export default function PeerList({ panelId }) {
         const autoConnectId = item._autoConnectEnabled ? 0 : item.id;
         if (await AxiosCommand(`/container/${panelId}/peer/autoconnect/${autoConnectId}`)) {
             sendAlert(
-                `${item._autoConnectEnabled ? "Disabled" : "Enabled"} autoconnect${
-                    item._autoConnectEnabled ? "" : ` from ${item.name}`
-                }`,
+                `${item._autoConnectEnabled ? "Disabled" : "Enabled"} autoconnect${item._autoConnectEnabled ? "" : ` from ${item.name}`}`,
                 {
                     variant: "success",
                 }

@@ -98,7 +98,9 @@ const main = async () => {
     devicesCollection = await mongoCollection("devices");
 
     // and now create the index with ttl
-    await mongoCreateIndex(devicesCollection, "timestamp", { expireAfterSeconds: updateDelay * 4 });
+    await mongoCreateIndex(devicesCollection, "timestamp", {
+        expireAfterSeconds: updateDelay * 4,
+    });
 
     while (true) {
         await getDeviceInfo();

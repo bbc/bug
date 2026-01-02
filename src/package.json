@@ -6,12 +6,16 @@
     "directories": {
         "doc": "docs"
     },
+    "private": true,
     "scripts": {
         "production": "node bin/bug-prod",
         "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
         "test": "jest --forceExit --detectOpenHandles --maxWorkers=1",
         "modulebuilder": "node modulebuilder/cli.mjs",
-        "documentation": "node utils/docs-templater.js"
+        "documentation": "node utils/docs-templater.js",
+        "format:check": "prettier --check .",
+        "format:write": "prettier --write .",
+        "update:packages": "for d in modules/*/container; do (cd \"$d\" && npm update); done"
     },
     "nodemonConfig": {
         "ignore": [
@@ -51,7 +55,7 @@
         "express-rate-limit": "^7.5.0",
         "express-session": "^1.17.3",
         "fs-extra": "^10.1.0",
-        "glob": "^8.0.3",
+        "glob": "^13.0.0",
         "helmet": "^5.1.0",
         "inquirer": "^9.0.0",
         "ip-range-check": "^0.2.0",
@@ -88,6 +92,7 @@
         "jest": "^30.0.0",
         "jest-extended": "^6.0.0",
         "nodemon": "^3.1.10",
+        "prettier": "^3.7.4",
         "supertest": "^7.1.1"
     },
     "_moduleAliases": {
@@ -129,5 +134,12 @@
             "@services/(.*)": "<rootDir>/services/$1",
             "@middleware/(.*)": "<rootDir>/middleware/$1"
         }
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": false,
+        "printWidth": 120
     }
 }

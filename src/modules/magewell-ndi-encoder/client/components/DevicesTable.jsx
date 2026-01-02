@@ -47,7 +47,10 @@ export default function DevicesTable({ panelId }) {
     };
 
     const handleEdit = (event, item) => {
-        setDeviceData({ ...{ deviceId: item?.deviceId }, ...panelConfig?.data?.devices[item?.deviceId] });
+        setDeviceData({
+            ...{ deviceId: item?.deviceId },
+            ...panelConfig?.data?.devices[item?.deviceId],
+        });
         setEditDialogOpen(true);
     };
 
@@ -82,10 +85,19 @@ export default function DevicesTable({ panelId }) {
             result = `magewell-enc-${item?.serial}`;
         }
 
-        if (await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/rename`, { name: result })) {
-            sendAlert(`Renamed device to ${result}`, { broadcast: "true", variant: "success" });
+        if (
+            await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/rename`, {
+                name: result,
+            })
+        ) {
+            sendAlert(`Renamed device to ${result}`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to rename device to ${result}`, { variant: "error" });
+            sendAlert(`Failed to rename device to ${result}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -108,7 +120,11 @@ export default function DevicesTable({ panelId }) {
             result = `${item?.serial}`;
         }
 
-        if (await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/sourcename`, { name: result })) {
+        if (
+            await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/sourcename`, {
+                name: result,
+            })
+        ) {
             sendAlert(`NDI Source name of ${item?.name} set to ${result}`, {
                 broadcast: "true",
                 variant: "success",

@@ -43,7 +43,9 @@ module.exports = async (port, untaggedVlan = 1, taggedVlans = []) => {
     console.log(`interface-setvlantrunk: setting vlan ${untaggedVlan} on interface ${port}`);
 
     // fetch existing config
-    const portConfig = await NetgearApi.get({ path: `dot1q_sw_port_config?interface=${port}` });
+    const portConfig = await NetgearApi.get({
+        path: `dot1q_sw_port_config?interface=${port}`,
+    });
 
     // pull out the keys we need
     const newConfig = {
@@ -52,24 +54,34 @@ module.exports = async (port, untaggedVlan = 1, taggedVlans = []) => {
             allowedVlanList: expandedVlans,
             configMode: "general",
             nativeVlan: untaggedVlan,
-        }
-    }
+        },
+    };
 
     // save it back
-    const result = await NetgearApi.post({ path: `dot1q_sw_port_config?interface=${port}`, params: newConfig });
+    const result = await NetgearApi.post({
+        path: `dot1q_sw_port_config?interface=${port}`,
+        params: newConfig,
+    });
 
     if (result?.resp?.status === "success") {
         console.log(`interface-setvlantrunk: success - updating DB`);
         // update db
         try {
-
             // in the db we only want vlans which are configured on the switch. Grumble grumble.
-            const filteredVlans = expandedVlans?.filter((v) => availableVlans.includes(parseInt(v))).map((v) => parseInt(v));
+            const filteredVlans = expandedVlans
+                ?.filter((v) => availableVlans.includes(parseInt(v)))
+                .map((v) => parseInt(v));
 
             const interfacesCollection = await mongoCollection("interfaces");
             const dbResult = await interfacesCollection.updateOne(
                 { port: parseInt(port) },
-                { $set: { "tagged-vlans": filteredVlans, configMode: "general", "untagged-vlan": untaggedVlan } }
+                {
+                    $set: {
+                        "tagged-vlans": filteredVlans,
+                        configMode: "general",
+                        "untagged-vlan": untaggedVlan,
+                    },
+                }
             );
             console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
             return true;

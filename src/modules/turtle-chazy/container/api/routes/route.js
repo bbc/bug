@@ -6,7 +6,12 @@ route.get("/:destinationDevice/:destinationIndex/:sourceDevice/:sourceIndex", as
     try {
         res.json({
             status: "success",
-            data: await deviceRoute(req.params?.destinationDevice, parseInt(req.params?.destinationIndex), req.params?.sourceDevice, parseInt(req.params?.sourceIndex)),
+            data: await deviceRoute(
+                req.params?.destinationDevice,
+                parseInt(req.params?.destinationIndex),
+                req.params?.sourceDevice,
+                parseInt(req.params?.sourceIndex)
+            ),
         });
     } catch (error) {
         console.log(error);

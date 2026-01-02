@@ -15,25 +15,25 @@ module.exports = async (sourceIndex, description = "") => {
     const match = sourcesRaw.find((r) => r.uiId === sourceIndex);
     if (!match) {
         logger.error(`source-setdescription: failed to find source index ${sourceIndex}`);
-        throw new Error()
+        throw new Error();
     }
 
     match.description = description;
 
     // the tallymode update is different from the get. We have to update it.
     const tallyModes = {
-        "Normal": 0,
-        "Redirect": 1,
-        "Routed": 2
-    }
-    match.tallyMode = tallyModes[match.tallyMode]
+        Normal: 0,
+        Redirect: 1,
+        Routed: 2,
+    };
+    match.tallyMode = tallyModes[match.tallyMode];
 
     logger.info(`source-setdescription: updating description with data ${JSON.stringify([match])}`);
 
     // write it back
-    if (!await ultrixWebApi.post("source/update", config, JSON.stringify([match]))) {
+    if (!(await ultrixWebApi.post("source/update", config, JSON.stringify([match])))) {
         logger.error(`source-setdescription: failed to update source description`);
-        throw new Error()
+        throw new Error();
     }
 
     // update the db

@@ -7,10 +7,7 @@ export default function OutputPanel() {
 
     return (
         <>
-            <Output
-                panelId={params.panelId}
-                outputNumber={params.outputNumber}
-            />
+            <Output panelId={params.panelId} outputNumber={params.outputNumber} />
         </>
     );
 }

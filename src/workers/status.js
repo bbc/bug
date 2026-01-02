@@ -119,7 +119,9 @@ const fetch = async () => {
                 }
 
                 // update the database
-                await panelStatusCollection.replaceOne({ panelId: eachPanelConfig.id }, panelStatus, { upsert: true });
+                await panelStatusCollection.replaceOne({ panelId: eachPanelConfig.id }, panelStatus, {
+                    upsert: true,
+                });
             }
             await delay(1000);
         }

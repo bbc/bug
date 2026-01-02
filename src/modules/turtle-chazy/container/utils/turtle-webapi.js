@@ -2,7 +2,6 @@
 const axios = require("axios");
 
 const get = async (path, { address }) => {
-
     const url = `http://${address}/${path}`;
     const response = await axios.get(url);
     return response.data;
@@ -24,5 +23,5 @@ const command = async (address, commandArray) => {
 module.exports = {
     get: get,
     post: post,
-    command: command
-}
+    command: command,
+};

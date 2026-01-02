@@ -85,9 +85,7 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/mpegencodeprofile/video/setbitrate/${item.videoProfileId}/${encodeURIComponent(
-                    result
-                )}`
+                `/container/${panelId}/mpegencodeprofile/video/setbitrate/${item.videoProfileId}/${encodeURIComponent(result)}`
             )
         ) {
             sendAlert(`Updated bitrate`, {
@@ -112,9 +110,7 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/mpegencodeprofile/video/setlatency/${item.videoProfileId}/${encodeURIComponent(
-                    result
-                )}`
+                `/container/${panelId}/mpegencodeprofile/video/setlatency/${item.videoProfileId}/${encodeURIComponent(result)}`
             )
         ) {
             sendAlert(`Updated latency`, {
@@ -139,9 +135,7 @@ export default function EncoderServicesList({ panelId }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/mpegencodeprofile/video/setcolor/${item.videoProfileId}/${encodeURIComponent(
-                    result.bitDepth
-                )}/${encodeURIComponent(result.chromaSampling)}`
+                `/container/${panelId}/mpegencodeprofile/video/setcolor/${item.videoProfileId}/${encodeURIComponent(result.bitDepth)}/${encodeURIComponent(result.chromaSampling)}`
             )
         ) {
             sendAlert(`Updated color depth`, {
@@ -164,7 +158,9 @@ export default function EncoderServicesList({ panelId }) {
         if (
             await AxiosCommand(`/container/${panelId}/mpegencoderservice/${checked ? `enable` : `disable`}/${item.id}`)
         ) {
-            sendAlert(`${checked ? `Enabled` : `Disabled`} service: ${item.serviceName}`, { variant: "success" });
+            sendAlert(`${checked ? `Enabled` : `Disabled`} service: ${item.serviceName}`, {
+                variant: "success",
+            });
             doForceRefresh();
         } else {
             sendAlert(`Failed to ${checked ? `enable` : `disable`} service: ${item.serviceName}`, {
@@ -188,9 +184,7 @@ export default function EncoderServicesList({ panelId }) {
     const handleProtectClicked = async (event, item) => {
         if (
             await AxiosCommand(
-                `/container/${panelId}/service/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(
-                    item.id
-                )}`
+                `/container/${panelId}/service/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(item.id)}`
             )
         ) {
             doForceRefresh();
@@ -223,9 +217,7 @@ export default function EncoderServicesList({ panelId }) {
                         >
                             {
                                 <img
-                                    src={`/container/${panelId}/thumb/${item.slot}/${
-                                        item.connectorIndex
-                                    }?${new Date().getTime()}`}
+                                    src={`/container/${panelId}/thumb/${item.slot}/${item.connectorIndex}?${new Date().getTime()}`}
                                 />
                             }
                         </Box>
@@ -364,7 +356,14 @@ export default function EncoderServicesList({ panelId }) {
                         return item.outputs.map((o, index) => (
                             <Box key={index} sx={{ display: "flex", padding: "4px" }}>
                                 {o.interfaces.length === 2 ? (
-                                    <Box sx={{ display: "flex", alignItems: "center", padding: "4px", width: "32px" }}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            padding: "4px",
+                                            width: "32px",
+                                        }}
+                                    >
                                         <ShareIcon sx={{ color: "primary.main" }} />
                                     </Box>
                                 ) : (
@@ -377,7 +376,12 @@ export default function EncoderServicesList({ panelId }) {
                                             width: "32px",
                                         }}
                                     >
-                                        <LinearScaleIcon sx={{ color: "primary.main", fontSize: "1.2rem" }} />
+                                        <LinearScaleIcon
+                                            sx={{
+                                                color: "primary.main",
+                                                fontSize: "1.2rem",
+                                            }}
+                                        />
                                     </Box>
                                 )}
                                 <Box>

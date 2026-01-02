@@ -16,7 +16,11 @@ export default function CodecMux({ codecdata, onChange }) {
                             <BugTextField
                                 changeOnBlur
                                 value={codecdata?.EncTsRate}
-                                onChange={(event) => onChange({ EncTsRate: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        EncTsRate: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1300}

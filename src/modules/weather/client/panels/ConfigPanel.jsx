@@ -80,7 +80,12 @@ export default function ConfigPanel() {
                     name="latitude"
                     control={control}
                     rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    inputProps={{
+                        inputmode: "decimal",
+                        max: 90,
+                        min: -90,
+                        step: "0.01",
+                    }}
                     type="number"
                     fullWidth
                     error={errors?.latitude}
@@ -94,7 +99,12 @@ export default function ConfigPanel() {
                     name="longitude"
                     control={control}
                     rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    inputProps={{
+                        inputmode: "decimal",
+                        max: 90,
+                        min: -90,
+                        step: "0.01",
+                    }}
                     type="number"
                     fullWidth
                     error={errors?.longitude}

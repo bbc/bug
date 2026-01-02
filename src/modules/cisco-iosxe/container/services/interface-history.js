@@ -14,7 +14,12 @@ module.exports = async (interfaceId, startTime = null, endTime = null) => {
         const historyCollection = await mongoCollection("history");
 
         let history = await historyCollection
-            .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
+            .find({
+                timestamp: {
+                    $gte: new Date(startTime),
+                    $lte: new Date(endTime),
+                },
+            })
             .toArray();
 
         let dataPoints = [];

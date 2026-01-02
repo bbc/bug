@@ -36,7 +36,9 @@ export default function SecurityStrategy({ type = null }) {
         if (strategyResult) {
             setStrategy(strategyResult);
         } else {
-            sendAlert(`Failed to load security details`, { variant: "warning" });
+            sendAlert(`Failed to load security details`, {
+                variant: "warning",
+            });
             setTimeout(() => {
                 history.push(`/system/security`);
             }, 1000);

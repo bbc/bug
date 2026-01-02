@@ -24,7 +24,9 @@ const main = async () => {
     const interfacesCollection = await mongoCollection("interfaces");
 
     // and now create the index with ttl
-    await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 90 });
+    await mongoCreateIndex(interfacesCollection, "timestamp", {
+        expireAfterSeconds: 90,
+    });
 
     // remove previous values
     await interfacesCollection.deleteMany({});

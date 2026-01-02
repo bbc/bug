@@ -33,7 +33,10 @@ module.exports = async () => {
 
         await downloadCollection.deleteMany({});
         await uploadCollection.deleteMany({});
-        const testResultsEntry = await testCollection.insertOne({ timestamp: new Date(), running: true });
+        const testResultsEntry = await testCollection.insertOne({
+            timestamp: new Date(),
+            running: true,
+        });
 
         const testResults = await speedTest({
             progress: progressEvent,

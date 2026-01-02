@@ -134,7 +134,10 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const handleVlanChanged = async (event, value, item) => {
         const messages = getVlanChangedMessage(
             item.longId,
-            { untaggedVlan: item["untagged-vlan"], taggedVlans: item["tagged-vlans"] },
+            {
+                untaggedVlan: item["untagged-vlan"],
+                taggedVlans: item["tagged-vlans"],
+            },
             value
         );
 
@@ -169,7 +172,9 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const interfaceToggle = async (checked, item) => {
         const description = item.description ? item.description : item.longId;
         if (await AxiosCommand(`/container/${panelId}/interface/${checked ? `enable` : `disable`}/${item.port}`)) {
-            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${description}`, { variant: "success" });
+            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${description}`, {
+                variant: "success",
+            });
             doForceRefresh();
         } else {
             sendAlert(`Failed to ${checked ? `enable` : `disable`} interface: ${description}`, {
@@ -194,9 +199,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
         const description = item.description ? item.description : item.longId;
         if (
             await AxiosCommand(
-                `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(
-                    item.longId
-                )}`
+                `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(item.longId)}`
             )
         ) {
             doForceRefresh();

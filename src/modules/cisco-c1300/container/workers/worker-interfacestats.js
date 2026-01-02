@@ -25,19 +25,18 @@ const snmpAwait = new SnmpAwait({
 const convert32BitCounters = (results) => {
     // this switch incorrectly reports these OIDs as 64 bit even though they are 32 bit
 
-    const output = {}
+    const output = {};
 
     Object.entries(results).forEach(([key, value]) => {
         if (value.length !== 4) {
             output[key] = 0;
-        }
-        else {
-            output[key] = value.readInt32BE(0)
+        } else {
+            output[key] = value.readInt32BE(0);
         }
     });
 
     return output;
-}
+};
 
 const main = async () => {
     // Connect to the db
@@ -48,7 +47,9 @@ const main = async () => {
     const historyCollection = await mongoCollection("history");
 
     // and now create indexes with ttl
-    await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
+    await mongoCreateIndex(historyCollection, "timestamp", {
+        expireAfterSeconds: 60 * 10,
+    });
 
     // Kick things off
     console.log(`worker-interfacestats: connecting to device at ${workerData.address}`);
@@ -60,12 +61,11 @@ const main = async () => {
             console.log("worker-interfacestats: no interfaces found in db - waiting ...");
             await delay(5000);
         } else {
-
             // get subtree of interface input stats
             const ifInOctets = await snmpAwait.subtree({
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.10",
-                raw: true
+                raw: true,
             });
             const ifInOctets32Bit = convert32BitCounters(ifInOctets);
 
@@ -73,7 +73,7 @@ const main = async () => {
             const ifOutOctets = await snmpAwait.subtree({
                 maxRepetitions: 1000,
                 oid: "1.3.6.1.2.1.2.2.1.16",
-                raw: true
+                raw: true,
             });
             const ifOutOctets32Bit = convert32BitCounters(ifOutOctets);
 

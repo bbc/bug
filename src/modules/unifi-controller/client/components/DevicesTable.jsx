@@ -60,10 +60,19 @@ export default function DevicesTable({ panelId }) {
             result = item["serial"];
         }
 
-        if (await AxiosPost(`/container/${panelId}/device/rename/${item.deviceId}`, { name: result })) {
-            sendAlert(`Renamed device to ${result}`, { broadcast: "true", variant: "success" });
+        if (
+            await AxiosPost(`/container/${panelId}/device/rename/${item.deviceId}`, {
+                name: result,
+            })
+        ) {
+            sendAlert(`Renamed device to ${result}`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to rename device to ${result}`, { variant: "error" });
+            sendAlert(`Failed to rename device to ${result}`, {
+                variant: "error",
+            });
         }
     };
 

@@ -23,9 +23,13 @@ export default function EditPanel() {
     const deletePlayer = async (playerId) => {
         const response = await AxiosDelete(`/container/${params?.panelId}/players/${playerId}`);
         if (response) {
-            sendAlert(`Deleted player  ${panelConfig.data.players[playerId].title}`, { variant: "success" });
+            sendAlert(`Deleted player  ${panelConfig.data.players[playerId].title}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Could not delete player ${panelConfig.data.players[playerId].title}`, { variant: "error" });
+            sendAlert(`Could not delete player ${panelConfig.data.players[playerId].title}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -36,9 +40,13 @@ export default function EditPanel() {
         if (result !== false) {
             const response = await AxiosPost(`/container/${params?.panelId}/players`, result);
             if (response) {
-                sendAlert(`Created player ${result.title}`, { variant: "success" });
+                sendAlert(`Created player ${result.title}`, {
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Could not create player ${result.title}`, { variant: "error" });
+                sendAlert(`Could not create player ${result.title}`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -50,9 +58,13 @@ export default function EditPanel() {
         if (result !== false) {
             const response = await AxiosPut(`/container/${params?.panelId}/players/${result.id}`, result);
             if (response) {
-                sendAlert(`Updated player ${result.title}`, { variant: "success" });
+                sendAlert(`Updated player ${result.title}`, {
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Could not update player ${result.title}`, { variant: "error" });
+                sendAlert(`Could not update player ${result.title}`, {
+                    variant: "error",
+                });
             }
         }
     };

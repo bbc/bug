@@ -80,7 +80,9 @@ export default function Router({ panelId, editMode = false, sourceGroup = "-", d
             setDestinationForceRefresh();
             return;
         }
-        sendAlert(`Failed to route '${source.label}' to '${destination.label}'`, { variant: "error" });
+        sendAlert(`Failed to route '${source.label}' to '${destination.label}'`, {
+            variant: "error",
+        });
     };
 
     const scrollableGroupButtons = (props) => {

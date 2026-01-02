@@ -19,8 +19,10 @@ module.exports = async (port, newName) => {
     console.log(`device-save: saving config ...`);
 
     // save the config
-    const result = await NetgearApi.post({ path: `config_copy?directive=rtos` });
+    const result = await NetgearApi.post({
+        path: `config_copy?directive=rtos`,
+    });
     console.log(result?.resp?.status);
 
-    return result?.resp?.status === "success"
+    return result?.resp?.status === "success";
 };

@@ -56,7 +56,12 @@ export default function ConfigPanel() {
                     name="esLatitude"
                     control={control}
                     rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    inputProps={{
+                        inputmode: "decimal",
+                        max: 90,
+                        min: -90,
+                        step: "0.01",
+                    }}
                     type="number"
                     fullWidth
                     error={errors?.esLatitude}
@@ -70,7 +75,12 @@ export default function ConfigPanel() {
                     name="esLongitude"
                     control={control}
                     rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    inputProps={{
+                        inputmode: "decimal",
+                        max: 90,
+                        min: -90,
+                        step: "0.01",
+                    }}
                     type="number"
                     fullWidth
                     error={errors?.esLongitude}
@@ -84,7 +94,12 @@ export default function ConfigPanel() {
                     name="esAltitude"
                     control={control}
                     rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 5000, min: 0, step: "1" }}
+                    inputProps={{
+                        inputmode: "decimal",
+                        max: 5000,
+                        min: 0,
+                        step: "1",
+                    }}
                     type="number"
                     fullWidth
                     error={errors?.esAltitude}
@@ -98,7 +113,12 @@ export default function ConfigPanel() {
                     name="satLongitude"
                     control={control}
                     rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    inputProps={{
+                        inputmode: "decimal",
+                        max: 90,
+                        min: -90,
+                        step: "0.01",
+                    }}
                     type="number"
                     fullWidth
                     error={errors?.satLongitude}

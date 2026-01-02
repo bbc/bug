@@ -19,7 +19,10 @@ export default function Map({
     satDirection = "east",
     panelId,
 }) {
-    const [position, setPosition] = useState({ lat: esLatitude, lng: esLongitude });
+    const [position, setPosition] = useState({
+        lat: esLatitude,
+        lng: esLongitude,
+    });
     const isMounted = useRef(false);
     const pathOptions = { color: "#e74b3c" };
 
@@ -27,7 +30,10 @@ export default function Map({
     useEffect(() => {
         if (isMounted.current) {
             if (position.lat && position.lng) {
-                AxiosPut(`/api/panelconfig/${panelId}`, { esLatitude: position.lat, esLongitude: position.lng });
+                AxiosPut(`/api/panelconfig/${panelId}`, {
+                    esLatitude: position.lat,
+                    esLongitude: position.lng,
+                });
             }
         } else {
             isMounted.current = true;
@@ -125,7 +131,8 @@ export default function Map({
                         <Typography variant="body1" noWrap>
                             <b>Azimuth</b> {Math.round(getAzimuth(position) * 100) / 100}&deg;
                             <br />
-                            <b>Elevation</b> {Math.round(getElevation(position) * 100) / 100}&deg;
+                            <b>Elevation</b> {Math.round(getElevation(position) * 100) / 100}
+                            &deg;
                         </Typography>
                     </Popup>
                 </DraggableMarker>

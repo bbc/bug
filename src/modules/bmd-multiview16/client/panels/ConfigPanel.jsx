@@ -95,8 +95,14 @@ export default function ConfigPanel() {
                         helperText="Automatically routes inputs to ouputs when the layout changes"
                         options={[
                             { id: "none", label: "None" },
-                            { id: "uk", label: "UK Layout (rows then columns)" },
-                            { id: "us", label: "US Layout (columns then rows)" },
+                            {
+                                id: "uk",
+                                label: "UK Layout (rows then columns)",
+                            },
+                            {
+                                id: "us",
+                                label: "US Layout (columns then rows)",
+                            },
                         ]}
                     />
                 </Grid>

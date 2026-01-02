@@ -70,7 +70,11 @@ route.get("/addbuttons/:type/:groupIds/:buttonIndexes", async function (req, res
     try {
         res.json({
             status: "success",
-            data: await groupAddButtons(req.params?.type, req.params?.groupIds?.split(","), req.params?.buttonIndexes?.split(",")),
+            data: await groupAddButtons(
+                req.params?.type,
+                req.params?.groupIds?.split(","),
+                req.params?.buttonIndexes?.split(",")
+            ),
         });
     } catch (error) {
         console.log(error);

@@ -43,7 +43,10 @@ export default function ChannelPanel({ panelId }) {
     const onSubmit = async (form) => {
         const response = await AxiosPost(`/container/${panelId}/channels`, form);
         if (response) {
-            sendAlert(`Channel has been added.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Channel has been added.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
             sendAlert(`Channel could add channel.`, { variant: "warning" });

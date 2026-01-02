@@ -78,7 +78,14 @@ export default function BugCodecAutocomplete({
             disableClearable={true}
             renderOption={(props, option) => {
                 return (
-                    <li {...props} key={option.id} style={{ display: "flex", justifyContent: "space-between" }}>
+                    <li
+                        {...props}
+                        key={option.id}
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                        }}
+                    >
                         <Box
                             sx={{
                                 whiteSpace: "nowrap",

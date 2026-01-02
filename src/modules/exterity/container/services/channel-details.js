@@ -7,7 +7,9 @@ module.exports = async (channelId) => {
     try {
         const config = await configGet();
         const channelsCollection = await mongoCollection("channels");
-        const channel = await channelsCollection.findOne({ channelId: channelId });
+        const channel = await channelsCollection.findOne({
+            channelId: channelId,
+        });
 
         return { ...channel, ...config.channels[channelId] };
     } catch (error) {

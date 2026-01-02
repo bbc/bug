@@ -23,7 +23,14 @@ export default function PlayerCardEdit({ handleDelete, handleEdit, player, playe
             }}
             variant="outlined"
         >
-            <CardContent sx={{ padding: "13px", paddingBottom: "0px", display: "flex", flexDirection: "column" }}>
+            <CardContent
+                sx={{
+                    padding: "13px",
+                    paddingBottom: "0px",
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
                 <Typography variant="h5" component="div">
                     {player?.title}
                 </Typography>

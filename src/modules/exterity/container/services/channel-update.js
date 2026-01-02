@@ -14,6 +14,9 @@ module.exports = async (channelId, newChannel) => {
         return false;
     }
 
-    config.channels[channelId] = { ...config.channels[channelId], ...newChannel };
+    config.channels[channelId] = {
+        ...config.channels[channelId],
+        ...newChannel,
+    };
     return await configPutViaCore(config);
 };

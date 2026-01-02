@@ -83,7 +83,12 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
                                                 {devicedata?.system?.sfpStatus?.[`sfpPartNo$${rowIndex}`]}
                                             </TableCell>
                                             <TableCell>
-                                                <Grid container sx={{ flexDirection: "column" }}>
+                                                <Grid
+                                                    container
+                                                    sx={{
+                                                        flexDirection: "column",
+                                                    }}
+                                                >
                                                     {Array(2)
                                                         .fill(null)
                                                         .map((value, ifIndex) => {
@@ -111,14 +116,22 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
                                                                             flexGrow: 1,
                                                                         }}
                                                                     >
-                                                                        <Grid sx={{ padding: "6px" }}>
+                                                                        <Grid
+                                                                            sx={{
+                                                                                padding: "6px",
+                                                                            }}
+                                                                        >
                                                                             {
                                                                                 devicedata?.system?.sfpStatus?.[
                                                                                     `portTxt$${totalIndex - 1}`
                                                                                 ]
                                                                             }
                                                                         </Grid>
-                                                                        <Grid sx={{ padding: "6px" }}>
+                                                                        <Grid
+                                                                            sx={{
+                                                                                padding: "6px",
+                                                                            }}
+                                                                        >
                                                                             {
                                                                                 devicedata?.system?.sfpStatus?.[
                                                                                     `sfpFormat$${totalIndex - 1}`

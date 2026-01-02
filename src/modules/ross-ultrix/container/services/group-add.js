@@ -6,7 +6,6 @@ const logger = require("@core/logger")(module);
 const fetchGroups = require("@utils/fetch-groups");
 
 module.exports = async (groupName) => {
-
     let config;
     try {
         config = await configGet();
@@ -18,7 +17,7 @@ module.exports = async (groupName) => {
         return false;
     }
     const path = `groupcategory/add?name=${encodeURIComponent(groupName)}&parentId=1`;
-    await ultrixWebApi.get(path, config)
+    await ultrixWebApi.get(path, config);
     await fetchGroups(config);
 
     return true;

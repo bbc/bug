@@ -43,15 +43,24 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                             { id: "1", label: "75% Bars" },
                                             { id: "2", label: "100% Bars" },
                                             { id: "3", label: "Luma Ramp" },
-                                            { id: "4", label: "Luma Limit Ramp" },
+                                            {
+                                                id: "4",
+                                                label: "Luma Limit Ramp",
+                                            },
                                             { id: "5", label: "Ramp" },
                                             { id: "6", label: "Limit Ramp" },
                                             { id: "7", label: "100% Sweep" },
                                             { id: "8", label: "75% Sweep" },
                                             { id: "9", label: "Multi-Burst" },
                                             { id: "10", label: "Pathalogical" },
-                                            { id: "11", label: "BT2111 HLG Narrow" },
-                                            { id: "12", label: "BT2111 PQ Narrow" },
+                                            {
+                                                id: "11",
+                                                label: "BT2111 HLG Narrow",
+                                            },
+                                            {
+                                                id: "12",
+                                                label: "BT2111 PQ Narrow",
+                                            },
                                         ]}
                                         onChange={(event) =>
                                             onChange({
@@ -86,7 +95,10 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                         value={devicedata?.video?.videoGeneration?.[`identTextBGModeCh${videoIndex}`]}
                                         options={[
                                             { id: "0", label: "Off" },
-                                            { id: "1", label: "On Passthrough" },
+                                            {
+                                                id: "1",
+                                                label: "On Passthrough",
+                                            },
                                             { id: "2", label: "On" },
                                         ]}
                                         onChange={(event) =>
@@ -196,16 +208,46 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                                             ]
                                                         }
                                                         options={[
-                                                            { id: "5", label: "0" },
-                                                            { id: "10", label: "1" },
-                                                            { id: "15", label: "2" },
-                                                            { id: "20", label: "3" },
-                                                            { id: "25", label: "4" },
-                                                            { id: "65", label: "5" },
-                                                            { id: "70", label: "6" },
-                                                            { id: "75", label: "7" },
-                                                            { id: "80", label: "8" },
-                                                            { id: "85", label: "9" },
+                                                            {
+                                                                id: "5",
+                                                                label: "0",
+                                                            },
+                                                            {
+                                                                id: "10",
+                                                                label: "1",
+                                                            },
+                                                            {
+                                                                id: "15",
+                                                                label: "2",
+                                                            },
+                                                            {
+                                                                id: "20",
+                                                                label: "3",
+                                                            },
+                                                            {
+                                                                id: "25",
+                                                                label: "4",
+                                                            },
+                                                            {
+                                                                id: "65",
+                                                                label: "5",
+                                                            },
+                                                            {
+                                                                id: "70",
+                                                                label: "6",
+                                                            },
+                                                            {
+                                                                id: "75",
+                                                                label: "7",
+                                                            },
+                                                            {
+                                                                id: "80",
+                                                                label: "8",
+                                                            },
+                                                            {
+                                                                id: "85",
+                                                                label: "9",
+                                                            },
                                                         ]}
                                                         onChange={(event) =>
                                                             onChange({
@@ -223,12 +265,30 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                                             ]
                                                         }
                                                         options={[
-                                                            { id: "3", label: "XS" },
-                                                            { id: "5", label: "S" },
-                                                            { id: "8", label: "M" },
-                                                            { id: "12", label: "L" },
-                                                            { id: "16", label: "XL" },
-                                                            { id: "20", label: "XXL" },
+                                                            {
+                                                                id: "3",
+                                                                label: "XS",
+                                                            },
+                                                            {
+                                                                id: "5",
+                                                                label: "S",
+                                                            },
+                                                            {
+                                                                id: "8",
+                                                                label: "M",
+                                                            },
+                                                            {
+                                                                id: "12",
+                                                                label: "L",
+                                                            },
+                                                            {
+                                                                id: "16",
+                                                                label: "XL",
+                                                            },
+                                                            {
+                                                                id: "20",
+                                                                label: "XXL",
+                                                            },
                                                         ]}
                                                         onChange={(event) =>
                                                             onChange({
@@ -246,14 +306,38 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                                             ]
                                                         }
                                                         options={[
-                                                            { id: "0", label: "White" },
-                                                            { id: "1", label: "Red" },
-                                                            { id: "2", label: "Green" },
-                                                            { id: "3", label: "Blue" },
-                                                            { id: "4", label: "Cyan" },
-                                                            { id: "5", label: "Magenta" },
-                                                            { id: "6", label: "Yellow" },
-                                                            { id: "7", label: "Black" },
+                                                            {
+                                                                id: "0",
+                                                                label: "White",
+                                                            },
+                                                            {
+                                                                id: "1",
+                                                                label: "Red",
+                                                            },
+                                                            {
+                                                                id: "2",
+                                                                label: "Green",
+                                                            },
+                                                            {
+                                                                id: "3",
+                                                                label: "Blue",
+                                                            },
+                                                            {
+                                                                id: "4",
+                                                                label: "Cyan",
+                                                            },
+                                                            {
+                                                                id: "5",
+                                                                label: "Magenta",
+                                                            },
+                                                            {
+                                                                id: "6",
+                                                                label: "Yellow",
+                                                            },
+                                                            {
+                                                                id: "7",
+                                                                label: "Black",
+                                                            },
                                                         ]}
                                                         onChange={(event) =>
                                                             onChange({
@@ -271,14 +355,38 @@ export default function TabOutput({ devicedata, panelId, videoIndex, onChange })
                                                             ]
                                                         }
                                                         options={[
-                                                            { id: "0", label: "Hind" },
-                                                            { id: "1", label: "DroidSansMono" },
-                                                            { id: "2", label: "Comforta" },
-                                                            { id: "3", label: "Tempnou" },
-                                                            { id: "4", label: "Simple Print" },
-                                                            { id: "5", label: "Beckett-Kanzlei" },
-                                                            { id: "6", label: "Ye Olde Oak" },
-                                                            { id: "7", label: "Mister Vampire" },
+                                                            {
+                                                                id: "0",
+                                                                label: "Hind",
+                                                            },
+                                                            {
+                                                                id: "1",
+                                                                label: "DroidSansMono",
+                                                            },
+                                                            {
+                                                                id: "2",
+                                                                label: "Comforta",
+                                                            },
+                                                            {
+                                                                id: "3",
+                                                                label: "Tempnou",
+                                                            },
+                                                            {
+                                                                id: "4",
+                                                                label: "Simple Print",
+                                                            },
+                                                            {
+                                                                id: "5",
+                                                                label: "Beckett-Kanzlei",
+                                                            },
+                                                            {
+                                                                id: "6",
+                                                                label: "Ye Olde Oak",
+                                                            },
+                                                            {
+                                                                id: "7",
+                                                                label: "Mister Vampire",
+                                                            },
                                                         ]}
                                                         onChange={(event) =>
                                                             onChange({

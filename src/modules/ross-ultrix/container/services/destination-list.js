@@ -39,8 +39,7 @@ module.exports = async (groupIndex = -1, showExcluded = false) => {
         filteredGroups = groups.filter((g) =>
             limitDestinationGroups.some((label) => label.toLowerCase() === g.label.toLowerCase())
         );
-    }
-    else {
+    } else {
         filteredGroups = groups;
     }
 
@@ -52,17 +51,14 @@ module.exports = async (groupIndex = -1, showExcluded = false) => {
                 fixed: g.fixed,
                 empty: g.empty,
                 id: g.id,
-                selected: g.index === parseInt(groupIndex)
-            }
+                selected: g.index === parseInt(groupIndex),
+            };
         }),
         destinations: [],
     };
 
     // check that selected group is in the filteredGroups
-    if (filteredGroups?.some(
-        (l) => l.label.toLowerCase() === groups[groupIndex].label.toLowerCase()
-    )) {
-
+    if (filteredGroups?.some((l) => l.label.toLowerCase() === groups[groupIndex].label.toLowerCase())) {
         // calculate excluded sources
         // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
         const excludedDestinations = config["excludeDestinations"] ? config["excludeDestinations"] : [];
@@ -72,7 +68,6 @@ module.exports = async (groupIndex = -1, showExcluded = false) => {
         console.log(`showing group index ${groupIndex}`);
 
         groups[groupIndex]?.["value"].forEach((destinationIndex, order) => {
-
             // pull out all sources routed across all levels
             let sourceLabel = undefined;
             let sourceIndex = undefined;
@@ -83,8 +78,7 @@ module.exports = async (groupIndex = -1, showExcluded = false) => {
                 if (uniqueSources.length > 1) {
                     sourceIndex = -1;
                     sourceLabel = "** MULTIPLE **";
-                }
-                else if (uniqueSources.length === 1) {
+                } else if (uniqueSources.length === 1) {
                     sourceIndex = uniqueSources[0];
                     sourceLabel = sources?.[sourceIndex]?.name;
                 }

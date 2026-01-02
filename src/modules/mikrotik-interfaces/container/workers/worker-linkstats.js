@@ -24,7 +24,9 @@ const main = async () => {
     const linkStatsCollection = await mongoDb.db.collection("linkstats");
 
     // and now create the index with ttl
-    await mongoCreateIndex(linkStatsCollection, "timestamp", { expireAfterSeconds: 60 });
+    await mongoCreateIndex(linkStatsCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
 
     const conn = new RosApi({
         host: workerData.address,

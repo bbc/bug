@@ -42,7 +42,9 @@ export default function LeaseList({ panelId }) {
                     variant: "success",
                 });
             } else {
-                sendAlert(`Failed to set comment on lease`, { variant: "error" });
+                sendAlert(`Failed to set comment on lease`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -80,7 +82,10 @@ export default function LeaseList({ panelId }) {
     const handleDeleteClicked = async (event, item) => {
         const response = await AxiosDelete(`/container/${panelId}/lease/${item.id}`);
         if (response) {
-            sendAlert(`Lease has been deleted.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Lease has been deleted.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
             sendAlert(`Lease could not be deleted.`, { variant: "warning" });
         }
@@ -89,16 +94,24 @@ export default function LeaseList({ panelId }) {
     const handleMakeStaticClicked = async (event, item) => {
         const response = await AxiosGet(`/container/${panelId}/lease/makestatic/${item.id}`);
         if (response) {
-            sendAlert(`Set lease to static.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Set lease to static.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Lease could not be set to static.`, { variant: "warning" });
+            sendAlert(`Lease could not be set to static.`, {
+                variant: "warning",
+            });
         }
     };
 
     const handleWolClicked = async (event, item) => {
         const response = await AxiosGet(`/container/${panelId}/lease/magicpacket/${item.id}`);
         if (response) {
-            sendAlert(`Set wake request.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Set wake request.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to send wake request.`, { variant: "warning" });
         }
@@ -109,7 +122,10 @@ export default function LeaseList({ panelId }) {
             return "";
         }
         const dateLastSeen = new Date(nowTimestamp - value);
-        return formatDistanceToNow(dateLastSeen, { includeSeconds: true, addSuffix: true });
+        return formatDistanceToNow(dateLastSeen, {
+            includeSeconds: true,
+            addSuffix: true,
+        });
     };
 
     const formatExpiresAfter = (value) => {
@@ -117,7 +133,10 @@ export default function LeaseList({ panelId }) {
             return "";
         }
         const dateExpiresAfter = new Date(nowTimestamp + value * 1000);
-        return formatDistanceToNow(dateExpiresAfter, { includeSeconds: true, addSuffix: true });
+        return formatDistanceToNow(dateExpiresAfter, {
+            includeSeconds: true,
+            addSuffix: true,
+        });
     };
 
     return (

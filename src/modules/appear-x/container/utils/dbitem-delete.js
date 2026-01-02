@@ -11,9 +11,7 @@ module.exports = async (mongoCollectionName, idsToDelete) => {
     console.log(`dbitem-delete: deleting ${idsToDelete.length} item(s) from collection ${mongoCollectionName}`);
     const filteredCollection = collection.filter((c) => !idsToDelete.includes(c.key));
     console.log(
-        `dbitem-delete: removed ${
-            collection.length - filteredCollection.length
-        } item(s) from collection ${mongoCollectionName}`
+        `dbitem-delete: removed ${collection.length - filteredCollection.length} item(s) from collection ${mongoCollectionName}`
     );
     return await mongoSingle.set(mongoCollectionName, filteredCollection, 60);
 };

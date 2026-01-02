@@ -14,7 +14,17 @@ export default {
     },
 
     decorators: [
-        (Story) => <div style={{ margin: "1em", backgroundColor: "#262626", maxWidth: "300px" }}>{Story()}</div>,
+        (Story) => (
+            <div
+                style={{
+                    margin: "1em",
+                    backgroundColor: "#262626",
+                    maxWidth: "300px",
+                }}
+            >
+                {Story()}
+            </div>
+        ),
     ],
 
     argTypes: {

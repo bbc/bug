@@ -88,9 +88,18 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                                 label="Behaviour"
                                 rules={{ required: true }}
                                 options={[
-                                    { id: "new", label: "Open link in new tab" },
-                                    { id: "same", label: "Open link over this tab" },
-                                    { id: "inside", label: "Open link within this tab" },
+                                    {
+                                        id: "new",
+                                        label: "Open link in new tab",
+                                    },
+                                    {
+                                        id: "same",
+                                        label: "Open link over this tab",
+                                    },
+                                    {
+                                        id: "inside",
+                                        label: "Open link within this tab",
+                                    },
                                 ]}
                             />
                         </Grid>

@@ -38,9 +38,14 @@ export default function UserTable({ interval }) {
 
         if (result !== false) {
             if (await AxiosDelete(`/api/user/${item.id}`)) {
-                sendAlert(`Deleted user: ${item.name}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Deleted user: ${item.name}`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to delete user: ${item.name}`, { variant: "error" });
+                sendAlert(`Failed to delete user: ${item.name}`, {
+                    variant: "error",
+                });
             }
         }
     };

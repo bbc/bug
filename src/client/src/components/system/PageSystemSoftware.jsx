@@ -92,13 +92,19 @@ export default function PageSystemBackup() {
     const onCheckUpdate = async () => {
         const response = await AxiosGet(`/api/system/updatecheck`);
         if (response?.newVersion) {
-            sendAlert(`There's a new version of BUG avalible ${response.data.version}.`, { variant: "success" });
+            sendAlert(`There's a new version of BUG avalible ${response.data.version}.`, {
+                variant: "success",
+            });
         }
         if (!response?.newVersion) {
-            sendAlert(`You're using the latest version of BUG.`, { variant: "success" });
+            sendAlert(`You're using the latest version of BUG.`, {
+                variant: "success",
+            });
         }
         if (!response) {
-            sendAlert(`Failed to check for system updates.`, { variant: "error" });
+            sendAlert(`Failed to check for system updates.`, {
+                variant: "error",
+            });
         }
     };
 
@@ -170,7 +176,9 @@ export default function PageSystemBackup() {
                                                                 `${info.data?.git.repository}/releases/tag/v${info.data?.updates?.version}`
                                                             )
                                                         }
-                                                        sx={{ color: "text.secondary" }}
+                                                        sx={{
+                                                            color: "text.secondary",
+                                                        }}
                                                     >
                                                         {info.data?.updates?.version}
                                                     </BugTableLinkButton>

@@ -37,7 +37,9 @@ const main = async () => {
     const interfacesCollection = await mongoCollection("interfaces");
 
     // and now create the index with ttl
-    await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 900 });
+    await mongoCreateIndex(interfacesCollection, "timestamp", {
+        expireAfterSeconds: 900,
+    });
 
     // remove previous values
     await interfacesCollection.deleteMany({});
@@ -73,7 +75,10 @@ const main = async () => {
                         delete eachInterface.vlanInformation;
 
                         // add the timestamp
-                        const dbDocument = { ...eachInterface, timestamp: new Date() };
+                        const dbDocument = {
+                            ...eachInterface,
+                            timestamp: new Date(),
+                        };
 
                         // and save it to the db
                         await interfacesCollection.updateOne(

@@ -28,7 +28,9 @@ const main = async () => {
     const connectionsCollection = await mongoCollection("connections");
 
     // and now create the index with ttl
-    await mongoCreateIndex(connectionsCollection, "timestamp", { expireAfterSeconds: 30 });
+    await mongoCreateIndex(connectionsCollection, "timestamp", {
+        expireAfterSeconds: 30,
+    });
 
     // Kick things off
     console.log(`worker-connections: starting ...`);

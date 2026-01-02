@@ -894,7 +894,9 @@ var readPdu = function (reader, scoped) {
 };
 
 var createDiscoveryPdu = function (context) {
-    return GetRequestPdu.createFromVariables(_generateId(), [], { context: context });
+    return GetRequestPdu.createFromVariables(_generateId(), [], {
+        context: context,
+    });
 };
 
 var Authentication = {};
@@ -3385,8 +3387,8 @@ ModuleStore.prototype.getProvidersForModule = function (moduleName) {
             typeof mibEntry["MAX-ACCESS"] != "undefined"
                 ? mibEntry["MAX-ACCESS"]
                 : access
-                ? AccessToMaxAccess[access]
-                : "not-accessible";
+                  ? AccessToMaxAccess[access]
+                  : "not-accessible";
         var defVal = mibEntry["DEFVAL"];
 
         if (syntax) {
@@ -3421,8 +3423,8 @@ ModuleStore.prototype.getProvidersForModule = function (moduleName) {
                         typeof mibEntry["MAX-ACCESS"] != "undefined"
                             ? mibEntry["MAX-ACCESS"]
                             : access
-                            ? AccessToMaxAccess[access]
-                            : "not-accessible";
+                              ? AccessToMaxAccess[access]
+                              : "not-accessible";
                     defVal = mibEntry["DEFVAL"];
 
                     constraintsResults = ModuleStore.getConstraintsFromSyntax(syntax);

@@ -96,7 +96,14 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
         }
         if (controls.length > 0) {
             return (
-                <Box sx={{ marginTop: "4px", marginBottom: "4px", textAlign: "right", whiteSpace: "nowrap" }}>
+                <Box
+                    sx={{
+                        marginTop: "4px",
+                        marginBottom: "4px",
+                        textAlign: "right",
+                        whiteSpace: "nowrap",
+                    }}
+                >
                     {controls.map((control) => control)}
                 </Box>
             );
@@ -111,11 +118,19 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
     };
 
     const handleRestart = async (event) => {
-        sendAlert(`Restarting panel: ${panel.title} - please wait ...`, { broadcast: "true", variant: "info" });
+        sendAlert(`Restarting panel: ${panel.title} - please wait ...`, {
+            broadcast: "true",
+            variant: "info",
+        });
         if (await AxiosCommand(`/api/panel/restart/${panel.id}`)) {
-            sendAlert(`Restarted panel: ${panel.title}`, { broadcast: "true", variant: "success" });
+            sendAlert(`Restarted panel: ${panel.title}`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to restart panel: ${panel.title}`, { variant: "error" });
+            sendAlert(`Failed to restart panel: ${panel.title}`, {
+                variant: "error",
+            });
         }
         event.stopPropagation();
         event.preventDefault();

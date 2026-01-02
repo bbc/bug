@@ -44,9 +44,13 @@ export default function TabLabels({ panelId }) {
             })
         ) {
             doForceRefresh();
-            sendAlert(`Changed label of input ${item.input} to '${result}'`, { variant: "success" });
+            sendAlert(`Changed label of input ${item.input} to '${result}'`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to change label of input ${item.input}`, { variant: "error" });
+            sendAlert(`Failed to change label of input ${item.input}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -58,7 +62,9 @@ export default function TabLabels({ panelId }) {
             })
         ) {
             doForceRefresh();
-            sendAlert(`${checked ? "Enabled" : "Disabled"} autolabel for input ${item.input}`, { variant: "success" });
+            sendAlert(`${checked ? "Enabled" : "Disabled"} autolabel for input ${item.input}`, {
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to ${checked ? "enable" : "disable"} autolabel for input ${item.input}`, {
                 variant: "error",
@@ -74,7 +80,9 @@ export default function TabLabels({ panelId }) {
             })
         ) {
             doForceRefresh();
-            sendAlert(`Updated autolabel source for input ${item.input}`, { variant: "success" });
+            sendAlert(`Updated autolabel source for input ${item.input}`, {
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to update autolabel source for input ${item.input}`, {
                 variant: "error",

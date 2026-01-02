@@ -23,7 +23,13 @@ const CustomTooltip = ({
         const getTooltipValues = () => {
             const lines = [
                 <div key="timestamp">
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         TIME:
                     </Box>
                     {` ${format(parseInt(timestamp), "kk:mm")}`}
@@ -34,7 +40,13 @@ const CustomTooltip = ({
                 if (series !== "timestamp") {
                     lines.push(
                         <div key={series}>
-                            <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                            <Box
+                                component="span"
+                                sx={{
+                                    fontWeight: 500,
+                                    color: "rgba(255, 255, 255, 0.7)",
+                                }}
+                            >
                                 {series.toUpperCase()}:
                             </Box>
                             {` ${Math.round(payload[0].payload[series] * 100) / 100}${units[series]}`}
@@ -47,7 +59,13 @@ const CustomTooltip = ({
         };
 
         return (
-            <Box sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}>
+            <Box
+                sx={{
+                    padding: "0.5rem",
+                    backgroundColor: "background.default",
+                    color: "rgba(255, 255, 255, 0.5)",
+                }}
+            >
                 {getTooltipValues()}
             </Box>
         );

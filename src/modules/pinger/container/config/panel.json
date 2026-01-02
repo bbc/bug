@@ -1,13 +1,13 @@
 {
-  "id": "",
-  "order": 0,
-  "needsConfigured": true,
-  "title": "",
-  "module": "pinger",
-  "description": "",
-  "notes": "",
-  "enabled": false,
-  "frequency": 30,
-  "hosts": {},
-  "edges": {}
+    "id": "",
+    "order": 0,
+    "needsConfigured": true,
+    "title": "",
+    "module": "pinger",
+    "description": "",
+    "notes": "",
+    "enabled": false,
+    "frequency": 30,
+    "hosts": {},
+    "edges": {}
 }

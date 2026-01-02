@@ -22,7 +22,13 @@ const CustomTooltip = ({ active, payload, label, receiverCount, units }) => {
         const getTooltipValues = () => {
             const lines = [
                 <div key="timestamp">
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         TIME:
                     </Box>
                     {format(timestamp, "kk:mm:ss")}
@@ -33,7 +39,13 @@ const CustomTooltip = ({ active, payload, label, receiverCount, units }) => {
                 if (receiver !== "timestamp" && parseInt(receiver) <= parseInt(receiverCount)) {
                     lines.push(
                         <div key={receiver}>
-                            <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                            <Box
+                                component="span"
+                                sx={{
+                                    fontWeight: 500,
+                                    color: "rgba(255, 255, 255, 0.7)",
+                                }}
+                            >
                                 {receiver}:
                             </Box>
                             {` ${Math.round(payload[0].payload[receiver] * 100) / 100} ${units}`}
@@ -45,7 +57,13 @@ const CustomTooltip = ({ active, payload, label, receiverCount, units }) => {
         };
 
         return (
-            <Box sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}>
+            <Box
+                sx={{
+                    padding: "0.5rem",
+                    backgroundColor: "background.default",
+                    color: "rgba(255, 255, 255, 0.5)",
+                }}
+            >
                 {getTooltipValues()}
             </Box>
         );

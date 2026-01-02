@@ -42,7 +42,10 @@ export default function PeerAdd({ panelId }) {
     const onSubmit = async (form) => {
         const response = await AxiosPost(`/container/${panelId}/peer/add`, form);
         if (response) {
-            sendAlert(`Connection has been added.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Connection has been added.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.push(`/panel/${panelId}/`);
         } else {
             sendAlert(`Connection could not be added.`, { variant: "warning" });

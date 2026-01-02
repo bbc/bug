@@ -19,13 +19,19 @@ module.exports = async (TielineApi, data) => {
 
         // if connection is 'unavailable' then remove it
         if (data?.["cxn-status"]?.["CXN_STATE"]?.["_text"] === "Unavailable") {
-            await connectionsCollection.deleteOne({ id: connectionArray["id"] });
+            await connectionsCollection.deleteOne({
+                id: connectionArray["id"],
+            });
             console.log(
                 `process-cxnstatus: connection id ${connectionArray["id"]} is marked 'unavailable' - removing from db`
             );
         } else {
             // check if the record exists in the db
-            if (!(await connectionsCollection.findOne({ id: connectionArray["id"] }))) {
+            if (
+                !(await connectionsCollection.findOne({
+                    id: connectionArray["id"],
+                }))
+            ) {
                 // there's nothing there - just go away and fetch the whole thing
                 console.log(
                     `process-cxnstatus: connection ${connectionArray["id"]} not found - requesting all details`

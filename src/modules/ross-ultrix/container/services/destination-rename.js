@@ -15,25 +15,25 @@ module.exports = async (destinationIndex, name = "") => {
     const match = destinationsRaw.find((r) => r.uiId === destinationIndex);
     if (!match) {
         logger.error(`destination-rename: failed to find destination index ${destinationIndex}`);
-        throw new Error()
+        throw new Error();
     }
 
     match.name = name;
 
     // the tallymode update is different from the get. We have to update it.
     const tallyModes = {
-        "Normal": 0,
-        "Redirect": 1,
-        "Routed": 2
-    }
-    match.tallyMode = tallyModes[match.tallyMode]
+        Normal: 0,
+        Redirect: 1,
+        Routed: 2,
+    };
+    match.tallyMode = tallyModes[match.tallyMode];
 
     logger.info(`destination-rename: updating name with data ${JSON.stringify([match])}`);
 
     // write it back
-    if (!await ultrixWebApi.post("destination/update", config, JSON.stringify([match]))) {
+    if (!(await ultrixWebApi.post("destination/update", config, JSON.stringify([match])))) {
         logger.error(`destination-rename: failed to update destination label`);
-        throw new Error()
+        throw new Error();
     }
 
     // update the db

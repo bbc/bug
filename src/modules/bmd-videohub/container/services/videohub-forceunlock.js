@@ -20,7 +20,10 @@ module.exports = async (index) => {
         const field = "VIDEO OUTPUT LOCKS";
         const command = `${index} F`;
 
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new videohub({
+            port: config.port,
+            host: config.address,
+        });
         await router.connect();
         await router.send(field, command);
         return true;

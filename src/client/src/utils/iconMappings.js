@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // List of MDI icon names
 const mdiIconNames = [
@@ -38,10 +38,9 @@ const lazyMdiIcon = (iconName) => {
             default: (props) => <MdiSvgIcon path={icons[iconName]} {...props} />,
         };
     });
-}
+};
 
 export const iconMap = {
-
     // MUI icons
     Home: React.lazy(() => import("@mui/icons-material/Home")),
     AccountCircle: React.lazy(() => import("@mui/icons-material/AccountCircle")),
@@ -61,6 +60,5 @@ export const iconMap = {
     Schedule: React.lazy(() => import("@mui/icons-material/Schedule")),
 
     // MDI icons
-    ...Object.fromEntries(mdiIconNames.map(name => [name, lazyMdiIcon(name)])),
-
+    ...Object.fromEntries(mdiIconNames.map((name) => [name, lazyMdiIcon(name)])),
 };

@@ -41,7 +41,9 @@ export default function HostCard({ panelId, hostId }) {
             sendAlert(`Created host ${host.title}`, { variant: "success" });
             history.goBack();
         } else {
-            sendAlert(`Could not create host ${host.title}`, { variant: "error" });
+            sendAlert(`Could not create host ${host.title}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -51,7 +53,9 @@ export default function HostCard({ panelId, hostId }) {
             sendAlert(`Updated host ${host.title}`, { variant: "success" });
             history.goBack();
         } else {
-            sendAlert(`Could not update host ${host.title}`, { variant: "error" });
+            sendAlert(`Could not update host ${host.title}`, {
+                variant: "error",
+            });
         }
     };
 

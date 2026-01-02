@@ -54,7 +54,10 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
     if (vlans) {
         // expand any '1-4094' entries
         for (let eachInterface of interfaces) {
-            eachInterface["tagged-vlans"] = ciscoC1300ExpandVlanRanges(eachInterface["tagged-vlans"], availableVlanArray);
+            eachInterface["tagged-vlans"] = ciscoC1300ExpandVlanRanges(
+                eachInterface["tagged-vlans"],
+                availableVlanArray
+            );
         }
     }
 

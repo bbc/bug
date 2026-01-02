@@ -25,23 +25,62 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                         { name: "Description", value: iface.data?.description },
                         { name: "Alias", value: iface.data?.alias },
                         { name: "Interface ID", value: iface.data?.longId },
-                        { name: "TX Rate", value: iface.data?.["tx-rate-text"] },
-                        { name: "RX Rate", value: iface.data?.["rx-rate-text"] },
+                        {
+                            name: "TX Rate",
+                            value: iface.data?.["tx-rate-text"],
+                        },
+                        {
+                            name: "RX Rate",
+                            value: iface.data?.["rx-rate-text"],
+                        },
 
-                        { name: "Auto Negotiation", value: iface.data?.["auto-negotiation"] ? "yes" : "no" },
-                        { name: "Admin State", value: iface.data?.["admin-state"] ? "up" : "down" },
-                        { name: "Link State", value: iface.data?.["link-state"] ? "up" : "down" },
+                        {
+                            name: "Auto Negotiation",
+                            value: iface.data?.["auto-negotiation"] ? "yes" : "no",
+                        },
+                        {
+                            name: "Admin State",
+                            value: iface.data?.["admin-state"] ? "up" : "down",
+                        },
+                        {
+                            name: "Link State",
+                            value: iface.data?.["link-state"] ? "up" : "down",
+                        },
 
-                        { name: "Admin Speed", value: iface.data?.["admin-speed"] },
-                        { name: "Operational Speed", value: iface.data?.["operational-speed"] },
+                        {
+                            name: "Admin Speed",
+                            value: iface.data?.["admin-speed"],
+                        },
+                        {
+                            name: "Operational Speed",
+                            value: iface.data?.["operational-speed"],
+                        },
 
-                        { name: "POE Available", value: iface.data?.["poe-available"] ? "yes" : "no" },
-                        { name: "POE Status", value: iface.data?.["poe-operational-status"] ? "on" : "off" },
-                        { name: "POE Type", value: iface.data?.["poe-description"] },
-                        { name: "POE Power", value: `${iface.data?.["poe-power"] / 1000} W` },
-                        { name: "POE Description", value: iface.data?.["poe-port-status-description"] },
+                        {
+                            name: "POE Available",
+                            value: iface.data?.["poe-available"] ? "yes" : "no",
+                        },
+                        {
+                            name: "POE Status",
+                            value: iface.data?.["poe-operational-status"] ? "on" : "off",
+                        },
+                        {
+                            name: "POE Type",
+                            value: iface.data?.["poe-description"],
+                        },
+                        {
+                            name: "POE Power",
+                            value: `${iface.data?.["poe-power"] / 1000} W`,
+                        },
+                        {
+                            name: "POE Description",
+                            value: iface.data?.["poe-port-status-description"],
+                        },
 
-                        { name: "Untagged VLAN", value: iface.data?.["untagged-vlan"] },
+                        {
+                            name: "Untagged VLAN",
+                            value: iface.data?.["untagged-vlan"],
+                        },
                         {
                             name: "Tagged VLANs",
                             value: iface.data?.["tagged-vlans"] ? iface.data?.["tagged-vlans"].join(", ") : "",

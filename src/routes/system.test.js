@@ -10,6 +10,5 @@ describe("Test the '/api/system/' endpoint", () => {
         const response = await request(system).get("/api/system/hello");
         expect(response.statusCode).toBe(200);
         expect(response.body.data).toEqual("Good morning sunshine, the earth says hello.");
-
     });
 });

@@ -16,7 +16,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.InputInterfaceVideo}
-                                onChange={(event) => onChange({ InputInterfaceVideo: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        InputInterfaceVideo: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "SDI" },
                                     { id: 1, label: "HDMI" },
@@ -31,7 +35,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 disabled={true}
                                 value={codecdata?.InputVideoFormat}
-                                onChange={(event) => onChange({ InputVideoFormat: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        InputVideoFormat: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "1080i29" },
                                     { id: 1, label: "1080i25" },
@@ -67,7 +75,9 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.InputVideoSignalUndetected}
                                 onChange={(event) =>
-                                    onChange({ InputVideoSignalUndetected: parseInt(event.target.value) })
+                                    onChange({
+                                        InputVideoSignalUndetected: parseInt(event.target.value),
+                                    })
                                 }
                                 options={[
                                     { id: 0, label: "Show last frame" },
@@ -87,7 +97,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <Switch
                                 checked={codecdata?.InputTestSignalVideo === 2}
-                                onChange={(event) => onChange({ InputTestSignalVideo: event.target.checked ? 2 : 0 })}
+                                onChange={(event) =>
+                                    onChange({
+                                        InputTestSignalVideo: event.target.checked ? 2 : 0,
+                                    })
+                                }
                             />
                         ),
                     },
@@ -96,7 +110,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <Switch
                                 checked={codecdata?.InputTestSignalAudio === 1}
-                                onChange={(event) => onChange({ InputTestSignalAudio: event.target.checked ? 1 : 0 })}
+                                onChange={(event) =>
+                                    onChange({
+                                        InputTestSignalAudio: event.target.checked ? 1 : 0,
+                                    })
+                                }
                             />
                         ),
                     },
@@ -106,7 +124,9 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <Switch
                                 checked={codecdata?.InputSuperimposeTextDisplay === 1}
                                 onChange={(event) =>
-                                    onChange({ InputSuperimposeTextDisplay: event.target.checked ? 1 : 0 })
+                                    onChange({
+                                        InputSuperimposeTextDisplay: event.target.checked ? 1 : 0,
+                                    })
                                 }
                             />
                         ),
@@ -116,7 +136,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugTextField
                                 changeOnBlur
-                                onChange={(event) => onChange({ InputSuperimposeUpperText: event.target.value })}
+                                onChange={(event) =>
+                                    onChange({
+                                        InputSuperimposeUpperText: event.target.value,
+                                    })
+                                }
                                 value={codecdata?.InputSuperimposeUpperText}
                             />
                         ),
@@ -126,7 +150,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugTextField
                                 changeOnBlur
-                                onChange={(event) => onChange({ InputSuperimposeLowerText: event.target.value })}
+                                onChange={(event) =>
+                                    onChange({
+                                        InputSuperimposeLowerText: event.target.value,
+                                    })
+                                }
                                 value={codecdata?.InputSuperimposeLowerText}
                             />
                         ),
@@ -137,7 +165,9 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 value={codecdata?.InputSuperimposeFontSize}
                                 onChange={(event) =>
-                                    onChange({ InputSuperimposeFontSize: parseInt(event.target.value) })
+                                    onChange({
+                                        InputSuperimposeFontSize: parseInt(event.target.value),
+                                    })
                                 }
                                 options={[
                                     { id: 0, label: "Minimum" },
@@ -154,7 +184,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.InputSuperimposeEffect}
-                                onChange={(event) => onChange({ InputSuperimposeEffect: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        InputSuperimposeEffect: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "0%" },
                                     { id: 1, label: "25%" },
@@ -177,7 +211,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.EncLatencyMode}
-                                onChange={(event) => onChange({ EncLatencyMode: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        EncLatencyMode: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "Standard" },
                                     { id: 1, label: "Low" },
@@ -191,7 +229,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.EncVideoProfileLevel}
-                                onChange={(event) => onChange({ EncVideoProfileLevel: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        EncVideoProfileLevel: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "Main" },
                                     { id: 3, label: "High" },
@@ -204,7 +246,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.EncVideoFormat}
-                                onChange={(event) => onChange({ EncVideoFormat: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        EncVideoFormat: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "1920x1080i29" },
                                     { id: 1, label: "1440x1080i29" },

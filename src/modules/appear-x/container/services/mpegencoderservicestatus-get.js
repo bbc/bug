@@ -62,9 +62,7 @@ module.exports = async (panelId, serviceId) => {
 
     const connectorIndex = getConnectorIndex(mpegEncoderService?.encoderService);
     statusBlocks.push({
-        image: `/container/${panelId}/thumb/${
-            mpegEncoderService?.encoderService?.value?.slot
-        }/${connectorIndex}?${new Date().getTime()}`,
+        image: `/container/${panelId}/thumb/${mpegEncoderService?.encoderService?.value?.slot}/${connectorIndex}?${new Date().getTime()}`,
     });
 
     //TODO make this work for Quad-link

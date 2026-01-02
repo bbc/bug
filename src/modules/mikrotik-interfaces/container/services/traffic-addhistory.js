@@ -21,8 +21,14 @@ module.exports = async (trafficCollection, trafficArray) => {
         }
 
         // add them on
-        eachTraffic["tx-history"].push({ timestamp: eachTraffic.timestamp, value: eachTraffic["tx-bits-per-second"] });
-        eachTraffic["rx-history"].push({ timestamp: eachTraffic.timestamp, value: eachTraffic["rx-bits-per-second"] });
+        eachTraffic["tx-history"].push({
+            timestamp: eachTraffic.timestamp,
+            value: eachTraffic["tx-bits-per-second"],
+        });
+        eachTraffic["rx-history"].push({
+            timestamp: eachTraffic.timestamp,
+            value: eachTraffic["rx-bits-per-second"],
+        });
 
         // check the length
         eachTraffic["tx-history"].splice(0, eachTraffic["tx-history"].length - maxLength);

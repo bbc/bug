@@ -37,7 +37,10 @@ module.exports = async (index, type, label) => {
         const field = type == "output" ? "OUTPUT LABELS" : "INPUT LABELS";
         const command = `${index} ${label}`;
 
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new videohub({
+            port: config.port,
+            host: config.address,
+        });
         await router.connect();
         await router.send(field, command);
         return true;

@@ -16,8 +16,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
     let stream;
 
     try {
-
-        process.on('uncaughtException', (err) => {
+        process.on("uncaughtException", (err) => {
             console.error(err);
             updateProgressCallback(-1);
             throw new Error(`Failed to build docker module ${moduleName}`);
@@ -39,12 +38,10 @@ module.exports = async (moduleName, updateProgressCallback) => {
             }
         );
 
-        stream.on('error', (err) => console.error('Stream error:', err));
-
+        stream.on("error", (err) => console.error("Stream error:", err));
     } catch (error) {
-        console.error('Caught error:', error);
+        console.error("Caught error:", error);
     }
-
 
     // watch the stream for progress
     let progressResult = await new Promise((resolve, reject) => {

@@ -28,21 +28,29 @@ module.exports = async (port, untaggedVlan = "1") => {
             allowedVlanList: [1],
             configMode: "access",
             nativeVlan: 1,
-        }
-    }
+        },
+    };
 
     // save it back
-    const result = await NetgearApi.post({ path: `dot1q_sw_port_config?interface=${port}`, params: newConfig });
+    const result = await NetgearApi.post({
+        path: `dot1q_sw_port_config?interface=${port}`,
+        params: newConfig,
+    });
 
     if (result?.resp?.status === "success") {
         console.log(`interface-setvlanaccess: success - updating DB`);
         // update db
         try {
-
             const interfacesCollection = await mongoCollection("interfaces");
             const dbResult = await interfacesCollection.updateOne(
                 { port: parseInt(port) },
-                { $set: { "tagged-vlans": [], configMode: "access", "untagged-vlan": parseInt(untaggedVlan) } }
+                {
+                    $set: {
+                        "tagged-vlans": [],
+                        configMode: "access",
+                        "untagged-vlan": parseInt(untaggedVlan),
+                    },
+                }
             );
             console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
             return true;
@@ -53,5 +61,4 @@ module.exports = async (port, untaggedVlan = "1") => {
         }
     }
     return true;
-
 };

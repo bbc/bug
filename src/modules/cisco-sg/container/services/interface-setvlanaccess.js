@@ -11,7 +11,9 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
     console.log(`interface-setvlanaccess: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
 
     const interfaceCollection = await mongoCollection("interfaces");
-    const iface = await interfaceCollection.findOne({ interfaceId: parseInt(interfaceId) });
+    const iface = await interfaceCollection.findOne({
+        interfaceId: parseInt(interfaceId),
+    });
     if (!iface) {
         throw new Error(`interface ${interfaceId} not found`);
     }
@@ -62,7 +64,12 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
         // update db
         const dbResult = await interfaceCollection.updateOne(
             { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
+            {
+                $set: {
+                    "untagged-vlan": parseInt(untaggedVlan),
+                    "tagged-vlans": [],
+                },
+            }
         );
         console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
         return true;

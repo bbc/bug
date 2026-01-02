@@ -11,6 +11,5 @@ describe("Test the '/api/bug/quote' route", () => {
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).not.toBe("");
-
     });
 });

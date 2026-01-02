@@ -1,14 +1,14 @@
 {
-  "id": "",
-  "order": 0,
-  "needsConfigured": true,
-  "title": "",
-  "module": "dtc-prorx",
-  "description": "",
-  "notes": "",
-  "enabled": false,
-  "address": "",
-  "username": "",
-  "password": "",
-  "receiverCount": 4
+    "id": "",
+    "order": 0,
+    "needsConfigured": true,
+    "title": "",
+    "module": "dtc-prorx",
+    "description": "",
+    "notes": "",
+    "enabled": false,
+    "address": "",
+    "username": "",
+    "password": "",
+    "receiverCount": 4
 }

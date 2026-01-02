@@ -48,14 +48,38 @@ export default function SystemHealthHost({ stats }) {
                                 name: "CPU",
                                 value: `${health.data.cpu.manufacturer} ${health.data.cpu.brand}`,
                             },
-                            { name: "Memory used", value: health.data.memory.used_text },
-                            { name: "Memory free", value: health.data.memory.free_text },
-                            { name: "Memory total", value: health.data.memory.total_text },
-                            { name: "Disk used - images", value: health.data.disk.images_text },
-                            { name: "Disk used - containers", value: health.data.disk.containers_text },
-                            { name: "Disk used - volumes", value: health.data.disk.volumes_text },
-                            { name: "Disk used - buildcache", value: health.data.disk.buildCache_text },
-                            { name: "Disk used - total", value: health.data.disk.total_text },
+                            {
+                                name: "Memory used",
+                                value: health.data.memory.used_text,
+                            },
+                            {
+                                name: "Memory free",
+                                value: health.data.memory.free_text,
+                            },
+                            {
+                                name: "Memory total",
+                                value: health.data.memory.total_text,
+                            },
+                            {
+                                name: "Disk used - images",
+                                value: health.data.disk.images_text,
+                            },
+                            {
+                                name: "Disk used - containers",
+                                value: health.data.disk.containers_text,
+                            },
+                            {
+                                name: "Disk used - volumes",
+                                value: health.data.disk.volumes_text,
+                            },
+                            {
+                                name: "Disk used - buildcache",
+                                value: health.data.disk.buildCache_text,
+                            },
+                            {
+                                name: "Disk used - total",
+                                value: health.data.disk.total_text,
+                            },
                         ]}
                     />
                 </Grid>

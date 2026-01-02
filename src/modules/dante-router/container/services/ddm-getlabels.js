@@ -23,7 +23,9 @@ module.exports = async () => {
     };
 
     // get data from the db
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
+    const dbInputLabels = await dataCollection.findOne({
+        title: "input_labels",
+    });
     if (dbInputLabels) {
         for (const [eachIndex, eachValue] of Object.entries(dbInputLabels["data"])) {
             const intIndex = parseInt(eachIndex);
@@ -36,7 +38,9 @@ module.exports = async () => {
     }
 
     // get data from the db
-    const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
+    const dbOutputLabels = await dataCollection.findOne({
+        title: "output_labels",
+    });
     if (dbOutputLabels) {
         for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels["data"])) {
             const intIndex = parseInt(eachIndex);

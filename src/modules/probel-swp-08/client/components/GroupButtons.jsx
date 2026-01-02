@@ -77,7 +77,9 @@ export default function GroupButtons({
                 sendAlert(`Added group: ${result}`, { variant: "success" });
                 onChange();
             } else {
-                sendAlert(`Failed to add group: ${result}`, { variant: "error" });
+                sendAlert(`Failed to add group: ${result}`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -97,7 +99,9 @@ export default function GroupButtons({
                     groups: groupNamesInOrder,
                 }))
             ) {
-                sendAlert(`Failed to save new group ordering`, { variant: "error" });
+                sendAlert(`Failed to save new group ordering`, {
+                    variant: "error",
+                });
             }
             const editText = editMode ? "/edit" : "";
             if (groupType === "source") {
@@ -113,7 +117,9 @@ export default function GroupButtons({
             dialog: <EditButtonsDialog panelId={panelId} groupType={groupType} groupIndex={item.index} />,
         });
         if (result !== false) {
-            sendAlert(`Updated buttons for group: ${item.label}`, { variant: "success" });
+            sendAlert(`Updated buttons for group: ${item.label}`, {
+                variant: "success",
+            });
             onChange();
         }
     };

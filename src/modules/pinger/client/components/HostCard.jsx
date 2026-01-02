@@ -36,7 +36,9 @@ export default function HostCard({
             } else if (response && !response.acknowledged) {
                 sendAlert(`Unacknowledged ${title}`, { variant: "info" });
             } else {
-                sendAlert(`Could not acknowledge ${title}`, { variant: "error" });
+                sendAlert(`Could not acknowledge ${title}`, {
+                    variant: "error",
+                });
             }
         }
     });

@@ -49,7 +49,12 @@ const getDevices = async () => {
                     delete item.device_id;
 
                     devices.push({
-                        ...{ deviceId: item._id, siteId: site, connected: connected, timestamp: Date.now() },
+                        ...{
+                            deviceId: item._id,
+                            siteId: site,
+                            connected: connected,
+                            timestamp: Date.now(),
+                        },
                         ...item,
                     });
                 });

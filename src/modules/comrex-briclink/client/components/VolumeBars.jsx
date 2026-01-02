@@ -33,11 +33,29 @@ export default function VolumeBars({ panelId }) {
                 <Grid container direction="row">
                     <Box sx={{ margin: "8px" }}>
                         <BugVolumeBar max={72} min={0} value={levels["data"]["output-left"]} width={30} />
-                        <Box sx={{ fontWeight: 700, textAlign: "center", fontSize: "14px", margin: "4px" }}>L</Box>
+                        <Box
+                            sx={{
+                                fontWeight: 700,
+                                textAlign: "center",
+                                fontSize: "14px",
+                                margin: "4px",
+                            }}
+                        >
+                            L
+                        </Box>
                     </Box>
                     <Box sx={{ margin: "8px" }}>
                         <BugVolumeBar max={72} min={0} value={levels["data"]["output-right"]} width={30} />
-                        <Box sx={{ fontWeight: 700, textAlign: "center", fontSize: "14px", margin: "4px" }}>R</Box>
+                        <Box
+                            sx={{
+                                fontWeight: 700,
+                                textAlign: "center",
+                                fontSize: "14px",
+                                margin: "4px",
+                            }}
+                        >
+                            R
+                        </Box>
                     </Box>
                 </Grid>
             </Grid>
@@ -58,11 +76,29 @@ export default function VolumeBars({ panelId }) {
                 <Grid container direction="row">
                     <Box sx={{ margin: "8px" }}>
                         <BugVolumeBar max={72} min={0} value={levels["data"]["input-left"]} width={30} />
-                        <Box sx={{ fontWeight: 700, textAlign: "center", fontSize: "14px", margin: "4px" }}>L</Box>
+                        <Box
+                            sx={{
+                                fontWeight: 700,
+                                textAlign: "center",
+                                fontSize: "14px",
+                                margin: "4px",
+                            }}
+                        >
+                            L
+                        </Box>
                     </Box>
                     <Box sx={{ margin: "8px" }}>
                         <BugVolumeBar max={72} min={0} value={levels["data"]["input-right"]} width={30} />
-                        <Box sx={{ fontWeight: 700, textAlign: "center", fontSize: "14px", margin: "4px" }}>R</Box>
+                        <Box
+                            sx={{
+                                fontWeight: 700,
+                                textAlign: "center",
+                                fontSize: "14px",
+                                margin: "4px",
+                            }}
+                        >
+                            R
+                        </Box>
                     </Box>
                 </Grid>
             </Grid>

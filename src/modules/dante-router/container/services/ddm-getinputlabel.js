@@ -18,7 +18,9 @@ module.exports = async (index) => {
     const dataCollection = await mongoCollection("data");
 
     // get data from the db
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
+    const dbInputLabels = await dataCollection.findOne({
+        title: "input_labels",
+    });
     if (dbInputLabels && dbInputLabels["data"][index] !== undefined) {
         return dbInputLabels["data"][index];
     }

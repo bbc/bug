@@ -51,7 +51,11 @@ export default function Codec({ panelId }) {
 
     const updateBackend = async (value, field) => {
         // and send to backend to persist
-        if (!(await AxiosPost(`/container/${panelId}/localdata/`, { [field]: value }))) {
+        if (
+            !(await AxiosPost(`/container/${panelId}/localdata/`, {
+                [field]: value,
+            }))
+        ) {
             sendAlert(`Changes could not be saved`, { variant: "error" });
         }
     };

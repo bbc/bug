@@ -24,7 +24,9 @@ const main = async () => {
     const serversCollection = await mongoCollection("servers");
 
     // update ttl
-    await mongoCreateIndex(serversCollection, "timestamp", { expireAfterSeconds: 60 });
+    await mongoCreateIndex(serversCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
 
     // remove previous values
     await serversCollection.deleteMany({});

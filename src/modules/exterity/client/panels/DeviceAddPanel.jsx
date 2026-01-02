@@ -43,7 +43,10 @@ export default function DevicePanel({ panelId }) {
     const onSubmit = async (form) => {
         const response = await AxiosPost(`/container/${panelId}/devices`, form);
         if (response) {
-            sendAlert(`Device has been added.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Device has been added.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
             sendAlert(`Device could not be added.`, { variant: "warning" });

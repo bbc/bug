@@ -8,7 +8,11 @@ route.post("/", async function (req, res, next) {
     try {
         res.json({
             status: "success",
-            data: await sourcesList(req.body?.sourceDevice, req.body?.destinationDevice, parseInt(req.body?.destinationIndex)),
+            data: await sourcesList(
+                req.body?.sourceDevice,
+                req.body?.destinationDevice,
+                parseInt(req.body?.destinationIndex)
+            ),
         });
     } catch (error) {
         console.log(error);
@@ -33,6 +37,5 @@ route.post("/", async function (req, res, next) {
 //         });
 //     }
 // });
-
 
 module.exports = route;

@@ -54,28 +54,30 @@ const transports = [
         handleExceptions: true,
         colorize: true,
         format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
-    })
-]
+    }),
+];
 
 if (!process.env.JEST_WORKER_ID) {
-    transports.push(new winston.transports.MongoDB({
-        level: logLevel,
-        db: `${url}/${databaseName}`,
-        options: {
-            poolSize: 2,
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        },
-        collection: "logs",
-        tryReconnect: true,
-        cappedMax: 10000,
-    }))
+    transports.push(
+        new winston.transports.MongoDB({
+            level: logLevel,
+            db: `${url}/${databaseName}`,
+            options: {
+                poolSize: 2,
+                useUnifiedTopology: true,
+                useNewUrlParser: true,
+            },
+            collection: "logs",
+            tryReconnect: true,
+            cappedMax: 10000,
+        })
+    );
 }
 
 const loggerInstance = winston.createLogger({
     levels: customLevels.levels,
     handleExceptions: false,
-    transports: transports
+    transports: transports,
 });
 
 const logger = (module) => {
@@ -84,7 +86,9 @@ const logger = (module) => {
 
     for (let level in customLevels?.levels) {
         loggers[level] = (message, metadata) => {
-            loggerInstance[level](message, { metadata: { ...{ filename: filename }, ...metadata } });
+            loggerInstance[level](message, {
+                metadata: { ...{ filename: filename }, ...metadata },
+            });
         };
     }
 

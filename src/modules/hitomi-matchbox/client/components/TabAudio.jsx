@@ -135,7 +135,13 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
                                     {Array(4)
                                         .fill(null)
                                         .map((value, colIndex) => (
-                                            <TableCell key={colIndex} sx={{ width: "2rem", textAlign: "center" }}>
+                                            <TableCell
+                                                key={colIndex}
+                                                sx={{
+                                                    width: "2rem",
+                                                    textAlign: "center",
+                                                }}
+                                            >
                                                 {colIndex + 1}
                                             </TableCell>
                                         ))}
@@ -207,36 +213,126 @@ export default function TabOutput({ devicedata, panelId, onChange }) {
                                                     <BugSelect
                                                         value={devicedata?.audio?.[`toneSequence${rowIndex}`]}
                                                         options={[
-                                                            { id: "0", label: "BLITS1-L" },
-                                                            { id: "1", label: "BLITS1-R" },
-                                                            { id: "2", label: "BLITS1-C" },
-                                                            { id: "3", label: "BLITS1-LFE" },
-                                                            { id: "4", label: "BLITS1-Ls" },
-                                                            { id: "5", label: "BLITS1-Rs" },
-                                                            { id: "6", label: "BLITS2-L" },
-                                                            { id: "7", label: "BLITS2-R" },
-                                                            { id: "8", label: "BLITS2-C" },
-                                                            { id: "9", label: "BLITS2-LFE" },
-                                                            { id: "10", label: "BLITS2-Ls" },
-                                                            { id: "11", label: "BLITS2-Rs" },
-                                                            { id: "12", label: "GLITS A-L" },
-                                                            { id: "13", label: "GLITS A-R" },
-                                                            { id: "14", label: "GLITS B-L" },
-                                                            { id: "15", label: "GLITS B-R" },
-                                                            { id: "16", label: "GLITS C-L" },
-                                                            { id: "17", label: "GLITS C-R" },
-                                                            { id: "18", label: "GLITS D-L" },
-                                                            { id: "19", label: "GLITS D-R" },
-                                                            { id: "20", label: "GLITS E-L" },
-                                                            { id: "21", label: "GLITS E-R" },
-                                                            { id: "22", label: "GLITS F-L" },
-                                                            { id: "23", label: "GLITS F-R" },
-                                                            { id: "24", label: "GLITS G-L" },
-                                                            { id: "25", label: "GLITS G-R" },
-                                                            { id: "26", label: "GLITS H-L" },
-                                                            { id: "27", label: "GLITS H-R" },
-                                                            { id: "28", label: "CONT 1K" },
-                                                            { id: "29", label: "Silence" },
+                                                            {
+                                                                id: "0",
+                                                                label: "BLITS1-L",
+                                                            },
+                                                            {
+                                                                id: "1",
+                                                                label: "BLITS1-R",
+                                                            },
+                                                            {
+                                                                id: "2",
+                                                                label: "BLITS1-C",
+                                                            },
+                                                            {
+                                                                id: "3",
+                                                                label: "BLITS1-LFE",
+                                                            },
+                                                            {
+                                                                id: "4",
+                                                                label: "BLITS1-Ls",
+                                                            },
+                                                            {
+                                                                id: "5",
+                                                                label: "BLITS1-Rs",
+                                                            },
+                                                            {
+                                                                id: "6",
+                                                                label: "BLITS2-L",
+                                                            },
+                                                            {
+                                                                id: "7",
+                                                                label: "BLITS2-R",
+                                                            },
+                                                            {
+                                                                id: "8",
+                                                                label: "BLITS2-C",
+                                                            },
+                                                            {
+                                                                id: "9",
+                                                                label: "BLITS2-LFE",
+                                                            },
+                                                            {
+                                                                id: "10",
+                                                                label: "BLITS2-Ls",
+                                                            },
+                                                            {
+                                                                id: "11",
+                                                                label: "BLITS2-Rs",
+                                                            },
+                                                            {
+                                                                id: "12",
+                                                                label: "GLITS A-L",
+                                                            },
+                                                            {
+                                                                id: "13",
+                                                                label: "GLITS A-R",
+                                                            },
+                                                            {
+                                                                id: "14",
+                                                                label: "GLITS B-L",
+                                                            },
+                                                            {
+                                                                id: "15",
+                                                                label: "GLITS B-R",
+                                                            },
+                                                            {
+                                                                id: "16",
+                                                                label: "GLITS C-L",
+                                                            },
+                                                            {
+                                                                id: "17",
+                                                                label: "GLITS C-R",
+                                                            },
+                                                            {
+                                                                id: "18",
+                                                                label: "GLITS D-L",
+                                                            },
+                                                            {
+                                                                id: "19",
+                                                                label: "GLITS D-R",
+                                                            },
+                                                            {
+                                                                id: "20",
+                                                                label: "GLITS E-L",
+                                                            },
+                                                            {
+                                                                id: "21",
+                                                                label: "GLITS E-R",
+                                                            },
+                                                            {
+                                                                id: "22",
+                                                                label: "GLITS F-L",
+                                                            },
+                                                            {
+                                                                id: "23",
+                                                                label: "GLITS F-R",
+                                                            },
+                                                            {
+                                                                id: "24",
+                                                                label: "GLITS G-L",
+                                                            },
+                                                            {
+                                                                id: "25",
+                                                                label: "GLITS G-R",
+                                                            },
+                                                            {
+                                                                id: "26",
+                                                                label: "GLITS H-L",
+                                                            },
+                                                            {
+                                                                id: "27",
+                                                                label: "GLITS H-R",
+                                                            },
+                                                            {
+                                                                id: "28",
+                                                                label: "CONT 1K",
+                                                            },
+                                                            {
+                                                                id: "29",
+                                                                label: "Silence",
+                                                            },
                                                         ]}
                                                         onChange={(event) =>
                                                             onChange({

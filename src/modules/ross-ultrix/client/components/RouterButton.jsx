@@ -44,9 +44,13 @@ export default function RouterButton({
                     `/container/${panelId}/${buttonType}s/setname/${button.index}/${encodeURIComponent(result)}`
                 )
             ) {
-                sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
+                sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, {
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to rename ${buttonType}: ${result}`, { variant: "error" });
+                sendAlert(`Failed to rename ${buttonType}: ${result}`, {
+                    variant: "error",
+                });
             }
             onChange();
         }
@@ -67,7 +71,9 @@ export default function RouterButton({
                     variant: "success",
                 });
             } else {
-                sendAlert(`Failed to change description for ${buttonType}: ${result}`, { variant: "error" });
+                sendAlert(`Failed to change description for ${buttonType}: ${result}`, {
+                    variant: "error",
+                });
             }
             onChange();
         }
@@ -80,18 +86,26 @@ export default function RouterButton({
                 `/container/${panelId}/${buttonType}s/setname/${button.index}/${encodeURIComponent(defaultLabel)}`
             )
         ) {
-            sendAlert(`Cleared button name for ${buttonType} ${button.index}`, { variant: "success" });
+            sendAlert(`Cleared button name for ${buttonType} ${button.index}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to clear name for ${buttonType} ${button.index}`, { variant: "error" });
+            sendAlert(`Failed to clear name for ${buttonType} ${button.index}`, {
+                variant: "error",
+            });
         }
         onChange();
     };
 
     const handleClearDescriptionClicked = async (event, item) => {
         if (await AxiosCommand(`/container/${panelId}/${buttonType}s/setdescription/${button.index}/`)) {
-            sendAlert(`Cleared button description for ${buttonType} ${button.index}`, { variant: "success" });
+            sendAlert(`Cleared button description for ${buttonType} ${button.index}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to clear description for ${buttonType} ${button.index}`, { variant: "error" });
+            sendAlert(`Failed to clear description for ${buttonType} ${button.index}`, {
+                variant: "error",
+            });
         }
         onChange();
     };
@@ -101,9 +115,13 @@ export default function RouterButton({
         const url = `/container/${panelId}/${buttonType}s/${groupId}/${encodeURIComponent(button.label)}`;
 
         if (await AxiosDelete(url)) {
-            sendAlert(`Removed ${buttonType} button: ${button.label}`, { variant: "success" });
+            sendAlert(`Removed ${buttonType} button: ${button.label}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to remove ${buttonType} button: ${button.label}`, { variant: "error" });
+            sendAlert(`Failed to remove ${buttonType} button: ${button.label}`, {
+                variant: "error",
+            });
         }
         onChange();
     };
@@ -137,10 +155,14 @@ export default function RouterButton({
             if (
                 await AxiosCommand(`/container/${panelId}/groups/addbuttons/${buttonType}/${groupIds}/${button.index}`)
             ) {
-                sendAlert(`Added button to group(s) '${groupIds.join(",")}'`, { variant: "success" });
+                sendAlert(`Added button to group(s) '${groupIds.join(",")}'`, {
+                    variant: "success",
+                });
                 onChange();
             } else {
-                sendAlert(`Failed to add button to group(s)`, { variant: "error" });
+                sendAlert(`Failed to add button to group(s)`, {
+                    variant: "error",
+                });
             }
         }
     };

@@ -4,7 +4,6 @@ const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourceIndex) => {
-
     let config;
     try {
         config = await configGet();
@@ -16,7 +15,19 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
         return false;
     }
 
-    const command = ["SET", "DANTE", "DEV", destinationDevice, "AUDIO", "RXCHN", destinationIndex, "SOURCE", sourceDevice, "CHN", sourceIndex];
+    const command = [
+        "SET",
+        "DANTE",
+        "DEV",
+        destinationDevice,
+        "AUDIO",
+        "RXCHN",
+        destinationIndex,
+        "SOURCE",
+        sourceDevice,
+        "CHN",
+        sourceIndex,
+    ];
 
     // we get no usable response from the box, so we just assume it's worked
     await turtleWebApi.command(config.address, command);
@@ -25,9 +36,15 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
     const sourcesCollection = await mongoCollection("sources");
     const destinationsCollection = await mongoCollection("destinations");
 
-    const destinationDocument = await destinationsCollection.findOne({ deviceId: destinationDevice });
-    const sourceDocument = await sourcesCollection.findOne({ deviceId: sourceDevice });
-    const routeDocument = await routesCollection.findOne({ deviceId: destinationDevice });
+    const destinationDocument = await destinationsCollection.findOne({
+        deviceId: destinationDevice,
+    });
+    const sourceDocument = await sourcesCollection.findOne({
+        deviceId: sourceDevice,
+    });
+    const routeDocument = await routesCollection.findOne({
+        deviceId: destinationDevice,
+    });
     if (!sourceDocument || !routeDocument || !destinationDocument) {
         return false;
     }
@@ -37,13 +54,16 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
         destinationIndex: destinationIndex,
         sourceDevice: sourceDevice,
         sourceChannel: sourceDocument?.labels[sourceIndex - 1]?.name,
-        sourceIndex: sourceIndex
-    }
+        sourceIndex: sourceIndex,
+    };
 
-    const result = await routesCollection.updateOne({ deviceId: destinationDevice, "routes.destinationIndex": destinationIndex },
-        { $set: { "routes.$": route } })
+    const result = await routesCollection.updateOne(
+        {
+            deviceId: destinationDevice,
+            "routes.destinationIndex": destinationIndex,
+        },
+        { $set: { "routes.$": route } }
+    );
 
     return true;
 };
-
-

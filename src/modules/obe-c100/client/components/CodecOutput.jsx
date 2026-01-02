@@ -53,7 +53,11 @@ export default function CodecOutput({
                         value: (
                             <BugSelect
                                 value={outputData?.outputMethod}
-                                onChange={(event) => handleChange({ outputMethod: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputMethod: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "UDP" },
                                     { id: 2, label: "RTP" },
@@ -85,7 +89,11 @@ export default function CodecOutput({
                             <BugTextField
                                 changeOnBlur
                                 value={outputData?.outputIP}
-                                onChange={(event) => handleChange({ outputIP: event.target.value })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputIP: event.target.value,
+                                    })
+                                }
                                 // filter={/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}/}
                             />
                         ),
@@ -96,7 +104,11 @@ export default function CodecOutput({
                             <BugTextField
                                 changeOnBlur
                                 value={outputData?.outputPort}
-                                onChange={(event) => handleChange({ outputPort: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputPort: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1024}
@@ -110,7 +122,11 @@ export default function CodecOutput({
                             <BugTextField
                                 changeOnBlur
                                 value={outputData?.outputTTL}
-                                onChange={(event) => handleChange({ outputTTL: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputTTL: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1}
@@ -123,7 +139,11 @@ export default function CodecOutput({
                         value: (
                             <BugSelect
                                 value={outputData?.outputTOS}
-                                onChange={(event) => handleChange({ outputTOS: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputTOS: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "None" },
                                     { id: 104, label: "DSCP 26 (TOS 104)" },
@@ -136,7 +156,11 @@ export default function CodecOutput({
                         value: (
                             <BugSelect
                                 value={outputData?.outputFecType}
-                                onChange={(event) => handleChange({ outputFecType: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputFecType: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "None" },
                                     { id: 2, label: "FEC" },
@@ -150,7 +174,11 @@ export default function CodecOutput({
                             <BugTextField
                                 changeOnBlur
                                 value={outputData?.outputFecColumns}
-                                onChange={(event) => handleChange({ outputFecColumns: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputFecColumns: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1}
@@ -164,7 +192,11 @@ export default function CodecOutput({
                             <BugTextField
                                 changeOnBlur
                                 value={outputData?.outputFecRows}
-                                onChange={(event) => handleChange({ outputFecRows: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputFecRows: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={4}
@@ -178,7 +210,11 @@ export default function CodecOutput({
                             value: (
                                 <Switch
                                     checked={outputData?.outputDupDelay > 0}
-                                    onChange={(event) => handleChange({ outputDupDelay: event.target.checked ? 1 : 0 })}
+                                    onChange={(event) =>
+                                        handleChange({
+                                            outputDupDelay: event.target.checked ? 1 : 0,
+                                        })
+                                    }
                                 />
                             ),
                         },
@@ -190,7 +226,11 @@ export default function CodecOutput({
                                 changeOnBlur
                                 disabled={outputData?.outputDupDelay === 0}
                                 value={outputData?.outputDupDelay}
-                                onChange={(event) => handleChange({ outputDupDelay: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputDupDelay: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1}
@@ -207,7 +247,11 @@ export default function CodecOutput({
                             <BugTextField
                                 changeOnBlur
                                 value={outputData?.outputARQBuffer}
-                                onChange={(event) => handleChange({ outputARQBuffer: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        outputARQBuffer: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1}

@@ -27,17 +27,50 @@ export default function InterfaceTabHardware({ panelId, interfaceName }) {
                             name: "SFP Module Present",
                             value: iface?.data?.linkstats?.["sfp-module-present"] ? "yes" : "no",
                         },
-                        { name: "SFP RX Loss", value: iface?.data?.linkstats?.["sfp-rx-loss"] ? "yes" : "no" },
-                        { name: "SFP TX Fault", value: iface?.data?.linkstats?.["sfp-tx-fault"] ? "yes" : "no" },
-                        { name: "SFP Type", value: iface?.data?.linkstats?.["sfp-type"] },
-                        { name: "SFP Connector Type", value: iface?.data?.linkstats?.["sfp-connector-type"] },
-                        { name: "SFP Link Length (Copper)", value: iface?.data?.linkstats?.["sfp-link-length-copper"] },
-                        { name: "SFP Vendor Name", value: iface?.data?.linkstats?.["sfp-vendor-name"] },
-                        { name: "SFP Vendor Part Number", value: iface?.data?.linkstats?.["sfp-vendor-part-number"] },
-                        { name: "SFP Vendor Revision", value: iface?.data?.linkstats?.["sfp-vendor-revision"] },
-                        { name: "SFP Vendor Serial", value: iface?.data?.linkstats?.["sfp-vendor-serial"] },
-                        { name: "SFP Manufacturing Date", value: iface?.data?.linkstats?.["sfp-manufacturing-date"] },
-                        { name: "EEPROM checksum", value: iface?.data?.linkstats?.["eeprom-checksum"] },
+                        {
+                            name: "SFP RX Loss",
+                            value: iface?.data?.linkstats?.["sfp-rx-loss"] ? "yes" : "no",
+                        },
+                        {
+                            name: "SFP TX Fault",
+                            value: iface?.data?.linkstats?.["sfp-tx-fault"] ? "yes" : "no",
+                        },
+                        {
+                            name: "SFP Type",
+                            value: iface?.data?.linkstats?.["sfp-type"],
+                        },
+                        {
+                            name: "SFP Connector Type",
+                            value: iface?.data?.linkstats?.["sfp-connector-type"],
+                        },
+                        {
+                            name: "SFP Link Length (Copper)",
+                            value: iface?.data?.linkstats?.["sfp-link-length-copper"],
+                        },
+                        {
+                            name: "SFP Vendor Name",
+                            value: iface?.data?.linkstats?.["sfp-vendor-name"],
+                        },
+                        {
+                            name: "SFP Vendor Part Number",
+                            value: iface?.data?.linkstats?.["sfp-vendor-part-number"],
+                        },
+                        {
+                            name: "SFP Vendor Revision",
+                            value: iface?.data?.linkstats?.["sfp-vendor-revision"],
+                        },
+                        {
+                            name: "SFP Vendor Serial",
+                            value: iface?.data?.linkstats?.["sfp-vendor-serial"],
+                        },
+                        {
+                            name: "SFP Manufacturing Date",
+                            value: iface?.data?.linkstats?.["sfp-manufacturing-date"],
+                        },
+                        {
+                            name: "EEPROM checksum",
+                            value: iface?.data?.linkstats?.["eeprom-checksum"],
+                        },
                     ]}
                 />
             </Grid>

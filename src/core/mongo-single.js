@@ -39,7 +39,9 @@ const set = async (name, value, ttl = null) => {
     try {
         const collection = await mongoCollection(name);
         if (ttl) {
-            await mongoCreateIndex(collection, "timestamp", { expireAfterSeconds: ttl });
+            await mongoCreateIndex(collection, "timestamp", {
+                expireAfterSeconds: ttl,
+            });
         }
         const document = {
             type: name,

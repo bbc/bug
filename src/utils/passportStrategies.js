@@ -17,7 +17,11 @@ const bcrypt = require("bcryptjs");
 //Setup Trusted Header authentication
 const proxyStrategy = (settings) => {
     return new HeaderStrategy(
-        { header: settings?.headerField, passReqToCallback: true, passReqToCallback: true },
+        {
+            header: settings?.headerField,
+            passReqToCallback: true,
+            passReqToCallback: true,
+        },
         async (req, header, done) => {
             const user = await userGetByField(header.toLowerCase(), settings?.headerFieldMatch);
 
@@ -50,7 +54,11 @@ const proxyStrategy = (settings) => {
 //Setup Local authentication
 const localStrategy = (settings) => {
     return new LocalStrategy(
-        { usernameField: "username", passwordField: "password", passReqToCallback: true },
+        {
+            usernameField: "username",
+            passwordField: "password",
+            passReqToCallback: true,
+        },
         async (req, username, password, done) => {
             const user = await userGetByField(username.toLowerCase(), "username");
 

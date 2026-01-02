@@ -14,10 +14,15 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
             dbFilters["meta"] = { panelId: filters["meta"] };
         }
         if (filters["message"]) {
-            dbFilters["message"] = { $regex: filters["message"], $options: "i" };
+            dbFilters["message"] = {
+                $regex: filters["message"],
+                $options: "i",
+            };
         }
         if (filters["timestamp"]) {
-            dbFilters["timestamp"] = { $gte: new Date(Date.now() - filters["timestamp"] * 1000) };
+            dbFilters["timestamp"] = {
+                $gte: new Date(Date.now() - filters["timestamp"] * 1000),
+            };
         }
 
         const logs = await logsModel.get(dbFilters);

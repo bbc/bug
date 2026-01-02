@@ -32,15 +32,13 @@ export default function GroupList({ panelId }) {
     }
 
     const handleChange = async (groupId, connectionId, valueArray) => {
-        const url = `/container/${panelId}/destination/${[
-            encodeURIComponent(loadedProgram.data.handle),
-            encodeURIComponent(groupId),
-            encodeURIComponent(connectionId),
-        ].join("/")}`;
+        const url = `/container/${panelId}/destination/${[encodeURIComponent(loadedProgram.data.handle), encodeURIComponent(groupId), encodeURIComponent(connectionId)].join("/")}`;
         const result = await AxiosPut(url, valueArray);
         if (result) {
             doForceRefresh();
-            sendAlert(`Successfully updated device config`, { variant: "success" });
+            sendAlert(`Successfully updated device config`, {
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to update device config`, { variant: "error" });
         }

@@ -22,9 +22,7 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
         onChange(clonedCodecData);
     };
 
-    const slotPort = `Slot ${codecdata?.encoderService?.value?.slot} / Port ${
-        codecdata?.encoderService?.value?.video?.source?.sdi?.connectors.split("_")[1]
-    }`;
+    const slotPort = `Slot ${codecdata?.encoderService?.value?.slot} / Port ${codecdata?.encoderService?.value?.video?.source?.sdi?.connectors.split("_")[1]}`;
 
     return (
         <>
@@ -106,8 +104,14 @@ export default function MpegEncoderService({ codecdata, onChange, showAdvanced, 
                                 options={[
                                     { id: "COLOR_BAR", label: "Color Bar" },
                                     { id: "BLACK_FRAME", label: "Black Frame" },
-                                    { id: "FREEZE_FRAME", label: "Freeze Frame" },
-                                    { id: "TEST_GENERATOR", label: "Test Generator" },
+                                    {
+                                        id: "FREEZE_FRAME",
+                                        label: "Freeze Frame",
+                                    },
+                                    {
+                                        id: "TEST_GENERATOR",
+                                        label: "Test Generator",
+                                    },
                                 ]}
                             ></BugSelect>
                         ),

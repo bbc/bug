@@ -71,9 +71,7 @@ class ComrexSocket extends EventEmitter {
                             // we didn't get a response last time - we'll delay by 10 seconds
                             await delay(10000);
                         }
-                        console.log(
-                            `comrex-socket: attempting to log in with provided credentials`
-                        );
+                        console.log(`comrex-socket: attempting to log in with provided credentials`);
 
                         // this is what comrex require to log into the device
                         const hashedChallenge = md5(result.children?.[0]?.attributes?.challenge + self.opts.password);

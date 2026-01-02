@@ -16,9 +16,13 @@ export default function EditPanel() {
     const deleteHost = async (hostId) => {
         const response = await AxiosDelete(`/container/${params?.panelId}/hosts/${hostId}`);
         if (response) {
-            sendAlert(`Deleted host  ${panelConfig.data.hosts[hostId].title}`, { variant: "success" });
+            sendAlert(`Deleted host  ${panelConfig.data.hosts[hostId].title}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Could not delete host ${panelConfig.data.hosts[hostId].title}`, { variant: "error" });
+            sendAlert(`Could not delete host ${panelConfig.data.hosts[hostId].title}`, {
+                variant: "error",
+            });
         }
     };
 

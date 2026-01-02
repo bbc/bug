@@ -26,7 +26,9 @@ module.exports = async (config) => {
     const url = `http://${coreHost}:${corePort}/api/panelconfig/${panelId}`;
     try {
         // make the request
-        let response = await axios.put(url, config, { headers: { authorization: `Bearer ${config?.key}` } });
+        let response = await axios.put(url, config, {
+            headers: { authorization: `Bearer ${config?.key}` },
+        });
         return response?.data?.status === "success";
     } catch (error) {
         console.log(`config-putviacore: ${error.stack || error.trace || error || error.message}`);

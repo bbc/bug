@@ -45,7 +45,9 @@ export default function VmList({ panelId }) {
                     variant: "success",
                 });
             } else {
-                sendAlert(`Failed to rename VM '${item.name_label}'`, { variant: "error" });
+                sendAlert(`Failed to rename VM '${item.name_label}'`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -64,12 +66,19 @@ export default function VmList({ panelId }) {
             // they've changed their mind ...
             return false;
         }
-        sendAlert(`Deleting VM '${item.name_label}'`, { broadcast: "true", variant: "info" });
+        sendAlert(`Deleting VM '${item.name_label}'`, {
+            broadcast: "true",
+            variant: "info",
+        });
 
         if (await AxiosDelete(`/container/${panelId}/vm/${item.uuid}`)) {
-            sendAlert(`Deleted VM '${item.name_label}'`, { variant: "success" });
+            sendAlert(`Deleted VM '${item.name_label}'`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to delete VM '${item.name_label}'`, { variant: "error" });
+            sendAlert(`Failed to delete VM '${item.name_label}'`, {
+                variant: "error",
+            });
         }
     };
 
@@ -89,7 +98,9 @@ export default function VmList({ panelId }) {
                     variant: "success",
                 });
             } else {
-                sendAlert(`Failed to update description on VM '${item.name_label}'`, { variant: "error" });
+                sendAlert(`Failed to update description on VM '${item.name_label}'`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -107,59 +118,103 @@ export default function VmList({ panelId }) {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
         if (await AxiosCommand(`/container/${panelId}/vm/${command}autopower/${item.uuid}`)) {
-            sendAlert(`${commandText} auto power for VM '${item.name_label}'`, { variant: "success" });
+            sendAlert(`${commandText} auto power for VM '${item.name_label}'`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to ${command} auto power for VM '${item.name_label}'`, { variant: "error" });
+            sendAlert(`Failed to ${command} auto power for VM '${item.name_label}'`, {
+                variant: "error",
+            });
         }
     };
 
     const handleStartClicked = async (event, item) => {
-        sendAlert(`Starting VM '${item.name_label}'`, { broadcast: "true", variant: "info" });
+        sendAlert(`Starting VM '${item.name_label}'`, {
+            broadcast: "true",
+            variant: "info",
+        });
         const response = await AxiosCommand(`/container/${panelId}/vm/start/${item.uuid}`);
         if (response) {
-            sendAlert(`${item.name_label} has been started.`, { broadcast: "true", variant: "success" });
+            sendAlert(`${item.name_label} has been started.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`${item.name_label} could not be started.`, { variant: "warning" });
+            sendAlert(`${item.name_label} could not be started.`, {
+                variant: "warning",
+            });
         }
     };
 
     const handleCleanShutdownClicked = async (event, item) => {
-        sendAlert(`Stopping VM '${item.name_label}'`, { broadcast: "true", variant: "info" });
+        sendAlert(`Stopping VM '${item.name_label}'`, {
+            broadcast: "true",
+            variant: "info",
+        });
         const response = await AxiosCommand(`/container/${panelId}/vm/cleanshutdown/${item.uuid}`);
         if (response) {
-            sendAlert(`${item.name_label} has been stopped.`, { broadcast: "true", variant: "success" });
+            sendAlert(`${item.name_label} has been stopped.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`${item.name_label} could not be stopped.`, { variant: "warning" });
+            sendAlert(`${item.name_label} could not be stopped.`, {
+                variant: "warning",
+            });
         }
     };
 
     const handleHardShutdownClicked = async (event, item) => {
-        sendAlert(`Stopping VM '${item.name_label}'`, { broadcast: "true", variant: "info" });
+        sendAlert(`Stopping VM '${item.name_label}'`, {
+            broadcast: "true",
+            variant: "info",
+        });
         const response = await AxiosCommand(`/container/${panelId}/vm/hardshutdown/${item.uuid}`);
         if (response) {
-            sendAlert(`${item.name_label} has been stopped.`, { broadcast: "true", variant: "success" });
+            sendAlert(`${item.name_label} has been stopped.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`${item.name_label} could not be stopped.`, { variant: "warning" });
+            sendAlert(`${item.name_label} could not be stopped.`, {
+                variant: "warning",
+            });
         }
     };
 
     const handleCleanRebootClicked = async (event, item) => {
-        sendAlert(`Rebooting VM '${item.name_label}'`, { broadcast: "true", variant: "info" });
+        sendAlert(`Rebooting VM '${item.name_label}'`, {
+            broadcast: "true",
+            variant: "info",
+        });
         const response = await AxiosCommand(`/container/${panelId}/vm/cleanreboot/${item.uuid}`);
         if (response) {
-            sendAlert(`${item.name_label} has been rebooted.`, { broadcast: "true", variant: "success" });
+            sendAlert(`${item.name_label} has been rebooted.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`${item.name_label} could not be rebooted.`, { variant: "warning" });
+            sendAlert(`${item.name_label} could not be rebooted.`, {
+                variant: "warning",
+            });
         }
     };
 
     const handleHardRebootClicked = async (event, item) => {
-        sendAlert(`Rebooting VM '${item.name_label}'`, { broadcast: "true", variant: "info" });
+        sendAlert(`Rebooting VM '${item.name_label}'`, {
+            broadcast: "true",
+            variant: "info",
+        });
         const response = await AxiosCommand(`/container/${panelId}/vm/hardreboot/${item.uuid}`);
         if (response) {
-            sendAlert(`${item.name_label} has been rebooted.`, { broadcast: "true", variant: "success" });
+            sendAlert(`${item.name_label} has been rebooted.`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`${item.name_label} could not be rebooted.`, { variant: "warning" });
+            sendAlert(`${item.name_label} could not be rebooted.`, {
+                variant: "warning",
+            });
         }
     };
 

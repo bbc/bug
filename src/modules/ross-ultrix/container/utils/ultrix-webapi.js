@@ -2,7 +2,6 @@
 const axios = require("axios");
 
 const get = async (path, { address, uiPort }) => {
-
     const url = `http://${address}:${uiPort}/${path}`;
     const response = await axios.get(url);
     return response.data;
@@ -16,5 +15,5 @@ const post = async (path, { address, uiPort }, jsonBody) => {
 
 module.exports = {
     get: get,
-    post: post
-}
+    post: post,
+};

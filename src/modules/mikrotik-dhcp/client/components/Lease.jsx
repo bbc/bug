@@ -44,7 +44,10 @@ export default function Lease({ panelId, leaseId }) {
     const handleDeleteClicked = async () => {
         const response = await AxiosDelete(`/container/${panelId}/lease/${leaseId}`);
         if (response) {
-            sendAlert(`Lease has been deleted.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Lease has been deleted.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
             sendAlert(`Lease could not be deleted.`, { variant: "warning" });
@@ -78,7 +81,10 @@ export default function Lease({ panelId, leaseId }) {
 
         const response = await AxiosPut(`/container/${panelId}/lease/${leaseId}`, form);
         if (response) {
-            sendAlert(`Lease has been updated.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Lease has been updated.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
             sendAlert(`Lease could not be updated.`, { variant: "warning" });

@@ -3,10 +3,7 @@
     "description": "Generic client-only module (no container)",
     "version": "1.0.0",
     "author": "Geoff House",
-    "files": [
-        "module.json",
-        "client/components/Example.jsx"
-    ],
+    "files": ["module.json", "client/components/Example.jsx"],
     "fields": [
         {
             "name": "name",

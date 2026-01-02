@@ -78,7 +78,11 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
             },
             { id: "V_576", label: "576", frameRates: ["FPS_25"] },
             { id: "V_480", label: "480", frameRates: ["FPS_29_97"] },
-            { id: "V_720", label: "720", frameRates: ["FPS_50", "FPS_59_94", "FPS_60"] },
+            {
+                id: "V_720",
+                label: "720",
+                frameRates: ["FPS_50", "FPS_59_94", "FPS_60"],
+            },
         ];
 
         return availableResolutions.filter((ar) => ar.frameRates.includes(codecdata.videoProfile.value.resolution.fps));
@@ -166,7 +170,11 @@ export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, pa
     const getHorizontalResolutions = () => {
         const availableResolutions = [
             { id: "H_720", label: "720", frameRates: ["FPS_25", "FPS_29_97"] },
-            { id: "H_1280", label: "1280", frameRates: ["FPS_50", "FPS_59_94", "FPS_60"] },
+            {
+                id: "H_1280",
+                label: "1280",
+                frameRates: ["FPS_50", "FPS_59_94", "FPS_60"],
+            },
             {
                 id: "H_1920",
                 label: "1920",

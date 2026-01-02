@@ -19,7 +19,6 @@ const fetchExampleModuleName = async () => {
 };
 
 describe("Test the '/api/module/' endpoint", () => {
-
     //TODO - Mock list images service so this can be a valid test
     test.skip("Test the '/' getall route", async () => {
         const exampleModuleName = await fetchExampleModuleName();

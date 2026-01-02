@@ -1,5 +1,5 @@
-const systemLogs = require('@services/system-logs');
-const { response } = require('@bin/api');
+const systemLogs = require("@services/system-logs");
+const { response } = require("@bin/api");
 
 let interval;
 let logs;
@@ -10,19 +10,17 @@ const getSystemLogs = async () => {
         response = {
             status: "success",
             data: await systemLogs(),
-        }
+        };
     } catch (error) {
         response = {
             status: "error",
-            message: "Failed to list panels"
-        }
+            message: "Failed to list panels",
+        };
     }
-    return response
-}
+    return response;
+};
 
 const logHandler = (io, socket) => {
-
-
     if (interval) {
         clearInterval(interval);
     }
@@ -31,17 +29,17 @@ const logHandler = (io, socket) => {
         const newPanels = await getSystemLogs();
         if (JSON.stringify(panels) !== JSON.stringify(newPanels)) {
             panels = newPanels;
-            io.emit('panel', panels)
+            io.emit("panel", panels);
         }
     }, 500);
 
-    socket.on('logs', async () => {
-        socket.emit('panel', await getSystemLogs());
+    socket.on("logs", async () => {
+        socket.emit("panel", await getSystemLogs());
     });
 
     socket.on("disconnect", () => {
         clearInterval(interval);
     });
-}
+};
 
 module.exports = logHandler;

@@ -36,9 +36,7 @@ module.exports = async () => {
                             new StatusItem({
                                 key: `linkquality`,
                                 message: [
-                                    `${directionArray.join("/")} link quality is low for ${eachGroup?.name} ${
-                                        eachConnection?._tabName
-                                    }`,
+                                    `${directionArray.join("/")} link quality is low for ${eachGroup?.name} ${eachConnection?._tabName}`,
                                 ],
                                 type: "warning",
                             })

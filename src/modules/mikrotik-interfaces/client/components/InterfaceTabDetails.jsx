@@ -25,12 +25,27 @@ export default function InterfaceTabDetails({ panelId, interfaceName }) {
                     items={[
                         { name: "Name", value: iface.data?.name },
                         { name: "Comment", value: iface.data?.comment },
-                        { name: "Running", value: iface.data?.running ? "yes" : "no" },
-                        { name: "Disabled", value: iface.data?.disabled ? "yes" : "no" },
+                        {
+                            name: "Running",
+                            value: iface.data?.running ? "yes" : "no",
+                        },
+                        {
+                            name: "Disabled",
+                            value: iface.data?.disabled ? "yes" : "no",
+                        },
                         { name: "Type", value: iface.data?.type },
-                        { name: "MAC Address", value: iface.data?.["mac-address"] },
-                        { name: "Last link up time", value: iface.data?.["last-link-up-time"] },
-                        { name: "MTU", value: `${iface.data?.mtu} / actual: ${iface.data?.["actual-mtu"]}` },
+                        {
+                            name: "MAC Address",
+                            value: iface.data?.["mac-address"],
+                        },
+                        {
+                            name: "Last link up time",
+                            value: iface.data?.["last-link-up-time"],
+                        },
+                        {
+                            name: "MTU",
+                            value: `${iface.data?.mtu} / actual: ${iface.data?.["actual-mtu"]}`,
+                        },
                     ]}
                 />
             </Grid>

@@ -7,7 +7,9 @@
  */
 
 const string = (a, b, sortField) => {
-    return a[sortField]?.localeCompare(b[sortField], "en", { sensitivity: "base" });
+    return a[sortField]?.localeCompare(b[sortField], "en", {
+        sensitivity: "base",
+    });
 };
 
 const ipAddress = (a, b, sortField) => {

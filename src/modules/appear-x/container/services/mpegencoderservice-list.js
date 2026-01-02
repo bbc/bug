@@ -149,7 +149,11 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
                     _protected: config?.protectedServices?.includes(es?.key),
                 };
             })
-            .sort((a, b) => a.slotPort.localeCompare(b.slotPort, "en", { sensitivity: "base" }))
+            .sort((a, b) =>
+                a.slotPort.localeCompare(b.slotPort, "en", {
+                    sensitivity: "base",
+                })
+            )
     );
     return [];
 };

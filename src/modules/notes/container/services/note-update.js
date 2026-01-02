@@ -14,6 +14,10 @@ module.exports = async (noteId, newNote) => {
         return false;
     }
 
-    config.notes[noteId] = { ...config.notes[noteId], ...newNote, ...{ lastUpdated: new Date() } };
+    config.notes[noteId] = {
+        ...config.notes[noteId],
+        ...newNote,
+        ...{ lastUpdated: new Date() },
+    };
     return await configPutViaCore(config);
 };

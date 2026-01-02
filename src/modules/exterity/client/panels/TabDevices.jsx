@@ -50,7 +50,9 @@ export default function TabDevices({ panelId }) {
         };
         const handleMute = async (item, value) => {
             setMute(!mute);
-            const response = await AxiosPost(`/container/${panelId}/devices/${device?.deviceId}/mute`, { mute: !mute });
+            const response = await AxiosPost(`/container/${panelId}/devices/${device?.deviceId}/mute`, {
+                mute: !mute,
+            });
         };
 
         const getIcon = () => {
@@ -112,7 +114,9 @@ export default function TabDevices({ panelId }) {
                 variant: "success",
             });
         } else {
-            sendAlert(`Failed to change channel to ${channel?.label}.`, { variant: "error" });
+            sendAlert(`Failed to change channel to ${channel?.label}.`, {
+                variant: "error",
+            });
         }
     };
 
@@ -139,7 +143,9 @@ export default function TabDevices({ panelId }) {
             return;
         }
 
-        const response = await AxiosPost(`/container/${panelId}/devices/${item.deviceId}/name`, { name: result });
+        const response = await AxiosPost(`/container/${panelId}/devices/${item.deviceId}/name`, {
+            name: result,
+        });
         if (response) {
             sendAlert(result ? `Renamed device to ${result}` : "Reset device name", {
                 broadcast: "true",

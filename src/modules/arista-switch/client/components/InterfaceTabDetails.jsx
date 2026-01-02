@@ -25,15 +25,33 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                     items={[
                         { name: "Interface ID", value: iface.data?.longId },
                         { name: "Description", value: iface.data?.description },
-                        { name: "TX Rate", value: iface.data?.["tx-rate-text"] },
-                        { name: "RX Rate", value: iface.data?.["rx-rate-text"] },
+                        {
+                            name: "TX Rate",
+                            value: iface.data?.["tx-rate-text"],
+                        },
+                        {
+                            name: "RX Rate",
+                            value: iface.data?.["rx-rate-text"],
+                        },
 
-                        { name: "Auto Negotiation", value: iface.data?.["autoNegotiateActive"] ? "yes" : "no" },
+                        {
+                            name: "Auto Negotiation",
+                            value: iface.data?.["autoNegotiateActive"] ? "yes" : "no",
+                        },
                         { name: "Link Status", value: iface.data?.linkStatus },
-                        { name: "Interface Type", value: iface.data?.interfaceType },
-                        { name: "Port Bandwidth", value: iface.data?.["bandwidthText"] },
+                        {
+                            name: "Interface Type",
+                            value: iface.data?.interfaceType,
+                        },
+                        {
+                            name: "Port Bandwidth",
+                            value: iface.data?.["bandwidthText"],
+                        },
 
-                        { name: "Untagged VLAN", value: iface.data?.["accessVlanId"] },
+                        {
+                            name: "Untagged VLAN",
+                            value: iface.data?.["accessVlanId"],
+                        },
                         {
                             name: "Tagged VLANs",
                             value: iface.data?.["trunkAllowedVlans"],

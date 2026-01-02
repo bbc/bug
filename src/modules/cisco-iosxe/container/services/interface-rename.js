@@ -9,7 +9,9 @@ module.exports = async (interfaceId, newName) => {
 
     // fetch interface details
     const interfacesCollection = await mongoCollection("interfaces");
-    const dbInterface = await interfacesCollection.findOne({ interfaceId: interfaceId });
+    const dbInterface = await interfacesCollection.findOne({
+        interfaceId: interfaceId,
+    });
     if (!dbInterface) {
         console.log(`interface-rename: interface ${interfaceId} not found`);
         return false;
@@ -20,9 +22,7 @@ module.exports = async (interfaceId, newName) => {
 
     const result = await ciscoIOSXEApi.update({
         host: config["address"],
-        path: `/restconf/data/Cisco-IOS-XE-native:native/interface/${dbInterface.type}=${encodeURIComponent(
-            dbInterface.portIndex
-        )}`,
+        path: `/restconf/data/Cisco-IOS-XE-native:native/interface/${dbInterface.type}=${encodeURIComponent(dbInterface.portIndex)}`,
         data: {
             [dbInterface.type]: {
                 description: nonEmptyNewName,

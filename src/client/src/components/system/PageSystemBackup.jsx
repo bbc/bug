@@ -105,8 +105,12 @@ export default function PageSystemBackup() {
                                                         }}
                                                         type="file"
                                                         inputProps={{
-                                                            ...{ accept: "application/gzip" },
-                                                            ...register("file", { required: true }),
+                                                            ...{
+                                                                accept: "application/gzip",
+                                                            },
+                                                            ...register("file", {
+                                                                required: true,
+                                                            }),
                                                         }}
                                                     />
                                                     <Button

@@ -46,9 +46,13 @@ export default function OutputList({ panelId, deviceIndex }) {
         const commandAction = item._protected ? "Unprotected" : "Protected";
 
         if (await AxiosCommand(`/container/${panelId}/output/${deviceIndex}/${item.outputIndex}/${command}`)) {
-            sendAlert(`${commandAction} output ${item.outputIndex}`, { variant: "success" });
+            sendAlert(`${commandAction} output ${item.outputIndex}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to ${command} output ${item.outputIndex}`, { variant: "error" });
+            sendAlert(`Failed to ${command} output ${item.outputIndex}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -60,9 +64,13 @@ export default function OutputList({ panelId, deviceIndex }) {
                 state: checked,
             })
         ) {
-            sendAlert(`${commandText} ${item.outputName}`, { variant: "success" });
+            sendAlert(`${commandText} ${item.outputName}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to ${command} ${item.outputName}`, { variant: "error" });
+            sendAlert(`Failed to ${command} ${item.outputName}`, {
+                variant: "error",
+            });
         }
     };
 

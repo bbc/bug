@@ -7,7 +7,9 @@ export default function BugApiTableCell({ children, column, index, sx, ...props 
                 ...sx,
                 position: "relative",
                 width: column.width ? column.width : "auto",
-                [`@media (max-width:${column.hideWidth}px)`]: { display: "none" },
+                [`@media (max-width:${column.hideWidth}px)`]: {
+                    display: "none",
+                },
                 minWidth: column.minWidth ? column.minWidth : "auto",
                 maxWidth: column.maxWidth ? column.maxWidth : column.noWrap ? "0px" : "none",
                 overflow: column.noWrap ? "hidden" : "visible",

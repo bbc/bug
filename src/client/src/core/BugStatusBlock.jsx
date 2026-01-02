@@ -16,7 +16,15 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
 
     if (image) {
         return (
-            <Box sx={{ marginTop: "32px", padding: "4px", display: "inline-block", verticalAlign: "top", ...sx }}>
+            <Box
+                sx={{
+                    marginTop: "32px",
+                    padding: "4px",
+                    display: "inline-block",
+                    verticalAlign: "top",
+                    ...sx,
+                }}
+            >
                 <img
                     style={{
                         height: isSmall ? "90px" : "120px",
@@ -29,7 +37,14 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
     }
 
     return (
-        <Box sx={{ padding: "4px", display: "inline-block", verticalAlign: "top", ...sx }}>
+        <Box
+            sx={{
+                padding: "4px",
+                display: "inline-block",
+                verticalAlign: "top",
+                ...sx,
+            }}
+        >
             <Box
                 sx={{
                     textTransform: "uppercase",
@@ -66,7 +81,14 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
                 {items &&
                     items.map((item, index) => (
                         <ScaleText key={index} maxFontSize={isSmall ? 24 : 34}>
-                            <div style={{ whiteSpace: "nowrap", fontWeight: 500 }}>{item}</div>
+                            <div
+                                style={{
+                                    whiteSpace: "nowrap",
+                                    fontWeight: 500,
+                                }}
+                            >
+                                {item}
+                            </div>
                         </ScaleText>
                     ))}
             </Box>

@@ -38,13 +38,31 @@ export default function PageServerInformation() {
                         width="14rem"
                         items={[
                             { name: "IP Address", value: info.data.ip },
-                            { name: "Uptime", value: timeAgo.format(Date.now() - parseInt(info.data?.uptime) * 1000) },
-                            { name: "NPM Version", value: info.data.npmVersion },
-                            { name: "Node Version", value: info.data.nodeVersion },
-                            { name: "Docker Version", value: info.data.dockerVersion },
+                            {
+                                name: "Uptime",
+                                value: timeAgo.format(Date.now() - parseInt(info.data?.uptime) * 1000),
+                            },
+                            {
+                                name: "NPM Version",
+                                value: info.data.npmVersion,
+                            },
+                            {
+                                name: "Node Version",
+                                value: info.data.nodeVersion,
+                            },
+                            {
+                                name: "Docker Version",
+                                value: info.data.dockerVersion,
+                            },
                             { name: "Docker OS", value: info.data.dockerOs },
-                            { name: "Docker Kernel Version", value: info.data.kernelVersion },
-                            { name: "Docker Architecture", value: info.data.architecture },
+                            {
+                                name: "Docker Kernel Version",
+                                value: info.data.kernelVersion,
+                            },
+                            {
+                                name: "Docker Architecture",
+                                value: info.data.architecture,
+                            },
                             {
                                 name: "Update Status",
                                 value: info.data?.upToDate ? "Yes" : "Up to date",

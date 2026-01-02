@@ -7,7 +7,11 @@ module.exports = async (deviceId, device) => {
     const config = await configGet();
 
     if (config && config.devices[deviceId] && device.address && device.password && device.username) {
-        config.devices[deviceId] = { address: device.address, username: device.username, password: device.password };
+        config.devices[deviceId] = {
+            address: device.address,
+            username: device.username,
+            password: device.password,
+        };
         return await configPutViaCore(config);
     }
 

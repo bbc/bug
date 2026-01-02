@@ -31,7 +31,11 @@ export default function OutputsList({ panelId }) {
         });
 
         if (result !== false) {
-            if (await AxiosPost(`/container/${panelId}/output/${item.number}/name`, { name: result })) {
+            if (
+                await AxiosPost(`/container/${panelId}/output/${item.number}/name`, {
+                    name: result,
+                })
+            ) {
                 sendAlert(`Renamed output ${item.number} to '${result}'`, {
                     variant: "success",
                 });
@@ -56,13 +60,19 @@ export default function OutputsList({ panelId }) {
         });
 
         if (result !== false) {
-            if (await AxiosPost(`/container/${panelId}/output/${item.number}/delay`, { delay: parseInt(result) })) {
+            if (
+                await AxiosPost(`/container/${panelId}/output/${item.number}/delay`, {
+                    delay: parseInt(result),
+                })
+            ) {
                 sendAlert(`Set output ${item.number} delay to ${result} seconds`, {
                     variant: "success",
                 });
                 doForceRefresh();
             } else {
-                sendAlert(`Failed to change output delay`, { variant: "error" });
+                sendAlert(`Failed to change output delay`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -76,9 +86,13 @@ export default function OutputsList({ panelId }) {
         const commandAction = item._protected ? "Unprotected" : "Protected";
 
         if (await AxiosCommand(`/container/${panelId}/output/${item.number}/${command}`)) {
-            sendAlert(`${commandAction} output ${item.number}`, { variant: "success" });
+            sendAlert(`${commandAction} output ${item.number}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to ${command} output ${item.number}`, { variant: "error" });
+            sendAlert(`Failed to ${command} output ${item.number}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -92,7 +106,9 @@ export default function OutputsList({ panelId }) {
         ) {
             sendAlert(`${commandText} ${item.name}`, { variant: "success" });
         } else {
-            sendAlert(`Failed to ${command} ${item.name}`, { variant: "error" });
+            sendAlert(`Failed to ${command} ${item.name}`, {
+                variant: "error",
+            });
         }
     };
 

@@ -28,14 +28,21 @@ module.exports = async (type, groupName, newGroupName) => {
 
     // check new group doesn't already exist
     const newGroupCheck = config[groupVar].filter(
-        (group) => !group.name.localeCompare(newGroupName, "en", { sensitivity: "base" })
+        (group) =>
+            !group.name.localeCompare(newGroupName, "en", {
+                sensitivity: "base",
+            })
     );
     if (newGroupCheck.length > 0) {
         return false;
     }
 
     config[groupVar] = config[groupVar].map((eachGroup) => {
-        if (!eachGroup["name"].localeCompare(groupName, "en", { sensitivity: "base" })) {
+        if (
+            !eachGroup["name"].localeCompare(groupName, "en", {
+                sensitivity: "base",
+            })
+        ) {
             eachGroup["name"] = newGroupName;
         }
         return eachGroup;

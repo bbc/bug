@@ -42,7 +42,10 @@ export default function Codec({ panelId }) {
 
         let codecdataClone = { ...codecdata };
         if (arrayName !== null && index !== null) {
-            codecdataClone[arrayName][index] = { ...codecdataClone[arrayName][index], ...values };
+            codecdataClone[arrayName][index] = {
+                ...codecdataClone[arrayName][index],
+                ...values,
+            };
         } else {
             codecdataClone = { ...codecdataClone, ...values };
         }

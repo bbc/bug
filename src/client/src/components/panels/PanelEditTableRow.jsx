@@ -9,7 +9,9 @@ import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
 
 export default function PanelEditTableRow({ id, panel }) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+        id: id,
+    });
     let transformString = null;
 
     if (transform?.y) {
@@ -33,7 +35,11 @@ export default function PanelEditTableRow({ id, panel }) {
             {...attributes}
             {...listeners}
             key={id}
-            sx={{ height: "65px", cursor: "move", backgroundColor: "background.paper" }}
+            sx={{
+                height: "65px",
+                cursor: "move",
+                backgroundColor: "background.paper",
+            }}
         >
             <TableCell sx={{ textAlign: "center" }}>
                 <BugDragIcon />

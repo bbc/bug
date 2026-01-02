@@ -3,23 +3,22 @@
 const mongoSingle = require("@core/mongo-single");
 
 const entryTypes = {
-    "0": "Static",
-    "1": "Learned",
-    "2": "Management",
-    "3": "GMRP Learned",
-    "4": "Self",
-    "5": "Dot1x Static",
-    "6": "Dot1ag Static",
-    "7": "Routing Intf address",
-    "8": "Address is learned, but not guaranteed to be in HW (relevant for SW learning)",
-    "9": "FIP Snooping Learned",
-    "10": "CP client MAC Address",
-    "11": "ethcfm Static",
-    "12": "Y.1731 Static",
-}
+    0: "Static",
+    1: "Learned",
+    2: "Management",
+    3: "GMRP Learned",
+    4: "Self",
+    5: "Dot1x Static",
+    6: "Dot1ag Static",
+    7: "Routing Intf address",
+    8: "Address is learned, but not guaranteed to be in HW (relevant for SW learning)",
+    9: "FIP Snooping Learned",
+    10: "CP client MAC Address",
+    11: "ethcfm Static",
+    12: "Y.1731 Static",
+};
 
 module.exports = async (NetgearApi, interfacesCollection) => {
-
     // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
     // more details to the user
     const leases = await mongoSingle.get("leases");
@@ -41,7 +40,7 @@ module.exports = async (NetgearApi, interfacesCollection) => {
             }
             const matchingLease = leasesByMac[eachEntry.mac];
             fdbByInterface[eachEntry.interface].push({
-                "vlanId": eachEntry.vlanId,
+                vlanId: eachEntry.vlanId,
                 entryType: entryTypes[eachEntry.entryType],
                 mac: eachEntry.mac,
                 address: matchingLease?.address ?? "",
@@ -63,5 +62,4 @@ module.exports = async (NetgearApi, interfacesCollection) => {
             { upsert: false }
         );
     }
-
 };

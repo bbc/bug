@@ -9,7 +9,9 @@ import Box from "@mui/material/Box";
 import BugDragIcon from "@core/BugDragIcon";
 
 export default function EditButtonsDragItem({ button, onRemove }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: `button:${button.index}` });
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: `button:${button.index}`,
+    });
 
     let transformString = null;
 

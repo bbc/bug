@@ -75,7 +75,9 @@ module.exports = async (TielineApi) => {
                     console.log(
                         `fetch-connections: connection handle ${eachConnectionHandle} not found - removing from db`
                     );
-                    await connectionsCollection.deleteOne({ handle: eachConnectionHandle });
+                    await connectionsCollection.deleteOne({
+                        handle: eachConnectionHandle,
+                    });
                 }
             }
         } catch (error) {

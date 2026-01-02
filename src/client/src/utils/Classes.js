@@ -1,13 +1,11 @@
-import { useMemo } from 'react';
-import { css } from '@emotion/css';
-import { useTheme } from '@emotion/react';
+import { useMemo } from "react";
+import { css } from "@emotion/css";
+import { useTheme } from "@emotion/react";
 
-const useClasses = stylesElement => {
+const useClasses = (stylesElement) => {
     const theme = useTheme();
     return useMemo(() => {
-        const rawClasses = typeof stylesElement === 'function'
-            ? stylesElement(theme)
-            : stylesElement;
+        const rawClasses = typeof stylesElement === "function" ? stylesElement(theme) : stylesElement;
         const prepared = {};
 
         Object.entries(rawClasses).forEach(([key, value = {}]) => {

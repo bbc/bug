@@ -79,7 +79,8 @@ export const MyBugVlansDialog = (args) => {
                 Show Dialog
             </Button>
             <Box sx={{ margin: "1rem" }}>
-                Result: untagged={result?.untaggedVlan}, tagged={JSON.stringify(result?.taggedVlans)}
+                Result: untagged={result?.untaggedVlan}, tagged=
+                {JSON.stringify(result?.taggedVlans)}
             </Box>
         </>
     );
