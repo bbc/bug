@@ -7,10 +7,6 @@
         "doc": "docs"
     },
     "private": true,
-    "workspaces": [
-        "modules/*",
-        "client"
-    ],
     "scripts": {
         "production": "node bin/bug-prod",
         "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
@@ -18,7 +14,8 @@
         "modulebuilder": "node modulebuilder/cli.mjs",
         "documentation": "node utils/docs-templater.js",
         "format:check": "prettier --check .",
-        "format:write": "prettier --write ."
+        "format:write": "prettier --write .",
+        "update:packages": "for d in modules/*/container; do (cd \"$d\" && npm update); done"
     },
     "nodemonConfig": {
         "ignore": [
@@ -58,7 +55,7 @@
         "express-rate-limit": "^7.5.0",
         "express-session": "^1.17.3",
         "fs-extra": "^10.1.0",
-        "glob": "^8.0.3",
+        "glob": "^13.0.0",
         "helmet": "^5.1.0",
         "inquirer": "^9.0.0",
         "ip-range-check": "^0.2.0",
