@@ -1,0 +1,36 @@
+# .github/workflows/frontend.yml
+name: BUG Frontend
+permissions:
+    contents: read
+on:
+    push:
+        branches:
+            - "**"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+    pull_request:
+        branches:
+            - "main"
+        paths-ignore:
+            - "**/README.md"
+            - "docs/**"
+
+jobs:
+    frontend:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [20]
+        defaults:
+            run:
+                working-directory: ./src/client
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              name: Frontend Build & Test using Node.js ${{ matrix.node-version }}
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: npm install --legacy-peer-deps
+            - run: npm test
+            - run: CI=false npm run build --if-present
