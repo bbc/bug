@@ -7,6 +7,7 @@ const logger = require("@utils/logger")(module);
 const axios = require("axios");
 const userGet = require("@services/user-get");
 const hashResponse = require("@core/hash-response");
+const panelConfig = require("@models/panel-config");
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');
@@ -40,11 +41,18 @@ router.use(
     "/:panelid",
     restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
-        const url = `http://${req.params.panelid}:${modulePort}/api${req.url}`;
+
         try {
+
+            // Check if request is for a valid panel before proxying
+            const panel = await panelConfig.get(req.params?.panelid);
+            if (!panel) {
+                throw new Error("Invalid panel ID");
+            }
+
             const axiosConfig = {
                 method: req.method,
-                url: url,
+                url: `http://${req.params.panelid}:${modulePort}/api${req.url}`,
                 responseType: "stream",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,7 +64,7 @@ router.use(
                 axiosConfig["data"] = req.body;
             }
 
-            //If a log object is in the request, pass it for logging and pad with panelId and username
+            // If a log object is in the request, pass it for logging and pad with panelId and username
             if (req.body?.log) {
                 const user = await userGet(req.user);
                 const message = req.body?.log?.message;
