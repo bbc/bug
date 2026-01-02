@@ -6,6 +6,11 @@
     "directories": {
         "doc": "docs"
     },
+    "private": true,
+    "workspaces": [
+        "modules/*",
+        "client"
+    ],
     "scripts": {
         "production": "node bin/bug-prod",
         "development": "concurrently \"nodemon ./bin/bug-dev.js\" \"cd client && npm run start\"",
