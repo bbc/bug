@@ -18,18 +18,18 @@ module.exports = async (type, groupId, buttonIndexes) => {
         return false;
     }
 
-    // so the easiest way to do this is to use the groupcategory api call to fetch the current 
+    // so the easiest way to do this is to use the groupcategory api call to fetch the current
     // list of buttons. We check if any need deleting, then add any new ones
 
     const typeCodes = {
-        "source": 3,
-        "destination": 2,
-    }
+        source: 3,
+        destination: 2,
+    };
 
     // we need to get the new button source/dest names to match against the api call
     const names = await mongoSingle.get(`${type}s`);
     const buttonNames = buttonIndexes.map((b) => {
-        return names.find((n) => n.uiId === b)?.name
+        return names.find((n) => n.uiId === b)?.name;
     });
 
     const response = await ultrixWebApi.get("groupcategory/agdatassds", config);
@@ -49,7 +49,7 @@ module.exports = async (type, groupId, buttonIndexes) => {
         if (nodesToDelete && nodesToDelete?.length > 0) {
             const deletePath = `groupcategory/remove?ids=${nodesToDelete.map((n) => n.Id)}`;
             logger.info(`group-set: calling '${deletePath}'`);
-            await ultrixWebApi.get(deletePath, config)
+            await ultrixWebApi.get(deletePath, config);
         }
 
         // and add any new ones
@@ -61,15 +61,13 @@ module.exports = async (type, groupId, buttonIndexes) => {
             // so ... even though the new firmware for ultrix defines the buttons as zero-based ... this API endpoint wants them 1-based.
             // come on Ross! At least be consistent!
 
-            const offsetButtonIds = buttonIds.map(
-                (i) => {
-                    return parseInt(i) + 1
-                });
+            const offsetButtonIds = buttonIds.map((i) => {
+                return parseInt(i) + 1;
+            });
 
-
-            const addPath = `groupcategory/addLeaves?groupId=${groupId}&ids=${offsetButtonIds.join(",")}&type=${typeCodes[type]}`
+            const addPath = `groupcategory/addLeaves?groupId=${groupId}&ids=${offsetButtonIds.join(",")}&type=${typeCodes[type]}`;
             logger.info(`group-set: calling '${addPath}'`);
-            await ultrixWebApi.get(addPath, config)
+            await ultrixWebApi.get(addPath, config);
         }
 
         await fetchGroups(config);

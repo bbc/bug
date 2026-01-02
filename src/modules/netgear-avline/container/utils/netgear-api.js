@@ -20,7 +20,6 @@ module.exports = class NetgearAPI {
         });
 
         this.dbName = `token_${this.opts.host}:${this.opts.username}`;
-
     }
 
     getToken = async () => {
@@ -35,7 +34,7 @@ module.exports = class NetgearAPI {
             }
         }
         return token;
-    }
+    };
 
     login = async () => {
         const url = `${this.opts.protocol}://${this.opts.host}:${this.opts.port}/api/v1/login`;
@@ -43,7 +42,7 @@ module.exports = class NetgearAPI {
             login: {
                 username: this.opts.username,
                 password: this.opts.password,
-            }
+            },
         };
         try {
             const response = await axios.post(url, jsonBody, {
@@ -113,8 +112,7 @@ module.exports = class NetgearAPI {
                     await mongoSingle.clear(this.dbName);
                     throw new Error("Login token expired");
                 }
-            }
-            else {
+            } else {
                 console.log(error);
             }
             return false;

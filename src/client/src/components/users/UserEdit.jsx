@@ -138,10 +138,15 @@ export default function UserEdit({ userId = null }) {
 
         if (result !== false) {
             if (await AxiosDelete(`/api/user/${user.id}`)) {
-                sendAlert(`Deleted user: ${user.name}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Deleted user: ${user.name}`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
                 history.push(`/system/users`);
             } else {
-                sendAlert(`Failed to delete user: ${user.name}`, { variant: "error" });
+                sendAlert(`Failed to delete user: ${user.name}`, {
+                    variant: "error",
+                });
             }
         }
     };

@@ -1,14 +1,12 @@
 "use strict";
 
 module.exports = async (NetgearApi, interfacesCollection) => {
-
     const result = await NetgearApi.get({ path: "swcfg_port?portid=ALL" });
 
     // save to db
     const interfaces = result?.switchPortConfig;
     if (interfaces) {
         for (let eachInterface of interfaces) {
-
             const filteredFields = {};
             filteredFields.interfaceId = `Ethernet${eachInterface.ID}`;
             filteredFields.longId = `Ethernet${eachInterface.ID}`;
@@ -28,7 +26,6 @@ module.exports = async (NetgearApi, interfacesCollection) => {
                 { $set: dbDocument },
                 { upsert: true }
             );
-        };
+        }
     }
 };
-

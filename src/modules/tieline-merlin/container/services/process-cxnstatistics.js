@@ -15,7 +15,9 @@ module.exports = async (data) => {
     if (data?.["cxn-stats"]) {
         const statisticsCollection = await mongoCollection("statistics");
         // and now create the index with ttl
-        await mongoCreateIndex(statisticsCollection, "timestamp", { expireAfterSeconds: 30 });
+        await mongoCreateIndex(statisticsCollection, "timestamp", {
+            expireAfterSeconds: 30,
+        });
 
         const dataArray = ensureArray(data?.["cxn-stats"]);
 

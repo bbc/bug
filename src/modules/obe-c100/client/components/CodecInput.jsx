@@ -39,7 +39,11 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                         value: (
                             <Switch
                                 checked={codecdata?.obeEncoderRowStatus === 1}
-                                onChange={(event) => onChange({ obeEncoderRowStatus: event.target.checked ? 1 : 2 })}
+                                onChange={(event) =>
+                                    onChange({
+                                        obeEncoderRowStatus: event.target.checked ? 1 : 2,
+                                    })
+                                }
                             />
                         ),
                     },
@@ -49,7 +53,11 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                             <BugTextField
                                 changeOnBlur
                                 value={codecdata?.obeEncoderName}
-                                onChange={(event) => onChange({ obeEncoderName: event.target.value })}
+                                onChange={(event) =>
+                                    onChange({
+                                        obeEncoderName: event.target.value,
+                                    })
+                                }
                             ></BugTextField>
                         ),
                     },
@@ -58,7 +66,11 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                         value: (
                             <BugSelect
                                 value={codecdata?.inputDeviceType}
-                                onChange={(event) => onChange({ inputDeviceType: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        inputDeviceType: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "SDI" },
                                     { id: 2, label: "Bars and Tone" },
@@ -77,7 +89,11 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                             <BugSelect
                                 disabled={codecdata?.inputDeviceType !== 1 && codecdata?.inputDeviceType !== 7}
                                 value={codecdata?.inputCardidx}
-                                onChange={(event) => onChange({ inputCardidx: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        inputCardidx: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "Input 0" },
                                     { id: 1, label: "Input 1" },
@@ -98,7 +114,11 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                                 <BugSelect
                                     value={codecdata?.inputVideoFormat}
                                     disabled={isDetecting}
-                                    onChange={(event) => onChange({ inputVideoFormat: parseInt(event.target.value) })}
+                                    onChange={(event) =>
+                                        onChange({
+                                            inputVideoFormat: parseInt(event.target.value),
+                                        })
+                                    }
                                     options={[
                                         { id: 1, label: "625i (PAL)" },
                                         { id: 2, label: "480i (NTSC)" },
@@ -127,7 +147,9 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                             <BugSelect
                                 value={codecdata?.inputPictureOnSignalLoss}
                                 onChange={(event) =>
-                                    onChange({ inputPictureOnSignalLoss: parseInt(event.target.value) })
+                                    onChange({
+                                        inputPictureOnSignalLoss: parseInt(event.target.value),
+                                    })
                                 }
                                 options={[
                                     { id: 1, label: "Stop Streaming" },
@@ -143,7 +165,11 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                         value: (
                             <Switch
                                 checked={codecdata?.obeEncoderAutoStart === 2}
-                                onChange={(event) => onChange({ obeEncoderAutoStart: event.target.checked ? 2 : 1 })}
+                                onChange={(event) =>
+                                    onChange({
+                                        obeEncoderAutoStart: event.target.checked ? 2 : 1,
+                                    })
+                                }
                             />
                         ),
                     },
@@ -152,7 +178,11 @@ export default function CodecInput({ codecdata, onChange, showAdvanced, panelId 
                         value: (
                             <BugSelect
                                 value={codecdata?.inputSDDownscale}
-                                onChange={(event) => onChange({ inputSDDownscale: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        inputSDDownscale: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "Disabled" },
                                     { id: 2, label: "Fast" },

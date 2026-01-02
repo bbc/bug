@@ -26,7 +26,10 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                         { name: "Name", value: iface.data?.lldp?.name },
                         { name: "Port ID", value: iface.data?.lldp?.id },
                         { name: "MAC Address", value: iface.data?.lldp?.mac },
-                        { name: "IP Address", value: iface.data?.lldp?.address },
+                        {
+                            name: "IP Address",
+                            value: iface.data?.lldp?.address,
+                        },
                     ]}
                 />
             </Grid>

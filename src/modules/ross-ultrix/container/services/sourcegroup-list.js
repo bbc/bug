@@ -22,7 +22,7 @@ module.exports = async () => {
         label: `All Video`,
         value: videoSources?.map((s) => s.uiId) ?? [],
         fixed: true,
-        empty: !videoSources?.length > 0
+        empty: !videoSources?.length > 0,
     });
     groupIndex += 1;
 
@@ -43,7 +43,7 @@ module.exports = async () => {
         label: `Virtual`,
         value: virtualSources?.map((s) => s.uiId) ?? [],
         fixed: true,
-        empty: !virtualSources.length > 0
+        empty: !virtualSources.length > 0,
     });
     groupIndex += 1;
 
@@ -54,7 +54,7 @@ module.exports = async () => {
             label: `All`,
             value: sources?.map((s) => s.uiId),
             fixed: true,
-            empty: false
+            empty: false,
         });
         groupIndex += 1;
     }
@@ -67,7 +67,7 @@ module.exports = async () => {
             id: eachGroup["id"],
             fixed: false,
             value: eachGroup.sources ?? [],
-            empty: !eachGroup?.sources?.length > 0
+            empty: !eachGroup?.sources?.length > 0,
         });
         groupIndex += 1;
     });

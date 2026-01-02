@@ -100,7 +100,11 @@ router.delete(
 router.get(
     "/comment/:leaseId/:leaseComment?",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikLeaseSet(req.params.leaseId, "comment", req.params.leaseComment ? req.params.leaseComment : "");
+        const result = await mikrotikLeaseSet(
+            req.params.leaseId,
+            "comment",
+            req.params.leaseComment ? req.params.leaseComment : ""
+        );
         res.json({
             status: result ? "success" : "failure",
             data: result,

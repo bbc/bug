@@ -17,14 +17,13 @@ module.exports = async (type, groupId, name) => {
         return false;
     }
 
-    // so there's no easy way to do this because we don't store the actual node ID from the 
+    // so there's no easy way to do this because we don't store the actual node ID from the
     // groupcategory api call. So - we'll call it again and search for the (luckily unique) name
 
     const typeCodes = {
-        "source": 3,
-        "destination": 2,
-    }
-
+        source: 3,
+        destination: 2,
+    };
 
     const response = await ultrixWebApi.get("groupcategory/agdatassds", config);
     if (response?.[0]?.Name === "GroupCategories") {
@@ -43,9 +42,9 @@ module.exports = async (type, groupId, name) => {
         }
 
         // now we can delete it
-        const path = `groupcategory/remove?ids=${matchingNode.Id}`
+        const path = `groupcategory/remove?ids=${matchingNode.Id}`;
         logger.info(`button-remove: calling '${path}'`);
-        await ultrixWebApi.get(path, config)
+        await ultrixWebApi.get(path, config);
         await fetchGroups(config);
     }
 };

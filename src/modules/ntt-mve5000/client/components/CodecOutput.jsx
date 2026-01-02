@@ -76,7 +76,9 @@ export default function CodecVideo({
                                 changeOnBlur
                                 value={codecdata?.[`outputs_${outputIndex}_StreamIpv4DstAddress`]}
                                 onChange={(event) =>
-                                    onChange({ [`outputs_${outputIndex}_StreamIpv4DstAddress`]: event.target.value })
+                                    onChange({
+                                        [`outputs_${outputIndex}_StreamIpv4DstAddress`]: event.target.value,
+                                    })
                                 }
                             />
                         ),

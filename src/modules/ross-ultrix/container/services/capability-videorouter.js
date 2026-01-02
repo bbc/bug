@@ -15,14 +15,11 @@ module.exports = async () => {
     //     logger.warning(`matrix-getalldestinations: failed to fetch config`);
     //     return false;
     // }
-
     // const dataCollection = await mongoCollection("data");
-
     // const returnArray = [];
     // const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
     // const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
     // const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-
     // if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
     //     // loop through and add routing
     //     for (const [index, element] of Object.entries(dbOutputLabels.data)) {
@@ -34,6 +31,5 @@ module.exports = async () => {
     //         });
     //     }
     // }
-
     // return returnArray;
 };

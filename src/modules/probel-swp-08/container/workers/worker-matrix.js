@@ -30,7 +30,10 @@ const processTallies = async (routerState) => {
         if (Array.isArray(destinations)) {
             for (let destination of destinations) {
                 if (!entries[parseInt(destination) - 1]) {
-                    entries[parseInt(destination) - 1] = { destination: parseInt(destination), levels: {} };
+                    entries[parseInt(destination) - 1] = {
+                        destination: parseInt(destination),
+                        levels: {},
+                    };
                 }
                 entries[parseInt(destination) - 1]["levels"][level] = routerState[matrix][level][destination];
                 entries[parseInt(destination) - 1]["timestamp"] = Date.now();
@@ -71,7 +74,9 @@ const main = async () => {
     dataCollection = await mongoCollection("data");
 
     // and now create the index with ttl
-    await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 60 });
+    await mongoCreateIndex(dataCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
 
     // remove previous values
     dataCollection.deleteMany({});

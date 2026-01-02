@@ -31,7 +31,10 @@ const dockerCleanup = require("@services/docker-cleanup");
  *          description: Success
  */
 router.get("/hello", function (req, res, next) {
-    const message = { data: "Good morning sunshine, the earth says hello.", status: "success" };
+    const message = {
+        data: "Good morning sunshine, the earth says hello.",
+        status: "success",
+    };
     hashResponse(res, req, message);
 });
 

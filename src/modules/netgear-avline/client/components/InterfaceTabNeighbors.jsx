@@ -23,12 +23,30 @@ export default function InterfaceTabNeighbors({ panelId, interfaceId }) {
             <Grid item xs={12}>
                 <BugDetailsTable
                     items={[
-                        { name: "Remote Port Description", value: iface.data?.lldp?.remotePortDesc },
-                        { name: "Remote MAC Address", value: iface.data?.lldp?.remotePortId },
-                        { name: "Remote Name", value: iface.data?.lldp?.remoteSysName },
-                        { name: "Remote Description", value: iface.data?.lldp?.remoteSysDesc },
-                        { name: "MAC Address", value: iface.data?.lldp?.chassisId },
-                        { name: "IP Address", value: iface.data?.lldp?.address },
+                        {
+                            name: "Remote Port Description",
+                            value: iface.data?.lldp?.remotePortDesc,
+                        },
+                        {
+                            name: "Remote MAC Address",
+                            value: iface.data?.lldp?.remotePortId,
+                        },
+                        {
+                            name: "Remote Name",
+                            value: iface.data?.lldp?.remoteSysName,
+                        },
+                        {
+                            name: "Remote Description",
+                            value: iface.data?.lldp?.remoteSysDesc,
+                        },
+                        {
+                            name: "MAC Address",
+                            value: iface.data?.lldp?.chassisId,
+                        },
+                        {
+                            name: "IP Address",
+                            value: iface.data?.lldp?.address,
+                        },
                     ]}
                 />
             </Grid>

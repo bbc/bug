@@ -55,8 +55,8 @@ const fetchMatrixSize = async () => {
         sources: sources.length,
         destinations: destinations.length,
         levels: levels,
-    }
-}
+    };
+};
 
 const main = async () => {
     await delay(1000);
@@ -80,9 +80,10 @@ const main = async () => {
 
     while (true) {
         try {
-
             // kick things off
-            console.log(`worker-swp08: connecting to device at ${workerData.address}:${workerData.port} with ${matrixSize.sources} source(s), ${matrixSize.destinations} destination(s) and ${matrixSize.levels} level(s)`);
+            console.log(
+                `worker-swp08: connecting to device at ${workerData.address}:${workerData.port} with ${matrixSize.sources} source(s), ${matrixSize.destinations} destination(s) and ${matrixSize.levels} level(s)`
+            );
 
             let router;
             router = new Probel(workerData.address, {
@@ -101,13 +102,11 @@ const main = async () => {
                 await fetchRoutes(router, routesCollection);
                 await delay(5000);
             }
-
         } catch (error) {
             console.log(error);
             console.log(`worker-swp08: restarting swp08 poller after error`);
         }
     }
-
 };
 
 main();

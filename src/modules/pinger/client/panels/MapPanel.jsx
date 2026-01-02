@@ -24,7 +24,9 @@ function FlowDiagram({ hosts, edgesData, panelId }) {
     };
 
     const updateHostPositsion = async (hostId, position) => {
-        const response = await AxiosPut(`/container/${panelId}/hosts/${hostId}`, { position: position });
+        const response = await AxiosPut(`/container/${panelId}/hosts/${hostId}`, {
+            position: position,
+        });
         if (!response) {
             sendAlert(`Could not move host`, { variant: "error" });
         }

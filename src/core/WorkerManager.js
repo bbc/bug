@@ -155,9 +155,7 @@ module.exports = class WorkerManager {
                 workers[index].state = "stopped";
                 if (!workers[index].restarting) {
                     console.log(
-                        `WorkerManager->handleExit: Restarting ${filename} in ${Math.round(
-                            workers[index].restartDelay / 1000
-                        )} seconds.`
+                        `WorkerManager->handleExit: Restarting ${filename} in ${Math.round(workers[index].restartDelay / 1000)} seconds.`
                     );
                     await delay(workers[index].restartDelay);
                 }

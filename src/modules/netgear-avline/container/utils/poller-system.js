@@ -3,7 +3,6 @@
 const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (NetgearApi) => {
-
     // fetch system info
     const result = await NetgearApi.get({ path: "device_info" });
     if (result?.deviceInfo) {
@@ -13,9 +12,8 @@ module.exports = async (NetgearApi) => {
             memoryUsage: result.deviceInfo?.memoryUsage,
             cpuUsage: result.deviceInfo?.cpuUsage,
             fanState: result.deviceInfo?.fanState,
-            temperatureSensors: result.deviceInfo?.temperatureSensors
-        }
+            temperatureSensors: result.deviceInfo?.temperatureSensors,
+        };
         await mongoSingle.set("system", payload, 120);
     }
-
 };

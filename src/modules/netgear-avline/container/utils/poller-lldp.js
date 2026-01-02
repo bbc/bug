@@ -3,16 +3,15 @@
 const mongoSingle = require("@core/mongo-single");
 
 const types = {
-    "1": "Chassis component",
-    "2": "Interface alias",
-    "3": "Port component",
-    "4": "MAC address",
-    "5": "Network address",
-    "6": "Interface",
-}
+    1: "Chassis component",
+    2: "Interface alias",
+    3: "Port component",
+    4: "MAC address",
+    5: "Network address",
+    6: "Interface",
+};
 
 module.exports = async (NetgearApi, interfacesCollection) => {
-
     // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
     // more details to the user
     const leases = await mongoSingle.get("leases");
@@ -41,7 +40,7 @@ module.exports = async (NetgearApi, interfacesCollection) => {
                 address: matchingLease?.address ?? "",
                 hostname: matchingLease?.hostname ?? "",
                 comment: matchingLease?.comment ?? "",
-            }
+            };
         }
     }
 
@@ -57,5 +56,4 @@ module.exports = async (NetgearApi, interfacesCollection) => {
             { upsert: false }
         );
     }
-
 };

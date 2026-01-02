@@ -8,20 +8,20 @@ https://github.com/bbc/bug/tree/main/src/modules/cisco-iosxe
 
 ### Interface list
 
--   View of current port state (including err-disabled)
--   Ability to enable/disable interfaces
--   Rename interface
--   Show LLDP neighbour information
--   View and change switchport VLAN membership
--   Display port speed
--   Sparklines to show interface traffic
+- View of current port state (including err-disabled)
+- Ability to enable/disable interfaces
+- Rename interface
+- Show LLDP neighbour information
+- View and change switchport VLAN membership
+- Display port speed
+- Sparklines to show interface traffic
 
 ### Interface
 
--   view interface details
--   view interface stats
--   view LLDP neighbour information
--   view ARP/MAC table for interface
+- view interface details
+- view interface stats
+- view LLDP neighbour information
+- view ARP/MAC table for interface
 
 ## Installation
 
@@ -45,6 +45,6 @@ None
 
 ## To do
 
--   SFP light level?
--   Policy maps
--   Interface stats history
+- SFP light level?
+- Policy maps
+- Interface stats history

@@ -46,7 +46,10 @@ export default function Device({ panelId }) {
 
     healthItems = healthItems.concat(
         health.data.psu.map((eachPsu, index) => {
-            return { name: `Power Supply ${index + 1}`, value: psuStates[eachPsu] };
+            return {
+                name: `Power Supply ${index + 1}`,
+                value: psuStates[eachPsu],
+            };
         })
     );
 
@@ -54,7 +57,11 @@ export default function Device({ panelId }) {
         <Grid
             container
             spacing={0.5}
-            sx={{ backgroundColor: "background.default", height: "100%", alignContent: "start" }}
+            sx={{
+                backgroundColor: "background.default",
+                height: "100%",
+                alignContent: "start",
+            }}
         >
             <Grid item sm={12} md={6}>
                 <BugDetailsCard
@@ -64,10 +71,22 @@ export default function Device({ panelId }) {
                     items={[
                         { name: "Model", value: device.data.model },
                         { name: "Name", value: device.data.name },
-                        { name: "Front panel auto lock", value: device.data.front_panel_auto_lock ? "YES" : "NO" },
-                        { name: "Front panel lock", value: device.data.front_panel_lock ? "YES" : "NO" },
-                        { name: "Front panel lock timeout", value: `${device.data.front_panel_lock_timeout} seconds` },
-                        { name: "Front panel PIN set", value: device.data.front_panel_pin_set ? "YES" : "NO" },
+                        {
+                            name: "Front panel auto lock",
+                            value: device.data.front_panel_auto_lock ? "YES" : "NO",
+                        },
+                        {
+                            name: "Front panel lock",
+                            value: device.data.front_panel_lock ? "YES" : "NO",
+                        },
+                        {
+                            name: "Front panel lock timeout",
+                            value: `${device.data.front_panel_lock_timeout} seconds`,
+                        },
+                        {
+                            name: "Front panel PIN set",
+                            value: device.data.front_panel_pin_set ? "YES" : "NO",
+                        },
                     ]}
                 />
             </Grid>

@@ -54,7 +54,9 @@ module.exports = class TielineApiNotifications {
                         filteredLinesArray.push("</eventArray>");
 
                         // convert XML to JS object
-                        const filteredLinesObject = convert.xml2js(filteredLinesArray.join("\n"), { compact: true });
+                        const filteredLinesObject = convert.xml2js(filteredLinesArray.join("\n"), {
+                            compact: true,
+                        });
 
                         if (Object.keys(filteredLinesObject["eventArray"])?.[0] === "keepalive") {
                             // it's a keep alive

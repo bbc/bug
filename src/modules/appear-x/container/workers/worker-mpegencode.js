@@ -93,7 +93,9 @@ const main = async () => {
                     const inputServices = await XApi.post({
                         path: `board/${eachCard?.value?.slot}/api/jsonrpc`,
                         method: "board:4.0/services/GetInputServices",
-                        params: { query: { value: { servicePresence: "ALL" } } },
+                        params: {
+                            query: { value: { servicePresence: "ALL" } },
+                        },
                     });
                     inputServicesArray = inputServicesArray.concat(inputServices?.data);
                 }

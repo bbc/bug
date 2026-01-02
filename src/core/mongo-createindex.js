@@ -13,9 +13,8 @@ module.exports = async (collection, indexName, options = {}) => {
     try {
         const indexDetails = {};
         indexDetails[indexName] = 1;
-        options['name'] = indexName;
+        options["name"] = indexName;
         await collection.createIndex(indexDetails, options);
-
     } catch (err) {
         if (err.message.indexOf("with different options")) {
             console.log(
@@ -31,5 +30,4 @@ module.exports = async (collection, indexName, options = {}) => {
         collMod: collection.collectionName,
         index: options,
     });
-
-}
+};

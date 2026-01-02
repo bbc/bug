@@ -56,7 +56,9 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
 
     // get get the existing data from the db
-    const crosspoints = await dataCollection.findOne({ destination: parseInt(destinationIndex) });
+    const crosspoints = await dataCollection.findOne({
+        destination: parseInt(destinationIndex),
+    });
 
     // we'll just use the first one for the moment
     const selectedSourceIndex = crosspoints?.levels?.[1];

@@ -12,9 +12,7 @@ module.exports = async () => {
                 ...config?.channels[channelId],
                 ...{ channelId: channelId },
                 ...{
-                    addressFull: `${config?.channels[channelId]?.protocol.toLowerCase()}://${
-                        config?.channels[channelId]?.address
-                    }:${config?.channels[channelId]?.port}`,
+                    addressFull: `${config?.channels[channelId]?.protocol.toLowerCase()}://${config?.channels[channelId]?.address}:${config?.channels[channelId]?.port}`,
                 },
             });
         }

@@ -60,7 +60,10 @@ module.exports = (namespace, socket) => {
 
         //TODO - CHECK IF PANEL CONTAINER IS RUNNING
         if (panel) {
-            containerSockets[panelId] = io(`ws://{elements[1]}`, { forceNew: true, transports: ["websocket"] });
+            containerSockets[panelId] = io(`ws://{elements[1]}`, {
+                forceNew: true,
+                transports: ["websocket"],
+            });
 
             containerSockets[panelId].on("connect", () => {
                 logger.debug(`Websocket connection established to panelId ${panelId}`);

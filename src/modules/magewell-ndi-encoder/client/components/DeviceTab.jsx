@@ -57,10 +57,19 @@ export default function DeviceTab({ panelId, deviceId }) {
             result = `magewell-enc-${item?.serial}`;
         }
 
-        if (await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/rename`, { name: result })) {
-            sendAlert(`Renamed device to ${result}`, { broadcast: "true", variant: "success" });
+        if (
+            await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/rename`, {
+                name: result,
+            })
+        ) {
+            sendAlert(`Renamed device to ${result}`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to rename device to ${result}`, { variant: "error" });
+            sendAlert(`Failed to rename device to ${result}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -83,7 +92,11 @@ export default function DeviceTab({ panelId, deviceId }) {
             result = `${item?.serial}`;
         }
 
-        if (await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/sourcename`, { name: result })) {
+        if (
+            await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/sourcename`, {
+                name: result,
+            })
+        ) {
             sendAlert(`NDI Source name of ${item?.name} set to ${result}`, {
                 broadcast: "true",
                 variant: "success",
@@ -110,7 +123,11 @@ export default function DeviceTab({ panelId, deviceId }) {
             return;
         }
 
-        if (await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/discovery`, { address: result })) {
+        if (
+            await AxiosPut(`/container/${panelId}/device/${item?.deviceId}/discovery`, {
+                address: result,
+            })
+        ) {
             sendAlert(`NDI Discovery Server for ${item?.name} set to ${result}`, {
                 broadcast: "true",
                 variant: "success",

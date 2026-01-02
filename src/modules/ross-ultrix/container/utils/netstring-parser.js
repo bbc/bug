@@ -1,5 +1,3 @@
-
-
 module.exports = (inputString) => {
     const match = inputString.match(/^(\d+):(.+),$/);
     if (!match) {
@@ -19,5 +17,4 @@ module.exports = (inputString) => {
         console.log(error);
         throw new Error(`Invalid JSON: ${data}`);
     }
-
-}
+};

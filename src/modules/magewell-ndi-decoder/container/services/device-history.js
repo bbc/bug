@@ -16,7 +16,12 @@ module.exports = async (startTime = null, endTime = null) => {
         const deviceCollection = await mongoCollection("data");
 
         let history = await deviceCollection
-            .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
+            .find({
+                timestamp: {
+                    $gte: new Date(startTime),
+                    $lte: new Date(endTime),
+                },
+            })
             .toArray();
 
         let dataPoints = {
@@ -28,11 +33,26 @@ module.exports = async (startTime = null, endTime = null) => {
         };
 
         for (let eachItem of history) {
-            dataPoints.videoJitter.push({ timestamp: eachItem.timestamp, value: eachItem.ndi["video-jitter"] });
-            dataPoints.audioJitter.push({ timestamp: eachItem.timestamp, value: eachItem.ndi["audio-jitter"] });
-            dataPoints.cpu.push({ timestamp: eachItem.timestamp, value: eachItem.device["cpu-usage"] });
-            dataPoints.memory.push({ timestamp: eachItem.timestamp, value: eachItem.device["memory-usage"] });
-            dataPoints.temperature.push({ timestamp: eachItem.timestamp, value: eachItem.device["core-temp"] });
+            dataPoints.videoJitter.push({
+                timestamp: eachItem.timestamp,
+                value: eachItem.ndi["video-jitter"],
+            });
+            dataPoints.audioJitter.push({
+                timestamp: eachItem.timestamp,
+                value: eachItem.ndi["audio-jitter"],
+            });
+            dataPoints.cpu.push({
+                timestamp: eachItem.timestamp,
+                value: eachItem.device["cpu-usage"],
+            });
+            dataPoints.memory.push({
+                timestamp: eachItem.timestamp,
+                value: eachItem.device["memory-usage"],
+            });
+            dataPoints.temperature.push({
+                timestamp: eachItem.timestamp,
+                value: eachItem.device["core-temp"],
+            });
         }
 
         return dataPoints;

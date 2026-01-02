@@ -19,14 +19,19 @@ module.exports = async (port, newName) => {
     console.log(`interface-rename: renaming interface ${port} to '${newName}' ...`);
 
     // fetch existing config
-    const portConfig = await NetgearApi.get({ path: `swcfg_port?portid=${port}` });
+    const portConfig = await NetgearApi.get({
+        path: `swcfg_port?portid=${port}`,
+    });
 
     // replace value
     portConfig.switchPortConfig.description = newName;
     delete portConfig.resp;
 
     // save it back
-    const result = await NetgearApi.post({ path: `swcfg_port?portid=${port}`, params: portConfig });
+    const result = await NetgearApi.post({
+        path: `swcfg_port?portid=${port}`,
+        params: portConfig,
+    });
 
     if (result?.resp?.status === "success") {
         console.log(`interface-rename: success - updating DB`);

@@ -4,21 +4,20 @@ const StatusItem = require("@core/StatusItem");
 const mongoSingle = require("@core/mongo-single");
 
 const sensorStates = {
-    "0": "NONE",
-    "1": "NORMAL",
-    "2": "WARNING",
-    "3": "CRITICAL",
-    "4": "SHUTDOWN",
-    "5": "NOT PRESENT",
-    "6": "NOT OPERATIONAL"
-}
+    0: "NONE",
+    1: "NORMAL",
+    2: "WARNING",
+    3: "CRITICAL",
+    4: "SHUTDOWN",
+    5: "NOT PRESENT",
+    6: "NOT OPERATIONAL",
+};
 
 module.exports = async () => {
     const system = await mongoSingle.get("system");
     const statusItems = [];
 
     if (system) {
-
         // fans
         for (const eachFanObject of system?.fanState) {
             for (const [key, value] of Object.entries(eachFanObject)) {
@@ -44,7 +43,7 @@ module.exports = async () => {
                         type: "warning",
                     })
                 );
-            };
+            }
             if (eachTemperature.sensorState === "3" || eachTemperature.sensorState === "4") {
                 statusItems.push(
                     new StatusItem({

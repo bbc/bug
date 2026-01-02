@@ -53,8 +53,7 @@ module.exports = ({
         if (eachField in result) {
             if (result[eachField]) {
                 result[eachField] = result[eachField].split(",");
-            }
-            else {
+            } else {
                 result[eachField] = [];
             }
         }

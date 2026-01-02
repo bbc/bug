@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-};
+const initialState = {};
 
 export default createSlice({
     name: "panelData",

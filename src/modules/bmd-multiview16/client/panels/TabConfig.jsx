@@ -29,27 +29,39 @@ export default function TabConfig({ panelId }) {
     const handleLayoutChanged = async (event) => {
         if (await AxiosGet(`/container/${panelId}/deviceconfig/setlayout/${event.target.value}`)) {
             doForceRefresh();
-            sendAlert(`Set layout to ${event.target.value}`, { variant: "success" });
+            sendAlert(`Set layout to ${event.target.value}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to set layout to ${event.target.value}`, { variant: "error" });
+            sendAlert(`Failed to set layout to ${event.target.value}`, {
+                variant: "error",
+            });
         }
     };
 
     const handleBoolConfigChanged = async (value, field, label) => {
         if (await AxiosGet(`/container/${panelId}/deviceconfig/set/${field}/${value}`)) {
             doForceRefresh();
-            sendAlert(`${value ? "Enabled" : "Disabled"} config setting: '${label}'`, { variant: "success" });
+            sendAlert(`${value ? "Enabled" : "Disabled"} config setting: '${label}'`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to ${value ? "enable" : "disable"} config setting: '${label}'`, { variant: "error" });
+            sendAlert(`Failed to ${value ? "enable" : "disable"} config setting: '${label}'`, {
+                variant: "error",
+            });
         }
     };
 
     const handleStringConfigChanged = async (value, field, label) => {
         if (await AxiosGet(`/container/${panelId}/deviceconfig/set/${field}/${value}`)) {
             doForceRefresh();
-            sendAlert(`Set config setting: '${label}' to '${value}'`, { variant: "success" });
+            sendAlert(`Set config setting: '${label}' to '${value}'`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to set config setting: '${label}' to '${value}'`, { variant: "error" });
+            sendAlert(`Failed to set config setting: '${label}' to '${value}'`, {
+                variant: "error",
+            });
         }
     };
 

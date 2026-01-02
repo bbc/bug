@@ -33,4 +33,8 @@ const calculateMuxRate = (fps, videoBitrate, audioBitratesArray) => {
     return result;
 };
 
-module.exports = { calculateAudioBitrate, calculateVideoBitrate, calculateMuxRate };
+module.exports = {
+    calculateAudioBitrate,
+    calculateVideoBitrate,
+    calculateMuxRate,
+};

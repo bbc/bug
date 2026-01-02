@@ -56,7 +56,14 @@ const logger = (module) => {
     for (let level in customLevels?.levels) {
         loggers[level] = (message, metadata) => {
             loggerInstance[level](message, {
-                metadata: { ...{ panel: panelId, module: moduleName, filename: filename }, ...metadata },
+                metadata: {
+                    ...{
+                        panel: panelId,
+                        module: moduleName,
+                        filename: filename,
+                    },
+                    ...metadata,
+                },
             });
         };
     }

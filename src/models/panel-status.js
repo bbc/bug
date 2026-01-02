@@ -9,7 +9,9 @@ exports.get = async function (panelId) {
     try {
         const panelStatusCollection = await mongoCollection("panelstatus");
         if (panelStatusCollection) {
-            const result = await panelStatusCollection.findOne({ panelId: panelId });
+            const result = await panelStatusCollection.findOne({
+                panelId: panelId,
+            });
             if (result) {
                 return result;
             }

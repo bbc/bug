@@ -16,7 +16,10 @@ module.exports = async (inputIndex, label) => {
     }
 
     try {
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new videohub({
+            port: config.port,
+            host: config.address,
+        });
         await router.connect();
         await router.send("INPUT LABELS", `${inputIndex} ${label}`, true);
         return true;

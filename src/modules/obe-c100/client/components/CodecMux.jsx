@@ -17,7 +17,11 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                             <BugTextField
                                 changeOnBlur
                                 value={codecdata?.muxRate ? parseInt(codecdata?.muxRate) / 1000 : 0}
-                                onChange={(event) => onChange({ muxRate: parseInt(event.target.value) * 1000 })}
+                                onChange={(event) =>
+                                    onChange({
+                                        muxRate: parseInt(event.target.value) * 1000,
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={1000}
@@ -35,7 +39,11 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                                 changeOnBlur
                                 maxLength={64}
                                 value={codecdata?.muxDvbServiceName}
-                                onChange={(event) => onChange({ muxDvbServiceName: event.target.value })}
+                                onChange={(event) =>
+                                    onChange({
+                                        muxDvbServiceName: event.target.value,
+                                    })
+                                }
                             ></BugTextField>
                         ),
                     },
@@ -46,7 +54,11 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                                 changeOnBlur
                                 maxLength={64}
                                 value={codecdata?.muxDvbProviderName}
-                                onChange={(event) => onChange({ muxDvbProviderName: event.target.value })}
+                                onChange={(event) =>
+                                    onChange({
+                                        muxDvbProviderName: event.target.value,
+                                    })
+                                }
                             ></BugTextField>
                         ),
                     },
@@ -55,7 +67,11 @@ export default function CodecMux({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <Switch
                                 checked={codecdata?.muxNullPackets}
-                                onChange={(event) => onChange({ muxNullPackets: event.target.checked ? 1 : 0 })}
+                                onChange={(event) =>
+                                    onChange({
+                                        muxNullPackets: event.target.checked ? 1 : 0,
+                                    })
+                                }
                             />
                         ),
                     },

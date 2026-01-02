@@ -54,7 +54,10 @@ export default function DevicePanel({ panelId }) {
     const onSubmit = async (form) => {
         const response = await AxiosPut(`/container/${panelId}/devices/${deviceId}`, form);
         if (response) {
-            sendAlert(`Device has been updated.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Device has been updated.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
             sendAlert(`Device could not be updated.`, { variant: "warning" });

@@ -113,9 +113,14 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
         if (result !== false) {
             if (await AxiosDelete(`/api/panel/${panel.data.id}`)) {
                 history.push("/");
-                sendAlert(`Deleted panel: ${panel.data.title}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Deleted panel: ${panel.data.title}`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to delete panel: ${panel.data.title}`, { variant: "error" });
+                sendAlert(`Failed to delete panel: ${panel.data.title}`, {
+                    variant: "error",
+                });
             }
         }
     };

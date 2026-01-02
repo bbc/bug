@@ -40,10 +40,15 @@ export default function InterfaceList({ panelId }) {
             result = item["default-name"];
         }
         if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.id}/${encodeURIComponent(result)}`)) {
-            sendAlert(`Renamed interface to ${result}`, { broadcast: "true", variant: "success" });
+            sendAlert(`Renamed interface to ${result}`, {
+                broadcast: "true",
+                variant: "success",
+            });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to rename interface to ${result}`, { variant: "error" });
+            sendAlert(`Failed to rename interface to ${result}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -66,7 +71,9 @@ export default function InterfaceList({ panelId }) {
             });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to set comment on interface ${item.name}`, { variant: "error" });
+            sendAlert(`Failed to set comment on interface ${item.name}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -78,10 +85,14 @@ export default function InterfaceList({ panelId }) {
         const command = checked ? "enable" : "disable";
         const commandText = checked ? "Enabled" : "Disabled";
         if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceName}`)) {
-            sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
+            sendAlert(`${commandText} interface: ${interfaceName}`, {
+                variant: "success",
+            });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
+            sendAlert(`Failed to ${command} interface: ${interfaceName}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -90,10 +101,14 @@ export default function InterfaceList({ panelId }) {
         const commandAction = item._protected ? "Unprotected" : "Protected";
 
         if (await AxiosCommand(`/container/${panelId}/interface/${command}/${item.name}`)) {
-            sendAlert(`${commandAction} interface: ${item.name}`, { variant: "success" });
+            sendAlert(`${commandAction} interface: ${item.name}`, {
+                variant: "success",
+            });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to ${command} interface: ${item.name}`, { variant: "error" });
+            sendAlert(`Failed to ${command} interface: ${item.name}`, {
+                variant: "error",
+            });
         }
     };
 

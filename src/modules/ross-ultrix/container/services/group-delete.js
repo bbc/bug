@@ -17,10 +17,9 @@ module.exports = async (groupId) => {
         return false;
     }
 
-
     const path = `groupcategory/remove?ids=${encodeURIComponent(groupId)}`;
     logger.info(`group-delete: calling '${path}'`);
-    await ultrixWebApi.get(path, config)
+    await ultrixWebApi.get(path, config);
     await fetchGroups(config);
 
     return true;

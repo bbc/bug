@@ -30,7 +30,9 @@ module.exports = async (sourceDevice = null, destinationDevice = null, destinati
         sourceDevice = devices[0]?.name;
     }
     const source = await sourcesCollection.findOne({ deviceId: sourceDevice });
-    const routesDocument = await routesCollection.findOne({ deviceId: destinationDevice });
+    const routesDocument = await routesCollection.findOne({
+        deviceId: destinationDevice,
+    });
 
     const outputArray = {
         devices: [],
@@ -48,8 +50,12 @@ module.exports = async (sourceDevice = null, destinationDevice = null, destinati
 
     // then get channels for this source device
     source?.labels?.forEach((eachSource, eachIndex) => {
-
-        const matchingRoute = routesDocument?.routes.find((r) => r.sourceDevice === sourceDevice && r.sourceChannel === eachSource.name && r.destinationIndex === destinationIndex);
+        const matchingRoute = routesDocument?.routes.find(
+            (r) =>
+                r.sourceDevice === sourceDevice &&
+                r.sourceChannel === eachSource.name &&
+                r.destinationIndex === destinationIndex
+        );
 
         outputArray["sources"].push({
             index: eachSource.index,
@@ -58,7 +64,7 @@ module.exports = async (sourceDevice = null, destinationDevice = null, destinati
             // icon: icons[intIndex] ? icons[intIndex] : null,
             // iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
         });
-    })
+    });
 
     return outputArray;
 };

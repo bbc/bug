@@ -18,11 +18,17 @@ parentPort.postMessage({
 });
 
 const getReceiverStatus = async () => {
-    const response = await axios.get(`http://${workerData.address}:80/data.xml`, { timeout: 10000 });
+    const response = await axios.get(`http://${workerData.address}:80/data.xml`, {
+        timeout: 10000,
+    });
     let unitName = "";
 
     if (response.data) {
-        const dataString = parser.xml2json(response.data, { compact: true, trim: true, spaces: 4 });
+        const dataString = parser.xml2json(response.data, {
+            compact: true,
+            trim: true,
+            spaces: 4,
+        });
         const data = JSON.parse(dataString);
         const power = [];
         const snr = [];

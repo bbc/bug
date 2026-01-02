@@ -6,7 +6,7 @@ const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (interfaceId, action) => {
     const config = await configGet();
-    const actionText = (action === "enable" ? "enabling" : "disabling");
+    const actionText = action === "enable" ? "enabling" : "disabling";
 
     // create new snmp session
     const snmpAwait = new SnmpAwait({
@@ -18,7 +18,7 @@ module.exports = async (interfaceId, action) => {
 
     const result = await snmpAwait.set({
         oid: `.1.3.6.1.2.1.105.1.1.1.3.1.${interfaceId}`,
-        value: (action === "enable") ? 1 : 2
+        value: action === "enable" ? 1 : 2,
     });
 
     // we're done with the SNMP session

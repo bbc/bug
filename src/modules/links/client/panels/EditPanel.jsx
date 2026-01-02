@@ -19,35 +19,49 @@ export default function EditPanel() {
     const deleteLink = async (index) => {
         const updatedLinks = Object.assign([], panelConfig.data.links);
         updatedLinks.splice(index, 1);
-        const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, { links: updatedLinks });
+        const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, {
+            links: updatedLinks,
+        });
         if (response) {
-            sendAlert(`Deleted link to ${panelConfig.data.links[index].title}`, { variant: "success" });
+            sendAlert(`Deleted link to ${panelConfig.data.links[index].title}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Could not delete link to ${panelConfig.data.links[index].title}`, { variant: "error" });
+            sendAlert(`Could not delete link to ${panelConfig.data.links[index].title}`, {
+                variant: "error",
+            });
         }
     };
 
     const createLink = async (link) => {
         const updatedLinks = Object.assign([], panelConfig.data.links);
         updatedLinks.push(link);
-        const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, { links: updatedLinks });
+        const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, {
+            links: updatedLinks,
+        });
         setCurrentIndex(null);
         if (response) {
             sendAlert(`Created link to ${link.title}`, { variant: "success" });
         } else {
-            sendAlert(`Could not create link to ${link.title}`, { variant: "error" });
+            sendAlert(`Could not create link to ${link.title}`, {
+                variant: "error",
+            });
         }
     };
 
     const updateLink = async (link, index) => {
         const updatedLinks = Object.assign([], panelConfig.data.links);
         updatedLinks[index] = link;
-        const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, { links: updatedLinks });
+        const response = await AxiosPut(`/api/panelconfig/${params?.panelId}`, {
+            links: updatedLinks,
+        });
         setCurrentIndex(null);
         if (response) {
             sendAlert(`Updated link to ${link.title}`, { variant: "success" });
         } else {
-            sendAlert(`Could not update link to ${link.title}`, { variant: "error" });
+            sendAlert(`Could not update link to ${link.title}`, {
+                variant: "error",
+            });
         }
     };
 

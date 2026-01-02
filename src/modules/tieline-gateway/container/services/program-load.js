@@ -18,7 +18,9 @@ module.exports = async (programHandle) => {
         });
 
         console.log(`program-load: loading program handle ${programHandle}`);
-        const postResult = await TielineApi.post("/api/load_program", { "prog-handle": programHandle });
+        const postResult = await TielineApi.post("/api/load_program", {
+            "prog-handle": programHandle,
+        });
         if (postResult?.result?.["prog-handle"]?.["_text"] === programHandle) {
             // update the db (to match)
             const programList = await mongoSingle.get("programList");

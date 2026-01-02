@@ -15,7 +15,12 @@ module.exports = async (startTime = null, endTime = null) => {
         const receiverCollection = await mongoCollection("receiver");
 
         let history = await receiverCollection
-            .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
+            .find({
+                timestamp: {
+                    $gte: new Date(startTime),
+                    $lte: new Date(endTime),
+                },
+            })
             .toArray();
 
         history = history.map((item) => {

@@ -83,8 +83,13 @@ export default function MpegEncoder({ panelId, serviceId }) {
                 levelAdjustment: {},
                 loudness: {},
                 passthrough: false,
-                profile: { id: { value: "5dd9b4ab-5f1d-48d2-9600-8b25a79d1246" }, cpy: {} },
-                destination: { ts: { language: "eng", pid: 201, audioType: "UNDEFINED" } },
+                profile: {
+                    id: { value: "5dd9b4ab-5f1d-48d2-9600-8b25a79d1246" },
+                    cpy: {},
+                },
+                destination: {
+                    ts: { language: "eng", pid: 201, audioType: "UNDEFINED" },
+                },
             },
             backup: {},
         });
@@ -104,9 +109,7 @@ export default function MpegEncoder({ panelId, serviceId }) {
 
         const newOutput = output({
             key: uuidv4(),
-            label: `${codecdata?.encoderService?.value?.output?.ts?.serviceName}-output-${
-                codecdata.outputs.length + 1
-            }`,
+            label: `${codecdata?.encoderService?.value?.output?.ts?.serviceName}-output-${codecdata.outputs.length + 1}`,
             interfaceId: d1InterfaceId,
             sourceId: codecdata.inputServiceKey,
             slot: codecdata?.ipOutputCards?.[0],

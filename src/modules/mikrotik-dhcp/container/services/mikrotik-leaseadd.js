@@ -10,20 +10,20 @@ module.exports = async (params) => {
 
     const paramArray = [
         `=address=${params.address}`,
-        `=mac-address=${params['mac-address']}`,
+        `=mac-address=${params["mac-address"]}`,
         `=disabled=${params.disabled ? "yes" : "no"}`,
     ];
 
     if (params.server && params.server !== "all") {
-        paramArray.push(`=server=${params.server}`)
+        paramArray.push(`=server=${params.server}`);
     }
 
-    if (params['address-lists'] && params['address-lists'].length > 0) {
-        paramArray.push(`=address-lists=${params['address-lists'].join(",")}`);
+    if (params["address-lists"] && params["address-lists"].length > 0) {
+        paramArray.push(`=address-lists=${params["address-lists"].join(",")}`);
     }
 
     if (params.comment) {
-        paramArray.push(`=comment=${params.comment}`)
+        paramArray.push(`=comment=${params.comment}`);
     }
 
     try {

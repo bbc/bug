@@ -29,8 +29,12 @@ const main = async () => {
     const historyCollection = await mongoCollection("history");
 
     // and now create indexes with ttl
-    await mongoCreateIndex(trafficCollection, "timestamp", { expireAfterSeconds: 60 });
-    await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
+    await mongoCreateIndex(trafficCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
+    await mongoCreateIndex(historyCollection, "timestamp", {
+        expireAfterSeconds: 60 * 10,
+    });
 
     const conn = new RosApi({
         host: workerData.address,

@@ -61,7 +61,10 @@ module.exports = async () => {
     if (codecdata?.audio?.length > 1) {
         // we have to remove the extra audio channels from the device first
         for (let a = 1; a < codecdata.audio.length; a++) {
-            valuesToSend.push({ oid: `1.3.6.1.4.1.40562.3.2.7.1.1.13.${config.encoderIndex}.${a}`, value: 6 });
+            valuesToSend.push({
+                oid: `1.3.6.1.4.1.40562.3.2.7.1.1.13.${config.encoderIndex}.${a}`,
+                value: 6,
+            });
         }
     }
 
@@ -104,7 +107,10 @@ module.exports = async () => {
     if (codecdata?.outputs.length > 1) {
         // we have to remove the extra outputs from the device first
         for (let a = 1; a < codecdata?.outputs?.length; a++) {
-            valuesToSend.push({ oid: `1.3.6.1.4.1.40562.3.2.10.1.1.12.${config.encoderIndex}.${a}`, value: 6 });
+            valuesToSend.push({
+                oid: `1.3.6.1.4.1.40562.3.2.10.1.1.12.${config.encoderIndex}.${a}`,
+                value: 6,
+            });
         }
     }
 
@@ -119,7 +125,10 @@ module.exports = async () => {
     outputs.forEach((output, index) => {
         if (index > 0) {
             // if it's not the first output (which always exists) we should add it first
-            valuesToSend.push({ oid: `1.3.6.1.4.1.40562.3.2.10.1.1.12.${config.encoderIndex}.${index}`, value: 4 });
+            valuesToSend.push({
+                oid: `1.3.6.1.4.1.40562.3.2.10.1.1.12.${config.encoderIndex}.${index}`,
+                value: 4,
+            });
         }
 
         // get list of oids for this output

@@ -16,7 +16,11 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioFormat}
-                                onChange={(event) => onChange({ audioFormat: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        audioFormat: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "MPEG-1 Layer 2" },
                                     { id: 2, label: "MPEG-4 AAC-LC" },
@@ -31,7 +35,11 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioChannelMap}
-                                onChange={(event) => onChange({ audioChannelMap: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        audioChannelMap: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "Mono" },
                                     { id: 2, label: "Stereo" },
@@ -46,7 +54,11 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioBitrate}
-                                onChange={(event) => onChange({ audioBitrate: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        audioBitrate: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 96, label: "96kbps" },
                                     { id: 112, label: "112kbps" },
@@ -66,7 +78,11 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                         value: (
                             <BugSelect
                                 value={audioData?.audioSdiPair}
-                                onChange={(event) => onChange({ audioSdiPair: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        audioSdiPair: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "1" },
                                     { id: 2, label: "2" },
@@ -86,7 +102,11 @@ export default function CodecAudio({ audioData, audioIndex, onChange, onClose, s
                             <BugSelect
                                 value={audioData?.audioMp2Mode}
                                 disabled={audioData?.audioFormat !== 1}
-                                onChange={(event) => onChange({ audioMp2Mode: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    onChange({
+                                        audioMp2Mode: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "Auto" },
                                     { id: 2, label: "Stereo" },

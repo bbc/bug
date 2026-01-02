@@ -31,10 +31,14 @@ module.exports = async (destinationDevice = null) => {
     }
 
     // now fetch destination and routes
-    const destination = await destinationsCollection.findOne({ deviceId: destinationDevice });
-    const routesDocument = await routesCollection.findOne({ deviceId: destinationDevice });
+    const destination = await destinationsCollection.findOne({
+        deviceId: destinationDevice,
+    });
+    const routesDocument = await routesCollection.findOne({
+        deviceId: destinationDevice,
+    });
 
-    const mappedRoutes = []
+    const mappedRoutes = [];
     if (routesDocument?.routes) {
         for (let eachRoute of routesDocument.routes) {
             mappedRoutes[eachRoute.destinationIndex] = eachRoute;
@@ -57,7 +61,6 @@ module.exports = async (destinationDevice = null) => {
 
     // then get channels for this destination device
     destination?.labels?.forEach((eachDestination, eachIndex) => {
-
         let status = eachDestination.status;
 
         let matchingRoute = mappedRoutes?.[eachDestination.index];
@@ -72,11 +75,11 @@ module.exports = async (destinationDevice = null) => {
             sourceDevice: matchingRoute?.sourceDevice ?? null,
             sourceChannel: matchingRoute?.sourceChannel ?? null,
             sourceIndex: matchingRoute?.sourceIndex ?? null,
-            status: status
+            status: status,
             // icon: icons[intIndex] ? icons[intIndex] : null,
             // iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
         });
-    })
+    });
 
     return outputArray;
 };

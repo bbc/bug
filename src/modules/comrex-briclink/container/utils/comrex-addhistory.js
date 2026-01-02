@@ -32,5 +32,7 @@ module.exports = async (collectionName, resultObject, filterFields = [], maxAge 
     storedDocument.data = storedDocument.data.filter((item) => item.timestamp > oldestTimestamp);
 
     // store in the db
-    await collection.replaceOne({ name: collectionName }, storedDocument, { upsert: true });
+    await collection.replaceOne({ name: collectionName }, storedDocument, {
+        upsert: true,
+    });
 };

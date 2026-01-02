@@ -1,2 +1,2 @@
--   auto detection of modules is done - but needs testing!
--   spinner while edit buttons dialog loads
+- auto detection of modules is done - but needs testing!
+- spinner while edit buttons dialog loads

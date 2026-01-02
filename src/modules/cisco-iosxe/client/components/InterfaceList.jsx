@@ -46,9 +46,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(
-                    result
-                )}`
+                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(result)}`
             )
         ) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
@@ -137,7 +135,10 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const handleVlanChanged = async (event, value, item) => {
         const messages = getVlanChangedMessage(
             item.shortId,
-            { untaggedVlan: item["untagged-vlan"], taggedVlans: item["tagged-vlans"] },
+            {
+                untaggedVlan: item["untagged-vlan"],
+                taggedVlans: item["tagged-vlans"],
+            },
             value
         );
 
@@ -163,9 +164,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
             sendAlert(messages.start, { variant: "info" });
             if (
                 await AxiosCommand(
-                    `/container/${panelId}/interface/setvlanaccess/${encodeURIComponent(item.interfaceId)}/${
-                        value.untaggedVlan
-                    }`
+                    `/container/${panelId}/interface/setvlanaccess/${encodeURIComponent(item.interfaceId)}/${value.untaggedVlan}`
                 )
             ) {
                 doForceRefresh();
@@ -179,12 +178,12 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const interfaceToggle = async (checked, item) => {
         if (
             await AxiosCommand(
-                `/container/${panelId}/interface/${checked ? `enable` : `disable`}/${encodeURIComponent(
-                    item.interfaceId
-                )}`
+                `/container/${panelId}/interface/${checked ? `enable` : `disable`}/${encodeURIComponent(item.interfaceId)}`
             )
         ) {
-            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${item.shortId}`, { variant: "success" });
+            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${item.shortId}`, {
+                variant: "success",
+            });
             doForceRefresh();
         } else {
             sendAlert(`Failed to ${checked ? `enable` : `disable`} interface: ${item.shortId}`, {
@@ -208,9 +207,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const handleProtectClicked = async (event, item) => {
         if (
             await AxiosCommand(
-                `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(
-                    item.interfaceId
-                )}`
+                `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(item.interfaceId)}`
             )
         ) {
             doForceRefresh();

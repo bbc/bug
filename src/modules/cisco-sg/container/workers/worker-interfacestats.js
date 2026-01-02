@@ -31,7 +31,9 @@ const main = async () => {
     const historyCollection = await mongoCollection("history");
 
     // and now create indexes with ttl
-    await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
+    await mongoCreateIndex(historyCollection, "timestamp", {
+        expireAfterSeconds: 60 * 10,
+    });
 
     // Kick things off
     console.log(`worker-interfacestats: connecting to device at ${workerData.address}`);

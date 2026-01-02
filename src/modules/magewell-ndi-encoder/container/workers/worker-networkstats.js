@@ -70,7 +70,9 @@ const main = async () => {
     networkCollection = await mongoCollection("network");
 
     // and now create the index with ttl
-    await mongoCreateIndex(networkCollection, "timestamp", { expireAfterSeconds: updateDelay * 4 });
+    await mongoCreateIndex(networkCollection, "timestamp", {
+        expireAfterSeconds: updateDelay * 4,
+    });
 
     while (true) {
         await getNetworkInfo();

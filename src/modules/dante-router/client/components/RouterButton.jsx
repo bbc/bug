@@ -39,10 +39,18 @@ export default function RouterButton({
             defaultValue: button.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/setlabel/${button.id}/${encodeURIComponent(buttonType)}/${encodeURIComponent(result)}`)) {
-                sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, { variant: "success" });
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/setlabel/${button.id}/${encodeURIComponent(buttonType)}/${encodeURIComponent(result)}`
+                )
+            ) {
+                sendAlert(`Renamed ${buttonType}: ${button.label} -> ${result}`, {
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to rename ${buttonType}: ${result}`, { variant: "error" });
+                sendAlert(`Failed to rename ${buttonType}: ${result}`, {
+                    variant: "error",
+                });
             }
             onChange();
         }
@@ -50,9 +58,13 @@ export default function RouterButton({
 
     const handleClearClicked = async (event, item) => {
         if (await AxiosCommand(`/container/${panelId}/setlabel/${button.id}/${buttonType}/-`)) {
-            sendAlert(`Cleared button label for ${buttonType} ${button.id}`, { variant: "success" });
+            sendAlert(`Cleared button label for ${buttonType} ${button.id}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to clear label for ${buttonType} ${button.index}`, { variant: "error" });
+            sendAlert(`Failed to clear label for ${buttonType} ${button.index}`, {
+                variant: "error",
+            });
         }
         onChange();
     };
@@ -61,9 +73,13 @@ export default function RouterButton({
         const url = `/container/${panelId}/${buttonType}s/${selectedGroup}/${button.id}`;
 
         if (await AxiosDelete(url)) {
-            sendAlert(`Removed ${buttonType} button: ${button.label}`, { variant: "success" });
+            sendAlert(`Removed ${buttonType} button: ${button.label}`, {
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to remove ${buttonType} button: ${button.label}`, { variant: "error" });
+            sendAlert(`Failed to remove ${buttonType} button: ${button.label}`, {
+                variant: "error",
+            });
         }
         onChange();
     };
@@ -112,10 +128,14 @@ export default function RouterButton({
             if (
                 await AxiosCommand(`/container/${panelId}/groups/addbutton/${buttonType}/${groupIndexes}/${button.id}`)
             ) {
-                sendAlert(`Added button to group(s) '${groupIndexes.join(",")}'`, { variant: "success" });
+                sendAlert(`Added button to group(s) '${groupIndexes.join(",")}'`, {
+                    variant: "success",
+                });
                 onChange();
             } else {
-                sendAlert(`Failed to add button to group(s)`, { variant: "error" });
+                sendAlert(`Failed to add button to group(s)`, {
+                    variant: "error",
+                });
             }
         }
     };

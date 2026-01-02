@@ -18,7 +18,6 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-
     const NetgearApi = new netgearApi({
         host: workerData.address,
         username: workerData.username,
@@ -32,7 +31,9 @@ const main = async () => {
     const interfacesCollection = await mongoCollection("interfaces");
 
     // and now create the index with ttl
-    await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 900 });
+    await mongoCreateIndex(interfacesCollection, "timestamp", {
+        expireAfterSeconds: 900,
+    });
 
     // remove previous values
     interfacesCollection.deleteMany({});

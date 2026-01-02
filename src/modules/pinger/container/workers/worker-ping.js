@@ -48,7 +48,9 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
     let hostsCollection = await mongoDb.db.collection("hosts");
-    await mongoCreateIndex(hostsCollection, "timestamp", { expireAfterSeconds: workerData.frequency * 20 });
+    await mongoCreateIndex(hostsCollection, "timestamp", {
+        expireAfterSeconds: workerData.frequency * 20,
+    });
 
     while (true) {
         const pingsPerDay = parseInt((1 / workerData.frequency) * 60 * 60 * 24);
@@ -57,7 +59,9 @@ const main = async () => {
             for (let hostId in workerData.hosts) {
                 const host = workerData.hosts[hostId];
 
-                const exisitingHost = await hostsCollection.findOne({ hostId: hostId });
+                const exisitingHost = await hostsCollection.findOne({
+                    hostId: hostId,
+                });
 
                 if (!exisitingHost || exisitingHost.lastPinged < new Date() - workerData.frequency * 1000) {
                     const response = await ping.promise.probe(host.host, {
@@ -118,9 +122,7 @@ const main = async () => {
                                 attachments: [
                                     {
                                         title: `:large_green_circle: ${host?.title}`,
-                                        text: `${host?.title}  (<http://${bugHost}:${bugPort}/panel/${
-                                            workerData?.id
-                                        }/host/${hostId}|${host?.host}>) is online. ${getOutageString(
+                                        text: `${host?.title}  (<http://${bugHost}:${bugPort}/panel/${workerData?.id}/host/${hostId}|${host?.host}>) is online. ${getOutageString(
                                             exisitingHost?.lastPinged
                                         )}`,
                                         color: `#4caf50`,

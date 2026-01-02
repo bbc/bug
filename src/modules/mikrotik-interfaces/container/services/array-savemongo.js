@@ -6,7 +6,9 @@ module.exports = async (collection, dataArray, idFieldName) => {
             let matchArray = {};
             matchArray[idFieldName] = eachArrayItem[idFieldName];
 
-            await collection.replaceOne(matchArray, eachArrayItem, { upsert: true });
+            await collection.replaceOne(matchArray, eachArrayItem, {
+                upsert: true,
+            });
         } catch (error) {
             console.log(error);
         }

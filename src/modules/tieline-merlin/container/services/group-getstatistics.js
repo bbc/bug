@@ -5,7 +5,10 @@ const mongoCollection = require("@core/mongo-collection");
 module.exports = async (groupId) => {
     // and now the stats (what we actually want!)
     const statisticsCollection = await mongoCollection("statistics");
-    const stats = await statisticsCollection.findOne({ type: "group", groupId: groupId });
+    const stats = await statisticsCollection.findOne({
+        type: "group",
+        groupId: groupId,
+    });
     if (stats) {
         stats["_time"] = "";
         if (stats["seconds"]) {

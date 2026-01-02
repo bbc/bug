@@ -16,7 +16,12 @@ module.exports = async (startTime = null, endTime = null) => {
         const networkCollection = await mongoCollection("network");
 
         let history = await networkCollection
-            .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
+            .find({
+                timestamp: {
+                    $gte: new Date(startTime),
+                    $lte: new Date(endTime),
+                },
+            })
             .toArray();
 
         history.map((item) => {

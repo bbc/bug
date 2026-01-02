@@ -18,21 +18,45 @@ const CustomTooltip = ({ active, payload }) => {
         let tx = payload[0].payload.tx;
         let rx = payload[0].payload.rx;
         return (
-            <Box sx={{ padding: "0.5rem", backgroundColor: "background.default", color: "rgba(255, 255, 255, 0.5)" }}>
+            <Box
+                sx={{
+                    padding: "0.5rem",
+                    backgroundColor: "background.default",
+                    color: "rgba(255, 255, 255, 0.5)",
+                }}
+            >
                 <div>
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         TIME:
                     </Box>
                     {format(timestamp, "kk:mm:ss")}
                 </div>
                 <div>
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         TX BITRATE:
                     </Box>
                     {formatBps(tx)}
                 </div>
                 <div>
-                    <Box component="span" sx={{ fontWeight: 500, color: "rgba(255, 255, 255, 0.7)" }}>
+                    <Box
+                        component="span"
+                        sx={{
+                            fontWeight: 500,
+                            color: "rgba(255, 255, 255, 0.7)",
+                        }}
+                    >
                         RX BITRATE:
                     </Box>
                     {formatBps(rx)}

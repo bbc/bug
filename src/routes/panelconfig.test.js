@@ -20,7 +20,7 @@ const newTestPanel = {
 afterAll(async () => {
     try {
         await panelDelete(testPanel.id);
-    } catch (error) { }
+    } catch (error) {}
 
     await new Promise((resolve) => setTimeout(() => resolve(), 500));
 });
@@ -29,7 +29,7 @@ beforeAll(async () => {
     // remove any previous tests
     try {
         await panelDelete(testPanel.id);
-    } catch (error) { }
+    } catch (error) {}
 
     // create new testpanel
     await panelAdd(testPanel);
@@ -42,7 +42,6 @@ describe("Test the '/api/panel/' endpoint", () => {
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBeArray();
         expect(response.body.data.length).toBeGreaterThan(0);
-
     });
 
     test("Test the '/{panelId}' GET route with the test panel", async () => {
@@ -55,7 +54,6 @@ describe("Test the '/api/panel/' endpoint", () => {
         expect(response.body.data.needsConfigured).toBeTrue();
         expect(response.body.data.title).toEqual(testPanel.title);
         expect(response.body.data.description).toEqual(testPanel.description);
-
     });
 
     test("Test the '/{panelId}' PUT route to update properties", async () => {
@@ -65,7 +63,6 @@ describe("Test the '/api/panel/' endpoint", () => {
             .set("Content-Type", "application/json");
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-
     });
 
     test("Check for updated properties", async () => {
@@ -77,7 +74,6 @@ describe("Test the '/api/panel/' endpoint", () => {
         expect(response.body.data.module).toEqual(newTestPanel.module);
         expect(response.body.data.needsConfigured).toBeFalse();
         expect(response.body.data.description).toEqual(newTestPanel.description);
-
     });
 
     test("Test the '/push/{panelId}' GET route", async () => {
@@ -85,6 +81,5 @@ describe("Test the '/api/panel/' endpoint", () => {
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data);
-
     });
 });

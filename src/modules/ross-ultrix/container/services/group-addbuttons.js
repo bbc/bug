@@ -18,22 +18,21 @@ module.exports = async (type, groupIds, buttonIndexes) => {
     }
 
     const typeCodes = {
-        "source": 3,
-        "destination": 2,
-    }
+        source: 3,
+        destination: 2,
+    };
 
     // so ... even though the new firmware for ultrix defines the buttons as zero-based ... this API endpoint wants them 1-based.
     // come on Ross! At least be consistent!
 
-    const offsetIndexes = buttonIndexes.map(
-        (i) => {
-            return parseInt(i) + 1
-        });
+    const offsetIndexes = buttonIndexes.map((i) => {
+        return parseInt(i) + 1;
+    });
 
     for (let eachGroupId of groupIds) {
-        const path = `groupcategory/addLeaves?groupId=${eachGroupId}&ids=${offsetIndexes.join(",")}&type=${typeCodes[type]}`
+        const path = `groupcategory/addLeaves?groupId=${eachGroupId}&ids=${offsetIndexes.join(",")}&type=${typeCodes[type]}`;
         logger.info(`group-addbuttons: calling '${path}'`);
-        await ultrixWebApi.get(path, config)
+        await ultrixWebApi.get(path, config);
     }
     await fetchGroups(config);
 };

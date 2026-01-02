@@ -1,7 +1,6 @@
 "use strict";
 
 module.exports = (vlanArray, availableVlans) => {
-
     if (vlanArray.length === 1 && vlanArray[0] === "1-4093") {
         // return all VLANs (even non-configured ones)
         return Array.from({ length: 4093 }, (v, i) => i + 1);

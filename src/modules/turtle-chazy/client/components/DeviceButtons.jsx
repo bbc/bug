@@ -30,9 +30,7 @@ export default function DeviceButtons({
             );
         } else {
             history.push(
-                `/panel/${panelId}/route/${encodeURIComponent(sourceGroup ? sourceGroup : "-")}/${encodeURIComponent(
-                    groupName
-                )}`
+                `/panel/${panelId}/route/${encodeURIComponent(sourceGroup ? sourceGroup : "-")}/${encodeURIComponent(groupName)}`
             );
         }
     };

@@ -152,7 +152,13 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                         </Grid>
                     </Box>
                 )}
-                <Box sx={{ position: "relative", height: "350px", opacity: isLoading ? 0.2 : 1 }}>
+                <Box
+                    sx={{
+                        position: "relative",
+                        height: "350px",
+                        opacity: isLoading ? 0.2 : 1,
+                    }}
+                >
                     <Box sx={{ overflow: "scroll", height: "100%" }} onScroll={scrollEvent} ref={iconsContent}>
                         <div>
                             <Box
@@ -255,7 +261,13 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                         setShowColorPicker(!showColorPicker);
                     }}
                 >
-                    <Box sx={{ width: "100%", height: "32px", backgroundColor: selectedColor }}></Box>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: "32px",
+                            backgroundColor: selectedColor,
+                        }}
+                    ></Box>
                     <ArrowDropDownIcon />
                 </Button>
             </FormControl>

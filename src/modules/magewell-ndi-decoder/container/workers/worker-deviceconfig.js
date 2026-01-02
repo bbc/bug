@@ -36,7 +36,9 @@ const main = async () => {
     await dataCollection.deleteMany({});
 
     // and now create the index with ttl
-    await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 600 });
+    await mongoCreateIndex(dataCollection, "timestamp", {
+        expireAfterSeconds: 600,
+    });
 
     while (true) {
         await writeDeviceInfo();

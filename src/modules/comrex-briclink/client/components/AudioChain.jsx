@@ -30,7 +30,16 @@ export default function AudioChain({ levels, history, type }) {
                             width={30}
                             height={170}
                         />
-                        <Box sx={{ fontWeight: 700, textAlign: "center", fontSize: "14px", margin: "4px" }}>L</Box>
+                        <Box
+                            sx={{
+                                fontWeight: 700,
+                                textAlign: "center",
+                                fontSize: "14px",
+                                margin: "4px",
+                            }}
+                        >
+                            L
+                        </Box>
                     </Box>
                     <Box sx={{ margin: "8px" }}>
                         <BugVolumeBar
@@ -40,7 +49,16 @@ export default function AudioChain({ levels, history, type }) {
                             width={30}
                             height={170}
                         />
-                        <Box sx={{ fontWeight: 700, textAlign: "center", fontSize: "14px", margin: "4px" }}>R</Box>
+                        <Box
+                            sx={{
+                                fontWeight: 700,
+                                textAlign: "center",
+                                fontSize: "14px",
+                                margin: "4px",
+                            }}
+                        >
+                            R
+                        </Box>
                     </Box>
                 </Grid>
                 <Grid sx={{ margin: "1rem", flexGrow: 1 }}>

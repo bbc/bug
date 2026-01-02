@@ -33,9 +33,7 @@ export default function Router({ panelId, editMode = false, transmitterGroup = 0
     const useDoubleClick = panelConfig && panelConfig.data.useTake;
 
     const transmitterButtons = useApiPoller({
-        url: `/container/${panelId}/transmitters/${
-            selectedReceiver === null ? -1 : selectedReceiver
-        }/${transmitterGroup}`,
+        url: `/container/${panelId}/transmitters/${selectedReceiver === null ? -1 : selectedReceiver}/${transmitterGroup}`,
         interval: editMode ? 5000 : 500,
         forceRefresh: transmitterForceRefresh,
     });
@@ -74,7 +72,9 @@ export default function Router({ panelId, editMode = false, transmitterGroup = 0
             setReceiverForceRefresh();
             return;
         }
-        sendAlert(`Failed to route '${transmitter[0].label}' to '${receiver[0].label}'`, { variant: "error" });
+        sendAlert(`Failed to route '${transmitter[0].label}' to '${receiver[0].label}'`, {
+            variant: "error",
+        });
     };
 
     const scrollableGroupButtons = (props) => {

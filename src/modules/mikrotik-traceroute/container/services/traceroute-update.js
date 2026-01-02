@@ -14,7 +14,10 @@ module.exports = async (tracerouteId, newTraceroute) => {
         return false;
     }
 
-    config.traceroutes[tracerouteId] = { ...config.traceroutes[tracerouteId], ...newTraceroute };
+    config.traceroutes[tracerouteId] = {
+        ...config.traceroutes[tracerouteId],
+        ...newTraceroute,
+    };
     console.log(newTraceroute);
     console.log(config.traceroutes[tracerouteId]);
     return await configPutViaCore(config);

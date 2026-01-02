@@ -16,7 +16,10 @@ module.exports = async (name, value) => {
     }
 
     try {
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new videohub({
+            port: config.port,
+            host: config.address,
+        });
         await router.connect();
         await router.send("CONFIGURATION", `${name}: ${value}`, true);
         return true;

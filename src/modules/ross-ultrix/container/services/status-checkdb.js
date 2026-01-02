@@ -5,7 +5,6 @@ const mongoSingle = require("@core/mongo-single");
 const StatusItem = require("@core/StatusItem");
 
 module.exports = async () => {
-
     const statusItems = [];
 
     const sources = await mongoSingle.get("sources");
@@ -31,7 +30,7 @@ module.exports = async () => {
     }
 
     const routesCollection = await mongoCollection("routes");
-    if (!await routesCollection.find().toArray()) {
+    if (!(await routesCollection.find().toArray())) {
         statusItems.push(
             new StatusItem({
                 key: `db_routes`,

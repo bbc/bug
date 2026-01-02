@@ -41,9 +41,7 @@ router.use(
     "/:panelid",
     restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
-
         try {
-
             // Check if request is for a valid panel before proxying
             const panel = await panelConfig.get(req.params?.panelid);
             if (!panel) {
@@ -69,7 +67,10 @@ router.use(
                 const user = await userGet(req.user);
                 const message = req.body?.log?.message;
                 delete req.body?.log?.message;
-                logger.panel(message, { ...{ user: user, panelId: req.params.panelid }, ...req.body?.log });
+                logger.panel(message, {
+                    ...{ user: user, panelId: req.params.panelid },
+                    ...req.body?.log,
+                });
             }
 
             const axiosResponse = await axios(axiosConfig);

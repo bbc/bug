@@ -8,7 +8,10 @@ export default function AudioPlayer({ title, source, playing, volume }) {
 
     const handleError = (error) => {
         if (playing) {
-            sendAlert(`Failed to play ${title}`, { broadcast: "false", variant: "error" });
+            sendAlert(`Failed to play ${title}`, {
+                broadcast: "false",
+                variant: "error",
+            });
         }
     };
 

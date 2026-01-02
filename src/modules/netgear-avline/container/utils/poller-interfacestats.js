@@ -4,7 +4,6 @@ const delay = require("delay");
 const formatBps = require("@core/format-bps");
 const trafficSaveHistory = require("../services/traffic-savehistory");
 
-
 const parseSpeed = (speed) => {
     const speeds = {
         2: "100M",
@@ -19,12 +18,11 @@ const parseSpeed = (speed) => {
         11: "25G",
         12: "50G",
         13: "100G",
-    }
+    };
     return speeds?.[speed] ?? "";
-}
+};
 
 module.exports = async (NetgearApi, interfacesCollection, historyCollection) => {
-
     // get list of interfaces
     const interfaces = await interfacesCollection.find().toArray();
 
@@ -34,15 +32,15 @@ module.exports = async (NetgearApi, interfacesCollection, historyCollection) => 
     } else {
         // get stats from device API ...
 
-
-        const result = await NetgearApi.get({ path: "sw_portstats?portid=ALL" });
+        const result = await NetgearApi.get({
+            path: "sw_portstats?portid=ALL",
+        });
 
         // do this now - in case updating the DB takes a while ...
         const sampleDate = new Date();
         const historyArray = [];
 
         for (let eachInterface of interfaces) {
-
             const interfaceResultFromApi = result?.switchStatsPort?.find((p) => p.portId === eachInterface.port);
             if (interfaceResultFromApi) {
                 // we create a new object, and use $set in mongo, so we don't overwrite the main interface worker results
@@ -111,13 +109,10 @@ module.exports = async (NetgearApi, interfacesCollection, historyCollection) => 
                     },
                     { $set: fieldsToUpdate }
                 );
-
             }
         }
 
         // save history
         await trafficSaveHistory(historyCollection, historyArray);
-
     }
 };
-

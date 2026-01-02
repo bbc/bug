@@ -19,7 +19,9 @@ module.exports = async (image) => {
     try {
         logger.info(`Checking for new version of ${image}`);
 
-        const stream = await docker.pull(`${registry}/${image}`, { authconfig: auth });
+        const stream = await docker.pull(`${registry}/${image}`, {
+            authconfig: auth,
+        });
 
         const processUpdate = await new Promise((resolve, reject) => {
             docker.modem.followProgress(stream, onFinished, onProgress);

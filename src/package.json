@@ -12,8 +12,8 @@
         "test": "jest --forceExit --detectOpenHandles --maxWorkers=1",
         "modulebuilder": "node modulebuilder/cli.mjs",
         "documentation": "node utils/docs-templater.js",
-        "format-check": "prettier --check .",
-        "format-write": "prettier --write ."
+        "format:check": "prettier --check .",
+        "format:write": "prettier --write ."
     },
     "nodemonConfig": {
         "ignore": [
@@ -136,7 +136,8 @@
     "prettier": {
         "trailingComma": "es5",
         "tabWidth": 4,
-        "semi": false,
-        "singleQuote": false
+        "semi": true,
+        "singleQuote": false,
+        "printWidth": 120
     }
 }

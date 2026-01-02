@@ -1,2 +1,2 @@
--   codex integration
--   config validation
+- codex integration
+- config validation

@@ -18,10 +18,18 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
             defaultValue: group.label,
         });
         if (result !== false) {
-            if (await AxiosCommand(`/container/${panelId}/groups/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(group.label)}/${encodeURIComponent(result)}`)) {
-                sendAlert(`Renamed group: ${group.label} -> ${result}`, { variant: "success" });
+            if (
+                await AxiosCommand(
+                    `/container/${panelId}/groups/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(group.label)}/${encodeURIComponent(result)}`
+                )
+            ) {
+                sendAlert(`Renamed group: ${group.label} -> ${result}`, {
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to rename group: ${group.label}`, { variant: "error" });
+                sendAlert(`Failed to rename group: ${group.label}`, {
+                    variant: "error",
+                });
             }
             onChange();
         }
@@ -31,7 +39,9 @@ export default function GroupButton({ panelId, group, onClick, groupType, editMo
         if (await AxiosDelete(`/container/${panelId}/groups/${groupType}/${group.label}`)) {
             sendAlert(`Deleted group: ${group.label}`, { variant: "success" });
         } else {
-            sendAlert(`Failed to delete group: ${group.label}`, { variant: "error" });
+            sendAlert(`Failed to delete group: ${group.label}`, {
+                variant: "error",
+            });
         }
         onChange();
     };

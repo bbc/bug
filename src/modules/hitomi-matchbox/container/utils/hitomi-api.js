@@ -4,9 +4,7 @@ const axios = require("axios");
 const get = async ({ host, apiFunction = "", apiMenu = "" }) => {
     try {
         const response = await axios.get(
-            `http://${host}/cgi-bin/mbServerSide.ccgi?func=${encodeURIComponent(
-                apiFunction
-            )}&menuName=${encodeURIComponent(apiMenu)}`
+            `http://${host}/cgi-bin/mbServerSide.ccgi?func=${encodeURIComponent(apiFunction)}&menuName=${encodeURIComponent(apiMenu)}`
         );
         if (response && response?.data) {
             return response.data;
@@ -23,9 +21,7 @@ const set = async ({ host, category = "", value = "", field = "" }) => {
             ? `http://${host}/cgi-bin/mbServerSide.ccgi?func=controlChange&name=${encodeURIComponent(
                   category
               )}&value=${encodeURIComponent(value)}&vControl=${encodeURIComponent(field)}`
-            : `http://${host}/cgi-bin/mbServerSide.ccgi?func=controlChange&name=${encodeURIComponent(
-                  field
-              )}&value=${encodeURIComponent(value)}`;
+            : `http://${host}/cgi-bin/mbServerSide.ccgi?func=controlChange&name=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
 
         console.log(`hitomi-api: setting value: ${url}`);
         const response = await axios.get(url);

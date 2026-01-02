@@ -19,7 +19,9 @@ export default function SourceSelector({ panelId, currentSource }) {
                 name: source?.label,
             }))
         ) {
-            sendAlert(`Source changed to ${source.label}`, { variant: "success" });
+            sendAlert(`Source changed to ${source.label}`, {
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to change source`, { variant: "error" });
         }
@@ -39,7 +41,10 @@ export default function SourceSelector({ panelId, currentSource }) {
                 <BugApiAutocomplete
                     disableClearable={true}
                     options={sources?.data}
-                    value={{ label: currentSource, id: getSourceId(currentSource) }}
+                    value={{
+                        label: currentSource,
+                        id: getSourceId(currentSource),
+                    }}
                     onChange={(event, value) => handleSourceChange(value)}
                 />
             </>

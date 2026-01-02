@@ -57,7 +57,11 @@ export default function PlayerCard({ panelId, player }) {
                 <CardContent sx={{ padding: "0.2em" }}>
                     <Grid>
                         <Sparklines data={bars} limit={15} style={{ padding: "12px", opacity: 0.2 }} min={0}>
-                            <SparklinesBars style={{ fill: theme.palette.background.default }} />
+                            <SparklinesBars
+                                style={{
+                                    fill: theme.palette.background.default,
+                                }}
+                            />
                         </Sparklines>
                         <Grid
                             sx={{
@@ -93,7 +97,14 @@ export default function PlayerCard({ panelId, player }) {
                                     )}
                                 </Grid>
                             </Grid>
-                            <CardActions style={{ padding: 1, marginTop: "8px", align: "center", width: "100%" }}>
+                            <CardActions
+                                style={{
+                                    padding: 1,
+                                    marginTop: "8px",
+                                    align: "center",
+                                    width: "100%",
+                                }}
+                            >
                                 <Slider
                                     onChange={handleVolume}
                                     defaultValue={volume}

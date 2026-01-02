@@ -23,7 +23,10 @@ const alertHandler = (namespace, socket) => {
             socket.broadcast.emit("event", data);
         }
 
-        logger[level](data.message, { userId: data?.userId, panelId: data?.panelId });
+        logger[level](data.message, {
+            userId: data?.userId,
+            panelId: data?.panelId,
+        });
     });
 };
 

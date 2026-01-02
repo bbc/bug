@@ -45,9 +45,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
         }
         if (
             await AxiosCommand(
-                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(
-                    result
-                )}`
+                `/container/${panelId}/interface/rename/${encodeURIComponent(item.interfaceId)}/${encodeURIComponent(result)}`
             )
         ) {
             sendAlert(result ? `Renamed interface to ${result}` : "Reset interface name", {
@@ -136,7 +134,10 @@ export default function InterfaceList({ panelId, stackId = null }) {
     const handleVlanChanged = async (event, value, item) => {
         const messages = getVlanChangedMessage(
             item.shortId,
-            { untaggedVlan: item["_untaggedVlan"], taggedVlans: item["_taggedVlans"] },
+            {
+                untaggedVlan: item["_untaggedVlan"],
+                taggedVlans: item["_taggedVlans"],
+            },
             value
         );
 
@@ -177,7 +178,9 @@ export default function InterfaceList({ panelId, stackId = null }) {
         if (
             await AxiosCommand(`/container/${panelId}/interface/${checked ? `enable` : `disable`}/${item.interfaceId}`)
         ) {
-            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${description}`, { variant: "success" });
+            sendAlert(`${checked ? `Enabled` : `Disabled`} interface: ${description}`, {
+                variant: "success",
+            });
             doForceRefresh();
         } else {
             sendAlert(`Failed to ${checked ? `enable` : `disable`} interface: ${description}`, {
@@ -202,9 +205,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
         const description = item.description ? item.description : item.longId;
         if (
             await AxiosCommand(
-                `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(
-                    item.longId
-                )}`
+                `/container/${panelId}/interface/${item._protected ? "unprotect" : "protect"}/${encodeURIComponent(item.longId)}`
             )
         ) {
             doForceRefresh();

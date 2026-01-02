@@ -25,7 +25,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.videoLatency}
-                                onChange={(event) => handleChange({ videoLatency: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        videoLatency: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "Normal" },
                                     { id: 3, label: "Low (PPP)" },
@@ -40,7 +44,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                         value: (
                             <BugSelect
                                 value={codecdata?.videoAvcProfile}
-                                onChange={(event) => handleChange({ videoAvcProfile: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        videoAvcProfile: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 1, label: "Main" },
                                     { id: 2, label: "High" },
@@ -67,7 +75,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugTextField
                                 changeOnBlur
                                 value={codecdata?.videoBufferSize}
-                                onChange={(event) => handleChange({ videoBufferSize: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        videoBufferSize: parseInt(event.target.value),
+                                    })
+                                }
                                 filter={/[^0-9]/}
                                 numeric
                                 min={10}
@@ -105,7 +117,11 @@ export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
                             <BugSelect
                                 disabled={codecdata?.videoLatency > 1}
                                 value={codecdata?.videoBFrames}
-                                onChange={(event) => handleChange({ videoBFrames: parseInt(event.target.value) })}
+                                onChange={(event) =>
+                                    handleChange({
+                                        videoBFrames: parseInt(event.target.value),
+                                    })
+                                }
                                 options={[
                                     { id: 0, label: "0" },
                                     { id: 1, label: "1" },

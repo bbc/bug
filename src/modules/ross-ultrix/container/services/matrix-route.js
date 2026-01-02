@@ -35,14 +35,15 @@ module.exports = async (destinatonIndex, sourceIndex) => {
 
         // now update db
         const query = { destination: parseInt(destinatonIndex) };
-        const payload = { "$set": { "levels": new Array(16).fill(parseInt(sourceIndex)) } };
+        const payload = {
+            $set: { levels: new Array(16).fill(parseInt(sourceIndex)) },
+        };
         const options = { upsert: true };
         await routesCollection.updateOne(query, payload, options);
 
         return true;
-    }
-    else {
+    } else {
         console.error(`Failed to route Source #${sourceInt} to Destination #${destinationInt} on all levels`);
-        return false
+        return false;
     }
 };

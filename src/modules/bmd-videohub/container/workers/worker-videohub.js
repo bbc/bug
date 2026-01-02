@@ -42,7 +42,9 @@ const saveResult = async (newResults) => {
             // add timestamp
             existingData.timestamp = new Date();
 
-            await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
+            await dataCollection.replaceOne({ title: newResult["title"] }, existingData, {
+                upsert: true,
+            });
         }
     }
 };
@@ -55,7 +57,9 @@ const main = async () => {
     dataCollection = await mongoCollection("data");
 
     // and now create the index with ttl
-    await mongoCreateIndex(dataCollection, "timestamp", { expireAfterSeconds: 60 });
+    await mongoCreateIndex(dataCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
 
     // remove previous values
     await dataCollection.deleteMany({});

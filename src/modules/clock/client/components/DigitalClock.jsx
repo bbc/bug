@@ -36,5 +36,15 @@ export default function DigitalClock({ size }) {
         xl: 200,
     };
 
-    return <Box sx={{ color: "text.primary", fontFamily: "monospace", fontSize: fontSizes[size] }}>{time}</Box>;
+    return (
+        <Box
+            sx={{
+                color: "text.primary",
+                fontFamily: "monospace",
+                fontSize: fontSizes[size],
+            }}
+        >
+            {time}
+        </Box>
+    );
 }

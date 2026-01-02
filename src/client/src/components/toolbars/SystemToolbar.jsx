@@ -18,21 +18,33 @@ export default function SystemToolbar(props) {
     const sendAlert = useAlert();
 
     const handleShutdown = async () => {
-        sendAlert(`Application shutting down`, { broadcast: "true", variant: "success" });
+        sendAlert(`Application shutting down`, {
+            broadcast: "true",
+            variant: "success",
+        });
         AxiosGet("/api/bug/shutdown");
     };
 
     const handleRestart = async () => {
-        sendAlert(`Application restarting`, { broadcast: "true", variant: "success" });
+        sendAlert(`Application restarting`, {
+            broadcast: "true",
+            variant: "success",
+        });
         AxiosGet("/api/bug/restart");
     };
 
     const handleCleanup = async () => {
-        sendAlert(`Cleaning up system`, { broadcast: "true", variant: "success" });
+        sendAlert(`Cleaning up system`, {
+            broadcast: "true",
+            variant: "success",
+        });
 
         const status = await AxiosGet("/api/system/cleanup");
         if (status) {
-            sendAlert(`Cleanup successful`, { broadcast: "true", variant: "success" });
+            sendAlert(`Cleanup successful`, {
+                broadcast: "true",
+                variant: "success",
+            });
         }
     };
 

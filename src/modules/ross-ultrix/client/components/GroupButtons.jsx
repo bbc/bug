@@ -50,7 +50,9 @@ export default function GroupButtons({
                 sendAlert(`Added group: ${result}`, { variant: "success" });
                 onChange();
             } else {
-                sendAlert(`Failed to add group: ${result}`, { variant: "error" });
+                sendAlert(`Failed to add group: ${result}`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -62,7 +64,9 @@ export default function GroupButtons({
             ),
         });
         if (result !== false) {
-            sendAlert(`Updated buttons for group: ${item.label}`, { variant: "success" });
+            sendAlert(`Updated buttons for group: ${item.label}`, {
+                variant: "success",
+            });
             onChange();
         }
     };

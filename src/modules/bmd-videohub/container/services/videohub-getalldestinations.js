@@ -18,7 +18,9 @@ module.exports = async () => {
 
     const dataCollection = await mongoCollection("data");
 
-    const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
+    const dbOutputLabels = await dataCollection.findOne({
+        title: "output_labels",
+    });
     if (dbOutputLabels) {
         return Object.values(dbOutputLabels["data"]);
     }

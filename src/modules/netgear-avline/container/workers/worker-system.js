@@ -14,7 +14,6 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-
     const NetgearApi = new netgearApi({
         host: workerData.address,
         username: workerData.username,

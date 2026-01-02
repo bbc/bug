@@ -7,9 +7,7 @@
     "icon": "Schedule",
     "author": "Ryan McCartney",
     "needsContainer": false,
-    "protectedRoutes": [
-        "config"
-    ],
+    "protectedRoutes": ["config"],
     "license": "Apache-2.0",
     "status": "stable",
     "defaultconfig": {

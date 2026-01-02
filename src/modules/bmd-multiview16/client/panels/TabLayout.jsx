@@ -34,7 +34,9 @@ export default function TabLayout({ panelId }) {
             // force a refresh of the destinations
             doForceRefresh();
         } else {
-            sendAlert(`Failed to change source for output ${outputIndex + 1}`, { variant: "error" });
+            sendAlert(`Failed to change source for output ${outputIndex + 1}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -47,7 +49,9 @@ export default function TabLayout({ panelId }) {
             // force a refresh of the layout
             doForceRefresh();
         } else {
-            sendAlert(`Failed to change audio source to input ${inputIndex + 1}`, { variant: "error" });
+            sendAlert(`Failed to change audio source to input ${inputIndex + 1}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -61,7 +65,9 @@ export default function TabLayout({ panelId }) {
                 // force a refresh of the layout
                 doForceRefresh();
             } else {
-                sendAlert(`Failed to change solo source to input ${inputIndex + 1}`, { variant: "error" });
+                sendAlert(`Failed to change solo source to input ${inputIndex + 1}`, {
+                    variant: "error",
+                });
             }
         } else {
             if (await AxiosCommand(`/container/${panelId}/source/clearsolo`)) {
@@ -72,7 +78,9 @@ export default function TabLayout({ panelId }) {
                 // force a refresh of the layout
                 doForceRefresh();
             } else {
-                sendAlert(`Failed to unselect solo source`, { variant: "error" });
+                sendAlert(`Failed to unselect solo source`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -94,12 +102,24 @@ export default function TabLayout({ panelId }) {
 
         return (
             <>
-                <Grid container spacing={1} sx={{ backgroundColor: "background.default", paddingTop: "2px" }}>
+                <Grid
+                    container
+                    spacing={1}
+                    sx={{
+                        backgroundColor: "background.default",
+                        paddingTop: "2px",
+                    }}
+                >
                     {layout.data.map((row, rowIndex) => {
                         return row.map((col, colIndex) => {
                             return (
                                 <Grid item key={`${colIndex}-${rowIndex}`} xs={12 / layout.data.length}>
-                                    <Box sx={{ padding: "16px", backgroundColor: "background.paper" }}>
+                                    <Box
+                                        sx={{
+                                            padding: "16px",
+                                            backgroundColor: "background.paper",
+                                        }}
+                                    >
                                         <BugApiSelect
                                             value={col.inputIndex}
                                             options={sourcesArray}
@@ -108,7 +128,12 @@ export default function TabLayout({ panelId }) {
                                             }
                                             renderItem={(item) => (
                                                 <>
-                                                    <span style={{ fontWeight: 600, marginRight: "0.5rem" }}>
+                                                    <span
+                                                        style={{
+                                                            fontWeight: 600,
+                                                            marginRight: "0.5rem",
+                                                        }}
+                                                    >
                                                         {item.id + 1}
                                                     </span>
                                                     {item.label}

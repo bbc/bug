@@ -38,7 +38,10 @@ module.exports = async (layout) => {
     }
 
     try {
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new videohub({
+            port: config.port,
+            host: config.address,
+        });
         await router.connect();
 
         // send the new layout command

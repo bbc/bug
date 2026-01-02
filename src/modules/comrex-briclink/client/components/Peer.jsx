@@ -32,10 +32,15 @@ export default function Peer({ panelId, peerId }) {
     const handleDeleteClicked = async () => {
         const response = await AxiosDelete(`/container/${panelId}/peer/${peerId}`);
         if (response) {
-            sendAlert(`Connection has been deleted.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Connection has been deleted.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
-            sendAlert(`Connection could not be deleted.`, { variant: "warning" });
+            sendAlert(`Connection could not be deleted.`, {
+                variant: "warning",
+            });
         }
     };
 
@@ -60,10 +65,15 @@ export default function Peer({ panelId, peerId }) {
     const onSubmit = async (form) => {
         const response = await AxiosPut(`/container/${panelId}/peer/${peerId}`, form);
         if (response) {
-            sendAlert(`Connection has been updated.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Connection has been updated.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
-            sendAlert(`Connection could not be updated.`, { variant: "warning" });
+            sendAlert(`Connection could not be updated.`, {
+                variant: "warning",
+            });
         }
     };
 

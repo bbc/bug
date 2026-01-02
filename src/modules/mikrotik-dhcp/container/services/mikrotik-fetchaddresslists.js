@@ -8,8 +8,8 @@ module.exports = async (conn) => {
     // process data
     const addressListUniqueObject = {};
     for (var i in data) {
-        if (data[i]['address-list']) {
-            const val = data[i]['address-list'];
+        if (data[i]["address-list"]) {
+            const val = data[i]["address-list"];
             addressListUniqueObject[val] = val;
         }
     }

@@ -9,7 +9,10 @@ module.exports = async () => {
     let traceroute = await tracerouteCollection.find().toArray();
 
     for (let i in traceroute) {
-        traceroute[i] = { ...traceroute[i], ...config.traceroutes[traceroute[i].tracerouteId] };
+        traceroute[i] = {
+            ...traceroute[i],
+            ...config.traceroutes[traceroute[i].tracerouteId],
+        };
     }
 
     if (!traceroute) {

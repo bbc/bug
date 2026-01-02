@@ -26,17 +26,41 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                         { name: "Description", value: iface.data?.description },
                         { name: "Interface ID", value: iface.data?.longId },
                         { name: "Port", value: iface.data?.port },
-                        { name: "TX Rate", value: iface.data?.["tx-rate-text"] },
-                        { name: "RX Rate", value: iface.data?.["rx-rate-text"] },
+                        {
+                            name: "TX Rate",
+                            value: iface.data?.["tx-rate-text"],
+                        },
+                        {
+                            name: "RX Rate",
+                            value: iface.data?.["rx-rate-text"],
+                        },
 
-                        { name: "Auto Negotiation", value: iface.data?.["autoNegotiateActive"] ? "yes" : "no" },
-                        { name: "Admin State", value: iface.data?.["adminMode"] ? "up" : "down" },
-                        { name: "Link State", value: iface.data?.["linkStatus"] === 1 ? "down" : "up" },
-                        { name: "POE Available", value: iface.data?.["isPoE"] ? "yes" : "no" },
+                        {
+                            name: "Auto Negotiation",
+                            value: iface.data?.["autoNegotiateActive"] ? "yes" : "no",
+                        },
+                        {
+                            name: "Admin State",
+                            value: iface.data?.["adminMode"] ? "up" : "down",
+                        },
+                        {
+                            name: "Link State",
+                            value: iface.data?.["linkStatus"] === 1 ? "down" : "up",
+                        },
+                        {
+                            name: "POE Available",
+                            value: iface.data?.["isPoE"] ? "yes" : "no",
+                        },
 
-                        { name: "Operational Speed", value: iface.data?.["bandwidthText"] },
+                        {
+                            name: "Operational Speed",
+                            value: iface.data?.["bandwidthText"],
+                        },
 
-                        { name: "Untagged VLAN", value: iface.data?.["untagged-vlan"] },
+                        {
+                            name: "Untagged VLAN",
+                            value: iface.data?.["untagged-vlan"],
+                        },
                         {
                             name: "Tagged VLANs",
                             value: iface.data?.["tagged-vlans"] ? iface.data?.["tagged-vlans"].join(", ") : "",

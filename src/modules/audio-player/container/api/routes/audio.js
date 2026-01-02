@@ -20,7 +20,9 @@ route.get(
         }
 
         try {
-            const { data } = await axios.get(proxyAddress, { responseType: "stream" });
+            const { data } = await axios.get(proxyAddress, {
+                responseType: "stream",
+            });
             data.pipe(res);
         } catch (err) {}
     })

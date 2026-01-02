@@ -70,9 +70,9 @@ const convertPoeDescription = (value) => {
         case 4:
             return "60W PoE";
         case 5:
-            return "802.3bt Type 3"
+            return "802.3bt Type 3";
         case 6:
-            return "802.3bt Type 4"
+            return "802.3bt Type 4";
         default:
             return "";
     }
@@ -81,7 +81,7 @@ const convertPoeDescription = (value) => {
 const convertPoePortType = (value) => {
     switch (value) {
         case 1:
-            return false
+            return false;
         case 2:
         case 3:
         case 4:
@@ -89,9 +89,9 @@ const convertPoePortType = (value) => {
         case 6:
             return true;
         default:
-            return false
+            return false;
     }
-}
+};
 
 const main = async () => {
     // stagger start of script ...
@@ -175,16 +175,24 @@ const main = async () => {
                 );
 
                 const poeAdminEnable =
-                    pethPsePortAdminEnable[`1.3.6.1.2.1.105.1.1.1.3.1.${eachInterface.interfaceId}`] === 1
+                    pethPsePortAdminEnable[`1.3.6.1.2.1.105.1.1.1.3.1.${eachInterface.interfaceId}`] === 1;
 
                 const poeOperStatus =
-                    rlPethPsePortOperStatus[`1.3.6.1.4.1.9.6.1.101.108.1.1.11.1.${eachInterface.interfaceId}`] === 1
+                    rlPethPsePortOperStatus[`1.3.6.1.4.1.9.6.1.101.108.1.1.11.1.${eachInterface.interfaceId}`] === 1;
 
-                const poeAvailable = convertPoePortType(rlPethPsePortSupportPoeType[`1.3.6.1.4.1.9.6.1.101.108.1.1.13.1.${eachInterface.interfaceId}`]);
-                const poeDescription = convertPoeDescription(rlPethPsePortSupportPoeType[`1.3.6.1.4.1.9.6.1.101.108.1.1.13.1.${eachInterface.interfaceId}`]);
-                const poePower = rlPethPsePortOutputPower[`1.3.6.1.4.1.9.6.1.101.108.1.1.5.1.${eachInterface.interfaceId}`] ?? 0;
-                const poePortStatusDescription = rlPethPsePortStatusDescription[`1.3.6.1.4.1.9.6.1.101.108.1.1.8.1.${eachInterface.interfaceId}`] ?? "";
-                const poePortError = rlPethPsePortStatus[`1.3.6.1.4.1.9.6.1.101.108.1.1.7.1.${eachInterface.interfaceId}`] === 9
+                const poeAvailable = convertPoePortType(
+                    rlPethPsePortSupportPoeType[`1.3.6.1.4.1.9.6.1.101.108.1.1.13.1.${eachInterface.interfaceId}`]
+                );
+                const poeDescription = convertPoeDescription(
+                    rlPethPsePortSupportPoeType[`1.3.6.1.4.1.9.6.1.101.108.1.1.13.1.${eachInterface.interfaceId}`]
+                );
+                const poePower =
+                    rlPethPsePortOutputPower[`1.3.6.1.4.1.9.6.1.101.108.1.1.5.1.${eachInterface.interfaceId}`] ?? 0;
+                const poePortStatusDescription =
+                    rlPethPsePortStatusDescription[`1.3.6.1.4.1.9.6.1.101.108.1.1.8.1.${eachInterface.interfaceId}`] ??
+                    "";
+                const poePortError =
+                    rlPethPsePortStatus[`1.3.6.1.4.1.9.6.1.101.108.1.1.7.1.${eachInterface.interfaceId}`] === 9;
 
                 await interfacesCollection.updateOne(
                     { interfaceId: eachInterface.interfaceId },
@@ -200,7 +208,7 @@ const main = async () => {
                             "poe-description": poeDescription,
                             "poe-power": poePower,
                             "poe-port-status-description": poePortStatusDescription,
-                            "poe-error": poePortError
+                            "poe-error": poePortError,
                         },
                     },
                     { upsert: false }

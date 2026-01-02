@@ -21,8 +21,8 @@ module.exports = async (groupId, newGroupName) => {
         return false;
     }
 
-    const path = `groupcategory/rename?name=${newGroupName}&id=${groupId}`
+    const path = `groupcategory/rename?name=${newGroupName}&id=${groupId}`;
     logger.info(`group-rename: calling '${path}'`);
-    await ultrixWebApi.get(path, config)
+    await ultrixWebApi.get(path, config);
     await fetchGroups(config);
 };

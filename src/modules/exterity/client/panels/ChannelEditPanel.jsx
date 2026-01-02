@@ -54,7 +54,10 @@ export default function ChannelPanel({ panelId }) {
     const onSubmit = async (form) => {
         const response = await AxiosPut(`/container/${panelId}/channels/${channelId}`, form);
         if (response) {
-            sendAlert(`Channel has been updated.`, { broadcast: "true", variant: "success" });
+            sendAlert(`Channel has been updated.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             history.goBack();
         } else {
             sendAlert(`Channel could not be updated.`, { variant: "warning" });

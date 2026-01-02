@@ -4,11 +4,11 @@ This folder is used to provide templates for BUG modulebuilder.
 
 Each folder should contain the following items:
 
--   a `builder.json` file containing metadata for the template
--   a `src` folder containing:
-    -   `container` - optional files to be built into a docker container
-    -   `client` - ReactJS files to be compiled into front-end code
-    -   `module.json` - metadata file for the module
+- a `builder.json` file containing metadata for the template
+- a `src` folder containing:
+    - `container` - optional files to be built into a docker container
+    - `client` - ReactJS files to be compiled into front-end code
+    - `module.json` - metadata file for the module
 
 modulebuilder will prompt for the items listed in `fields`, and search `templatedfiles` for matching template tags replacing any that it finds.
 

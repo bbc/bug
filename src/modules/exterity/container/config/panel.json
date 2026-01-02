@@ -1,11 +1,11 @@
 {
-  "id": "",
-  "order": 0,
-  "needsConfigured": false,
-  "title": "",
-  "module": "exterity",
-  "description": "Channel list server and device manager for exterity STBs",
-  "enabled": false,
-  "channels": {},
-  "devices": {}
+    "id": "",
+    "order": 0,
+    "needsConfigured": false,
+    "title": "",
+    "module": "exterity",
+    "description": "Channel list server and device manager for exterity STBs",
+    "enabled": false,
+    "channels": {},
+    "devices": {}
 }

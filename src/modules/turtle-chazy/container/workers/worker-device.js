@@ -21,10 +21,18 @@ const main = async () => {
     const sourcesCollection = await mongoCollection("sources");
     const destinationsCollection = await mongoCollection("destinations");
     const routesCollection = await mongoCollection("routes");
-    await mongoCreateIndex(devicesCollection, "timestamp", { expireAfterSeconds: 60 });
-    await mongoCreateIndex(sourcesCollection, "timestamp", { expireAfterSeconds: 60 });
-    await mongoCreateIndex(destinationsCollection, "timestamp", { expireAfterSeconds: 60 });
-    await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 60 });
+    await mongoCreateIndex(devicesCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
+    await mongoCreateIndex(sourcesCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
+    await mongoCreateIndex(destinationsCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
+    await mongoCreateIndex(routesCollection, "timestamp", {
+        expireAfterSeconds: 60,
+    });
 
     // Kick things off
     console.log(`worker-device: connecting to controller ...`);
@@ -33,7 +41,7 @@ const main = async () => {
     while (true) {
         // do stuff here
 
-        await fetchDevices(workerData)
+        await fetchDevices(workerData);
 
         await delay(5000);
     }

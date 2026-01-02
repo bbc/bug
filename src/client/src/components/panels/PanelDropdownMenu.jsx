@@ -52,9 +52,14 @@ export default function PanelDropdownMenu({ panel }) {
     const handleEnable = async (event) => {
         setAnchorEl(null);
         if (await AxiosCommand(`/api/panel/enable/${panel?.id}`)) {
-            sendAlert(`Enabled panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
+            sendAlert(`Enabled panel: ${panel?.title}`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to enable panel: ${panel?.title}`, { variant: "error" });
+            sendAlert(`Failed to enable panel: ${panel?.title}`, {
+                variant: "error",
+            });
         }
         event.stopPropagation();
         event.preventDefault();
@@ -63,9 +68,14 @@ export default function PanelDropdownMenu({ panel }) {
     const handleDisable = async (event) => {
         setAnchorEl(null);
         if (await AxiosCommand(`/api/panel/disable/${panel?.id}`)) {
-            sendAlert(`Disabled panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
+            sendAlert(`Disabled panel: ${panel?.title}`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to disable panel: ${panel?.title}`, { variant: "error" });
+            sendAlert(`Failed to disable panel: ${panel?.title}`, {
+                variant: "error",
+            });
         }
         event.stopPropagation();
         event.preventDefault();
@@ -75,11 +85,19 @@ export default function PanelDropdownMenu({ panel }) {
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();
-        sendAlert(`Restarting panel: ${panel?.title} - please wait ...`, { broadcast: "true", variant: "info" });
+        sendAlert(`Restarting panel: ${panel?.title} - please wait ...`, {
+            broadcast: "true",
+            variant: "info",
+        });
         if (await AxiosCommand(`/api/panel/restart/${panel?.id}`)) {
-            sendAlert(`Restarted panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
+            sendAlert(`Restarted panel: ${panel?.title}`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
-            sendAlert(`Failed to restart panel: ${panel?.title}`, { variant: "error" });
+            sendAlert(`Failed to restart panel: ${panel?.title}`, {
+                variant: "error",
+            });
         }
     };
 
@@ -107,9 +125,14 @@ export default function PanelDropdownMenu({ panel }) {
             );
 
             if (await AxiosCommand(`/api/module/rebuild/${panel?._module.name}`)) {
-                sendAlert(`Upgraded panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Upgraded panel: ${panel?.title}`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to upgrade panel: ${panel?.title}`, { variant: "error" });
+                sendAlert(`Failed to upgrade panel: ${panel?.title}`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -126,9 +149,14 @@ export default function PanelDropdownMenu({ panel }) {
 
         if (result !== false) {
             if (await AxiosDelete(`/api/panel/${panel.id}`)) {
-                sendAlert(`Deleted panel: ${panel.title}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Deleted panel: ${panel.title}`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to delete panel: ${panel.title}`, { variant: "error" });
+                sendAlert(`Failed to delete panel: ${panel.title}`, {
+                    variant: "error",
+                });
             }
         }
     };
@@ -158,9 +186,14 @@ export default function PanelDropdownMenu({ panel }) {
 
         if (result !== false) {
             if (await AxiosCommand(`/api/panel/group/${panel?.id}/${result.toLowerCase()}`)) {
-                sendAlert(`Updated group for panel ${panel?.title}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Updated group for panel ${panel?.title}`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to change group for panel: ${panel?.title}`, { variant: "error" });
+                sendAlert(`Failed to change group for panel: ${panel?.title}`, {
+                    variant: "error",
+                });
             }
         }
     };

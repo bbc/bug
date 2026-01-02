@@ -27,7 +27,11 @@ const getSites = async () => {
         if (loggedIn) {
             const sitesData = await unifi.getSitesStats();
             sites = sitesData.map((item) => {
-                return { label: item?.desc, id: item?.name, timestamp: Date.now() };
+                return {
+                    label: item?.desc,
+                    id: item?.name,
+                    timestamp: Date.now(),
+                };
             });
             await mongoSaveArray(siteCollection, sites, "id");
         }
@@ -43,7 +47,11 @@ const main = async () => {
     siteCollection = await mongoCollection("sites");
     await siteCollection.deleteMany({});
 
-    unifi = await new Unifi.Controller({ host: workerData.address, port: workerData.port, sslverify: false });
+    unifi = await new Unifi.Controller({
+        host: workerData.address,
+        port: workerData.port,
+        sslverify: false,
+    });
 
     while (true) {
         await getSites();

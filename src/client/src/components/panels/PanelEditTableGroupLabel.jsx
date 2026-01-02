@@ -6,7 +6,9 @@ import BugTextField from "@core/BugTextField";
 import { useSortable } from "@dnd-kit/sortable";
 
 export default function PanelEditTableGroupLabel({ group, onChange, placeholder, id, passedKey }) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+        id: id,
+    });
     let transformString = null;
 
     if (transform?.y) {

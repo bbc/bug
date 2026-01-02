@@ -48,7 +48,9 @@ export default function TextEditor({ data, onSave = { defaultChange }, panelId, 
                                 });
                                 setEdit(false);
                             } else {
-                                sendAlert(`Failed to delete note`, { variant: "error" });
+                                sendAlert(`Failed to delete note`, {
+                                    variant: "error",
+                                });
                             }
                         },
                     },

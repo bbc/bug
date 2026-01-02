@@ -38,15 +38,25 @@ const AddDialog = ({ panelId, deviceId = null, defaultData, dialogOpen, open, ti
         //If new link
         if (!deviceId) {
             if (await AxiosPost(`/container/${panelId}/device`, form)) {
-                sendAlert(`Added Magewell Encoder at ${form.address}.`, { broadcast: "true", variant: "success" });
+                sendAlert(`Added Magewell Encoder at ${form.address}.`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to add magewell encoder at ${form.address}`, { variant: "error" });
+                sendAlert(`Failed to add magewell encoder at ${form.address}`, {
+                    variant: "error",
+                });
             }
         } else {
             if (await AxiosPut(`/container/${panelId}/device/${deviceId}`, form)) {
-                sendAlert(`Updated Magewell Encoder at ${form.address}.`, { broadcast: "true", variant: "success" });
+                sendAlert(`Updated Magewell Encoder at ${form.address}.`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to update magewell encoder at ${form.address}`, { variant: "error" });
+                sendAlert(`Failed to update magewell encoder at ${form.address}`, {
+                    variant: "error",
+                });
             }
         }
 

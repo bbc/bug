@@ -37,8 +37,15 @@ export default function DeviceTab({ panelId }) {
             return false;
         }
 
-        if (await AxiosPut(`/container/${panelId}/device/rename`, { name: result })) {
-            sendAlert(`Successfully renamed device`, { broadcast: "true", variant: "success" });
+        if (
+            await AxiosPut(`/container/${panelId}/device/rename`, {
+                name: result,
+            })
+        ) {
+            sendAlert(`Successfully renamed device`, {
+                broadcast: "true",
+                variant: "success",
+            });
         } else {
             sendAlert(`Failed to rename device`, { variant: "error" });
         }

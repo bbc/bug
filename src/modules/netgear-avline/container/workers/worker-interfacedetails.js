@@ -17,7 +17,6 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-
     await delay(5000);
 
     const NetgearApi = new netgearApi({
@@ -34,10 +33,11 @@ const main = async () => {
     const historyCollection = await mongoCollection("history");
 
     // and now create the index with ttl
-    await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
+    await mongoCreateIndex(historyCollection, "timestamp", {
+        expireAfterSeconds: 60 * 10,
+    });
 
     while (true) {
-
         await pollerInterfaceStats(NetgearApi, interfacesCollection, historyCollection);
         await pollerInterfaceVlans(NetgearApi, interfacesCollection, historyCollection);
         await delay(5000);

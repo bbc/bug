@@ -61,7 +61,10 @@ const main = async () => {
                     const parsedProgramProperties = await parseProgramProperties(programPropertiesResult);
 
                     // then merge the results with the programme
-                    programListWithProperties.push({ ...eachProgram, ...parsedProgramProperties });
+                    programListWithProperties.push({
+                        ...eachProgram,
+                        ...parsedProgramProperties,
+                    });
                 }
 
                 // save to DB

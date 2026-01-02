@@ -27,7 +27,10 @@ const main = async () => {
 
     while (true) {
         let outputs = await mdu.getOutputs();
-        outputs = outputs.map((output) => ({ ...output, timestamp: new Date() }));
+        outputs = outputs.map((output) => ({
+            ...output,
+            timestamp: new Date(),
+        }));
         await mongoSaveArray(outputsCollection, outputs, "number");
         await delay(updateDelay);
     }

@@ -3,7 +3,6 @@
 const delay = require("delay");
 
 module.exports = async (router, routesCollection) => {
-
     // this always returns a 1-based result. Gah.
     console.log(`fetch-routes: fetching routes from device ... `);
     const routerState = await router.getState();
@@ -13,8 +12,7 @@ module.exports = async (router, routesCollection) => {
         // this happens a lot - we'll wait before exiting the worker
         await delay(10000);
         throw new Error(`Error fetching routes: ${routerState?.message}`);
-    }
-    else {
+    } else {
         let routes = [];
 
         // get the array matrix keys
@@ -23,7 +21,7 @@ module.exports = async (router, routesCollection) => {
         // and the 1-based array of levels (assuming there's only one matrix)
         const levels = Object.keys(routerState[matrix[0]]);
         for (let level of levels) {
-            const intLevel = parseInt(level)
+            const intLevel = parseInt(level);
             const destinations = Object.keys(routerState[matrix[0]][level]);
             if (Array.isArray(destinations)) {
                 for (let destination of destinations) {
@@ -32,7 +30,10 @@ module.exports = async (router, routesCollection) => {
                         const destinationZero = parseInt(destination) - 1;
 
                         if (!routes[destinationZero]) {
-                            routes[destinationZero] = { destination: destinationZero, levels: {} };
+                            routes[destinationZero] = {
+                                destination: destinationZero,
+                                levels: {},
+                            };
                         }
                         // now we've guaranteed the levels key is there we can populate it
                         routes[destinationZero]["levels"][intLevel] = routerState[matrix]?.[level]?.[destination];

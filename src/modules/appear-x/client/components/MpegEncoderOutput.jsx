@@ -266,8 +266,14 @@ export default function MpegEncoderOutput({
                                 options={[
                                     { id: "UDP", label: "UDP" },
                                     { id: "RTP", label: "RTP" },
-                                    { id: "RTP:FEC:A", label: "RTP with FEC - Level A" },
-                                    { id: "RTP:FEC:B", label: "RTP with FEC - Level B" },
+                                    {
+                                        id: "RTP:FEC:A",
+                                        label: "RTP with FEC - Level A",
+                                    },
+                                    {
+                                        id: "RTP:FEC:B",
+                                        label: "RTP with FEC - Level B",
+                                    },
                                 ]}
                                 onChange={(event) => outputTypeChanged(event.target.value)}
                             ></BugSelect>

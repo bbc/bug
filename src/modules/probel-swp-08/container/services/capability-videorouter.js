@@ -19,9 +19,15 @@ module.exports = async () => {
     const dataCollection = await mongoCollection("data");
 
     const returnArray = [];
-    const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
-    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
+    const dbOutputLabels = await dataCollection.findOne({
+        title: "output_labels",
+    });
+    const dbOutputRouting = await dataCollection.findOne({
+        title: "video_output_routing",
+    });
+    const dbInputLabels = await dataCollection.findOne({
+        title: "input_labels",
+    });
 
     if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
         // loop through and add routing

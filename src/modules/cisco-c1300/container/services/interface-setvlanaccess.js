@@ -37,7 +37,12 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
         // update db
         const dbResult = await interfaceCollection.updateOne(
             { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
+            {
+                $set: {
+                    "untagged-vlan": parseInt(untaggedVlan),
+                    "tagged-vlans": [],
+                },
+            }
         );
         console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
         return true;

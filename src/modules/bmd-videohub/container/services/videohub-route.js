@@ -39,7 +39,10 @@ module.exports = async (destinatonIndex, sourceIndex) => {
     }
 
     try {
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new videohub({
+            port: config.port,
+            host: config.address,
+        });
         await router.connect();
         await router.send("VIDEO OUTPUT ROUTING", routeCommands);
         return true;

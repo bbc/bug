@@ -56,10 +56,18 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     const excludedDestinations = config["excludeDestinations"] ? config["excludeDestinations"] : [];
 
     // get get the existing data from the db
-    const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
-    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-    const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
+    const dbOutputLabels = await dataCollection.findOne({
+        title: "output_labels",
+    });
+    const dbOutputRouting = await dataCollection.findOne({
+        title: "video_output_routing",
+    });
+    const dbInputLabels = await dataCollection.findOne({
+        title: "input_labels",
+    });
+    const dbOutputLocks = await dataCollection.findOne({
+        title: "video_output_locks",
+    });
 
     if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
         for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels["data"])) {

@@ -14,7 +14,6 @@ describe("Test the '/api/icons/' endpoint", () => {
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
         expect(response.body.data).toContain(iconsSettings.variants[0]);
-
     });
 
     test("Test the '/icons' getall route", async () => {
@@ -24,7 +23,6 @@ describe("Test the '/api/icons/' endpoint", () => {
         for (let eachIcon of testIcons) {
             expect(response.body.data.icons).toContain(eachIcon);
         }
-
     });
 
     test("Test the '/icons' POST route with no parameters", async () => {
@@ -36,7 +34,6 @@ describe("Test the '/api/icons/' endpoint", () => {
         }
         const arrayLength = response.body.data.icons.length;
         expect(response.body.data.length).toEqual(arrayLength);
-
     });
 
     test("Test the '/icons/{iconName}' GET route", async () => {
@@ -46,7 +43,6 @@ describe("Test the '/api/icons/' endpoint", () => {
         expect(response.body.data.icons).toContain(testIcons[0]);
         expect(response.body.data.icons.length).toEqual(1);
         expect(response.body.data.length).toEqual(1);
-
     });
 
     test("Test the '/icons/{iconName}' POST route", async () => {
@@ -56,7 +52,6 @@ describe("Test the '/api/icons/' endpoint", () => {
         expect(response.body.data.icons).toContain(testIcons[0]);
         expect(response.body.data.icons.length).toEqual(1);
         expect(response.body.data.length).toEqual(1);
-
     });
 
     test("Test the '/icons' POST route with length parameter", async () => {
@@ -68,7 +63,6 @@ describe("Test the '/api/icons/' endpoint", () => {
         expect(response.body.status).toBe("success");
         expect(response.body.data.icons).toBeArray();
         expect(response.body.data.icons.length).toEqual(10);
-
     });
 
     test("Test the '/icons' POST route with variant parameter", async () => {
@@ -80,6 +74,5 @@ describe("Test the '/api/icons/' endpoint", () => {
         expect(response.body.status).toBe("success");
         expect(response.body.data.icons.length).toBeGreaterThan(0);
         expect(response.body.data.icons[0]).toEndWith(`-${testVariant}`);
-
     });
 });

@@ -13,7 +13,11 @@ module.exports = async (device) => {
 
     if (device.address && device.username && device.password) {
         const deviceId = await uuidv4();
-        config.devices[deviceId] = { address: device.address, username: device.username, password: device.password };
+        config.devices[deviceId] = {
+            address: device.address,
+            username: device.username,
+            password: device.password,
+        };
     }
 
     return await configPutViaCore(config);

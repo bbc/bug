@@ -76,7 +76,11 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                             <BugTextField
                                 fullWidth
                                 value={connection.destination ? connection.destination : ""}
-                                onChange={(e) => onChange(group.id, connection.id, { destination: e.target.value })}
+                                onChange={(e) =>
+                                    onChange(group.id, connection.id, {
+                                        destination: e.target.value,
+                                    })
+                                }
                                 type="text"
                                 variant="outlined"
                                 changeOnBlur
@@ -90,7 +94,11 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                             <BugTextField
                                 fullWidth
                                 value={connection.audioPort}
-                                onChange={(e) => onChange(group.id, connection.id, { audioPort: e.target.value })}
+                                onChange={(e) =>
+                                    onChange(group.id, connection.id, {
+                                        audioPort: e.target.value,
+                                    })
+                                }
                                 type="text"
                                 variant="outlined"
                                 filter={/[^0-9]/}
@@ -108,7 +116,11 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                             <BugTextField
                                 fullWidth
                                 value={connection.sessionPort}
-                                onChange={(e) => onChange(group.id, connection.id, { sessionPort: e.target.value })}
+                                onChange={(e) =>
+                                    onChange(group.id, connection.id, {
+                                        sessionPort: e.target.value,
+                                    })
+                                }
                                 type="text"
                                 variant="outlined"
                                 filter={/[^0-9]/}
@@ -140,7 +152,11 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                                     { id: "VLAN4", label: "VLAN4" },
                                 ]}
                                 variant="outlined"
-                                onChange={(e) => onChange(group.id, connection.id, { via: e.target.value })}
+                                onChange={(e) =>
+                                    onChange(group.id, connection.id, {
+                                        via: e.target.value,
+                                    })
+                                }
                                 disabled={connection._connected || connection._connecting}
                             />
                         ),

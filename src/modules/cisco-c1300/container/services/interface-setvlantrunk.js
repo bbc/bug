@@ -36,9 +36,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         // summarise this into a list of vlans - it's used to update the db
         const vlanArray = ciscoC1300VlanArray(vlans, taggedVlans);
         console.log(
-            `interface-setvlantrunk: setting vlan trunk members to ${JSON.stringify(
-                vlanArray
-            )}, native ${untaggedVlan} on interface ${interfaceId}`
+            `interface-setvlantrunk: setting vlan trunk members to ${JSON.stringify(vlanArray)}, native ${untaggedVlan} on interface ${interfaceId}`
         );
 
         // encode the vlan array back into a hex string
@@ -70,7 +68,12 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         const interfaceCollection = await mongoCollection("interfaces");
         const dbResult = await interfaceCollection.updateOne(
             { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": vlanArray } }
+            {
+                $set: {
+                    "untagged-vlan": parseInt(untaggedVlan),
+                    "tagged-vlans": vlanArray,
+                },
+            }
         );
         console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
 
