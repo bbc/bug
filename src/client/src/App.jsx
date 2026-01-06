@@ -7,7 +7,8 @@ import SettingsHandler from "@data/SettingsHandler";
 import StrategiesHandler from "@data/StrategiesHandler";
 import UserHandler from "@data/UserHandler";
 import { CssBaseline, Fade } from "@mui/material";
-import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { StyledEngineProvider } from "@mui/styled-engine";
 import reduxStore from "@redux/store";
 import { SnackbarConfigurator } from "@utils/Snackbar";
 import TimeAgo from "javascript-time-ago";
@@ -57,12 +58,10 @@ const ThemedApp = (props) => {
 };
 export default function App() {
     return (
-        <>
-            <Provider store={reduxStore}>
-                <StyledEngineProvider injectFirst>
-                    <ThemedApp />
-                </StyledEngineProvider>
-            </Provider>
-        </>
+        <Provider store={reduxStore}>
+            <StyledEngineProvider injectFirst>
+                <ThemedApp />
+            </StyledEngineProvider>
+        </Provider>
     );
 }

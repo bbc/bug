@@ -1,7 +1,8 @@
 import io from "@utils/io";
 import { useSnackbar } from "notistack";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { setUseSnackbarRef } from "./snackHelpers"; // Import the setter
 
 const alert = io("/alert");
 
@@ -10,25 +11,18 @@ const InnerSnackbarConfigurator = (props) => {
     return null;
 };
 
-let useSnackbarRef;
-const setUseSnackbarRef = (useSnackbarRefProp) => {
-    useSnackbarRef = useSnackbarRefProp;
-};
-
 export function SnackbarConfigurator() {
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
-        alert.on("event", (payload) => {
+        const handleEvent = (payload) => {
             enqueueSnackbar(payload?.message, payload?.options);
-        });
-    });
+        };
+        alert.on("event", handleEvent);
+        return () => alert.off("event", handleEvent); // Cleanup prevents memory leaks
+    }, [enqueueSnackbar]);
 
-    return (
-        <>
-            <InnerSnackbarConfigurator setUseSnackbarRef={setUseSnackbarRef} />
-        </>
-    );
+    return <InnerSnackbarConfigurator setUseSnackbarRef={setUseSnackbarRef} />;
 }
 
 export const useAlert = () => {
@@ -36,34 +30,15 @@ export const useAlert = () => {
     const user = useSelector((state) => state?.user);
     const panelConfig = useSelector((state) => state?.panelConfig);
 
-    const sendAlert = (message, options) => {
+    return (message, options) => {
         alert.emit("event", {
-            message: message,
+            message,
             userId: user?.data?.id,
             panelId: panelConfig?.data?.id,
-            options: options,
+            options,
         });
-        delete options.broadcast;
-        enqueueSnackbar(message, options);
+        const localOptions = { ...options };
+        delete localOptions.broadcast;
+        enqueueSnackbar(message, localOptions);
     };
-
-    return sendAlert;
-};
-
-export const snackActions = {
-    success(msg) {
-        this.toast(msg, "success");
-    },
-    warning(msg) {
-        this.toast(msg, "warning");
-    },
-    info(msg) {
-        this.toast(msg, "info");
-    },
-    error(msg) {
-        this.toast(msg, "error");
-    },
-    toast(msg, variant = "default") {
-        useSnackbarRef.enqueueSnackbar(msg, { variant });
-    },
 };

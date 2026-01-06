@@ -6,12 +6,15 @@ networks:
 services:
     app:
         container_name: bug
-        build: "./src"
+        build:
+            context: .
+            dockerfile: ./src/server/Dockerfile
         restart: unless-stopped
         user: root
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./src:/home/node/bug
+            - .:/home/node/bug
+            - /home/node/bug/node_modules
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
@@ -29,6 +32,7 @@ services:
             PORT: 3000
             NODE_ENV: development
             SESSION_SECRET: aSecretForYourSessions
+        working_dir: /home/node/bug
         depends_on:
             - mongo
         networks:
@@ -36,6 +40,7 @@ services:
         ports:
             - 3000:3000
             - 3101:3101
+        command: npm run dev
         logging:
             driver: "json-file"
             options:
