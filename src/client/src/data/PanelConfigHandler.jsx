@@ -20,6 +20,7 @@ export function usePanelConfig({ panelId }) {
 
         return () => {
             socket.emit("unsubscribe", panelId);
+            socket.off("event");
             socket.disconnect();
             dispatch(panelConfigSlice.actions["idle"]());
         };
