@@ -9,10 +9,14 @@ export default function SettingsHandler() {
     const [connection, setConnection] = useState(false);
 
     useEffect(() => {
-        const socket = io("/system", {
-            reconnection: true,
-            reconnectionDelay: 500,
-        });
+        const socket = io(
+            "/system",
+            {
+                reconnection: true,
+                reconnectionDelay: 500,
+            },
+            false
+        );
 
         socket.on("connect", () => {
             setConnection(true);

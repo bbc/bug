@@ -7,11 +7,7 @@ export default function PanelListHandler() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const socket = io("/panelList");
-
-        socket.on("connect", () => {
-            console.log("PanelList Socket Connected");
-        });
+        const socket = io("/panelList", {}, false);
 
         socket.on("event", (result) => {
             const action = panelListSlice?.actions?.[result?.status];
@@ -23,7 +19,6 @@ export default function PanelListHandler() {
         });
 
         return () => {
-            socket.off("connect");
             socket.off("event");
             socket.disconnect();
         };
