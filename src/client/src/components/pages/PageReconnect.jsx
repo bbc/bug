@@ -40,8 +40,7 @@ export default function PageReconnect({ connection = false }) {
                             >
                                 Cannot connect to BUG server
                             </Typography>
-                            <Grid
-                                size={{ xs: 3 }}
+                            <Box
                                 sx={{
                                     margin: "16px",
                                 }}
@@ -60,7 +59,7 @@ export default function PageReconnect({ connection = false }) {
                                         justifyContent="center"
                                     ></Box>
                                 </Box>
-                            </Grid>
+                            </Box>
                             <Button
                                 onClick={handleReloadClicked}
                                 variant="contained"

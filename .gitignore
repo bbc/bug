@@ -38,6 +38,7 @@ src/server/routes/logs
 
 # Client Production Build
 /src/client/build/*
+/src/client/dist/*
 !/src/client/build/.gitkeep
 
 # Storybook Static Files
