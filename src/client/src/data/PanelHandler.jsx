@@ -1,33 +1,32 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import panelSlice from "@redux/panelSlice";
 import io from "@utils/io";
-
-const panel = io("/panel");
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export function usePanel({ panelId }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!panelId) {
-            return null;
+            return;
         }
-        panel.emit("subscribe", panelId);
-        // console.log(`${panelId}: panel - subscribed`);
 
-        panel.on("event", function (result) {
-            // console.log(`${panelId}: panel - event`, result);
-            const actionFunction = panelSlice.actions[result["status"]];
+        const socket = io("/panel");
+
+        socket.emit("subscribe", panelId);
+
+        socket.on("event", (result) => {
+            const actionFunction = panelSlice.actions[result?.status];
             if (typeof actionFunction === "function") {
                 dispatch(actionFunction(result));
             } else {
-                console.error(`no suitable action found for status ${result["status"]}`);
+                console.error(`No suitable action found for status: ${result?.status}`);
             }
         });
 
-        return async () => {
-            panel.emit("unsubscribe", panelId);
-            // console.log(`${panelId}: panel unsubscribed`);
+        return () => {
+            socket.emit("unsubscribe", panelId);
+            socket.disconnect();
             dispatch(panelSlice.actions["idle"]());
         };
     }, [panelId, dispatch]);

@@ -1,10 +1,9 @@
-import { useDispatch } from "react-redux";
-import userSlice from "@redux/userSlice";
 import { useApiPoller } from "@hooks/ApiPoller";
+import userSlice from "@redux/userSlice";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-// this is used to fetch the initial user state - which may already be logged in
-export default function UserHandler(props) {
+export default function UserHandler() {
     const dispatch = useDispatch();
 
     const user = useApiPoller({
@@ -14,7 +13,14 @@ export default function UserHandler(props) {
     });
 
     useEffect(() => {
-        dispatch(userSlice.actions[user.status](user));
+        const status = user?.status;
+        const action = userSlice.actions[status];
+
+        if (status && action) {
+            dispatch(action(user));
+        } else if (status === "error") {
+            console.warn("UserHandler: API Poller returned an error status");
+        }
     }, [user, dispatch]);
 
     return null;

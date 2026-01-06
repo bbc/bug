@@ -3,24 +3,24 @@
 node_modules
 
 #Logs
-/src/logs/*
-!/src/logs/.gitkeep
+/logs/*
+!/logs/.gitkeep
 
 #Backup Data
-/src/data/*
-!/src/data/.gitkeep
+/src/server/data/*
+!/src/server/data/.gitkeep
 
 # Panel Configs
-/src/config/panels/*.json
-!/src/config/panels/.gitkeep
+/src/server/config/panels/*.json
+!/src/server/config/panels/.gitkeep
 
 # Global Config
-/src/config/global/*.json
-!/src/config/global/.gitkeep
+/src/server/config/global/*.json
+!/src/server/config/global/.gitkeep
 
 # Module Dockerfiles
 Dockerfile*
-!/src/Dockerfile
+!/src/server/Dockerfile
 
 # Global Environment Files
 .env.development
@@ -29,11 +29,12 @@ Dockerfile*
 
 # Client
 src/client/.pnp
+src/client/dist/*
 .pnp.js
 
 # Testing
 src/client/coverage
-src/routes/logs
+src/server/routes/logs
 
 # Client Production Build
 /src/client/build/*

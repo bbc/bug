@@ -1,40 +1,40 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import PageReconnect from "@components/pages/PageReconnect";
 import settingsSlice from "@redux/settingsSlice";
-import { useEffect } from "react";
 import io from "@utils/io";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
-const system = io("/system", {
-    reconnection: true,
-    reconnectionDelay: 500,
-});
-
-// this is used to fetch the initial global configuration settings state
 export default function SettingsHandler() {
     const dispatch = useDispatch();
-    const [connection, setConnection] = useState(true);
+    const [connection, setConnection] = useState(false);
 
     useEffect(() => {
-        system.on("connect", () => {
-            //console.log(`${system.id}: system - subscribed`);
+        const socket = io("/system", {
+            reconnection: true,
+            reconnectionDelay: 500,
+        });
+
+        socket.on("connect", () => {
             setConnection(true);
-            system.emit("settings");
+            socket.emit("settings");
         });
 
-        system.on("settings", (result) => {
-            //console.log(`${system.id}: system - settings event`, result);
-            dispatch(settingsSlice.actions[result["status"]](result));
+        socket.on("settings", (result) => {
+            const action = settingsSlice.actions[result?.status];
+            if (action) {
+                dispatch(action(result));
+            }
         });
 
-        system.on("disconnect", () => {
-            //console.log(`${system.id}: system - disconnected`);
+        socket.on("disconnect", () => {
             setConnection(false);
         });
 
-        return async () => {
-            // console.log(`${system.id}: system - unsubscribed`);
-            system.disconnect();
+        return () => {
+            socket.off("connect");
+            socket.off("settings");
+            socket.off("disconnect");
+            socket.disconnect();
         };
     }, [dispatch]);
 

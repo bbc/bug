@@ -1,27 +1,20 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import strategiesSlice from "@redux/strategiesSlice";
 import io from "@utils/io";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-const strategyList = io("/strategies");
-
-export default function StrategiesHandler(props) {
+export default function StrategiesHandler() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        strategyList.on("connect", () => {
-            // console.log(`${strategyList.id}: strategyList - subscribed`);
+        const socket = io("/strategies");
+
+        socket.on("event", (result) => {
+            const action = strategiesSlice.actions[result?.status];
+            if (action) dispatch(action(result));
         });
 
-        strategyList.on("event", (result) => {
-            // console.log(`${strategyList.id}: strategyList - event`, result);
-            dispatch(strategiesSlice.actions[result["status"]](result));
-        });
-
-        return async () => {
-            // console.log(`${strategyList.id}: strategyList - unsubscribed`);
-            strategyList.disconnect();
-        };
+        return () => socket.disconnect();
     }, [dispatch]);
 
     return null;

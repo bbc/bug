@@ -8,7 +8,22 @@ import UsersToolbar from "@components/toolbars/UsersToolbar";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import * as Toolbars from "../../../../modules/*/client/Toolbar.jsx";
+
+const rawModules = import.meta.glob("../../../../modules/*/client/Toolbar.jsx", { eager: true });
+
+const Toolbars = { modules: {} };
+
+Object.entries(rawModules).forEach(([path, module]) => {
+    const pathParts = path.split("/");
+    const moduleName = pathParts[pathParts.length - 3];
+
+    if (!Toolbars.modules[moduleName]) {
+        Toolbars.modules[moduleName] = { client: {} };
+    }
+
+    Toolbars.modules[moduleName].client.Toolbar = module.default || module.Toolbar;
+});
+
 const Title = ({ children }) => (
     <Box
         sx={{
@@ -22,8 +37,8 @@ const Title = ({ children }) => (
 
 const ToolbarRouter = (props) => {
     const location = useLocation();
-
     const panelConfig = useSelector((state) => state.panelConfig);
+
     if (panelConfig.status === "loading") {
         return null;
     }
@@ -34,11 +49,12 @@ const ToolbarRouter = (props) => {
         }
         try {
             if (Toolbars["modules"][panelConfig?.data?.module]) {
-                console.log("changed this comment in development to force a refresh of the Toolbar logic above");
                 const Toolbar = Toolbars["modules"][panelConfig.data.module]["client"]["Toolbar"];
                 return <Toolbar panelId={panelConfig.data.id} />;
             }
-        } catch (error) {}
+        } catch (error) {
+            console.error("Toolbar resolution error:", error);
+        }
 
         return <></>;
     };
