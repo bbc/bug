@@ -45,25 +45,13 @@ export default defineConfig({
                 target: 'http://localhost:3101',
                 ws: true,
                 changeOrigin: true,
-                configure: (proxy, _options) => {
-                    proxy.on('error', (err, _req, _res) => {
-                        console.log('proxy error', err);
-                    });
-                    proxy.on('proxyRes', (proxyRes, req, _res) => {
-                        console.log('proxyRes');
-                        proxyRes.headers['connection'] = 'keep-alive';
-                    });
-                    proxy.on('proxyReqWs', (proxyReq) => {
-                        console.log('proxyReqWs');
-                        proxyReq.setHeader('Connection', 'Upgrade');
-                    });
-                },
             }
         },
         watch: {
             ignored: [
                 path.resolve(__dirname, '../modules/*/container/**'),
-                '**/node_modules/resolve/test/**'
+                '**/node_modules/resolve/test/**',
+                '**/src/server/config/**',
             ],
             usePolling: true,
             interval: 100

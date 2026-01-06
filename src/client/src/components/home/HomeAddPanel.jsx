@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const HomeAddPanel = () => {
     return (
         <Grid
-            item
             size={{ xl: 3, lg: 4, sm: 6, xs: 12 }}
             sx={{
                 padding: "12px",

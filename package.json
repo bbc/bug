@@ -19,6 +19,7 @@
     "nodemonConfig": {
         "ignore": [
             "src/client/*",
+            "src/server/config/*",
             "**/node_modules/*",
             "**/container/*",
             "**/docs/*",
