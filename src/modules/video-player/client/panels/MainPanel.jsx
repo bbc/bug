@@ -1,8 +1,6 @@
-import React from "react";
-import VideoPlayer from "../components/VideoPlayer";
+import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
-import Box from "@mui/material/Box";
-
+import VideoPlayer from "../components/VideoPlayer";
 export default function MainPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
 

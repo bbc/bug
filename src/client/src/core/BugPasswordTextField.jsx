@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import IconButton from "@mui/material/IconButton";
-
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { useState } from "react";
 export default function BugPasswordTextField({ variant = "standard", allowShowPassword = true, sx = {}, ...props }) {
     const [showPassword, setShowPassword] = useState(false);
 

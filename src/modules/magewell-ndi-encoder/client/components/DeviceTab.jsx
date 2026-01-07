@@ -1,14 +1,13 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import { useApiPoller } from "@hooks/ApiPoller";
-import { useAlert } from "@utils/Snackbar";
+import BugDetailsTable from "@core/BugDetailsTable";
 import BugLoading from "@core/BugLoading";
+import BugNoData from "@core/BugNoData";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugSparkCell from "@core/BugSparkCell";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Grid } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
-import BugNoData from "@core/BugNoData";
-import BugDetailsTable from "@core/BugDetailsTable";
+import { useAlert } from "@utils/Snackbar";
 import TimeAgo from "javascript-time-ago";
 
 export default function DeviceTab({ panelId, deviceId }) {
@@ -164,7 +163,7 @@ export default function DeviceTab({ panelId, deviceId }) {
 
     return (
         <>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         {

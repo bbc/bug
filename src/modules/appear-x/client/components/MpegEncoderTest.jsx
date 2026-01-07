@@ -1,8 +1,7 @@
-import React from "react";
+import BugColorPicker from "@core/BugColorPicker";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugColorPicker from "@core/BugColorPicker";
-import Switch from "@mui/material/Switch";
+import { Switch } from "@mui/material";
 import rgbHex from "rgb-hex";
 
 export default function MpegEncoderTest({ codecdata, onChange, showAdvanced, panelId, serviceId }) {

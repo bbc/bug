@@ -1,17 +1,8 @@
-import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import SecurityTableDraggableRow from "@components/security/SecurityTableDraggableRow";
 import BugLoading from "@core/BugLoading";
-import { useSelector } from "react-redux";
 import {
-    DndContext,
     closestCenter,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
     TouchSensor,
@@ -24,8 +15,11 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useSelector } from "react-redux";
 
 export default function SecurityTableEdit() {
     const strategies = useSelector((state) => state.strategies);

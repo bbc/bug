@@ -1,12 +1,11 @@
-import React from "react";
-import BugLoading from "@core/BugLoading";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import { useSelector } from "react-redux";
-import panelListGroups from "@utils/panelListGroups";
-import HomeTile from "@components/home/HomeTile";
 import HomeAddPanel from "@components/home/HomeAddPanel";
+import HomeTile from "@components/home/HomeTile";
+import BugLoading from "@core/BugLoading";
 import BugRestrictTo from "@core/BugRestrictTo";
+import { Box, Grid } from "@mui/material";
+import panelListGroups from "@utils/panelListGroups";
+import React from "react";
+import { useSelector } from "react-redux";
 
 const GroupedTiles = ({ groupedPanelArray }) => {
     return (
@@ -47,7 +46,9 @@ const Tiles = ({ panels }) => {
         <Grid container>
             {panels.map((panel) => (
                 <BugRestrictTo key={panel.id} panel={panel?.id}>
-                    <HomeTile panel={panel} />
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ display: "flex" }}>
+                        <HomeTile panel={panel} />
+                    </Grid>
                 </BugRestrictTo>
             ))}
         </Grid>

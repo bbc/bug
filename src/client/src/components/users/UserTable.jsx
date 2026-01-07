@@ -1,20 +1,19 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import BugApiTable from "@core/BugApiTable";
-import { useHistory } from "react-router-dom";
 import BugApiSwitch from "@core/BugApiSwitch";
+import BugApiTable from "@core/BugApiTable";
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import { useForceRefresh } from "@hooks/ForceRefresh";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useBugConfirmDialog } from "@core/BugConfirmDialog";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function UserTable({ interval }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const user = useSelector((state) => state.user);
     const currentUserId = user.status === "success" ? user.data?.id : null;
     const sendAlert = useAlert();
@@ -22,11 +21,11 @@ export default function UserTable({ interval }) {
     const { confirmDialog } = useBugConfirmDialog();
 
     const handleRowClick = (event, item) => {
-        history.push(`/system/user/${item.id}`);
+        navigate(`/system/user/${item.id}`);
     };
 
     const handleEditClick = (event, item) => {
-        history.push(`/system/user/${item.id}`);
+        navigate(`/system/user/${item.id}`);
     };
 
     const handleDeleteClick = async (event, item) => {

@@ -1,16 +1,16 @@
-import React from "react";
 import BugLoading from "@core/BugLoading";
-import Grid from "@mui/material/Grid";
-import CodecVideo from "./CodecVideo";
+import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
+import { Grid } from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
+import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useSelector } from "react-redux";
+import useAsyncEffect from "use-async-effect";
 import CodecAudio from "./CodecAudio";
 import CodecMux from "./CodecMux";
 import CodecOutput from "./CodecOutput";
-import AxiosGet from "@utils/AxiosGet";
-import AxiosPost from "@utils/AxiosPost";
-import useAsyncEffect from "use-async-effect";
-import { useSelector } from "react-redux";
-import { useAlert } from "@utils/Snackbar";
-import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
+import CodecVideo from "./CodecVideo";
 
 export default function Codec({ panelId }) {
     const [codecdata, setCodecdata] = React.useState({});
@@ -68,18 +68,18 @@ export default function Codec({ panelId }) {
                 padding: "4px",
             }}
         >
-            <Grid item xs={12} md={6} xl={8}>
+            <Grid size={{ xs: 12, md: 6, xl: 8 }}>
                 <Grid container spacing={1}>
-                    <Grid item xs={12} xl={6}>
+                    <Grid size={{ xs: 12, xl: 6 }}>
                         <CodecVideo codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                     </Grid>
-                    <Grid item xs={12} xl={6}>
+                    <Grid size={{ xs: 12, xl: 6 }}>
                         <CodecAudio codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                         <CodecMux codecdata={codecdata} onChange={onChange} showAdvanced={showAdvanced} />
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} md={6} xl={4}>
+            <Grid size={{ xs: 12, md: 6, xl: 4 }}>
                 <CodecOutput
                     codecdata={codecdata}
                     onChange={onChange}

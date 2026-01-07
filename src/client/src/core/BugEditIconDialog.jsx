@@ -1,26 +1,28 @@
-import React, { useMemo } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import AxiosPost from "@utils/AxiosPost";
-import AxiosGet from "@utils/AxiosGet";
 import BugDynamicIcon from "@core/BugDynamicIcon";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
-import { useDebounce } from "use-debounce";
-import Tooltip from "@mui/material/Tooltip";
-import Box from "@mui/material/Box";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import CancelIcon from "@mui/icons-material/Cancel";
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    IconButton,
+    InputAdornment,
+    MenuItem,
+    TextField,
+    Tooltip,
+} from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
+import AxiosPost from "@utils/AxiosPost";
+import React, { useMemo } from "react";
 import { TwitterPicker } from "react-color";
 import useAsyncEffect from "use-async-effect";
-import InputAdornment from "@mui/material/InputAdornment";
-import CancelIcon from "@mui/icons-material/Cancel";
-import IconButton from "@mui/material/IconButton";
+import { useDebounce } from "use-debounce";
 
 const defaultCount = 500;
 
@@ -146,7 +148,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                                 height: "100%",
                             }}
                         >
-                            <Grid item xs={3}>
+                            <Grid size={{ xs: 3 }}>
                                 <CircularProgress disableShrink />
                             </Grid>
                         </Grid>

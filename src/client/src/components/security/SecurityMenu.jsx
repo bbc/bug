@@ -1,23 +1,17 @@
-import React from "react";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useAlert } from "@utils/Snackbar";
-import Divider from "@mui/material/Divider";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
-import { useHistory } from "react-router-dom";
-
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 export default function SecurityMenu({ strategy }) {
     const sendAlert = useAlert();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -62,7 +56,7 @@ export default function SecurityMenu({ strategy }) {
     };
 
     const handleSettings = (event) => {
-        history.push(`/system/security/${strategy.type}`);
+        navigate(`/system/security/${strategy.type}`);
         event.stopPropagation();
     };
 

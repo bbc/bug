@@ -1,28 +1,20 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import DoneIcon from "@mui/icons-material/Done";
 import { usePanelStatus } from "@hooks/PanelStatus";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import CheckIcon from "@mui/icons-material/Check";
+import DoneIcon from "@mui/icons-material/Done";
+import EditIcon from "@mui/icons-material/Edit";
 import LabelIcon from "@mui/icons-material/Label";
-import Divider from "@mui/material/Divider";
-import { useSelector } from "react-redux";
-import AxiosPut from "@utils/AxiosPut";
+import { Button, Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
-import { useHistory } from "react-router-dom";
-
+import AxiosPut from "@utils/AxiosPut";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 export default function Toolbar({ panelId, ...props }) {
     const toolbarProps = { ...props };
     const location = useLocation();
     const panelStatus = usePanelStatus();
     const panelConfig = useSelector((state) => state.panelConfig);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     if (!panelStatus) {
         return null;
@@ -42,12 +34,12 @@ export default function Toolbar({ panelId, ...props }) {
 
     const handleEditClicked = (event, item) => {
         const params = getParams(5);
-        history.push(`/panel/${panelId}/edit/${params}`);
+        navigate(`/panel/${panelId}/edit/${params}`);
     };
 
     const handleDoneClicked = (event, item) => {
         const params = getParams(6);
-        history.push(`/panel/${panelId}/${params}`);
+        navigate(`/panel/${panelId}/${params}`);
     };
 
     const getParams = (matchCount) => {

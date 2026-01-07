@@ -1,8 +1,7 @@
-import React from "react";
-import OutputList from "./OutputList";
-import Grid from "@mui/material/Grid";
-import { useApiPoller } from "@hooks/ApiPoller";
 import BugGauge from "@core/BugGauge";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Grid } from "@mui/material";
+import OutputList from "./OutputList";
 
 export default function Device({ panelId, deviceIndex }) {
     const stats = useApiPoller({
@@ -12,12 +11,12 @@ export default function Device({ panelId, deviceIndex }) {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={12} sm={12} md={7}>
+            <Grid size={{ xs: 12, sm: 12, md: 7 }}>
                 <OutputList panelId={panelId} deviceIndex={deviceIndex} />
             </Grid>
-            <Grid item xs={12} sm={12} md={5}>
+            <Grid size={{ xs: 12, sm: 12, md: 5 }}>
                 <Grid container spacing={1} sx={{ marginBottom: "8px" }}>
-                    <Grid item xs={12} sm={6} md={12} lg={6}>
+                    <Grid size={{ xs: 12, sm: 6, md: 12, lg: 6 }}>
                         <BugGauge
                             value={stats?.data?.meterVolts / 1000}
                             max={480}
@@ -26,15 +25,15 @@ export default function Device({ panelId, deviceIndex }) {
                             decimalPlaces={1}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={12} lg={6}>
+                    <Grid size={{ xs: 12, sm: 6, md: 12, lg: 6 }}>
                         <BugGauge value={stats?.data?.meterAmps / 1000} max={16} unit="A" title="Current" />
                     </Grid>
                 </Grid>
                 <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
                         <BugGauge value={stats?.data?.meterFrequency / 1000} max={100} unit="Hz" title="Frequency" />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
                         <BugGauge
                             value={stats?.data?.meterWatts / 1000}
                             max={16 * 240}

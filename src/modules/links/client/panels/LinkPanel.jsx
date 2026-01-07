@@ -1,22 +1,18 @@
-import React from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useHotkeys } from "react-hotkeys-hook";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
 import CloseIcon from "@mui/icons-material/Close";
+import { Box, IconButton, Typography } from "@mui/material";
+import { useHotkeys } from "react-hotkeys-hook";
 import Iframe from "react-iframe";
-
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 export default function LinkPage() {
     const params = useParams();
     const panelConfig = useSelector((state) => state.panelConfig);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onClose = () => {
-        history.push(`/panel/${params.panelId}`);
+        navigate(`/panel/${params.panelId}`);
     };
 
     const link = panelConfig.data.links[params.linkIndex];

@@ -1,7 +1,7 @@
-import React from "react";
 import BugModuleWrapper from "@core/BugModuleWrapper";
 import BugRestrictTo from "@core/BugRestrictTo";
-import { Route } from "react-router-dom";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 
 const MainPanel = React.lazy(() => import("./panels/MainPanel"));
 const ConfigPanel = React.lazy(() => import("./panels/ConfigPanel"));
@@ -11,21 +11,19 @@ const NewLeasePanel = React.lazy(() => import("./panels/NewLeasePanel"));
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
-            <Route exact path="/panel/:panelId">
-                <MainPanel />
-            </Route>
-
-            <Route exact path="/panel/:panelId/lease/:leaseId">
-                <LeasePanel />
-            </Route>
-            <Route exact path="/panel/:panelId/lease/">
-                <NewLeasePanel />
-            </Route>
-            <BugRestrictTo role="admin">
-                <Route exact path="/panel/:panelId/config">
-                    <ConfigPanel />
-                </Route>
-            </BugRestrictTo>
+            <Routes>
+                <Route index element={<MainPanel {...props} />} />
+                <Route path="/lease/:leaseId" element={<LeasePanel {...props} />} />
+                <Route path="/lease/" element={<NewLeasePanel {...props} />} />
+                <Route
+                    path="config"
+                    element={
+                        <BugRestrictTo role="admin">
+                            <ConfigPanel {...props} />
+                        </BugRestrictTo>
+                    }
+                />
+            </Routes>
         </BugModuleWrapper>
     );
 }

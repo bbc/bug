@@ -1,7 +1,5 @@
+import { Autocomplete, Paper, TextField } from "@mui/material";
 import React from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
 
 export default React.memo(
     function BugApiAutocomplete({

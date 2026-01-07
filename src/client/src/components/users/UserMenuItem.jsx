@@ -1,29 +1,25 @@
 import BugAvatar from "@core/BugAvatar";
 import EditIcon from "@mui/icons-material/Edit";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import userSlice from "@redux/userSlice";
 import AxiosPost from "@utils/AxiosPost";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserMenuItem = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [anchorEl, setAnchorEl] = useState(null);
-    const history = useHistory();
+    const navigate = useNavigate();
     const open = Boolean(anchorEl);
 
     const handleOpenMenuClick = (event) => {
         if (user?.status === "success") {
             setAnchorEl(event.currentTarget);
         } else {
-            history.push("/login");
+            navigate("/login");
         }
         event.stopPropagation();
     };
@@ -33,7 +29,7 @@ const UserMenuItem = () => {
     };
 
     const handleEdit = (event) => {
-        history.push(`/system/user/${user?.data?.id}`);
+        navigate(`/system/user/${user?.data?.id}`);
         handleClose();
         event.stopPropagation();
     };
@@ -47,7 +43,7 @@ const UserMenuItem = () => {
     const logout = async () => {
         await AxiosPost("/api/logout");
         dispatch(userSlice.actions["failure"]({ error: "User logged out" }));
-        history.push(`/login`);
+        navigate(`/login`);
     };
 
     const getName = (name) => {
@@ -86,12 +82,12 @@ const UserMenuItem = () => {
 
     return (
         <>
-            <ListItem button onClick={handleOpenMenuClick}>
+            <ListItemButton onClick={handleOpenMenuClick}>
                 <ListItemIcon sx={{ padding: "1px" }}>
                     <BugAvatar {...user.data} />
                 </ListItemIcon>
                 <ListItemText primary={getName(user?.data?.name)} />
-            </ListItem>
+            </ListItemButton>
             {getMenu()}
         </>
     );

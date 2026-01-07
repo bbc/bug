@@ -5,7 +5,7 @@ const configPutViaCore = require("@core/config-putviacore");
 
 module.exports = async (inputIndex, routerIndex) => {
     const config = await configGet();
-    console.log(inputIndex, routerIndex);
+
     if (!config) {
         return false;
     }

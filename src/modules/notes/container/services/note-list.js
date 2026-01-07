@@ -12,7 +12,7 @@ module.exports = async () => {
             notesArray.push(config?.notes[noteId]);
         }
 
-        return await notesArray;
+        return notesArray.sort((a, b) => new Date(a.lastUpdated) - new Date(b.lastUpdated));
     } catch (error) {
         return [];
     }

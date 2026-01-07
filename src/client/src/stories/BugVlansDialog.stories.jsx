@@ -1,9 +1,7 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import BugVlansDialog from "@core/BugVlansDialog";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
-
+import BugVlansDialog from "@core/BugVlansDialog";
+import { Box, Button } from "@mui/material";
+import React from "react";
 export default {
     title: "BUG Core/Dialogs/BugVlansDialog",
     component: "div",

@@ -1,13 +1,10 @@
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
+import { Box, Divider, IconButton } from "@mui/material";
 import convertToRange from "convert-to-ranges";
 import React from "react";
 import BugVlansDialog from "./BugVlansDialog";
-
 const BugApiVlanAutocomplete = ({
     options,
     taggedValue,

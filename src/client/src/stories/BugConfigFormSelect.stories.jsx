@@ -1,7 +1,7 @@
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
-import { useForm } from "react-hook-form";
 import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
+import { Grid } from "@mui/material";
+import { useForm } from "react-hook-form";
 
 export default {
     title: "BUG Core/Forms/BugConfigFormSelect",
@@ -142,7 +142,7 @@ export const MyBugConfigFormSelect = (args) => {
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormSelect
                             name={args.name}
                             control={control}
@@ -172,7 +172,7 @@ MyBugConfigFormSelect.parameters = {
     <BugForm.Header>My Form</BugForm.Header>
     <BugForm.Body>
         <Grid container>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormSelect
                     name="control-name"
                     control={control}

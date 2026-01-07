@@ -1,16 +1,11 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import { useHistory } from "react-router-dom";
-import { CardActionArea } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
 import AddIcon from "@mui/icons-material/Add";
-import Stack from "@mui/material/Stack";
-
+import { Card, CardActionArea, CardContent, Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 export default function AddCard({ panelId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleAddClick = () => {
-        history.push(`/panel/${panelId}/host/add`);
+        navigate(`/panel/${panelId}/host/add`);
     };
     return (
         <>

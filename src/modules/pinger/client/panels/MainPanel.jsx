@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import HostCard from "./../components/HostCard";
-import Grid from "@mui/material/Grid";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { Grid } from "@mui/material";
+import { useParams } from "react-router-dom";
+import HostCard from "./../components/HostCard";
 
 export default function MainPanel() {
     const params = useParams();
@@ -17,7 +16,7 @@ export default function MainPanel() {
         const cards = [];
         for (let host of hosts) {
             cards.push(
-                <Grid key={host?.hostId} item xl={3} lg={4} md={6} xs={12}>
+                <Grid key={host?.hostId} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                     <HostCard panelId={params?.panelId} {...host} />
                 </Grid>
             );

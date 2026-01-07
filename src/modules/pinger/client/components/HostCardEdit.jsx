@@ -1,19 +1,18 @@
-import React from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { Typography, Button, Card, CardContent, CardActionArea, CardActions } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { Button, Card, CardActionArea, CardActions, CardContent, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function HostCard({ panelId, handleDelete, host, hostId }) {
     const params = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
-        history.push(`/panel/${panelId}/host/${hostId}`);
+        navigate(`/panel/${panelId}/host/${hostId}`);
     };
 
     const handleEditClick = (event) => {
-        history.push(`/panel/${panelId}/host/${hostId}/edit`);
+        navigate(`/panel/${panelId}/host/${hostId}/edit`);
     };
 
     const handleDeleteClick = (event) => {

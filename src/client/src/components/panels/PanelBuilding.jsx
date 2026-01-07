@@ -1,9 +1,4 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import ProgressCounter from "@components/ProgressCounter";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 
 const CircularProgressWithLabel = ({ value }) => {
     return (
@@ -29,7 +24,7 @@ const CircularProgressWithLabel = ({ value }) => {
                             fontSize: "2rem",
                         }}
                     >
-                        <ProgressCounter value={Math.round(value)} />%
+                        {Math.round(value)}%
                     </Typography>
                 )}
             </Box>
@@ -50,14 +45,13 @@ export default function PanelBuilding({ panel }) {
                 }}
             >
                 <Grid
-                    item
                     sx={{
                         padding: "1rem",
                     }}
                 >
                     Panel is building ...
                 </Grid>
-                <Grid item xs={3}>
+                <Grid size={{ xs: 3 }}>
                     <CircularProgressWithLabel value={panel?._buildStatus?.progress} />
                 </Grid>
             </Grid>

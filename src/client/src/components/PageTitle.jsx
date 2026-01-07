@@ -1,5 +1,4 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
+import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 
 export default function PageTitle(props) {

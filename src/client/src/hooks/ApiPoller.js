@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect } from "react";
-import axios from "axios";
 import { useRecursiveTimeout } from "@hooks/RecursiveTimeout";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 
 export function useApiPoller({
     polling = true,
@@ -18,40 +18,36 @@ export function useApiPoller({
     });
 
     const localResult = useRef(pollResult);
-    if (!errorInterval) {
-        errorInterval = interval;
-    }
+    const controllerRef = useRef(null); // single controller per endpoint
 
-    const source = axios.CancelToken.source();
-    const cancelToken = source.token;
+    if (!errorInterval) errorInterval = interval;
 
     const triggerUpdate = (newState) => {
-        // this method checks if the data has changed
         if (JSON.stringify(localResult.current) !== JSON.stringify(newState)) {
-            // it has - store the local value
             localResult.current = newState;
-
-            // and update the state (to trigger a render in the parent component)
             setPollResult(newState);
         }
     };
 
-    const fetch = async () => {
+    const fetchData = async () => {
+        if (!url) return;
+
+        // cancel any previous request before starting a new one
+        if (controllerRef.current) {
+            controllerRef.current.abort();
+        }
+
+        const controller = new AbortController();
+        controllerRef.current = controller;
+
         try {
-            // fetch the data from the API
-            let response = null;
-            if (postData) {
-                response = await axios.post(url, postData, {
-                    cancelToken: cancelToken,
-                });
-            } else {
-                response = await axios.get(url, {
-                    cancelToken: cancelToken,
-                });
-            }
-            // if we get an error from the API, throw it as an exception
-            if (response.data.status === "error") {
-                throw response.data.message;
+            const axiosConfig = { signal: controller.signal };
+            const response = postData
+                ? await axios.post(url, postData, axiosConfig)
+                : await axios.get(url, axiosConfig);
+
+            if (response.data?.status === "error") {
+                throw new Error(response.data.message || "API Error");
             }
 
             triggerUpdate({
@@ -60,45 +56,38 @@ export function useApiPoller({
                 error: null,
             });
         } catch (error) {
-            // if we've cancelled the axios request (by unloading this component) just quit - no problem!
-            if (axios.isCancel(error)) {
-                return;
-            }
+            if (error.name === "CanceledError") return;
 
-            // send an update with the failed state
             triggerUpdate({
                 status: "failure",
                 data: pollResult.data,
-                error: null,
+                error: error.message || null,
             });
 
-            // log the error for good measure
             console.error(error);
         }
     };
 
+    // Initial fetch
     useEffect(() => {
-        if (url && !mockApiData) {
-            fetch();
-        }
+        if (mockApiData || !url) return;
+
+        fetchData();
 
         return () => {
-            // this is run when the component is unloaded
-            // cancel any in-flight axios requests
-            source.cancel();
+            // cancel any ongoing request on unmount
+            controllerRef.current?.abort();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [url, interval, forceRefresh, errorInterval, postData]);
+    }, [url, forceRefresh]);
 
-    useRecursiveTimeout(async () => {
-        if (url && !mockApiData && polling) {
-            await fetch();
-        }
+    // Polling
+    useRecursiveTimeout(() => {
+        if (!url || !polling || mockApiData) return;
+        fetchData();
     }, interval);
 
-    if (mockApiData) {
-        return mockApiData;
-    }
+    if (mockApiData) return mockApiData;
 
     return pollResult;
 }

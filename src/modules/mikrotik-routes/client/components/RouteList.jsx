@@ -1,23 +1,21 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
-import Box from "@mui/material/Box";
-import BugStatusLabel from "@core/BugStatusLabel";
-import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiTable from "@core/BugApiTable";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugNoData from "@core/BugNoData";
+import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugStatusLabel from "@core/BugStatusLabel";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useForceRefresh } from "@hooks/ForceRefresh";
-import { useBugCustomDialog } from "@core/BugCustomDialog";
-import RouteFilterDialog from "./RouteFilterDialog";
-import RouteOspfDialog from "./RouteOspfDialog";
-import { useSelector } from "react-redux";
 import CommentIcon from "@mui/icons-material/Comment";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-
+import { Box } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
+import RouteFilterDialog from "./RouteFilterDialog";
+import RouteOspfDialog from "./RouteOspfDialog";
 export default function RouteList({ panelId }) {
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();

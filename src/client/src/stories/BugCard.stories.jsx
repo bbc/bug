@@ -1,8 +1,5 @@
 import BugCard from "@core/BugCard";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Paper from "@mui/material/Paper";
-
+import { CardContent, CardHeader, Paper } from "@mui/material";
 export default {
     title: "BUG Core/Layout/BugCard",
     component: BugCard,

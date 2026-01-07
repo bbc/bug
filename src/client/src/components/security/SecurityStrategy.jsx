@@ -1,24 +1,23 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import AxiosPut from "@utils/AxiosPut";
-import AxiosGet from "@utils/AxiosGet";
-import BugForm from "@core/BugForm";
 import LoadingOverlay from "@components/LoadingOverlay";
-import { useAlert } from "@utils/Snackbar";
-import Button from "@mui/material/Button";
-import { useHistory } from "react-router-dom";
-import useAsyncEffect from "use-async-effect";
+import SecurityStrategyAuto from "@components/security/SecurityStrategyAuto";
 import SecurityStrategyLocal from "@components/security/SecurityStrategyLocal";
 import SecurityStrategyOidc from "@components/security/SecurityStrategyOidc";
 import SecurityStrategyPin from "@components/security/SecurityStrategyPin";
 import SecurityStrategyProxy from "@components/security/SecurityStrategyProxy";
 import SecurityStrategySaml from "@components/security/SecurityStrategySaml";
-import SecurityStrategyAuto from "@components/security/SecurityStrategyAuto";
-
+import BugForm from "@core/BugForm";
+import { Button } from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 export default function SecurityStrategy({ type = null }) {
     const [loading, setLoading] = useState(false);
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [strategy, setStrategy] = React.useState(null);
 
     const {
@@ -30,7 +29,7 @@ export default function SecurityStrategy({ type = null }) {
 
     useAsyncEffect(async () => {
         if (!type) {
-            history.push(`/system/security/`);
+            navigate(`/system/security/`);
         }
         const strategyResult = await AxiosGet(`/api/strategy/${type}`);
         if (strategyResult) {
@@ -38,7 +37,7 @@ export default function SecurityStrategy({ type = null }) {
         } else {
             sendAlert(`Failed to load security details`, { variant: "warning" });
             setTimeout(() => {
-                history.push(`/system/security`);
+                navigate(`/system/security`);
             }, 1000);
         }
     }, [type]);
@@ -51,7 +50,7 @@ export default function SecurityStrategy({ type = null }) {
                 broadcast: "true",
                 variant: "success",
             });
-            history.push(`/system/security`);
+            navigate(`/system/security`);
         } else {
             sendAlert(`Failed to update security type '${strategy.type}'`, {
                 variant: "warning",
@@ -61,7 +60,7 @@ export default function SecurityStrategy({ type = null }) {
     };
 
     const handleCancel = () => {
-        history.push(`/system/security`);
+        navigate(`/system/security`);
     };
 
     const FormContent = () => {

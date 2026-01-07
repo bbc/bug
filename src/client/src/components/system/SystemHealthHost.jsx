@@ -1,10 +1,9 @@
-import React from "react";
 import BugDetailsTable from "@core/BugDetailsTable";
-import TimeAgo from "javascript-time-ago";
 import BugGauge from "@core/BugGauge";
-import Grid from "@mui/material/Grid";
-import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Grid } from "@mui/material";
+import TimeAgo from "javascript-time-ago";
 
 export default function SystemHealthHost({ stats }) {
     const timeAgo = new TimeAgo("en-GB");
@@ -36,7 +35,7 @@ export default function SystemHealthHost({ stats }) {
                     backgroundColor: "background.default",
                 }}
             >
-                <Grid item md={8} sm={7} xs={12} sx={{ backgroundColor: "background.paper" }}>
+                <Grid size={{ md: 8, sm: 7, xs: 12 }} sx={{ backgroundColor: "background.paper" }}>
                     <BugDetailsTable
                         width="auto"
                         items={[
@@ -59,7 +58,7 @@ export default function SystemHealthHost({ stats }) {
                         ]}
                     />
                 </Grid>
-                <Grid item md={4} sm={5} xs={12}>
+                <Grid size={{ md: 4, sm: 5, xs: 12 }}>
                     <BugGauge
                         max={health.data.memory.total / oneGigabyte}
                         value={health.data.memory.used / oneGigabyte}

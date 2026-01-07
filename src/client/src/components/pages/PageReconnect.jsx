@@ -1,10 +1,4 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Backdrop from "@mui/material/Backdrop";
+import { Backdrop, Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 
 export default function PageReconnect({ connection = false }) {
     const handleReloadClicked = () => {
@@ -18,7 +12,7 @@ export default function PageReconnect({ connection = false }) {
                 open={!connection}
             >
                 <Grid container spacing={0} alignItems="center" justify="center" sx={{ minHeight: "100vh" }}>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <Grid
                             container
                             spacing={0}
@@ -46,9 +40,7 @@ export default function PageReconnect({ connection = false }) {
                             >
                                 Cannot connect to BUG server
                             </Typography>
-                            <Grid
-                                item
-                                xs={3}
+                            <Box
                                 sx={{
                                     margin: "16px",
                                 }}
@@ -67,7 +59,7 @@ export default function PageReconnect({ connection = false }) {
                                         justifyContent="center"
                                     ></Box>
                                 </Box>
-                            </Grid>
+                            </Box>
                             <Button
                                 onClick={handleReloadClicked}
                                 variant="contained"
