@@ -7,7 +7,7 @@ WORKDIR /home/node/bug
 # 2. Install Root Dependencies
 # We do this first so code changes don't trigger a fresh npm install
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # 3. Copy the entire src tree from your host
 # This includes src/server (with core), src/client, and src/modules
