@@ -11,7 +11,7 @@
     "status": "beta",
     "needsContainer": false,
     "devmounts": [],
-    "protectedRoutes": [],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,
