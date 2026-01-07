@@ -1,6 +1,6 @@
 name: BUG Deploy
 env:
-    regsitry: "ghcr.io"
+    registry: "ghcr.io"
 
 on:
     push:
@@ -20,7 +20,7 @@ jobs:
             packages: write
         defaults:
             run:
-                working-directory: ./src
+                working-directory: ./src/server
         steps:
             # get the latest version of the repository
             - name: Checkout
@@ -38,7 +38,7 @@ jobs:
               name: Get Backend Version
               id: backend-version
               with:
-                  path: ./src
+                  path: ./
             - uses: martinbeentjes/npm-get-version-action@master
               name: Get Frontend Version
               id: frontend-version
@@ -62,7 +62,7 @@ jobs:
             - name: Login to GHCR Registry
               uses: docker/login-action@v3
               with:
-                  registry: ${{ env.regsitry }}
+                  registry: ${{ env.registry }}
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
                   logout: false
@@ -71,12 +71,12 @@ jobs:
             - name: Build and push to registry
               uses: docker/build-push-action@v6
               with:
-                  context: "./src"
-                  platforms: linux/amd64,linux/arm64
+                  context: "./src/server"
+                  platforms: linux/amd64
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: |
-                      ${{env.regsitry}}/${{ github.repository_owner }}/bug:latest
-                      ${{env.regsitry}}/${{ github.repository_owner }}/bug:${{steps.backend-version.outputs.current-version}}
+                      ${{env.registry}}/${{ github.repository_owner }}/bug:latest
+                      ${{env.registry}}/${{ github.repository_owner }}/bug:${{steps.backend-version.outputs.current-version}}
                   outputs: type=registry
                   labels: |
                       author=${{github.actor}}
