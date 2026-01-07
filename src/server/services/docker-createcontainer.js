@@ -1,42 +1,46 @@
 "use strict";
 
 const logger = require("@utils/logger")(module);
-const nodeEnv = process.env.NODE_ENV || "production";
 const docker = require("@utils/docker");
 const path = require("path");
 const dockerGetSourceFolder = require("@services/docker-getsourcefolder");
 const moduleDevMounts = require("@services/module-getdevmounts");
 const moduleGet = require("@services/module-get");
+const DEFAULT_NODE_ENV = process.env.NODE_ENV || "production";
 
 module.exports = async (configObject) => {
-    let module;
+    if (!configObject?.id || !configObject?.module) {
+        throw new Error("Missing required configObject properties: id or module");
+    }
+
+    let moduleData;
     try {
-        module = await moduleGet(configObject?.module);
+        moduleData = await moduleGet(configObject.module);
+        logger.info(`Creating container for panel id: ${configObject.id}`);
 
-        logger.info(`creating container for panel id ${configObject.id}`);
+        const envVars = {
+            modulePort: process.env.MODULE_PORT || "3200",
+            bugCorePort: process.env.BUG_PORT || "3101",
+            bugCoreHost: process.env.BUG_CONTAINER || "bug",
+            networkName: process.env.DOCKER_NETWORK_NAME || "bug",
+            moduleHome: process.env.MODULE_HOME || "/home/node/module",
+            moduleMemory: moduleData?.memory || process.env.MODULE_MEMORY || 100,
+            bugHost: process.env.BUG_HOST || "127.0.0.1",
+        };
 
-        const modulePort = process.env.MODULE_PORT || "3200";
-        const bugCorePort = process.env.BUG_PORT || "3101";
-        const bugCoreHost = process.env.BUG_CONTAINER || "bug";
-        const networkName = process.env.DOCKER_NETWORK_NAME || "bug";
-        const moduleHome = process.env.MODULE_HOME || "/home/node/module";
-        const moduleMemory = module?.memory || process.env.MODULE_MEMORY || 100; //Max Memory in MB
-        const bugHost = process.env.BUG_HOST || "127.0.0.1";
-        const nodeEnv = process.env.NODE_ENV || "production";
-
-        let containerOptions = {
-            Image: `${configObject.module}:${module?.version}`,
-            Cmd: ["npm", "run", nodeEnv],
+        const containerOptions = {
+            Image: `${configObject.module}:${moduleData?.version || 'latest'}`,
+            Cmd: ["npm", "run", DEFAULT_NODE_ENV],
             Env: [
-                `PORT=${modulePort}`,
+                `PORT=${envVars.modulePort}`,
                 `PANEL_ID=${configObject.id}`,
                 `MODULE=${configObject.module}`,
-                `CORE_PORT=${bugCorePort}`,
-                `CORE_HOST=${bugCoreHost}`,
-                `BUG_HOST=${bugHost}`,
-                `NODE_ENV=${nodeEnv}`,
-                `BUG_PORT=${bugCorePort}`,
-                `NODE_OPTIONS="--max-old-space-size=${moduleMemory}"`,
+                `CORE_PORT=${envVars.bugCorePort}`,
+                `CORE_HOST=${envVars.bugCoreHost}`,
+                `BUG_HOST=${envVars.bugHost}`,
+                `NODE_ENV=${DEFAULT_NODE_ENV}`,
+                `BUG_PORT=${envVars.bugCorePort}`,
+                `NODE_OPTIONS=--max-old-space-size=${envVars.moduleMemory}`,
             ],
             Hostname: configObject.id,
             name: configObject.id,
@@ -48,45 +52,45 @@ module.exports = async (configObject) => {
             HostConfig: {
                 Mounts: [],
                 RestartPolicy: { name: "unless-stopped" },
-                NetworkMode: networkName,
-                Memory: parseInt(moduleMemory * 1024 * 1024),
+                NetworkMode: envVars.networkName,
+                Memory: Math.floor(envVars.moduleMemory * 1024 * 1024),
                 LogConfig: {
                     Type: "json-file",
                     Config: { "max-size": "10m", "max-file": "1" },
                 },
             },
         };
-        if (nodeEnv === "development") {
+
+        // development-specific mounts
+        if (DEFAULT_NODE_ENV === "development") {
             const sourceFolder = await dockerGetSourceFolder();
             const devMounts = await moduleDevMounts(configObject.module);
+
             const mounts = [
                 {
-                    Target: path.join(moduleHome, "core"),
-                    Source: path.join(sourceFolder, "core"),
+                    Target: path.join(envVars.moduleHome, "core"),
+                    Source: path.join(sourceFolder, "src", "server", "core"),
                     Type: "bind",
                 },
             ];
 
-            if (devMounts.length > 0) {
-                for (let eachMount of devMounts) {
-                    const localPath = path.join(sourceFolder, "..", "..", "modules", configObject.module, "container", eachMount);
-                    const remotePath = path.join(moduleHome, eachMount);
-                    mounts.push({
-                        Target: remotePath,
-                        Source: localPath,
-                        Type: "bind",
-                    });
-                }
-            }
-            containerOptions["HostConfig"]["Mounts"] = mounts;
+            devMounts.forEach(mountPoint => {
+                mounts.push({
+                    Target: path.join(envVars.moduleHome, mountPoint),
+                    Source: path.join(sourceFolder, "src", "modules", configObject.module, "container", mountPoint),
+                    Type: "bind",
+                });
+            });
+
+            containerOptions.HostConfig.Mounts = mounts;
         }
 
-        let container = await docker.createContainer(containerOptions);
-
-        logger.info(`container id ${container.id} created OK`);
+        const container = await docker.createContainer(containerOptions);
+        logger.info(`Container id ${container.id} created OK`);
         return container;
+
     } catch (error) {
-        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
-        throw new Error(`Failed to create docker container ${configObject.module}:${module?.version}`);
+        logger.error(`Docker Creation Error: ${error.message}`, { stack: error.stack });
+        throw new Error(`Failed to create docker container ${configObject.module}: ${error.message}`);
     }
 };

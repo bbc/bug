@@ -53,6 +53,8 @@ module.exports = async (panelId) => {
 
         // attempt to get the container from docker
         let container = await dockerGetContainer(panelId);
+        console.log('panelId:', panelId);
+        console.log('container:', container);
         if (!container) {
             // it doesn't exist - let's create it
             logger.info(`container for panel id ${panelId} doesn't exist ... creating`);

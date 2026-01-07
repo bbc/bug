@@ -21,6 +21,7 @@ node_modules
 # Module Dockerfiles
 Dockerfile*
 !/src/server/Dockerfile
+!/src/server/services/dockerfile-write.js
 
 # Global Environment Files
 .env.development
