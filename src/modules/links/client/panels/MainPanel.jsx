@@ -30,7 +30,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid container spacing={1}>
+            <Grid container spacing={0}>
                 {getLinkCards(panelConfig.data.links)}
             </Grid>
         </>
