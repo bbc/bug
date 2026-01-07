@@ -3,6 +3,7 @@ env:
     registry: "ghcr.io"
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - main
