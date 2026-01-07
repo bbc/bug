@@ -10,3 +10,4 @@
 **/.editorconfig
 **/.aws
 **/dist
+**/modules/*/container/
