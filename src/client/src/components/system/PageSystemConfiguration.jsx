@@ -134,6 +134,8 @@ export default function PageSystemBackup() {
                                     options={[
                                         { id: "stable", label: "Stable" },
                                         { id: "beta", label: "Beta" },
+                                        { id: "development", label: "Development" },
+                                        { id: "archived", label: "Archived" },
                                     ]}
                                     fullWidth
                                     helperText="Filter available modules by status tag"
