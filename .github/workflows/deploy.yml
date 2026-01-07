@@ -73,7 +73,7 @@ jobs:
             - name: Build and push to registry
               uses: docker/build-push-action@v6
               with:
-                  context: "./src/server"
+                  context: "."
                   platforms: linux/amd64
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: |
