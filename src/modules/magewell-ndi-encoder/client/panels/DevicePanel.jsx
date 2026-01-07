@@ -1,17 +1,14 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
+import { Box } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 import DeviceTab from "../components/DeviceTab";
 import NetworkTab from "../components/NetworkTab";
-import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
-import Box from "@mui/material/Box";
-import { useHistory } from "react-router-dom";
-
 export default function MainPanel() {
     const params = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleBackClicked = () => {
-        history.push(`/panel/${params?.panelId}`);
+        navigate(`/panel/${params?.panelId}`);
     };
 
     return (

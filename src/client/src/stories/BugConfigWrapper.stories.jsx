@@ -1,5 +1,5 @@
+import { ArgsTable, Description, PRIMARY_STORY, Subtitle, Title } from "@storybook/addon-docs";
 import { Source } from "@storybook/addon-docs/blocks";
-import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
 
 export default {
     title: "BUG Core/Wrappers/BugConfigWrapper",
@@ -21,7 +21,7 @@ export default {
                         language="jsx"
                         code={`
 import BugConfigWrapper from "@core/BugConfigWrapper";
-import Grid from "@mui/material/Grid";
+import {Grid} from "@mui/material";;
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import { useSelector } from "react-redux";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
@@ -36,7 +36,7 @@ export default function ConfigPanel() {
     return (
         <>
             <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="title"
                         control={control}

@@ -1,8 +1,8 @@
-import React from "react";
-import AxiosGet from "@utils/AxiosGet";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
-import Chip from "@mui/material/Chip";
+import { Chip } from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
+import React from "react";
 
 export default function CodecList({ panelId }) {
     const [zones, setZones] = React.useState([]);

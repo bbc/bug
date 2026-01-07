@@ -1,7 +1,4 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+import { FormControl, MenuItem, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
 const BugConfigFormSelect = ({

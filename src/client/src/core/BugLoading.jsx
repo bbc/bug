@@ -1,6 +1,4 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
+import { CircularProgress, Grid } from "@mui/material";
 
 export default function BugLoading({ height = "100vh", sx = {} }) {
     return (
@@ -15,7 +13,7 @@ export default function BugLoading({ height = "100vh", sx = {} }) {
                 ...sx,
             }}
         >
-            <Grid item xs={3}>
+            <Grid size={{ xs: 3 }} sx={{ textAlign: "center" }}>
                 <CircularProgress />
             </Grid>
         </Grid>

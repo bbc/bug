@@ -1,14 +1,7 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment } from "@mui/material";
 import React from "react";
 import BugTextField from "./BugTextField";
-
 /*
 USAGE:
 =================

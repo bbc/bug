@@ -1,22 +1,24 @@
-import React, { useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import BugLoading from "@core/BugLoading";
-import BugItemMenu from "@components/BugItemMenu";
-import { useApiPoller } from "@hooks/ApiPoller";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import BugApiTableFilters from "@components/BugApiTableFilters";
-import { useCookies } from "react-cookie";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import IconButton from "@mui/material/IconButton";
-import { useCookieId } from "@hooks/CookieId";
 import BugApiTableCell from "@components/BugApiTableCell";
+import BugApiTableFilters from "@components/BugApiTableFilters";
+import BugItemMenu from "@components/BugItemMenu";
+import BugLoading from "@core/BugLoading";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { useCookieId } from "@hooks/CookieId";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import {
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableSortLabel,
+} from "@mui/material";
+import React, { useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 export default function BugApiTable({
     apiUrl,

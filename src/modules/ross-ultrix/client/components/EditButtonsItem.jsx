@@ -1,9 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-
+import { Box, IconButton, ListItem, ListItemText } from "@mui/material";
 export default function EditButtonsItem({ button, onRemove }) {
     return (
         <ListItem

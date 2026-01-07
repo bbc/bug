@@ -1,5 +1,4 @@
-import React from "react";
-import Badge from "@mui/material/Badge";
+import { Badge } from "@mui/material";
 
 const BadgeWrapper = ({
     panel,

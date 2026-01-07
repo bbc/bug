@@ -1,8 +1,5 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
-import BugTextField from "@core/BugTextField";
-import Switch from "@mui/material/Switch";
 
 export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
     return (

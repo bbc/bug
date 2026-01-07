@@ -1,26 +1,22 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { useAlert } from "@utils/Snackbar";
-import { useForm } from "react-hook-form";
-import { useApiPoller } from "@hooks/ApiPoller";
-
-import AxiosPut from "@utils/AxiosPut";
-
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
-import BugLoading from "@core/BugLoading";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Button, Grid } from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function DevicePanel({ panelId }) {
     const { deviceId } = useParams();
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const [device, setDevice] = React.useState(null);
     const sendAlert = useAlert();
 
@@ -29,7 +25,7 @@ export default function DevicePanel({ panelId }) {
     }, []);
 
     const handleCancelClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const groups = useApiPoller({
@@ -55,7 +51,7 @@ export default function DevicePanel({ panelId }) {
         const response = await AxiosPut(`/container/${panelId}/devices/${deviceId}`, form);
         if (response) {
             sendAlert(`Device has been updated.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Device could not be updated.`, { variant: "warning" });
         }
@@ -72,7 +68,7 @@ export default function DevicePanel({ panelId }) {
                     <BugForm.Header onClose={handleCancelClicked}>Edit Device</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -83,7 +79,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid size={{ md: 6, xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="username"
                                     control={control}
@@ -94,7 +90,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Username"
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid size={{ md: 6, xs: 12 }}>
                                 <BugConfigFormPasswordTextField
                                     name="password"
                                     control={control}
@@ -105,7 +101,7 @@ export default function DevicePanel({ panelId }) {
                                     label="Password"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="groups"
                                     label="Groups"

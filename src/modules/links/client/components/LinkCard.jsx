@@ -1,13 +1,8 @@
-import React from "react";
-import { useHistory, useParams } from "react-router-dom";
-import Card from "@mui/material/Card";
-import { CardActionArea } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-
+import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 export default function LinkCard({ title, description, behaviour, url, index }) {
     const params = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = (event) => {
         if (behaviour === "new") {
@@ -17,7 +12,7 @@ export default function LinkCard({ title, description, behaviour, url, index }) 
             window.open(url, "_self");
         }
         if (behaviour === "inside") {
-            history.push(`/panel/${params.panelId}/link/${index}`);
+            navigate(`/panel/${params.panelId}/link/${index}`);
         }
     };
 

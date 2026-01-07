@@ -1,11 +1,10 @@
-import React from "react";
-import { Bar, ComposedChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
-import Box from "@mui/material/Box";
 import { useApiPoller } from "@hooks/ApiPoller";
-import { format } from "date-fns";
 import { useInterval } from "@hooks/Interval";
+import { Box } from "@mui/material";
+import { format } from "date-fns";
 import TimeAgo from "javascript-time-ago";
-
+import React from "react";
+import { Bar, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         let timestamp = payload[0].payload.timestamp;

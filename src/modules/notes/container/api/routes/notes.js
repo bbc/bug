@@ -45,7 +45,7 @@ route.put(
 route.post(
     "/",
     asyncHandler(async (req, res) => {
-        const result = await noteAdd(req.body);
+        const result = await noteAdd();
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             data: result,

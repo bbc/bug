@@ -1,9 +1,8 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import { useApiPoller } from "@hooks/ApiPoller";
-import BugLoading from "@core/BugLoading";
 import BugDetailsTable from "@core/BugDetailsTable";
+import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Grid } from "@mui/material";
 
 export default function InterfaceTabEthernet({ panelId, interfaceName }) {
     const iface = useApiPoller({
@@ -20,7 +19,7 @@ export default function InterfaceTabEthernet({ panelId, interfaceName }) {
 
     return (
         <>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         { name: "Status", value: iface.data?.linkstats?.status },

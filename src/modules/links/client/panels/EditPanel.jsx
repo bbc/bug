@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
-import EditLinkCard from "../components/EditLinkCard";
-import AddCard from "../components/AddCard";
-import Grid from "@mui/material/Grid";
-import { useSelector } from "react-redux";
-import AddDialog from "./../components/AddDialog";
+import { Grid } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import AddCard from "../components/AddCard";
+import EditLinkCard from "../components/EditLinkCard";
+import AddDialog from "./../components/AddDialog";
 
 export default function EditPanel() {
     const params = useParams();
@@ -69,7 +69,7 @@ export default function EditPanel() {
         const cards = [];
         for (let index in links) {
             cards.push(
-                <Grid item key={index} lg={6} xs={12}>
+                <Grid key={index} size={{ lg: 6, xs: 12 }}>
                     <EditLinkCard handleDelete={deleteLink} handleEdit={onClickAdd} link={links[index]} index={index} />
                 </Grid>
             );
@@ -97,7 +97,7 @@ export default function EditPanel() {
             />
             <Grid container spacing={1}>
                 {getLinkCards(panelConfig.data.links)}
-                <Grid item lg={6} xs={12}>
+                <Grid size={{ xs: 12, lg: 6 }}>
                     <AddCard handleClick={onClickAdd} />
                 </Grid>
             </Grid>

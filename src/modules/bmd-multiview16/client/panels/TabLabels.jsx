@@ -1,15 +1,13 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import BugApiTable from "@core/BugApiTable";
-import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugApiSelect from "@core/BugApiSelect";
 import BugApiSwitch from "@core/BugApiSwitch";
-import AxiosPost from "@utils/AxiosPost";
+import BugApiTable from "@core/BugApiTable";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import { useAlert } from "@utils/Snackbar";
-import { useForceRefresh } from "@hooks/ForceRefresh";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import { Grid, TextField } from "@mui/material";
+import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
 
 export default function TabLabels({ panelId }) {
     const sendAlert = useAlert();
@@ -94,7 +92,7 @@ export default function TabLabels({ panelId }) {
     });
     return (
         <>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <BugApiTable
                     columns={[
                         {

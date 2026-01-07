@@ -1,24 +1,18 @@
-import React, { Suspense, useEffect } from "react";
-import BugLoading from "@core/BugLoading";
 import PanelBuilding from "@components/panels/PanelBuilding";
-import PanelStopped from "@components/panels/PanelStopped";
-import PanelRestarting from "@components/panels/PanelRestarting";
 import PanelCritical from "@components/panels/PanelCritical";
-import { useDispatch } from "react-redux";
-import pageTitleSlice from "@redux/pageTitleSlice";
-import { Switch } from "react-router-dom";
-import { useSelector } from "react-redux";
+import PanelRestarting from "@components/panels/PanelRestarting";
+import PanelStopped from "@components/panels/PanelStopped";
+import BugLoading from "@core/BugLoading";
 import { usePanel } from "@data/PanelHandler";
-import { useHistory } from "react-router-dom";
+import pageTitleSlice from "@redux/pageTitleSlice";
+import React, { Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function ModuleSwitch({ children }) {
     // we memoize this to hide any panel.data changes from updating the page
     return React.useMemo(() => {
-        return (
-            <Suspense fallback={<BugLoading />}>
-                <Switch>{children}</Switch>
-            </Suspense>
-        );
+        return <Suspense fallback={<BugLoading />}>{children}</Suspense>;
     }, [children]);
 }
 
@@ -26,7 +20,7 @@ export default function BugModuleWrapper({ panelId, children }) {
     const dispatch = useDispatch();
     const panelConfig = useSelector((state) => state.panelConfig);
     const panel = useSelector((state) => state.panel);
-    const history = useHistory();
+    const navigate = useNavigate();
     usePanel({ panelId });
 
     useEffect(() => {
@@ -39,7 +33,7 @@ export default function BugModuleWrapper({ panelId, children }) {
     }, [panelConfig, dispatch]);
 
     if (!panelConfig.data.enabled) {
-        history.push(`/`);
+        navigate(`/`);
     }
 
     if (panel.status === "loading") {
@@ -57,7 +51,7 @@ export default function BugModuleWrapper({ panelId, children }) {
     }
 
     if (panel.status !== "success") {
-        return null;
+        return <></>;
     }
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
 
@@ -81,5 +75,6 @@ export default function BugModuleWrapper({ panelId, children }) {
             }
         }
     }
+
     return <ModuleSwitch children={children} panelId={panelId} />;
 }

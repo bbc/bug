@@ -1,10 +1,8 @@
-import React from "react";
+import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
+import { Box } from "@mui/material";
 import { useParams } from "react-router-dom";
 import DeviceTab from "./../components/DeviceTab";
 import NetworkTab from "./../components/NetworkTab";
-import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
-import Box from "@mui/material/Box";
-
 export default function MainPanel() {
     const params = useParams();
 

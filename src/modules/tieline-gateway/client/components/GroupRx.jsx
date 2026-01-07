@@ -1,12 +1,10 @@
-import React from "react";
 import BugApiButton from "@core/BugApiButton";
 import BugDetailsTable from "@core/BugDetailsTable";
 import BugTextField from "@core/BugTextField";
+import { Box } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import StateLabel from "./StateLabel";
-import Box from "@mui/material/Box";
-
 export default function GroupRx({ connection, panelId, showAdvanced }) {
     const sendAlert = useAlert();
 

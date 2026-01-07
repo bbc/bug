@@ -1,9 +1,6 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 
 export default function Toolbar({ panelId, ...props }) {
     let toolbarProps = { ...props };

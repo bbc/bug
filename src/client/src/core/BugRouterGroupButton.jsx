@@ -1,8 +1,6 @@
 import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-
+import { Box, Button } from "@mui/material";
 export default function BugRouterGroupButton({
     draggable = false,
     editMode = false,

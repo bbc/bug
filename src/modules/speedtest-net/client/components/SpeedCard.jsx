@@ -1,13 +1,9 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
 import BugCard from "@core/BugCard";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import { Sparklines, SparklinesLine } from "react-sparklines";
 import { useApiPoller } from "@hooks/ApiPoller";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Sparklines, SparklinesLine } from "react-sparklines";
 
 export default function SpeedCard({
     running = true,
@@ -58,7 +54,7 @@ export default function SpeedCard({
 
     return (
         <>
-            <Grid item md={6} xs={12} sx={{ padding: "8px" }}>
+            <Grid size={{ md: 6, xs: 12 }} sx={{ padding: "8px" }}>
                 <BugCard>
                     <CardHeader title={title} />
 

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
 export default function DigitalClock({ size }) {
     const [time, setTime] = useState("hh:mm:ss");
 

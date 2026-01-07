@@ -1,10 +1,10 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents } from "react-leaflet";
+import { Typography } from "@mui/material";
+import AxiosPut from "@utils/AxiosPut";
 import Leaflet from "leaflet";
 import "leaflet/dist/leaflet.css";
-import Typography from "@mui/material/Typography";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents } from "react-leaflet";
 import geostationaryCalcultation from "./../utils/geostationaryCalcultation";
-import AxiosPut from "@utils/AxiosPut";
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

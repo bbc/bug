@@ -1,59 +1,46 @@
-import React from "react";
-import MUIRichTextEditor from "mui-rte";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AxiosDelete from "@utils/AxiosDelete";
-import { useAlert } from "@utils/Snackbar";
+import { Stack } from "@mui/material";
+import { forwardRef, useImperativeHandle, useRef } from "react";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
-const defaultChange = (data) => {
-    console.log(data);
-};
+const TextEditor = forwardRef(({ data }, ref) => {
+    const quillRef = useRef(null);
 
-export default function TextEditor({ data, onSave = { defaultChange }, panelId, noteId }) {
-    const sendAlert = useAlert();
+    // Expose methods to parent
+    useImperativeHandle(ref, () => ({
+        getContent: () => {
+            const editor = quillRef.current.getEditor();
+            return editor.root.innerHTML;
+        },
+        setContent: (value) => {
+            const editor = quillRef.current.getEditor();
+            editor.root.innerHTML = value;
+        },
+    }));
+
+    const modules = {
+        toolbar: [
+            [{ header: [1, 2, false] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link", "image"],
+            ["clean"],
+        ],
+    };
 
     return (
-        <>
-            <MUIRichTextEditor
-                readOnly={false}
-                onSave={onSave}
-                defaultValue={data}
-                label="Your notes here"
-                inlineToolbar={false}
-                toolbar={true}
-                toolbarButtonSize="small"
-                controls={[
-                    "title",
-                    "bold",
-                    "underline",
-                    "italic",
-                    "link",
-                    "clear",
-                    "undo",
-                    "redo",
-                    "bulletList",
-                    "numberList",
-                    "color",
-                    "delete",
-                    "save",
-                ]}
-                customControls={[
-                    {
-                        name: "delete",
-                        icon: <DeleteIcon />,
-                        type: "callback",
-                        onClick: async (editorState, name, anchor) => {
-                            if (await AxiosDelete(`/container/${panelId}/notes/${noteId}`)) {
-                                sendAlert(`Deleted note`, {
-                                    variant: "success",
-                                });
-                                setEdit(false);
-                            } else {
-                                sendAlert(`Failed to delete note`, { variant: "error" });
-                            }
-                        },
-                    },
-                ]}
-            />
-        </>
+        <Stack
+            spacing={1}
+            sx={{
+                ".ql-toolbar": { borderRadius: "4px 4px 0 0" },
+                ".ql-container": { borderRadius: "0 0 4px 4px" },
+                ".ql-container.ql-snow": { border: "1px solid #3c3c3c" },
+                ".ql-toolbar.ql-snow": { border: "1px solid #3c3c3c", borderBottom: "none" },
+            }}
+        >
+            <ReactQuill ref={quillRef} theme="snow" defaultValue={data} modules={modules} />
+        </Stack>
     );
-}
+});
+
+export default TextEditor;

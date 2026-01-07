@@ -1,34 +1,32 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import BugPowerIcon from "@core/BugPowerIcon";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
-import EditIcon from "@mui/icons-material/Edit";
+import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import PowerOffIcon from "@mui/icons-material/PowerOff";
-import PowerIcon from "@mui/icons-material/Power";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useForceRefresh } from "@hooks/ForceRefresh";
-import Box from "@mui/material/Box";
-import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import FolderIcon from "@mui/icons-material/Folder";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import CheckIcon from "@mui/icons-material/Check";
-import { useHistory } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import FolderIcon from "@mui/icons-material/Folder";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import PowerIcon from "@mui/icons-material/Power";
+import PowerOffIcon from "@mui/icons-material/PowerOff";
+import { Box } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
-
+import { useAlert } from "@utils/Snackbar";
+import { useNavigate } from "react-router-dom";
 export default function PeerList({ panelId }) {
     const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleEditClicked = async (event, item) => {
-        history.push(`/panel/${panelId}/connection/${item.id}`);
+        navigate(`/panel/${panelId}/connection/${item.id}`);
     };
 
     const handleRenameClicked = async (event, item) => {

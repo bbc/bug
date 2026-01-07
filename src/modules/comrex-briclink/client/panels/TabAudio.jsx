@@ -1,9 +1,7 @@
-import React from "react";
-import AudioChain from "../components/AudioChain";
-import { useParams } from "react-router-dom";
 import { useApiPoller } from "@hooks/ApiPoller";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
+import { useParams } from "react-router-dom";
+import AudioChain from "../components/AudioChain";
 export default function TabAudio() {
     const params = useParams();
 

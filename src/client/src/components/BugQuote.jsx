@@ -1,8 +1,7 @@
-import React from "react";
+import { Box } from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
+import React from "react";
 import useAsyncEffect from "use-async-effect";
-import Box from "@mui/material/Box";
-
 export default function BugQuote(props) {
     const [quote, setQuote] = React.useState(null);
 

@@ -1,7 +1,7 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import ScaleText from "react-scale-text";
+import { Box } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { memo } from "react";
+import { Textfit } from "react-textfit";
 
 export default function BugStatusBlock({ items, label, state, sx = {}, image }) {
     const stateColors = {
@@ -14,9 +14,38 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
 
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
+    // Memoized Textfit to prevent unnecessary recalculation
+    const MemoTextfit = memo(({ children }) => (
+        <Textfit
+            mode="multi"
+            min={10}
+            max={1000}
+            forceSingleModeWidth={false}
+            style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "500",
+                fontFamily: "Fira Code",
+            }}
+        >
+            {children}
+        </Textfit>
+    ));
+
     if (image) {
         return (
-            <Box sx={{ marginTop: "32px", padding: "4px", display: "inline-block", verticalAlign: "top", ...sx }}>
+            <Box
+                sx={{
+                    marginTop: "32px",
+                    padding: "4px",
+                    display: "inline-block",
+                    verticalAlign: "top",
+                    ...sx,
+                }}
+            >
                 <img
                     style={{
                         height: isSmall ? "90px" : "120px",
@@ -45,6 +74,7 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
             >
                 {label}&nbsp;
             </Box>
+
             <Box
                 sx={{
                     width: isSmall ? "90px" : "120px",
@@ -53,21 +83,27 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "space-evenly",
-                    padding: "8px 8px 12px 8px",
-                    "& .scaletext-wrapper": {
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    },
+                    justifyContent: "center",
+                    padding: "8px",
+                    gap: "4px",
+                    overflow: "hidden",
+                    boxSizing: "border-box",
                 }}
             >
                 {items &&
                     items.map((item, index) => (
-                        <ScaleText key={index} maxFontSize={isSmall ? 24 : 34}>
-                            <div style={{ whiteSpace: "nowrap", fontWeight: 500 }}>{item}</div>
-                        </ScaleText>
+                        <Box
+                            key={index}
+                            sx={{
+                                flex: 1,
+                                width: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <MemoTextfit>{item}</MemoTextfit>
+                        </Box>
                     ))}
             </Box>
         </Box>

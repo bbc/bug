@@ -1,17 +1,16 @@
-import React from "react";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
+import { useNavigate } from "react-router-dom";
 import InterfaceTabDetails from "./InterfaceTabDetails";
 import InterfaceTabEthernet from "./InterfaceTabEthernet";
-import InterfaceTabStatistics from "./InterfaceTabStatistics";
 import InterfaceTabHardware from "./InterfaceTabHardware";
 import InterfaceTabNeighbors from "./InterfaceTabNeighbors";
-import { useHistory } from "react-router-dom";
+import InterfaceTabStatistics from "./InterfaceTabStatistics";
 
 export default function Interface({ panelId, interfaceName }) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleBackClicked = () => {
-        history.push(`/panel/${panelId}`);
+        navigate(`/panel/${panelId}`);
     };
 
     return (

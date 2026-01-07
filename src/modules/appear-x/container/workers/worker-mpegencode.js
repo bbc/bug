@@ -31,8 +31,8 @@ const main = async () => {
     await XApi.connect();
 
     // clear any localdata
-    //TODO const localdataCollection = await mongoCollection("localdata");
-    //TODO await localdataCollection.deleteMany({});
+    const localdataCollection = await mongoCollection("localdata");
+    await localdataCollection.deleteMany({});
 
     while (true) {
         await XApi.refreshSession();
