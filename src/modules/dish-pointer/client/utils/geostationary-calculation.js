@@ -41,21 +41,11 @@ const calcElevation = (esLat, esLong, satLong, orbitHeight = 35786, esHeight = 0
 };
 
 //Azimuth, Elevation = function(Satelite Offset, Satelite Direction, Earth Station Latitude, Earth Station Longitude)
-const geostationaryCalcultation = (satOffset, satDirection, position) => {
+const geostationaryCalculation = (satLong, position) => {
     const esLat = position.lat;
     const esLong = position.lng;
     const result = {};
     try {
-        let satLong = 0;
-
-        if (satDirection === "west") {
-            satLong -= satOffset;
-        } else if (satDirection === "east") {
-            satLong += satOffset;
-        } else {
-            throw new Error("Invalid direction. Valid values are W or E");
-        }
-
         result.azimuth = calcAzimuth(esLat, esLong, satLong);
         result.elevation = calcElevation(esLat, esLong, satLong);
     } catch (error) {
@@ -65,4 +55,4 @@ const geostationaryCalcultation = (satOffset, satDirection, position) => {
     return result;
 };
 
-export default geostationaryCalcultation;
+export default geostationaryCalculation;
