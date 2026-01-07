@@ -11,6 +11,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import { useSelector } from "react-redux";
+
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);

@@ -1,4 +1,3 @@
-import React from "react";
 import Codec from "../components/Codec";
 import CodecStatus from "../components/CodecStatus";
 
