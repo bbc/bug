@@ -1,16 +1,35 @@
 FROM node:20-alpine
 
-RUN apk add --no-cache python3 make g++ 
-
+# 1. Setup
+RUN deluser --remove-home node
 WORKDIR /home/node/bug
 
+# 2. Install Root Dependencies
 COPY package*.json ./
-COPY src/client/package*.json ./src/client/
+RUN npm install
 
+# 3. Copy source for the Build Phase
+# We need the Core and the Modules (client-side only via .dockerignore)
+COPY src/modules ./src/modules
+COPY src/client ./src/client
+
+# 4. Build the Client
+WORKDIR /home/node/bug/src/client
 RUN npm install --legacy-peer-deps
 
-COPY . .
+# Build generates the /dist folder inside /home/node/bug/src/client/dist
+RUN npm run build
 
-EXPOSE 3000 3101
+# 5. Clean up Source Code (The "Shrink" Phase)
+# We move the static build to a permanent location and delete the raw source
+RUN mkdir -p /home/node/bug/client
+RUN mv dist/* /home/node/bug/client/
+WORKDIR /home/node/bug
+RUN rm -rf src/client src/modules
 
-CMD [ "npm", "run", "dev" ]
+# 6. Final Server Setup
+COPY src/server ./src/server
+
+ENV NODE_ENV=production
+# Ensure your server script points to /home/node/bug/client for static files
+CMD [ "sh", "-c", "npm run $NODE_ENV" ]

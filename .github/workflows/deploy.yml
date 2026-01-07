@@ -45,6 +45,7 @@ jobs:
               id: frontend-version
               with:
                   path: ./src/client
+
             - name: Print Current Versions
               run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and frontend version ${{ steps.frontend-version.outputs.current-version }}
 
