@@ -78,8 +78,8 @@ jobs:
                   platforms: linux/amd64
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: |
-                      ${{env.registry}}/${{ github.repository_owner }}/bug:latest
-                      ${{env.registry}}/${{ github.repository_owner }}/bug:${{steps.backend-version.outputs.current-version}}
+                      ${{ steps.backend-version.outputs.current-version != '' && format('{0}/{1}/bug:{2}', env.registry, github.repository_owner, steps.backend-version.outputs.current-version) || '' }}
+                      ${{ github.ref == 'refs/heads/main' && format('{0}/{1}/bug:latest', env.registry, github.repository_owner) || '' }}
                   outputs: type=registry
                   labels: |
                       author=${{github.actor}}
