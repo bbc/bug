@@ -29,20 +29,29 @@ export default defineConfig({
             '@mui/system'
         ]
     },
+    customLogger: {
+        info: (msg) => { if (!msg.includes('proxy error')) console.info(msg) },
+        warn: (msg) => { if (!msg.includes('proxy error')) console.warn(msg) },
+        error: (msg) => {
+            if (!msg.includes('proxy error') && !msg.includes('ECONNREFUSED')) {
+                console.error(msg);
+            }
+        },
+    },
     server: {
         host: '0.0.0.0',
         port: 3000,
         proxy: {
             '/api': {
-                target: 'http://localhost:3101',
+                target: 'http://127.0.0.1:3101',
                 changeOrigin: true,
             },
             '/container': {
-                target: 'http://localhost:3101',
+                target: 'http://127.0.0.1:3101',
                 changeOrigin: true,
             },
             '/socket.io': {
-                target: 'http://localhost:3101',
+                target: 'http://127.0.0.1:3101',
                 ws: true,
                 changeOrigin: true,
             }
