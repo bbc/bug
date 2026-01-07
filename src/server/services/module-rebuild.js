@@ -7,35 +7,37 @@ const dockerBuildModule = require("@services/docker-buildmodule");
 const moduleConfig = require("@models/module-config");
 const dockerFileWrite = require("@services/dockerfile-write");
 
-// update is optional - if used, then docker-buildmodule will call it to update progress
-module.exports = async (moduleName) => {
+module.exports = async (moduleName, updateProgressCallback) => {
     try {
-        // fetch list of available modules
+        // fetch module config
         const moduleList = await moduleConfig.list();
-
-        const matchedModule = moduleList.find(function (eachModule, index) {
-            return eachModule.name == moduleName;
-        });
+        const matchedModule = moduleList.find(m => m.name === moduleName);
 
         if (!matchedModule) {
             throw new Error(`Module config '${moduleName}' not found`);
         }
 
-        // list images
-        if (!(await dockerDeleteModule(moduleName))) {
-            throw new Error(`Failed to delete module '${moduleName}'`);
+        // delete existing module images/containers - we do this first to ensure the build isn't using cached layers we want gone
+        logger.info(`Deleting existing module assets for: ${moduleName}`);
+        const deleted = await dockerDeleteModule(moduleName);
+        if (!deleted) {
+            logger.warning(`Could not fully delete assets for ${moduleName}, proceeding with build anyway.`);
         }
 
-        // Write a dockerfile for the module (in case it's changed)
-        const modulePath = path.join(__dirname, "..", "..", "modules", moduleName, "container");
-        if (!(await dockerFileWrite(modulePath))) {
-            throw new Error(`Failed to write dockerfile to  '${modulePath}'`);
+        // write/update the dockerfile
+        const modulePath = path.resolve(__dirname, "..", "..", "modules", moduleName, "container");
+
+        const fileWriteSuccess = await dockerFileWrite(modulePath, moduleName);
+        if (!fileWriteSuccess) {
+            throw new Error(`Failed to write dockerfile to '${modulePath}'`);
         }
 
-        // and build the module
-        return await dockerBuildModule(moduleName);
+        // trigger the build
+        logger.info(`Rebuilding image for ${moduleName}...`);
+        return await dockerBuildModule(moduleName, updateProgressCallback);
+
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed to rebuild module ${moduleName}`);
+        logger.error(`Rebuild Error: ${error.message}`, { stack: error.stack });
+        throw new Error(`Failed to rebuild module ${moduleName}: ${error.message}`);
     }
 };

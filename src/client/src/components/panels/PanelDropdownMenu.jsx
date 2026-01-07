@@ -29,7 +29,7 @@ export default function PanelDropdownMenu({ panel }) {
     const disableDisable = !panel?.enabled || panel?._dockerContainer._isBuilding;
     const disableRestart = !needsContainer;
     const disableUpgrade = !panel?.upgradeable;
-    const disableDelete = panel?._dockerContainer._isBuilding;
+    const disableDelete = false; //panel?._dockerContainer._isBuilding;
     const disableConfig = !panel?.enabled || panel?._dockerContainer._isBuilding;
 
     const handleOpenMenuClick = (event) => {

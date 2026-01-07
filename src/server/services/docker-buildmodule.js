@@ -6,100 +6,75 @@ const docker = require("@utils/docker");
 const moduleGet = require("@services/module-get");
 
 module.exports = async (moduleName, updateProgressCallback) => {
-    logger.info(`building module ${moduleName}`);
-
-    // Get full path in container
-    const corePath = path.join("..", "..", "..", "core");
-    const containerPath = path.join(__dirname, "..", "..", "modules", moduleName, "container");
-    const module = await moduleGet(moduleName);
-
-    let stream;
+    logger.info(`Building module: ${moduleName}`);
 
     try {
+        const moduleData = await moduleGet(moduleName);
+        if (!moduleData) {
+            throw new Error(`Module metadata not found for: ${moduleName}`);
+        }
 
-        process.on('uncaughtException', (err) => {
-            console.error(err);
-            updateProgressCallback(-1);
-            throw new Error(`Failed to build docker module ${moduleName}`);
-        });
+        const projectRoot = path.resolve(__dirname, "..", "..", "..");
 
-        // Build the image with dockerode
-        stream = await docker.buildImage(
-            {
-                context: containerPath,
-                src: ["/", corePath],
+        // relative paths from the projectRoot for Docker's 'src' array
+        const relModulePath = path.join("src", "modules", moduleName, "container");
+        const relCorePath = path.join("src", "server", "core");
+
+        const buildOptions = {
+            t: [`${moduleName}:${moduleData.version}`],
+            dockerfile: path.join(relModulePath, "Dockerfile"),
+            labels: {
+                "uk.co.bbc.bug.module.version": String(moduleData.version),
+                "uk.co.bbc.bug.module.name": String(moduleData.name),
+                "uk.co.bbc.bug.module.author": String(moduleData.author || "unknown"),
             },
-            {
-                t: [`${moduleName}:${module.version}`],
-                labels: {
-                    "uk.co.bbc.bug.module.version": `${module.version}`,
-                    "uk.co.bbc.bug.module.name": `${module.name}`,
-                    "uk.co.bbc.bug.module.author": `${module.author}`,
+        };
+
+        const contextFiles = {
+            context: projectRoot,
+            src: [relModulePath, relCorePath],
+        };
+
+        logger.debug(`Build context root: ${projectRoot}`);
+        const stream = await docker.buildImage(contextFiles, buildOptions);
+
+        return await new Promise((resolve) => {
+            docker.modem.followProgress(
+                stream,
+                (err, output) => {
+                    if (err) {
+                        logger.error(`Build failed for ${moduleName}:`, err);
+                        return resolve(false);
+                    }
+                    logger.info(`Module ${moduleName} built OK`);
+                    resolve(true);
                 },
-            }
-        );
-
-        stream.on('error', (err) => console.error('Stream error:', err));
-
-    } catch (error) {
-        console.error('Caught error:', error);
-    }
-
-
-    // watch the stream for progress
-    let progressResult = await new Promise((resolve, reject) => {
-        docker.modem.followProgress(stream, onFinished, onProgress);
-
-        function onFinished(err, output) {
-            if (err) {
-                logger.warning(`error while building module ${moduleName}: `, err);
-                resolve(false);
-            } else {
-                logger.info(`module ${moduleName} built OK`);
-                resolve(true);
-            }
-        }
-
-        function parseProgress(output) {
-            if (output.indexOf("Step ") !== 0) {
-                return null;
-            }
-
-            let outputSpaceArray = output.split(" ");
-            if (outputSpaceArray.length < 2) {
-                return null;
-            }
-            if (outputSpaceArray[1].indexOf("/") === -1) {
-                return null;
-            }
-
-            let outputSlashArray = outputSpaceArray[1].split("/");
-            if (outputSlashArray.length != 2) {
-                return null;
-            }
-
-            if (isNaN(outputSlashArray[0]) || isNaN(outputSlashArray[1])) {
-                return null;
-            }
-            return (100 / parseInt(outputSlashArray[1])) * parseInt(outputSlashArray[0]);
-        }
-
-        function onProgress(event) {
-            if (event && event.stream) {
-                // remove newlines etc
-                const output = event.stream.replace(/(\r\n|\n|\r)/gm, "");
-
-                // if this line has 'Step 1/5' etc, then we'll call the calback
-                if (updateProgressCallback) {
-                    let progress = parseProgress(output);
-                    if (progress) {
-                        updateProgressCallback(progress);
+                (event) => {
+                    if (event.stream && updateProgressCallback) {
+                        const progress = parseStepProgress(event.stream);
+                        if (progress !== null) {
+                            updateProgressCallback(progress);
+                        }
+                        logger.debug(`[${moduleName}] ${event.stream.trim()}`);
                     }
                 }
-                logger.debug(`${moduleName} ${output}`);
-            }
-        }
-    });
+            );
+        });
 
-    return progressResult;
+    } catch (error) {
+        logger.error(`Failed to initialize build for ${moduleName}: ${error.message}`);
+        if (updateProgressCallback) updateProgressCallback(-1);
+        return false;
+    }
 };
+
+// parses "Step 1/10" format from Docker stream to return a percentage
+function parseStepProgress(input) {
+    const match = input.match(/Step\s+(\d+)\/(\d+)/i);
+    if (match) {
+        const current = parseInt(match[1], 10);
+        const total = parseInt(match[2], 10);
+        return Math.round((current / total) * 100);
+    }
+    return null;
+}
