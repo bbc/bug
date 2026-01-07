@@ -1,24 +1,18 @@
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, title = "New Link" }) => {
-    const [data, setDefault] = useState(defaultData);
     const {
         control,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
-    useEffect(() => {
-        setDefault(defaultData);
-    }, [defaultData]);
-
     const onSubmit = (form) => {
         //If new link
-        if (!index) {
+        if (index === null || index === undefined) {
             onCreate(form);
         } else {
             onEdit(form, index);
@@ -27,11 +21,13 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
     };
 
     const getActionText = () => {
-        if (index) {
-            return "Edit Link";
+        if (index !== null && index !== undefined) {
+            return "Save";
         }
-        return "Add Link";
+        return "Add";
     };
+
+    // console.log(data);
     return (
         <Dialog open={open} onClose={onDismiss} style={{ minWidth: "50%" }}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -45,7 +41,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                                 rules={{ required: true }}
                                 fullWidth
                                 error={errors.title}
-                                defaultValue={data?.title}
+                                defaultValue={defaultData?.title ?? ""}
                                 label="Title"
                             />
                         </Grid>
@@ -56,7 +52,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                                 rules={{ required: true }}
                                 fullWidth
                                 error={errors.description}
-                                defaultValue={data?.description}
+                                defaultValue={defaultData?.description ?? ""}
                                 label="Description"
                             />
                         </Grid>
@@ -67,7 +63,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                                 rules={{ required: true }}
                                 fullWidth
                                 error={errors.url}
-                                defaultValue={data?.url}
+                                defaultValue={defaultData?.url ?? ""}
                                 label="URL"
                             />
                         </Grid>
@@ -78,7 +74,7 @@ const AddDialog = ({ defaultData, onDismiss, onCreate, onEdit, index, open, titl
                                 control={control}
                                 fullWidth
                                 error={errors?.behaviour}
-                                defaultValue={data?.behaviour}
+                                defaultValue={defaultData?.behaviour ?? "new"}
                                 label="Behaviour"
                                 rules={{ required: true }}
                                 options={[
