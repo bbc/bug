@@ -17,6 +17,8 @@ const options = {
     cors: {
         origin: "*",
     },
+    transports: ['websocket'],
+    allowEIO3: true
 };
 
 const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);

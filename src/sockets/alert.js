@@ -1,8 +1,12 @@
 const logger = require("@utils/logger")(module);
 
 const alertHandler = (namespace, socket) => {
+    // remove previous "event" listeners to prevent stacking/memory leaks
+    socket.removeAllListeners("event");
+
     socket.on("event", (data) => {
         let level;
+        // logic remains the same...
         switch (data.options.variant) {
             case "info":
             case "success":
@@ -19,8 +23,9 @@ const alertHandler = (namespace, socket) => {
         }
 
         if (data.options.broadcast) {
-            delete data.options.broadcast;
-            socket.broadcast.emit("event", data);
+            const broadcastData = { ...data };
+            delete broadcastData.options.broadcast;
+            socket.broadcast.emit("event", broadcastData);
         }
 
         logger[level](data.message, { userId: data?.userId, panelId: data?.panelId });
