@@ -2,7 +2,7 @@
 
 const logger = require("@utils/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
-// const mongoCreateIndex = require("@core/mongo-createindex");
+const mongoCreateIndex = require("@core/mongo-createindex");
 
 //TODO error handling with throw
 
@@ -24,7 +24,7 @@ exports.get = async function (panelId) {
 exports.set = async function (panelId, statusText, progress) {
     try {
         const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
-        // await mongoCreateIndex(panelBuildStatusCollection, "timestamp", { expireAfterSeconds: 60 });
+        await mongoCreateIndex(panelBuildStatusCollection, "timestamp", { expireAfterSeconds: 60 });
         if (panelBuildStatusCollection) {
             await panelBuildStatusCollection.updateOne(
                 {
@@ -38,7 +38,7 @@ exports.set = async function (panelId, statusText, progress) {
                             progress,
                             error: false,
                         },
-                        // timestamp: new Date()
+                        timestamp: new Date(),
                     },
                 },
                 {
@@ -69,7 +69,7 @@ exports.setError = async function (panelId, errorText) {
                             progress: -1,
                             error: true,
                         },
-                        // timestamp: new Date()
+                        timestamp: new Date()
                     },
                 },
                 {
@@ -95,7 +95,7 @@ exports.setProgress = async function (panelId, progress) {
                 {
                     $set: {
                         "status.progress": progress,
-                        // timestamp: new Date()
+                        timestamp: new Date()
                     },
                 },
                 {
