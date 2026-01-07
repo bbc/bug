@@ -1,22 +1,21 @@
-import React, { useEffect } from "react";
-import RouterButton from "./RouterButton";
-import { useParams } from "react-router-dom";
-import { useAlert } from "@utils/Snackbar";
-import BugLoading from "@core/BugLoading";
 import BugEditIconDialog from "@core/BugEditIconDialog";
+import BugLoading from "@core/BugLoading";
+import { Box } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
-import Box from "@mui/material/Box";
-
+import { useAlert } from "@utils/Snackbar";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import RouterButton from "./RouterButton";
 import {
-    DndContext,
     closestCenter,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
     TouchSensor,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from "@dnd-kit/sortable";
+import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 export default function Router({
     panelId,

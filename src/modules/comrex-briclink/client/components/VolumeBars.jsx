@@ -1,8 +1,6 @@
-import React from "react";
-import { useApiPoller } from "@hooks/ApiPoller";
 import BugVolumeBar from "@core/BugVolumeBar";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Box, Grid } from "@mui/material";
 
 export default function VolumeBars({ panelId }) {
     const levels = useApiPoller({

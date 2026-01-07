@@ -1,16 +1,14 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
-import BugConfigFormChipInput from "@core/BugConfigFormChipInput";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import { Grid, TextField } from "@mui/material";
 
 export default function SecurityStrategyAuto({ strategy, errors, control }) {
     return (
         <>
             <Grid container spacing={4}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="name"
                         control={control}
@@ -22,7 +20,7 @@ export default function SecurityStrategyAuto({ strategy, errors, control }) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <TextField
                         variant="standard"
                         fullWidth
@@ -33,7 +31,7 @@ export default function SecurityStrategyAuto({ strategy, errors, control }) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormTextField
                         name="description"
                         control={control}
@@ -45,7 +43,7 @@ export default function SecurityStrategyAuto({ strategy, errors, control }) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormSwitch
                         name="enabled"
                         label="Enable this security type"
@@ -56,7 +54,7 @@ export default function SecurityStrategyAuto({ strategy, errors, control }) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormSelect
                         name="sessionLength"
                         control={control}
@@ -78,7 +76,7 @@ export default function SecurityStrategyAuto({ strategy, errors, control }) {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <BugConfigFormChipInput
                         name="sourceFilterList"
                         label="Source filter list"

@@ -1,6 +1,4 @@
-import React from "react";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 export default function PanelPowerState({ item }) {
     const operationLabels = {
         migrate_send: "Migrating",
@@ -18,7 +16,6 @@ export default function PanelPowerState({ item }) {
         changing_shadow_memory: "Reconfiguring",
         changing_static_range: "Reconfiguring",
         make_into_template: "Reconfiguring",
-        changing_dynamic_range: "Reconfiguring",
         destroy: "Deleting",
         export: "Exporting",
         start_on: "Starting",
@@ -39,7 +36,6 @@ export default function PanelPowerState({ item }) {
         pause: "warning.main",
         checkpoint: "primary.main",
         snapshot: "primary.main",
-        changing_dynamic_range: "primary.main",
         changing_shadow_memory: "primary.main",
         changing_static_range: "primary.main",
         make_into_template: "primary.main",

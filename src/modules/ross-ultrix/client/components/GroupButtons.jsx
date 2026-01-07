@@ -1,15 +1,14 @@
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugLoading from "@core/BugLoading";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AddGroupButton from "./AddGroupButton";
 import EditButtonsDialog from "./EditButtonsDialog";
 import GroupButton from "./GroupButton";
-
 export default function GroupButtons({
     panelId,
     editMode = false,
@@ -20,7 +19,7 @@ export default function GroupButtons({
     sourceGroup = 0,
 }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [localButtons, setLocalButtons] = useState(null);
     const { renameDialog } = useBugRenameDialog();
     const { customDialog } = useBugCustomDialog();
@@ -33,9 +32,9 @@ export default function GroupButtons({
         const editText = editMode ? "/edit" : "";
 
         if (groupType === "source") {
-            history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationGroup}`);
+            navigate(`/panel/${panelId}${editText}/${groupIndex}/${destinationGroup}`);
         } else {
-            history.push(`/panel/${panelId}${editText}/${sourceGroup}/${groupIndex}`);
+            navigate(`/panel/${panelId}${editText}/${sourceGroup}/${groupIndex}`);
         }
     };
 

@@ -1,13 +1,7 @@
-import React from "react";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import { useSortable } from "@dnd-kit/sortable";
-import Box from "@mui/material/Box";
 import BugDragIcon from "@core/BugDragIcon";
-
+import { useSortable } from "@dnd-kit/sortable";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, IconButton, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 export default function EditButtonsDragItem({ button, onRemove }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: `button:${button.index}`,

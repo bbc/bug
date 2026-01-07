@@ -1,5 +1,5 @@
+import { TextField } from "@mui/material";
 import React from "react";
-import TextField from "@mui/material/TextField";
 
 const BugTextField = ({
     disabled = false,

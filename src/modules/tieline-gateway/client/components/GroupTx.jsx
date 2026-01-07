@@ -1,14 +1,12 @@
-import React from "react";
 import BugApiButton from "@core/BugApiButton";
+import BugApiSelect from "@core/BugApiSelect";
+import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
 import BugDetailsTable from "@core/BugDetailsTable";
 import BugTextField from "@core/BugTextField";
-import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
-import BugApiSelect from "@core/BugApiSelect";
+import { Box } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import StateLabel from "./StateLabel";
-import Box from "@mui/material/Box";
-
 export default function GroupTx({ panelConfig, connection, group, panelId, onChange, showAdvanced }) {
     const sendAlert = useAlert();
 

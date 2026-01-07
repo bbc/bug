@@ -1,10 +1,8 @@
-import React from "react";
 import BugApiTable from "@core/BugApiTable";
 import BugPowerIcon from "@core/BugPowerIcon";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import GpsNotFixedIcon from "@mui/icons-material/GpsNotFixed";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 export default function InterfaceTabDevices({ panelId, interfaceId }) {
     return (
         <BugApiTable

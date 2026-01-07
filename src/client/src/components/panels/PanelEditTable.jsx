@@ -1,31 +1,25 @@
-import React, { useState } from "react";
-import useAsyncEffect from "use-async-effect";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import BugLoading from "@core/BugLoading";
-import { useSelector } from "react-redux";
-import panelListGroups from "@utils/panelListGroups";
-import _ from "lodash";
-import PanelEditTableRow from "@components/panels/PanelEditTableRow";
 import PanelEditTableGroupLabel from "@components/panels/PanelEditTableGroupLabel";
+import PanelEditTableRow from "@components/panels/PanelEditTableRow";
+import BugLoading from "@core/BugLoading";
 import { usePanelToolbarEvent } from "@hooks/PanelToolbarEvent";
-import { useAlert } from "@utils/Snackbar";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
-import { useHistory } from "react-router-dom";
+import panelListGroups from "@utils/panelListGroups";
+import { useAlert } from "@utils/Snackbar";
+import _ from "lodash";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
-import { DndContext, closestCenter, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { closestCenter, DndContext, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 export default function PanelTable({ showGroups = true }) {
     const panelList = useSelector((state) => state.panelList);
     const [itemList, setItemList] = useState([]);
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const sensors = useSensors(useSensor(PointerSensor), useSensor(TouchSensor));
 
     const getNextGroup = () => {
@@ -106,7 +100,7 @@ export default function PanelTable({ showGroups = true }) {
                 })
             );
             // it's worked - redirect page to panels
-            history.push(`/panels`);
+            navigate(`/panels`);
         } catch (error) {
             sendAlert(`Failed to save changes`, { variant: "error" });
         }

@@ -1,10 +1,7 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
-import Box from "@mui/material/Box";
-import InputAdornment from "@mui/material/InputAdornment";
-
+import { Box, InputAdornment } from "@mui/material";
 export default function MpegEncoderVideo({ codecdata, onChange, showAdvanced, panelId, serviceId }) {
     const updateCodecData = (callback) => {
         const clonedCodecData = { ...codecdata };

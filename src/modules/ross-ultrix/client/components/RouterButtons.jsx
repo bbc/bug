@@ -1,12 +1,11 @@
 import BugEditIconDialog from "@core/BugEditIconDialog";
 import BugLoading from "@core/BugLoading";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import RouterButton from "./RouterButton";
-
 export default function Router({
     panelId,
     editMode = false,

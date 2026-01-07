@@ -1,5 +1,5 @@
+import { ArgsTable, Description, PRIMARY_STORY, Subtitle, Title } from "@storybook/addon-docs";
 import { Source } from "@storybook/addon-docs/blocks";
-import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
 
 export default {
     title: "BUG Core/Wrappers/BugToolbarWrapper",
@@ -24,9 +24,9 @@ import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import AxiosCommand from "@utils/AxiosCommand";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {MenuItem} from "@mui/material";
+import {ListItemIcon} from "@mui/material";
+import {ListItemText} from "@mui/material";
 import { useAlert } from "@utils/Snackbar";
 import { usePanelStatus } from "@hooks/PanelStatus";
 import { useSelector } from "react-redux";

@@ -1,22 +1,21 @@
-import { useHistory } from "react-router-dom";
-import React from "react";
+import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
+import { Button, Grid } from "@mui/material";
+import AxiosDelete from "@utils/AxiosDelete";
+import AxiosGet from "@utils/AxiosGet";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import BugConfigFormDeleteButton from "@core/BugConfigFormDeleteButton";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
-import AxiosGet from "@utils/AxiosGet";
-import AxiosDelete from "@utils/AxiosDelete";
-import BugLoading from "@core/BugLoading";
-import useAsyncEffect from "use-async-effect";
-import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function Peer({ panelId, peerId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [peer, setPeer] = React.useState(null);
     const [profileLabels, setProfileLabels] = React.useState(null);
     const sendAlert = useAlert();
@@ -33,14 +32,14 @@ export default function Peer({ panelId, peerId }) {
         const response = await AxiosDelete(`/container/${panelId}/peer/${peerId}`);
         if (response) {
             sendAlert(`Connection has been deleted.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Connection could not be deleted.`, { variant: "warning" });
         }
     };
 
     const handleCancelClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const { handleSubmit, control, formState } = useForm();
@@ -61,7 +60,7 @@ export default function Peer({ panelId, peerId }) {
         const response = await AxiosPut(`/container/${panelId}/peer/${peerId}`, form);
         if (response) {
             sendAlert(`Connection has been updated.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Connection could not be updated.`, { variant: "warning" });
         }
@@ -86,7 +85,7 @@ export default function Peer({ panelId, peerId }) {
                                 },
                             }}
                         >
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="name"
                                     control={control}
@@ -97,7 +96,7 @@ export default function Peer({ panelId, peerId }) {
                                     label="Name"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="addr"
                                     control={control}
@@ -108,7 +107,7 @@ export default function Peer({ panelId, peerId }) {
                                 />
                             </Grid>
                             {profileLabels && (
-                                <Grid item xs={12}>
+                                <Grid size={{ xs: 12 }}>
                                     <BugConfigFormSelect
                                         name="profile"
                                         label="Profile"
@@ -120,7 +119,7 @@ export default function Peer({ panelId, peerId }) {
                                     />
                                 </Grid>
                             )}
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormSwitch
                                     name="use_xlock"
                                     label="Use crosslock"

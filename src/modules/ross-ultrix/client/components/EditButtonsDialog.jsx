@@ -1,23 +1,24 @@
 import BugScrollbars from "@core/BugScrollbars";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+    Box,
+    Button,
+    Checkbox,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+} from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import _ from "lodash";
 import React from "react";
 import useAsyncEffect from "use-async-effect";
 import EditButtonsItem from "./EditButtonsItem";
-
 export default function EditButtonsDialog({ open, panelId, onDismiss, groupType, onConfirm, groupIndex, groupId }) {
     const [buttons, setButtons] = React.useState(null);
     const [selectedButtons, setSelectedButtons] = React.useState(null);

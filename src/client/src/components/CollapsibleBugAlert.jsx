@@ -1,16 +1,13 @@
-import React from "react";
-import Alert from "@mui/material/Alert";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ReplayIcon from "@mui/icons-material/Replay";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { Alert, Box, IconButton } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import { useHistory } from "react-router-dom";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
-
+import React from "react";
+import { useNavigate } from "react-router-dom";
 export default function CollapsibleBugAlert({ type, message, flags = [], panel, square = false }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const sendAlert = useAlert();
     const [open, setOpen] = React.useState(false);
 
@@ -105,7 +102,7 @@ export default function CollapsibleBugAlert({ type, message, flags = [], panel, 
     };
 
     const handleConfig = (event) => {
-        history.push(`/panel/${panel.id}/config`);
+        navigate(`/panel/${panel.id}/config`);
         event.stopPropagation();
         event.preventDefault();
     };

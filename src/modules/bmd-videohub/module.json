@@ -3,7 +3,7 @@
     "longname": "Blackmagic Videohub",
     "description": "Control and monitor Blackmagic videohub devices",
     "capabilities": ["video-router"],
-    "memory": 50,
+    "memory": 100,
     "notes": "",
     "version": "1.3.2",
     "icon": "mdiMatrix",

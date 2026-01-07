@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugLoading from "@core/BugLoading";
-import PlayerCardEdit from "../components/PlayerCardEdit";
-import AddCard from "../components/AddCard";
-import Grid from "@mui/material/Grid";
-import { useSelector } from "react-redux";
-import AddDialog from "../components/AddDialog";
-import EditDialog from "../components/EditDialog";
-import AxiosPut from "@utils/AxiosPut";
+import { Grid } from "@mui/material";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosPost from "@utils/AxiosPost";
-import { useBugCustomDialog } from "@core/BugCustomDialog";
+import AxiosPut from "@utils/AxiosPut";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import AddCard from "../components/AddCard";
+import AddDialog from "../components/AddDialog";
+import EditDialog from "../components/EditDialog";
+import PlayerCardEdit from "../components/PlayerCardEdit";
 
 import { useAlert } from "@utils/Snackbar";
 
@@ -75,7 +74,7 @@ export default function EditPanel() {
         <>
             <Grid container spacing={1} sx={{ padding: "8px" }}>
                 {sortedPlayers.map((player) => (
-                    <Grid item key={player.id} xl={3} lg={4} md={6} xs={12}>
+                    <Grid key={player.id} size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                         <PlayerCardEdit
                             handleDelete={deletePlayer}
                             handleEdit={() => onClickEdit(player)}
@@ -83,7 +82,7 @@ export default function EditPanel() {
                         />
                     </Grid>
                 ))}
-                <Grid item xl={3} lg={4} md={6} xs={12}>
+                <Grid size={{ xl: 3, lg: 4, md: 6, xs: 12 }}>
                     <AddCard handleClick={onClickAdd} />
                 </Grid>
             </Grid>

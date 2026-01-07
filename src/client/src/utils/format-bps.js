@@ -1,4 +1,4 @@
-module.exports = (bits, decimals) => {
+const formatBps = (bits, decimals) => {
     if (bits === 0) return "0";
     if (bits < 0) {
         bits = bits * -1;
@@ -14,3 +14,5 @@ module.exports = (bits, decimals) => {
     const size = sizes[i] ? sizes[i] : sizes[0];
     return parseFloat((bits / Math.pow(k, i)).toFixed(dm)) + " " + size;
 };
+
+export default formatBps;

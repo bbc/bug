@@ -1,6 +1,5 @@
-import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-
+import { Button } from "@mui/material";
 export default function AddGroupButton({ onClick }) {
     return (
         <Button

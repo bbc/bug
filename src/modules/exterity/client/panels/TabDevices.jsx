@@ -1,37 +1,29 @@
-import React, { useState } from "react";
-import { useApiPoller } from "@hooks/ApiPoller";
-import { useHistory } from "react-router-dom";
+import BugApiAutocomplete from "@core/BugApiAutocomplete";
+import BugApiTable from "@core/BugApiTable";
+import BugChipDisplay from "@core/BugChipDisplay";
+import { useBugCustomDialog } from "@core/BugCustomDialog";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import BugApiTable from "@core/BugApiTable";
+import BugPowerIcon from "@core/BugPowerIcon";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slider, Stack } from "@mui/material";
+import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
-import AxiosDelete from "@utils/AxiosDelete";
-import { useForceRefresh } from "@hooks/ForceRefresh";
 import { useAlert } from "@utils/Snackbar";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import DeleteIcon from "@mui/icons-material/Delete";
-import BugPowerIcon from "@core/BugPowerIcon";
-import BugChipDisplay from "@core/BugChipDisplay";
-import BugApiAutocomplete from "@core/BugApiAutocomplete";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import { useBugCustomDialog } from "@core/BugCustomDialog";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import Slider from "@mui/material/Slider";
-import Stack from "@mui/material/Stack";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 export default function TabDevices({ panelId }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
     const { renameDialog } = useBugRenameDialog();
 
@@ -185,7 +177,7 @@ export default function TabDevices({ panelId }) {
     };
 
     const handleEditClicked = (event, item) => {
-        history.push(`/panel/${panelId}/devices/edit/${item.deviceId}`);
+        navigate(`/panel/${panelId}/devices/edit/${item.deviceId}`);
     };
 
     const handleVolumeClicked = async (event, item) => {

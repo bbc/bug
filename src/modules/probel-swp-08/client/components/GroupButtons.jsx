@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import BugLoading from "@core/BugLoading";
-import { useAlert } from "@utils/Snackbar";
-import GroupButton from "./GroupButton";
-import AddGroupButton from "./AddGroupButton";
-import AxiosPost from "@utils/AxiosPost";
-import { useHistory } from "react-router-dom";
-import EditButtonsDialog from "./EditButtonsDialog";
-import Box from "@mui/material/Box";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
-
+import BugLoading from "@core/BugLoading";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import { Box } from "@mui/material";
+import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AddGroupButton from "./AddGroupButton";
+import EditButtonsDialog from "./EditButtonsDialog";
+import GroupButton from "./GroupButton";
 import {
-    DndContext,
     closestCenter,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
     TouchSensor,
@@ -21,9 +20,9 @@ import {
 } from "@dnd-kit/core";
 import {
     arrayMove,
+    horizontalListSortingStrategy,
     SortableContext,
     sortableKeyboardCoordinates,
-    horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
 export default function GroupButtons({
@@ -36,7 +35,7 @@ export default function GroupButtons({
     sourceGroup = 0,
 }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [localButtons, setLocalButtons] = useState(null);
     const { renameDialog } = useBugRenameDialog();
     const { customDialog } = useBugCustomDialog();
@@ -60,9 +59,9 @@ export default function GroupButtons({
         const destinationIndex = pathItems[4] ? pathItems[4] : 0;
 
         if (groupType === "source") {
-            history.push(`/panel/${panelId}${editText}/${groupIndex}/${destinationIndex}`);
+            navigate(`/panel/${panelId}${editText}/${groupIndex}/${destinationIndex}`);
         } else {
-            history.push(`/panel/${panelId}${editText}/${sourceIndex}/${groupIndex}`);
+            navigate(`/panel/${panelId}${editText}/${sourceIndex}/${groupIndex}`);
         }
     };
 
@@ -101,9 +100,9 @@ export default function GroupButtons({
             }
             const editText = editMode ? "/edit" : "";
             if (groupType === "source") {
-                history.push(`/panel/${panelId}${editText}/${newIndex}/${destinationGroup}`);
+                navigate(`/panel/${panelId}${editText}/${newIndex}/${destinationGroup}`);
             } else {
-                history.push(`/panel/${panelId}${editText}/${sourceGroup}/${newIndex}`);
+                navigate(`/panel/${panelId}${editText}/${sourceGroup}/${newIndex}`);
             }
         }
     };

@@ -1,12 +1,10 @@
-import React from "react";
-import BugDragIcon from "@core/BugDragIcon";
-import BugApiSwitch from "@core/BugApiSwitch";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import { useSortable } from "@dnd-kit/sortable";
 import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
+import BugApiSwitch from "@core/BugApiSwitch";
+import BugDragIcon from "@core/BugDragIcon";
+import { useSortable } from "@dnd-kit/sortable";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { TableCell, TableRow } from "@mui/material";
 
 export default function PanelEditTableRow({ id, panel }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });

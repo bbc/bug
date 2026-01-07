@@ -1,16 +1,9 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import LaunchIcon from "@mui/icons-material/Launch";
-import Divider from "@mui/material/Divider";
-import { useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
-import { useLocation } from "react-router-dom";
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
-
+import LaunchIcon from "@mui/icons-material/Launch";
+import { Button, Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 export default function Toolbar({ panelId, ...props }) {
     const panelConfig = useSelector((state) => state.panelConfig);
     const location = useLocation();

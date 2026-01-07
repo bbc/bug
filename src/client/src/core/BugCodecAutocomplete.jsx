@@ -1,10 +1,6 @@
-import React from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
+import { Autocomplete, Box, Paper, TextField } from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
-
+import React from "react";
 export default function BugCodecAutocomplete({
     addressValue = "",
     apiUrl = "",

@@ -1,8 +1,6 @@
-import React from "react";
-import Weather from "../components/Weather";
+import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
-import Box from "@mui/material/Box";
-
+import Weather from "../components/Weather";
 export default function MainPanel({ panelId }) {
     const panelConfig = useSelector((state) => state.panelConfig);
 
