@@ -2,10 +2,8 @@ import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugRouterButton from "@core/BugRouterButton";
 import GridViewIcon from "@mui/icons-material/GridView";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Box, Typography } from "@mui/material";
 import { useAlert } from "@utils/Snackbar";
-
 export default function RouterButton({
     panelId,
     buttonType,

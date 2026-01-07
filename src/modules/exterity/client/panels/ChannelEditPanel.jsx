@@ -1,26 +1,22 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { useAlert } from "@utils/Snackbar";
-import { useForm } from "react-hook-form";
-import { useApiPoller } from "@hooks/ApiPoller";
-
-import AxiosPut from "@utils/AxiosPut";
-
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
-import BugLoading from "@core/BugLoading";
 import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
 import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import BugLoading from "@core/BugLoading";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Button, Grid } from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function ChannelPanel({ panelId }) {
     const { channelId } = useParams();
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const [channel, setChannel] = React.useState(null);
     const sendAlert = useAlert();
 
@@ -29,7 +25,7 @@ export default function ChannelPanel({ panelId }) {
     }, []);
 
     const handleCancelClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const groups = useApiPoller({
@@ -55,7 +51,7 @@ export default function ChannelPanel({ panelId }) {
         const response = await AxiosPut(`/container/${panelId}/channels/${channelId}`, form);
         if (response) {
             sendAlert(`Channel has been updated.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Channel could not be updated.`, { variant: "warning" });
         }
@@ -72,7 +68,7 @@ export default function ChannelPanel({ panelId }) {
                     <BugForm.Header onClose={handleCancelClicked}>Edit Channel</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     control={control}
@@ -83,7 +79,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Title"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="number"
                                     control={control}
@@ -95,7 +91,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Number"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormSelect
                                     name="protocol"
                                     control={control}
@@ -110,7 +106,7 @@ export default function ChannelPanel({ panelId }) {
                                     ]}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -121,7 +117,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="port"
                                     control={control}
@@ -133,7 +129,7 @@ export default function ChannelPanel({ panelId }) {
                                     label="Port"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="groups"
                                     label="Groups"

@@ -1,4 +1,4 @@
-import Switch from "@mui/material/Switch";
+import { Switch } from "@mui/material";
 import React from "react";
 
 export default function BugApiSwitch({

@@ -1,12 +1,10 @@
-import React from "react";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
 import BugPowerIcon from "@core/BugPowerIcon";
 import BugStatusLabel from "@core/BugStatusLabel";
-import Box from "@mui/material/Box";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-
+import { Box } from "@mui/material";
 export default function ModuleList({ panelId }) {
     return (
         <Box>

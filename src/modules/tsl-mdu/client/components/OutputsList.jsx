@@ -1,23 +1,22 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import { useHistory } from "react-router-dom";
-import { useAlert } from "@utils/Snackbar";
-import AxiosPost from "@utils/AxiosPost";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugApiTable from "@core/BugApiTable";
-import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugNoData from "@core/BugNoData";
-import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useForceRefresh } from "@hooks/ForceRefresh";
 import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import TimerIcon from "@mui/icons-material/Timer";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import AxiosCommand from "@utils/AxiosCommand";
-import { useForceRefresh } from "@hooks/ForceRefresh";
+import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
+import { useNavigate } from "react-router-dom";
 
 export default function OutputsList({ panelId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
@@ -68,7 +67,7 @@ export default function OutputsList({ panelId }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/output/${item.number}`);
+        navigate(`/panel/${panelId}/output/${item.number}`);
     };
 
     const handleProtectClicked = async (event, item) => {

@@ -1,6 +1,5 @@
-import React from "react";
 import BugPasswordTextField from "@core/BugPasswordTextField";
-import FormControl from "@mui/material/FormControl";
+import { FormControl } from "@mui/material";
 import { Controller } from "react-hook-form";
 
 const BugConfigFormPasswordTextField = ({

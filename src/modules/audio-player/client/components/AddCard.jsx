@@ -1,9 +1,5 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import { CardActionArea } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
 import AddIcon from "@mui/icons-material/Add";
-
+import { Card, CardActionArea, CardContent } from "@mui/material";
 export default function AddCard({ handleClick }) {
     const handleAddClick = () => {
         handleClick();

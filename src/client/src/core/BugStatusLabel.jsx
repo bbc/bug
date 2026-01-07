@@ -1,6 +1,4 @@
-import React from "react";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 export default function BugStatusLabel({ sx = {}, children }) {
     return (
         <Box

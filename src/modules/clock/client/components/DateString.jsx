@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
 export default function DateString(props) {
     const [dateString, setDateString] = useState("DD/MM/YYYY");
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

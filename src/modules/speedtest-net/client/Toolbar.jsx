@@ -1,13 +1,10 @@
-import React from "react";
-import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import BugApiButton from "@core/BugApiButton";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { useAlert } from "@utils/Snackbar";
-import AxiosGet from "@utils/AxiosGet";
+import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import { useApiPoller } from "@hooks/ApiPoller";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
+import { useAlert } from "@utils/Snackbar";
 
 export default function Toolbar({ panelId, ...props }) {
     let toolbarProps = { ...props };

@@ -1,9 +1,8 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
-import Switch from "@mui/material/Switch";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { Switch } from "@mui/material";
 
 export default function MpegEncoderService({ codecdata, onChange, showAdvanced, panelId, serviceId }) {
     const videoProfiles = useApiPoller({

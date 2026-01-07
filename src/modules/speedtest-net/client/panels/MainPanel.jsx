@@ -1,11 +1,8 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import SpeedCard from "./../components/SpeedCard";
-import ResultsTable from "../components/ResultsTable";
 import { useApiPoller } from "@hooks/ApiPoller";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import { Grid } from "@mui/material";
+import { useParams } from "react-router-dom";
+import ResultsTable from "../components/ResultsTable";
+import SpeedCard from "./../components/SpeedCard";
 
 export default function MainPanel() {
     const params = useParams();
@@ -33,7 +30,7 @@ export default function MainPanel() {
                     interval={500}
                 />
 
-                <Grid item xs={12} sx={{ padding: "8px" }}>
+                <Grid size={{ xs: 12 }} sx={{ padding: "8px" }}>
                     <ResultsTable panelId={params.panelId} limit={10} />
                 </Grid>
             </Grid>

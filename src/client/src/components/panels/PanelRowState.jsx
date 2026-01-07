@@ -1,7 +1,4 @@
-import React from "react";
-import ProgressCounter from "@components/ProgressCounter";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 const State = ({ state, children }) => {
     const stateColors = {
         running: "success.main",
@@ -44,7 +41,7 @@ export default function PanelRowState({ panel }) {
         case "building":
             return (
                 <State state="building">
-                    {panel._buildStatus.text} - <ProgressCounter value={panel._buildStatus.progress} />% complete
+                    {panel._buildStatus.text} - {Math.round(panel._buildStatus.progress)}% complete
                 </State>
             );
         case "error":

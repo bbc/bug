@@ -1,15 +1,13 @@
-import React from "react";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import AxiosCommand from "@utils/AxiosCommand";
 import BugApiSwitch from "@core/BugApiSwitch";
+import { TableCell, TableRow } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import { useNavigate } from "react-router-dom";
 import SecurityMenu from "./SecurityMenu";
-import { useHistory } from "react-router-dom";
 
 export default function SecurityTableRow({ strategy }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleSwitchChange = async (checked, type) => {
         const command = checked ? "enable" : "disable";
@@ -34,7 +32,7 @@ export default function SecurityTableRow({ strategy }) {
     };
 
     const handleRowClick = (type) => {
-        history.push(`/system/security/${type}`);
+        navigate(`/system/security/${type}`);
     };
 
     return (

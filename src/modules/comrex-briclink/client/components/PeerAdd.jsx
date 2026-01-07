@@ -1,19 +1,18 @@
-import { useHistory } from "react-router-dom";
-import React from "react";
+import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import { Button, Grid } from "@mui/material";
+import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
-import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
+import React from "react";
 import { useForm } from "react-hook-form";
-import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
+import { useNavigate } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function PeerAdd({ panelId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [profileLabels, setProfileLabels] = React.useState(null);
     const sendAlert = useAlert();
 
@@ -22,7 +21,7 @@ export default function PeerAdd({ panelId }) {
     }, []);
 
     const handleCancelClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const { handleSubmit, control, formState, setValue } = useForm();
@@ -43,7 +42,7 @@ export default function PeerAdd({ panelId }) {
         const response = await AxiosPost(`/container/${panelId}/peer/add`, form);
         if (response) {
             sendAlert(`Connection has been added.`, { broadcast: "true", variant: "success" });
-            history.push(`/panel/${panelId}/`);
+            navigate(`/panel/${panelId}/`);
         } else {
             sendAlert(`Connection could not be added.`, { variant: "warning" });
         }
@@ -64,7 +63,7 @@ export default function PeerAdd({ panelId }) {
                                 },
                             }}
                         >
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugCodecAutocomplete
                                     apiUrl={`/container/${panelId}/codecdb`}
                                     capability="comrex"
@@ -76,7 +75,7 @@ export default function PeerAdd({ panelId }) {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="name"
                                     control={control}
@@ -87,7 +86,7 @@ export default function PeerAdd({ panelId }) {
                                     label="Name"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="addr"
                                     control={control}
@@ -99,7 +98,7 @@ export default function PeerAdd({ panelId }) {
                                 />
                             </Grid>
                             {profileLabels && (
-                                <Grid item xs={12}>
+                                <Grid size={{ xs: 12 }}>
                                     <BugConfigFormSelect
                                         name="profile"
                                         rules={{ required: true }}

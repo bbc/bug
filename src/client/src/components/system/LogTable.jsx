@@ -1,14 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import BugNoData from "@core/BugNoData";
-import BugLoading from "@core/BugLoading";
 import BugApiTable from "@core/BugApiTable";
-import BugChipDisplay from "@core/BugChipDisplay";
 import BugAvatar from "@core/BugAvatar";
-import { useSelector } from "react-redux";
+import BugChipDisplay from "@core/BugChipDisplay";
+import BugLoading from "@core/BugLoading";
+import BugNoData from "@core/BugNoData";
 import { useApiPoller } from "@hooks/ApiPoller";
+import { useSelector } from "react-redux";
 
-export default function LogTable({ panelId, level, interval }) {
+export default function LogTable({ panelId = "", level = "info", interval = 1000 }) {
     const panelFilter = useSelector((state) =>
         state.panelList.data.map((item) => {
             return { label: item.title, id: item.id };
@@ -143,15 +141,3 @@ export default function LogTable({ panelId, level, interval }) {
         />
     );
 }
-
-LogTable.defaultProps = {
-    level: "info",
-    panelId: "",
-    interval: 1000,
-};
-
-LogTable.propTypes = {
-    level: PropTypes.string,
-    panelId: PropTypes.string,
-    interval: PropTypes.number,
-};

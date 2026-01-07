@@ -1,10 +1,7 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
-import Switch from "@mui/material/Switch";
-import Box from "@mui/material/Box";
-
+import { Box, Switch } from "@mui/material";
 const IndentedName = ({ children }) => <Box sx={{ marginLeft: "1rem" }}>{children}</Box>;
 const SectionTitle = ({ children }) => (
     <Box sx={{ color: "text.primary", opacity: 1, marginTop: "8px" }}>{children}</Box>

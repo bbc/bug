@@ -1,8 +1,6 @@
-import React from "react";
 import BugEditIconDialog from "@core/BugEditIconDialog";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-
+import { Box, Button } from "@mui/material";
+import React from "react";
 export default {
     title: "BUG Core/Dialogs/BugEditIconDialog",
     component: BugEditIconDialog,
@@ -99,8 +97,8 @@ MyBugEditIconDialog.parameters = {
             code: `
 import React from "react";
 import BugEditIconDialog from "@core/BugEditIconDialog";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";            
+import {Button} from "@mui/material";;
+import {Box} from "@mui/material";;            
 
 export const MyBugEditIconDialog = (args) => {
     const [result, setResult] = React.useState(null);

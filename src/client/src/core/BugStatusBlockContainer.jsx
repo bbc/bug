@@ -1,7 +1,5 @@
-import React from "react";
-import Box from "@mui/material/Box";
 import BugStatusBlock from "@core/BugStatusBlock";
-
+import { Box } from "@mui/material";
 export default function BugStatusBlockContainer({ items, sx = {} }) {
     return (
         <Box

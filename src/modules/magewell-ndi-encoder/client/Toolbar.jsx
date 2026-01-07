@@ -1,10 +1,9 @@
-import React, { useState } from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import { usePanelStatus } from "@hooks/PanelStatus";
-import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
+import { useState } from "react";
 import AddDialog from "./components/AddDialog";
-
 export default function Toolbar(props) {
     let toolbarProps = { ...props };
     const [dialogOpen, setDialogOpen] = useState(false);

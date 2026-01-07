@@ -1,13 +1,9 @@
+import BugCard from "@core/BugCard";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, IconButton, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import BugCard from "@core/BugCard";
-import { useHistory, useLocation } from "react-router-dom";
-import Box from "@mui/material/Box";
-
+import { useLocation, useNavigate } from "react-router-dom";
 const TabPanel = ({ children, value, index, fullHeight }) => {
     const hidden = value !== index;
     return (
@@ -28,13 +24,13 @@ export default function BugPanelTabbedForm({
     fullHeight = false,
 }) {
     const [tabIndex, setTabIndex] = React.useState(false);
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const handleChange = (event, newIndex) => {
         setTabIndex(newIndex);
         if (locations && locations[newIndex] && locations[newIndex] !== location.pathname) {
-            history.push(locations[newIndex]);
+            navigate(locations[newIndex]);
         }
     };
 

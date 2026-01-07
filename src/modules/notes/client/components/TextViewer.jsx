@@ -1,16 +1,6 @@
-import React from "react";
-import MUIRichTextEditor from "mui-rte";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 export default function TextEditor({ data }) {
-    return (
-        <>
-            <MUIRichTextEditor
-                readOnly={true}
-                defaultValue={data}
-                inlineToolbar={false}
-                toolbar={false}
-                toolbarButtonSize="small"
-            />
-        </>
-    );
+    return <ReactQuill value={data} readOnly={true} theme="bubble" modules={{ toolbar: false }} />;
 }

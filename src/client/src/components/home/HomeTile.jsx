@@ -1,16 +1,11 @@
-import React from "react";
-import BugDynamicIcon from "@core/BugDynamicIcon";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
 import BadgeWrapper from "@components/BadgeWrapper";
 import CollapsibleBugAlert from "@components/CollapsibleBugAlert";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import BugRestrictTo from "@core/BugRestrictTo";
+import { Card, CardContent, CardHeader, CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Link } from "react-router-dom";
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
     padding: "8px 0px",
@@ -123,7 +118,7 @@ const HomeTile = ({ panel }) => {
     };
 
     return (
-        <StyledGrid item xl={3} lg={4} sm={6} xs={12} key={panel.id}>
+        <StyledGrid key={panel.id} sx={{ width: "100%" }}>
             <StyledLink key={panel.id} to={`/panel/${panel.id}`}>
                 <StyledCard>
                     <StyledCardHeader

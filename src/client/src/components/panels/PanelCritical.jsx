@@ -1,6 +1,5 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
 import BugAlert from "@components/BugAlert";
+import { Grid } from "@mui/material";
 
 export default function PanelCritical({ panel }) {
     return (

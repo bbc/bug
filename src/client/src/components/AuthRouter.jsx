@@ -1,11 +1,10 @@
-import React from "react";
-import { useSelector } from "react-redux";
 import PageLogin from "@components/pages/PageLogin";
 import PageRouter from "@components/pages/PageRouter";
 import BugLoading from "@core/BugLoading";
+import { useSelector } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 
-const AuthRouter = (props) => {
+const AuthRouter = () => {
     const user = useSelector((state) => state.user);
     const strategies = useSelector((state) => state.strategies);
 

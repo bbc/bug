@@ -1,9 +1,7 @@
-import React from "react";
 import BugApiTable from "@core/BugApiTable";
 import BugSparkCell from "@core/BugSparkCell";
-import Box from "@mui/material/Box";
 import BugStatusLabel from "@core/BugStatusLabel";
-
+import { Box } from "@mui/material";
 export default function SystemHealthHost() {
     return (
         <BugApiTable

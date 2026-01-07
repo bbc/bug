@@ -1,12 +1,6 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import TimeAgo from "javascript-time-ago";
+import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 import parse from "html-react-parser";
-
+import TimeAgo from "javascript-time-ago";
 export default function FeedCard({ item }) {
     const timeAgo = new TimeAgo("en-GB");
 
