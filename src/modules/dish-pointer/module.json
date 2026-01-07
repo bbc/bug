@@ -3,7 +3,7 @@
     "longname": "Satelite Dish Pointer",
     "description": "Get the Azimuth and Elevation to point a Satelite Dish",
     "capabilities": [],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "icon": "mdiSatelliteUplink",
     "author": "Ryan McCartney",
     "needsContainer": false,

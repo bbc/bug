@@ -52,6 +52,20 @@ export default function ConfigPanel() {
 
             <Grid size={{ xs: 6 }}>
                 <BugConfigFormTextField
+                    name="esAltitude"
+                    control={control}
+                    rules={{ required: true }}
+                    inputProps={{ inputmode: "decimal", max: 5000, min: 0, step: "1" }}
+                    type="number"
+                    fullWidth
+                    error={errors?.esAltitude}
+                    defaultValue={panelConfig.data.esAltitude}
+                    label="Earth Station Altitude"
+                />
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
+                <BugConfigFormTextField
                     name="esLatitude"
                     control={control}
                     rules={{ required: true }}
@@ -75,20 +89,6 @@ export default function ConfigPanel() {
                     error={errors?.esLongitude}
                     defaultValue={panelConfig.data.esLongitude}
                     label="Earth Station Longitude"
-                />
-            </Grid>
-
-            <Grid size={{ xs: 6 }}>
-                <BugConfigFormTextField
-                    name="esAltitude"
-                    control={control}
-                    rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 5000, min: 0, step: "1" }}
-                    type="number"
-                    fullWidth
-                    error={errors?.esAltitude}
-                    defaultValue={panelConfig.data.esAltitude}
-                    label="Earth Station Altitude"
                 />
             </Grid>
 
