@@ -1,0 +1,26 @@
+{
+    "name": "webpage-embed",
+    "longname": "Embedded Web Page",
+    "description": "Embed a web page within the BUG UI",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "Web",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "stable",
+    "needsContainer": false,
+    "devmounts": [],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "webpage-embed",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "url": ""
+    }
+}
