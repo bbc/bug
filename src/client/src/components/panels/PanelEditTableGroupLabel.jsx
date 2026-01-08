@@ -4,15 +4,13 @@ import { TableCell, TableRow } from "@mui/material";
 export default function PanelEditTableGroupLabel({ group, onChange, placeholder, id, passedKey }) {
     return (
         <TableRow
-            hover
             key={passedKey}
             sx={{
-                height: "48px",
-                cursor: "move",
+                height: "62px",
                 backgroundColor: "background.default",
             }}
         >
-            <TableCell colSpan={6}>
+            <TableCell colSpan={7}>
                 <BugTextField
                     sx={{
                         fontSize: "0.875rem",

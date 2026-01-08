@@ -47,6 +47,7 @@ export default function PanelTableRow({ panel, showGroups }) {
             key={panel.id}
             hover={panel._active}
             sx={{
+                height: "65px",
                 cursor: panel._active ? "pointer" : "auto",
             }}
             onClick={(e) => handleRowClicked(e, panel.id)}
