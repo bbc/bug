@@ -16,11 +16,17 @@ export default function BugTileStatus({ statusItems }) {
 
     const currentStatusItem = statusItems[statusIndex];
 
+    const type = stateColors[currentStatusItem?.type] ? currentStatusItem?.type : "warning";
+
+    if (!stateColors[currentStatusItem?.type]) {
+        console.warn(`BugStatusItem: Unknown status type: ${currentStatusItem?.type}`);
+    }
+
     return (
         <Box
             sx={{
-                backgroundColor: stateColors[currentStatusItem.type][0] || "#1a1a1a",
-                color: stateColors[currentStatusItem.type][1] || "#ffffff",
+                backgroundColor: stateColors[type][0] || "#1a1a1a",
+                color: stateColors[type][1] || "#ffffff",
                 borderTop: `1px solid #121212`,
             }}
         >
