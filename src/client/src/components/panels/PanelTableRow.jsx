@@ -31,7 +31,7 @@ export default function PanelTableRow({ panel, showGroups }) {
     };
 
     if (redirectUrl) {
-        return <Navigate replace to={{ pathname: redirectUrl }} />;
+        return <Navigate to={{ pathname: redirectUrl }} />;
     }
     let rowOpacity = 1;
     if (

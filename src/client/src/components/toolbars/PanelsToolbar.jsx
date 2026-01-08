@@ -1,5 +1,4 @@
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Box, Button, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import React from "react";
@@ -22,15 +21,6 @@ export default function PanelsToolbar(props) {
                 <Button component={Link} to={`/panels/add`} variant="outlined" color="primary" startIcon={<AddIcon />}>
                     Add
                 </Button>
-                <Button
-                    component={Link}
-                    to={`/panels/edit`}
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<EditIcon />}
-                >
-                    Edit
-                </Button>
             </Box>
             <IconButton
                 sx={{
@@ -50,12 +40,6 @@ export default function PanelsToolbar(props) {
                         <AddIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Add Panel" />
-                </MenuItem>
-                <MenuItem component={Link} to={`/panels/edit`}>
-                    <ListItemIcon>
-                        <EditIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Edit" />
                 </MenuItem>
             </Menu>
         </>

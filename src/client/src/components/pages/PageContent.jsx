@@ -26,7 +26,6 @@ const PageHome = lazy(() => import("./PageHome"));
 const PagePanel = lazy(() => import("./PagePanel"));
 const PagePanels = lazy(() => import("./PagePanels"));
 const PagePanelsAdd = lazy(() => import("./PagePanelsAdd"));
-const PagePanelsEdit = lazy(() => import("./PagePanelsEdit"));
 const PageSystem = lazy(() => import("./PageSystem"));
 
 // Styled wrappers
@@ -79,20 +78,6 @@ const PageContent = () => {
                                 <StyledPageContent>
                                     <BugScrollbars>
                                         <PagePanelsAdd />
-                                    </BugScrollbars>
-                                </StyledPageContent>
-                            </BugRestrictTo>
-                        </Suspense>
-                    }
-                />
-                <Route
-                    path="/panels/edit"
-                    element={
-                        <Suspense fallback={<BugLoading />}>
-                            <BugRestrictTo role="admin">
-                                <StyledPageContent>
-                                    <BugScrollbars>
-                                        <PagePanelsEdit />
                                     </BugScrollbars>
                                 </StyledPageContent>
                             </BugRestrictTo>
