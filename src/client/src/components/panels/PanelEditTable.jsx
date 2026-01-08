@@ -131,18 +131,20 @@ export default function PanelTable({ showGroups = true }) {
                             }}
                         >
                             <TableRow>
-                                <TableCell sx={{ width: "48px" }}></TableCell>
-                                <TableCell sx={{ width: "48px" }}></TableCell>
+                                <TableCell width="10"></TableCell>
+                                <TableCell width="10"></TableCell>
+                                <TableCell>Title</TableCell>
                                 <TableCell
                                     sx={{
-                                        width: "50%",
+                                        "@media (max-width:1024px)": {
+                                            display: "none",
+                                        },
                                     }}
                                 >
-                                    Title
+                                    Description
                                 </TableCell>
                                 <TableCell
                                     sx={{
-                                        width: "50%",
                                         "@media (max-width:512px)": {
                                             display: "none",
                                         },
@@ -150,7 +152,16 @@ export default function PanelTable({ showGroups = true }) {
                                 >
                                     Module
                                 </TableCell>
-                                <TableCell sx={{ width: "48px" }}></TableCell>
+                                <TableCell
+                                    sx={{
+                                        "@media (max-width:250px)": {
+                                            display: "none",
+                                        },
+                                    }}
+                                >
+                                    Version
+                                </TableCell>
+                                <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

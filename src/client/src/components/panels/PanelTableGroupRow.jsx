@@ -4,7 +4,7 @@ export default function PanelTableGroupRow({ title }) {
     return (
         <TableRow
             sx={{
-                height: 48,
+                height: "62px",
             }}
         >
             <TableCell
