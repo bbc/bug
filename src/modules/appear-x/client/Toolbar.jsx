@@ -6,9 +6,9 @@ export default function Toolbar(props) {
     return (
         <Routes>
             <Route path="/panel/:panelId" element={<ListToolbar {...props} />} />
-            <Route path="/display/:tab" element={<ListToolbar {...props} />} />
-            <Route path="/mpegencoder/:serviceId" element={<MpegEncoderToolbar {...props} />} />
-            <Route path="/config" element={<> </>} />
+            <Route path="/panel/:panelId/display/:tab" element={<ListToolbar {...props} />} />
+            <Route path="/panel/:panelId/mpegencoder/:serviceId" element={<MpegEncoderToolbar {...props} />} />
+            <Route path="/panel/:panelId/config" element={<> </>} />
         </Routes>
     );
 }
