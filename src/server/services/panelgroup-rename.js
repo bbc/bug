@@ -5,7 +5,7 @@ const panelConfigModel = require("@models/panel-config");
 
 module.exports = async (groupName, newGroupName) => {
 
-    console.log("Renaming group", groupName, "to", newGroupName);
+    logger.info(`panelgroup-rename: renaming group ${groupName} to ${newGroupName}`);
 
     const panelConfigs = await panelConfigModel.list();
 
@@ -13,7 +13,7 @@ module.exports = async (groupName, newGroupName) => {
         .filter(panelConfig => panelConfig.group === groupName)
         .map(async (panelConfig) => {
             panelConfig.group = newGroupName;
-            console.log(`Updating panel id ${panelConfig.id} to new group ${newGroupName}`);
+            logger.info(`Updating panel id ${panelConfig.id} to new group ${newGroupName}`);
             const success = await panelConfigModel.set(panelConfig);
             if (!success) {
                 throw new Error(`Failed to update panel id ${panelConfig.id} during group rename`);
