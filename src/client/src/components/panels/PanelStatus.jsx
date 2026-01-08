@@ -1,4 +1,3 @@
-import React from "react";
 import BugAlert from "@components/BugAlert";
 
 export default function PanelStatus({ statusItems, panel }) {

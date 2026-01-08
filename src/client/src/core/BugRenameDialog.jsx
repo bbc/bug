@@ -58,7 +58,7 @@ const BugRenameDialog = ({
                                 padding: "4px",
                             },
                         }}
-                        value={value}
+                        value={value ?? ""}
                         onChange={(event) => {
                             setValue(event.target.value);
                         }}

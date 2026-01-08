@@ -2,7 +2,6 @@
 
 const logger = require("@utils/logger")(module);
 const panelConfigModel = require("@models/panel-config");
-const panelGetLastIndex = require("@services/panel-getlastindex");
 
 module.exports = async (panelId, group) => {
     try {
@@ -13,9 +12,6 @@ module.exports = async (panelId, group) => {
 
         // update the group
         panelConfig.group = group;
-
-        // and set the order to be after the last current panel
-        panelConfig.order = await panelGetLastIndex(group);
 
         // and save
         if (!(await panelConfigModel.set(panelConfig))) {

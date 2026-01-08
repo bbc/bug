@@ -8,6 +8,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import React from "react";
 import { Navigate } from "react-router";
+
 export default function PanelTableRow({ panel, showGroups }) {
     const sendAlert = useAlert();
     const [redirectUrl, setRedirectUrl] = React.useState(null);

@@ -56,7 +56,6 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
 
     return {
         id: panelConfig["id"],
-        order: panelConfig["order"],
         title: panelConfig["title"],
         group: panelConfig["group"] ? panelConfig["group"] : "",
         description: panelConfig["description"],

@@ -18,6 +18,12 @@ export default function panelListGroups(panelListData, hideDisabledGroups = true
 
     const panelsByGroupArray = [];
     for (const [group, items] of Object.entries(panelsByGroup)) {
+        // Sort panels in each group by title, case-insensitive
+        items.sort((a, b) => {
+            const at = (a?.title || "").toString();
+            const bt = (b?.title || "").toString();
+            return at.localeCompare(bt, "en", { sensitivity: "base" });
+        });
         panelsByGroupArray.push({
             group: group,
             items: items,

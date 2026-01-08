@@ -57,8 +57,11 @@ module.exports = async () => {
             }
         }
 
+        // Sort panels by title, case-insensitive
         filteredPanelList.sort(function (a, b) {
-            return a.order < b.order ? -1 : 1;
+            const at = (a && a.title ? a.title.toString() : "");
+            const bt = (b && b.title ? b.title.toString() : "");
+            return at.localeCompare(bt, "en", { sensitivity: "base" });
         });
 
         cacheStore.set(cacheKey, filteredPanelList, 1);
