@@ -22,6 +22,7 @@ const documentation = require("@middleware/documentation");
 const systemRouter = require("@routes/system");
 const moduleRouter = require("@routes/module");
 const panelRouter = require("@routes/panel");
+const panelGroupRouter = require("@routes/panelgroup");
 const panelConfigRouter = require("@routes/panelconfig");
 const bugRouter = require("@routes/bug");
 const iconsRouter = require("@routes/icons");
@@ -87,6 +88,7 @@ bugApi.use("/api/module", moduleRouter);
 bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
+bugApi.use("/api/panelgroup", panelGroupRouter);
 bugApi.use("/api/system", systemRouter); // Auth on a per route basis
 bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
 bugApi.use("/api/login", loginRouter);

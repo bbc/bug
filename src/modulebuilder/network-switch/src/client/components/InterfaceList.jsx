@@ -19,6 +19,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import { useNavigate } from "react-router-dom";
+
 export default function InterfaceList({ panelId, stackId = null }) {
     const sendAlert = useAlert();
     const navigate = useNavigate();

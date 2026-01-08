@@ -1,5 +1,4 @@
 import PageTitle from "@components/PageTitle";
-import PanelsEditToolbar from "@components/toolbars/PanelsEditToolbar";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
 import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
 import SecurityToolbar from "@components/toolbars/SecurityToolbar";
@@ -67,15 +66,6 @@ const ToolbarRouter = (props) => {
                         <PageTitle />
                     </Title>
                     <PanelsToolbar />
-                </>
-            );
-        case "/panels/edit":
-            return (
-                <>
-                    <Title>
-                        <PageTitle />
-                    </Title>
-                    <PanelsEditToolbar />
                 </>
             );
         case "/system":
