@@ -50,8 +50,7 @@ const fetch = async () => {
                             new StatusItem({
                                 key: "panelnotconfigured",
                                 message: [
-                                    "Panel has not yet been configured for use",
-                                    "Please configure the panel with the required fields",
+                                    "Panel has not yet been configured for use"
                                 ],
                                 type: "critical",
                                 flags: ["configurePanel"],

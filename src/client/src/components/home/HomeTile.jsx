@@ -1,11 +1,13 @@
 import BadgeWrapper from "@components/BadgeWrapper";
-import CollapsibleBugAlert from "@components/CollapsibleBugAlert";
+import BugTileStatus from "@components/BugTileStatus";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import BugRestrictTo from "@core/BugRestrictTo";
 import { Card, CardContent, CardHeader, CircularProgress, Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+
+const statePriority = ["critical", "warning", "success", "info", "default"];
 
 const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
     padding: "8px 0px",
@@ -82,40 +84,37 @@ const HomeTile = ({ panel }) => {
         return null;
     }
 
-    const renderStatusItems = () => {
-        let itemsToRender = panel._status;
+    let itemsToRender = panel._status ?? [];
 
-        if (panel._dockerContainer._isBuilding) {
-            itemsToRender = [
-                {
-                    key: "building",
-                    type: "info",
-                    message: "Panel is building - please wait",
-                    flags: [],
-                    panel: null,
-                },
-            ];
-        } else {
-            // if we only have critical alerts, just show them
-            const criticalStatusOnly = panel._status && panel._status.filter((x) => x.type === "critical");
-            if (criticalStatusOnly.length > 0) {
-                itemsToRender = criticalStatusOnly;
-            }
-        }
+    if (panel._dockerContainer?._isBuilding) {
+        itemsToRender = [
+            {
+                key: "building",
+                type: "info",
+                message: "Panel is building - please wait",
+                flags: [],
+                panel: null,
+            },
+        ];
+    }
 
-        // otherwise, show everything
-        return itemsToRender.map((eachItem) => (
-            <StyledCardContent key={eachItem.key}>
-                <CollapsibleBugAlert
-                    type={eachItem.type}
-                    message={eachItem.message}
-                    flags={eachItem.flags}
-                    panel={panel}
-                    square
-                />
-            </StyledCardContent>
-        ));
-    };
+    if (itemsToRender.length === 0) {
+        itemsToRender = [
+            {
+                key: "panelok",
+                type: "default",
+                message: "Panel configured and ready",
+                flags: [],
+                panel: null,
+            },
+        ];
+    }
+
+    const sortedItems = [...itemsToRender].sort((a, b) => {
+        const priorityA = statePriority.indexOf(a.type);
+        const priorityB = statePriority.indexOf(b.type);
+        return priorityA - priorityB;
+    });
 
     return (
         <StyledGrid key={panel.id} sx={{ width: "100%" }}>
@@ -145,7 +144,9 @@ const HomeTile = ({ panel }) => {
                         title={panel.title}
                         subheader={panel.description ? panel.description : panel._module.description}
                     />
-                    {panel !== null && renderStatusItems()}
+                    <StyledCardContent>
+                        <BugTileStatus statusItems={sortedItems} />
+                    </StyledCardContent>
                 </StyledCard>
             </StyledLink>
         </StyledGrid>
