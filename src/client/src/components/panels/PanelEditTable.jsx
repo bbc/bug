@@ -12,15 +12,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useAsyncEffect from "use-async-effect";
 
-import { closestCenter, DndContext, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-
 export default function PanelTable({ showGroups = true }) {
     const panelList = useSelector((state) => state.panelList);
     const [itemList, setItemList] = useState([]);
     const sendAlert = useAlert();
     const navigate = useNavigate();
-    const sensors = useSensors(useSensor(PointerSensor), useSensor(TouchSensor));
 
     const getNextGroup = () => {
         var groupIndex = 1;
@@ -117,17 +113,6 @@ export default function PanelTable({ showGroups = true }) {
         setItemList(clonedItemList);
     };
 
-    function handleDragEnd(event) {
-        const { active, over } = event;
-        if (active.id !== over.id) {
-            setItemList((itemList) => {
-                const oldIndex = itemList.findIndex((item) => item.id === active.id);
-                const newIndex = itemList.findIndex((item) => item.id === over.id);
-                return arrayMove(itemList, oldIndex, newIndex);
-            });
-        }
-    }
-
     if (panelList.status === "loading") {
         return <BugLoading />;
     }
@@ -146,7 +131,6 @@ export default function PanelTable({ showGroups = true }) {
                             }}
                         >
                             <TableRow>
-                                <TableCell sx={{ width: "48px" }}></TableCell>
                                 <TableCell sx={{ width: "48px" }}></TableCell>
                                 <TableCell sx={{ width: "48px" }}></TableCell>
                                 <TableCell
@@ -170,26 +154,22 @@ export default function PanelTable({ showGroups = true }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                                <SortableContext items={itemIDs} strategy={verticalListSortingStrategy}>
-                                    {itemList.map((item, index) => {
-                                        if (item.type === "group") {
-                                            return (
-                                                <PanelEditTableGroupLabel
-                                                    onChange={updateGroupName}
-                                                    group={item.value}
-                                                    id={item.id}
-                                                    key={index}
-                                                    passedKey={index}
-                                                    placeholder={item.value ? "Enter group name" : "No Group"}
-                                                />
-                                            );
-                                        } else {
-                                            return <PanelEditTableRow id={item.id} key={item.id} panel={item.value} />;
-                                        }
-                                    })}
-                                </SortableContext>
-                            </DndContext>
+                            {itemList.map((item, index) => {
+                                if (item.type === "group") {
+                                    return (
+                                        <PanelEditTableGroupLabel
+                                            onChange={updateGroupName}
+                                            group={item.value}
+                                            id={item.id}
+                                            key={index}
+                                            passedKey={index}
+                                            placeholder={item.value ? "Enter group name" : "No Group"}
+                                        />
+                                    );
+                                } else {
+                                    return <PanelEditTableRow id={item.id} key={item.id} panel={item.value} />;
+                                }
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>

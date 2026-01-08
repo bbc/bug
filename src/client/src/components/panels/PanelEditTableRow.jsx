@@ -1,42 +1,12 @@
 import PanelPowerIcon from "@components/panels/PanelPowerIcon";
 import PanelRowState from "@components/panels/PanelRowState";
 import BugApiSwitch from "@core/BugApiSwitch";
-import BugDragIcon from "@core/BugDragIcon";
-import { useSortable } from "@dnd-kit/sortable";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { TableCell, TableRow } from "@mui/material";
 
 export default function PanelEditTableRow({ id, panel }) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: id });
-    let transformString = null;
-
-    if (transform?.y) {
-        transformString = `translateY(${Math.round(transform?.y)}px)`;
-    }
-
-    const style = {
-        transform: transformString,
-        transition,
-    };
-
-    if (isDragging) {
-        style.boxShadow = "0px 0px 30px 5px rgba(10,10,10,0.3)";
-    }
-
     return (
-        <TableRow
-            hover
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            key={id}
-            sx={{ height: "65px", cursor: "move", backgroundColor: "background.paper" }}
-        >
-            <TableCell sx={{ textAlign: "center" }}>
-                <BugDragIcon />
-            </TableCell>
-
+        <TableRow hover key={id} sx={{ height: "65px", cursor: "move", backgroundColor: "background.paper" }}>
             <TableCell
                 sx={{
                     width: "48px",
