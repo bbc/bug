@@ -8,19 +8,17 @@
     "icon": "<%= icon %>",
     "author": "<%= author %>",
     "license": "<%= license %>",
-    "status": "beta",
+    "status": "development",
     "needsContainer": false,
     "devmounts": [],
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
-        "order": 0,
         "needsConfigured": true,
         "title": "",
         "module": "<%= name %>",
         "description": "",
         "notes": "",
-        "enabled": false,
-        "url": ""
+        "enabled": false
     }
 }

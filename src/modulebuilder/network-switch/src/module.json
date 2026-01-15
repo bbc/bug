@@ -8,10 +8,11 @@
     "icon": "SettingsEthernet",
     "author": "<%= author %>",
     "license": "<%= license %>",
-    "status": "beta",
+    "status": "development",
     "needsContainer": true,
     "devmounts": ["api", "services", "workers", "utils"],
     "protectedRoutes": ["config"],
+    "memory": 200,
     "defaultconfig": {
         "id": "",
         "order": 0,
