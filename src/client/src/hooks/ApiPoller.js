@@ -1,6 +1,6 @@
 import { useRecursiveTimeout } from "@hooks/RecursiveTimeout";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function useApiPoller({
     polling = true,
@@ -17,20 +17,27 @@ export function useApiPoller({
         error: null,
     });
 
+    // use a ref to track result so async calls always see the latest state
     const localResult = useRef(pollResult);
-    const controllerRef = useRef(null); // single controller per endpoint
+    const controllerRef = useRef(null);
 
-    if (!errorInterval) errorInterval = interval;
+    const actualErrorInterval = errorInterval || interval;
 
-    const triggerUpdate = (newState) => {
-        if (JSON.stringify(localResult.current) !== JSON.stringify(newState)) {
+    // trigger update only if data or status has actually changed
+    const triggerUpdate = useCallback((newState) => {
+        const hasChanged =
+            localResult.current.status !== newState.status ||
+            localResult.current.error !== newState.error ||
+            JSON.stringify(localResult.current.data) !== JSON.stringify(newState.data);
+
+        if (hasChanged) {
             localResult.current = newState;
             setPollResult(newState);
         }
-    };
+    }, []);
 
-    const fetchData = async () => {
-        if (!url) return;
+    const fetchData = useCallback(async () => {
+        if (!url || mockApiData) return;
 
         // cancel any previous request before starting a new one
         if (controllerRef.current) {
@@ -47,7 +54,7 @@ export function useApiPoller({
                 : await axios.get(url, axiosConfig);
 
             if (response.data?.status === "error") {
-                throw new Error(response.data.message || "API Error");
+                throw new Error(response.data.message || "api error");
             }
 
             triggerUpdate({
@@ -56,37 +63,37 @@ export function useApiPoller({
                 error: null,
             });
         } catch (error) {
-            if (error.name === "CanceledError") return;
+            // ignore cleanup-driven cancellations
+            if (axios.isCancel(error) || error.name === "CanceledError") return;
 
             triggerUpdate({
                 status: "failure",
-                data: pollResult.data,
-                error: error.message || null,
+                data: localResult.current.data, // use ref value to avoid closure staleness
+                error: error.message || "unknown error",
             });
 
             console.error(error);
         }
-    };
+    }, [url, postData, mockApiData, triggerUpdate]);
 
-    // Initial fetch
+    // trigger fetch on url, postdata, or manual refresh changes
     useEffect(() => {
         if (mockApiData || !url) return;
 
         fetchData();
 
         return () => {
-            // cancel any ongoing request on unmount
             controllerRef.current?.abort();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [url, forceRefresh]);
+    }, [url, forceRefresh, postData, mockApiData, fetchData]);
 
-    // Polling
+    // handle polling loop
     useRecursiveTimeout(() => {
         if (!url || !polling || mockApiData) return;
         fetchData();
-    }, interval);
+    }, pollResult.status === "failure" ? actualErrorInterval : interval);
 
+    // handle mock data return
     if (mockApiData) return mockApiData;
 
     return pollResult;
