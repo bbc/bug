@@ -1,14 +1,14 @@
 import axios from "axios";
 
-export default async function AxiosDelete(url) {
+export default async function AxiosDelete(url, data) {
     try {
-        let response = await axios.delete(url);
+        let response = await axios.delete(url, { data });
 
         switch (response.data.status) {
             case "success":
                 return true;
             case "failure":
-                console.error("failed to fetch " + url);
+                console.error("failed to DELETE " + url);
                 return false;
             case "error":
                 console.error(response.data.message);
