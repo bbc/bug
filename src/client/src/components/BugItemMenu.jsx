@@ -1,90 +1,71 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import { useState } from "react";
+
 const StyledListItemText = styled(ListItemText)(({ theme }) => ({
     color: theme.palette.text.primary,
 }));
 
 export default function BugItemMenu({ item, menuItems }) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isOpen = Boolean(anchorEl);
 
-    const handleOpenMenuClick = (event) => {
+    // helper to stop event propagation and closing the menu
+    const stopAndClose = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        setAnchorEl(null);
+    };
+
+    const handleOpen = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
         setAnchorEl(event.currentTarget);
-        event.stopPropagation();
-        event.preventDefault();
     };
 
-    const handleClose = (event) => {
-        setAnchorEl(null);
-        event.stopPropagation();
-        event.preventDefault();
-    };
+    const handleItemClick = (event, menuItem) => {
+        const isDisabled = resolveValue(menuItem.disabled, item);
 
-    const handleMenuItemClicked = (event, menuItem) => {
-        setAnchorEl(null);
-        event.stopPropagation();
-        event.preventDefault();
-        if (menuItem.disabled !== true && typeof menuItem.onClick === "function") {
+        stopAndClose(event);
+
+        if (!isDisabled && typeof menuItem.onClick === "function") {
             menuItem.onClick(event, item);
         }
     };
 
-    const parseDisabled = (disabledValue) => {
-        if (disabledValue === undefined) {
-            return false;
-        }
-
-        if (typeof disabledValue === "function") {
-            return disabledValue(item);
-        }
-
-        return disabledValue;
-    };
-
-    const getIcon = (icon) => {
-        if (typeof icon === "function") {
-            return icon(item);
-        }
-        return icon;
+    // generic helper to handle both static values and function-based props
+    const resolveValue = (value, context) => {
+        return typeof value === "function" ? value(context) : value;
     };
 
     return (
         <div>
-            <IconButton
-                component="span"
-                sx={{
-                    padding: "4px",
-                }}
-                aria-label="menu"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleOpenMenuClick}
-            >
+            <IconButton size="small" sx={{ padding: "4px" }} onClick={handleOpen}>
                 <MoreVertIcon />
             </IconButton>
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                {menuItems
-                    .filter((menuItem) => menuItem !== null)
-                    .map((menuItem, index) => {
-                        if (menuItem.title === "-") {
-                            return <Divider key={index} />;
-                        } else {
-                            return (
-                                <MenuItem
-                                    onClick={(event) => handleMenuItemClicked(event, menuItem)}
-                                    key={index}
-                                    disabled={parseDisabled(menuItem.disabled)}
-                                >
-                                    <ListItemIcon disabled={parseDisabled(menuItem.disabled)}>
-                                        {getIcon(menuItem.icon)}
-                                    </ListItemIcon>
-                                    <StyledListItemText primary={menuItem.title} />
-                                </MenuItem>
-                            );
-                        }
-                    })}
+
+            <Menu anchorEl={anchorEl} open={isOpen} onClose={stopAndClose}>
+                {menuItems.filter(Boolean).map((menuItem, index) => {
+                    // render divider for shorthand title
+                    if (menuItem.title === "-") {
+                        return <Divider key={`divider-${index}`} />;
+                    }
+
+                    const isDisabled = resolveValue(menuItem.disabled, item);
+                    const icon = resolveValue(menuItem.icon, item);
+
+                    return (
+                        <MenuItem
+                            key={`menu-item-${index}`}
+                            onClick={(e) => handleItemClick(e, menuItem)}
+                            disabled={isDisabled}
+                        >
+                            {icon && <ListItemIcon>{icon}</ListItemIcon>}
+                            <StyledListItemText primary={menuItem.title} />
+                        </MenuItem>
+                    );
+                })}
             </Menu>
         </div>
     );
