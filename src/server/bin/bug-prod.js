@@ -10,10 +10,10 @@ const WorkerManager = require("@core/WorkerManager");
 const heapInfo = require("@core/heap-info");
 const cleanup = require("@utils/cleanup");
 
-//Print the heap size
+// print the heap size
 heapInfo(logger);
 
-//Start Core Workers
+// start Core Workers
 const manager = new WorkerManager(undefined, false);
 
 const port = process.env.BUG_PORT || "80";
@@ -30,7 +30,7 @@ const serve = async () => {
         server.on("listening", onListening);
         server.listen(port);
 
-        // Give the server to sockets as well
+        // give the server to sockets as well
         bugSocket(server);
     } catch (error) {
         throw error;
