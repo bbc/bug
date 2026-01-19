@@ -98,6 +98,7 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         sourcemap: true,
+        chunkSizeWarningLimit: 3000,
         rollupOptions: {
             external: [
                 /\/container\//,

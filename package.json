@@ -13,6 +13,7 @@
         "dev:server": "nodemon ./src/server/bin/bug-dev.js",
         "dev:client": "npm run dev -w src/client",
         "build:client": "npm run build -w src/client",
+        "start": "node ./src/server/bin/bug-prod.js",
         "install-all": "npm install",
         "modulebuilder": "node ./src/modulebuilder/cli.mjs"
     },
