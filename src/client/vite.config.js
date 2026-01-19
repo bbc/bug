@@ -100,11 +100,5 @@ export default defineConfig({
         outDir: 'dist',
         sourcemap: true,
         chunkSizeWarningLimit: 3000,
-        rollupOptions: {
-            external: [
-                /\/container\//,
-                /\/node_modules\/.*\/test\//
-            ]
-        }
-    },
+    }
 });
