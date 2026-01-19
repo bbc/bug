@@ -46,7 +46,7 @@ const Tiles = ({ panels }) => {
         <Grid container>
             {panels.map((panel) => (
                 <BugRestrictTo key={panel.id} panel={panel?.id}>
-                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} sx={{ display: "flex" }}>
+                    <Grid size={{ xs: 12, lg: 6, xl: 4 }} sx={{ display: "flex" }}>
                         <HomeTile panel={panel} />
                     </Grid>
                 </BugRestrictTo>
