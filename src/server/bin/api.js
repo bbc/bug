@@ -6,18 +6,14 @@ const cors = require("cors");
 const favicon = require("serve-favicon");
 const helmet = require("helmet");
 const httpLogger = require("@utils/http-logger");
-
-// passporty auth stuff
 const passport = require("passport");
 const session = require("@utils/session");
 
-// import environment variables from .env file
+// load environment variables
 require("dotenv").config();
-
-// get environment
 const nodeEnv = process.env.NODE_ENV || "production";
 
-// load routes
+// import routes
 const documentation = require("@middleware/documentation");
 const systemRouter = require("@routes/system");
 const moduleRouter = require("@routes/module");
@@ -34,21 +30,15 @@ const strategyRouter = require("@routes/strategy");
 
 const bugApi = express();
 
+// auth setup
 bugApi.use(session());
 
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
-
-// configure passport
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 bugApi.use(passport.initialize());
 bugApi.use(passport.session());
 
-bugApi.set("json spaces", 2);
+// middleware
 bugApi.use(httpLogger);
 bugApi.use(cors());
 bugApi.use(
@@ -68,20 +58,15 @@ bugApi.use(
         },
     })
 );
-
-bugApi.use(favicon(path.join(__dirname, "..", "..", "client", "public", "icons", "favicon.ico")));
 bugApi.use(
-    fileUpload({
-        useTempFiles: true,
-        tempFileDir: "./data",
-    })
+    favicon(path.join(__dirname, "..", "client", "public", "icons", "favicon.ico"))
 );
-
+bugApi.use(fileUpload({ useTempFiles: true, tempFileDir: "./data" }));
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
 bugApi.use(cookieParser());
 
-bugApi.use("/documentation", documentation);
+// API Routes
 bugApi.use("/container", proxyRouter);
 bugApi.use("/api/icons", iconsRouter);
 bugApi.use("/api/module", moduleRouter);
@@ -89,41 +74,39 @@ bugApi.use("/api/panel", panelRouter);
 bugApi.use("/api/user", userRouter);
 bugApi.use("/api/panelconfig", panelConfigRouter);
 bugApi.use("/api/panelgroup", panelGroupRouter);
-bugApi.use("/api/system", systemRouter); // Auth on a per route basis
-bugApi.use("/api/bug", bugRouter); // Open to all - just quotes
+bugApi.use("/api/system", systemRouter);
+bugApi.use("/api/bug", bugRouter);
 bugApi.use("/api/login", loginRouter);
-bugApi.use("/api/logout", logoutRouter); // Open to all - just logout
-bugApi.use("/api/strategy", strategyRouter); // Auth on a per route basis
+bugApi.use("/api/logout", logoutRouter);
+bugApi.use("/api/strategy", strategyRouter);
 
-// redirect /api to /documentation
-bugApi.use("/api", function (req, res, next) {
+// redirect root API path
+bugApi.get("/api", (req, res) => {
     res.redirect("/documentation");
 });
 
-if (nodeEnv === "production") {
-    const root = path.join(__dirname, "..", "..", "client", "build");
+// documentation
+bugApi.use("/documentation", documentation);
 
-    // production: include react build static client files
+// production: serve vite frontend
+if (nodeEnv === "production") {
+    const root = path.join(__dirname, "..", "client", "dist"); // Vite build output
     bugApi.use(express.static(root));
 
-    // production: serve react frontend for bug on the default route
+    // SPA fallback (must be after API routes)
     bugApi.get("*", (req, res) => {
         res.sendFile("index.html", { root });
     });
-} else {
-    // development: serve files in the public folder
-    bugApi.use(express.static(path.join(__dirname, "..", "..", "client", "public")));
 }
 
-// catch 404 and forward to error handler
-bugApi.use(function (req, res, next) {
+// error handling
+bugApi.use((req, res, next) => {
     const err = new Error("File Not Found");
     err.status = 404;
     next(err);
 });
 
-// error handler
-bugApi.use(function (error, req, res, next) {
+bugApi.use((error, req, res, next) => {
     res.status(error.status || 500).json({
         status: error.status,
         message: error.message,
