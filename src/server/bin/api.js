@@ -101,7 +101,7 @@ bugApi.use("/api", function (req, res, next) {
 });
 
 if (nodeEnv === "production") {
-    const root = require("path").join(__dirname, "..", "client", "build");
+    const root = path.join(__dirname, "..", "..", "client", "build");
 
     // production: include react build static client files
     bugApi.use(express.static(root));
@@ -112,7 +112,7 @@ if (nodeEnv === "production") {
     });
 } else {
     // development: serve files in the public folder
-    bugApi.use(express.static(path.join(__dirname, "..", "client", "public")));
+    bugApi.use(express.static(path.join(__dirname, "..", "..", "client", "public")));
 }
 
 // catch 404 and forward to error handler
