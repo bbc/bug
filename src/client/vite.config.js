@@ -39,9 +39,6 @@ export default defineConfig({
             }
         },
     },
-    ssr: {
-        noExternal: ['recharts'],
-    },
     server: {
         host: '0.0.0.0',
         port: 3000,
@@ -95,7 +92,7 @@ export default defineConfig({
             'socket.io-client',
             '@mui/material',
             '@emotion/react',
-            '@emotion/styled'
+            '@emotion/styled',
         ],
         exclude: ['@modules']
     },
