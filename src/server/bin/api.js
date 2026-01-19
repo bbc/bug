@@ -58,9 +58,6 @@ bugApi.use(
         },
     })
 );
-bugApi.use(
-    favicon(path.join(__dirname, "..", "client", "public", "icons", "favicon.ico"))
-);
 bugApi.use(fileUpload({ useTempFiles: true, tempFileDir: "./data" }));
 bugApi.use(express.json());
 bugApi.use(express.urlencoded({ extended: false }));
@@ -89,7 +86,7 @@ bugApi.get("/api", (req, res) => {
 bugApi.use("/documentation", documentation);
 
 if (nodeEnv === "production") {
-    const root = path.join(__dirname, "..", "client", "dist");
+    const root = path.join(__dirname, "..", "..", "client", "dist");
 
     bugApi.use(express.static(root));
 
@@ -100,6 +97,12 @@ if (nodeEnv === "production") {
     bugApi.get("*", (req, res) => {
         res.sendFile("index.html", { root });
     });
+}
+else {
+    // favicon
+    bugApi.use(
+        favicon(path.join(__dirname, "..", "..", "client", "public", "icons", "favicon.ico"))
+    );
 }
 
 
