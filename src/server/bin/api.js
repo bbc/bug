@@ -88,16 +88,20 @@ bugApi.get("/api", (req, res) => {
 // documentation
 bugApi.use("/documentation", documentation);
 
-// production: serve vite frontend
 if (nodeEnv === "production") {
-    const root = path.join(__dirname, "..", "client", "dist"); // Vite build output
+    const root = path.join(__dirname, "..", "client", "dist");
+
     bugApi.use(express.static(root));
 
-    // SPA fallback (must be after API routes)
+    // serve favicon from dist
+    bugApi.use(favicon(path.join(root, "icons", "favicon.ico")));
+
+    // spa fallback
     bugApi.get("*", (req, res) => {
         res.sendFile("index.html", { root });
     });
 }
+
 
 // error handling
 bugApi.use((req, res, next) => {
