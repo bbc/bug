@@ -73,6 +73,27 @@ router.use(
             res.status(axiosResponse.status);
             axiosResponse.data.pipe(res);
         } catch (error) {
+            // Check if the remote service responded with an error (e.g., 404, 500)
+            if (error.response) {
+                const remoteStatus = error.response.status;
+
+                // Since responseType is "stream", we have to handle the error data carefully
+                // If it's a stream, we can't easily read it like a JSON object without buffering
+                res.status(remoteStatus);
+
+                // If the remote sent a stream back, pipe it. 
+                // Otherwise, send the axios error message.
+                if (error.response.data && typeof error.response.data.pipe === 'function') {
+                    return error.response.data.pipe(res);
+                }
+
+                return res.json({
+                    status: "error",
+                    message: error.message
+                });
+            }
+
+            // If it's not a response error (e.g., timeout, dns failure), use your existing handler
             hashResponse(res, req, error);
         }
     })
