@@ -12,6 +12,7 @@
     "status": "stable",
     "devmounts": ["api", "services", "workers", "utils"],
     "protectedRoutes": ["config"],
+    "memory": 500,
     "defaultconfig": {
         "id": "",
         "order": 0,

@@ -132,9 +132,9 @@ export default function LeaseList({ panelId }) {
                         field: "status",
                         filterType: "dropdown",
                         filterOptions: [
-                            { id: "View all items", label: "" },
-                            { id: "Bound", label: "bound" },
-                            { id: "Waiting", label: "waiting" },
+                            { id: "", label: "View all items" },
+                            { id: "bound", label: "Bound" },
+                            { id: "waiting", label: "Waiting" },
                         ],
                         content: (item) => <BugPowerIcon disabled={item.status !== "bound"} />,
                     },
