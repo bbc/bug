@@ -44,6 +44,7 @@ const theme = (selectedTheme = "dark") => {
                     default: "#181818",
                     accent: "#212121",
                     paper: "#262626",
+                    light: "#2a2a2a",
                     hover: "#333333",
                 },
 
