@@ -82,6 +82,7 @@ module.exports = async (configObject) => {
                 });
             });
 
+            logger.info(`Adding development mounts for module ${configObject.module}: ${JSON.stringify(mounts)}`);
             containerOptions.HostConfig.Mounts = mounts;
         }
 

@@ -42,6 +42,7 @@ const lazyMdiIcon = (iconName) => {
 
 export const iconMap = {
     // MUI icons
+    AltRoute: React.lazy(() => import("@mui/icons-material/AltRoute")),
     Home: React.lazy(() => import("@mui/icons-material/Home")),
     AccountCircle: React.lazy(() => import("@mui/icons-material/AccountCircle")),
     ChevronRight: React.lazy(() => import("@mui/icons-material/ChevronRight")),

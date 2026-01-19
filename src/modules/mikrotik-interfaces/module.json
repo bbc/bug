@@ -10,6 +10,7 @@
     "needsContainer": true,
     "license": "Apache-2.0",
     "status": "stable",
+    "memory": 256,
     "devmounts": ["api", "services", "workers", "utils"],
     "protectedRoutes": ["config"],
     "defaultconfig": {

@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import BitrateDialog from "./BitrateDialog";
 import ColorDialog from "./ColorDialog";
 import LatencyDialog from "./LatencyDialog";
+
 export default function EncoderServicesList({ panelId }) {
     const sendAlert = useAlert();
     const navigate = useNavigate();
