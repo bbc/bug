@@ -60,7 +60,7 @@ export default function EntryList({ panelId }) {
         }
     }, [location.state, doForceRefresh]);
 
-    const groupNames = entries.data ? entries.data.map((g) => g.group) : [];
+    const groupNames = entries.data ? entries.data.map((g) => g.group).filter((name) => name !== "UNGROUPED") : [];
 
     const handleEntryClick = async (item, wan) => {
         const response = await AxiosPut(`/container/${panelId}/entry/route`, {
@@ -120,7 +120,7 @@ export default function EntryList({ panelId }) {
 
     const handleSetGroupClicked = async (_, item) => {
         const result = await customDialog({
-            dialog: <SetGroupDialog groups={groupNames} />,
+            dialog: <SetGroupDialog groups={groupNames} value={item.group.toUpperCase()} />,
         });
         if (result !== false) {
             if (
