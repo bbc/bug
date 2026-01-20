@@ -8,9 +8,7 @@ export default function SetGroupDialog({ onDismiss, onConfirm, groups, value }) 
     const handleSubmit = (event) => {
         event.preventDefault();
         // ensure we don't submit if empty
-        if (selectedGroup?.trim()) {
-            onConfirm(event, selectedGroup.trim());
-        }
+        onConfirm(event, selectedGroup);
     };
 
     return (
@@ -47,7 +45,7 @@ export default function SetGroupDialog({ onDismiss, onConfirm, groups, value }) 
                     <Button onClick={onDismiss} color="secondary">
                         Cancel
                     </Button>
-                    <Button type="submit" color="primary" variant="contained" disabled={!selectedGroup?.trim()}>
+                    <Button type="submit" color="primary" variant="contained">
                         Change
                     </Button>
                 </DialogActions>
