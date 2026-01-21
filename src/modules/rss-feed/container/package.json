@@ -14,9 +14,9 @@
     "author": "",
     "license": "Apache-2.0",
     "dependencies": {
-        "axios": "^0.21.1",
+        "axios": "^1.13.2",
         "delay": "^5.0.0",
-        "express": "^4.18.2",
+        "express": "^4.22.1",
         "express-async-handler": "^1.1.4",
         "http-errors": "^1.8.0",
         "md5": "^2.3.0",
@@ -27,7 +27,7 @@
         "package.json": "^2.0.1",
         "path": "^0.12.7",
         "ping": "^0.4.1",
-        "rss-to-json": "^2.0.2",
+        "rss-to-json": "^2.1.1",
         "underscore": "^1.13.1"
     },
     "devDependencies": {
