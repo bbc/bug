@@ -20,7 +20,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
             - name: "Documentation: Spell Check Documentation"
               uses: codespell-project/actions-codespell@master
               with:
@@ -38,7 +38,7 @@ jobs:
                 working-directory: ./src/client
         steps:
             - name: Checkout 🛎️
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                   persist-credentials: false
             - name: Install and Build 🔧
@@ -52,7 +52,7 @@ jobs:
         needs: storybook
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: Build with Jekyll
@@ -61,7 +61,7 @@ jobs:
                   source: ./docs
                   destination: ./_site
             - name: Upload artifact
-              uses: actions/upload-pages-artifact@v3
+              uses: actions/upload-pages-artifact@v4
 
     # deployment job
     deploy:
