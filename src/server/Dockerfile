@@ -11,7 +11,7 @@ COPY src/client/package*.json ./src/client/
 COPY src/server/package*.json ./src/server/
 
 # install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # copy source code
 COPY src ./src
