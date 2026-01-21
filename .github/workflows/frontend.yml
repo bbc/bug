@@ -24,7 +24,7 @@ jobs:
                 node-version: [22]
         defaults:
             run:
-                working-directory: ./src/client
+                working-directory: /
         steps:
             - uses: actions/checkout@v6
             - uses: actions/setup-node@v6
@@ -32,5 +32,5 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
             - run: npm ci
-            - run: npm test
-            - run: CI=false npm run build --if-present
+            - run: cd src/client && npm test
+            - run: cd src/client && npm run build --if-present
