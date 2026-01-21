@@ -17,4 +17,4 @@ We do not encorage user to run instances of BUG exposed to the internet. BUG is 
 
 We encorage the reporting of security vulnerabilities, please raise an issue on this repo.
 
-Alternatively, you can find more information at - (https://www.bbc.com/backstage/security-disclosure-policy)[https://www.bbc.com/backstage/security-disclosure-policy]
+Alternatively, you can find more information at - [https://www.bbc.com/backstage/security-disclosure-policy](https://www.bbc.com/backstage/security-disclosure-policy)
