@@ -4,6 +4,10 @@ on:
     push:
         branches:
             - main
+        paths:
+            - "src/server/**"
+            - "src/client/**"
+            - "src/modules/**"
 permissions:
     checks: write
     deployments: write
