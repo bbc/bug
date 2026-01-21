@@ -33,9 +33,6 @@ jobs:
     # build storybook static files
     storybook:
         runs-on: ubuntu-latest
-        defaults:
-            run:
-                working-directory: ./src/client
         steps:
             - name: Checkout 🛎️
               uses: actions/checkout@v6
@@ -43,8 +40,8 @@ jobs:
                   persist-credentials: false
             - name: Install and Build 🔧
               run: |
-                  npm install --legacy-peer-deps
-                  npm run build-storybook
+                  npm ci
+                  cd src/client && npm run build-storybook
 
     # build jekyll documentation
     pages:
