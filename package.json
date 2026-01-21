@@ -15,7 +15,9 @@
         "build:client": "npm run build -w src/client",
         "start": "node ./src/server/bin/bug-prod.js",
         "install-all": "npm install",
-        "modulebuilder": "node ./src/modulebuilder/cli.mjs"
+        "modulebuilder": "node ./src/modulebuilder/cli.mjs",
+        "format:check": "prettier --check .",
+        "format:write": "prettier --write ."
     },
     "nodemonConfig": {
         "ignore": [
@@ -81,7 +83,7 @@
         "express-rate-limit": "^7.5.0",
         "express-session": "^1.17.3",
         "fs-extra": "^10.1.0",
-        "glob": "^8.0.3",
+        "glob": "^13.0.0",
         "helmet": "^5.1.0",
         "html-react-parser": "^1.4.14",
         "inquirer": "^9.0.0",
@@ -220,9 +222,17 @@
         "babel-plugin-bulk-import": "^2.0.0",
         "jest": "^30.0.0",
         "jest-extended": "^6.0.0",
+        "prettier": "^3.7.4",
         "nodemon": "^3.1.10",
         "supertest": "^7.1.1",
         "vite": "^7.3.0",
         "vite-plugin-svgr": "^4.5.0"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": false,
+        "printWidth": 120
     }
 }
