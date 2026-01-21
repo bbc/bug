@@ -9,9 +9,11 @@ on:
             - main
         tags:
             - "v*"
-        paths-ignore:
-            - "**/README.md"
-            - "docs/**"
+        paths:
+            - "package*.json"
+            - "src/client/**"
+            - "src/modules/**"
+            - "src/server/**"
 
 jobs:
     docker:
