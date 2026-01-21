@@ -1,15 +1,13 @@
-import React from "react";
-import BugApiSwitch from "@core/BugApiSwitch";
 import PanelDropdownMenu from "@components/panels/PanelDropdownMenu";
-import PanelRowState from "@components/panels/PanelRowState";
-import AxiosCommand from "@utils/AxiosCommand";
 import BugPowerIcon from "@components/panels/PanelPowerIcon";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import Box from "@mui/material/Box";
-import { useAlert } from "@utils/Snackbar";
-import { Redirect } from "react-router";
+import PanelRowState from "@components/panels/PanelRowState";
+import BugApiSwitch from "@core/BugApiSwitch";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import { Box, TableCell, TableRow } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
+import { Navigate } from "react-router";
 
 export default function PanelTableRow({ panel, showGroups }) {
     const sendAlert = useAlert();
@@ -33,7 +31,7 @@ export default function PanelTableRow({ panel, showGroups }) {
     };
 
     if (redirectUrl) {
-        return <Redirect push to={{ pathname: redirectUrl }} />;
+        return <Navigate to={{ pathname: redirectUrl }} />;
     }
     let rowOpacity = 1;
     if (
@@ -49,6 +47,7 @@ export default function PanelTableRow({ panel, showGroups }) {
             key={panel.id}
             hover={panel._active}
             sx={{
+                height: "65px",
                 cursor: panel._active ? "pointer" : "auto",
             }}
             onClick={(e) => handleRowClicked(e, panel.id)}

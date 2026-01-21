@@ -1,14 +1,12 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
-import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import { useForceRefresh } from "@hooks/ForceRefresh";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
+import { useAlert } from "@utils/Snackbar";
 export default function ProfileList({ panelId }) {
     const sendAlert = useAlert(panelId);
     const { renameDialog } = useBugRenameDialog();
@@ -38,7 +36,11 @@ export default function ProfileList({ panelId }) {
         if (result === false) {
             return;
         }
-        if (await AxiosCommand(`/container/${panelId}/profile/rename/${encodeURIComponent(item.id)}/${encodeURIComponent(result)}`)) {
+        if (
+            await AxiosCommand(
+                `/container/${panelId}/profile/rename/${encodeURIComponent(item.id)}/${encodeURIComponent(result)}`
+            )
+        ) {
             sendAlert(`Renamed profile to ${result}`, {
                 broadcast: "true",
                 variant: "success",

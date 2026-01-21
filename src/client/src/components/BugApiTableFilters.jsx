@@ -1,13 +1,10 @@
-import React from "react";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import FilterTextField from "@components/FilterTextField";
+import BugApiTableCell from "@components/BugApiTableCell";
 import FilterDropdown from "@components/FilterDropdown";
 import FilterMultiDropdown from "@components/FilterMultiDropdown";
+import FilterTextField from "@components/FilterTextField";
 import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import BugApiTableCell from "@components/BugApiTableCell";
-
+import { IconButton, TableCell, TableRow } from "@mui/material";
+import React from "react";
 export default function BugApiTable({ onChange, columns, classes, filters, onClose }) {
     const [localFilters, setLocalFilters] = React.useState({});
     const timer = React.useRef();

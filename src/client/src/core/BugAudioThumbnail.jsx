@@ -1,7 +1,5 @@
-import React from "react";
 import BugVolumeBar from "@core/BugVolumeBar";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 export default function BugAudioThumbnail({ src, leftLevel, rightLevel, min, max, sx = {} }) {
     return (
         <Box

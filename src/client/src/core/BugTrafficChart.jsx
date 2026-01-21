@@ -1,17 +1,15 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import formatBps from "@utils/format-bps";
-import { format } from "date-fns";
-import { ComposedChart, Area, XAxis, Legend, YAxis, ResponsiveContainer, Tooltip } from "recharts";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import BugTimePicker from "@core/BugTimePicker";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { Box, Button } from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
-import useAsyncEffect from "use-async-effect";
+import formatBps from "@utils/format-bps";
 import { useWindowSize } from "@utils/WindowSize";
-import BugTimePicker from "@core/BugTimePicker";
-
+import { format } from "date-fns";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Area, ComposedChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import useAsyncEffect from "use-async-effect";
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         let timestamp = payload[0].payload.timestamp;
@@ -187,7 +185,7 @@ export default function BugTrafficChart({ url, mockApiData = null, sx = {} }) {
                     Latest
                 </Button>
 
-                <BugTimePicker value={range[1]} onChange={handleTimePickerChange} minutesStep={5} />
+                <BugTimePicker value={range[1] ?? 0} onChange={handleTimePickerChange} minutesStep={5} />
 
                 <Button
                     sx={{ margin: "8px" }}

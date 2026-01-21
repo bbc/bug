@@ -1,29 +1,28 @@
-import React from "react";
 import BugApiSwitch from "@core/BugApiSwitch";
-import BugPowerIcon from "@core/BugPowerIcon";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
-import { formatDistanceToNow } from "date-fns";
 import BugApiTable from "@core/BugApiTable";
 import BugChipDisplay from "@core/BugChipDisplay";
-import { useHistory } from "react-router-dom";
+import BugNoData from "@core/BugNoData";
+import BugPowerIcon from "@core/BugPowerIcon";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import CommentIcon from "@mui/icons-material/Comment";
-import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import GpsNotFixedIcon from "@mui/icons-material/GpsNotFixed";
-import DeleteIcon from "@mui/icons-material/Delete";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import { Tooltip } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import BugNoData from "@core/BugNoData";
-import Tooltip from "@mui/material/Tooltip";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useAlert } from "@utils/Snackbar";
+import { formatDistanceToNow } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 export default function LeaseList({ panelId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const sendAlert = useAlert();
     const nowTimestamp = Date.now();
     const { renameDialog } = useBugRenameDialog();
@@ -48,7 +47,7 @@ export default function LeaseList({ panelId }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/lease/${item.id}`);
+        navigate(`/panel/${panelId}/lease/${item.id}`);
     };
 
     const handleEnabledChanged = async (checked, leaseId) => {
@@ -133,9 +132,9 @@ export default function LeaseList({ panelId }) {
                         field: "status",
                         filterType: "dropdown",
                         filterOptions: [
-                            { id: "View all items", label: "" },
-                            { id: "Bound", label: "bound" },
-                            { id: "Waiting", label: "waiting" },
+                            { id: "", label: "View all items" },
+                            { id: "bound", label: "Bound" },
+                            { id: "waiting", label: "Waiting" },
                         ],
                         content: (item) => <BugPowerIcon disabled={item.status !== "bound"} />,
                     },

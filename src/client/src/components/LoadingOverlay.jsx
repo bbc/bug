@@ -1,6 +1,4 @@
-import { Backdrop } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grid from "@mui/material/Grid";
+import { Backdrop, CircularProgress, Grid } from "@mui/material";
 
 export default function LoadingOverlay(props) {
     return (

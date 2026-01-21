@@ -1,10 +1,7 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import { useForm } from "react-hook-form";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
+import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import { Box, Button, Grid } from "@mui/material";
+import { useForm } from "react-hook-form";
 
 export default function LocalLogin({ handleLogin }) {
     const {
@@ -29,7 +26,7 @@ export default function LocalLogin({ handleLogin }) {
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormTextField
                             name="username"
                             control={control}
@@ -39,7 +36,7 @@ export default function LocalLogin({ handleLogin }) {
                             label="Username"
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <BugConfigFormPasswordTextField
                             name="password"
                             control={control}
@@ -49,7 +46,7 @@ export default function LocalLogin({ handleLogin }) {
                             label="Password"
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                         <Button
                             fullWidth
                             type="submit"

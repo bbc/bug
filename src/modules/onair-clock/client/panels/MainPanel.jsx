@@ -1,20 +1,16 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import { useAlert } from "@utils/Snackbar";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-import AxiosPut from "@utils/AxiosPut";
+import BugColorPicker from "@core/BugColorPicker";
 import BugDetailsTable from "@core/BugDetailsTable";
-import { useSelector } from "react-redux";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
-import BugColorPicker from "@core/BugColorPicker";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugTimeZonePicker from "@core/BugTimeZonePicker";
-import Box from "@mui/material/Box";
-import Input from "@mui/material/Input";
-import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
+import { Box, Button, Grid, Input, Switch } from "@mui/material";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -117,7 +113,7 @@ export default function MainPanel() {
 
     return (
         <>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <BugDetailsTable
                     items={[
                         {

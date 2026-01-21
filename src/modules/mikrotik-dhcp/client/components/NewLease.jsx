@@ -1,20 +1,19 @@
-import { useHistory } from "react-router-dom";
-import React from "react";
-import { useAlert } from "@utils/Snackbar";
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
+import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
+import BugForm from "@core/BugForm";
+import { Button, Grid } from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
-import useAsyncEffect from "use-async-effect";
-import BugConfigFormAutocomplete from "@core/BugConfigFormAutocomplete";
-import BugConfigFormSwitch from "@core/BugConfigFormSwitch";
+import { useAlert } from "@utils/Snackbar";
+import React from "react";
 import { useForm } from "react-hook-form";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
+import { useNavigate } from "react-router-dom";
+import useAsyncEffect from "use-async-effect";
 
 export default function Lease({ panelId, leaseId }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [servers, setServers] = React.useState(null);
     const [addressLists, setAddressLists] = React.useState(null);
     const sendAlert = useAlert();
@@ -33,7 +32,7 @@ export default function Lease({ panelId, leaseId }) {
     }, []);
 
     const handleCancelClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const { register, handleSubmit, control, formState, setError, getValues, clearErrors, setValue } = useForm();
@@ -79,7 +78,7 @@ export default function Lease({ panelId, leaseId }) {
         const response = await AxiosPost(`/container/${panelId}/lease/add/`, form);
         if (response) {
             sendAlert(`Lease has been updated.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`Lease could not be updated.`, { variant: "warning" });
         }
@@ -100,7 +99,7 @@ export default function Lease({ panelId, leaseId }) {
                                 },
                             }}
                         >
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 {servers && (
                                     <BugConfigFormSelect
                                         name="server"
@@ -113,7 +112,7 @@ export default function Lease({ panelId, leaseId }) {
                                     />
                                 )}
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="address"
                                     control={control}
@@ -123,7 +122,7 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Address"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="comment"
                                     control={control}
@@ -132,7 +131,7 @@ export default function Lease({ panelId, leaseId }) {
                                     label="Comment"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="mac-address"
                                     control={control}
@@ -143,7 +142,7 @@ export default function Lease({ panelId, leaseId }) {
                                     label="MAC Address"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormSwitch
                                     name="enabled"
                                     label="Enabled"
@@ -153,7 +152,7 @@ export default function Lease({ panelId, leaseId }) {
                                 />
                             </Grid>
                             {addressLists && (
-                                <Grid item xs={12}>
+                                <Grid size={{ xs: 12 }}>
                                     <BugConfigFormAutocomplete
                                         name="address-lists"
                                         label="Address Lists"

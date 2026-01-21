@@ -1,6 +1,5 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
 import BugPowerIcon from "@core/BugPowerIcon";
+import { CircularProgress } from "@mui/material";
 
 export default function PanelPowerIcon({ panel }) {
     if (

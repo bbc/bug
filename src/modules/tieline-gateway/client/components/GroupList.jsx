@@ -1,11 +1,10 @@
-import React from "react";
-import AxiosPut from "@utils/AxiosPut";
-import { useAlert } from "@utils/Snackbar";
-import { useForceRefresh } from "@hooks/ForceRefresh";
-import { useApiPoller } from "@hooks/ApiPoller";
-import Grid from "@mui/material/Grid";
 import BugLoading from "@core/BugLoading";
 import BugNoData from "@core/BugNoData";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import { Grid } from "@mui/material";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
 import Group from "./Group";
 
 export default function GroupList({ panelId }) {

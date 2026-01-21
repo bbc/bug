@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
 import Clock from "react-clock";
 import "react-clock/dist/Clock.css";
-import Box from "@mui/material/Box";
-
 const AnalogueClock = ({ size }) => {
     const [value, setValue] = useState(new Date());
     let width = 500;

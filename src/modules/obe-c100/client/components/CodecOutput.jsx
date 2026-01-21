@@ -1,10 +1,8 @@
-import React from "react";
+import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
-import Switch from "@mui/material/Switch";
-import InputAdornment from "@mui/material/InputAdornment";
-import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
+import { InputAdornment, Switch } from "@mui/material";
 
 export default function CodecOutput({
     outputData,

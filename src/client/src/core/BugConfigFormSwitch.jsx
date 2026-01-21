@@ -1,10 +1,7 @@
-import React from "react";
-import FormControl from "@mui/material/FormControl";
-import { Controller } from "react-hook-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import BugHelperText from "@components/BugHelperText";
+import { FormControl, FormControlLabel, Switch } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { Controller } from "react-hook-form";
 
 const BugConfigFormSwitch = ({ name, label, control, sort, defaultValue, rules, helperText, sx = {}, ...props }) => {
     const theme = useTheme();

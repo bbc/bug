@@ -1,14 +1,10 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import { usePanelStatus } from "@hooks/PanelStatus";
-import { useSelector } from "react-redux";
-import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
 import CheckIcon from "@mui/icons-material/Check";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import LaunchIcon from "@mui/icons-material/Launch";
+import { Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
+import { useSelector } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
     const toolbarProps = { ...props };

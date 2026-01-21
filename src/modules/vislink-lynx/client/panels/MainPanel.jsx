@@ -1,12 +1,11 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useApiPoller } from "@hooks/ApiPoller";
-import { useSelector } from "react-redux";
 import BugLoading from "@core/BugLoading";
-import Grid from "@mui/material/Grid";
+import BugNoData from "@core/BugNoData";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { Grid } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import PowerChart from "../components/PowerChart";
 import ReceiverStatus from "../components/ReceiverStatus";
-import BugNoData from "@core/BugNoData";
 
 export default function MainPanel() {
     const params = useParams();

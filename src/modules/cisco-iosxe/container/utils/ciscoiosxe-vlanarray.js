@@ -4,7 +4,6 @@ module.exports = (allVlans, vlanArray) => {
     const selectedVlans = new Array(4094);
     for (const eachVlan of vlanArray) {
         if (eachVlan.toString().indexOf("-") > -1) {
-            console.log("range", eachVlan);
             // it's a range
             const vlanRange = eachVlan.split("-");
             const start = parseInt(vlanRange[0]);

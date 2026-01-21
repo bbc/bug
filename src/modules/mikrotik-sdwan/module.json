@@ -1,0 +1,29 @@
+{
+    "name": "mikrotik-sdwan",
+    "longname": "Mikrotik SD-WAN",
+    "description": "Multiple WAN manager for Mikrotik routers",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "AltRoute",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "development",
+    "needsContainer": true,
+    "memory": 512,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "title": "",
+        "module": "mikrotik-sdwan",
+        "description": "",
+        "notes": "",
+        "routingTablePrefix": "r-tab",
+        "address": "",
+        "username": "bug",
+        "password": "",
+        "enabled": false
+    }
+}

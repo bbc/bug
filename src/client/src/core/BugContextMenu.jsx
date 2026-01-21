@@ -1,9 +1,4 @@
-import React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
+import { Divider, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 
 export default function BugContextMenu({ item, menuItems, anchorEl, onClose }) {
     const open = Boolean(anchorEl);

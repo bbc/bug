@@ -1,8 +1,6 @@
-import React from "react";
-import AudioChart from "../components/AudioChart";
 import BugVolumeBar from "@core/BugVolumeBar";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import { Box, Grid } from "@mui/material";
+import AudioChart from "../components/AudioChart";
 
 export default function AudioChain({ levels, history, type }) {
     return (

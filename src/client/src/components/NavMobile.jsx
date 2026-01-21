@@ -1,13 +1,9 @@
 import Menu from "@components/Menu";
 import Toolbar from "@components/toolbars/ToolbarRouter";
 import MenuIcon from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
+import { AppBar, Box, Drawer, IconButton } from "@mui/material";
 import MuiToolbar from "@mui/material/Toolbar";
-import React, { useState } from "react";
-
+import { useState } from "react";
 const NavMobile = (props) => {
     const [open, setOpen] = useState(false);
 

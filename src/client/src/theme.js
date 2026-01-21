@@ -1,5 +1,5 @@
-import { createTheme } from "@mui/material/styles";
 import { alpha } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 const defaultTheme = createTheme();
 const selectedFont = "Roboto";
 
@@ -44,6 +44,7 @@ const theme = (selectedTheme = "dark") => {
                     default: "#181818",
                     accent: "#212121",
                     paper: "#262626",
+                    light: "#2a2a2a",
                     hover: "#333333",
                 },
 
@@ -408,6 +409,21 @@ const theme = (selectedTheme = "dark") => {
                     },
                 },
             },
+            MuiPickersLayout: {
+                styleOverrides: {
+                    root: {
+                        display: "flex",
+                        flexDirection: "column",
+                        "& .MuiMultiSectionDigitalClock-root": {
+                            justifyContent: "center",
+                        },
+                        "& .MuiButtonBase-root": {
+                            minWidth: "0",
+                        }
+                    },
+                },
+            }
+
         },
         typography: {
             fontFamily: selectedFont,

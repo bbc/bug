@@ -22,7 +22,6 @@ module.exports = function (config, env) {
             "@components": path.resolve("src/components"),
             "@core": path.resolve("src/core"),
             "@data": path.resolve("src/data"),
-            "@pages": path.resolve("src/pages"),
             "@redux": path.resolve("src/redux"),
             "@utils": path.resolve("src/utils"),
             "@hooks": path.resolve("src/hooks"),

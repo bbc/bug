@@ -1,16 +1,15 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
 import BugLoading from "@core/BugLoading";
-import { useApiPoller } from "@hooks/ApiPoller";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { useNavigate } from "react-router-dom";
 import OutputTabDetails from "./OutputTabDetails";
 import OutputTabHistory from "./OutputTabHistory";
 
 export default function Output({ panelId, outputNumber }) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleBackClicked = () => {
-        history.push(`/panel/${panelId}`);
+        navigate(`/panel/${panelId}`);
     };
 
     const output = useApiPoller({

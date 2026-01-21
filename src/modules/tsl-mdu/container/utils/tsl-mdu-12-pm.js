@@ -1,8 +1,3 @@
-//NAME:  tsl-mdu12-3es.js
-//AUTH:  Ryan McCartney <ryan.mccartney01@bbc.co.uk>
-//DATE:  16/11/2020
-//DESC:  TSL MDU Connection Class
-
 const JSSoup = require("jssoup").default;
 const axios = require("axios");
 const formurlencoded = require("form-urlencoded");

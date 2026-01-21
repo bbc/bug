@@ -1,4 +1,4 @@
-import Avatar from "@mui/material/Avatar";
+import { Avatar } from "@mui/material";
 import getGravatarUrl from "@utils/getGravatarUrl";
 import getInitials from "@utils/getInitials";
 

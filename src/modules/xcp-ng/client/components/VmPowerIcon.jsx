@@ -1,8 +1,5 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 import BugPowerIcon from "@core/BugPowerIcon";
-
+import { Box, CircularProgress } from "@mui/material";
 export default function PanelPowerIcon({ item }) {
     return Object.keys(item.current_operations).length > 0 ? (
         <Box sx={{ textAlign: "center", marginTop: "2px" }}>

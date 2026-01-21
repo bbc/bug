@@ -3,13 +3,13 @@
     "longname": "Clock",
     "description": "Digital and Analogue Clocks",
     "capabilities": [],
+    "notes": "",
     "version": "1.0.0",
     "icon": "Schedule",
     "author": "Ryan McCartney",
     "needsContainer": false,
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": [],
+    "protectedRoutes": ["config"],
     "license": "Apache-2.0",
     "status": "stable",
     "defaultconfig": {
