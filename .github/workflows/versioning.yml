@@ -22,7 +22,7 @@ jobs:
                   ls -la ./
             # get the latest version of the repository
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
             # bump the backend version
             - name: "Backend: Automated Version Bump"
               uses: "phips28/gh-action-bump-version@master"
