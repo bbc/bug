@@ -21,16 +21,23 @@ router.get(
 );
 ```
 
-Then in services - we should log and throw:
+Any error thrown inside the async function will automatically be passed to Express’s error handler.
+
+# Throwing errors in services
+
+Inside module services, log the error and then throw a new one.
+This ensures it’s visible in logs and propagated to the router:
 
 ```
+    try {
+        await buildModule(moduleName);
     } catch (error) {
         logger.warn(`module-build: ${error.stack || error.trace || error || error.message}`);
         throw new Error(`Failed to build module ${moduleName}`);
     }
 ```
 
-Inside a service, if you want to stop execution because a step has failed, use:
+If a step fails and you want to stop execution immediately, simply throw an error:
 
 ```
 throw new Error(`Failed to write dockerfile to '${modulePath}'`);

@@ -5,13 +5,16 @@ parent: Development
 nav_order: 2
 ---
 
-# Development - Module Capabilities
+# Module capabilities
 
-Each module type can support one or more capabilities. These are standardised API endpoints to allow data flow between modules.
+Modules can expose one or more **capabilities**.  
+A capability is a **standardised API endpoint** that allows data to be shared between modules in a consistent way.
+
+Capabilities make it possible for modules to consume information provided by other modules without needing to know their internal implementation.
 
 ## dhcp-server
 
-This capability is used primary for network routers which provide DHCP servers. It can be used to provide 'friendly' names in other modules when only the IP address is known.
+This capability is used primary for network routers which provide DHCP servers. It can be used to provide 'friendly' names in other modules when only the MAC or IP address is known.
 
 `/container/{panelid}/capabilities/dhcp-server/`
 

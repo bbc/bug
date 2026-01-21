@@ -7,22 +7,42 @@ nav_order: 7
 
 # Requirements
 
-Some guidelines for the specification of host hardware needed to run BUG.
+This page outlines the recommended specifications for host hardware to run BUG efficiently.
+
+---
 
 ## Disk Space
 
-The BUG image itself is around 300MB. You'll need 2GB of storage space free on your hard-drive to run BUG with another 200MB for every adaitional panel you add.
+-   The BUG Docker image is approximately 300MB.
+-   Allocate at least 2GB of free disk space for the core application.
+-   Each additional panel may require roughly 200MB of storage.
+
+---
 
 ## Memory
 
-BUG itself requires 1GB of free RAM. Each container uses around of 100MB of RAM, you should budget accordingly.
+-   BUG itself requires at least 1GB of free RAM.
+-   Each container typically consumes around 100MB of RAM.
+-   Some modules have higher memory requirements. For example, the Cisco-SG module requires about 250MB. These requirements are defined in the module’s `module.json` under the optional `memory` field.
+-   Additional memory usage comes from workers: each worker typically consumes ~10MB.
 
-Some modules, have higher memory requirements. For exmapled the Cisco-SG module which requires 250MB. When this is the cause it is defined as an optional field `memory` in the `module.json` definition file. This additional memory requirement is down to the number of workers these modules run. Each additional worker requires approximately 10MB of memory.
+**Development Note:** If building a development version of BUG, you should have at least 4GB of RAM to allow `vite` to compile the frontend efficiently.
 
-Note - If you're building a development build of BUG you'll require at least 4GB of RAM in order to `create-react-app` to compile the development build.
+---
 
 ## CPU
 
+There are no strict CPU requirements for running BUG, but here are some real-world examples from tested systems:
+
+-   **Intel Core i3**  
+    Can run Docker, MongoDB, and the BUG web app. Suitable for a few lightweight modules.
+
+-   **Intel Core i5**  
+    Can run Docker, MongoDB, and the BUG web app. Capable of handling several modules simultaneously.
+
+-   **Intel Core i7**  
+    Can run Docker, MongoDB, and the BUG web app. Supports a large number of containers; in some events, over 20 switch panels were managed concurrently.
+
 ### Architecture
 
-Currently BUG runs on x64 CPU architectures only. In future support may be extended to ARMv7 for Raspberry Pi.
+-   BUG currently only supports x64 CPU architectures.

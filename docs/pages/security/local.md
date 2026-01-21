@@ -5,13 +5,13 @@ parent: Security
 nav_order: 1
 ---
 
-# Local
+# Local Authentication
 
-Local login allows a user to login using a username and password combination as set in `/system/users`.
+Local login allows users to authenticate using a username and password as configured in `/system/users`.
 
-By default this security is restricted with a source address filter to;
+By default, access is restricted to the following network ranges:
 
 -   `192.168.0.0/24`
 -   `127.0.0.0/8`
 
-If you'd like users on other networks to be able to login with this method. You'll need to adjust the source filter list.
+To allow users from other networks to log in using local authentication, update the source address filter list in the configuration.

@@ -5,143 +5,156 @@ parent: Installation
 nav_order: 1
 ---
 
-# Linux
+# Linux Installation
+
+This guide explains how to install and run BUG on a Linux system using Docker. These steps are suitable for both local deployments and virtualised environments.
+
+---
 
 ## Install Docker
 
-1. Download and install the docker engine for your flavour of linux. We quite like Ubuntu [Docker Install Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+1. Install the Docker Engine for your Linux distribution.  
+   For Ubuntu systems, follow the official instructions here:  
+   https://docs.docker.com/engine/install/ubuntu/
 
-2. Follow these post-installation steps so that you don't need to run docker as root [Docker Post-Installation Steps](https://docs.docker.com/engine/install/linux-postinstall/)
+2. Complete the post-installation steps so Docker can be run without root privileges:  
+   https://docs.docker.com/engine/install/linux-postinstall/
 
-## Install Docker-Compose
-
-On Linux platforms docker engine is packaged separately to other docker tools. Docker Compose is used to spin up the main BUG app and additional services together in a single command.
-
-1. Run this command to download the current stable release of Docker Compose:
-
-```
- sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-```
-
-2. Apply executable permissions to the binary
+Verify the installation:
 
 ```
- sudo chmod +x /usr/local/bin/docker-compose
+docker --version
 ```
 
-3. Check it works. A sensible version number should be returned
+---
+
+## Install Docker Compose (v2)
+
+Docker Compose v2 is distributed as a Docker CLI plugin.
+
+1. Install the Compose plugin using your package manager or by following the official guide:  
+   https://docs.docker.com/compose/install/linux/
+
+2. Verify the installation:
 
 ```
-docker-compose --version
+docker compose version
 ```
 
-## Create Files
+A valid version number should be displayed.
 
-1. Create a file called `docker-compose.yml`. You can create this file anywhere on your filesystem but it's probably best to put it in a well-known location - something like `/opt/bug`.
+---
 
-2. Copy the below code snippet into the file:
+## Create the Docker Compose File
+
+1. Create a directory to hold your BUG installation. A common location is `/opt/bug`.
+
+2. Inside this directory, create a file named `docker-compose.yml`.
+
+3. Copy the following contents into the file:
 
 ```
-# BUG for Linux
-
 version: "3.8"
 
 networks:
-    bug:
-        name: bug
-        driver: bridge
+  bug:
+    name: bug
+    driver: bridge
 
 services:
-    app:
-        container_name: bug
-        image: ghcr.io/bbc/bug:latest
-        extra_hosts:
-          - "host.docker.internal:host-gateway"
-        restart: always
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-          - ./logs:/home/node/bug/logs
-          - ./config/panels:/home/node/bug/config/panels
-          - ./config/global:/home/node/bug/config/global
-        environment:
-            MODULE_PORT: 3200
-            MODULE_HOME: /home/node/module
-            DOCKER_NETWORK_NAME: bug
-            BUG_CONTAINER: bug
-            BUG_PORT: 80
-            BUG_HOST: 127.0.0.1
-            BUG_LOG_FOLDER: logs
-            BUG_LOG_NAME: bug
-            BUG_REGISTRY_FQDN: ghcr.io/bbc
-            PORT: 3000
-            NODE_ENV: production
-            SESSION_SECRET: aSecretForYourSessions
-            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CONTAINER: bug-watchtower
-        labels:
-            - "com.centurylinklabs.watchtower.enable=true"
-        networks:
-            - bug
-        ports:
-            - 80:80
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-    watchtower:
-        container_name: bug-watchtower
-        image: containrrr/watchtower
-        restart: always
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        networks:
-            - bug
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-        environment:
-            WATCHTOWER_HTTP_API_UPDATE: "true"
-            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CLEANUP: "true"
-            WATCHTOWER_LABEL_ENABLE: "true"
-    mongo:
-        image: mongo:latest
-        restart: unless-stopped
-        container_name: bug-mongo
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-        networks:
-            - bug
+  app:
+    container_name: bug
+    image: ghcr.io/bbc/bug:latest
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/home/node/bug/logs
+      - ./config/panels:/home/node/bug/config/panels
+      - ./config/global:/home/node/bug/config/global
+    environment:
+      MODULE_PORT: 3200
+      MODULE_HOME: /home/node/module
+      DOCKER_NETWORK_NAME: bug
+      BUG_CONTAINER: bug
+      BUG_PORT: 80
+      BUG_HOST: 127.0.0.1
+      BUG_LOG_FOLDER: logs
+      BUG_LOG_NAME: bug
+      PORT: 3000
+      NODE_ENV: production
+      SESSION_SECRET: change-me
+    networks:
+      - bug
+    ports:
+      - 80:80
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "1"
+
+  mongo:
+    image: mongo:latest
+    container_name: bug-mongo
+    restart: unless-stopped
+    networks:
+      - bug
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "1"
 ```
 
-Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going.
+The values provided here are sensible defaults. You should review and adjust them to suit your environment.
+
+---
 
 ## Start BUG
 
-1. Finally, we can now start BUG from the terminal by running `docker-compose up -d` from the directory containing the `docker-compose.yml` file.
+1. From the directory containing `docker-compose.yml`, start BUG:
 
-2. BUG should now be available on [http://localhost](http://localhost)
+```
+docker compose up -d
+```
 
-3. You can double check BUG is running by typing `docker ps` into your terminal. Hopefully you'll see something that looks like this;
+2. BUG should now be available at:
 
-![docker ps](/bug/assets/images/screenshots/docker-ps.png)
+http://localhost
+
+3. Confirm that the containers are running:
+
+```
+docker ps
+```
+
+You should see containers for the BUG application and MongoDB.
+
+---
 
 ## BUG Folder Structure
 
-All config and logs for BUG are stored outside of the docker container in a subfolder of the folder containing your docker-compose.yml file:
-Your BUG folder structure should look like this:
+All configuration and logs are stored outside the containers and mounted using volumes. After startup, your directory structure should look like this:
 
 ```
 .
-├── `docker-compose.yml`.       # Docker Compose file created in step 2
-├── config                      # A folder to hold all the BUG configuration
-│   ├── panels                  # Each inviduals panel's configuration can be viewed here
-│   └── global                  # Global configuration can be viewed here
-└── logs                        # You can find all the logs here
+├── docker-compose.yml
+├── config
+│   ├── panels
+│   └── global
+└── logs
 ```
+
+This layout allows configuration and logs to be backed up or migrated without accessing the containers.
+
+---
+
+## Security Notes
+
+-   Change `SESSION_SECRET` to a strong, unique value before running BUG in production.
+-   Do not expose BUG directly to the internet without additional protection.
+-   If BUG must be publicly accessible, place it behind a reverse proxy and enable TLS.
+-   Restrict access to the Docker socket where possible, as it grants elevated control over the host.
+-   Limit network access to MongoDB so it is not exposed outside the Docker network.
