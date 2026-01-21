@@ -101,7 +101,7 @@ const BugRouterButton = ({
         iconSize = "small";
     }
 
-    let fontSize = number.toString().length > 3 ? 22 : 28;
+    let fontSize = number?.toString().length > 3 ? 22 : 28;
     if (iconSize === "small") {
         fontSize -= 8;
     }

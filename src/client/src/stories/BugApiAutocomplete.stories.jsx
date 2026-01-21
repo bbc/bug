@@ -1,5 +1,6 @@
 import BugApiAutocomplete from "@core/BugApiAutocomplete";
-import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
+import { Description, Stories, Subtitle, Title } from "@storybook/addon-docs";
+import { Controls } from '@storybook/blocks';
 
 export default {
     title: "BUG Core/API Controls/BugApiAutocomplete",
@@ -18,7 +19,7 @@ export default {
                     <Subtitle />
                     <Description />
                     <br />
-                    <ArgsTable story={PRIMARY_STORY} />
+                    <Controls />
                     <Stories includePrimary={true} title="" />
                 </>
             ),

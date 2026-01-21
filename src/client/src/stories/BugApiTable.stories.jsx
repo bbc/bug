@@ -1,14 +1,15 @@
+import BugApiSwitch from "@core/BugApiSwitch";
 import BugApiTable from "@core/BugApiTable";
 import BugPowerIcon from "@core/BugPowerIcon";
-import BugApiSwitch from "@core/BugApiSwitch";
-import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import CheckIcon from "@mui/icons-material/Check";
-import EditIcon from "@mui/icons-material/Edit";
 import CommentIcon from "@mui/icons-material/Comment";
+import EditIcon from "@mui/icons-material/Edit";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { action } from "@storybook/addon-actions";
-import { Title, Subtitle, Description, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs";
+import { Description, Stories, Subtitle, Title } from "@storybook/addon-docs";
+import { Controls } from '@storybook/blocks';
 
 export default {
     title: "BUG Core/API Controls/BugApiTable",
@@ -27,7 +28,7 @@ export default {
                 <Subtitle />
                 <Description />
                 <br />
-                <ArgsTable story={PRIMARY_STORY} />
+                <Controls />
                 <Stories includePrimary={true} title="" />
             </>
         ),
