@@ -21,5 +21,5 @@ export default function BugRestrictTo({ panel = "", role = "", children }) {
         }
     }
 
-    return null;
+    return <> </>;
 }

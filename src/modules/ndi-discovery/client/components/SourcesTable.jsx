@@ -1,11 +1,9 @@
-import React from "react";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
 import BugScrollbars from "@core/BugScrollbars";
-
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Box } from "@mui/material";
+import Chip from "@mui/material/Chip";
 export default function InterfaceList({ panelId }) {
     const handleGotoClicked = (event, item) => {
         window.open(`http://${item?.address}`);

@@ -1,24 +1,22 @@
-import React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
 import AuthRouter from "@components/AuthRouter";
-import theme from "./theme";
-import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
-import { SnackbarProvider } from "notistack";
-import { useSelector } from "react-redux";
-import Fade from "@mui/material/Fade";
-import { SnackbarConfigurator } from "@utils/Snackbar";
 import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
-import { BugRenameDialogProvider } from "@core/BugRenameDialog";
 import { BugCustomDialogProvider } from "@core/BugCustomDialog";
+import { BugRenameDialogProvider } from "@core/BugRenameDialog";
 import PanelListHandler from "@data/PanelListHandler";
-import UserHandler from "@data/UserHandler";
 import SettingsHandler from "@data/SettingsHandler";
 import StrategiesHandler from "@data/StrategiesHandler";
-import { ModalProvider } from "react-modal-hook";
-import { Provider } from "react-redux";
+import UserHandler from "@data/UserHandler";
+import { CssBaseline, Fade } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { StyledEngineProvider } from "@mui/styled-engine";
 import reduxStore from "@redux/store";
+import { SnackbarConfigurator } from "@utils/Snackbar";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
+import { SnackbarProvider } from "notistack";
+import { ModalProvider } from "react-modal-hook";
+import { Provider, useSelector } from "react-redux";
+import theme from "./theme";
 TimeAgo.addDefaultLocale(en);
 
 const ThemedApp = (props) => {
@@ -60,12 +58,10 @@ const ThemedApp = (props) => {
 };
 export default function App() {
     return (
-        <>
-            <Provider store={reduxStore}>
-                <StyledEngineProvider injectFirst>
-                    <ThemedApp />
-                </StyledEngineProvider>
-            </Provider>
-        </>
+        <Provider store={reduxStore}>
+            <StyledEngineProvider injectFirst>
+                <ThemedApp />
+            </StyledEngineProvider>
+        </Provider>
     );
 }

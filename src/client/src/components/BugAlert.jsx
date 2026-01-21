@@ -1,14 +1,10 @@
 import ReplayIcon from "@mui/icons-material/Replay";
 import SettingsIcon from "@mui/icons-material/Settings";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { Alert, AlertTitle, Box, Button } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const StyledButton = styled(Button)({
     borderColor: "#ccc",
@@ -21,7 +17,7 @@ const StyledButton = styled(Button)({
 });
 
 export default function BugAlert({ title = null, type, message, flags = [], panel, square = false, width = null }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const sendAlert = useAlert();
 
     const titles = {
@@ -104,7 +100,7 @@ export default function BugAlert({ title = null, type, message, flags = [], pane
     };
 
     const handleConfig = (event) => {
-        history.push(`/panel/${panel.id}/config`);
+        navigate(`/panel/${panel.id}/config`);
     };
 
     const handleRestart = async (event) => {

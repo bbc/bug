@@ -1,14 +1,8 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import Button from "@mui/material/Button";
 import { usePanelStatus } from "@hooks/PanelStatus";
-import { useLocation } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-
+import { Button, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 export default function Toolbar(props) {
     const toolbarProps = { ...props };
     const panelStatus = usePanelStatus();

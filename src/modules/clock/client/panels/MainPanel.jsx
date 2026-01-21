@@ -1,41 +1,14 @@
-import React from "react";
-import DigitalClock from "../components/DigitalClock";
+import { Box } from "@mui/material";
+import { useSelector } from "react-redux";
 import AnalogueClock from "../components/AnalogueClock";
 import DateString from "../components/DateString";
-import { useSelector } from "react-redux";
-import Hidden from "@mui/material/Hidden";
-import Box from "@mui/material/Box";
-
+import DigitalClock from "../components/DigitalClock";
 const Clock = ({ type, ...props }) => {
-    if (type === "digital") {
-        return <DigitalClock {...props} />;
-    }
-    return <AnalogueClock {...props} />;
+    return type === "digital" ? <DigitalClock {...props} /> : <AnalogueClock {...props} />;
 };
 
 const MainPanel = () => {
     const panelConfig = useSelector((state) => state.panelConfig);
-    const renderClock = () => {
-        return (
-            <>
-                <Hidden only={["sm", "md", "lg", "xl", "xxl"]}>
-                    <Clock type={panelConfig.data.type} size="xs" />
-                </Hidden>
-                <Hidden only={["xs", "md", "lg", "xl", "xxl"]}>
-                    <Clock type={panelConfig.data.type} size="sm" />
-                </Hidden>
-                <Hidden only={["xs", "sm", "lg", "xl", "xxl"]}>
-                    <Clock type={panelConfig.data.type} size="md" />
-                </Hidden>
-                <Hidden only={["xs", "sm", "md", "xl", "xxl"]}>
-                    <Clock type={panelConfig.data.type} size="lg" />
-                </Hidden>
-                <Hidden only={["xs", "sm", "md", "lg"]}>
-                    <Clock type={panelConfig.data.type} size="xl" />
-                </Hidden>
-            </>
-        );
-    };
 
     if (panelConfig.status === "loading") {
         return <BugLoading />;
@@ -44,6 +17,14 @@ const MainPanel = () => {
     if (panelConfig.status !== "success") {
         return null;
     }
+
+    const clocks = [
+        { size: "xs", display: { xs: "block", sm: "none" } },
+        { size: "sm", display: { xs: "none", sm: "block", md: "none" } },
+        { size: "md", display: { xs: "none", sm: "none", md: "block", lg: "none" } },
+        { size: "lg", display: { xs: "none", md: "none", lg: "block", xl: "none" } },
+        { size: "xl", display: { xs: "none", lg: "none", xl: "block" } },
+    ];
 
     return (
         <Box
@@ -54,12 +35,16 @@ const MainPanel = () => {
                 alignItems: "center",
                 justifyContent: "space-around",
                 minWidth: "200px",
-                padding: "8px",
+                padding: 2,
                 textAlign: "center",
                 color: "text.secondary",
             }}
         >
-            {renderClock()}
+            {clocks.map((c) => (
+                <Box key={c.size} sx={{ display: c.display }}>
+                    <Clock type={panelConfig.data.type} size={c.size} />
+                </Box>
+            ))}
             <DateString />
         </Box>
     );

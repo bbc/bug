@@ -4,12 +4,10 @@ import BugCountdownSpinner from "@core/BugCountdownSpinner";
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import LockIcon from "@mui/icons-material/Lock";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { Box, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { useLongPress } from "use-long-press";
-
 const StyledBugDynamicIcon = styled(BugDynamicIcon)({
     fontSize: "2rem",
     "@media (max-width:800px)": {
@@ -48,8 +46,6 @@ const BugRouterButton = ({
     const bind = useLongPress((event) => {
         setContextMenuAnchorEl(event.target);
     });
-
-    const multiLineSecondary = Array.isArray(secondaryLabel) && secondaryLabel.length === 2;
 
     let style = {
         transform: "",

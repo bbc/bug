@@ -3,7 +3,7 @@
     "main": "",
     "scripts": {
         "production": "node ./api/server",
-        "development": "nodemon ./api/server",
+        "development": "nodemon --verbose ./api/server",
         "test": "jest"
     },
     "nodemonConfig": {

@@ -4,21 +4,20 @@ import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugForm from "@core/BugForm";
 import BugLoading from "@core/BugLoading";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import { Button, Grid } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
 import settingsSlice from "@redux/settingsSlice";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function PageSystemBackup() {
     const sendAlert = useAlert();
     const settings = useSelector((state) => state.settings);
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
@@ -57,7 +56,7 @@ export default function PageSystemBackup() {
     };
 
     const handleCancel = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     if (settings.status === "loading" || settings.status === "idle") {
@@ -69,10 +68,10 @@ export default function PageSystemBackup() {
             {renderLoading()}
             <BugForm onClose={handleCancel}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <BugForm.Header onClose={handleCancel}>Edit Settings</BugForm.Header>
+                    <BugForm.Header onClose={handleCancel}>Global Configuration</BugForm.Header>
                     <BugForm.Body>
                         <Grid container spacing={4}>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="title"
                                     control={control}
@@ -84,7 +83,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormTextField
                                     name="description"
                                     control={control}
@@ -95,7 +94,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormSelect
                                     name="theme"
                                     control={control}
@@ -109,7 +108,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormSelect
                                     name="logLevel"
                                     control={control}
@@ -126,7 +125,7 @@ export default function PageSystemBackup() {
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="moduleStatus"
                                     label="Filter Modules"
@@ -135,6 +134,8 @@ export default function PageSystemBackup() {
                                     options={[
                                         { id: "stable", label: "Stable" },
                                         { id: "beta", label: "Beta" },
+                                        { id: "development", label: "Development" },
+                                        { id: "archived", label: "Archived" },
                                     ]}
                                     fullWidth
                                     helperText="Filter available modules by status tag"

@@ -1,14 +1,6 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import CardActions from "@mui/material/CardActions";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Box, Card, CardActions, CardContent, CardHeader, IconButton, Paper } from "@mui/material";
 import { useHotkeys } from "react-hotkeys-hook";
-
 const BugForm = ({ sx = {}, onClose, children, iconButtons = [] }) => {
     useHotkeys("esc", onClose);
 

@@ -1,15 +1,9 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import CardHeader from "@mui/material/CardHeader";
 import BugDetailsTable from "@core/BugDetailsTable";
-import Collapse from "@mui/material/Collapse";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Box, Card, CardHeader, Collapse, IconButton, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
+import React from "react";
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;

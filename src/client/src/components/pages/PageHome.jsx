@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
-import HomeTiles from "@components/home/HomeTiles";
 import BugQuote from "@components/BugQuote";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { useDispatch } from "react-redux";
+import HomeTiles from "@components/home/HomeTiles";
+import { Box, Grid } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function PageHome() {
     const dispatch = useDispatch();
@@ -18,7 +17,7 @@ export default function PageHome() {
             <HomeTiles />
 
             <Grid container>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <Box
                         sx={{
                             position: "relative",

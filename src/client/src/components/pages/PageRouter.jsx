@@ -1,10 +1,9 @@
-import React from "react";
-import PageContent from "./PageContent";
 import NavDesktop from "@components/NavDesktop";
 import NavMobile from "@components/NavMobile";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
+import React from "react";
+import PageContent from "./PageContent";
 const NavSwitcher = ({ showMobile, showDesktop, children }) => {
     if (showDesktop) {
         return <NavDesktop>{children}</NavDesktop>;

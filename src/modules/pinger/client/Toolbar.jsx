@@ -1,13 +1,11 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import DoneIcon from "@mui/icons-material/Done";
-import MapIcon from "@mui/icons-material/Map";
-import GridViewIcon from "@mui/icons-material/GridView";
-import { Link } from "react-router-dom";
 import { usePanelStatus } from "@hooks/PanelStatus";
-
+import DoneIcon from "@mui/icons-material/Done";
+import EditIcon from "@mui/icons-material/Edit";
+import GridViewIcon from "@mui/icons-material/GridView";
+import MapIcon from "@mui/icons-material/Map";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 export default function Toolbar({ panelId, ...props }) {
     let toolbarProps = { ...props };
     const panelStatus = usePanelStatus();

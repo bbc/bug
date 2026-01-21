@@ -1,16 +1,15 @@
-import React from "react";
-import BugNoData from "@core/BugNoData";
 import BugApiTable from "@core/BugApiTable";
+import BugChipDisplay from "@core/BugChipDisplay";
+import BugNoData from "@core/BugNoData";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AxiosDelete from "@utils/AxiosDelete";
 import { useAlert } from "@utils/Snackbar";
-import DeleteIcon from "@mui/icons-material/Delete";
-import BugChipDisplay from "@core/BugChipDisplay";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function TabChannels({ panelId }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleDeleteClicked = async (event, item) => {
         if (await AxiosDelete(`/container/${panelId}/channels/${item?.channelId}`)) {
@@ -23,7 +22,7 @@ export default function TabChannels({ panelId }) {
     };
 
     const handleEditClicked = (event, item) => {
-        history.push(`/panel/${panelId}/channels/edit/${item.channelId}`);
+        navigate(`/panel/${panelId}/channels/edit/${item.channelId}`);
     };
 
     return (

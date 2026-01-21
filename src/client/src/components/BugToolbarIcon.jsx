@@ -1,6 +1,4 @@
-import React from "react";
-import IconButton from "@mui/material/IconButton";
-
+import { IconButton } from "@mui/material";
 export default function BugToolbarIcon(props) {
     return (
         <IconButton

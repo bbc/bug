@@ -1,5 +1,5 @@
 {
-    "name": "probel-swp-08",
+    "name": "ross-ultrix",
     "main": "",
     "scripts": {
         "production": "node ./api/server",

@@ -1,15 +1,9 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import { useDispatch } from "react-redux";
-import panelDataSlice from "@redux/panelDataSlice";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import CheckIcon from "@mui/icons-material/Check";
+import { Divider, FormControlLabel, FormGroup, ListItemIcon, ListItemText, MenuItem, Switch } from "@mui/material";
+import panelDataSlice from "@redux/panelDataSlice";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
     const toolbarProps = { ...props };

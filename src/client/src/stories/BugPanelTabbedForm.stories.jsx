@@ -1,6 +1,5 @@
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
-import Box from "@mui/material/Box";
-
+import { Box } from "@mui/material";
 export default {
     title: "BUG Core/Wrappers/BugPanelTabbedForm",
     component: BugPanelTabbedForm,

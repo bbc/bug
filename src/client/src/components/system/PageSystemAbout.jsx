@@ -1,33 +1,22 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import { useDispatch } from "react-redux";
-import AxiosGet from "@utils/AxiosGet";
-import BugStatusLabel from "@core/BugStatusLabel";
 import BugCard from "@core/BugCard";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Link from "@mui/material/Link";
+import BugDetailsCard from "@core/BugDetailsCard";
+import BugTableLinkButton from "@core/BugTableLinkButton";
 import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
+import { Box, CardContent, CardHeader, Grid, Link } from "@mui/material";
 import pageTitleSlice from "@redux/pageTitleSlice";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 export default function PageSystemAbout() {
     const dispatch = useDispatch();
-    const [modules, setModules] = React.useState(null);
 
-    React.useEffect(() => {
-        const fetchModules = async () => {
-            const moduleResult = await AxiosGet("/api/module");
-            setModules(moduleResult);
-        };
-        fetchModules();
-    }, []);
+    const openWebpage = async (event, url) => {
+        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+        if (newWindow) newWindow.opener = null;
+        event.stopPropagation();
+        event.preventDefault();
+    };
 
     React.useEffect(() => {
         dispatch(pageTitleSlice.actions.set("About BUG"));
@@ -43,10 +32,10 @@ export default function PageSystemAbout() {
                 }}
             >
                 <Grid
-                    item
                     sx={{
                         maxWidth: "792px",
                     }}
+                    size={{ lg: 8, xs: 12 }}
                 >
                     <BugCard>
                         <CardHeader
@@ -77,7 +66,7 @@ export default function PageSystemAbout() {
                                 >
                                     <FontAwesomeIcon size="lg" icon={faBug} />
                                 </Box>
-                                <Box>
+                                <Box sx={{ color: "text.primary" }}>
                                     <p>
                                         BUG is a modular web application which controls and monitors a wide range of
                                         broadcast equipment.
@@ -108,56 +97,44 @@ export default function PageSystemAbout() {
                         </CardContent>
                     </BugCard>
                 </Grid>
-                {modules && (
-                    <Grid
-                        item
+                <Grid
+                    sx={{
+                        maxWidth: "792px",
+                    }}
+                    size={{ lg: 8, xs: 12 }}
+                >
+                    <BugDetailsCard
+                        title="Developer Information"
+                        width="12rem"
                         sx={{
-                            maxWidth: "800px",
+                            marginBottom: 0,
                         }}
-                    >
-                        <BugCard>
-                            <CardHeader
-                                sx={{
-                                    borderBottomWidth: "1px",
-                                    borderBottomColor: "border.light",
-                                    borderBottomStyle: "solid",
-                                }}
-                                title="Available Modules"
-                            />
-                            <CardContent sx={{ padding: 0, paddingBottom: "0 !important" }}>
-                                <TableContainer>
-                                    <Table>
-                                        <TableBody>
-                                            {modules &&
-                                                modules.map((module) => (
-                                                    <TableRow key={module.name}>
-                                                        <TableCell sx={{ fontWeight: 500 }}>
-                                                            {module.longname}
-                                                        </TableCell>
-                                                        <TableCell sx={{ opacity: 0.5 }}>
-                                                            {module.description}
-                                                        </TableCell>
-                                                        <TableCell>{module.version}</TableCell>
-                                                        <TableCell>
-                                                            <BugStatusLabel
-                                                                color={
-                                                                    module.status === "stable"
-                                                                        ? "success.main"
-                                                                        : "warning.main"
-                                                                }
-                                                            >
-                                                                {module.status}
-                                                            </BugStatusLabel>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </CardContent>
-                        </BugCard>
-                    </Grid>
-                )}
+                        items={[
+                            {
+                                name: "Documentation",
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) => openWebpage(event, `https://bbc.github.io/bug`)}
+                                        sx={{ color: "text.primary" }}
+                                    >
+                                        bbc.github.io/bug
+                                    </BugTableLinkButton>
+                                ),
+                            },
+                            {
+                                name: "API Documentation",
+                                value: (
+                                    <BugTableLinkButton
+                                        onClick={(event) => openWebpage(event, `/documentation`)}
+                                        sx={{ color: "text.primary" }}
+                                    >
+                                        /documentation
+                                    </BugTableLinkButton>
+                                ),
+                            },
+                        ]}
+                    />
+                </Grid>
             </Grid>
         </>
     );

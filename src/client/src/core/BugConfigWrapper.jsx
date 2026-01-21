@@ -1,18 +1,16 @@
-import { useHistory } from "react-router-dom";
-import React, { useState } from "react";
+import BugForm from "@core/BugForm";
+import CodeIcon from "@mui/icons-material/Code";
+import { Button, Grid, IconButton } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import BugForm from "@core/BugForm";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
+import { useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import JSONInput from "react-json-editor-ajrm";
 import locale from "react-json-editor-ajrm/locale/en";
-import IconButton from "@mui/material/IconButton";
-import CodeIcon from "@mui/icons-material/Code";
-import { useHotkeys } from "react-hotkeys-hook";
+import { useNavigate } from "react-router-dom";
 
 export default function BugConfigWrapper({ children, config, handleSubmit = () => {} }) {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [editorMode, setEditorMode] = useState(false);
     const [editorJson, setEditorJson] = useState(config);
     const sendAlert = useAlert();
@@ -22,7 +20,7 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
     });
 
     const onCancel = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const handleEditorMode = () => {
@@ -60,7 +58,7 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
         const response = await AxiosPut(`/api/panelconfig/${config?.id}`, form);
         if (!response?.error) {
             sendAlert(`${config?.title} has been updated.`, { broadcast: "true", variant: "success" });
-            history.goBack();
+            navigate(-1);
         } else {
             sendAlert(`${config?.title} could not be updated.`, { variant: "warning" });
         }

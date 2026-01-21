@@ -1,8 +1,6 @@
-import React from "react";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import BugDragIcon from "@core/BugDragIcon";
 import { useSortable } from "@dnd-kit/sortable";
+import { TableCell, TableRow } from "@mui/material";
 
 export default function SecurityTableDraggableRow({ strategy, index }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: strategy.type });

@@ -1,7 +1,5 @@
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Button, CircularProgress } from "@mui/material";
 import React from "react";
-
 export default function BugApiButton({
     disabled,
     color = "primary",

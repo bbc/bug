@@ -1,19 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Button, Card, CardHeader, Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const HomeAddPanel = () => {
     return (
         <Grid
-            item
-            xl={3}
-            lg={4}
-            sm={6}
-            xs={12}
+            size={{ xl: 3, lg: 4, sm: 6, xs: 12 }}
             sx={{
                 padding: "12px",
                 "@media (max-width:1200px)": {

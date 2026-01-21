@@ -1,20 +1,15 @@
-import React from "react";
-import BugCard from "@core/BugCard";
-import Grid from "@mui/material/Grid";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
-import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import BugApiButton from "@core/BugApiButton";
-import { useSelector } from "react-redux";
+import BugCard from "@core/BugCard";
+import LinkIcon from "@mui/icons-material/Link";
+import PollIcon from "@mui/icons-material/Poll";
+import { Box, CardContent, CardHeader, Grid, Tab, Tabs } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
-import GroupStats from "./GroupStats";
-import PollIcon from "@mui/icons-material/Poll";
-import LinkIcon from "@mui/icons-material/Link";
-import GroupTx from "./GroupTx";
+import React from "react";
+import { useSelector } from "react-redux";
 import GroupRx from "./GroupRx";
+import GroupStats from "./GroupStats";
+import GroupTx from "./GroupTx";
 import stateColor from "./stateColor";
 
 export default function Group({ group, panelId, onChange }) {
@@ -90,7 +85,7 @@ export default function Group({ group, panelId, onChange }) {
     }
 
     return (
-        <Grid key={group.id} item xxl={4} lg={6} xs={12}>
+        <Grid key={group.id} size={{ xxl: 4, lg: 6, xs: 12 }}>
             <BugCard fullHeight>
                 <CardHeader
                     action={

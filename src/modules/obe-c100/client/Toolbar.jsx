@@ -1,21 +1,16 @@
-import React from "react";
-import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useApiPoller } from "@hooks/ApiPoller";
-import SaveIcon from "@mui/icons-material/Save";
-import AxiosCommand from "@utils/AxiosCommand";
-import { useAlert } from "@utils/Snackbar";
 import BugApiButton from "@core/BugApiButton";
-import LaunchIcon from "@mui/icons-material/Launch";
-import Divider from "@mui/material/Divider";
-import { useSelector } from "react-redux";
-import CheckIcon from "@mui/icons-material/Check";
-import AxiosPut from "@utils/AxiosPut";
-import UndoIcon from "@mui/icons-material/Undo";
-import Button from "@mui/material/Button";
+import BugToolbarWrapper from "@core/BugToolbarWrapper";
+import { useApiPoller } from "@hooks/ApiPoller";
 import { usePanelToolbarEventTrigger } from "@hooks/PanelToolbarEvent";
+import CheckIcon from "@mui/icons-material/Check";
+import LaunchIcon from "@mui/icons-material/Launch";
+import SaveIcon from "@mui/icons-material/Save";
+import UndoIcon from "@mui/icons-material/Undo";
+import { Button, Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
+import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
+import { useSelector } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
     const sendAlert = useAlert();

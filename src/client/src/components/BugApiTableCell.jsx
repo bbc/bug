@@ -1,4 +1,4 @@
-import TableCell from "@mui/material/TableCell";
+import { TableCell } from "@mui/material";
 
 export default function BugApiTableCell({ children, column, index, sx, ...props }) {
     return (

@@ -1,8 +1,7 @@
-import React from "react";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugSelect from "@core/BugSelect";
 import BugTextField from "@core/BugTextField";
-import InputAdornment from "@mui/material/InputAdornment";
+import { InputAdornment } from "@mui/material";
 
 export default function CodecVideo({ codecdata, onChange, showAdvanced }) {
     const handleChange = (values) => {

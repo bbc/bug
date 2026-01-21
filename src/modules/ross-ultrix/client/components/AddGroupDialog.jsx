@@ -1,13 +1,14 @@
+import {
+    Autocomplete,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    TextField,
+} from "@mui/material";
 import React from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-
 export default function AddGroupDialog({ onDismiss, onConfirm, groups }) {
     const [selectedGroups, setSelectedGroups] = React.useState([]);
 

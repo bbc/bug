@@ -4,7 +4,7 @@
     "description": "Link to other services",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "icon": "mdiLink",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
@@ -15,7 +15,7 @@
     "defaultconfig": {
         "id": "",
         "order": 0,
-        "needsConfigured": true,
+        "needsConfigured": false,
         "title": "",
         "module": "links",
         "description": "",

@@ -1,6 +1,4 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
+import { MenuItem, TextField } from "@mui/material";
 
 export default function FilterDropdown({ value, onChange, options, multiple = false }) {
     return (

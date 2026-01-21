@@ -1,12 +1,11 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
+import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
+import BugConfigFormSelect from "@core/BugConfigFormSelect";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
-import { useSelector } from "react-redux";
 import { useConfigFormHandler } from "@hooks/ConfigFormHandler";
-import BugConfigFormSelect from "@core/BugConfigFormSelect";
-import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
+import { Grid } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export default function ConfigPanel() {
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -25,7 +24,7 @@ export default function ConfigPanel() {
 
     return (
         <BugConfigWrapper config={panelConfig.data} handleSubmit={handleSubmit}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormTextField
                     name="title"
                     control={control}
@@ -36,7 +35,7 @@ export default function ConfigPanel() {
                     label="Panel Title"
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <BugConfigFormTextField
                     name="description"
                     control={control}
@@ -47,39 +46,11 @@ export default function ConfigPanel() {
                 />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
                 <BugConfigFormPanelGroup name="group" control={control} defaultValue={panelConfig.data.group} />
             </Grid>
 
-            <Grid item xs={6}>
-                <BugConfigFormTextField
-                    name="esLatitude"
-                    control={control}
-                    rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
-                    type="number"
-                    fullWidth
-                    error={errors?.esLatitude}
-                    defaultValue={panelConfig.data.esLatitude}
-                    label="Earth Station Latitude"
-                />
-            </Grid>
-
-            <Grid item xs={6}>
-                <BugConfigFormTextField
-                    name="esLongitude"
-                    control={control}
-                    rules={{ required: true }}
-                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
-                    type="number"
-                    fullWidth
-                    error={errors?.esLongitude}
-                    defaultValue={panelConfig.data.esLongitude}
-                    label="Earth Station Longitude"
-                />
-            </Grid>
-
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
                 <BugConfigFormTextField
                     name="esAltitude"
                     control={control}
@@ -93,7 +64,35 @@ export default function ConfigPanel() {
                 />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
+                <BugConfigFormTextField
+                    name="esLatitude"
+                    control={control}
+                    rules={{ required: true }}
+                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    type="number"
+                    fullWidth
+                    error={errors?.esLatitude}
+                    defaultValue={panelConfig.data.esLatitude}
+                    label="Earth Station Latitude"
+                />
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
+                <BugConfigFormTextField
+                    name="esLongitude"
+                    control={control}
+                    rules={{ required: true }}
+                    inputProps={{ inputmode: "decimal", max: 90, min: -90, step: "0.01" }}
+                    type="number"
+                    fullWidth
+                    error={errors?.esLongitude}
+                    defaultValue={panelConfig.data.esLongitude}
+                    label="Earth Station Longitude"
+                />
+            </Grid>
+
+            <Grid size={{ xs: 6 }}>
                 <BugConfigFormTextField
                     name="satLongitude"
                     control={control}
@@ -107,7 +106,7 @@ export default function ConfigPanel() {
                 />
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
                 <BugConfigFormSelect
                     name="satDirection"
                     control={control}

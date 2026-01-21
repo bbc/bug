@@ -1,12 +1,6 @@
-import React from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import Button from "@mui/material/Button";
 import BugTextField from "@core/BugTextField";
-import InputAdornment from "@mui/material/InputAdornment";
-
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment } from "@mui/material";
+import React from "react";
 export default function BitrateDialog({ open, item, onDismiss, onConfirm }) {
     const [value, setValue] = React.useState(null);
 

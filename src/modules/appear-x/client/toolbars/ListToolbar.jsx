@@ -1,10 +1,7 @@
-import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useSelector } from "react-redux";
 import LaunchIcon from "@mui/icons-material/Launch";
+import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
     let toolbarProps = { ...props };

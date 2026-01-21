@@ -15,15 +15,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
-import { useHistory } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 export default function InterfaceList({ panelId, stackId = null }) {
     const sendAlert = useAlert();
-    const history = useHistory();
+    const navigate = useNavigate();
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
 
@@ -64,17 +63,17 @@ export default function InterfaceList({ panelId, stackId = null }) {
     };
 
     const handleDetailsClicked = (event, item) => {
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}`);
+        navigate(`/panel/${panelId}/interface/${item.interfaceId}`);
     };
 
     const handleNeighborLinkClicked = (event, item) => {
         event.stopPropagation();
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}/neighbor`);
+        navigate(`/panel/${panelId}/interface/${item.interfaceId}/neighbor`);
     };
 
     const handleDevicesLinkClicked = (event, item) => {
         event.stopPropagation();
-        history.push(`/panel/${panelId}/interface/${item.interfaceId}/devices`);
+        navigate(`/panel/${panelId}/interface/${item.interfaceId}/devices`);
     };
 
     const getVlanChangedMessage = (interfaceId, oldValues, newValues) => {

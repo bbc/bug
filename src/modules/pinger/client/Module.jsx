@@ -1,7 +1,7 @@
-import React from "react";
 import BugModuleWrapper from "@core/BugModuleWrapper";
 import BugRestrictTo from "@core/BugRestrictTo";
-import { Route } from "react-router-dom";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 
 const MainPanel = React.lazy(() => import("./panels/MainPanel"));
 const MapPanel = React.lazy(() => import("./panels/MapPanel"));
@@ -14,31 +14,22 @@ const HostAddPanel = React.lazy(() => import("./panels/HostAddPanel"));
 export default function Module(props) {
     return (
         <BugModuleWrapper {...props}>
-            <Route exact path="/panel/:panelId">
-                <MainPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/map">
-                <MapPanel {...props} />
-            </Route>
-            <Route exact path="/panel/:panelId/edit">
-                <EditPanel {...props} />
-            </Route>
-
-            <Route exact path="/panel/:panelId/host/add">
-                <HostAddPanel />
-            </Route>
-            <Route exact path="/panel/:panelId/host/:hostId/edit">
-                <HostEditPanel />
-            </Route>
-            <Route exact path="/panel/:panelId/host/:hostId">
-                <HostPanel />
-            </Route>
-
-            <BugRestrictTo role="admin">
-                <Route exact path="/panel/:panelId/config">
-                    <ConfigPanel />
-                </Route>
-            </BugRestrictTo>
+            <Routes>
+                <Route index element={<MainPanel {...props} />} />
+                <Route path="/map" element={<MapPanel {...props} />} />
+                <Route path="/edit" element={<EditPanel {...props} />} />
+                <Route path="/host/add" element={<HostAddPanel />} />
+                <Route path="/host/:hostId/edit" element={<HostEditPanel />} />
+                <Route path="/host/:hostId" element={<HostPanel />} />
+                <Route
+                    path="config"
+                    element={
+                        <BugRestrictTo role="admin">
+                            <ConfigPanel {...props} />
+                        </BugRestrictTo>
+                    }
+                />
+            </Routes>
         </BugModuleWrapper>
     );
 }

@@ -1,7 +1,4 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import Paper from "@mui/material/Paper";
-
+import { Card, Paper } from "@mui/material";
 export default function BugCard({ sx = {}, fullHeight = false, children }) {
     const fullHeightProps = fullHeight
         ? {
