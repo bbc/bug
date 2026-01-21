@@ -4,7 +4,7 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const systemBackup = require("@services/system-backup");
 const systemRestore = require("@services/system-restore");
-const systemLogs = require("@services/system-logs");
+// const systemLogs = require("@services/system-logs");
 const systemLogsPaginated = require("@services/system-logs-paginated");
 const systemContainers = require("@services/system-containers");
 const systemInfo = require("@services/system-info");
@@ -12,7 +12,6 @@ const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
 const systemHostHealth = require("@services/system-hosthealth");
 const systemContainerHealth = require("@services/system-containerhealth");
-const systemUpdate = require("@services/system-update-apply");
 const systemSettingsGet = require("@services/system-settings-get");
 const systemSettingsUpdate = require("@services/system-settings-update");
 const dockerCleanup = require("@services/docker-cleanup");
@@ -140,26 +139,6 @@ router.get("/settings", async function (req, res, next) {
     hashResponse(res, req, {
         status: result ? "success" : "failure",
         data: result?.data,
-    });
-});
-
-/**
- * @swagger
- * /system/update:
- *   get:
- *     description: Applies any downloaded system updates
- *     tags: [system]
- *     produces:
- *       - application/json
- *     responses:
- *       '200':
- *         description: Success
- */
-router.get("/update", async function (req, res, next) {
-    const result = await systemUpdate();
-    hashResponse(res, req, {
-        ...result,
-        status: result.error ? "failure" : "success",
     });
 });
 

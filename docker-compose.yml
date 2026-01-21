@@ -18,8 +18,6 @@ services:
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
-            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CONTAINER: bug-watchtower
             MONGO_CONTAINER: bug-mongo
             DOCKER_NETWORK_NAME: bug
             BUG_CONTAINER: bug
@@ -28,7 +26,6 @@ services:
             BUG_HOST: "127.0.0.1"
             BUG_LOG_FOLDER: logs
             BUG_LOG_NAME: bug
-            BUG_REGISTRY_FQDN: ghcr.io/bbc
             PORT: 3000
             NODE_ENV: development
             SESSION_SECRET: aSecretForYourSessions
