@@ -7,39 +7,84 @@ has_children: false
 
 # Upgrading
 
-## Web Interface
+BUG is updated via Docker and the command line.
 
-Your BUG should automatically check for updates.
-You can see if any are available and update by going to the `settings` page and then `Software Updates`.
-Click the `Check for Updates` button followed by `Update` and BUG should update automatically!
+---
 
-## Command Line
+## Safe Upgrade Checklist
 
-If you want to upgrade BUG from command line
+Before upgrading a production instance, it is recommended to:
 
-The first stage is to get the latest version of the BUG image from the registry using this command
+1. Backup all configuration and panel data
 
-`docker pull ghcr.io/bbc/bug:latest`
+    - Copy the `./config` and `./logs` folders to a safe location.
+    - These are mounted outside the container, so backups are straightforward.
 
-Next, run the following command and Docker will determine which containers to restart with minimal downtime of approximately 10 seconds.
+2. Stop any non-essential panels or modules (optional)
 
-`docker-compose up -d`
+    - If your deployment has many panels or heavy workloads, stopping them reduces the chance of in-flight data issues.
 
-That's it - your BUG instance is up to date.
+3. Review the changelog for the target BUG version
 
-## Running a Specific version of bug
+    - Check for breaking changes that may affect your panel configs or module setups.
 
-In your `docker-compose.yml` file adjust the image line to reflect the specific version you wish to run rather than the default `latest`. See the snippet below.
+4. Test the upgrade in a development or staging environment first if possible
+
+5. Proceed with upgrading via Docker
+
+---
+
+## Command Line Upgrade
+
+To upgrade your BUG instance:
+
+1. Pull the latest BUG image from the GitHub Container Registry:
 
 ```
-...
+docker pull ghcr.io/bbc/bug:latest
+```
+
+2. Restart the containers with the new image:
+
+```
+docker-compose up -d
+```
+
+Docker will recreate only the containers that need updating, minimizing downtime (usually around 10 seconds). Panel configurations and module data are preserved.
+
+---
+
+## Running a Specific Version
+
+To run a specific BUG version instead of `latest`:
+
+1. Edit your `docker-compose.yml` and update the `image` field for the app service. For example:
+
+```
 services:
     app:
         container_name: bug
         image: ghcr.io/bbc/bug:3.0.1
-...
 ```
 
-After adjusting the file in a text editor save it and run `docker-compose up -d` again. The changes will be registered and the main BUG app will restart.
+2. Save the file and run:
 
-WARNING: Be careful changing major or minor versions on a production BUG as this may make your current configs incompatible with the version you're moving to - read the changelogs before proceeding.
+```
+docker-compose up -d
+```
+
+The containers will be restarted using the specified version.
+
+> Warning: Changing major or minor versions on a production instance may introduce breaking changes. Always check the changelog and backup your configuration before upgrading.
+
+---
+
+## Upgrading Modules
+
+After upgrading the BUG core, the UI will indicate if any module types have newer images available.
+
+-   The panel list will show an upgrade notice for modules with a new version.
+-   Upgrading a module type will update **all instances** of that module type across your BUG instance.
+-   You can initiate the upgrade from the panel list in the UI.
+
+> Note: Module upgrades do not affect your panel configurations, but it is recommended to review module-specific changelogs before upgrading, especially for modules that handle critical equipment.

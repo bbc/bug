@@ -5,15 +5,15 @@ parent: Security
 nav_order: 3
 ---
 
-# Reverse Proxy
+# Reverse Proxy Authentication
 
-This provides authentication through a Reverse Proxy, where the proxy is determining the identity of the user. When using this method the email, name or username of the user can be passed in a request header allowing the user to authenticate BUG.
+Reverse Proxy authentication allows the proxy to determine the identity of the user. The proxy passes the user’s email, name, or username in a request header, which BUG uses to authenticate the user.
 
-By default the header field `REMOTE_USER` is used which is expecting to match the user's email as configured in `system/user`. This behavior can adjusted in `system/security/proxy`.
+By default, the header field `REMOTE_USER` is used and is expected to match the user's email as configured in `/system/users`. This behavior can be customized in `/system/security/proxy`.
 
-By default this security is restricted with a source address filter to
+By default, access is restricted to the following network ranges:
 
 -   `192.168.0.0/24`
 -   `127.0.0.0/8`
 
-When using this login method you should adjust the source filter list to `x.x.x.x/32` to only accept requests for this authentication type from a trusted proxy.
+When using this method, you should adjust the source filter list to only accept requests from your trusted proxy (for example, `x.x.x.x/32`), ensuring that only authorized requests are used for authentication.

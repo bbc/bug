@@ -8,29 +8,38 @@ nav_order: 1
 
 **Broadcast Universal Gateway**
 
-[![Backend](https://github.com/bbc/bug/actions/workflows/backend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/backend.yml) [![Frontend](https://github.com/bbc/bug/actions/workflows/frontend.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/frontend.yml) [![BUG Deploy](https://github.com/bbc/bug/actions/workflows/docker.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/docker.yml) [![Documentation](https://github.com/bbc/bug/actions/workflows/documentation.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/documentation.yml)
+[![BUG Deploy](https://github.com/bbc/bug/actions/workflows/deploy.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/deploy.yml)
+[![Documentation](https://github.com/bbc/bug/actions/workflows/documentation.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/documentation.yml)
 
-Control and monitor a wide range of equipment from a single web interface.
+BUG is a web-based system for **controlling and monitoring broadcast and media equipment from a single interface**.
 
-You can run BUG on a server within your network. A single web page then allows you to add panels that control equipment. Examples include, network switches, video and audio codecs, video matrixes and many more.
+Run BUG on a server within your network and access it through a browser. From one web page, you can add panels to control and observe a wide range of devices and services — including network switches, video and audio codecs, video matrices, and more.
 
 ![BUG Home Screenshot](/bug/assets/images/screenshots/bug-home.png)
 
-# Getting Started
+## Getting started
 
--   [Installation](./pages/installation) - Installation guide for any operating system
--   [Modules](./pages/modules) - A list of equipment that can be controlled and implemented functionality
+-   [Installation](./pages/installation) — Install BUG on any supported operating system
+-   [Modules](./pages/modules) — See which devices and services can be controlled, and what functionality is available
 
-# Development
+## Development
 
-We welcome [development](./pages/development) of additional modules for BUG. A module adds additional control or monitoring functionality to BUG. In principle a module normally represents control of a specific piece of hardware or a service. For example a single module exists to control Blackmagic Videohub matrices and another modules to monitor and report on a NewTek NDI discovery service.
+BUG is designed to be extended. We welcome [development](./pages/development) of additional modules that add new control or monitoring capabilities.
 
-An instance of a module is a panel. Multiple panels of the same type can co-exist in BUG. Learn more about [developing](./pages/development) your own below;
+A **module** typically represents a specific piece of hardware or service. For example:
+
+-   a module for controlling Blackmagic Videohub matrices
+-   a module for monitoring a NewTek NDI discovery service
+
+Each module can be instantiated one or more times as **panels** within the BUG interface, allowing multiple devices of the same type to be controlled simultaneously.
+
+To learn more about developing your own modules, see:
 
 -   [Architecture](./pages/architecture.html)
--   [Project Layout](./pages/development/layout.html)
--   [Coding Style](./pages/development/style.html)
+-   [Project layout](./pages/development/layout.html)
+-   [Coding style](./pages/development/style.html)
 
-# Open Source
+## Open source
 
-BUG is just one of many Open Source projects at the BBC. Check out the full catalog - [https://www.bbc.co.uk/opensource/](https://www.bbc.co.uk/opensource/).
+BUG is one of many open source projects developed at the BBC.  
+Explore the full catalogue at [https://www.bbc.co.uk/opensource/](https://www.bbc.co.uk/opensource/).

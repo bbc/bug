@@ -7,43 +7,67 @@ has_children: true
 
 # Installation
 
-BUG allows you to control equipment in a production or broadcast setting from a single interface - no more rearranging chrome tabs or keyboards or sharing maagement IP addresses!
+BUG provides a single, central interface for monitoring and controlling equipment in production and broadcast environments. It removes the need to manage multiple browser tabs, keyboards, or shared management IP addresses, and instead offers a consistent UI with user management and audit trails.
 
-You can run BUG on any compatible operating system and deploy a central interface with user management and audit trails that allow you to control a range of equipment.
+BUG can be run on any supported operating system and deployed either locally or in a virtualised environment, depending on your scale and availability requirements.
 
-A full list of supported modules is available on the [Modules Page](/bug/pages/modules)
+A full list of supported modules is available on the Modules page:
+https://bbc.github.io/bug/pages/modules
 
-Trying to run a BUG instance to develop a new module? You probably want [these instructions](/bug/pages/development) instead.
+If you are installing BUG in order to develop or test a new module, refer to the Development documentation instead:
+https://bbc.github.io/bug/pages/development
+
+---
 
 ## Supported Operating Systems
 
--   [Windows](/bug/pages/installation/windows.html)
--   [MacOS](/bug/pages/installation/mac.html)
--   [Linux](/bug/pages/installation/linux.html)
+BUG can be installed on the following platforms:
 
-## Install Environments
+-   Windows
+-   macOS
+-   Linux
 
-### AWS or Virtualised
+Detailed installation steps for each platform are available in the pages below:
 
-Run BUG in EC2 or on a virtual machine for larger deployments or for higher levels of availability, in such a case it might be desirable to make BUG available publicly and couple it with SSO options such as OIDC or SAML.
+-   https://bbc.github.io/bug/pages/installation/windows.html
+-   https://bbc.github.io/bug/pages/installation/mac.html
+-   https://bbc.github.io/bug/pages/installation/linux.html
 
-Note - When making BUG available on the internet you should take the necessary precautions to protect your infrastructure. You should use SSL certificates and reduce risk by placing BUG behind a reverse proxy.
+---
 
-### Using locally
+## Installation Environments
 
-Run BUG on any hardware that has support for docker. This is suggested for small deployments where only a couple of users are accessing BUG on a local network.
+### AWS or Virtualised Environments
 
-# User Guide
+BUG can be run on EC2 or other virtual machines for larger deployments or where higher availability is required. In these environments it may be appropriate to expose BUG publicly and integrate it with authentication systems such as OIDC or SAML.
 
-## Adding Panels
+When making BUG accessible from the internet, appropriate security measures should be taken. This includes using SSL certificates and placing BUG behind a reverse proxy to reduce exposure.
 
-For each piece of equipment you want to control you'll need to create a panel:
+### Local Installation
 
-1. Click panels on the left-hand toolbar
-2. Select `Add Panel` in the top right
-3. Give your panel a recognisable name and description and select the type of module.
-4. Click `add` and wait for your brand new panel to start. You'll see it appear in the toolbar on the right.
+BUG can also be run locally on any hardware that supports Docker. This approach is well suited to smaller installations where only a small number of users access BUG on a local network.
 
-# Troubleshooting
+---
 
--   [Troubleshooting](/bug/pages/installation/troubleshooting.html)
+## User Guide
+
+### Adding Panels
+
+Each piece of equipment or service you want to control or monitor is represented by a panel.
+
+To add a panel:
+
+1. Select Panels from the left-hand toolbar
+2. Click Add Panel in the top-right corner
+3. Enter a name and description, then choose the appropriate module type
+4. Click Add and wait for the panel to start
+
+Once created, the panel will appear in the toolbar and become available in the UI.
+
+---
+
+## Troubleshooting
+
+If you encounter problems during installation or startup, see:
+
+-   https://bbc.github.io/bug/pages/installation/troubleshooting.html

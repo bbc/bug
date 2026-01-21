@@ -7,30 +7,56 @@ nav_order: 10
 
 # Docker and BUG
 
-BUG's main application runs in a docker container, it speaks to a separate database in a separate container.
-When you start a panel the main BUG application will build a docker container and launch it on your system and then speak to it via an API.
-This enables BUG to perform very different monitoring and control tasks without continually adjusting the core BUG code.
+BUG runs its main application in a **Docker container**, with a separate container for its database.  
+When you start a panel, the core BUG application **builds and launches a dedicated container** for that panel, then communicates with it via an API.
 
-Below we've gathered a few helpful terminal commands that'll help you work with the docker cli and debug inside a panel's container.
+This containerised architecture allows BUG to handle a wide variety of monitoring and control tasks **without modifying the core application code**. It also allows individual panels to be restarted independently of each other and the core services.
+
+Below are some useful Docker commands to help you **monitor, debug, and manage BUG containers**.
+
+---
 
 ## Checking BUG status
 
-Verify your containers are running using the `docker ps` command.
+Use the following command to see which containers are running:
+
+```bash
+docker ps
+```
+
+Find the one named `bug` and make sure it's not in a `restarting` mode.
+To look at the logs (terminal) of the core container use:
+
+```bash
+docker logs bug
+```
 
 ## Check individual container outputs
 
-To look at the logs (terminal) of the core container use;
+All running panels will have a relevant docker container, identifiable by their panel id. This is the same as the one shown when you navigate to the panel in the Web UI.
 
-`docker logs bug_app`
+To view the logs of a particular panel:
 
-Where `bug_app` is the name of the container that can be seen from `docker ps`. You could also add a panel id here to view a panel's terminal output
+```bash
+docker logs yourlongpanelid
+```
 
-## Stop BUG
+## BUG system actions
 
-To stop the bug, all it's services and containers use;
+To perform any of these actions, navigate to the installation folder containing the `docker-compose.yml` file (usually `/opt/bug`).
 
-`docker compose down --remove-orphans`
+### Stop BUG
 
-## Detaching from the Terminal
+To stop all BUG services and containers
 
-Using the flag `-d` with docker-compose detaches the container output stream from the terminal
+```
+docker compose down --remove-orphans
+```
+
+### Start BUG
+
+This will start the BUG core web service and database, but not any previously-built individual panel containers. You'll have to enable these in the BUG UI.
+
+```
+docker compose up -d
+```

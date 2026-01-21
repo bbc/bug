@@ -5,120 +5,138 @@ parent: Installation
 nav_order: 3
 ---
 
-# MacOS
+# MacOS Installation
 
-## Install Docker
+This guide explains how to install and run BUG on MacOS using Docker Desktop and Docker Compose v2.
 
-1. Download and install docker desktop for mac, see the [official docker guide](https://docs.docker.com/desktop/mac/install/)
+---
 
-Note - There's a different version for Intel and M1 based macs. You'll need to pick the one suitable for your machine.
+## Install Docker Desktop
 
-## Create Files
+1. Download and install Docker Desktop for Mac. Follow the official guide:  
+   https://docs.docker.com/desktop/mac/install/
 
-1. Create a file called `docker-compose.yml`. You can create this file anywhere on your system but it's probably simplest to put it in a new folder all of its own.
-2. Copy the below code snippet into the file:
+2. Choose the correct version for your architecture (Intel vs Apple Silicon M1/M2).
+
+After installation, verify Docker is working:
 
 ```
-# BUG for Linux
+docker --version
+```
 
+---
+
+## Create the Docker Compose File
+
+1. Create a dedicated folder for your BUG installation.
+
+2. Inside this folder, create a file named `docker-compose.yml`.
+
+3. Copy the following contents into the file:
+
+```
 version: "3.8"
 
 networks:
-    bug:
-        name: bug
-        driver: bridge
+  bug:
+    name: bug
+    driver: bridge
 
 services:
-    app:
-        container_name: bug
-        image: ghcr.io/bbc/bug:latest
-        extra_hosts:
-          - "host.docker.internal:host-gateway"
-        restart: always
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-          - ./logs:/home/node/bug/logs
-          - ./config/panels:/home/node/bug/config/panels
-          - ./config/global:/home/node/bug/config/global
-        environment:
-            MODULE_PORT: 3200
-            MODULE_HOME: /home/node/module
-            DOCKER_NETWORK_NAME: bug
-            BUG_CONTAINER: bug
-            BUG_PORT: 80
-            BUG_HOST: 127.0.0.1
-            BUG_LOG_FOLDER: logs
-            BUG_LOG_NAME: bug
-            BUG_REGISTRY_FQDN: ghcr.io/bbc
-            PORT: 3000
-            NODE_ENV: production
-            SESSION_SECRET: aSecretForYourSessions
-            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CONTAINER: bug-watchtower
-        labels:
-            - "com.centurylinklabs.watchtower.enable=true"
-        networks:
-            - bug
-        ports:
-            - 80:80
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-    watchtower:
-        container_name: bug-watchtower
-        image: containrrr/watchtower
-        restart: always
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        networks:
-            - bug
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-        environment:
-            WATCHTOWER_HTTP_API_UPDATE: "true"
-            WATCHTOWER_HTTP_API_TOKEN: bugupdatetoken
-            WATCHTOWER_CLEANUP: "true"
-            WATCHTOWER_LABEL_ENABLE: "true"
-    mongo:
-        image: mongo:latest
-        restart: unless-stopped
-        container_name: bug-mongo
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "1"
-        networks:
-            - bug
+  app:
+    container_name: bug
+    image: ghcr.io/bbc/bug:latest
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/home/node/bug/logs
+      - ./config/panels:/home/node/bug/config/panels
+      - ./config/global:/home/node/bug/config/global
+    environment:
+      MODULE_PORT: 3200
+      MODULE_HOME: /home/node/module
+      DOCKER_NETWORK_NAME: bug
+      BUG_CONTAINER: bug
+      BUG_PORT: 80
+      BUG_HOST: 127.0.0.1
+      BUG_LOG_FOLDER: logs
+      BUG_LOG_NAME: bug
+      PORT: 3000
+      NODE_ENV: production
+      SESSION_SECRET: change-me
+    networks:
+      - bug
+    ports:
+      - 80:80
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "1"
+
+  mongo:
+    image: mongo:latest
+    container_name: bug-mongo
+    restart: unless-stopped
+    networks:
+      - bug
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "1"
 ```
 
-Note - The environment variables in this file are something you might want to adjust when setting up docker initially - here we've provided some sensible defaults to get you going.
+> Note: You may wish to adjust environment variables for your setup. `SESSION_SECRET` should always be changed to a strong, unique value in production.
+
+---
 
 ## Start BUG
 
-1. Finally, we can now start BUG from the terminal by running `docker compose up -d` from the directory containing the `docker-compose.yml` file.
+1. From the directory containing `docker-compose.yml`, start BUG:
 
-2. BUG should now be available on [http://localhost](http://localhost)
+```
+docker compose up -d
+```
 
-3. You can double check BUG is running by typing `docker ps` into your terminal. Hopefully you'll see something that looks like this;
+2. BUG should now be available at:
 
-![docker ps](/bug/assets/images/screenshots/docker-ps.png)
+http://localhost
+
+3. Confirm that the containers are running:
+
+```
+docker ps
+```
+
+You should see containers for the BUG app and MongoDB.
+
+---
 
 ## BUG Folder Structure
 
-All config and logs for BUG are stored outside of the docker container in a subfolder of the folder containing your docker-compose.yml file:
-Your BUG folder structure should look like this:
+All configuration and logs are stored outside the containers using Docker volumes. After setup, your folder should look like this:
 
 ```
+
 .
-├── `docker-compose.yml`.       # Docker Compose file created in step 2
-├── config                      # A folder to hold all the BUG configuration
-│   ├── panels                  # Each inviduals panel's configuration can be viewed here
-│   └── global                  # Global configuration can be viewed here
-└── logs                        # You can find all the logs here
+├── docker-compose.yml       # Docker Compose file
+├── config
+│   ├── panels               # Individual panel configurations
+│   └── global               # Global configuration
+└── logs                     # Application logs
 ```
+
+This structure makes it easy to back up, migrate, or inspect configuration and logs without entering the containers.
+
+---
+
+## Security Notes
+
+-   Change `SESSION_SECRET` to a strong, unique value before running in production.
+-   Do not expose BUG directly to the internet without protection.
+-   If public access is required, place BUG behind a reverse proxy and enable TLS.
+-   Restrict access to the Docker socket where possible.
+-   Limit network exposure of MongoDB to the Docker network only.

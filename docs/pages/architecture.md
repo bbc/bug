@@ -7,68 +7,76 @@ has_children: false
 
 # Architecture
 
-BUG makes a few underlying assumptions built into its architecture that will guide you in developing modules for it. A module's backend exists within its own docker container. The frontend is loaded by BUG core
+BUG is built around a modular, containerized architecture designed to simplify control and monitoring of broadcast equipment. Understanding the assumptions and principles of this architecture is important when developing new modules.
 
-BUG runs entirely in Docker. It can be run locally, but this is designed for development purposes only.
+## Core Principles
 
-BUG is made up of a number of containers. Every BUG instance will have at least the following containers
+-   Each module is self-contained: one module per function.
+-   Modules are designed to be independent but can interact via APIs if needed.
+-   Focus on simplicity: aim to implement ~80% of a device’s functionality.
+-   BUG is mobile-first: UI components are designed to scale across screen sizes.
+-   Performance matters: consider the load on devices and frequency of data polling.
+-   Modules run in Docker containers, isolating their backend logic from the core system.
+-   Module memory is volatile: any temporary data should not be relied upon for persistent state.
 
--   BUG Core
--   Mongo
+## Containers Overview
+
+Every BUG instance includes at minimum:
+
+-   BUG Core – serves the frontend UI, manages configuration, and orchestrates modules.
+-   Mongo – stores persistent configuration and module data.
 
 ![Architecture Overview](/bug/assets/diagrams/architecture-overview.drawio.svg)
 
-In development an additional module
+In development environments, additional containers such as Mongo Express may be present for easier inspection of the database.
 
--   Mongo Express
+Each module is allocated its own container, which provides:
 
-Each module is then allocated its own container, an isolated environment to carry out backend monitoring, control and data acquisition functions associated with controlling broadcast infrastructure.
-
-# Principles
-
--   [Overview ](/bug/pages/architecture/overview.html)
-
-*   Mobile first
-*   It's not mission critical
-*   80% of the functionality of any device.
-*   Keep it simple
-*   Keep it self-contained
-*   One module per function
-*   Connect modules (videohub) but don't depend
-*   Consider performance
-*   Consider load on device
-*   Consider connections to device
-
----
+-   Isolated environment for backend logic
+-   Data acquisition and monitoring for connected devices
+-   REST APIs and WebSocket endpoints for communication with the core
 
 ## Panel Communication
 
 ![Panel Communication](/bug/assets/diagrams/panel-communication.drawio.svg)
 
-## Panel Config
+Panels communicate only with the BUG Core API. Workers within module containers fetch data directly from devices or external services and write to the module’s Mongo database. The frontend reads data from the BUG Core, not directly from devices or module containers.
 
-Configs contain panel configurations. This configuration is stored in BUG core and pushed to panels on either start or update.
+### Key Points
 
-Each module is responsible for providing a base config page accessible in the module router from;
+-   Workers handle device communication asynchronously.
+-   The frontend interacts only with BUG Core, not module containers.
+-   Central Mongo databases are per-panel and facilitate sharing data between workers.
+-   NodeCache or other local caches can be used within containers for temporary data.
 
-`/config`
+## Module Configuration
 
-Any config input or form should be wrapped in a PanelConfig component with a save button.
+Panel configuration is persistent and stored in BUG Core. Module containers receive their configuration when started or updated.
+
+-   Each module should provide a base config page accessible at `/config`.
+-   Config forms should use the `PanelConfig` component to ensure consistent behavior:
 
 ```
-<PanelConfig>
 
+<PanelConfig>
+  <!-- form fields -->
 </PanelConfig>
 ```
 
-The API route `/api/panel/config/${panelId}` uses the HTTP action PUT and accepts a config object. Any valid fields are MERGED with the existing config. Any invalid fields are ignored. ??? Should we check and passed config against the `module.json` deafulConfig ???
+-   The API route `/api/panel/config/${panelId}` accepts a PUT request with a config object.
+-   Valid fields are merged with existing configuration; invalid fields are ignored.
+-   Field validation is the responsibility of the module developer.
 
-Responsibility for validating fields rests with the module developer.
+Persistent configuration includes things like IP addresses, credentials, or default module options. Temporary runtime data should be stored in the module’s container database or cache.
 
 ## Module Memory is Volatile
 
-Anything created in a module's container during operation should not be viewed as persistent. While it is true that this data in fact persists for as long as the container does you should design modules in such a way that operation could continue without this data.
+Anything stored in a module’s container during runtime should not be considered permanent. Containers can be restarted, rebuilt, or removed at any time.
 
-Leading on from this configuration that should persist is managed and stored by BUG core and passed to the container when it is created, started or changes are made to the config in BUG core.
+-   Design modules to function correctly even if runtime data is lost.
+-   Persistent config should always be stored in BUG Core and passed to the module container.
+-   Use the panel-specific Mongo database for temporary or frequently-updated data.
 
-Each module has access to a mongo database named as the panel ID that can be used as desired by the module developer. It functions in a similar way to a cache facilitating the sharing of data between workers.
+---
+
+This architecture ensures that BUG remains scalable, modular, and resilient while providing clear boundaries between persistent configuration, frontend UI, and module runtime logic.
