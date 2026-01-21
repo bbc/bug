@@ -1,5 +1,6 @@
-import { ArgsTable, Description, PRIMARY_STORY, Subtitle, Title } from "@storybook/addon-docs";
+import { Description, Subtitle, Title } from "@storybook/addon-docs";
 import { Source } from "@storybook/addon-docs/blocks";
+import { Controls } from '@storybook/blocks';
 
 export default {
     title: "BUG Core/Wrappers/BugConfigWrapper",
@@ -54,7 +55,7 @@ export default function ConfigPanel() {
       `}
                     />
                     <br />
-                    <ArgsTable story={PRIMARY_STORY} />
+                    <Controls />
                 </>
             ),
         },

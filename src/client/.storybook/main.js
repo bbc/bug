@@ -1,50 +1,43 @@
-const path = require("path");
-const fs = require("fs");
-const { merge } = require("webpack-merge");
+import { resolve } from "path";
 
-function getPackageDir(filepath) {
-    let currDir = path.dirname(require.resolve(filepath));
-    while (true) {
-        if (fs.existsSync(path.join(currDir, "package.json"))) {
-            return currDir;
-        }
-        const { dir, root } = path.parse(currDir);
-        if (dir === root) {
-            throw new Error(`Could not find package.json in the parent directories starting from ${filepath}.`);
-        }
-        currDir = dir;
-    }
-}
+/** @type { import('@storybook/react-vite').StorybookConfig } */
+const config = {
+    stories: ["../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))"],
 
-module.exports = {
-    core: {
-        builder: "webpack5",
-    },
-    stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
     addons: [
         "@storybook/addon-links",
         "@storybook/addon-essentials",
-        "@react-theming/storybook-addon",
-        "@storybook/preset-create-react-app",
+        "@storybook/addon-interactions" // Recommended for SB8 + @storybook/test
     ],
-    framework: "@storybook/react",
-    webpackFinal: async (config) => ({
-        ...config,
-        resolve: {
-            ...config.resolve,
-            alias: {
-                ...config.resolve?.alias,
-                "@modules": path.resolve("../modules"),
-                "@components": path.resolve("src/components"),
-                "@core": path.resolve("src/core"),
-                "@data": path.resolve("src/data"),
-                "@redux": path.resolve("src/redux"),
-                "@utils": path.resolve("src/utils"),
-                "@hooks": path.resolve("src/hooks"),
-                "@emotion/core": getPackageDir("@emotion/react"),
-                "@emotion/styled": getPackageDir("@emotion/styled"),
-                "emotion-theming": getPackageDir("@emotion/react"),
-            },
-        },
-    }),
+
+    framework: {
+        // Updated to standard string format for SB8
+        name: "@storybook/react-vite",
+        options: {},
+    },
+
+    async viteFinal(config) {
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            "@components": resolve(__dirname, "../src/components"),
+            "@redux": resolve(__dirname, "../src/redux"),
+            "@utils": resolve(__dirname, "../src/utils"),
+            "@hooks": resolve(__dirname, "../src/hooks"),
+            "@data": resolve(__dirname, "../src/data"),
+            "@core": resolve(__dirname, "../src/core"),
+        };
+
+        return config;
+    },
+
+    docs: {
+        autodocs: true
+    },
+
+    typescript: {
+        // 'react-docgen' is significantly faster in SB8 than 'react-docgen-typescript'
+        reactDocgen: "react-docgen"
+    }
 };
+
+export default config;

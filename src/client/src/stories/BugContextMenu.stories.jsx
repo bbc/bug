@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
-import { ArgsTable, Description, PRIMARY_STORY, Subtitle, Title } from "@storybook/addon-docs";
+import { Description, Subtitle, Title } from "@storybook/addon-docs";
+import { Controls } from '@storybook/blocks';
 
 export default {
     title: "BUG Core/Controls/BugContextMenu",
@@ -15,7 +16,7 @@ export default {
                     <Subtitle />
                     <Description />
                     <br />
-                    <ArgsTable story={PRIMARY_STORY} />
+                    <Controls />
                 </>
             ),
         },
