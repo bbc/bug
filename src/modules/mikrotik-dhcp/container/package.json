@@ -24,7 +24,6 @@
         "node-cache": "^5.1.2",
         "node-routeros": "^1.6.9",
         "oui": "^11.0.74",
-        "package.json": "^2.0.1",
         "path": "^0.12.7",
         "ping": "^0.4.1",
         "routeros-client": "^1.1.2",
