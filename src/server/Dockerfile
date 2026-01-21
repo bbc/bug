@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22-alpine
 
 # Remove default node user
 RUN deluser --remove-home node
