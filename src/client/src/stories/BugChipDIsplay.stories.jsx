@@ -1,10 +1,20 @@
 import BugChipDisplay from "@core/BugChipDisplay";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugChipDisplay",
     component: BugChipDisplay,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `A control for displaying content such as tags<br />`,
             },
@@ -12,43 +22,43 @@ export default {
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        options: ["Option 1", "Option 2", "Option 3"],
+        sx: {},
+    },
 
     argTypes: {
         avatar: {
-            type: { name: "data" },
             description: "An optional element containing an avatar image to display",
             control: {
                 disable: true,
             },
             table: {
                 type: { summary: "data" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         options: {
-            type: { name: "data", required: true },
             description: "An array of strings to display inside the control",
-            defaultValue: ["Option 1", "Option 2", "Option 3"],
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "array" },
+                defaultValue: { summary: "[]" },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "An object containing style overrides - see MaterialUI docs for options",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
     },
 };
 
-export const MyBugChipDisplay = (args) => <BugChipDisplay {...args} />;
-
-MyBugChipDisplay.displayName = "BugChipDisplay";
-MyBugChipDisplay.storyName = "BugChipDisplay";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugChipDisplay {...args} />
+        </div>
+    ),
+};

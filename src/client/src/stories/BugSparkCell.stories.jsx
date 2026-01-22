@@ -1,78 +1,95 @@
 import BugSparkCell from "@core/BugSparkCell";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugSparkCell",
     component: BugSparkCell,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A sparkline control for use in a BugApiTable cell`,
+                component: `A sparkline control optimized for use in a <b>BugApiTable</b> cell to show data trends (e.g., bitrate, CPU usage) over time.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        value: "10 Mbps",
+        height: "50px",
+        showEmpty: false,
+        history: [
+            { timestamp: "2022-02-09T09:58:11.635Z", value: 0 },
+            { timestamp: "2022-02-09T09:58:14.468Z", value: 10 },
+            { timestamp: "2022-02-09T09:58:15.468Z", value: 20 },
+            { timestamp: "2022-02-09T09:58:16.468Z", value: 3 },
+            { timestamp: "2022-02-09T09:58:17.212Z", value: 5 },
+            { timestamp: "2022-02-09T09:58:19.961Z", value: 25 },
+        ],
+        sx: {},
+    },
 
     argTypes: {
+        history: {
+            description: "An array of data points. Each point requires a **timestamp** and a **value**.",
+            table: {
+                type: { summary: "array" },
+                defaultValue: { summary: "[]" },
+            },
+        },
+        value: {
+            description: "A text label to overlay on the sparkline (e.g., the current real-time value).",
+            table: {
+                type: { summary: "string" },
+            },
+        },
         height: {
-            type: { name: "string", required: false },
-            defaultValue: "50px",
             description: "The height of the sparkline. Accepts any valid CSS unit.",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "100%" },
             },
         },
-        history: {
-            type: { name: "data", required: true },
-            defaultValue: [
-                { timestamp: "2022-02-09T09:58:11.635Z", value: 0 },
-                { timestamp: "2022-02-09T09:58:14.468Z", value: 10 },
-                { timestamp: "2022-02-09T09:58:15.468Z", value: 20 },
-                { timestamp: "2022-02-09T09:58:16.468Z", value: 3 },
-                { timestamp: "2022-02-09T09:58:17.212Z", value: 5 },
-                { timestamp: "2022-02-09T09:58:19.961Z", value: 25 },
-            ],
-            description:
-                "An array of data points to display. Each data point should contain timestamp (Javascript time object) and value (number) properties.",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-        },
         showEmpty: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to display the control when all values are zero",
+            description: "If false, the control will remain hidden if all values in history are zero.",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MUI style overrides.",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
-        },
-        value: {
-            type: { name: "string", required: false },
-            defaultValue: "10 Mbps",
-            description: "A text value to display over the sparkline",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
+                type: { summary: "object" },
             },
         },
     },
 };
 
-export const MyBugSparkCell = (args) => <BugSparkCell {...args} />;
-
-MyBugSparkCell.displayName = "BugSparkCell";
-MyBugSparkCell.storyName = "BugSparkCell";
+export const Default = {
+    render: (args) => (
+        <div
+            style={{
+                padding: "20px",
+            }}
+        >
+            <div
+                style={{
+                    padding: "10px",
+                    maxWidth: "300px",
+                    background: "#111",
+                }}
+            >
+                <BugSparkCell {...args} />
+            </div>
+        </div>
+    ),
+};

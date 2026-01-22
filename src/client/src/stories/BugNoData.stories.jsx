@@ -1,68 +1,79 @@
 import BugNoData from "@core/BugNoData";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugNoData",
     component: BugNoData,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `An information panel to be displayed when no data is available. <br />
-                    Can optionally redirect user to panel config page if panelId property is provided.`,
+                    Can optionally redirect users to the panel config page if the <b>panelId</b> property is provided.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
+
+    args: {
+        title: "No data found",
+        message: "Try adjusting your filters or check the connection.",
+        showConfigButton: true,
+        sx: {},
+    },
+
     argTypes: {
-        message: {
-            type: { name: "string" },
-            defaultValue: "",
-            description: "Additional message to be displayed",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "" },
-            },
-        },
-        panelId: {
-            type: { name: "string" },
-            description: "Pass in a valid panel id to be used to navigate to the config page",
-            defaultValue: "",
-            control: {
-                disable: true,
-            },
-        },
-        showConfigButton: {
-            type: { name: "boolean" },
-            defaultValue: true,
-            description: "Whether to show the 'configure' action button",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: true },
-            },
-        },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
-        },
         title: {
-            type: { name: "string" },
-            defaultValue: "No data found",
             description: "Main text to be displayed in the alert",
             table: {
                 type: { summary: "string" },
+                defaultValue: { summary: "No data found" },
+            },
+        },
+        message: {
+            description: "Additional message to be displayed below the title",
+            table: {
+                type: { summary: "string" },
                 defaultValue: { summary: "" },
+            },
+        },
+        showConfigButton: {
+            description: "Whether to show the 'configure' action button",
+            table: {
+                type: { summary: "boolean" },
+                defaultValue: { summary: "true" },
+            },
+        },
+        panelId: {
+            description: "Pass in a valid panel id to enable navigation to the config page",
+            control: { disable: true },
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "" },
+            },
+        },
+        sx: {
+            description: "MUI style overrides (the sx prop)",
+            table: {
+                type: { summary: "object" },
+                defaultValue: { summary: "{}" },
             },
         },
     },
 };
 
-export const BugNoData1 = (args) => <BugNoData {...args} />;
-BugNoData1.storyName = "BugNoData";
-BugNoData1.parameters = {
-    title: "No data found",
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px" }}>
+            <BugNoData {...args} />
+        </div>
+    ),
 };

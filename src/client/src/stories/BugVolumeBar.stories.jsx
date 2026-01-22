@@ -1,78 +1,81 @@
 import BugVolumeBar from "@core/BugVolumeBar";
+import { Stack } from "@mui/material";
+import { Controls, Description, Stories, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugVolumeBar",
     component: BugVolumeBar,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <div class="story-no-header">
+                        <Story />
+                    </div>
+                    <Controls />
+                    <Stories />
+                </>
+            ),
             description: {
-                component: `A control which displays audio levels in a vertical bar`,
+                component: `A vertical audio level meter. It is designed to be high-density, typically used in groups to monitor multiple channels of audio simultaneously.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        value: 70,
+        min: 0,
+        max: 100,
+        height: "150px",
+        width: "8px",
+        sx: {},
+    },
 
     argTypes: {
-        height: {
-            type: { name: "string", required: false },
-            defaultValue: "100px",
-            description: "The height of the control - can be in any valid CSS unit",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "100px" },
-            },
-        },
-        max: {
-            type: { name: "number", required: false },
-            description: "The maximum level of the audio meter",
-            defaultValue: 100,
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: 100 },
-            },
+        value: {
+            description: "The current audio level to display.",
+            table: { type: { summary: "number" } },
         },
         min: {
-            type: { name: "number", required: false },
-            description: "The minimum level of the audio meter",
-            defaultValue: 0,
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: 0 },
-            },
+            description: "The minimum value (floor) of the meter.",
+            table: { type: { summary: "number" }, defaultValue: { summary: 0 } },
         },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
+        max: {
+            description: "The maximum value (ceiling) of the meter.",
+            table: { type: { summary: "number" }, defaultValue: { summary: 100 } },
         },
-        value: {
-            type: { name: "number", required: true },
-            description: "The volume level of the audio meter",
-            defaultValue: 70,
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
-            },
+        height: {
+            description: "Total vertical height (e.g., '100px', '10rem').",
+            table: { type: { summary: "string" }, defaultValue: { summary: "100px" } },
         },
         width: {
-            type: { name: "string", required: false },
-            defaultValue: "6px",
-            description: "The width of the control - can be in any valid CSS unit",
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: "6px" },
-            },
+            description: "Thickness of the bar.",
+            table: { type: { summary: "string" }, defaultValue: { summary: "6px" } },
+        },
+        sx: {
+            description: "MUI style overrides.",
+            table: { type: { summary: "object" } },
         },
     },
 };
 
-export const MyBugVolumeBar = (args) => <BugVolumeBar {...args} />;
-MyBugVolumeBar.displayName = "BugVolumeBar";
-MyBugVolumeBar.storyName = "BugVolumeBar";
+export const Mono = {
+    render: (args) => (
+        <div style={{ padding: "20px", display: "flex", justifyContent: "center" }}>
+            <BugVolumeBar {...args} />
+        </div>
+    ),
+};
+
+export const StereoPair = {
+    render: (args) => (
+        <Stack style={{ padding: "20px", display: "flex", justifyContent: "center" }} spacing={1} direction="row">
+            <BugVolumeBar {...args} value={75} />
+            <BugVolumeBar {...args} value={72} />
+        </Stack>
+    ),
+};

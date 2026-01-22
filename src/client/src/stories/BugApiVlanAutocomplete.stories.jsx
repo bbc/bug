@@ -1,10 +1,20 @@
 import BugApiVlanAutocomplete from "@core/BugApiVlanAutocomplete";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/API Controls/BugApiVlanAutocomplete",
     component: BugApiVlanAutocomplete,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `An autocomplete dropdown which is designed for use with an API.<br />
                     Triggers the onChange event, and disables the control to allow the new value to be updated.<br />
@@ -93,11 +103,21 @@ export default {
     },
 };
 
-export const MyBugApiVlanAutocomplete = (args) => <BugApiVlanAutocomplete {...args} />;
-MyBugApiVlanAutocomplete.displayName = "BugApiVlanAutocomplete";
-MyBugApiVlanAutocomplete.storyName = "BugApiVlanAutocomplete";
-MyBugApiVlanAutocomplete.args = {
-    options: [{ label: "VLAN 101", id: 101 }],
-    options: [{ label: "VLAN 102", id: 102 }],
-    options: [{ label: "VLAN 103", id: 103 }],
+export const Default = {
+    render: (args) => {
+        args = {
+            ...args,
+            options: [
+                { label: "VLAN 101", id: 101 },
+                { label: "VLAN 102", id: 102 },
+                { label: "VLAN 103", id: 103 },
+            ],
+        };
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <BugApiVlanAutocomplete {...args} />
+            </div>
+        );
+    },
 };

@@ -1,77 +1,79 @@
-import React from "react";
 import BugTimePicker from "@core/BugTimePicker";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
+import { useEffect, useState } from "react";
 
 export default {
     title: "BUG Core/Controls/BugTimePicker",
     component: BugTimePicker,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A time picker control with BUG styling.`,
+                component: `A specialized time input control with BUG styling. It provides a clean interface for selecting hours and minutes, integrating seamlessly with standard Javascript Date objects.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
+    args: {
+        value: new Date("2026-01-22T21:11:54"),
+        variant: "filled",
+        sx: {},
+    },
 
     argTypes: {
-        onChange: {
-            type: { name: "function", required: true },
-            defaultValue: {},
-            description: "This callback is called when the value changes",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
-        },
         value: {
-            type: { name: "data", required: false },
-            defaultValue: null,
-            description: "The selected value when the control is loaded (valid Javascript Date object)",
+            description: "The selected time. This must be a valid Javascript Date object.",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "Date" },
+                defaultValue: { summary: "null" },
             },
         },
         variant: {
             options: ["filled", "outlined", "standard"],
-            description: "The MUI variant of the control",
-            defaultValue: "filled",
             control: { type: "select" },
+            description: "The MUI variant of the underlying text field.",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "filled" },
             },
         },
+        onChange: {
+            description: "Callback fired when the time is changed. Returns the new Date object.",
+            control: { disable: true },
+            table: { type: { summary: "function" } },
+        },
+        sx: {
+            description: "MUI style overrides (the sx prop).",
+            table: {
+                type: { summary: "object" },
+                defaultValue: { summary: "{}" },
+            },
+        },
     },
 };
 
-export const MyBugTimePicker = (args) => {
-    const [value, setValue] = React.useState(new Date("2014-08-18T21:11:54"));
-    return (
-        <BugTimePicker
-            {...args}
-            value={value}
-            onChange={(newValue) => {
-                setValue(newValue);
-            }}
-        />
-    );
-};
+export const Default = {
+    render: (args) => {
+        const [selectedTime, setSelectedTime] = useState(args.value);
 
-MyBugTimePicker.displayName = "BugTimePicker";
-MyBugTimePicker.storyName = "BugTimePicker";
+        // Sync local state if changed via Storybook Controls
+        useEffect(() => {
+            setSelectedTime(args.value);
+        }, [args.value]);
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "300px" }}>
+                <BugTimePicker {...args} value={selectedTime} onChange={(newValue) => setSelectedTime(newValue)} />
+            </div>
+        );
+    },
+};

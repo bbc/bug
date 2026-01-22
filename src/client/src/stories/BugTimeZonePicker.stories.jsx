@@ -1,96 +1,90 @@
-import React from "react";
 import BugTimeZonePicker from "@core/BugTimeZonePicker";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
+import { useEffect, useState } from "react";
 
 export default {
     title: "BUG Core/Controls/BugTimeZonePicker",
     component: BugTimeZonePicker,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A timezone dropdown with a populated list of available timezones.`,
+                component: `A specialized autocomplete dropdown pre-populated with a comprehensive list of global timezones, including UTC offsets.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
+    args: {
+        label: "System Timezone",
+        value: "(UTC+00:00) Dublin, Edinburgh, Lisbon, London",
+        helperText: "Select the local timezone for this device",
+        variant: "outlined",
+        sx: {},
+    },
 
     argTypes: {
-        helperText: {
-            type: { name: "string", required: false },
-            defaultValue: "Tell me something interesting",
-            description: "Optional helper text to be shown below the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
         label: {
-            type: { name: "string", required: true },
-            defaultValue: "My Control Name",
-            description: "Short description to be shown in the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        onChange: {
-            type: { name: "function", required: true },
-            defaultValue: {},
-            description: "This callback is called when the selection changes",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
+            description: "Short description shown as the label of the control.",
+            table: { type: { summary: "string" } },
         },
         value: {
-            type: { name: "data", required: false },
-            defaultValue: "(UTC) Edinburgh, London",
-            description: "The selected timezone when the control is loaded",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
+            description: "The currently selected timezone string.",
+            table: { type: { summary: "string" } },
+        },
+        helperText: {
+            description: "Optional instruction text shown below the dropdown.",
+            table: { type: { summary: "string" } },
         },
         variant: {
             options: ["filled", "outlined", "standard"],
-            description: "The MUI variant of the control",
-            defaultValue: "outlined",
             control: { type: "select" },
+            description: "The MUI variant of the underlying text field.",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "outlined" },
             },
         },
+        onChange: {
+            description: "Callback fired when the selection changes. Returns the event and the timezone object.",
+            control: { disable: true },
+            table: { type: { summary: "function" } },
+        },
+        sx: {
+            description: "MUI style overrides.",
+            table: { type: { summary: "object" } },
+        },
     },
 };
 
-export const MyBugTimeZonePicker = (args) => {
-    const [result, setResult] = React.useState(null);
+export const Default = {
+    render: (args) => {
+        const [selected, setSelected] = useState(args.value);
 
-    return (
-        <BugTimeZonePicker
-            {...args}
-            value={result?.label}
-            onChange={(event, timezone) => {
-                setResult(timezone);
-            }}
-        />
-    );
+        // Update local state if the Control panel value changes
+        useEffect(() => {
+            setSelected(args.value);
+        }, [args.value]);
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <BugTimeZonePicker
+                    {...args}
+                    value={selected}
+                    onChange={(event, timezone) => {
+                        // Assuming timezone is an object with a label property
+                        setSelected(timezone?.label || "");
+                    }}
+                />
+            </div>
+        );
+    },
 };
-
-MyBugTimeZonePicker.displayName = "BugTimeZonePicker";
-MyBugTimeZonePicker.storyName = "BugTimeZonePicker";

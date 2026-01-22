@@ -1,105 +1,104 @@
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
 import { Box } from "@mui/material";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
+
 export default {
     title: "BUG Core/Wrappers/BugPanelTabbedForm",
     component: BugPanelTabbedForm,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `Tabs are ideal for switching between multiple views in a panel.<br />
-                This component also provides url re-routing and overwriting, allowing users to navigate directly to each tab.`,
+                This component also provides URL re-routing and overwriting, allowing users to navigate directly to each tab via the address bar.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em" }}>{Story()}</div>],
+    args: {
+        labels: ["Details", "Statistics", "Hardware"],
+        locations: ["/details", "/statistics", "/hardware"],
+        content: [
+            <Box key="details" sx={{ p: 4 }}>
+                This is the details tab
+            </Box>,
+            <Box key="stats" sx={{ p: 4 }}>
+                This is the statistics tab
+            </Box>,
+            <Box key="hw" sx={{ p: 4 }}>
+                This is the hardware tab
+            </Box>,
+        ],
+        defaultTab: 0,
+        contentProps: {},
+        sx: {},
+    },
 
     argTypes: {
-        contentProps: {
-            type: { name: "data", required: false },
-            defaultValue: {},
-            description: "An object containing props to pass to the MUI Paper component which wraps the content",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
-        },
-        onClose: {
-            type: { name: "function", required: true },
-            defaultValue: null,
-            description:
-                "This callback is called when the close button is pressed. If it is not defined then the close button will not be displayed.",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
         labels: {
-            type: { name: "data", required: true },
-            defaultValue: ["Details", "Statistics", "Hardware"],
-            description: "An array of tab labels to display",
+            description: "An array of tab labels to display.",
             table: {
-                type: { summary: "data" },
+                type: { summary: "string[]" },
                 defaultValue: { summary: "[]" },
             },
         },
         locations: {
-            type: { name: "data", required: true },
-            defaultValue: [
-                "/panel/${panelId}/interface/${interfaceId}/details",
-                "/panel/${panelId}/interface/${interfaceId}/statistics",
-                "/panel/${panelId}/interface/${interfaceId}/hardware",
-            ],
-            description:
-                "An array of URLs to match to each tab. Make sure you embed the panelId in the URL and create a valid route in the ModuleWrapper",
+            description: "An array of URLs to match each tab. Ensure valid routes exist in the ModuleWrapper.",
             table: {
-                type: { summary: "data" },
+                type: { summary: "string[]" },
                 defaultValue: { summary: "[]" },
             },
         },
         content: {
-            type: { name: "data", required: true },
-            defaultValue: [
-                <Box sx={{ margin: 4 }}>This is the details tab</Box>,
-                <Box sx={{ margin: 4 }}>This is the statistics tab</Box>,
-                <Box sx={{ margin: 4 }}>This is the hardware tab</Box>,
-            ],
-            description: "An array of React components which contain the content for each tab",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
+            description: "An array of React components containing the content for each tab.",
             table: {
-                type: { summary: "data" },
+                type: { summary: "ReactNode[]" },
                 defaultValue: { summary: "[]" },
             },
         },
         defaultTab: {
-            type: { name: "number", required: false },
-            defaultValue: 0,
-            description: "The tab to load when the component is mounted.",
+            description: "The index of the tab to load when the component mounts.",
             table: {
                 type: { summary: "number" },
                 defaultValue: { summary: 0 },
             },
         },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+        onClose: {
+            description: "Callback fired when the close button is pressed. If undefined, the button is hidden.",
+            control: { disable: true },
+            table: { type: { summary: "function" } },
+        },
+        contentProps: {
+            description: "Props passed to the MUI Paper component wrapping the content.",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
+                defaultValue: { summary: "{}" },
+            },
+        },
+        sx: {
+            description: "MUI style overrides (the sx prop).",
+            table: {
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
     },
 };
 
-export const MyBugPanelTabbedForm = (args) => <BugPanelTabbedForm {...args} />;
-
-MyBugPanelTabbedForm.displayName = "BugPanelTabbedForm";
-MyBugPanelTabbedForm.storyName = "BugPanelTabbedForm";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "800px" }}>
+            <BugPanelTabbedForm {...args} />
+        </div>
+    ),
+};

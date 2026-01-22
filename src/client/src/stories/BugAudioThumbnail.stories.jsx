@@ -1,10 +1,20 @@
 import BugAudioThumbnail from "@core/BugAudioThumbnail";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugAudioThumbnail",
     component: BugAudioThumbnail,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `A control which adds audio levels to either side of an image`,
             },
@@ -12,12 +22,17 @@ export default {
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        src: "",
+        sx: {},
+        leftLevel: 50,
+        rightLevel: 50,
+        min: 0,
+        max: 100,
+    },
 
     argTypes: {
         src: {
-            type: { name: "string", required: true },
-            defaultValue: "",
             description: "The source of the image to be displayed",
             table: {
                 type: { summary: "string" },
@@ -25,54 +40,47 @@ export default {
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "An object containing style overrides - see MaterialUI docs for options",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
         leftLevel: {
-            type: { name: "number", required: true },
             description: "The level of the left audio meter",
-            defaultValue: 50,
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "50" },
             },
         },
         rightLevel: {
-            type: { name: "number", required: true },
             description: "The level of the right audio meter",
-            defaultValue: 50,
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "50" },
             },
         },
         min: {
-            type: { name: "number", required: true },
             description: "The minimum level of the meters",
-            defaultValue: 0,
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "0" },
             },
         },
         max: {
-            type: { name: "number", required: true },
             description: "The maximum level of the meters",
-            defaultValue: 100,
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "100" },
             },
         },
     },
 };
 
-export const MyBugAudioThumbnail = (args) => <BugAudioThumbnail {...args} />;
-MyBugAudioThumbnail.displayName = "BugAudioThumbnail";
-MyBugAudioThumbnail.storyName = "BugAudioThumbnail";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugAudioThumbnail {...args} />
+        </div>
+    ),
+};

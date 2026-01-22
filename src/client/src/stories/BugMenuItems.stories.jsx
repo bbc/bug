@@ -1,83 +1,76 @@
-import { Box } from "@mui/material";
-import { Description, Subtitle, Title } from "@storybook/addon-docs";
-import { Controls } from '@storybook/blocks';
+import { Controls, Description, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugMenuItems",
-    component: Box,
+    // We use a div or fragment since BugMenuItems is a data structure, not a component
+    component: "div",
     parameters: {
         docs: {
-            description: {
-                component: `These menuitems are used in BugToolbarWrapper and BugApiTable<br />
-                They are always delivered as an array.<br />
-                Each column is an object with the following properties:<br />`,
-            },
             page: () => (
                 <>
                     <Title />
                     <Subtitle />
                     <Description />
-                    <br />
                     <Controls />
                 </>
             ),
+            description: {
+                component: `These menu items are used in **BugToolbarWrapper**, **BugApiTable**, and **BugContextMenu**.<br />
+                They are always delivered as an array of objects.<br />
+                Each object in the array supports the following properties:`,
+            },
         },
         controls: { sort: "requiredFirst" },
     },
 
     argTypes: {
-        icon: {
-            type: { name: "data", required: false },
-            description: "The icon to be displayed in the menu item - usually a React component",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
         title: {
+            description: "The text to be displayed. Use **'-'** to render a divider line.",
             type: { name: "string", required: true },
-            description: "The text to be displayed in the menu item. Use '-' to show a divider.",
-            control: {
-                disable: true,
-            },
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+            },
+        },
+        icon: {
+            description: "An icon component (usually from MUI or BugDynamicIcon) to display next to the text.",
+            table: {
+                type: { summary: "element" },
             },
         },
         onClick: {
-            type: { name: "function", required: true },
-            defaultValue: null,
-            description:
-                "This callback is called when the menu item is clicked. It provides an event and item object as parameters.",
-            control: {
-                disable: true,
-            },
+            description: "Callback fired when the item is clicked. Receives (event, item) as arguments.",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "function" },
             },
         },
         disabled: {
-            type: { name: "function", required: true },
-            defaultValue: null,
-            description:
-                "Can either be boolean, or a callback that returns a boolean. The callback is provided with the item as a parameter.",
-            control: {
-                disable: true,
-            },
+            description: "Either a boolean or a function returning a boolean: **(item) => boolean**.",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "boolean | function" },
+            },
+        },
+        hidden: {
+            description: "Either a boolean or a function returning a boolean to conditionally hide the item.",
+            table: {
+                type: { summary: "boolean | function" },
             },
         },
     },
 };
 
-export const MyBugMenuItems = (args) => <div {...args} />;
-MyBugMenuItems.displayName = "BugMenuItems";
-MyBugMenuItems.storyName = "BugMenuItems";
-MyBugMenuItems.args = {};
+export const Default = {
+    render: () => (
+        <div
+            style={{
+                padding: "20px",
+                color: "#666",
+                fontStyle: "italic",
+                border: "1px dashed #ccc",
+                maxWidth: "600px",
+            }}
+        >
+            This component does not render directly. It defines the object structure used by menus and toolbars. Refer
+            to the properties table below for implementation.
+        </div>
+    ),
+};

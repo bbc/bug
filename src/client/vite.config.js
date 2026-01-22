@@ -93,6 +93,7 @@ export default defineConfig({
             '@mui/material',
             '@emotion/react',
             '@emotion/styled',
+            'react-colorful'
         ],
         exclude: ['@modules']
     },

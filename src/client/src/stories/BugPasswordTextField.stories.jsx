@@ -1,116 +1,119 @@
 import BugPasswordTextField from "@core/BugPasswordTextField";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
+import React from "react";
 
 export default {
     title: "BUG Core/Controls/BugPasswordTextField",
     component: BugPasswordTextField,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A password textfield control with BUG styling.`,
+                component: `A password textfield control with BUG styling and a built-in visibility toggle.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
+    args: {
+        label: "Password",
+        value: "12345",
+        helperText: "Enter your secret key",
+        variant: "standard",
+        fullWidth: true,
+        disabled: false,
+        allowShowPassword: true,
+        sx: {},
+    },
 
     argTypes: {
+        label: {
+            description: "Short description to be shown in the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
+            },
+        },
+        value: {
+            description: "The value to be displayed in the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
+            },
+        },
+        variant: {
+            options: ["filled", "outlined", "standard"],
+            control: { type: "select" },
+            description: "The MUI variant of the control",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "standard" },
+            },
+        },
         allowShowPassword: {
-            type: { name: "boolean", required: false },
-            defaultValue: true,
-            description:
-                "Allows viewing of the password using the icon button. This is only available when the control is not disabled.",
+            description: "Allows viewing of the password using the icon button (only when not disabled).",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: true },
             },
         },
-        disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to disable the control",
+        helperText: {
+            description: "Optional helper text to be shown below the control",
             table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
             },
         },
         fullWidth: {
-            type: { name: "boolean" },
-            defaultValue: true,
             description: "Expands the control to fill available horizontal space",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
-        helperText: {
-            type: { name: "string", required: false },
-            defaultValue: "Tell me something interesting",
-            description: "Optional helper text to be shown below the control",
+        disabled: {
+            description: "Whether to disable the control",
             table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        label: {
-            type: { name: "string", required: true },
-            defaultValue: "My Control Name",
-            description: "Short description to be shown in the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
+                type: { summary: "boolean" },
+                defaultValue: { summary: false },
             },
         },
         onChange: {
-            type: { name: "function", required: true },
-            defaultValue: {},
-            description: "This callback is called when the control changes",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
+            description: "Callback called when the control value changes",
+            control: { disable: true },
+            table: { type: { summary: "function" } },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MUI style overrides (the sx prop)",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
-        type: {
-            table: { disable: true },
-        },
-        value: {
-            type: { name: "string", required: true },
-            defaultValue: "12345",
-            description: "The value to be displayed in the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        variant: {
-            options: ["filled", "outlined", "standard"],
-            description: "The MUI variant of the control",
-            defaultValue: "standard",
-            control: { type: "select" },
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "standard" },
-            },
-        },
+        type: { table: { disable: true } },
     },
 };
 
-export const MyBugPasswordTextField = (args) => {
-    return <BugPasswordTextField {...args} onChange={() => {}} />;
-};
+export const Default = {
+    render: (args) => {
+        const [value, setValue] = React.useState(args.value);
 
-MyBugPasswordTextField.displayName = "BugPasswordTextField";
-MyBugPasswordTextField.storyName = "BugPasswordTextField";
+        React.useEffect(() => {
+            setValue(args.value);
+        }, [args.value]);
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <BugPasswordTextField {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+            </div>
+        );
+    },
+};

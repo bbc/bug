@@ -1,10 +1,20 @@
 import BugApiButton from "@core/BugApiButton";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/API Controls/BugApiButton",
     component: BugApiButton,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `A simple button which is designed for use with an API.<br />
                 Triggers the onClick event, and disables the control to allow the new value to be updated.<br />
@@ -13,80 +23,73 @@ export default {
         },
         controls: { sort: "requiredFirst" },
     },
-
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
-
+    args: {
+        disabled: false,
+        timeout: 5000,
+        variant: "contained",
+        sx: {},
+    },
     argTypes: {
         disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
             description: "Whether the control is disabled",
             table: {
                 type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "false" },
             },
         },
         icon: {
-            type: { name: "data", required: false },
-            defaultValue: null,
-            description: "Optional icon to display at the start of the button. Pass a valid React element.",
-            control: {
-                disable: true,
-            },
+            description: "Optional icon to display at the start. Pass a valid React element.",
+            control: { disable: true },
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "ReactNode" },
+                defaultValue: { summary: "null" },
             },
         },
         onClick: {
-            type: { name: "function", required: true },
-            defaultValue: null,
             description: "This callback is called when the button is clicked",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "function" },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MaterialUI sx prop for style overrides.",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
         timeout: {
-            type: { name: "number" },
-            description: "Duration to wait (in milliseconds) before reverting to previous state",
-            defaultValue: 5000,
+            description: "Duration to wait (ms) before reverting state",
+            control: { type: "number" },
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: 5000 },
+                defaultValue: { summary: "5000" },
             },
         },
         variant: {
             options: ["contained", "outlined", "text"],
             description: "The MUI variant of the button",
-            defaultValue: "contained",
             control: { type: "select" },
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "contained" },
+            },
         },
     },
 };
 
-export const MyApiButton = (args) => (
-    <BugApiButton
-        {...args}
-        onClick={() => {
-            alert("thank you!");
-        }}
-    >
-        Click Me!
-    </BugApiButton>
-);
-MyApiButton.displayName = "BugApiButton";
-MyApiButton.storyName = "BugApiButton";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugApiButton
+                {...args}
+                onClick={() => {
+                    alert("thank you!");
+                }}
+            >
+                Click Me!
+            </BugApiButton>
+        </div>
+    ),
+};

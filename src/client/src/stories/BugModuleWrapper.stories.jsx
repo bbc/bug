@@ -1,25 +1,18 @@
-import { Description, Subtitle, Title } from "@storybook/addon-docs";
-import { Source } from "@storybook/addon-docs/blocks";
-import { Controls } from '@storybook/blocks';
+import { Controls, Description, Source, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Wrappers/BugModuleWrapper",
     component: "div",
     parameters: {
         docs: {
-            description: {
-                component: `This component provides a handy wrapper for module pages.<br />
-                It takes a panelId and children, and pulls the panelConfig from redux.<br />
-                Using this it hides content if the panel is not available, and memoizes the children to prevent re-rendering on panel.data changes.`,
-            },
             page: () => (
                 <>
                     <Title />
                     <Subtitle />
                     <Description />
-
                     <Source
                         language="jsx"
+                        dark
                         code={`
 import React from "react";
 import MainPanel from "./panels/MainPanel";
@@ -43,42 +36,46 @@ export default function Module(props) {
 }
 `}
                     />
-                    <br />
+                    <Story />
                     <Controls />
                 </>
             ),
+            description: {
+                component: `This component provides a handy wrapper for module pages.<br />
+                It takes a <b>panelId</b> and children, and pulls the panelConfig from Redux.<br />
+                It automatically handles content visibility based on panel availability and memoizes children to prevent unnecessary re-renders.`,
+            },
         },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
-
     argTypes: {
         children: {
-            control: {
-                disable: true,
-            },
-            type: { name: "data", required: true },
-            description: "The form controls to display",
+            control: { disable: true },
+            description: "The routed components or panel content to display.",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "ReactNode" },
+                defaultValue: { summary: "null" },
             },
         },
-        config: {
-            control: {
-                disable: true,
-            },
-            type: { name: "string", required: true },
-            description: "The id of the current panel",
+        panelId: {
+            control: { disable: true },
+            description: "The unique ID of the current panel (used to fetch config from Redux).",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
     },
 };
 
-export const MyBugModuleWrapper = (args) => <></>;
-
-MyBugModuleWrapper.displayName = "BugModuleWrapper";
-MyBugModuleWrapper.storyName = "BugModuleWrapper";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px" }}>
+            <div style={{ padding: "20px", textAlign: "center", color: "#666", border: "1px dashed #ccc" }}>
+                [ BugModuleWrapper: Routing and Redux logic is active here ]
+                <br />
+                <small>(Children components would render in this area)</small>
+            </div>
+        </div>
+    ),
+};

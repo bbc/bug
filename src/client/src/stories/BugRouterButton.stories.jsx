@@ -1,207 +1,108 @@
 import BugRouterButton from "@core/BugRouterButton";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugRouterButton",
     component: BugRouterButton,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A button which forms part of a matrix/router control panel.<br />
-                It's fully customisable and also features drag-and-drop capabilities.`,
+                component: `A button specifically designed for matrix and router control panels. It supports multiple label layers, icon states, and drag-and-drop functionality.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
+    args: {
+        id: "button001",
+        primaryLabel: "Bugle",
+        secondaryLabel: "Cornet",
+        tertiaryLabel: "Button 1",
+        number: 1,
+        icon: "MusicNote",
+        iconColor: "#ffffff",
+        iconSize: "medium",
+        selected: false,
+        locked: false,
+        disabled: false,
+        draggable: false,
+        editMode: false,
+        wide: false,
+        useDoubleClick: false,
+        sx: {},
+    },
+
     argTypes: {
-        wide: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to use the 'wide' variant of the button",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
+        primaryLabel: {
+            description: "The main button text. Usually shows the source or destination name.",
+            table: { type: { summary: "string" } },
         },
-        disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is disabled",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
+        secondaryLabel: {
+            description: "The secondary button text. For a destination, usually shows the current source.",
+            table: { type: { summary: "string" } },
         },
-        draggable: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is draggable",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        editMode: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is in edit mode (allows drag/drop and access to item menu)",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        id: {
-            type: { name: "string" },
-            description: "A unique identifier for the control",
-            defaultValue: "button001",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
+        tertiaryLabel: {
+            description: "Text shown at the top of the button, often for destination descriptions.",
+            table: { type: { summary: "string" } },
         },
         icon: {
-            type: { name: "string" },
-            description: "An icon to be displayed in the button. Can be MUI or Material Display icon",
-            defaultValue: "",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        lefticon: {
-            type: { name: "string" },
-            description:
-                "Optional small indicator icon to be displayed in the top left of the button. Can be MUI or Material Display icon",
-            defaultValue: "",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
+            description: "An icon name (MUI or MDI) to be displayed.",
+            table: { type: { summary: "string" } },
         },
         iconColor: {
             control: "color",
-            description: "The color of the icon to be displayed in the button.",
-            defaultValue: "#ffffff",
-            table: {
-                type: { summary: "color" },
-                defaultValue: { summary: null },
-            },
-        },
-        item: {
-            type: { name: "data" },
-            description: "An object which is passed back on event handlers in the item menu",
-            defaultValue: null,
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        locked: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the router button is locked",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        menuItems: {
-            type: "data",
-            description: "An array of menuitems to be shown via the context menu",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-        },
-        number: {
-            type: { name: "number" },
-            description: "The source or destination index to be displayed inside the button when there is no icon",
-            defaultValue: 1,
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
-            },
-        },
-        onClick: {
-            type: { name: "function", required: true },
-            defaultValue: null,
-            description: "This callback is called when the button is clicked",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        primaryLabel: {
-            type: { name: "string" },
-            description: "The main button text. Usually shows the source or destination name",
-            defaultValue: "Bugle",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        secondaryLabel: {
-            type: { name: "string" },
-            description: "The secondary button text. For a destination, usually shows source",
-            defaultValue: "Cornet",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        tertiaryLabel: {
-            type: { name: "string" },
-            description: "Text to show at the top of the button - often used for destination descriptions",
-            defaultValue: "button 1",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        selected: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the router button is selected",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
+            description: "The color of the icon.",
+            table: { type: { summary: "string" } },
         },
         iconSize: {
-            options: ["medium", "small"],
-            description: "The size of the icon to display.",
-            defaultValue: "medium",
+            options: ["small", "medium"],
             control: { type: "select" },
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "medium" },
-            },
+            description: "The size of the icon.",
+            table: { type: { summary: "string" }, defaultValue: { summary: "medium" } },
         },
-        useDoubleClick: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the router button requires a double-click to take",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
+        selected: {
+            description: "Highlights the button to indicate selection.",
+            table: { type: { summary: "boolean" }, defaultValue: { summary: false } },
         },
+        editMode: {
+            description: "Enables drag/drop and context menu access.",
+            table: { type: { summary: "boolean" }, defaultValue: { summary: false } },
+        },
+        onClick: {
+            description: "Callback fired when the button is clicked.",
+            control: { disable: true },
+            table: { type: { summary: "function" } },
+        },
+        sx: {
+            description: "MUI style overrides.",
+            table: { type: { summary: "object" } },
+        },
+        // Grouping data-heavy props
+        menuItems: { table: { category: "Data", type: { summary: "array" } } },
+        item: { table: { category: "Data", type: { summary: "object" } } },
     },
 };
 
-export const MyApiSaveButton = (args) => <BugRouterButton {...args} />;
-MyApiSaveButton.displayName = "BugRouterButton";
-MyApiSaveButton.storyName = "BugRouterButton";
+export const Default = {
+    render: (args) => (
+        <div
+            style={{
+                padding: "20px",
+                background: "#262626",
+                display: "flex",
+                justifyContent: "center",
+            }}
+        >
+            <BugRouterButton {...args} />
+        </div>
+    ),
+};

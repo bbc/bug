@@ -1,10 +1,20 @@
 import BugApiSwitch from "@core/BugApiSwitch";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/API Controls/BugApiSwitch",
     component: BugApiSwitch,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `A switch control which is designed for use with an API.<br />
                 Triggers the onChange event, and disables the control to allow the new value to be updated.<br />
@@ -13,23 +23,27 @@ export default {
         },
         controls: { sort: "requiredFirst" },
     },
-
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
-
+    args: {
+        checked: false,
+        color: "primary",
+        disabled: false,
+        timeout: 10000,
+        sx: {},
+    },
     argTypes: {
-        onChange: { action: "changed", table: { disable: true } },
+        onChange: {
+            action: "changed",
+            table: { disable: true },
+        },
         checked: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is checked ",
+            description: "Whether the control is checked",
             table: {
                 type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "false" },
             },
         },
         color: {
             options: ["primary", "secondary", "default"],
-            defaultValue: "primary",
             description: "The color to pass to the Switch control - see MaterialUI for options",
             control: { type: "select" },
             table: {
@@ -37,38 +51,35 @@ export default {
                 defaultValue: { summary: "primary" },
             },
         },
-
         disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
             description: "Whether the control is disabled",
             table: {
                 type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "false" },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "An object containing style overrides - see MaterialUI docs for options",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
         timeout: {
-            type: { name: "number" },
-            description: "Duration to wait (in seconds) before reverting to previous state",
-            defaultValue: 10000,
+            description: "Duration to wait (in milliseconds) before reverting to previous state",
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "10000" },
             },
         },
     },
 };
 
-export const MyApiSwitch = (args) => <BugApiSwitch {...args}>Click Me!</BugApiSwitch>;
-MyApiSwitch.displayName = "BugApiSwitch";
-MyApiSwitch.storyName = "BugApiSwitch";
+export const Default = {
+    name: "BugApiSwitch",
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugApiSwitch {...args} />
+        </div>
+    ),
+};

@@ -5,4 +5,8 @@ import bugTheme from "./BugTheme";
 
 addons.setConfig({
     theme: bugTheme,
+    sidebar: {
+        collapsedRoots: ['bug-core'],
+        showStoriesView: false,
+    },
 });

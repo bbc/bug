@@ -49,6 +49,7 @@ export const iconMap = {
     Dvr: React.lazy(() => import("@mui/icons-material/Dvr")),
     Settings: React.lazy(() => import("@mui/icons-material/Settings")),
     Dashboard: React.lazy(() => import("@mui/icons-material/Dashboard")),
+    MusicNote: React.lazy(() => import("@mui/icons-material/MusicNote")),
     People: React.lazy(() => import("@mui/icons-material/People")),
     Security: React.lazy(() => import("@mui/icons-material/Security")),
     SettingsBackupRestore: React.lazy(() => import("@mui/icons-material/SettingsBackupRestore")),

@@ -1,159 +1,119 @@
 import BugTextField from "@core/BugTextField";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
+import { useEffect, useState } from "react";
 
 export default {
     title: "BUG Core/Controls/BugTextField",
     component: BugTextField,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A password textfield control with BUG styling and optional filtering.`,
+                component: `A standard text input control with BUG styling. It includes advanced features like input filtering, numeric enforcement (min/max), and optional deferred updates (changeOnBlur).`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
+    args: {
+        value: "This is a textfield",
+        label: "My Text Field",
+        helperText: "Tell me something interesting",
+        variant: "outlined",
+        fullWidth: true,
+        disabled: false,
+        numeric: false,
+        changeOnBlur: false,
+        type: "text",
+        sx: {},
+    },
 
     argTypes: {
-        changeOnBlur: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to wait until the control loses focus before emitting a changed event",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to disable the control",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        filter: {
-            type: { name: "string", required: false },
-            defaultValue: null,
-            description:
-                "Can either be a callback function (which is passed a value) or a regular expression which removes the specified characters.",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        fullWidth: {
-            type: { name: "boolean" },
-            defaultValue: true,
-            description: "Expands the control to fill available horizontal space",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        helperText: {
-            type: { name: "string", required: false },
-            defaultValue: "Tell me something interesting",
-            description: "Optional helper text to be shown below the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        max: {
-            type: { name: "number" },
-            defaultValue: null,
-            description: "Enforces a maximum value for the control (NOTE - only works if 'numeric' is enabled)",
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
-            },
-        },
-        maxLength: {
-            type: { name: "number" },
-            defaultValue: null,
-            description: "Specifies the maximum number of characters allowed in the control",
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
-            },
-        },
-        min: {
-            type: { name: "number" },
-            defaultValue: null,
-            description: "Enforces a minimum value for the control (NOTE - only works if 'numeric' is enabled)",
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
-            },
+        value: {
+            description: "The value to be displayed in the control.",
+            table: { type: { summary: "string" } },
         },
         numeric: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description:
-                "Enables support for min/max rules, and enforces only numerical values when control loses focus",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
+            description: "Enables support for min/max rules and enforces numerical values on blur.",
+            table: { type: { summary: "boolean" }, defaultValue: { summary: false } },
         },
-        onChange: {
-            type: { name: "function", required: true },
-            defaultValue: {},
-            description: "This callback is called when the control changes",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
+        filter: {
+            description: "A regex string or callback function to sanitize input characters.",
+            table: { type: { summary: "string | function" } },
         },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
+        changeOnBlur: {
+            description: "If true, the onChange event only fires when the control loses focus.",
+            table: { type: { summary: "boolean" }, defaultValue: { summary: false } },
         },
-        type: {
-            type: { name: "string", required: false },
-            defaultValue: "text",
-            description: "HTML5 input type",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "text" },
-            },
+        min: {
+            description: "Minimum value (requires 'numeric' to be enabled).",
+            table: { type: { summary: "number" } },
+        },
+        max: {
+            description: "Maximum value (requires 'numeric' to be enabled).",
+            table: { type: { summary: "number" } },
+        },
+        maxLength: {
+            description: "Specifies the maximum number of characters allowed.",
+            table: { type: { summary: "number" } },
         },
         variant: {
             options: ["filled", "outlined", "standard"],
-            description: "The MUI variant of the control",
-            defaultValue: "outlined",
             control: { type: "select" },
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "outlined" },
-            },
+            description: "The MUI variant of the control.",
+            table: { type: { summary: "string" }, defaultValue: { summary: "outlined" } },
         },
-        value: {
-            type: { name: "string", required: true },
-            defaultValue: "This is a textfield",
-            description: "Value to be displayed in the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
+        onChange: {
+            description: "Callback called when the value changes.",
+            control: { disable: true },
+            table: { type: { summary: "function" } },
+        },
+        sx: {
+            description: "MUI style overrides (the sx prop).",
+            table: { type: { summary: "object" } },
         },
     },
 };
 
-export const MyBugTextField = (args) => {
-    return <BugTextField {...args} onChange={() => {}} />;
+export const Default = {
+    render: (args) => {
+        const [value, setValue] = useState(args.value);
+
+        useEffect(() => {
+            setValue(args.value);
+        }, [args.value]);
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <BugTextField {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+            </div>
+        );
+    },
 };
 
-MyBugTextField.displayName = "BugTextField";
-MyBugTextField.storyName = "BugTextField";
+export const NumericOnly = {
+    args: {
+        label: "Age Input",
+        value: "25",
+        numeric: true,
+        min: 0,
+        max: 120,
+        helperText: "Enforces numbers between 0 and 120",
+    },
+    render: (args) => {
+        const [value, setValue] = useState(args.value);
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <BugTextField {...args} value={value} onChange={(e) => setValue(e.target.value)} />
+            </div>
+        );
+    },
+};

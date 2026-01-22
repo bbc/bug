@@ -1,10 +1,20 @@
 import BugAutocompletePlaceholder from "@core/BugAutocompletePlaceholder";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugAutocompletePlaceholder",
     component: BugAutocompletePlaceholder,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `A placeholder control to use when a BugAutoComplete control is loading`,
             },
@@ -12,21 +22,25 @@ export default {
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        value: "Loading ...",
+    },
 
     argTypes: {
         value: {
-            type: { name: "string", required: true },
-            defaultValue: "Loading ...",
             description: "The text to display inside the control",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: "" },
+                defaultValue: { summary: "Loading ..." },
             },
         },
     },
 };
 
-export const MyBugAutocompletePlaceholder = (args) => <BugAutocompletePlaceholder {...args} />;
-MyBugAutocompletePlaceholder.displayName = "BugAutocompletePlaceholder";
-MyBugAutocompletePlaceholder.storyName = "BugAutocompletePlaceholder";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugAutocompletePlaceholder {...args} />
+        </div>
+    ),
+};

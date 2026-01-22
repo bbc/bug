@@ -1,10 +1,20 @@
 import BugDetailsCardAdd from "@core/BugDetailsCardAdd";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Layout/BugDetailsCardAdd",
     component: BugDetailsCardAdd,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `Useful when you want to allow users to add card content.<br />
                 Often used in codecs and other devices where you have dynamic content to display.`,
@@ -13,41 +23,41 @@ export default {
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        width: "10rem",
+        sx: {},
+    },
 
     argTypes: {
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
-        },
         onAdd: {
-            type: { name: "data", required: true },
-            control: { disable: true },
             description: "Provides a callback when the card button is clicked",
+            control: { disable: true },
             table: {
                 type: { summary: "function" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         width: {
-            type: { name: "string", required: false },
-            defaultValue: "10rem",
             description: "The width of the card - can be in any valid CSS unit",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "10rem" },
             },
         },
+        sx: {
+            description: "MUI style overrides",
+            table: {
+                type: { summary: "object" },
+                defaultValue: { summary: "{}" },
+            },
+        },
     },
 };
 
-export const MyBugDetailsCardAdd = (args) => <BugDetailsCardAdd {...args} />;
-
-MyBugDetailsCardAdd.displayName = "BugDetailsCardAdd";
-MyBugDetailsCardAdd.storyName = "BugDetailsCardAdd";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugDetailsCardAdd {...args} onAdd={() => alert("Add button clicked")} />
+        </div>
+    ),
+};

@@ -1,64 +1,98 @@
 import BugTableLinkButton from "@core/BugTableLinkButton";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugTableLinkButton",
     component: BugTableLinkButton,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A link button for use in BugApiTables.`,
+                component: `A specialized link button designed for high-density layouts like **BugApiTable**. It provides a clickable text interface with minimal padding to maintain table row heights.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
+    args: {
+        children: "View Details",
+        disabled: false,
+        sx: {},
+    },
+
     argTypes: {
         children: {
-            control: {
-                disable: true,
-            },
-            type: { name: "data", required: true },
-            description: "The text (and optionally other components) to display inside the link control",
+            name: "label",
+            description: "The text or components to display inside the link.",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "ReactNode" },
             },
         },
         disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether to disable the control",
+            description: "If true, the button is not clickable and follows the 'disabled' theme styling.",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
         onClick: {
-            type: { name: "function", required: true },
-            defaultValue: null,
-            description: "This callback is called when the button is clicked",
-            control: {
-                disable: true,
-            },
+            description: "Callback fired when the link button is clicked.",
+            control: { disable: true },
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "function" },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MUI style overrides (the sx prop).",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
     },
 };
 
-export const MyBugTableLinkButton = (args) => <BugTableLinkButton {...args}>Some text to display</BugTableLinkButton>;
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px" }}>
+            <BugTableLinkButton {...args} />
+        </div>
+    ),
+};
 
-MyBugTableLinkButton.displayName = "BugTableLinkButton";
-MyBugTableLinkButton.storyName = "BugTableLinkButton";
+export const InTableContext = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "500px" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", color: "#eee" }}>
+                <thead>
+                    <tr style={{ textAlign: "left", borderBottom: "1px solid #444" }}>
+                        <th style={{ padding: "8px" }}>Device Name</th>
+                        <th style={{ padding: "8px" }}>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style={{ borderBottom: "1px solid #333" }}>
+                        <td style={{ padding: "8px" }}>Encoder-01</td>
+                        <td style={{ padding: "8px" }}>
+                            <BugTableLinkButton {...args} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style={{ padding: "8px" }}>Decoder-04</td>
+                        <td style={{ padding: "8px" }}>
+                            <BugTableLinkButton {...args}>Configure</BugTableLinkButton>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    ),
+};
