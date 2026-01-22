@@ -76,7 +76,6 @@ export default {
 };
 
 export const Default = {
-    name: "BugApiSwitch",
     render: (args) => (
         <div style={{ padding: "20px", maxWidth: "600px" }}>
             <BugApiSwitch {...args} />

@@ -152,7 +152,6 @@ export default {
 };
 
 export const Default = {
-    name: "BugApiTableColumn",
     render: () => (
         <div style={{ fontStyle: "italic", color: "#666", padding: "10px" }}>
             Column configuration (no visual preview)
