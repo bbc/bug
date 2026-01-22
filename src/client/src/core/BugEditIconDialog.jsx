@@ -19,25 +19,42 @@ import {
 } from "@mui/material";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
-import React, { useMemo } from "react";
-import { TwitterPicker } from "react-color";
+import { useMemo, useRef, useState } from "react";
+import { HexColorPicker } from "react-colorful";
 import useAsyncEffect from "use-async-effect";
 import { useDebounce } from "use-debounce";
 
 const defaultCount = 500;
 
+const PRESET_COLORS = [
+    "#FFFFFF",
+    "#ABB8C3",
+    "#888888",
+    "#FF6900",
+    "#FFFF00",
+    "#FCB900",
+    "#58dcb9",
+    "#2bd649",
+    "#8ED1FC",
+    "#0693E3",
+    "#0000FF",
+    "#DE2424",
+    "#F78DA7",
+    "#9900EF",
+];
+
 export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff", icon = null }) {
-    const [iconFilter, setIconFilter] = React.useState(icon ? icon : "");
+    const [iconFilter, setIconFilter] = useState(icon ? icon : "");
     const [debouncedIconFilter] = useDebounce(iconFilter, 500);
-    const [icons, setIcons] = React.useState({ icons: [], length: null });
-    const [selectedIcon, setSelectedIcon] = React.useState(icon);
-    const [variants, setVariants] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(true);
-    const [selectedVariant, setSelectedVariant] = React.useState(null);
-    const [iconCount, setIconCount] = React.useState(defaultCount);
-    const [showColorPicker, setShowColorPicker] = React.useState(false);
-    const iconsContent = React.useRef(null);
-    const [selectedColor, setSelectedColor] = React.useState(color);
+    const [icons, setIcons] = useState({ icons: [], length: null });
+    const [selectedIcon, setSelectedIcon] = useState(icon);
+    const [variants, setVariants] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [selectedVariant, setSelectedVariant] = useState(null);
+    const [iconCount, setIconCount] = useState(defaultCount);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const iconsContent = useRef(null);
+    const [selectedColor, setSelectedColor] = useState(color);
 
     const handleFilterChanged = (value) => {
         setIsLoading(true);
@@ -57,22 +74,16 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
     };
 
     const scrollEvent = (e) => {
-        if (icons.icons.length === icons.length) {
-            return;
-        }
-        const overlap = 10; // pixels
+        if (icons.icons.length === icons.length) return;
+        const overlap = 10;
         if (e.target.scrollHeight - e.target.scrollTop < e.target.clientHeight + overlap) {
             setIconCount(iconCount + 100);
         }
     };
 
     useAsyncEffect(async () => {
-        const postData = {
-            variant: selectedVariant,
-        };
-        if (iconCount) {
-            postData["length"] = iconCount;
-        }
+        const postData = { variant: selectedVariant };
+        if (iconCount) postData["length"] = iconCount;
         setIcons(await AxiosPost(`/api/icons/${debouncedIconFilter}`, postData));
         setIsLoading(false);
     }, [debouncedIconFilter, selectedVariant, iconCount]);
@@ -81,8 +92,8 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
         setVariants(await AxiosGet(`/api/icons/variants`));
     }, []);
 
-    const handleColorChanged = (color, event) => {
-        setSelectedColor(color.hex);
+    const handleColorChanged = (newHex) => {
+        setSelectedColor(newHex);
         setShowColorPicker(false);
     };
 
@@ -96,32 +107,46 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                             zIndex: 2002,
                             right: "28px",
                             marginTop: "-12px",
-                            "& .twitter-picker": {
-                                backgroundColor: "#3a3a3a !important",
-                            },
+                            backgroundColor: "#3a3a3a",
+                            padding: "10px",
+                            borderRadius: "4px",
+                            boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "10px",
                         }}
                     >
-                        <TwitterPicker
-                            triangle="hide"
-                            color={selectedColor}
-                            onChange={handleColorChanged}
-                            colors={[
-                                "#FFFFFF",
-                                "#ABB8C3",
-                                "#888888",
-                                "#FF6900",
-                                "#FFFF00",
-                                "#FCB900",
-                                "#58dcb9",
-                                "#2bd649",
-                                "#8ED1FC",
-                                "#0693E3",
-                                "#0000FF",
-                                "#DE2424",
-                                "#F78DA7",
-                                "#9900EF",
-                            ]}
-                        />
+                        <HexColorPicker color={selectedColor} onChange={handleColorChanged} />
+
+                        <Box
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(7, 1fr)",
+                                gap: "6px",
+                            }}
+                        >
+                            {PRESET_COLORS.map((c) => (
+                                <Box
+                                    key={c}
+                                    onClick={() => {
+                                        handleColorChanged(c);
+                                        setShowColorPicker(false);
+                                    }}
+                                    sx={{
+                                        width: "22px",
+                                        height: "22px",
+                                        backgroundColor: c,
+                                        cursor: "pointer",
+                                        borderRadius: "2px",
+                                        border:
+                                            selectedColor.toLowerCase() === c.toLowerCase()
+                                                ? "2px solid white"
+                                                : "1px solid rgba(0,0,0,0.2)",
+                                        "&:hover": { transform: "scale(1.1)" },
+                                    }}
+                                />
+                            ))}
+                        </Box>
                     </Box>
                 )}
                 {isLoading && (
@@ -136,11 +161,9 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                             left: 0,
                             right: 0,
                         }}
-                        open={true}
                     >
                         <Grid
                             container
-                            spacing={0}
                             sx={{
                                 flexDirection: "column",
                                 alignItems: "center",
@@ -148,23 +171,17 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                                 height: "100%",
                             }}
                         >
-                            <Grid size={{ xs: 3 }}>
-                                <CircularProgress disableShrink />
-                            </Grid>
+                            <CircularProgress disableShrink />
                         </Grid>
                     </Box>
                 )}
                 <Box sx={{ position: "relative", height: "350px", opacity: isLoading ? 0.2 : 1 }}>
                     <Box sx={{ overflow: "scroll", height: "100%" }} onScroll={scrollEvent} ref={iconsContent}>
                         <div>
-                            <Box
-                                sx={{
-                                    display: "inline-block",
-                                }}
-                            >
+                            <Box sx={{ display: "inline-block" }}>
                                 <Button
                                     variant={selectedIcon === null ? "contained" : "outlined"}
-                                    color={selectedIcon === null ? "primary" : "default"}
+                                    color={selectedIcon === null ? "primary" : "inherit"}
                                     disableElevation
                                     sx={{ margin: "4px" }}
                                     onClick={() => setSelectedIcon(null)}
@@ -173,7 +190,6 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                                     &nbsp;
                                 </Button>
                             </Box>
-
                             {memoizedIcons}
                         </div>
                     </Box>
@@ -189,11 +205,9 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                     <Tooltip title={icon}>
                         <Button
                             variant={selectedIcon === icon ? "contained" : "outlined"}
-                            color={selectedIcon === icon ? "primary" : "default"}
+                            color={selectedIcon === icon ? "primary" : "inherit"}
                             disableElevation
-                            sx={{
-                                margin: "4px",
-                            }}
+                            sx={{ margin: "4px" }}
                             onClick={() => setSelectedIcon(icon)}
                             style={{ color: selectedColor }}
                         >
@@ -232,7 +246,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                     select
                     fullWidth
                     label="Variant"
-                    value={selectedVariant ? selectedVariant : ""}
+                    value={selectedVariant || ""}
                     onChange={(e) => handleVariantChanged(e.target.value)}
                 >
                     <MenuItem value={""}>- none -</MenuItem>
@@ -249,13 +263,10 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                         height: "53px",
                         backgroundColor: "rgba(255, 255, 255, 0.09)",
                         borderBottom: "1px solid #c4c4c4",
-                        borderBottomLeftRadius: "0px",
-                        borderBottomRightRadius: "0px",
+                        borderRadius: "4px 4px 0 0",
                         padding: "6px 6px 6px 12px",
                     }}
-                    onClick={(e) => {
-                        setShowColorPicker(!showColorPicker);
-                    }}
+                    onClick={() => setShowColorPicker(!showColorPicker)}
                 >
                     <Box sx={{ width: "100%", height: "32px", backgroundColor: selectedColor }}></Box>
                     <ArrowDropDownIcon />
@@ -266,12 +277,8 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
 
     return (
         <Dialog open onClose={onCancel} fullWidth maxWidth="md">
-            <form
-                onSubmit={(event) => {
-                    event.preventDefault();
-                }}
-            >
-                <DialogTitle id="alert-dialog-title">Select an Icon</DialogTitle>
+            <form onSubmit={(e) => e.preventDefault()}>
+                <DialogTitle>Select an Icon</DialogTitle>
                 <DialogContent sx={{ padding: "4px" }}>
                     <Box sx={{ padding: "0px 16px", height: "420px" }}>
                         {controls()}
