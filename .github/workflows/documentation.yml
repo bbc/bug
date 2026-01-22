@@ -5,7 +5,13 @@ on:
         branches: ["main"]
         paths:
             - "docs/**"
+            - "src/client/.storybook/**"
+            - "src/client/src/**/*.stories.@(js|jsx|ts|tsx)"
+            - "src/client/src/**/*.mdx"
             - "src/client/src/components/**"
+            - "src/client/src/core/**"
+            - "src/client/src/hooks/**"
+            - "src/client/src/utils/**"
     workflow_dispatch:
 
 permissions:
