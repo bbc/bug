@@ -1,6 +1,6 @@
 {
     "name": "unifi-controller",
-    "longname": "Unifi Contoller",
+    "longname": "Unifi Controller",
     "description": "Interact with a Unifi Controller",
     "capabilities": [],
     "notes": "",
