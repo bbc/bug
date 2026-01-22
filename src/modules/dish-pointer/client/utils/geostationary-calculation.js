@@ -40,7 +40,7 @@ const calcElevation = (esLat, esLong, satLong, orbitHeight = 35786, esHeight = 0
     return radToDeg(elevation);
 };
 
-//Azimuth, Elevation = function(Satelite Offset, Satelite Direction, Earth Station Latitude, Earth Station Longitude)
+//Azimuth, Elevation = function(Satellite Offset, Satellite Direction, Earth Station Latitude, Earth Station Longitude)
 const geostationaryCalculation = (satLong, position) => {
     const esLat = position.lat;
     const esLong = position.lng;
