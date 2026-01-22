@@ -1,7 +1,7 @@
 {
     "name": "dante-router",
     "longname": "Dante Router",
-    "description": "Control and route dante in conjuction with Dante Domain Controller",
+    "description": "Control and route dante in conjunction with Dante Domain Controller",
     "notes": "",
     "version": "1.0.2",
     "icon": "mdiMatrix",
