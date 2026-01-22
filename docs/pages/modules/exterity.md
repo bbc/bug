@@ -14,7 +14,7 @@ Channel list server and device manager for exterity STBs
 
 ![Exterity STB Module Screenshot](/bug/assets/images/screenshots/module-exterity.png)
 
-Add a channel list using multicast address and then add exterity devices. Channel lists are automatically sent to the remote set-top boxes. Additionally, the module displays device information such as conntected TV model and allows control over volume, muting, channel selction, name and location.
+Add a channel list using multicast address and then add exterity devices. Channel lists are automatically sent to the remote set-top boxes. Additionally, the module displays device information such as connected TV model and allows control over volume, muting, channel selction, name and location.
 
 ## Default Configuration
 
