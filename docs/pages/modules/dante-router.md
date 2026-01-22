@@ -12,7 +12,7 @@ Beta
 
 Control and route dante in conjuction with Dante Domain Controller
 
-Dante Domain Manager subscription required. Minium versio 1.5.0.
+Dante Domain Manager subscription required. Minimum version 1.5.0.
 
 ![Dante Router Module Screenshot](/bug/assets/images/screenshots/module-dante-router.png)
 

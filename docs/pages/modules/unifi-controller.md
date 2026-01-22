@@ -1,11 +1,11 @@
 ---
 layout: page
-title: Unifi Contoller
+title: Unifi Controller
 parent: Modules
 nav_order: 42
 ---
 
-# Unifi Contoller
+# Unifi Controller
 
 Stable
 {: .label .label-green }
