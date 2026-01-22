@@ -8,7 +8,6 @@ WORKDIR /home/node/bug
 # copy package manifests
 COPY package*.json ./
 COPY src/client/package*.json ./src/client/
-COPY src/server/package*.json ./src/server/
 
 # install dependencies
 RUN npm install --legacy-peer-deps
