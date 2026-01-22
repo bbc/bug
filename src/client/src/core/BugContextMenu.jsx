@@ -31,7 +31,7 @@ export default function BugContextMenu({ item, menuItems, anchorEl, onClose }) {
         return icon;
     };
 
-    if (menuItems) {
+    if (!menuItems) {
         return null;
     }
 
