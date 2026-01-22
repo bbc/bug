@@ -439,6 +439,9 @@ const theme = (selectedTheme = "dark") => {
                 opacity: 0.5,
                 fontWeight: 500,
             },
+            code: {
+                fontFamily: '"Fira Code", monospace',
+            }
         },
         palette: getPalette(selectedTheme),
     });
