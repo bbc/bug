@@ -13,3 +13,7 @@ last_edit_time_format: "%b %e %Y at %I:%M %p"
 aux_links:
     "BUG on GitHub":
         - "//github.com/bbc/bug"
+
+nav_external_links:
+    - title: Component Library
+      url: /storybook/
