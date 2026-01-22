@@ -145,6 +145,7 @@ const BugRouterButton = ({
 
     return (
         <Button
+            component="div"
             ref={setNodeRef}
             {...extraProps}
             sx={{
