@@ -4,11 +4,13 @@ import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
-    base: '/',
+    base: '/bug/',
+
     plugins: [
         react(),
         svgr()
     ],
+
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
@@ -30,6 +32,7 @@ export default defineConfig({
             '@mui/system'
         ]
     },
+
     customLogger: {
         info: (msg) => { if (!msg.includes('proxy error')) console.info(msg) },
         warn: (msg) => { if (!msg.includes('proxy error')) console.warn(msg) },
@@ -39,6 +42,7 @@ export default defineConfig({
             }
         },
     },
+
     server: {
         host: '0.0.0.0',
         port: 3000,
@@ -76,6 +80,7 @@ export default defineConfig({
             allow: ['..']
         },
     },
+
     optimizeDeps: {
         entries: [
             'index.html',
@@ -97,6 +102,7 @@ export default defineConfig({
         ],
         exclude: ['@modules']
     },
+
     build: {
         outDir: 'dist',
         sourcemap: true,
