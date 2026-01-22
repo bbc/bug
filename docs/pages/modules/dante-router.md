@@ -10,7 +10,7 @@ nav_order: 13
 Beta
 {: .label .label-purple }
 
-Control and route dante in conjuction with Dante Domain Controller
+Control and route dante in conjunction with Dante Domain Controller
 
 Dante Domain Manager subscription required. Minimum version 1.5.0.
 
