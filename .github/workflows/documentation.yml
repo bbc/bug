@@ -53,7 +53,7 @@ jobs:
                   name: storybook
                   path: src/client/storybook-static
 
-    # Build docs and merge Storybook
+    # Build Jekyll docs and merge Storybook
     pages:
         runs-on: ubuntu-latest
         needs: storybook
@@ -70,19 +70,24 @@ jobs:
             - name: Setup Pages
               uses: actions/configure-pages@v5
 
+            # Build Jekyll site into temporary folder
             - name: Build Jekyll Site
               uses: actions/jekyll-build-pages@v1
               with:
                   source: ./docs
-                  destination: ./_site
+                  destination: ./jekyll_site
 
+            # Merge Storybook into site
             - name: Merge Storybook into site
               run: |
-                  mkdir -p _site/storybook
-                  cp -a storybook-static/* _site/storybook/
+                  mkdir -p jekyll_site/storybook
+                  cp -a storybook-static/* jekyll_site/storybook/
 
+            # Upload merged site as Pages artifact
             - name: Upload Pages Artifact
               uses: actions/upload-pages-artifact@v4
+              with:
+                  path: jekyll_site
 
     # Deploy to GitHub Pages
     deploy:
