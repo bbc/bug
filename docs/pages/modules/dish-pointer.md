@@ -1,16 +1,16 @@
 ---
 layout: page
-title: Satelite Dish Pointer
+title: Satellite Dish Pointer
 parent: Modules
 nav_order: 15
 ---
 
-# Satelite Dish Pointer
+# Satellite Dish Pointer
 
 Stable
 {: .label .label-green }
 
-Get the Azimuth and Elevation to point a Satelite Dish
+Get the Azimuth and Elevation to point a Satellite Dish
 
 ![Dish Pointer Module Screenshot](/bug/assets/images/screenshots/module-dish-pointer.png)
 
@@ -21,14 +21,14 @@ Get the Azimuth and Elevation to point a Satelite Dish
   "id": "",
   "needsConfigured": true,
   "order": 0,
-  "title": "Satelite Dish Pointer",
+  "title": "Satellite Dish Pointer",
   "module": "dish-pointer",
   "esLatitude": 51.518788,
   "esLongitude": -0.143521,
   "esAltitude": 0,
   "satLongitude": 16,
   "satDirection": "east",
-  "description": "Satelite Dish Pointer",
+  "description": "Satellite Dish Pointer",
   "enabled": false
 }
 ```
