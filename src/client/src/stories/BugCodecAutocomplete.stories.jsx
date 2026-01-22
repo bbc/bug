@@ -1,10 +1,20 @@
 import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugCodecAutocomplete",
     component: BugCodecAutocomplete,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `An autocomplete dropdown which is populated with items exposed by the codec-apipoller module.<br />
                     Use it in a codec module to select destination or source devices.<br />
@@ -13,94 +23,90 @@ export default {
         },
         controls: { sort: "requiredFirst" },
     },
+
+    args: {
+        addressValue: "",
+        apiUrl: "",
+        capability: "",
+        disabled: false,
+        label: "Search codec database ...",
+        portValue: "",
+        sx: {},
+        variant: "outlined",
+    },
+
     argTypes: {
         onChange: {
             action: "changed",
             description: "The function to call when the selection is changed. Passes event/item as arguments",
             table: {
                 type: { summary: "function" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         addressValue: {
-            type: { name: "string" },
             description: "Optionally provide an IP address to pre-select matching codecs",
-            defaultValue: "",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         apiUrl: {
-            type: { name: "string" },
             description:
                 "An API GET endpoint which returns an array containing objects with the following fields: id/label/device/address/port",
-            defaultValue: "",
             control: {
                 disable: true,
             },
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         capability: {
-            type: { name: "string" },
             description:
                 "An optional capability label - this will be appended to the API URL like this: 'apiUrl/capability'",
-            defaultValue: "",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
             control: {
                 disable: true,
             },
         },
         disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
             description: "Whether the control is disabled",
             table: {
                 type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "false" },
             },
         },
         label: {
-            type: { name: "string", required: true },
-            defaultValue: "Search codec database ...",
             description: "Short description to be shown in the control",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         mockApiData: {
             table: { disable: true },
         },
         portValue: {
-            type: { name: "string" },
             description: "Optionally provide an IP port to pre-select matching codecs",
-            defaultValue: "",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "An object containing style overrides - see MaterialUI docs for options",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
         variant: {
             options: ["filled", "outlined", "standard"],
             description: "The MUI variant of the button. Always use 'standard' in config forms.",
-            defaultValue: "outlined",
             control: { type: "select" },
             table: {
                 type: { summary: "string" },
@@ -109,16 +115,6 @@ export default {
         },
     },
 };
-
-const Template = (args) => (
-    <div
-        style={{
-            maxWidth: "300px",
-        }}
-    >
-        <BugCodecAutocomplete {...args} />
-    </div>
-);
 
 const mockApiData = [
     {
@@ -150,7 +146,11 @@ const mockApiData = [
         port: "1004",
     },
 ];
-export const MyBugCodecAutocomplete = (args) => <BugCodecAutocomplete mockApiData={mockApiData} {...args} />;
 
-MyBugCodecAutocomplete.displayName = "BugCodecAutocomplete";
-MyBugCodecAutocomplete.storyName = "BugCodecAutocomplete";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugCodecAutocomplete mockApiData={mockApiData} {...args} />
+        </div>
+    ),
+};

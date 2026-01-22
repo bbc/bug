@@ -1,66 +1,72 @@
 import BugPanelGroupDropdown from "@core/BugPanelGroupDropdown";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugPanelGroupDropdown",
     component: BugPanelGroupDropdown,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `A dropdown control listing all available panel groups. Can also be used to add a new group.<br />
-**Please Note**: the control will not be populated with data on this storybook`,
+                **Please Note**: The control relies on application state/API and will not be populated with live data in this Storybook environment.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
+    args: {
+        value: "Group 1",
+        fullWidth: false,
+        sx: {},
+    },
 
     argTypes: {
+        value: {
+            description: "The selected value when the control is loaded.",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
+            },
+        },
         fullWidth: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Expands the control to fill available horizontal space",
+            description: "Expands the control to fill available horizontal space.",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
         onChange: {
-            type: { name: "function", required: true },
-            defaultValue: {},
-            description: "This callback is called when the dropdown value changes",
-            control: {
-                disable: true,
-            },
+            description: "Callback fired when the dropdown value changes.",
+            control: { disable: true },
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
+                type: { summary: "function" },
+                defaultValue: { summary: "null" },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MUI style overrides (the sx prop).",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
-            },
-        },
-        value: {
-            type: { name: "string", required: false },
-            defaultValue: "Group 1",
-            description: "The selected value when the control is loaded.",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
             },
         },
         variant: { table: { disable: true } },
     },
 };
 
-export const MyBugPanelGroupDropdown = (args) => <BugPanelGroupDropdown {...args} />;
-
-MyBugPanelGroupDropdown.displayName = "BugPanelGroupDropdown";
-MyBugPanelGroupDropdown.storyName = "BugPanelGroupDropdown";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugPanelGroupDropdown {...args} />
+        </div>
+    ),
+};

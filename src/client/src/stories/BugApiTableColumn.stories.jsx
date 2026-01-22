@@ -1,16 +1,10 @@
 import { Box } from "@mui/material";
-import { Description, Subtitle, Title } from "@storybook/addon-docs";
-import { Controls } from '@storybook/blocks';
+import { Controls, Description, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/API Controls/BugApiTableColumn",
     component: Box,
     parameters: {
-        previewTabs: {
-            canvas: {
-                hidden: true,
-            },
-        },
         docs: {
             description: {
                 component: `An array of these columns can be passed to the BugApiTable component.<br />
@@ -21,7 +15,6 @@ export default {
                     <Title />
                     <Subtitle />
                     <Description />
-                    <br />
                     <Controls />
                 </>
             ),
@@ -29,48 +22,45 @@ export default {
         controls: { sort: "requiredFirst" },
     },
 
+    args: {
+        sortable: false,
+        noPadding: false,
+        noWrap: false,
+        width: "auto",
+        minWidth: "auto",
+        textAlign: "start",
+    },
+
     argTypes: {
         content: {
-            type: { name: "data", required: true },
             description: "The content to be displayed in the cell, usually a React component",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "data" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
             },
         },
         sortable: {
-            type: { name: "boolean" },
             description: "Whether the column supports sorting",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "false" },
                 category: "Sorting",
             },
         },
         hideWidth: {
-            type: { name: "number" },
             description: "Hides the column when it is narrower than this value (in pixels)",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "null" },
                 category: "Layout",
             },
         },
         width: {
-            type: { name: "string" },
             description: "Desired width of the column. Can be a number or a string with a unit (e.g. '100px')",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "auto" },
@@ -78,11 +68,8 @@ export default {
             },
         },
         minWidth: {
-            type: { name: "string" },
             description: "Minimum width of the column. Can be a number or a string with a unit (e.g. '100px')",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "auto" },
@@ -92,47 +79,34 @@ export default {
         defaultSortDirection: {
             options: ["asc", "desc"],
             description: "The default sort direction. Required for filtering.",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "string" },
                 category: "Sorting",
             },
         },
         noPadding: {
-            type: { name: "boolean" },
-            defaultValue: false,
             description: "If enabled, removes padding from the table cell. Useful for embedded controls",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "false" },
                 category: "Layout",
             },
         },
         noWrap: {
-            type: { name: "boolean" },
-            defaultValue: false,
             description: "If enabled, prevents word-wrapping on the cell content",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "boolean" },
-                defaultValue: { summary: false },
+                defaultValue: { summary: "false" },
                 category: "Layout",
             },
         },
         filterOptions: {
-            type: "data",
             description:
                 "An array of options to be used in the filter dropdown. These should be objects with a 'name' and 'value' property",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
                 type: { summary: "data" },
                 defaultValue: { summary: "null" },
@@ -140,44 +114,36 @@ export default {
             },
         },
         title: {
-            type: { name: "string", required: true },
             description: "The text description to be shown in the table header",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
-                defaultValue: { summary: null },
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
             },
         },
         field: {
-            type: { name: "string" },
             description: "The field name in the source data. Required for filtering and sorting",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
-                defaultValue: { summary: null },
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
                 category: "Filtering",
             },
         },
         filterType: {
-            type: { name: "string" },
             description: "Either 'text' or 'dropdown'. Required for filtering.",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
-                defaultValue: { summary: null },
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
                 category: "Filtering",
             },
         },
         textAlign: {
-            type: { name: "string" },
             description: "A valid HTML text-align value",
-            control: {
-                disable: true,
-            },
+            control: { disable: true },
             table: {
+                type: { summary: "string" },
                 defaultValue: { summary: "start" },
                 category: "Layout",
             },
@@ -185,7 +151,11 @@ export default {
     },
 };
 
-export const MyApiTableColumn = (args) => <div {...args} />;
-MyApiTableColumn.displayName = "BugApiTableColumn";
-MyApiTableColumn.storyName = "BugApiTableColumn";
-MyApiTableColumn.args = {};
+export const Default = {
+    name: "BugApiTableColumn",
+    render: () => (
+        <div style={{ fontStyle: "italic", color: "#666", padding: "10px" }}>
+            Column configuration (no visual preview)
+        </div>
+    ),
+};

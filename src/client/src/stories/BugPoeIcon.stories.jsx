@@ -1,61 +1,70 @@
 import BugPoeIcon from "@core/BugPoeIcon";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Icons/BugPoeIcon",
     component: BugPoeIcon,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A handy power icon to use in tables to indicate that the item has POE power.`,
+                component: `A handy power icon to use in tables to indicate that the item has POE power state.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "6rem" }}>{Story()}</div>],
+    args: {
+        active: false,
+        disabled: false,
+        error: false,
+        sx: {},
+    },
 
     argTypes: {
-        disabled: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is disabled",
+        active: {
+            description: "Whether the control is active (usually renders in a 'power on' color).",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
-        active: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is active",
+        disabled: {
+            description: "Whether the control is disabled.",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
         error: {
-            type: { name: "boolean" },
-            defaultValue: false,
-            description: "Whether the control is in an error state",
+            description: "Whether the control is in an error state.",
             table: {
                 type: { summary: "boolean" },
                 defaultValue: { summary: false },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MUI style overrides (the sx prop).",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
     },
 };
 
-export const MyBugPowerIcon = (args) => <BugPoeIcon {...args} />;
-
-MyBugPowerIcon.displayName = "BugPoeIcon";
-MyBugPowerIcon.storyName = "BugPoeIcon";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px" }}>
+            <BugPoeIcon {...args} />
+        </div>
+    ),
+};

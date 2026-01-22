@@ -1,26 +1,17 @@
-import { ThemeProvider } from "@emotion/react";
-import { ThemeProvider as MUIThemeProvider, StyledEngineProvider } from "@mui/material/styles";
-import { fn } from "@storybook/test";
-import { themes } from "@storybook/theming";
-import { Provider } from "react-redux";
-import { MemoryRouter as Router } from "react-router";
-
 import { BugConfirmDialogProvider } from "@core/BugConfirmDialog";
 import { BugCustomDialogProvider } from "@core/BugCustomDialog";
 import { BugRenameDialogProvider } from "@core/BugRenameDialog";
+import { ThemeProvider } from "@emotion/react";
+import { ThemeProvider as MUIThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import reduxStore from "@redux/store";
+import { themes } from "@storybook/theming";
+import { Provider } from "react-redux";
+import { MemoryRouter as Router } from "react-router";
 import theme from "../src/theme";
 
 const appTheme = theme();
 
-/** @type { import('@storybook/react').Preview } */
 const preview = {
-    args: {
-        onClick: fn(),
-        onChange: fn(),
-        onSubmit: fn(),
-    },
-
     parameters: {
         controls: {
             expanded: true,

@@ -1,118 +1,107 @@
-import { Description, Subtitle, Title } from "@storybook/addon-docs";
-import { Source } from "@storybook/addon-docs/blocks";
-import { Controls } from '@storybook/blocks';
+import BugToolbarWrapper from "@core/BugToolbarWrapper";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Button, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import { Controls, Description, Source, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Wrappers/BugToolbarWrapper",
-    component: "div",
+    component: BugToolbarWrapper,
     parameters: {
         docs: {
-            description: {
-                component: `This component provides a handy wrapper for module toolbars.<br />
-                It takes an array of button components and an array of menuItems.<br/>
-                The best way to learn about this component is to look at the source code in a module.`,
-            },
             page: () => (
                 <>
                     <Title />
                     <Subtitle />
                     <Description />
-
                     <Source
                         language="jsx"
+                        dark
                         code={`
 import React from "react";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import AxiosCommand from "@utils/AxiosCommand";
-import {MenuItem} from "@mui/material";
-import {ListItemIcon} from "@mui/material";
-import {ListItemText} from "@mui/material";
-import { useAlert } from "@utils/Snackbar";
-import { usePanelStatus } from "@hooks/PanelStatus";
-import { useSelector } from "react-redux";
+import { MenuItem, ListItemIcon, ListItemText, Button } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 export default function Toolbar(props) {
-    let toolbarProps = { ...props };
-    const panelStatus = usePanelStatus();
-    const panelConfig = useSelector((state) => state.panelConfig);
-    const sendAlert = useAlert();
-
-    toolbarProps["onClick"] = null;
-
-    const handleReboot = async (event) => {
-        sendAlert(\`Rebooting \${panelConfig.data.name}, please wait ...\`, { broadcast: "true", variant: "info" });
-        if (await AxiosCommand(\`/container/\${props?.panelId}/device/reboot\`)) {
-            sendAlert(\`Restarted \${panelConfig.data.name}\`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(\`Failed to reboot \${panelConfig.data.name}\`, { variant: "error" });
-        }
-    };
-
-    const handleWebpageClicked = async (event) => {
-        const url = \`http://\${panelConfig.data.address}\`;
-        const newWindow = window.open(url, "_blank", "noopener,noreferrer");
-        if (newWindow) newWindow.opener = null;
-        event.stopPropagation();
-        event.preventDefault();
-    };
-
-    const menuItems = () => [
-        <MenuItem onClick={handleWebpageClicked} key="launch">
-            <ListItemIcon>
-                <OpenInNewIcon fontSize="small" />
-            </ListItemIcon>
+    const menuItems = [
+        <MenuItem onClick={() => {}} key="launch">
+            <ListItemIcon><OpenInNewIcon fontSize="small" /></ListItemIcon>
             <ListItemText primary="Goto Webpage" />
-        </MenuItem>,
-        <MenuItem onClick={handleReboot} key="reboot">
-            <ListItemIcon>
-                <PowerSettingsNewIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Reboot Device" />
-        </MenuItem>,
+        </MenuItem>
     ];
 
-    const buttons = () => [];
+    const buttons = [
+        <Button key="save" variant="contained">Save</Button>
+    ];
 
-    toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
-    toolbarProps["menuItems"] = panelStatus.hasCritical ? null : menuItems();
-
-    return <BugToolbarWrapper {...toolbarProps} />;
-}
-                        
-`}
+    return <BugToolbarWrapper buttons={buttons} menuItems={menuItems} />;
+}`}
                     />
-                    <br />
+                    <Story />
                     <Controls />
                 </>
             ),
+            description: {
+                component: `A layout wrapper for module toolbars. It standardizes the positioning of action buttons (left) and a secondary 'more' menu (right).`,
+            },
         },
+        controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        buttons: [],
+        menuItems: [],
+    },
 
     argTypes: {
-        menuItems: {
-            type: "data",
-            description: "An array of menuitems to be shown via the menu",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-        },
         buttons: {
-            type: "data",
-            description: "An array of Button components to be shown via the menu",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
+            description: "An array of React elements (usually Buttons) to be displayed on the left of the toolbar.",
+            table: { type: { summary: "ReactNode[]" }, defaultValue: { summary: "[]" } },
+        },
+        menuItems: {
+            description: "An array of MenuItem components to be displayed inside the 'more' dropdown menu.",
+            table: { type: { summary: "ReactNode[]" }, defaultValue: { summary: "[]" } },
         },
     },
 };
 
-export const MyBugToolbarWrapper = (args) => <></>;
+export const Default = {
+    render: (args) => {
+        // Create concrete elements for the preview
+        const demoButtons = [
+            <Button key="1" variant="outlined" size="small" startIcon={<SettingsIcon />}>
+                Configure
+            </Button>,
+            <Button key="2" variant="contained" size="small" color="primary">
+                Apply
+            </Button>,
+        ];
 
-MyBugToolbarWrapper.displayName = "BugToolbarWrapper";
-MyBugToolbarWrapper.storyName = "BugToolbarWrapper";
+        const demoMenu = [
+            <MenuItem key="web" onClick={() => alert("Launching...")}>
+                <ListItemIcon>
+                    <OpenInNewIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Open Web Interface" />
+            </MenuItem>,
+            <MenuItem key="reboot" onClick={() => alert("Rebooting...")}>
+                <ListItemIcon>
+                    <PowerSettingsNewIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Reboot Device" />
+            </MenuItem>,
+        ];
+
+        return (
+            <div style={{ padding: "20px", width: "100%", background: "#222", borderRadius: "4px" }}>
+                <BugToolbarWrapper
+                    {...args}
+                    buttons={args.buttons.length > 0 ? args.buttons : demoButtons}
+                    menuItems={args.menuItems.length > 0 ? args.menuItems : demoMenu}
+                />
+            </div>
+        );
+    },
+};

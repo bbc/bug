@@ -1,73 +1,122 @@
-import { Box } from "@mui/material";
-import { Description, Subtitle, Title } from "@storybook/addon-docs";
-import { Controls } from '@storybook/blocks';
+import BugContextMenu from "@core/BugContextMenu";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Box, IconButton } from "@mui/material";
+import { Controls, Description, Source, Story, Subtitle, Title } from "@storybook/blocks";
+import { useState } from "react";
 
 export default {
     title: "BUG Core/Controls/BugContextMenu",
-    component: Box,
+    component: BugContextMenu,
     parameters: {
         docs: {
-            description: {
-                component: `This is a context menu which accepts BugMenuItems`,
-            },
             page: () => (
                 <>
                     <Title />
                     <Subtitle />
                     <Description />
-                    <br />
+                    <Source
+                        language="jsx"
+                        dark
+                        code={`
+import React, { useState } from "react";
+import BugContextMenu from "@core/BugContextMenu";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { IconButton } from "@mui/material";
+
+export default function MyComponent() {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const menuItems = [
+        { title: "Edit", onClick: () => console.log("Edit clicked") },
+        { title: "Delete", onClick: () => console.log("Delete clicked") },
+    ];
+
+    return (
+        <>
+            <IconButton onClick={handleClick}>
+                <MoreVertIcon />
+            </IconButton>
+            <BugContextMenu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                menuItems={menuItems}
+            />
+        </>
+    );
+}`}
+                    />
+                    <Story />
                     <Controls />
                 </>
             ),
+            description: {
+                component: `A context menu component that accepts an array of **BugMenuItems**. <br />
+                It is designed to be anchored to a specific HTML element or pointer position triggered by user events.`,
+            },
         },
         controls: { sort: "requiredFirst" },
     },
 
+    args: {
+        menuItems: [
+            { title: "Option 1", onClick: () => alert("Option 1 clicked") },
+            { title: "Option 2", onClick: () => alert("Option 2 clicked") },
+            { title: "Option 3", onClick: () => alert("Option 3 clicked"), disabled: true },
+        ],
+    },
+
     argTypes: {
-        menuItems: {
-            type: { name: "data", required: true },
-            description: "An array of menuitems to be shown via the menu",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-        },
         item: {
-            type: { name: "object", required: false },
-            description: "An optional object which is passed as a parameter when click event is fired",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "object" },
-                defaultValue: { summary: null },
-            },
+            description: "The item associated with the context menu",
+            table: { type: { summary: "any" }, defaultValue: { summary: "null" } },
+        },
+        menuItems: {
+            description: "An array of menuitems to be shown via the menu",
+            table: { type: { summary: "array" }, defaultValue: { summary: "[]" } },
         },
         anchorEl: {
-            type: { name: "data", required: true },
-            description:
-                "An HTML element or function that returns one which is used to set the location of the context menu",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "null" },
-            },
+            description: "The HTML element used to position the menu",
+            table: { type: { summary: "HTMLElement" }, defaultValue: { summary: "null" } },
         },
         onClose: {
-            type: { name: "function", required: true },
-            defaultValue: null,
-            description: "This callback is called when the menu requests to be closed",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
+            description: "Callback fired when the menu requests to close",
+            control: { disable: true },
+            table: { type: { summary: "function" } },
         },
     },
 };
 
-export const MyBugContextMenu = (args) => <div {...args} />;
-MyBugContextMenu.displayName = "BugContextMenu";
-MyBugContextMenu.storyName = "BugContextMenu";
-MyBugContextMenu.args = {};
+export const Default = {
+    render: (args) => {
+        const [anchorEl, setAnchorEl] = useState(null);
+
+        const handleClick = (event) => {
+            event.stopPropagation();
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handleClose = () => {
+            setAnchorEl(null);
+        };
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <Box>
+                    <IconButton size="small" sx={{ padding: "4px" }} onClick={handleClick}>
+                        <MoreVertIcon />
+                    </IconButton>
+                    <BugContextMenu {...args} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} />
+                </Box>
+            </div>
+        );
+    },
+};

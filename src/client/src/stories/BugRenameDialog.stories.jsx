@@ -1,192 +1,131 @@
 import BugRenameDialog, { useBugRenameDialog } from "@core/BugRenameDialog";
 import { Box, Button } from "@mui/material";
-import React from "react";
+import { Controls, Description, Source, Story, Subtitle, Title } from "@storybook/blocks";
+import { useState } from "react";
+
 export default {
     title: "BUG Core/Dialogs/BugRenameDialog",
     component: BugRenameDialog,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Source
+                        language="jsx"
+                        dark
+                        code={`
+import React, { useState } from "react";
+import { Button, Box } from "@mui/material";
+import { useBugRenameDialog } from "@core/BugRenameDialog";
+
+export default function RenameExample() {
+    const { renameDialog } = useBugRenameDialog();
+    const [name, setName] = useState("Original Value");
+
+    const handleRename = async () => {
+        const result = await renameDialog({
+            title: "Rename Item",
+            defaultValue: name,
+            label: "New Name",
+            confirmButtonText: "Save",
+        });
+
+        if (result !== false) {
+            setName(result);
+        }
+    };
+
+    return (
+        <Box>
+            <Button variant="contained" onClick={handleRename}>Rename</Button>
+            <Box sx={{ mt: 2 }}>Current Name: {name}</Box>
+        </Box>
+    );
+}`}
+                    />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A hook for displaying a rename dialog for simple text fields.<br />
-                The message, title and button text are customizable.<br />
-                If the text value is unchanged, then FALSE is returned (the same as cancelling the dialog).`,
+                component: `A hook-based dialog for simple text renaming tasks.<br />
+                The message, title, and button text are customizable. If the value is unchanged or the dialog is dismissed, the hook returns <b>false</b>.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
+    args: {
+        title: "Rename",
+        defaultValue: "Previous Value",
+        label: "Rename me",
+        confirmButtonText: "Rename",
+        placeholder: "Enter a new name",
+        allowBlank: false,
+    },
 
     argTypes: {
-        allowBlank: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description: "Whether to allow blank values",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        confirmButtonText: {
-            type: { name: "string", required: false },
-            defaultValue: "Rename",
-            description: "Text to show in the confirmation button",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "Rename" },
-            },
-        },
         defaultValue: {
-            type: { name: "string", required: true },
-            defaultValue: "Previous Value",
-            description: "The existing value to load into the textfield control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        label: {
-            type: { name: "string", required: false },
-            defaultValue: "Rename me",
-            description: "The label to use in the textfield control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        onDismiss: {
-            control: {
-                disable: true,
-            },
-            description: "Handles when the cancel button is clicked or the dialog closed",
-            table: {
-                type: { summary: "function" },
-                defaultValue: { summary: null },
-            },
-        },
-        onRename: {
-            control: {
-                disable: true,
-            },
-            description: "Handles when the dialog confirmation button is clicked",
-            table: {
-                type: { summary: "function" },
-                defaultValue: { summary: null },
-            },
-        },
-        placeholder: {
-            type: { name: "string", required: false },
-            defaultValue: "Enter a new name",
-            description:
-                "Text to show in the textfield control when empty. Can be used to show default value to be used when blank.",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
-        },
-        textFieldProps: {
-            type: { name: "data", required: false },
-            defaultValue: {},
-            description: "Any other props to pass to the textfield control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "{}" },
-            },
+            description: "The existing value to load into the textfield.",
+            table: { type: { summary: "string" } },
         },
         title: {
-            type: { name: "string", required: false },
-            defaultValue: "Rename",
-            description: "Text to show in the title bar of the dialog",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "Rename" },
-            },
+            description: "Text to show in the title bar of the dialog.",
+            table: { type: { summary: "string" }, defaultValue: { summary: "Rename" } },
         },
+        confirmButtonText: {
+            description: "Text to show in the confirmation button.",
+            table: { type: { summary: "string" }, defaultValue: { summary: "Rename" } },
+        },
+        allowBlank: {
+            description: "Whether to allow the user to submit a blank value.",
+            table: { type: { summary: "boolean" }, defaultValue: { summary: false } },
+        },
+        onRename: { table: { disable: true } },
+        onDismiss: { table: { disable: true } },
+        sx: { table: { type: { summary: "object" } } },
+        textFieldProps: { table: { type: { summary: "object" } } },
     },
 };
 
-export const MyBugRenameDialog = (args) => {
-    const { renameDialog } = useBugRenameDialog();
-    const [result, setResult] = React.useState(null);
+export const Default = {
+    render: (args) => {
+        const { renameDialog } = useBugRenameDialog();
+        const [result, setResult] = useState(null);
 
-    const showDialog = async () => {
-        const renameResult = await renameDialog({
-            allowBlank: args.allowBlank,
-            confirmButtonText: args.confirmButtonText,
-            defaultValue: args.defaultValue,
-            label: args.label,
-            placeholder: args.placeholder,
-            title: args.title,
-        });
+        const showDialog = async () => {
+            const renameResult = await renameDialog({
+                ...args,
+            });
 
-        if (renameResult === false) {
-            setResult("you clicked 'Cancel'");
-        } else {
-            setResult(`you renamed to "${renameResult}"`);
-        }
-    };
+            if (renameResult === false) {
+                setResult("Action cancelled or no change made.");
+            } else {
+                setResult(`Renamed to: "${renameResult}"`);
+            }
+        };
 
-    return (
-        <>
-            <Button variant="contained" onClick={showDialog}>
-                Show Dialog
-            </Button>
-            <Box sx={{ margin: "1rem" }}>Result: {result}</Box>
-        </>
-    );
-};
-
-MyBugRenameDialog.displayName = "BugRenameDialog";
-MyBugRenameDialog.storyName = "BugRenameDialog";
-MyBugRenameDialog.parameters = {
-    docs: {
-        source: {
-            code: `
-import React from "react";
-import {Button} from "@mui/material";;
-import {Box} from "@mui/material";;
-import BugRenameDialog from "@core/BugRenameDialog";
-import { useBugRenameDialog } from "@core/BugRenameDialog";
-
-export default () => {
-
-    const { confirmDialog } = useBugRenameDialog();
-    const [result, setResult] = React.useState(null);
-
-    const showDialog = async () => {
-        const confirmResult = await confirmDialog({
-            open: true,
-            title: "Confirm your action",
-            message: "Are you sure you want to do this thing?",
-            confirmButtonText: "Confirm",
-        });
-
-        if (confirmResult !== false) {
-            setResult("you clicked 'Confirm');
-        } else {
-            setResult("you clicked 'Cancel'");
-        }
-    };
-
-    return (
-        <>
-            <Button variant="contained" onClick={showDialog}>
-                Show Dialog
-            </Button>
-            <Box sx={{ margin: "1rem" }}>Result: {result}</Box>
-        </>
-    );
-}`,
-        },
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <Button variant="contained" onClick={showDialog}>
+                    Open Rename Dialog
+                </Button>
+                <Box
+                    sx={{
+                        mt: 2,
+                        p: 2,
+                        bgcolor: "background.paper",
+                        borderRadius: 1,
+                        border: "1px solid",
+                        borderColor: "divider",
+                    }}
+                >
+                    <strong>Result:</strong> {result || "No action yet"}
+                </Box>
+            </div>
+        );
     },
 };

@@ -1,148 +1,29 @@
 import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 import BugForm from "@core/BugForm";
 import { Grid } from "@mui/material";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
+import { useArgs } from "@storybook/preview-api";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-export default {
-    title: "BUG Core/Forms/BugConfigFormPanelSelect",
-    component: BugConfigFormPanelSelect,
-    parameters: {
-        docs: {
-            description: {
-                component: `This is a form control, designed to work within a BugForm.<br/>
-                BugForm uses react-hook-form to manage the form state. See https://react-hook-form.com/ for more info.<br />
-                A dropdown control for selecting a single panel. Often used to select remote panel data sources.<br/>
-                Optionally takes a 'capability' field which filters panels by the capability the panel provides.`,
-            },
+const AutocompleteFormWrapper = ({ currentArgs, updateArgs, ...args }) => {
+    const { control, reset } = useForm({
+        defaultValues: {
+            [args.name]: currentArgs.defaultValue || args.defaultValue,
         },
-        controls: { sort: "requiredFirst" },
-    },
+    });
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
-
-    argTypes: {
-        name: {
-            type: { name: "string", required: true },
-            defaultValue: "control-name",
-            description: "Field name to use for this control eg 'group'",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        label: {
-            type: { name: "string", required: true },
-            defaultValue: "Select a panel",
-            description: "Short description to be shown in the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        helperText: {
-            type: { name: "string", required: false },
-            defaultValue: "Select a panel source for DHCP data",
-            description: "Optional helper text to be shown below the control",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        capability: {
-            type: { name: "string", required: false },
-            defaultValue: "dhcp-server",
-            description: "This value is used to search available panels by capability",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        control: {
-            type: { name: "data", required: true },
-            defaultValue: {},
-            description: "This should be passed from the parent BugForm",
-            control: {
-                disable: true,
-            },
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        error: {
-            type: { name: "boolean", required: false },
-            defaultValue: false,
-            description:
-                "This is usually handled by the parent BugForm but can also be set manually. Change the helperText to add additional error information.",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        rules: {
-            type: { name: "data", required: false },
-            defaultValue: { required: true },
-            description:
-                "Optional validation rules in object format. See https://react-hook-form.com/api/usecontroller/controller for more information.",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        defaultValue: {
-            type: { name: "data", required: false },
-            defaultValue: "1",
-            description: "The selected value when the control is loaded. A single panel ID.",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: null },
-            },
-        },
-        fullWidth: {
-            type: { name: "boolean" },
-            defaultValue: true,
-            description: "Expands the control to fill available horizontal space",
-            table: {
-                type: { summary: "boolean" },
-                defaultValue: { summary: false },
-            },
-        },
-        mockApiData: {
-            table: { disable: true },
-        },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
-            },
-        },
-    },
-};
-
-export const MyBugConfigFormPanelSelect = (args) => {
-    const { control } = useForm();
+    useEffect(() => {
+        reset({ [args.name]: currentArgs.defaultValue });
+    }, [currentArgs.defaultValue, reset, args.name]);
 
     return (
         <BugForm>
             <BugForm.Header>My Form</BugForm.Header>
             <BugForm.Body>
                 <Grid container>
-                    <Grid size={{ xs: 12 }}>
-                        <BugConfigFormPanelSelect
-                            name={args.name}
-                            control={control}
-                            label={args.label}
-                            error={args.error}
-                            options={args.options}
-                            defaultValue={args.defaultValue}
-                            helperText={args.helperText}
-                            fullWidth={args.fullWidth}
-                            mockApiData={args.mockApiData}
-                        />
+                    <Grid item size={{ xs: 12 }}>
+                        <BugConfigFormPanelSelect {...args} control={control} defaultValue={currentArgs.defaultValue} />
                     </Grid>
                 </Grid>
             </BugForm.Body>
@@ -150,54 +31,80 @@ export const MyBugConfigFormPanelSelect = (args) => {
     );
 };
 
-MyBugConfigFormPanelSelect.displayName = "BugConfigFormPanelSelect";
-MyBugConfigFormPanelSelect.storyName = "BugConfigFormPanelSelect";
-MyBugConfigFormPanelSelect.args = {
-    mockApiData: {
-        status: "success",
-        data: [
-            {
-                id: "1",
-                title: "Cisco Router Bay 1",
-                enabled: true,
+export default {
+    title: "BUG Core/Forms/BugConfigFormPanelSelect",
+    component: BugConfigFormPanelSelect,
+    parameters: {
+        docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
+            description: {
+                component: `This is a form control, designed to work within a BugForm.<br/>
+                BugForm uses <b>react-hook-form</b> to manage the form state. <br />
+                A dropdown control for selecting a single panel. Often used to select remote panel data sources.<br/>
+                Optionally takes a 'capability' field which filters panels by the capability the panel provides.`,
             },
-            {
-                id: "2",
-                title: "Mikrotik Router Bay 1",
-                enabled: true,
-            },
-            {
-                id: "3",
-                title: "Mikrotik Router Bay 2",
-                enabled: true,
-            },
-        ],
+        },
+        controls: { sort: "requiredFirst" },
+    },
+
+    args: {
+        name: "control-name",
+        label: "Select a panel",
+        helperText: "Select a panel source for DHCP data",
+        capability: "dhcp-server",
+        defaultValue: "1",
+        error: false,
+        fullWidth: true,
+        mockApiData: {
+            status: "success",
+            data: [
+                { id: "1", title: "Cisco Router Bay 1", enabled: true },
+                { id: "2", title: "Mikrotik Router Bay 1", enabled: true },
+                { id: "3", title: "Mikrotik Router Bay 2", enabled: true },
+            ],
+        },
+    },
+
+    argTypes: {
+        control: {
+            description: "This should be passed from the parent BugForm",
+            control: { disable: true },
+            table: { type: { summary: "data" }, defaultValue: { summary: "null" } },
+        },
+        defaultValue: {
+            description: "The selected value when the control is loaded. A single panel ID.",
+            table: { type: { summary: "data" }, defaultValue: { summary: "null" } },
+        },
+        error: {
+            description: "Usually handled by parent BugForm but can be set manually.",
+            table: { type: { summary: "boolean" }, defaultValue: { summary: "false" } },
+        },
+        mockApiData: {
+            table: { disable: true },
+        },
+        sx: {
+            description: "MUI style overrides",
+            table: { type: { summary: "object" }, defaultValue: { summary: "{}" } },
+        },
     },
 };
-MyBugConfigFormPanelSelect.parameters = {
-    docs: {
-        source: {
-            code: `
-<BugForm>
-    <BugForm.Header>My Form</BugForm.Header>
-    <BugForm.Body>
-        <Grid container>
-            <Grid size={{ xs: 12 }}>
-                <BugConfigFormPanelSelect
-                    name="control-name"
-                    label="Select Panels"
-                    helperText="Select a panel source for DHCP data"
-                    capability="dhcp-server"
-                    control={control}
-                    error={false}
-                    rules={{ required: true }}
-                    defaultValue={[1, 2]}
-                    fullWidth={true}
-                />
-            </Grid>
-        </Grid>
-    </BugForm.Body>
-</BugForm>`,
-        },
+
+export const Default = {
+    render: (args) => {
+        const [currentArgs, updateArgs] = useArgs();
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <AutocompleteFormWrapper {...args} currentArgs={currentArgs} updateArgs={updateArgs} />
+            </div>
+        );
     },
 };

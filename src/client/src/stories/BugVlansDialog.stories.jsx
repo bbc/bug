@@ -1,87 +1,71 @@
+import { useState } from "react";
+// 1. Ensure the import name is unique
 import { useBugCustomDialog } from "@core/BugCustomDialog";
-import BugVlansDialog from "@core/BugVlansDialog";
-import { Box, Button } from "@mui/material";
-import React from "react";
+import BugVlansDialogComponent from "@core/BugVlansDialog";
+import { Box, Button, Typography } from "@mui/material";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
+
 export default {
     title: "BUG Core/Dialogs/BugVlansDialog",
-    component: "div",
+    // 2. Use the imported component here
+    component: BugVlansDialogComponent,
     parameters: {
         docs: {
-            description: {
-                component: `A custom dialog for displaying untagged and tagged members of network interfaces.<br />
-                Uses BugCustomDialog hook to display the dialog.`,
-            },
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
         },
-        controls: { sort: "requiredFirst" },
     },
-
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
-
-    argTypes: {
-        untaggedVlan: {
-            type: { name: "number" },
-            description: "The VLAN ID untagged on this interface",
-            defaultValue: 101,
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: null },
-            },
-        },
-        taggedVlans: {
-            type: { name: "data", required: true },
-            defaultValue: [],
-            description: "An array of VLAN IDs tagged on this interface",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-        },
-        vlans: {
-            type: { name: "data", required: true },
-            defaultValue: [
-                { id: 101, label: "VLAN 101" },
-                { id: 102, label: "VLAN 102" },
-                { id: 103, label: "VLAN 103" },
-                { id: 104, label: "VLAN 104" },
-            ],
-            description: "An array of available VLANs. Each VLAN is an object with a label and id property.",
-            table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "[]" },
-            },
-        },
+    args: {
+        untaggedVlan: 101,
+        taggedVlans: [102, 103],
+        vlans: [
+            { id: 101, label: "VLAN 101" },
+            { id: 102, label: "VLAN 102" },
+            { id: 103, label: "VLAN 103" },
+        ],
     },
 };
 
-export const MyBugVlansDialog = (args) => {
-    const { customDialog } = useBugCustomDialog();
-    const [result, setResult] = React.useState(null);
+export const Default = {
+    render: (args) => {
+        const { customDialog } = useBugCustomDialog();
+        const [result, setResult] = useState(null);
 
-    const showDialog = async () => {
-        setResult(
-            await customDialog({
+        const handleOpen = async () => {
+            // 3. Use the uniquely named import here to avoid initialization conflicts
+            const data = await customDialog({
+                title: "VLAN Configuration",
                 dialog: (
-                    <BugVlansDialog
+                    <BugVlansDialogComponent
                         vlans={args.vlans}
                         taggedVlans={args.taggedVlans}
                         untaggedVlan={args.untaggedVlan}
                     />
                 ),
-            })
-        );
-    };
+            });
+            if (data) setResult(data);
+        };
 
-    return (
-        <>
-            <Button variant="contained" onClick={showDialog}>
-                Show Dialog
-            </Button>
-            <Box sx={{ margin: "1rem" }}>
-                Result: untagged={result?.untaggedVlan}, tagged={JSON.stringify(result?.taggedVlans)}
+        return (
+            <Box sx={{ p: 4, textAlign: "center" }}>
+                <Button variant="contained" onClick={handleOpen}>
+                    Open VLAN Settings
+                </Button>
+
+                {result && (
+                    <Box sx={{ mt: 2, p: 2, border: "1px dashed #666" }}>
+                        <Typography variant="caption">Return Data:</Typography>
+                        <pre>{JSON.stringify(result, null, 2)}</pre>
+                    </Box>
+                )}
             </Box>
-        </>
-    );
+        );
+    },
 };
-
-MyBugVlansDialog.displayName = "BugVlansDialog";
-MyBugVlansDialog.storyName = "BugVlansDialog";

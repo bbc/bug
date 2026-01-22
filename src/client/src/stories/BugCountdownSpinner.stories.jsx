@@ -1,38 +1,55 @@
 import BugCountdownSpinner from "@core/BugCountdownSpinner";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugCountdownSpinner",
     component: BugCountdownSpinner,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A circular progress icon which counts down over a specified duration.`,
+                component: `A circular progress icon which counts down over a specified duration. <br />
+                Useful for indicating when an automated action (like a page refresh or a redirect) is about to occur.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
+
+    args: {
+        duration: 5000,
+        sx: {},
+    },
+
     argTypes: {
         duration: {
-            type: { name: "number" },
-            description: "Duration over which the progress should count down",
-            defaultValue: 5000,
+            description: "Duration (in milliseconds) over which the progress should count down",
             table: {
                 type: { summary: "number" },
                 defaultValue: { summary: 5000 },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MUI style overrides",
             table: {
-                type: { summary: "data" },
+                type: { summary: "object" },
                 defaultValue: { summary: "{}" },
             },
         },
     },
 };
 
-export const BugCountdownSpinner1 = (args) => <BugCountdownSpinner {...args} />;
-BugCountdownSpinner1.storyName = "BugCountdownSpinner";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "600px" }}>
+            <BugCountdownSpinner {...args} />
+        </div>
+    ),
+};

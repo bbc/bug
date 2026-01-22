@@ -1,10 +1,20 @@
 import BugGauge from "@core/BugGauge";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugGauge",
     component: BugGauge,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
                 component: `A gauge control which can be used in a BUG module to display temperature, disk space, etc.`,
             },
@@ -12,77 +22,68 @@ export default {
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        title: "Bug Gauge",
+        value: 50,
+        max: 100,
+        unit: "%",
+        decimalPlaces: 2,
+        sx: {},
+    },
 
     argTypes: {
-        decimalPlaces: {
-            type: "number",
-            description: "The number of decimal places to be displayed",
-            defaultValue: 2,
+        value: {
+            description: "Current value of the gauge",
+            control: { type: "number" },
             table: {
                 type: { summary: "number" },
-                defaultValue: { summary: 2 },
-            },
-            control: {
-                type: "number",
+                defaultValue: { summary: 0 },
             },
         },
         max: {
-            type: "number",
             description: "Maximum value of the gauge",
-            defaultValue: 100,
+            control: { type: "number" },
             table: {
                 type: { summary: "number" },
                 defaultValue: { summary: 100 },
             },
-            control: {
-                type: "number",
+        },
+        decimalPlaces: {
+            description: "The number of decimal places to be displayed",
+            control: { type: "number" },
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: 2 },
             },
         },
-        sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+        unit: {
+            description: "The unit string to be displayed after the value, e.g., %",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
+                type: { summary: "string" },
+                defaultValue: { summary: "%" },
             },
         },
         title: {
-            type: { name: "string" },
-            defaultValue: "Bug Gauge",
             description: "Title to be displayed at the top of the control",
             table: {
                 type: { summary: "string" },
                 defaultValue: { summary: "" },
             },
         },
-        unit: {
-            type: { name: "string" },
-            description: "The unit string to be displayed after the value, eg. %",
-            defaultValue: "%",
+        sx: {
+            description: "MUI style overrides (the sx prop)",
             table: {
-                type: { summary: "string" },
-                defaultValue: { summary: "%" },
-            },
-        },
-        value: {
-            type: { name: "number" },
-            description: "Value of the gauge",
-            defaultValue: 50,
-            table: {
-                type: { summary: "number" },
-                defaultValue: { summary: 0 },
-            },
-            control: {
-                type: "number",
+                type: { summary: "object" },
+                defaultValue: { summary: "{}" },
             },
         },
     },
 };
 
-export const MyBugGauge = (args) => <BugGauge {...args} />;
-MyBugGauge.displayName = "MyBugGauge";
-MyBugGauge.value = 50;
-MyBugGauge.storyName = "BugGauge";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", maxWidth: "400px" }}>
+            <BugGauge {...args} />
+        </div>
+    ),
+};

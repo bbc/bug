@@ -1,72 +1,77 @@
 import BugStatusBlock from "@core/BugStatusBlock";
+import { Controls, Description, Story, Subtitle, Title } from "@storybook/blocks";
 
 export default {
     title: "BUG Core/Controls/BugStatusBlock",
     component: BugStatusBlock,
     parameters: {
         docs: {
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Story />
+                    <Controls />
+                </>
+            ),
             description: {
-                component: `A square block which indicates a status or configuration item on a device.<br />
-                These should be contained by a BugStatusBlockContainer.<br />
-                Text is automatically sized to fit the block.`,
+                component: `A square status indicator used for device metrics. It features automatic text scaling and status-driven background colors. Best used inside a <b>BugStatusBlockContainer</b>.`,
             },
         },
         controls: { sort: "requiredFirst" },
     },
 
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "300px" }}>{Story()}</div>],
+    args: {
+        label: "Bitrate",
+        items: ["100", "Mbps"],
+        state: "success",
+        image: "",
+        sx: {},
+    },
 
     argTypes: {
-        image: {
-            type: { name: "string", required: false },
-            defaultValue: "",
-            description: "If set, renders an image from the provided src url. No other fields will be rendered",
+        label: {
+            description: "Small header text displayed at the top of the block.",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: "" },
             },
         },
         items: {
-            type: { name: "data", required: true },
-            defaultValue: ["100", "Mbps"],
-            description: "An array of strings to display inside the block",
+            description: "An array of strings rendered in the center of the block. Font size scales automatically.",
             table: {
-                type: { summary: "data" },
+                type: { summary: "string[]" },
                 defaultValue: { summary: "[]" },
             },
         },
-        label: {
-            type: { name: "string", required: true },
-            defaultValue: "Bitrate",
-            description: "Text to show at the top of the block",
+        state: {
+            control: "select",
+            options: ["success", "warning", "error", "info", "disabled", "active"],
+            description: "Determines the background color and theme of the block.",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: null },
+                defaultValue: { summary: "success" },
             },
         },
-        state: {
-            type: { name: "string", required: true },
-            defaultValue: "success",
-            description: "",
+        image: {
+            description: "If provided, displays an image instead of text labels.",
             table: {
                 type: { summary: "string" },
-                defaultValue: { summary: "10rem" },
             },
         },
         sx: {
-            type: { name: "data" },
-            defaultValue: {},
-            description:
-                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            description: "MUI style overrides.",
             table: {
-                type: { summary: "data" },
-                defaultValue: { summary: "{}" },
+                type: { summary: "object" },
             },
         },
     },
 };
 
-export const MyBugStatusBlock = (args) => <BugStatusBlock {...args} />;
-
-MyBugStatusBlock.displayName = "BugStatusBlock";
-MyBugStatusBlock.storyName = "BugStatusBlock";
+export const Default = {
+    render: (args) => (
+        <div style={{ padding: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <BugStatusBlock {...args} />
+        </div>
+    ),
+};

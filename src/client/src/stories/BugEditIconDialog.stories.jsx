@@ -1,116 +1,35 @@
 import BugEditIconDialog from "@core/BugEditIconDialog";
 import { Box, Button } from "@mui/material";
-import React from "react";
+import { Controls, Description, Source, Story, Subtitle, Title } from "@storybook/blocks";
+import { useState } from "react";
+
 export default {
     title: "BUG Core/Dialogs/BugEditIconDialog",
     component: BugEditIconDialog,
     parameters: {
         docs: {
-            description: {
-                component: `A dialog for selecting icons. There's no hook for this one - instead you have to conditionally show it using your own logic and state.<br />
-**Please Note**: The dialog icons are provided by the application API, and are therefore not available in this storybook.`,
-            },
-        },
-        controls: { sort: "requiredFirst" },
-    },
-
-    decorators: [(Story) => <div style={{ margin: "1em", maxWidth: "600px" }}>{Story()}</div>],
-
-    argTypes: {
-        icon: {
-            type: { name: "string", required: false },
-            defaultValue: "bugle",
-            description: "Pre-select an icon by setting this prop",
-            table: {
-                type: { summary: "string" },
-                defaultValue: { summary: null },
-            },
-        },
-        color: {
-            control: "color",
-            description: "Pre-select the color of the icons",
-            defaultValue: "#ff3822",
-            table: {
-                type: { summary: "color" },
-                defaultValue: { summary: "#ffffff" },
-            },
-        },
-        onCancel: {
-            control: {
-                disable: true,
-            },
-            description: "Handles when the cancel button is clicked or the dialog closed",
-            table: {
-                type: { summary: "function" },
-                defaultValue: { summary: null },
-            },
-        },
-        onSubmit: {
-            control: {
-                disable: true,
-            },
-            description: "Handles when the dialog OK button is clicked",
-            table: {
-                type: { summary: "function" },
-                defaultValue: { summary: null },
-            },
-        },
-    },
-};
-
-export const MyBugEditIconDialog = (args) => {
-    const [result, setResult] = React.useState(null);
-    const [showDialog, setShowDialog] = React.useState(false);
-
-    const handleCancel = () => {
-        setShowDialog(false);
-    };
-
-    const handleSubmit = (icon, color) => {
-        setShowDialog(false);
-        setResult(`you have selected icon: ${icon} in color: ${color}`);
-    };
-
-    return (
-        <>
-            <Button variant="contained" onClick={() => setShowDialog(true)}>
-                Show Dialog
-            </Button>
-            <Box sx={{ margin: "1rem" }}>Result: {result}</Box>
-            {showDialog && (
-                <BugEditIconDialog
-                    icon={args.icon}
-                    color={args.color}
-                    onCancel={handleCancel}
-                    onSubmit={(icon, color) => handleSubmit(icon, color)}
-                />
-            )}
-        </>
-    );
-};
-
-MyBugEditIconDialog.displayName = "BugEditIconDialog";
-MyBugEditIconDialog.storyName = "BugEditIconDialog";
-MyBugEditIconDialog.parameters = {
-    docs: {
-        source: {
-            code: `
-import React from "react";
+            page: () => (
+                <>
+                    <Title />
+                    <Subtitle />
+                    <Description />
+                    <Source
+                        language="jsx"
+                        dark
+                        code={`
+import React, { useState } from "react";
 import BugEditIconDialog from "@core/BugEditIconDialog";
-import {Button} from "@mui/material";;
-import {Box} from "@mui/material";;            
+import { Button, Box } from "@mui/material";
 
-export const MyBugEditIconDialog = (args) => {
-    const [result, setResult] = React.useState(null);
-    const [showDialog, setShowDialog] = React.useState(false);
+export default function MyComponent() {
+    const [result, setResult] = useState(null);
+    const [showDialog, setShowDialog] = useState(false);
 
-    const handleCancel = () => {
-        setShowDialog(false);
-    };
+    const handleCancel = () => setShowDialog(false);
 
     const handleSubmit = (icon, color) => {
         setShowDialog(false);
-        setResult(\`you have selected icon: \${icon} in color: \${color}\`);
+        setResult(\`Selected icon: \${icon} in color: \${color}\`);
     };
 
     return (
@@ -118,19 +37,87 @@ export const MyBugEditIconDialog = (args) => {
             <Button variant="contained" onClick={() => setShowDialog(true)}>
                 Show Dialog
             </Button>
-            <Box sx={{ margin: "1rem" }}>Result: {result}</Box>
+            <Box sx={{ mt: 2 }}>Result: {result}</Box>
             {showDialog && (
                 <BugEditIconDialog
                     icon="bugle"
                     color="#ff3822"
                     onCancel={handleCancel}
-                    onSubmit={(icon, color) => handleSubmit(icon, color)}
+                    onSubmit={handleSubmit}
                 />
             )}
         </>
     );
-};
-`,
+}`}
+                    />
+                    <Story />
+                    <Controls />
+                </>
+            ),
+            description: {
+                component: `A dialog for selecting icons. There's no hook for this one - instead you have to conditionally show it using your own logic and state.<br />
+                **Please Note**: The dialog icons are provided by the application API, and are therefore not available in this storybook environment.`,
+            },
         },
+        controls: { sort: "requiredFirst" },
+    },
+
+    args: {
+        icon: "bugle",
+        color: "#ff3822",
+    },
+
+    argTypes: {
+        icon: {
+            description: "Pre-select an icon by setting this prop",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "null" },
+            },
+        },
+        color: {
+            control: "color",
+            description: "Pre-select the color of the icons",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "#ffffff" },
+            },
+        },
+        onCancel: {
+            control: { disable: true },
+            description: "Handles when the cancel button is clicked or the dialog closed",
+            table: { type: { summary: "function" } },
+        },
+        onSubmit: {
+            control: { disable: true },
+            description: "Handles when the dialog OK button is clicked",
+            table: { type: { summary: "function" } },
+        },
+    },
+};
+
+export const Default = {
+    render: (args) => {
+        const [result, setResult] = useState(null);
+        const [showDialog, setShowDialog] = useState(false);
+
+        const handleCancel = () => setShowDialog(false);
+
+        const handleSubmit = (icon, color) => {
+            setShowDialog(false);
+            setResult(`you have selected icon: ${icon} in color: ${color}`);
+        };
+
+        return (
+            <div style={{ padding: "20px", maxWidth: "600px" }}>
+                <Button variant="contained" onClick={() => setShowDialog(true)}>
+                    Show Icon Dialog
+                </Button>
+                <Box sx={{ mt: 2, fontWeight: "bold" }}>
+                    Result: <span style={{ color: "#1976d2" }}>{result || "No selection yet"}</span>
+                </Box>
+                {showDialog && <BugEditIconDialog {...args} onCancel={handleCancel} onSubmit={handleSubmit} />}
+            </div>
+        );
     },
 };

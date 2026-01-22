@@ -7,11 +7,10 @@ const config = {
     addons: [
         "@storybook/addon-links",
         "@storybook/addon-essentials",
-        "@storybook/addon-interactions" // Recommended for SB8 + @storybook/test
+        "@storybook/addon-interactions"
     ],
 
     framework: {
-        // Updated to standard string format for SB8
         name: "@storybook/react-vite",
         options: {},
     },
@@ -31,11 +30,12 @@ const config = {
     },
 
     docs: {
-        autodocs: true
+        defaultName: 'Documentation',
+        autodocs: true,
+        docsMode: true,
     },
 
     typescript: {
-        // 'react-docgen' is significantly faster in SB8 than 'react-docgen-typescript'
         reactDocgen: "react-docgen"
     }
 };
