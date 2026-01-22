@@ -102,7 +102,7 @@ export default function ConfigPanel() {
                     fullWidth
                     error={errors?.satLongitude}
                     defaultValue={panelConfig.data.satLongitude}
-                    label="Satelite Longitude"
+                    label="Satellite Longitude"
                 />
             </Grid>
 
@@ -113,7 +113,7 @@ export default function ConfigPanel() {
                     fullWidth
                     error={errors?.satDirection}
                     defaultValue={panelConfig.data.satDirection}
-                    label="Satelite Direction"
+                    label="Satellite Direction"
                     rules={{ required: true }}
                     options={[
                         { id: "west", label: "West" },
