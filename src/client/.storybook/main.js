@@ -27,7 +27,6 @@ const config = {
             "@core": resolve(__dirname, "../src/core"),
         };
 
-        // FIX: correct base path for GitHub Pages repo site
         return mergeConfig(config, {
             base: "/bug/storybook/",
         });
@@ -36,6 +35,7 @@ const config = {
     docs: {
         defaultName: "Documentation",
         autodocs: true,
+        docsMode: true,
     },
 
     typescript: {
