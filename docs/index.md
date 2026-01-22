@@ -19,8 +19,12 @@ Run BUG on a server within your network and access it through a browser. From on
 
 ## Getting started
 
--   [Installation](./pages/installation) — Install BUG on any supported operating system
--   [Modules](./pages/modules) — See which devices and services can be controlled, and what functionality is available
+- [Installation](./pages/installation) — Install BUG on any supported operating system
+- [Modules](./pages/modules) — See which devices and services can be controlled, and what functionality is available
+
+## Component Library
+
+View the BUG **component library** (React components, panels, and UI elements) in [Storybook](/storybook/).
 
 ## Development
 
@@ -28,16 +32,16 @@ BUG is designed to be extended. We welcome [development](./pages/development) of
 
 A **module** typically represents a specific piece of hardware or service. For example:
 
--   a module for controlling Blackmagic Videohub matrices
--   a module for monitoring a NewTek NDI discovery service
+- a module for controlling Blackmagic Videohub matrices
+- a module for monitoring a NewTek NDI discovery service
 
 Each module can be instantiated one or more times as **panels** within the BUG interface, allowing multiple devices of the same type to be controlled simultaneously.
 
 To learn more about developing your own modules, see:
 
--   [Architecture](./pages/architecture.html)
--   [Project layout](./pages/development/layout.html)
--   [Coding style](./pages/development/style.html)
+- [Architecture](./pages/architecture.html)
+- [Project layout](./pages/development/layout.html)
+- [Coding style](./pages/development/style.html)
 
 ## Open source
 
