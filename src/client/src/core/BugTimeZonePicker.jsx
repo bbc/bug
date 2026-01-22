@@ -2,9 +2,18 @@ import { Autocomplete, TextField } from "@mui/material";
 import timezonesJSON from "timezones.json";
 
 export default function BugTimeZonePicker({ helperText, label, onChange, value, variant = "outlined", sx = {} }) {
+    const timezones = timezonesJSON.map((tz) => {
+        return { label: tz.text, id: tz.value };
+    });
+
     return (
         <Autocomplete
-            sx={sx}
+            sx={{
+                "& .MuiInputBase-root": {
+                    borderRadius: 0,
+                },
+                ...sx,
+            }}
             onChange={onChange}
             autoHighlight={true}
             value={value?.label}
@@ -13,5 +22,3 @@ export default function BugTimeZonePicker({ helperText, label, onChange, value, 
         />
     );
 }
-
-const timezones = JSON.parse(timezonesJSON);
