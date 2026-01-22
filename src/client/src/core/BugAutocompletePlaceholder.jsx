@@ -7,7 +7,12 @@ export default function BugAutocompletePlaceholder({ sx, value }) {
             value={value}
             options={[value]}
             renderInput={(params) => <TextField {...params} variant="outlined" />}
-            sx={sx}
+            sx={{
+                ".MuiInputBase-root": {
+                    borderRadius: 0,
+                },
+                ...sx,
+            }}
         />
     );
 }

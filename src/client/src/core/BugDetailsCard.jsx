@@ -56,7 +56,7 @@ function BugDetailsCard({
                 </IconButton>
             );
         }
-        return null;
+        return <Box sx={{ height: "40px" }}></Box>;
     };
 
     return (
@@ -81,7 +81,7 @@ function BugDetailsCard({
                             fontWeight: 500,
                             color: "text.primary",
                         },
-                        height: "50px",
+                        height: "32px",
                         padding: "8px 16px",
                         borderBottomWidth: "1px",
                         borderBottomStyle: "solid",
