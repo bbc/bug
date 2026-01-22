@@ -1,6 +1,7 @@
 import { resolve } from "path";
 import { mergeConfig } from "vite";
 
+/** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
     stories: ["../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))"],
 
@@ -26,15 +27,15 @@ const config = {
             "@core": resolve(__dirname, "../src/core"),
         };
 
+        // FIX: correct base path for GitHub Pages repo site
         return mergeConfig(config, {
-            base: "/storybook/",
+            base: "/bug/storybook/",
         });
     },
 
     docs: {
         defaultName: "Documentation",
         autodocs: true,
-        docsMode: true,
     },
 
     typescript: {
