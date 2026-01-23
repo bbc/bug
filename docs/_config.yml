@@ -1,4 +1,5 @@
-theme: just-the-docs
+#theme: just-the-docs
+remote_theme: just-the-docs/just-the-docs
 
 title: BBC BUG
 description: Broadcast Universal Gateway
