@@ -24,7 +24,7 @@ Run BUG on a server within your network and access it through a browser. From on
 
 ## Component Library
 
-View the BUG **component library** (React components, panels, and UI elements) in [Storybook](/bug/storybook/).
+View the BUG **component library** (React components, panels, and UI elements) in [Storybook](/bug/storybook/?path=/docs/bug-core-introduction--documentation).
 
 ## Development
 
