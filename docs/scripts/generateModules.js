@@ -4,7 +4,7 @@ import path from "path";
 
 const repoRoot = path.resolve(".");
 const srcModulesDir = path.join(repoRoot, "src/modules");
-const docsPagesModulesDir = path.join(repoRoot, "docs/pages/modules"); // build into /pages/modules
+const docsPagesModulesDir = path.join(repoRoot, "docs/pages/modules");
 const dataDir = path.join(repoRoot, "docs/_data");
 const sidebarFile = path.join(dataDir, "sidebar.yml");
 
