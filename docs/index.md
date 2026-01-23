@@ -15,12 +15,12 @@ BUG is a web-based system for **controlling and monitoring broadcast and media e
 
 Run BUG on a server within your network and access it through a browser. From one web page, you can add panels to control and observe a wide range of devices and services — including network switches, video and audio codecs, video matrices, and more.
 
-![BUG Home Screenshot](/bug/assets/images/screenshots/bug-home.png)
+![BUG Home Screenshot](./assets/images/screenshots/bug-home.png)
 
 ## Getting started
 
 - [Installation](./pages/installation) — Install BUG on any supported operating system
-- [Modules](./pages/modules) — See which devices and services can be controlled, and what functionality is available
+- [Modules](./modules) — See which devices and services can be controlled, and what functionality is available
 
 ## Component Library
 

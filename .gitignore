@@ -53,3 +53,14 @@ yarn-debug.log*
 yarn-error.log*
 
 TODO.md
+
+# docs
+
+docs/_data/sidebar.yml
+docs/pages/modules
+docs/pages/modules/**
+docs/_data
+docs/_site
+docs/_site/**
+docs/.jekyll-cache
+docs/.jekyll-cache/**
