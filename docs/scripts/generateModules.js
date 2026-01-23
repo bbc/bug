@@ -2,19 +2,19 @@ import fs from "fs";
 import yaml from "js-yaml";
 import path from "path";
 
-const srcModulesDir = path.resolve("../src/modules");
-const docsPagesModulesDir = path.resolve("pages/modules");
-const dataDir = path.resolve("_data");
+const repoRoot = path.resolve(".");
+const srcModulesDir = path.join(repoRoot, "src/modules");
+const docsPagesModulesDir = path.join(repoRoot, "docs/pages/modules"); // build into /pages/modules
+const dataDir = path.join(repoRoot, "docs/_data");
 const sidebarFile = path.join(dataDir, "sidebar.yml");
 
-//ensure _data exists
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+if (!fs.existsSync(docsPagesModulesDir)) fs.mkdirSync(docsPagesModulesDir, { recursive: true });
 
-// clear old modules pages
-if (fs.existsSync(docsPagesModulesDir)) {
-    fs.rmSync(docsPagesModulesDir, { recursive: true, force: true });
+if (!fs.existsSync(srcModulesDir)) {
+    console.warn(`modules folder not found at ${srcModulesDir}. skipping module generation.`);
+    process.exit(0);
 }
-fs.mkdirSync(docsPagesModulesDir, { recursive: true });
 
 function getModuleFolders(dir) {
     return fs
@@ -34,7 +34,6 @@ function copyFolder(src, dest) {
     }
 }
 
-// generate module pages and table data
 const moduleFolders = getModuleFolders(srcModulesDir);
 const tableRows = [];
 
@@ -43,7 +42,6 @@ for (const folder of moduleFolders) {
     const moduleDocsPath = path.join(docsPagesModulesDir, folder);
     fs.mkdirSync(moduleDocsPath, { recursive: true });
 
-    // Read module.json
     const metaFile = path.join(moduleSrcPath, "module.json");
     let meta = {};
     if (fs.existsSync(metaFile)) {
@@ -53,13 +51,12 @@ for (const folder of moduleFolders) {
     const title = meta.longname || meta.name || folder;
     const description = meta.description || "";
     const version = meta.version || "";
-    const status = meta.status || "development";
+    let status = meta.status || "development";
 
-    // Check if README exists
     const readmeFile = path.join(moduleSrcPath, "README.md");
     const hasContent = fs.existsSync(readmeFile);
 
-    // Copy README.md to index.md with front matter if exists
+    // copy readme to index.md if it exists
     if (hasContent) {
         const frontMatter = `---
 title: "${title}"
@@ -72,11 +69,9 @@ nav_exclude: true
         const content = fs.readFileSync(readmeFile, "utf8");
         fs.writeFileSync(path.join(moduleDocsPath, "index.md"), frontMatter + content, "utf8");
 
-        // Copy assets
         copyFolder(path.join(moduleSrcPath, "assets"), path.join(moduleDocsPath, "assets"));
     }
 
-    // add row for Modules table
     tableRows.push({
         name: title,
         url: hasContent ? `/pages/modules/${folder}/` : null,
@@ -86,10 +81,9 @@ nav_exclude: true
     });
 }
 
-// generate Modules index page with table ---
+// generate modules index page with table
 const modulesIndexPath = path.join(docsPagesModulesDir, "index.md");
 
-// updated status colors and text color
 const statusColors = {
     development: "#2167d2",
     beta: "#b76600",
@@ -100,10 +94,9 @@ const statusColors = {
 
 const tableMarkdown = tableRows.map(row => {
     const nameCell = row.url ? `[${row.name}](${row.url})` : row.name;
-    const statusKey = row.status;
-    const statusColor = statusColors[statusKey] || "gray";
+    const statusColor = statusColors[row.status] || "#5f5f5f";
 
-    return `| ${nameCell} | ${row.description} | ${row.version} | <span style="display:inline-block;padding:0.15em 0.5em;background-color:${statusColor};border-radius:4px;">${statusKey}</span> |`;
+    return `| ${nameCell} | ${row.description} | ${row.version} | <span style="display:inline-block;padding:0.15em 0.5em;background-color:${statusColor};color:black;border-radius:4px;">${row.status}</span> |`;
 });
 
 const indexContent = `---
@@ -114,7 +107,7 @@ permalink: /pages/modules/
 ---
 # Modules
 
-Below is a list of all available modules:
+below is a list of all available modules:
 
 | Name | Description | Version | Status |
 |------|-------------|---------|--------|
@@ -123,13 +116,14 @@ ${tableMarkdown.join("\n")}
 
 fs.writeFileSync(modulesIndexPath, indexContent, "utf8");
 
-// generate sidebar.yml
+// generate sidebar with only parent modules heading
 const sidebar = [
     {
         title: "Documentation",
         children: [
             {
                 title: "Modules",
+                url: null,
                 children: [],
             },
         ],
@@ -138,8 +132,7 @@ const sidebar = [
 
 fs.writeFileSync(sidebarFile, yaml.dump(sidebar, { noRefs: true }), "utf8");
 
-// verification output
-console.log("\n\n - Sidebar structure:");
-console.log(`   - Modules index page generated at ${modulesIndexPath}`);
-console.log("   - Module pages generated in " + docsPagesModulesDir);
-console.log(" - Done\n");
+console.log("modules index page generated at:", modulesIndexPath);
+console.log("module pages generated in:", docsPagesModulesDir);
+console.log("sidebar written to:", sidebarFile);
+console.log("all done");
