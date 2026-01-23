@@ -17,7 +17,8 @@
         "install-all": "npm install",
         "modulebuilder": "node ./src/modulebuilder/cli.mjs",
         "format:check": "prettier --check .",
-        "format:write": "prettier --write ."
+        "format:write": "prettier --write .",
+        "docs:serve": "cd docs && node scripts/generateModules.js && RUBYOPT='-W0' bundle exec jekyll serve --livereload"
     },
     "nodemonConfig": {
         "ignore": [

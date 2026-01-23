@@ -1,13 +1,6 @@
----
-title: mikrotik-sdwan
-sidebar_label: Mikrotik SD-WAN
----
-
----
-
 # <ModuleName>
 
-![<ModuleName> diagram](./assets/diagram.png)
+![Screenshot](./assets/screenshot.png)
 
 ## Overview
 

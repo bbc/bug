@@ -42,10 +42,10 @@ async function buildModule(moduleName) {
 
 Log levels you can use:
 
--   logger.info() — Informational messages about normal operations
--   logger.warn() — Warnings about recoverable issues
--   logger.error() — Serious errors that may affect functionality
--   logger.debug() — Detailed debugging information (optional, for development)
+- logger.info() — Informational messages about normal operations
+- logger.warn() — Warnings about recoverable issues
+- logger.error() — Serious errors that may affect functionality
+- logger.debug() — Detailed debugging information (optional, for development)
 
 # Viewing logs
 
@@ -55,8 +55,8 @@ Logs are written to the console, so in Docker you can view them using:
 docker logs <container_name>
 ```
 
--   Replace `<container_name>` with the name of your BUG container.
--   Logs can also be tailed in real time:
+- Replace `<container_name>` with the name of your BUG container.
+- Logs can also be tailed in real time:
 
 ```
 docker logs -f <container_name>
@@ -66,8 +66,8 @@ While the BUG UI can display logs for convenience, the command line is the prima
 
 # Best practices
 
--   Always log at the start and end of major operations
--   Only debug log (if at all) for regularly called endpoints or services (get/list etc)
--   Include relevant identifiers (module name, panel ID, etc.)
--   Don’t swallow errors — log them and throw them to propagate to the API layer
--   Use structured messages when possible for easier parsing and filtering
+- Always log at the start and end of major operations
+- Only debug log (if at all) for regularly called endpoints or services (get/list etc)
+- Include relevant identifiers (module name, panel ID, etc.)
+- Don’t swallow errors — log them and throw them to propagate to the API layer
+- Use structured messages when possible for easier parsing and filtering
