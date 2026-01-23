@@ -93,7 +93,9 @@ const statusColors = {
 };
 
 const tableMarkdown = tableRows.map(row => {
-    const nameCell = row.url ? `[${row.name}](${row.url})` : row.name;
+    const nameCell = row.url
+        ? `[${row.name}]({{ site.baseurl }}${row.url})`
+        : row.name;
     const statusColor = statusColors[row.status] || "#5f5f5f";
 
     return `| ${nameCell} | ${row.description} | ${row.version} | <span style="display:inline-block;padding:0.15em 0.5em;background-color:${statusColor};color:black;border-radius:4px;">${row.status}</span> |`;
