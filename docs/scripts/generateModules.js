@@ -60,7 +60,6 @@ for (const folder of moduleFolders) {
     if (hasContent) {
         const frontMatter = `---
 title: "${title}"
-layout: page
 description: "${description}"
 permalink: /pages/modules/${folder}/
 nav_exclude: true
@@ -103,7 +102,6 @@ const tableMarkdown = tableRows.map(row => {
 
 const indexContent = `---
 title: "Modules"
-layout: page
 description: "List of all modules"
 permalink: /pages/modules/
 ---

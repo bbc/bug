@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Linux
 parent: Installation
 nav_order: 1
@@ -153,8 +152,8 @@ This layout allows configuration and logs to be backed up or migrated without ac
 
 ## Security Notes
 
--   Change `SESSION_SECRET` to a strong, unique value before running BUG in production.
--   Do not expose BUG directly to the internet without additional protection.
--   If BUG must be publicly accessible, place it behind a reverse proxy and enable TLS.
--   Restrict access to the Docker socket where possible, as it grants elevated control over the host.
--   Limit network access to MongoDB so it is not exposed outside the Docker network.
+- Change `SESSION_SECRET` to a strong, unique value before running BUG in production.
+- Do not expose BUG directly to the internet without additional protection.
+- If BUG must be publicly accessible, place it behind a reverse proxy and enable TLS.
+- Restrict access to the Docker socket where possible, as it grants elevated control over the host.
+- Limit network access to MongoDB so it is not exposed outside the Docker network.

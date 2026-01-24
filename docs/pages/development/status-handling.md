@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Status Handling
 parent: Development
 nav_order: 2

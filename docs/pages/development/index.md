@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Development
 nav_order: 4
 has_children: true
@@ -34,7 +33,7 @@ Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used f
 
 ## Troubleshooting
 
--   The `-d` in the command `docker compose -d` deataches the process from the terminal running the container in the background.
--   If you're getting Docker related 'permission denied' errors, make sure you've run the Docker [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/) on Linux.
--   If you're developing on a linux OS you may see errors on the main bug container logs regarding file write permission. This can be solved by giving the docker group read write permissions on the repository directory.
--   If using a linux machine for development it's suggested that [docker engine](https://docs.docker.com/engine/install/ubuntu/) is used rather than docker desktop.
+- The `-d` in the command `docker compose -d` deataches the process from the terminal running the container in the background.
+- If you're getting Docker related 'permission denied' errors, make sure you've run the Docker [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/) on Linux.
+- If you're developing on a linux OS you may see errors on the main bug container logs regarding file write permission. This can be solved by giving the docker group read write permissions on the repository directory.
+- If using a linux machine for development it's suggested that [docker engine](https://docs.docker.com/engine/install/ubuntu/) is used rather than docker desktop.

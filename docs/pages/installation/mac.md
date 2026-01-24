@@ -1,5 +1,4 @@
 ---
-layout: page
 title: MacOS
 parent: Installation
 nav_order: 3
@@ -135,8 +134,8 @@ This structure makes it easy to back up, migrate, or inspect configuration and l
 
 ## Security Notes
 
--   Change `SESSION_SECRET` to a strong, unique value before running in production.
--   Do not expose BUG directly to the internet without protection.
--   If public access is required, place BUG behind a reverse proxy and enable TLS.
--   Restrict access to the Docker socket where possible.
--   Limit network exposure of MongoDB to the Docker network only.
+- Change `SESSION_SECRET` to a strong, unique value before running in production.
+- Do not expose BUG directly to the internet without protection.
+- If public access is required, place BUG behind a reverse proxy and enable TLS.
+- Restrict access to the Docker socket where possible.
+- Limit network exposure of MongoDB to the Docker network only.

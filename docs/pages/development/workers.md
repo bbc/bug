@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Workers
 parent: Development
 nav_order: 2
@@ -15,17 +14,17 @@ Any JavaScript file placed inside a `workers` folder at the root of a module wil
 
 ## Worker Structure
 
--   Each task should be implemented as a **separate worker file**. This keeps code modular and avoids a single worker consuming excessive memory.
--   Workers receive a `workerData` object from the Worker Manager, which usually includes the panel ID and any configuration or parameters the worker needs.
--   Use `async/await` where possible to simplify asynchronous operations.
--   Include `console.log` statements for debugging, but use structured messages so logs are clear and searchable.
+- Each task should be implemented as a **separate worker file**. This keeps code modular and avoids a single worker consuming excessive memory.
+- Workers receive a `workerData` object from the Worker Manager, which usually includes the panel ID and any configuration or parameters the worker needs.
+- Use `async/await` where possible to simplify asynchronous operations.
+- Include `console.log` statements for debugging, but use structured messages so logs are clear and searchable.
 
 ---
 
 ## Lifecycle and Error Handling
 
--   Workers are automatically restarted if they fail unexpectedly.
--   Always wrap main logic in a `try/catch` block. Log errors and rethrow or let the Worker Manager handle the restart. For example:
+- Workers are automatically restarted if they fail unexpectedly.
+- Always wrap main logic in a `try/catch` block. Log errors and rethrow or let the Worker Manager handle the restart. For example:
 
 ```
 
@@ -39,23 +38,23 @@ throw error; // Worker Manager will restart
 
 ```
 
--   Be mindful of polling intervals and avoid overwhelming the database or external device.
+- Be mindful of polling intervals and avoid overwhelming the database or external device.
 
 ---
 
 ## Cross-Panel Data Access
 
--   Workers can fetch data from other panels if needed, but always use **API calls to the other panel** rather than accessing its database directly.
--   This ensures **isolation** between panels and avoids race conditions or database corruption.
+- Workers can fetch data from other panels if needed, but always use **API calls to the other panel** rather than accessing its database directly.
+- This ensures **isolation** between panels and avoids race conditions or database corruption.
 
 ---
 
 ## Best Practices
 
--   Keep each worker **focused on a single responsibility**.
--   Avoid long-running synchronous operations; prefer asynchronous functions.
--   Use TTLs for any temporary data stored in the database to prevent stale entries.
--   Test workers independently before deploying them in a module container.
+- Keep each worker **focused on a single responsibility**.
+- Avoid long-running synchronous operations; prefer asynchronous functions.
+- Use TTLs for any temporary data stored in the database to prevent stale entries.
+- Test workers independently before deploying them in a module container.
 
 ---
 

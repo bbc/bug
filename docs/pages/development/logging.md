@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Logging
 parent: Development
 nav_order: 3

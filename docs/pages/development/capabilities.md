@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Capabilities
 parent: Development
 nav_order: 2
@@ -18,7 +17,7 @@ This capability is used primary for network routers which provide DHCP servers. 
 
 `/container/{panelid}/capabilities/dhcp-server/`
 
--   lists all DHCP leases on the server, with the following fields:
+- lists all DHCP leases on the server, with the following fields:
 
 | Field    | Description                        |
 | -------- | ---------------------------------- |
@@ -35,7 +34,7 @@ This capability is used primary for video routers. It can be used to provide rou
 
 `/container/{panelid}/capabilities/video-router/`
 
--   lists an array containing all routes on the video router with the following fields:
+- lists an array containing all routes on the video router with the following fields:
 
 | Field       | Description                                  |
 | ----------- | -------------------------------------------- |

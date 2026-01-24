@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Upgrading
 nav_order: 7
 has_children: false
@@ -16,16 +15,13 @@ BUG is updated via Docker and the command line.
 Before upgrading a production instance, it is recommended to:
 
 1. Backup all configuration and panel data
-
     - Copy the `./config` and `./logs` folders to a safe location.
     - These are mounted outside the container, so backups are straightforward.
 
 2. Stop any non-essential panels or modules (optional)
-
     - If your deployment has many panels or heavy workloads, stopping them reduces the chance of in-flight data issues.
 
 3. Review the changelog for the target BUG version
-
     - Check for breaking changes that may affect your panel configs or module setups.
 
 4. Test the upgrade in a development or staging environment first if possible
@@ -83,8 +79,8 @@ The containers will be restarted using the specified version.
 
 After upgrading the BUG core, the UI will indicate if any module types have newer images available.
 
--   The panel list will show an upgrade notice for modules with a new version.
--   Upgrading a module type will update **all instances** of that module type across your BUG instance.
--   You can initiate the upgrade from the panel list in the UI.
+- The panel list will show an upgrade notice for modules with a new version.
+- Upgrading a module type will update **all instances** of that module type across your BUG instance.
+- You can initiate the upgrade from the panel list in the UI.
 
 > Note: Module upgrades do not affect your panel configurations, but it is recommended to review module-specific changelogs before upgrading, especially for modules that handle critical equipment.

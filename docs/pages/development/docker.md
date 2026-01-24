@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Docker
 parent: Development
 nav_order: 10

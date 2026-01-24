@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Error Handling
 parent: Development
 nav_order: 2
