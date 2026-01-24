@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Security
 nav_order: 5
 has_children: true
@@ -25,10 +24,10 @@ Before enabling security, make sure to add users via `/system/users`.
 
 BUG ships with a default user account:
 
--   Name: `Admin`
--   Email: `bug@bbc.co.uk`
--   Pin: `1234`
--   Password: `admin`
+- Name: `Admin`
+- Email: `bug@bbc.co.uk`
+- Pin: `1234`
+- Password: `admin`
 
 All users are stored as JSON files in `./config/global/user.json`. You can edit this file directly if you lose access to the frontend.
 
@@ -60,6 +59,6 @@ Example default user JSON:
 
 ## Security Methods
 
--   [Local Authentication](/bug/pages/security/local)
--   [PIN Authentication](/bug/pages/security/pin)
--   [HTTP Proxy / SSO](/bug/pages/security/proxy)
+- [Local Authentication](/bug/pages/security/local)
+- [PIN Authentication](/bug/pages/security/pin)
+- [HTTP Proxy / SSO](/bug/pages/security/proxy)

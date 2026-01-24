@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Panels
 parent: Development
 nav_order: 2
@@ -47,7 +46,7 @@ When a panel is disabled:
 
 ## Notes on Panel Management
 
--   Each panel runs in a separate Docker container, isolating it from other panels and the main BUG server.
--   Dockerode is used for all container operations (build, create, start, stop, remove).
--   Panel enable/disable logic ensures that containers are only running when needed, improving scalability and performance.
--   The UI does not communicate directly with containers for startup — all interactions happen through the main server API.
+- Each panel runs in a separate Docker container, isolating it from other panels and the main BUG server.
+- Dockerode is used for all container operations (build, create, start, stop, remove).
+- Panel enable/disable logic ensures that containers are only running when needed, improving scalability and performance.
+- The UI does not communicate directly with containers for startup — all interactions happen through the main server API.

@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Live Validation
 parent: Development
 nav_order: 2

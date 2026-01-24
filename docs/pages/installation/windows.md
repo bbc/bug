@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Windows
 parent: Installation
 nav_order: 4
@@ -143,6 +142,6 @@ This makes it easy to back up, migrate, or inspect configuration and logs withou
 
 ## Security Notes
 
--   Exposing the Docker TCP socket is a security risk. Only do this on a trusted network.
--   Change `SESSION_SECRET` to a strong, unique value.
--   Do not expose BUG directly to the internet without a reverse proxy and TLS.
+- Exposing the Docker TCP socket is a security risk. Only do this on a trusted network.
+- Change `SESSION_SECRET` to a strong, unique value.
+- Do not expose BUG directly to the internet without a reverse proxy and TLS.

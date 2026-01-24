@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Installation
 nav_order: 2
 has_children: true
@@ -23,15 +22,15 @@ https://bbc.github.io/bug/pages/development
 
 BUG can be installed on the following platforms:
 
--   Windows
--   macOS
--   Linux
+- Windows
+- macOS
+- Linux
 
 Detailed installation steps for each platform are available in the pages below:
 
--   https://bbc.github.io/bug/pages/installation/windows.html
--   https://bbc.github.io/bug/pages/installation/mac.html
--   https://bbc.github.io/bug/pages/installation/linux.html
+- https://bbc.github.io/bug/pages/installation/windows.html
+- https://bbc.github.io/bug/pages/installation/mac.html
+- https://bbc.github.io/bug/pages/installation/linux.html
 
 ---
 
@@ -70,4 +69,4 @@ Once created, the panel will appear in the toolbar and become available in the U
 
 If you encounter problems during installation or startup, see:
 
--   https://bbc.github.io/bug/pages/installation/troubleshooting.html
+- https://bbc.github.io/bug/pages/installation/troubleshooting.html

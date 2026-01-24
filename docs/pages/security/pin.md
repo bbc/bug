@@ -1,5 +1,4 @@
 ---
-layout: page
 title: Pin
 parent: Security
 nav_order: 2
@@ -15,7 +14,7 @@ PIN authentication is primarily designed to provide a lightweight way for users 
 
 By default, access is restricted to the following network ranges:
 
--   `192.168.0.0/24`
--   `127.0.0.0/8`
+- `192.168.0.0/24`
+- `127.0.0.0/8`
 
 To allow users from other networks to log in using PIN authentication, update the source address filter list in the configuration.
