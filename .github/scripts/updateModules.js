@@ -31,13 +31,13 @@ modules.forEach(moduleName => {
     }
 
     // fetch new commits for this module
-    const gitRange = lastCommitHash ? `${lastCommitHash}..HEAD` : 'HEAD~50..HEAD'
     let gitLog = ''
     try {
         gitLog = execSync(
             `git log --pretty=format:"%H|%ad|%s" --date=short ${lastCommitHash ? lastCommitHash + '..HEAD' : ''} -- src/modules/${moduleName}`,
             { encoding: 'utf-8' }
         );
+        console.log(` - found ${gitLog.split('\n').length} total commit(s) in git`)
     } catch (err) {
         console.log(` - no new commits`)
         return
@@ -59,10 +59,11 @@ modules.forEach(moduleName => {
         .filter(Boolean)
 
     if (!commits.length) {
-        console.log(` - no tagged commits`)
+        console.log(` - no new commits to process`)
         return
     }
 
+    console.log(` - found ${commits.length} commit(s) to process`)
 
     // read module.json and bump version
     if (!fs.existsSync(moduleJsonFile)) {
