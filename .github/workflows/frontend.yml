@@ -6,9 +6,9 @@ on:
     push:
         branches:
             - "**"
-        paths-ignore:
-            - "**/README.md"
-            - "docs/**"
+        paths:
+            - "src/client/**"
+            - "src/modules/**"
     pull_request:
         branches:
             - "main"
