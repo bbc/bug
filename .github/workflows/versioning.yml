@@ -35,10 +35,10 @@ jobs:
 
             # update module changelogs and bump module.json versions
             - name: update module changelogs
-              run: node scripts/update-changelogs.js
+              run: node .github/scripts/updateModules.js
 
-            # commit any changes from update-changelogs.js
-            - name: commit changelog changes
+            # commit any changes from updateModules.js
+            - name: commit changelog/module changes
               run: |
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
