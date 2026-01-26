@@ -26,7 +26,7 @@ module.exports = async () => {
         const managedLeases = (dbDhcpLeases || []).filter(d => d.isManaged === true);
 
         // return empty array if no managed leases exist
-        if (dbDhcpLeases.length === 0) return [];
+        if (dbDhcpLeases?.length === 0) return [];
 
         // create a map for list items metadata
         const listItemMap = new Map(dbListItems?.map(i => [i.address, i]));
