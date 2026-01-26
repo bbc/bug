@@ -55,7 +55,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: "/"
               with:
-                  commit-message: "CI: bumps backend version to {{version}}"
+                  commit-message: "ci: bump backend version to {{version}}"
                   skip-tag: "true"
                   skip-push: "false"
                   target-branch: "main"
@@ -71,7 +71,7 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: "/src/client"
               with:
-                  commit-message: "CI: bumps frontend version to {{version}}"
+                  commit-message: "ci: bump frontend version to {{version}}"
                   skip-tag: "true"
                   skip-push: "false"
                   target-branch: "main"
