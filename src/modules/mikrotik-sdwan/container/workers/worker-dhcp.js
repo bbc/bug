@@ -39,7 +39,7 @@ const main = async () => {
 
         console.log("worker-dhcp: starting device poll....");
 
-        // loop until an error occurs, then exit so the manager restarts the thread
+        // loop until an error occurs, then exit so the manager restarts the thread.
         while (true) {
             try {
                 // fetch and update leases
