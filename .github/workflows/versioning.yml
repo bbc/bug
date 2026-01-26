@@ -8,7 +8,7 @@ on:
             - "src/server/**"
             - "src/client/**"
             - "src/modules/**"
-    workflow_dispatch: # Optional manual trigger
+    workflow_dispatch:
 
 permissions:
     contents: write
@@ -18,50 +18,54 @@ jobs:
     version:
         runs-on: ubuntu-latest
         steps:
-            # Checkout code first
-            - name: Checkout repository
+            # checkout code first
+            - name: checkout repository
               uses: actions/checkout@v6
 
-            # Setup Node (needed if you run npm commands)
-            - name: Setup Node
+            # setup node
+            - name: setup node
               uses: actions/setup-node@v3
               with:
                   node-version: 20
                   cache: npm
 
-            # Install dependencies (if needed for any scripts)
-            - name: Install dependencies
+            # install dependencies
+            - name: install dependencies
               run: npm ci
 
-            # Backend version bump
-            - name: "Backend: Automated Version Bump"
-              uses: "phips28/gh-action-bump-version@master"
+            # update module versions and changelogs
+            - name: update module versions and changelogs
+              run: node scripts/updateModules.js
+
+            # backend version bump
+            - name: "backend: automated version bump"
+              uses: phips28/gh-action-bump-version@master
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: "/"
               with:
                   commit-message: "CI: bumps backend version to {{version}}"
                   skip-tag: "true"
-                  skip-push: "false" # now actually commits & pushes
+                  skip-push: "false"
                   target-branch: "main"
                   minor-wording: "Minor:"
                   major-wording: "Major:"
                   rc-wording: "RELEASE,alpha"
                   tag-prefix: "v"
 
-            # Frontend version bump
-            - name: "Frontend: Automated Version Bump"
-              uses: "phips28/gh-action-bump-version@master"
+            # frontend version bump
+            - name: "frontend: automated version bump"
+              uses: phips28/gh-action-bump-version@master
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PACKAGEJSON_DIR: "/src/client"
               with:
                   commit-message: "CI: bumps frontend version to {{version}}"
                   skip-tag: "true"
-                  skip-push: "false" # commits & pushes
+                  skip-push: "false"
                   target-branch: "main"
                   minor-wording: "Minor:"
                   major-wording: "Major:"
                   rc-wording: "RELEASE,alpha"
                   tag-prefix: "v"
-                  bump-policy: "auto" # now it can actually bump
+                  bump-policy: "auto"
