@@ -1,5 +1,4 @@
 const { Server } = require("socket.io");
-const logger = require("@utils/logger")(module);
 
 const containerHandler = require("@sockets/container");
 const panelListHandler = require("@sockets/panel-list");

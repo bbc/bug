@@ -2,7 +2,7 @@ import PageLogin from "@components/pages/PageLogin";
 import PageRouter from "@components/pages/PageRouter";
 import BugLoading from "@core/BugLoading";
 import { useSelector } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 const AuthRouter = () => {
     const user = useSelector((state) => state.user);
@@ -18,9 +18,9 @@ const AuthRouter = () => {
 
     if (enabledStrategiesCount === 0) {
         return (
-            <Router>
+            <BrowserRouter>
                 <PageRouter />
-            </Router>
+            </BrowserRouter>
         );
     }
 
@@ -31,9 +31,9 @@ const AuthRouter = () => {
 
     if (user.data && user.data.id !== null) {
         return (
-            <Router>
+            <BrowserRouter>
                 <PageRouter />
-            </Router>
+            </BrowserRouter>
         );
     }
 

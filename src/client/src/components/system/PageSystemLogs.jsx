@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
-import LogTable from "@components/system/LogTable";
-import { useDispatch } from "react-redux";
+import LogStream from "@components/system/LogStream";
 import pageTitleSlice from "@redux/pageTitleSlice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 export default function PageSystemLogs() {
     const dispatch = useDispatch();
@@ -19,9 +18,5 @@ export default function PageSystemLogs() {
         dispatch(pageTitleSlice.actions.set(title));
     }, [dispatch, panel]);
 
-    return (
-        <>
-            <LogTable panelId={panelId} level={"action"} />
-        </>
-    );
+    return <LogStream panelId={panelId} level={"action"} />;
 }

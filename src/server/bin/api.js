@@ -27,6 +27,7 @@ const userRouter = require("@routes/user");
 const loginRouter = require("@routes/login");
 const logoutRouter = require("@routes/logout");
 const strategyRouter = require("@routes/strategy");
+const logRouter = require("@routes/log");
 
 const bugApi = express();
 
@@ -76,6 +77,7 @@ bugApi.use("/api/bug", bugRouter);
 bugApi.use("/api/login", loginRouter);
 bugApi.use("/api/logout", logoutRouter);
 bugApi.use("/api/strategy", strategyRouter);
+bugApi.use("/api/log", logRouter);
 
 // redirect root API path
 bugApi.get("/api", (req, res) => {
