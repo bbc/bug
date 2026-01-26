@@ -26,53 +26,44 @@ jobs:
               uses: actions/checkout@v6
 
             # setup node
-            - name: Setup node
+            - name: setup node
               uses: actions/setup-node@v3
               with:
                   node-version: 20
                   cache: npm
 
             # install dependencies
-            - name: Install dependencies
+            - name: install dependencies
               run: npm ci
 
             # set build timestamp
-            - name: Set build timestamp
+            - name: set build timestamp
               run: echo "timestamp=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
 
             # get backend version
-            - name: Get backend version
+            - name: get backend version
               id: backend-version
               uses: martinbeentjes/npm-get-version-action@v1.1.0
               with:
                   path: ./
 
-            # get frontend version
-            - name: Get frontend version
-              id: frontend-version
-              uses: martinbeentjes/npm-get-version-action@v1.1.0
-              with:
-                  path: ./src/client
-
-            # print current versions
-            - name: Print current versions
-              run: |
-                  echo "backend version: ${{ steps.backend-version.outputs.current-version }}"
-                  echo "frontend version: ${{ steps.frontend-version.outputs.current-version }}"
+            # print version
+            - name: print backend version
+              run: echo "building server image with version ${{ steps.backend-version.outputs.current-version }}"
 
             # setup qemu for multi-platform builds
-            - name: Set up qemu
+            - name: set up qemu
               uses: docker/setup-qemu-action@v3
 
             # setup docker buildx
-            - name: Set up docker buildx
+            - name: set up docker buildx
               id: buildx
               uses: docker/setup-buildx-action@v3
               with:
                   buildkitd-flags: --debug
 
-            # login to ghcr
-            - name: Login to ghcr
+            # login to GHCR
+            - name: login to ghcr
               uses: docker/login-action@v3
               with:
                   registry: ${{ env.registry }}
@@ -80,14 +71,8 @@ jobs:
                   password: ${{ secrets.GITHUB_TOKEN }}
                   logout: false
 
-            # define a single release tag based on backend version
-            - name: Set release tag
-              id: release
-              run: |
-                  echo "release_tag=v${{ steps.backend-version.outputs.current-version }}" >> $GITHUB_ENV
-
-            # build and push backend image
-            - name: Build and push backend image
+            # build and push server image
+            - name: build and push server image
               uses: docker/build-push-action@v6
               with:
                   context: "."
@@ -95,30 +80,11 @@ jobs:
                   platforms: linux/amd64
                   push: true
                   tags: |
-                      ${{ env.registry }}/${{ github.repository_owner }}/bug-backend:${{ env.release_tag }}
-                      ${{ env.registry }}/${{ github.repository_owner }}/bug-backend:latest
+                      ${{ env.registry }}/${{ github.repository_owner }}/bug:${{ steps.backend-version.outputs.current-version }}
+                      ${{ env.registry }}/${{ github.repository_owner }}/bug:latest
                   labels: |
                       author=${{ github.actor }}
-                      version=${{ env.release_tag }}
-                      org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
-                      uk.co.bbc.bug.build.timestamp=${{ env.timestamp }}
-                      uk.co.bbc.bug.build.number=${{ github.run_number }}
-                      uk.co.bbc.bug.build.commit=${{ github.sha }}
-
-            # build and push frontend image
-            - name: Build and push frontend image
-              uses: docker/build-push-action@v6
-              with:
-                  context: ./src/client
-                  file: ./src/client/Dockerfile
-                  platforms: linux/amd64
-                  push: true
-                  tags: |
-                      ${{ env.registry }}/${{ github.repository_owner }}/bug-frontend:${{ env.release_tag }}
-                      ${{ env.registry }}/${{ github.repository_owner }}/bug-frontend:latest
-                  labels: |
-                      author=${{ github.actor }}
-                      version=${{ env.release_tag }}
+                      version=${{ steps.backend-version.outputs.current-version }}
                       org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
                       uk.co.bbc.bug.build.timestamp=${{ env.timestamp }}
                       uk.co.bbc.bug.build.number=${{ github.run_number }}
