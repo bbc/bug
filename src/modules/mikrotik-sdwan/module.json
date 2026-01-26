@@ -4,7 +4,7 @@
     "description": "Multiple WAN manager for Mikrotik routers",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "AltRoute",
     "author": "Geoff House",
     "license": "Apache-2.0",
