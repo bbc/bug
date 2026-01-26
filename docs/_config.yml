@@ -1,7 +1,7 @@
-# theme: just-the-docs
 remote_theme: just-the-docs/just-the-docs
 
 title: BBC BUG
+layout: page
 description: Broadcast Universal Gateway
 logo: "/assets/images/logo.png"
 favicon_ico: "/assets/images/favicon.ico"
