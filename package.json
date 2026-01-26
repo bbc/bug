@@ -18,7 +18,7 @@
         "modulebuilder": "node ./src/modulebuilder/cli.mjs",
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
-        "docs:serve": "cd docs && node scripts/generateModules.js && RUBYOPT='-W0' bundle exec jekyll serve --livereload"
+        "docs:serve": "cd docs && node scripts/generateModules.js && RUBYOPT='-W0' bundle exec jekyll serve --livereload --config _config.yml,_config.local.yml"
     },
     "nodemonConfig": {
         "ignore": [
