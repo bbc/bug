@@ -3,67 +3,76 @@ env:
     registry: "ghcr.io"
 
 on:
+    workflow_run:
+        workflows: ["Version Bump"]
+        types:
+            - completed
     workflow_dispatch:
-    push:
-        branches:
-            - main
-        tags:
-            - "v*"
-        paths:
-            - "package*.json"
-            - "src/client/**"
-            - "src/modules/**"
-            - "src/server/**"
+
+permissions:
+    contents: read
+    packages: write
 
 jobs:
     docker:
         runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            packages: write
         defaults:
             run:
                 working-directory: ./src/server
+
         steps:
-            # get the latest version of the repository
-            - name: Checkout
+            # checkout the repository at the latest commit
+            - name: checkout repository
               uses: actions/checkout@v6
-            - uses: actions/setup-node@v6
 
-            # get current date and time for build
-            - name: Set current date and time as an environment variable
+            # setup node
+            - name: Setup node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+                  cache: npm
+
+            # install dependencies
+            - name: Install dependencies
+              run: npm ci
+
+            # set build timestamp
+            - name: Set build timestamp
               run: echo "timestamp=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-            - name: Print current date and time
-              run: echo ${{ env.timestamp }}
 
-            # get the package.json version
-            - uses: martinbeentjes/npm-get-version-action@master
-              name: Get Backend Version
+            # get backend version
+            - name: Get backend version
               id: backend-version
+              uses: martinbeentjes/npm-get-version-action@v1.1.0
               with:
                   path: ./
-            - uses: martinbeentjes/npm-get-version-action@master
-              name: Get Frontend Version
+
+            # get frontend version
+            - name: Get frontend version
               id: frontend-version
+              uses: martinbeentjes/npm-get-version-action@v1.1.0
               with:
                   path: ./src/client
 
-            - name: Print Current Versions
-              run: echo Building BUG with backend version ${{ steps.backend-version.outputs.current-version }} and frontend version ${{ steps.frontend-version.outputs.current-version }}
+            # print current versions
+            - name: Print current versions
+              run: |
+                  echo "backend version: ${{ steps.backend-version.outputs.current-version }}"
+                  echo "frontend version: ${{ steps.frontend-version.outputs.current-version }}"
 
-            # docker buildx setup
-            - name: Set up QEMU
+            # setup qemu for multi-platform builds
+            - name: Set up qemu
               uses: docker/setup-qemu-action@v3
-            - name: Set up Docker Buildx
+
+            # setup docker buildx
+            - name: Set up docker buildx
               id: buildx
               uses: docker/setup-buildx-action@v3
               with:
                   buildkitd-flags: --debug
-            - name: List available platforms
-              run: echo ${{ steps.buildx.outputs.platforms }}
 
-            # docker registry login
-            - name: Login to GHCR Registry
+            # login to ghcr
+            - name: Login to ghcr
               uses: docker/login-action@v3
               with:
                   registry: ${{ env.registry }}
@@ -71,26 +80,46 @@ jobs:
                   password: ${{ secrets.GITHUB_TOKEN }}
                   logout: false
 
-            # docker build image and push to registry
-            - name: Build and push to registry
+            # define a single release tag based on backend version
+            - name: Set release tag
+              id: release
+              run: |
+                  echo "release_tag=v${{ steps.backend-version.outputs.current-version }}" >> $GITHUB_ENV
+
+            # build and push backend image
+            - name: Build and push backend image
               uses: docker/build-push-action@v6
               with:
                   context: "."
                   file: ./src/server/Dockerfile
                   platforms: linux/amd64
-                  push: ${{ github.event_name != 'pull_request' }}
+                  push: true
                   tags: |
-                      ${{ steps.backend-version.outputs.current-version != '' && format('{0}/{1}/bug:{2}', env.registry, github.repository_owner, steps.backend-version.outputs.current-version) || '' }}
-                      ${{ github.ref == 'refs/heads/main' && format('{0}/{1}/bug:latest', env.registry, github.repository_owner) || '' }}
-                  outputs: type=registry
+                      ${{ env.registry }}/${{ github.repository_owner }}/bug-backend:${{ env.release_tag }}
+                      ${{ env.registry }}/${{ github.repository_owner }}/bug-backend:latest
                   labels: |
-                      author=${{github.actor}}
-                      version=${{steps.backend-version.outputs.current-version}}
-                      org.opencontainers.image.licenses=Apache-2.0
-                      org.opencontainers.image.source=${{github.server_url}}/${{github.repository}}
-                      uk.co.bbc.bug.build.timestamp=${{env.timestamp}}
-                      uk.co.bbc.bug.build.number=${{github.run_number}}
-                      uk.co.bbc.bug.build.id=${{github.run_id}}
-                      uk.co.bbc.bug.build.branch=${{github.ref_name}}
-                      uk.co.bbc.bug.build.commit=${{github.sha}}
-                      uk.co.bbc.bug.build.repository=${{github.server_url}}/${{github.repository}}
+                      author=${{ github.actor }}
+                      version=${{ env.release_tag }}
+                      org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+                      uk.co.bbc.bug.build.timestamp=${{ env.timestamp }}
+                      uk.co.bbc.bug.build.number=${{ github.run_number }}
+                      uk.co.bbc.bug.build.commit=${{ github.sha }}
+
+            # build and push frontend image
+            - name: Build and push frontend image
+              uses: docker/build-push-action@v6
+              with:
+                  context: ./src/client
+                  file: ./src/client/Dockerfile
+                  platforms: linux/amd64
+                  push: true
+                  tags: |
+                      ${{ env.registry }}/${{ github.repository_owner }}/bug-frontend:${{ env.release_tag }}
+                      ${{ env.registry }}/${{ github.repository_owner }}/bug-frontend:latest
+                  labels: |
+                      author=${{ github.actor }}
+                      version=${{ env.release_tag }}
+                      org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+                      uk.co.bbc.bug.build.timestamp=${{ env.timestamp }}
+                      uk.co.bbc.bug.build.number=${{ github.run_number }}
+                      uk.co.bbc.bug.build.commit=${{ github.sha }}
