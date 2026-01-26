@@ -35,9 +35,9 @@ modules.forEach(moduleName => {
     let gitLog = ''
     try {
         gitLog = execSync(
-            `git log --pretty=format:"%H|%ad|%s" --date=short ${gitRange} -- src/modules/${moduleName}`,
+            `git log --pretty=format:"%H|%ad|%s" --date=short ${lastCommitHash ? lastCommitHash + '..HEAD' : ''} -- src/modules/${moduleName}`,
             { encoding: 'utf-8' }
-        )
+        );
     } catch (err) {
         console.log(` - no new commits`)
         return
