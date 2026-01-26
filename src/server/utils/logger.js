@@ -1,15 +1,6 @@
 const winston = require("winston");
-require("winston-daily-rotate-file");
-require("winston-mongodb");
-const path = require("path");
 const global = require("@utils/globalEmitter");
 const readJson = require("@core/read-json");
-const logFolder = process.env.BUG_LOG_FOLDER || "logs";
-const logName = process.env.BUG_LOG_NAME || "bug";
-const databaseName = process.env.BUG_CONTAINER || "bug";
-const mongoContainer = process.env.MONGO_CONTAINER || "mongo";
-const mongoPort = process.env.MONGO_PORT || "27017";
-const url = `mongodb://${mongoContainer}:${mongoPort}`;
 
 let logLevel = "info";
 
@@ -30,6 +21,8 @@ const customLevels = {
     },
 };
 
+winston.addColors(customLevels.colors);
+
 const customLogFormat = winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.timestamp(),
@@ -37,88 +30,56 @@ const customLogFormat = winston.format.combine(
     winston.format.printf((log) => `${log.timestamp} ${log.level}: ${log.message}`)
 );
 
-winston.addColors(customLevels.colors);
-
-const transports = [
-    new winston.transports.DailyRotateFile({
-        level: logLevel,
-        format: customLogFormat,
-        filename: path.join(logFolder, logName + "-%DATE%.log"),
-        datePattern: "YYYY-MM-DD",
-        zippedArchive: true,
-        maxSize: "100m",
-        maxFiles: "1d",
-    }),
-    new winston.transports.Console({
-        level: logLevel,
-        handleExceptions: true,
-        colorize: true,
-        format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
-    })
-]
-
-if (!process.env.JEST_WORKER_ID) {
-    transports.push(new winston.transports.MongoDB({
-        level: logLevel,
-        db: `${url}/${databaseName}`,
-        options: {
-            poolSize: 2,
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        },
-        collection: "logs",
-        tryReconnect: true,
-        cappedMax: 10000,
-    }))
-}
-
 const loggerInstance = winston.createLogger({
     levels: customLevels.levels,
     handleExceptions: false,
-    transports: transports
+    transports: [
+        new winston.transports.Console({
+            level: logLevel,
+            handleExceptions: true,
+            format: winston.format.combine(
+                customLogFormat,
+                winston.format.colorize({ all: true })
+            ),
+        }),
+    ],
 });
 
-const logger = (module) => {
-    const filename = path.basename(module.filename);
+// factory function to create loggers
+const logger = () => {
     const loggers = {};
-
-    for (let level in customLevels?.levels) {
+    for (let level in customLevels.levels) {
         loggers[level] = (message, metadata) => {
-            loggerInstance[level](message, { metadata: { ...{ filename: filename }, ...metadata } });
+            loggerInstance[level](message, { metadata });
         };
     }
-
     return loggers;
 };
 
+// read log level from global settings or environment
 const getLogLevel = async () => {
-    let settingsLogLevel;
     try {
-        const filename = path.join(__dirname, "..", "config", "global", "settings.json");
-        const settings = await readJson(filename);
-        settingsLogLevel = settings?.logLevel;
-    } catch (error) {
-        console.log(`Can't reading log level from global settings file - /config/global/settings.json`);
-        settingsLogLevel = process.env.BUG_LOG_LEVEL || "debug";
+        const settings = await readJson(
+            require("path").join(__dirname, "..", "config", "global", "settings.json")
+        );
+        return (settings?.logLevel || process.env.BUG_LOG_LEVEL || "debug").toLowerCase();
+    } catch {
+        return (process.env.BUG_LOG_LEVEL || "debug").toLowerCase();
     }
-    return settingsLogLevel.toLowerCase();
 };
 
+// update all transports with new log level
 const setLogLevel = (level) => {
-    for (let transport of loggerInstance.transports) {
-        transport.level = level;
-    }
+    loggerInstance.transports.forEach((transport) => (transport.level = level));
 };
 
+// initialize log level
 const initLogLevel = async () => {
-    const firstLogLevel = await getLogLevel();
-    if (firstLogLevel) {
-        logLevel = firstLogLevel;
-    }
+    logLevel = await getLogLevel();
     setLogLevel(logLevel);
 };
 
-//Global Event on settings change to update the log level
+// listen for dynamic settings changes
 global.on("settings", async (settings) => {
     if (settings.logLevel) {
         logLevel = settings.logLevel;

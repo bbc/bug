@@ -80,13 +80,13 @@ When reporting issues, return an array containing the relevant error types:
 
 ### Field Definitions
 
-| Name          | Description                                                                           |
-| ------------- | ------------------------------------------------------------------------------------- |
-| **key**       | A unique string identifier for the specific alert.                                    |
-| **message**   | An array of strings. The first line is the headline; subsequent lines provide detail. |
-| **type**      | One of: `default`, `success`, `info`, `warning`, `error`, `critical`.                 |
-| **timestamp** | A Javascript timestamp (ms) representing when the alert was generated.                |
-| **flags**     | An array of action triggers. Supported: `restartPanel`, `configurePanel`.             |
+| Name          | Description                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| **key**       | A unique string identifier for the specific alert.                                         |
+| **message**   | An array of strings. The first line is the headline; subsequent lines provide detail.      |
+| **type**      | One of: `default`, `success`, `info`, `warning`, `error`, `critical`.                      |
+| **timestamp** | A Javascript timestamp (ms) representing when the alert was generated.                     |
+| **flags**     | An array of action triggers. Supported: `restartPanel`, `configurePanel`, `viewPanelLogs`. |
 
 ---
 

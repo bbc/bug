@@ -4,8 +4,6 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const systemBackup = require("@services/system-backup");
 const systemRestore = require("@services/system-restore");
-// const systemLogs = require("@services/system-logs");
-const systemLogsPaginated = require("@services/system-logs-paginated");
 const systemContainers = require("@services/system-containers");
 const systemInfo = require("@services/system-info");
 const hashResponse = require("@core/hash-response");
@@ -173,101 +171,6 @@ router.put("/settings", restrict.to(["admin", "user"]), async function (req, res
         data: result?.data,
     });
 });
-
-/**
- * @swagger
- * /system/logs:
- *   post:
- *     description: Returns the system logs according to specifed filters
- *     tags: [system]
- *     produces:
- *       - application/json
- *     parameters:
- *       - in: formData
- *         name: sortField
- *         type: string
- *         required: false
- *         description: The field to sort results by
- *       - in: formData
- *         name: sortDirection
- *         type: string
- *         required: false
- *         description: The direction to sort by - either "asc" or "desc"
- *       - in: formData
- *         name: filters
- *         type: object
- *         required: false
- *         description: An object containing key/value pairs to filter results by
- *     responses:
- *       '200':
- *         description: Success
- */
-router.post(
-    "/logs",
-    restrict.to(["admin", "user"]),
-    asyncHandler(async (req, res) => {
-        res.json({
-            status: "success",
-            data: await systemLogsPaginated(req.body.sortField, req.body.sortDirection, req.body.filters, 1, 100),
-        });
-    })
-);
-
-/**
- * @swagger
- * /system/logs/{page}:
- *   post:
- *     description: Returns the logs in a paginated form
- *     tags: [system]
- *     produces:
- *       - application/json
- *     parameters:
- *       - in: path
- *         name: page
- *         type: integer
- *         required: true
- *         description: The page number to return
- *       - in: formData
- *         name: nPerPage
- *         type: integer
- *         required: true
- *         description: The number of results to return per page
- *       - in: formData
- *         name: sortField
- *         type: string
- *         required: false
- *         description: The field to sort results by
- *       - in: formData
- *         name: sortDirection
- *         type: string
- *         required: false
- *         description: The direction to sort by - either "asc" or "desc"
- *       - in: formData
- *         name: filters
- *         type: object
- *         required: false
- *         description: An object containing key/value pairs to filter results by
- *     responses:
- *       '200':
- *         description: Success
- */
-router.post(
-    "/logs/:panelId",
-    restrict.to(["admin", "user"]),
-    asyncHandler(async (req, res) => {
-        const logs = await systemLogsPaginated(
-            req.body.sortField,
-            req.body.sortDirection,
-            { ...req.body.filters, ...{ panelId: req.params.panelId } },
-            req.body.page,
-            req.body.nPerPage
-        );
-        res.json({
-            status: logs.length > 0 ? "success" : "failure",
-            data: logs,
-        });
-    })
-);
 
 /**
  * @swagger

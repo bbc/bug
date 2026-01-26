@@ -56,7 +56,6 @@ services:
     image: ghcr.io/bbc/bug:latest
     restart: always
     volumes:
-      - ./logs:/home/node/bug/logs
       - ./config/panels:/home/node/bug/config/panels
       - ./config/global:/home/node/bug/config/global
     hostname: bug
@@ -69,8 +68,6 @@ services:
       BUG_CONTAINER: bug
       BUG_PORT: 80
       BUG_HOST: http://localhost
-      BUG_LOG_FOLDER: logs
-      BUG_LOG_NAME: bug
       PORT: 3000
       NODE_ENV: production
       SESSION_SECRET: change-me
@@ -125,18 +122,17 @@ You should see containers for BUG and MongoDB.
 
 ## BUG Folder Structure
 
-All configuration and logs are stored outside the containers using Docker volumes:
+All configuration is stored outside the containers using Docker volumes:
 
 ```
 .
 ├── docker-compose.yml       # Docker Compose file
-├── config
-│   ├── panels               # Each panel's configuration
-│   └── global               # Global configuration
-└── logs                     # Application logs
+└── config
+    ├── panels               # Each panel's configuration
+    └── global               # Global configuration
 ```
 
-This makes it easy to back up, migrate, or inspect configuration and logs without entering the containers.
+This makes it easy to back up, migrate, or inspect configuration without entering the containers.
 
 ---
 

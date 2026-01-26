@@ -50,7 +50,6 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./logs:/home/node/bug/logs
       - ./config/panels:/home/node/bug/config/panels
       - ./config/global:/home/node/bug/config/global
     environment:
@@ -60,8 +59,6 @@ services:
       BUG_CONTAINER: bug
       BUG_PORT: 80
       BUG_HOST: 127.0.0.1
-      BUG_LOG_FOLDER: logs
-      BUG_LOG_NAME: bug
       PORT: 3000
       NODE_ENV: production
       SESSION_SECRET: change-me
@@ -116,19 +113,18 @@ You should see containers for the BUG app and MongoDB.
 
 ## BUG Folder Structure
 
-All configuration and logs are stored outside the containers using Docker volumes. After setup, your folder should look like this:
+All configuration is are stored outside the containers using Docker volumes. After setup, your folder should look like this:
 
 ```
 
 .
 ├── docker-compose.yml       # Docker Compose file
-├── config
-│   ├── panels               # Individual panel configurations
-│   └── global               # Global configuration
-└── logs                     # Application logs
+└── config
+    ├── panels               # Individual panel configurations
+    └── global               # Global configuration
 ```
 
-This structure makes it easy to back up, migrate, or inspect configuration and logs without entering the containers.
+This structure makes it easy to back up, migrate, or inspect configuration without entering the containers.
 
 ---
 

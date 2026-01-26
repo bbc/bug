@@ -1,5 +1,6 @@
 import ReplayIcon from "@mui/icons-material/Replay";
 import SettingsIcon from "@mui/icons-material/Settings";
+import TerminalIcon from "@mui/icons-material/Terminal";
 import { Alert, AlertTitle, Box, Button } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import AxiosCommand from "@utils/AxiosCommand";
@@ -81,6 +82,20 @@ export default function BugAlert({ title = null, type, message, flags = [], pane
                 </StyledButton>
             );
         }
+        if (flags.includes("viewPanelLogs")) {
+            controls.push(
+                <StyledButton
+                    key="logs"
+                    variant="contained"
+                    color="secondary"
+                    disableElevation
+                    onClick={handleLogs}
+                    startIcon={<TerminalIcon />}
+                >
+                    View Logs
+                </StyledButton>
+            );
+        }
 
         if (controls.length > 0) {
             return (
@@ -110,6 +125,10 @@ export default function BugAlert({ title = null, type, message, flags = [], pane
         } else {
             sendAlert(`Failed to restart panel: ${panel.title}`, { variant: "error" });
         }
+    };
+
+    const handleLogs = (event) => {
+        navigate(`/system/logs/${panel.id}`);
     };
 
     return (

@@ -7,7 +7,7 @@ nav_order: 3
 # Module Logging
 
 In BUG, **all modules should write logs to the console**.  
-Logs are primarily viewed via `docker logs` on the command line, but they can also be accessed in the BUG UI.  
+Logs are primarily viewed via `docker logs` on the command line, but they can also be accessed in the BUG UI via the admin/system panel.
 Logging consistently allows you to debug issues and track module behavior in both development and production.
 
 ---

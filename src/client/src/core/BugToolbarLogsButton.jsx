@@ -1,4 +1,4 @@
-import AssignmentIcon from "@mui/icons-material/Assignment";
+import TerminalIcon from "@mui/icons-material/Terminal";
 import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ export default function BugToolbarLogsButton({ panelId }) {
     return (
         <MenuItem key="launch" onClick={handleLogsClicked}>
             <ListItemIcon>
-                <AssignmentIcon fontSize="small" />
+                <TerminalIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="View Logs" />
         </MenuItem>
