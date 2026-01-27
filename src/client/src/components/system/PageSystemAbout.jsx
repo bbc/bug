@@ -125,10 +125,10 @@ export default function PageSystemAbout() {
                                 name: "API Documentation",
                                 value: (
                                     <BugTableLinkButton
-                                        onClick={(event) => openWebpage(event, `/documentation`)}
+                                        onClick={(event) => openWebpage(event, `/api/documentation`)}
                                         sx={{ color: "text.primary" }}
                                     >
-                                        /documentation
+                                        /api/documentation
                                     </BugTableLinkButton>
                                 ),
                             },

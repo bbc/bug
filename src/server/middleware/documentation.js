@@ -1,6 +1,6 @@
 const express = require("express");
-const documentation = express.Router();
-
+const router = express.Router();
+const path = require("path");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 
@@ -25,8 +25,7 @@ const swaggerOptions = {
             },
             contact: {
                 name: "Bug Developers",
-                url: "https://bug.pages.github.io",
-                email: "bug.developers@bbc.co.uk",
+                url: "https://github.com/bbc/bug",
             },
         },
         servers: [
@@ -35,10 +34,13 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ["./routes/*.js", "../modules/*.js"],
+    apis: [
+        path.join(__dirname, "../routes/*.js"),
+        path.join(__dirname, "../../modules/*.js")
+    ],
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
-documentation.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs, options));
+router.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs, options));
 
-module.exports = documentation;
+module.exports = router;

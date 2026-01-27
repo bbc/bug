@@ -81,11 +81,11 @@ bugApi.use("/api/log", logRouter);
 
 // redirect root API path
 bugApi.get("/api", (req, res) => {
-    res.redirect("/documentation");
+    res.redirect("/api/documentation");
 });
 
 // documentation
-bugApi.use("/documentation", documentation);
+bugApi.use("/api/documentation", documentation);
 
 if (nodeEnv === "production") {
     const root = path.join(__dirname, "..", "..", "client", "dist");
