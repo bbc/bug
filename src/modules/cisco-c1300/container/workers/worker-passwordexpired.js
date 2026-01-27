@@ -15,10 +15,10 @@ parentPort.postMessage({
 
 const main = async () => {
     // Connect to the db
-    await mongoDb.connect(workerData.id);
+    await mongoDb.connect(workerData?.id);
 
     // Kick things off
-    console.log(`worker-passwordexpired: connecting to device at ${workerData.address}`);
+    console.log(`worker-passwordexpired: connecting to device at ${workerData?.address}`);
 
     while (true) {
         try {
@@ -31,7 +31,7 @@ const main = async () => {
             });
             await mongoSingle.set("passwordexpired", false, 600);
         } catch (error) {
-            if (error && error.indexOf("exceeded the maximum lifetime") > -1) {
+            if (error && error?.indexOf("exceeded the maximum lifetime") > -1) {
                 await mongoSingle.set("passwordexpired", true, 600);
             }
         }

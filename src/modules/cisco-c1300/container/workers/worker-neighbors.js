@@ -17,8 +17,8 @@ parentPort.postMessage({
 
 // create new snmp session
 const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
+    host: workerData?.address,
+    community: workerData?.snmpCommunity,
 });
 
 const main = async () => {
