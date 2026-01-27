@@ -5,7 +5,8 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const SnmpAwait = require("@core/snmp-await");
-const mongoSingle = require("@core/mongo-single");
+const ciscoC1300FetchSystem = require("../utils/ciscoc1300-fetchsystem");
+const ciscoC1300FetchPassword = require("../utils/ciscoc1300-fetchpassword");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -23,40 +24,12 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
-    // Kick things off
-    console.log(`worker-system: connecting to device at ${workerData.address}`);
-
     while (true) {
-        // get the system info
-        const systemResult = await snmpAwait.getMultiple({
-            oids: [
-                "1.3.6.1.2.1.1.1.0",
-                "1.3.6.1.2.1.1.3.0",
-                "1.3.6.1.2.1.1.4.0",
-                "1.3.6.1.2.1.1.5.0",
-                "1.3.6.1.2.1.1.6.0",
-            ],
-        });
-
-        if (systemResult) {
-            const payload = {
-                description: systemResult["1.3.6.1.2.1.1.1.0"],
-                uptime: systemResult["1.3.6.1.2.1.1.3.0"],
-                contact: systemResult["1.3.6.1.2.1.1.4.0"],
-                name: systemResult["1.3.6.1.2.1.1.5.0"],
-                location: systemResult["1.3.6.1.2.1.1.6.0"],
-            };
-            await mongoSingle.set("system", payload, 120);
-        }
-        await delay(1000);
-
-        // get the pending flag
-        const pendingResult = await snmpAwait.get({
-            oid: ".1.3.6.1.4.1.9.6.1.101.1.13.0",
-        });
-        await mongoSingle.set("pending", pendingResult === 2, 60);
-        await delay(1000);
+        await ciscoC1300FetchSystem(workerData, snmpAwait);
+        await ciscoC1300FetchPassword(workerData, snmpAwait);
+        await delay(1200000);
     }
+
 };
 
 main();

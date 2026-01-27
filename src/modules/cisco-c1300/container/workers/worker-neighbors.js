@@ -33,9 +33,11 @@ const main = async () => {
 
     while (true) {
         await subworkerInterfaceFdb({ snmpAwait, interfacesCollection });
-        await delay(10000);
+
+        await delay(1000);
 
         await subworkerInterfaceLldp({ snmpAwait, interfacesCollection });
+
         await delay(10000);
     }
 };

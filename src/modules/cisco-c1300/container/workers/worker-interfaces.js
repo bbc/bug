@@ -42,6 +42,7 @@ const main = async () => {
     console.log(`worker-interfaces: connecting to device at ${workerData.address}`);
 
     while (true) {
+
         const ifIDs = await snmpAwait.subtree({
             maxRepetitions: 1000,
             oid: "1.3.6.1.2.1.2.2.1.8",
@@ -57,6 +58,8 @@ const main = async () => {
             maxRepetitions: 1000,
             oid: "1.3.6.1.2.1.2.2.1.2",
         });
+
+        console.log(`worker-interfaces: fetched ${Object.keys(ifIDs).length} interface(s), with ${Object.keys(ifShortIDs).length} shortIds and ${Object.keys(ifDescriptions).length} description(s)`);
 
         for (let [eachOid, eachResult] of Object.entries(ifIDs)) {
             const interfaceId = parseInt(eachOid.substring(eachOid.lastIndexOf(".") + 1));
@@ -84,6 +87,7 @@ const main = async () => {
                 }
             }
         }
+        console.log(`worker-interfaces: fetched ok - waiting`);
 
         // wait 10 minutes - the interfaces shouldn't really change...
         await delay(600000);
