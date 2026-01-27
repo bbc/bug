@@ -115,11 +115,10 @@ bugApi.use((req, res, next) => {
     next(err);
 });
 
-bugApi.use((error, req, res, next) => {
-    res.status(error.status || 500).json({
-        status: error.status,
-        message: error.message,
-        stack: nodeEnv !== "production" ? error?.stack?.split("\n") : undefined,
+bugApi.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+        status: "error",
+        message: err.message || "Internal Server Error"
     });
 });
 
