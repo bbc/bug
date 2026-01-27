@@ -7,7 +7,7 @@ module.exports = async (user) => {
     try {
         return await userModel.set(user);
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed update user.`);
+        logger.error(`user-set: ${error.stack}`);
+        throw new Error(`Failed to update user.`);
     }
 };

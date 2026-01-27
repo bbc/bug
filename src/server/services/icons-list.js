@@ -13,59 +13,65 @@ module.exports = async (variant = null) => {
         try {
             filenames = await readDir(directory);
         } catch (error) {
-            throw new Error(`Failed to read files in folder ${directory}`);
+            logger.error(`icons-list: Failed to read folder ${directory}: ${error.message}`);
+            throw new Error(`Failed to read icons directory`);
         }
 
         const prefixString = prefix ? `${prefix}-` : "";
-
         const icons = [];
+
         for (let filename of filenames.files) {
-            try {
-                if (path.extname(filename) === ".js") {
-                    const iconName = paramCase(path.parse(filename).name);
-                    let iconVariant = null;
-                    for (let eachVariant of iconsSettings.variants) {
-                        if (iconName.endsWith(`-${eachVariant}`)) {
-                            iconVariant = eachVariant;
-                        }
+            if (path.extname(filename) === ".js") {
+                const iconName = paramCase(path.parse(filename).name);
+                let iconVariant = null;
+
+                // check for variants (e.g., 'outlined', 'rounded')
+                for (let eachVariant of iconsSettings.variants) {
+                    if (iconName.endsWith(`-${eachVariant}`)) {
+                        iconVariant = eachVariant;
+                        break;
                     }
-                    icons.push({
-                        id: prefixString + iconName,
-                        sortKey: iconName,
-                        variant: iconVariant,
-                    });
                 }
-            } catch (error) {
-                logger.warning(`${error.stack || error.trace || error || error.message}`);
-                throw new Error(`Failed to fetch icon list`);
+
+                icons.push({
+                    id: prefixString + iconName,
+                    sortKey: iconName,
+                    variant: iconVariant,
+                });
             }
         }
         return icons;
     };
 
-    const cacheKey = "workersState";
+    const cacheKey = "muiIconsList";
 
-    // check the cache first
-    let icons = cacheStore.get(cacheKey);
-    if (!icons) {
-        const muiIcons = await fetchIcons(
-            path.join(__dirname, "..", "client", "node_modules", "@mui", "icons-material")
-        );
+    try {
+        let icons = cacheStore.get(cacheKey);
 
-        icons = [...muiIcons];
+        if (!icons) {
+            logger.info("icons-list: cache miss - scanning MUI icons-material directory...");
 
-        icons = icons.filter((icon) => !iconsSettings.ignoreIcons.includes(icon.id));
+            const iconsPath = path.join(__dirname, "..", "client", "node_modules", "@mui", "icons-material");
+            const muiIcons = await fetchIcons(iconsPath);
 
-        // sort by sortKey
-        icons.sort((a, b) => (a.sortKey > b.sortKey ? 1 : -1));
+            // filter out ignored icons
+            icons = muiIcons.filter((icon) => !iconsSettings.ignoreIcons.includes(icon.id));
+
+            // sort alphabetically
+            icons.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+
+            // set cache
+            cacheStore.set(cacheKey, icons, 10);
+            logger.info(`Icon Cache warmed with ${icons.length} icons.`);
+        }
+
+        // filter by variant and map to IDs
+        return icons
+            .filter((icon) => icon.variant === variant)
+            .map((icon) => icon.id);
+
+    } catch (error) {
+        logger.error(`icons-list: ${error.stack}`);
+        throw new Error(`Failed to fetch icons list`);
     }
-
-    // cache the result for 10 minutes
-    cacheStore.set(cacheKey, icons, 1);
-
-    // now filter by variant
-    icons = icons.filter((icon) => icon.variant === variant);
-
-    // extract the id (without the mdi prefix)
-    return icons.map((icon) => icon.id);
 };

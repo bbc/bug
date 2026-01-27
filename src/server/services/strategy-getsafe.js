@@ -16,7 +16,7 @@ module.exports = async (type) => {
             enabled: strategy["enabled"],
         };
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`strategy-getsafe: ${error.stack}`);
         throw new Error(`Failed to retrieve security strategy`);
     }
 };

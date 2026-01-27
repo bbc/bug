@@ -68,7 +68,7 @@ module.exports = async () => {
 
         return filteredPanelList;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`panel-list: ${error.stack}`);
         throw new Error(`Failed to get panel list`);
     }
 };

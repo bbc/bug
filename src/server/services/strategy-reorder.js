@@ -6,22 +6,28 @@ const strategyModel = require("@models/strategies");
 module.exports = async (strategies) => {
     try {
         const reorderedStrategies = [];
-
-        // fetch list of existing strategies
         const existingStrategies = await strategyModel.list();
-        // console.log(existingStrategies);
+
         // loop through provided array and place into new list
-        for (const eachStrategy of strategies) {
-            // console.log("eachStrategy", eachStrategy);
-            const match = existingStrategies.find((strategy) => strategy.type === eachStrategy);
-            // console.log("match", match);
+        for (const eachStrategyType of strategies) {
+            const match = existingStrategies.find((strategy) => strategy.type === eachStrategyType);
+
             if (match) {
                 reorderedStrategies.push(match);
+            } else {
+                logger.warning(`strategy-reorder: could not find strategy type '${eachStrategyType}' in existing list`);
             }
         }
-        return await strategyModel.setAll(reorderedStrategies);
+
+        const success = await strategyModel.setAll(reorderedStrategies);
+
+        if (success) {
+            logger.info(`strategy-reorder: successfully updated strategy order`);
+        }
+
+        return success;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed update user.`);
+        logger.error(`strategy-reorder: ${error.stack}`);
+        throw new Error(`Failed to reorder strategies.`);
     }
 };

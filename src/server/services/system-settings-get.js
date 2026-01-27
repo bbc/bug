@@ -9,7 +9,7 @@ module.exports = async () => {
         response.data = await settingsModel.get();
         return response;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed retrieve global bug settings.`);
+        logger.error(`system-settings-get: ${error.stack}`);
+        throw new Error(`Failed to retrieve global bug settings.`);
     }
 };

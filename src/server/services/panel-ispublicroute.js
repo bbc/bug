@@ -11,7 +11,7 @@ module.exports = async (panelId, route) => {
                 for (let publicRoute of panel._module?.publicRoutes) {
                     const isMatch = wcmatch(publicRoute);
                     if (isMatch(route)) {
-                        logger.debug(`Public route accessed - ${panelId}/${route}`);
+                        logger.debug(`panel-ispublicroute: public route accessed - ${panelId}/${route}`);
                         return true;
                     }
                 }
@@ -19,7 +19,7 @@ module.exports = async (panelId, route) => {
         }
         return false;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`panel-ispublicroute: ${error.stack}`);
         return false;
     }
 };

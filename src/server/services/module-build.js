@@ -20,7 +20,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
         // check if the specific version already exists
         const images = await listModuleImages(matchedModule.name, matchedModule.version);
         if (images.length > 0) {
-            logger.info(`Image ${matchedModule.name}:${matchedModule.version} already exists. Skipping build.`);
+            logger.info(`module-build: image ${matchedModule.name}:${matchedModule.version} already exists - skipping build`);
             return true;
         }
 
@@ -32,16 +32,16 @@ module.exports = async (moduleName, updateProgressCallback) => {
             throw new Error(`Failed to write dockerfile to '${modulePath}'`);
         }
 
-        logger.info(`Dockerfile generated for ${matchedModule.name} at ${modulePath}`);
+        logger.info(`module-build: dockerfile generated for ${matchedModule.name} at ${modulePath}`);
 
         // trigger the build
-        logger.info(`Building new image: ${matchedModule.name}:${matchedModule.version}`);
+        logger.info(`module-build: building new image: ${matchedModule.name}:${matchedModule.version}`);
         const buildSuccess = await dockerBuildModule(moduleName, updateProgressCallback);
 
         return buildSuccess;
 
     } catch (error) {
-        logger.error(`Orchestration Error: ${error.message}`, { stack: error.stack });
+        logger.error(`module-build: ${error.stack}`);
         throw new Error(`Failed to build module ${moduleName}: ${error.message}`);
     }
 };

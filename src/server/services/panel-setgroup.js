@@ -19,7 +19,7 @@ module.exports = async (panelId, group) => {
         }
         return true;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`panel-setgroup: ${error.stack}`);
         throw new Error(`Failed to set group for panel id ${panelId}`);
     }
 };

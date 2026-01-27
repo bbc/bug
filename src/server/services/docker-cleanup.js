@@ -73,7 +73,7 @@ module.exports = async () => {
             });
         });
     } catch (error) {
-        logger.debug(`${error?.stack || error?.trace || error || error?.message}`);
+        logger.error(`docker-cleanup: ${error?.stack}`);
         status = false;
     }
     return status;

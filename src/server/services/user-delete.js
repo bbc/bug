@@ -7,7 +7,7 @@ module.exports = async (uuid) => {
     try {
         return await userModel.delete(uuid);
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed delete user.`);
+        logger.error(`user-delete: ${error.stack}`);
+        throw new Error(`Failed to delete user.`);
     }
 };
