@@ -8,7 +8,7 @@ module.exports = async () => {
         const uptime = await process.uptime();
         return uptime;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed retrieve system uptime.`);
+        logger.error(`system-uptime: ${error.stack}`);
+        throw new Error(`Failed to retrieve system uptime.`);
     }
 };

@@ -18,10 +18,10 @@ module.exports = async (panelId) => {
         }
 
         // restart the container
-        logger.info(`restarting container for panel id ${panelId}`);
+        logger.info(`panel-restart restarting container for panel id ${panelId}`);
         return dockerRestartContainer(container);
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`panel-restart: ${error.stack}`);
         throw new Error(`Failed to restart panel id ${panelId}`);
     }
 };

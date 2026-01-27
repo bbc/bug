@@ -12,7 +12,7 @@ module.exports = async () => {
         let title = systemSettings.data?.title;
 
         if (title) {
-            // Sanitize the title so it can be used as a filename
+            // sanitize the title so it can be used as a filename
             title = title.toLowerCase();
             title = title.replace(/[/\\?%*:|"<>]/g, "_");
             title = title.replace(" ", "-");
@@ -22,6 +22,8 @@ module.exports = async () => {
 
         const configFolder = path.join(__dirname, "..", "config");
         const filename = `${title}-backup-${format(new Date(), "dd-MM-yyyy-HH-mm-ss")}.tgz`;
+
+        logger.info(`system-backup: creating system backup file ${filename}`);
         const stream = await tarFolder(configFolder, ["panels", "global"]);
 
         return {
@@ -29,7 +31,7 @@ module.exports = async () => {
             filename,
         };
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`system-backup: ${error.stack}`);
         throw new Error(`Failed to complete system backup`);
     }
 };

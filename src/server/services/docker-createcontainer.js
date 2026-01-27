@@ -16,7 +16,7 @@ module.exports = async (configObject) => {
     let moduleData;
     try {
         moduleData = await moduleGet(configObject.module);
-        logger.info(`Creating container for panel id: ${configObject.id}`);
+        logger.info(`docker-createcontainer: creating container for panel id: ${configObject.id}`);
 
         const envVars = {
             modulePort: process.env.MODULE_PORT || "3200",
@@ -82,16 +82,16 @@ module.exports = async (configObject) => {
                 });
             });
 
-            logger.info(`Adding development mounts for module ${configObject.module}: ${JSON.stringify(mounts)}`);
+            logger.info(`docker-createcontainer: adding development mounts for module ${configObject.module}: ${JSON.stringify(mounts)}`);
             containerOptions.HostConfig.Mounts = mounts;
         }
 
         const container = await docker.createContainer(containerOptions);
-        logger.info(`Container id ${container.id} created OK`);
+        logger.info(`docker-createcontainer: container id ${container.id} created OK`);
         return container;
 
     } catch (error) {
-        logger.error(`Docker Creation Error: ${error.message}`, { stack: error.stack });
+        logger.error(`docker-createcontainer: ${error.stack}`);
         throw new Error(`Failed to create docker container ${configObject.module}: ${error.message}`);
     }
 };

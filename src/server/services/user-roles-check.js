@@ -30,7 +30,7 @@ module.exports = (strategyRoles, userRoles) => {
 
         return false;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed check user roles.`);
+        logger.error(`user-roles-check: ${error.stack}`);
+        throw new Error(`Failed to check user roles`);
     }
 };

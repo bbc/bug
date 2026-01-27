@@ -26,7 +26,7 @@ module.exports = async (panelId) => {
             // update the database
             return panelBuildStatusModel.setProgress(panelId, progress);
         } catch (error) {
-            logger.warning(`failed to update progress: ${error.stack || error.trace || error || error.message}`);
+            logger.warning(`panel-start: failed to update progress: ${error.stack}`);
             return false;
         }
     };
@@ -38,14 +38,14 @@ module.exports = async (panelId) => {
         }
 
         if (!(await moduleNeedsContainer(config?.module))) {
-            logger.info(`no container required for panel id ${panelId}`);
+            logger.info(`panel-start: no container required for panel id ${panelId}`);
             return true;
         }
 
         panelBuildStatusModel.set(panelId, "Building image", 5);
 
         // build the image for the module, if it's already been done this will be quick
-        logger.info(`building module ${config.module} for panel id ${panelId}`);
+        logger.info(`panel-start: building module ${config.module} for panel id ${panelId}`);
         if (!(await moduleBuild(config.module, updateProgress))) {
             panelBuildStatusModel.setError(panelId, "Failed to build image");
             throw new Error(`Failed to build module (image)`);
@@ -55,26 +55,26 @@ module.exports = async (panelId) => {
         let container = await dockerGetContainer(panelId);
         if (!container) {
             // it doesn't exist - let's create it
-            logger.info(`container for panel id ${panelId} doesn't exist ... creating`);
+            logger.info(`panel-start: container for panel id ${panelId} doesn't exist ... creating`);
             panelBuildStatusModel.set(panelId, "Building container", 10);
             await dockerCreateContainer(config);
 
             // and fetch it again - to make sure it exists
-            logger.info(`checking container for panel id ${panelId}`);
+            logger.info(`panel-start: checking container for panel id ${panelId}`);
             container = await dockerGetContainer(panelId);
             if (!container) {
                 // it still doesn't exist - give up
                 panelBuildStatusModel.setError(panelId, "Failed to build container");
                 throw new Error(`Failed to create container for panel id ${panelId}`);
             }
-            logger.info(`successfully created container id ${container.id}`);
+            logger.info(`panel-start: successfully created container id ${container.id}`);
         }
 
         // final status update (then we leave the rest to the containerinfo service)
         panelBuildStatusModel.set(panelId, "Built", -1);
 
         // start the container
-        logger.info(`starting container for panel id ${panelId}`);
+        logger.info(`panel-start: starting container for panel id ${panelId}`);
         const startResult = await dockerStartContainer(container);
         if (!startResult) {
             throw new Error(`Failed to start container for panel id ${panelId}`);
@@ -85,19 +85,19 @@ module.exports = async (panelId) => {
             // do the push - it returns false if it doesn't work
             try {
                 if (await panelConfigPush(panelId)) {
-                    logger.info(`successfully pushed config to container for panel id ${panelId}`);
+                    logger.info(`panel-start: successfully pushed config to container for panel id ${panelId}`);
                     return true;
                 }
             } catch (error) {
-                logger.info(`failed to push config to container for panel id ${panelId} ... try ${a}/10`);
+                logger.info(`panel-start: failed to push config to container for panel id ${panelId} ... try ${a}/10`);
             }
             await delay(2000);
         }
-        logger.info(`failed to push config to container for panel id ${panelId} given up`);
+        logger.info(`panel-start: failed to push config to container for panel id ${panelId} given up`);
         return false;
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`panel-start: ${error.stack}`);
         throw new Error(`Failed to start panel id ${panelId}`);
     }
 };

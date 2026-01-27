@@ -19,7 +19,7 @@ module.exports = async () => {
 
         return safeResults;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`strategy-listsafe: ${error.stack}`);
         throw new Error(`Failed to retrieve list of security strategies`);
     }
 };

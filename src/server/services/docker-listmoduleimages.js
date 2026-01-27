@@ -17,7 +17,7 @@ module.exports = async (moduleName, moduleVersion) => {
         });
         return images;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`docker-listmoduleimages: ${error.stack}`);
         throw new Error(`Failed to get list of any image for module ${moduleName}`);
     }
 };

@@ -30,7 +30,7 @@ module.exports = async (capability) => {
 
         return validPanels;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`panel-listbycapability: ${error.stack}`);
         throw new Error(`Failed to get panel list`);
     }
 };

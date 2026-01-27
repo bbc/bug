@@ -17,7 +17,7 @@ module.exports = async (panelId) => {
         const panelStatus = await panelStatusModel.get(panelId);
         return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus, panelStatus);
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`panel-get: ${error.stack}`);
         throw new Error(`Failed to get panel id ${panelId}`);
     }
 };

@@ -5,19 +5,37 @@ const panelConfigModel = require("@models/panel-config");
 const panelDelete = require("@services/panel-delete");
 
 module.exports = async (groupName) => {
-
-    logger.info(`panelgroup-delete: deleting all panels in group ${groupName}`);
-    const panelConfigs = await panelConfigModel.list();
-    const panelsToDelete = panelConfigs.filter(panelConfig => panelConfig.group === groupName);
-
-    for (const panelConfig of panelsToDelete) {
-        logger.info(`panelgroup-delete: deleting panel id ${panelConfig.id} in group ${groupName}`);
-        try {
-            await panelDelete(panelConfig.id);
-        } catch (error) {
-            logger.warning(`${error.stack || error.trace || error || error.message}`);
-        }
+    if (!groupName) {
+        throw new Error("groupName is required for bulk deletion");
     }
 
-    return true
+    try {
+        logger.info(`panelgroup-delete: searching for panels in group '${groupName}'`);
+
+        const allPanels = await panelConfigModel.list();
+        const panelsToDelete = allPanels.filter(p => p.group === groupName);
+
+        if (panelsToDelete.length === 0) {
+            logger.info(`panelgroup-delete: no panels found for group '${groupName}'`);
+            return true;
+        }
+
+        logger.info(`panelgroup-delete: found ${panelsToDelete.length} panel(s) to remove`);
+
+        for (const panel of panelsToDelete) {
+            try {
+                logger.info(`panelgroup-delete: removing panel ${panel.id}`);
+                await panelDelete(panel.id);
+            } catch (error) {
+                logger.error(`panelgroup-delete: failed to delete panel ${panel.id}: ${error.message}`);
+            }
+        }
+
+        logger.info(`panelgroup-delete: bulk deletion for group '${groupName}' completed`);
+        return true;
+
+    } catch (error) {
+        logger.error(`panelgroup-delete: ${error.stack}`);
+        throw new Error(`Failed to delete panel group ${groupName}`);
+    }
 };

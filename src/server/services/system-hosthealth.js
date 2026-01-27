@@ -10,7 +10,7 @@ module.exports = async () => {
             data: result?.host,
         };
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`system-hosthealth: ${error.stack}`);
         throw new Error(`Failed to retrieve host health details`);
     }
 };

@@ -3,31 +3,33 @@
 const logger = require("@utils/logger")(module);
 
 module.exports = async (container) => {
-    try {
-        logger.info(`removing container id ${container?.id}`);
+    if (!container || !container.id) {
+        logger.info(`docker-removecontainer: container reference not valid, skipping removal`);
+        return true;
+    }
 
-        return await new Promise((resolve, reject) => {
-            if (!container) {
-                logger.info(`container not valid`);
-                reject();
-            }
-            container.remove(function (error, data) {
+    try {
+        logger.info(`docker-removecontainer: removing container id: ${container.id}`);
+
+        return await new Promise((resolve) => {
+            container.remove({ v: true }, function (error) {
                 if (error) {
-                    if (error.statusCode === 304) {
-                        logger.info(`container id ${container.id} already removed`);
-                        resolve(true);
-                    } else {
-                        logger.warning(`${error.stack || error.trace || error || error.message}`);
-                        resolve(false);
+                    // 404 means the container doesn't exist (already removed)
+                    if (error.statusCode === 404) {
+                        logger.info(`docker-removecontainer: container ${container.id} already removed (404)`);
+                        return resolve(true);
                     }
-                } else {
-                    logger.info(`container id ${container.id} removed`);
-                    resolve(true);
+
+                    logger.warning(`docker-removecontainer: failed to remove container ${container.id}: ${error.message}`);
+                    return resolve(false);
                 }
+
+                logger.info(`docker-removecontainer: container ${container.id} removed OK`);
+                resolve(true);
             });
         });
     } catch (error) {
-        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
-        throw new Error(`Failed to remove container id ${container?.id}`);
+        logger.error(`docker-removecontainer: ${error.stack}`);
+        throw new Error(`Failed to remove container ${container.id}`);
     }
 };

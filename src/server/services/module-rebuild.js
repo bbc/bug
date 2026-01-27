@@ -18,10 +18,10 @@ module.exports = async (moduleName, updateProgressCallback) => {
         }
 
         // delete existing module images/containers - we do this first to ensure the build isn't using cached layers we want gone
-        logger.info(`Deleting existing module assets for: ${moduleName}`);
+        logger.info(`module-rebuild: deleting existing module assets for: ${moduleName}`);
         const deleted = await dockerDeleteModule(moduleName);
         if (!deleted) {
-            logger.warning(`Could not fully delete assets for ${moduleName}, proceeding with build anyway.`);
+            logger.warning(`module-rebuild: could not fully delete assets for ${moduleName} - proceeding with build anyway`);
         }
 
         // write/update the dockerfile
@@ -33,11 +33,11 @@ module.exports = async (moduleName, updateProgressCallback) => {
         }
 
         // trigger the build
-        logger.info(`Rebuilding image for ${moduleName}...`);
+        logger.info(`module-rebuild: rebuilding image for ${moduleName}...`);
         return await dockerBuildModule(moduleName, updateProgressCallback);
 
     } catch (error) {
-        logger.error(`Rebuild Error: ${error.message}`, { stack: error.stack });
+        logger.error(`module-rebuild: ${error.stack}`);
         throw new Error(`Failed to rebuild module ${moduleName}: ${error.message}`);
     }
 };

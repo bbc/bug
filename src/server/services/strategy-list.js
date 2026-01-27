@@ -7,7 +7,7 @@ module.exports = async () => {
     try {
         return await strategyModel.list();
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`strategy-list: ${error.stack}`);
         throw new Error(`Failed to retrieve list of security strategies`);
     }
 };

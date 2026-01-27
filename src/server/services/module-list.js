@@ -6,43 +6,41 @@ const dockerListImages = require("@services/docker-listimages");
 const settingsModel = require("@models/settings");
 
 module.exports = async () => {
-    let response = [];
-
-    const images = await dockerListImages();
-    const settings = await settingsModel.get();
-
-    // filter out the modules according to user set beta/stable
-    let moduleList = await moduleConfig.list();
-
-    // handle field not being avalible in settings
-    if (settings?.moduleStatus) {
-        moduleList = moduleList.filter((module) => {
-            let statusMatch = false;
-            for (let status of settings.moduleStatus) {
-                if (status === module.status) {
-                    statusMatch = true;
-                    break;
-                }
-            }
-            return statusMatch;
-        });
-    }
-
     try {
-        for (let eachModule of moduleList) {
-            for (const eachImage of images) {
-                if (eachImage.module === eachModule.name) {
-                    eachModule.image = eachImage;
-                }
+        const images = await dockerListImages();
+        const settings = await settingsModel.get();
+        let moduleList = await moduleConfig.list();
+
+        if (settings?.moduleStatus) {
+            moduleList = moduleList.filter((module) =>
+                settings.moduleStatus.includes(module.status)
+            );
+        }
+
+        const imageMap = new Map(images.map(img => [img.module, img]));
+
+        const response = moduleList.map((eachModule) => {
+
+            if (imageMap.has(eachModule.name)) {
+                eachModule.image = imageMap.get(eachModule.name);
             }
+
             delete eachModule.defaultconfig;
             delete eachModule.devmounts;
-            response.push(eachModule);
-        }
+
+            return eachModule;
+        });
+
+        response.sort((a, b) => {
+            const nameA = a.longname?.toLowerCase() || "";
+            const nameB = b.longname?.toLowerCase() || "";
+            return nameA.localeCompare(nameB);
+        });
+
+        return response;
+
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`module-list: ${error.stack}`);
         throw new Error(`Failed to get module list`);
     }
-
-    return response;
 };

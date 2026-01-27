@@ -8,7 +8,7 @@ module.exports = async (moduleName) => {
         const moduleConfig = await moduleConfigModel.get(moduleName);
         return moduleConfig?.needsContainer === true;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.error(`module-needscontainer: ${error.stack}`);
         throw new Error(`Failed to get container requirement status for module ${moduleName}`);
     }
 };

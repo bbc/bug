@@ -8,7 +8,7 @@ const bugContainer = process.env.BUG_CONTAINER || "bug";
 
 module.exports = async () => {
     try {
-        logger.info(`BUG is restarting...`);
+        logger.info(`bug-restart:BUG is restarting...`);
         const containerInfoList = await dockerListContainerInfo();
         for (let eachContainer of containerInfoList) {
             if (!eachContainer.image.includes(bugContainer)) {
@@ -19,7 +19,7 @@ module.exports = async () => {
         const container = docker.getContainer(bugContainer);
         await dockerRestartContainer(container);
     } catch (error) {
-        logger.error(`${error?.stack || error?.trace || error || error?.message}`);
+        logger.error(`bug-restart: ${error?.stack}`);
         throw new Error(`Failed to restart BUG`);
     }
     return null;

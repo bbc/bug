@@ -9,7 +9,7 @@ module.exports = async (settings) => {
         response.data = await settingsModel.update(settings);
         return response;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
-        throw new Error(`Failed update global bug settings.`);
+        logger.error(`system-settings-update: ${error.stack}`);
+        throw new Error(`Failed to update global bug settings.`);
     }
 };

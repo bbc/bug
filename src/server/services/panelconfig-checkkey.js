@@ -18,7 +18,7 @@ module.exports = async (apiKey) => {
 
         return panel;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`panelconfig-checkkey: ${error.stack}`);
         throw new Error(`Error checking panels for API keys`);
     }
 };

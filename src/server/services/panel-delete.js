@@ -27,7 +27,7 @@ module.exports = async (panelId) => {
         }
         return await panelConfigModel.delete(panelId);
     } catch (error) {
-        logger.warning(`panel-delete: ${error.stack || error.trace || error || error.message}`);
+        logger.warning(`panel-delete: ${error.stack}`);
         throw new Error(`Failed to delete panel id ${panelId}`);
     }
 };

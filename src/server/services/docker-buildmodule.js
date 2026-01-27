@@ -35,7 +35,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
             src: [relModulePath, relCorePath],
         };
 
-        logger.debug(`Build context root: ${projectRoot}`);
+        logger.debug(`docker-buildmodule: build context root: ${projectRoot}`);
         const stream = await docker.buildImage(contextFiles, buildOptions);
 
         return await new Promise((resolve) => {
@@ -43,10 +43,10 @@ module.exports = async (moduleName, updateProgressCallback) => {
                 stream,
                 (err, output) => {
                     if (err) {
-                        logger.error(`Build failed for ${moduleName}:`, err);
+                        logger.error(`docker-buildmodule: build failed for ${moduleName}:`, err);
                         return resolve(false);
                     }
-                    logger.info(`Module ${moduleName} built OK`);
+                    logger.info(`docker-buildmodule: module ${moduleName} built OK`);
                     resolve(true);
                 },
                 (event) => {
@@ -55,14 +55,14 @@ module.exports = async (moduleName, updateProgressCallback) => {
                         if (progress !== null) {
                             updateProgressCallback(progress);
                         }
-                        logger.debug(`[${moduleName}] ${event.stream.trim()}`);
+                        logger.debug(`docker-buildmodule: [${moduleName}] ${event.stream.trim()}`);
                     }
                 }
             );
         });
 
     } catch (error) {
-        logger.error(`Failed to initialize build for ${moduleName}: ${error.message}`);
+        logger.error(`docker-buildmodule: ${error.stack}`);
         if (updateProgressCallback) updateProgressCallback(-1);
         return false;
     }
