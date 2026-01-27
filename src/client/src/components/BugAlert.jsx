@@ -17,7 +17,16 @@ const StyledButton = styled(Button)({
     marginRight: "1rem",
 });
 
-export default function BugAlert({ title = null, type, message, flags = [], panel, square = false, width = null }) {
+export default function BugAlert({
+    title = null,
+    type,
+    message,
+    flags = [],
+    panel,
+    square = false,
+    width = null,
+    sx = {},
+}) {
     const navigate = useNavigate();
     const sendAlert = useAlert();
 
@@ -26,6 +35,7 @@ export default function BugAlert({ title = null, type, message, flags = [], pane
         warning: "Warning",
         info: "Info",
         error: "Error",
+        success: "Status",
     };
 
     const mappedSeverity = {
@@ -139,6 +149,7 @@ export default function BugAlert({ title = null, type, message, flags = [], pane
                 "& .MuiAlert-message": {
                     paddingRight: "4px",
                 },
+                ...sx,
             }}
             severity={mappedSeverity[type]}
         >
