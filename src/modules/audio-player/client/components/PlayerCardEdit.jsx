@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, Card, CardContent, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
 export default function PlayerCardEdit({ handleDelete, handleEdit, player, playerId }) {
     const handleEditClick = (event) => {
         handleEdit(playerId);
@@ -17,26 +17,32 @@ export default function PlayerCardEdit({ handleDelete, handleEdit, player, playe
                 borderRadius: "3px",
                 minWidth: 275,
                 margin: "4px",
+                display: "flex",
             }}
             variant="outlined"
         >
-            <CardContent sx={{ padding: "13px", paddingBottom: "0px", display: "flex", flexDirection: "column" }}>
-                <Typography variant="h5" component="div">
-                    {player?.title}
-                </Typography>
+            <CardContent sx={{ padding: 0.5, position: "relative", width: "100%", height: "100%" }}>
+                <Grid
+                    sx={{ padding: "6px 16px", top: 0, left: 0, width: "100%", height: "100%", position: "absolute" }}
+                >
+                    <Grid sx={{ display: "flex", alignItems: "center", height: 64 }}>
+                        <Grid sx={{ flexGrow: 1 }}>
+                            <Typography variant="h5">{player.title}</Typography>
+                            <Typography variant="body2" sx={{ height: "1rem" }}>
+                                {player.description}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Box sx={{ textAlign: "right" }}>
+                        <Button onClick={handleEditClick} startIcon={<EditIcon />} size="small" color="primary">
+                            Edit
+                        </Button>
 
-                <Typography variant="body2" sx={{ height: "20px" }}>
-                    {player?.description}
-                </Typography>
-                <Box sx={{ paddingTop: "8px" }}>
-                    <Button onClick={handleEditClick} startIcon={<EditIcon />} size="small" color="primary">
-                        Edit
-                    </Button>
-
-                    <Button onClick={handleDeleteClick} startIcon={<DeleteIcon />} size="small" color="primary">
-                        Delete
-                    </Button>
-                </Box>
+                        <Button onClick={handleDeleteClick} startIcon={<DeleteIcon />} size="small" color="primary">
+                            Delete
+                        </Button>
+                    </Box>
+                </Grid>
             </CardContent>
         </Card>
     );

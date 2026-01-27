@@ -26,7 +26,8 @@
         "morgan": "^1.10.0",
         "node-cache": "^5.1.2",
         "ping": "^0.4.1",
-        "underscore": "^1.13.1"
+        "underscore": "^1.13.1",
+        "uuid": "^13.0.0"
     },
     "devDependencies": {
         "jest": "^30.2.0",
