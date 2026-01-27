@@ -28,7 +28,7 @@ const alertHandler = (namespace, socket) => {
             socket.broadcast.emit("event", broadcastData);
         }
 
-        logger[level](data.message, { userId: data?.userId, panelId: data?.panelId });
+        logger[level](`sockets/alert (from UI): ${data.message}`, { userId: data?.userId, panelId: data?.panelId });
     });
 };
 
