@@ -10,7 +10,7 @@ module.exports = async () => {
                 "There is no recent system data for this device.",
                 "Check your connection, model and authentication settings.",
             ],
-            itemType: "critical",
+            itemType: "error",
             timeoutSeconds: 120,
             flags: ["restartPanel", "configurePanel"],
         }),

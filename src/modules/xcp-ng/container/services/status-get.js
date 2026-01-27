@@ -7,7 +7,7 @@ module.exports = async () => {
         await statusCheckMongoSingle({
             collectionName: "vms",
             message: ["There is no recent information for this device."],
-            itemType: "critical",
+            itemType: "error",
             flags: ["restartPanel", "configurePanel"],
         })
     );

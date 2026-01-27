@@ -11,7 +11,7 @@ module.exports = async () => {
         await statusCheckMongoSingle({
             collectionName: "codecdata",
             message: ["There is no recent codec information for this device."],
-            itemType: "critical",
+            itemType: "error",
             flags: ["restartPanel", "configurePanel"],
         })
     );

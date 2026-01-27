@@ -8,7 +8,7 @@ module.exports = async () => {
     // await statusCheckCollection({
     //     collectionName: "myCollection",
     //     message: ["There is no recent wibble data for this device."],
-    //     itemType: "critical",
+    //     itemType: "error",
     //     timeoutSeconds: 1200,
     //     flags: ["restartPanel", "configurePanel"],
     // })

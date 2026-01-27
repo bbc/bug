@@ -7,7 +7,7 @@ module.exports = async () => {
         await statusCheckMongoSingle({
             collectionName: "codecs",
             message: ["There is no recent codec data for this service.", "Check your settings."],
-            itemType: "critical",
+            itemType: "error",
             timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         })
