@@ -4,15 +4,22 @@
     "description": "Control of Appear X10/X20 codec chassis",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icon": "SmartButton",
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "development",
     "memory": 200,
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,
