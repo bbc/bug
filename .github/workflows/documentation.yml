@@ -12,6 +12,7 @@ on:
             - "src/client/src/core/**"
             - "src/client/src/hooks/**"
             - "src/client/src/utils/**"
+            - "src/modules/**/*.md"
     workflow_dispatch:
 
 permissions:
