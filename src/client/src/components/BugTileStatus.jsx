@@ -3,6 +3,13 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { Box, IconButton } from "@mui/material";
 import React from "react";
 
+// Canonical status order
+const statusOrder = ["critical", "error", "warning", "info", "success", "default"];
+const statusRank = statusOrder.reduce((acc, type, index) => {
+    acc[type] = index;
+    return acc;
+}, {});
+
 export default function BugTileStatus({ statusItems }) {
     const [statusIndex, setStatusIndex] = React.useState(0);
 
@@ -14,8 +21,24 @@ export default function BugTileStatus({ statusItems }) {
         default: ["#212121", "#aaaaaa"],
     };
 
-    const currentStatusItem = statusItems[statusIndex];
+    // Sort statusItems by priority
+    const sortedStatusItems = React.useMemo(() => {
+        if (!Array.isArray(statusItems)) return [];
+        return [...statusItems].sort((a, b) => {
+            const rankA = statusRank[a?.type] ?? statusRank.default;
+            const rankB = statusRank[b?.type] ?? statusRank.default;
+            return rankA - rankB;
+        });
+    }, [statusItems]);
 
+    // Reset index if out of bounds
+    React.useEffect(() => {
+        if (statusIndex >= sortedStatusItems.length) {
+            setStatusIndex(0);
+        }
+    }, [sortedStatusItems, statusIndex]);
+
+    const currentStatusItem = sortedStatusItems[statusIndex];
     const type = stateColors[currentStatusItem?.type] ? currentStatusItem?.type : "warning";
 
     if (!stateColors[currentStatusItem?.type]) {
@@ -49,36 +72,28 @@ export default function BugTileStatus({ statusItems }) {
                         whiteSpace: "nowrap",
                     }}
                 >
-                    {Array.isArray(currentStatusItem.message)
+                    {Array.isArray(currentStatusItem?.message)
                         ? currentStatusItem.message[0]
-                        : currentStatusItem.message}
+                        : currentStatusItem?.message}
                 </Box>
 
-                <Box
-                    sx={{
-                        whiteSpace: "nowrap",
-                    }}
-                >
+                <Box sx={{ whiteSpace: "nowrap" }}>
                     <IconButton
-                        disabled={statusItems.length === 0 || statusIndex === 0}
+                        disabled={sortedStatusItems.length === 0 || statusIndex === 0}
                         onClick={(event) => {
                             event.stopPropagation();
                             event.preventDefault();
-                            if (statusIndex > 0) {
-                                setStatusIndex(statusIndex - 1);
-                            }
+                            if (statusIndex > 0) setStatusIndex(statusIndex - 1);
                         }}
                     >
                         <ArrowLeftIcon />
                     </IconButton>
                     <IconButton
-                        disabled={statusItems.length === 0 || statusIndex === statusItems.length - 1}
+                        disabled={sortedStatusItems.length === 0 || statusIndex === sortedStatusItems.length - 1}
                         onClick={(event) => {
                             event.stopPropagation();
                             event.preventDefault();
-                            if (statusIndex < statusItems.length - 1) {
-                                setStatusIndex(statusIndex + 1);
-                            }
+                            if (statusIndex < sortedStatusItems.length - 1) setStatusIndex(statusIndex + 1);
                         }}
                     >
                         <ArrowRightIcon />
