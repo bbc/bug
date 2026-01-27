@@ -2,6 +2,7 @@
 title: Capabilities
 parent: Development
 nav_order: 2
+layout: page
 ---
 
 # Module capabilities

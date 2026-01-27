@@ -2,6 +2,7 @@
 title: Docker
 parent: Development
 nav_order: 10
+layout: page
 ---
 
 # Docker and BUG

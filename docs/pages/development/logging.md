@@ -2,6 +2,7 @@
 title: Logging
 parent: Development
 nav_order: 3
+layout: page
 ---
 
 # Module Logging

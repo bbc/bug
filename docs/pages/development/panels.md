@@ -2,6 +2,7 @@
 title: Panels
 parent: Development
 nav_order: 2
+layout: page
 ---
 
 # Panels

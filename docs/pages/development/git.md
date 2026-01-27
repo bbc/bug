@@ -2,6 +2,7 @@
 title: Git
 parent: Development
 nav_order: 2
+layout: page
 ---
 
 # Git

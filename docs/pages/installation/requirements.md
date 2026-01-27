@@ -2,6 +2,7 @@
 title: Requirements
 parent: Installation
 nav_order: 7
+layout: page
 ---
 
 # Requirements

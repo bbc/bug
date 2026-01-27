@@ -2,6 +2,7 @@
 title: Windows
 parent: Installation
 nav_order: 4
+layout: page
 ---
 
 # Windows Installation

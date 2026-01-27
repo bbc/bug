@@ -2,6 +2,7 @@
 title: MacOS
 parent: Installation
 nav_order: 3
+layout: page
 ---
 
 # MacOS Installation

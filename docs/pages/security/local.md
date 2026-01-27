@@ -2,6 +2,7 @@
 title: Local
 parent: Security
 nav_order: 1
+layout: page
 ---
 
 # Local Authentication
