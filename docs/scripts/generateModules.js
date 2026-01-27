@@ -72,9 +72,25 @@ nav_exclude: true
 layout: page
 ---
 `;
-        const content = fs.readFileSync(readmeFile, "utf8");
-        fs.writeFileSync(path.join(moduleDocsPath, "index.md"), frontMatter + content, "utf8");
 
+        const content = fs.readFileSync(readmeFile, "utf8");
+
+        const changelogFile = path.join(moduleSrcPath, "CHANGELOG.md");
+        let changelogContent = "";
+
+        if (fs.existsSync(changelogFile)) {
+            changelogContent =
+                "\n\n---\n\n" +
+                fs.readFileSync(changelogFile, "utf8");
+        }
+
+        fs.writeFileSync(
+            path.join(moduleDocsPath, "index.md"),
+            frontMatter + content + changelogContent,
+            "utf8"
+        );
+
+        // copy assets if any
         copyFolder(path.join(moduleSrcPath, "assets"), path.join(moduleDocsPath, "assets"));
     }
 

@@ -6,6 +6,7 @@ const path = require('path')
 
 // base path for modules
 const modulesBase = 'src/modules'
+const GITHUB_REPO = 'https://github.com/bbc/bug'
 
 // get all module folders
 const modules = fs.readdirSync(modulesBase).filter(f =>
@@ -26,7 +27,7 @@ modules.forEach(moduleName => {
     let existingContent = ''
     if (fs.existsSync(mdFile)) {
         existingContent = fs.readFileSync(mdFile, 'utf-8')
-        const match = existingContent.match(/\(([0-9a-f]{7})\)/)
+        const match = existingContent.match(/\[([0-9a-f]{7})\]\(https?:\/\/github\.com\/[^)]+\/commit\/[0-9a-f]{7,40}\)/)
         if (match) lastCommitHash = match[1]
     }
 
@@ -87,18 +88,19 @@ modules.forEach(moduleName => {
         console.log(` - version unchanged`)
     }
 
-    // build new markdown section for version
-    let newMd = `## version ${moduleData.version}\n\n`
+    // build new markdown section for version (with GitHub links)
+    let newMd = `### version ${moduleData.version}\n\n`
     commits.sort((a, b) => b.date.localeCompare(a.date)).forEach(c => {
-        newMd += `- ${c.date}: ${c.description} (${c.hash.substring(0, 7)})\n`
+        const shortHash = c.hash.substring(0, 7)
+        const commitUrl = `${GITHUB_REPO}/commit/${c.hash}`
+        newMd += `- ${c.date}: ${c.description} ([${shortHash}](${commitUrl}))\n`
     })
     newMd += '\n'
 
     // prepend to existing changelog or create new
-    if (!existingContent) existingContent = `# changelog\n\n`
+    if (!existingContent) existingContent = `## Changelog\n\n`
 
-    // use regex to match "# changelog" followed by any whitespace/newlines
-    existingContent = existingContent.replace(/^# changelog\s*/i, `# changelog\n\n${newMd}`)
+    existingContent = existingContent.replace(/^## Changelog\s*/i, `## Changelog\n\n${newMd}`)
     fs.writeFileSync(mdFile, existingContent)
     console.log(` - updated changelog.md`)
 })
