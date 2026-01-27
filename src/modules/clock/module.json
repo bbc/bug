@@ -4,7 +4,7 @@
     "description": "Digital and Analogue Clocks",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "Schedule",
     "author": "Ryan McCartney",
     "needsContainer": false,
