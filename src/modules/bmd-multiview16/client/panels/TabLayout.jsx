@@ -100,6 +100,7 @@ export default function TabLayout({ panelId }) {
                                         <BugApiSelect
                                             value={col.inputIndex}
                                             options={sourcesArray}
+                                            variant="outlined"
                                             onChange={(event) =>
                                                 handleSourceChange(col.outputIndex, event.target.value)
                                             }

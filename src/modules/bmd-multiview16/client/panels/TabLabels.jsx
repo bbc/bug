@@ -90,6 +90,7 @@ export default function TabLabels({ panelId }) {
             label: item,
         };
     });
+
     return (
         <>
             <Grid size={{ xs: 12 }}>
@@ -119,7 +120,9 @@ export default function TabLabels({ panelId }) {
                                 <BugApiSelect
                                     value={item.autoLabelIndex}
                                     options={destinations}
+                                    variant="outlined"
                                     onChange={(event) => handleAutoLabelIndexChanged(event.target.value, item)}
+                                    disabled={destinations.length === 0}
                                 />
                             ),
                         },
@@ -131,6 +134,7 @@ export default function TabLabels({ panelId }) {
                                 <BugApiSwitch
                                     checked={item.autoLabelEnabled}
                                     onChange={(checked) => handleAutoLabelStateChanged(checked, item)}
+                                    disabled={destinations.length === 0}
                                 />
                             ),
                         },

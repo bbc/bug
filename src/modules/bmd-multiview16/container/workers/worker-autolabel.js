@@ -46,8 +46,6 @@ const updateLabels = async () => {
         return;
     }
 
-    const autoLabels = routerLabels.map((label) => label.inputLabel);
-
     // loop through autolabel-enabled outputs and check the labels. If they are different, update the device
     for (let eachEnabledIndex of workerData.autoLabelEnabled) {
         const routerIndex = workerData.autoLabelIndex[eachEnabledIndex.toString()];
