@@ -1,9 +1,12 @@
 "use strict";
 
 const snmp = require("net-snmp");
+const obscure = require("@core/obscure-password");
 
 module.exports = class SnmpAwait {
     constructor({ host, community = "public", timeout = 5000, port = 161 }) {
+
+        console.log(`snmp-await: connecting to device at ${host}, community ${obscure(community)}, port ${port}`);
         this.session = snmp.createSession(host, community, {
             version: snmp.Version2c,
             timeout: timeout,

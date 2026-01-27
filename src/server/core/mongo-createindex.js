@@ -10,6 +10,10 @@
 const MongoDb = require("@core/mongo-db");
 
 module.exports = async (collection, indexName, options = {}) => {
+    if (!MongoDb.db) {
+        throw new Error("MongoDB has not been initialised");
+    }
+
     try {
         const indexDetails = {};
         indexDetails[indexName] = 1;
