@@ -6,6 +6,7 @@ const mongoSingle = require("@core/mongo-single");
 const ciscoC1300VlanArray = require("@utils/ciscoc1300-vlanarray");
 const ciscoC1300VlanList = require("@utils/ciscoc1300-vlanlist");
 const SnmpAwait = require("@core/snmp-await");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     const config = await configGet();
@@ -73,7 +74,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": vlanArray } }
         );
         console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
-
+        await deviceSetPending(true);
         return true;
     } catch (error) {
         console.log(error);
