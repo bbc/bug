@@ -12,6 +12,7 @@ export default function PanelStatus({ statusItems, panel }) {
                     flags={eachItem.flags}
                     panel={panel}
                     square
+                    sx={{ borderBottomStyle: "solid", borderBottomWidth: "1px", borderBottomColor: "border.bold" }}
                 />
             ))}
         </div>

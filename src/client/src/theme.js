@@ -63,6 +63,7 @@ const theme = (selectedTheme = "dark") => {
                 border: {
                     light: "#181818",
                     medium: "#3c3c3c",
+                    bold: "#505050",
                     heavy: "#a2a2a2",
                 },
 
@@ -403,6 +404,13 @@ const theme = (selectedTheme = "dark") => {
                     standardInfo: {
                         color: "#dee4f7",
                         backgroundColor: "#337ab7",
+                        "& .MuiAlert-icon": {
+                            color: "#fff",
+                        },
+                    },
+                    standardSuccess: {
+                        color: "#dff7d6",
+                        backgroundColor: "#05990c",
                         "& .MuiAlert-icon": {
                             color: "#fff",
                         },
