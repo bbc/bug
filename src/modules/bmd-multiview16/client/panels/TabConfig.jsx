@@ -1,12 +1,11 @@
-import React from "react";
-import { useApiPoller } from "@hooks/ApiPoller";
-import BugLoading from "@core/BugLoading";
-import BugNoData from "@core/BugNoData";
 import BugApiSelect from "@core/BugApiSelect";
 import BugApiSwitch from "@core/BugApiSwitch";
 import BugDetailsTable from "@core/BugDetailsTable";
-import AxiosGet from "@utils/AxiosGet";
+import BugLoading from "@core/BugLoading";
+import BugNoData from "@core/BugNoData";
+import { useApiPoller } from "@hooks/ApiPoller";
 import { useForceRefresh } from "@hooks/ForceRefresh";
+import AxiosGet from "@utils/AxiosGet";
 import { useAlert } from "@utils/Snackbar";
 
 export default function TabConfig({ panelId }) {
@@ -61,6 +60,7 @@ export default function TabConfig({ panelId }) {
                         name: "Layout",
                         value: (
                             <BugApiSelect
+                                variant="outlined"
                                 onChange={handleLayoutChanged}
                                 options={[
                                     { id: "2x2", label: "2x2" },
@@ -75,6 +75,7 @@ export default function TabConfig({ panelId }) {
                         name: "Output Format",
                         value: (
                             <BugApiSelect
+                                variant="outlined"
                                 onChange={(event) =>
                                     handleStringConfigChanged(event.target.value, "Output Format", "Output Format")
                                 }

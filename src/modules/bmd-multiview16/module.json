@@ -9,6 +9,7 @@
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "stable",
+    "memory": 250,
     "needsContainer": true,
     "devmounts": ["api", "utils", "services", "workers"],
     "protectedRoutes": ["config"],
