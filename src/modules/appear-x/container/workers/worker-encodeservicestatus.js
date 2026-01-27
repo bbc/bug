@@ -30,32 +30,37 @@ const main = async () => {
     await XApi.connect();
 
     while (true) {
-        await XApi.refreshSession();
+        try {
+            await XApi.refreshSession();
 
-        // fetch list of services
-        const mpegEncoderServices = await mongoSingle.get("mpegEncoderServices");
+            // fetch list of services
+            const mpegEncoderServices = await mongoSingle.get("mpegEncoderServices");
 
-        //TODO  and others? J2K?
+            //TODO  and others? J2K?
 
-        const mpegEncoderServiceIds =
-            mpegEncoderServices &&
-            mpegEncoderServices.map((e) => {
-                return {
-                    id: e.key,
-                    slot: e.value.slot,
-                };
-            });
+            const mpegEncoderServiceIds =
+                mpegEncoderServices &&
+                mpegEncoderServices.map((e) => {
+                    return {
+                        id: e.key,
+                        slot: e.value.slot,
+                    };
+                });
 
-        if (mpegEncoderServices) {
-            // now fetch service status
-            const mpegEncoderServiceStatus = await XApi.post({
-                path: "mmi/service_encoderpool/api/jsonrpc",
-                method: "Xger:2.31/serviceStatus/GetServiceStatus",
-                params: { query: mpegEncoderServiceIds },
-            });
-            await mongoSingle.set("mpegEncoderServiceStatus", mpegEncoderServiceStatus.data, 60);
+            if (mpegEncoderServices) {
+                // now fetch service status
+                const mpegEncoderServiceStatus = await XApi.post({
+                    path: "mmi/service_encoderpool/api/jsonrpc",
+                    method: "Xger:2.31/serviceStatus/GetServiceStatus",
+                    params: { query: mpegEncoderServiceIds },
+                });
+                await mongoSingle.set("mpegEncoderServiceStatus", mpegEncoderServiceStatus.data || [], 60);
+            }
+
+        } catch (err) {
+            console.error("worker-encodeservicestatus", err);
+            await delay(5000);
         }
-
         // delay before doing it all again ...
         await delay(2000);
     }
