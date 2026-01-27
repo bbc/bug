@@ -1,6 +1,6 @@
 {
     "name": "bug-monorepo",
-    "version": "3.1.41",
+    "version": "3.1.42",
     "description": "Broadcast Universal Gateway",
     "private": true,
     "workspaces": [
