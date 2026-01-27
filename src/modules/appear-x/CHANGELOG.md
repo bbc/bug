@@ -8,3 +8,13 @@
 
 - 2026-01-27: add README and improve workers ([2e3a0ad](https://github.com/bbc/bug/commit/2e3a0ad019efad173d53480b1366bbea365108eb))
 
+### version 1.0.2
+
+- 2025-12-17: fix memory limit
+
+### version 1.0.1
+
+- 2024-05-26: add pcm-passthrough
+- 2024-05-26: fix when missing encoderservice
+- 2024-05-26: handle missing test profile
+- 2024-05-26: handle autofirst in encode services
