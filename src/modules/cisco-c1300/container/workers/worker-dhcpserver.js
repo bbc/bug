@@ -19,7 +19,7 @@ const main = async () => {
     await delay(4000);
 
     // Connect to the db
-    await mongoDb.connect(workerData.id);
+    await mongoDb.connect(workerData?.id);
 
     while (true) {
         let dhcpLeases = [];

@@ -17,8 +17,8 @@ parentPort.postMessage({
 
 // create new snmp session
 const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
+    host: workerData?.address,
+    community: workerData?.snmpCommunity,
 });
 
 // so ... this worker just gets the interface IDs and labels. It seems like a lot of effort for a simple
@@ -27,7 +27,7 @@ const snmpAwait = new SnmpAwait({
 
 const main = async () => {
     // Connect to the db
-    await mongoDb.connect(workerData.id);
+    await mongoDb.connect(workerData?.id);
 
     // get the collection reference
     const interfacesCollection = await mongoCollection("interfaces");

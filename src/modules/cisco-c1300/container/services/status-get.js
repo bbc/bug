@@ -3,13 +3,14 @@
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckPending = require("@services/status-checkpending");
 const statusCheckPasswordExpired = require("@services/status-checkpasswordexpired");
+const statusCheckConfig = require("@core/status-checkconfig");
 
 module.exports = async () => {
     return [].concat(
         await statusCheckCollection({
             collectionName: "interfaces",
             message: ["There is no recent interface information for this device."],
-            itemType: "critical",
+            itemType: "error",
             timeoutSeconds: 1200,
             flags: ["restartPanel", "configurePanel"],
         }),
@@ -26,6 +27,7 @@ module.exports = async () => {
             timeoutSeconds: 150,
         }),
         await statusCheckPending(),
-        await statusCheckPasswordExpired()
+        await statusCheckPasswordExpired(),
+        await statusCheckConfig()
     );
 };
