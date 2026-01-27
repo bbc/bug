@@ -4,12 +4,14 @@
     "description": "Digital and Analogue Clocks",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "Schedule",
     "author": "Ryan McCartney",
     "needsContainer": false,
     "devmounts": [],
-    "protectedRoutes": ["config"],
+    "protectedRoutes": [
+        "config"
+    ],
     "license": "Apache-2.0",
     "status": "stable",
     "defaultconfig": {
