@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.5
+
+- 2026-01-27: add success/default status ([f74d5af](https://github.com/bbc/bug/commit/f74d5af6db995d9c8890a29eedb54b72ca5e88b0))
+
 ### version 1.0.4
 
 - 2026-01-27: add README and improve workers ([2e3a0ad](https://github.com/bbc/bug/commit/2e3a0ad019efad173d53480b1366bbea365108eb))
