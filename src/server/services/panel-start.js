@@ -93,7 +93,7 @@ module.exports = async (panelId) => {
             }
             await delay(2000);
         }
-        logger.info(`panel-start: failed to push config to container for panel id ${panelId} given up`);
+        logger.warning(`panel-start: failed to push config to container for panel id ${panelId} - given up`);
         return false;
     } catch (error) {
         panelBuildStatusModel.setError(panelId, "Unknown error");
