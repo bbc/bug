@@ -1,6 +1,7 @@
 "use strict";
 
 const statusCheckCollection = require("@core/status-checkcollection");
+const statusCheckConfig = require("@core/status-checkconfig");
 
 module.exports = async () => {
     return [].concat(
@@ -10,6 +11,7 @@ module.exports = async () => {
             itemType: "error",
             timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
-        })
+        }),
+        await statusCheckConfig()
     );
 };
