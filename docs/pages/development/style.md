@@ -2,6 +2,7 @@
 title: Coding Style
 parent: Development
 nav_order: 2
+layout: page
 ---
 
 # Coding Style

@@ -2,6 +2,7 @@
 title: Workers
 parent: Development
 nav_order: 2
+layout: page
 ---
 
 # Workers

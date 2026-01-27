@@ -2,6 +2,7 @@
 title: Error Handling
 parent: Development
 nav_order: 2
+layout: page
 ---
 
 # Module Error Handling

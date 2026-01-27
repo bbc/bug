@@ -2,7 +2,13 @@ import fs from "fs";
 import yaml from "js-yaml";
 import path from "path";
 
-const repoRoot = path.resolve(".");
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const repoRoot = path.resolve(__dirname, "..", "..");
+
 const srcModulesDir = path.join(repoRoot, "src/modules");
 const docsPagesModulesDir = path.join(repoRoot, "docs/pages/modules");
 const dataDir = path.join(repoRoot, "docs/_data");
@@ -63,6 +69,7 @@ title: "${title}"
 description: "${description}"
 permalink: /pages/modules/${folder}/
 nav_exclude: true
+layout: page
 ---
 `;
         const content = fs.readFileSync(readmeFile, "utf8");

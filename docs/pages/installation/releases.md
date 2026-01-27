@@ -2,6 +2,7 @@
 title: Releases
 parent: Installation
 nav_order: 6
+layout: page
 ---
 
 # Releases

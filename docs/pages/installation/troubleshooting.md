@@ -2,6 +2,7 @@
 title: Troubleshooting
 parent: Installation
 nav_order: 7
+layout: page
 ---
 
 # Troubleshooting BUG

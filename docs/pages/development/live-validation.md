@@ -2,6 +2,7 @@
 title: Live Validation
 parent: Development
 nav_order: 2
+layout: page
 ---
 
 Each container can optionally support live config validation. This should be via a RESTful API endpoint at

@@ -2,6 +2,7 @@
 title: Pin
 parent: Security
 nav_order: 2
+layout: page
 ---
 
 # PIN Authentication

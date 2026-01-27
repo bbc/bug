@@ -2,6 +2,7 @@
 title: Reverse Proxy
 parent: Security
 nav_order: 3
+layout: page
 ---
 
 # Reverse Proxy Authentication

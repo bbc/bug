@@ -1,6 +1,7 @@
 ---
 title: Connecting Panels
 parent: Development
+layout: page
 nav_order: 2
 ---
 
