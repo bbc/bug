@@ -3,6 +3,7 @@
 const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, newName) => {
     const config = await configGet();
@@ -32,6 +33,7 @@ module.exports = async (interfaceId, newName) => {
                 { $set: { alias: newName } }
             );
             console.log(`interface-rename: ${JSON.stringify(dbResult.result)}`);
+            await deviceSetPending(true);
             return true;
         } catch (error) {
             console.log(`interface-rename: failed to update db`);

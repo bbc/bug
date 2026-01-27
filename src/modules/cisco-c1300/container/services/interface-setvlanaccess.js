@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const SnmpAwait = require("@core/snmp-await");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = "1") => {
     const config = await configGet();
@@ -40,6 +41,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
         );
         console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+        await deviceSetPending(true);
         return true;
     } catch (error) {
         console.log(error);

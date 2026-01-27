@@ -15,7 +15,7 @@ export default function Toolbar({ panelId, ...props }) {
 
     const pending = useApiPoller({
         url: `/container/${panelId}/pending/`,
-        interval: 1000,
+        interval: 2000,
     });
 
     const isPending = pending.status === "success" && pending.data;

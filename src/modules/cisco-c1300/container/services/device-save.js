@@ -2,6 +2,7 @@
 
 const ciscoC1300SSH = require("@utils/ciscoc1300-ssh");
 const configGet = require("@core/config-get");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async () => {
     const config = await configGet();
@@ -17,6 +18,7 @@ module.exports = async () => {
     console.log(result);
     if (result && result.length === 1 && result[0].indexOf("Copy succeeded") > -1) {
         console.log("device-save: success");
+        await deviceSetPending(false);
     } else {
         console.log("device-save: failed");
         console.log(result);

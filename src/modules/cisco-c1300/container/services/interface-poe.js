@@ -3,6 +3,7 @@
 const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, action) => {
     const config = await configGet();
@@ -33,6 +34,7 @@ module.exports = async (interfaceId, action) => {
                 { $set: { "poe-admin-enable": action === "enable" } }
             );
             console.log(`interface-poe: ${JSON.stringify(dbResult.result)}`);
+            await deviceSetPending(true);
             return true;
         } catch (error) {
             console.log(`interface-poe: failed to update db`);
