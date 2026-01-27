@@ -2,6 +2,7 @@
 
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
 const statusCheckAlarms = require("./status-checkalarms");
+const statusCheckService = require("./status-checkservices");
 
 module.exports = async () => {
     return [].concat(
@@ -12,6 +13,7 @@ module.exports = async () => {
             timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         }),
-        await statusCheckAlarms()
+        await statusCheckAlarms(),
+        await statusCheckService()
     );
 };

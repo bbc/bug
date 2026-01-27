@@ -19,7 +19,7 @@ module.exports = async (options) => {
         NOTICE: "info",
         WARNING: "warning",
         CRITICAL: "warning",
-        MAJOR: "error",
+        MAJOR: "warning",
     };
 
     const isIgnored = (alarm) => {
@@ -39,7 +39,6 @@ module.exports = async (options) => {
             if (!isIgnored(eachAlarm)) {
                 items.push(
                     new StatusItem({
-                        title: eachAlarm.name,
                         key: eachAlarm.objectId,
                         message: eachAlarm.message,
                         type: typeMaps[eachAlarm.severity],
