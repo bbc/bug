@@ -1,30 +1,22 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
 import AnalogueClock from "../components/AnalogueClock";
 import DateString from "../components/DateString";
 import DigitalClock from "../components/DigitalClock";
-const Clock = ({ type, ...props }) => {
-    return type === "digital" ? <DigitalClock {...props} /> : <AnalogueClock {...props} />;
-};
 
 const MainPanel = () => {
     const panelConfig = useSelector((state) => state.panelConfig);
+    const theme = useTheme();
 
-    if (panelConfig.status === "loading") {
-        return <BugLoading />;
-    }
+    const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+    const isSm = useMediaQuery(theme.breakpoints.only("sm"));
+    const isMd = useMediaQuery(theme.breakpoints.only("md"));
+    const isLg = useMediaQuery(theme.breakpoints.only("lg"));
 
-    if (panelConfig.status !== "success") {
-        return null;
-    }
+    const activeSize = isXs ? "xs" : isSm ? "sm" : isMd ? "md" : isLg ? "lg" : "xl";
 
-    const clocks = [
-        { size: "xs", display: { xs: "block", sm: "none" } },
-        { size: "sm", display: { xs: "none", sm: "block", md: "none" } },
-        { size: "md", display: { xs: "none", sm: "none", md: "block", lg: "none" } },
-        { size: "lg", display: { xs: "none", md: "none", lg: "block", xl: "none" } },
-        { size: "xl", display: { xs: "none", lg: "none", xl: "block" } },
-    ];
+    if (panelConfig.status === "loading") return <BugLoading />;
+    if (panelConfig.status !== "success") return null;
 
     return (
         <Box
@@ -40,14 +32,14 @@ const MainPanel = () => {
                 color: "text.secondary",
             }}
         >
-            {clocks.map((c) => (
-                <Box key={c.size} sx={{ display: c.display }}>
-                    <Clock type={panelConfig.data.type} size={c.size} />
-                </Box>
-            ))}
+            {panelConfig.data.type === "digital" ? (
+                <DigitalClock size={activeSize} />
+            ) : (
+                <AnalogueClock key="analogue" size={activeSize} />
+            )}
+
             <DateString />
         </Box>
     );
 };
-
 export default MainPanel;
