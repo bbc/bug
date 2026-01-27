@@ -35,15 +35,20 @@ class WorkerManager {
         this.workers = await this.getWorkerFiles(this.folder);
         this.config = await configGet();
 
-        if (this.isModule && this.config?.needsConfigured) {
-            console.log("WorkerManager->setup: Module needs config, not starting workers.");
+        if (this.isModule && this.config === null) {
+            console.log("WorkerManager->setup: module is missing config, not starting workers.");
+            return;
+        }
+
+        if (this.isModule && (this.config?.needsConfigured || this.config === null)) {
+            console.log("WorkerManager->setup: module needs config, not starting workers.");
             return;
         }
 
         if (isMainThread) {
             await this.createWorkers();
         } else {
-            console.log("WorkerManager->setup: Not starting workers in a worker thread.");
+            console.log("WorkerManager->setup: not starting workers in a worker thread.");
         }
     }
 
