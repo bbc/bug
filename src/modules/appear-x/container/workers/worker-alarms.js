@@ -27,41 +27,45 @@ const main = async () => {
     await XApi.connect();
 
     while (true) {
-        // do stuff here
 
-        await XApi.refreshSession();
+        try {
+            await XApi.refreshSession();
 
-        // fetch chassis info
-        const alarms = await XApi.post({
-            path: "mmi/api/jsonrpc",
-            method: "mmi:3.6/alarms/GetActiveAlarms",
-            params: {
-                query: {},
-            },
-        });
-
-        if (alarms?.data) {
-            const mappedAlarms = alarms.data.map((a) => {
-                const messageArray = [];
-                if (a.details) {
-                    messageArray.push(a.details);
-                } else {
-                    messageArray.push(a.alarmDescription);
-                }
-                if (a.configObjectLabel) {
-                    messageArray.push(a.configObjectLabel);
-                }
-
-                return {
-                    id: a.alarmId,
-                    name: a.alarmName,
-                    severity: a.severity,
-                    message: messageArray.join(" - "),
-                    objectId: a.configObjectId,
-                    date: new Date(parseInt(`${a.timeSet}000`)),
-                };
+            // fetch chassis info
+            const alarms = await XApi.post({
+                path: "mmi/api/jsonrpc",
+                method: "mmi:3.6/alarms/GetActiveAlarms",
+                params: {
+                    query: {},
+                },
             });
-            await mongoSingle.set("alarms", mappedAlarms, 10);
+
+            if (alarms?.data) {
+                const mappedAlarms = alarms.data.map((a) => {
+                    const messageArray = [];
+                    if (a.details) {
+                        messageArray.push(a.details);
+                    } else {
+                        messageArray.push(a.alarmDescription);
+                    }
+                    if (a.configObjectLabel) {
+                        messageArray.push(a.configObjectLabel);
+                    }
+
+                    return {
+                        id: a.alarmId,
+                        name: a.alarmName,
+                        severity: a.severity,
+                        message: messageArray.join(" - "),
+                        objectId: a.configObjectId,
+                        date: new Date(parseInt(`${a.timeSet}000`)),
+                    };
+                });
+                await mongoSingle.set("alarms", mappedAlarms || [], 10);
+            }
+        } catch (err) {
+            console.error("worker-alarms: ", err);
+            await delay(5000);
         }
 
         // wait 5 seconds

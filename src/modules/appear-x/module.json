@@ -9,13 +9,12 @@
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "development",
-    "memory": 150,
+    "memory": 200,
     "needsContainer": true,
     "devmounts": ["api", "services", "workers", "utils"],
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
-        "order": 0,
         "needsConfigured": true,
         "title": "",
         "module": "appear-x",
@@ -25,7 +24,6 @@
         "username": "",
         "password": "",
         "enabled": false,
-        "url": "",
         "protectedServices": [],
         "ignoredAlarms": [
             "Freeze",

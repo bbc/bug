@@ -13,9 +13,8 @@ parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
-
 const main = async () => {
-    // Connect to the db
+
     await mongoDb.connect(workerData.id);
 
     const XApi = new appearXApi({
@@ -27,41 +26,42 @@ const main = async () => {
     await XApi.connect();
 
     while (true) {
-        // do stuff here
+        try {
+            await XApi.refreshSession();
 
-        await XApi.refreshSession();
+            // fetch chassis info
+            const chassisInfo = await XApi.post({
+                path: "mmi/api/jsonrpc",
+                method: "mmi:3.6/cards/GetChassisInfo",
+            });
+            await mongoSingle.set("chassisInfo", chassisInfo?.data, 60);
 
-        // fetch chassis info
-        const chassisInfo = await XApi.post({
-            path: "mmi/api/jsonrpc",
-            method: "mmi:3.6/cards/GetChassisInfo",
-        });
-        await mongoSingle.set("chassisInfo", chassisInfo?.data, 60);
+            // fetch chassis settings
+            const chassisSettings = await XApi.post({
+                path: "mmi/api/jsonrpc",
+                method: "mmi:3.6/chassis/GetChassisSettings",
+            });
+            await mongoSingle.set("chassisSettings", chassisSettings, 60);
 
-        // fetch chassis settings
-        const chassisSettings = await XApi.post({
-            path: "mmi/api/jsonrpc",
-            method: "mmi:3.6/chassis/GetChassisSettings",
-        });
-        await mongoSingle.set("chassisSettings", chassisSettings, 60);
+            const ipCards = chassisInfo?.data?.cards?.filter(
+                (c) => c.value.features.includes("ipinput") || c.value.features.includes("ipoutput")
+            ) || [];
 
-        // fetch IP interface settings
-        const ipCards = chassisInfo?.data?.cards.filter(
-            (c) => c.value.features.includes("ipinput") || c.value.features.includes("ipoutput")
-        );
-        let ipInterfaces = [];
-        if (ipCards) {
+            let ipInterfaces = [];
             for (const eachCard of ipCards) {
                 const ipInterfaceSettings = await XApi.post({
                     path: `board/ui/board/${eachCard?.value?.slot}/api/jsonrpc`,
                     method: "ipGateway:1.31/ipinterface/GetIpInterfaces",
                 });
-                ipInterfaces = ipInterfaces.concat(ipInterfaceSettings?.data);
+                ipInterfaces = ipInterfaces.concat(ipInterfaceSettings?.data || []);
             }
-        }
-        await mongoSingle.set("ipInterfaces", ipInterfaces, 60);
+            await mongoSingle.set("ipInterfaces", ipInterfaces, 60);
 
-        // delay before doing it all again ...
+        } catch (err) {
+            console.error("Worker error:", err);
+            await delay(5000); // wait before retry
+        }
+
         await delay(30000);
     }
 };
