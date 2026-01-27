@@ -10,7 +10,7 @@ module.exports = async () => {
         await statusCheckMongoSingle({
             collectionName: "loadedProgram",
             message: ["There is no recent information about the loaded programme."],
-            itemType: "critical",
+            itemType: "error",
             timeoutSeconds: 1200,
             flags: ["restartPanel", "configurePanel"],
         }),

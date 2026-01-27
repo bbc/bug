@@ -9,7 +9,7 @@ module.exports = async () => {
         await statusCheckMongoSingle({
             collectionName: "peerList",
             message: ["There is no recent information for this device."],
-            itemType: "critical",
+            itemType: "error",
             flags: ["restartPanel", "configurePanel"],
         })
     );
