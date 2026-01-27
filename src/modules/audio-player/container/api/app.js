@@ -10,7 +10,7 @@ const defaultRouter = require("@routes/default");
 
 const heapInfo = require("@core/heap-info");
 
-//Print the heap size
+// print the heap size
 heapInfo(console);
 
 let app = express();

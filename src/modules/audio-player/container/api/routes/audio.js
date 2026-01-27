@@ -19,10 +19,14 @@ route.get(
             proxyAddress = `${parsedSource?.protocol}//${parsedSource?.host}/${req.params?.filePath}`;
         }
 
+        console.log(`audio: proxying file request to: ${proxyAddress}`);
+
         try {
             const { data } = await axios.get(proxyAddress, { responseType: "stream" });
             data.pipe(res);
-        } catch (err) {}
+        } catch (err) {
+            console.error(`audio: error proxying file request to: ${proxyAddress}`, err.message);
+        }
     })
 );
 
