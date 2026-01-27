@@ -1,6 +1,4 @@
-# <ModuleName>
-
-![Screenshot](./assets/screenshot.png)
+# Mikrotik SD-WAN
 
 ## Overview
 
@@ -11,6 +9,8 @@ IP addresses can be added manually or selected from the router’s DHCP lease li
 WANs exposed in the UI are simply MikroTik route tables. Route tables are labelled using their comments on the router; tables without a comment are ignored. Updating a comment immediately updates the label shown in the module.
 
 When a WAN is selected for an IP address, the module creates the required address list entry to steer traffic via the chosen route table. Selecting the default WAN removes this entry, returning traffic to normal routing behaviour. If an IP address was sourced from DHCP, the module also displays whether the lease is currently active.
+
+![Screenshot](./assets/screenshot.png)
 
 ## Configuration
 

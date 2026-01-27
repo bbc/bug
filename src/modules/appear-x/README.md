@@ -1,12 +1,12 @@
-# <ModuleName>
-
-![Screenshot](./assets/screenshot.png)
+# Appear X
 
 ## Overview
 
 This module provides an interface to control multiple encode or decode channels on an Appear X chassis.
 
 The Appear UI can be fiddly to use, and difficult to adjust quickly. With this module you can easily change bitrate, colour space, audio channels, and latency with a couple of clicks.
+
+![Screenshot](./assets/screenshot.png)
 
 ## Configuration
 

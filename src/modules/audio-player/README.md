@@ -1,12 +1,12 @@
-# <ModuleName>
-
-![Screenshot](./assets/screenshot.png)
+# Audio Player
 
 ## Overview
 
 Provides multiple web-based audio players in a single page.
 
 Uses https://github.com/cookpete/react-player under the hood and supports all transports/codecs provided by the native `<Audio>` HTML component.
+
+![Screenshot](./assets/screenshot.png)
 
 ## Configuration
 

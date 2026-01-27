@@ -1,13 +1,13 @@
-# <ModuleName>
-
-<img src="./assets/screenshot-analogue.png" width="45%" />
-<img src="./assets/screenshot-digital.png" width="45%" />
+# Clock
 
 ## Overview
 
 This simple clock module provides analogue and digital display of the current time.
 
 > NOTE: The clock module uses the browser's local time, not the time on the BUG server.
+
+<img src="./assets/screenshot-analogue.png" width="45%" />
+<img src="./assets/screenshot-digital.png" width="45%" />
 
 ## Configuration
 
