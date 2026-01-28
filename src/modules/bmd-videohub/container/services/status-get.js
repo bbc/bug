@@ -2,6 +2,7 @@
 
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckAlarms = require("./status-checkalarms");
+const statusCheckDevice = require("./status-checkdevice");
 
 module.exports = async () => {
     return [].concat(
@@ -12,6 +13,7 @@ module.exports = async () => {
             timeoutSeconds: 15,
             flags: ["restartPanel", "configurePanel"],
         }),
-        await statusCheckAlarms()
+        await statusCheckAlarms(),
+        await statusCheckDevice()
     );
 };
