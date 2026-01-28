@@ -11,12 +11,12 @@ node_modules
 !/src/server/data/.gitkeep
 
 # Panel Configs
-/src/server/config/panels/*.json
-!/src/server/config/panels/.gitkeep
+/src/config/panels/*.json
+!/src/config/panels/.gitkeep
 
 # Global Config
-/src/server/config/global/*.json
-!/src/server/config/global/.gitkeep
+/src/config/global/*.json
+!/src/config/global/.gitkeep
 
 # Module Dockerfiles
 Dockerfile*

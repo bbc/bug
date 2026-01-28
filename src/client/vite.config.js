@@ -64,7 +64,7 @@ export default defineConfig({
             ignored: [
                 path.resolve(__dirname, '../modules/*/container/**'),
                 '**/node_modules/resolve/test/**',
-                '**/src/server/config/**',
+                '**/src/config/**',
             ],
             usePolling: true,
             interval: 100

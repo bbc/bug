@@ -5,9 +5,9 @@ const readJson = require("@core/read-json");
 const writeJson = require("@core/write-json");
 const path = require("path");
 
-const filename = path.join(__dirname, "..", "config", "global", "strategies.json");
+const filename = path.join(__dirname, "..", "..", "config", "global", "strategies.json");
 
-const defaultFilename = path.join(__dirname, "..", "config", "default", "strategies.json");
+const defaultFilename = path.join(__dirname, "..", "..", "config", "default", "strategies.json");
 
 async function getStrategyIndex(strategies, type) {
     if (strategies && type) {

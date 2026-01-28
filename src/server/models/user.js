@@ -7,9 +7,9 @@ const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const hash = require("@utils/hash");
 
-const filename = path.join(__dirname, "..", "config", "global", "users.json");
+const filename = path.join(__dirname, "..", "..", "config", "global", "users.json");
 
-const defaultFilename = path.join(__dirname, "..", "config", "default", "users.json");
+const defaultFilename = path.join(__dirname, "..", "..", "config", "default", "users.json");
 
 async function getUserIndex(users, id) {
     if (users && id) {
