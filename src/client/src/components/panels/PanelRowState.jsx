@@ -1,4 +1,6 @@
+import { useElapsedTime } from "@hooks/ElapsedTime";
 import { Box } from "@mui/material";
+
 const State = ({ state, children }) => {
     const stateColors = {
         running: "success.main",
@@ -28,6 +30,17 @@ const State = ({ state, children }) => {
     );
 };
 
+function formatDuration(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    const mm = String(minutes).padStart(2, "0");
+    const ss = String(seconds).padStart(2, "0");
+
+    return `${mm}:${ss}`;
+}
+
 export default function PanelRowState({ panel }) {
     const errorCount = panel._status.filter((x) => x.type === "error").length;
     const warningCount = panel._status.filter((x) => x.type === "warning").length;
@@ -37,11 +50,13 @@ export default function PanelRowState({ panel }) {
         return <State state="empty">...</State>;
     }
 
+    const elapsed = useElapsedTime(panel?._buildStatus?.startTime);
+
     switch (panel._dockerContainer._status) {
         case "building":
             return (
                 <State state="building">
-                    {panel._buildStatus.text} - {Math.round(panel._buildStatus.progress)}% complete
+                    BUILDING PANEL [{formatDuration(elapsed)}] - {panel?._buildStatus?.text}
                 </State>
             );
         case "error":

@@ -51,9 +51,9 @@ module.exports = async (moduleName, updateProgressCallback) => {
                 },
                 (event) => {
                     if (event.stream && updateProgressCallback) {
-                        const progress = parseStepProgress(event.stream);
-                        if (progress !== null) {
-                            updateProgressCallback(progress);
+                        const progressText = parseStepProgress(event.stream);
+                        if (progressText !== null) {
+                            updateProgressCallback(progressText);
                         }
                         logger.debug(`docker-buildmodule: [${moduleName}] ${event.stream.trim()}`);
                     }
@@ -68,13 +68,25 @@ module.exports = async (moduleName, updateProgressCallback) => {
     }
 };
 
-// parses "Step 1/10" format from Docker stream to return a percentage
+// returns a human-readable status based on Docker build output
 function parseStepProgress(input) {
-    const match = input.match(/Step\s+(\d+)\/(\d+)/i);
-    if (match) {
-        const current = parseInt(match[1], 10);
-        const total = parseInt(match[2], 10);
-        return Math.round((current / total) * 100);
+    const textMaps = {
+        "FROM node:22": "Installing OS",
+        "WORKDIR": "Setting up folder",
+        "RUN apk": "Installing utilities",
+        "COPY src/server/core": "Copying core files",
+        "COPY src/modules": "Copying module files",
+        "RUN npm install": "Installing dependencies",
+        "CMD [\"npm\", \"run\"": "Starting module",
+    };
+
+    if (!input) return null;
+
+    for (const [needle, label] of Object.entries(textMaps)) {
+        if (input.includes(needle)) {
+            return label;
+        }
     }
+
     return null;
 }

@@ -21,10 +21,56 @@ exports.get = async function (panelId) {
     return null;
 };
 
-exports.set = async function (panelId, statusText, progress) {
+exports.create = async function (panelId, statusText = "") {
     try {
         const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
         await mongoCreateIndex(panelBuildStatusCollection, "timestamp", { expireAfterSeconds: 60 });
+        if (panelBuildStatusCollection) {
+            await panelBuildStatusCollection.replaceOne(
+                {
+                    panelid: panelId,
+                },
+                {
+                    panelid: panelId,
+                    status: {
+                        text: statusText,
+                        startTime: new Date(),
+                        error: false,
+                    },
+                    timestamp: new Date(),
+                },
+                {
+                    upsert: true,
+                }
+            );
+            return true;
+        }
+    } catch (error) {
+        logger.warning(`${error.trace || error || error.message}`);
+    }
+    return false;
+};
+
+exports.delete = async function (panelId) {
+    try {
+        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
+        if (panelBuildStatusCollection) {
+            await panelBuildStatusCollection.deleteOne(
+                {
+                    panelid: panelId,
+                }
+            );
+            return true;
+        }
+    } catch (error) {
+        logger.warning(`${error.trace || error || error.message}`);
+    }
+    return false;
+};
+
+exports.set = async function (panelId, statusText) {
+    try {
+        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
         if (panelBuildStatusCollection) {
             await panelBuildStatusCollection.updateOne(
                 {
@@ -32,12 +78,8 @@ exports.set = async function (panelId, statusText, progress) {
                 },
                 {
                     $set: {
-                        panelid: panelId,
-                        status: {
-                            text: statusText,
-                            progress,
-                            error: false,
-                        },
+                        "status.text": statusText,
+                        "status.error": false,
                         timestamp: new Date(),
                     },
                 },
@@ -63,43 +105,13 @@ exports.setError = async function (panelId, errorText) {
                 },
                 {
                     $set: {
-                        panelid: panelId,
-                        status: {
-                            text: errorText,
-                            progress: -1,
-                            error: true,
-                        },
-                        timestamp: new Date()
+                        "status.text": statusText,
+                        "status.error": false,
+                        timestamp: new Date(),
                     },
                 },
                 {
                     upsert: true,
-                }
-            );
-            return true;
-        }
-    } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
-    }
-    return false;
-};
-
-exports.setProgress = async function (panelId, progress) {
-    try {
-        const panelBuildStatusCollection = await mongoCollection("panelbuildstatus");
-        if (panelBuildStatusCollection) {
-            await panelBuildStatusCollection.updateOne(
-                {
-                    panelid: panelId,
-                },
-                {
-                    $set: {
-                        "status.progress": progress,
-                        timestamp: new Date()
-                    },
-                },
-                {
-                    upsert: false,
                 }
             );
             return true;
@@ -120,6 +132,7 @@ exports.list = async function () {
                 response.push({
                     panelid: eachResult["panelid"],
                     status: eachResult["status"],
+                    startTime: eachResult["startTime"],
                 });
             }
             return response;

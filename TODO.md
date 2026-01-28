@@ -20,3 +20,6 @@
 - you can crash chrome by pasting a large text in config edit code dialog
 - why does the development version show module upgrades available?
 - improve upgrade process
+
+- check PanelBuilding
+- check PanelRowState
