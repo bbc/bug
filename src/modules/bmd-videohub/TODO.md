@@ -1,3 +1,2 @@
-- add historical entries to CHANGELOG.md
 - check try/catch/throw (see mikrotik-sdwan)
 - Clicking an already selected destination should lock it

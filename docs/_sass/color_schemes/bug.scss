@@ -15,4 +15,26 @@ $search-background-color: #262626;
 $search-result-preview-color: #e0e0e0;
 $border-color: #262626;
 
-// @import "./vendor/OneDarkJekyll/syntax";
+html p,
+html li {
+    font-size: 14px !important;
+}
+$body-font-family: "Roboto", sans-serif;
+
+html body h1 {
+    font-size: 32px !important;
+    font-weight: 500;
+}
+
+html body h2 {
+    font-size: 22px !important;
+    font-weight: 300;
+}
+
+div.highlighter-rouge div.highlight {
+    border-width: 0 !important;
+}
+
+code {
+    color: #a0a0a0;
+}
