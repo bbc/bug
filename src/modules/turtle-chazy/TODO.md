@@ -1,4 +1,10 @@
--   channel rename - make sure unique - if not just use channel number
--   do we want source name on the destination button? Or index?
--   add edit/rename
--   add clear route
+- channel rename - make sure unique - if not just use channel number
+- do we want source name on the destination button? Or index?
+- add edit/rename
+- add clear route
+- add README.md
+- add historical entries to CHANGELOG.md
+- add screenshot
+- check try/catch/throw (see mikrotik-sdwan)
+- add panel status (default/success etc)
+- check module status (dev/beta/stable etc)
