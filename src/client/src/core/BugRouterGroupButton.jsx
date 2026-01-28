@@ -38,6 +38,7 @@ export default function BugRouterGroupButton({
     return (
         <>
             <Button
+                component="div"
                 ref={setNodeRef}
                 {...extraProps}
                 sx={{
