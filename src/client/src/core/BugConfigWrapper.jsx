@@ -1,52 +1,68 @@
 import BugForm from "@core/BugForm";
+import Editor from "@monaco-editor/react";
 import CodeIcon from "@mui/icons-material/Code";
-import { Button, Grid, IconButton } from "@mui/material";
+import { Box, Button, Grid, IconButton } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import { useState } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import JSONInput from "react-json-editor-ajrm";
-import locale from "react-json-editor-ajrm/locale/en";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function BugConfigWrapper({ children, config, handleSubmit = () => {} }) {
     const navigate = useNavigate();
-    const [editorMode, setEditorMode] = useState(false);
-    const [editorJson, setEditorJson] = useState(config);
     const sendAlert = useAlert();
 
-    useHotkeys("e", () => {
-        setEditorMode(true);
-    });
+    const [editorMode, setEditorMode] = useState(false);
+    const [editorText, setEditorText] = useState("");
+    const [editorJson, setEditorJson] = useState(config);
+    const [jsonError, setJsonError] = useState(null);
 
-    const onCancel = () => {
-        navigate(-1);
-    };
+    // Initialize editor with current config
+    useEffect(() => {
+        const pretty = JSON.stringify(config, null, 2);
+        setEditorText(pretty);
+        setEditorJson(config);
+        setJsonError(null);
+    }, [config]);
 
-    const handleEditorMode = () => {
-        setEditorMode(!editorMode);
-    };
+    const onCancel = () => navigate(-1);
 
-    const handleEditorChange = (editor) => {
-        if (!editor.error) {
-            setEditorJson(editor.jsObject);
+    const handleEditorMode = () => setEditorMode(!editorMode);
+
+    const handleEditorChange = (value) => {
+        setEditorText(value);
+        try {
+            const parsed = JSON.parse(value);
+            setEditorJson(parsed);
+            setJsonError(null);
+        } catch (err) {
+            setJsonError(err.message);
         }
     };
 
     const getBody = () => {
         if (editorMode) {
             return (
-                <JSONInput
-                    id="json_editor"
-                    onChange={handleEditorChange}
-                    placeholder={config}
-                    colors={{ background: "#262626" }}
-                    locale={locale}
-                    height="auto"
-                    width="auto"
-                />
+                <>
+                    <Editor
+                        height="400px"
+                        defaultLanguage="json"
+                        theme="vs-dark"
+                        value={editorText}
+                        onChange={handleEditorChange}
+                        options={{
+                            minimap: { enabled: false },
+                            fontSize: 12,
+                            tabSize: 2,
+                            scrollBeyondLastLine: false,
+                        }}
+                    />
+                    {jsonError && (
+                        <Box sx={{ color: "#f44336", margin: 1, marginBottom: 0 }}>Invalid JSON: {jsonError}</Box>
+                    )}
+                </>
             );
         }
+
         return (
             <Grid container spacing={4}>
                 {children}
@@ -57,49 +73,59 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
     const onSubmit = async (form) => {
         const response = await AxiosPut(`/api/panelconfig/${config?.id}`, form);
         if (!response?.error) {
-            sendAlert(`${config?.title} has been updated.`, { broadcast: "true", variant: "success" });
+            sendAlert(`${config?.title} has been updated.`, {
+                broadcast: "true",
+                variant: "success",
+            });
             navigate(-1);
         } else {
-            sendAlert(`${config?.title} could not be updated.`, { variant: "warning" });
+            sendAlert(`${config?.title} could not be updated.`, {
+                variant: "warning",
+            });
         }
     };
 
     return (
-        <>
-            <BugForm
-                onClose={onCancel}
-                iconButtons={
-                    <IconButton
-                        aria-label="close"
-                        sx={{
-                            color: editorMode ? "primary.main" : "grey.A500",
-                            padding: "14px",
-                        }}
-                        onClick={handleEditorMode}
+        <BugForm
+            onClose={onCancel}
+            iconButtons={
+                <IconButton
+                    aria-label="toggle editor"
+                    sx={{
+                        color: editorMode ? "primary.main" : "grey.A500",
+                        padding: "14px",
+                    }}
+                    onClick={handleEditorMode}
+                >
+                    <CodeIcon />
+                </IconButton>
+            }
+            sx={{
+                maxWidth: "800px",
+            }}
+        >
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <BugForm.Header onClose={onCancel}>Configuration</BugForm.Header>
+
+                <BugForm.Body>{getBody()}</BugForm.Body>
+
+                <BugForm.Actions>
+                    <Button variant="contained" color="secondary" disableElevation onClick={onCancel}>
+                        Cancel
+                    </Button>
+
+                    <Button
+                        type={editorMode ? "button" : "submit"}
+                        variant="contained"
+                        color="primary"
+                        disableElevation
+                        disabled={editorMode && !!jsonError}
+                        onClick={editorMode ? () => onSubmit(editorJson) : undefined}
                     >
-                        <CodeIcon />
-                    </IconButton>
-                }
-            >
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <BugForm.Header onClose={onCancel}>Configuration</BugForm.Header>
-                    <BugForm.Body>{getBody()}</BugForm.Body>
-                    <BugForm.Actions>
-                        <Button variant="contained" color="secondary" disableElevation onClick={onCancel}>
-                            Cancel
-                        </Button>
-                        <Button
-                            type={editorMode ? "button" : "submit"}
-                            variant="contained"
-                            color="primary"
-                            disableElevation
-                            onClick={editorMode ? () => onSubmit(editorJson) : () => {}}
-                        >
-                            Save Changes
-                        </Button>
-                    </BugForm.Actions>
-                </form>
-            </BugForm>
-        </>
+                        Save Changes
+                    </Button>
+                </BugForm.Actions>
+            </form>
+        </BugForm>
     );
 }
