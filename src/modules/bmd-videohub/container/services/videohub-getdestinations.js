@@ -8,17 +8,16 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     let config;
     try {
         config = await configGet();
-        if (!config) {
-            throw new Error();
-        }
+        if (!config) throw new Error();
     } catch (error) {
         logger.error(`videohub-getdestinations: failed to fetch config`);
         return false;
     }
 
-    const icons = config.destinationIcons ? config.destinationIcons : [];
-    const iconColors = config.destinationIconColors ? config.destinationIconColors : [];
-    const quads = config.destinationQuads ? config.destinationQuads : [];
+    // fallback to empty arrays if not defined
+    const icons = config.destinationIcons ?? [];
+    const iconColors = config.destinationIconColors ?? [];
+    const quads = config.destinationQuads ?? [];
 
     const dataCollection = await mongoCollection("data");
 
@@ -28,43 +27,36 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     };
 
     // add groups first
-    groupIndex = groupIndex < 0 ? null : groupIndex;
+    groupIndex = Number.isInteger(groupIndex) && groupIndex >= 0 ? groupIndex : null;
 
-    const groups = config["destinationGroups"] ?? [];
-    if (groups.length > 0 && groupIndex === null) {
-        groupIndex = 0;
-    }
-
-    if (groups.length === 0) {
-        groupIndex = null;
-    }
+    const groups = config.destinationGroups ?? [];
+    groupIndex = groups.length > 0 ? groupIndex ?? 0 : null;
 
     // add groups to output array
-    groups.forEach((eachGroup, eachIndex) => {
-        outputArray["groups"].push({
-            label: eachGroup["name"],
-            selected: eachIndex === parseInt(groupIndex),
-            index: eachIndex,
-        });
-    });
+    outputArray.groups = groups.map((eachGroup, eachIndex) => ({
+        label: eachGroup.name,
+        selected: eachIndex === groupIndex,
+        index: eachIndex,
+    }));
 
-    // then calculate valid sources for this group
-    const validDestinations = groups[groupIndex] ? groups[groupIndex]["value"] : [];
+    // then calculate valid destinations for this group
+    const validDestinations = groups[groupIndex]?.value ?? [];
 
-    // calculate excluded sources too
-    // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
-    const excludedDestinations = config["excludeDestinations"] ? config["excludeDestinations"] : [];
+    // calculate excluded destinations too
+    // note that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
+    const excludedDestinations = config.excludeDestinations ?? [];
 
-    // get get the existing data from the db
+    // get the existing data from the db
     const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
     const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
     const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
     const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
 
     if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
-        for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels["data"])) {
-            const intIndex = parseInt(eachIndex);
-            const selectedSource = dbOutputRouting["data"][eachIndex];
+        for (const [eachIndexStr, eachValue] of Object.entries(dbOutputLabels.data)) {
+            const intIndex = parseInt(eachIndexStr);
+
+            const selectedSource = dbOutputRouting.data[eachIndex];
             const selectedSourceLabel = dbInputLabels.data[selectedSource];
             const isExcluded = excludedDestinations.includes(intIndex.toString());
             const isInGroup = groupIndex === null || validDestinations.includes(intIndex);
@@ -72,23 +64,18 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
             let isLocalLocked = false;
             let isRemoteLocked = false;
 
-            if (dbOutputLocks && dbOutputLocks["data"][eachIndex]) {
-                isLocalLocked = dbOutputLocks["data"][eachIndex] == "O";
-                isRemoteLocked = dbOutputLocks["data"][eachIndex] == "L";
+            if (dbOutputLocks?.data?.[eachIndex]) {
+                isLocalLocked = dbOutputLocks.data[eachIndex] === "O";
+                isRemoteLocked = dbOutputLocks.data[eachIndex] === "L";
             }
 
-            const indexText = config["showNumber"] === false ? "" : intIndex + 1;
+            const indexText = config.showNumber === false ? "" : intIndex + 1;
 
-            // set new order field - if in group then use the validsources index, otherwise the normal one
-            let order;
-            if (groupIndex !== null) {
-                order = validDestinations.indexOf(intIndex);
-            } else {
-                order = intIndex;
-            }
+            // set new order field - if in group then use the validDestinations index, otherwise the normal one
+            const order = groupIndex !== null ? validDestinations.indexOf(intIndex) : intIndex;
 
             if (isInGroup && (!isExcluded || showExcluded)) {
-                outputArray["destinations"].push({
+                outputArray.destinations.push({
                     index: intIndex,
                     label: eachValue,
                     sourceIndex: parseInt(selectedSource),
@@ -99,15 +86,16 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
                     isLocked: isLocalLocked || isRemoteLocked,
                     isLocalLocked: isLocalLocked,
                     isRemoteLocked: isRemoteLocked,
-                    isQuad: quads?.[intIndex] === true,
-                    icon: icons[intIndex] ? icons[intIndex] : null,
-                    iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
+                    isQuad: !!quads[intIndex],
+                    icon: icons[intIndex] ?? null,
+                    iconColor: iconColors[intIndex] ?? "#ffffff",
                 });
             }
         }
 
         // sort by order field
-        outputArray["destinations"].sort((a, b) => (a.order > b.order ? 1 : -1));
+        outputArray.destinations.sort((a, b) => a.order - b.order);
     }
+
     return outputArray;
 };
