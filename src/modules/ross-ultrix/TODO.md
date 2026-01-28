@@ -1,4 +1,11 @@
--   detect slot for socket
--   snmp alarms
--   config show all
--   scroll to the right in edit mode breaks with too many groups
+- detect slot for socket
+- snmp alarms
+- config show all
+- scroll to the right in edit mode breaks with too many groups
+- needs special Duncan setting
+- add README.md
+- add historical entries to CHANGELOG.md
+- add screenshot
+- check try/catch/throw (see mikrotik-sdwan)
+- add panel status (default/success etc)
+- check module status (dev/beta/stable etc)

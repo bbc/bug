@@ -1,10 +1,13 @@
 {
-  "prettier.prettierPath": "./node_modules/prettier",
-  "prettier.requireConfig": false,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "search.exclude": {
-    "**/node_modules": true,
-    "dist": true
-  }
+    "prettier.prettierPath": "./node_modules/prettier",
+    "prettier.requireConfig": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "search.exclude": {
+        "**/node_modules": true,
+        "dist": true
+    },
+    "todo-tree.filtering.includeGlobs": ["**/TODO.md"],
+    "todo-tree.regex.regex": "^(\\s*[-*]\\s+.*)$",
+    "todo-tree.tree.showCountsInTree": true
 }
