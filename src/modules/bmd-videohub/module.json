@@ -15,7 +15,6 @@
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
-        "order": 0,
         "needsConfigured": true,
         "title": "",
         "module": "bmd-videohub",
