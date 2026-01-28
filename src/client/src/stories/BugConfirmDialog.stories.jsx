@@ -65,6 +65,52 @@ export default function MyComponent() {
         title: "Confirm your action",
         message: "Are you sure you want to do this thing?",
         confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+        open: true,
+        sx: {},
+    },
+
+    argTypes: {
+        title: {
+            description: "The title to be displayed in the dialog",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "Confirm" },
+            },
+        },
+        message: {
+            description: "The main body message to be displayed",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "" },
+            },
+        },
+        cancelButtonText: {
+            description: "The label to be displayed on the 'cancel' button",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "Cancel" },
+            },
+        },
+        confirmButtonText: {
+            description: "The label to be displayed on the 'confirm' button",
+            table: {
+                type: { summary: "string" },
+                defaultValue: { summary: "Confirm" },
+            },
+        },
+        sx: {
+            description: "An object containing style overrides - see MaterialUI docs for options",
+            table: {
+                type: { summary: "object" },
+                defaultValue: { summary: "{}" },
+            },
+        },
+        open: {
+            table: {
+                disable: true,
+            },
+        },
     },
 };
 
