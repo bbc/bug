@@ -53,8 +53,8 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
     const dbOutputLocks = await dataCollection.findOne({ title: "video_output_locks" });
 
     if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
-        for (const [eachIndexStr, eachValue] of Object.entries(dbOutputLabels.data)) {
-            const intIndex = parseInt(eachIndexStr);
+        for (const [eachIndex, eachValue] of Object.entries(dbOutputLabels.data)) {
+            const intIndex = parseInt(eachIndex);
 
             const selectedSource = dbOutputRouting.data[eachIndex];
             const selectedSourceLabel = dbInputLabels.data[selectedSource];

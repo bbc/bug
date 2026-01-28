@@ -19,3 +19,4 @@
 - clicking cancel/save in edit dialog shouldn't go 'back' - it should navigate
 - you can crash chrome by pasting a large text in config edit code dialog
 - why does the development version show module upgrades available?
+- improve upgrade process
