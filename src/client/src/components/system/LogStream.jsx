@@ -15,6 +15,7 @@ const ansiConverter = new AnsiToHtml({
     bg: "#1e1e1e",
     newline: true,
     escapeXML: true,
+    colors: { 1: "#e72323", 4: "#6b6be5" },
 });
 
 export default function LogStream({ panelId }) {
@@ -174,7 +175,7 @@ export default function LogStream({ panelId }) {
                                     }}
                                 >
                                     <span
-                                        style={{ color: isError ? "red" : undefined }}
+                                        style={{ color: isError ? "#e72323" : undefined }}
                                         dangerouslySetInnerHTML={{ __html: html }}
                                     />
                                 </Typography>
