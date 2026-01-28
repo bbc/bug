@@ -36,6 +36,7 @@ export default function BugAlert({
         info: "Info",
         error: "Error",
         success: "Status",
+        default: "Status",
     };
 
     const mappedSeverity = {
@@ -43,6 +44,7 @@ export default function BugAlert({
         warning: "warning",
         info: "info",
         error: "error",
+        default: "",
     };
 
     const renderMessage = () => {
