@@ -67,7 +67,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                         panel?._dockerContainer?._status === "building" ||
                         panel?._dockerContainer?._status === "starting"
                     }
-                    checked={panel._active}
+                    checked={panel._active || panel?._dockerContainer?._status === "building"}
                     onChange={(checked) => handleEnabledChanged(checked, panel.id)}
                 />
             </TableCell>
