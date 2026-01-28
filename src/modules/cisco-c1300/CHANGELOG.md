@@ -9,3 +9,10 @@
 
 - 2026-01-27: add checkconfig to status checks ([a197707](https://github.com/bbc/bug/commit/a1977076674c960fbfa31bc9262728e2162e238d))
 
+### version 1.2.0
+
+- 2025-06-29: add poe control and support ([7107139](https://github.com/bbc/bug/commit/71071397627ef36e02f3bbb35cf96395c5b78bcd))
+
+### version 1.0.0
+
+- 2025-04-28: add support for cisco C1300 switches
