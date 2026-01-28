@@ -51,6 +51,13 @@ Docker will recreate only the containers that need updating, minimizing downtime
 
 ---
 
+## Upgrade docker-compose
+
+> Important!
+
+If you are upgrading to a newer version of BUG we recommend updating your docker-compose to the latest version available on Github.
+Running with an old version can cause complications, and loss of config or database.
+
 ## Running a Specific Version
 
 To run a specific BUG version instead of `latest`:
