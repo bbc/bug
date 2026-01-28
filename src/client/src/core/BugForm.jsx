@@ -46,7 +46,7 @@ const BugForm = ({ sx = {}, onClose, children, iconButtons = [] }) => {
     );
 };
 
-const Header = ({ children }) => {
+const Header = ({ children, sx = {} }) => {
     return (
         <CardHeader
             component={Paper}
@@ -54,17 +54,18 @@ const Header = ({ children }) => {
             elevation={0}
             sx={{
                 padding: "16px",
+                ...sx,
             }}
             title={children}
         ></CardHeader>
     );
 };
 
-const Body = ({ children }) => {
-    return <CardContent>{children}</CardContent>;
+const Body = ({ children, sx = {} }) => {
+    return <CardContent sx={{ ...sx }}>{children}</CardContent>;
 };
 
-const Actions = ({ children }) => {
+const Actions = ({ children, sx = {} }) => {
     return (
         <CardActions
             sx={{
@@ -73,6 +74,7 @@ const Actions = ({ children }) => {
                 },
                 padding: "16px",
                 justifyContent: "flex-end",
+                ...sx,
             }}
         >
             {children}
