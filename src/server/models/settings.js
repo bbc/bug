@@ -7,9 +7,9 @@ const path = require("path");
 const hash = require("@utils/hash");
 const global = require("@utils/globalEmitter");
 
-const filename = path.join(__dirname, "..", "config", "global", "settings.json");
+const filename = path.join(__dirname, "..", "..", "config", "global", "settings.json");
 
-const defaultFilename = path.join(__dirname, "..", "config", "default", "settings.json");
+const defaultFilename = path.join(__dirname, "..", "..", "config", "default", "settings.json");
 
 async function getSettings() {
     try {

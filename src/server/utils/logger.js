@@ -60,7 +60,7 @@ const logger = () => {
 const getLogLevel = async () => {
     try {
         const settings = await readJson(
-            require("path").join(__dirname, "..", "config", "global", "settings.json")
+            require("path").join(__dirname, "..", "..", "config", "global", "settings.json")
         );
         return (settings?.logLevel || process.env.BUG_LOG_LEVEL || "debug").toLowerCase();
     } catch {
