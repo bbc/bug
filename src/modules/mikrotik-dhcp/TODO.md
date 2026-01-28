@@ -4,3 +4,4 @@
 - check try/catch/throw (see mikrotik-sdwan)
 - add panel status (default/success etc)
 - check module status (dev/beta/stable etc)
+- add dhcp pool number left to mikrotik dhcp module
