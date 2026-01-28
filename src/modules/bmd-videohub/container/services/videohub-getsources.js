@@ -8,18 +8,25 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     let config;
     try {
         config = await configGet();
-        if (!config) {
-            throw new Error();
-        }
+        if (!config) throw new Error();
     } catch (error) {
         logger.error(`videohub-getsources: failed to fetch config`);
         return false;
     }
 
-    const icons = config.sourceIcons ? config.sourceIcons : [];
-    const iconColors = config.sourceIconColors ? config.sourceIconColors : [];
-    const sourceQuads = config.sourceQuads ? config.sourceQuads : [];
-    const destinationQuads = config.destinationQuads ? config.destinationQuads : [];
+    // fallback to empty arrays if not defined
+    const icons = config.sourceIcons ?? [];
+    const iconColors = config.sourceIconColors ?? [];
+    const sourceQuads = config.sourceQuads ?? [];
+    const destinationQuads = config.destinationQuads ?? [];
+    const excludedSources = config.excludeSources ?? [];
+    const groups = config.sourceGroups ?? [];
+
+    // validate groupIndex
+    groupIndex = Number.isInteger(groupIndex) && groupIndex >= 0 ? groupIndex : null;
+
+    // if no groupIndex given, default to 0 if groups exist
+    groupIndex = groups.length > 0 ? groupIndex ?? 0 : null;
 
     const dataCollection = await mongoCollection("data");
 
@@ -29,85 +36,65 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     };
 
     // add groups first
-    groupIndex = groupIndex < 0 ? null : groupIndex;
-
-    const groups = config["sourceGroups"] ?? [];
-    if (groups.length > 0 && groupIndex === null) {
-        groupIndex = 0;
-    }
-    if (groups.length === 0) {
-        groupIndex = null;
-    }
-
-    // add groups to output array
-    groups.forEach((eachGroup, eachIndex) => {
-        outputArray["groups"].push({
-            label: eachGroup["name"],
-            selected: eachIndex === parseInt(groupIndex),
-            index: eachIndex,
-        });
-    });
+    outputArray.groups = groups.map((eachGroup, eachIndex) => ({
+        label: eachGroup.name,
+        selected: eachIndex === groupIndex,
+        index: eachIndex,
+    }));
 
     // then calculate valid sources for this group
-    const validSources = groups[groupIndex] ? groups[groupIndex]["value"] : [];
+    const validSources = groups[groupIndex]?.value ?? [];
 
-    // calculate excluded sources too
-    // not that this field is an array of strings - so we call toString() on each check later on. Grrrrr.
-    const excludedSources = config["excludeSources"] ? config["excludeSources"] : [];
-
-    // get get the existing data from the db
+    // get the existing data from the db
     const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
 
+    // initialize selectedSourceIndex for currently selected destination
     let selectedSourceIndex = null;
     if (destinationIndex !== null) {
-        // save the selected source index for the currently selected destination
-        if (dbOutputRouting?.["data"]?.[destinationIndex] !== null) {
-            selectedSourceIndex = parseInt(dbOutputRouting?.["data"]?.[destinationIndex]);
+        if (dbOutputRouting?.data?.[destinationIndex] !== null) {
+            selectedSourceIndex = parseInt(dbOutputRouting.data[destinationIndex]);
         }
 
-        if (destinationQuads?.[destinationIndex] === true) {
-            // it's a quad destination, so we need to check that the following 3 sources match the following 3 destinations
-            for (let a = 1; a < 4; a++) {
-                if (parseInt(dbOutputRouting?.["data"]?.[parseInt(destinationIndex) + a]) !== selectedSourceIndex + a) {
-                    selectedSourceIndex = null;
-                }
-            }
+        // check quad destinations
+        // it's a quad destination, so we need to check that the following 3 sources match the following 3 destinations
+        const isValidQuad = (startIndex, selectedSource) =>
+            [1, 2, 3].every(a => parseInt(dbOutputRouting?.data?.[startIndex + a]) === selectedSource + a);
+
+        if (destinationQuads?.[destinationIndex] && !isValidQuad(destinationIndex, selectedSourceIndex)) {
+            selectedSourceIndex = null;
         }
     }
 
+    // get input labels from the db
     const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
     if (dbInputLabels) {
-        for (const [eachIndex, eachValue] of Object.entries(dbInputLabels["data"])) {
-            const intIndex = parseInt(eachIndex);
+        for (const [eachIndexStr, eachValue] of Object.entries(dbInputLabels.data)) {
+            const intIndex = parseInt(eachIndexStr);
+
             // check it's not excluded or if it's a selected source - in which case we'll show it anyway
             const isExcluded = excludedSources.includes(intIndex.toString());
             const isSelected = selectedSourceIndex === intIndex;
             const isInGroup = groupIndex === null || validSources.includes(intIndex);
 
             // set new order field - if in group then use the validsources index, otherwise the normal one
-            let order;
-            if (groupIndex !== null) {
-                order = validSources.indexOf(intIndex);
-            } else {
-                order = intIndex;
-            }
+            const order = groupIndex !== null ? validSources.indexOf(intIndex) : intIndex;
 
             if (isInGroup && (!isExcluded || showExcluded)) {
-                outputArray["sources"].push({
+                outputArray.sources.push({
                     index: intIndex,
                     label: eachValue,
                     selected: isSelected,
                     hidden: isExcluded,
                     order: order,
-                    isQuad: sourceQuads?.[intIndex] === true,
-                    icon: icons[intIndex] ? icons[intIndex] : null,
-                    iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
+                    isQuad: !!sourceQuads[intIndex],
+                    icon: icons[intIndex] ?? null,
+                    iconColor: iconColors[intIndex] ?? "#ffffff",
                 });
             }
         }
 
         // sort by order field
-        outputArray["sources"].sort((a, b) => (a.order > b.order ? 1 : -1));
+        outputArray.sources.sort((a, b) => a.order - b.order);
     }
 
     return outputArray;
