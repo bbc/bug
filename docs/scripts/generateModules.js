@@ -127,6 +127,7 @@ const indexContent = `---
 title: "Modules"
 description: "List of all modules"
 permalink: /pages/modules/
+layout: "page"
 ---
 # Modules
 

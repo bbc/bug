@@ -9,7 +9,6 @@
 - make all user names lower-case
 - sort out overlaying menu in bug api table
 - move jest to vitest
-- add better dropdown for module selection - maybe with icons and descrioptions?
 - update docs with upgrade instructions (command line only)
 - update diagrams in docs to remove watchtower
 - add tests for groups
