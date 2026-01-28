@@ -10,12 +10,12 @@
 
 ### version 1.2.0
 
-- 2025-09-26: bmd-videohub: fix page refresh
+- 2025-09-26: fix page refresh
 
 ### version 1.1.0
 
-- 2024-06-10: bmd-videohub: add quad button routing
+- 2024-06-10: add quad button routing
 
 ### version 1.0.1
 
-- 2023-08-09: Added new Module logger to BMD videohub module
+- 2023-08-09: add new Module logger
