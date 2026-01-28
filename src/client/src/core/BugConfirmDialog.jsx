@@ -7,6 +7,7 @@ const BugConfirmDialog = ({
     onConfirm,
     onDismiss,
     confirmButtonText = "Confirm",
+    cancelButtonText = "Cancel",
     sx = {},
 }) => {
     const getMessage = () => {
@@ -26,7 +27,7 @@ const BugConfirmDialog = ({
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>{getMessage()}</DialogContent>
                 <DialogActions>
-                    <Button onClick={onDismiss}>Cancel</Button>
+                    <Button onClick={onDismiss}>{cancelButtonText}</Button>
                     <Button color="primary" onClick={onConfirm}>
                         {confirmButtonText}
                     </Button>
