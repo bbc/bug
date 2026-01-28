@@ -132,7 +132,6 @@ exports.list = async function () {
                 response.push({
                     panelid: eachResult["panelid"],
                     status: eachResult["status"],
-                    startTime: eachResult["startTime"],
                 });
             }
             return response;

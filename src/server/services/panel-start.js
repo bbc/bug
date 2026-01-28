@@ -12,9 +12,9 @@ const delay = require("delay");
 const panelConfigPush = require("@services/panelconfig-push");
 
 module.exports = async (panelId) => {
-    const updateProgress = (progressText) => {
+    const updateProgress = async (progressText) => {
         // update the database
-        return panelBuildStatusModel.set(panelId, progressText);
+        return await panelBuildStatusModel.set(panelId, progressText);
     };
 
     try {
@@ -28,12 +28,12 @@ module.exports = async (panelId) => {
             return true;
         }
 
-        panelBuildStatusModel.create(panelId, "Building image");
+        await panelBuildStatusModel.create(panelId, "Building image");
 
         // build the image for the module, if it's already been done this will be quick
         logger.info(`panel-start: building module ${config.module} for panel id ${panelId}`);
         if (!(await moduleBuild(config.module, updateProgress))) {
-            panelBuildStatusModel.setError(panelId, "Failed to build image");
+            await panelBuildStatusModel.setError(panelId, "Failed to build image");
             throw new Error(`Failed to build module (image)`);
         }
 
@@ -42,7 +42,7 @@ module.exports = async (panelId) => {
         if (!container) {
             // it doesn't exist - let's create it
             logger.info(`panel-start: container for panel id ${panelId} doesn't exist ... creating`);
-            panelBuildStatusModel.set(panelId, "Completed");
+            await panelBuildStatusModel.set(panelId, "Completed");
             await dockerCreateContainer(config);
 
             // and fetch it again - to make sure it exists
@@ -50,7 +50,7 @@ module.exports = async (panelId) => {
             container = await dockerGetContainer(panelId);
             if (!container) {
                 // it still doesn't exist - give up
-                panelBuildStatusModel.setError(panelId, "Failed to build container");
+                await panelBuildStatusModel.setError(panelId, "Failed to build container");
                 throw new Error(`Failed to create container for panel id ${panelId}`);
             }
             logger.info(`panel-start: successfully created container id ${container.id}`);

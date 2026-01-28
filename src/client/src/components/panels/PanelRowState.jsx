@@ -10,6 +10,7 @@ const State = ({ state, children }) => {
         starting: "warning.main",
         restarting: "text.primary",
         building: "warning.main",
+        upgrading: "warning.main",
         error: "error.main",
         warning: "warning.main",
         active: "success.main",
@@ -50,13 +51,18 @@ export default function PanelRowState({ panel }) {
         return <State state="empty">...</State>;
     }
 
-    const elapsed = useElapsedTime(panel?._buildStatus?.startTime);
-
     switch (panel._dockerContainer._status) {
         case "building":
             return (
                 <State state="building">
-                    BUILDING PANEL [{formatDuration(elapsed)}] - {panel?._buildStatus?.text}
+                    BUILDING PANEL [{formatDuration(useElapsedTime(panel?._buildStatus?.startTime))}] -{" "}
+                    {panel?._buildStatus?.text}
+                </State>
+            );
+        case "upgrading":
+            return (
+                <State state="upgrading">
+                    UPGRADING PANEL [{formatDuration(useElapsedTime(panel?._upgradeStatus?.startTime))}]
                 </State>
             );
         case "error":

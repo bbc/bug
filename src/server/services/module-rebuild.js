@@ -6,6 +6,7 @@ const dockerDeleteModule = require("@services/docker-deletemodule");
 const dockerBuildModule = require("@services/docker-buildmodule");
 const moduleConfig = require("@models/module-config");
 const dockerFileWrite = require("@services/dockerfile-write");
+const moduleUpgradeStatusModel = require("@models/module-upgradestatus");
 
 module.exports = async (moduleName, updateProgressCallback) => {
     try {
@@ -16,6 +17,9 @@ module.exports = async (moduleName, updateProgressCallback) => {
         if (!matchedModule) {
             throw new Error(`Module config '${moduleName}' not found`);
         }
+
+        // update the UI to show we're building
+        await moduleUpgradeStatusModel.create(moduleName)
 
         // delete existing module images/containers - we do this first to ensure the build isn't using cached layers we want gone
         logger.info(`module-rebuild: deleting existing module assets for: ${moduleName}`);
@@ -34,7 +38,10 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
         // trigger the build
         logger.info(`module-rebuild: rebuilding image for ${moduleName}...`);
-        return await dockerBuildModule(moduleName, updateProgressCallback);
+        const result = await dockerBuildModule(moduleName, updateProgressCallback);
+        await moduleUpgradeStatusModel.delete(moduleName)
+        return result
+
 
     } catch (error) {
         logger.error(`module-rebuild: ${error.stack}`);

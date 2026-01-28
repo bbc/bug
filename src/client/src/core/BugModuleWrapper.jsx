@@ -1,4 +1,4 @@
-import PanelBuilding from "@components/panels/PanelBuilding";
+import PanelBusy from "@components/panels/PanelBusy";
 import PanelCritical from "@components/panels/PanelCritical";
 import PanelRestarting from "@components/panels/PanelRestarting";
 import PanelStopped from "@components/panels/PanelStopped";
@@ -58,7 +58,10 @@ export default function BugModuleWrapper({ panelId, children }) {
     if (!isProtected) {
         if (panel.data._module.needsContainer) {
             if (panel.data._dockerContainer._isBuilding) {
-                return <PanelBuilding panel={panel.data} />;
+                return <PanelBusy message="Panel is building ..." />;
+            }
+            if (panel.data._dockerContainer._isUpgrading) {
+                return <PanelBusy message="Panel is upgrading ..." />;
             }
         }
 

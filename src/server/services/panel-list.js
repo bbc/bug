@@ -8,6 +8,7 @@ const panelBuildStatusModel = require("@models/panel-buildstatus");
 const panelStatusModel = require("@models/panel-status");
 const dockerContainerModel = require("@models/docker-container");
 const cacheStore = require("@core/cache-store");
+const moduleUpgradeStatusModel = require("@models/module-upgradestatus");
 
 module.exports = async () => {
     try {
@@ -24,6 +25,7 @@ module.exports = async () => {
 
         const containerInfoList = await dockerContainerModel.list();
         const panelBuildStatus = await panelBuildStatusModel.list();
+        const moduleUpgradeStatus = await moduleUpgradeStatusModel.list();
 
         const panelStatus = await panelStatusModel.list({ noTimestamps: true });
 
@@ -38,11 +40,21 @@ module.exports = async () => {
                     panelBuildStatus !== null
                         ? panelBuildStatus.find((o) => o.panelid === eachPanelConfig["id"])
                         : null;
+                const thisUpgrade =
+                    moduleUpgradeStatus !== null
+                        ? moduleUpgradeStatus.find((o) => o.moduleName === eachPanelConfig["module"])
+                        : null;
 
                 // the build list returns a nested 'status' object, direct from the database - we need to pull it out
                 let thisBuildStatus = null;
                 if (thisBuild) {
                     thisBuildStatus = thisBuild["status"];
+                }
+
+                // and the upgrade status
+                let thisUpgradeStatus = null;
+                if (thisUpgrade) {
+                    thisUpgradeStatus = thisUpgrade["status"];
                 }
 
                 // remove unneeded fields from moduleConfig
@@ -52,7 +64,7 @@ module.exports = async () => {
 
                 // combine them
                 filteredPanelList.push(
-                    panelFilter(eachPanelConfig, thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus)
+                    panelFilter(eachPanelConfig, thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus, thisUpgradeStatus)
                 );
             }
         }

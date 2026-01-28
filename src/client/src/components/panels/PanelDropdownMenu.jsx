@@ -46,24 +46,24 @@ export default function PanelDropdownMenu({ panel }) {
 
     const handleEnable = async (event) => {
         setAnchorEl(null);
+        event.stopPropagation();
+        event.preventDefault();
         if (await AxiosCommand(`/api/panel/enable/${panel?.id}`)) {
             sendAlert(`Enabled panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to enable panel: ${panel?.title}`, { variant: "error" });
         }
-        event.stopPropagation();
-        event.preventDefault();
     };
 
     const handleDisable = async (event) => {
         setAnchorEl(null);
+        event.stopPropagation();
+        event.preventDefault();
         if (await AxiosCommand(`/api/panel/disable/${panel?.id}`)) {
             sendAlert(`Disabled panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
         } else {
             sendAlert(`Failed to disable panel: ${panel?.title}`, { variant: "error" });
         }
-        event.stopPropagation();
-        event.preventDefault();
     };
 
     const handleRestart = async (event) => {
@@ -102,9 +102,12 @@ export default function PanelDropdownMenu({ panel }) {
             );
 
             if (await AxiosCommand(`/api/module/rebuild/${panel?._module.name}`)) {
-                sendAlert(`Upgraded panel: ${panel?.title}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Panel '${panel?.title}' upgrade complete - ready to restart`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
             } else {
-                sendAlert(`Failed to upgrade panel: ${panel?.title}`, { variant: "error" });
+                sendAlert(`Failed to upgrade panel: '${panel?.title}'`, { variant: "error" });
             }
         }
     };

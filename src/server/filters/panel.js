@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, thisStatus) => {
+module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, thisStatus, panelUpgradeStatus) => {
     // we don't need the defaultconfig bit in the panelModule - we we'll just remove it - every byte counts!
     delete moduleConfig.defaultconfig;
 
@@ -18,6 +18,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     // check container states
     let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
     let isBuilding = (!isRunning && panelBuildStatus && panelBuildStatus?.error !== true) ?? false;
+    let isUpgrading = !!panelUpgradeStatus ?? false;
     let isBuilt = panelBuildStatus !== null ?? false;
     let isStarting = recentlyStarted(containerInfo.status);
     let isRestarting = (containerInfo && containerInfo.state === "restarting") ?? false;
@@ -36,6 +37,8 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         status = panelConfig["enabled"] ? "running" : "stopping";
     } else if (isBuilding) {
         status = "building";
+    } else if (isUpgrading) {
+        status = "upgrading";
     } else if (isBuilt) {
         if (panelBuildStatus.error) {
             status = "error";
@@ -43,6 +46,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     }
 
     containerInfo._isRunning = isRunning;
+    containerInfo._isUpgrading = isUpgrading;
     containerInfo._isBuilding = isBuilding;
     containerInfo._isBuilt = isBuilt;
     containerInfo._isRestarting = isRestarting;
@@ -64,10 +68,11 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         _module: moduleConfig,
         _dockerContainer: containerInfo,
         _buildStatus: panelBuildStatus,
+        _upgradeStatus: panelUpgradeStatus,
         _status: thisStatus ? thisStatus?.statusItems : [],
         upgradeable: upgradeable,
         _active: moduleConfig.needsContainer
-            ? containerInfo._isRunning && panelConfig["enabled"]
+            ? panelConfig["enabled"] && (isRunning || isBuilding || isUpgrading)
             : panelConfig["enabled"],
     };
 };

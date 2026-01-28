@@ -86,6 +86,18 @@ const HomeTile = ({ panel }) => {
 
     let itemsToRender = panel._status ?? [];
 
+    if (panel._dockerContainer?._isUpgrading) {
+        itemsToRender = [
+            {
+                key: "upgrading",
+                type: "info",
+                message: "Panel is upgrading - please wait",
+                flags: [],
+                panel: null,
+            },
+        ];
+    }
+
     if (panel._dockerContainer?._isBuilding) {
         itemsToRender = [
             {
