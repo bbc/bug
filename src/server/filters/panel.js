@@ -17,7 +17,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
 
     // check container states
     let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
-    let isBuilding = (!isRunning && panelBuildStatus !== null && panelBuildStatus.progress > -1) ?? false;
+    let isBuilding = (!isRunning && panelBuildStatus && panelBuildStatus?.error !== true) ?? false;
     let isBuilt = panelBuildStatus !== null ?? false;
     let isStarting = recentlyStarted(containerInfo.status);
     let isRestarting = (containerInfo && containerInfo.state === "restarting") ?? false;

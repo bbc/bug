@@ -12,23 +12,9 @@ const delay = require("delay");
 const panelConfigPush = require("@services/panelconfig-push");
 
 module.exports = async (panelId) => {
-    const updateProgress = (progress) => {
-        if (progress === -1) {
-            // the build has failed - we just need to clear it
-            panelBuildStatusModel.setError(panelId, "Failed to build image");
-            panelBuildStatusModel.setProgress(panelId, 100);
-            return;
-        }
-        try {
-            // progress is a percentage value, but we need to start at 10% and finish at 90%.
-            progress = progress * 0.8 + 10;
-
-            // update the database
-            return panelBuildStatusModel.setProgress(panelId, progress);
-        } catch (error) {
-            logger.warning(`panel-start: failed to update progress: ${error.stack}`);
-            return false;
-        }
+    const updateProgress = (progressText) => {
+        // update the database
+        return panelBuildStatusModel.set(panelId, progressText);
     };
 
     try {
@@ -42,7 +28,7 @@ module.exports = async (panelId) => {
             return true;
         }
 
-        panelBuildStatusModel.set(panelId, "Building image", 5);
+        panelBuildStatusModel.create(panelId, "Building image");
 
         // build the image for the module, if it's already been done this will be quick
         logger.info(`panel-start: building module ${config.module} for panel id ${panelId}`);
@@ -56,7 +42,7 @@ module.exports = async (panelId) => {
         if (!container) {
             // it doesn't exist - let's create it
             logger.info(`panel-start: container for panel id ${panelId} doesn't exist ... creating`);
-            panelBuildStatusModel.set(panelId, "Building container", 10);
+            panelBuildStatusModel.set(panelId, "Completed");
             await dockerCreateContainer(config);
 
             // and fetch it again - to make sure it exists
@@ -71,7 +57,7 @@ module.exports = async (panelId) => {
         }
 
         // final status update (then we leave the rest to the containerinfo service)
-        panelBuildStatusModel.set(panelId, "Built", -1);
+        panelBuildStatusModel.delete(panelId);
 
         // start the container
         logger.info(`panel-start: starting container for panel id ${panelId}`);
