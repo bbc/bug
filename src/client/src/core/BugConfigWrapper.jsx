@@ -1,7 +1,9 @@
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import BugForm from "@core/BugForm";
 import Editor from "@monaco-editor/react";
 import CodeIcon from "@mui/icons-material/Code";
-import { Box, Button, Grid, IconButton } from "@mui/material";
+import { Button, Grid, IconButton } from "@mui/material";
+import Alert from "@mui/material/Alert";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import { useEffect, useState } from "react";
@@ -10,22 +12,26 @@ import { useNavigate } from "react-router-dom";
 export default function BugConfigWrapper({ children, config, handleSubmit = () => {} }) {
     const navigate = useNavigate();
     const sendAlert = useAlert();
+    const { confirmDialog } = useBugConfirmDialog();
 
     const [editorMode, setEditorMode] = useState(false);
     const [editorText, setEditorText] = useState("");
     const [editorJson, setEditorJson] = useState(config);
     const [jsonError, setJsonError] = useState(null);
 
-    // Initialize editor with current config
+    // Track if the ID has been changed
+    const [idChanged, setIdChanged] = useState(false);
+    const originalId = config?.id;
+
     useEffect(() => {
         const pretty = JSON.stringify(config, null, 2);
         setEditorText(pretty);
         setEditorJson(config);
         setJsonError(null);
+        setIdChanged(false); // reset ID change
     }, [config]);
 
     const onCancel = () => navigate(-1);
-
     const handleEditorMode = () => setEditorMode(!editorMode);
 
     const handleEditorChange = (value) => {
@@ -34,9 +40,19 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
             const parsed = JSON.parse(value);
             setEditorJson(parsed);
             setJsonError(null);
+
+            // Detect ID change
+            setIdChanged(parsed.id !== originalId);
         } catch (err) {
             setJsonError(err.message);
         }
+    };
+
+    const handleRevertId = () => {
+        const reverted = { ...editorJson, id: originalId };
+        setEditorJson(reverted);
+        setEditorText(JSON.stringify(reverted, null, 2));
+        setIdChanged(false);
     };
 
     const getBody = () => {
@@ -57,7 +73,23 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
                         }}
                     />
                     {jsonError && (
-                        <Box sx={{ color: "#f44336", margin: 1, marginBottom: 0 }}>Invalid JSON: {jsonError}</Box>
+                        <Alert severity="error" sx={{ marginTop: 1 }}>
+                            Invalid JSON: {jsonError}
+                        </Alert>
+                    )}
+
+                    {idChanged && (
+                        <Alert
+                            severity="warning"
+                            sx={{ marginTop: 1 }}
+                            action={
+                                <Button color="inherit" size="small" onClick={handleRevertId}>
+                                    Restore
+                                </Button>
+                            }
+                        >
+                            Panel ID has been changed. Restore original ID before saving.
+                        </Alert>
                     )}
                 </>
             );
@@ -79,9 +111,7 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
             });
             navigate(-1);
         } else {
-            sendAlert(`${config?.title} could not be updated.`, {
-                variant: "warning",
-            });
+            sendAlert(`${config?.title} could not be updated.`, { variant: "warning" });
         }
     };
 
@@ -100,14 +130,12 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
                     <CodeIcon />
                 </IconButton>
             }
-            sx={{
-                maxWidth: "800px",
-            }}
+            sx={{ maxWidth: "800px" }}
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <BugForm.Header onClose={onCancel}>Configuration</BugForm.Header>
 
-                <BugForm.Body>{getBody()}</BugForm.Body>
+                <BugForm.Body sx={{ paddingBottom: 0 }}>{getBody()}</BugForm.Body>
 
                 <BugForm.Actions>
                     <Button variant="contained" color="secondary" disableElevation onClick={onCancel}>
@@ -119,7 +147,7 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
                         variant="contained"
                         color="primary"
                         disableElevation
-                        disabled={editorMode && !!jsonError}
+                        disabled={editorMode && (!!jsonError || idChanged)}
                         onClick={editorMode ? () => onSubmit(editorJson) : undefined}
                     >
                         Save Changes
