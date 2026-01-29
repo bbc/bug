@@ -44,71 +44,65 @@ const main = async () => {
         console.log(`worker-interfaces: connecting to device at ${workerData.address}`);
 
         while (true) {
-            try {
-                // fetch interface data
-                const ifIDs = await snmpAwait.subtree({
-                    maxRepetitions: 1000,
-                    oid: "1.3.6.1.2.1.2.2.1.8",
-                });
+            // fetch interface data
+            const ifIDs = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.2.1.2.2.1.8",
+            });
 
-                const ifShortIDs = await snmpAwait.subtree({
-                    maxRepetitions: 1000,
-                    oid: "1.3.6.1.2.1.31.1.1.1.1",
-                });
+            const ifShortIDs = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.2.1.31.1.1.1.1",
+            });
 
-                const ifDescriptions = await snmpAwait.subtree({
-                    maxRepetitions: 1000,
-                    oid: "1.3.6.1.2.1.2.2.1.2",
-                });
+            const ifDescriptions = await snmpAwait.subtree({
+                maxRepetitions: 1000,
+                oid: "1.3.6.1.2.1.2.2.1.2",
+            });
 
-                console.log(
-                    `worker-interfaces: fetched ${Object.keys(ifIDs).length} interface(s), ` +
-                    `with ${Object.keys(ifShortIDs).length} shortIds and ${Object.keys(ifDescriptions).length} description(s)`
-                );
+            console.log(
+                `worker-interfaces: fetched ${Object.keys(ifIDs).length} interface(s), ` +
+                `with ${Object.keys(ifShortIDs).length} shortIds and ${Object.keys(ifDescriptions).length} description(s)`
+            );
 
-                // process each interface
-                for (let [eachOid, eachResult] of Object.entries(ifIDs)) {
-                    const interfaceId = parseInt(eachOid.substring(eachOid.lastIndexOf(".") + 1));
-                    if (eachResult < 3 && interfaceId < 1000) {
-                        const shortId = ifShortIDs[`1.3.6.1.2.1.31.1.1.1.1.${interfaceId}`];
-                        const description = ifDescriptions[`1.3.6.1.2.1.2.2.1.2.${interfaceId}`];
+            // process each interface
+            for (let [eachOid, eachResult] of Object.entries(ifIDs)) {
+                const interfaceId = parseInt(eachOid.substring(eachOid.lastIndexOf(".") + 1));
+                if (eachResult < 3 && interfaceId < 1000) {
+                    const shortId = ifShortIDs[`1.3.6.1.2.1.31.1.1.1.1.${interfaceId}`];
+                    const description = ifDescriptions[`1.3.6.1.2.1.2.2.1.2.${interfaceId}`];
 
-                        if (description) {
-                            const portArray = ciscoC1300SplitPort(description);
-                            const dbDocument = {
-                                longId: description,
-                                interfaceId,
-                                shortId,
-                                description: `${portArray.label}${portArray.port}`,
-                                device: portArray.device,
-                                slot: portArray.slot,
-                                port: portArray.port,
-                                timestamp: new Date(),
-                            };
+                    if (description) {
+                        const portArray = ciscoC1300SplitPort(description);
+                        const dbDocument = {
+                            longId: description,
+                            interfaceId,
+                            shortId,
+                            description: `${portArray.label}${portArray.port}`,
+                            device: portArray.device,
+                            slot: portArray.slot,
+                            port: portArray.port,
+                            timestamp: new Date(),
+                        };
 
-                            await interfacesCollection.updateOne(
-                                { interfaceId },
-                                { $set: dbDocument },
-                                { upsert: true }
-                            );
-                        }
+                        await interfacesCollection.updateOne(
+                            { interfaceId },
+                            { $set: dbDocument },
+                            { upsert: true }
+                        );
                     }
                 }
-
-                console.log(`worker-interfaces: fetched ok - waiting`);
-
-            } catch (innerErr) {
-                console.error(`worker-interfaces(thread ${threadId}): error fetching interface data`);
-                console.error(innerErr.stack || innerErr.message || innerErr);
             }
+
+            console.log(`worker-interfaces: fetched ok - waiting`);
+
 
             // wait 10 minutes - interfaces rarely change
             await delay(600000);
         }
     } catch (err) {
-        console.error(`worker-interfaces(thread ${threadId}): fatal error`);
+        console.error(`worker-interfaces: fatal error`);
         console.error(err.stack || err.message || err);
-        process.exit(1); // allow manager to restart
     } finally {
         if (snmpAwait) {
             snmpAwait.close();
