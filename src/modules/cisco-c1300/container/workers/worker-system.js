@@ -31,6 +31,7 @@ const main = async () => {
         snmpAwait = new SnmpAwait({
             host: workerData.address,
             community: workerData.snmpCommunity,
+            timeout: 30000
         });
 
         while (true) {

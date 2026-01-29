@@ -25,20 +25,27 @@ const main = async () => {
         // Connect to the db
         await mongoDb.connect(workerData.id);
 
-        // create new snmp session
-        snmpAwait = new SnmpAwait({
-            host: workerData.address,
-            community: workerData.snmpCommunity,
-        });
 
         while (true) {
+
+            // create new snmp session
+            snmpAwait = new SnmpAwait({
+                host: workerData.address,
+                community: workerData.snmpCommunity,
+                timeout: 30000
+            });
+
             // fetch VLAN information
             await ciscoc1300FetchVlans(workerData, snmpAwait);
 
             await delay(1000);
 
-            // fetch interface VLAN assignments
-            await ciscoc1300FetchInterfaceVlans(workerData, snmpAwait);
+            for (let a = 1; a < 5; a++) {
+                // fetch interface VLAN assignments
+                await ciscoc1300FetchInterfaceVlans(workerData, snmpAwait);
+            }
+
+            snmpAwait.close();
 
             // wait before next poll
             await delay(20000);
@@ -46,10 +53,6 @@ const main = async () => {
     } catch (err) {
         console.error(`worker-vlans: fatal error`);
         console.error(err.stack || err.message || err);
-    } finally {
-        if (snmpAwait) {
-            snmpAwait.close();
-        }
     }
 };
 

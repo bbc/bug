@@ -91,47 +91,61 @@ module.exports = class SnmpAwait {
         });
     }
 
-    walk({ maxRepetitions = 10, oid, raw = false, ignoreMissing = false }) {
+    walk({ oid, maxRepetitions = 10, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
             const result = {};
-            const addItem = (varbinds) => {
+
+            const feedVarbinds = (varbinds) => {
                 for (const vb of varbinds) {
-                    if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
-                        console.error(snmp.varbindError(vb));
-                    } else {
-                        result[vb.oid] = self.convertVarbind(vb, raw);
+                    if (snmp.isVarbindError(vb)) {
+                        const errMsg = snmp.varbindError(vb);
+                        if (self.isMissing(errMsg) && ignoreMissing) {
+                            continue;
+                        } else {
+                            console.warn(`snmp-await: walk varbind error on ${vb.oid}: ${errMsg}`);
+                            continue;
+                        }
                     }
+                    result[vb.oid] = self.convertVarbind(vb, raw);
                 }
             };
 
-            self.session.walk(self.trimOid(oid), maxRepetitions, addItem, (err) => {
-                if (err) return reject(err);
+            self.session.walk(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
+                if (err) {
+                    console.warn(`walk session error: ${err.message || err}`);
+                }
                 resolve(result);
             });
         });
     }
 
-    subtree({ maxRepetitions = 10, oid, raw = false, ignoreMissing = false }) {
+    subtree({ oid, maxRepetitions = 5, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
             const result = {};
-            const addItem = (varbinds) => {
+
+            const feedVarbinds = (varbinds) => {
                 for (const vb of varbinds) {
-                    if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
-                        console.error(snmp.varbindError(vb));
-                    } else {
-                        result[vb.oid] = self.convertVarbind(vb, raw);
+                    if (snmp.isVarbindError(vb)) {
+                        const errMsg = snmp.varbindError(vb);
+                        if (self.isMissing(errMsg) && ignoreMissing) continue;
+                        console.warn(`snmp-await: subtree varbind error on ${vb.oid}: ${errMsg}`);
+                        continue;
                     }
+                    result[vb.oid] = self.convertVarbind(vb, raw);
                 }
             };
 
-            self.session.subtree(self.trimOid(oid), maxRepetitions, addItem, (err) => {
-                if (err) return reject(err);
+            self.session.subtree(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
+                if (err) {
+                    console.warn(`snmp-await: subtree session error: ${err.message || err}`);
+                }
                 resolve(result);
             });
         });
     }
+
 
     checkExists({ oids }) {
         const self = this;
