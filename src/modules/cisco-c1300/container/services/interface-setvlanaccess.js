@@ -6,11 +6,24 @@ const SnmpAwait = require("@core/snmp-await");
 const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = "1") => {
-    const config = await configGet();
+    let snmpAwait;
 
     try {
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
+        }
+
+        if (!untaggedVlan) {
+            throw new Error("untaggedVlan is required");
+        }
+
+        const config = await configGet();
+        if (!config) {
+            throw new Error("Failed to load config");
+        }
+
         // create new snmp session
-        const snmpAwait = new SnmpAwait({
+        snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
@@ -33,19 +46,27 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
                 type: "gauge",
             },
         });
+
         console.log(`interface-setvlanaccess: success - updating DB`);
 
         // update db
         const dbResult = await interfaceCollection.updateOne(
-            { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
+            { interfaceId: Number(interfaceId) },
+            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": [] } }
         );
+
         console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+
         await deviceSetPending(true);
+
         return true;
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.error(err);
         console.log(`interface-setvlanaccess: failed to set vlan ${untaggedVlan} on interface ${interfaceId}`);
-        return false;
+        throw err;
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };

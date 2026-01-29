@@ -14,34 +14,55 @@ parentPort.postMessage({
     restartOn: ["dhcpSources"],
 });
 
-const main = async () => {
-    // stagger start of script ...
-    await delay(4000);
+const fetchDhcpLeases = async (dhcpSource) => {
+    const url = `http://${dhcpSource}:${modulePort}/api/capabilities/dhcp-server`;
 
-    // Connect to the db
-    await mongoDb.connect(workerData?.id);
-
-    while (true) {
-        let dhcpLeases = [];
-
-        // loop through each dhcp source and fetch the list
-        for (const dhcpSource of workerData?.dhcpSources) {
-            const url = `http://${dhcpSource}:${modulePort}/api/capabilities/dhcp-server`;
-            try {
-                // make the request
-                const response = await axios.get(url);
-                if (response?.data?.status === "success" && Array.isArray(response?.data?.data)) {
-                    dhcpLeases = dhcpLeases.concat(response.data.data);
-                }
-            } catch (error) {
-                console.log(`worker-dhcpserver: ${error.stack || error.trace || error || error.message}`);
-            }
+    try {
+        const response = await axios.get(url);
+        if (response?.data?.status === "success" && Array.isArray(response.data.data)) {
+            return response.data.data;
         }
+        return [];
+    } catch (err) {
+        console.error(`worker-dhcpserver: failed to fetch from ${dhcpSource}`);
+        console.error(err.stack || err.message || err);
+        return [];
+    }
+};
 
-        await mongoSingle.set("leases", dhcpLeases, 60);
+const main = async () => {
+    try {
+        // stagger start of script ...
+        await delay(4000);
 
-        // every 30 seconds
-        await delay(30000);
+        // Connect to the db
+        await mongoDb.connect(workerData?.id);
+
+        while (true) {
+            let dhcpLeases = [];
+
+            // loop through each dhcp source and fetch the list
+            if (Array.isArray(workerData?.dhcpSources)) {
+                for (const dhcpSource of workerData.dhcpSources) {
+                    const leases = await fetchDhcpLeases(dhcpSource);
+                    dhcpLeases = dhcpLeases.concat(leases);
+                }
+            }
+
+            try {
+                // store leases in mongo
+                await mongoSingle.set("leases", dhcpLeases, 60);
+            } catch (err) {
+                console.error(`worker-dhcpserver: failed to write leases to DB`);
+                console.error(err.stack || err.message || err);
+            }
+
+            // every 30 seconds
+            await delay(30000);
+        }
+    } catch (err) {
+        console.error(`worker-dhcpserver: unexpected error`);
+        console.error(err.stack || err.message || err);
     }
 };
 

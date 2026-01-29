@@ -13,15 +13,17 @@ Main list features:
 - select VLAN, including editing of trunk or access mode
 - display of interface rate (1G/100M)
 - ablity to 'protect' ports to prevent accidental changes (useful for uplinks etc) - stored locally in BUG
-- display of neighbor (LLDP or CDB)
+- display of neighbors and/or known devices (LLDP or FDB)
 - configurable DHCP address source to convert discovered MAC addresses to IP
+
+The main interfaces list also supports stacked switches, though this configuration is not recommended.
 
 Interface page features:
 
 - more detailed view of interface
 - statistics graph for last few minutes
 - neighbor details (LLDP)
-- devices tab (CDB) with optional IP lookup
+- devices tab (FDB) with optional IP lookup
 
 Also polls the switch to check if there are pending changes and prompts to save if there are.
 

@@ -3,13 +3,14 @@
 const mongoSingle = require("@core/mongo-single");
 
 module.exports = async (pendingStatus) => {
-    console.log(`device-setpending: setting pending status to ${pendingStatus ? "true" : "false"}`);
+    console.log(
+        `device-setpending: setting pending status to ${pendingStatus ? "true" : "false"}`
+    );
+
     try {
         await mongoSingle.set("pending", pendingStatus, 60);
-        return true;
-    } catch (error) {
-        console.log(`device-setpending: ${error}`);
-        return false;
+    } catch (err) {
+        err.message = `device-setpending: failed to set pending=${pendingStatus}: ${err.message}`;
+        throw err;
     }
-
 };

@@ -9,11 +9,28 @@ const SnmpAwait = require("@core/snmp-await");
 const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
-    const config = await configGet();
+    let snmpAwait;
 
     try {
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
+        }
+
+        if (!untaggedVlan) {
+            throw new Error("untaggedVlan is required");
+        }
+
+        if (!Array.isArray(taggedVlans)) {
+            throw new Error("taggedVlans must be an array");
+        }
+
+        const config = await configGet();
+        if (!config) {
+            throw new Error("Failed to load config");
+        }
+
         // create new snmp session
-        const snmpAwait = new SnmpAwait({
+        snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
@@ -70,14 +87,25 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         // update db
         const interfaceCollection = await mongoCollection("interfaces");
         const dbResult = await interfaceCollection.updateOne(
-            { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": vlanArray } }
+            { interfaceId: Number(interfaceId) },
+            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": vlanArray } }
         );
         console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+
         await deviceSetPending(true);
+
         return true;
-    } catch (error) {
-        console.log(error);
-        return false;
+    } catch (err) {
+        console.error(err);
+        console.log(
+            `interface-setvlantrunk: failed to set vlan trunk ${JSON.stringify(
+                taggedVlans
+            )}, native ${untaggedVlan} on interface ${interfaceId}`
+        );
+        throw err;
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };
