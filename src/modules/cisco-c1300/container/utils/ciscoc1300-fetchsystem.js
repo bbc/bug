@@ -30,7 +30,7 @@ module.exports = async function (config, snmpAwait) {
         };
         if (payload.description && payload.uptime) {
             console.log(`ciscoc1300-fetchsystem: saving system data to db - uptime ${payload.uptime}`);
-            await mongoSingle.set("system", payload, 120);
+            await mongoSingle.set("system", payload, 1200000);
         }
         else {
             console.log(`ciscoc1300-fetchsystem: failed to retrieve system data from device`);
@@ -42,7 +42,7 @@ module.exports = async function (config, snmpAwait) {
     const pendingResult = await snmpAwait.get({
         oid: ".1.3.6.1.4.1.9.6.1.101.1.13.0",
     });
-    await mongoSingle.set("pending", pendingResult === 2, 60);
+    await mongoSingle.set("pending", pendingResult === 2, 1200000);
     await delay(1000);
 
 };
