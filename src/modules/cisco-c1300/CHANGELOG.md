@@ -1,5 +1,11 @@
 ## Changelog
 
+### version 1.2.3
+
+- 2026-01-29: overhaul error handling ([c3bb04a](https://github.com/bbc/bug/commit/c3bb04ac42d65af4a554f8b78a0316fb7e93f2d5))
+- 2026-01-29: add readme ([04d0c13](https://github.com/bbc/bug/commit/04d0c1363ae74d6a9fb18721265c10475f88b4de))
+- 2026-01-29: fix system/password timeouts ([90ae7e7](https://github.com/bbc/bug/commit/90ae7e790f2716cb7cf03fbbadc93634772b6ab0))
+
 ### version 1.2.2
 
 - 2026-01-27: combine workers to save memory ([f9505cf](https://github.com/bbc/bug/commit/f9505cf6e5b280b51a1001f654f930eb4f853a84))
