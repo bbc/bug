@@ -15,30 +15,59 @@ parentPort.postMessage({
     restartOn: ["address", "snmpCommunity", "dhcpSources"],
 });
 
-// create new snmp session
-const snmpAwait = new SnmpAwait({
-    host: workerData?.address,
-    community: workerData?.snmpCommunity,
-});
+let snmpAwait;
 
 const main = async () => {
-    // stagger start of script ...
-    await delay(2000);
+    try {
+        if (!workerData?.address || !workerData?.snmpCommunity) {
+            throw new Error("Missing SNMP connection details in workerData");
+        }
 
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+        // stagger start of script ...
+        await delay(2000);
 
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
 
-    while (true) {
-        await subworkerInterfaceFdb({ snmpAwait, interfacesCollection });
+        // get the collection reference
+        const interfacesCollection = await mongoCollection("interfaces");
 
-        await delay(1000);
+        // create new SNMP session
+        snmpAwait = new SnmpAwait({
+            host: workerData.address,
+            community: workerData.snmpCommunity,
+        });
 
-        await subworkerInterfaceLldp({ snmpAwait, interfacesCollection });
+        while (true) {
+            try {
+                // fetch FDB information
+                await subworkerInterfaceFdb({ snmpAwait, interfacesCollection });
+            } catch (err) {
+                console.error(`worker-interface-sub(thread ${threadId}): error fetching FDB`);
+                console.error(err.stack || err.message || err);
+            }
 
-        await delay(10000);
+            await delay(1000); // small pause between subworkers
+
+            try {
+                // fetch LLDP information
+                await subworkerInterfaceLldp({ snmpAwait, interfacesCollection });
+            } catch (err) {
+                console.error(`worker-interface-sub(thread ${threadId}): error fetching LLDP`);
+                console.error(err.stack || err.message || err);
+            }
+
+            // wait before next full poll
+            await delay(10000);
+        }
+    } catch (err) {
+        console.error(`worker-interface-sub(thread ${threadId}): fatal error`);
+        console.error(err.stack || err.message || err);
+        process.exit(1); // allow manager to restart
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };
 

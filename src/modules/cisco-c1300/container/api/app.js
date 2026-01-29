@@ -13,7 +13,7 @@ const interfaceRouter = require("@routes/interface");
 const vlanRouter = require("@routes/vlan");
 const heapInfo = require("@core/heap-info");
 
-//Print the heap size
+// print the heap size
 heapInfo(console);
 
 const app = express();
@@ -38,5 +38,24 @@ app.use("/api/device", deviceRouter);
 app.use("/api/validate", validationRouter);
 
 app.use("*", defaultRouter);
+
+app.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
+
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    const errorLocation = err.stack ? err.stack.split('\n')[1].trim() : "Unknown location";
+
+    console.error(`ERROR: ${message} | ${errorLocation}`);
+
+    res.status(statusCode).json({
+        status: "error",
+        message: message
+    });
+});
+
 
 module.exports = app;

@@ -15,21 +15,53 @@ parentPort.postMessage({
     restartOn: ["address", "snmpCommunity"],
 });
 
-// create new snmp session
-const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
-});
+let snmpAwait;
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+    try {
+        if (!workerData?.address || !workerData?.snmpCommunity) {
+            throw new Error("Missing SNMP connection details in workerData");
+        }
 
-    while (true) {
-        await ciscoc1300FetchVlans(workerData, snmpAwait);
-        await delay(1000);
-        await ciscoc1300FetchInterfaceVlans(workerData, snmpAwait);
-        await delay(20000);
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
+
+        // create new snmp session
+        snmpAwait = new SnmpAwait({
+            host: workerData.address,
+            community: workerData.snmpCommunity,
+        });
+
+        while (true) {
+            try {
+                // fetch VLAN information
+                await ciscoc1300FetchVlans(workerData, snmpAwait);
+            } catch (err) {
+                console.error(`worker-cisco-vlans(thread ${threadId}): error fetching VLANs`);
+                console.error(err.stack || err.message || err);
+            }
+
+            await delay(1000);
+
+            try {
+                // fetch interface VLAN assignments
+                await ciscoc1300FetchInterfaceVlans(workerData, snmpAwait);
+            } catch (err) {
+                console.error(`worker-cisco-vlans(thread ${threadId}): error fetching interface VLANs`);
+                console.error(err.stack || err.message || err);
+            }
+
+            // wait before next poll
+            await delay(20000);
+        }
+    } catch (err) {
+        console.error(`worker-cisco-vlans(thread ${threadId}): fatal error`);
+        console.error(err.stack || err.message || err);
+        process.exit(1); // allow manager to restart
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };
 

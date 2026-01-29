@@ -5,12 +5,11 @@ const obscure = require("@core/obscure-password");
 
 module.exports = class SnmpAwait {
     constructor({ host, community = "public", timeout = 5000, port = 161 }) {
-
         console.log(`snmp-await: connecting to device at ${host}, community ${obscure(community)}, port ${port}`);
         this.session = snmp.createSession(host, community, {
             version: snmp.Version2c,
-            timeout: timeout,
-            port: port,
+            timeout,
+            port,
         });
     }
 
@@ -19,57 +18,35 @@ module.exports = class SnmpAwait {
     }
 
     close() {
-        if (this.session !== undefined) {
-            this.session.close();
-        }
+        if (this.session) this.session.close();
     }
 
     trimOid(oid) {
-        if (oid.length > 1 && oid.indexOf(".") === 0) {
-            return oid.substring(1);
-        }
-        return oid;
+        return oid.length > 1 && oid.startsWith(".") ? oid.substring(1) : oid;
     }
 
     trimOids(oids) {
-        const retArray = [];
-        for (let eachOid of oids) {
-            retArray.push(this.trimOid(eachOid));
-        }
-        return retArray;
+        return oids.map(this.trimOid.bind(this));
     }
 
     convertVarbind(varbind, raw = false) {
-        if (raw) {
-            return varbind.value;
-        }
+        if (raw) return varbind.value;
+
         switch (varbind.type) {
-            case 1: // Boolean
-                return new Boolean(varbind.value);
-            case 2: // Integer
-                return parseInt(varbind.value);
-            case 4: // OctetString
-                return varbind.value.toString();
-            case 5: // Null
-                return null;
+            case 1: return Boolean(varbind.value); // Boolean
+            case 2: return parseInt(varbind.value); // Integer
+            case 4: return varbind.value.toString(); // OctetString
+            case 5: return null; // Null
             case 6: // OID
-                return varbind.value;
-            case 64: // IP address
-                return varbind.value;
+            case 64: // IP
             case 65: // Counter
-                return varbind.value;
             case 66: // Gauge
-                return varbind.value;
             case 67: // TimeTicks
-                return varbind.value;
             case 68: // Opaque
-                return varbind.value;
             case 70: // Counter64
                 return varbind.value;
             case 128: // NoSuchObject
-                return null;
             case 129: // NoSuchInstance
-                return null;
             case 130: // EndOfMibView
                 return null;
             default:
@@ -78,30 +55,22 @@ module.exports = class SnmpAwait {
     }
 
     isMissing(varbind) {
-        return varbind.indexOf("NoSuchInstance") > -1 || varbind.indexOf("NoSuchObject") > -1;
+        const str = typeof varbind === "string" ? varbind : "";
+        return str.includes("NoSuchInstance") || str.includes("NoSuchObject");
     }
 
     get({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
-            let returnValue = null;
+            self.session.get([self.trimOid(oid)], (error, varbinds) => {
+                if (error) return reject(error);
 
-            self.session.get([self.trimOid(oid)], function (error, varbinds) {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    if (
-                        snmp.isVarbindError(varbinds[0]) &&
-                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
-                    ) {
-                        console.error(snmp.varbindError(varbinds[0]));
-                        reject();
-                    } else {
-                        returnValue = self.convertVarbind(varbinds[0], raw);
-                    }
+                const vb = varbinds[0];
+                if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
+                    return reject(snmp.varbindError(vb));
                 }
-                resolve(returnValue);
+
+                resolve(self.convertVarbind(vb, raw));
             });
         });
     }
@@ -109,20 +78,15 @@ module.exports = class SnmpAwait {
     getNext({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
-            self.session.getNext([self.trimOid(oid)], function (error, varbinds) {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    if (
-                        snmp.isVarbindError(varbinds[0]) &&
-                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
-                    ) {
-                        console.error(snmp.varbindError(varbinds[0]));
-                        reject();
-                    }
+            self.session.getNext([self.trimOid(oid)], (error, varbinds) => {
+                if (error) return reject(error);
+
+                const vb = varbinds[0];
+                if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
+                    return reject(snmp.varbindError(vb));
                 }
-                resolve(self.convertVarbind(varbinds[0], raw));
+
+                resolve(self.convertVarbind(vb, raw));
             });
         });
     }
@@ -130,60 +94,20 @@ module.exports = class SnmpAwait {
     walk({ maxRepetitions = 10, oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
-            let returnValues = {};
-
+            const result = {};
             const addItem = (varbinds) => {
-                for (var i = 0; i < varbinds.length; i++) {
-                    if (
-                        snmp.isVarbindError(varbinds[i]) &&
-                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
-                    ) {
-                        console.error(snmp.varbindError(varbinds[i]));
+                for (const vb of varbinds) {
+                    if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
+                        console.error(snmp.varbindError(vb));
                     } else {
-                        returnValues[varbinds[i].oid] = self.convertVarbind(varbinds[i], raw);
+                        result[vb.oid] = self.convertVarbind(vb, raw);
                     }
                 }
             };
 
-            self.session.walk(self.trimOid(oid), maxRepetitions, addItem, (error) => {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    resolve(returnValues);
-                }
-            });
-        });
-    }
-
-    checkExists({ oids }) {
-        const self = this;
-        return new Promise((resolve, reject) => {
-            let returnValues = [];
-
-            self.session.get(self.trimOids(oids), function (error, varbinds) {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    for (var i = 0; i < varbinds.length; i++) {
-                        if (
-                            snmp.isVarbindError(varbinds[i]) &&
-                            snmp.varbindError(varbinds[i]).indexOf("NoSuchInstance") > -1
-                        ) {
-                            returnValues.push({
-                                oid: varbinds[i].oid,
-                                isValid: false,
-                            });
-                        } else {
-                            returnValues.push({
-                                oid: varbinds[i].oid,
-                                isValid: true,
-                            });
-                        }
-                    }
-                }
-                resolve(returnValues);
+            self.session.walk(self.trimOid(oid), maxRepetitions, addItem, (err) => {
+                if (err) return reject(err);
+                resolve(result);
             });
         });
     }
@@ -191,28 +115,38 @@ module.exports = class SnmpAwait {
     subtree({ maxRepetitions = 10, oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
-            let returnValues = {};
-
+            const result = {};
             const addItem = (varbinds) => {
-                for (var i = 0; i < varbinds.length; i++) {
-                    if (
-                        snmp.isVarbindError(varbinds[i]) &&
-                        !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
-                    ) {
-                        console.error(snmp.varbindError(varbinds[i]));
+                for (const vb of varbinds) {
+                    if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
+                        console.error(snmp.varbindError(vb));
                     } else {
-                        returnValues[varbinds[i].oid] = self.convertVarbind(varbinds[i], raw);
+                        result[vb.oid] = self.convertVarbind(vb, raw);
                     }
                 }
             };
 
-            self.session.subtree(self.trimOid(oid), maxRepetitions, addItem, (error) => {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    resolve(returnValues);
+            self.session.subtree(self.trimOid(oid), maxRepetitions, addItem, (err) => {
+                if (err) return reject(err);
+                resolve(result);
+            });
+        });
+    }
+
+    checkExists({ oids }) {
+        const self = this;
+        return new Promise((resolve, reject) => {
+            const results = [];
+            self.session.get(self.trimOids(oids), (err, varbinds) => {
+                if (err) return reject(err);
+
+                for (const vb of varbinds) {
+                    results.push({
+                        oid: vb.oid,
+                        isValid: !(snmp.isVarbindError(vb) && self.isMissing(snmp.varbindError(vb))),
+                    });
                 }
+                resolve(results);
             });
         });
     }
@@ -220,129 +154,135 @@ module.exports = class SnmpAwait {
     getMultiple({ oids = [], raw = false, ignoreMissing = false }) {
         const self = this;
         return new Promise((resolve, reject) => {
-            let returnValues = {};
-            self.session.get(self.trimOids(oids), function (error, varbinds) {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    for (var i = 0; i < varbinds.length; i++) {
-                        if (
-                            snmp.isVarbindError(varbinds[i]) &&
-                            !(self.isMissing(snmp.varbindError(varbinds[0])) && ignoreMissing)
-                        ) {
-                            console.error(snmp.varbindError(varbinds[i]));
-                        } else {
-                            returnValues[varbinds[i].oid] = self.convertVarbind(varbinds[i], raw);
-                        }
+            const results = {};
+            self.session.get(self.trimOids(oids), (err, varbinds) => {
+                if (err) return reject(err);
+
+                for (const vb of varbinds) {
+                    if (!(snmp.isVarbindError(vb) && self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
+                        results[vb.oid] = self.convertVarbind(vb, raw);
                     }
                 }
-                resolve(returnValues);
+                resolve(results);
             });
         });
     }
 
     getSnmpObject(oid, value) {
-        // we do some cunning auto-detection.
-        // if it's an object then we expect the type to be passed
-
+        // Auto-detect type if value is an object
         let detectedType = typeof value;
-        if (detectedType === "object") {
+        if (detectedType === "object" && value !== null) {
             detectedType = value?.type;
             value = value?.value;
         }
 
-        switch (detectedType) {
+        switch (detectedType?.toLowerCase()) {
             case "string":
-                return {
-                    oid: oid,
-                    type: snmp.ObjectType.OctetString,
-                    value: value.toString(),
-                };
+                return { oid, type: snmp.ObjectType.OctetString, value: value.toString() };
+
             case "octetstring":
-                return {
-                    oid: oid,
-                    type: snmp.ObjectType.OctetString,
-                    value: value,
-                };
+                return { oid, type: snmp.ObjectType.OctetString, value };
+
             case "number":
-                return {
-                    oid: oid,
-                    type: snmp.ObjectType.Integer,
-                    value: parseInt(value),
-                };
+            case "integer":
+                return { oid, type: snmp.ObjectType.Integer, value: parseInt(value) };
+
             case "gauge":
-                return {
-                    oid: oid,
-                    type: snmp.ObjectType.Gauge,
-                    value: parseInt(value),
-                };
+                return { oid, type: snmp.ObjectType.Gauge, value: parseInt(value) };
+
+            case "counter":
+                return { oid, type: snmp.ObjectType.Counter, value: parseInt(value) };
+
+            case "counter64":
+                return { oid, type: snmp.ObjectType.Counter64, value: parseInt(value) };
+
+            case "timerticks":
+            case "timeticks":
+                return { oid, type: snmp.ObjectType.TimeTicks, value: parseInt(value) };
+
+            case "ipaddress":
+                return { oid, type: snmp.ObjectType.IpAddress, value };
+
+            case "oid":
+                return { oid, type: snmp.ObjectType.OID, value };
+
+            case "null":
+                return { oid, type: snmp.ObjectType.Null, value: null };
+
             default:
                 if (snmp.ObjectType[detectedType] !== undefined) {
-                    return {
-                        oid: oid,
-                        type: snmp.ObjectType[detectedType],
-                        value: value,
-                    };
+                    return { oid, type: snmp.ObjectType[detectedType], value };
                 }
-                console.error(`snmp-await: unsupported type '${detectedType}'`);
-                return null;
+                throw new Error(`snmp-await: unsupported SNMP type '${detectedType}' for OID ${oid}`);
         }
     }
 
-    // this accepts an array of objects, each with an oid and value
-    // remember the value can itself be an object containing a type and value - see getSnmpObject
-    setMultiple({ values = [], timeout = 5000 }) {
-        const self = this;
-        return new Promise((resolve, reject) => {
-            const varbinds = [];
-            for (let eachValue of values) {
-                varbinds.push(self.getSnmpObject(self.trimOid(eachValue.oid), eachValue.value));
-            }
 
-            self.session.set(varbinds, function (error, varbinds) {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    for (var i = 0; i < varbinds.length; i++) {
-                        if (snmp.isVarbindError(varbinds[i])) {
-                            reject();
+    set({ oid, value }) {
+        const self = this;
+
+        return new Promise((resolve, reject) => {
+            try {
+                const varbinds = [self.getSnmpObject(self.trimOid(oid), value)];
+
+                self.session.set(varbinds, function (error, responseVarbinds) {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    // check for SNMP varbind errors
+                    for (const vb of responseVarbinds) {
+                        if (snmp.isVarbindError(vb)) {
+                            return reject(new Error(snmp.varbindError(vb)));
                         }
                     }
-                }
-                resolve(true);
-            });
+
+                    resolve(true);
+                });
+            } catch (err) {
+                reject(err);
+            }
         });
     }
 
-    // the value here can be an object containing a type and value - see getSnmpObject
-    set({ oid, value }) {
+    setMultiple({ values = [] }) {
         const self = this;
+
         return new Promise((resolve, reject) => {
-            const varbinds = [self.getSnmpObject(self.trimOid(oid), value)];
-            self.session.set(varbinds, function (error, varbinds) {
-                if (error) {
-                    console.error(error);
-                    reject();
-                } else {
-                    for (var i = 0; i < varbinds.length; i++) {
-                        if (snmp.isVarbindError(varbinds[i])) {
-                            reject();
+            try {
+                if (!Array.isArray(values) || values.length === 0) {
+                    return resolve(true); // nothing to set
+                }
+
+                const varbinds = values.map(eachValue =>
+                    self.getSnmpObject(self.trimOid(eachValue.oid), eachValue.value)
+                );
+
+                self.session.set(varbinds, function (error, responseVarbinds) {
+                    if (error) {
+                        return reject(error);
+                    }
+
+                    // check for SNMP varbind errors
+                    for (const vb of responseVarbinds) {
+                        if (snmp.isVarbindError(vb)) {
+                            return reject(new Error(snmp.varbindError(vb)));
                         }
                     }
-                }
-                resolve(true);
-            });
+
+                    resolve(true);
+                });
+            } catch (err) {
+                reject(err);
+            }
         });
     }
 
     oidToMac(oid) {
-        const valArray = oid.split(".");
-        const macArray = [];
-        for (const eachVal of valArray) {
-            macArray.push(parseInt(eachVal).toString(16).padStart(2, "0"));
-        }
-        return macArray.join(":").toUpperCase();
+        return oid
+            .split(".")
+            .map(val => parseInt(val).toString(16).padStart(2, "0"))
+            .join(":")
+            .toUpperCase();
     }
 };

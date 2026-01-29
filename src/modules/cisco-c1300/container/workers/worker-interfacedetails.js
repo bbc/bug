@@ -5,9 +5,9 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const SnmpAwait = require("@core/snmp-await");
-const fetchInterfaceDetails = require("../utils/ciscoc1300-fetchinterfacedetails")
-const fetchInterfaceState = require("../utils/ciscoc1300-fetchinterfacestate")
-const fetchInterfaceStats = require("../utils/ciscoc1300-fetchinterfacestats")
+const fetchInterfaceDetails = require("../utils/ciscoc1300-fetchinterfacedetails");
+const fetchInterfaceState = require("../utils/ciscoc1300-fetchinterfacestate");
+const fetchInterfaceStats = require("../utils/ciscoc1300-fetchinterfacestats");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
@@ -18,31 +18,53 @@ parentPort.postMessage({
 });
 
 // create new snmp session
-const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
-});
-
+let snmpAwait;
 
 const main = async () => {
-    // stagger start of script ...
-    await delay(4000);
+    try {
+        if (!workerData?.address || !workerData?.snmpCommunity) {
+            throw new Error("Missing SNMP connection details in workerData");
+        }
 
-    // Connect to the db
-    await mongoDb.connect(workerData?.id);
+        // stagger start of script ...
+        await delay(4000);
 
-    // create indexes with ttl
-    const historyCollection = await mongoCollection("history");
-    await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
 
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+        // create new SNMP session
+        snmpAwait = new SnmpAwait({
+            host: workerData.address,
+            community: workerData.snmpCommunity,
+        });
 
-    while (true) {
-        await fetchInterfaceDetails(workerData, snmpAwait);
-        await fetchInterfaceState(workerData, snmpAwait);
-        await fetchInterfaceStats(workerData, snmpAwait);
-        await delay(10500);
+        // create indexes with TTL
+        const historyCollection = await mongoCollection("history");
+        await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
+
+        while (true) {
+            try {
+                // fetch interface details, state, and stats
+                await fetchInterfaceDetails(workerData, snmpAwait);
+                await fetchInterfaceState(workerData, snmpAwait);
+                await fetchInterfaceStats(workerData, snmpAwait);
+            } catch (innerErr) {
+                console.error(
+                    `worker-ciscoc1300(thread ${threadId}): error fetching interface data`
+                );
+                console.error(innerErr.stack || innerErr.message || innerErr);
+            }
+
+            // pause between polling cycles
+            await delay(10500);
+        }
+    } catch (err) {
+        console.error(`worker-ciscoc1300(thread ${threadId}): fatal error`);
+        console.error(err.stack || err.message || err);
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };
 
