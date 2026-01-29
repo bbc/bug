@@ -44,10 +44,8 @@ app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    // Get only the first line of the stack trace
     const errorLocation = err.stack ? err.stack.split('\n')[1].trim() : "Unknown location";
 
-    // Log a single, clean line to the console
     console.error(`ERROR: ${message} | ${errorLocation}`);
 
     res.status(statusCode).json({
