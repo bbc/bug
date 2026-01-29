@@ -39,6 +39,7 @@ const main = async () => {
         snmpAwait = new SnmpAwait({
             host: workerData.address,
             community: workerData.snmpCommunity,
+            timeout: 30000
         });
 
         console.log(`worker-interfaces: connecting to device at ${workerData.address}`);

@@ -33,8 +33,8 @@ module.exports = async function (config, snmpAwait) {
             });
         }
 
-        await mongoSingle.set("vlans", vlans, 60);
+        console.log(`ciscoc1300-fetchvlans: updating db with ${vlans.length} vlan(s)`);
+        await mongoSingle.set("vlans", vlans, 600);
     }
-    // await delay(20400);
 };
 

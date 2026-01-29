@@ -63,7 +63,11 @@ module.exports = async function (config, snmpAwait) {
             { upsert: false }
         );
     }
+    if (!interfaces?.length) {
+        console.info(`ciscoc1300-fetchinterfacevlans: no interfaces in db - skipping update of vlans`);
+    }
+    else {
+        console.info(`ciscoc1300-fetchinterfacevlans: updated db with vlans for ${interfaces.length} interface(s)`);
+    }
 
-    // every 30 seconds
-    // await delay(30000);
 };
