@@ -1,9 +1,8 @@
-import React from "react";
-import InterfaceList from "../components/InterfaceList";
-import { useParams } from "react-router-dom";
-import { useApiPoller } from "@hooks/ApiPoller";
 import BugLoading from "@core/BugLoading";
 import BugPanelTabbedForm from "@core/BugPanelTabbedForm";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { useParams } from "react-router-dom";
+import InterfaceList from "../components/InterfaceList";
 
 export default function MainPanel(props) {
     const { panelId, stackId } = useParams();

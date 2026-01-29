@@ -22,4 +22,11 @@
 - improve upgrade process
 
 - check PanelBuilding
+
 - check PanelRowState
+
+- need to use UTC for all panel dates
+
+- add api error handler to all containers (see mikrotik-sdwan)
+- services should try/throw
+- routes don\t need check for errors - handled by async-handler
