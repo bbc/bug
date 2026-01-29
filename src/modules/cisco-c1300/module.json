@@ -3,9 +3,7 @@
     "longname": "Cisco C1300 Switch",
     "version": "1.2.2",
     "description": "Monitoring and control of Cisco C1300 series switches",
-    "capabilities": [
-        "network-switch"
-    ],
+    "capabilities": ["network-switch"],
     "icon": "SettingsEthernet",
     "notes": "",
     "author": "Geoff House",
@@ -13,18 +11,10 @@
     "status": "stable",
     "memory": 240,
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
-        "order": 0,
         "needsConfigured": true,
         "title": "",
         "module": "cisco-c1300",
