@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.4
+
+- 2026-01-29: add panel status display ([2414da2](https://github.com/bbc/bug/commit/2414da262c1cce676439d81bbd2b4b5c70be2e94))
+
 ### version 1.2.3
 
 - 2026-01-29: overhaul error handling ([c3bb04a](https://github.com/bbc/bug/commit/c3bb04ac42d65af4a554f8b78a0316fb7e93f2d5))
