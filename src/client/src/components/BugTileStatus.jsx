@@ -16,6 +16,7 @@ export default function BugTileStatus({ statusItems }) {
     const stateColors = {
         success: ["#05990c", "#ffffff"],
         warning: ["#d07111", "#ffffff"],
+        error: ["#b52424", "#ffffff"],
         critical: ["#b52424", "#ffffff"],
         info: ["#337ab7", "#ffffff"],
         default: ["#212121", "#aaaaaa"],
