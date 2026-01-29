@@ -36,34 +36,24 @@ const main = async () => {
         snmpAwait = new SnmpAwait({
             host: workerData.address,
             community: workerData.snmpCommunity,
+            timeout: 20000
         });
 
         while (true) {
-            try {
-                // fetch FDB information
-                await subworkerInterfaceFdb({ snmpAwait, interfacesCollection });
-            } catch (err) {
-                console.error(`worker-interface-sub(thread ${threadId}): error fetching FDB`);
-                console.error(err.stack || err.message || err);
-            }
+            // fetch FDB information
+            await subworkerInterfaceFdb({ snmpAwait, interfacesCollection });
 
             await delay(1000); // small pause between subworkers
 
-            try {
-                // fetch LLDP information
-                await subworkerInterfaceLldp({ snmpAwait, interfacesCollection });
-            } catch (err) {
-                console.error(`worker-interface-sub(thread ${threadId}): error fetching LLDP`);
-                console.error(err.stack || err.message || err);
-            }
+            // fetch LLDP information
+            await subworkerInterfaceLldp({ snmpAwait, interfacesCollection });
 
             // wait before next full poll
             await delay(10000);
         }
     } catch (err) {
-        console.error(`worker-interface-sub(thread ${threadId}): fatal error`);
+        console.error(`worker-neighbors: fatal error`);
         console.error(err.stack || err.message || err);
-        process.exit(1); // allow manager to restart
     } finally {
         if (snmpAwait) {
             snmpAwait.close();

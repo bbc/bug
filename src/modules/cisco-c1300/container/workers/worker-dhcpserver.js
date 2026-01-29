@@ -49,13 +49,8 @@ const main = async () => {
                 }
             }
 
-            try {
-                // store leases in mongo
-                await mongoSingle.set("leases", dhcpLeases, 60);
-            } catch (err) {
-                console.error(`worker-dhcpserver: failed to write leases to DB`);
-                console.error(err.stack || err.message || err);
-            }
+            // store leases in mongo
+            await mongoSingle.set("leases", dhcpLeases, 60);
 
             // every 30 seconds
             await delay(30000);

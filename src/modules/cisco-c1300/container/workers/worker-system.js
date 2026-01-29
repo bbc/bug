@@ -34,29 +34,18 @@ const main = async () => {
         });
 
         while (true) {
-            try {
-                // fetch system information
-                await ciscoC1300FetchSystem(workerData, snmpAwait);
-            } catch (err) {
-                console.error(`worker-cisco-system(thread ${threadId}): error fetching system info`);
-                console.error(err.stack || err.message || err);
-            }
+            // fetch system information
+            await ciscoC1300FetchSystem(workerData, snmpAwait);
 
-            try {
-                // fetch password information
-                await ciscoC1300FetchPassword(workerData, snmpAwait);
-            } catch (err) {
-                console.error(`worker-cisco-system(thread ${threadId}): error fetching password info`);
-                console.error(err.stack || err.message || err);
-            }
+            // fetch password information
+            await ciscoC1300FetchPassword(workerData, snmpAwait);
 
             // wait until next poll
             await delay(pollInterval);
         }
     } catch (err) {
-        console.error(`worker-cisco-system(thread ${threadId}): fatal error`);
+        console.error(`worker-system: fatal error`);
         console.error(err.stack || err.message || err);
-        process.exit(1); // allow manager to restart
     } finally {
         if (snmpAwait) {
             snmpAwait.close();

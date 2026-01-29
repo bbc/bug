@@ -43,23 +43,16 @@ const main = async () => {
         await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
 
         while (true) {
-            try {
-                // fetch interface details, state, and stats
-                await fetchInterfaceDetails(workerData, snmpAwait);
-                await fetchInterfaceState(workerData, snmpAwait);
-                await fetchInterfaceStats(workerData, snmpAwait);
-            } catch (innerErr) {
-                console.error(
-                    `worker-ciscoc1300(thread ${threadId}): error fetching interface data`
-                );
-                console.error(innerErr.stack || innerErr.message || innerErr);
-            }
+            // fetch interface details, state, and stats
+            await fetchInterfaceDetails(workerData, snmpAwait);
+            await fetchInterfaceState(workerData, snmpAwait);
+            await fetchInterfaceStats(workerData, snmpAwait);
 
             // pause between polling cycles
             await delay(10500);
         }
     } catch (err) {
-        console.error(`worker-ciscoc1300(thread ${threadId}): fatal error`);
+        console.error(`worker-interfacedetails: fatal error`);
         console.error(err.stack || err.message || err);
     } finally {
         if (snmpAwait) {
