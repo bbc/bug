@@ -1,7 +1,6 @@
 import BugAlert from "@components/BugAlert";
 
 export default function PanelStatus({ statusItems, panel }) {
-    console.log(statusItems);
     return (
         <div>
             {statusItems.map((eachItem, index) => (
