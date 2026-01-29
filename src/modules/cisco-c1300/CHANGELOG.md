@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.2.5
+
+- 2026-01-29: improve reliability of snmp ([816724e](https://github.com/bbc/bug/commit/816724e5041cfabe3d86bf6130b53ef6bafbd4f6))
+- 2026-01-29: update workers ([3b53571](https://github.com/bbc/bug/commit/3b5357165aa69c7774ddd903e370594f35c833c1))
+
 ### version 1.2.4
 
 - 2026-01-29: add panel status display ([2414da2](https://github.com/bbc/bug/commit/2414da262c1cce676439d81bbd2b4b5c70be2e94))
