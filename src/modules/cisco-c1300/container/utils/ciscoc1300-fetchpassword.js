@@ -18,11 +18,11 @@ module.exports = async function (config, _) {
             timeout: 20000,
             commands: ["exit"],
         });
-        await mongoSingle.set("passwordexpired", false, 600);
+        await mongoSingle.set("passwordexpired", false, 1200000);
     } catch (error) {
         if (error && error.indexOf("exceeded the maximum lifetime") > -1) {
             console.log(`ciscoc1300-fetchpassword: password has expired!!`);
-            await mongoSingle.set("passwordexpired", true, 600);
+            await mongoSingle.set("passwordexpired", true, 1200000);
         }
         else {
             console.log(`ERROR: ${error}`);

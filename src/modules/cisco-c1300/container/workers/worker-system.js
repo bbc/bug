@@ -27,7 +27,7 @@ const main = async () => {
     while (true) {
         await ciscoC1300FetchSystem(workerData, snmpAwait);
         await ciscoC1300FetchPassword(workerData, snmpAwait);
-        await delay(1200000);
+        await delay(1000000);
     }
 
 };
