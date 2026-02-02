@@ -1,51 +1,49 @@
 "use strict";
 
-const { parentPort, workerData, threadId } = require("worker_threads");
+const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const mongoSingle = require("@core/mongo-single");
-const aristaApi = require("@utils/arista-api");
+const obscure = require("@core/obscure-password");
+const aristaFetchSystem = require("@utils/arista-fetchsystem");
+const aristaFetchPending = require("@utils/arista-fetchpending");
+const PENDING_POLL_COUNT = 4;
+const PENDING_POLL_DELAY_MS = 5000;
 
-// Tell the manager the things you care about
+// tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
 
 const main = async () => {
-    // Connect to the db
+    if (!workerData?.address || !workerData?.username || !workerData?.password) {
+        throw new Error("Missing connection details in workerData");
+    }
+
+    // connect to the db
     await mongoDb.connect(workerData.id);
 
-    // Kick things off
-    console.log(`worker-system: connecting to device at ${workerData.address}`);
+    // kick things off
+    console.log(`worker-system: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`);
 
     while (true) {
         try {
-            const systemResult = await aristaApi({
-                host: workerData.address,
-                protocol: "https",
-                port: 443,
-                username: workerData.username,
-                password: workerData.password,
-                commands: ["show version"],
-            });
-
-            await mongoSingle.set("system", systemResult, 120);
-
-            const powerResult = await aristaApi({
-                host: workerData.address,
-                protocol: "https",
-                port: 443,
-                username: workerData.username,
-                password: workerData.password,
-                commands: ["show system environment power"],
-            });
-
-            await mongoSingle.set("power", powerResult?.["powerSupplies"], 120);
-        } catch (error) {}
-        await delay(10000);
+            await aristaFetchSystem(workerData);
+            for (let i = 0; i < PENDING_POLL_COUNT; i++) {
+                await aristaFetchPending(workerData);
+                await delay(PENDING_POLL_DELAY_MS);
+            }
+        } catch (err) {
+            console.error(`worker-system: fatal error`);
+            console.error(err.stack || err.message || err);
+            process.exit();
+        }
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-system: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});

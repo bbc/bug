@@ -1,137 +1,132 @@
 "use strict";
 
-const { parentPort, workerData, threadId } = require("worker_threads");
+const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
-const aristaApi = require("@utils/arista-api");
 const mongoSingle = require("@core/mongo-single");
+const aristaApi = require("@utils/arista-api");
 const parseHex = require("@utils/arista-parsehex");
+const obscure = require("@core/obscure-password");
 
-// Tell the manager the things you care about
+// tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
 
+const POLL_DELAY_MS = 20000;
+const START_DELAY_MS = 2000;
+
 const main = async () => {
-    // stagger start of script ...
-    await delay(2000);
 
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+    const { address, username, password, id } = workerData;
+    if (!address || !username || !password || !id) {
+        throw new Error("Missing required connection details in workerData");
+    }
 
-    // get the collection reference
+    // stagger start
+    await delay(START_DELAY_MS);
+
+    // connect to MongoDB and get collections
+    await mongoDb.connect(id);
     const interfacesCollection = await mongoCollection("interfaces");
 
-    // // Kick things off
-    console.log(`worker-interfaceneighbors: connecting to device at ${workerData.address}`);
+    console.log(`worker-interfaces: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`);
+
 
     while (true) {
-        // fetch list of LLDP neighbors
-        const result = await aristaApi({
-            host: workerData.address,
-            protocol: "https",
-            port: 443,
-            username: workerData.username,
-            password: workerData.password,
-            commands: ["show arp"],
-        });
+        try {
+            // fetch ARP neighbors
+            const arpResult = await aristaApi({
+                host: address,
+                protocol: "https",
+                port: 443,
+                username,
+                password,
+                commands: ["show arp"],
+            });
 
-        // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
-        // more details to the user
-        const leases = await mongoSingle.get("leases");
-        const leasesByMac = {};
-        if (leases) {
-            for (const lease of leases) {
-                leasesByMac[lease.mac] = lease;
-            }
-        }
+            // fetch leases once
+            const leases = await mongoSingle.get("leases") || [];
+            const leasesByMac = Object.fromEntries(leases.map(lease => [lease.mac, lease]));
 
-        // we'll do FDB first ...
-        const fdbByInterface = {};
-        if (result) {
-            for (const eachArp of result.ipV4Neighbors) {
+            // process ARP / FDB-like info
+            const arpByInterface = {};
+            (arpResult?.ipV4Neighbors || []).forEach(eachArp => {
                 const mac = parseHex(eachArp.hwAddress).toUpperCase();
                 const interfaceArray = eachArp.interface.split(", ");
-                for (const eachInterface of interfaceArray) {
-                    if (!fdbByInterface[eachInterface]) {
-                        fdbByInterface[eachInterface] = [];
-                    }
-                    if (leasesByMac[mac]) {
-                        fdbByInterface[eachInterface].push(leasesByMac[mac]);
-                    } else {
-                        fdbByInterface[eachInterface].push({
-                            mac: mac,
-                        });
-                    }
+                interfaceArray.forEach(iface => {
+                    if (!arpByInterface[iface]) arpByInterface[iface] = [];
+                    arpByInterface[iface].push(leasesByMac[mac] || { mac });
+                });
+            });
+
+            // bulk update ARP info
+            const arpOps = Object.entries(arpByInterface).map(([interfaceId, data]) => ({
+                updateOne: {
+                    filter: { interfaceId },
+                    update: { $set: { fdb: data } },
+                    upsert: false
                 }
-            }
-        }
+            }));
+            if (arpOps.length) await interfacesCollection.bulkWrite(arpOps);
 
-        // and update the DB
-        for (let [interfaceId, fdbArray] of Object.entries(fdbByInterface)) {
-            await interfacesCollection.updateOne(
-                { interfaceId: interfaceId },
-                {
-                    $set: {
-                        fdb: fdbArray,
-                    },
-                },
-                { upsert: false }
-            );
-        }
+            // fetch LLDP neighbors
+            const lldpResult = await aristaApi({
+                host: address,
+                protocol: "https",
+                port: 443,
+                username,
+                password,
+                commands: ["show lldp neighbors"],
+            });
 
-        // now do LLDP neighbours
-        const lldpResult = await aristaApi({
-            host: workerData.address,
-            protocol: "https",
-            port: 443,
-            username: workerData.username,
-            password: workerData.password,
-            commands: ["show lldp neighbors"],
-        });
-
-        const lldpByInterface = {};
-
-        if (lldpResult) {
-            for (const eachNeighbor of lldpResult.lldpNeighbors) {
+            // process LLDP info
+            const lldpByInterface = {};
+            (lldpResult?.lldpNeighbors || []).forEach(eachNeighbor => {
                 const interfaceId = eachNeighbor.port;
-                if (!lldpByInterface[interfaceId]) {
-                    lldpByInterface[interfaceId] = {};
-                }
-                lldpByInterface[interfaceId]["name"] = eachNeighbor.neighborDevice;
+                if (!lldpByInterface[interfaceId]) lldpByInterface[interfaceId] = {};
+
+                lldpByInterface[interfaceId].name = eachNeighbor.neighborDevice;
+
                 const macAddress = parseHex(eachNeighbor.neighborPort).toUpperCase();
                 if (macAddress !== eachNeighbor.neighborPort) {
                     const lease = leasesByMac[macAddress];
-                    lldpByInterface[interfaceId]["port"] = "";
-                    lldpByInterface[interfaceId]["mac"] = macAddress;
-                    lldpByInterface[interfaceId]["address"] = lease ? lease.address : "";
+                    lldpByInterface[interfaceId].port = "";
+                    lldpByInterface[interfaceId].mac = macAddress;
+                    lldpByInterface[interfaceId].address = lease?.address || "";
                 } else {
-                    lldpByInterface[interfaceId]["port"] = eachNeighbor.neighborPort;
-                    lldpByInterface[interfaceId]["mac"] = "";
-                    lldpByInterface[interfaceId]["address"] = "";
+                    lldpByInterface[interfaceId].port = eachNeighbor.neighborPort;
+                    lldpByInterface[interfaceId].mac = "";
+                    lldpByInterface[interfaceId].address = "";
                 }
-            }
-        }
+            });
 
-        // .. and update the DB
-        for (let [interfaceId, lldpObject] of Object.entries(lldpByInterface)) {
-            await interfacesCollection.updateOne(
-                { interfaceId: interfaceId },
-                {
-                    $set: {
-                        lldp: lldpObject,
-                    },
-                },
-                { upsert: false }
-            );
-        }
+            // bulk update LLDP info
+            const lldpOps = Object.entries(lldpByInterface).map(([interfaceId, data]) => ({
+                updateOne: {
+                    filter: { interfaceId },
+                    update: { $set: { lldp: data } },
+                    upsert: false
+                }
+            }));
+            if (lldpOps.length) await interfacesCollection.bulkWrite(lldpOps);
 
-        // every 20 seconds
-        await delay(20000);
+            // delay before next poll
+            await delay(POLL_DELAY_MS);
+
+        } catch (err) {
+            console.error(`worker-interfaceneighbors: fatal error for device ${address}`);
+            console.error(err.stack || err.message || err);
+            process.exit(1);
+        }
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-interfaceneighbors: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});
