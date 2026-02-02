@@ -58,7 +58,18 @@ module.exports = async ({
             return response?.data.result[0];
         }
     } catch (error) {
-        // console.log(error);
+        console.error(`arista-api: ERROR: ${getAxiosErrorMessage(error)}`);
     }
     return null;
 };
+
+const getAxiosErrorMessage = (error) => {
+    if (axios.isAxiosError(error)) {
+        return (
+            error.response?.data?.message ||
+            error.response?.data?.error ||
+            error.message
+        );
+    }
+    return String(error);
+}

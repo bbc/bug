@@ -8,7 +8,7 @@
     "notes": "",
     "author": "Geoff House",
     "license": "Apache-2.0",
-    "memory": 220,
+    "memory": 280,
     "status": "stable",
     "needsContainer": true,
     "devmounts": ["api", "services", "workers", "utils"],

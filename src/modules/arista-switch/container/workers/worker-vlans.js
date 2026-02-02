@@ -4,46 +4,47 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const mongoSingle = require("@core/mongo-single");
-const aristaApi = require("@utils/arista-api");
+const aristaFetchVlans = require("@utils/arista-fetchvlans");
+const aristaFetchSwitchports = require("@utils/arista-fetchswitchports");
+const obscure = require("@core/obscure-password");
 
-// Tell the manager the things you care about
+// tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
-
-    // Kick things off
-    console.log(`worker-vlans: connecting to device at ${workerData.address}`);
-
-    while (true) {
-        const result = await aristaApi({
-            host: workerData.address,
-            protocol: "https",
-            port: 443,
-            username: workerData.username,
-            password: workerData.password,
-            commands: ["show vlan"],
-        });
-
-        if (result?.vlans) {
-            const vlans = [];
-            for (let [vlanId, eachVlan] of Object.entries(result?.vlans)) {
-                vlans.push({
-                    id: parseInt(vlanId),
-                    name: eachVlan.name,
-                    dynamic: eachVlan.dynamic,
-                    status: eachVlan.status,
-                });
-            }
-            await mongoSingle.set("vlans", vlans, 60);
+    try {
+        if (!workerData?.address || !workerData?.username || !workerData?.password) {
+            throw new Error("Missing connection details in workerData");
         }
-        await delay(20400);
-    }
-};
 
-main();
+        // connect to the db
+        await mongoDb.connect(workerData.id);
+
+        // kick things off
+        console.log(`worker-vlans: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`);
+
+        while (true) {
+
+            await aristaFetchVlans(workerData);
+            await delay(500);
+            await aristaFetchSwitchports(workerData);
+
+            // every 10 seconds
+            await delay(10000);
+        }
+
+    } catch (err) {
+        console.error(`worker-interfaces: fatal error`);
+        console.error(err.stack || err.message || err);
+        process.exit();
+    }
+}
+
+main().catch(err => {
+    console.error("worker-vlans: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});
