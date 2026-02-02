@@ -30,3 +30,4 @@
 - add api error handler to all containers (see mikrotik-sdwan)
 - services should try/throw
 - routes don\t need check for errors - handled by async-handler
+- add panel toolbar menu to logs page

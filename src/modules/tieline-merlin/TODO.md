@@ -1,3 +1,4 @@
+- doesn't build correctly
 - codex integration
 - config validation
 - copy changes from tieline-gateway related to group connect / disconnect

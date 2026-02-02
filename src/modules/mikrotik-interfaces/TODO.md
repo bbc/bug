@@ -4,3 +4,6 @@
 - check try/catch/throw (see mikrotik-sdwan)
 - add panel status (default/success etc)
 - check module status (dev/beta/stable etc)
+- Add firmware check for mikrotik devices (info only, maybe?) and bugfix
+- Use the interface capacity to colour the sparkline to show utilisation.
+- add status warning when one or more interfaces are at 90% of capacity?

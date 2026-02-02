@@ -5,3 +5,5 @@
 - add panel status (default/success etc)
 - check module status (dev/beta/stable etc)
 - use setPending (like cisco-c1300) to update save flag when something is changed
+- show errdisabled state (like aristas)
+- interface on now-deleted vlan - does it show 'loading' in control?
