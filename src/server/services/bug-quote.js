@@ -36,6 +36,18 @@ module.exports = async () => {
         "What do you call a musical insect? A humbug!",
         "What do you call a bee who's having a bad hair day? A frizz-bee!",
         "What bug is always running away from everything? A flea!",
+        "Why did the spider get a job in IT? Because he was great at web design.",
+        "Why do ants never get sick? Because they have little anty-bodies.",
+        "What do you call a bee that can't make up its mind? A maybe.",
+        "What do you call a rabbit with fleas? Bugs Bunny.",
+        "What do you call a fly with no wings? A walk.",
+        "What do you call a fly without wings or legs? A sit.",
+        "What do you call a fly without wings, legs or a head? A raisin.",
+        "Why are frogs always so happy? They eat whatever is bugging them.",
+        "What do you call a bug that hesitates before biting something? A nervous tick.",
+        "What kind of bugs smell the best? Deodorants.",
+        "How do bees brush their hair? With a honeycomb.",
+        "What do butterflies study in school? Mothematics."
     ];
 
     let random = quotes[Math.floor(Math.random() * quotes.length)];
