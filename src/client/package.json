@@ -1,6 +1,6 @@
 {
   "name": "bug-client",
-  "version": "3.1.58",
+  "version": "3.1.59",
   "private": true,
   "scripts": {
     "dev": "vite",
