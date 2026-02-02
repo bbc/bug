@@ -139,7 +139,7 @@ module.exports = class SnmpAwait {
 
             self.session.subtree(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
                 if (err) {
-                    console.warn(`snmp-await: subtree session error: ${err.message || err}`);
+                    throw new Error(`subtree session error: ${err.message || err}`);
                 }
                 resolve(result);
             });
