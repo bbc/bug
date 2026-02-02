@@ -9,7 +9,7 @@ const mongoCreateIndex = require("@core/mongo-createindex");
 const SnmpAwait = require("@core/snmp-await");
 const ciscoC1300SplitPort = require("@utils/ciscoc1300-splitport");
 
-// Tell the manager the things you care about
+// tell the manager the things you care about
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "snmpCommunity"],
@@ -23,7 +23,7 @@ const main = async () => {
             throw new Error("Missing SNMP connection details in workerData");
         }
 
-        // Connect to the db
+        // connect to the db
         await mongoDb.connect(workerData.id);
 
         // get the collection reference

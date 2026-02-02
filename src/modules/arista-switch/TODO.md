@@ -9,3 +9,4 @@
 - check module status (dev/beta/stable etc)
 - use setPending (like cisco-c1300) to update save flag when something is changed
 - add POE support
+- Add SFP hardware info to arista interface details tab

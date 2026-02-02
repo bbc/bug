@@ -1,1 +1,2 @@
 - bitrates not working on traffic graphs for interfaces
+- show errdisabled state (like aristas)
