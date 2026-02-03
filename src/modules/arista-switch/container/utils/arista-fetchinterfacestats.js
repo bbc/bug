@@ -18,7 +18,7 @@ module.exports = async (config) => {
     let interfaceCount = 0;
 
     if (!interfaces) {
-        console.log("worker-interfacestats: no interfaces found in db - waiting ...");
+        console.log("arista-fetchinterfacestats: no interfaces found in db - waiting ...");
         await delay(5000);
     } else {
         // get stats from device
