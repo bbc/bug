@@ -5,22 +5,29 @@ const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
 
 module.exports = async (config) => {
+    try {
+        // get interfaces collection
+        const interfacesCollection = await mongoCollection("interfaces");
 
-    const interfacesCollection = await mongoCollection("interfaces");
+        // fetch switchport info from device
+        const result = await aristaApi({
+            host: config.address,
+            protocol: "https",
+            port: 443,
+            username: config.username,
+            password: config.password,
+            commands: ["show interfaces switchport"],
+        });
 
-    let interfaceCount = 0;
+        if (!result?.switchports) {
+            console.info("arista-fetchswitchports: no switchport info returned from device");
+            return;
+        }
 
-    const result = await aristaApi({
-        host: config.address,
-        protocol: "https",
-        port: 443,
-        username: config.username,
-        password: config.password,
-        commands: ["show interfaces switchport"],
-    });
+        let interfaceCount = 0;
 
-    if (result?.switchports) {
-        for (let [interfaceId, interfaceResult] of Object.entries(result?.switchports)) {
+        // loop through each interface and update db
+        for (const [interfaceId, interfaceResult] of Object.entries(result.switchports)) {
             const dbDocument = {
                 accessVlanId: interfaceResult?.switchportInfo?.accessVlanId,
                 mode: interfaceResult?.switchportInfo?.mode,
@@ -29,13 +36,18 @@ module.exports = async (config) => {
             };
 
             await interfacesCollection.updateOne(
-                { interfaceId: interfaceId },
+                { interfaceId },
                 { $set: dbDocument },
                 { upsert: false }
             );
+
             interfaceCount += 1;
         }
-    }
-    console.info(`arista-fetchswitchports: saved switchport info for ${interfaceCount} interface(s) to the db`);
-};
 
+        console.info(`arista-fetchswitchports: saved switchport info for ${interfaceCount} interface(s) to the db`);
+
+    } catch (err) {
+        console.error(`arista-fetchswitchports failed: ${err.message}`);
+        throw err;
+    }
+};

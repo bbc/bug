@@ -3,7 +3,6 @@ const axios = require("axios");
 const https = require("https");
 
 module.exports = async ({
-    strict = false,
     protocol = "https",
     host,
     port = 443,
@@ -12,64 +11,64 @@ module.exports = async ({
     commands = [],
     format = "json",
     debug = false,
+    timeout = 5000,
 }) => {
     const url = `${protocol}://${host}:${port}/command-api`;
 
-    const agent = new https.Agent({
-        rejectUnauthorized: false,
-    });
+    // ignore self-signed certs
+    const agent = new https.Agent({ rejectUnauthorized: false });
 
     const jsonBody = {
         jsonrpc: "2.0",
         method: "runCmds",
-        params: {
-            version: 1,
-            cmds: commands,
-            format: format,
-        },
+        params: { version: 1, cmds: commands, format },
         id: 1,
     };
 
     if (debug) {
-        console.log(jsonBody);
+        console.log("arista-api request body:", jsonBody);
+        console.log("arista-api url:", url);
     }
 
     try {
         const response = await axios.post(url, jsonBody, {
             httpsAgent: agent,
-            auth: {
-                username: username,
-                password: password,
-            },
-            json: jsonBody,
-            timeout: 5000,
+            auth: { username, password },
+            timeout,
         });
-        if (response?.data?.result) {
-            for (let eachResult of response?.data?.result) {
-                if (eachResult.errors) {
-                    throw new Error(eachResult.errors.join("\n"));
-                }
+
+        const results = response.data?.result;
+        if (!results) {
+            throw new Error("no result returned from device");
+        }
+
+        // check for errors in any command result
+        for (const eachResult of results) {
+            if (eachResult.errors?.length) {
+                throw new Error(eachResult.errors.join("\n"));
             }
         }
+
         if (response?.data?.result?.length > 1) {
             return response?.data.result;
         }
         if (response?.data?.result?.length === 1) {
             return response?.data.result[0];
         }
-    } catch (error) {
-        console.error(`arista-api: ERROR: ${getAxiosErrorMessage(error)}`);
+
+    } catch (err) {
+        const msg = getAxiosErrorMessage(err);
+        console.error(`arista-api: ERROR: ${msg}`);
+        throw new Error("arista-api request failed", { cause: err });
     }
-    return null;
 };
 
+// extract meaningful message from axios error
 const getAxiosErrorMessage = (error) => {
     if (axios.isAxiosError(error)) {
-        return (
-            error.response?.data?.message ||
+        return error.response?.data?.message ||
             error.response?.data?.error ||
-            error.message
-        );
+            error.message;
     }
     return String(error);
-}
+};
