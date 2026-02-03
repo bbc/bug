@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId) => {
     try {
@@ -30,6 +31,7 @@ module.exports = async (interfaceId) => {
         );
 
         console.log(`interface-disable: ${JSON.stringify(dbResult.result)}`);
+        await deviceSetPending(false);
         return true;
 
     } catch (err) {
