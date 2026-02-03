@@ -4,10 +4,10 @@
 
 A module to control and monitor Cisco C1300-series switches.
 
-Main list features:
+Interface list features:
 
 - list of interfaces with bitrate (and recent historical stats)
-- ability enable/disable ports
+- ability to enable/disable ports
 - view POE status and control power
 - add description to interface (click on the name to edit)
 - select VLAN, including editing of trunk or access mode
@@ -16,7 +16,7 @@ Main list features:
 - display of neighbors and/or known devices (LLDP or FDB)
 - configurable DHCP address source to convert discovered MAC addresses to IP
 
-The main interfaces list also supports stacked switches, though this configuration is not recommended.
+> INFO: The main interfaces list also supports stacked switches, though this configuration is not recommended.
 
 Interface page features:
 
@@ -56,7 +56,7 @@ Also checks the device to see if the password has expired - this is a common cau
 
 ## Capabilities
 
-This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation](https://bbc.github.io/bug/pages/development/capabilities.html).
+This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}bug/pages/development/capabilities.html).
 
 | Type         | List        |
 | ------------ | ----------- |
