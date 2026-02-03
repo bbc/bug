@@ -1,2 +1,0 @@
-- add panel status (default/success etc)
-- Add SFP hardware info to arista interface details tab
