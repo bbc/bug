@@ -57,7 +57,7 @@ module.exports = async (panelId) => {
         }
 
         // final status update (then we leave the rest to the containerinfo service)
-        panelBuildStatusModel.delete(panelId);
+        await panelBuildStatusModel.delete(panelId);
 
         // start the container
         logger.info(`panel-start: starting container for panel id ${panelId}`);
@@ -82,7 +82,7 @@ module.exports = async (panelId) => {
         logger.warning(`panel-start: failed to push config to container for panel id ${panelId} - given up`);
         return false;
     } catch (error) {
-        panelBuildStatusModel.setError(panelId, "Unknown error");
+        await panelBuildStatusModel.setError(panelId, "Unknown error");
         logger.warning(`panel-start: ${error.stack}`);
         throw new Error(`Failed to start panel id ${panelId}`);
     }

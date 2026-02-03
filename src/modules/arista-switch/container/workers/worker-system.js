@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const obscure = require("@core/obscure-password");
 const aristaFetchSystem = require("@utils/arista-fetchsystem");
 const aristaFetchPending = require("@utils/arista-fetchpending");
+const aristaFetchTemperature = require("@utils/arista-fetchtemperature");
 const PENDING_POLL_COUNT = 4;
 const PENDING_POLL_DELAY_MS = 5000;
 
@@ -29,6 +30,7 @@ const main = async () => {
 
     while (true) {
         try {
+            await aristaFetchTemperature(workerData);
             await aristaFetchSystem(workerData);
             for (let i = 0; i < PENDING_POLL_COUNT; i++) {
                 await aristaFetchPending(workerData);
