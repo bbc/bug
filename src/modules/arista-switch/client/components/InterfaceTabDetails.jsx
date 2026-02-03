@@ -41,6 +41,10 @@ export default function InterfaceTabDetails({ panelId, interfaceId }) {
                             name: "Native VLAN",
                             value: iface.data?.["trunkingNativeVlanId"],
                         },
+                        { name: "POE available", value: iface.data?.poe?.present ? "yes" : "no" },
+                        { name: "POE enabled", value: iface.data?.poe?.enabled ? "yes" : "no" },
+                        { name: "POE state", value: iface.data?.poe?.state },
+                        { name: "POE power", value: iface.data?.poe?.power },
                     ]}
                 />
             </Grid>
