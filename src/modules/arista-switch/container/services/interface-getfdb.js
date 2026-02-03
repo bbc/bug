@@ -5,29 +5,31 @@ const sortHandlers = require("@core/sort-handlers");
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, interfaceId) => {
     const dbInterfaces = await mongoCollection("interfaces");
-    const iface = await dbInterfaces.findOne({ interfaceId: interfaceId });
-    if (!iface || !iface.fdb || !Array.isArray(iface.fdb)) {
+    const iface = await dbInterfaces.findOne({ interfaceId });
+
+    if (!iface?.fdb || !Array.isArray(iface.fdb)) {
         return [];
     }
-    let fdbArray = iface.fdb;
-    if (filters["mac"]) {
-        fdbArray = fdbArray.filter((item) => {
-            return item["mac"] && item["mac"].indexOf(filters.mac) > -1;
+
+    let fdbArray = [...iface.fdb];
+
+    // apply filters
+    if (filters.mac) {
+        fdbArray = fdbArray.filter(item => item.mac?.includes(filters.mac));
+    }
+    if (filters.address) {
+        fdbArray = fdbArray.filter(item => item.address?.includes(filters.address));
+    }
+    if (filters.name) {
+        const searchName = filters.name.toLowerCase();
+        fdbArray = fdbArray.filter(item => {
+            const hostname = item.hostname?.toLowerCase();
+            const comment = item.comment?.toLowerCase();
+            return (comment && comment.includes(searchName)) || (hostname && hostname.includes(searchName));
         });
     }
-    if (filters["address"]) {
-        fdbArray = fdbArray.filter((item) => {
-            return item["address"] && item["address"].indexOf(filters.address) > -1;
-        });
-    }
-    if (filters["name"]) {
-        fdbArray = fdbArray.filter((item) => {
-            if (item.comment) {
-                return item.comment.toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
-            }
-            return item["hostname"] && item["hostname"].toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
-        });
-    }
+
+    // define sort handlers
     const sortHandlerList = {
         mac: sortHandlers.string,
         address: sortHandlers.ipAddress,
@@ -35,13 +37,12 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, i
         active: sortHandlers.boolean,
         static: sortHandlers.boolean,
     };
-    // sort
+
+    // sort if requested
     if (sortField && sortHandlerList[sortField]) {
-        if (sortDirection === "asc") {
-            fdbArray.sort((a, b) => sortHandlerList[sortField](a, b, sortField));
-        } else {
-            fdbArray.sort((a, b) => sortHandlerList[sortField](b, a, sortField));
-        }
+        const handler = sortHandlerList[sortField];
+        fdbArray.sort((a, b) => sortDirection === "asc" ? handler(a, b, sortField) : handler(b, a, sortField));
     }
+
     return fdbArray;
 };
