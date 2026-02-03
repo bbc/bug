@@ -37,7 +37,7 @@ Handy features:
 
 ## Capabilities
 
-This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation](https://bbc.github.io/bug/pages/development/capabilities.html).
+This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}bug/pages/development/capabilities.html).
 
 | Type         | List         |
 | ------------ | ------------ |
