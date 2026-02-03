@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = "1") => {
     const config = await configGet();
@@ -43,6 +44,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             { $set: { mode: "access", accessVlanId: parseInt(untaggedVlan) } }
         );
         console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+        await deviceSetPending(false);
         return true;
     } catch (error) {
         err.message = `interface-setvlanaccess: ${err.stack || err.message || err}`;

@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     const config = await configGet();
@@ -57,6 +58,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         // update db
         const dbResult = await interfaceCollection.updateOne({ interfaceId: interfaceId }, { $set: dataToSet });
         console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+        await deviceSetPending(false);
         return true;
     } catch (error) {
         err.message = `interface-setvlantrunk: ${err.stack || err.message || err}`;
