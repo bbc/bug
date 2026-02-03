@@ -59,7 +59,6 @@ const fetch = async () => {
                     } else {
                         // find the module config for this panel
                         const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
-
                         if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
                             const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
                             try {
@@ -105,8 +104,7 @@ const fetch = async () => {
                                     new StatusItem({
                                         key: "panelnotreachable",
                                         message: [
-                                            "Panel container is not reachable.",
-                                            "There may be more information in the container logs",
+                                            "Panel container is not responding",
                                         ],
                                         type: "critical",
                                         flags: ["restartPanel", "viewPanelLogs"],
