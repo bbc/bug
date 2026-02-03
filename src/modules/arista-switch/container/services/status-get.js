@@ -5,6 +5,7 @@ const statusCheckPending = require("@services/status-checkpending");
 const statusCheckInterfaceStatus = require("@services/status-checkinterfacestatus");
 const statusCheckSfps = require("@services/status-checksfps");
 const statusCheckPower = require("@services/status-checkpower");
+const statusCheckTemperature = require("@services/status-checktemperature");
 
 module.exports = async () => {
     return [].concat(
@@ -30,6 +31,7 @@ module.exports = async () => {
         await statusCheckPending(),
         await statusCheckInterfaceStatus(),
         await statusCheckSfps(),
-        await statusCheckPower()
+        await statusCheckPower(),
+        await statusCheckTemperature()
     );
 };
