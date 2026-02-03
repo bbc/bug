@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, newName) => {
     try {
@@ -35,6 +36,7 @@ module.exports = async (interfaceId, newName) => {
         );
 
         console.log(`interface-rename: ${JSON.stringify(dbResult.result)}`);
+        await deviceSetPending(false);
         return true;
 
     } catch (err) {

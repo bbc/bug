@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, action) => {
     try {
@@ -49,6 +50,8 @@ module.exports = async (interfaceId, action) => {
         if (dbResult.matchedCount !== 1) {
             throw new Error(`expected to update 1 interface in DB, matched ${dbResult.matchedCount}`);
         }
+        await deviceSetPending(false);
+        return true;
 
     } catch (err) {
         err.message = `interface-poe(${interfaceId}, ${action}): ${err.stack || err.message || err}`;
