@@ -1,0 +1,32 @@
+meta {
+  name: interfaces-list
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://{{HOSTNAME}}:443/command-api
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "jsonrpc": "2.0",
+    "method": "runCmds",
+    "params": {
+      "version": 1,
+      "cmds": [
+        "show interfaces status"
+      ],
+      "format": "json"
+    },
+    "id": 1
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
