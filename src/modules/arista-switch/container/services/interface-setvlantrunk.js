@@ -43,7 +43,6 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         username: config.username,
         password: config.password,
         commands: commands,
-        debug: true,
     });
 
     console.log(`interface-setvlantrunk: success - updating DB`);
@@ -60,8 +59,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
         return true;
     } catch (error) {
-        console.log(`interface-setvlantrunk: failed to update db`);
-        console.log(error);
+        err.message = `interface-setvlantrunk: ${err.stack || err.message || err}`;
+        throw err;
     }
-    return false;
 };

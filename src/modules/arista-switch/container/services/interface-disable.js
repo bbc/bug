@@ -5,32 +5,35 @@ const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
 
 module.exports = async (interfaceId) => {
-    const config = await configGet();
-
-    console.log(`interface-disable: disabling interface ${interfaceId} ...`);
-
-    await aristaApi({
-        host: config.address,
-        protocol: "https",
-        port: 443,
-        username: config.username,
-        password: config.password,
-        commands: ["enable", "configure", `interface ${interfaceId}`, "shutdown"],
-    });
-
-    console.log(`interface-disable: success - updating DB`);
     try {
-        const interfacesCollection = await mongoCollection("interfaces");
+        const config = await configGet();
 
+        console.log(`interface-disable: disabling interface ${interfaceId} ...`);
+
+        // disable the interface on the device
+        await aristaApi({
+            host: config.address,
+            protocol: "https",
+            port: 443,
+            username: config.username,
+            password: config.password,
+            commands: ["enable", "configure", `intserface ${interfaceId}`, "shutdown"],
+        });
+
+        console.log(`interface-disable: success - updating DB`);
+
+        // update the DB to reflect disabled interface
+        const interfacesCollection = await mongoCollection("interfaces");
         const dbResult = await interfacesCollection.updateOne(
-            { interfaceId: interfaceId },
+            { interfaceId },
             { $set: { linkStatus: "disabled" } }
         );
+
         console.log(`interface-disable: ${JSON.stringify(dbResult.result)}`);
         return true;
-    } catch (error) {
-        console.log(`interface-disable: failed to update db`);
-        console.log(error);
+
+    } catch (err) {
+        err.message = `interface-disable(${interfaceId}): ${err.stack || err.message || err}`;
+        throw err;
     }
-    return false;
 };

@@ -59,6 +59,8 @@ module.exports = async ({
     } catch (err) {
         const msg = getAxiosErrorMessage(err);
         console.error(`arista-api: ERROR: ${msg}`);
+        console.log("arista-api url:", url);
+        console.log("arista-api request body:", jsonBody);
         throw new Error("arista-api request failed", { cause: err });
     }
 };
