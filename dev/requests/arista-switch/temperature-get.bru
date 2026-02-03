@@ -1,0 +1,32 @@
+meta {
+  name: temperature-get
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://{{HOSTNAME}}:443/command-api
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "jsonrpc": "2.0",
+    "method": "runCmds",
+    "params": {
+      "version": 1,
+      "cmds": [
+        "show system environment temperature"
+      ],
+      "format": "json"
+    },
+    "id": 1
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

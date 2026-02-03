@@ -1,0 +1,32 @@
+meta {
+  name: lldp-get
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://{{HOSTNAME}}:443/command-api
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "jsonrpc": "2.0",
+    "method": "runCmds",
+    "params": {
+      "version": 1,
+      "cmds": [
+        "show lldp neighbors"
+      ],
+      "format": "json"
+    },
+    "id": 1
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
