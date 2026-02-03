@@ -5,28 +5,38 @@ const mongoSingle = require("@core/mongo-single");
 const aristaApi = require("@utils/arista-api");
 
 module.exports = async (config) => {
+    try {
+        // fetch vlan info from device
+        const result = await aristaApi({
+            host: config.address,
+            protocol: "https",
+            port: 443,
+            username: config.username,
+            password: config.password,
+            commands: ["show vlan"],
+        });
 
-    const result = await aristaApi({
-        host: config.address,
-        protocol: "https",
-        port: 443,
-        username: config.username,
-        password: config.password,
-        commands: ["show vlan"],
-    });
-
-    const vlans = [];
-    if (result?.vlans) {
-        for (let [vlanId, eachVlan] of Object.entries(result?.vlans)) {
-            vlans.push({
-                id: parseInt(vlanId),
-                name: eachVlan.name,
-                dynamic: eachVlan.dynamic,
-                status: eachVlan.status,
-            });
+        if (!result?.vlans) {
+            console.info("arista-fetchvlans: no vlans returned from device");
+            await mongoSingle.set("vlans", [], 60);
+            return;
         }
-        await mongoSingle.set("vlans", vlans, 60);
-    }
-    console.info(`arista-fetchvlans: saved ${vlans.length} vlan(s) to the db`);
-};
 
+        // transform vlans into db-ready format
+        const vlans = Object.entries(result.vlans).map(([vlanId, eachVlan]) => ({
+            id: parseInt(vlanId, 10),
+            name: eachVlan.name,
+            dynamic: eachVlan.dynamic,
+            status: eachVlan.status,
+        }));
+
+        // save vlans to db
+        await mongoSingle.set("vlans", vlans, 60);
+
+        console.info(`arista-fetchvlans: saved ${vlans.length} vlan(s) to the db`);
+
+    } catch (err) {
+        console.error(`arista-fetchvlans failed: ${err.message}`);
+        throw err;
+    }
+};
