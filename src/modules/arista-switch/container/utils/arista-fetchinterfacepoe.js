@@ -6,17 +6,23 @@ const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
 
 module.exports = async (config) => {
+    let interfacesCollection;
 
-    const interfacesCollection = await mongoCollection("interfaces");
+    try {
+        // get interfaces collection
+        interfacesCollection = await mongoCollection("interfaces");
 
-    // get list of interfaces
-    const interfaces = await interfacesCollection.find().toArray();
+        // get list of interfaces
+        const interfaces = await interfacesCollection.find().toArray();
+        if (!interfaces || !interfaces.length) {
+            console.log("arista-fetchinterfacepoe: no interfaces found in db - waiting ...");
+            await delay(5000);
+            return;
+        }
 
-    if (!interfaces) {
-        console.log("arista-fetchinterfacepoe: no interfaces found in db - waiting ...");
-        await delay(5000);
-    } else {
-        // get details from device
+        console.log(`arista-fetchinterfacepoe: fetching poe details from ${config.address} ...`);
+
+        // get poe details from device
         const result = await aristaApi({
             host: config.address,
             protocol: "https",
@@ -26,25 +32,13 @@ module.exports = async (config) => {
             commands: ["enable", "configure", "show poe"],
         });
 
-        const poePorts = result.find(r => r?.poePorts).poePorts;
+        const poePorts = result.find(r => r?.poePorts)?.poePorts;
         if (!poePorts) {
+            console.log("arista-fetchinterfacepoe: no poe data returned from device");
             return;
         }
 
-
-        const mappedPoePorts = Object.entries(poePorts).map(([ifName, port]) => ({
-            name: ifName,
-            present: port.portPresent,
-            enabled: port.pseEnabled,
-            state: port.portState,
-            power: port.power,
-            voltage: port.voltage,
-            current: port.current,
-            temperature: port.temperature,
-            priority: port.portPriority,
-        }));
-
-
+        // prepare bulk update operations
         const ops = Object.entries(poePorts).map(([ifName, port]) => ({
             updateOne: {
                 filter: { interfaceId: ifName },
@@ -66,11 +60,17 @@ module.exports = async (config) => {
             },
         }));
 
-        if (ops.length) {
-            await interfacesCollection.bulkWrite(ops);
-            console.log(`arista-fetchinterfacepoe: updated db with poe details for ${ops.length} interface(s)`);
-            await delay(500000);
+        if (!ops.length) {
+            console.log("arista-fetchinterfacepoe: no poe updates to write");
+            return;
         }
 
+        // update db
+        const bulkResult = await interfacesCollection.bulkWrite(ops);
+        console.log(`arista-fetchinterfacepoe: updated db with poe details for ${bulkResult.modifiedCount} interface(s)`);
+
+    } catch (err) {
+        console.error(`arista-fetchinterfacepoe failed: ${err.message}`);
+        throw err;
     }
 };

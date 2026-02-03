@@ -8,20 +8,23 @@ const trafficSaveHistory = require("../services/traffic-savehistory");
 const aristaApi = require("@utils/arista-api");
 
 module.exports = async (config) => {
+    let interfacesCollection;
+    let historyCollection;
 
-    const interfacesCollection = await mongoCollection("interfaces");
-    const historyCollection = await mongoCollection("history");
+    try {
+        // get collections
+        interfacesCollection = await mongoCollection("interfaces");
+        historyCollection = await mongoCollection("history");
 
-    // get list of interfaces
-    const interfaces = await interfacesCollection.find().toArray();
+        // get list of interfaces
+        const interfaces = await interfacesCollection.find().toArray();
+        if (!interfaces?.length) {
+            console.log("arista-fetchinterfacestats: no interfaces found in db - waiting ...");
+            await delay(5000);
+            return;
+        }
 
-    let interfaceCount = 0;
-
-    if (!interfaces) {
-        console.log("arista-fetchinterfacestats: no interfaces found in db - waiting ...");
-        await delay(5000);
-    } else {
-        // get stats from device
+        // fetch stats from device
         const result = await aristaApi({
             host: config.address,
             protocol: "https",
@@ -31,104 +34,86 @@ module.exports = async (config) => {
             commands: ["show interfaces counters"],
         });
 
-        // do this now - in case updating the DB takes a while ...
-        const sampleDate = new Date();
-
-        const historyArray = [];
-
-        // loop through each stored interface
-        for (let eachInterface of interfaces) {
-            const interfaceResultFromApi = result?.interfaces?.[eachInterface.interfaceId];
-            if (interfaceResultFromApi) {
-                // found a result - we can use it to update the db
-
-                // we create a new object, and use $set in mongo, so we don't overwrite the main interface worker results
-                const fieldsToUpdate = {};
-
-                let rxRate = 0;
-                let txRate = 0;
-
-                // fetch the values from the SNMP results
-                const inOctets = interfaceResultFromApi.inOctets;
-                const outOctets = interfaceResultFromApi.outOctets;
-
-                if (eachInterface["stats-date"] !== undefined) {
-                    // get millisecond-resolution dates to compare ...
-                    const previousMilliseconds = eachInterface["stats-date"].getTime();
-                    const currentMilliseconds = sampleDate.getTime();
-                    const differenceSeconds = (currentMilliseconds - previousMilliseconds) / 1000;
-
-                    // calculate the rates
-                    if (eachInterface["out-octets"] !== undefined) {
-                        txRate = ((outOctets - eachInterface["out-octets"]) / differenceSeconds) * 8;
-                    }
-                    if (eachInterface["in-octets"] !== undefined) {
-                        rxRate = ((inOctets - eachInterface["in-octets"]) / differenceSeconds) * 8;
-                    }
-                }
-
-                // save current values back
-                fieldsToUpdate["out-octets"] = outOctets;
-                fieldsToUpdate["in-octets"] = inOctets;
-                fieldsToUpdate["stats-date"] = sampleDate;
-                fieldsToUpdate["tx-rate"] = txRate;
-                fieldsToUpdate["rx-rate"] = rxRate;
-
-                // we copy these across from the db result - so they get updated too
-                fieldsToUpdate["tx-history"] = eachInterface["tx-history"];
-                fieldsToUpdate["rx-history"] = eachInterface["rx-history"];
-
-                // check we have empty arrays
-                if (fieldsToUpdate["tx-history"] === undefined) {
-                    fieldsToUpdate["tx-history"] = [];
-                } else {
-                    // if not, push value onto stats array (for spark line etc)
-                    fieldsToUpdate["tx-history"].push({
-                        value: txRate,
-                        timestamp: sampleDate,
-                    });
-                    fieldsToUpdate["tx-history"] = fieldsToUpdate["tx-history"].slice(
-                        Math.max(fieldsToUpdate["tx-history"].length - 20, 0)
-                    );
-                }
-                if (fieldsToUpdate["rx-history"] === undefined) {
-                    fieldsToUpdate["rx-history"] = [];
-                } else {
-                    // if not, push value onto stats array (for spark line etc)
-                    fieldsToUpdate["rx-history"].push({
-                        value: rxRate,
-                        timestamp: sampleDate,
-                    });
-                    fieldsToUpdate["rx-history"] = fieldsToUpdate["rx-history"].slice(
-                        Math.max(fieldsToUpdate["rx-history"].length - 20, 0)
-                    );
-                }
-
-                // and then lastly we need nicely formatted text versions
-                fieldsToUpdate["tx-rate-text"] = formatBps(txRate);
-                fieldsToUpdate["rx-rate-text"] = formatBps(rxRate);
-
-                // save history
-                historyArray.push({
-                    id: eachInterface.interfaceId,
-                    "tx-rate": txRate,
-                    "rx-rate": rxRate,
-                });
-
-                // save back to database
-                await interfacesCollection.updateOne(
-                    {
-                        interfaceId: eachInterface.interfaceId,
-                    },
-                    { $set: fieldsToUpdate }
-                );
-                interfaceCount += 1;
-            }
+        if (!result?.interfaces) {
+            throw new Error("no interface stats returned from device");
         }
 
-        console.log(`arista-fetchinterfacestats: updated stats for ${interfaceCount} interface(s), pushed ${historyArray.length} stat(s) to interface history`);
+        const sampleDate = new Date();
+        const historyArray = [];
+        let interfaceCount = 0;
+
+        // loop through stored interfaces
+        for (const eachInterface of interfaces) {
+            const apiResult = result.interfaces[eachInterface.interfaceId];
+            if (!apiResult) continue;
+
+            const fieldsToUpdate = {};
+            let rxRate = 0;
+            let txRate = 0;
+
+            const inOctets = apiResult.inOctets;
+            const outOctets = apiResult.outOctets;
+
+            if (eachInterface["stats-date"]) {
+                const prevMs = eachInterface["stats-date"].getTime();
+                const currMs = sampleDate.getTime();
+                const diffSec = (currMs - prevMs) / 1000;
+
+                if (eachInterface["out-octets"] !== undefined) {
+                    txRate = ((outOctets - eachInterface["out-octets"]) / diffSec) * 8;
+                }
+                if (eachInterface["in-octets"] !== undefined) {
+                    rxRate = ((inOctets - eachInterface["in-octets"]) / diffSec) * 8;
+                }
+            }
+
+            // save current values
+            fieldsToUpdate["out-octets"] = outOctets;
+            fieldsToUpdate["in-octets"] = inOctets;
+            fieldsToUpdate["stats-date"] = sampleDate;
+            fieldsToUpdate["tx-rate"] = txRate;
+            fieldsToUpdate["rx-rate"] = rxRate;
+
+            // preserve or initialize history arrays
+            fieldsToUpdate["tx-history"] = eachInterface["tx-history"] || [];
+            fieldsToUpdate["rx-history"] = eachInterface["rx-history"] || [];
+
+            fieldsToUpdate["tx-history"].push({ value: txRate, timestamp: sampleDate });
+            fieldsToUpdate["rx-history"].push({ value: rxRate, timestamp: sampleDate });
+
+            // keep only last 20 samples
+            fieldsToUpdate["tx-history"] = fieldsToUpdate["tx-history"].slice(-20);
+            fieldsToUpdate["rx-history"] = fieldsToUpdate["rx-history"].slice(-20);
+
+            // formatted text versions
+            fieldsToUpdate["tx-rate-text"] = formatBps(txRate);
+            fieldsToUpdate["rx-rate-text"] = formatBps(rxRate);
+
+            // add to history array for separate history collection
+            historyArray.push({
+                id: eachInterface.interfaceId,
+                "tx-rate": txRate,
+                "rx-rate": rxRate,
+            });
+
+            // save back to db
+            await interfacesCollection.updateOne(
+                { interfaceId: eachInterface.interfaceId },
+                { $set: fieldsToUpdate }
+            );
+
+            interfaceCount += 1;
+        }
+
+        console.log(
+            `arista-fetchinterfacestats: updated stats for ${interfaceCount} interface(s), pushed ${historyArray.length} stat(s) to interface history`
+        );
 
         // save history
         await trafficSaveHistory(historyCollection, historyArray);
+
+    } catch (err) {
+        console.error(`arista-fetchinterfacestats failed: ${err.message}`);
+        throw err;
     }
 };
