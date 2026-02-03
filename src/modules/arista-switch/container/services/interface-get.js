@@ -3,6 +3,6 @@
 const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (interfaceId) => {
-    const dbInterfaces = await mongoCollection("interfaces");
-    return await dbInterfaces.findOne({ interfaceId: interfaceId });
+    const interfaces = await mongoCollection("interfaces");
+    return interfaces.findOne({ interfaceId });
 };

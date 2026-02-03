@@ -1,46 +1,34 @@
 "use strict";
-const validationResult = require("@core/ValidationResult");
+
+const ValidationResult = require("@core/ValidationResult");
 const aristaApi = require("@utils/arista-api");
 
 module.exports = async (formData) => {
-    // try {
-    const result = await aristaApi({
-        host: formData.address,
-        protocol: "https",
-        port: 443,
-        username: formData.username,
-        password: formData.password,
-        commands: ["show version"],
-    });
+    try {
+        const result = await aristaApi({
+            host: formData.address,
+            protocol: "https",
+            port: 443,
+            username: formData.username,
+            password: formData.password,
+            commands: ["show version"],
+        });
 
-    console.log(result);
-    if (result && result.modelName) {
-        return new validationResult([
-            {
-                state: true,
-                field: "username",
-                message: "Logged into device OK",
-            },
-            {
-                state: true,
-                field: "password",
-                message: "Logged into device OK",
-            },
-        ]);
+        console.log("validate-auth:", result);
+
+        if (result?.modelName) {
+            return new ValidationResult([
+                { state: true, field: "username", message: "Logged into device OK" },
+                { state: true, field: "password", message: "Logged into device OK" },
+            ]);
+        }
+    } catch (err) {
+        console.error(`validate-auth: ${err.stack || err.message || err}`);
     }
-    // } catch (error) {
-    //     // do nothing
-    // }
-    return new validationResult([
-        {
-            state: false,
-            field: "username",
-            message: "Could not log into device",
-        },
-        {
-            state: false,
-            field: "password",
-            message: "Could not log into device",
-        },
+
+    // fallback if login failed
+    return new ValidationResult([
+        { state: false, field: "username", message: "Could not log into device" },
+        { state: false, field: "password", message: "Could not log into device" },
     ]);
 };

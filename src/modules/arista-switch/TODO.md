@@ -1,4 +1,3 @@
-- check try/catch/throw (see mikrotik-sdwan)
 - add panel status (default/success etc)
 - use setPending (like cisco-c1300) to update save flag when something is changed
 - Add SFP hardware info to arista interface details tab

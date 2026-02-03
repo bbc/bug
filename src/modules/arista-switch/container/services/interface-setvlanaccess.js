@@ -33,7 +33,6 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
         username: config.username,
         password: config.password,
         commands: commands,
-        debug: true,
     });
 
     console.log(`interface-setvlanaccess: success - updating DB`);
@@ -46,8 +45,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
         console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
         return true;
     } catch (error) {
-        console.log(`interface-setvlanaccess: failed to update db`);
-        console.log(error);
+        err.message = `interface-setvlanaccess: ${err.stack || err.message || err}`;
+        throw err;
     }
-    return false;
 };
