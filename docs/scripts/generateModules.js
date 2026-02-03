@@ -1,8 +1,12 @@
 import fs from "fs";
 import yaml from "js-yaml";
+import { createRequire } from "module";
 import path from "path";
-
 import { fileURLToPath } from "url";
+
+const require = createRequire(import.meta.url);
+const CONSTANTS = require("../../src/server/core/constants");
+const DOCS_BASEURL = CONSTANTS.DOCS_BASEURL;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -74,6 +78,8 @@ layout: page
 `;
 
         const content = fs.readFileSync(readmeFile, "utf8");
+        // replace template keys like {DOCS_BASEURL} with constants
+        const processedContent = content.replace(/\{DOCS_BASEURL\}/g, DOCS_BASEURL);
 
         const changelogFile = path.join(moduleSrcPath, "CHANGELOG.md");
         let changelogContent = "";
@@ -86,7 +92,7 @@ layout: page
 
         fs.writeFileSync(
             path.join(moduleDocsPath, "index.md"),
-            frontMatter + content + changelogContent,
+            frontMatter + processedContent + changelogContent,
             "utf8"
         );
 
