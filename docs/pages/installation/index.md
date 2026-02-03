@@ -12,10 +12,10 @@ BUG provides a single, central interface for monitoring and controlling equipmen
 BUG can be run on any supported operating system and deployed either locally or in a virtualised environment, depending on your scale and availability requirements.
 
 A full list of supported modules is available on the Modules page:
-https://bbc.github.io/bug/pages/modules
+{DOCS_BASEURL}bug/pages/modules
 
 If you are installing BUG in order to develop or test a new module, refer to the Development documentation instead:
-https://bbc.github.io/bug/pages/development
+{DOCS_BASEURL}bug/pages/development
 
 ---
 
@@ -29,9 +29,9 @@ BUG can be installed on the following platforms:
 
 Detailed installation steps for each platform are available in the pages below:
 
-- https://bbc.github.io/bug/pages/installation/windows.html
-- https://bbc.github.io/bug/pages/installation/mac.html
-- https://bbc.github.io/bug/pages/installation/linux.html
+- {DOCS_BASEURL}bug/pages/installation/windows.html
+- {DOCS_BASEURL}bug/pages/installation/mac.html
+- {DOCS_BASEURL}bug/pages/installation/linux.html
 
 ---
 
@@ -70,4 +70,4 @@ Once created, the panel will appear in the toolbar and become available in the U
 
 If you encounter problems during installation or startup, see:
 
-- https://bbc.github.io/bug/pages/installation/troubleshooting.html
+- {DOCS_BASEURL}bug/pages/installation/troubleshooting.html
