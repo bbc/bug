@@ -9,6 +9,7 @@ const mongoCreateIndex = require("@core/mongo-createindex");
 const aristaFetchInterfaces = require("@utils/arista-fetchinterfaces");
 const aristaFetchInterfaceStats = require("@utils/arista-fetchinterfacestats");
 const aristaFetchInterfaceStatus = require("@utils/arista-fetchinterfacestatus");
+const aristaFetchInterfacePoe = require("@utils/arista-fetchinterfacepoe");
 const obscure = require("@core/obscure-password");
 
 // tell the manager the things you care about
@@ -47,7 +48,7 @@ const main = async () => {
             await delay(500);
             await aristaFetchInterfaceStats(workerData);
             await delay(500);
-
+            await aristaFetchInterfacePoe(workerData);
             // every 5 seconds
             await delay(5000);
         }
