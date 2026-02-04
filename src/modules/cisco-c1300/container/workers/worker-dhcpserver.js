@@ -61,4 +61,8 @@ const main = async () => {
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-dhcpserver: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});
