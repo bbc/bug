@@ -4,32 +4,36 @@ const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
 
 module.exports = async (type, buttonIndex, icon, color) => {
-    const config = await configGet();
-    if (!config) {
-        return false;
-    }
+    try {
+        const config = await configGet();
+        if (!config) throw new Error("Failed to load config");
 
-    // update icons
-    let typeVar = `${type}Icons`;
-    if (!config[typeVar]) {
-        config[typeVar] = [];
-    }
+        // update icons
+        const iconVar = `${type}Icons`;
+        if (!config[iconVar]) {
+            config[iconVar] = [];
+        }
+        while (config[iconVar].length <= buttonIndex) {
+            config[iconVar].push(null);
+        }
+        config[iconVar][buttonIndex] = icon;
 
-    if (config[typeVar].length < buttonIndex) {
-        config[typeVar].fill(config[typeVar].length, buttonIndex);
-    }
-    config[typeVar][buttonIndex] = icon;
+        // update colors
+        const colorVar = `${type}IconColors`;
+        if (!config[colorVar]) {
+            config[colorVar] = [];
+        }
+        while (config[colorVar].length <= buttonIndex) {
+            config[colorVar].push(null);
+        }
+        config[colorVar][buttonIndex] = color;
 
-    // update colors
-    typeVar = `${type}IconColors`;
-    if (!config[typeVar]) {
-        config[typeVar] = [];
-    }
+        console.log(`button-seticon: set button index ${buttonIndex} to icon ${icon}, color ${color}`);
 
-    if (config[typeVar].length < buttonIndex) {
-        config[typeVar].fill(config[typeVar].length, buttonIndex);
-    }
-    config[typeVar][buttonIndex] = color;
+        return await configPutViaCore(config);
 
-    return await configPutViaCore(config);
+    } catch (err) {
+        err.message = `button-seticon: ${err.message}`;
+        throw err;
+    }
 };

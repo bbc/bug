@@ -5,35 +5,32 @@ const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
 
 module.exports = async () => {
-    let config;
     try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
+        const config = await configGet();
+        if (!config) throw new Error("Failed to load config");
+
+        const dataCollection = await mongoCollection("data");
+
+        const returnArray = [];
+        const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
+        const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
+        const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
+
+        if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
+            for (const [index, element] of Object.entries(dbOutputLabels.data)) {
+                returnArray.push({
+                    outputIndex: parseInt(index),
+                    outputLabel: element,
+                    inputIndex: parseInt(dbOutputRouting.data[index]),
+                    inputLabel: dbInputLabels.data[dbOutputRouting.data[index]],
+                });
+            }
         }
-    } catch (error) {
-        logger.warning(`videohub-getalldestinations: failed to fetch config`);
-        return false;
+
+        return returnArray;
+
+    } catch (err) {
+        logger.warning(`capability-videorouter: ${err.stack || err.message}`);
+        throw err;
     }
-
-    const dataCollection = await mongoCollection("data");
-
-    const returnArray = [];
-    const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
-    const dbOutputRouting = await dataCollection.findOne({ title: "video_output_routing" });
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-
-    if (dbOutputLabels && dbOutputRouting && dbInputLabels) {
-        // loop through and add routing
-        for (const [index, element] of Object.entries(dbOutputLabels.data)) {
-            returnArray.push({
-                outputIndex: parseInt(index),
-                outputLabel: element,
-                inputIndex: parseInt(dbOutputRouting.data[index]),
-                inputLabel: dbInputLabels.data[dbOutputRouting.data[index]],
-            });
-        }
-    }
-
-    return returnArray;
 };
