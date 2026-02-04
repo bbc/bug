@@ -36,60 +36,66 @@ const saveResult = async (newResults) => {
 };
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
 
-    // Kick things off
-    console.log(`worker-multiview: connecting to device at ${workerData.address}:${workerData.port}`);
-
-    let router;
     try {
-        router = new videohub({
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
+
+        // Kick things off
+        console.log(`worker-multiview: connecting to device at ${workerData.address}:${workerData.port}`);
+
+        const router = new videohub({
             host: workerData.address,
             port: workerData.port,
         });
-    } catch (error) {
-        throw error;
-    }
 
-    router.on("update", saveResult);
-    console.log("worker-multiview: attempting connection ... ");
+        router.on("update", saveResult);
+        console.log("worker-multiview: attempting connection ... ");
 
-    await router.connect();
-    console.log("worker-multiview: waiting for events ...");
+        await router.connect();
+        console.log("worker-multiview: waiting for events ...");
 
-    let statusDumpTime = Date.now();
-    let statusDumpFields = [
-        "VIDEOHUB DEVICE",
-        "INPUT LABELS",
-        "OUTPUT LABELS",
-        "VIDEO OUTPUT LOCKS",
-        "VIDEO OUTPUT ROUTING",
-        "CONFIGURATION",
-    ];
-    while (true) {
-        // poll occasionally
-        await delay(updateDelay);
+        let statusDumpTime = Date.now();
+        let statusDumpFields = [
+            "VIDEOHUB DEVICE",
+            "INPUT LABELS",
+            "OUTPUT LABELS",
+            "VIDEO OUTPUT LOCKS",
+            "VIDEO OUTPUT ROUTING",
+            "CONFIGURATION",
+        ];
+        while (true) {
+            // poll occasionally
+            await delay(updateDelay);
 
-        // every 30 seconds we re-request all the blocks
-        if (statusDumpTime + 30 * 1000 < Date.now()) {
-            statusDumpTime = Date.now();
-            for (let eachField of statusDumpFields) {
-                await router.send(eachField);
+            // every 30 seconds we re-request all the blocks
+            if (statusDumpTime + 30 * 1000 < Date.now()) {
+                statusDumpTime = Date.now();
+                for (let eachField of statusDumpFields) {
+                    await router.send(eachField);
+                }
+            } else {
+                // otherwise we just request an 'ack' to keep the database timestamp fresh
+                await router.send("PING");
             }
-        } else {
-            // otherwise we just request an 'ack' to keep the database timestamp fresh
-            await router.send("PING");
-        }
 
-        if (!lastSeen) {
-            // it didn't work
-            throw new Error("No response from device");
+            if (!lastSeen) {
+                // it didn't work
+                throw new Error("No response from device");
+            }
+            if (Date.now() - lastSeen > 1000 * 10) {
+                throw new Error("Device not seen in 10 seconds");
+            }
         }
-        if (Date.now() - lastSeen > 1000 * 10) {
-            throw new Error("Device not seen in 10 seconds");
-        }
+    } catch (err) {
+        console.error(`worker-multiview: fatal error`);
+        console.error(err.stack || err.message || err);
+        process.exit();
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-multiview: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});

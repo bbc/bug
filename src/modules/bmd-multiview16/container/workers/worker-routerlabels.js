@@ -18,33 +18,46 @@ const main = async () => {
     // stagger start of script ...
     await delay(4000);
 
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+    try {
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
 
-    while (true) {
-        let labels = [];
+        while (true) {
+            let labels = [];
 
-        // loop through each dhcp source and fetch the list
-        if (workerData?.autoLabelSource) {
-            const url = `http://${workerData?.autoLabelSource}:${modulePort}/api/capabilities/video-router`;
-            try {
-                // make the request
-                const response = await axios.get(url);
-                if (response?.data?.status === "success" && Array.isArray(response?.data?.data)) {
-                    labels = response.data.data;
+            // loop through each dhcp source and fetch the list
+
+            if (workerData?.autoLabelSource) {
+                const url = `http://${workerData.autoLabelSource}:${modulePort}/api/capabilities/video-router`;
+                try {
+                    const response = await axios.get(url);
+
+                    if (response?.data?.status === "success" && Array.isArray(response.data.data)) {
+                        labels = response.data.data;
+                    } else {
+                        console.warn(`worker-routerlabels: invalid response`, response?.data);
+                    }
+                } catch (error) {
+                    console.error(`worker-routerlabels: ${error.stack || error.message}`);
+                    // wait before retry
+                    await delay(5000);
                 }
-            } catch (error) {
-                console.log(`worker-routerlabels: ${error.stack || error.trace || error || error.message}`);
-                // it's not available - wait a few seconds
-                await delay(5000);
             }
+
+            await mongoSingle.set("routerlabels", labels, 60);
+
+            // every 2 seconds
+            await delay(2000);
         }
-
-        await mongoSingle.set("routerlabels", labels, 60);
-
-        // every 2 seconds
-        await delay(2000);
+    } catch (err) {
+        console.error(`worker-routerlabels: fatal error`);
+        console.error(err.stack || err.message || err);
+        process.exit();
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-routerlabels: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});

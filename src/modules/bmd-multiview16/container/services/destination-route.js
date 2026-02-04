@@ -1,27 +1,31 @@
 "use strict";
 
 const configGet = require("@core/config-get");
-const videohub = require("@utils/videohub-promise");
+const Videohub = require("@utils/videohub-promise");
 
-module.exports = async (destinatonIndex, sourceIndex) => {
-    let config;
+module.exports = async (destinationIndex, sourceIndex) => {
     try {
-        config = await configGet();
+        const config = await configGet();
         if (!config) {
-            throw new Error();
+            throw new Error("Failed to load config");
         }
-    } catch (error) {
-        console.log(`output-route: failed to fetch config`);
-        return false;
-    }
 
-    try {
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new Videohub({
+            host: config.address,
+            port: config.port,
+        });
+
         await router.connect();
-        await router.send("VIDEO OUTPUT ROUTING", `${destinatonIndex} ${sourceIndex}`);
+        await router.send(
+            "VIDEO OUTPUT ROUTING",
+            `${destinationIndex} ${sourceIndex}`,
+            true
+        );
+
         return true;
-    } catch (error) {
-        console.log("output-route: ", error);
-        return false;
+
+    } catch (err) {
+        err.message = `destination-route: ${err.message}`;
+        throw err;
     }
 };

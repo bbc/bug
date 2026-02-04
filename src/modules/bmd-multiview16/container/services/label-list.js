@@ -4,33 +4,35 @@ const mongoSingle = require("@core/mongo-single");
 const configGet = require("@core/config-get");
 
 module.exports = async () => {
-    let config;
     try {
-        config = await configGet();
+        const config = await configGet();
         if (!config) {
-            throw new Error();
+            throw new Error("Failed to load config");
         }
-    } catch (error) {
-        console.log(`label-list: failed to fetch config`);
-        return false;
-    }
 
-    const routerLabels = await mongoSingle.get("routerlabels");
-    const labelsFromDb = await mongoSingle.get("input_labels");
-    const labelsArray = [];
-    if (labelsFromDb) {
-        for (const [key, value] of Object.entries(labelsFromDb)) {
-            const autoLabelIndex = config?.autoLabelIndex?.[key] ?? "";
+        const routerLabels = await mongoSingle.get("routerlabels");
+        const labelsFromDb = await mongoSingle.get("input_labels");
+        const labelsArray = [];
 
-            labelsArray.push({
-                inputIndex: parseInt(key),
-                input: (parseInt(key) + 1).toString(),
-                label: value,
-                autoLabel: routerLabels?.[autoLabelIndex]?.inputLabel ?? "",
-                autoLabelIndex: autoLabelIndex,
-                autoLabelEnabled: config?.autoLabelEnabled?.includes(parseInt(key)),
-            });
+        if (labelsFromDb) {
+            for (const [key, value] of Object.entries(labelsFromDb)) {
+                const autoLabelIndex = config.autoLabelIndex?.[key] ?? "";
+
+                labelsArray.push({
+                    inputIndex: parseInt(key),
+                    input: (parseInt(key) + 1).toString(),
+                    label: value,
+                    autoLabel: routerLabels?.[autoLabelIndex]?.inputLabel ?? "",
+                    autoLabelIndex: autoLabelIndex,
+                    autoLabelEnabled: config.autoLabelEnabled?.includes(parseInt(key)) ?? false,
+                });
+            }
         }
+
+        return labelsArray;
+
+    } catch (err) {
+        err.message = `label-list: ${err.message}`;
+        throw err;
     }
-    return labelsArray;
 };
