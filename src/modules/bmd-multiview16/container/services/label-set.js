@@ -1,27 +1,23 @@
 "use strict";
 
 const configGet = require("@core/config-get");
-const videohub = require("@utils/videohub-promise");
+const Videohub = require("@utils/videohub-promise");
 
 module.exports = async (inputIndex, label) => {
-    let config;
     try {
-        config = await configGet();
+        const config = await configGet();
         if (!config) {
-            throw new Error();
+            throw new Error("Failed to load config");
         }
-    } catch (error) {
-        console.log(`label-set: failed to fetch config`);
-        return false;
-    }
 
-    try {
-        const router = new videohub({ port: config.port, host: config.address });
+        const router = new Videohub({ host: config.address, port: config.port });
         await router.connect();
         await router.send("INPUT LABELS", `${inputIndex} ${label}`, true);
+
         return true;
-    } catch (error) {
-        console.log("label-set: ", error);
-        return false;
+
+    } catch (err) {
+        err.message = `label-set: ${err.message}`;
+        throw err;
     }
 };

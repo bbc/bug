@@ -17,16 +17,20 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-    // stagger start of script ...
-    // await delay(5000);
+    try {
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
 
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+        // check if any autolabel sources are configured
+        while (true) {
+            await updateLabels();
+            await delay(1000);
+        }
 
-    // check if any autolabel sources are configured
-    while (true) {
-        await updateLabels();
-        await delay(1000);
+    } catch (err) {
+        console.error(`worker-autolabel: fatal error`);
+        console.error(err.stack || err.message || err);
+        process.exit();
     }
 };
 
@@ -61,4 +65,8 @@ const updateLabels = async () => {
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-autolabel: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});

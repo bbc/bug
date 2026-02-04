@@ -1,69 +1,66 @@
 "use strict";
 const net = require("net");
-const util = require("util");
 const events = require("events");
-const _ = require("underscore");
 const parser = require("./videohub-parser");
 
-module.exports = Router;
+class Router extends events.EventEmitter {
+    constructor(opts = {}) {
+        super();
+        this.opts = opts;
+        this.socket = null;
+    }
 
-function Router(opts) {
-    this.opts = opts || {};
+    async connect() {
+        if (!this.opts.host) throw new Error("Please supply host parameter");
+        if (!this.opts.port) throw new Error("Please supply port parameter");
 
-    this.socket = null;
+        if (this.socket && !this.socket.destroyed) {
+            // already connected
+            return this.socket;
+        }
+
+        return new Promise((resolve, reject) => {
+            this.socket = net.createConnection(this.opts.port, this.opts.host);
+
+            this.socket.on("data", (data) => {
+                try {
+                    this.emit("update", parser(data.toString()));
+                } catch (err) {
+                    this.emit("error", err);
+                }
+            });
+
+            this.socket.on("connect", () => resolve(this.socket));
+
+            this.socket.on("timeout", () => reject(new Error("Connection timed out")));
+            this.socket.setTimeout(this.opts.timeout || 5000);
+
+            this.socket.on("error", (err) => reject(err));
+        });
+    }
+
+    async send(field, command, log = false) {
+        if (!this.socket || this.socket.destroyed) {
+            throw new Error("Socket is not connected");
+        }
+
+        return new Promise((resolve, reject) => {
+            try {
+                let message = `${field}:\n`;
+                if (command) message += `${command}\n\n`;
+                else message += `\n`;
+
+                if (log) console.log(`videohub-promise: sending ${JSON.stringify(message)}`);
+
+                this.socket.write(message, (err) => {
+                    if (err) return reject(err);
+                    resolve();
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 }
 
-util.inherits(Router, events.EventEmitter);
-
-Router.prototype.connect = function () {
-    const instance = this;
-    return new Promise((resolve, reject) => {
-        if (!instance.opts.host) throw new Error("Please supply host parameter");
-        if (!instance.opts.port) throw new Error("Please supply port parameter");
-
-        instance.socket = net.createConnection(instance.opts.port, instance.opts.host);
-
-        instance.socket.on("data", function (data) {
-            try {
-                instance.emit("update", parser(data.toString()));
-            } catch (error) {}
-        });
-
-        instance.socket.on("connect", function () {
-            resolve(instance.socket);
-        });
-
-        instance.socket.on("timeout", function () {
-            reject(new Error("Connected timed out"));
-        });
-
-        instance.socket.on("error", function (error) {
-            reject(new Error(error));
-        });
-    });
-};
-
-Router.prototype.send = function (field, command, log = false) {
-    const instance = this;
-
-    return new Promise((resolve, reject) => {
-        try {
-            let message = `${field}:\n`;
-            if (command) {
-                message += `${command}\n\n`;
-            } else {
-                message += `\n`;
-            }
-            if (log) {
-                console.log(`videohub-promise: sending ${JSON.stringify(message)}`);
-            }
-            instance.socket.write(message, () => {
-                setTimeout(() => {
-                    resolve();
-                }, 100);
-            });
-        } catch (error) {
-            reject(new Error(error));
-        }
-    });
-};
+module.exports = Router;
