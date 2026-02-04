@@ -12,3 +12,4 @@
 - use asyncHandler in routes
 - refactor services with try/catch/throw
 - refactor workers to improve error handling
+- use bulkwrite in workers to improve db performance
