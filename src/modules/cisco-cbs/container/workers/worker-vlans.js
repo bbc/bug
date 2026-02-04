@@ -5,7 +5,8 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const SnmpAwait = require("@core/snmp-await");
-const mongoSingle = require("@core/mongo-single");
+const ciscoc1300FetchVlans = require("../utils/ciscocbs-fetchvlans");
+const ciscoc1300FetchInterfaceVlans = require("../utils/ciscocbs-fetchinterfacevlans");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -13,48 +14,51 @@ parentPort.postMessage({
     restartOn: ["address", "snmpCommunity"],
 });
 
-// create new snmp session
-const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
-});
+let snmpAwait;
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
-
-    // Kick things off
-    console.log(`worker-vlans: connecting to device at ${workerData.address}`);
-
-    while (true) {
-        const vlanResults = await snmpAwait.subtree({
-            oid: ".1.3.6.1.2.1.17.7.1.4.3.1.1",
-        });
-
-        if (vlanResults) {
-            const vlans = [];
-
-            // some switches include the default VLAN (1) in the list - we should check
-            // and provide it if it's missing
-            if (vlanResults["1.3.6.1.2.1.17.7.1.4.3.1.1.1"] === undefined) {
-                vlans.push({ id: 1, label: "Default" });
-            }
-
-            for (let [eachOid, eachResult] of Object.entries(vlanResults)) {
-                const vlan = eachOid.substring(eachOid.lastIndexOf(".") + 1);
-                if (!eachResult) {
-                    eachResult = `VLAN_${vlan}`;
-                }
-                vlans.push({
-                    id: parseInt(vlan),
-                    label: eachResult,
-                });
-            }
-
-            await mongoSingle.set("vlans", vlans, 60);
+    try {
+        if (!workerData?.address || !workerData?.snmpCommunity) {
+            throw new Error("missing SNMP connection details in workerData");
         }
-        await delay(20400);
+
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
+
+
+        while (true) {
+
+            // create new snmp session
+            snmpAwait = new SnmpAwait({
+                host: workerData.address,
+                community: workerData.snmpCommunity,
+                timeout: 30000
+            });
+
+            // fetch VLAN information
+            await ciscoc1300FetchVlans(workerData, snmpAwait);
+
+            await delay(1000);
+
+            for (let a = 1; a < 5; a++) {
+                // fetch interface VLAN assignments
+                await ciscoc1300FetchInterfaceVlans(workerData, snmpAwait);
+                await delay(10000);
+            }
+
+            snmpAwait.close();
+
+            // wait before next poll
+            await delay(20000);
+        }
+    } catch (err) {
+        console.error(`worker-vlans: fatal error`);
+        console.error(err.stack || err.message || err);
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-vlans: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});
