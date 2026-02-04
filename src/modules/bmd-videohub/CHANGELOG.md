@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.3.6
+
+- 2026-02-04: refactor service code to use new error handling ([6c8eecd](https://github.com/bbc/bug/commit/6c8eecd29704759e10086529c8d1972c64c2d14f))
+- 2026-02-04: improve api JSON error handling ([9a97c7a](https://github.com/bbc/bug/commit/9a97c7a97b4b185e5260c2dbb919a2de7f3c1c73))
+
 ### version 1.3.5
 
 - 2026-01-28: fix bug in getdestinations ([2bd4d11](https://github.com/bbc/bug/commit/2bd4d11ba0c13cd5b7d944708876ce15f609b48a))
