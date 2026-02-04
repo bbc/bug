@@ -1,8 +1,11 @@
 - add README.md
 - add historical entries to CHANGELOG.md
 - add screenshot
-- check try/catch/throw (see mikrotik-sdwan)
 - add panel status (default/success etc)
 - check module status (dev/beta/stable etc)
 - use setPending (like cisco-c1300) to update save flag when something is changed
 - add poe support
+- add JSON error handler to api.js
+- use asyncHandler in routes
+- refactor services with try/catch/throw
+- refactor workers to improve error handling

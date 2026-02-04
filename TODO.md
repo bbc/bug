@@ -59,3 +59,4 @@ catch(err) {
 - add JSON API response to all servers
 
 - error.trace isn't a thing
+- check upgrade - the panel enabled should be false and it takes a long time to update
