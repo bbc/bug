@@ -5,44 +5,47 @@ const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
 
 module.exports = async (index, type, label) => {
-    if (type === "source") {
-        type = "input";
-    }
-
-    if (type === "destination") {
-        type = "output";
-    }
-
-    if (!["input", "output"].includes(type)) {
-        logger.error(`videohub-setlabel: invalid type '${type}'`);
-        return false;
-    }
-
-    if (label === "" || label === undefined || label === null) {
-        label = "-";
-    }
-
-    let config;
     try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
+        // normalize type
+        if (type === "source") type = "input";
+        if (type === "destination") type = "output";
+
+        // validate type
+        if (!["input", "output"].includes(type)) {
+            throw new Error(`invalid type '${type}'`);
         }
-    } catch (error) {
-        logger.error(`videohub-setlabel: failed to fetch config`);
-        return false;
-    }
 
-    try {
-        const field = type == "output" ? "OUTPUT LABELS" : "INPUT LABELS";
+        // default empty label
+        if (label === "" || label === undefined || label === null) {
+            label = "-";
+        }
+
+        // fetch config
+        const config = await configGet();
+        if (!config) throw new Error("failed to load config");
+
+        // validate index
+        if (index === undefined || index === null || isNaN(index)) {
+            throw new Error("invalid index provided");
+        }
+
+        // determine field and command
+        const field = type === "output" ? "OUTPUT LABELS" : "INPUT LABELS";
         const command = `${index} ${label}`;
 
+        // connect to videohub router
         const router = new videohub({ port: config.port, host: config.address });
         await router.connect();
-        await router.send(field, command);
+
+        // send label command
+        await router.send(field, command, true);
+
+        logger.info(`videohub-setlabel: set ${type} label '${label}' for index ${index}`);
         return true;
-    } catch (error) {
-        logger.error("videohub-setlabel: ", error);
-        return false;
+
+    } catch (err) {
+        logger.error(`videohub-setlabel: ${err.stack || err.message}`);
+        err.message = `videohub-setlabel: ${err.message}`;
+        throw err;
     }
 };

@@ -5,27 +5,33 @@ const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
 
 module.exports = async (index) => {
-    let config;
     try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
-        }
-    } catch (error) {
-        logger.error(`videohub-lock: failed to fetch config`);
-        return false;
-    }
+        // fetch config
+        const config = await configGet();
+        if (!config) throw new Error("failed to load config");
 
-    try {
+        // validate input
+        if (index === undefined || index === null || isNaN(index)) {
+            throw new Error("invalid index provided");
+        }
+
+        // prepare command
         const field = "VIDEO OUTPUT LOCKS";
         const command = `${index} O`;
 
+        // connect to videohub router
         const router = new videohub({ port: config.port, host: config.address });
         await router.connect();
-        await router.send(field, command);
+
+        // send lock command
+        await router.send(field, command, true);
+
+        logger.info(`videohub-lock: locked output ${index}`);
         return true;
-    } catch (error) {
-        logger.error("videohub-lock: ", error);
-        return false;
+
+    } catch (err) {
+        logger.error(`videohub-lock: ${err.stack || err.message}`);
+        err.message = `videohub-lock: ${err.message}`;
+        throw err;
     }
 };

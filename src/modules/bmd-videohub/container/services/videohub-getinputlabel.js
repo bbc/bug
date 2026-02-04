@@ -5,24 +5,26 @@ const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
 
 module.exports = async (index) => {
-    let config;
     try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
+        // fetch config
+        const config = await configGet();
+        if (!config) throw new Error("Failed to load config");
+
+        const dataCollection = await mongoCollection("data");
+
+        // get data from the db
+        const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
+
+        if (dbInputLabels && dbInputLabels.data[index] !== undefined) {
+            return dbInputLabels.data[index];
         }
-    } catch (error) {
-        logger.error(`videohub-getinputlabel: failed to fetch config`);
-        return false;
+
+        logger.warning(`videohub-getinputlabel: no input label found for index ${index}`);
+        return null;
+
+    } catch (err) {
+        logger.error(`videohub-getinputlabel: ${err.stack || err.message}`);
+        err.message = `videohub-getinputlabel: ${err.message}`;
+        throw err;
     }
-
-    const dataCollection = await mongoCollection("data");
-
-    // get data from the db
-    const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
-    if (dbInputLabels && dbInputLabels["data"][index] !== undefined) {
-        return dbInputLabels["data"][index];
-    }
-
-    return null;
 };

@@ -4,47 +4,58 @@ const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
 
-module.exports = async (destinatonIndex, sourceIndex) => {
-    let config;
+module.exports = async (destinationIndex, sourceIndex) => {
     try {
-        config = await configGet();
-        if (!config) {
-            throw new Error();
+        // fetch config
+        const config = await configGet();
+        if (!config) throw new Error("Failed to load config");
+
+        // validate inputs
+        if (destinationIndex === undefined || destinationIndex === null || isNaN(destinationIndex)) {
+            throw new Error("invalid destinationIndex provided");
         }
-    } catch (error) {
-        logger.error(`videohub-route: failed to fetch config`);
-        return false;
-    }
+        if (sourceIndex === undefined || sourceIndex === null || isNaN(sourceIndex)) {
+            throw new Error("invalid sourceIndex provided");
+        }
 
-    const sourceQuads = config.sourceQuads ? config.sourceQuads : [];
-    const destinationQuads = config.destinationQuads ? config.destinationQuads : [];
+        // fallback to empty arrays if not defined
+        const sourceQuads = config.sourceQuads ?? [];
+        const destinationQuads = config.destinationQuads ?? [];
 
-    const routeCommands = [];
-    if (destinationQuads?.[destinatonIndex] === true) {
-        // quad destination. Check sources
-        if (sourceQuads?.[sourceIndex] === true) {
-            // bullseye - route all four!
-            for (let a = 0; a < 4; a++) {
-                routeCommands.push(`${parseInt(destinatonIndex) + a} ${parseInt(sourceIndex) + a}`);
+        // prepare routing commands
+        const routeCommands = [];
+
+        if (destinationQuads[destinationIndex] === true) {
+            // quad destination - check sources
+            if (sourceQuads[sourceIndex] === true) {
+                // bullseye - route all four!
+                for (let a = 0; a < 4; a++) {
+                    routeCommands.push(`${parseInt(destinationIndex) + a} ${parseInt(sourceIndex) + a}`);
+                }
+            } else {
+                // route same source to all four destinations
+                for (let a = 0; a < 4; a++) {
+                    routeCommands.push(`${parseInt(destinationIndex) + a} ${sourceIndex}`);
+                }
             }
         } else {
-            // well ... it's not ideal but we should probably route the same source to all four destinations
-            for (let a = 0; a < 4; a++) {
-                routeCommands.push(`${parseInt(destinatonIndex) + a} ${sourceIndex}`);
-            }
+            // normal route
+            routeCommands.push(`${destinationIndex} ${sourceIndex}`);
         }
-    } else {
-        // just a normal route - oh well.
-        routeCommands.push(`${destinatonIndex} ${sourceIndex}`);
-    }
 
-    try {
+        // connect to videohub router
         const router = new videohub({ port: config.port, host: config.address });
         await router.connect();
-        await router.send("VIDEO OUTPUT ROUTING", routeCommands);
+
+        // send routing commands
+        await router.send("VIDEO OUTPUT ROUTING", routeCommands, true);
+
+        logger.info(`videohub-route: routed destination ${destinationIndex} to source ${sourceIndex}`);
         return true;
-    } catch (error) {
-        logger.error("videohub-route: ", error);
-        return false;
+
+    } catch (err) {
+        logger.error(`videohub-route: ${err.stack || err.message}`);
+        err.message = `videohub-route: ${err.message}`;
+        throw err;
     }
 };
