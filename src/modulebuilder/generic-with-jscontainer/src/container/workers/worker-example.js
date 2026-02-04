@@ -15,22 +15,32 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+    try {
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
 
-    // Kick things off
-    console.log(`worker-example: doing something ...`);
+        // Kick things off
+        console.log(`worker-example: doing something ...`);
 
-    // use an infinite loop
-    while (true) {
-        // do stuff here
+        // use an infinite loop
+        while (true) {
+            // do stuff here
 
-        // use mongoDb or mongoSingle to save to DB
+            // use mongoDb or mongoSingle to save to DB
 
-        // delay before doing it all again ...
+            // delay before doing it all again ...
 
-        await delay(300000);
+            await delay(300000);
+        }
+    } catch (err) {
+        console.error(`worker-example: fatal error`);
+        console.error(err.stack || err.message || err);
+        process.exit();
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-example: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});
