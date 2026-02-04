@@ -3,6 +3,7 @@
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckPending = require("@services/status-checkpending");
 const statusCheckPasswordExpired = require("@services/status-checkpasswordexpired");
+const statusGetSystem = require("@services/status-getsystem");
 
 module.exports = async () => {
     return [].concat(
@@ -26,6 +27,7 @@ module.exports = async () => {
             timeoutSeconds: 1800,
         }),
         await statusCheckPending(),
-        await statusCheckPasswordExpired()
+        await statusCheckPasswordExpired(),
+        await statusGetSystem()
     );
 };
