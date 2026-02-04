@@ -20,7 +20,7 @@ let snmpAwait;
 const main = async () => {
     try {
         if (!workerData?.address || !workerData?.snmpCommunity) {
-            throw new Error("Missing SNMP connection details in workerData");
+            throw new Error("missing SNMP connection details in workerData");
         }
 
         // stagger start of script ...
@@ -61,4 +61,8 @@ const main = async () => {
     }
 };
 
-main();
+main().catch(err => {
+    console.error("worker-neighbors: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});
