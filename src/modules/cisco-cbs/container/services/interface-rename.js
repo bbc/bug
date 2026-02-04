@@ -3,6 +3,7 @@
 const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, newName) => {
     try {
@@ -27,6 +28,8 @@ module.exports = async (interfaceId, newName) => {
             oid: `.1.3.6.1.2.1.31.1.1.1.18.${interfaceId}`,
             value: newName.toString(),
         });
+
+        await deviceSetPending(true);
 
         // we're done with the SNMP session
         snmpAwait.close();

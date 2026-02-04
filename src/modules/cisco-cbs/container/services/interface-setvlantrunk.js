@@ -6,6 +6,7 @@ const mongoSingle = require("@core/mongo-single");
 const ciscoCBSVlanArray = require("@utils/ciscocbs-vlanarray");
 const ciscoCBSVlanList = require("@utils/ciscocbs-vlanlist");
 const SnmpAwait = require("@core/snmp-await");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     try {
@@ -71,6 +72,8 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
                 type: "gauge",
             },
         });
+
+        await deviceSetPending(true);
 
         console.log(`interface-setvlantrunk: success - updating DB`);
 
