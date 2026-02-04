@@ -9,3 +9,7 @@
 - add ability to change LED color
 - add protectedservices feature
 - use a hashed id to ignore localdata when device changes
+- errors relating to endpoints should show against the item in the UI, not globally
+- update routes with asynchandler
+- update services with try/catch
+- update workers with process.exit & global main().catch

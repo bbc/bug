@@ -31,3 +31,31 @@
 - services should try/throw
 - routes don\t need check for errors - handled by async-handler
 - add panel toolbar menu to logs page
+- should we use process.exit() inside worker error handler
+- i need a flag to prevent the module ui from loading - overlayPanel or something? When a status item is so important the panel can't run.
+
+- put this at the end of all workers?
+
+```
+main().catch(err => {
+    console.error("worker-interface: startup failure");
+    console.error(err.stack || err.message || err);
+    process.exit(1);
+});
+```
+
+GOT TO:
+screenshots and readme in arista - then rest of list.
+
+- I like this for utils (called from workers):
+
+```
+catch(err) {
+    console.error(`arista-fetchtemperature failed: ${err.message}`);
+    throw err;
+}
+```
+
+- add JSON API response to all servers
+
+- error.trace isn't a thing
