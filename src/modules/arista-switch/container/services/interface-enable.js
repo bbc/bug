@@ -45,7 +45,7 @@ module.exports = async (interfaceId) => {
         return true;
 
     } catch (err) {
-        err.message = `interface-disable(${interfaceId}): ${err.stack || err.message || err}`;
+        err.message = `interface-enable(${interfaceId}): ${err.stack || err.message || err}`;
         throw err;
     }
 };
