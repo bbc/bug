@@ -15,7 +15,7 @@ const convertAdminPortSpeed = (speed) => {
             return "1G";
         case 100000000:
             return "100M";
-        case 100000000:
+        case 10000000:
             return "10M";
         default:
             return "";
