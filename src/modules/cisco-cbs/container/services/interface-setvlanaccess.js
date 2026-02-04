@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const SnmpAwait = require("@core/snmp-await");
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async (interfaceId, untaggedVlan = "1") => {
     try {
@@ -41,6 +42,8 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
         });
 
         console.log(`interface-setvlanaccess: success - updating DB`);
+
+        await deviceSetPending(true);
 
         // update db
         const dbResult = await interfaceCollection.updateOne(
