@@ -8,9 +8,16 @@ const ciscoCBSVlanList = require("@utils/ciscocbs-vlanlist");
 const SnmpAwait = require("@core/snmp-await");
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
-    const config = await configGet();
-
     try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        if (!interfaceId || isNaN(parseInt(untaggedVlan)) || !Array.isArray(taggedVlans)) {
+            throw new Error("invalid input");
+        }
+
         // create new snmp session
         const snmpAwait = new SnmpAwait({
             host: config.address,
@@ -29,12 +36,13 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
 
         // we have to add the untagged vlan to the tagged vlans (it's a thing...) otherwise
         // it's marked as 'inactive'
-        if (!taggedVlans.includes(untaggedVlan)) {
-            taggedVlans.push(untaggedVlan);
+        const taggedVlansSafe = [...taggedVlans];
+        if (!taggedVlansSafe.includes(untaggedVlan)) {
+            taggedVlansSafe.push(untaggedVlan);
         }
 
         // summarise this into a list of vlans - it's used to update the db
-        const vlanArray = ciscoCBSVlanArray(vlans, taggedVlans);
+        const vlanArray = ciscoCBSVlanArray(vlans, taggedVlansSafe);
         console.log(
             `interface-setvlantrunk: setting vlan trunk members to ${JSON.stringify(
                 vlanArray
@@ -42,7 +50,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         );
 
         // encode the vlan array back into a hex string
-        const writeValues = ciscoCBSVlanList.encode(taggedVlans, 1024, "");
+        const writeValues = ciscoCBSVlanList.encode(taggedVlansSafe, 1024, "");
 
         // write it back
         for (const [index, value] of writeValues.entries()) {
@@ -75,8 +83,8 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
 
         return true;
-    } catch (error) {
-        console.log(error);
-        return false;
+    } catch (err) {
+        err.message = `interface-setvlantrunk: ${err.stack || err.message || err}`;
+        throw err;
     }
 };

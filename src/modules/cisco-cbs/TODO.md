@@ -1,4 +1,3 @@
 - use setPending (like cisco-c1300) to update save flag when something is changed
 - show errdisabled state (like aristas)
 - interface on now-deleted vlan - does it show 'loading' in control?
-- refactor services with try/catch/throw

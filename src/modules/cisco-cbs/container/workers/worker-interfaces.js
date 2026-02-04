@@ -91,6 +91,8 @@ const main = async () => {
             }
         }
 
+        console.log(`worker-interfaces: found ${bulkOperations.length} interface(s) - updating DB`);
+
         // perform all updates in a single bulk operation
         if (bulkOperations.length) {
             await interfacesCollection.bulkWrite(bulkOperations);

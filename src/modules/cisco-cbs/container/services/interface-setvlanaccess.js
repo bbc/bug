@@ -5,9 +5,16 @@ const mongoCollection = require("@core/mongo-collection");
 const SnmpAwait = require("@core/snmp-await");
 
 module.exports = async (interfaceId, untaggedVlan = "1") => {
-    const config = await configGet();
-
     try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        if (!interfaceId || isNaN(parseInt(untaggedVlan))) {
+            throw new Error("invalid input");
+        }
+
         // create new snmp session
         const snmpAwait = new SnmpAwait({
             host: config.address,
@@ -32,6 +39,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
                 type: "gauge",
             },
         });
+
         console.log(`interface-setvlanaccess: success - updating DB`);
 
         // update db
@@ -39,11 +47,11 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             { interfaceId: parseInt(interfaceId) },
             { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
         );
+
         console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
         return true;
-    } catch (error) {
-        console.log(error);
-        console.log(`interface-setvlanaccess: failed to set vlan ${untaggedVlan} on interface ${interfaceId}`);
-        return false;
+    } catch (err) {
+        err.message = `interface-setvlanaccess: ${err.stack || err.message || err}`;
+        throw err;
     }
 };

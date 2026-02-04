@@ -4,13 +4,16 @@ const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async (interfaceId, startTime = null, endTime = null) => {
     try {
+        if (!interfaceId) throw new Error("invalid input: missing interfaceId");
+
         if (endTime === null) {
             endTime = Date.now();
         }
 
         if (startTime === null) {
-            startTime = endTime - 60 * 5 * 1000; // 5 mins
+            startTime = endTime - 5 * 60 * 1000; // 5 mins
         }
+
         const historyCollection = await mongoCollection("history");
 
         let history = await historyCollection
@@ -20,14 +23,18 @@ module.exports = async (interfaceId, startTime = null, endTime = null) => {
         let dataPoints = [];
 
         for (let eachItem of history) {
-            if (eachItem["interfaces"][interfaceId]) {
-                let dataPoint = eachItem["interfaces"][interfaceId];
+            if (eachItem["interfaces"] && eachItem["interfaces"][interfaceId]) {
+                let dataPoint = { ...eachItem["interfaces"][interfaceId] };
                 dataPoint.timestamp = new Date(eachItem.timestamp).getTime();
                 dataPoints.push(dataPoint);
             }
         }
+
+        if (!dataPoints.length) throw new Error("failed to load config");
+
         return dataPoints;
-    } catch (error) {
-        console.log(`interface-history: ${error.stack || error.trace || error || error.message}`);
+    } catch (err) {
+        err.message = `interface-history: ${err.stack || err.message || err}`;
+        throw err;
     }
 };
