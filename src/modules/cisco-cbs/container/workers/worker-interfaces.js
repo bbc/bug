@@ -58,6 +58,8 @@ const main = async () => {
             oid: "1.3.6.1.2.1.2.2.1.2",
         });
 
+        const bulkOperations = [];
+
         for (let [eachOid, eachResult] of Object.entries(ifIDs)) {
             const interfaceId = parseInt(eachOid.substring(eachOid.lastIndexOf(".") + 1));
             if (eachResult < 3 && interfaceId < 1000) {
@@ -76,13 +78,22 @@ const main = async () => {
                         port: portArray.port,
                         timestamp: new Date(),
                     };
-                    await interfacesCollection.updateOne(
-                        { interfaceId: dbDocument.interfaceId },
-                        { $set: dbDocument },
-                        { upsert: true }
-                    );
+
+                    // prepare bulk write operation
+                    bulkOperations.push({
+                        updateOne: {
+                            filter: { interfaceId: dbDocument.interfaceId },
+                            update: { $set: dbDocument },
+                            upsert: true,
+                        },
+                    });
                 }
             }
+        }
+
+        // perform all updates in a single bulk operation
+        if (bulkOperations.length) {
+            await interfacesCollection.bulkWrite(bulkOperations);
         }
 
         // wait 10 minutes - the interfaces shouldn't really change...
