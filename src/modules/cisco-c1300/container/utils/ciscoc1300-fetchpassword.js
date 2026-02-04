@@ -29,6 +29,5 @@ module.exports = async function (config, _) {
         }
     }
 
-    // await delay(60000);
 };
 

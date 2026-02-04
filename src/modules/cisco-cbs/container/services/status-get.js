@@ -23,7 +23,7 @@ module.exports = async () => {
             collectionName: "system",
             message: "System information is out of date.",
             itemType: "warning",
-            timeoutSeconds: 150,
+            timeoutSeconds: 1800,
         }),
         await statusCheckPending(),
         await statusCheckPasswordExpired()
