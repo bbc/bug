@@ -1,20 +1,13 @@
 const express = require("express");
 const layoutGet = require("@services/layout-get");
 const router = express.Router();
+const asyncHandler = require("express-async-handler");
 
-router.get("/", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await layoutGet(),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to get device layout",
-        });
-    }
-});
+router.get("/", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await layoutGet(),
+    });
+}));
 
 module.exports = router;
