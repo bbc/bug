@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.2.6
+
+- 2026-02-04: use bulkwrite to improve worker db writes ([9664e85](https://github.com/bbc/bug/commit/9664e85f72f7cf8e25cf5520218fa7e292635881))
+- 2026-02-04: improve error handling in workers ([f7de786](https://github.com/bbc/bug/commit/f7de78662aabdd01c0cb7f61febf9b3b3b88bd2d))
+
 ### version 1.2.5
 
 - 2026-01-29: improve reliability of snmp ([816724e](https://github.com/bbc/bug/commit/816724e5041cfabe3d86bf6130b53ef6bafbd4f6))
