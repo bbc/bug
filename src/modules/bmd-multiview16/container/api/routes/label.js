@@ -5,81 +5,42 @@ const labelGetRouterOutputs = require("@services/label-getrouteroutputs");
 const labelSetAutoState = require("@services/label-setautostate");
 const labelSetAutoIndex = require("@services/label-setautoindex");
 const router = express.Router();
+const asyncHandler = require("express-async-handler");
 
-router.all("/", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await labelList(),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to get label list",
-        });
-    }
-});
+router.all("/", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await labelList(),
+    });
+}));
 
-router.get("/getrouteroutputs", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await labelGetRouterOutputs(),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to get label list",
-        });
-    }
-});
+router.get("/getrouteroutputs", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await labelGetRouterOutputs(),
+    });
+}));
 
-router.post("/set", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await labelSet(req?.body?.inputIndex, req?.body?.label),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to set label",
-        });
-    }
-});
+router.post("/set", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await labelSet(req?.body?.inputIndex, req?.body?.label),
+    });
+}));
 
-router.post("/setautostate", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await labelSetAutoState(req?.body?.inputIndex, req?.body?.state),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to set auto label state",
-        });
-    }
-});
+router.post("/setautostate", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await labelSetAutoState(req?.body?.inputIndex, req?.body?.state),
+    });
+}));
 
-router.post("/setautoindex", async function (req, res, next) {
-    try {
-        const result = await labelSetAutoIndex(req?.body?.inputIndex, req?.body?.routerIndex);
-        res.json({
-            status: result ? "success" : "failure",
-            data: result,
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to set auto label index",
-        });
-    }
-});
+router.post("/setautoindex", asyncHandler(async (req, res) => {
+    const result = await labelSetAutoIndex(req?.body?.inputIndex, req?.body?.routerIndex);
+    res.json({
+        status: result ? "success" : "failure",
+        data: result,
+    });
+}));
 
 module.exports = router;
