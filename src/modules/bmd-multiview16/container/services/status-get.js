@@ -2,6 +2,7 @@
 
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckConfig = require("@core/status-checkconfig");
+const statusGetSystem = require("./status-getsystem");
 
 module.exports = async () => {
     return [].concat(
@@ -12,6 +13,7 @@ module.exports = async () => {
             timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         }),
-        await statusCheckConfig()
+        await statusCheckConfig(),
+        await statusGetSystem()
     );
 };
