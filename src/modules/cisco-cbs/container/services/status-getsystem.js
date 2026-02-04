@@ -36,7 +36,6 @@ module.exports = async () => {
         })
 
     } catch (error) {
-        // re-throw error so the api handler catches it
         console.error(`status-getsystem: ${error.message}`);
         throw error;
     }
