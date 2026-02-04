@@ -2,27 +2,35 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@core/logger")(module);
 
 module.exports = async (type, groupIndexes, buttonIndex) => {
-    const config = await configGet();
-    if (!config) {
-        return false;
-    }
+    try {
+        const config = await configGet();
+        if (!config) throw new Error("Failed to load config");
 
-    const groupVar = `${type}Groups`;
-    if (!config[groupVar]) {
-        config[groupVar] = [];
-    }
+        const groupVar = `${type}Groups`;
+        if (!config[groupVar]) {
+            config[groupVar] = [];
+        }
 
-    const groupIndexArray = groupIndexes.split(",");
+        const groupIndexArray = groupIndexes.split(",");
+        const parsedButtonIndex = parseInt(buttonIndex);
 
-    for (const groupIndex of groupIndexArray) {
-        if (config[groupVar][groupIndex]) {
-            if (config[groupVar][groupIndex]["value"].indexOf(parseInt(buttonIndex)) === -1) {
-                config[groupVar][groupIndex]["value"].push(parseInt(buttonIndex));
+        for (const groupIndex of groupIndexArray) {
+            const group = config[groupVar][groupIndex];
+            if (group) {
+                if (!group.value.includes(parsedButtonIndex)) {
+                    group.value.push(parsedButtonIndex);
+                    logger.info(`group-addbutton: added button ${parsedButtonIndex} to ${groupVar}[${groupIndex}]`);
+                }
             }
         }
-    }
 
-    return await configPutViaCore(config);
+        return await configPutViaCore(config);
+
+    } catch (err) {
+        err.message = `group-addbutton: ${err.message}`;
+        throw err;
+    }
 };

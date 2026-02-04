@@ -5,26 +5,31 @@ const configPutViaCore = require("@core/config-putviacore");
 const logger = require("@core/logger")(module);
 
 module.exports = async (type, groupName) => {
-    const config = await configGet();
-    if (!config) {
-        return false;
-    }
+    try {
+        const config = await configGet();
+        if (!config) throw new Error("Failed to load config");
 
-    const groupVar = `${type}Groups`;
-    if (!config[groupVar]) {
-        config[groupVar] = [];
-    }
-
-    for (let eachGroup of config[groupVar]) {
-        if (eachGroup["name"].toLowerCase() === groupName.toLowerCase()) {
-            logger.error(`group-add: group ${groupName} already exists`);
-            return false;
+        const groupVar = `${type}Groups`;
+        if (!config[groupVar]) {
+            config[groupVar] = [];
         }
-    }
 
-    config[groupVar].push({
-        name: groupName,
-        value: [],
-    });
-    return await configPutViaCore(config);
+        for (const eachGroup of config[groupVar]) {
+            if (eachGroup.name.toLowerCase() === groupName.toLowerCase()) {
+                throw new Error(`Group ${groupName} already exists`);
+            }
+        }
+
+        config[groupVar].push({
+            name: groupName,
+            value: [],
+        });
+
+        logger.info(`group-add: added group ${groupName} to ${groupVar}`);
+        return await configPutViaCore(config);
+
+    } catch (err) {
+        err.message = `group-add: ${err.message}`;
+        throw err;
+    }
 };
