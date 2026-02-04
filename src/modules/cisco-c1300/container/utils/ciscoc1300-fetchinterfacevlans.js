@@ -12,6 +12,13 @@ module.exports = async function (config, snmpAwait) {
 
     const interfaces = await interfacesCollection.find().toArray();
 
+    if (!interfaces?.length) {
+        console.info(`ciscoc1300-fetchinterfacevlans: no interfaces in db - skipping update of vlans`);
+        return;
+    }
+
+    const bulkOperations = [];
+
     for (const eachInterface of interfaces) {
         const updateFields = {};
 
@@ -55,19 +62,19 @@ module.exports = async function (config, snmpAwait) {
             }
             updateFields["untagged-vlan"] = nativeVlan;
         }
-        await interfacesCollection.updateOne(
-            { interfaceId: eachInterface.interfaceId },
-            {
-                $set: updateFields,
-            },
-            { upsert: false }
-        );
-    }
-    if (!interfaces?.length) {
-        console.info(`ciscoc1300-fetchinterfacevlans: no interfaces in db - skipping update of vlans`);
-    }
-    else {
-        console.info(`ciscoc1300-fetchinterfacevlans: updated db with vlans for ${interfaces.length} interface(s)`);
+
+        bulkOperations.push({
+            updateOne: {
+                filter: { interfaceId: eachInterface.interfaceId },
+                update: { $set: updateFields },
+                upsert: false
+            }
+        });
     }
 
+    if (bulkOperations.length) {
+        await interfacesCollection.bulkWrite(bulkOperations);
+    }
+
+    console.info(`ciscoc1300-fetchinterfacevlans: updated db with vlans for ${interfaces.length} interface(s)`);
 };

@@ -43,6 +43,7 @@ const main = async () => {
             for (let a = 1; a < 5; a++) {
                 // fetch interface VLAN assignments
                 await ciscoc1300FetchInterfaceVlans(workerData, snmpAwait);
+                await delay(5000);
             }
 
             snmpAwait.close();
