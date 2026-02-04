@@ -1,20 +1,13 @@
 const express = require("express");
 const capabilityVideoRouter = require("@services/capability-videorouter");
 const route = express.Router();
+const asyncHandler = require("express-async-handler");
 
-route.get("/video-router", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await capabilityVideoRouter(),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to get videorouter capability result",
-        });
-    }
-});
+route.get("/video-router", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await capabilityVideoRouter(),
+    });
+}));
 
 module.exports = route;
