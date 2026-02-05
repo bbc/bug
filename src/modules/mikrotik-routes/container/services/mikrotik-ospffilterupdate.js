@@ -49,7 +49,7 @@ module.exports = async (routeComment) => {
 
         return true;
     } catch (error) {
-        console.log(`mikrotik-ospffilterupdate: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-ospffilterupdate: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }

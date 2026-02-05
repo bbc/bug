@@ -13,7 +13,7 @@ exports.get = async function (panelId) {
             return result;
         }
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -33,7 +33,7 @@ exports.set = async function (containerId, containerInfo) {
         );
         return true;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
         return false;
     }
 };
@@ -65,7 +65,7 @@ exports.setMultiple = async function (containerInfoArray) {
 
         return true;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
         return false;
     }
 };
@@ -81,7 +81,7 @@ exports.list = async function (containerId) {
             }
         }
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return [];
 };

@@ -28,6 +28,6 @@ module.exports = async (interfaceName, startTime = null, endTime = null) => {
         return dataPoints;
 
     } catch (error) {
-        console.log(`interface-history: ${error.stack || error.trace || error || error.message}`);
+        console.log(`interface-history: ${error.stack || error || error.message}`);
     }
 };

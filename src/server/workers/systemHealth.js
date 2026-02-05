@@ -210,7 +210,7 @@ const main = async () => {
             await delay(2000);
         }
     } catch (error) {
-        logger.warning(`workers/systemHealth: ${error.stack || error.trace || error || error.message}`);
+        logger.warning(`workers/systemHealth: ${error.stack || error || error.message}`);
         return;
     }
 };

@@ -14,7 +14,7 @@ exports.get = async function (panelId) {
         const filename = path.join(__dirname, "..", "..", "config", "panels", `${panelId}.json`);
         return await readJson(filename);
     } catch (error) {
-        logger.warning(`panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
+        logger.warning(`panel id ${panelId} - ${error.stack || error || error.message}`);
     }
 };
 
@@ -24,7 +24,7 @@ exports.getChangedDate = async function (panelId) {
         const stats = await fs.stat(filename);
         return stats.mtime;
     } catch (error) {
-        logger.warning(`panel id ${panelId} - ${error.stack || error.trace || error || error.message}`);
+        logger.warning(`panel id ${panelId} - ${error.stack || error || error.message}`);
     }
 };
 
@@ -44,7 +44,7 @@ exports.delete = async function (panelId) {
         logger.debug(`deleting file ${filename}`);
         return await deleteFile(filename);
     } catch (error) {
-        logger.warning(`panel id ${panelConfig.id} - ${error.stack || error.trace || error || error.message}`);
+        logger.warning(`panel id ${panelConfig.id} - ${error.stack || error || error.message}`);
         return false;
     }
 };
@@ -71,7 +71,7 @@ exports.list = async function () {
                 }
             }
         } catch (error) {
-            logger.warning(`${error.stack || error.trace || error || error.message}`);
+            logger.warning(`${error.stack || error || error.message}`);
         }
     }
 

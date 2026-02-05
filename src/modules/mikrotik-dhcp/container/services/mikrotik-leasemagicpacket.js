@@ -14,7 +14,7 @@ module.exports = async (macAddress) => {
         conn.close();
         return true;
     } catch (error) {
-        console.log(`mikrotik-leasemagicpacket: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-leasemagicpacket: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }
