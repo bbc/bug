@@ -5,7 +5,7 @@ const mikrotikParseResults = require("@core/mikrotik-parseresults");
 module.exports = async (conn) => {
     // ensure the connection exists
     if (!conn) {
-        throw new Error("mikrotik-fetchdhcpnetworks: no connection provided");
+        throw new Error("no connection provided");
     }
 
     try {
@@ -13,21 +13,22 @@ module.exports = async (conn) => {
 
         // if the router returns something that isn't an array, it's a failure
         if (!data || !Array.isArray(data)) {
-            throw new Error("mikrotik-fetchdhcpnetworks: invalid response from router");
+            throw new Error("invalid response from router");
         }
 
         // process and normalize network data
-        return data.map((item) => {
+        const result = data.map((item) => {
             return mikrotikParseResults({
                 result: item,
                 booleanFields: ["dynamic"],
                 timeFields: [],
             });
         });
-
+        console.log(`mikrorik-fetchdhcpnetworks: found ${result.length} network(s) - saving to db`);
+        return result;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`mikrotik-fetchdhcpnetworks error: ${error.message}`);
+        console.error(`mikrotik-fetchdhcpnetworks: ${error.message}`);
         throw error;
     }
 };

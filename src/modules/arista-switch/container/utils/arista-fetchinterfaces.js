@@ -68,7 +68,7 @@ module.exports = async (config) => {
         console.log(`arista-fetchinterfaces: updated db with details for ${interfaceCount} interface(s)`);
 
     } catch (err) {
-        console.error(`arista-fetchinterfaces failed: ${err.message}`);
+        console.error(`arista-fetchinterfaces: ${err.message}`);
         throw err;
     }
 };

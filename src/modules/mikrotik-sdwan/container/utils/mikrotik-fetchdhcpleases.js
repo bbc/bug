@@ -6,7 +6,7 @@ const leaseLabel = require("@utils/lease-label");
 module.exports = async (conn) => {
     // ensure the connection exists to prevent calling .write on null
     if (!conn) {
-        throw new Error("mikrotik-fetchdhcpleases: no connection provided");
+        throw new Error("no connection provided");
     }
 
     try {
@@ -15,11 +15,11 @@ module.exports = async (conn) => {
 
         // if the router returns something that isn't an array, it's a failure
         if (!data || !Array.isArray(data)) {
-            throw new Error("mikrotik-fetchdhcpleases: invalid response from router");
+            throw new Error("invalid response from router");
         }
 
         // process and normalize lease data in a single map operation
-        return data.map((item) => {
+        const result = data.map((item) => {
             // parse raw api result into typed fields
             const lease = mikrotikParseResults({
                 result: item,
@@ -48,6 +48,8 @@ module.exports = async (conn) => {
                 id: lease.id
             };
         });
+        console.log(`mikrorik-fetchdhcpleases: found ${result.length} lease(s) - saving to db`);
+        return result;
 
     } catch (error) {
         // log and re-throw so the worker loop catches the failure and exits
