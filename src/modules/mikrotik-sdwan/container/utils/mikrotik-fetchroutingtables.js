@@ -5,7 +5,7 @@ const mikrotikParseResults = require("@core/mikrotik-parseresults");
 module.exports = async (conn) => {
     // ensure the connection exists before attempting write
     if (!conn) {
-        throw new Error("mikrotik-fetchroutingtables: no connection provided");
+        throw new Error("no connection provided");
     }
 
     try {
@@ -14,10 +14,10 @@ module.exports = async (conn) => {
 
         // if the response isn't an array, the router likely returned an error or timed out
         if (!data || !Array.isArray(data)) {
-            throw new Error("mikrotik-fetchroutingtables: invalid response from router");
+            throw new Error("invalid response from router");
         }
 
-        return data.map((item) => {
+        const result = data.map((item) => {
             const parsed = mikrotikParseResults({
                 result: item,
                 booleanFields: ["invalid", "disabled", "dynamic"],
@@ -32,10 +32,12 @@ module.exports = async (conn) => {
                 disabled: parsed.disabled,
             };
         });
+        console.log(`mikrorik-fetchroutingtables: found ${result.length} routing table(s) - saving to db`);
+        return result;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`mikrotik-fetchroutingtables error: ${error.message}`);
+        console.error(`mikrotik-fetchroutingtables: ${error.message}`);
         throw error;
     }
 };
