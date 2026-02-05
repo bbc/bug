@@ -200,7 +200,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
 
     const memoizedIcons = useMemo(
         () =>
-            icons.icons.map((icon) => (
+            icons?.icons?.map((icon) => (
                 <Box key={icon} sx={{ display: "inline-block" }}>
                     <Tooltip title={icon}>
                         <Button

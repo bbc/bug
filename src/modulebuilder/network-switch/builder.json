@@ -3,11 +3,7 @@
     "description": "Generic network switch module",
     "version": "1.0.0",
     "author": "Geoff House",
-    "files": [
-        "module.json",
-        "container/package.json",
-        "client/components/ExampleList.jsx"
-    ],
+    "files": ["module.json", "container/package.json", "client/components/ExampleList.jsx"],
     "fields": [
         {
             "name": "name",
@@ -36,7 +32,7 @@
         },
         {
             "name": "icon",
-            "message": "Enter an kebab-case icon name (either https://materialdesignicons.com/ or https://mui.com/material-ui/material-icons/) ",
+            "message": "Enter an MUI or MDI icon name eg mdi-set-top-box or SettingsInputComponent",
             "type": "input",
             "required": "true",
             "default": "abc-icon"

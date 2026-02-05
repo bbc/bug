@@ -5,7 +5,7 @@
     "capabilities": ["power-control"],
     "notes": "",
     "version": "2.0.1",
-    "icon": "mdiPowerPlugOutline",
+    "icon": "mdi-power-plug-outline",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",

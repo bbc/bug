@@ -9,6 +9,7 @@
         "src/modules/**/client"
     ],
     "scripts": {
+        "predev": "node src/client/scripts/generateMuiIcons.mjs",
         "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
         "dev:server": "nodemon ./src/server/bin/bug-dev.js",
         "dev:client": "npm run dev -w src/client",
@@ -54,6 +55,8 @@
         "@fortawesome/fontawesome-svg-core": "^6.7.2",
         "@fortawesome/free-solid-svg-icons": "^6.7.2",
         "@fortawesome/react-fontawesome": "^3.1.1",
+        "@iconify-icons/mdi": "^1.2.48",
+        "@iconify/react": "^6.0.2",
         "@mdi/js": "^7.4.47",
         "@monaco-editor/react": "^4.7.0",
         "@mui/icons-material": "^7.3.6",
