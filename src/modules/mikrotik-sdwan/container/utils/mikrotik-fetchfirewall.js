@@ -5,7 +5,7 @@ const mikrotikParseResults = require("@core/mikrotik-parseresults");
 module.exports = async (conn) => {
     // ensure the connection exists
     if (!conn) {
-        throw new Error("mikrotik-fetchmangle: no connection provided");
+        throw new Error("no connection provided");
     }
 
     try {
@@ -14,11 +14,11 @@ module.exports = async (conn) => {
 
         // if the router returns something that isn't an array, it's a failure
         if (!data || !Array.isArray(data)) {
-            throw new Error("mikrotik-fetchmangle: invalid response from router");
+            throw new Error("invalid response from router");
         }
 
         // map the raw mikrotik results into a structured format
-        return data.map(item =>
+        const resut = data.map(item =>
             mikrotikParseResults({
                 result: item,
                 integerFields: ["bytes", "packets"],
@@ -26,10 +26,11 @@ module.exports = async (conn) => {
                 timeFields: [],
             })
         );
-
+        console.log(`mikrorik-fetchfirewall: found ${result.length} firewall rule(s) - saving to db`);
+        return result;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`mikrotik-fetchmangle error: ${error.message}`);
+        console.error(`mikrotik-fetchfirewall: ${error.message}`);
         throw error;
     }
 };

@@ -8,7 +8,7 @@ const mongoDb = require("@core/mongo-db");
 const mongoSingle = require("@core/mongo-single");
 const mikrotikFetchListItems = require("@utils/mikrotik-fetchlistitems");
 
-const updateDelay = 2000;
+const updateDelay = 5000;
 
 // tell the manager the things you care about
 parentPort.postMessage({
@@ -30,7 +30,7 @@ const main = async () => {
             host: workerData.address,
             user: workerData.username,
             password: workerData.password,
-            timeout: 5,
+            timeout: 10,
         });
 
         console.log(`worker-listitems: connecting to ${workerData.address}`);

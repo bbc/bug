@@ -5,7 +5,7 @@ const mikrotikParseResults = require("@core/mikrotik-parseresults");
 module.exports = async (conn) => {
     // ensure the connection exists before attempting write
     if (!conn) {
-        throw new Error("mikrotik-fetchlistitems: no connection provided");
+        throw new Error("no connection provided");
     }
 
     try {
@@ -14,11 +14,11 @@ module.exports = async (conn) => {
 
         // if the response isn't an array, the router likely returned an error or timed out
         if (!data || !Array.isArray(data)) {
-            throw new Error("mikrotik-fetchlistitems: invalid response from router");
+            throw new Error("invalid response from router");
         }
 
         // parse and normalize the data in one step
-        return data.map((item) => {
+        const result = data.map((item) => {
             const parsed = mikrotikParseResults({
                 result: item,
                 integerFields: [],
@@ -35,10 +35,12 @@ module.exports = async (conn) => {
                 id: parsed.id
             };
         });
+        console.log(`mikrorik-fetchlistitems: found ${result.length} sdwan item(s) - saving to db`);
+        return result;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`mikrotik-fetchlistitems error: ${error.message}`);
+        console.error(`mikrotik-fetchlistitems: ${error.message}`);
         throw error;
     }
 };

@@ -9,3 +9,5 @@
 - test log level for bug app
 - use asyncHandler in routes
 - refactor workers to improve error handling
+
+- fetchFirewall isn't used!
