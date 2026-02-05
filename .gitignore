@@ -44,6 +44,7 @@ src/server/routes/logs
 
 # storybook static files
 docs/assets/storybook
+src/client/storybook-static
 
 # misc
 ._*
