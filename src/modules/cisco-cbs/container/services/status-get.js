@@ -11,7 +11,7 @@ module.exports = async () => {
             collectionName: "interfaces",
             message: ["There is no recent interface information for this device."],
             itemType: "error",
-            timeoutSeconds: 1200,
+            timeoutSeconds: 600,
             flags: ["restartPanel", "configurePanel"],
         }),
         await statusCheckCollection({
@@ -24,7 +24,7 @@ module.exports = async () => {
             collectionName: "system",
             message: "System information is out of date.",
             itemType: "warning",
-            timeoutSeconds: 1800,
+            timeoutSeconds: 600,
         }),
         await statusCheckPending(),
         await statusCheckPasswordExpired(),
