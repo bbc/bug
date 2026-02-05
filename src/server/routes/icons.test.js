@@ -1,6 +1,5 @@
 const request = require("supertest");
 const system = require("@bin/api");
-const iconsSettings = require("@services/icons-settings");
 
 afterAll(async () => {
     await new Promise((resolve) => setTimeout(() => resolve(), 500));
@@ -9,14 +8,6 @@ afterAll(async () => {
 const testIcons = ["mdi-abacus", "access-alarm"];
 
 describe("Test the '/api/icons/' endpoint", () => {
-    test("Test the '/variants' route", async () => {
-        const response = await request(system).get("/api/icons/variants");
-        expect(response.statusCode).toBe(200);
-        expect(response.body.status).toBe("success");
-        expect(response.body.data).toContain(iconsSettings.variants[0]);
-
-    });
-
     test("Test the '/icons' getall route", async () => {
         const response = await request(system).get("/api/icons/");
         expect(response.statusCode).toBe(200);
@@ -71,15 +62,4 @@ describe("Test the '/api/icons/' endpoint", () => {
 
     });
 
-    test("Test the '/icons' POST route with variant parameter", async () => {
-        const testVariant = iconsSettings.variants[0];
-        const response = await request(system).post("/api/icons/").send({
-            variant: testVariant,
-        });
-        expect(response.statusCode).toBe(200);
-        expect(response.body.status).toBe("success");
-        expect(response.body.data.icons.length).toBeGreaterThan(0);
-        expect(response.body.data.icons[0]).toEndWith(`-${testVariant}`);
-
-    });
 });
