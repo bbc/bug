@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.4
+
+- 2026-02-05: fix status check timeouts ([63cbf43](https://github.com/bbc/bug/commit/63cbf43fa2a19625d6f3d3fb986f85c39271d616))
+
 ### version 1.1.3
 
 - 2026-02-04: set pending flag on any change to update UI ([58494b4](https://github.com/bbc/bug/commit/58494b4f1b3c1adc34fcbfef42bd0e1fe1afaa7c))
