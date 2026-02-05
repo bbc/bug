@@ -46,6 +46,8 @@ export default function PanelRowState({ panel }) {
     const errorCount = panel._status.filter((x) => x.type === "error").length;
     const warningCount = panel._status.filter((x) => x.type === "warning").length;
     const criticalCount = panel._status.filter((x) => x.type === "critical").length;
+    const buildElapsed = useElapsedTime(panel?._buildStatus?.startTime);
+    const upgradeElapsed = useElapsedTime(panel?._upgradeStatus?.startTime);
 
     if (panel._isPending) {
         return <State state="empty">...</State>;
@@ -55,16 +57,12 @@ export default function PanelRowState({ panel }) {
         case "building":
             return (
                 <State state="building">
-                    BUILDING PANEL [{formatDuration(useElapsedTime(panel?._buildStatus?.startTime))}] -{" "}
-                    {panel?._buildStatus?.text}
+                    BUILDING PANEL [{formatDuration(buildElapsed)}] - {panel?._buildStatus?.text}
                 </State>
             );
+
         case "upgrading":
-            return (
-                <State state="upgrading">
-                    UPGRADING PANEL [{formatDuration(useElapsedTime(panel?._upgradeStatus?.startTime))}]
-                </State>
-            );
+            return <State state="upgrading">UPGRADING PANEL [{formatDuration(upgradeElapsed)}]</State>;
         case "error":
             return <State state="error">ERROR - {panel._buildStatus.text}</State>;
         default:
