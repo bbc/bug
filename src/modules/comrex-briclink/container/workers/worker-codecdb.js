@@ -34,7 +34,7 @@ const main = async () => {
                     codecs = response.data.data;
                 }
             } catch (error) {
-                console.log(`worker-codecdb: ${error.stack || error.trace || error || error.message}`);
+                console.log(`worker-codecdb: ${error.stack || error || error.message}`);
                 // it's not available - wait a few seconds
                 await delay(5000);
             }

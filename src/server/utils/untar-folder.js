@@ -12,7 +12,7 @@ module.exports = async (tarballPath, extractToPath) => {
         );
         return status;
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
         throw new Error(`Failed to extract the tarball`);
     }
 };

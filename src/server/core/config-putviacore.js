@@ -29,7 +29,7 @@ module.exports = async (config) => {
         let response = await axios.put(url, config, { headers: { authorization: `Bearer ${config?.key}` } });
         return response?.data?.status === "success";
     } catch (error) {
-        console.log(`config-putviacore: ${error.stack || error.trace || error || error.message}`);
+        console.log(`config-putviacore: ${error.stack || error || error.message}`);
         return false;
     }
 };

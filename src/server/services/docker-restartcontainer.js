@@ -9,7 +9,7 @@ module.exports = async (container) => {
         return await new Promise((resolve, reject) => {
             container.restart(function (error, data) {
                 if (error) {
-                    logger.warning(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
                     logger.info(`docker-restartcontainer: container id ${container.id} restarted OK`);

@@ -13,7 +13,7 @@ module.exports = async (container) => {
                         logger.info(`docker-startcontainer: container id ${container.id} already started`);
                         resolve(true);
                     } else {
-                        logger.warning(`docker-startcontainer: ${error.stack || error.trace || error || error.message}`);
+                        logger.warning(`docker-startcontainer: ${error.stack || error || error.message}`);
                         resolve(false);
                     }
                 } else {

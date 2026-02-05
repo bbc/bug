@@ -14,7 +14,7 @@ module.exports = async (leaseId, field, value) => {
         conn.close();
         return true;
     } catch (error) {
-        console.log(`mikrotik-leaseset: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-leaseset: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }

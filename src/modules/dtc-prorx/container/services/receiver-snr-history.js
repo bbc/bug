@@ -29,6 +29,6 @@ module.exports = async (startTime = null, endTime = null) => {
 
         return history;
     } catch (error) {
-        console.log(`receiver-snr-history: ${error.stack || error.trace || error || error.message}`);
+        console.log(`receiver-snr-history: ${error.stack || error || error.message}`);
     }
 };

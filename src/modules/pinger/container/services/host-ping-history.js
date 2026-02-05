@@ -43,6 +43,6 @@ module.exports = async (hostId, startTime = null, endTime = null) => {
 
         return pingHistory;
     } catch (error) {
-        console.log(`host-ping-history: ${error.stack || error.trace || error || error.message}`);
+        console.log(`host-ping-history: ${error.stack || error || error.message}`);
     }
 };

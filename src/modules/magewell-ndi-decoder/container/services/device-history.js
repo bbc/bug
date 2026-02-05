@@ -37,6 +37,6 @@ module.exports = async (startTime = null, endTime = null) => {
 
         return dataPoints;
     } catch (error) {
-        console.log(`device-history: ${error.stack || error.trace || error || error.message}`);
+        console.log(`device-history: ${error.stack || error || error.message}`);
     }
 };

@@ -35,7 +35,7 @@ exports.list = async function () {
                     }
                     moduleArray.push(packageFile);
                 } catch (error) {
-                    logger.warning(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error || error.message}`);
                 }
             }
         }
@@ -55,7 +55,7 @@ exports.get = async function (moduleName) {
             }
         }
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
 
     return null;

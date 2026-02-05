@@ -29,7 +29,7 @@ module.exports = async (deviceId, startTime = null, endTime = null) => {
 
         return history;
     } catch (error) {
-        console.log(`network-history: ${error.stack || error.trace || error || error.message}`);
+        console.log(`network-history: ${error.stack || error || error.message}`);
         return [];
     }
 };

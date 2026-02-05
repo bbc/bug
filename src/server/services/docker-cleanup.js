@@ -12,7 +12,7 @@ module.exports = async () => {
             logger.debug(`Pruning docker images not in use.`);
             docker.pruneImages({ filters: { dangling: { false: true } } }, (error, data) => {
                 if (error) {
-                    logger.warning(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
                     logger.debug(`Pruned images.`);
@@ -25,7 +25,7 @@ module.exports = async () => {
             logger.debug(`Pruning docker builders not in use.`);
             docker.pruneBuilder((error, data) => {
                 if (error) {
-                    logger.warning(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
                     logger.debug(`Pruned builders.`);
@@ -38,7 +38,7 @@ module.exports = async () => {
             logger.debug(`Pruning docker containers not in use.`);
             docker.pruneContainers((error, data) => {
                 if (error) {
-                    logger.warning(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
                     logger.debug(`Pruned containers.`);
@@ -51,7 +51,7 @@ module.exports = async () => {
             logger.debug(`Pruning docker volumes not in use.`);
             docker.pruneVolumes((error, data) => {
                 if (error) {
-                    logger.warning(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
                     logger.debug(`Pruned volumes.`);
@@ -64,7 +64,7 @@ module.exports = async () => {
             logger.debug(`Pruning docker networks not in use.`);
             docker.pruneContainers((error, data) => {
                 if (error) {
-                    logger.warning(`${error.stack || error.trace || error || error.message}`);
+                    logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
                     logger.debug(`Pruned networks.`);
