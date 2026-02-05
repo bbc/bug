@@ -21,7 +21,7 @@ module.exports = async (interfaceId, interfaceName) => {
         conn.close();
         return true;
     } catch (error) {
-        console.log(`mikrotik-interfacerename: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-interfacerename: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }

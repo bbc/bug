@@ -32,7 +32,7 @@ module.exports = async (params) => {
         conn.close();
         return true;
     } catch (error) {
-        console.log(`mikrotik-leaseadd: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-leaseadd: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }

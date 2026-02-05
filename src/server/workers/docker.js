@@ -23,7 +23,7 @@ const fetch = async () => {
             await delay(1000);
         }
     } catch (error) {
-        logger.warning(`workers/docker: ${error.stack || error.trace || error || error.message}`);
+        logger.warning(`workers/docker: ${error.stack || error || error.message}`);
         return;
     }
 };
@@ -37,7 +37,7 @@ const main = async () => {
         try {
             await fetch();
         } catch (error) {
-            logger.warning(`workers/docker: ${error.stack || error.trace || error || error.message}`);
+            logger.warning(`workers/docker: ${error.stack || error || error.message}`);
         }
         await delay(10000);
     }

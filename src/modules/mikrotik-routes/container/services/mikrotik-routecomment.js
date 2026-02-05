@@ -23,7 +23,7 @@ module.exports = async (routeId, routeComment) => {
 
         return true;
     } catch (error) {
-        console.log(`mikrotik-routecomment: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-routecomment: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }

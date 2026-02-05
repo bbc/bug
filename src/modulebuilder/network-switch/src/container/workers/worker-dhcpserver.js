@@ -36,7 +36,7 @@ const main = async () => {
                 dhcpLeases = dhcpLeases.concat(response.data.data);
             }
         } catch (error) {
-            console.log(`worker-dhcpserver: ${error.stack || error.trace || error || error.message}`);
+            console.log(`worker-dhcpserver: ${error.stack || error || error.message}`);
         }
     }
 

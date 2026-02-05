@@ -14,7 +14,7 @@ module.exports = async (routeId) => {
         conn.close();
         return true;
     } catch (error) {
-        console.log(`mikrotik-routedisable: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-routedisable: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }

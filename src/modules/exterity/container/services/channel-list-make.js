@@ -70,6 +70,6 @@ module.exports = async (deviceIdXml) => {
         const xml = await convert.json2xml(parsedChannels, options);
         return xml;
     } catch (error) {
-        console.log(`channel-list-get: ${error.stack || error.trace || error || error.message}`);
+        console.log(`channel-list-get: ${error.stack || error || error.message}`);
     }
 };

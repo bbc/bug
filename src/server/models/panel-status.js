@@ -15,7 +15,7 @@ exports.get = async function (panelId) {
             }
         }
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -27,7 +27,7 @@ exports.list = async function () {
             return await panelStatusCollection.find().toArray();
         }
     } catch (error) {
-        logger.warning(`${error.stack || error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };

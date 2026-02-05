@@ -48,7 +48,7 @@ module.exports = async (distance, routeComment) => {
 
         return true;
     } catch (error) {
-        console.log(`mikrotik-filterupdate: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-filterupdate: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }

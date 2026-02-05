@@ -24,7 +24,7 @@ module.exports = async (interfaceId, interfaceComment) => {
 
         return true;
     } catch (error) {
-        console.log(`mikrotik-interfacecomment: ${error.stack || error.trace || error || error.message}`);
+        console.log(`mikrotik-interfacecomment: ${error.stack || error || error.message}`);
         conn.close();
         return false;
     }
