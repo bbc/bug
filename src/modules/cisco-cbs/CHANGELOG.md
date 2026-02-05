@@ -1,5 +1,13 @@
 ## Changelog
 
+### version 1.1.3
+
+- 2026-02-04: set pending flag on any change to update UI ([58494b4](https://github.com/bbc/bug/commit/58494b4f1b3c1adc34fcbfef42bd0e1fe1afaa7c))
+- 2026-02-04: improve logging in status handlers ([a892bdd](https://github.com/bbc/bug/commit/a892bdd76aaa3963833262aaeff8e28287194c8d))
+- 2026-02-04: refactor services with try/catch/throw ([471d8ee](https://github.com/bbc/bug/commit/471d8eeb1c57a008bc74852913c992d8adb65445))
+- 2026-02-04: add default status check ([67c018b](https://github.com/bbc/bug/commit/67c018be3de76a089c7c599ea87a6cb175fe7e01))
+- 2026-02-04: add README ([1e9bd70](https://github.com/bbc/bug/commit/1e9bd70ffe9a6c6612c2b530745f8e43e24368ca))
+
 ### version 1.1.2
 
 - 2026-02-04: use mongo bulkwrite to improve performance ([8e8cb29](https://github.com/bbc/bug/commit/8e8cb29ebdaf6e751e0ffff0d177c20ce5480d0c))
