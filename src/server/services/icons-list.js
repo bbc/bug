@@ -5,10 +5,9 @@ const path = require("path");
 const readDir = require("@core/read-dir");
 const { paramCase } = require("change-case");
 const cacheStore = require("@core/cache-store");
-const iconsSettings = require("@services/icons-settings");
 
 module.exports = async (variant = null) => {
-    const fetchIcons = async (directory, prefix = null) => {
+    const fetchMUIIcons = async (directory) => {
         let filenames;
         try {
             filenames = await readDir(directory);
@@ -17,61 +16,87 @@ module.exports = async (variant = null) => {
             throw new Error(`Failed to read icons directory`);
         }
 
-        const prefixString = prefix ? `${prefix}-` : "";
-        const icons = [];
+        const ignoreVariants = ["Outlined", "Rounded", "Sharp", "TwoTone", "Outline"];
 
-        for (let filename of filenames.files) {
-            if (path.extname(filename) === ".js") {
-                const iconName = paramCase(path.parse(filename).name);
-                let iconVariant = null;
+        const icons = filenames.files
+            .filter(filename => path.extname(filename) === ".js")
+            .map(filename => path.parse(filename).name)
+            .filter(iconName => !ignoreVariants.some(variant => iconName.endsWith(variant)))
+            .map(iconName => ({
+                id: iconName,
+                sortKey: iconName,
+                variant: null,
+                type: "mui",
+            }));
 
-                // check for variants (e.g., 'outlined', 'rounded')
-                for (let eachVariant of iconsSettings.variants) {
-                    if (iconName.endsWith(`-${eachVariant}`)) {
-                        iconVariant = eachVariant;
-                        break;
-                    }
-                }
 
-                icons.push({
-                    id: prefixString + iconName,
-                    sortKey: iconName,
-                    variant: iconVariant,
-                });
-            }
-        }
         return icons;
     };
 
-    const cacheKey = "muiIconsList";
+    const fetchMDIIcons = async () => {
+        let mdi;
+        try {
+            mdi = require("@mdi/js");
+        } catch (err) {
+            logger.error("icons-list: Failed to load @mdi/js package.");
+            return [];
+        }
+
+        const icons = Object.keys(mdi).filter(key => !key.endsWith("Outline")).map((key) => ({
+            id: `${paramCase(key)}`,
+            sortKey: key,
+            variant: null,
+            type: "mdi",
+        }));
+
+        return icons;
+    };
+
+    const cacheKey = "allIconsList";
 
     try {
         let icons = cacheStore.get(cacheKey);
 
         if (!icons) {
-            logger.info("icons-list: cache miss - scanning MUI icons-material directory...");
+            logger.info("icons-list: cache miss - scanning MUI and MDI icons...");
 
-            const iconsPath = path.join(__dirname, "..", "..", "..", "node_modules", "@mui", "icons-material");
-            const muiIcons = await fetchIcons(iconsPath);
+            const muiIconsPath = path.join(
+                __dirname,
+                "..",
+                "..",
+                "..",
+                "node_modules",
+                "@mui",
+                "icons-material"
+            );
+            const muiIcons = await fetchMUIIcons(muiIconsPath);
+            const mdiIcons = await fetchMDIIcons();
+
+            icons = [...muiIcons, ...mdiIcons];
+
+            const ignoreIcons = ["mdi-license-icon", "mdi-index-es", "mdi-index", "Index"];
 
             // filter out ignored icons
-            icons = muiIcons.filter((icon) => !iconsSettings.ignoreIcons.includes(icon.id));
+            icons = icons.filter((icon) => !ignoreIcons.includes(icon.id));
 
             // sort alphabetically
             icons.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
 
-            // set cache
+            // set cache for 10 minutes
             cacheStore.set(cacheKey, icons, 10);
-            logger.info(`Icon Cache warmed with ${icons.length} icons.`);
+            logger.info(`icons-list: icon cache stored ${icons.length} icons.`);
         }
 
-        // filter by variant and map to IDs
+        // filter by variant and return IDs
         return icons
-            .filter((icon) => icon.variant === variant)
+            .filter((icon) => {
+                if (variant === null) return icon.variant === null;
+                return icon.variant === variant;
+            })
             .map((icon) => icon.id);
 
     } catch (error) {
         logger.error(`icons-list: ${error.stack}`);
-        throw new Error(`Failed to fetch icons list`);
+        throw new Error("Failed to fetch icons list");
     }
 };

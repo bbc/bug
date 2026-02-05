@@ -13,11 +13,9 @@ import {
     Grid,
     IconButton,
     InputAdornment,
-    MenuItem,
     TextField,
     Tooltip,
 } from "@mui/material";
-import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
 import { useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
@@ -48,7 +46,6 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
     const [debouncedIconFilter] = useDebounce(iconFilter, 500);
     const [icons, setIcons] = useState({ icons: [], length: null });
     const [selectedIcon, setSelectedIcon] = useState(icon);
-    const [variants, setVariants] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedVariant, setSelectedVariant] = useState(null);
     const [iconCount, setIconCount] = useState(defaultCount);
@@ -59,13 +56,6 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
     const handleFilterChanged = (value) => {
         setIsLoading(true);
         setIconFilter(value);
-    };
-
-    const handleVariantChanged = (value) => {
-        setIsLoading(true);
-        setIconCount(defaultCount);
-        setSelectedVariant(value);
-        iconsContent.current.scrollTo(0, 0);
     };
 
     const handleClear = () => {
@@ -87,10 +77,6 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
         setIcons(await AxiosPost(`/api/icons/${debouncedIconFilter}`, postData));
         setIsLoading(false);
     }, [debouncedIconFilter, selectedVariant, iconCount]);
-
-    useAsyncEffect(async () => {
-        setVariants(await AxiosGet(`/api/icons/variants`));
-    }, []);
 
     const handleColorChanged = (newHex) => {
         setSelectedColor(newHex);
@@ -207,7 +193,7 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                             variant={selectedIcon === icon ? "contained" : "outlined"}
                             color={selectedIcon === icon ? "primary" : "inherit"}
                             disableElevation
-                            sx={{ margin: "4px" }}
+                            sx={{ margin: "4px", borderColor: "border.heavy" }}
                             onClick={() => setSelectedIcon(icon)}
                             style={{ color: selectedColor }}
                         >
@@ -239,23 +225,6 @@ export default function BugEditIconDialog({ onCancel, onSubmit, color = "#ffffff
                         ),
                     }}
                 />
-            </FormControl>
-            <FormControl sx={{ padding: "4px", flexGrow: 1 }}>
-                <TextField
-                    variant="filled"
-                    select
-                    fullWidth
-                    label="Variant"
-                    value={selectedVariant || ""}
-                    onChange={(e) => handleVariantChanged(e.target.value)}
-                >
-                    <MenuItem value={""}>- none -</MenuItem>
-                    {variants.map((variant) => (
-                        <MenuItem key={variant} value={variant}>
-                            {variant}
-                        </MenuItem>
-                    ))}
-                </TextField>
             </FormControl>
             <FormControl sx={{ padding: "4px", width: "120px", flexGrow: 1 }}>
                 <Button
