@@ -5,7 +5,7 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.2",
-    "icon": "mdiTransitConnectionVariant",
+    "icon": "mdi-transit-connection-variant",
     "author": "Geoff House",
     "memory": 200,
     "license": "Apache-2.0",

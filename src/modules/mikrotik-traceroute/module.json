@@ -4,7 +4,7 @@
     "description": "Run a Traceroute from your MikroTik Router",
     "capabilities": [],
     "version": "1.0.0",
-    "icon": "mdiMapMarkerPath",
+    "icon": "mdi-map-marker-path",
     "author": "Ryan McCartney",
     "needsContainer": true,
     "license": "Apache-2.0",

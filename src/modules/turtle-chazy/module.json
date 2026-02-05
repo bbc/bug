@@ -5,7 +5,7 @@
     "capabilities": [],
     "notes": "",
     "version": "1.0.2",
-    "icon": "mdiTurtle",
+    "icon": "mdi-turtle",
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "beta",

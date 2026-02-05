@@ -5,7 +5,7 @@
     "capabilities": [],
     "notes": "",
     "version": "1.1.0",
-    "icon": "mdiNoteEditOutline",
+    "icon": "mdi-note-edit-outline",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",

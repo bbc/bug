@@ -4,7 +4,7 @@
     "description": "HLS, DASH and Web Video Player",
     "capabilities": [],
     "version": "1.0.0",
-    "icon": "mdiPlayBoxOutline",
+    "icon": "mdi-play-box-outline",
     "author": "Ryan McCartney",
     "needsContainer": false,
     "protectedRoutes": ["config"],

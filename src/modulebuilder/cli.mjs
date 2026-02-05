@@ -77,10 +77,10 @@ const main = async () => {
 
     console.log(`\nBuilding module in: ${targetDir}...\n`);
 
-    // 4. Get files using glob
+    // get files using glob
     const allFiles = glob.sync(path.join(sourceDir, "/**/*"), { nodir: true });
 
-    // 5. Process files in parallel
+    // process files in parallel
     await Promise.all(
         allFiles.map(async (filePath) => {
             const relativePath = path.relative(sourceDir, filePath);
@@ -89,7 +89,7 @@ const main = async () => {
             try {
                 await fs.ensureDir(path.dirname(destPath));
 
-                // Check if this file needs EJS templating
+                // check if this file needs EJS templating
                 const normalizedRelPath = relativePath.replace(/\\/g, "/");
                 const shouldTemplate = template.files.includes(normalizedRelPath);
 

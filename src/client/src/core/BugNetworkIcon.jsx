@@ -12,7 +12,7 @@ export default function BugNetworkIcon({ disabled = false, sx = {}, activeColor 
                 ...sx,
             }}
         >
-            <BugDynamicIcon iconName="mdiLan" />
+            <BugDynamicIcon iconName="mdi-lan" />
         </Box>
     );
 }

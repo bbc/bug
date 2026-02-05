@@ -46,6 +46,25 @@ export default {
                 defaultValue: { summary: "#ff3822" },
             },
         },
+        size: {
+            type: { name: "number" },
+            description: "The size in pixels of the icon",
+            defaultValue: 24,
+            table: {
+                type: { summary: "number" },
+                defaultValue: { summary: 24 },
+            },
+        },
+        sx: {
+            type: { name: "data" },
+            defaultValue: {},
+            description:
+                "An object containing style overrides - see MaterialUI docs for options: https://mui.com/system/getting-started/the-sx-prop/",
+            table: {
+                type: { summary: "data" },
+                defaultValue: { summary: "{}" },
+            },
+        },
     },
 };
 
