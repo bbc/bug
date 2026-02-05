@@ -51,7 +51,7 @@ module.exports = async (variant = null) => {
         if (!icons) {
             logger.info("icons-list: cache miss - scanning MUI icons-material directory...");
 
-            const iconsPath = path.join(__dirname, "..", "client", "node_modules", "@mui", "icons-material");
+            const iconsPath = path.join(__dirname, "..", "..", "..", "node_modules", "@mui", "icons-material");
             const muiIcons = await fetchIcons(iconsPath);
 
             // filter out ignored icons

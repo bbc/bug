@@ -2,47 +2,47 @@
 # NPM
 node_modules
 
-#Logs
+# logs
 /logs/*
 !/logs/.gitkeep
 
-#Backup Data
+# backup data
 /src/server/data/*
 !/src/server/data/.gitkeep
 
-# Panel Configs
+# panel configs
 /src/config/panels/*.json
 !/src/config/panels/.gitkeep
 
-# Global Config
+# global config
 /src/config/global/*.json
 !/src/config/global/.gitkeep
 
-# Module Dockerfiles
+# module dockerfiles
 Dockerfile*
 !/src/server/Dockerfile
 !/src/server/services/dockerfile-write.js
 
-# Global Environment Files
+# global environment files
 .env.development
 .env.test
 .env.production
 
-# Client
+# client
 src/client/.pnp
 src/client/dist/*
 .pnp.js
 
-# Testing
+# testing
 src/client/coverage
 src/server/routes/logs
 
-# Client Production Build
+# client production build
 /src/client/build/*
 /src/client/dist/*
 !/src/client/build/.gitkeep
 
-# Storybook Static Files
+# storybook static files
 docs/assets/storybook
 
 # misc
@@ -53,7 +53,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # docs
-
 docs/_data/sidebar.yml
 docs/pages/modules
 docs/pages/modules/**
@@ -62,3 +61,6 @@ docs/_site
 docs/_site/**
 docs/.jekyll-cache
 docs/.jekyll-cache/**
+
+# script outputs
+/src/client/src/utils/muiIconMap.js

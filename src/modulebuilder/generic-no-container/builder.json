@@ -3,10 +3,7 @@
     "description": "Generic client-only module (no container)",
     "version": "1.0.0",
     "author": "Geoff House",
-    "files": [
-        "module.json",
-        "client/components/Example.jsx"
-    ],
+    "files": ["module.json", "client/components/Example.jsx"],
     "fields": [
         {
             "name": "name",
@@ -35,7 +32,7 @@
         },
         {
             "name": "icon",
-            "message": "Enter an kebab-case icon name (either https://materialdesignicons.com/ or https://mui.com/material-ui/material-icons/) ",
+            "message": "Enter an MUI or MDI icon name eg mdi-set-top-box or SettingsInputComponent",
             "type": "input",
             "required": "true",
             "default": "abc-icon"

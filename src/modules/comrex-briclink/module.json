@@ -4,7 +4,7 @@
     "version": "1.0.9",
     "description": "Control of Comrex BRIC-Link and BRIC-Link II devices",
     "capabilities": [],
-    "icon": "mdiPhoneSettings",
+    "icon": "mdi-phone-settings",
     "notes": "",
     "author": "Geoff House",
     "memory": 150,
