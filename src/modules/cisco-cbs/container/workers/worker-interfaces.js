@@ -98,8 +98,8 @@ const main = async () => {
             await interfacesCollection.bulkWrite(bulkOperations);
         }
 
-        // wait 10 minutes - the interfaces shouldn't really change...
-        await delay(600000);
+        // wait 15 minutes - the interfaces shouldn't really change...
+        await delay(900000);
     }
 };
 
