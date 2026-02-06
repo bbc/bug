@@ -1,19 +1,26 @@
 "use strict";
+const logger = require("@utils/logger")(module);
 
 module.exports = async (collection, interfaceArray) => {
-    let saveDocument = {
-        timestamp: new Date(),
-        interfaces: {},
-    };
-    for (let eachInterface of interfaceArray) {
-        try {
-            saveDocument.interfaces[eachInterface["id"]] = {
-                tx: eachInterface["tx-rate"],
-                rx: eachInterface["rx-rate"],
-            };
-        } catch (error) {
-            console.log(error);
+    try {
+        let saveDocument = {
+            timestamp: new Date(),
+            interfaces: {},
+        };
+        for (let eachInterface of interfaceArray) {
+            try {
+                saveDocument.interfaces[eachInterface["id"]] = {
+                    tx: eachInterface["tx-rate"],
+                    rx: eachInterface["rx-rate"],
+                };
+            } catch (error) {
+                logger.info(error);
+            }
         }
+        collection.insertOne(saveDocument);
+    } catch (err) {
+        err.message = `traffic-savehistory: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
-    collection.insertOne(saveDocument);
 };

@@ -1,16 +1,18 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (pendingStatus) => {
-    console.log(
+    logger.info(
         `device-setpending: setting pending status to ${pendingStatus ? "true" : "false"}`
     );
 
     try {
         await mongoSingle.set("pending", pendingStatus, 60);
     } catch (err) {
-        err.message = `device-setpending: failed to set pending=${pendingStatus}: ${err.message}`;
+        err.message = `device-setpending: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

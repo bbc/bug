@@ -1,11 +1,18 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
-    const vlans = await mongoSingle.get("vlans") ?? [];
-    return vlans.map(vlan => ({
-        id: vlan.id,
-        label: vlan.name,
-    }));
+    try {
+        const vlans = await mongoSingle.get("vlans") ?? [];
+        return vlans.map(vlan => ({
+            id: vlan.id,
+            label: vlan.name,
+        }));
+    } catch (err) {
+        err.message = `vlan-list: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
+    }
 };

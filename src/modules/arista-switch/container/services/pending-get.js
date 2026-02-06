@@ -1,7 +1,14 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
-    return mongoSingle.get("pending");
+    try {
+        return mongoSingle.get("pending");
+    } catch (err) {
+        err.message = `pending-get: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
+    }
 };
