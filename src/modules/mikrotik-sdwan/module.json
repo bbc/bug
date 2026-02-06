@@ -20,7 +20,7 @@
         "module": "mikrotik-sdwan",
         "description": "",
         "notes": "",
-        "routingTablePrefix": "r-tab",
+        "routingTablePrefix": "rtab-",
         "address": "",
         "username": "bug",
         "password": "",

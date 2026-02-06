@@ -51,9 +51,8 @@ const main = async () => {
         }
 
     } catch (error) {
-        // catch connection, db, or fetch errors
-        // logging here provides context before the manager restarts the thread
-        console.error(`worker-listitems: stopping due to error - ${error.message || error}`);
+        console.error(`worker-listitems: fatal error`);
+        console.error(err.stack || err.message || err);
     } finally {
         // ensure the mikrotik connection is closed properly before thread exit
         if (conn) {
@@ -65,6 +64,7 @@ const main = async () => {
             }
         }
     }
+    process.exit();
 };
 
 main().catch(err => {
