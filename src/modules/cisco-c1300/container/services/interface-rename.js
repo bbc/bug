@@ -4,6 +4,7 @@ const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId, newName) => {
     let snmpAwait;
@@ -15,7 +16,7 @@ module.exports = async (interfaceId, newName) => {
 
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         // create new snmp session
@@ -24,7 +25,7 @@ module.exports = async (interfaceId, newName) => {
             community: config.snmpCommunity,
         });
 
-        console.log(`interface-rename: renaming interface ${interfaceId} to '${newName}' ...`);
+        logger.info(`interface-rename: renaming interface ${interfaceId} to '${newName}' ...`);
 
         // perform SNMP set to rename interface
         await snmpAwait.set({
@@ -32,7 +33,7 @@ module.exports = async (interfaceId, newName) => {
             value: newName.toString(),
         });
 
-        console.log(`interface-rename: success - updating DB`);
+        logger.info(`interface-rename: success - updating DB`);
 
         // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
@@ -41,20 +42,21 @@ module.exports = async (interfaceId, newName) => {
             { $set: { alias: newName } }
         );
 
-        console.log(`interface-rename: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-rename: ${JSON.stringify(dbResult.result)}`);
 
         if (dbResult.matchedCount !== 1) {
             throw new Error(
-                `Expected to update 1 interface in DB, matched ${dbResult.matchedCount}`
+                `expected to update 1 interface in DB, matched ${dbResult.matchedCount}`
             );
         }
 
         // mark system as pending
         await deviceSetPending(true);
 
-        console.log(`interface-rename: complete`);
+        logger.info(`interface-rename: complete`);
     } catch (err) {
-        err.message = `interface-rename(${interfaceId}, ${newName}): ${err.message}`;
+        err.message = `interface-rename(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     } finally {
         if (snmpAwait) {

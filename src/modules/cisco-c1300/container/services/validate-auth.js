@@ -1,6 +1,7 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
 const ciscoC1300SSH = require("@utils/ciscoc1300-ssh");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (formData) => {
     try {

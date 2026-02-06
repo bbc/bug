@@ -1,6 +1,7 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
 const SnmpAwait = require("@core/snmp-await");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (formData) => {
     // create new snmp session

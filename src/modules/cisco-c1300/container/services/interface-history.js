@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId, startTime = null, endTime = null) => {
     try {
@@ -35,7 +36,8 @@ module.exports = async (interfaceId, startTime = null, endTime = null) => {
 
         return dataPoints;
     } catch (err) {
-        err.message = `interface-history(${interfaceId}): ${err.message}`;
+        err.message = `interface-history(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };
