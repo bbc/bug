@@ -17,5 +17,5 @@
 - need to use UTC for all panel dates
 - add panel toolbar menu to logs page
 - i need a flag to prevent the module ui from loading - overlayPanel or something? When a status item is so important the panel can't run.
-- error.trace isn't a thing
 - check upgrade - the panel enabled should be false and it takes a long time to update
+- use logger rather than console.log

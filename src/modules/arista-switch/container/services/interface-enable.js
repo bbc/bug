@@ -4,12 +4,16 @@ const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId) => {
     try {
         const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
 
-        console.log(`interface-enable: enabling interface ${interfaceId} ...`);
+        logger.info(`interface-enable: enabling interface ${interfaceId} ...`);
 
         // enable the interface on the device
         await aristaApi({
@@ -21,15 +25,14 @@ module.exports = async (interfaceId) => {
             commands: ["enable", "configure", `interface ${interfaceId}`, "no shutdown"],
         });
 
-        console.log(`interface-enable: success - updating DB`);
+        logger.info(`interface-enable: success - updating DB`);
 
         // update the DB to reflect enabled interface
         const interfacesCollection = await mongoCollection("interfaces");
         const dbInterface = await interfacesCollection.findOne({ interfaceId });
 
         if (!dbInterface) {
-            console.log(`interface-enable: can't find interface ${interfaceId} in db to update`);
-            return false;
+            throw new Error(`can't find interface ${interfaceId} in db to update`);
         }
 
         // determine link status based on linkProtocolStatus
@@ -40,12 +43,13 @@ module.exports = async (interfaceId) => {
             { $set: { linkStatus } }
         );
 
-        console.log(`interface-enable: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-enable: ${JSON.stringify(dbResult.result)}`);
         await deviceSetPending(false);
         return true;
 
     } catch (err) {
-        err.message = `interface-enable(${interfaceId}): ${err.stack || err.message || err}`;
+        err.message = `interface-enable(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

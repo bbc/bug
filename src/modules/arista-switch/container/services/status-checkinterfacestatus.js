@@ -2,18 +2,24 @@
 
 const StatusItem = require("@core/StatusItem");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
-    const interfaceStatuses = await mongoSingle.get("interfacestatuses");
-    if (interfaceStatuses) {
-        return interfaceStatuses.map(
-            (i) =>
-                new StatusItem({
-                    key: i.key,
-                    message: i.message,
-                    type: i.type,
-                })
-        );
+    try {
+        const interfaceStatuses = await mongoSingle.get("interfacestatuses");
+        if (interfaceStatuses) {
+            return interfaceStatuses.map(
+                (i) =>
+                    new StatusItem({
+                        key: i.key,
+                        message: i.message,
+                        type: i.type,
+                    })
+            );
+        }
+        return [];
+    } catch (err) {
+        logger.error(`status-checkinterfacestatus: ${err.stack || err.message}`);
+        return []
     }
-    return [];
 };

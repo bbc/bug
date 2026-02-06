@@ -4,6 +4,7 @@ const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId, newName) => {
     try {
@@ -12,7 +13,7 @@ module.exports = async (interfaceId, newName) => {
             throw new Error("failed to load config");
         }
 
-        console.log(`interface-rename: renaming interface ${interfaceId} to '${newName}' ...`);
+        logger.info(`interface-rename: renaming interface ${interfaceId} to '${newName}' ...`);
 
         const descriptionCommand = newName ? `description ${newName}` : "no description";
 
@@ -26,7 +27,7 @@ module.exports = async (interfaceId, newName) => {
             commands: ["enable", "configure", `interface ${interfaceId}`, descriptionCommand],
         });
 
-        console.log(`interface-rename: success - updating DB`);
+        logger.info(`interface-rename: success - updating DB`);
 
         // update DB
         const interfacesCollection = await mongoCollection("interfaces");
@@ -35,12 +36,13 @@ module.exports = async (interfaceId, newName) => {
             { $set: { description: newName } }
         );
 
-        console.log(`interface-rename: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-rename: ${JSON.stringify(dbResult.result)}`);
         await deviceSetPending(false);
         return true;
 
     } catch (err) {
-        err.message = `interface-rename: ${err.stack || err.message || err}`;
+        err.message = `interface-rename: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

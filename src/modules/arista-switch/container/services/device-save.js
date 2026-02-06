@@ -2,19 +2,31 @@
 
 const configGet = require("@core/config-get");
 const aristaApi = require("@utils/arista-api");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
-    const config = await configGet();
-    console.log("device-save: saving device config ...");
+    try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
 
-    await aristaApi({
-        host: config.address,
-        protocol: "https",
-        port: 443,
-        username: config.username,
-        password: config.password,
-        commands: ["enable", "write memory"],
-    });
+        logger.info("device-save: saving device config ...");
 
-    console.log("device-save: success");
-};
+        await aristaApi({
+            host: config.address,
+            protocol: "https",
+            port: 443,
+            username: config.username,
+            password: config.password,
+            commands: ["enable", "write memory"],
+        });
+
+        logger.info("device-save: success");
+
+    } catch (err) {
+        err.message = `device-save: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
+    }
+}
