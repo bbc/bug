@@ -8,7 +8,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
     try {
         // fetch config
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         // fallback to empty arrays if not defined
         const icons = config.sourceIcons ?? [];
@@ -99,8 +99,8 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
         return outputArray;
 
     } catch (err) {
-        logger.error(`videohub-getsources: ${err.stack || err.message}`);
-        err.message = `videohub-getsources: ${err.message}`;
+        err.message = `videohub-getsources: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

@@ -7,7 +7,7 @@ const logger = require("@core/logger")(module);
 module.exports = async () => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         const dataCollection = await mongoCollection("data");
         const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
@@ -22,8 +22,8 @@ module.exports = async () => {
         return destinations;
 
     } catch (err) {
-        logger.error(`videohub-getalldestinations: ${err.stack || err.message}`);
-        err.message = `videohub-getalldestinations: ${err.message}`;
+        err.message = `videohub-getalldestinations: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

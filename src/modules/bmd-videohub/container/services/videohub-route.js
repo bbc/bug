@@ -8,7 +8,7 @@ module.exports = async (destinationIndex, sourceIndex) => {
     try {
         // fetch config
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         // validate inputs
         if (destinationIndex === undefined || destinationIndex === null || isNaN(destinationIndex)) {
@@ -54,8 +54,8 @@ module.exports = async (destinationIndex, sourceIndex) => {
         return true;
 
     } catch (err) {
-        logger.error(`videohub-route: ${err.stack || err.message}`);
-        err.message = `videohub-route: ${err.message}`;
+        err.message = `videohub-route: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };
