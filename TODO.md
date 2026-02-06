@@ -4,7 +4,6 @@
 
 # Backlog
 
-- make all user names lower-case
 - sort out overlaying menu in bug api table
 - move jest to vitest
 - update diagrams in docs to remove watchtower
