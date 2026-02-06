@@ -2,11 +2,12 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (type, buttonIndex, value) => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         // update quad
         const typeVar = `${type}Quads`;
@@ -21,12 +22,13 @@ module.exports = async (type, buttonIndex, value) => {
 
         config[typeVar][buttonIndex] = value;
 
-        console.log(`button-setquad: set ${typeVar}[${buttonIndex}] = ${JSON.stringify(value)}`);
+        logger.info(`button-setquad: set ${typeVar}[${buttonIndex}] = ${JSON.stringify(value)}`);
 
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `button-setquad: ${err.message}`;
+        err.message = `button-setquad: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

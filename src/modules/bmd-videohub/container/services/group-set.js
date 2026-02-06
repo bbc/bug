@@ -7,13 +7,13 @@ const logger = require("@core/logger")(module);
 module.exports = async (type, groupIndex, buttons) => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         const groupVar = `${type}Groups`;
-        if (!config[groupVar]) throw new Error(`No groups found for ${groupVar}`);
+        if (!config[groupVar]) throw new Error(`no groups found for ${groupVar}`);
 
         const group = config[groupVar][groupIndex];
-        if (!group) throw new Error(`Group at index ${groupIndex} not found in ${groupVar}`);
+        if (!group) throw new Error(`group at index ${groupIndex} not found in ${groupVar}`);
 
         // update the group buttons
         group.value = buttons;
@@ -23,7 +23,8 @@ module.exports = async (type, groupIndex, buttons) => {
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `group-setbuttons: ${err.message}`;
+        err.message = `group-setbuttons: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

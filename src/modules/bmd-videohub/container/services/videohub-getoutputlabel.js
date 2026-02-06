@@ -8,7 +8,7 @@ module.exports = async (index) => {
     try {
         // fetch config
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         const dataCollection = await mongoCollection("data");
 
@@ -22,8 +22,8 @@ module.exports = async (index) => {
         return null;
 
     } catch (err) {
-        logger.error(`videohub-getoutputlabel: ${err.stack || err.message}`);
-        err.message = `videohub-getoutputlabel: ${err.message}`;
+        err.message = `videohub-getoutputlabel: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

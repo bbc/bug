@@ -7,21 +7,21 @@ const logger = require("@core/logger")(module);
 module.exports = async (type, groupName, newGroupName) => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         if (!newGroupName) {
-            throw new Error("New group name is required");
+            throw new Error("new group name is required");
         }
 
         const groupVar = `${type}Groups`;
-        if (!config[groupVar]) throw new Error(`No groups found for ${groupVar}`);
+        if (!config[groupVar]) throw new Error(`no groups found for ${groupVar}`);
 
         // check the old group exists
         const groupExistsCheck = config[groupVar].filter(
             group => !group.name.localeCompare(groupName, "en", { sensitivity: "base" })
         );
         if (groupExistsCheck.length === 0) {
-            throw new Error(`Group "${groupName}" not found in ${groupVar}`);
+            throw new Error(`group "${groupName}" not found in ${groupVar}`);
         }
 
         // check the new group name doesn't already exist
@@ -29,7 +29,7 @@ module.exports = async (type, groupName, newGroupName) => {
             group => !group.name.localeCompare(newGroupName, "en", { sensitivity: "base" })
         );
         if (newGroupCheck.length > 0) {
-            throw new Error(`Group "${newGroupName}" already exists in ${groupVar}`);
+            throw new Error(`group "${newGroupName}" already exists in ${groupVar}`);
         }
 
         // rename the group
@@ -44,7 +44,8 @@ module.exports = async (type, groupName, newGroupName) => {
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `group-rename: ${err.message}`;
+        err.message = `group-rename: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

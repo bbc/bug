@@ -30,8 +30,8 @@ module.exports = async (index) => {
         return true;
 
     } catch (err) {
-        logger.error(`videohub-lock: ${err.stack || err.message}`);
-        err.message = `videohub-lock: ${err.message}`;
+        err.message = `videohub-lock: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

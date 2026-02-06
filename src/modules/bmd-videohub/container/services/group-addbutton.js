@@ -2,12 +2,12 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
-const logger = require("@core/logger")(module);
+const logger = require("@utils/logger")(module);
 
 module.exports = async (type, groupIndexes, buttonIndex) => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         const groupVar = `${type}Groups`;
         if (!config[groupVar]) {
@@ -30,7 +30,7 @@ module.exports = async (type, groupIndexes, buttonIndex) => {
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `group-addbutton: ${err.message}`;
+        err.message = `group-addbutton: ${err.stack || err.message}`;
         throw err;
     }
 };
