@@ -2,44 +2,41 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const sortHandlers = require("@core/sort-handlers");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, interfaceId) => {
     try {
-        if (!interfaceId) throw new Error("invalid input: missing interfaceId");
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
+        }
 
         const dbInterfaces = await mongoCollection("interfaces");
+        const iface = await dbInterfaces.findOne({ interfaceId: Number(interfaceId) });
 
-        const iface = await dbInterfaces.findOne({ interfaceId: parseInt(interfaceId) });
-        if (!iface) throw new Error("failed to load config");
-        if (!iface.fdb || !Array.isArray(iface.fdb)) {
-            // fdb array missing or invalid
+        if (!iface || !Array.isArray(iface.fdb)) {
             return [];
         }
 
-        // safely clone fdb array
         let fdbArray = [...iface.fdb];
 
-        if (filters["mac"]) {
-            fdbArray = fdbArray.filter((item) => {
-                return item["mac"] && item["mac"].indexOf(filters.mac) > -1;
+        // apply filters
+        if (filters.mac) {
+            fdbArray = fdbArray.filter(item => item.mac && item.mac.includes(filters.mac));
+        }
+
+        if (filters.address) {
+            fdbArray = fdbArray.filter(item => item.address && item.address.includes(filters.address));
+        }
+
+        if (filters.name) {
+            const searchName = filters.name.toLowerCase();
+            fdbArray = fdbArray.filter(item => {
+                if (item.comment) return item.comment.toLowerCase().includes(searchName);
+                return item.hostname && item.hostname.toLowerCase().includes(searchName);
             });
         }
 
-        if (filters["address"]) {
-            fdbArray = fdbArray.filter((item) => {
-                return item["address"] && item["address"].indexOf(filters.address) > -1;
-            });
-        }
-
-        if (filters["name"]) {
-            fdbArray = fdbArray.filter((item) => {
-                if (item.comment) {
-                    return item.comment.toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
-                }
-                return item["hostname"] && item["hostname"].toLowerCase().indexOf(filters.name.toLowerCase()) > -1;
-            });
-        }
-
+        // sorting
         const sortHandlerList = {
             mac: sortHandlers.string,
             address: sortHandlers.ipAddress,
@@ -48,18 +45,17 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, i
             static: sortHandlers.boolean,
         };
 
-        // sort
         if (sortField && sortHandlerList[sortField]) {
-            if (sortDirection === "asc") {
-                fdbArray.sort((a, b) => sortHandlerList[sortField](a, b, sortField));
-            } else {
-                fdbArray.sort((a, b) => sortHandlerList[sortField](b, a, sortField));
-            }
+            const handler = sortHandlerList[sortField];
+            fdbArray.sort((a, b) =>
+                sortDirection === "asc" ? handler(a, b, sortField) : handler(b, a, sortField)
+            );
         }
 
         return fdbArray;
     } catch (err) {
-        err.message = `interfaces-fdb-service: ${err.stack || err.message || err}`;
+        err.message = `interface-fdb(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

@@ -10,7 +10,6 @@ const logger = require("@utils/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     try {
-        // fetch config
         const config = await configGet();
         if (!config) {
             throw new Error("failed to load config");

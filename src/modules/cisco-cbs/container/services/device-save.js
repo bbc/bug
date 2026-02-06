@@ -2,49 +2,45 @@
 
 const ciscoCBSSSH = require("@utils/ciscocbs-ssh");
 const configGet = require("@core/config-get");
+const logger = require("@utils/logger")(module);
+const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async () => {
     try {
-        // load config
         const config = await configGet();
         if (!config) {
             throw new Error("failed to load config");
         }
 
-        const { address, username, password } = config;
+        logger.info("device-save: saving device config ...");
 
-        if (!address || !username || !password) {
-            throw new Error("invalid config: missing address, username, or password");
-        }
-
-        console.log("device-save: saving device config ...");
-
-        // prepare commands safely
-        const commands = ["write memory"];
-
-        // run cisco ssh
-        const result = await ciscoCBSSSH({
-            host: address,
-            username,
-            password,
+        result = await ciscoC1300SSH({
+            host: config.address,
+            username: config.username,
+            password: config.password,
             timeout: 20000,
-            commands: commands.slice(), // safely extend array if needed
+            commands: ["write memory"],
         });
 
-        console.log("device-save: ssh result ->", result);
+        const success =
+            Array.isArray(result) &&
+            result.length === 1 &&
+            typeof result[0] === "string" &&
+            result[0].includes("Copy succeeded");
 
-        // check result safely
-        const resultArray = Array.isArray(result) ? result : [];
-        if (resultArray.length === 1 && resultArray[0]?.includes("Copy succeeded")) {
-            console.log("device-save: success");
-        } else {
-            console.error("device-save: failed");
-            console.error(resultArray);
-            throw new Error("device save failed: unexpected ssh result");
+        if (!success) {
+            throw new Error(
+                `device did not confirm save (response: ${JSON.stringify(result)})`
+            );
         }
 
+        logger.info("device-save: success");
+
+        await deviceSetPending(false);
+
     } catch (err) {
-        console.error("device-save: ", err);
+        err.message = `device-save: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

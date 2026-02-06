@@ -4,56 +4,69 @@ const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId, action) => {
+    let snmpAwait;
+
     try {
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
+        }
+
+        if (!["enable", "disable"].includes(action)) {
+            throw new Error(`invalid action '${action}', must be 'enable' or 'disable'`);
+        }
+
         const config = await configGet();
         if (!config) {
             throw new Error("failed to load config");
         }
 
-        if (!interfaceId || (action !== "enable" && action !== "disable")) {
-            throw new Error("invalid input");
-        }
-
         const actionText = action === "enable" ? "enabling" : "disabling";
 
         // create new snmp session
-        const snmpAwait = new SnmpAwait({
+        snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
 
-        console.log(`interface-poe: ${actionText} POE on interface ${interfaceId} ...`);
+        logger.info(`interface-poe: ${actionText} POE on interface ${interfaceId} ...`);
 
-        const result = await snmpAwait.set({
+        // perform SNMP set to enable/disable POE
+        await snmpAwait.set({
             oid: `.1.3.6.1.2.1.105.1.1.1.3.1.${interfaceId}`,
             value: action === "enable" ? 1 : 2,
         });
 
-        await deviceSetPending(true);
+        logger.info(`interface-poe: success - updating DB`);
 
-        // we're done with the SNMP session
-        snmpAwait.close();
-
-        if (!result) {
-            console.log(`interface-poe: failed to ${action} interface ${interfaceId}`);
-            throw new Error("snmp set failed");
-        }
-
-        console.log(`interface-poe: success - updating DB`);
-
+        // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
         const dbResult = await interfacesCollection.updateOne(
-            { interfaceId: parseInt(interfaceId) },
+            { interfaceId: Number(interfaceId) },
             { $set: { "poe-admin-enable": action === "enable" } }
         );
 
-        console.log(`interface-poe: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-poe: ${JSON.stringify(dbResult.result)}`);
 
-        return true;
+        if (dbResult.matchedCount !== 1) {
+            throw new Error(
+                `expected to update 1 interface in DB, matched ${dbResult.matchedCount}`
+            );
+        }
+
+        // mark system as pending
+        await deviceSetPending(true);
+
+        logger.info(`interface-poe: complete`);
     } catch (err) {
-        err.message = `interface-poe: ${err.stack || err.message || err}`;
+        err.message = `interface-poe(${interfaceId}, ${action}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };

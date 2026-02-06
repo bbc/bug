@@ -4,34 +4,41 @@ const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const SnmpAwait = require("@core/snmp-await");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId, untaggedVlan = "1") => {
+    let snmpAwait;
+
     try {
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
+        }
+
+        if (!untaggedVlan) {
+            throw new Error("untaggedVlan is required");
+        }
+
         const config = await configGet();
         if (!config) {
             throw new Error("failed to load config");
         }
 
-        if (!interfaceId || isNaN(parseInt(untaggedVlan))) {
-            throw new Error("invalid input");
-        }
-
         // create new snmp session
-        const snmpAwait = new SnmpAwait({
+        snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
 
         const interfaceCollection = await mongoCollection("interfaces");
 
-        console.log(`interface-setvlanaccess: setting interface to access mode`);
+        logger.info(`interface-setvlanaccess: setting interface to access mode`);
 
         await snmpAwait.set({
             oid: `.1.3.6.1.4.1.9.6.1.101.48.22.1.1.${interfaceId}`,
             value: 11,
         });
 
-        console.log(`interface-setvlanaccess: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
+        logger.info(`interface-setvlanaccess: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
 
         await snmpAwait.set({
             oid: `.1.3.6.1.4.1.9.6.1.101.48.62.1.1.${interfaceId}`,
@@ -41,20 +48,26 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             },
         });
 
-        console.log(`interface-setvlanaccess: success - updating DB`);
-
-        await deviceSetPending(true);
+        logger.info(`interface-setvlanaccess: success - updating DB`);
 
         // update db
         const dbResult = await interfaceCollection.updateOne(
-            { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
+            { interfaceId: Number(interfaceId) },
+            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": [] } }
         );
 
-        console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+
+        await deviceSetPending(true);
+
         return true;
     } catch (err) {
-        err.message = `interface-setvlanaccess: ${err.stack || err.message || err}`;
+        err.message = `interface-setvlanaccess: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };

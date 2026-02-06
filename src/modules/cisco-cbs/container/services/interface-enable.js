@@ -4,56 +4,55 @@ const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId) => {
+    let snmpAwait;
+
     try {
-        console.log(`interface-enable: starting for interfaceId=${interfaceId}`);
-
-        if (!interfaceId) {
-            throw new Error("invalid input: interfaceId is required");
-        }
-
         const config = await configGet();
-        if (!config || !config.address || !config.snmpCommunity) {
+        if (!config) {
             throw new Error("failed to load config");
         }
 
-        // create new snmp session
-        const snmpAwait = new SnmpAwait({
+        logger.info(`interface-enable: enabling interface ${interfaceId} ...`);
+
+        // create SNMP session
+        snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
 
-        console.log(`interface-enable: disabling interface ${interfaceId} via SNMP`);
-
-        const result = await snmpAwait.set({
+        // enable the interface on the device
+        await snmpAwait.set({
             oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,
             value: 1,
         });
 
-        await deviceSetPending(true);
+        logger.info(`interface-enable: SNMP success - updating DB`);
 
-        // we're done with the SNMP session
-        snmpAwait.close();
-
-        if (!result) {
-            throw new Error(`failed to disable interface ${interfaceId}`);
-        }
-
-        console.log(`interface-enable: SNMP success - updating DB`);
-
+        // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
-
         const dbResult = await interfacesCollection.updateOne(
-            { interfaceId: parseInt(interfaceId) },
+            { interfaceId: Number(interfaceId) },
             { $set: { "admin-state": true } }
         );
 
-        console.log(`interface-enable: DB update result: ${JSON.stringify(dbResult)}`);
-        return true;
+        if (dbResult.matchedCount !== 1) {
+            throw new Error(`expected to update 1 interface in DB, matched ${dbResult.matchedCount}`);
+        }
 
+        // mark system as pending
+        await deviceSetPending(true);
+
+        logger.info(`interface-enable: complete`);
     } catch (err) {
-        err.message = `interface-enable: ${err.stack || err.message || err}`;
+        err.message = `interface-enable(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };
