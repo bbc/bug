@@ -7,7 +7,7 @@ const logger = require("@core/logger")(module);
 module.exports = async (index) => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         const field = "VIDEO OUTPUT LOCKS";
         const command = `${index} F`;
@@ -20,8 +20,8 @@ module.exports = async (index) => {
         return true;
 
     } catch (err) {
-        logger.error(`videohub-forceunlock: ${err.stack || err.message}`);
-        err.message = `videohub-forceunlock: ${err.message}`;
+        err.message = `videohub-forceunlock: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

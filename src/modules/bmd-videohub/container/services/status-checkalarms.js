@@ -37,8 +37,7 @@ module.exports = async () => {
         });
 
     } catch (error) {
-        // log the error and return a safe fallback
-        logger.error(`statusitem-alarm: ${error.stack || error.message || error}`);
+        logger.error(`status-checkalarms: ${error.stack || error.message}`);
         return [];
     }
 };

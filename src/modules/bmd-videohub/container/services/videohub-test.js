@@ -40,8 +40,8 @@ module.exports = async (address, port) => {
         });
 
     } catch (err) {
-        logger.error(`videohub-ping: ${err.stack || err.message}`);
-        err.message = `videohub-ping: ${err.message}`;
+        err.message = `videohub-ping: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

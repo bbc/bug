@@ -57,8 +57,8 @@ module.exports = async (params) => {
         return true;
 
     } catch (err) {
-        logger.error(`videohub-setlabels: ${err.stack || err.message}`);
-        err.message = `videohub-setlabels: ${err.message}`;
+        err.message = `videohub-setlabels: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

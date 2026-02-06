@@ -26,7 +26,6 @@ module.exports = async () => {
         });
 
     } catch (err) {
-        // log error and return empty array
         logger.error(`status-checkdevice: ${err.stack || err.message}`);
         return [];
     }

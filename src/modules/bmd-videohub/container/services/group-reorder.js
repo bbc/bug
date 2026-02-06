@@ -7,7 +7,7 @@ const logger = require("@core/logger")(module);
 module.exports = async (type, groupNames) => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         if (!groupNames || !Array.isArray(groupNames) || groupNames.length === 0) {
             throw new Error("groupNames must be a non-empty array");
@@ -15,7 +15,7 @@ module.exports = async (type, groupNames) => {
 
         const groupVar = `${type}Groups`;
         if (!config[groupVar] || config[groupVar].length === 0) {
-            throw new Error(`No groups found for ${groupVar}`);
+            throw new Error(`no groups found for ${groupVar}`);
         }
 
         // map current groups by name
@@ -43,7 +43,8 @@ module.exports = async (type, groupNames) => {
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `group-reorder: ${err.message}`;
+        err.message = `group-reorder: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

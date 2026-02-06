@@ -7,7 +7,7 @@ const logger = require("@core/logger")(module);
 module.exports = async (type, groupName) => {
     try {
         const config = await configGet();
-        if (!config) throw new Error("Failed to load config");
+        if (!config) throw new Error("failed to load config");
 
         const groupVar = `${type}Groups`;
         if (!config[groupVar]) {
@@ -26,7 +26,8 @@ module.exports = async (type, groupName) => {
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `group-delete: ${err.message}`;
+        err.message = `group-delete: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };
