@@ -23,7 +23,7 @@ module.exports = async (workers, config) => {
 
         return true;
     } catch (error) {
-        console.log(`config-put: ${error.trace || error || error.message}`);
+        console.log(`config-put: ${error.stack || error || error.message}`);
     }
 
     return false;

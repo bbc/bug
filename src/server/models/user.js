@@ -39,7 +39,7 @@ exports.list = async function () {
     try {
         return await getUsers();
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -53,7 +53,7 @@ exports.get = async function (id) {
         }
         return users[index];
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -68,7 +68,7 @@ exports.delete = async function (id) {
         users.splice(index, 1);
         return await writeJson(filename, users);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -101,7 +101,7 @@ exports.set = async function (user) {
         users.push(user);
         return await writeJson(filename, users);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -122,7 +122,7 @@ exports.update = async function (id, user) {
 
         return await writeJson(filename, users);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };

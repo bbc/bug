@@ -20,7 +20,7 @@ exports.list = async function () {
         try {
             files = await fs.readdir(modulesFolder);
         } catch (error) {
-            logger.warning(`${error.trace || error || error.message}`);
+            logger.warning(`${error.stack || error || error.message}`);
         }
 
         moduleArray = [];

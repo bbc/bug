@@ -8,7 +8,7 @@ const bugContainer = process.env.BUG_CONTAINER || "bug";
 
 module.exports = async () => {
     try {
-        logger.info(`bug-restart:BUG is restarting...`);
+        logger.info(`bug-restart: BUG is restarting...`);
         const containerInfoList = await dockerListContainerInfo();
         for (let eachContainer of containerInfoList) {
             if (!eachContainer.image.includes(bugContainer)) {

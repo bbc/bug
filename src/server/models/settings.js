@@ -28,7 +28,7 @@ exports.get = async function () {
         const settings = await getSettings();
         return settings;
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -42,7 +42,7 @@ exports.update = async function (newSettings) {
 
         return await writeJson(filename, { ...settings, ...newSettings });
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };

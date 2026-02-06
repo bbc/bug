@@ -33,7 +33,7 @@ exports.set = async function (panelConfig) {
         const filename = path.join(__dirname, "..", "..", "config", "panels", `${panelConfig.id}.json`);
         return await writeJson(filename, panelConfig);
     } catch (error) {
-        logger.warning(`panel id ${panelConfig.id} - ${error.trace || error || error.message}`);
+        logger.warning(`panel id ${panelConfig.id} - ${error.stack || error || error.message}`);
         return false;
     }
 };
@@ -58,7 +58,7 @@ exports.list = async function () {
     try {
         files = await fs.readdir(configFolder);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
 
     for (let i in files) {
