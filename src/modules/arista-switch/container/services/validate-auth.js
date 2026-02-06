@@ -2,6 +2,7 @@
 
 const ValidationResult = require("@core/ValidationResult");
 const aristaApi = require("@utils/arista-api");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (formData) => {
     try {
@@ -14,7 +15,7 @@ module.exports = async (formData) => {
             commands: ["show version"],
         });
 
-        console.log("validate-auth:", result);
+        logger.info("validate-auth:", result);
 
         if (result?.modelName) {
             return new ValidationResult([
@@ -23,7 +24,7 @@ module.exports = async (formData) => {
             ]);
         }
     } catch (err) {
-        console.error(`validate-auth: ${err.stack || err.message || err}`);
+        logger.error(`validate-auth: ${err.stack || err.message || err}`);
     }
 
     // fallback if login failed

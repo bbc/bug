@@ -2,23 +2,28 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId) => {
-    const config = await configGet();
-    if (!config) {
-        console.error(`interface-unprotect: failed to load config`);
-        return false;
+    try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        config.protectedInterfaces = config.protectedInterfaces ?? [];
+
+        if (!config.protectedInterfaces.includes(interfaceId)) {
+            throw new Error(`cannot find interface ${interfaceId}`);
+        }
+
+        logger.info(`interface-unprotect: unprotecting interface ${interfaceId}`);
+        config.protectedInterfaces = config.protectedInterfaces.filter(item => item !== interfaceId);
+
+        return configPutViaCore(config);
+    } catch (err) {
+        err.message = `interface-unprotect(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
-
-    config.protectedInterfaces = config.protectedInterfaces ?? [];
-
-    if (!config.protectedInterfaces.includes(interfaceId)) {
-        console.log(`interface-unprotect: cannot find interface ${interfaceId}`);
-        return false;
-    }
-
-    console.log(`interface-unprotect: unprotecting interface ${interfaceId}`);
-    config.protectedInterfaces = config.protectedInterfaces.filter(item => item !== interfaceId);
-
-    return configPutViaCore(config);
 };
