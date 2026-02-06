@@ -2,12 +2,13 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (inputIndex, routerIndex) => {
     try {
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         if (!config.autoLabelIndex) {
@@ -23,11 +24,12 @@ module.exports = async (inputIndex, routerIndex) => {
             delete config.autoLabelIndex[inputIndex];
         }
 
-        console.log(`label-setautoindex: set autolabel index for input ${inputIndex} to ${routerIndex}`);
+        logger.info(`label-setautoindex: set autolabel index for input ${inputIndex} to ${routerIndex}`);
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `label-setautoindex: ${err.message}`;
+        err.message = `label-setautoindex: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };
