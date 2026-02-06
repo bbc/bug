@@ -14,7 +14,7 @@ exports.get = async function (moduleName) {
             }
         }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -44,7 +44,7 @@ exports.create = async function (moduleName) {
             return true;
         }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return false;
 };
@@ -61,7 +61,7 @@ exports.delete = async function (moduleName) {
             return true;
         }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return false;
 };
@@ -81,7 +81,7 @@ exports.list = async function () {
             return response;
         }
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };

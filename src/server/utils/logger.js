@@ -1,3 +1,5 @@
+// logger for modules
+
 const winston = require("winston");
 const global = require("@utils/globalEmitter");
 const readJson = require("@core/read-json");
