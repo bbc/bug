@@ -34,11 +34,14 @@ export default function UserEdit({ userId = null }) {
     const { confirmDialog } = useBugConfirmDialog();
     const currentUser = useSelector((state) => state.user);
     const currentUserId = currentUser.status === "success" ? currentUser.data?.id : null;
+
     const panelList = useSelector((state) =>
-        state.panelList.data.map((item) => {
-            return { label: item.title, id: item.id };
-        })
+        (state.panelList.data ?? []).map((item) => ({
+            label: item.title,
+            id: item.id,
+        }))
     );
+
     useAsyncEffect(async () => {
         if (!userId) {
             // we're creating a new user
@@ -65,7 +68,8 @@ export default function UserEdit({ userId = null }) {
     const onSubmit = async (form) => {
         setLoading(true);
         let response;
-        //Parse Roles
+
+        // parse roles
         if (form?.roles && Array.isArray(form.roles)) {
             const roles = [];
             for (let role of form.roles) {
@@ -78,7 +82,7 @@ export default function UserEdit({ userId = null }) {
             form.roles = [];
         }
 
-        //Parse Panels
+        // parse panels
         if (form?.panels && Array.isArray(form.panels)) {
             const panels = [];
             for (let panel of form.panels) {
@@ -95,6 +99,10 @@ export default function UserEdit({ userId = null }) {
             // it hasn't been changed
             delete form.password;
         }
+
+        // make sure username/email are lower case
+        form.username = form.username?.trim().toLowerCase();
+        form.email = form.email?.trim().toLowerCase();
 
         if (userId && userId === currentUserId && !currentUser.data.roles.includes("admin")) {
             response = await AxiosPut(`/api/user/current`, form);
@@ -137,10 +145,10 @@ export default function UserEdit({ userId = null }) {
 
         if (result !== false) {
             if (await AxiosDelete(`/api/user/${user.id}`)) {
-                sendAlert(`Deleted user: ${user.name}`, { broadcast: "true", variant: "success" });
+                sendAlert(`Deleted user: ${user.username}`, { broadcast: "true", variant: "success" });
                 navigate(`/system/users`);
             } else {
-                sendAlert(`Failed to delete user: ${user.name}`, { variant: "error" });
+                sendAlert(`Failed to delete user: ${user.username}`, { variant: "error" });
             }
         }
     };
