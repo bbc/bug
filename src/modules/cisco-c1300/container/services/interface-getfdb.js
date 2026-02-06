@@ -2,6 +2,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const sortHandlers = require("@core/sort-handlers");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, interfaceId) => {
     try {
@@ -53,7 +54,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, i
 
         return fdbArray;
     } catch (err) {
-        err.message = `interface-fdb(${interfaceId}): ${err.message}`;
+        err.message = `interface-fdb(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

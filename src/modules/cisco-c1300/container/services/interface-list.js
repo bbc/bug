@@ -6,13 +6,14 @@ const wildcard = require("wildcard-regex");
 const configGet = require("@core/config-get");
 const ciscoC1300ExpandVlanRanges = require("@utils/ciscoc1300-expandvlanranges");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     try {
         // fetch config
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         const dbInterfaces = await mongoCollection("interfaces");
@@ -66,7 +67,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
 
         return interfaces;
     } catch (err) {
-        err.message = `interfaces-list: ${err.message}`;
+        err.message = `interface-list: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

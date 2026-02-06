@@ -3,6 +3,7 @@
 
 const mongoSingle = require('@core/mongo-single');
 const StatusItem = require("@core/StatusItem");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
 
@@ -36,8 +37,7 @@ module.exports = async () => {
         })
 
     } catch (error) {
-        // re-throw error so the api handler catches it
-        console.error(`status-getsystem: ${error.message}`);
-        throw error;
+        logger.error(`status-getsystem: ${error.message}`);
+        return []
     }
 };

@@ -2,17 +2,24 @@
 
 const StatusItem = require("@core/StatusItem");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
-    const pending = await mongoSingle.get("pending");
-    if (pending) {
-        return [
-            new StatusItem({
-                key: `pending`,
-                message: [`Device has unsaved changes`],
-                type: "warning",
-            }),
-        ];
+    try {
+        const pending = await mongoSingle.get("pending");
+        if (pending) {
+            return [
+                new StatusItem({
+                    key: `pending`,
+                    message: [`Device has unsaved changes`],
+                    type: "warning",
+                }),
+            ];
+        }
+        return [];
+    } catch (err) {
+        logger.error(`status-checkpending: ${err.stack || err.message}`);
+        return [];
     }
-    return [];
+
 };
