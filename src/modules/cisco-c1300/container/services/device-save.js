@@ -7,17 +7,14 @@ const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
     try {
-        let config;
-        let result;
-
-        config = await configGet();
+        const config = await configGet();
         if (!config) {
             throw new Error("failed to load config");
         }
 
         logger.info("device-save: saving device config ...");
 
-        result = await ciscoC1300SSH({
+        const result = await ciscoC1300SSH({
             host: config.address,
             username: config.username,
             password: config.password,

@@ -3,30 +3,41 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const mongoSingle = require("@core/mongo-single");
-const ciscoCBSVlanArray = require("@utils/ciscocbs-vlanarray");
-const ciscoCBSVlanList = require("@utils/ciscocbs-vlanlist");
+const ciscoC1300VlanArray = require("@utils/ciscoc1300-vlanarray");
+const ciscoC1300VlanList = require("@utils/ciscoc1300-vlanlist");
 const SnmpAwait = require("@core/snmp-await");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
+    let snmpAwait;
+
     try {
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
+        }
+
+        if (!untaggedVlan) {
+            throw new Error("untaggedVlan is required");
+        }
+
+        if (!Array.isArray(taggedVlans)) {
+            throw new Error("taggedVlans must be an array");
+        }
+
         const config = await configGet();
         if (!config) {
             throw new Error("failed to load config");
         }
 
-        if (!interfaceId || isNaN(parseInt(untaggedVlan)) || !Array.isArray(taggedVlans)) {
-            throw new Error("invalid input");
-        }
-
         // create new snmp session
-        const snmpAwait = new SnmpAwait({
+        snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
 
         // set the mode
-        console.log(`interface-setvlantrunk: setting interface to trunk mode`);
+        logger.info(`interface-setvlantrunk: setting interface to trunk mode`);
         await snmpAwait.set({
             oid: `.1.3.6.1.4.1.9.6.1.101.48.22.1.1.${interfaceId}`,
             value: 12,
@@ -37,21 +48,20 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
 
         // we have to add the untagged vlan to the tagged vlans (it's a thing...) otherwise
         // it's marked as 'inactive'
-        const taggedVlansSafe = [...taggedVlans];
-        if (!taggedVlansSafe.includes(untaggedVlan)) {
-            taggedVlansSafe.push(untaggedVlan);
+        if (!taggedVlans.includes(untaggedVlan)) {
+            taggedVlans.push(untaggedVlan);
         }
 
         // summarise this into a list of vlans - it's used to update the db
-        const vlanArray = ciscoCBSVlanArray(vlans, taggedVlansSafe);
-        console.log(
+        const vlanArray = ciscoC1300VlanArray(vlans, taggedVlans);
+        logger.info(
             `interface-setvlantrunk: setting vlan trunk members to ${JSON.stringify(
                 vlanArray
             )}, native ${untaggedVlan} on interface ${interfaceId}`
         );
 
         // encode the vlan array back into a hex string
-        const writeValues = ciscoCBSVlanList.encode(taggedVlansSafe, 1024, "");
+        const writeValues = ciscoC1300VlanList.encode(taggedVlans, 1024, "");
 
         // write it back
         for (const [index, value] of writeValues.entries()) {
@@ -73,21 +83,26 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             },
         });
 
-        await deviceSetPending(true);
-
-        console.log(`interface-setvlantrunk: success - updating DB`);
+        logger.info(`interface-setvlantrunk: success - updating DB`);
 
         // update db
         const interfaceCollection = await mongoCollection("interfaces");
         const dbResult = await interfaceCollection.updateOne(
-            { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": vlanArray } }
+            { interfaceId: Number(interfaceId) },
+            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": vlanArray } }
         );
-        console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+
+        await deviceSetPending(true);
 
         return true;
     } catch (err) {
-        err.message = `interface-setvlantrunk: ${err.stack || err.message || err}`;
+        err.message = `interface-setvlantrunk: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
+        }
     }
 };

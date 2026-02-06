@@ -588,7 +588,7 @@ function writeVarbinds(buffer, varbinds) {
  ** PDU class definitions
  **/
 
-var SimplePdu = function () {};
+var SimplePdu = function () { };
 
 SimplePdu.prototype.toBuffer = function (buffer) {
     buffer.startSequence(this.type);
@@ -783,7 +783,7 @@ TrapV2Pdu.createFromVariables = function (id, varbinds, options) {
     return pdu;
 };
 
-var SimpleResponsePdu = function () {};
+var SimpleResponsePdu = function () { };
 
 SimpleResponsePdu.prototype.toBuffer = function (writer) {
     writer.startSequence(this.type);
@@ -1289,7 +1289,7 @@ Encryption.algorithms[PrivProtocols.aes256r] = {
  ** Message class definition
  **/
 
-var Message = function () {};
+var Message = function () { };
 
 Message.prototype.getReqId = function () {
     return this.version == Version3 ? this.msgGlobalData.msgID : this.pdu.id;
@@ -1491,15 +1491,15 @@ Message.prototype.checkAuthentication = function (user, responseCb) {
         responseCb(
             new ResponseInvalidError(
                 "Authentication digest " +
-                    this.msgSecurityParameters.msgAuthenticationParameters.toString("hex") +
-                    " received in message does not match digest " +
-                    Authentication.calculateDigest(
-                        this.buffer,
-                        user.authProtocol,
-                        user.authKey,
-                        this.msgSecurityParameters.msgAuthoritativeEngineID
-                    ).toString("hex") +
-                    " calculated for message",
+                this.msgSecurityParameters.msgAuthenticationParameters.toString("hex") +
+                " received in message does not match digest " +
+                Authentication.calculateDigest(
+                    this.buffer,
+                    user.authProtocol,
+                    user.authKey,
+                    this.msgSecurityParameters.msgAuthoritativeEngineID
+                ).toString("hex") +
+                " calculated for message",
                 ResponseInvalidCode.EAuthFailure,
                 { user }
             )
@@ -1833,16 +1833,16 @@ Session.prototype.get = function (oids, responseCb) {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                req.message.pdu.varbinds[i].oid +
-                                "' in request at position '" +
-                                i +
-                                "' does not " +
-                                "match OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            req.message.pdu.varbinds[i].oid +
+                            "' in request at position '" +
+                            i +
+                            "' does not " +
+                            "match OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.EReqResOidNoMatch
                         )
                     );
@@ -1904,16 +1904,16 @@ Session.prototype.getBulk = function () {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                reqVarbinds[i].oid +
-                                "' in request at position '" +
-                                i +
-                                "' does not " +
-                                "match OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            reqVarbinds[i].oid +
+                            "' in request at position '" +
+                            i +
+                            "' does not " +
+                            "match OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.EReqResOidNoMatch
                         )
                     );
@@ -1924,16 +1924,16 @@ Session.prototype.getBulk = function () {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                reqVarbinds[i].oid +
-                                "' in request at positiion '" +
-                                i +
-                                "' does not " +
-                                "precede OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            reqVarbinds[i].oid +
+                            "' in request at positiion '" +
+                            i +
+                            "' does not " +
+                            "precede OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.EOutOfOrder
                         )
                     );
@@ -1956,16 +1956,16 @@ Session.prototype.getBulk = function () {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                prevOid +
-                                "' in response at position '" +
-                                prevIndex +
-                                "' does not " +
-                                "match OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            prevOid +
+                            "' in response at position '" +
+                            prevIndex +
+                            "' does not " +
+                            "match OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.EReqResOidNoMatch
                         )
                     );
@@ -1976,16 +1976,16 @@ Session.prototype.getBulk = function () {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                prevOid +
-                                "' in response at positiion '" +
-                                prevIndex +
-                                "' does not " +
-                                "precede OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            prevOid +
+                            "' in response at positiion '" +
+                            prevIndex +
+                            "' does not " +
+                            "precede OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.EOutOfOrder
                         )
                     );
@@ -2039,17 +2039,17 @@ Session.prototype.getNext = function (oids, responseCb) {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                req.message.pdu.varbinds[i].oid +
-                                "' in request at " +
-                                "positiion '" +
-                                i +
-                                "' does not precede " +
-                                "OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            req.message.pdu.varbinds[i].oid +
+                            "' in request at " +
+                            "positiion '" +
+                            i +
+                            "' does not precede " +
+                            "OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.OutOfOrder
                         )
                     );
@@ -2131,16 +2131,16 @@ Session.prototype.inform = function () {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                req.message.pdu.varbinds[i].oid +
-                                "' in inform at positiion '" +
-                                i +
-                                "' does not " +
-                                "match OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            req.message.pdu.varbinds[i].oid +
+                            "' in inform at positiion '" +
+                            i +
+                            "' does not " +
+                            "match OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.EReqResOidNoMatch
                         )
                     );
@@ -2211,11 +2211,11 @@ Session.prototype.onMsg = function (buffer) {
         req.responseCb(
             new ResponseInvalidError(
                 "Version in request '" +
-                    req.message.version +
-                    "' does not match version in " +
-                    "response '" +
-                    message.version +
-                    "'",
+                req.message.version +
+                "' does not match version in " +
+                "response '" +
+                message.version +
+                "'",
                 ResponseInvalidCode.EVersionNoMatch
             )
         );
@@ -2223,11 +2223,11 @@ Session.prototype.onMsg = function (buffer) {
         req.responseCb(
             new ResponseInvalidError(
                 "Community '" +
-                    req.message.community +
-                    "' in request does not match " +
-                    "community '" +
-                    message.community +
-                    "' in response",
+                req.message.community +
+                "' in request does not match " +
+                "community '" +
+                message.community +
+                "' in response",
                 ResponseInvalidCode.ECommunityNoMatch
             )
         );
@@ -2358,16 +2358,16 @@ Session.prototype.set = function (varbinds, responseCb) {
                     req.responseCb(
                         new ResponseInvalidError(
                             "OID '" +
-                                req.message.pdu.varbinds[i].oid +
-                                "' in request at position '" +
-                                i +
-                                "' does not " +
-                                "match OID '" +
-                                pdu.varbinds[i].oid +
-                                "' in response " +
-                                "at position '" +
-                                i +
-                                "'",
+                            req.message.pdu.varbinds[i].oid +
+                            "' in request at position '" +
+                            i +
+                            "' does not " +
+                            "match OID '" +
+                            pdu.varbinds[i].oid +
+                            "' in response " +
+                            "at position '" +
+                            i +
+                            "'",
                             ResponseInvalidCode.EReqResOidNoMatch
                         )
                     );
@@ -2903,7 +2903,7 @@ Listener.prototype.send = function (message, rinfo) {
     this.dgram.send(buffer, 0, buffer.length, rinfo.port, rinfo.address, function (error, bytes) {
         if (error) {
             // me.callback (error);
-            console.error("Error sending: " + error.message);
+            logger.error("Error sending: " + error.message);
         } else {
             // debug ("Listener sent response message");
         }
@@ -2944,7 +2944,7 @@ Listener.processIncoming = function (buffer, authorizer, callback) {
                 callback(
                     new RequestFailedError(
                         "Local user not found and message requires authentication with user " +
-                            message.msgSecurityParameters.msgUserName
+                        message.msgSecurityParameters.msgUserName
                     )
                 );
                 return;
@@ -2962,8 +2962,8 @@ Listener.processIncoming = function (buffer, authorizer, callback) {
             callback(
                 new RequestFailedError(
                     "Local user " +
-                        message.msgSecurityParameters.msgUserName +
-                        " requires authentication but message does not provide it"
+                    message.msgSecurityParameters.msgUserName +
+                    " requires authentication but message does not provide it"
                 )
             );
             return;
@@ -2972,8 +2972,8 @@ Listener.processIncoming = function (buffer, authorizer, callback) {
             callback(
                 new RequestFailedError(
                     "Local user " +
-                        message.msgSecurityParameters.msgUserName +
-                        " requires privacy but message does not provide it"
+                    message.msgSecurityParameters.msgUserName +
+                    " requires privacy but message does not provide it"
                 )
             );
             return;
@@ -3385,8 +3385,8 @@ ModuleStore.prototype.getProvidersForModule = function (moduleName) {
             typeof mibEntry["MAX-ACCESS"] != "undefined"
                 ? mibEntry["MAX-ACCESS"]
                 : access
-                ? AccessToMaxAccess[access]
-                : "not-accessible";
+                    ? AccessToMaxAccess[access]
+                    : "not-accessible";
         var defVal = mibEntry["DEFVAL"];
 
         if (syntax) {
@@ -3421,8 +3421,8 @@ ModuleStore.prototype.getProvidersForModule = function (moduleName) {
                         typeof mibEntry["MAX-ACCESS"] != "undefined"
                             ? mibEntry["MAX-ACCESS"]
                             : access
-                            ? AccessToMaxAccess[access]
-                            : "not-accessible";
+                                ? AccessToMaxAccess[access]
+                                : "not-accessible";
                     defVal = mibEntry["DEFVAL"];
 
                     constraintsResults = ModuleStore.getConstraintsFromSyntax(syntax);
@@ -3849,7 +3849,7 @@ MibNode.prototype.pruneUpwards = function () {
 MibNode.prototype.dump = function (options) {
     var valueString;
     if ((!options.leavesOnly || options.showProviders) && this.provider) {
-        console.log(this.oid + " [" + MibProviderType[this.provider.type] + ": " + this.provider.name + "]");
+        logger.info(this.oid + " [" + MibProviderType[this.provider.type] + ": " + this.provider.name + "]");
     } else if (!options.leavesOnly || Object.keys(this.children).length == 0) {
         if (this.value != null) {
             valueString = " = ";
@@ -3858,7 +3858,7 @@ MibNode.prototype.dump = function (options) {
         } else {
             valueString = "";
         }
-        console.log(this.oid + valueString);
+        logger.info(this.oid + valueString);
     }
     for (var node of Object.keys(this.children).sort((a, b) => a - b)) {
         this.children[node].dump(options);
@@ -4038,21 +4038,21 @@ Mib.prototype.populateIndexEntryFromColumn = function (localProvider, indexEntry
     if (indexEntry.columnName && indexEntry.columnName != column.name) {
         throw new Error(
             "Index entry " +
-                i +
-                ": Calculated column name " +
-                column.name +
-                "does not match supplied column name " +
-                indexEntry.columnName
+            i +
+            ": Calculated column name " +
+            column.name +
+            "does not match supplied column name " +
+            indexEntry.columnName
         );
     }
     if (indexEntry.columnNumber && indexEntry.columnNumber != column.number) {
         throw new Error(
             "Index entry " +
-                i +
-                ": Calculated column number " +
-                column.number +
-                " does not match supplied column number " +
-                indexEntry.columnNumber
+            i +
+            ": Calculated column number " +
+            column.number +
+            " does not match supplied column number " +
+            indexEntry.columnNumber
         );
     }
     if (!indexEntry.columnName) {
@@ -4175,7 +4175,7 @@ Mib.prototype.dumpProviders = function () {
             provider.type == MibProviderType.Scalar
                 ? ObjectType[provider.scalarType]
                 : "Columns = " + provider.tableColumns.length;
-        console.log(MibProviderType[provider.type] + ": " + provider.name + " (" + provider.oid + "): " + extraInfo);
+        logger.info(MibProviderType[provider.type] + ": " + provider.name + " (" + provider.oid + "): " + extraInfo);
     }
 };
 
@@ -4235,10 +4235,10 @@ Mib.prototype.getProviderNodeForTable = function (table) {
     if (provider.type != MibProviderType.Table) {
         throw new TypeError(
             "Registered MIB provider " +
-                table +
-                " is not of the correct type (is type " +
-                MibProviderType[provider.type] +
-                ")"
+            table +
+            " is not of the correct type (is type " +
+            MibProviderType[provider.type] +
+            ")"
         );
     }
     return providerNode;
@@ -4636,7 +4636,7 @@ var Agent = function (options, callback, mib) {
     this.listener = new Listener(options, this);
     this.engine = new Engine(options.engineID);
     this.authorizer = new Authorizer(options);
-    this.callback = callback || function () {};
+    this.callback = callback || function () { };
     this.mib = mib || new Mib();
     this.context = "";
     this.forwarder = new Forwarder(this.listener, this.callback);
@@ -4713,7 +4713,7 @@ Agent.prototype.tableRowStatusHandlerInternal = function (createRequest) {
             values.push(columnInfo.defVal);
         } else {
             // Default value was required but not found
-            console.log("No defVal defined for column:", columnInfo);
+            logger.info("No defVal defined for column:", columnInfo);
             missingDefVal = true;
             values.push(undefined); // just for debugging; never gets returned
         }
@@ -4838,7 +4838,7 @@ Agent.prototype.tryCreateInstance = function (varbind, requestType) {
         provider = providersByOid[subOid];
         if (provider) {
             // Yup. Figure out what to do with it.
-            // console.log(`FOUND MATCH TO ${oid}:\n`, providersByOid[subOid]);
+            // logger.info(`FOUND MATCH TO ${oid}:\n`, providersByOid[subOid]);
 
             //
             // Scalar
@@ -4951,7 +4951,7 @@ Agent.prototype.tryCreateInstance = function (varbind, requestType) {
         }
     }
 
-    //	console.log(`NO MATCH TO ${oid}`);
+    //	logger.info(`NO MATCH TO ${oid}`);
     return undefined;
 };
 
@@ -5231,9 +5231,9 @@ Agent.prototype.request = function (requestMessage, rinfo) {
                         let rowStatusColumn =
                             provider.type == MibProviderType.Table
                                 ? provider.tableColumns.reduce(
-                                      (acc, current) => (current.rowStatus ? current.number : acc),
-                                      null
-                                  )
+                                    (acc, current) => (current.rowStatus ? current.number : acc),
+                                    null
+                                )
                                 : null;
                         if (
                             requestPdu.varbinds[savedIndex].value === RowStatus["destroy"] &&
@@ -5538,10 +5538,10 @@ Forwarder.prototype.dumpProxies = function () {
             port: proxy.port,
         };
     }
-    console.log(JSON.stringify(dump, null, 2));
+    logger.info(JSON.stringify(dump, null, 2));
 };
 
-var AgentXPdu = function () {};
+var AgentXPdu = function () { };
 
 AgentXPdu.prototype.toBuffer = function () {
     var buffer = new smartbuffer.SmartBuffer();
@@ -5922,7 +5922,7 @@ Subagent.prototype.connectSocket = function () {
 
     this.socket.on("data", me.onMsg.bind(me));
     this.socket.on("error", function (error) {
-        console.error(error);
+        logger.error(error);
     });
 };
 

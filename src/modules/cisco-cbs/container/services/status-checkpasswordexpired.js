@@ -2,10 +2,10 @@
 
 const StatusItem = require("@core/StatusItem");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
     try {
-
         const passwordExpired = await mongoSingle.get("passwordexpired");
         if (passwordExpired) {
             return [
@@ -17,8 +17,8 @@ module.exports = async () => {
             ];
         }
         return [];
-    } catch (error) {
-        console.error(`status-checkpasswordexpired: ${error.message}`);
-        throw error;
+    } catch (err) {
+        logger.error(`status-checkpasswordexpired: ${err.stack || err.message}`);
+        return [];
     }
 };

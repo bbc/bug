@@ -7,23 +7,26 @@ const deviceSetPending = require("@services/device-setpending");
 const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId) => {
-    let snmpAwait;
 
     try {
+        // validate input
+        if (!interfaceId) {
+            throw new Error("invalid input: interfaceId is required");
+        }
+
         const config = await configGet();
         if (!config) {
             throw new Error("failed to load config");
         }
 
-        logger.info(`interface-disable: disabling interface ${interfaceId} ...`);
+        logger.info(`interface-disable: disabling interface ${interfaceId} via SNMP`);
 
         // create SNMP session
-        snmpAwait = new SnmpAwait({
+        const snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
 
-        // disable the interface on the device
         await snmpAwait.set({
             oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,
             value: 2,
@@ -44,7 +47,6 @@ module.exports = async (interfaceId) => {
             );
         }
 
-        // mark system as pending
         await deviceSetPending(true);
 
         logger.info(`interface-disable: complete`);

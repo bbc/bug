@@ -2,6 +2,7 @@
 
 const StatusItem = require("@core/StatusItem");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
     try {
@@ -16,8 +17,9 @@ module.exports = async () => {
             ];
         }
         return [];
-    } catch (error) {
-        console.error(`status-checkpending: ${error.message}`);
-        throw error;
+    } catch (err) {
+        logger.error(`status-checkpending: ${err.stack || err.message}`);
+        return [];
     }
+
 };
