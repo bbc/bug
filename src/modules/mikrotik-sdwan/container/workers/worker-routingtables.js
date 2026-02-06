@@ -51,8 +51,8 @@ const main = async () => {
         }
 
     } catch (error) {
-        // catch connection, db, or polling errors
-        console.error(`worker-routingtables: stopping due to error - ${error.message || error}`);
+        console.error(`worker-routingtables: fatal error`);
+        console.error(err.stack || err.message || err);
     } finally {
         // ensure connection is closed before thread exit
         if (conn) {
@@ -64,6 +64,7 @@ const main = async () => {
             }
         }
     }
+    process.exit();
 };
 
 main().catch(err => {
