@@ -63,8 +63,8 @@ const main = async () => {
             await delay(updateDelay);
         }
     } catch (error) {
-        // catches the throw from the loop or initial connection/db failure
-        console.error(`worker-dhcp fatal error: ${error.message}`);
+        console.error(`worker-dhcp: fatal error`);
+        console.error(err.stack || err.message || err);
     } finally {
         // ensure connection is cleaned up before the thread exits
         if (conn) {
@@ -72,6 +72,7 @@ const main = async () => {
             await conn.close().catch(() => { });
         }
     }
+    process.exit();
 };
 
 main().catch(err => {
