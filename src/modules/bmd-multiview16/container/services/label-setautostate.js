@@ -2,12 +2,13 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (inputIndex, state) => {
     try {
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         if (!config.autoLabelEnabled) {
@@ -16,26 +17,26 @@ module.exports = async (inputIndex, state) => {
 
         if (state) {
             if (config.autoLabelEnabled.includes(inputIndex)) {
-                console.log(`label-setautostate: input ${inputIndex} already enabled`);
+                logger.info(`label-setautostate: input ${inputIndex} already enabled`);
                 return false;
             }
             config.autoLabelEnabled.push(inputIndex);
         } else {
             if (!config.autoLabelEnabled.includes(inputIndex)) {
-                console.log(`label-setautostate: input ${inputIndex} not found`);
+                logger.info(`label-setautostate: input ${inputIndex} not found`);
                 return false;
             }
             config.autoLabelEnabled.splice(config.autoLabelEnabled.indexOf(inputIndex), 1);
         }
 
-        console.log(
+        logger.info(
             `label-setautostate: ${state ? "enabling" : "disabling"} autolabel for input ${inputIndex}`
         );
 
         return await configPutViaCore(config);
 
     } catch (err) {
-        err.message = `label-setautostate: ${err.message}`;
+        err.message = `label-setautostate: ${err.stack || err.message}`;
         throw err;
     }
 };

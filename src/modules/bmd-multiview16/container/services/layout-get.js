@@ -4,12 +4,13 @@ const configGet = require("@core/config-get");
 const deviceConfigList = require("./deviceconfig-list");
 const sourceList = require("./source-list");
 const routeList = require("./route-list");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
     try {
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         const layoutArray = [];
@@ -44,7 +45,8 @@ module.exports = async () => {
         return layoutArray;
 
     } catch (err) {
-        err.message = `layout-get: ${err.message}`;
+        err.message = `layout-get: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

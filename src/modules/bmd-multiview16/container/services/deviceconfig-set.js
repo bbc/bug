@@ -2,12 +2,13 @@
 
 const configGet = require("@core/config-get");
 const Videohub = require("@utils/videohub-promise");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (name, value) => {
     try {
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         const router = new Videohub({
@@ -25,7 +26,8 @@ module.exports = async (name, value) => {
         return true;
 
     } catch (err) {
-        err.message = `deviceconfig-set: ${err.message}`;
+        err.message = `deviceconfig-set: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

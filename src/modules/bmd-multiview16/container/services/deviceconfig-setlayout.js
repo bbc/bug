@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const Videohub = require("@utils/videohub-promise");
 const delay = require("delay");
+const logger = require("@utils/logger")(module);
 
 const layoutStrings = {
     "2x2": {
@@ -23,7 +24,7 @@ module.exports = async (layout) => {
     try {
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         let routingString = layoutStrings?.[layout]?.[config.autolayout] ?? "";
@@ -43,7 +44,8 @@ module.exports = async (layout) => {
         return true;
 
     } catch (err) {
-        err.message = `deviceconfig-setlayout: ${err.message}`;
+        err.message = `deviceconfig-setlayout: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

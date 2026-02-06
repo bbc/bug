@@ -2,12 +2,13 @@
 
 const mongoSingle = require("@core/mongo-single");
 const configGet = require("@core/config-get");
+const logger = require("@utils/logger")(module);
 
 module.exports = async () => {
     try {
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         const routerLabels = await mongoSingle.get("routerlabels");
@@ -32,7 +33,8 @@ module.exports = async () => {
         return labelsArray;
 
     } catch (err) {
-        err.message = `label-list: ${err.message}`;
+        err.message = `label-list: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };
