@@ -7,6 +7,7 @@ const ciscoC1300VlanArray = require("@utils/ciscoc1300-vlanarray");
 const ciscoC1300VlanList = require("@utils/ciscoc1300-vlanlist");
 const SnmpAwait = require("@core/snmp-await");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     let snmpAwait;
@@ -26,7 +27,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
 
         const config = await configGet();
         if (!config) {
-            throw new Error("Failed to load config");
+            throw new Error("failed to load config");
         }
 
         // create new snmp session
@@ -36,7 +37,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         });
 
         // set the mode
-        console.log(`interface-setvlantrunk: setting interface to trunk mode`);
+        logger.info(`interface-setvlantrunk: setting interface to trunk mode`);
         await snmpAwait.set({
             oid: `.1.3.6.1.4.1.9.6.1.101.48.22.1.1.${interfaceId}`,
             value: 12,
@@ -53,7 +54,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
 
         // summarise this into a list of vlans - it's used to update the db
         const vlanArray = ciscoC1300VlanArray(vlans, taggedVlans);
-        console.log(
+        logger.info(
             `interface-setvlantrunk: setting vlan trunk members to ${JSON.stringify(
                 vlanArray
             )}, native ${untaggedVlan} on interface ${interfaceId}`
@@ -82,7 +83,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             },
         });
 
-        console.log(`interface-setvlantrunk: success - updating DB`);
+        logger.info(`interface-setvlantrunk: success - updating DB`);
 
         // update db
         const interfaceCollection = await mongoCollection("interfaces");
@@ -90,18 +91,14 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             { interfaceId: Number(interfaceId) },
             { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": vlanArray } }
         );
-        console.log(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
 
         await deviceSetPending(true);
 
         return true;
     } catch (err) {
-        console.error(err);
-        console.log(
-            `interface-setvlantrunk: failed to set vlan trunk ${JSON.stringify(
-                taggedVlans
-            )}, native ${untaggedVlan} on interface ${interfaceId}`
-        );
+        err.message = `interface-setvlantrunk: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     } finally {
         if (snmpAwait) {

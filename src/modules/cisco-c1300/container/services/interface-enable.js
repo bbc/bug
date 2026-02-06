@@ -4,14 +4,18 @@ const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId) => {
     let snmpAwait;
 
     try {
         const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
 
-        console.log(`interface-enable: enabling interface ${interfaceId} ...`);
+        logger.info(`interface-enable: enabling interface ${interfaceId} ...`);
 
         // create SNMP session
         snmpAwait = new SnmpAwait({
@@ -25,7 +29,7 @@ module.exports = async (interfaceId) => {
             value: 1,
         });
 
-        console.log(`interface-enable: SNMP success - updating DB`);
+        logger.info(`interface-enable: SNMP success - updating DB`);
 
         // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
@@ -35,17 +39,16 @@ module.exports = async (interfaceId) => {
         );
 
         if (dbResult.matchedCount !== 1) {
-            throw new Error(
-                `interface-enable: expected to update 1 interface in DB, matched ${dbResult.matchedCount}`
-            );
+            throw new Error(`expected to update 1 interface in DB, matched ${dbResult.matchedCount}`);
         }
 
         // mark system as pending
         await deviceSetPending(true);
 
-        console.log(`interface-enable: complete`);
+        logger.info(`interface-enable: complete`);
     } catch (err) {
-        err.message = `interface-enable(${interfaceId}): ${err.message}`;
+        err.message = `interface-enable(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     } finally {
         if (snmpAwait) {

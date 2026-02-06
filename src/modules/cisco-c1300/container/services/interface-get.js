@@ -3,6 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const ciscoC1300ExpandVlanRanges = require("@utils/ciscoc1300-expandvlanranges");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (interfaceId) => {
     try {
@@ -23,7 +24,7 @@ module.exports = async (interfaceId) => {
         const interfaceResult = await dbInterfaces.findOne({ interfaceId: Number(interfaceId) });
 
         if (!interfaceResult) {
-            throw new Error(`Interface ${interfaceId} not found`);
+            throw new Error(`interface ${interfaceId} not found`);
         }
 
         // expand tagged VLAN ranges
@@ -34,7 +35,8 @@ module.exports = async (interfaceId) => {
 
         return interfaceResult;
     } catch (err) {
-        err.message = `interface-get(${interfaceId}): ${err.message}`;
+        err.message = `interface-get(${interfaceId}): ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };
