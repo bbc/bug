@@ -38,7 +38,7 @@ exports.list = async function () {
     try {
         return await getStrategies();
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -52,7 +52,7 @@ exports.get = async function (type) {
         }
         return strategies[index];
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -67,7 +67,7 @@ exports.delete = async function (type) {
         strategies.splice(index, 1);
         return await writeJson(filename, strategies);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -84,7 +84,7 @@ exports.set = async function (strategy) {
 
         return await writeJson(filename, strategies);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -93,7 +93,7 @@ exports.setAll = async function (strategies) {
     try {
         return await writeJson(filename, strategies);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
@@ -110,7 +110,7 @@ exports.update = async function (type, strategy) {
 
         return await writeJson(filename, strategies);
     } catch (error) {
-        logger.warning(`${error.trace || error || error.message}`);
+        logger.warning(`${error.stack || error || error.message}`);
     }
     return null;
 };
