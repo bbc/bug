@@ -1,6 +1,7 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
 const videohubTest = require("@services/videohub-test");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (formData) => {
     if (await videohubTest(formData.address, formData.port)) {
