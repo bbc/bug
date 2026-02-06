@@ -4,8 +4,9 @@ const mongoCollection = require("@core/mongo-collection");
 const matchAnyRegex = require("@core/regex-matchany");
 const wildcard = require("wildcard-regex");
 const configGet = require("@core/config-get");
-const ciscoCBSExpandVlanRanges = require("@utils/ciscocbs-expandvlanranges");
+const ciscoC1300ExpandVlanRanges = require("@utils/ciscoc1300-expandvlanranges");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@utils/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     try {
@@ -17,21 +18,20 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
         const dbInterfaces = await mongoCollection("interfaces");
         let interfaces = await dbInterfaces.find().toArray();
         if (!interfaces) {
-            throw new Error("invalid input");
+            interfaces = [];
         }
 
-        interfaces = [...interfaces];
-
+        // filter interfaces by stack if provided
         if (stackId !== null) {
-            interfaces = interfaces.filter((iface) => iface["device"] === parseInt(stackId));
+            interfaces = interfaces.filter((iface) => iface["device"] === Number(stackId));
         }
 
         // cache the regexes - once
         let protectedRegexArray = [];
         if (config.protectedInterfaces) {
-            protectedRegexArray = [...config.protectedInterfaces].map((eachFilter) =>
-                wildcard.wildcardRegExp(eachFilter)
-            );
+            for (let eachFilter of config.protectedInterfaces) {
+                protectedRegexArray.push(wildcard.wildcardRegExp(eachFilter));
+            }
         }
 
         // loop through and set protected interface for each
@@ -46,27 +46,28 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
             // if it's false, then the protection is provided by a wildcard
             eachInterface["_allowunprotect"] =
                 config.protectedInterfaces &&
-                config.protectedInterfaces.find((loopInterface, index) => {
+                config.protectedInterfaces.find((loopInterface) => {
                     return loopInterface == eachInterface.longId;
                 }) !== undefined;
         }
 
         const vlans = await mongoSingle.get("vlans");
-        const availableVlanArray = vlans && [...vlans].map((eachVlan) => eachVlan.id);
+        const availableVlanArray = vlans && vlans.map((eachVlan) => eachVlan.id);
 
         if (vlans) {
             // expand any '1-4094' entries
             for (let eachInterface of interfaces) {
-                const taggedVlans = Array.isArray(eachInterface["tagged-vlans"])
-                    ? [...eachInterface["tagged-vlans"]]
-                    : eachInterface["tagged-vlans"];
-                eachInterface["tagged-vlans"] = ciscoCBSExpandVlanRanges(taggedVlans, availableVlanArray);
+                eachInterface["tagged-vlans"] = ciscoC1300ExpandVlanRanges(
+                    eachInterface["tagged-vlans"],
+                    availableVlanArray
+                );
             }
         }
 
         return interfaces;
     } catch (err) {
-        err.message = `interfaces-service: ${err.stack || err.message || err}`;
+        err.message = `interface-list: ${err.stack || err.message}`;
+        logger.error(err.message);
         throw err;
     }
 };

@@ -1,6 +1,7 @@
 "use strict";
 
 const chunk = require("@core/chunk");
+const logger = require("@utils/logger")(module);
 
 const parseHexString = (hexString) => {
     // check if the string value is only letters, numbers or slash
@@ -14,50 +15,57 @@ const parseHexString = (hexString) => {
 };
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
-    // fetch list of LLDP neighbors
-    const lldpInfo = await snmpAwait.subtree({
-        oid: "1.0.8802.1.1.2.1.4.1.1",
-        timeout: 30000,
-        raw: true,
-    });
+    try {
+        // fetch list of LLDP neighbors
+        const lldpInfo = await snmpAwait.subtree({
+            oid: "1.0.8802.1.1.2.1.4.1.1",
+            timeout: 30000,
+            raw: true,
+        });
 
-    const needles = {
-        "1.0.8802.1.1.2.1.4.1.1.5.0": "chassis_id",
-        "1.0.8802.1.1.2.1.4.1.1.7.0": "port_id",
-        "1.0.8802.1.1.2.1.4.1.1.8.0": "port_description",
-        "1.0.8802.1.1.2.1.4.1.1.9.0": "system_name",
-        "1.0.8802.1.1.2.1.4.1.1.10.0": "system_description",
-    };
+        const needles = {
+            "1.0.8802.1.1.2.1.4.1.1.5.0": "chassis_id",
+            "1.0.8802.1.1.2.1.4.1.1.7.0": "port_id",
+            "1.0.8802.1.1.2.1.4.1.1.8.0": "port_description",
+            "1.0.8802.1.1.2.1.4.1.1.9.0": "system_name",
+            "1.0.8802.1.1.2.1.4.1.1.10.0": "system_description",
+        };
 
-    const lldpByInterface = [];
+        const lldpByInterface = [];
 
-    Object.entries(lldpInfo).forEach(([oid, value]) => {
-        for (const [needleOid, needleValue] of Object.entries(needles)) {
-            if (oid.indexOf(needleOid) === 0) {
-                const oidArray = oid.split(".");
-                const interfaceId = parseInt(oidArray[oidArray.length - 2]);
+        Object.entries(lldpInfo).forEach(([oid, value]) => {
+            for (const [needleOid, needleValue] of Object.entries(needles)) {
+                if (oid.indexOf(needleOid) === 0) {
+                    const oidArray = oid.split(".");
+                    const interfaceId = parseInt(oidArray[oidArray.length - 2]);
 
-                if (!lldpByInterface[interfaceId]) {
-                    lldpByInterface[interfaceId] = {};
-                }
-                if (needleValue === "chassis_id" || needleValue === "port_id") {
-                    lldpByInterface[interfaceId][needleValue] = parseHexString(value);
-                } else {
-                    lldpByInterface[interfaceId][needleValue] = value.toString();
+                    if (!lldpByInterface[interfaceId]) {
+                        lldpByInterface[interfaceId] = {};
+                    }
+                    if (needleValue === "chassis_id" || needleValue === "port_id") {
+                        lldpByInterface[interfaceId][needleValue] = parseHexString(value);
+                    } else {
+                        lldpByInterface[interfaceId][needleValue] = value.toString();
+                    }
                 }
             }
-        }
-    });
+        });
 
-    lldpByInterface.forEach(async (lldpObject, eachIndex) => {
-        await interfacesCollection.updateOne(
-            { interfaceId: parseInt(eachIndex) },
-            {
-                $set: {
-                    lldp: lldpObject,
+        lldpByInterface.forEach(async (lldpObject, eachIndex) => {
+            await interfacesCollection.updateOne(
+                { interfaceId: parseInt(eachIndex) },
+                {
+                    $set: {
+                        lldp: lldpObject,
+                    },
                 },
-            },
-            { upsert: false }
-        );
-    });
+                { upsert: false }
+            );
+        });
+    } catch (err) {
+        err.message = `subworker-interfacefdb: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
+    }
+
 };
