@@ -1,7 +1,7 @@
 "use strict";
 
-module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, thisStatus, panelUpgradeStatus) => {
-    // we don't need the defaultconfig bit in the panelModule - we we'll just remove it - every byte counts!
+module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, thisStatus, panelUpgradeStatus, builtModules) => {
+    // we don't need the defaultconfig bit in the panelModule - we'll just remove it - every byte counts!
     delete moduleConfig.defaultconfig;
 
     // if containerInfo is null, we'll make it an empty object so we can add calculated fields
@@ -26,9 +26,9 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     // now we've used the 'status' field, we get rid of it, to prevent 1-second refreshes in the UI!
     delete containerInfo.status;
 
-    let status = "idle";
-    if (!moduleConfig.needsContainer) {
-        status = panelConfig["enabled"] ? "active" : "idle";
+    let status = "disabled";
+    if (!moduleConfig.needsContainer && panelConfig["enabled"]) {
+        status = "active"
     } else if (isRestarting) {
         status = "restarting";
     } else if (isStarting) {
@@ -52,6 +52,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     containerInfo._isRestarting = isRestarting;
     containerInfo._isStarting = isStarting;
     containerInfo._status = status;
+    containerInfo._moduleBuilt = builtModules.includes(panelConfig["module"]);
 
     let upgradeable = false;
     if (moduleConfig?.version !== containerInfo?.version && containerInfo?.version !== undefined) {
