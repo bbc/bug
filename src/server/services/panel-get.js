@@ -18,6 +18,7 @@ module.exports = async (panelId) => {
         const panelBuildStatus = await panelBuildStatusModel.get(panelId);
         const moduleUpgradeStatus = await moduleUpgradeStatusModel.get(panelConfig["module"]);
         const panelStatus = await panelStatusModel.get(panelId);
+        const dockerImages = await dockerListImages();
         const builtModules = dockerImages?.map((m) => m.module) || [];
 
         return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus, panelStatus, moduleUpgradeStatus, builtModules);
