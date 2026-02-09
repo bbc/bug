@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.5
+
+- 2026-02-06: improve service logging ([c70cf23](https://github.com/bbc/bug/commit/c70cf23a3aafecfc95dadb76e8436875e1f3b757))
+
 ### version 1.1.4
 
 - 2026-02-05: fix status check timeouts ([63cbf43](https://github.com/bbc/bug/commit/63cbf43fa2a19625d6f3d3fb986f85c39271d616))

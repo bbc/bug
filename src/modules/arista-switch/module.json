@@ -1,7 +1,7 @@
 {
     "name": "arista-switch",
     "longname": "Arista Switch",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Monitoring and control of Arista switches",
     "capabilities": [
         "network-switch"
