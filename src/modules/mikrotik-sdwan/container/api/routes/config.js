@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const configGet = require("@core/config-get");
 const configPut = require("@core/config-put");
+const asyncHandler = require("express-async-handler");
 
 router.get("/", asyncHandler(async (req, res) => {
     res.json({
