@@ -3,7 +3,7 @@
 
 const mongoSingle = require('@core/mongo-single');
 const StatusItem = require("@core/StatusItem");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
 

@@ -2,6 +2,7 @@
 
 const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
     // ensure address is provided to prevent logic errors
@@ -42,7 +43,7 @@ module.exports = async (address) => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`dhcplease-delete: ${error.message}`);
+        logger.error(`dhcplease-delete: ${error.message}`);
         throw error;
     } finally {
         // ensure connection always closes regardless of success or failure

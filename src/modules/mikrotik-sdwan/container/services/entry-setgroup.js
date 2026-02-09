@@ -3,6 +3,7 @@
 const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const leaseLabel = require("@utils/lease-label");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address, group) => {
     // ensure address is provided to prevent logic errors
@@ -24,7 +25,7 @@ module.exports = async (address, group) => {
         const lease = dbLeases[existingIndex];
 
         // update existing
-        console.log(`entry-setlabel: setting group for ${address} to '${group}'`);
+        logger.info(`entry-setgroup: setting group for ${address} to '${group}'`);
         const newEntry = { ...lease, group: group }
         const newComment = leaseLabel.stringify(newEntry);
 
@@ -43,7 +44,7 @@ module.exports = async (address, group) => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`entry-setgroup: ${error.message}`);
+        logger.error(`entry-setgroup: ${error.message}`);
         throw error;
     } finally {
         // ensure connection always closes regardless of success or failure

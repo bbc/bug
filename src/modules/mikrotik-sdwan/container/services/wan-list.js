@@ -2,6 +2,7 @@
 
 const mongoSingle = require('@core/mongo-single');
 const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {
@@ -15,7 +16,7 @@ module.exports = async () => {
 
         // if prefix is missing, we can't filter, so return empty list
         if (!config.routingTablePrefix) {
-            console.log("routingtable-list: no routing table prefix defined in config");
+            logger.info("wan-list: no routing table prefix defined in config");
             return [];
         }
 
@@ -41,7 +42,7 @@ module.exports = async () => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`wan-list: ${error.message}`);
+        logger.error(`wan-list: ${error.message}`);
         throw error;
     }
 };

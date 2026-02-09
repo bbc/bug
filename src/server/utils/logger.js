@@ -1,4 +1,4 @@
-// logger for modules
+// logger for BUG core app
 
 const winston = require("winston");
 const global = require("@utils/globalEmitter");

@@ -1,7 +1,7 @@
 "use strict";
 
 const chunk = require("@core/chunk");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 const parseHexString = (hexString) => {
     // check if the string value is only letters, numbers or slash

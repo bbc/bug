@@ -4,7 +4,7 @@ const configGet = require("@core/config-get");
 const deviceConfigList = require("./deviceconfig-list");
 const sourceList = require("./source-list");
 const routeList = require("./route-list");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {

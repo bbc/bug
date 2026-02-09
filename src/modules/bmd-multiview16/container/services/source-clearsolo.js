@@ -2,7 +2,7 @@
 
 const deviceConfigSet = require("@services/deviceconfig-set");
 const delay = require("delay");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {

@@ -6,7 +6,7 @@ const wildcard = require("wildcard-regex");
 const configGet = require("@core/config-get");
 const ciscoC1300ExpandVlanRanges = require("@utils/ciscoc1300-expandvlanranges");
 const mongoSingle = require("@core/mongo-single");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     try {

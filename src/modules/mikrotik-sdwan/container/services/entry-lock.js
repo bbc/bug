@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
     // ensure address is provided to prevent logic errors
@@ -25,7 +26,7 @@ module.exports = async (address) => {
         }
 
         // update the configuration
-        console.log(`entry-lock: locking address ${address}`);
+        logger.info(`entry-lock: locking address ${address}`);
         config.lockedEntries.push(address);
 
         const success = await configPutViaCore(config);
@@ -38,7 +39,7 @@ module.exports = async (address) => {
 
     } catch (error) {
         // re-throw the error so it bubbles up to the express route handler
-        console.error(`entry-lock: ${error.message}`);
+        logger.error(`entry-lock: ${error.message}`);
         throw error;
     }
 };

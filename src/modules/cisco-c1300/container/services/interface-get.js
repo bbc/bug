@@ -3,7 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const ciscoC1300ExpandVlanRanges = require("@utils/ciscoc1300-expandvlanranges");
 const mongoSingle = require("@core/mongo-single");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId) => {
     try {

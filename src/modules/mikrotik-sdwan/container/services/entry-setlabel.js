@@ -3,6 +3,7 @@
 const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const leaseLabel = require("@utils/lease-label");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address, label) => {
     // ensure address is provided to prevent logic errors
@@ -24,7 +25,7 @@ module.exports = async (address, label) => {
         const lease = dbLeases[existingIndex];
 
         // update existing
-        console.log(`entry-setlabel: renaming ${address} to '${label}'`);
+        logger.info(`entry-setlabel: renaming ${address} to '${label}'`);
         const newEntry = { ...lease, label: label }
         const newComment = leaseLabel.stringify(newEntry);
 
@@ -43,7 +44,7 @@ module.exports = async (address, label) => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`entry-setlabel: ${error.message}`);
+        logger.error(`entry-setlabel: ${error.message}`);
         throw error;
     } finally {
         // ensure connection always closes regardless of success or failure

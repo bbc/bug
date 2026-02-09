@@ -3,7 +3,7 @@
 const configGet = require("@core/config-get");
 const Videohub = require("@utils/videohub-promise");
 const delay = require("delay");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 const layoutStrings = {
     "2x2": {

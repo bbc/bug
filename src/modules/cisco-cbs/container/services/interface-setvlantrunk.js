@@ -7,7 +7,7 @@ const ciscoC1300VlanArray = require("@utils/ciscoc1300-vlanarray");
 const ciscoC1300VlanList = require("@utils/ciscoc1300-vlanlist");
 const SnmpAwait = require("@core/snmp-await");
 const deviceSetPending = require("@services/device-setpending");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
     let snmpAwait;

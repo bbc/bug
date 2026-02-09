@@ -2,7 +2,7 @@
 
 const ValidationResult = require("@core/ValidationResult");
 const aristaApi = require("@utils/arista-api");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (formData) => {
     try {
