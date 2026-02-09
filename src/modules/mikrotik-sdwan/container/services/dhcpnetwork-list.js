@@ -30,9 +30,9 @@ module.exports = async () => {
             return commentA.localeCompare(commentB);
         });
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`dhcpnetwork-list: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `dhcpnetwork-list: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

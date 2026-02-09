@@ -46,9 +46,9 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
 
         return dbLeases;
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`dhcplease-list error: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `dhcplease-list: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

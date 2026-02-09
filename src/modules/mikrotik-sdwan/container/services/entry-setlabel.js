@@ -6,15 +6,15 @@ const leaseLabel = require("@utils/lease-label");
 const logger = require("@core/logger")(module);
 
 module.exports = async (address, label) => {
-    // ensure address is provided to prevent logic errors
-    if (!address || address === "undefined") {
-        throw new Error("no address provided to set label");
-    }
-
-    const conn = await mikrotikConnect();
-    if (!conn) throw new Error("could not connect to mikrotik router");
 
     try {
+        if (!address || address === "undefined") {
+            throw new Error("no address provided to set label");
+        }
+
+        const conn = await mikrotikConnect();
+        if (!conn) throw new Error("could not connect to mikrotik router");
+
         const dbLeases = await mongoSingle.get('dhcpLeases') || [];
         const existingIndex = dbLeases.findIndex((li) => li.address === address);
 
@@ -42,12 +42,11 @@ module.exports = async (address, label) => {
 
         return true;
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`entry-setlabel: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `entry-setlabel: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     } finally {
-        // ensure connection always closes regardless of success or failure
         if (conn) conn.close();
     }
 };

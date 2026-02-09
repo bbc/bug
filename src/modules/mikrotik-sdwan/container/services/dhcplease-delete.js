@@ -41,10 +41,10 @@ module.exports = async (address) => {
 
         return true;
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`dhcplease-delete: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `dhcplease-delete: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     } finally {
         // ensure connection always closes regardless of success or failure
         if (conn) conn.close();

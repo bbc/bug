@@ -5,15 +5,15 @@ const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 
 module.exports = async (address, list) => {
-    // ensure address is provided to prevent logic errors
-    if (!address || address === "undefined") {
-        throw new Error("no address provided to set route");
-    }
-
-    const conn = await mikrotikConnect();
-    if (!conn) throw new Error("could not connect to mikrotik router");
 
     try {
+        if (!address || address === "undefined") {
+            throw new Error("no address provided to set route");
+        }
+
+        const conn = await mikrotikConnect();
+        if (!conn) throw new Error("could not connect to mikrotik router");
+
         const dbListItems = await mongoSingle.get('listItems') || [];
         const existingIndex = dbListItems.findIndex((li) => li.address === address);
 
@@ -55,12 +55,11 @@ module.exports = async (address, list) => {
 
         return true;
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`entry-setroute: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `entry-setroute: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     } finally {
-        // ensure connection always closes regardless of success or failure
         if (conn) conn.close();
     }
 };

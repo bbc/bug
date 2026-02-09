@@ -2,6 +2,7 @@
 
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
 const statusCheckEntries = require("./status-checkentries");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     return [].concat(
