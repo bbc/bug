@@ -54,7 +54,7 @@ const Menu = ({ showGroups = true }) => {
 
     useEffect(() => {
         if (selectedGroup) {
-            setExpanded(selectedGroup);
+            setExpanded(selectedGroup.toUpperCase());
         }
     }, [selectedGroup]);
 
