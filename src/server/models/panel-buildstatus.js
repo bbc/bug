@@ -105,8 +105,8 @@ exports.setError = async function (panelId, errorText) {
                 },
                 {
                     $set: {
-                        "status.text": statusText,
-                        "status.error": false,
+                        "status.text": errorText,
+                        "status.error": true,
                         timestamp: new Date(),
                     },
                 },
