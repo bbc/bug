@@ -5,15 +5,19 @@ const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
-    // ensure address is provided to prevent logic errors
-    if (!address || address === "undefined") {
-        throw new Error("no address provided for lease removal");
-    }
 
-    const conn = await mikrotikConnect();
-    if (!conn) throw new Error("could not connect to mikrotik router");
+    let conn;
 
     try {
+
+        // ensure address is provided to prevent logic errors
+        if (!address || address === "undefined") {
+            throw new Error("no address provided for lease removal");
+        }
+
+        conn = await mikrotikConnect();
+        if (!conn) throw new Error("could not connect to mikrotik router");
+
         // get the list of leases first
         const dbLeases = await mongoSingle.get('dhcpLeases') || [];
         const leaseIndex = dbLeases.findIndex((li) => li.address === address);

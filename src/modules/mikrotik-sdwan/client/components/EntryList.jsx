@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import AddEntryButton from "./AddEntryButton";
 import SetGroupDialog from "./SetGroupDialog";
 
-const EntryStatus = ({ entry }) => {
+const EntryStatus = ({ entry, routes }) => {
     if (entry.static) {
         return <BugStatusLabel>STATIC</BugStatusLabel>;
     }
@@ -31,7 +31,7 @@ const EntryStatus = ({ entry }) => {
     return <BugStatusLabel>UNKNOWN</BugStatusLabel>;
 };
 
-export default function EntryList({ panelId }) {
+export default function EntryList({ panelId, routes }) {
     const sendAlert = useAlert();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
     const { renameDialog } = useBugRenameDialog();
@@ -48,6 +48,8 @@ export default function EntryList({ panelId }) {
         url: `/container/${panelId}/wan`,
         interval: 2000,
     });
+
+    const activeRoute = routes?.data?.find((route) => route.active);
 
     useEffect(() => {
         if (location.state?.forceRefresh) {
@@ -261,7 +263,7 @@ export default function EntryList({ panelId }) {
                                         sx={{ justifyContent: "space-between" }}
                                     >
                                         <Stack sx={{ whiteSpace: "nowrap" }}>
-                                            <Typography sx={{ fontWeight: 600 }}>
+                                            <Typography sx={{ fontWeight: 400 }}>
                                                 {item.label || item.address}
                                             </Typography>
                                             <EntryStatus entry={item} />
@@ -294,6 +296,30 @@ export default function EntryList({ panelId }) {
                                         },
                                     }}
                                 >
+                                    <Button
+                                        color="warning"
+                                        variant={!item?.list ? "contained" : "outlined"}
+                                        onClick={() => {
+                                            if (!item?.isLocked && item?.list) {
+                                                handleDefaultEntryClick(item);
+                                            }
+                                        }}
+                                        sx={{
+                                            opacity: item.isLocked ? 0.5 : 1,
+                                            cursor: item.isLocked ? "default" : "pointer",
+                                            WebkitTapHighlightColor: item.isLocked ? "transparent" : "inherit",
+                                        }}
+                                    >
+                                        {activeRoute ? (
+                                            <Stack>
+                                                <Box>DEFAULT</Box>
+                                                <Box sx={{ opacity: 0.5 }}>{activeRoute.comment}</Box>
+                                            </Stack>
+                                        ) : (
+                                            "DEFAULT"
+                                        )}
+                                    </Button>
+
                                     {wans?.data?.map((wan) => {
                                         const isActive = wan.name === item?.list;
                                         return (
@@ -315,22 +341,6 @@ export default function EntryList({ panelId }) {
                                             </Button>
                                         );
                                     })}
-
-                                    <Button
-                                        color={item.isLocked || isOffline ? "secondary" : "primary"}
-                                        variant={!item?.list ? "contained" : "outlined"}
-                                        onClick={() => {
-                                            if (!item?.isLocked && item?.list) {
-                                                handleDefaultEntryClick(item);
-                                            }
-                                        }}
-                                        sx={{
-                                            cursor: item.isLocked ? "default" : "pointer",
-                                            WebkitTapHighlightColor: item.isLocked ? "transparent" : "inherit",
-                                        }}
-                                    >
-                                        DEFAULT
-                                    </Button>
                                 </Box>
 
                                 <Box sx={{ flexShrink: 0, ml: "auto", pl: 1 }}>

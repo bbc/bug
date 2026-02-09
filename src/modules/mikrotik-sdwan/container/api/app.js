@@ -9,6 +9,7 @@ const statusRouter = require("@routes/status");
 const entryRouter = require("@routes/entry");
 const wanRouter = require("@routes/wan");
 const dhcpRouter = require("@routes/dhcp");
+const routeRouter = require("@routes/route");
 
 const heapInfo = require("@core/heap-info");
 
@@ -33,6 +34,7 @@ app.use("/api/status", statusRouter);
 app.use("/api/entry", entryRouter);
 app.use("/api/wan", wanRouter);
 app.use("/api/dhcp", dhcpRouter);
+app.use("/api/route", routeRouter);
 
 app.use("*", defaultRouter);
 
