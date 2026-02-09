@@ -48,6 +48,11 @@ To learn more about developing your own modules, see:
 - [Project layout](./pages/development/layout.html)
 - [Coding style](./pages/development/style.html)
 
+## Changelogs
+
+- The BUG application changelog is stored in the [GitHub repo](https://github.com/bbc/bug/blob/main/CHANGELOG.md).
+- Module changelogs are stored inside their module folder in the repo, and built into the [documentation](/bug/storybook/pages/modules).
+
 ## Open source
 
 BUG is one of many open source projects developed at the BBC.  
