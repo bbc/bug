@@ -3,18 +3,21 @@ networks:
         name: bug
         driver: bridge
 
+volumes:
+    bug_node_modules:
+
 services:
     app:
         container_name: bug
         build:
             context: .
-            dockerfile: ./src/server/Dockerfile
+            dockerfile: ./src/server/Dockerfile.dev
         restart: unless-stopped
         user: root
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - .:/home/node/bug
-            - /home/node/bug/node_modules
+            - .:/home/node/bug:cached
+            - bug_node_modules:/home/node/bug/node_modules
         environment:
             MODULE_PORT: 3200
             MODULE_HOME: /home/node/module
@@ -29,7 +32,6 @@ services:
             PORT: 3000
             NODE_ENV: development
             SESSION_SECRET: aSecretForYourSessions
-        working_dir: /home/node/bug
         depends_on:
             - mongo
         networks:

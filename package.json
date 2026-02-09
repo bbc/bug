@@ -4,9 +4,7 @@
     "description": "Broadcast Universal Gateway",
     "private": true,
     "workspaces": [
-        "src/client",
-        "src/server",
-        "src/modules/**/client"
+        "src/client"
     ],
     "scripts": {
         "predev": "node src/client/scripts/generateMuiIcons.mjs",
@@ -153,7 +151,7 @@
         "video.js": "^7.20.3",
         "web-vitals": "^1.0.1",
         "wildcard-match": "^5.1.2",
-        "winston": "^3.7.2",
+        "winston": "^3.19.0",
         "winston-daily-rotate-file": "^4.7.1",
         "winston-mongodb": "^5.0.7"
     },
