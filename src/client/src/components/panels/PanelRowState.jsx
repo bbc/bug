@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 const State = ({ state, children }) => {
     const stateColors = {
         running: "success.main",
-        idle: "text.secondary",
+        disabled: "text.secondary",
         empty: "text.primary",
         stopping: "warning.main",
         starting: "warning.main",
@@ -53,11 +53,14 @@ export default function PanelRowState({ panel }) {
         return <State state="empty">...</State>;
     }
 
+    const isReady = !panel?._module?.needsContainer || panel?._dockerContainer?._moduleBuilt;
+
     switch (panel._dockerContainer._status) {
         case "building":
             return (
                 <State state="building">
-                    BUILDING PANEL [{formatDuration(buildElapsed)}] - {panel?._buildStatus?.text}
+                    {isReady ? "STARTING" : "BUILDING"} PANEL [{formatDuration(buildElapsed)}] -{" "}
+                    {panel?._buildStatus?.text}
                 </State>
             );
 

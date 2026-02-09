@@ -9,6 +9,7 @@ const panelStatusModel = require("@models/panel-status");
 const dockerContainerModel = require("@models/docker-container");
 const cacheStore = require("@core/cache-store");
 const moduleUpgradeStatusModel = require("@models/module-upgradestatus");
+const dockerListImages = require("@services/docker-listimages");
 
 module.exports = async () => {
     try {
@@ -28,6 +29,8 @@ module.exports = async () => {
         const moduleUpgradeStatus = await moduleUpgradeStatusModel.list();
 
         const panelStatus = await panelStatusModel.list({ noTimestamps: true });
+        const dockerImages = await dockerListImages();
+        const builtModules = dockerImages?.map((m) => m.module) || [];
 
         const filteredPanelList = [];
         for (const eachPanelConfig of panelConfig) {
@@ -64,7 +67,7 @@ module.exports = async () => {
 
                 // combine them
                 filteredPanelList.push(
-                    panelFilter(eachPanelConfig, thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus, thisUpgradeStatus)
+                    panelFilter(eachPanelConfig, thisModuleConfig, thisContainerInfo, thisBuildStatus, thisStatus, thisUpgradeStatus, builtModules)
                 );
             }
         }

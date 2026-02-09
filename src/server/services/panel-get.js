@@ -8,6 +8,7 @@ const moduleUpgradeStatusModel = require("@models/module-upgradestatus");
 const dockerContainerModel = require("@models/docker-container");
 const panelFilter = require("@filters/panel");
 const panelStatusModel = require("@models/panel-status");
+const dockerListImages = require("@services/docker-listimages");
 
 module.exports = async (panelId) => {
     try {
@@ -17,7 +18,9 @@ module.exports = async (panelId) => {
         const panelBuildStatus = await panelBuildStatusModel.get(panelId);
         const moduleUpgradeStatus = await moduleUpgradeStatusModel.get(panelConfig["module"]);
         const panelStatus = await panelStatusModel.get(panelId);
-        return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus, panelStatus, moduleUpgradeStatus);
+        const builtModules = dockerImages?.map((m) => m.module) || [];
+
+        return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus, panelStatus, moduleUpgradeStatus, builtModules);
     } catch (error) {
         logger.error(`panel-get: ${error.stack}`);
         throw new Error(`Failed to get panel id ${panelId}`);
