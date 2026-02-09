@@ -1,5 +1,6 @@
 import HomeAddPanel from "@components/home/HomeAddPanel";
 import HomeTile from "@components/home/HomeTile";
+import HomeViewPanels from "@components/home/HomeViewPanels";
 import BugLoading from "@core/BugLoading";
 import BugRestrictTo from "@core/BugRestrictTo";
 import { Box, Grid } from "@mui/material";
@@ -66,6 +67,13 @@ const HomeTiles = () => {
             const activePanelList = panelList.data.filter((p) => p._active);
             const panelsByGroup = panelListGroups(activePanelList);
             if (panelsByGroup.length === 0) {
+                if (panelList.data.length > 0) {
+                    return (
+                        <BugRestrictTo role="admin">
+                            <HomeViewPanels />
+                        </BugRestrictTo>
+                    );
+                }
                 return (
                     <BugRestrictTo role="admin">
                         <HomeAddPanel />
