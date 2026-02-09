@@ -8,6 +8,7 @@ import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import BugForm from "@core/BugForm";
 import BugRestrictTo from "@core/BugRestrictTo";
 import { Button, Grid } from "@mui/material";
+import { createSelector } from "@reduxjs/toolkit";
 import AxiosDelete from "@utils/AxiosDelete";
 import AxiosGet from "@utils/AxiosGet";
 import AxiosPost from "@utils/AxiosPost";
@@ -35,12 +36,16 @@ export default function UserEdit({ userId = null }) {
     const currentUser = useSelector((state) => state.user);
     const currentUserId = currentUser.status === "success" ? currentUser.data?.id : null;
 
-    const panelList = useSelector((state) =>
-        (state.panelList.data ?? []).map((item) => ({
-            label: item.title,
-            id: item.id,
-        }))
+    const selectPanelList = createSelector(
+        (state) => state.panelList.data,
+        (data) =>
+            (data ?? []).map((item) => ({
+                label: item.title,
+                id: item.id,
+            }))
     );
+
+    const panelList = useSelector(selectPanelList);
 
     useAsyncEffect(async () => {
         if (!userId) {
