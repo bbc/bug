@@ -5,13 +5,15 @@ const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
+    let conn;
+
     try {
         // ensure address is provided
         if (!address || address === "undefined") {
             throw new Error("no address provided to delete route");
         }
 
-        const conn = await mikrotikConnect();
+        conn = await mikrotikConnect();
         if (!conn) throw new Error("could not connect to mikrotik router");
 
         const dbListItems = await mongoSingle.get('listItems') || [];

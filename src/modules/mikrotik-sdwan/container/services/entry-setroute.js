@@ -6,12 +6,14 @@ const logger = require("@core/logger")(module);
 
 module.exports = async (address, list) => {
 
+    let conn;
+
     try {
         if (!address || address === "undefined") {
             throw new Error("no address provided to set route");
         }
 
-        const conn = await mikrotikConnect();
+        conn = await mikrotikConnect();
         if (!conn) throw new Error("could not connect to mikrotik router");
 
         const dbListItems = await mongoSingle.get('listItems') || [];
