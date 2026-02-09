@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 3.1.72
+
+- 2026-02-09: add 'view logs' menu item to panel list ([c4fa89b](https://github.com/bbc/bug/commit/c4fa89bfac37cf485300c06779e19df25172042a))
+- 2026-02-09: allow users to be enabled when created ([567d6c9](https://github.com/bbc/bug/commit/567d6c9dd3dc6a3291d7ea1fb0233095278462e8))
+
 ### version 3.1.71
 
 - 2026-02-09: add update script and changelog generation ([a1adfff](https://github.com/bbc/bug/commit/a1adfff1bf4634f0a45f84b2f46138752d51990f))
