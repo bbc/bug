@@ -3,7 +3,7 @@
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoCollection = require("@core/mongo-collection");
-const ciscoC1300Vlanlist = require("@utils/ciscocbs-vlanlist");
+const ciscoCBSVlanlist = require("@utils/ciscocbs-vlanlist");
 
 module.exports = async function (config, snmpAwait) {
 
@@ -47,7 +47,7 @@ module.exports = async function (config, snmpAwait) {
                     oid: `1.3.6.1.4.1.9.6.1.101.48.61.1.${a}.${eachInterface.interfaceId}`,
                     raw: true,
                 });
-                const vlanList = ciscoC1300Vlanlist.decode(rawSnmpResult, (a - 2) * 1024);
+                const vlanList = ciscoCBSVlanlist.decode(rawSnmpResult, (a - 2) * 1024);
 
                 if (vlanList !== "ALL") {
                     taggedVlans = taggedVlans.concat(vlanList);

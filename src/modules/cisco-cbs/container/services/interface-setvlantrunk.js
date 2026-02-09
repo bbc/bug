@@ -3,8 +3,8 @@
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const mongoSingle = require("@core/mongo-single");
-const ciscoC1300VlanArray = require("@utils/ciscoc1300-vlanarray");
-const ciscoC1300VlanList = require("@utils/ciscoc1300-vlanlist");
+const ciscoCBSVlanArray = require("@utils/ciscocbs-vlanarray");
+const ciscoCBSVlanList = require("@utils/ciscocbs-vlanlist");
 const SnmpAwait = require("@core/snmp-await");
 const deviceSetPending = require("@services/device-setpending");
 const logger = require("@core/logger")(module);
@@ -53,7 +53,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         }
 
         // summarise this into a list of vlans - it's used to update the db
-        const vlanArray = ciscoC1300VlanArray(vlans, taggedVlans);
+        const vlanArray = ciscoCBSVlanArray(vlans, taggedVlans);
         logger.info(
             `interface-setvlantrunk: setting vlan trunk members to ${JSON.stringify(
                 vlanArray
@@ -61,7 +61,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         );
 
         // encode the vlan array back into a hex string
-        const writeValues = ciscoC1300VlanList.encode(taggedVlans, 1024, "");
+        const writeValues = ciscoCBSVlanList.encode(taggedVlans, 1024, "");
 
         // write it back
         for (const [index, value] of writeValues.entries()) {
