@@ -6,15 +6,17 @@ const leaseLabel = require("@utils/lease-label");
 const logger = require("@core/logger")(module);
 
 module.exports = async (lease) => {
-    // check for missing data before connecting
-    if (!lease || !lease.address || !lease.macAddress) {
-        throw new Error("missing required lease data (address or macaddress)");
-    }
 
-    const conn = await mikrotikConnect();
-    if (!conn) throw new Error("could not connect to mikrotik router");
-
+    let conn;
     try {
+        // check for missing data before connecting
+        if (!lease || !lease.address || !lease.macAddress) {
+            throw new Error("missing required lease data (address or macaddress)");
+        }
+
+        conn = await mikrotikConnect();
+        if (!conn) throw new Error("could not connect to mikrotik router");
+
         // get the list of leases first
         const dbLeases = await mongoSingle.get('dhcpLeases') || [];
         const newComment = leaseLabel.stringify({ ...lease, isManaged: true });
