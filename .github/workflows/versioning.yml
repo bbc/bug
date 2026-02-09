@@ -48,35 +48,15 @@ jobs:
                   git diff --cached --quiet || git commit -m "ci: update module changelogs and bump versions"
                   git push
 
-            # backend automated version bump
-            - name: "backend: automated version bump"
-              uses: phips28/gh-action-bump-version@master
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  PACKAGEJSON_DIR: "/"
-              with:
-                  commit-message: "ci: bump backend version to {{version}}"
-                  skip-tag: "true"
-                  skip-push: "false"
-                  target-branch: "main"
-                  minor-wording: "Minor:"
-                  major-wording: "Major:"
-                  rc-wording: "RELEASE,alpha"
-                  tag-prefix: "v"
+            # update app changelog and bump package.json versions
+            - name: update app changelogs
+              run: node .github/scripts/updateApp.js
 
-            # frontend automated version bump
-            - name: "frontend: automated version bump"
-              uses: phips28/gh-action-bump-version@master
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  PACKAGEJSON_DIR: "/src/client"
-              with:
-                  commit-message: "ci: bump frontend version to {{version}}"
-                  skip-tag: "true"
-                  skip-push: "false"
-                  target-branch: "main"
-                  minor-wording: "Minor:"
-                  major-wording: "Major:"
-                  rc-wording: "RELEASE,alpha"
-                  tag-prefix: "v"
-                  bump-policy: "auto"
+            # commit any changes from updateApp.js
+            - name: commit changelog/app changes
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git add CHANGELOG.md package.json src/client/package.json
+                  git diff --cached --quiet || git commit -m "ci: update app changelog and bump versions"
+                  git push
