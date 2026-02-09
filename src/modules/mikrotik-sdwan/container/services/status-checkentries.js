@@ -43,9 +43,8 @@ module.exports = async () => {
             }),
         ];
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`status-checkentries: ${error.message}`);
-        throw error;
+    } catch (err) {
+        logger.error(`status-checkentries: ${err.stack || err.message}`);
+        return [];
     }
 };

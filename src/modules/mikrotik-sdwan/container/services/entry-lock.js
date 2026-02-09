@@ -5,41 +5,40 @@ const configPutViaCore = require("@core/config-putviacore");
 const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
-    // ensure address is provided to prevent logic errors
-    if (!address || address === "undefined") {
-        throw new Error("no address provided to lock entry");
-    }
 
     try {
-        const config = await configGet();
-        if (!config) {
-            throw new Error("failed to retrieve system configuration");
+
+        if (!address || address === "undefined") {
+            throw new Error("no address provided to lock entry");
         }
 
-        // initialize list if missing using nullish assignment
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to retrieve system config");
+        }
+
+        // initialize list 
         config.lockedEntries ??= [];
 
         // exit if already locked to avoid duplicates
         if (config.lockedEntries.includes(address)) {
-            // we throw an error here so the frontend knows exactly why it failed
             throw new Error(`entry ${address} is already locked`);
         }
 
         // update the configuration
         logger.info(`entry-lock: locking address ${address}`);
         config.lockedEntries.push(address);
-
         const success = await configPutViaCore(config);
 
         if (!success) {
             throw new Error("failed to save the updated configuration");
         }
 
-        return { address, status: "locked" };
+        return true;
 
-    } catch (error) {
-        // re-throw the error so it bubbles up to the express route handler
-        logger.error(`entry-lock: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `entry-lock: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };
