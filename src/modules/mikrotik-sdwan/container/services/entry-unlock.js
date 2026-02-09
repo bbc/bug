@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
     // validate input to prevent filtering errors
@@ -18,12 +19,12 @@ module.exports = async (address) => {
         // exit early if there are no locked entries to process
         if (!config.lockedEntries || !config.lockedEntries.includes(address)) {
             // we return true here because the desired state (unlocked) is already met
-            console.log(`entry-unlock: entry ${address} is not currently locked`);
+            logger.info(`entry-unlock: entry ${address} is not currently locked`);
             return true;
         }
 
         // remove the specific address from the array
-        console.log(`entry-unlock: unlocking address ${address}`);
+        logger.info(`entry-unlock: unlocking address ${address}`);
         config.lockedEntries = config.lockedEntries.filter((entry) => entry !== address);
 
         // save the updated configuration
@@ -37,7 +38,7 @@ module.exports = async (address) => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`entry-unlock: ${error.message}`);
+        logger.error(`entry-unlock: ${error.message}`);
         throw error;
     }
 };

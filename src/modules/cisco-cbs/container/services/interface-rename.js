@@ -4,7 +4,7 @@ const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const deviceSetPending = require("@services/device-setpending");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId, newName) => {
     let snmpAwait;

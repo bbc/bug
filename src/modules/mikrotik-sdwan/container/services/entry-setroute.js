@@ -2,6 +2,7 @@
 
 const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address, list) => {
     // ensure address is provided to prevent logic errors
@@ -19,7 +20,7 @@ module.exports = async (address, list) => {
         if (existingIndex !== -1) {
             // update existing
             const item = dbListItems[existingIndex];
-            console.log(`entry-setroute: updating ${address} to list '${list}'`);
+            logger.info(`entry-setroute: updating ${address} to list '${list}'`);
 
             await conn.write(`/ip/firewall/address-list/set`, [
                 `=numbers=${item.id}`,
@@ -29,7 +30,7 @@ module.exports = async (address, list) => {
             dbListItems[existingIndex].list = list;
         } else {
             // add new item
-            console.log(`entry-setroute: creating new entry for ${address} in list '${list}'`);
+            logger.info(`entry-setroute: creating new entry for ${address} in list '${list}'`);
 
             // add to mikrotik and capture the new id
             const result = await conn.write(`/ip/firewall/address-list/add`, [
@@ -56,7 +57,7 @@ module.exports = async (address, list) => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`entry-setroute: ${error.message}`);
+        logger.error(`entry-setroute: ${error.message}`);
         throw error;
     } finally {
         // ensure connection always closes regardless of success or failure

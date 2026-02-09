@@ -4,7 +4,7 @@ const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const aristaApi = require("@utils/arista-api");
 const deviceSetPending = require("@services/device-setpending");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
 

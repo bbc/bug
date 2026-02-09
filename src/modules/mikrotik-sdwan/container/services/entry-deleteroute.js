@@ -2,6 +2,7 @@
 
 const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
     // ensure address is provided
@@ -18,7 +19,7 @@ module.exports = async (address) => {
 
         if (existingIndex !== -1) {
             const item = dbListItems[existingIndex];
-            console.log(`entry-deleteroute: removing ${address} (ID: ${item.id}) from Mikrotik`);
+            logger.info(`entry-deleteroute: removing ${address} (ID: ${item.id}) from Mikrotik`);
 
             // remove from mikrotik using the id stored in mongo
             await conn.write(`/ip/firewall/address-list/remove`, [
@@ -31,15 +32,15 @@ module.exports = async (address) => {
             // save the pruned array back to mongo
             await mongoSingle.set('listItems', updatedListItems);
 
-            console.log(`entry-deleteroute: ${address} successfully deleted.`);
+            logger.info(`entry-deleteroute: ${address} successfully deleted.`);
             return true;
         } else {
-            console.log(`entry-deleteroute: ${address} not found in database, nothing to delete.`);
+            logger.info(`entry-deleteroute: ${address} not found in database, nothing to delete.`);
             return false;
         }
 
     } catch (error) {
-        console.error(`entry-deleteroute error: ${error.message}`);
+        logger.error(`entry-deleteroute error: ${error.message}`);
         throw error;
     } finally {
         if (conn) conn.close();

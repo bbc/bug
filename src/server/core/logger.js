@@ -1,7 +1,6 @@
 /**
  * core/logger.js
- * Logger for BUG app server using winston
- * 0.0.1 09/08/2023 - Created first version (RM)
+ * Logger for BUG modules using winston
  */
 
 const winston = require("winston");

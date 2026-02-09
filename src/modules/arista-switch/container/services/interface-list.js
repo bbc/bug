@@ -6,7 +6,7 @@ const wildcard = require("wildcard-regex");
 const configGet = require("@core/config-get");
 const mongoSingle = require("@core/mongo-single");
 const aristaExpandVlanRanges = require("@utils/arista-expandvlanranges");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, stackId = null) => {
     try {

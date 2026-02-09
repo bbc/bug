@@ -3,6 +3,7 @@
 const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const leaseLabel = require("@utils/lease-label");
+const logger = require("@core/logger")(module);
 
 module.exports = async (lease) => {
     // check for missing data before connecting
@@ -23,7 +24,7 @@ module.exports = async (lease) => {
 
         if (existingMacIndex > -1) {
             // it's an update to the existing item
-            console.log(`dhcplease-add: updating existing item with mac address ${lease.macAddress}`);
+            logger.info(`dhcplease-add: updating existing item with mac address ${lease.macAddress}`);
 
             const existingLease = dbLeases[existingMacIndex];
 
@@ -52,7 +53,7 @@ module.exports = async (lease) => {
             }
 
             // creating a new item requires the add command
-            console.log(`dhcplease-add: creating new reservation for ${lease.macAddress}`);
+            logger.info(`dhcplease-add: creating new reservation for ${lease.macAddress}`);
 
             await conn.write(`/ip/dhcp-server/lease/add`, [
                 `=comment=${newComment}`,
@@ -80,7 +81,7 @@ module.exports = async (lease) => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`dhcplease-add: ${error.message}`);
+        logger.error(`dhcplease-add: ${error.message}`);
         throw error;
     } finally {
         // ensure connection always closes

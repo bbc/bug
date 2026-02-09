@@ -2,7 +2,7 @@
 
 const ciscoCBSSSH = require("@utils/ciscocbs-ssh");
 const configGet = require("@core/config-get");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const deviceSetPending = require("@services/device-setpending");
 
 module.exports = async () => {

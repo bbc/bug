@@ -1,7 +1,7 @@
 "use strict";
 
 const videohub = require("@utils/videohub-promise");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (address, port) => {
     try {

@@ -2,7 +2,7 @@
 
 const configGet = require("@core/config-get");
 const aristaApi = require("@utils/arista-api");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {

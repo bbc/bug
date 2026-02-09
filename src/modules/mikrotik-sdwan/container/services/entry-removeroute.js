@@ -2,6 +2,7 @@
 
 const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
     // ensure address is provided to prevent logic errors
@@ -19,13 +20,13 @@ module.exports = async (address) => {
         const itemsToRemove = dbListItems.filter(li => li.address === address);
 
         if (itemsToRemove.length === 0) {
-            console.log(`entry-removeroute: no entries found for ${address}`);
+            logger.info(`entry-removeroute: no entries found for ${address}`);
             return true;
         }
 
         // remove each matching entry from the mikrotik router
         for (const item of itemsToRemove) {
-            console.log(`entry-removeroute: removing ${address} from list '${item.list}'`);
+            logger.info(`entry-removeroute: removing ${address} from list '${item.list}'`);
 
             await conn.write("/ip/firewall/address-list/remove", [
                 `=.id=${item.id}`
@@ -39,7 +40,7 @@ module.exports = async (address) => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`entry-removeroute error: ${error.message}`);
+        logger.error(`entry-removeroute error: ${error.message}`);
         throw error;
     } finally {
         // ensure connection always closes regardless of success or failure

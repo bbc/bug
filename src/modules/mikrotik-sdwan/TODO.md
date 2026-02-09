@@ -11,3 +11,4 @@
 - refactor workers to improve error handling
 
 - fetchFirewall isn't used!
+- update services with logger.error (and use logger, not console.log)

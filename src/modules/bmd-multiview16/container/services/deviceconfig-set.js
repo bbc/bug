@@ -2,7 +2,7 @@
 
 const configGet = require("@core/config-get");
 const Videohub = require("@utils/videohub-promise");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (name, value) => {
     try {

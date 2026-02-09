@@ -2,6 +2,7 @@
 
 const mongoSingle = require('@core/mongo-single');
 const sortHandlers = require("@core/sort-handlers");
+const logger = require("@core/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     try {
@@ -47,7 +48,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`dhcplease-list error: ${error.message}`);
+        logger.error(`dhcplease-list error: ${error.message}`);
         throw error;
     }
 };
