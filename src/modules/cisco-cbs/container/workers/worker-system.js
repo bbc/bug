@@ -14,7 +14,7 @@ parentPort.postMessage({
     restartOn: ["address", "snmpCommunity"],
 });
 
-const pollInterval = 1000000; // ~16 minutes
+const pollInterval = 900000; // 15 minutes
 
 let snmpAwait;
 
