@@ -17,7 +17,7 @@
         "form-urlencoded": "^6.0.4",
         "http-errors": "^1.8.0",
         "json-form-data": "^1.7.2",
-        "jssoup": "0.0.12",
+        "jssoup": "0.0.15",
         "md5": "^2.3.0",
         "module-alias": "^2.2.2",
         "mongodb": "^3.6.6",
