@@ -1,20 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const wanList = require("@services/wan-list");
+const asyncHandler = require("express-async-handler");
 
-router.all("/", async function (req, res, next) {
-    try {
-        res.json({
-            status: "success",
-            data: await wanList(),
-        });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to list sdwan entries",
-        });
-    }
-});
+router.all("/", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await wanList(),
+    });
+}));
 
 module.exports = router;
