@@ -20,6 +20,8 @@ aux_links:
         - "//github.com/bbc/bug"
 
 nav_external_links:
+    - title: Changelog
+      url: https://github.com/bbc/bug/blob/main/CHANGELOG.md
     - title: Component Library
       url: /storybook/
 
