@@ -14,7 +14,7 @@ module.exports = async () => {
 
         logger.info("device-save: saving device config ...");
 
-        result = await ciscoC1300SSH({
+        result = await ciscoCBSSSH({
             host: config.address,
             username: config.username,
             password: config.password,

@@ -4,7 +4,7 @@ const mongoCollection = require("@core/mongo-collection");
 const matchAnyRegex = require("@core/regex-matchany");
 const wildcard = require("wildcard-regex");
 const configGet = require("@core/config-get");
-const ciscoC1300ExpandVlanRanges = require("@utils/ciscoc1300-expandvlanranges");
+const ciscoCBSExpandVlanRanges = require("@utils/ciscocbs-expandvlanranges");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 
@@ -57,7 +57,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
         if (vlans) {
             // expand any '1-4094' entries
             for (let eachInterface of interfaces) {
-                eachInterface["tagged-vlans"] = ciscoC1300ExpandVlanRanges(
+                eachInterface["tagged-vlans"] = ciscoCBSExpandVlanRanges(
                     eachInterface["tagged-vlans"],
                     availableVlanArray
                 );
