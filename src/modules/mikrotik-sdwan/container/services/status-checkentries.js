@@ -4,6 +4,7 @@
 const mongoSingle = require('@core/mongo-single');
 const configGet = require("@core/config-get");
 const StatusItem = require("@core/StatusItem");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
 
@@ -44,7 +45,7 @@ module.exports = async () => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`status-checkentries: ${error.message}`);
+        logger.error(`status-checkentries: ${error.message}`);
         throw error;
     }
 };

@@ -2,7 +2,7 @@
 
 const StatusItem = require("@core/StatusItem");
 const mongoCollection = require("@core/mongo-collection");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {

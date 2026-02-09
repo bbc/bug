@@ -2,6 +2,7 @@
 
 const mongoSingle = require('@core/mongo-single');
 const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     const ungroupedLabel = "UNGROUPED";
@@ -73,7 +74,7 @@ module.exports = async () => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`entry-list: ${error.message}`);
+        logger.error(`entry-list: ${error.message}`);
         throw error;
     }
 };

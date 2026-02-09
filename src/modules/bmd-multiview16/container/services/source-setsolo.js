@@ -3,7 +3,7 @@
 const destinationRoute = require("@services/destination-route");
 const delay = require("delay");
 const deviceConfigSet = require("@services/deviceconfig-set");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (sourceIndex) => {
     try {

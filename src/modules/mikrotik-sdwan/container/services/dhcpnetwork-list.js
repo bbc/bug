@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoSingle = require('@core/mongo-single');
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {
@@ -31,7 +32,7 @@ module.exports = async () => {
 
     } catch (error) {
         // re-throw error so the api handler catches it
-        console.error(`dhcpnetwork-list: ${error.message}`);
+        logger.error(`dhcpnetwork-list: ${error.message}`);
         throw error;
     }
 };

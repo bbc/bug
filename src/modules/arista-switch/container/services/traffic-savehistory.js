@@ -1,5 +1,5 @@
 "use strict";
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (collection, interfaceArray) => {
     try {

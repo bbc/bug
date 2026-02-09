@@ -3,7 +3,7 @@
 const ciscoC1300SSH = require("@utils/ciscoc1300-ssh");
 const configGet = require("@core/config-get");
 const deviceSetPending = require("@services/device-setpending");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {

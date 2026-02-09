@@ -2,7 +2,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const sortHandlers = require("@core/sort-handlers");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}, interfaceId) => {
     try {
