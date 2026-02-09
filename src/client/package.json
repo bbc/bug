@@ -1,6 +1,6 @@
 {
     "name": "bug-client",
-    "version": "3.1.69",
+    "version": "3.1.71",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -28,7 +28,6 @@
     },
     "devDependencies": {
         "@storybook/addon-essentials": "^8.6.15",
-        "@storybook/addon-highlight": "^8.6.15",
         "@storybook/addon-interactions": "^8.6.15",
         "@storybook/addon-links": "^8.6.15",
         "@storybook/addon-mdx-gfm": "^8.6.15",
