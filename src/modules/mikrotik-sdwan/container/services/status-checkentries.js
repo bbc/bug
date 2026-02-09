@@ -16,7 +16,7 @@ module.exports = async () => {
         ]);
 
         if (!config) {
-            throw new Error("failed to retrieve system configuration");
+            return []
         }
 
         // filter for managed leases immediately
