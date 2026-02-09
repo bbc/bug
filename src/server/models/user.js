@@ -93,7 +93,6 @@ exports.set = async function (user) {
 
         // create a new user with a sparkly new UUID
         user.id = await uuidv4();
-        user.enabled = false;
 
         // add lengths and hash password/pin
         user = await processPassword(user);
