@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.6
+
+- 2026-02-09: service/util updates ([73e1f9e](https://github.com/bbc/bug/commit/73e1f9eaa87b8b5d1bd2e6a2ea571dbe39b94644))
+
 ### version 1.1.5
 
 - 2026-02-06: improve service logging ([c70cf23](https://github.com/bbc/bug/commit/c70cf23a3aafecfc95dadb76e8436875e1f3b757))
