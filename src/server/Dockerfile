@@ -1,6 +1,6 @@
 FROM node:22-alpine
 
-# Remove default node user
+# remove default node user
 RUN deluser --remove-home node
 
 WORKDIR /home/node/bug
@@ -22,4 +22,4 @@ ENV NODE_ENV=production
 ENV BUG_PORT=80
 
 # start server
-CMD ["node", "./src/server/bin/bug-prod.js"]
+CMD ["npm", "run", "start"]

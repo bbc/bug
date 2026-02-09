@@ -1,0 +1,20 @@
+FROM node:22-alpine
+
+USER root
+WORKDIR /home/node/bug
+
+# copy package.json for install
+COPY package*.json ./
+COPY src/client/package*.json ./src/client/
+
+# install dependencies
+RUN npm install --legacy-peer-deps
+
+# copy all source for hot reload
+COPY src ./src
+
+ENV NODE_ENV=development
+ENV BUG_PORT=3101
+EXPOSE 3000 3101
+
+CMD ["npm", "run", "dev"]
