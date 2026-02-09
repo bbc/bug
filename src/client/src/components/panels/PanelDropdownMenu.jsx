@@ -6,6 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import ReplayIcon from "@mui/icons-material/Replay";
 import SettingsIcon from "@mui/icons-material/Settings";
+import TerminalIcon from "@mui/icons-material/Terminal";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
@@ -141,26 +142,13 @@ export default function PanelDropdownMenu({ panel }) {
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();
-        const result = await renameDialog({
-            title: "Change panel group",
-            defaultValue: panel?.group.toUpperCase(),
-            confirmButtonText: "Change",
-            filter: (char) => char.replace(":", ""),
-            allowBlank: true,
-            sx: {
-                "& .MuiInputBase-input": {
-                    textTransform: "uppercase",
-                },
-            },
-        });
+    };
 
-        if (result !== false) {
-            if (await AxiosCommand(`/api/panel/group/${panel?.id}/${result.toLowerCase()}`)) {
-                sendAlert(`Updated group for panel ${panel?.title}`, { broadcast: "true", variant: "success" });
-            } else {
-                sendAlert(`Failed to change group for panel: ${panel?.title}`, { variant: "error" });
-            }
-        }
+    const handleViewLogs = async (event) => {
+        setAnchorEl(null);
+        event.stopPropagation();
+        event.preventDefault();
+        navigate(`/system/logs/${panel.id}`);
     };
 
     const PanelMenuItem = React.forwardRef(({ text, onClick, hidden, disabled, children }, ref) => {
@@ -187,6 +175,14 @@ export default function PanelDropdownMenu({ panel }) {
                 <PanelMenuItem disabled={disableDisable} onClick={handleDisable} text="Disable">
                     <ToggleOffIcon fontSize="small" />
                 </PanelMenuItem>
+                <Divider />
+                <PanelMenuItem disabled={disableRestart} onClick={handleRestart} text="Restart" hidden={hideRestart}>
+                    <ReplayIcon fontSize="small" />
+                </PanelMenuItem>
+
+                <PanelMenuItem disabled={disableDelete} onClick={handleDelete} text="Delete">
+                    <DeleteIcon fontSize="small" />
+                </PanelMenuItem>
 
                 <Divider />
 
@@ -198,18 +194,14 @@ export default function PanelDropdownMenu({ panel }) {
                     <ClearAllIcon fontSize="small" />
                 </PanelMenuItem>
 
-                <PanelMenuItem disabled={disableDelete} onClick={handleDelete} text="Delete">
-                    <DeleteIcon fontSize="small" />
+                <PanelMenuItem onClick={handleViewLogs} text="View Logs">
+                    <TerminalIcon fontSize="small" />
                 </PanelMenuItem>
 
-                {hideRestart && hideUpgrade ? "" : <Divider />}
+                {hideUpgrade ? "" : <Divider />}
 
                 <PanelMenuItem disabled={disableUpgrade} onClick={handleUpgrade} text="Upgrade" hidden={hideUpgrade}>
                     <NewReleasesIcon fontSize="small" />
-                </PanelMenuItem>
-
-                <PanelMenuItem disabled={disableRestart} onClick={handleRestart} text="Restart" hidden={hideRestart}>
-                    <ReplayIcon fontSize="small" />
                 </PanelMenuItem>
             </Menu>
         </div>
