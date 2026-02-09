@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.3
+
+- 2026-02-06: improve service logging ([971b2eb](https://github.com/bbc/bug/commit/971b2eb8e030e6036e318084d0cd1e70c7b2b7a1))
+
 ### version 1.2.2
 
 - 2026-02-03: show poe info in details tab ([4373b97](https://github.com/bbc/bug/commit/4373b97c35efb277ee046c6fd3ec9d6023b2c59e))
