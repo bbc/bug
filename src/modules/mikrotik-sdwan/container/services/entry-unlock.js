@@ -5,12 +5,12 @@ const configPutViaCore = require("@core/config-putviacore");
 const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
-    // validate input to prevent filtering errors
-    if (!address || address === "undefined") {
-        throw new Error("no address provided for entry unlock");
-    }
 
     try {
+        if (!address || address === "undefined") {
+            throw new Error("no address provided for entry unlock");
+        }
+
         const config = await configGet();
         if (!config) {
             throw new Error("failed to retrieve system configuration");
@@ -36,9 +36,9 @@ module.exports = async (address) => {
 
         return true;
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`entry-unlock: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `entry-unlock: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

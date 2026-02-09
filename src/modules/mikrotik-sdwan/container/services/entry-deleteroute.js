@@ -5,23 +5,22 @@ const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 
 module.exports = async (address) => {
-    // ensure address is provided
-    if (!address || address === "undefined") {
-        throw new Error("no address provided to delete route");
-    }
-
-    const conn = await mikrotikConnect();
-    if (!conn) throw new Error("could not connect to mikrotik router");
-
     try {
+        // ensure address is provided
+        if (!address || address === "undefined") {
+            throw new Error("no address provided to delete route");
+        }
+
+        const conn = await mikrotikConnect();
+        if (!conn) throw new Error("could not connect to mikrotik router");
+
         const dbListItems = await mongoSingle.get('listItems') || [];
         const existingIndex = dbListItems.findIndex((li) => li.address === address);
 
         if (existingIndex !== -1) {
             const item = dbListItems[existingIndex];
-            logger.info(`entry-deleteroute: removing ${address} (ID: ${item.id}) from Mikrotik`);
+            logger.info(`entry-deleteroute: removing ${address} (id: ${item.id}) from router`);
 
-            // remove from mikrotik using the id stored in mongo
             await conn.write(`/ip/firewall/address-list/remove`, [
                 `=numbers=${item.id}`
             ]);
@@ -39,9 +38,10 @@ module.exports = async (address) => {
             return false;
         }
 
-    } catch (error) {
-        logger.error(`entry-deleteroute error: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `entry-deleteroute: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     } finally {
         if (conn) conn.close();
     }

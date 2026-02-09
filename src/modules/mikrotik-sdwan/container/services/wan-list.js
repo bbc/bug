@@ -40,9 +40,9 @@ module.exports = async () => {
                 return nameA.localeCompare(nameB);
             });
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`wan-list: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `wan-list: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

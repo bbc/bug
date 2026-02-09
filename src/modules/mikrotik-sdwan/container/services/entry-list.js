@@ -72,9 +72,9 @@ module.exports = async () => {
             return group;
         });
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`entry-list: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `entry-list: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

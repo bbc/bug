@@ -79,10 +79,10 @@ module.exports = async (lease) => {
 
         return true;
 
-    } catch (error) {
-        // re-throw error so the api handler catches it
-        logger.error(`dhcplease-add: ${error.message}`);
-        throw error;
+    } catch (err) {
+        err.message = `dhcplease-add: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     } finally {
         // ensure connection always closes
         if (conn) conn.close();
