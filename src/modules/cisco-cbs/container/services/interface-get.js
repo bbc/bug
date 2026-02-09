@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoCollection = require("@core/mongo-collection");
-const ciscoC1300ExpandVlanRanges = require("@utils/ciscoc1300-expandvlanranges");
+const ciscoCBSExpandVlanRanges = require("@utils/ciscocbs-expandvlanranges");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 
@@ -28,7 +28,7 @@ module.exports = async (interfaceId) => {
         }
 
         // expand tagged VLAN ranges
-        interfaceResult["tagged-vlans"] = ciscoC1300ExpandVlanRanges(
+        interfaceResult["tagged-vlans"] = ciscoCBSExpandVlanRanges(
             interfaceResult["tagged-vlans"],
             availableVlanArray
         );

@@ -5,8 +5,8 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const SnmpAwait = require("@core/snmp-await");
-const ciscoc1300FetchVlans = require("../utils/ciscocbs-fetchvlans");
-const ciscoc1300FetchInterfaceVlans = require("../utils/ciscocbs-fetchinterfacevlans");
+const ciscocbsFetchVlans = require("../utils/ciscocbs-fetchvlans");
+const ciscocbsFetchInterfaceVlans = require("../utils/ciscocbs-fetchinterfacevlans");
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -36,13 +36,13 @@ const main = async () => {
             });
 
             // fetch VLAN information
-            await ciscoc1300FetchVlans(workerData, snmpAwait);
+            await ciscocbsFetchVlans(workerData, snmpAwait);
 
             await delay(1000);
 
             for (let a = 1; a < 5; a++) {
                 // fetch interface VLAN assignments
-                await ciscoc1300FetchInterfaceVlans(workerData, snmpAwait);
+                await ciscocbsFetchInterfaceVlans(workerData, snmpAwait);
                 await delay(10000);
             }
 
