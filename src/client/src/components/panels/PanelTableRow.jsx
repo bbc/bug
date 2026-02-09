@@ -39,8 +39,10 @@ export default function PanelTableRow({ panel, showGroups }) {
         panel?._dockerContainer?._status !== "building" &&
         panel?._dockerContainer?._status !== "starting"
     ) {
-        rowOpacity = 0.3;
+        rowOpacity = 0.35;
     }
+
+    const isReady = !panel?._module?.needsContainer || panel?._dockerContainer?._moduleBuilt;
 
     return (
         <TableRow
@@ -59,7 +61,7 @@ export default function PanelTableRow({ panel, showGroups }) {
                     textAlign: "center",
                 }}
             >
-                <BugPowerIcon panel={panel} />
+                {isReady && <BugPowerIcon panel={panel} />}
             </TableCell>
             <TableCell sx={{ width: "4rem" }} style={{ textAlign: "center" }}>
                 <BugApiSwitch
