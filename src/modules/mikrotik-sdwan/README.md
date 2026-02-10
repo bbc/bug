@@ -4,11 +4,19 @@
 
 The mikrotik-sdwan module provides simple, rule-based traffic steering on a MikroTik router. It allows users to explicitly choose which WAN a device or service should use, using MikroTik address lists, mangle rules, and routes under the hood.
 
+### Leases
+
 IP addresses can be added manually or selected from the router’s DHCP lease list, then organised into logical groups. This makes it easy to manage multi-interface devices such as LiveU units or Tieline gateways, where each interface can be routed independently.
+
+### WANs
 
 WANs exposed in the UI are simply MikroTik route tables. Route tables are labelled using their comments on the router; tables without a comment are ignored. Updating a comment immediately updates the label shown in the module.
 
 When a WAN is selected for an IP address, the module creates the required address list entry to steer traffic via the chosen route table. Selecting the default WAN removes this entry, returning traffic to normal routing behaviour. If an IP address was sourced from DHCP, the module also displays whether the lease is currently active.
+
+### Default Routes
+
+Lastly, the available (and active) default routes of the main routing table are displayed at the top of the page. Note that this section is READ ONLY.
 
 ![Screenshot](./assets/screenshot.png)
 
