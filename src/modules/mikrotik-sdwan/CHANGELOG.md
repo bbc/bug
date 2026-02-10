@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.5
+
+- 2026-02-10: fix route/group sorting ([f00ee76](https://github.com/bbc/bug/commit/f00ee769ffce34e2b37c74feb852ebc3c50dbd9c))
+- 2026-02-10: improve default status ([dfd72e2](https://github.com/bbc/bug/commit/dfd72e2eda7f2c59d5506ec31e8e43af23f52508))
+
 ### version 1.0.4
 
 - 2026-02-09: add default route view ([6226bb2](https://github.com/bbc/bug/commit/6226bb2e6c719d920bdf5e79f513bbf3f38957e3))
