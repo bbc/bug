@@ -44,9 +44,8 @@ export default function LogStream({ panelId }) {
             }
         });
 
-        source.onerror = () => {
-            console.error("Log stream error");
-            source.close();
+        source.onerror = (e) => {
+            console.warn("Log stream error (will auto-reconnect)", e);
         };
     };
 
@@ -172,6 +171,11 @@ export default function LogStream({ panelId }) {
                                         userSelect: "text",
                                         WebkitUserSelect: "text",
                                         MozUserSelect: "text",
+                                        "& span": {
+                                            userSelect: "text",
+                                            WebkitUserSelect: "text",
+                                            MozUserSelect: "text",
+                                        },
                                     }}
                                 >
                                     <span
