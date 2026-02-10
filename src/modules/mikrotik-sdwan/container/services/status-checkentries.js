@@ -9,8 +9,8 @@ const logger = require("@core/logger")(module);
 module.exports = async () => {
 
     try {
-        // fetch data in parallel including the config for lock status
-        const [dbDhcpLeases, config] = await Promise.all([
+        const [dbTables, dbDhcpLeases, config] = await Promise.all([
+            mongoSingle.get('routingTables'),
             mongoSingle.get('dhcpLeases'),
             configGet()
         ]);
@@ -19,29 +19,18 @@ module.exports = async () => {
             return []
         }
 
-        // filter for managed leases immediately
         const managedLeases = (dbDhcpLeases || []).filter(d => d.isManaged === true);
+        const prefix = config.routingTablePrefix;
+        const managedTables = (dbTables || []).filter(table => table.name?.startsWith(prefix) && !table.disabled && table.comment)
+        const entryText = managedLeases.length === 1 ? "entry" : "entries";
 
-        if (!managedLeases || managedLeases.length === 0) {
-            return [
-                new StatusItem({
-                    key: `noleases`,
-                    message: "No SDWAN entries configured",
-                    type: "info",
-                    flags: [],
-                }),
-            ];
+        return new StatusItem({
+            message: `Device active with ${managedLeases.length} ${entryText} and ${managedTables.length} WAN(s) defined`,
+            key: "defaultservice",
+            type: "default",
+            flags: [],
+        })
 
-        }
-
-        return [
-            new StatusItem({
-                key: `leasesfound`,
-                message: `${managedLeases.length} SDWAN entries configured`,
-                type: "default",
-                flags: [],
-            }),
-        ];
 
     } catch (err) {
         logger.error(`status-checkentries: ${err.stack || err.message}`);
