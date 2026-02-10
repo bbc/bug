@@ -1,3 +1,0 @@
-- add README.md
-- add historical entries to CHANGELOG.md
-- add screenshot
