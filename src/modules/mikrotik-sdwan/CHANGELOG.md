@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.4
+
+- 2026-02-09: add default route view ([6226bb2](https://github.com/bbc/bug/commit/6226bb2e6c719d920bdf5e79f513bbf3f38957e3))
+
 ### version 1.0.3
 
 - 2026-02-09: update logging in services ([9a3830d](https://github.com/bbc/bug/commit/9a3830dd19ac09239808669ee3aaea87ce2faaff))
