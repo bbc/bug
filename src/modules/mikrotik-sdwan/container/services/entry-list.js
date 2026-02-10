@@ -63,14 +63,26 @@ module.exports = async () => {
         }, {});
 
         // convert to array and sort items within each group
-        return Object.values(groupedEntries).map(group => {
-            // sort items alphabetically by label
-            group.items.sort((a, b) => a.label.localeCompare(b.label, undefined, {
-                numeric: true,
-                sensitivity: 'base'
-            }));
-            return group;
-        });
+        return Object.values(groupedEntries)
+            // sort groups by name, UNGROUPED last
+            .sort((a, b) => {
+                if (a.group === ungroupedLabel) return 1;
+                if (b.group === ungroupedLabel) return -1;
+
+                return a.group.localeCompare(b.group, undefined, {
+                    sensitivity: 'base'
+                });
+            })
+            // then sort items within each group
+            .map(group => {
+                group.items.sort((a, b) =>
+                    a.label.localeCompare(b.label, undefined, {
+                        numeric: true,
+                        sensitivity: 'base'
+                    })
+                );
+                return group;
+            });
 
     } catch (err) {
         err.message = `entry-list: ${err.stack || err.message}`;

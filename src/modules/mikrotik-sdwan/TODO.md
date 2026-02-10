@@ -4,5 +4,4 @@
 - maybe a details page with a bugdetailspage showing the entry info
 - need to handle no data better - critical
 - add test for log route
-- refactor workers to improve error handling
 - fetchFirewall isn't used!
