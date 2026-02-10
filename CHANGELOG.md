@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 3.1.74
+
+- 2026-02-10: fix auto-reconnect of log stream ([df3b620](https://github.com/bbc/bug/commit/df3b620768f34347cfd84cea999b637c1df63c8f))
+
 ### version 3.1.73
 
 - 2026-02-09: add 'view panels' button to home screen ([07a3eac](https://github.com/bbc/bug/commit/07a3eac8b657bcd5393f5c86d6efa8a930692a98))
