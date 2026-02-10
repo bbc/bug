@@ -1,4 +1,3 @@
-- add panel status (default/success etc)
 - need to think about resetting connection table
 - do I want to show the hostname or ip address if the entry row is tall enough
 - maybe a details page with a bugdetailspage showing the entry info

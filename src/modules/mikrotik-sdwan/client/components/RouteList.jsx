@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 
 export default function RouteList({ panelId, routes }) {
     if (routes?.status === "loading" || routes?.status !== "success") {
@@ -57,7 +57,10 @@ export default function RouteList({ panelId, routes }) {
                                         cursor: "default",
                                     }}
                                 >
-                                    {route.comment}
+                                    <Stack>
+                                        <Box>{route.label}</Box>
+                                        <Box sx={{ opacity: 0.5 }}>{route.dynamic ? "DYNAMIC" : "STATIC"}</Box>
+                                    </Stack>
                                 </Button>
                             );
                         })}
