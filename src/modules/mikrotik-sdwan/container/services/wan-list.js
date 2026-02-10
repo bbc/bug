@@ -35,9 +35,9 @@ module.exports = async () => {
         return dbTables
             .filter(table => table.name?.startsWith(prefix) && !table.disabled && table.comment)
             .sort((a, b) => {
-                const nameA = a.name || '';
-                const nameB = b.name || '';
-                return nameA.localeCompare(nameB);
+                const commentA = a.comment || '';
+                const commentB = b.comment || '';
+                return commentA.localeCompare(commentB);
             });
 
     } catch (err) {
