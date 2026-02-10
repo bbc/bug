@@ -14,12 +14,15 @@ module.exports = async () => {
 
         return dbRoutes
             .map((route) => {
-                const gatewayLabel = route?.['immediate-gw'].includes('%') ? route?.['immediate-gw'].split('%', 2).slice(1).join('%') : '';
+                let label = route.comment;
+                if (!label) {
+                    label = route?.['immediate-gw'].includes('%') ? route?.['immediate-gw'].split('%', 2).slice(1).join('%') : '';
+                }
 
                 return {
                     id: route.id,
                     comment: route.comment,
-                    label: gatewayLabel,
+                    label: label,
                     interface: route.interface,
                     distance: route.distance,
                     disabled: route.disabled,
