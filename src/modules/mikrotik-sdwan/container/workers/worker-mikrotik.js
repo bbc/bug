@@ -1,20 +1,18 @@
 "use strict";
 
 const { parentPort, workerData } = require("worker_threads");
-const RosApi = require("node-routeros").RouterOSAPI;
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoSingle = require("@core/mongo-single");
 const obscure = require("@core/obscure-password");
 const logger = require("@core/logger")(module);
 const workerTaskManager = require("@core/worker-taskmanager");
+const RouterOSApi = require("@core/routeros-api");
 
 parentPort.postMessage({
     restartDelay: 10000,
     restartOn: ["address", "username", "password"],
 });
-
-let conn;
 
 const main = async () => {
     try {
@@ -29,18 +27,22 @@ const main = async () => {
         await mongoSingle.clear("routingTables");
         await mongoSingle.clear("system");
 
-        conn = new RosApi({
+        const routerOsApi = new RouterOSApi({
             host: workerData.address,
             user: workerData.username,
             password: workerData.password,
             timeout: 10,
+            onDisconnect: (err) => {
+                logger.error("RouterOS connection lost:", err.message);
+                process.exit(1);
+            }
         });
 
         logger.info(
             `worker-mikrotik: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
         );
 
-        await conn.connect();
+        const conn = await routerOsApi.connect();
         logger.info("worker-mikrotik: device connected ok");
 
 
@@ -53,7 +55,7 @@ const main = async () => {
                 { name: "routes", seconds: 4, handler: require("./tasks/routes") },
                 { name: "routingtables", seconds: 5, handler: require("./tasks/routingtables") },
                 { name: "listitems", seconds: 5, handler: require("./tasks/listitems") },
-                { name: "system", seconds: 100, handler: require("./tasks/system") },
+                { name: "system", seconds: 5, handler: require("./tasks/system") },
             ], context: { conn, mongoSingle }, baseDir: __dirname
         });
 
