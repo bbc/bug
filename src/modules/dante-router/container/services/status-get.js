@@ -7,8 +7,8 @@ module.exports = async () => {
     return [].concat(
         await statusCheckCollection({
             collectionName: "domains",
-            message: ["There is no recent router data for this device.", "Check your connection or address details."],
-            itemType: "error",
+            message: ["There is no recent router data for this device."],
+            itemType: "critical",
             timeoutSeconds: 15,
             flags: ["restartPanel", "configurePanel"],
         }),
