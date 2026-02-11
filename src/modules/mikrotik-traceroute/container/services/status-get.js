@@ -9,7 +9,7 @@ module.exports = async () => {
     const tracerouteResult = await statusCheckCollection({
         collectionName: "traceroute",
         message: ["There is no traceroute information.", "Check your connection and authentication settings."],
-        itemType: "error",
+        itemType: "critical",
         timeoutSeconds: 120,
         flags: ["restartPanel", "configurePanel"],
     });

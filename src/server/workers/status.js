@@ -46,7 +46,7 @@ const fetch = async () => {
 
                     // check needsConfigured first ...
                     if (eachPanelConfig.needsConfigured) {
-                        panelStatus.statusItems.push(
+                        panelStatus.statusItems = [
                             new StatusItem({
                                 key: "panelnotconfigured",
                                 message: [
@@ -55,7 +55,7 @@ const fetch = async () => {
                                 type: "critical",
                                 flags: ["configurePanel"],
                             })
-                        );
+                        ];
                     } else {
                         // find the module config for this panel
                         const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
