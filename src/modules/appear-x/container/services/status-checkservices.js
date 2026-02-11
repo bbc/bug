@@ -2,8 +2,6 @@
 
 const mongoSingle = require("@core/mongo-single");
 const StatusItem = require("@core/StatusItem");
-const configGet = require("@core/config-get");
-const mpegEncoderServiceGet = require("@services/mpegencoderservice-get");
 
 module.exports = async (options) => {
     const mpegEncoderServices = await mongoSingle.get("mpegEncoderServices");

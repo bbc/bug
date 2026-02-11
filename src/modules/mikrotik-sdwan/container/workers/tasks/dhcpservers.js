@@ -2,13 +2,13 @@
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
-module.exports = async (conn) => {
-    // ensure the connection exists before attempting write
-    if (!conn) {
-        throw new Error("no connection provided");
-    }
+module.exports = async ({ conn, mongoSingle }) => {
 
     try {
+        if (!conn) {
+            throw new Error("no connection provided");
+        }
+
         const data = await conn.write("/ip/dhcp-server/getall");
 
         // if the response isn't an array, the router likely returned an error or timed out
@@ -25,12 +25,13 @@ module.exports = async (conn) => {
             });
         });
 
-        console.log(`mikrorik-fetchservers: found ${result.length} dhcp server(s) - saving to db`);
+        console.log(`dhcpservers: found ${result.length} dhcp server(s) - saving to db`);
+        await mongoSingle.set("dhcpServers", result, 60);
         return result;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`mikrotik-fetchservers: ${error.message}`);
+        console.error(`dhcpservers: ${error.message}`);
         throw error;
     }
 };
