@@ -3,13 +3,13 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const leaseLabel = require("@utils/lease-label");
 
-module.exports = async (conn) => {
-    // ensure the connection exists to prevent calling .write on null
-    if (!conn) {
-        throw new Error("no connection provided");
-    }
+module.exports = async ({ conn, mongoSingle }) => {
 
     try {
+        if (!conn) {
+            throw new Error("no connection provided");
+        }
+
         // fetch all dhcp leases from the mikrotik router
         const data = await conn.write("/ip/dhcp-server/lease/getall");
 
@@ -48,12 +48,14 @@ module.exports = async (conn) => {
                 id: lease.id
             };
         });
-        console.log(`mikrorik-fetchdhcpleases: found ${result.length} lease(s) - saving to db`);
-        return result;
+        console.log(`dhcpleases: found ${result.length} lease(s) - saving to db`);
+        await mongoSingle.set("dhcpLeases", result, 60);
+        return true;
 
     } catch (error) {
         // log and re-throw so the worker loop catches the failure and exits
-        console.error(`mikrotik-fetchdhcpleases error: ${error.message}`);
+        console.error(`dhcpleases error: ${error.message}`);
         throw error;
     }
+
 };
