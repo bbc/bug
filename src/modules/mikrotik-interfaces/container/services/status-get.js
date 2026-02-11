@@ -9,7 +9,7 @@ module.exports = async () => {
             "There is no recent interface data for this device.",
             "Check your connection and authentication settings.",
         ],
-        itemType: "error",
+        itemType: "critical",
         timeoutSeconds: 10,
         flags: ["restartPanel", "configurePanel"],
     });

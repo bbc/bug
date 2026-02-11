@@ -9,7 +9,7 @@ module.exports = async () => {
         await statusCheckCollection({
             collectionName: "videohub_device",
             message: ["There is no recent data for this device.", "Check your connection or address details."],
-            itemType: "error",
+            itemType: "critical",
             timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         }),

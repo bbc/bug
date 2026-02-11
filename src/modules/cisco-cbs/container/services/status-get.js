@@ -10,7 +10,7 @@ module.exports = async () => {
         await statusCheckCollection({
             collectionName: "interfaces",
             message: ["There is no recent interface information for this device."],
-            itemType: "error",
+            itemType: "critical",
             timeoutSeconds: 1200,
             flags: ["restartPanel", "configurePanel"],
         }),

@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import DeviceTab from "../components/DeviceTab";
 import NetworkTab from "../components/NetworkTab";
+
 export default function MainPanel() {
     const params = useParams();
     const navigate = useNavigate();

@@ -10,7 +10,7 @@ module.exports = async () => {
         await statusCheckMongoSingle({
             collectionName: "chassisInfo",
             message: ["There is no recent chassis data for this device.", "Check your settings."],
-            itemType: "error",
+            itemType: "critical",
             timeoutSeconds: 60,
             flags: ["restartPanel", "configurePanel"],
         }),
