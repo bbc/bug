@@ -62,7 +62,7 @@ class WorkerManager {
                     filepath: path.join(folder, filename),
                     restart: true,
                     restarting: false,
-                    restartDelay: 0,
+                    restartDelay: 10000,
                     restartCount: 0,
                 }));
         } catch (err) {
