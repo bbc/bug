@@ -2,13 +2,13 @@
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
-module.exports = async (conn) => {
-    // ensure the connection exists before attempting write
-    if (!conn) {
-        throw new Error("no connection provided");
-    }
+module.exports = async ({ conn, mongoSingle }) => {
 
     try {
+        if (!conn) {
+            throw new Error("no connection provided");
+        }
+
         // fetch address list entries from the router
         const data = await conn.write("/ip/firewall/address-list/print");
 
@@ -35,12 +35,13 @@ module.exports = async (conn) => {
                 id: parsed.id
             };
         });
-        console.log(`mikrorik-fetchlistitems: found ${result.length} sdwan item(s) - saving to db`);
-        return result;
+        console.log(`listitems: found ${result.length} sdwan item(s) - saving to db`);
+        await mongoSingle.set("listItems", result, 60);
+        return true;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`mikrotik-fetchlistitems: ${error.message}`);
+        console.error(`listitems: ${error.message}`);
         throw error;
     }
 };

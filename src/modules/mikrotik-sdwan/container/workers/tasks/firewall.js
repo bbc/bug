@@ -2,13 +2,13 @@
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
-module.exports = async (conn) => {
-    // ensure the connection exists
-    if (!conn) {
-        throw new Error("no connection provided");
-    }
+module.exports = async ({ conn, mongoSingle }) => {
 
     try {
+        if (!conn) {
+            throw new Error("no connection provided");
+        }
+
         // fetch all firewall mangle rules from the router
         const data = await conn.write("/ip/firewall/mangle/print");
 
@@ -18,7 +18,7 @@ module.exports = async (conn) => {
         }
 
         // map the raw mikrotik results into a structured format
-        const resut = data.map(item =>
+        const result = data.map(item =>
             mikrotikParseResults({
                 result: item,
                 integerFields: ["bytes", "packets"],
@@ -26,11 +26,12 @@ module.exports = async (conn) => {
                 timeFields: [],
             })
         );
-        console.log(`mikrorik-fetchfirewall: found ${result.length} firewall rule(s) - saving to db`);
-        return result;
+        console.log(`firewall: found ${result.length} firewall rule(s) - saving to db`);
+        await mongoSingle.set("firewall", result, 60);
+        return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`mikrotik-fetchfirewall: ${error.message}`);
+        console.error(`firewall: ${error.message}`);
         throw error;
     }
 };

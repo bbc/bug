@@ -25,6 +25,7 @@
         "node-cache": "^5.1.2",
         "node-routeros": "^1.6.8",
         "ping": "^0.4.1",
+        "toad-scheduler": "^3.1.0",
         "underscore": "^1.13.1",
         "winston": "^3.19.0"
     },
