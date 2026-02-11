@@ -19,7 +19,7 @@ module.exports = async ({ conn, mongoSingle }) => {
 
         const nameData = await conn.write("/system/identity/print");
 
-        const result = { ...resourceResult[0], name: nameData?.[0]?.name }
+        const result = { ...resourceResult[0], name: nameData?.[0]?.name, lastUpdated: new Date() }
         console.log(`system: found ${Object.keys(result).length} system fields - saving to db`);
         await mongoSingle.set("system", result, 60);
         return true;
