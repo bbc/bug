@@ -2,6 +2,7 @@
 
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
 const statusCheckEntries = require("./status-checkentries");
+const statusCheckSystem = require("./status-checksystem");
 const logger = require("@core/logger")(module);
 
 module.exports = async () => {
@@ -24,6 +25,7 @@ module.exports = async () => {
             itemType: "warning",
             timeoutSeconds: 60,
         }),
+        await statusCheckSystem(),
         await statusCheckEntries()
     );
 };
