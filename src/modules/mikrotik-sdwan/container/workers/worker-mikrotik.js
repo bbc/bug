@@ -26,6 +26,9 @@ const main = async () => {
         await mongoSingle.clear("routes");
         await mongoSingle.clear("routingTables");
         await mongoSingle.clear("system");
+        await mongoSingle.clear("bridges");
+        await mongoSingle.clear("addresses");
+        await mongoSingle.clear("rules");
 
         const routerOsApi = new RouterOSApi({
             host: workerData.address,
@@ -48,14 +51,17 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
-                { name: "dhcpleases", seconds: 10, handler: require("./tasks/dhcpleases") },
-                { name: "dhcpnetworks", seconds: 10, handler: require("./tasks/dhcpnetworks") },
-                { name: "dhcpservers", seconds: 10, handler: require("./tasks/dhcpservers") },
-                { name: "firewall", seconds: 10, handler: require("./tasks/firewall") },
-                { name: "routes", seconds: 4, handler: require("./tasks/routes") },
-                { name: "routingtables", seconds: 5, handler: require("./tasks/routingtables") },
-                { name: "listitems", seconds: 5, handler: require("./tasks/listitems") },
-                { name: "system", seconds: 5, handler: require("./tasks/system") },
+                { name: "dhcpleases", seconds: 10 },
+                { name: "dhcpnetworks", seconds: 10 },
+                { name: "dhcpservers", seconds: 10 },
+                { name: "firewall", seconds: 10 },
+                { name: "routes", seconds: 4 },
+                { name: "routingtables", seconds: 5 },
+                { name: "listitems", seconds: 5 },
+                { name: "system", seconds: 5 },
+                { name: "bridges", seconds: 50 },
+                { name: "addresses", seconds: 20 },
+                { name: "rules", seconds: 50 },
             ], context: { conn, mongoSingle }, baseDir: __dirname
         });
 
@@ -67,7 +73,8 @@ const main = async () => {
 }
 
 main().catch(err => {
-    logger.error("worker-mikrotik: startup failure", err.stack || err);
+    logger.error(`worker-mikrotik: startup failure`);
+    logger.error(err.stack || err);
     process.exit(1);
 });
 
