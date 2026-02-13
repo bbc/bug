@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import AddEntryButton from "./AddEntryButton";
 import SetGroupDialog from "./SetGroupDialog";
 
-const EntryStatus = ({ entry, routes }) => {
+const EntryStatus = ({ entry }) => {
     if (entry.static) {
         return <BugStatusLabel>STATIC</BugStatusLabel>;
     }
@@ -31,12 +31,17 @@ const EntryStatus = ({ entry, routes }) => {
     return <BugStatusLabel>UNKNOWN</BugStatusLabel>;
 };
 
-export default function EntryList({ panelId, routes }) {
+export default function EntryList({ panelId }) {
     const sendAlert = useAlert();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
     const { renameDialog } = useBugRenameDialog();
     const { customDialog } = useBugCustomDialog();
     const { confirmDialog } = useBugConfirmDialog();
+
+    const routes = useApiPoller({
+        url: `/container/${panelId}/route`,
+        interval: 2000,
+    });
 
     const entries = useApiPoller({
         url: `/container/${panelId}/entry`,
@@ -222,9 +227,9 @@ export default function EntryList({ panelId, routes }) {
     }
 
     return (
-        <Box sx={{ p: 0.5 }}>
+        <Stack spacing={1}>
             {entries?.data?.map((group) => (
-                <Box key={group.group} sx={{ mb: 1 }}>
+                <Box key={group.group} sx={{ mb: 0 }}>
                     <Typography
                         sx={{
                             p: 2,
@@ -351,6 +356,6 @@ export default function EntryList({ panelId, routes }) {
                     })}
                 </Box>
             ))}
-        </Box>
+        </Stack>
     );
 }

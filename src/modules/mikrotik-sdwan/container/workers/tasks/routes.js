@@ -11,13 +11,18 @@ module.exports = async ({ conn, mongoSingle }) => {
 
         const data = await conn.write("/ip/route/print");
 
-        const result = data.map((item) => {
-            return mikrotikParseResults({
-                result: item,
+        const result = data.map((route) => {
+            const parsedItem = mikrotikParseResults({
+                result: route,
                 integerFields: ["distance", "scope", "target-scope", "route-tag", "ospf-metric"],
                 booleanFields: ["active", "dynamic", "static", "ospf", "disabled", "blackhole"],
                 timeFields: [],
             });
+
+            const _bridgeName = route?.['immediate-gw'].includes('%') && route?.['immediate-gw'].split('%', 2).slice(1).join('%');
+            return {
+                ...parsedItem, _bridgeName
+            }
         }).filter((route) => route?.["dst-address"] === "0.0.0.0/0" && route?.['routing-table'] === "main");
 
         console.log(`routes: found ${result.length} route(s) - saving to db`);

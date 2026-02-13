@@ -2,6 +2,8 @@
 
 # Do next
 
+- add link to modules in system/modules to the documentation page
+
 # Backlog
 
 - sort out overlaying menu in bug api table
@@ -16,4 +18,6 @@
 - i need a flag to prevent the module ui from loading - overlayPanel or something? When a status item is so important the panel can't run.
 - check upgrade - the panel enabled should be false and it takes a long time to update
 - use logger rather than console.log
-- fix reload in logs
+- new worker design using tasks
+- update mikrotik modules using new core class
+- mikrotik routes module doesn't understand sub routing tables

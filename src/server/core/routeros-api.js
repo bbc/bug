@@ -54,9 +54,7 @@ class RouterOSApi {
 
     async _heartbeatCheck() {
         try {
-            console.log("ping.");
             await this._withTimeout(this.conn.write('/system/resource/print'), 2)
-            console.log("ping.ok");
         } catch (err) {
             clearInterval(this._heartbeatTimer);
             this._heartbeatTimer = null;
