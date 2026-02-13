@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.6
+
+- 2026-02-10: fix route comments/labels ([ceff1e9](https://github.com/bbc/bug/commit/ceff1e982c654c7b3e532399c2ef64ff2efb3372))
+
 ### version 1.0.5
 
 - 2026-02-10: fix route/group sorting ([f00ee76](https://github.com/bbc/bug/commit/f00ee769ffce34e2b37c74feb852ebc3c50dbd9c))
