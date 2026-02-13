@@ -1,5 +1,11 @@
 ## Changelog
 
+### version 3.1.75
+
+- 2026-02-13: add new worker task manager ([e47c367](https://github.com/bbc/bug/commit/e47c367f043d57bf462812ae86bd75a6b2d126cc))
+- 2026-02-11: revert to using 'critical' for stale data status items ([e319084](https://github.com/bbc/bug/commit/e3190840f65c50b2c415e54061fb6a2210fcc531))
+- 2026-02-11: set workermanager default retry interval to 10s ([b1224e8](https://github.com/bbc/bug/commit/b1224e8901dca2f4b6b01f7b5d0555fe6fd027ac))
+
 ### version 3.1.74
 
 - 2026-02-10: fix auto-reconnect of log stream ([df3b620](https://github.com/bbc/bug/commit/df3b620768f34347cfd84cea999b637c1df63c8f))
