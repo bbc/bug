@@ -26,7 +26,7 @@ module.exports = ({ tasks, context, baseDir }) => {
             new SimpleIntervalJob(
                 { seconds: task.seconds, runImmediately: true },
                 new Task(task.name, async () => {
-                    await task.handler(context);
+                    await handler(context);
                 })
             ),
             {
