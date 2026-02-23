@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -32,12 +33,12 @@ module.exports = async ({ conn, mongoSingle }) => {
                 disabled: parsed.disabled,
             };
         });
-        console.log(`routingtables: found ${result.length} routing table(s) - saving to db`);
+        logger.debug(`routingtables: found ${result.length} routing table(s) - saving to db`);
         await mongoSingle.set("routingTables", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`routingtables: ${error.message}`);
+        logger.error(`routingtables error: ${error.message}`);
         throw error;
     }
 };

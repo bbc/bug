@@ -93,7 +93,7 @@ module.exports = async ({ conn, mongoSingle, pingCollection }) => {
             .filter(r => r.status === "fulfilled" && r.value).length
         const failedCount = results.length - successfulCount;
 
-        logger.info(`ping: ${successfulCount} ping check(s) successful`);
+        logger.debug(`ping: ${successfulCount} ping check(s) successful`);
 
         if (failedCount) {
             logger.warning(`ping: ${failedCount} ping check(s) failed`);

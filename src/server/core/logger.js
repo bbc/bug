@@ -39,6 +39,7 @@ const loggerInstance = winston.createLogger({
     handleExceptions: false,
     transports: [
         new winston.transports.Console({
+            level: 'debug',
             handleExceptions: true,
             colorize: true,
             format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),

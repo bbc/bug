@@ -16,7 +16,6 @@ module.exports = async (address) => {
         conn = await mikrotikConnect();
         if (!conn) throw new Error("could not connect to mikrotik router");
 
-        console.log(address);
         // get the list of existing connections for the address from the router
         const srcAddressConnections = await conn.write(`/ip/firewall/connection/print`, [
             `.src-address=${address}`
@@ -29,9 +28,6 @@ module.exports = async (address) => {
         const allConnections = [...srcAddressConnections, ...destAddressConnections];
         const uniqueConnections = Array.from(new Set(allConnections.map(conn => conn.id)))
             .map(id => allConnections.find(conn => conn.id === id));
-
-        console.log(uniqueConnections);
-
 
         // remove each connection from the router
         for (const connection of uniqueConnections) {
