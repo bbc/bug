@@ -19,7 +19,7 @@ module.exports = async ({ conn, mongoSingle }) => {
                 timeFields: [],
             });
 
-            const _bridgeName = route?.['immediate-gw'].includes('%') && route?.['immediate-gw'].split('%', 2).slice(1).join('%');
+            const _bridgeName = route?.['immediate-gw']?.includes('%') && route?.['immediate-gw'].split('%', 2).slice(1).join('%');
             return {
                 ...parsedItem, _bridgeName
             }

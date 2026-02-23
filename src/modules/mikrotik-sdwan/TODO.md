@@ -1,4 +1,3 @@
-- do I need to reset the connection table?
 - do I want to show the hostname or ip address if the entry row is tall enough
 - maybe a details page with a bugdetailspage showing the entry info
 - need to handle no data better - critical
