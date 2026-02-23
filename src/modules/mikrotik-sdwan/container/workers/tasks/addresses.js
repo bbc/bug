@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -22,13 +23,13 @@ module.exports = async ({ conn, mongoSingle }) => {
             })
         }).filter((address) => !address.invalid && !address.disabled && !address.slave);;
 
-        console.log(`addresses: found ${result.length} address(s) - saving to db`);
+        logger.debug(`addresses: found ${result.length} address(s) - saving to db`);
         await mongoSingle.set("addresses", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`bridges: ${error.message}`);
+        logger.error(`addresses: ${error.message}`);
         throw error;
     }
 };

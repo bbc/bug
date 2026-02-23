@@ -2,6 +2,7 @@
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const leaseLabel = require("@utils/lease-label");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -48,13 +49,13 @@ module.exports = async ({ conn, mongoSingle }) => {
                 id: lease.id
             };
         });
-        console.log(`dhcpleases: found ${result.length} lease(s) - saving to db`);
+        logger.debug(`dhcpleases: found ${result.length} lease(s) - saving to db`);
         await mongoSingle.set("dhcpLeases", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop catches the failure and exits
-        console.error(`dhcpleases error: ${error.message}`);
+        logger.error(`dhcpleases error: ${error.message}`);
         throw error;
     }
 

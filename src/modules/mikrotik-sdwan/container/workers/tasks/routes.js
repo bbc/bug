@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -25,12 +26,12 @@ module.exports = async ({ conn, mongoSingle }) => {
             }
         }).filter((route) => route?.["dst-address"] === "0.0.0.0/0" && route?.['routing-table'] === "main");
 
-        console.log(`routes: found ${result.length} route(s) - saving to db`);
+        logger.debug(`routes: found ${result.length} route(s) - saving to db`);
         await mongoSingle.set("routes", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`routes: ${error.message}`);
+        logger.error(`routes error: ${error.message}`);
         throw error;
     }
 };

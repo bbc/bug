@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -20,12 +21,12 @@ module.exports = async ({ conn, mongoSingle }) => {
         const nameData = await conn.write("/system/identity/print");
 
         const result = { ...resourceResult[0], name: nameData?.[0]?.name, lastUpdated: new Date() }
-        console.log(`system: found ${Object.keys(result).length} system fields - saving to db`);
+        logger.debug(`system: found ${Object.keys(result).length} system fields - saving to db`);
         await mongoSingle.set("system", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`system: ${error.message}`);
+        logger.error(`system error: ${error.message}`);
         throw error;
     }
 };

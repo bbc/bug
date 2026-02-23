@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -24,12 +25,12 @@ module.exports = async ({ conn, mongoSingle }) => {
                 timeFields: [],
             });
         });
-        console.log(`dhcpnetworks: found ${result.length} network(s) - saving to db`);
+        logger.debug(`dhcpnetworks: found ${result.length} network(s) - saving to db`);
         await mongoSingle.set("dhcpNetworks", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`networks: ${error.message}`);
+        logger.error(`dhcpnetworks error: ${error.message}`);
         throw error;
     }
 };

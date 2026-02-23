@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -26,12 +27,12 @@ module.exports = async ({ conn, mongoSingle }) => {
                 timeFields: [],
             })
         );
-        console.log(`firewall: found ${result.length} firewall rule(s) - saving to db`);
+        logger.debug(`firewall: found ${result.length} firewall rule(s) - saving to db`);
         await mongoSingle.set("firewall", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`firewall: ${error.message}`);
+        logger.error(`firewall error: ${error.message}`);
         throw error;
     }
 };
