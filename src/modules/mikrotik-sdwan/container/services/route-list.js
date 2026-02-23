@@ -3,6 +3,8 @@
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
+const freeIpApiLookup = require("@utils/freeipapi-lookup");
+const srcAddressGet = require("@utils/srcaddress-get");
 
 module.exports = async () => {
     try {
@@ -13,36 +15,35 @@ module.exports = async () => {
         const wanAddressCollection = await mongoCollection("wanAddresses");
         const dbRules = await mongoSingle.get("rules") || [];
 
-        if (!Array.isArray(dbRoutes)) {
-            throw new Error("route data is malformed (expected array)");
-        }
-
-        if (!Array.isArray(dbBridges)) {
-            throw new Error("bridge data is malformed (expected array)");
-        }
-
-        if (!Array.isArray(dbAddresses)) {
-            throw new Error("address data is malformed (expected array)");
-        }
+        if (!Array.isArray(dbRoutes)) throw new Error("route data is malformed (expected array)");
+        if (!Array.isArray(dbBridges)) throw new Error("bridge data is malformed (expected array)");
+        if (!Array.isArray(dbAddresses)) throw new Error("address data is malformed (expected array)");
 
         const pingResults = await pingCollection.find().toArray();
         const wanAddressResults = await wanAddressCollection.find().toArray();
-        const ruleAddresses = dbRules.map((r) => r['src-address']) || [];
 
-        return dbRoutes
-            .map((route) => {
+        const results = await Promise.all(
+            dbRoutes.map(async (route) => {
 
-                // find matching bridge
-                const bridge = route._bridgeName && dbBridges.find((b) => b.name === route._bridgeName);
+                const bridge = route._bridgeName && dbBridges.find(
+                    (b) => b.name === route._bridgeName
+                );
 
-                // find matching address (removing all that exist in the routing rules table)
-                const matchingAddress = route._bridgeName && dbAddresses.find((a) => a.interface === route._bridgeName && !ruleAddresses.includes(a.address));
+                const lanAddress = srcAddressGet(route, dbAddresses, dbRules);
 
-                // and matching ping (if it exists)
-                const matchingPing = pingResults.find((p) => p.bridge === route._bridgeName);
+                const matchingPing = pingResults.find(
+                    (p) => p.bridge === route._bridgeName
+                );
 
-                // and matching address (if it exists)
-                const matchingWanAddress = wanAddressResults.find((w) => w.bridge === route._bridgeName);
+                const matchingWanAddress = wanAddressResults.find(
+                    (w) => w.bridge === route._bridgeName
+                );
+
+                const geoIp = matchingWanAddress
+                    ? await freeIpApiLookup(
+                        matchingWanAddress.address.split("/")[0]
+                    )
+                    : null;
 
                 return {
                     id: route.id,
@@ -53,14 +54,18 @@ module.exports = async () => {
                     disabled: route.disabled ?? false,
                     dynamic: route.dynamic,
                     active: route.active ?? false,
-                    address: matchingAddress.address,
-                    network: matchingAddress.network,
-                    pingOk: matchingPing?.['avg-rtt'] ? true : false,
-                    pingRtt: matchingPing?.['avg-rtt'],
-                    wanAddress: matchingWanAddress?.address
-                }
+                    address: lanAddress,
+                    pingOk: matchingPing?.latest?.["avg-rtt"] ? true : false,
+                    pingRtt: matchingPing?.latest?.["avg-rtt"],
+                    pingHistory: matchingPing?.history || [],
+                    wanAddress: matchingWanAddress?.address,
+                    geoIp
+                };
             })
-            .sort((a, b) => (a.distance > b.distance ? 1 : -1))
+        );
+
+        return results.sort((a, b) => (a.distance > b.distance ? 1 : -1));
+
     } catch (err) {
         err.message = `route-list: ${err.stack || err.message}`;
         logger.error(err.message);

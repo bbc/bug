@@ -2,6 +2,7 @@
 
 const delay = require("delay");
 const logger = require("@core/logger")(module);
+const srcAddressGet = require('@utils/srcaddress-get');
 
 module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
 
@@ -32,28 +33,17 @@ module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
             return true;
         }
 
-        // filter routes to only enabled and static
-        const filteredRoutes = dbRoutes.filter(route => !route.disabled && !route.dynamic);
+        // filter routes to only enabled
+        const filteredRoutes = dbRoutes.filter(route => !route.disabled);
 
         const fetchTasks = filteredRoutes.map(async (route) => {
             try {
-                const bridgeAddresses = dbAddresses.filter(addr => addr.interface === route._bridgeName);
-
-                let matchingRule = null;
-                for (const addr of bridgeAddresses) {
-                    matchingRule = dbRules.find(rule => rule['src-address'] === addr.address);
-                    if (matchingRule) break;
-                }
-
-                if (!matchingRule) return null;
-
-                const address = matchingRule['src-address'].includes('/')
-                    ? matchingRule['src-address'].split('/')[0]
-                    : matchingRule['src-address'];
+                const address = srcAddressGet(route, dbAddresses, dbRules);
+                if (!address) return null;
 
                 logger.info(`fetch: from ${address} via bridge ${route._bridgeName}`);
 
-                // Do the ping check
+                // do the fetch
                 const data = await conn.write("/tool/fetch", [
                     `=src-address=${address}`,
                     `=url=https://ifconfig.me/ip`,
@@ -64,7 +54,6 @@ module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
                 const dbWanAddressResult = {
                     bridge: route._bridgeName,
                     address,
-                    table: matchingRule.table,
                     "address": data[1]?.["data"],
                     timestamp: Date.now()
                 };
@@ -99,29 +88,3 @@ module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
     }
 };
 
-function parsePing(pingStr) {
-    const regex = /(\d+)(s|ms|us)/g;
-    let match;
-    let totalMs = 0;
-    let found = false;
-
-    while ((match = regex.exec(pingStr)) !== null) {
-        found = true;
-        const value = parseInt(match[1], 10);
-        const unit = match[2];
-
-        switch (unit) {
-            case "s":
-                totalMs += value * 1000;
-                break;
-            case "ms":
-                totalMs += value;
-                break;
-            case "us":
-                totalMs += value / 1000;
-                break;
-        }
-    }
-
-    return found ? totalMs : null;
-}
