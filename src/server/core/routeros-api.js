@@ -46,6 +46,7 @@ class RouterOSApi {
 
     _startHeartbeat() {
         if (!this.onDisconnect) return;
+        if (!this.heartbeatInterval) return;
 
         this._heartbeatTimer = setInterval(() => {
             this._heartbeatCheck();
