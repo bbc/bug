@@ -41,7 +41,7 @@ module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
                 const address = srcAddressGet(route, dbAddresses, dbRules);
                 if (!address) return null;
 
-                logger.info(`fetch: from ${address} via bridge ${route._bridgeName}`);
+                logger.debug(`fetch: from ${address} via bridge ${route._bridgeName}`);
 
                 // do the fetch
                 const data = await conn.write("/tool/fetch", [

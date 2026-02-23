@@ -1,4 +1,5 @@
 "use strict";
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -24,7 +25,7 @@ module.exports = async ({ conn, mongoSingle }) => {
             }
         });
 
-        console.log(`bridges: found ${result.length} bridge(s) - saving to db`);
+        logger.debug(`bridges: found ${result.length} bridge(s) - saving to db`);
         await mongoSingle.set("bridges", result, 60);
         return true;
 

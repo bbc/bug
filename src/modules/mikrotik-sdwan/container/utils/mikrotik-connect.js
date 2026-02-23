@@ -2,6 +2,7 @@
 
 const RosApi = require("node-routeros").RouterOSAPI;
 const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     // fetch config and throw if missing
@@ -23,9 +24,9 @@ module.exports = async () => {
     });
 
     try {
-        console.log(`mikrotik-connect: attempting connection to ${config.address}`);
+        logger.info(`mikrotik-connect: attempting connection to ${config.address}`);
         await conn.connect();
-        console.log("mikrotik-connect: device connected ok");
+        logger.info("mikrotik-connect: device connected ok");
         return conn;
     } catch (error) {
         // throw the actual connection error so the service catch block can see it

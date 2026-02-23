@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -15,11 +16,11 @@ module.exports = async ({ conn, mongoSingle }) => {
             result: rule,
         }));
 
-        console.log(`rules: found ${result.length} rule(s) - saving to db`);
+        logger.debug(`rules: found ${result.length} rule(s) - saving to db`);
         await mongoSingle.set("rules", result, 60);
         return true;
     } catch (error) {
-        console.error(`rules: ${error.message}`);
+        logger.error(`rules error: ${error.message}`);
         throw error;
     }
 };

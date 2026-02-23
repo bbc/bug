@@ -1,6 +1,7 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ conn, mongoSingle }) => {
 
@@ -25,13 +26,13 @@ module.exports = async ({ conn, mongoSingle }) => {
             });
         });
 
-        console.log(`dhcpservers: found ${result.length} dhcp server(s) - saving to db`);
+        logger.debug(`dhcpservers: found ${result.length} dhcp server(s) - saving to db`);
         await mongoSingle.set("dhcpServers", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`dhcpservers: ${error.message}`);
+        logger.error(`dhcpservers error: ${error.message}`);
         throw error;
     }
 };
