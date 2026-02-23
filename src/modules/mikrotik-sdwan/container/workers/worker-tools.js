@@ -24,10 +24,17 @@ const main = async () => {
 
         const pingCollection = await mongoCollection("ping");
         const wanAddressesCollection = await mongoCollection("wanAddresses");
+        const geoIpCollection = await mongoCollection("geoip");
+
+        // clear old entries
+        await pingCollection.deleteMany({});
+        await wanAddressesCollection.deleteMany({});
+        await geoIpCollection.deleteMany({});
 
         // and now create the index with ttl
         await mongoCreateIndex(pingCollection, "timestamp", { expireAfterSeconds: 120 });
         await mongoCreateIndex(wanAddressesCollection, "timestamp", { expireAfterSeconds: 240 });
+        await mongoCreateIndex(geoIpCollection, "timestamp", { expireAfterSeconds: 3600 });
 
         const routerOsApi = new RouterOSApi({
             host: workerData.address,

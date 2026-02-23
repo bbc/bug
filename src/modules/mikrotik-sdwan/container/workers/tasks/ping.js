@@ -2,6 +2,7 @@
 
 const delay = require("delay");
 const logger = require("@core/logger")(module);
+const srcAddressGet = require('@utils/srcaddress-get');
 
 module.exports = async ({ conn, mongoSingle, pingCollection }) => {
 
@@ -32,26 +33,16 @@ module.exports = async ({ conn, mongoSingle, pingCollection }) => {
             return true;
         }
 
-        // filter routes to only enabled and static
-        const filteredRoutes = dbRoutes.filter(route => !route.disabled && !route.dynamic);
+        // filter routes to only enabled
+        const filteredRoutes = dbRoutes.filter(route => !route.disabled);
 
         const pingTasks = filteredRoutes.map(async (route) => {
             try {
-                const bridgeAddresses = dbAddresses.filter(addr => addr.interface === route._bridgeName);
 
-                let matchingRule = null;
-                for (const addr of bridgeAddresses) {
-                    matchingRule = dbRules.find(rule => rule['src-address'] === addr.address);
-                    if (matchingRule) break;
-                }
+                const address = srcAddressGet(route, dbAddresses, dbRules);
+                if (!address) return null;
 
-                if (!matchingRule) return null;
-
-                const address = matchingRule['src-address'].includes('/')
-                    ? matchingRule['src-address'].split('/')[0]
-                    : matchingRule['src-address'];
-
-                logger.info(`ping: from ${address} via bridge ${route._bridgeName}`);
+                logger.debug(`ping: from ${address} via bridge ${route._bridgeName}`);
 
                 // Do the ping check
                 const data = await conn.write("/tool/ping", [
@@ -60,22 +51,37 @@ module.exports = async ({ conn, mongoSingle, pingCollection }) => {
                     `=count=4`
                 ]);
 
-                const dbPingResult = {
-                    bridge: route._bridgeName,
-                    address,
-                    table: matchingRule.table,
+                const latestResult = {
                     "avg-rtt": parsePing(data?.[3]?.['avg-rtt']),
                     "min-rtt": parsePing(data?.[3]?.['min-rtt']),
                     "max-rtt": parsePing(data?.[3]?.['max-rtt']),
-                    timestamp: Date.now()
                 };
 
-                await pingCollection.replaceOne({ address }, dbPingResult, { upsert: true });
+                // save ping result
+                await pingCollection.updateOne(
+                    { address },
+                    {
+                        $set: {
+                            address,
+                            bridge: route._bridgeName,
+                            latest: latestResult,
+                            timestamp: Date.now()
 
-                return dbPingResult;
+                        },
+                        $push: {
+                            history: {
+                                $each: [latestResult["avg-rtt"]],
+                                $slice: -10
+                            }
+                        }
+                    },
+                    { upsert: true }
+                );
+
+                return true;
 
             } catch (err) {
-                logger.error(`ping: failed for route ${route._bridgeName}: ${err.message}`);
+                logger.error(`ping: failed for route ${route._bridgeName}: ${err.stack || err.message}`);
                 return null; // continue even on failure
             }
         });
