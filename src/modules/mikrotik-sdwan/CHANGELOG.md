@@ -1,5 +1,11 @@
 ## Changelog
 
+### version 1.0.7
+
+- 2026-02-13: add ping/fetch tests and use worker tasks ([5110967](https://github.com/bbc/bug/commit/5110967ae841feffa85ee5e9bef24d5e2f463cb7))
+- 2026-02-11: improve workers when device unavailable ([c840e53](https://github.com/bbc/bug/commit/c840e533d9d6e2e940e6981d9951aae37c3d1c5a))
+- 2026-02-11: use new task-based workers ([5636151](https://github.com/bbc/bug/commit/5636151091ab63b9f24a65de12f22c58678a0b63))
+
 ### version 1.0.6
 
 - 2026-02-10: fix route comments/labels ([ceff1e9](https://github.com/bbc/bug/commit/ceff1e982c654c7b3e532399c2ef64ff2efb3372))
