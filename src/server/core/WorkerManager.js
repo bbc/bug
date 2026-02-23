@@ -122,25 +122,34 @@ class WorkerManager {
         const worker = this.workers[index];
         console.log(`WorkerManager->handleExit: ${worker.filename} exited with code ${code}`);
         worker.state = "stopped";
+        delete worker.worker;
 
-        if (worker.restart && !worker.restarting) {
-            worker.restarting = true;
+        if (worker.restart) {
             console.log(`WorkerManager->handleExit: Restarting ${worker.filename} in ${worker.restartDelay / 1000}s`);
+
             setTimeout(async () => {
-                await this.createWorker(index);
+                if (worker._originalRestartDelay !== undefined) {
+                    worker.restartDelay = worker._originalRestartDelay;
+                    delete worker._originalRestartDelay;
+                }
+
                 worker.restarting = false;
+                await this.createWorker(index);
                 console.log(`WorkerManager->handleExit: ${worker.filename} restarted OK`);
             }, worker.restartDelay);
-        } else {
-            delete worker.worker;
         }
     }
 
-    async restartWorker(index) {
+    async restartWorker(index, immediate = false) {
         const worker = this.workers[index];
         worker.restartCount++;
         worker.restart = true;
         worker.restarting = true;
+
+        if (immediate) {
+            worker._originalRestartDelay ??= worker.restartDelay;
+            worker.restartDelay = 0;
+        }
 
         if (worker.worker) {
             console.log(`WorkerManager->restartWorker: terminating ${worker.filename}`);
@@ -153,7 +162,8 @@ class WorkerManager {
     }
 
     needsUpdated(oldObj, newObj, keys) {
-        if (!keys) return true;
+        if (!keys || keys.length === 0) return false;
+        if (keys.includes("*")) return true;
         return keys.some((key) => oldObj[key] !== newObj[key]);
     }
 
@@ -163,7 +173,7 @@ class WorkerManager {
 
         for (let i = 0; i < this.workers.length; i++) {
             if (this.needsUpdated(oldConfig, newConfig, this.workers[i].restartKeys)) {
-                await this.restartWorker(i);
+                await this.restartWorker(i, true);
             }
         }
     }
