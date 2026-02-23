@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.4
+
+- 2026-02-23: fix async code in protect/unprotect ([9955d9c](https://github.com/bbc/bug/commit/9955d9c6ab38c11df11415bd1a8f9ef49663d1c5))
+
 ### version 1.2.3
 
 - 2026-02-06: improve service logging ([971b2eb](https://github.com/bbc/bug/commit/971b2eb8e030e6036e318084d0cd1e70c7b2b7a1))
