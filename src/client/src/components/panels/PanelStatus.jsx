@@ -14,7 +14,7 @@ export default function PanelStatus({ statusItems, panel }) {
                     square
                     sx={{
                         borderBottomStyle: "solid",
-                        borderBottomWidth: index < statusItems.length ? "1px" : 0,
+                        borderBottomWidth: index < statusItems.length - 1 ? "1px" : 0,
                         borderBottomColor: "border.bold",
                     }}
                 />
