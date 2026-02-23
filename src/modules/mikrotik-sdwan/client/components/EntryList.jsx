@@ -6,6 +6,7 @@ import BugStatusLabel from "@core/BugStatusLabel";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import CheckIcon from "@mui/icons-material/Check";
+import ClearAllIcon from "@mui/icons-material/ClearAll";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import LockIcon from "@mui/icons-material/Lock";
@@ -144,6 +145,14 @@ export default function EntryList({ panelId }) {
         }
     };
 
+    const handleClearConnectionsClicked = async (_, item) => {
+        if (await AxiosPut(`/container/${panelId}/entry/clear/`, { address: item.address })) {
+            sendAlert(`Cleared connections for ${item.label}`, { variant: "success" });
+        } else {
+            sendAlert(`Failed to clear connections for ${item.label}`, { variant: "error" });
+        }
+    };
+
     const handleDeleteClicked = async (_, item) => {
         if (
             !(await confirmDialog({
@@ -203,6 +212,11 @@ export default function EntryList({ panelId }) {
         },
         {
             title: "-",
+        },
+        {
+            title: "Clear Connections",
+            icon: <ClearAllIcon fontSize="small" />,
+            onClick: handleClearConnectionsClicked,
         },
         {
             title: "Delete",

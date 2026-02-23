@@ -7,6 +7,7 @@ const entryLock = require("@services/entry-lock");
 const entryUnlock = require("@services/entry-unlock");
 const entrySetLabel = require("@services/entry-setlabel");
 const entrySetGroup = require("@services/entry-setgroup");
+const entryClearConnections = require("@services/entry-clearconnections");
 const asyncHandler = require("express-async-handler");
 
 router.get("/", asyncHandler(async (req, res) => {
@@ -55,6 +56,13 @@ router.put("/setgroup", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
         data: await entrySetGroup(req.body.address, req.body.group),
+    });
+}));
+
+router.put("/clear", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await entryClearConnections(req.body.address),
     });
 }));
 
