@@ -1,7 +1,6 @@
 import BugApiSwitch from "@core/BugApiSwitch";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
-import BugPowerIcon from "@core/BugPowerIcon";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 // import BugSparkCell from "@core/BugSparkCell";
 import BugTableLinkButton from "@core/BugTableLinkButton";
@@ -13,7 +12,10 @@ import { useForceRefresh } from "@hooks/ForceRefresh";
 // import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 // import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 // import { Box } from "@mui/material";
+import BugSparkCell from "@core/BugSparkCell";
 import BugStatusLabel from "@core/BugStatusLabel";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import { useNavigate } from "react-router-dom";
@@ -130,16 +132,40 @@ export default function RouteList({ panelId }) {
     //     return "1 device";
     // };
 
+    const getLocationText = (item) => {
+        if (item.geoIp) {
+            if (item.geoIp._isCgnat) {
+                // it's a mobile connection, so show ASN instead of location
+                return `${item.geoIp.asnOrganization}`;
+            }
+            return `${item.geoIp.asnOrganization}: ${item.geoIp.cityName}, ${item.geoIp.countryName}`;
+        }
+        return "";
+    };
+
+    const getStatusColor = (item) => {
+        if (item.active) {
+            return "success.main";
+        }
+        if (item.pingOk) {
+            return "primary.main";
+        }
+        return "secondary.main";
+    };
+
+    const getStatusText = (item) => {
+        if (item.active) {
+            return "ACTIVE";
+        }
+        if (item.pingOk) {
+            return "CONNECTED";
+        }
+        return "NO CONNECTION";
+    };
+
     return (
         <BugApiTable
             columns={[
-                {
-                    sortable: false,
-                    noPadding: true,
-                    width: 44,
-                    field: "running",
-                    content: (item) => <BugPowerIcon disabled={!item.pingOk && !item.dynamic} />,
-                },
                 {
                     sortable: false,
                     noPadding: true,
@@ -158,6 +184,7 @@ export default function RouteList({ panelId }) {
                 {
                     sortable: true,
                     minWidth: "5rem",
+                    width: "20%",
                     noWrap: true,
                     field: "name",
                     title: "Name",
@@ -179,26 +206,55 @@ export default function RouteList({ panelId }) {
                         <>
                             <BugStatusLabel
                                 sx={{
-                                    color: item.pingOk || item.dynamic ? "success.main" : "error.main",
+                                    color: getStatusColor(item),
                                 }}
                             >
-                                {item.pingOk || item.dynamic ? "CONNECTED" : "NOT CONNECTED"}
+                                {getStatusText(item)}
                             </BugStatusLabel>
                         </>
                     ),
                 },
                 {
-                    title: "LAN Address",
+                    title: "Internet Address",
+                    // hideWidth: 650,
+                    width: "15rem",
+                    content: (item) => (
+                        <Stack>
+                            <Typography>{item.wanAddress}</Typography>
+                            <Typography variant="caption" color="textSecondary">
+                                {getLocationText(item)}
+                            </Typography>
+                        </Stack>
+                    ),
+                },
+                {
+                    title: "Ping RTT",
+                    minWidth: "5rem",
+                    width: "20%",
+                    content: (item) => (
+                        <>
+                            {item?.pingRtt && (
+                                <BugSparkCell
+                                    value={`${Math.round(item?.pingRtt) || 0} ms`}
+                                    history={item?.pingHistory.map((h) => {
+                                        return { value: h };
+                                    })}
+                                    height={40}
+                                />
+                            )}
+                        </>
+                    ),
+                },
+                {
+                    title: "Local Address",
+                    width: "10rem",
                     // hideWidth: 650,
                     content: (item) => item.address,
                 },
                 {
-                    title: "WAN Address",
-                    // hideWidth: 650,
-                    content: (item) => item.wanAddress,
-                },
-                {
                     title: "Distance",
+                    width: "6rem",
+                    align: "center",
                     // hideWidth: 650,
                     content: (item) => item.distance,
                 },
