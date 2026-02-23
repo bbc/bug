@@ -9,7 +9,7 @@ export default function BugApiTableCell({ children, column, index, sx, ...props 
                 width: column.width ? column.width : "auto",
                 [`@media (max-width:${column.hideWidth}px)`]: { display: "none" },
                 minWidth: column.minWidth ? column.minWidth : "auto",
-                maxWidth: column.maxWidth ? column.maxWidth : column.noWrap ? "0px" : "none",
+                maxWidth: column.maxWidth || (column.noWrap ? "0px" : "none"),
                 overflow: column.noWrap ? "hidden" : "visible",
                 textAlign: column.align ? column.align : "start",
                 textOverflow: column.noWrap ? "inherit" : "clip",

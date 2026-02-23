@@ -55,7 +55,7 @@ module.exports = async () => {
                     dynamic: route.dynamic,
                     active: route.active ?? false,
                     address: lanAddress,
-                    pingOk: matchingPing?.latest?.["avg-rtt"] ? true : false,
+                    pingOk: matchingPing?.latest?.["avg-rtt"] != null ? true : matchingPing ? false : null,
                     pingRtt: matchingPing?.latest?.["avg-rtt"],
                     pingHistory: matchingPing?.history || [],
                     wanAddress: matchingWanAddress?.address,
