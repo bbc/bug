@@ -20,7 +20,7 @@ module.exports = async (interfaceId) => {
         logger.info(`interface-unprotect: unprotecting interface ${interfaceId}`);
         config.protectedInterfaces = config.protectedInterfaces.filter(item => item !== interfaceId);
 
-        return configPutViaCore(config);
+        return await configPutViaCore(config);
     } catch (err) {
         err.message = `interface-unprotect(${interfaceId}): ${err.stack || err.message}`;
         logger.error(err.message);
