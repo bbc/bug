@@ -27,7 +27,7 @@ module.exports = function getSrcAddress(route, dbAddresses, dbRules) {
     } else {
         // static route: find a rule that matches an address on the bridge
         const bridgeAddresses = dbAddresses.filter(addr => addr.interface === route._bridgeName);
-        address = bridgeAddresses.find(addr => !ruleAddresses.includes(addr.address)).address;
+        address = bridgeAddresses && bridgeAddresses.find(addr => !ruleAddresses.includes(addr?.address))?.address;
     }
 
     // strip CIDR if present

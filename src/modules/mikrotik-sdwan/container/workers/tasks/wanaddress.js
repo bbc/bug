@@ -58,7 +58,7 @@ module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
                     timestamp: Date.now()
                 };
 
-                await wanAddressesCollection.replaceOne({ address }, dbWanAddressResult, { upsert: true });
+                await wanAddressesCollection.replaceOne({ bridge: route._bridgeName }, dbWanAddressResult, { upsert: true });
 
                 return true;
 

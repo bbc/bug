@@ -2,53 +2,22 @@ import BugApiSwitch from "@core/BugApiSwitch";
 import BugApiTable from "@core/BugApiTable";
 import BugNoData from "@core/BugNoData";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-// import BugSparkCell from "@core/BugSparkCell";
-import BugTableLinkButton from "@core/BugTableLinkButton";
-import { useForceRefresh } from "@hooks/ForceRefresh";
-// import CheckIcon from "@mui/icons-material/Check";
-// import CommentIcon from "@mui/icons-material/Comment";
-// import EditIcon from "@mui/icons-material/Edit";
-// import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
-// import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-// import ToggleOnIcon from "@mui/icons-material/ToggleOn";
-// import { Box } from "@mui/material";
 import BugSparkCell from "@core/BugSparkCell";
 import BugStatusLabel from "@core/BugStatusLabel";
+import BugTableLinkButton from "@core/BugTableLinkButton";
+import { useForceRefresh } from "@hooks/ForceRefresh";
+import EditIcon from "@mui/icons-material/Edit";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import { useNavigate } from "react-router-dom";
 
 export default function RouteList({ panelId }) {
     const sendAlert = useAlert();
-    const navigate = useNavigate();
     const { renameDialog } = useBugRenameDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
-
-    // const handleRenameClicked = async (event, item) => {
-    //     event.stopPropagation();
-
-    //     let result = await renameDialog({
-    //         title: "Edit interface name",
-    //         defaultValue: item["name"],
-    //         placeholder: item["default-name"],
-    //         confirmButtonText: "Rename",
-    //         allowBlank: true,
-    //     });
-    //     if (result === false) {
-    //         return;
-    //     }
-    //     if (result === "") {
-    //         result = item["default-name"];
-    //     }
-    //     if (await AxiosCommand(`/container/${panelId}/interface/rename/${item.id}/${encodeURIComponent(result)}`)) {
-    //         sendAlert(`Renamed interface to ${result}`, { broadcast: "true", variant: "success" });
-    //         doForceRefresh();
-    //     } else {
-    //         sendAlert(`Failed to rename interface to ${result}`, { variant: "error" });
-    //     }
-    // };
 
     const handleNameClicked = async (event, item) => {
         event.stopPropagation();
@@ -82,55 +51,25 @@ export default function RouteList({ panelId }) {
         }
     };
 
-    // const handleDetailsClicked = (event, item) => {
-    //     navigate(`/panel/${panelId}/interface/${item.name}`);
-    // };
+    const handleEnabledChanged = async (checked, item) => {
+        const command = checked ? "enable" : "disable";
+        const commandText = checked ? "Enabled" : "Disabled";
+        const label = item.comment ? item.comment : item.name;
+        if (await AxiosPut(`/container/${panelId}/route/${command}/${item.id}`)) {
+            sendAlert(`${commandText} route: ${label}`, { variant: "success" });
+            doForceRefresh();
+        } else {
+            sendAlert(`Failed to ${command} route: ${label}`, { variant: "error" });
+        }
+    };
 
-    // const handleEnabledChanged = async (checked, interfaceName) => {
-    //     const command = checked ? "enable" : "disable";
-    //     const commandText = checked ? "Enabled" : "Disabled";
-    //     if (await AxiosCommand(`/container/${panelId}/interface/${command}/${interfaceName}`)) {
-    //         sendAlert(`${commandText} interface: ${interfaceName}`, { variant: "success" });
-    //         doForceRefresh();
-    //     } else {
-    //         sendAlert(`Failed to ${command} interface: ${interfaceName}`, { variant: "error" });
-    //     }
-    // };
+    const handleEnabledClicked = (event, item) => {
+        handleEnabledChanged(true, item);
+    };
 
-    // const handleProtectClicked = async (event, item) => {
-    //     const command = item._protected ? "unprotect" : "protect";
-    //     const commandAction = item._protected ? "Unprotected" : "Protected";
-
-    //     if (await AxiosCommand(`/container/${panelId}/interface/${command}/${item.name}`)) {
-    //         sendAlert(`${commandAction} interface: ${item.name}`, { variant: "success" });
-    //         doForceRefresh();
-    //     } else {
-    //         sendAlert(`Failed to ${command} interface: ${item.name}`, { variant: "error" });
-    //     }
-    // };
-
-    // const handleEnabledClicked = (event, item) => {
-    //     handleEnabledChanged(true, item.name);
-    // };
-
-    // const handleDisabledClicked = (event, item) => {
-    //     handleEnabledChanged(false, item.name);
-    // };
-
-    // const handleLldpClicked = (event, item) => {};
-
-    // const getItemNeighbor = (item) => {
-    //     if (item?.lldp === undefined || item?.lldp.length === 0) {
-    //         return null;
-    //     }
-    //     if (item?.lldp.length > 1) {
-    //         return `${item?.lldp.length} device(s)`;
-    //     }
-    //     if (item.lldp[0].identity) {
-    //         return item.lldp[0].identity;
-    //     }
-    //     return "1 device";
-    // };
+    const handleDisabledClicked = (event, item) => {
+        handleEnabledChanged(false, item);
+    };
 
     const getLocationText = (item) => {
         if (item.geoIp) {
@@ -144,6 +83,12 @@ export default function RouteList({ panelId }) {
     };
 
     const getStatusColor = (item) => {
+        if (item.disabled) {
+            return "secondary.main";
+        }
+        if (item.pingOk === null) {
+            return "secondary.main";
+        }
         if (item.active) {
             return "success.main";
         }
@@ -154,6 +99,12 @@ export default function RouteList({ panelId }) {
     };
 
     const getStatusText = (item) => {
+        if (item.disabled) {
+            return "DISABLED";
+        }
+        if (item.pingOk === null) {
+            return "PENDING";
+        }
         if (item.active) {
             return "ACTIVE";
         }
@@ -175,7 +126,7 @@ export default function RouteList({ panelId }) {
                         return (
                             <BugApiSwitch
                                 checked={!item.disabled}
-                                // onChange={(checked) => handleEnabledChanged(checked, item.name)}
+                                onChange={(checked) => handleEnabledChanged(checked, item)}
                                 disabled={item.dynamic}
                             />
                         );
@@ -183,8 +134,7 @@ export default function RouteList({ panelId }) {
                 },
                 {
                     sortable: true,
-                    minWidth: "5rem",
-                    width: "20%",
+                    minWidth: "10rem",
                     noWrap: true,
                     field: "name",
                     title: "Name",
@@ -201,12 +151,12 @@ export default function RouteList({ panelId }) {
                 {
                     title: "Status",
                     width: "10rem",
-                    hideWidth: 650,
                     content: (item) => (
                         <>
                             <BugStatusLabel
                                 sx={{
                                     color: getStatusColor(item),
+                                    whiteSpace: "nowrap",
                                 }}
                             >
                                 {getStatusText(item)}
@@ -216,24 +166,26 @@ export default function RouteList({ panelId }) {
                 },
                 {
                     title: "Internet Address",
-                    // hideWidth: 650,
+                    hideWidth: 980,
                     width: "15rem",
-                    content: (item) => (
-                        <Stack>
-                            <Typography>{item.wanAddress}</Typography>
-                            <Typography variant="caption" color="textSecondary">
-                                {getLocationText(item)}
-                            </Typography>
-                        </Stack>
-                    ),
+                    content: (item) =>
+                        !item.disabled && (
+                            <Stack>
+                                <Typography>{item.wanAddress}</Typography>
+                                <Typography variant="caption" color="textSecondary">
+                                    {getLocationText(item)}
+                                </Typography>
+                            </Stack>
+                        ),
                 },
                 {
                     title: "Ping RTT",
-                    minWidth: "5rem",
-                    width: "20%",
+                    hideWidth: 800,
+                    minWidth: "80px",
+                    maxWidth: "0",
                     content: (item) => (
                         <>
-                            {item?.pingRtt && (
+                            {!item.disabled && item?.pingRtt && (
                                 <BugSparkCell
                                     value={`${Math.round(item?.pingRtt) || 0} ms`}
                                     history={item?.pingHistory.map((h) => {
@@ -248,65 +200,39 @@ export default function RouteList({ panelId }) {
                 {
                     title: "Local Address",
                     width: "10rem",
-                    // hideWidth: 650,
-                    content: (item) => item.address,
+                    hideWidth: 1200,
+                    content: (item) => !item.disabled && item.address,
                 },
                 {
                     title: "Distance",
                     width: "6rem",
                     align: "center",
-                    // hideWidth: 650,
+                    hideWidth: 1420,
                     content: (item) => item.distance,
                 },
             ]}
-            menuItems={
-                [
-                    // {
-                    //     title: "View Details",
-                    //     icon: <SettingsInputComponentIcon fontSize="small" />,
-                    //     onClick: handleDetailsClicked,
-                    // },
-                    // {
-                    //     title: "-",
-                    // },
-                    // {
-                    //     title: "Enable",
-                    //     disabled: (item) => !item.disabled || item._protected,
-                    //     icon: <ToggleOnIcon fontSize="small" />,
-                    //     onClick: handleEnabledClicked,
-                    // },
-                    // {
-                    //     title: "Disable",
-                    //     disabled: (item) => item.disabled || item._protected,
-                    //     icon: <ToggleOffIcon fontSize="small" />,
-                    //     onClick: handleDisabledClicked,
-                    // },
-                    // {
-                    //     title: "-",
-                    // },
-                    // {
-                    //     title: "Rename",
-                    //     disabled: (item) => item._protected,
-                    //     icon: <EditIcon fontSize="small" />,
-                    //     onClick: handleRenameClicked,
-                    // },
-                    // {
-                    //     title: "Comment",
-                    //     disabled: (item) => item._protected,
-                    //     icon: <CommentIcon fontSize="small" />,
-                    //     onClick: handleCommentClicked,
-                    // },
-                    // {
-                    //     title: "-",
-                    // },
-                    // {
-                    //     title: "Protect",
-                    //     disabled: (item) => item._protected && !item._allowunprotect,
-                    //     icon: (item) => (item._protected ? <CheckIcon fontSize="small" /> : null),
-                    //     onClick: handleProtectClicked,
-                    // },
-                ]
-            }
+            menuItems={[
+                {
+                    title: "Enable",
+                    disabled: (item) => item.dynamic || !item.disabled,
+                    icon: <ToggleOnIcon fontSize="small" />,
+                    onClick: handleEnabledClicked,
+                },
+                {
+                    title: "Disable",
+                    disabled: (item) => item.dynamic || item.disabled,
+                    icon: <ToggleOffIcon fontSize="small" />,
+                    onClick: handleDisabledClicked,
+                },
+                {
+                    title: "-",
+                },
+                {
+                    title: "Rename",
+                    icon: <EditIcon fontSize="small" />,
+                    onClick: handleNameClicked,
+                },
+            ]}
             apiUrl={`/container/${panelId}/route`}
             panelId={panelId}
             hideHeader={false}
@@ -320,7 +246,6 @@ export default function RouteList({ panelId }) {
             }
             rowHeight="62px"
             sortable
-            // onRowClick={handleDetailsClicked}
             forceRefresh={forceRefresh}
         />
     );
