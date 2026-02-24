@@ -1,6 +1,7 @@
 "use strict";
 
 const statusCheckCollection = require("@core/status-checkcollection");
+const statusGetDefault = require("./status-getdefault");
 
 module.exports = async () => {
     const interfaceResult = await statusCheckCollection({
@@ -29,6 +30,7 @@ module.exports = async () => {
             message: "There is no recent link statistic data for this device.",
             itemType: "warning",
             timeoutSeconds: 15,
-        })
+        }),
+        await statusGetDefault()
     );
 };
