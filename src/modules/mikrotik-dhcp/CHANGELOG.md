@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.3
+
+- 2026-02-24: use node-routeros-v2 ([ddc9305](https://github.com/bbc/bug/commit/ddc9305ebe49a3d9cc61191698afc072f6361f21))
+
 ### version 1.1.2
 
 - 2026-02-24: add readme and screenshots ([7109c97](https://github.com/bbc/bug/commit/7109c9778c7072efac67a1f595d15109e9d315b2))
