@@ -2,19 +2,27 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceName) => {
-    const config = await configGet();
-    if (!config) {
-        return false;
+    try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+
+        if (!config.protectedInterfaces.includes(interfaceName)) {
+            logger.info(`mikrotik-interfaceunprotect: cannot find interface ${interfaceName}`);
+            return false;
+        }
+
+        config.protectedInterfaces = config.protectedInterfaces.filter((item) => item !== interfaceName);
+
+        return await configPutViaCore(config);
+    } catch (err) {
+        err.message = `mikrotik-interfaceprotect: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
-
-    if (!config.protectedInterfaces.includes(interfaceName)) {
-        console.log(`mikrotik-interfaceunprotect: cannot find interface ${interfaceName}`);
-        return false;
-    }
-
-    config.protectedInterfaces = config.protectedInterfaces.filter((item) => item !== interfaceName);
-
-    return await configPutViaCore(config);
 };

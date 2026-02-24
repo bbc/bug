@@ -1,12 +1,13 @@
 'use strict';
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async (conn, interfaceName) => {
 
     // print the interface menu
     try {
-        var data = await conn.write('/interface/monitor-traffic', [
+        const data = await conn.write('/interface/monitor-traffic', [
             '=interface=' + interfaceName,
             '=once='
         ]);
@@ -43,7 +44,7 @@ module.exports = async (conn, interfaceName) => {
         })
 
     } catch (error) {
-        console.log(`mikrotik-fetchtraffic: error fetching interface information for ${interfaceName}`);
+        logger.error(`mikrotik-fetchtraffic: error fetching interface information for ${interfaceName}`);
     }
     return null;
 };
