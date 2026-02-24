@@ -1,5 +1,5 @@
 const panelGet = require("@services/panel-get");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 let panels = {};
 let enablePanelPoll = {};

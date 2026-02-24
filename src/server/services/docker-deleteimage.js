@@ -1,7 +1,7 @@
 "use strict";
 
 const docker = require("@utils/docker");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (imageId, force = false) => {
     try {

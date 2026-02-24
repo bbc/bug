@@ -3,7 +3,7 @@
 //TODO error handling with throw
 
 const { promises: fs } = require("fs");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const path = require("path");
 const readJson = require("@core/read-json");
 const writeJson = require("@core/write-json");

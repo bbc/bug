@@ -4,7 +4,7 @@
 
 const { promises: fs } = require("fs");
 const path = require("path");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const readJson = require("@core/read-json");
 const cacheStore = require("@core/cache-store");
 

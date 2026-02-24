@@ -10,6 +10,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const StatusItem = require("@core/StatusItem");
+const logger = require("@core/logger")(module);
 
 module.exports = async (options) => {
     const defaults = {
@@ -25,7 +26,7 @@ module.exports = async (options) => {
 
     const connection = await mongoCollection(options.collectionName);
     if (!connection) {
-        console.log(`status-checkcollection: collection ${options.collectionName} not found`);
+        logger.warning(`status-checkcollection: collection ${options.collectionName} not found`);
         return;
     }
 

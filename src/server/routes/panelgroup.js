@@ -5,7 +5,6 @@ const asyncHandler = require("express-async-handler");
 const panelGroupRename = require("@services/panelgroup-rename");
 const panelGroupDelete = require("@services/panelgroup-delete");
 const restrict = require("@middleware/restrict");
-const logger = require("@utils/logger")(module);
 const hashResponse = require("@core/hash-response");
 
 /**

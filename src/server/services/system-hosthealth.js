@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const mongoSingle = require("@core/mongo-single");
 
 module.exports = async () => {

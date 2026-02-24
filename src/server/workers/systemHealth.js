@@ -1,7 +1,7 @@
 "use strict";
 
 const register = require("module-alias/register");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const mongoDb = require("@core/mongo-db");
 const delay = require("delay");
 const mongoSingle = require("@core/mongo-single");

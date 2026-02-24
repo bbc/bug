@@ -2,7 +2,7 @@
 
 //TODO error handling with throw
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
 
 exports.get = async function (panelId) {

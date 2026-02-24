@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require("path");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const dockerFileWrite = require("@services/dockerfile-write");
 const dockerBuildModule = require("@services/docker-buildmodule");
 const moduleConfig = require("@models/module-config");

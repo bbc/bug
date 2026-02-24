@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const iconsList = require("@services/icons-list");
 
 module.exports = async (iconName, variant = null, length = null) => {

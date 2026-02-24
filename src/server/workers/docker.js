@@ -2,7 +2,7 @@
 
 const { Worker, isMainThread, parentPort } = require("worker_threads");
 const register = require("module-alias/register");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const dockerListContainerInfo = require("@services/docker-listcontainerinfo");
 const dockerContainer = require("@models/docker-container");
 const mongoDb = require("@core/mongo-db");

@@ -2,7 +2,7 @@
 
 const path = require("path");
 const { format } = require("date-fns");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const tarFolder = require("@utils/tar-folder");
 const getSystemSettings = require("@services/system-settings-get");
 

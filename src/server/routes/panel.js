@@ -15,7 +15,7 @@ const panelListByCapability = require("@services/panel-listbycapability");
 const hashResponse = require("@core/hash-response");
 const panelSetGroup = require("@services/panel-setgroup");
 const restrict = require("@middleware/restrict");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 // const authUser = require('@middleware/auth-user');
 // const authGuest = require('@middleware/auth-guest');

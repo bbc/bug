@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const path = require("path");
 const readJson = require("@core/read-json");
 const systemIp = require("@services/system-ip");

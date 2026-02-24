@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const docker = require("@utils/docker");
 const dockerStopContainer = require("@services/docker-stopcontainer");
 const dockerDeleteContainer = require("@services/docker-deletecontainer");
