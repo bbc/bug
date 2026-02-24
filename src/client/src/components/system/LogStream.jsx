@@ -15,7 +15,7 @@ const ansiConverter = new AnsiToHtml({
     bg: "#1e1e1e",
     newline: true,
     escapeXML: true,
-    colors: { 1: "#e72323", 4: "#6b6be5" },
+    colors: { 1: "#e72323", 3: "#ff9800", 4: "#6767f6" },
 });
 
 export default function LogStream({ panelId }) {
