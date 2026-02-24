@@ -1,10 +1,11 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
 module.exports = async (conn, interfaceName) => {
     try {
-        var data = await conn.write("/interface/ethernet/monitor", ["=numbers=" + interfaceName, "=once="]);
+        const data = await conn.write("/interface/ethernet/monitor", ["=numbers=" + interfaceName, "=once="]);
 
         if (!data || data.length !== 1) {
             // just use an empty result - so that we overwrite the database entry
@@ -32,7 +33,7 @@ module.exports = async (conn, interfaceName) => {
             bitrateFields: [],
         });
     } catch (error) {
-        console.log(`mikrotik-fetchlinkstats: error fetching interface ${interfaceName}`);
+        logger.error(`mikrotik-fetchlinkstats: error fetching interface ${interfaceName}`);
     }
     return null;
 };

@@ -1,18 +1,26 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
+const configGet = require("@core/config-get");
+const RouterOSApi = require("@core/routeros-api");
 
 module.exports = async (interfaceId, interfaceComment) => {
-    const conn = await mikrotikConnect();
-    if (!conn) {
-        return;
-    }
-
     try {
-        await conn.write(`/interface/set`, [`=numbers=${interfaceId}`, "=comment=" + interfaceComment]);
-        console.log(`mikrotik-interfacecomment: set comment on interface ${interfaceId} to '${interfaceComment}'`);
-        conn.close();
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
+        await routerOsApi.run(`/interface/set`, [`=numbers=${interfaceId}`, "=comment=" + interfaceComment]);
+        logger.info(`mikrotik-interfacecomment: set comment on interface ${interfaceId} to '${interfaceComment}'`);
 
         // now update DB
         const interfacesCollection = await mongoCollection("interfaces");
@@ -20,12 +28,11 @@ module.exports = async (interfaceId, interfaceComment) => {
             { id: interfaceId },
             { $set: { comment: interfaceComment } }
         );
-        console.log(`interface-interfacecomment: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-interfacecomment: ${JSON.stringify(dbResult.result)}`);
 
         return true;
     } catch (error) {
-        console.log(`mikrotik-interfacecomment: ${error.stack || error || error.message}`);
-        conn.close();
+        logger.error(`mikrotik-interfacecomment: ${error.stack || error || error.message}`);
         return false;
     }
 };

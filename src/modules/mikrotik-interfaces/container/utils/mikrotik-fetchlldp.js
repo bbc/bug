@@ -3,11 +3,11 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
 module.exports = async (conn) => {
-    var data = await conn.write("/ip/neighbor/print");
+    const data = await conn.write("/ip/neighbor/print");
 
     // process data
-    var lldpItems = [];
-    for (var i in data) {
+    const lldpItems = [];
+    for (let i in data) {
         lldpItems.push(
             mikrotikParseResults({
                 result: data[i],
