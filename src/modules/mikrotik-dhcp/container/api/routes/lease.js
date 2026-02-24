@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const leaseGet = require("../../services/lease-get");
-const leaseUpdate = require("../../services/lease-update");
-const leaseList = require("../../services/lease-list");
-const leaseDelete = require("../../services/lease-delete");
-const leaseMagicPacket = require("../../services/lease-magicpacket");
-const mikrotikLeaseAdd = require("../../services/mikrotik-leaseadd");
-const mikrotikLeaseSet = require("../../services/mikrotik-leaseset");
-const mikrotikLeaseEnable = require("../../services/mikrotik-leaseenable");
-const mikrotikLeaseDisable = require("../../services/mikrotik-leasedisable");
-const mikrotikLeaseMakeStatic = require("../../services/mikrotik-leasemakestatic");
+const leaseGet = require("@services/lease-get");
+const leaseUpdate = require("@services/lease-update");
+const leaseList = require("@services/lease-list");
+const leaseDelete = require("@services/lease-delete");
+const leaseMagicPacket = require("@services/lease-magicpacket");
+const mikrotikLeaseAdd = require("@services/mikrotik-leaseadd");
+const mikrotikLeaseSet = require("@services/mikrotik-leaseset");
+const mikrotikLeaseEnable = require("@services/mikrotik-leaseenable");
+const mikrotikLeaseDisable = require("@services/mikrotik-leasedisable");
+const mikrotikLeaseMakeStatic = require("@services/mikrotik-leasemakestatic");
 const asyncHandler = require("express-async-handler");
 
 router.get(
@@ -45,10 +45,9 @@ router.post(
 router.put(
     "/:leaseId",
     asyncHandler(async (req, res) => {
-        const result = await leaseUpdate(req.params.leaseId, req.body);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await leaseUpdate(req.params.leaseId, req.body),
         });
     })
 );
@@ -56,10 +55,9 @@ router.put(
 router.get(
     "/:leaseId",
     asyncHandler(async (req, res) => {
-        const result = await leaseGet(req.params.leaseId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await leaseGet(req.params.leaseId),
         });
     })
 );
@@ -67,10 +65,9 @@ router.get(
 router.get(
     "/magicpacket/:leaseId",
     asyncHandler(async (req, res) => {
-        const result = await leaseMagicPacket(req.params.leaseId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await leaseMagicPacket(req.params.leaseId),
         });
     })
 );
@@ -78,10 +75,9 @@ router.get(
 router.get(
     "/makestatic/:leaseId",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikLeaseMakeStatic(req.params.leaseId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await mikrotikLeaseMakeStatic(req.params.leaseId),
         });
     })
 );
@@ -89,10 +85,9 @@ router.get(
 router.delete(
     "/:leaseId",
     asyncHandler(async (req, res) => {
-        const result = await leaseDelete(req.params.leaseId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await leaseDelete(req.params.leaseId),
         });
     })
 );
@@ -100,10 +95,9 @@ router.delete(
 router.get(
     "/comment/:leaseId/:leaseComment?",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikLeaseSet(req.params.leaseId, "comment", req.params.leaseComment ? req.params.leaseComment : "");
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await mikrotikLeaseSet(req.params.leaseId, "comment", req.params.leaseComment ? req.params.leaseComment : ""),
         });
     })
 );
@@ -111,10 +105,9 @@ router.get(
 router.get(
     "/enable/:leaseId",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikLeaseEnable(req.params.leaseId);
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await mikrotikLeaseEnable(req.params.leaseId),
         });
     })
 );
@@ -122,10 +115,9 @@ router.get(
 router.get(
     "/disable/:leaseId",
     asyncHandler(async (req, res) => {
-        const result = await mikrotikLeaseDisable(req.params.leaseId);
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await mikrotikLeaseDisable(req.params.leaseId),
         });
     })
 );
