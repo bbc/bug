@@ -30,6 +30,7 @@ Most of these shouldn't need to be changed, but here's a list of the current env
 | PORT                | `3000`              | The port running the main docker application API                         |
 | NODE_ENV            | `production`        | Whether the application is running in `production` or `development` mode |
 | SESSION_SECRET      | `change-me`         | The session secret used by the BUG REST API and socket server            |
+| LOG_HTTP            | `false`             | Sdet to 'true' to log http traffic to the console                        |
 
 ## Panel Configuration
 

@@ -1,5 +1,6 @@
 const morgan = require("morgan");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
+const logHttp = process.env.LOG_HTTP === "true";
 
 logger.stream = {
     write: (message) => {
@@ -11,4 +12,5 @@ logger.stream = {
 
 module.exports = morgan(`:remote-addr :method :url :status :res[content-length] :response-time ms`, {
     stream: logger.stream,
+    skip: () => !logHttp,
 });

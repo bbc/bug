@@ -27,8 +27,7 @@ services:
             CLEANUP: 2
             BUG_PORT: 3101
             BUG_HOST: "127.0.0.1"
-            BUG_LOG_FOLDER: logs
-            BUG_LOG_NAME: bug
+            LOG_HTTP: "false"
             PORT: 3000
             NODE_ENV: development
             SESSION_SECRET: aSecretForYourSessions
