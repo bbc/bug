@@ -2,10 +2,11 @@
 
 const mongoSaveArray = require("@core/mongo-savearray");
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
+const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, leasesCollection }) => {
+module.exports = async ({ routerOsApi, leasesCollection }) => {
     try {
-        const data = await conn.write("/ip/dhcp-server/lease/getall");
+        const data = await routerOsApi.run("/ip/dhcp-server/lease/getall");
         const leases = [];
 
         for (let i in data) {
@@ -19,6 +20,7 @@ module.exports = async ({ conn, leasesCollection }) => {
             );
         }
 
+        logger.debug(`leases: saving ${leases.length} lease(s) to database`);
         await mongoSaveArray(leasesCollection, leases, "id");
     } catch (error) {
         logger.error(`leases: ${error.message}`);
