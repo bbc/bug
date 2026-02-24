@@ -7,7 +7,7 @@
  */
 
 const { MongoClient } = require("mongodb");
-
+const logger = require("@core/logger")(module);
 const mongoContainer = process.env.MONGO_CONTAINER || "bug-mongo";
 const mongoPort = process.env.MONGO_PORT || "27017";
 const url = `mongodb://${mongoContainer}:${mongoPort}`;
@@ -23,12 +23,12 @@ class Mongo {
 
     async connect(dbName) {
         if (!isConnected) {
-            console.log(`mongo-db: connecting to mongo db at ${url}`);
+            logger.debug(`mongo-db: connecting to mongo db at ${url}`);
             await this.client.connect();
             isConnected = true;
-            console.log("mongo-db: connected to mongo db OK");
+            logger.info("mongo-db: connected to mongo db OK");
         }
-        console.log(`mongo-db: opening database ${dbName}`);
+        logger.debug(`mongo-db: opening database ${dbName}`);
         this.db = this.client.db(dbName);
     }
 }

@@ -14,6 +14,7 @@ const { Worker, isMainThread, SHARE_ENV } = require("worker_threads");
 const configGet = require("@core/config-get");
 const path = require("path");
 const fs = require("fs").promises;
+const logger = require("@core/logger")(module);
 
 class WorkerManager {
     constructor(folder, isModule = true) {
@@ -36,19 +37,19 @@ class WorkerManager {
         this.config = await configGet();
 
         if (this.isModule && this.config === null) {
-            console.log("WorkerManager->setup: module is missing config, not starting workers.");
+            logger.warning("WorkerManager->setup: module is missing config, not starting workers.");
             return;
         }
 
         if (this.isModule && (this.config?.needsConfigured || this.config === null)) {
-            console.log("WorkerManager->setup: module needs config, not starting workers.");
+            logger.warning("WorkerManager->setup: module needs config, not starting workers.");
             return;
         }
 
         if (isMainThread) {
             await this.createWorkers();
         } else {
-            console.log("WorkerManager->setup: not starting workers in a worker thread.");
+            logger.debug("WorkerManager->setup: not starting workers in a worker thread.");
         }
     }
 
@@ -66,7 +67,7 @@ class WorkerManager {
                     restartCount: 0,
                 }));
         } catch (err) {
-            console.error("WorkerManager->getWorkerFiles:", err);
+            logger.error("WorkerManager->getWorkerFiles:", err);
             return [];
         }
     }
@@ -76,7 +77,7 @@ class WorkerManager {
             try {
                 await this.createWorker(i);
             } catch (err) {
-                console.error(`WorkerManager->createWorkers: Failed to create ${this.workers[i].filename}`, err);
+                logger.error(`WorkerManager->createWorkers: Failed to create ${this.workers[i].filename}`, err);
             }
         }
     }
@@ -85,7 +86,7 @@ class WorkerManager {
         const workerInfo = this.workers[index];
         if (!workerInfo) return;
 
-        console.log(`WorkerManager->createWorker: Starting ${workerInfo.filename}`);
+        logger.debug(`WorkerManager->createWorker: Starting ${workerInfo.filename}`);
 
         const worker = new Worker(workerInfo.filepath, {
             ...this.options,
@@ -110,7 +111,7 @@ class WorkerManager {
 
     handleError(err, index) {
         const worker = this.workers[index];
-        console.error(`WorkerManager->handleError (${worker.filename}):`, err);
+        logger.error(`WorkerManager->handleError (${worker.filename}):`, err);
         worker.state = "error";
     }
 
@@ -120,12 +121,12 @@ class WorkerManager {
 
     async handleExit(code, index) {
         const worker = this.workers[index];
-        console.log(`WorkerManager->handleExit: ${worker.filename} exited with code ${code}`);
+        logger.warning(`WorkerManager->handleExit: ${worker.filename} exited with code ${code}`);
         worker.state = "stopped";
         delete worker.worker;
 
         if (worker.restart) {
-            console.log(`WorkerManager->handleExit: Restarting ${worker.filename} in ${worker.restartDelay / 1000}s`);
+            logger.info(`WorkerManager->handleExit: Restarting ${worker.filename} in ${worker.restartDelay / 1000}s`);
 
             setTimeout(async () => {
                 if (worker._originalRestartDelay !== undefined) {
@@ -135,7 +136,7 @@ class WorkerManager {
 
                 worker.restarting = false;
                 await this.createWorker(index);
-                console.log(`WorkerManager->handleExit: ${worker.filename} restarted OK`);
+                logger.info(`WorkerManager->handleExit: ${worker.filename} restarted OK`);
             }, worker.restartDelay);
         }
     }
@@ -152,11 +153,11 @@ class WorkerManager {
         }
 
         if (worker.worker) {
-            console.log(`WorkerManager->restartWorker: terminating ${worker.filename}`);
+            logger.info(`WorkerManager->restartWorker: terminating ${worker.filename}`);
             const code = await worker.worker.terminate();
-            console.log(`WorkerManager->restartWorker: ${worker.filename} terminated with code ${code}`);
+            logger.info(`WorkerManager->restartWorker: ${worker.filename} terminated with code ${code}`);
         } else {
-            console.log(`WorkerManager->restartWorker: creating worker ${worker.filename}`);
+            logger.info(`WorkerManager->restartWorker: creating worker ${worker.filename}`);
             await this.createWorker(index);
         }
     }
@@ -183,7 +184,7 @@ class WorkerManager {
             if (worker.worker) {
                 worker.restart = false;
                 const code = await worker.worker.terminate();
-                console.log(`Terminated ${worker.filename} with code ${code}`);
+                logger.warning(`Terminated ${worker.filename} with code ${code}`);
                 worker.state = "stopped";
                 delete worker.worker;
             }
