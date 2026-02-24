@@ -22,7 +22,7 @@ const main = async () => {
         const interfacesCollection = await mongoCollection("interfaces");
         const linkStatsCollection = await mongoCollection("linkstats");
         const trafficCollection = await mongoCollection("traffic");
-        const historyCollection = await mongoCollection("traffichistory");
+        const historyCollection = await mongoCollection("history");
 
         // clear old entries
         await interfacesCollection.deleteMany({});
