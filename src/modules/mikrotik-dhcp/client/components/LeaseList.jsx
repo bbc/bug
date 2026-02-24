@@ -33,6 +33,7 @@ export default function LeaseList({ panelId }) {
             title: "Edit comment",
             defaultValue: item.comment,
             confirmButtonText: "Change",
+            allowBlank: true,
         });
 
         if (result !== false) {
@@ -199,7 +200,11 @@ export default function LeaseList({ panelId }) {
                         content: (item) => {
                             return (
                                 <>
-                                    {item["host-name"] && <BugTableLinkButton>{item["host-name"]}</BugTableLinkButton>}
+                                    {item["host-name"] && (
+                                        <BugTableLinkButton onClick={(event) => handleCommentClicked(event, item)}>
+                                            {item["host-name"]}
+                                        </BugTableLinkButton>
+                                    )}
                                     {item.comment && (
                                         <BugTableLinkButton
                                             onClick={(event) => handleCommentClicked(event, item)}
