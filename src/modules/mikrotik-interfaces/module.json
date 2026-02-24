@@ -15,11 +15,11 @@
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
-        "order": 0,
         "needsConfigured": true,
         "title": "",
         "module": "mikrotik-interfaces",
         "description": "",
+        "notes": "",
         "enabled": false,
         "address": "",
         "username": "bug",
