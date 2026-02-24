@@ -5,7 +5,7 @@ const dhcpLeaseAdd = require("@services/dhcplease-add");
 const dhcpLeaseDelete = require("@services/dhcplease-delete");
 const dhcpNetworkList = require("@services/dhcpnetwork-list");
 const dhcpServerList = require("@services/dhcpserver-list");
-const entryDeleteRoute = require("@services/entry-deleteroute");
+const entryRemoveRoute = require("@services/entry-removeroute");
 const asyncHandler = require("express-async-handler");
 
 router.post("/lease", asyncHandler(async (req, res) => {
@@ -28,7 +28,7 @@ router.delete("/:address", asyncHandler(async (req, res) => {
 
     // delete address book entry (route)
     try {
-        await entryDeleteRoute(req.params.address);
+        await entryRemoveRoute(req.params.address);
     } catch (e) {
         // we don't throw here so the user gets a success for the dhcp part
         console.warn(`Could not delete address book entry for ${address}: ${e.message}`);

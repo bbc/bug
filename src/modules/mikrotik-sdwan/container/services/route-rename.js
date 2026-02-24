@@ -1,15 +1,24 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
 
 module.exports = async (routeId, routeName) => {
-    let conn;
 
     try {
-        conn = await mikrotikConnect();
-        if (!conn) throw new Error("could not connect to mikrotik router");
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
 
         const dbRoutes = await mongoSingle.get("routes") || [];
         const dbBridges = await mongoSingle.get("bridges") || [];
@@ -33,7 +42,7 @@ module.exports = async (routeId, routeName) => {
             logger.info(`route-rename: route id ${routeId} is dynamic`);
             logger.info(`route-rename: changing bridge id ${dbBridges[bridgeIndex].id} comment to ${routeName}`);
 
-            await conn.write(`/interface/bridge/set`, [`=numbers=${dbBridges[bridgeIndex].id}`, "=comment=" + routeName]);
+            await routerOsApi.run(`/interface/bridge/set`, [`=numbers=${dbBridges[bridgeIndex].id}`, "=comment=" + routeName]);
 
             // now update DB
             dbBridges[bridgeIndex].comment = routeName;
@@ -44,7 +53,7 @@ module.exports = async (routeId, routeName) => {
             logger.info(`route-rename: route id ${routeId} is static`);
             logger.info(`route-rename: changing route id ${dbRoutes[routeIndex].id} comment to ${routeName}`);
 
-            await conn.write(`/ip/route/set`, [`=numbers=${dbRoutes[routeIndex].id}`, "=comment=" + routeName]);
+            await routerOsApi.run(`/ip/route/set`, [`=numbers=${dbRoutes[routeIndex].id}`, "=comment=" + routeName]);
 
             // now update DB
             dbRoutes[routeIndex].comment = routeName;
@@ -56,7 +65,5 @@ module.exports = async (routeId, routeName) => {
         error.message = `route-rename: ${error.stack || error.message}`;
         logger.error(error.message);
         throw error;
-    } finally {
-        if (conn) conn.close();
     }
 };
