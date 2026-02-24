@@ -1,8 +1,4 @@
-- add README.md
 - add historical entries to CHANGELOG.md
-- add screenshot
-- add panel status (default/success etc)
-- check module status (dev/beta/stable etc)
 - add dhcp pool number left to mikrotik dhcp module
 - mikrotik-dhcp should warn when pools are full
 - update db on lease changes
