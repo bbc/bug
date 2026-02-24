@@ -5,11 +5,11 @@ const leaseUpdate = require("@services/lease-update");
 const leaseList = require("@services/lease-list");
 const leaseDelete = require("@services/lease-delete");
 const leaseMagicPacket = require("@services/lease-magicpacket");
-const mikrotikLeaseAdd = require("@services/mikrotik-leaseadd");
-const mikrotikLeaseSet = require("@services/mikrotik-leaseset");
-const mikrotikLeaseEnable = require("@services/mikrotik-leaseenable");
-const mikrotikLeaseDisable = require("@services/mikrotik-leasedisable");
-const mikrotikLeaseMakeStatic = require("@services/mikrotik-leasemakestatic");
+const leaseAdd = require("@services/lease-add");
+const leaseComment = require("@services/lease-comment");
+const leaseEnable = require("@services/lease-enable");
+const leaseDisable = require("@services/lease-disable");
+const leaseMakeStatic = require("@services/lease-makestatic");
 const asyncHandler = require("express-async-handler");
 
 router.get(
@@ -37,7 +37,7 @@ router.post(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await mikrotikLeaseAdd(req.body),
+            data: await leaseAdd(req.body),
         });
     })
 );
@@ -77,7 +77,7 @@ router.get(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await mikrotikLeaseMakeStatic(req.params.leaseId),
+            data: await leaseMakeStatic(req.params.leaseId),
         });
     })
 );
@@ -97,7 +97,7 @@ router.get(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await mikrotikLeaseSet(req.params.leaseId, "comment", req.params.leaseComment ? req.params.leaseComment : ""),
+            data: await leaseComment(req.params.leaseId, req?.params?.leaseComment ?? ""),
         });
     })
 );
@@ -107,7 +107,7 @@ router.get(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await mikrotikLeaseEnable(req.params.leaseId),
+            data: await leaseEnable(req.params.leaseId),
         });
     })
 );
@@ -117,7 +117,7 @@ router.get(
     asyncHandler(async (req, res) => {
         res.json({
             status: "success",
-            data: await mikrotikLeaseDisable(req.params.leaseId),
+            data: await leaseDisable(req.params.leaseId),
         });
     })
 );

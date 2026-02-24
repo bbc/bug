@@ -1,6 +1,5 @@
 "use strict";
 
-const mongoCollection = require("@core/mongo-collection");
 const RouterOSApi = require("@core/routeros-api");
 const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
@@ -20,17 +19,13 @@ module.exports = async (leaseId) => {
             timeout: 10,
         });
 
-        await routerOsApi.run("/ip/dhcp-server/lease/remove", ["=numbers=" + leaseId]);
-        logger.info(`mikrotik-leasedelete: removed lease id ${leaseId}`);
 
-        // now update local db
-        const dbLeases = await mongoCollection("leases");
-        await dbLeases.deleteOne({ id: leaseId });
+        await routerOsApi.run("/ip/dhcp-server/lease/make-static", ["=numbers=" + leaseId]);
+        logger.info(`mikrotik-leasemakestatic: made lease id ${leaseId} static`);
 
         return true;
-
     } catch (err) {
-        err.message = `lease-delete: ${err.stack || err.message}`;
+        err.message = `lease-makestatic: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

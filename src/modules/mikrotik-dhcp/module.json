@@ -4,7 +4,7 @@
     "description": "View and manage DHCP leases on Mikrotik routers",
     "capabilities": ["dhcp-server"],
     "notes": "",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "icon": "mdi-clipboard-list",
     "author": "Geoff House",
     "needsContainer": true,
