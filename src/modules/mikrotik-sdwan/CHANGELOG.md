@@ -1,5 +1,12 @@
 ## Changelog
 
+### version 1.0.8
+
+- 2026-02-23: fix logging levels ([3932f73](https://github.com/bbc/bug/commit/3932f736ae1eeacf9f15a21f5e27ed6e35c9eee0))
+- 2026-02-23: add enabling and disabling of routes ([83403f4](https://github.com/bbc/bug/commit/83403f4162c5055d0e413976fb8f2fe16e65b545))
+- 2026-02-23: add ability to clear connections ([ba4ea07](https://github.com/bbc/bug/commit/ba4ea079399e849241e270f2571e5968a2d055fb))
+- 2026-02-23: add ping sparkline, dynamic info and geoip ([aed9f42](https://github.com/bbc/bug/commit/aed9f42184951fbb0806a742c027a53b25e429fe))
+
 ### version 1.0.7
 
 - 2026-02-13: add ping/fetch tests and use worker tasks ([5110967](https://github.com/bbc/bug/commit/5110967ae841feffa85ee5e9bef24d5e2f463cb7))
