@@ -1,20 +1,29 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const leaseLabel = require("@utils/lease-label");
 const logger = require("@core/logger")(module);
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
 
 module.exports = async (address, label) => {
 
-    let conn;
     try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
         if (!address || address === "undefined") {
             throw new Error("no address provided to set label");
         }
-
-        conn = await mikrotikConnect();
-        if (!conn) throw new Error("could not connect to mikrotik router");
 
         const dbLeases = await mongoSingle.get('dhcpLeases') || [];
         const existingIndex = dbLeases.findIndex((li) => li.address === address);
@@ -30,7 +39,7 @@ module.exports = async (address, label) => {
         const newEntry = { ...lease, label: label }
         const newComment = leaseLabel.stringify(newEntry);
 
-        await conn.write(`/ip/dhcp-server/lease/set`, [
+        await routerOsApi.run(`/ip/dhcp-server/lease/set`, [
             `=numbers=${lease.id}`,
             `=comment=${newComment}`
         ]);
@@ -47,7 +56,5 @@ module.exports = async (address, label) => {
         err.message = `entry-setlabel: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
-    } finally {
-        if (conn) conn.close();
     }
 };

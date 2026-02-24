@@ -1,20 +1,28 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
 
 module.exports = async (address, list) => {
 
-    let conn;
-
     try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
         if (!address || address === "undefined") {
             throw new Error("no address provided to set route");
         }
-
-        conn = await mikrotikConnect();
-        if (!conn) throw new Error("could not connect to mikrotik router");
 
         const dbListItems = await mongoSingle.get('listItems') || [];
         const existingIndex = dbListItems.findIndex((li) => li.address === address);
@@ -24,7 +32,7 @@ module.exports = async (address, list) => {
             const item = dbListItems[existingIndex];
             logger.info(`entry-setroute: updating ${address} to list '${list}'`);
 
-            await conn.write(`/ip/firewall/address-list/set`, [
+            await routerOsApi.run(`/ip/firewall/address-list/set`, [
                 `=numbers=${item.id}`,
                 `=list=${list}`
             ]);
@@ -35,7 +43,7 @@ module.exports = async (address, list) => {
             logger.info(`entry-setroute: creating new entry for ${address} in list '${list}'`);
 
             // add to mikrotik and capture the new id
-            const result = await conn.write(`/ip/firewall/address-list/add`, [
+            const result = await routerOsApi.run(`/ip/firewall/address-list/add`, [
                 `=address=${address}`,
                 `=list=${list}`,
                 '=comment=[bug_sdwan]'
@@ -44,12 +52,14 @@ module.exports = async (address, list) => {
             // mikrotik usually returns the new id in the format [{ ret: "*1a" }]
             const newId = result[0]?.ret;
 
-            // push new object to our local array
-            dbListItems.push({
-                id: newId,
-                address: address,
-                list: list
-            });
+            if (newId) {
+                // push new object to our local array
+                dbListItems.push({
+                    id: newId,
+                    address: address,
+                    list: list
+                });
+            }
         }
 
         // save the updated array back to mongo
@@ -61,7 +71,5 @@ module.exports = async (address, list) => {
         err.message = `entry-setroute: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
-    } finally {
-        if (conn) conn.close();
     }
 };

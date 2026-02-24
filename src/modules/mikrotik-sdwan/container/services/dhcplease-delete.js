@@ -1,22 +1,29 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
 
 module.exports = async (address) => {
 
-    let conn;
-
     try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
 
         // ensure address is provided to prevent logic errors
         if (!address || address === "undefined") {
             throw new Error("no address provided for lease removal");
         }
-
-        conn = await mikrotikConnect();
-        if (!conn) throw new Error("could not connect to mikrotik router");
 
         // get the list of leases first
         const dbLeases = await mongoSingle.get('dhcpLeases') || [];
@@ -29,7 +36,7 @@ module.exports = async (address) => {
         const targetLease = dbLeases[leaseIndex];
 
         // update the mikrotik router to clear the comment
-        await conn.write(`/ip/dhcp-server/lease/set`, [
+        await routerOsApi.run(`/ip/dhcp-server/lease/set`, [
             `=.id=${targetLease.id}`,
             `=comment=`
         ]);
@@ -49,8 +56,5 @@ module.exports = async (address) => {
         err.message = `dhcplease-delete: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
-    } finally {
-        // ensure connection always closes regardless of success or failure
-        if (conn) conn.close();
     }
 };

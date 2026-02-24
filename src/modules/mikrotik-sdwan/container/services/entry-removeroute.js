@@ -1,21 +1,24 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
 
 module.exports = async (address) => {
 
-    let conn;
-
     try {
-
-        if (!address || address === "undefined") {
-            throw new Error("no address provided for route removal");
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
         }
 
-        conn = await mikrotikConnect();
-        if (!conn) throw new Error("could not connect to mikrotik router");
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
 
         const dbListItems = await mongoSingle.get('listItems') || [];
 
@@ -30,7 +33,7 @@ module.exports = async (address) => {
         for (const item of itemsToRemove) {
             logger.info(`entry-removeroute: removing ${address} from list '${item.list}'`);
 
-            await conn.write("/ip/firewall/address-list/remove", [
+            await routerOsApi.run("/ip/firewall/address-list/remove", [
                 `=.id=${item.id}`
             ]);
         }
@@ -44,7 +47,5 @@ module.exports = async (address) => {
         err.message = `entry-removeroute: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
-    } finally {
-        if (conn) conn.close();
     }
 };

@@ -35,15 +35,12 @@ const main = async () => {
             user: workerData.username,
             password: workerData.password,
             timeout: 10,
+            persistent: true,
             onDisconnect: (err) => {
                 logger.error("RouterOS connection lost:", err.message);
                 process.exit(1);
             }
         });
-
-        logger.info(
-            `worker-mikrotik: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
-        );
 
         const conn = await routerOsApi.connect();
         logger.info("worker-mikrotik: device connected ok");

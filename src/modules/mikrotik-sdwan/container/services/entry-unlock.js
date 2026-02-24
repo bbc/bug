@@ -13,7 +13,7 @@ module.exports = async (address) => {
 
         const config = await configGet();
         if (!config) {
-            throw new Error("failed to retrieve system configuration");
+            throw new Error("failed to load config");
         }
 
         // exit early if there are no locked entries to process

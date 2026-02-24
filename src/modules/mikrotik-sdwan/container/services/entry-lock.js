@@ -14,7 +14,7 @@ module.exports = async (address) => {
 
         const config = await configGet();
         if (!config) {
-            throw new Error("failed to retrieve system config");
+            throw new Error("failed to load config");
         }
 
         // initialize list 
