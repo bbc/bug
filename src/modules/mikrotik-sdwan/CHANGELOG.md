@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.9
+
+- 2026-02-24: use routeros-api for services ([74bd3e8](https://github.com/bbc/bug/commit/74bd3e83fb9fc8e643d79ac359f3b1037250c014))
+
 ### version 1.0.8
 
 - 2026-02-23: fix logging levels ([3932f73](https://github.com/bbc/bug/commit/3932f736ae1eeacf9f15a21f5e27ed6e35c9eee0))
