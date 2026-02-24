@@ -1,28 +1,36 @@
 "use strict";
 
-const mikrotikConnect = require("../utils/mikrotik-connect");
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
+const configGet = require("@core/config-get");
+const RouterOSApi = require("@core/routeros-api");
 
 module.exports = async (interfaceId, interfaceName) => {
-    const conn = await mikrotikConnect();
-    if (!conn) {
-        return;
-    }
 
     try {
-        await conn.write(`/interface/set`, [`=numbers=${interfaceId}`, "=name=" + interfaceName]);
-        console.log(`mikrotik-interfacerename: renamed interface ${interfaceName}`);
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
+        await routerOsApi.run(`/interface/set`, [`=numbers=${interfaceId}`, "=name=" + interfaceName]);
+        logger.info(`mikrotik-interfacerename: renamed interface ${interfaceName}`);
 
         // now update DB
         const interfacesCollection = await mongoCollection("interfaces");
         const dbResult = await interfacesCollection.updateOne({ id: interfaceId }, { $set: { name: interfaceName } });
-        console.log(`interface-interfacerename: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`interface-interfacerename: ${JSON.stringify(dbResult.result)}`);
 
-        conn.close();
         return true;
     } catch (error) {
-        console.log(`mikrotik-interfacerename: ${error.stack || error || error.message}`);
-        conn.close();
+        logger.error(`mikrotik-interfacerename: ${error.stack || error || error.message}`);
         return false;
     }
 };
