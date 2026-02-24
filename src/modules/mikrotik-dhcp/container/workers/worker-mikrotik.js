@@ -38,7 +38,7 @@ const main = async () => {
             user: workerData.username,
             password: workerData.password,
             timeout: 10,
-            persistent: true,
+            keepalive: true,
             onDisconnect: (err) => {
                 logger.error("RouterOS connection lost:", err.message);
                 process.exit(1);
@@ -49,7 +49,7 @@ const main = async () => {
             `worker-mikrotik: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
         );
 
-        const conn = await routerOsApi.connect();
+        await routerOsApi.connect();
         logger.info("worker-mikrotik: device connected ok");
 
         workerTaskManager({
@@ -57,7 +57,7 @@ const main = async () => {
                 { name: "addresslists", seconds: 10 },
                 { name: "leases", seconds: 2 },
                 { name: "servers", seconds: 10 },
-            ], context: { conn, addressListsCollection, leasesCollection, serversCollection }, baseDir: __dirname
+            ], context: { routerOsApi, addressListsCollection, leasesCollection, serversCollection }, baseDir: __dirname
         });
 
     } catch (err) {

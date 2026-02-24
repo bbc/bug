@@ -2,10 +2,10 @@
 
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, addressListsCollection }) => {
+module.exports = async ({ routerOsApi, addressListsCollection }) => {
 
     try {
-        const data = await conn.write("/ip/firewall/filter/getall");
+        const data = await routerOsApi.run("/ip/firewall/filter/print");
 
         // process data
         const addressListUniqueObject = {};
@@ -17,6 +17,7 @@ module.exports = async ({ conn, addressListsCollection }) => {
         }
         const addressLists = Object.values(addressListUniqueObject);
 
+        logger.debug(`addresslists: saving ${addressLists.length} address list(s) to database`);
         // this is a simple array, so we save it manually
         await addressListsCollection.replaceOne(
             { key: "addresslists" },
