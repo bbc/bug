@@ -1,21 +1,30 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const leaseLabel = require("@utils/lease-label");
 const logger = require("@core/logger")(module);
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
 
 module.exports = async (lease) => {
 
-    let conn;
     try {
         // check for missing data before connecting
         if (!lease || !lease.address || !lease.macAddress) {
             throw new Error("missing required lease data (address or macaddress)");
         }
 
-        conn = await mikrotikConnect();
-        if (!conn) throw new Error("could not connect to mikrotik router");
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
 
         // get the list of leases first
         const dbLeases = await mongoSingle.get('dhcpLeases') || [];
@@ -30,7 +39,7 @@ module.exports = async (lease) => {
 
             const existingLease = dbLeases[existingMacIndex];
 
-            await conn.write(`/ip/dhcp-server/lease/set`, [
+            await routerOsApi.run(`/ip/dhcp-server/lease/set`, [
                 `=.id=${existingLease.id}`,
                 `=comment=${newComment}`,
                 `=address=${lease.address}`,
@@ -57,7 +66,7 @@ module.exports = async (lease) => {
             // creating a new item requires the add command
             logger.info(`dhcplease-add: creating new reservation for ${lease.macAddress}`);
 
-            await conn.write(`/ip/dhcp-server/lease/add`, [
+            await routerOsApi.run(`/ip/dhcp-server/lease/add`, [
                 `=comment=${newComment}`,
                 `=address=${lease.address}`,
                 `=mac-address=${lease.macAddress}`,
@@ -85,8 +94,5 @@ module.exports = async (lease) => {
         err.message = `dhcplease-add: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
-    } finally {
-        // ensure connection always closes
-        if (conn) conn.close();
     }
-};
+}

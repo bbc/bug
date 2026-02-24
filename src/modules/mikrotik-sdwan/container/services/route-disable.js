@@ -1,23 +1,31 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
 const srcAddressGet = require('@utils/srcaddress-get');
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
 
 module.exports = async (routeId) => {
 
-    let conn;
-    const pingCollection = await mongoCollection("ping");
-    const wanAddressCollection = await mongoCollection("wanAddresses");
-    const dbAddresses = await mongoSingle.get("addresses") || [];
-    const dbRules = await mongoSingle.get("rules") || [];
-
     try {
-        conn = await mikrotikConnect();
-        if (!conn) throw new Error("could not connect to mikrotik router");
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
 
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
+        const pingCollection = await mongoCollection("ping");
+        const wanAddressCollection = await mongoCollection("wanAddresses");
+        const dbAddresses = await mongoSingle.get("addresses") || [];
+        const dbRules = await mongoSingle.get("rules") || [];
         const dbRoutes = await mongoSingle.get("routes") || [];
 
         if (!Array.isArray(dbRoutes)) {
@@ -37,7 +45,7 @@ module.exports = async (routeId) => {
             // we update the route
             logger.info(`route-disable: disabling route id ${dbRoutes[routeIndex].id}`);
 
-            await conn.write(`/ip/route/disable`, [`=numbers=${dbRoutes[routeIndex].id}`]);
+            await routerOsApi.run(`/ip/route/disable`, [`=numbers=${dbRoutes[routeIndex].id}`]);
 
             // now update routes DB
             dbRoutes[routeIndex].disabled = true;
@@ -55,7 +63,5 @@ module.exports = async (routeId) => {
         error.message = `route-disable: ${error.stack || error.message}`;
         logger.error(error.message);
         throw error;
-    } finally {
-        if (conn) conn.close();
     }
 };
