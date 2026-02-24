@@ -17,7 +17,8 @@
 - add panel toolbar menu to logs page
 - i need a flag to prevent the module ui from loading - overlayPanel or something? When a status item is so important the panel can't run.
 - check upgrade - the panel enabled should be false and it takes a long time to update
-- use logger rather than console.log
 - new worker design using tasks
 - update mikrotik modules using new core class
 - mikrotik routes module doesn't understand sub routing tables
+- check app.js API error in all modules
+- remove log level

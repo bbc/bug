@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require("path");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const untarFolder = require("@utils/untar-folder");
 const fs = require("fs-extra");
 const delay = require("delay");

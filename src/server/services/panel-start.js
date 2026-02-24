@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const panelConfig = require("@models/panel-config");
 const moduleBuild = require("@services/module-build");
 const dockerGetContainer = require("@services/docker-getcontainer");

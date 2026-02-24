@@ -1,5 +1,5 @@
 const panelList = require("@services/panel-list");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 let panels;
 let timer;

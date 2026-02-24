@@ -3,7 +3,7 @@
 const id = require("@utils/id");
 const panelConfigModel = require("@models/panel-config");
 const moduleGet = require("@services/module-get");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const panelStart = require("@services/panel-start");
 const key = require("@utils/key");
 

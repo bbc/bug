@@ -9,6 +9,8 @@
 
 const readJson = require("@core/read-json");
 const path = require("path");
+const logger = require("@core/logger")(module);
+
 module.exports = async () => {
     try {
         const filename = path.join(__dirname, "..", "config", "panel.json");
@@ -17,7 +19,7 @@ module.exports = async () => {
         if (error.code === "ENOENT") {
             return null;
         }
-        console.log(`config-get: ${error.stack || error || error.message}`);
+        logger.error(`config-get: ${error.stack || error || error.message}`);
     }
     return null;
 };

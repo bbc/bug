@@ -1,4 +1,5 @@
 "use strict";
+const logger = require("@core/logger")(module);
 
 module.exports = async (collection, dataArray, idFieldName, update = false) => {
     for (let eachArrayItem of dataArray) {
@@ -12,7 +13,7 @@ module.exports = async (collection, dataArray, idFieldName, update = false) => {
                 await collection.replaceOne(matchArray, eachArrayItem, { upsert: true });
             }
         } catch (error) {
-            console.log(error);
+            logger.error(`mongo-savearray: ${error.stack || error || error.message}`);
         }
     }
 };

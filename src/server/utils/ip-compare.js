@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const ipClean = require("@utils/ip-clean");
 const cidrRegex = require("cidr-regex");
 const ipRangeCheck = require("ip-range-check");

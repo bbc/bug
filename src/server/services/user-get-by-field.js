@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const userModel = require("@models/user");
 
 async function getUserIndex(users, fieldValue, fieldName) {

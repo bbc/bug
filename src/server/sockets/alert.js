@@ -1,4 +1,4 @@
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 const alertHandler = (namespace, socket) => {
     // remove previous "event" listeners to prevent stacking/memory leaks

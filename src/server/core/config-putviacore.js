@@ -7,15 +7,16 @@
  */
 
 const axios = require("axios");
+const logger = require("@core/logger")(module);
 
 module.exports = async (config) => {
     if (!config) {
-        console.log(`config-putviacore: no config passed`);
+        logger.error(`config-putviacore: no config passed`);
         return false;
     }
 
     if (!config.id) {
-        console.log(`config-putviacore: no ID value in config object`);
+        logger.error(`config-putviacore: no ID value in config object`);
         return false;
     }
 
@@ -29,7 +30,7 @@ module.exports = async (config) => {
         let response = await axios.put(url, config, { headers: { authorization: `Bearer ${config?.key}` } });
         return response?.data?.status === "success";
     } catch (error) {
-        console.log(`config-putviacore: ${error.stack || error || error.message}`);
+        logger.error(`config-putviacore: ${error.stack || error || error.message}`);
         return false;
     }
 };
