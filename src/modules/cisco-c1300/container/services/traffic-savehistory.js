@@ -19,7 +19,7 @@ module.exports = async (collection, interfaceArray) => {
             }
         }
 
-        collection.insertOne(saveDocument);
+        await collection.insertOne(saveDocument);
     } catch (err) {
         err.message = `traffic-savehistory: ${err.stack || err.message}`;
         logger.error(err.message);

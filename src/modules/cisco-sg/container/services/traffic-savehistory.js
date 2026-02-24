@@ -17,5 +17,5 @@ module.exports = async (collection, interfaceArray) => {
         }
     }
 
-    collection.insertOne(saveDocument);
+    await collection.insertOne(saveDocument);
 };
