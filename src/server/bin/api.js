@@ -116,6 +116,9 @@ bugApi.use((req, res, next) => {
 });
 
 bugApi.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
     res.status(err.status || 500).json({
         status: "error",
         message: err.message || "Internal Server Error"

@@ -63,6 +63,7 @@ services:
       PORT: 3000
       NODE_ENV: production
       SESSION_SECRET: change-me
+      LOG_HTTP: "false"
     networks:
       - bug
     ports:
