@@ -2,7 +2,7 @@
 
 const { Worker, isMainThread, parentPort } = require("worker_threads");
 const register = require("module-alias/register");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const mongoDb = require("@core/mongo-db");
 const delay = require("delay");
 const panelConfigModel = require("@models/panel-config");

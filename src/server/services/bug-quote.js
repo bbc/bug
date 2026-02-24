@@ -1,7 +1,5 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
-
 module.exports = async () => {
     let quotes = [
         "It's a buggy buggy day.",

@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const panelConfigList = require("@services/panelconfig-list");
 
 module.exports = async (apiKey) => {

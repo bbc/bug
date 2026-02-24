@@ -3,7 +3,7 @@
 const { promises: fs } = require("fs");
 const path = require("path");
 const nodeEnv = process.env.NODE_ENV || "production";
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 module.exports = async (filepath, moduleName) => {
     const filename = path.join(filepath, "Dockerfile");

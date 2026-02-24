@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const panelConfigModel = require("@models/panel-config");
 const panelDelete = require("@services/panel-delete");
 

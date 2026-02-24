@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const moduleGet = require("@services/module-get");
 
 module.exports = async (moduleName) => {

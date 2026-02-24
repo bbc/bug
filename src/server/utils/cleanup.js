@@ -1,4 +1,4 @@
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const schedule = require("node-schedule");
 const dockerCleanup = require("@services/docker-cleanup");
 

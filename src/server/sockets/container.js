@@ -1,6 +1,6 @@
 const getPanel = require("@services/panel-get");
 const getPanelConfig = require("@services/panelconfig-get");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const { io } = require("socket.io-client");
 
 const containerSockets = {};

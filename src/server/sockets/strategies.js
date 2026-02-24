@@ -1,5 +1,5 @@
 const strategyList = require("@services/strategy-list");
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 
 let strategies;
 let timer;

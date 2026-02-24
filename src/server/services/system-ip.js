@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("@utils/logger")(module);
+const logger = require("@core/logger")(module);
 const dns = require("dns");
 
 const bugHost = process.env.BUG_HOST;

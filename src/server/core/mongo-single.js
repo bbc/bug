@@ -10,29 +10,41 @@
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
 const MongoDb = require("@core/mongo-db");
+const logger = require("@core/logger")(module);
 
 const clear = async (name) => {
-    if (MongoDb.db) {
-        const collectionList = await MongoDb.db
-            .listCollections()
-            .map((collection) => collection.name)
-            .toArray();
+    try {
+        if (MongoDb.db) {
+            const collectionList = await MongoDb.db
+                .listCollections()
+                .map((collection) => collection.name)
+                .toArray();
 
-        if (collectionList && collectionList.includes(name)) {
-            await MongoDb.db.collection(name).drop();
+            if (collectionList && collectionList.includes(name)) {
+                await MongoDb.db.collection(name).drop();
+            }
         }
+    } catch (err) {
+        err.message = `mongo-single: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };
 
 const get = async (name) => {
-    const collection = await mongoCollection(name);
-    if (collection) {
-        const document = await collection.findOne({ type: name });
-        if (document && document.payload) {
-            return document.payload;
+    try {
+        const collection = await mongoCollection(name);
+        if (collection) {
+            const document = await collection.findOne({ type: name });
+            if (document && document.payload) {
+                return document.payload;
+            }
         }
+    } catch (err) {
+        err.message = `mongo-single: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
-    return null;
 };
 
 const set = async (name, value, ttl = null) => {
@@ -48,9 +60,10 @@ const set = async (name, value, ttl = null) => {
         };
         await collection.replaceOne({ type: name }, document, { upsert: true });
         return true;
-    } catch (error) {
-        console.log(error);
-        return false;
+    } catch (err) {
+        err.message = `mongo-single: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };
 
