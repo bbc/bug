@@ -1,5 +1,13 @@
 ## Changelog
 
+### version 1.3.8
+
+- 2026-02-04: refactor service code to use new error handling ([1d09f5a](https://github.com/bbc/bug/commit/1d09f5a87b279163fddec3a1198dc0cc11d6bbd0))
+- 2026-02-04: improve api JSON error handling ([8a96707](https://github.com/bbc/bug/commit/8a96707f60052dae1ef7b9e084cb726e565257da))
+- 2026-01-28: fix bug in getdestinations ([969bb28](https://github.com/bbc/bug/commit/969bb2852e61342ac5b4bdbbf00fcf7a8365174c))
+- 2026-01-28: add default status check ([9b21e74](https://github.com/bbc/bug/commit/9b21e741a8209e7e39a3192479d739e8a98aa33c))
+- 2026-01-28: add documentation ([822e2e2](https://github.com/bbc/bug/commit/822e2e21f063ab4cf3a0d51b58dbd02b38126205))
+
 ### version 1.3.7
 
 - 2026-02-04: refactor service code to use new error handling ([7f9aa7a](https://github.com/bbc/bug/commit/7f9aa7a9bea1f2d80e5113400fbad136ebbc197b))

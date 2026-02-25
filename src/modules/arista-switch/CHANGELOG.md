@@ -1,5 +1,18 @@
 ## Changelog
 
+### version 1.2.6
+
+- 2026-02-23: fix async code in protect/unprotect ([1d6045f](https://github.com/bbc/bug/commit/1d6045fdcdda560819e6de43ee46ab3bbc9ee811))
+- 2026-02-06: improve service logging ([1a43550](https://github.com/bbc/bug/commit/1a43550e871a89da46a10f8d460296c44e0c9bb2))
+- 2026-02-03: show poe info in details tab ([b8551f9](https://github.com/bbc/bug/commit/b8551f93a12a38644045921594812801455b59f5))
+- 2026-02-03: add panel status ([9cffcd6](https://github.com/bbc/bug/commit/9cffcd6c2e99de0bf7784db6be1e5a3afac64258))
+- 2026-02-03: set save pending flag on changes ([e699963](https://github.com/bbc/bug/commit/e69996321da337268f1923989a02468fb7edf81e))
+- 2026-02-03: improve api error handling ([67e0c70](https://github.com/bbc/bug/commit/67e0c70b7ad3691f1f33c065e06371fb6bfe7c62))
+- 2026-02-03: improve error handling in utils ([b42fe40](https://github.com/bbc/bug/commit/b42fe40116f825ac3404cbd6c4f207baa3c100b5))
+- 2026-02-03: add visiblity and control of POE status ([c51a720](https://github.com/bbc/bug/commit/c51a720dacbbb9ed16919173d689b02ea2f62ac0))
+- 2026-02-03: add temperature monitoring and alerts ([4b874b4](https://github.com/bbc/bug/commit/4b874b48423112c00c9f51fd70dfd9c586fe8cd1))
+- 2026-02-02: refactor workers to reduce memory ([fea38a5](https://github.com/bbc/bug/commit/fea38a5d9950e5464c54b4562238367a80a4917d))
+
 ### version 1.2.5
 
 - 2026-02-23: fix async code in protect/unprotect ([56a7f78](https://github.com/bbc/bug/commit/56a7f78931b6e500c90bc9262ed5c263591a18d5))
