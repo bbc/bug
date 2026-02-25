@@ -20,7 +20,7 @@ module.exports = async function (config, _) {
         });
         await mongoSingle.set("passwordexpired", false, 1200000);
     } catch (error) {
-        if (error && error.indexOf("exceeded the maximum lifetime") > -1) {
+        if (error && error.includes("exceeded the maximum lifetime")) {
             console.log(`ciscocbs-fetchpassword: password has expired!!`);
             await mongoSingle.set("passwordexpired", true, 1200000);
         }

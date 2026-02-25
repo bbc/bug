@@ -31,7 +31,7 @@ const main = async () => {
             });
             await mongoSingle.set("passwordexpired", false, 600);
         } catch (error) {
-            if (error && error.indexOf("exceeded the maximum lifetime") > -1) {
+            if (error && error.includes("exceeded the maximum lifetime")) {
                 await mongoSingle.set("passwordexpired", true, 600);
             }
         }
