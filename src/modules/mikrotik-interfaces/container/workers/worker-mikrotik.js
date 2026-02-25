@@ -52,7 +52,7 @@ const main = async () => {
             `worker-mikrotik: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
         );
 
-        const conn = await routerOsApi.connect();
+        await routerOsApi.connect();
         logger.info("worker-mikrotik: device connected ok");
 
         workerTaskManager({
@@ -61,7 +61,7 @@ const main = async () => {
                 { name: "interface-lldp", seconds: 5 },
                 { name: "linkstats", seconds: 5 },
                 { name: "traffic", seconds: 2 },
-            ], context: { conn, interfacesCollection, linkStatsCollection, trafficCollection, historyCollection }, baseDir: __dirname
+            ], context: { routerOsApi, interfacesCollection, linkStatsCollection, trafficCollection, historyCollection }, baseDir: __dirname
         });
 
     } catch (err) {

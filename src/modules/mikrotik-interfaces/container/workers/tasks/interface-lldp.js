@@ -1,20 +1,30 @@
 "use strict";
 
-const mikrotikFetchLldp = require("@utils/mikrotik-fetchlldp");
 const logger = require("@core/logger")(module);
+const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
-module.exports = async ({ conn, interfacesCollection }) => {
+module.exports = async ({ routerOsApi, interfacesCollection }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
+        const data = await routerOsApi.run("/ip/neighbor/print");
 
-        const lldp = await mikrotikFetchLldp(conn);
+        // process data
+        const lldpItems = [];
+        for (let i in data) {
+            lldpItems.push(
+                mikrotikParseResults({
+                    result: data[i],
+                    arrayFields: ["interface"],
+                    integerFields: [],
+                    booleanFields: [],
+                    timeFields: ["uptime"],
+                })
+            );
+        }
 
         // group by interface
         const lldpByInterface = {};
-        for (let eachEntry of lldp) {
+        for (let eachEntry of lldpItems) {
             // clone and tidy up a few fields we don't need
             const eachEntryClone = Object.assign({}, eachEntry);
             delete eachEntryClone?.interface;

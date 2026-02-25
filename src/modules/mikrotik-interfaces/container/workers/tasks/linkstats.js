@@ -5,13 +5,9 @@ const mongoSaveArray = require("@core/mongo-savearray");
 const interfaceList = require("@services/interface-list");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, linkStatsCollection }) => {
+module.exports = async ({ routerOsApi, linkStatsCollection }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
-
         // fetch interface list from db (empty if not yet fetched)
         const interfaces = await interfaceList();
 
@@ -20,7 +16,7 @@ module.exports = async ({ conn, linkStatsCollection }) => {
         if (interfaces) {
             for (let eachInterface of interfaces) {
                 if (eachInterface["type"] === "ether") {
-                    linkStatsArray.push(await mikrotikFetchLinkStats(conn, eachInterface["name"]));
+                    linkStatsArray.push(await mikrotikFetchLinkStats(routerOsApi, eachInterface["name"]));
                 }
             }
             await mongoSaveArray(linkStatsCollection, linkStatsArray, "name");

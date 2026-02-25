@@ -3,11 +3,11 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const logger = require("@core/logger")(module);
 
-module.exports = async (conn, interfaceName) => {
+module.exports = async (routerOsApi, interfaceName) => {
 
     // print the interface menu
     try {
-        const data = await conn.write('/interface/monitor-traffic', [
+        const data = await routerOsApi.run('/interface/monitor-traffic', [
             '=interface=' + interfaceName,
             '=once='
         ]);

@@ -3,9 +3,9 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const logger = require("@core/logger")(module);
 
-module.exports = async (conn, interfaceName) => {
+module.exports = async (routerOsApi, interfaceName) => {
     try {
-        const data = await conn.write("/interface/ethernet/monitor", ["=numbers=" + interfaceName, "=once="]);
+        const data = await routerOsApi.run("/interface/ethernet/monitor", ["=numbers=" + interfaceName, "=once="]);
 
         if (!data || data.length !== 1) {
             // just use an empty result - so that we overwrite the database entry

@@ -4,14 +4,10 @@ const mongoSaveArray = require("@core/mongo-savearray");
 const logger = require("@core/logger")(module);
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
-module.exports = async ({ conn, interfacesCollection }) => {
+module.exports = async ({ routerOsApi, interfacesCollection }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
-
-        const data = await conn.write("/interface/print");
+        const data = await routerOsApi.run("/interface/print");
 
         // process data
         const interfaces = [];

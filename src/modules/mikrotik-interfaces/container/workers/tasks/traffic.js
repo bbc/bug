@@ -7,12 +7,9 @@ const interfaceList = require("@services/interface-list");
 const trafficAddHistory = require("@utils/traffic-addhistory");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, trafficCollection, historyCollection }) => {
+module.exports = async ({ routerOsApi, trafficCollection, historyCollection }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
 
         // fetch interface list from db (empty if not yet fetched)
         const interfaces = await interfaceList();
@@ -21,7 +18,7 @@ module.exports = async ({ conn, trafficCollection, historyCollection }) => {
         let trafficArray = [];
         if (interfaces) {
             for (let eachInterface of interfaces) {
-                trafficArray.push(await mikrotikFetchTraffic(conn, eachInterface["name"]));
+                trafficArray.push(await mikrotikFetchTraffic(routerOsApi, eachInterface["name"]));
             }
         }
 
