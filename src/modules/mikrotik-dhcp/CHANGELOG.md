@@ -1,5 +1,20 @@
 ## Changelog
 
+### version 1.1.5
+
+- 2026-02-24: use node-routeros-v2 ([944c361](https://github.com/bbc/bug/commit/944c361ddf60b66d5a4bf8815901e9088d83788d))
+- 2026-02-24: add readme and screenshots ([bff326a](https://github.com/bbc/bug/commit/bff326ac664ae03d7d8833d7b9aa767aa1d45ba5))
+- 2026-02-24: add default status ([b825f4e](https://github.com/bbc/bug/commit/b825f4e109e9691918e286f2c6fa85122b90016a))
+- 2026-02-24: update services with new routeros api and error handling ([76a5de7](https://github.com/bbc/bug/commit/76a5de7680b82b9224243c8bb54782f2a2286460))
+- 2026-02-24: update routes with new error handling ([1d00dfb](https://github.com/bbc/bug/commit/1d00dfb965b75a54a3497248d0a4652f873aa5c8))
+- 2026-02-24: refactor workers into tasks ([f1a8429](https://github.com/bbc/bug/commit/f1a8429cf5d8a153c5967dc915697701debd43eb))
+- 2026-02-24: use node-routeros-v2 ([9102cfa](https://github.com/bbc/bug/commit/9102cfae6ab87e6e02f7ed7234bee93aab7b63e2))
+- 2026-02-24: add readme and screenshots ([9d5c484](https://github.com/bbc/bug/commit/9d5c4842f0035356ea85432294b8ab84acce38a1))
+- 2026-02-24: add default status ([f612eb0](https://github.com/bbc/bug/commit/f612eb07c381d689ba6b47bc24474d8d44720f52))
+- 2026-02-24: update services with new routeros api and error handling ([5c8cf2d](https://github.com/bbc/bug/commit/5c8cf2dc9b2eaa61fb9ba77df5e985b42b0ae8aa))
+- 2026-02-24: update routes with new error handling ([593c324](https://github.com/bbc/bug/commit/593c324a25dfe14182455592c30ff3468bb4eadb))
+- 2026-02-24: refactor workers into tasks ([7d32b93](https://github.com/bbc/bug/commit/7d32b93db82d4b8532d978a1b4f571d2b194eaec))
+
 ### version 1.1.4
 
 - 2026-02-24: use node-routeros-v2 ([4c930d2](https://github.com/bbc/bug/commit/4c930d29da267294b0dc17b5a851d809d03bacee))
