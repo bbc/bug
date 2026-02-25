@@ -109,23 +109,6 @@ export default function PageSystemBackup() {
                             </Grid>
 
                             <Grid size={{ xs: 12 }}>
-                                <BugConfigFormSelect
-                                    name="logLevel"
-                                    control={control}
-                                    fullWidth
-                                    label="Logging Level"
-                                    defaultValue={settings?.data?.logLevel}
-                                    options={[
-                                        { id: "error", label: "Error" },
-                                        { id: "warning", label: "Warning" },
-                                        { id: "info", label: "Info" },
-                                        { id: "http", label: "HTTP" },
-                                        { id: "debug", label: "Debug" },
-                                    ]}
-                                />
-                            </Grid>
-
-                            <Grid size={{ xs: 12 }}>
                                 <BugConfigFormAutocomplete
                                     name="moduleStatus"
                                     label="Filter Modules"
