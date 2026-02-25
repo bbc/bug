@@ -4,7 +4,6 @@ const { parentPort, workerData } = require("worker_threads");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoSingle = require("@core/mongo-single");
-const obscure = require("@core/obscure-password");
 const logger = require("@core/logger")(module);
 const workerTaskManager = require("@core/worker-taskmanager");
 const RouterOSApi = require("@core/routeros-api");
@@ -35,16 +34,15 @@ const main = async () => {
             user: workerData.username,
             password: workerData.password,
             timeout: 10,
-            persistent: true,
+            keepalive: true,
             onDisconnect: (err) => {
-                logger.error("RouterOS connection lost:", err.message);
+                logger.error(err.message || err);
                 process.exit(1);
             }
         });
 
         const conn = await routerOsApi.connect();
         logger.info("worker-mikrotik: device connected ok");
-
 
         workerTaskManager({
             tasks: [
