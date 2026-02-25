@@ -1,17 +1,17 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
-const RosApi = require("node-routeros").RouterOSAPI;
+const RouterOSApi = require("@core/routeros-api");
 
 module.exports = async (formData) => {
     try {
-        const conn = new RosApi({
+        const routerOsApi = new RouterOSApi({
             host: formData.address,
             user: formData.username,
             password: formData.password,
-            timeout: 3,
+            timeout: 5,
         });
 
-        await conn.connect();
+        await routerOsApi.connect();
     } catch (error) {
         return new validationResult([
             {

@@ -41,9 +41,9 @@ const main = async () => {
             user: workerData.username,
             password: workerData.password,
             timeout: 10,
-            persistent: true,
+            keepalive: true,
             onDisconnect: (err) => {
-                logger.error("RouterOS connection lost:", err.message);
+                logger.error(err.message || err);
                 process.exit(1);
             }
         });
