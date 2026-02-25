@@ -26,7 +26,6 @@
         "node-ipinfo": "^3.1.1",
         "node-routeros": "^1.6.9",
         "ping": "^0.4.1",
-        "routeros-client": "^1.1.2",
         "uuid": "^9.0.0",
         "wildcard-regex": "^3.0.2"
     },

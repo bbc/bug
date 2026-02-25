@@ -25,6 +25,7 @@ Dockerfile*
 !/src/server/services/dockerfile-write.js
 
 # global environment files
+.env
 .env.development
 .env.test
 .env.production
