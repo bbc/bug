@@ -3,14 +3,10 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, mongoSingle }) => {
+module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
-
-        const data = await conn.write("/ip/route/print");
+        const data = await routerOsApi.run("/ip/route/print");
 
         const result = data.map((route) => {
             const parsedItem = mikrotikParseResults({

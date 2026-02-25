@@ -29,7 +29,6 @@ const main = async () => {
         // clear old entries
         await pingCollection.deleteMany({});
         await wanAddressesCollection.deleteMany({});
-        await geoIpCollection.deleteMany({});
 
         // and now create the index with ttl
         await mongoCreateIndex(pingCollection, "timestamp", { expireAfterSeconds: 120 });
@@ -48,14 +47,14 @@ const main = async () => {
             }
         });
 
-        const conn = await routerOsApi.connect();
+        await routerOsApi.connect();
         logger.info("worker-tools: device connected ok");
 
         workerTaskManager({
             tasks: [
                 { name: "ping", seconds: 15 },
                 { name: "wanaddress", seconds: 30 },
-            ], context: { conn, mongoSingle, pingCollection, wanAddressesCollection }, baseDir: __dirname
+            ], context: { routerOsApi, mongoSingle, pingCollection, wanAddressesCollection }, baseDir: __dirname
         });
 
     } catch (err) {

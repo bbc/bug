@@ -1,14 +1,10 @@
 "use strict";
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, mongoSingle }) => {
+module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
-
-        const data = await conn.write("/interface/bridge/print");
+        const data = await routerOsApi.run("/interface/bridge/print");
 
         // if the response isn't an array, the router likely returned an error or timed out
         if (!data || !Array.isArray(data)) {

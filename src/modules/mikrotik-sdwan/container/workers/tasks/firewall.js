@@ -3,15 +3,11 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, mongoSingle }) => {
+module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
-
         // fetch all firewall mangle rules from the router
-        const data = await conn.write("/ip/firewall/mangle/print");
+        const data = await routerOsApi.run("/ip/firewall/mangle/print");
 
         // if the router returns something that isn't an array, it's a failure
         if (!data || !Array.isArray(data)) {

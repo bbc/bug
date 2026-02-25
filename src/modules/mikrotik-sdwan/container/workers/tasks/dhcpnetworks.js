@@ -3,14 +3,10 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, mongoSingle }) => {
+module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
-
-        const data = await conn.write("/ip/dhcp-server/network/getall");
+        const data = await routerOsApi.run("/ip/dhcp-server/network/getall");
 
         // if the router returns something that isn't an array, it's a failure
         if (!data || !Array.isArray(data)) {

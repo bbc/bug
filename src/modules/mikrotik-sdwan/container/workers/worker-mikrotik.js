@@ -41,7 +41,7 @@ const main = async () => {
             }
         });
 
-        const conn = await routerOsApi.connect();
+        await routerOsApi.connect();
         logger.info("worker-mikrotik: device connected ok");
 
         workerTaskManager({
@@ -57,7 +57,7 @@ const main = async () => {
                 { name: "bridges", seconds: 50 },
                 { name: "addresses", seconds: 20 },
                 { name: "rules", seconds: 50 },
-            ], context: { conn, mongoSingle }, baseDir: __dirname
+            ], context: { routerOsApi, mongoSingle }, baseDir: __dirname
         });
 
     } catch (err) {

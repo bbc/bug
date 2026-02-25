@@ -4,13 +4,10 @@ const delay = require("delay");
 const logger = require("@core/logger")(module);
 const srcAddressGet = require('@utils/srcaddress-get');
 
-module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
+module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) => {
 
     try {
         await delay(2000);
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
 
         // get a list of all default routes
         const dbRoutes = await mongoSingle.get("routes") || [];
@@ -44,7 +41,7 @@ module.exports = async ({ conn, mongoSingle, wanAddressesCollection }) => {
                 logger.debug(`fetch: from ${address} via bridge ${route._bridgeName}`);
 
                 // do the fetch
-                const data = await conn.write("/tool/fetch", [
+                const data = await routerOsApi.run("/tool/fetch", [
                     `=src-address=${address}`,
                     `=url=https://ifconfig.me/ip`,
                     `=mode=https`,

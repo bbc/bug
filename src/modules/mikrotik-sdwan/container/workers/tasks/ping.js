@@ -4,13 +4,10 @@ const delay = require("delay");
 const logger = require("@core/logger")(module);
 const srcAddressGet = require('@utils/srcaddress-get');
 
-module.exports = async ({ conn, mongoSingle, pingCollection }) => {
+module.exports = async ({ routerOsApi, mongoSingle, pingCollection }) => {
 
     try {
         await delay(2000);
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
 
         // get a list of all default routes
         const dbRoutes = await mongoSingle.get("routes") || [];
@@ -45,7 +42,7 @@ module.exports = async ({ conn, mongoSingle, pingCollection }) => {
                 logger.debug(`ping: from ${address} via bridge ${route._bridgeName}`);
 
                 // Do the ping check
-                const data = await conn.write("/tool/ping", [
+                const data = await routerOsApi.run("/tool/ping", [
                     `=src-address=${address}`,
                     `=address=8.8.8.8`,
                     `=count=4`

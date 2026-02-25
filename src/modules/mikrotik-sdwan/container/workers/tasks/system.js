@@ -3,14 +3,10 @@
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, mongoSingle }) => {
+module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
-
-        const resourceData = await conn.write("/system/resource/print");
+        const resourceData = await routerOsApi.run("/system/resource/print");
         const resourceResult = mikrotikParseResults({
             result: resourceData,
             booleanFields: [],
@@ -18,7 +14,7 @@ module.exports = async ({ conn, mongoSingle }) => {
             numberFields: ["cpu-count", "write-sect-since-reboot", "write-sect-total"]
         });
 
-        const nameData = await conn.write("/system/identity/print");
+        const nameData = await routerOsApi.run("/system/identity/print");
 
         const result = { ...resourceResult[0], name: nameData?.[0]?.name, lastUpdated: new Date() }
         logger.debug(`system: found ${Object.keys(result).length} system fields - saving to db`);

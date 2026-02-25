@@ -4,15 +4,12 @@ const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const leaseLabel = require("@utils/lease-label");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ conn, mongoSingle }) => {
+module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
-        if (!conn) {
-            throw new Error("no connection provided");
-        }
 
         // fetch all dhcp leases from the mikrotik router
-        const data = await conn.write("/ip/dhcp-server/lease/getall");
+        const data = await routerOsApi.run("/ip/dhcp-server/lease/getall");
 
         // if the router returns something that isn't an array, it's a failure
         if (!data || !Array.isArray(data)) {
