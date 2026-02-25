@@ -4,11 +4,9 @@ const { parentPort, workerData } = require("worker_threads");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoSingle = require("@core/mongo-single");
-const obscure = require("@core/obscure-password");
 const logger = require("@core/logger")(module);
 const workerTaskManager = require("@core/worker-taskmanager");
 const RouterOSApi = require("@core/routeros-api");
-const delay = require("delay");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
 
@@ -23,17 +21,12 @@ const main = async () => {
         await mongoDb.connect(workerData.id);
 
         const pingCollection = await mongoCollection("ping");
-        const wanAddressesCollection = await mongoCollection("wanAddresses");
-        const geoIpCollection = await mongoCollection("geoip");
 
         // clear old entries
         await pingCollection.deleteMany({});
-        await wanAddressesCollection.deleteMany({});
 
         // and now create the index with ttl
         await mongoCreateIndex(pingCollection, "timestamp", { expireAfterSeconds: 120 });
-        await mongoCreateIndex(wanAddressesCollection, "timestamp", { expireAfterSeconds: 240 });
-        await mongoCreateIndex(geoIpCollection, "timestamp", { expireAfterSeconds: 3600 });
 
         const routerOsApi = new RouterOSApi({
             host: workerData.address,
@@ -48,24 +41,23 @@ const main = async () => {
         });
 
         await routerOsApi.connect();
-        logger.info("worker-tools: device connected ok");
+        logger.info("worker-ping: device connected ok");
 
         workerTaskManager({
             tasks: [
                 { name: "ping", seconds: 15 },
-                { name: "wanaddress", seconds: 30 },
-            ], context: { routerOsApi, mongoSingle, pingCollection, wanAddressesCollection }, baseDir: __dirname
+            ], context: { routerOsApi, mongoSingle, pingCollection }, baseDir: __dirname
         });
 
     } catch (err) {
-        logger.error(`worker-tools: fatal error`);
+        logger.error(`worker-ping: fatal error`);
         logger.error(err.stack || err.message || err);
         process.exit();
     }
 }
 
 main().catch(err => {
-    logger.error(`worker-tools: startup failure`);
+    logger.error(`worker-ping: startup failure`);
     logger.error(err.stack || err);
     process.exit(1);
 });

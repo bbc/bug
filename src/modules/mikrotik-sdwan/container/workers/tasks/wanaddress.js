@@ -27,6 +27,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
         }
 
         if (dbRoutes.length === 0 || dbRules.length === 0) {
+            logger.warn("wanaddress: no routes or rules found, skipping fetch");
             return true;
         }
 
@@ -41,7 +42,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
                 logger.debug(`fetch: from ${address} via bridge ${route._bridgeName}`);
 
                 // do the fetch
-                const data = await routerOsApi.run("/tool/fetch", [
+                const data = await routerOsApi.conn.write("/tool/fetch", [
                     `=src-address=${address}`,
                     `=url=https://ifconfig.me/ip`,
                     `=mode=https`,
@@ -80,7 +81,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`wanaddress: ${error.message}`);
+        logger.error(`wanaddress: ${error.message}`);
         throw error;
     }
 };
