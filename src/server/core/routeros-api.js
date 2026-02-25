@@ -1,6 +1,6 @@
 "use strict";
 
-const RosApi = require("node-routeros").RouterOSAPI;
+const { RouterOSAPI } = require("node-routeros-v2");
 const logger = require("@core/logger")(module);
 const obscure = require("@core/obscure-password");
 
@@ -10,32 +10,33 @@ class RouterOSApi {
         user,
         password,
         timeout = 5,
+        keepalive = false,
         heartbeatInterval = 10,
-        persistent = false,
         onDisconnect
     }) {
         this.host = host;
         this.user = user;
         this.password = password;
         this.timeout = timeout;
+        this.keepalive = keepalive;
         this.heartbeatInterval = heartbeatInterval;
-        this.persistent = persistent;
         this.onDisconnect = onDisconnect;
 
-        this.conn = new RosApi({
+        this.conn = new RouterOSAPI({
             host,
             user,
             password,
-            timeout,
+            timeout
         });
 
-        this._heartbeatTimer = null;
-        this._busy = false;
         this._connecting = false;
+        this._queue = Promise.resolve();
+        this._heartbeatTimer = null;
     }
 
     async connect() {
         if (this.conn.connected) return this.conn;
+
         if (this._connecting) {
             await this._waitForConnection();
             return this.conn;
@@ -45,20 +46,21 @@ class RouterOSApi {
 
         try {
             logger.info(
-                `routeros-api: connecting to device at ${this.host} with username ${this.user}, password ${obscure(this.password)}`
+                `routeros-api: connecting to ${this.host} user=${this.user} password=${obscure(this.password)}`
             );
-            await this._withTimeout(
-                this.conn.connect(),
-                this.timeout
-            );
-            logger.info(`routeros-api: connected OK to ${this.host}`);
 
-            if (this.persistent) {
-                logger.info(`routeros-api: starting heartbeat with interval ${this.heartbeatInterval}s to ${this.host}`);
+            await this._withTimeout(this.conn.connect(), this.timeout);
+
+            logger.info(`routeros-api: connected to ${this.host}`);
+
+            if (this.keepalive && this.heartbeatInterval > 0) {
                 this._startHeartbeat();
             }
 
             return this.conn;
+        } catch (err) {
+            logger.error(`routeros-api: failed connecting to ${this.host}`, err);
+            throw err;
         } finally {
             this._connecting = false;
         }
@@ -68,94 +70,77 @@ class RouterOSApi {
         if (this._heartbeatTimer) {
             clearInterval(this._heartbeatTimer);
             this._heartbeatTimer = null;
-            logger.info(`routeros-api: stopped heartbeat interval from ${this.host}`);
+            logger.info(`routeros-api: stopped heartbeat for ${this.host}`);
         }
 
-        if (this.conn && this.conn.connected) {
-            await this.conn.close();
-            logger.info(`routeros-api: disconnected from ${this.host}`);
+        if (this.conn?.connected) {
+            try {
+                await this.conn.close();
+                logger.info(`routeros-api: disconnected from ${this.host}`);
+            } catch (err) {
+                logger.warning(`routeros-api: disconnect error from ${this.host}`);
+            }
         }
     }
 
     async run(command, params = {}) {
+        // queue commands so RouterOS API never overlaps
+        this._queue = this._queue.then(() => this._execute(command, params));
+        return this._queue;
+    }
+
+    async _execute(command, params) {
         await this.connect();
 
-        if (this._busy) {
-            await this._waitUntilFree();
-        }
-
-        this._busy = true;
-
         try {
-            const result = await this._withTimeout(
+            return await this._withTimeout(
                 this.conn.write(command, params),
                 this.timeout
             );
-
-            return result;
         } catch (err) {
-            // RouterOS sometimes drops connections silently
-            if (this.persistent && this.onDisconnect) {
-                this.onDisconnect(err);
-            }
+            logger.warning(`routeros-api: command failed ${command} on ${this.host}`);
+
+            try {
+                if (this.conn.connected) await this.conn.close();
+            } catch { }
+
+            if (this.onDisconnect) this.onDisconnect(err);
             throw err;
         } finally {
-            this._busy = false;
-
-            if (!this.persistent) {
-                await this.disconnect();
-            }
+            if (!this.keepalive) await this.disconnect();
         }
     }
 
     _startHeartbeat() {
-        if (!this.heartbeatInterval) return;
         if (this._heartbeatTimer) return;
 
+        logger.info(`routeros-api: heartbeat started (${this.heartbeatInterval}s) for ${this.host}`);
+
         this._heartbeatTimer = setInterval(() => {
-            logger.debug(`routeros-api: performing heartbeat check to ${this.host}`);
-            this._heartbeatCheck();
+            // queue the heartbeat to avoid overlapping writes
+            this._queue = this._queue.then(async () => {
+                if (!this.conn.connected) return;
+
+                try {
+                    await this._withTimeout(
+                        this.conn.write("/system/identity/print"),
+                        3
+                    );
+                    logger.debug(`routeros-api: heartbeat OK for ${this.host}`);
+                } catch (err) {
+                    logger.warning(`routeros-api: heartbeat failed for ${this.host}`);
+                    try { await this.conn.close(); } catch { }
+                    if (this.onDisconnect) this.onDisconnect(err);
+                }
+            });
         }, this.heartbeatInterval * 1000);
-    }
-
-    async _heartbeatCheck() {
-        if (!this.conn.connected) return;
-        if (this._busy) return;
-
-        try {
-            await this._withTimeout(
-                this.conn.write("/system/identity/print"),
-                3
-            );
-        } catch (err) {
-            logger.warning(`routeros-api: failed heartbeat check to ${this.host}`);
-            await this._handleDisconnect(err);
-        }
-    }
-
-    async _handleDisconnect(err) {
-        if (this._heartbeatTimer) {
-            clearInterval(this._heartbeatTimer);
-            this._heartbeatTimer = null;
-        }
-
-        try {
-            if (this.conn.connected) {
-                await this.conn.close();
-            }
-        } catch { }
-
-        if (this.onDisconnect) {
-            this.onDisconnect(err);
-        }
     }
 
     _withTimeout(promise, seconds) {
         return new Promise((resolve, reject) => {
-            const timer = setTimeout(
-                () => reject(new Error(`RouterOS call timed out after ${seconds}s`)),
-                seconds * 1000
-            );
+            const timer = setTimeout(() => {
+                reject(new Error(`RouterOS call timed out after ${seconds}s (${this.host})`));
+            }, seconds * 1000);
 
             promise
                 .then(res => {
@@ -169,21 +154,11 @@ class RouterOSApi {
         });
     }
 
-    _waitUntilFree() {
-        return new Promise(resolve => {
-            const check = () => {
-                if (!this._busy) return resolve();
-                setTimeout(check, 10);
-            };
-            check();
-        });
-    }
-
     _waitForConnection() {
         return new Promise(resolve => {
             const check = () => {
                 if (!this._connecting) return resolve();
-                setTimeout(check, 10);
+                setTimeout(check, 20);
             };
             check();
         });
