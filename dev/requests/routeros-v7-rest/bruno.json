@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "routeros-v7-rest",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

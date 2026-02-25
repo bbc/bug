@@ -1,0 +1,23 @@
+meta {
+  name: create address
+  type: http
+  seq: 6
+}
+
+put {
+  url: http://{{HOSTNAME}}/rest/ip/address
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "address": "192.168.255.254",
+    "interface": "bridge101-BE"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

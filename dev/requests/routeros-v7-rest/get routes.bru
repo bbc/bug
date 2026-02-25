@@ -1,0 +1,16 @@
+meta {
+  name: get routes
+  type: http
+  seq: 11
+}
+
+get {
+  url: http://{{HOSTNAME}}/rest/ip/route
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

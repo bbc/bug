@@ -1,0 +1,25 @@
+meta {
+  name: fetch using API
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://{{HOSTNAME}}/rest/tool/fetch
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "src-address": "192.168.1.1",
+    "url": "http://ifconfig.me/ip",
+    "mode": "http",
+    "output": "user"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

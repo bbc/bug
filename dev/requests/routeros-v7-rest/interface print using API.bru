@@ -1,0 +1,16 @@
+meta {
+  name: interface print using API
+  type: http
+  seq: 8
+}
+
+post {
+  url: http://{{HOSTNAME}}/rest/interface/print
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

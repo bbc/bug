@@ -1,0 +1,16 @@
+meta {
+  name: delete address
+  type: http
+  seq: 7
+}
+
+delete {
+  url: http://{{HOSTNAME}}/rest/ip/address/*266
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

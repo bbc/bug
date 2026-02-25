@@ -1,0 +1,24 @@
+meta {
+  name: ping using API
+  type: http
+  seq: 10
+}
+
+post {
+  url: http://{{HOSTNAME}}/rest/tool/ping
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "src-address": "172.1.1.1",
+    "address": "8.8.8.8",
+    "count": 4
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
