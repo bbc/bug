@@ -9,7 +9,7 @@ class RouterOSApi {
         host,
         user,
         password,
-        timeout = 5,
+        timeout = 30,
         keepalive = false,
         heartbeatInterval = 10,
         onDisconnect
@@ -26,7 +26,8 @@ class RouterOSApi {
             host,
             user,
             password,
-            timeout
+            timeout,
+            keepalive
         });
 
         this._connecting = false;
@@ -85,6 +86,7 @@ class RouterOSApi {
 
     async run(command, params = {}) {
         // queue commands so RouterOS API never overlaps
+        console.log(`routeros-api: queueing command ${command} with params ${JSON.stringify(params)} for ${this.host}`);
         this._queue = this._queue.then(() => this._execute(command, params));
         return this._queue;
     }
@@ -116,23 +118,20 @@ class RouterOSApi {
 
         logger.info(`routeros-api: heartbeat started (${this.heartbeatInterval}s) for ${this.host}`);
 
-        this._heartbeatTimer = setInterval(() => {
-            // queue the heartbeat to avoid overlapping writes
-            this._queue = this._queue.then(async () => {
-                if (!this.conn.connected) return;
+        this._heartbeatTimer = setInterval(async () => {
+            if (!this.conn.connected) return;
 
-                try {
-                    await this._withTimeout(
-                        this.conn.write("/system/identity/print"),
-                        3
-                    );
-                    logger.debug(`routeros-api: heartbeat OK for ${this.host}`);
-                } catch (err) {
-                    logger.warning(`routeros-api: heartbeat failed for ${this.host}`);
-                    try { await this.conn.close(); } catch { }
-                    if (this.onDisconnect) this.onDisconnect(err);
-                }
-            });
+            try {
+                await this._withTimeout(
+                    this.conn.write("/system/identity/print"),
+                    3
+                );
+                logger.debug(`routeros-api: heartbeat OK for ${this.host}`);
+            } catch (err) {
+                logger.warning(`routeros-api: heartbeat failed for ${this.host}`);
+                try { await this.conn.close(); } catch { }
+                if (this.onDisconnect) this.onDisconnect(err);
+            }
         }, this.heartbeatInterval * 1000);
     }
 
