@@ -1,0 +1,32 @@
+meta {
+  name: version-get
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://{{HOSTNAME}}:443/command-api
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "jsonrpc": "2.0",
+    "method": "runCmds",
+    "params": {
+      "version": 1,
+      "cmds": [
+        "show version"
+      ],
+      "format": "json"
+    },
+    "id": 1
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -6,6 +6,11 @@ const logger = require("@core/logger")(module);
 module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
+
+        if (!conn) {
+            throw new Error("no connection provided");
+        }
+
         // fetch routing table data from the router
         const data = await routerOsApi.run("/routing/table/print");
 

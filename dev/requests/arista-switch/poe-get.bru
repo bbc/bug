@@ -1,0 +1,32 @@
+meta {
+  name: poe-get
+  type: http
+  seq: 5
+}
+
+post {
+  url: https://{{HOSTNAME}}:443/command-api
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "jsonrpc": "2.0",
+    "method": "runCmds",
+    "params": {
+      "version": 1,
+      "cmds": [
+        "enable", "configure", "show poe"
+      ],
+      "format": "json"
+    },
+    "id": 1
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

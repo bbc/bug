@@ -6,6 +6,10 @@ const logger = require("@core/logger")(module);
 module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     try {
+        if (!conn) {
+            throw new Error("no connection provided");
+        }
+
         // fetch all firewall mangle rules from the router
         const data = await routerOsApi.run("/ip/firewall/mangle/print");
 
