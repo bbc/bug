@@ -1,5 +1,11 @@
 ## Changelog
 
+### version 1.0.5
+
+- 2026-02-04: add api JSON error handler ([3c35ca9](https://github.com/bbc/bug/commit/3c35ca9358ef373a82c6690f2bbbfb92b336ea05))
+- 2026-02-04: add default status response ([9631da0](https://github.com/bbc/bug/commit/9631da0bda6855469d5f435303387879829b226f))
+- 2026-02-04: update code with new patterns ([0d95014](https://github.com/bbc/bug/commit/0d95014d29f7680b5baa2fdbb86462099acebb04))
+
 ### version 1.0.4
 
 - 2026-02-04: add api JSON error handler ([c200e1b](https://github.com/bbc/bug/commit/c200e1b741a423a6aa9ab25d045a3bad45659f53))

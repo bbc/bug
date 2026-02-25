@@ -1,5 +1,15 @@
 ## Changelog
 
+### version 1.2.5
+
+- 2026-02-23: fix async code in protect/unprotect ([56a7f78](https://github.com/bbc/bug/commit/56a7f78931b6e500c90bc9262ed5c263591a18d5))
+- 2026-02-06: improve service logging ([f7be880](https://github.com/bbc/bug/commit/f7be8803e55f3b5156bd126d4657929f6a519ee8))
+- 2026-02-03: show poe info in details tab ([5250644](https://github.com/bbc/bug/commit/5250644b24ceaf32d40f9b9c92eee9ae2da41a59))
+- 2026-02-03: add panel status ([367cc3a](https://github.com/bbc/bug/commit/367cc3af3a83c2d38790f97ea37b70a44c23eb5f))
+- 2026-02-03: set save pending flag on changes ([4b6ff0d](https://github.com/bbc/bug/commit/4b6ff0dab847639ac7cd07594309fa07bc2031a1))
+- 2026-02-03: improve api error handling ([b1a551e](https://github.com/bbc/bug/commit/b1a551e873f75a3fac1b3266de8b4a3f62eb7ae2))
+- 2026-02-03: improve error handling in utils ([35e8281](https://github.com/bbc/bug/commit/35e82812da077ce3adc3c4f7f2d0f869fe6b5fa4))
+
 ### version 1.2.4
 
 - 2026-02-23: fix async code in protect/unprotect ([9955d9c](https://github.com/bbc/bug/commit/9955d9c6ab38c11df11415bd1a8f9ef49663d1c5))

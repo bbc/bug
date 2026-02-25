@@ -1,5 +1,11 @@
 ## Changelog
 
+### version 1.2.8
+
+- 2026-02-06: improve service logging ([7ba4aea](https://github.com/bbc/bug/commit/7ba4aea43229ee911db53fa450b291ae2f19a2a9))
+- 2026-02-04: use bulkwrite to improve worker db writes ([28d05e0](https://github.com/bbc/bug/commit/28d05e062e56571073063867c2a99c4214c6f838))
+- 2026-02-04: improve error handling in workers ([605fd6c](https://github.com/bbc/bug/commit/605fd6cadf1a8819dcec59ab9209f17ccbdd7e9a))
+
 ### version 1.2.7
 
 - 2026-02-06: improve service logging ([dbb7976](https://github.com/bbc/bug/commit/dbb79761a44c9136bdb217d4fc80a90db07045a3))
