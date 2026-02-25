@@ -40,7 +40,7 @@ const main = async () => {
             timeout: 10,
             keepalive: true,
             onDisconnect: (err) => {
-                logger.error("RouterOS connection lost:", err.message);
+                logger.error(err.message || err);
                 process.exit(1);
             }
         });
