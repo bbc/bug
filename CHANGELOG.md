@@ -1,5 +1,17 @@
 ## Changelog
 
+### version 3.1.76
+
+- 2026-02-13: add new worker task manager ([57c7cf1](https://github.com/bbc/bug/commit/57c7cf1bb388156b906df9398739a25f5b3decc8))
+- 2026-02-11: revert to using 'critical' for stale data status items ([56c7e70](https://github.com/bbc/bug/commit/56c7e70680dde8fe0e3452ee873e5de7bedfe049))
+- 2026-02-11: set workermanager default retry interval to 10s ([a55c294](https://github.com/bbc/bug/commit/a55c2940a56b9b24bae744cb0200a3876cdca36f))
+- 2026-02-10: fix auto-reconnect of log stream ([eec8e48](https://github.com/bbc/bug/commit/eec8e480c25ea940eb45ee53841c322779504100))
+- 2026-02-09: add 'view panels' button to home screen ([898d306](https://github.com/bbc/bug/commit/898d306cca14455f9da5d73f318c5f7b961fccc0))
+- 2026-02-09: improve UI when panel module is already built ([887834e](https://github.com/bbc/bug/commit/887834e7718e1af19248f072703b5eaffb212683))
+- 2026-02-09: add 'view logs' menu item to panel list ([e5e79ad](https://github.com/bbc/bug/commit/e5e79adfc4e3cd5a9740595af3b94b1ef18b2f24))
+- 2026-02-09: allow users to be enabled when created ([93f6a74](https://github.com/bbc/bug/commit/93f6a749a1ae9348dc05f52d0883c2f0f137cf2f))
+- 2026-02-09: add update script and changelog generation ([3e46882](https://github.com/bbc/bug/commit/3e4688218612ad90e7997db1225ddae6bc51a390))
+
 ### version 3.1.75
 
 - 2026-02-13: add new worker task manager ([e47c367](https://github.com/bbc/bug/commit/e47c367f043d57bf462812ae86bd75a6b2d126cc))
