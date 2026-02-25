@@ -1,11 +1,4 @@
-/**
- * core/logger.js
- * Logger for BUG modules using winston
- */
-
 const winston = require("winston");
-const panelId = process.env.PANEL_ID || "";
-const moduleName = process.env.MODULE || "";
 const path = require("path");
 
 const customLevels = {
@@ -25,24 +18,23 @@ const customLevels = {
     },
 };
 
+winston.addColors(customLevels.colors);
+
 const customLogFormat = winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.timestamp(),
-    winston.format.splat(),
-    winston.format.printf((log) => `${log.timestamp} ${log.level}: ${log.message}`)
+    winston.format.printf(({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`)
 );
-
-winston.addColors(customLevels.colors);
 
 const loggerInstance = winston.createLogger({
     levels: customLevels.levels,
-    handleExceptions: false,
     transports: [
         new winston.transports.Console({
             level: 'debug',
-            handleExceptions: true,
-            colorize: true,
-            format: winston.format.combine(customLogFormat, winston.format.colorize({ all: true })),
+            format: winston.format.combine(
+                customLogFormat,
+                winston.format.colorize({ all: true })
+            ),
         }),
     ],
 });
@@ -50,11 +42,22 @@ const loggerInstance = winston.createLogger({
 const logger = (module) => {
     const filename = path.basename(module.filename);
     const loggers = {};
-    for (let level in customLevels?.levels) {
-        loggers[level] = (message, metadata) => {
-            loggerInstance[level](message, {
-                metadata: { ...{ panel: panelId, module: moduleName, filename: filename }, ...metadata },
-            });
+
+    for (let level in customLevels.levels) {
+        loggers[level] = (...args) => {
+            const message = args
+                .map((arg) => {
+                    if (typeof arg === "string") return arg;
+                    if (arg instanceof Error) return arg.stack || arg.message;
+                    try {
+                        return JSON.stringify(arg, null, 2);
+                    } catch {
+                        return String(arg);
+                    }
+                })
+                .join(" ");
+
+            loggerInstance[level](`${filename}: ${message}`);
         };
     }
 
