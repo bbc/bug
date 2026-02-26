@@ -32,7 +32,7 @@
     "@storybook/addon-links": "^8.6.15",
     "@storybook/addon-mdx-gfm": "^8.6.15",
     "@storybook/blocks": "^8.6.15",
-    "@storybook/react": "^8.6.15",
+    "@storybook/react": "^10.2.13",
     "@storybook/react-vite": "^8.6.15",
     "@storybook/test": "^8.6.15",
     "@storybook/theming": "^8.6.15",
