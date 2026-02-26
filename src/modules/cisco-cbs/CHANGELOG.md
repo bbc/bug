@@ -1,5 +1,20 @@
 ## Changelog
 
+### version 1.1.9
+
+- 2026-02-09: fix status timeouts ([993e81c](https://github.com/bbc/bug/commit/993e81c1700903597ad6efc18ea1c9e49838bac5))
+- 2026-02-09: service/util updates ([ff54156](https://github.com/bbc/bug/commit/ff541560092389ea82ae1644728c5df2f90c9904))
+- 2026-02-06: improve service logging ([5c58884](https://github.com/bbc/bug/commit/5c58884cb07b21353efcd09ba70f67748cce7690))
+- 2026-02-05: fix status check timeouts ([c94e7ca](https://github.com/bbc/bug/commit/c94e7ca54844a915a2ae69b2a7fce4d0457d095b))
+- 2026-02-04: set pending flag on any change to update UI ([a93b71f](https://github.com/bbc/bug/commit/a93b71f30a69d87f4f8e78fe895823bb848d9209))
+- 2026-02-04: improve logging in status handlers ([bbcef46](https://github.com/bbc/bug/commit/bbcef46ad5630663ce35ddf74e346956f0dc3332))
+- 2026-02-04: refactor services with try/catch/throw ([9553fc2](https://github.com/bbc/bug/commit/9553fc2fa2aa7c39de43676925104d3a5e8ba20d))
+- 2026-02-04: add default status check ([47fdc72](https://github.com/bbc/bug/commit/47fdc724f840628bf6aa53f48c7bf1847325b48e))
+- 2026-02-04: add README ([709db62](https://github.com/bbc/bug/commit/709db620a3db86957fa9784973148aa9f18f10ab))
+- 2026-02-04: use mongo bulkwrite to improve performance ([9cb6cdf](https://github.com/bbc/bug/commit/9cb6cdf0d6478423ac1e00e2c32efd59712be877))
+- 2026-02-04: improve performance of workers ([9d4a1ca](https://github.com/bbc/bug/commit/9d4a1caeee37136714be7b5ac58b1161e0480099))
+- 2026-02-04: improve api route error handling ([7522afc](https://github.com/bbc/bug/commit/7522afc5e3608741043f5ce72b8ac5c8dddafd2b))
+
 ### version 1.1.8
 
 - 2026-02-09: fix status timeouts ([11fdb98](https://github.com/bbc/bug/commit/11fdb98c8341679e89e9701779126782ccc3ea9a))

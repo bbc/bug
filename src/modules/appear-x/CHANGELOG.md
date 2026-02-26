@@ -1,5 +1,11 @@
 ## Changelog
 
+### version 1.0.7
+
+- 2026-01-27: add checkconfig to status checks ([f909949](https://github.com/bbc/bug/commit/f9099491bb22fbfc4e9128f85613c8c69214c36f))
+- 2026-01-27: add success/default status ([de6b2a3](https://github.com/bbc/bug/commit/de6b2a3b7bad1668a921f5b53b97f5b89260407b))
+- 2026-01-27: add README and improve workers ([2fb60c8](https://github.com/bbc/bug/commit/2fb60c8beefe54f7cd5d0e8d31ae20037680b936))
+
 ### version 1.0.6
 
 - 2026-01-27: add checkconfig to status checks ([6fb6324](https://github.com/bbc/bug/commit/6fb63245472a276421a5daffa031373ef2614c42))
