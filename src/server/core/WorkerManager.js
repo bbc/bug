@@ -1,15 +1,5 @@
 "use strict";
 
-/**
- * core/WorkerManager.js
- * Class providing management of and access to all workers registered
- * 0.0.1 17/05/2021 - Created first version (GH)
- * 0.0.2 17/05/2021 - Adapted for use in bug core (GH)
- * 0.0.3 18/06/2021 - Change the use of context (RM)
- * 0.0.3 18/06/2021 - Restart workers and access to collection (RM)
- * 0.1.0 27/01/2026 - Overhaul and refactor (GH)
- */
-
 const { Worker, isMainThread, SHARE_ENV } = require("worker_threads");
 const configGet = require("@core/config-get");
 const path = require("path");
@@ -172,8 +162,21 @@ class WorkerManager {
         const oldConfig = this.config;
         this.config = newConfig;
 
+        // don’t start workers until the panel has been properly configured
+        if (this.isModule && this.config?.needsConfigured) {
+            logger.warning("WorkerManager->pushConfig: module not configured yet, skipping worker start.");
+            return;
+        }
+
         for (let i = 0; i < this.workers.length; i++) {
-            if (this.needsUpdated(oldConfig, newConfig, this.workers[i].restartKeys)) {
+            const worker = this.workers[i];
+
+            // restart if worker never started OR its restartKeys indicate a relevant config change
+            const shouldRestart =
+                !worker.worker || this.needsUpdated(oldConfig, newConfig, worker.restartKeys || ["*"]);
+
+            if (shouldRestart) {
+                logger.info(`WorkerManager->pushConfig: restarting worker ${worker.filename}`);
                 await this.restartWorker(i, true);
             }
         }
