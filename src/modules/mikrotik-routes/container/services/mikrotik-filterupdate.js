@@ -1,27 +1,37 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async (distance, routeComment) => {
-    const conn = await mikrotikConnect();
-    if (!conn) {
-        return;
-    }
-
-    // check if distance already used
-    const filters = await conn.write("/routing/filter/getall");
-
     try {
+
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
+        // check if distance already used
+        const filters = await routerOsApi.run("/routing/filter/getall");
+
         const existingFilter = filters.find((filter) => filter?.distance === distance);
 
         if (existingFilter) {
             // update
-            await conn.write(`/routing/filter/set`, [
+            await routerOsApi.run(`/routing/filter/set`, [
                 `=numbers=${existingFilter?.[".id"]}`,
                 `=set-route-comment=${routeComment}`,
             ]);
-            console.log(`mikrotik-filterupdate: updated route filter for distance ${distance}`);
+            logger.info(`mikrotik-filterupdate: updated route filter for distance ${distance}`);
         } else {
             // add new
             const paramArray = [
@@ -33,10 +43,9 @@ module.exports = async (distance, routeComment) => {
                 `=set-route-comment=${routeComment}`,
             ];
 
-            await conn.write(`/routing/filter/add`, paramArray);
-            console.log(`mikrotik-filterupdate: added route filter for distance ${distance}`);
+            await routerOsApi.run(`/routing/filter/add`, paramArray);
+            logger.info(`mikrotik-filterupdate: added route filter for distance ${distance}`);
         }
-        conn.close();
 
         // now update db
         const routes = await mongoSingle.get("routes");
@@ -47,9 +56,9 @@ module.exports = async (distance, routeComment) => {
         // console.log(updatedRoutes);
 
         return true;
-    } catch (error) {
-        console.log(`mikrotik-filterupdate: ${error.stack || error || error.message}`);
-        conn.close();
-        return false;
+    } catch (err) {
+        err.message = `mikrotik-filterupdate: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
-};
+}

@@ -10,7 +10,7 @@
     "license": "Apache-2.0",
     "status": "beta",
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers", "utils"],
+    "devmounts": ["api", "services", "workers"],
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",

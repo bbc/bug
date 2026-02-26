@@ -1,21 +1,30 @@
 "use strict";
 
-const mikrotikConnect = require("../utils/mikrotik-connect");
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async (routeId) => {
-    const conn = await mikrotikConnect();
-    if (!conn) {
-        return;
-    }
-
     try {
-        await conn.write("/ip/route/enable", ["=numbers=" + routeId]);
-        console.log(`mikrotik-routeenable: enabled route ${routeId}`);
-        conn.close();
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
+        await routerOsApi.run("/ip/route/enable", ["=numbers=" + routeId]);
+        logger.info(`mikrotik-routeenable: enabled route ${routeId}`);
+
         return true;
-    } catch (error) {
-        console.log(`mikrotik-routeenable: ${error.stack || error || error.message}`);
-        conn.close();
-        return false;
+    } catch (err) {
+        err.message = `mikrotik-routeenable: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

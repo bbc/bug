@@ -1,29 +1,38 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
+const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async (routeComment) => {
-    const conn = await mikrotikConnect();
-    if (!conn) {
-        return;
-    }
-
-    // check if distance already used
-    const filters = await conn.write("/routing/filter/getall");
-
     try {
+
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
+        // check if distance already used
+        const filters = await routerOsApi.run("/routing/filter/getall");
+
         const existingFilter = filters.find(
             (filter) => filter?.chain === "ospf-in" && filter?.action === "passthrough"
         );
 
         if (existingFilter) {
             // update
-            await conn.write(`/routing/filter/set`, [
+            await routerOsApi.run(`/routing/filter/set`, [
                 `=numbers=${existingFilter?.[".id"]}`,
                 `=set-route-comment=${routeComment}`,
             ]);
-            console.log(`mikrotik-ospffilterupdate: updated route filter for OSPF routes`);
+            logger.info(`mikrotik-ospffilterupdate: updated route filter for OSPF routes`);
         } else {
             // add new
             const paramArray = [
@@ -34,10 +43,9 @@ module.exports = async (routeComment) => {
                 `=set-route-comment=${routeComment}`,
             ];
 
-            await conn.write(`/routing/filter/add`, paramArray);
-            console.log(`mikrotik-ospffilterupdate: added route filter for OSPF routes`);
+            await routerOsApi.run(`/routing/filter/add`, paramArray);
+            logger.info(`mikrotik-ospffilterupdate: added route filter for OSPF routes`);
         }
-        conn.close();
 
         // now update db
         const routes = await mongoSingle.get("routes");
@@ -48,9 +56,9 @@ module.exports = async (routeComment) => {
         // console.log(updatedRoutes);
 
         return true;
-    } catch (error) {
-        console.log(`mikrotik-ospffilterupdate: ${error.stack || error || error.message}`);
-        conn.close();
-        return false;
+    } catch (err) {
+        err.message = `mikrotik-ospffilterupdate: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

@@ -25,15 +25,15 @@ export default function RouteList({ panelId }) {
 
     const getStatus = (item) => {
         if (item.defaultActive) {
-            return <BugStatusLabel sx={{ color: "text.highlight" }}>Active</BugStatusLabel>;
+            return <BugStatusLabel sx={{ color: "success.main" }}>Active</BugStatusLabel>;
         }
         if (item.disabled) {
-            return <BugStatusLabel sx={{ color: "text.secondary" }}>Inactive</BugStatusLabel>;
+            return <BugStatusLabel sx={{ color: "text.secondary" }}>Disabled</BugStatusLabel>;
         }
         if (item.active) {
             return <BugStatusLabel sx={{ color: "success.main" }}>Active</BugStatusLabel>;
         }
-        return <BugStatusLabel sx={{ color: "text.primary" }}>Pending</BugStatusLabel>;
+        return <BugStatusLabel sx={{ color: "text.secondary" }}>Pending</BugStatusLabel>;
     };
 
     const getItemName = (item) => {
@@ -128,10 +128,8 @@ export default function RouteList({ panelId }) {
         <BugApiTable
             columns={[
                 {
-                    sortable: false,
                     // noPadding: true,
                     width: 44,
-                    field: "active",
                     content: (item) => (
                         <BugPowerIcon
                             activeColor={item.defaultActive ? "text.primary" : "primary.main"}
@@ -140,7 +138,6 @@ export default function RouteList({ panelId }) {
                     ),
                 },
                 {
-                    sortable: false,
                     noPadding: true,
                     hideWidth: 700,
                     width: 70,
@@ -156,17 +153,8 @@ export default function RouteList({ panelId }) {
                     },
                 },
                 {
-                    sortable: false,
-                    minWidth: "5rem",
-                    noWrap: true,
-                    title: "Status",
-                    content: (item) => getStatus(item),
-                },
-                {
-                    sortable: "true",
                     minWidth: "15rem",
                     noWrap: true,
-                    field: "dst-address",
                     title: "Destination",
                     content: (item) => {
                         return (
@@ -192,12 +180,19 @@ export default function RouteList({ panelId }) {
                     },
                 },
                 {
-                    sortable: "true",
+                    minWidth: "5rem",
+                    noWrap: true,
+                    title: "Status",
+                    content: (item) => getStatus(item),
+                },
+                {
                     minWidth: "8rem",
                     noWrap: true,
-                    field: "gateway",
                     title: "Gateway",
-                    content: (item) => (item.type === "blackhole" ? "Blackhole" : item.gateway),
+                    content: (item) => {
+                        const firstPart = item?.gateway?.split("%", 1)[0];
+                        return item.type === "blackhole" ? "Blackhole" : firstPart;
+                    },
                 },
                 {
                     title: "Gateway Status",
@@ -213,10 +208,8 @@ export default function RouteList({ panelId }) {
                     ),
                 },
                 {
-                    sortable: "true",
                     title: "Distance",
                     width: "8rem",
-                    field: "distance",
                     // hideWidth: 2000,
                     content: (item) => item["distance"],
                 },
@@ -245,8 +238,6 @@ export default function RouteList({ panelId }) {
             ]}
             apiUrl={panelData.showAll === true ? `/container/${panelId}/route/all` : `/container/${panelId}/route`}
             panelId={panelId}
-            defaultSortDirection="asc"
-            defaultSortIndex={3}
             hideHeader={false}
             noData={
                 <BugNoData
@@ -257,11 +248,10 @@ export default function RouteList({ panelId }) {
                 />
             }
             rowHeight="62px"
-            sortable
             forceRefresh={forceRefresh}
-            highlightRow={(item) => {
-                return item.defaultActive;
-            }}
+            // highlightRow={(item) => {
+            //     return item.defaultActive;
+            // }}
             highlightColor="success.main"
         />
     );

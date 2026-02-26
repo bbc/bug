@@ -1,18 +1,26 @@
 "use strict";
 
-const mikrotikConnect = require("@utils/mikrotik-connect");
 const mongoSingle = require("@core/mongo-single");
+const RouterOSApi = require("@core/routeros-api");
+const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async (routeId, routeComment) => {
-    const conn = await mikrotikConnect();
-    if (!conn) {
-        return;
-    }
-
     try {
-        await conn.write(`/ip/route/set`, [`=numbers=${routeId}`, `=comment=${routeComment}`]);
-        console.log(`mikrotik-routecomment: set comment on interface ${routeId} to '${routeComment}'`);
-        conn.close();
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const routerOsApi = new RouterOSApi({
+            host: config.address,
+            user: config.username,
+            password: config.password,
+            timeout: 10,
+        });
+
+        await routerOsApi.run(`/ip/route/set`, [`=numbers=${routeId}`, `=comment=${routeComment}`]);
+        logger.info(`mikrotik-routecomment: set comment on interface ${routeId} to '${routeComment}'`);
 
         // now update db
         const routes = await mongoSingle.get("routes");
@@ -22,9 +30,9 @@ module.exports = async (routeId, routeComment) => {
         await mongoSingle.set("routes", updatedRoutes, 60);
 
         return true;
-    } catch (error) {
-        console.log(`mikrotik-routecomment: ${error.stack || error || error.message}`);
-        conn.close();
-        return false;
+    } catch (err) {
+        err.message = `mikrotik-routecomment: ${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

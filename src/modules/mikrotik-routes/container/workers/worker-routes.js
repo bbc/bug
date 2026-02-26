@@ -1,13 +1,13 @@
 "use strict";
 
 const { parentPort, workerData } = require("worker_threads");
+const register = require("module-alias/register");
 const RouterOSApi = require("@core/routeros-api");
 const delay = require("delay");
-const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoSingle = require("@core/mongo-single");
-const mikrotikFetchRoutes = require("@services/mikrotik-fetchroutes");
-
+const logger = require("@core/logger")(module);
+const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const updateDelay = 2000;
 
 parentPort.postMessage({
@@ -16,45 +16,64 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
-
-    const conn = new RosApi({
-        host: workerData.address,
-        user: workerData.username,
-        password: workerData.password,
-        timeout: 5,
-    });
-
-    // clear existing data
-    await mongoSingle.clear("routes");
 
     try {
-        console.log("worker-routes: connecting to device " + JSON.stringify(conn));
-        await conn.connect();
-    } catch (error) {
-        throw "worker-routes: failed to connect to device";
-    }
-    console.log("worker-routes: device connected ok");
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
 
-    let noErrors = true;
-    console.log("worker-routes: starting device poll....");
-    while (noErrors) {
-        try {
-            const routes = await mikrotikFetchRoutes(conn);
+        // clear existing data
+        await mongoSingle.clear("routes");
 
-            // filter out only static and default routes
-            const filteredRoutes = routes.filter((route) => route?.["dst-address"] === "0.0.0.0/0" || route.static);
+        const routerOsApi = new RouterOSApi({
+            host: workerData.address,
+            user: workerData.username,
+            password: workerData.password,
+            timeout: 10,
+            keepalive: true,
+            onDisconnect: (err) => {
+                logger.error(err.message || err);
+                process.exit(1);
+            }
+        });
+
+
+        await routerOsApi.connect();
+        logger.info("worker-routes: device connected ok");
+
+        while (true) {
+            const data = await routerOsApi.run("/ip/route/print");
+
+            // process data
+            const routes = [];
+            for (let i in data) {
+                routes.push(
+                    mikrotikParseResults({
+                        result: data[i],
+                        integerFields: ["distance", "scope", "target-scope", "route-tag", "ospf-metric"],
+                        booleanFields: ["active", "dynamic", "static", "ospf", "disabled", "blackhole"],
+                        timeFields: [],
+                    })
+                );
+            }
+
+            // filter out only static and default routes, in the main route table
+            const filteredRoutes = routes.filter((route) => (route?.["dst-address"] === "0.0.0.0/0" || route.static) && route?.["routing-table"] === "main");
 
             // save to db
             await mongoSingle.set("routes", filteredRoutes, 60);
-        } catch (error) {
-            console.log("worker-routes: ", error);
-            noErrors = false;
+            await delay(updateDelay);
         }
-        await delay(updateDelay);
+    } catch (err) {
+        logger.error(`worker-routes: fatal error`);
+        logger.error(err.stack || err.message || err);
+        process.exit();
     }
-    await conn.close();
 };
 
-main();
+main().catch(err => {
+    logger.error(`worker-routes: startup failure`);
+    logger.error(err.stack || err);
+    process.exit(1);
+});
+
+
