@@ -14,7 +14,7 @@ module.exports = async (formData) => {
             ]);
         }
 
-        logger.warn(`validate-ping: device ${formData.address} is not reachable`);
+        logger.warning(`validate-ping: device ${formData.address} is not reachable`);
         return new ValidationResult([
             { state: false, field: "address", message: "Device is not reachable" },
         ]);

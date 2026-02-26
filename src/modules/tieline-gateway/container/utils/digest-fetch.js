@@ -28,7 +28,7 @@ class DigestClient {
 
         let algorithm = options.algorithm || "MD5";
         if (!supported_algorithms.includes(algorithm)) {
-            if (this.logger) this.logger.warn(`Unsupported algorithm ${algorithm}, will try with MD5`);
+            if (this.logger) this.logger.warning(`Unsupported algorithm ${algorithm}, will try with MD5`);
             algorithm = "MD5";
         }
         this.digest = { nc: 0, algorithm, realm: "" };
@@ -106,7 +106,7 @@ class DigestClient {
         let _ha2 = "";
         if (this.digest.qop === "auth-int") {
             // not implemented for auth-int
-            if (this.logger) this.logger.warn("Sorry, auth-int is not implemented in this plugin");
+            if (this.logger) this.logger.warning("Sorry, auth-int is not implemented in this plugin");
             // const entityBody = xxx
             // _ha2 = ':' + md5(entityBody)
         }

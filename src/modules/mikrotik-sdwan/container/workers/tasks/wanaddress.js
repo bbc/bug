@@ -27,7 +27,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
         }
 
         if (dbRoutes.length === 0 || dbRules.length === 0) {
-            logger.warn("wanaddress: no routes or rules found, skipping fetch");
+            logger.warning("wanaddress: no routes or rules found, skipping fetch");
             return true;
         }
 

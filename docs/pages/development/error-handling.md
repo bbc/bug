@@ -32,7 +32,7 @@ This ensures it’s visible in logs and propagated to the router:
     try {
         await buildModule(moduleName);
     } catch (error) {
-        logger.warn(`module-build: ${error.stack || error || error.message}`);
+        logger.warning(`module-build: ${error.stack || error || error.message}`);
         throw new Error(`Failed to build module ${moduleName}`);
     }
 ```

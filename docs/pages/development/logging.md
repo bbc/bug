@@ -34,7 +34,7 @@ async function buildModule(moduleName) {
 
         logger.info(`Successfully built module: ${moduleName}`);
     } catch (error) {
-        logger.warn(`Build failed for module ${moduleName}: ${error.stack || error.message}`);
+        logger.warning(`Build failed for module ${moduleName}: ${error.stack || error.message}`);
         throw new Error(`Failed to build module ${moduleName}`);
     }
 }
@@ -43,7 +43,7 @@ async function buildModule(moduleName) {
 Log levels you can use:
 
 - logger.info() — Informational messages about normal operations
-- logger.warn() — Warnings about recoverable issues
+- logger.warning() — Warnings about recoverable issues
 - logger.error() — Serious errors that may affect functionality
 - logger.debug() — Detailed debugging information (optional, for development)
 
