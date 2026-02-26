@@ -20,14 +20,14 @@ const setupAdapterListeners = (namespace) => {
     namespace.adapter.on("join-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
-            logger.debug(`socket id ${id} joined room ${roomElements[1]}`);
+            logger.debug(`container: socket id ${id} joined room ${roomElements[1]}`);
         }
     });
 
     namespace.adapter.on("leave-room", (room, id) => {
         const roomElements = room.split(":");
         if (roomElements[0] === "panelId") {
-            logger.debug(`socket id ${id} left room ${roomElements[1]}`);
+            logger.debug(`container: socket id ${id} left room ${roomElements[1]}`);
         }
     });
 
@@ -44,7 +44,7 @@ const setupAdapterListeners = (namespace) => {
 
         //TODO - CHECK IF PANEL CONTAINER IS RUNNING
         if (panel) {
-            logger.info(`Opening container connection for panelId: ${panelId}`);
+            logger.info(`container: opening container connection for panelId: ${panelId}`);
 
             containerSockets[panelId] = io(`ws://${panelId}`, {
                 forceNew: true,
@@ -52,7 +52,7 @@ const setupAdapterListeners = (namespace) => {
             });
 
             containerSockets[panelId].on("connect", () => {
-                logger.debug(`Websocket connection established to panelId ${panelId}`);
+                logger.debug(`container: websocket connection established to panelId ${panelId}`);
             });
 
             containerSockets[panelId].on("data", (data) => {
@@ -60,7 +60,7 @@ const setupAdapterListeners = (namespace) => {
             });
 
             containerSockets[panelId].on("error", (err) => {
-                logger.error(`Container socket error for ${panelId}:`, err);
+                logger.error(`container: socket error for ${panelId}:`, err);
             });
         }
     });
@@ -74,7 +74,7 @@ const setupAdapterListeners = (namespace) => {
 
         // cleanup polling
         if (enablePanelPoll[panelId]) {
-            logger.debug(`Room ${room} deleted: stopping polling`);
+            logger.debug(`container: room ${room} deleted: stopping polling`);
             enablePanelPoll[panelId] = false;
             if (panelTimers[panelId]) {
                 clearTimeout(panelTimers[panelId]);
@@ -84,7 +84,7 @@ const setupAdapterListeners = (namespace) => {
 
         // cleanup container connection when no one is left in the room
         if (containerSockets[panelId]) {
-            logger.info(`Closing container connection for panelId: ${panelId} (Room empty)`);
+            logger.info(`container: closing container connection for panelId: ${panelId} (Room empty)`);
             containerSockets[panelId].disconnect();
             delete containerSockets[panelId];
         }
@@ -118,7 +118,7 @@ module.exports = (namespace, socket) => {
         if (panelId) {
             // we store this in case the client gets disconnected - it's the last panel id they were looking at
             lastPanelId = panelId;
-            logger.debug(`socket id ${socket.id} subscribed to panelId ${panelId}`);
+            logger.debug(`container: socket id ${socket.id} subscribed to panelId ${panelId}`);
 
             // join the room
             socket.join(`panelId:${panelId}`);
@@ -142,13 +142,13 @@ module.exports = (namespace, socket) => {
         if (lastPanelId && containerSockets[lastPanelId]) {
             containerSockets[lastPanelId].emit("data", data);
         } else {
-            logger.warn(`Data received for socket ${socket.id} but no active container connection.`);
+            logger.warning(`container: data received for socket ${socket.id} but no active container connection.`);
         }
     });
 
     socket.on("disconnect", () => {
         if (lastPanelId) {
-            logger.debug(`socket id ${socket.id} disconnected, leaving room ${lastPanelId}`);
+            logger.debug(`container: socket id ${socket.id} disconnected, leaving room ${lastPanelId}`);
             socket.leave(`panelId:${lastPanelId}`);
         }
     });

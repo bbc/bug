@@ -4,33 +4,35 @@ const logger = require("@core/logger")(module);
 const readJson = require("@core/read-json");
 const writeJson = require("@core/write-json");
 const path = require("path");
-const hash = require("@utils/hash");
 const global = require("@utils/globalEmitter");
 
-const filename = path.join(__dirname, "..", "..", "config", "global", "settings.json");
-
-const defaultFilename = path.join(__dirname, "..", "..", "config", "default", "settings.json");
+const filename = path.join(__dirname, "..", "..", "..", "config", "global", "settings.json");
+const defaultFilename = path.join(__dirname, "..", "..", "..", "config", "default", "settings.json");
 
 async function getSettings() {
     try {
         return await readJson(filename);
-    } catch (error) {
-        const contents = await readJson(defaultFilename);
-        if (await writeJson(filename, contents)) {
+    } catch (err) {
+        try {
+            const contents = await readJson(defaultFilename);
+            await writeJson(filename, contents);
             return contents;
+        } catch (writeErr) {
+            writeErr.message = `settings-getSettings: ${writeErr.message}`;
+            logger.error(writeErr.stack || writeErr.message);
+            throw writeErr;
         }
-        throw error;
     }
 }
 
 exports.get = async function () {
     try {
-        const settings = await getSettings();
-        return settings;
-    } catch (error) {
-        logger.warning(`${error.stack || error || error.message}`);
+        return await getSettings();
+    } catch (err) {
+        err.message = `settings-get: ${err.message}`;
+        logger.error(err.stack || err.message);
+        throw err;
     }
-    return null;
 };
 
 exports.update = async function (newSettings) {
@@ -40,9 +42,10 @@ exports.update = async function (newSettings) {
 
         global.emit("settings", mergedSettings);
 
-        return await writeJson(filename, { ...settings, ...newSettings });
-    } catch (error) {
-        logger.warning(`${error.stack || error || error.message}`);
+        return await writeJson(filename, mergedSettings);
+    } catch (err) {
+        err.message = `settings-update: ${err.message}`;
+        logger.error(err.stack || err.message);
+        throw err;
     }
-    return null;
 };

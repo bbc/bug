@@ -2,21 +2,17 @@
 # NPM
 node_modules
 
-# logs
-/logs/*
-!/logs/.gitkeep
-
 # backup data
 /src/server/data/*
 !/src/server/data/.gitkeep
 
 # panel configs
-/src/config/panels/*.json
-!/src/config/panels/.gitkeep
+/config/panels/*.json
+!/config/panels/.gitkeep
 
 # global config
-/src/config/global/*.json
-!/src/config/global/.gitkeep
+/config/global/*.json
+!/config/global/.gitkeep
 
 # module dockerfiles
 Dockerfile*

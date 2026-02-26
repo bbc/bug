@@ -1,7 +1,5 @@
 "use strict";
 
-//TODO error handling with throw
-
 const { promises: fs } = require("fs");
 const logger = require("@core/logger")(module);
 const path = require("path");
@@ -9,71 +7,70 @@ const readJson = require("@core/read-json");
 const writeJson = require("@core/write-json");
 const deleteFile = require("@core/delete-file");
 
+const PANELS_DIR = path.join(__dirname, "..", "..", "..", "config", "panels");
+
+function panelFilename(panelId) {
+    return path.join(PANELS_DIR, `${panelId}.json`);
+}
+
 exports.get = async function (panelId) {
     try {
-        const filename = path.join(__dirname, "..", "..", "config", "panels", `${panelId}.json`);
-        return await readJson(filename);
-    } catch (error) {
-        logger.warning(`panel id ${panelId} - ${error.stack || error || error.message}`);
+        return await readJson(panelFilename(panelId));
+    } catch (err) {
+        err.message = `panel-get: ${err.message}`;
+        logger.error(err.stack || err.message);
+        throw err;
     }
 };
 
 exports.getChangedDate = async function (panelId) {
     try {
-        const filename = path.join(__dirname, "..", "..", "config", "panels", `${panelId}.json`);
-        const stats = await fs.stat(filename);
+        const stats = await fs.stat(panelFilename(panelId));
         return stats.mtime;
-    } catch (error) {
-        logger.warning(`panel id ${panelId} - ${error.stack || error || error.message}`);
+    } catch (err) {
+        err.message = `panel-getChangedDate: ${err.message}`;
+        logger.error(err.stack || err.message);
+        throw err;
     }
 };
 
 exports.set = async function (panelConfig) {
     try {
-        const filename = path.join(__dirname, "..", "..", "config", "panels", `${panelConfig.id}.json`);
-        return await writeJson(filename, panelConfig);
-    } catch (error) {
-        logger.warning(`panel id ${panelConfig.id} - ${error.stack || error || error.message}`);
-        return false;
+        return await writeJson(panelFilename(panelConfig.id), panelConfig);
+    } catch (err) {
+        err.message = `panel-set: ${err.message}`;
+        logger.error(err.stack || err.message);
+        throw err;
     }
 };
 
 exports.delete = async function (panelId) {
     try {
-        const filename = path.join(__dirname, "..", "..", "config", "panels", `${panelId}.json`);
+        const filename = panelFilename(panelId);
         logger.debug(`deleting file ${filename}`);
         return await deleteFile(filename);
-    } catch (error) {
-        logger.warning(`panel id ${panelConfig.id} - ${error.stack || error || error.message}`);
-        return false;
+    } catch (err) {
+        err.message = `panel-delete: ${err.message}`;
+        logger.error(err.stack || err.message);
+        throw err;
     }
 };
 
 exports.list = async function () {
-    const configFolder = path.join(__dirname, "..", "..", "config", "panels");
-
-    const panelArray = [];
-
-    let files;
     try {
-        files = await fs.readdir(configFolder);
-    } catch (error) {
-        logger.warning(`${error.stack || error || error.message}`);
-    }
+        const files = await fs.readdir(PANELS_DIR);
+        const panelFiles = files.filter(file => file.endsWith(".json"));
 
-    for (let i in files) {
-        try {
-            const filename = path.join(configFolder, files[i]);
-            if (filename.endsWith(".json")) {
-                const panelFile = await readJson(filename);
-                if (panelFile) {
-                    panelArray.push(panelFile);
-                }
-            }
-        } catch (error) {
-            logger.warning(`${error.stack || error || error.message}`);
-        }
-    }
+        const panels = await Promise.all(
+            panelFiles.map(file =>
+                readJson(path.join(PANELS_DIR, file))
+            )
+        );
 
-    return panelArray;
+        return panels.filter(Boolean);
+    } catch (err) {
+        err.message = `panel-list: ${err.message}`;
+        logger.error(err.stack || err.message);
+        throw err;
+    }
 };
