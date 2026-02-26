@@ -12,6 +12,9 @@ COPY src/client/package*.json ./src/client/
 # install dependencies
 RUN npm install --legacy-peer-deps
 
+# copy default config
+COPY config/default ./config/default
+
 # copy source code
 COPY src ./src
 
