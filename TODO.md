@@ -1,6 +1,5 @@
 # Do now
 
-- after an upgrade the panel doesn't get a config. needs a push and a restart
 - during upgrade the panel shold show as disabled in the panel view
 - should an upgrade just delete the image? Then turning it back on builds it?
 

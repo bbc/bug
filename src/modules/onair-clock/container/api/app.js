@@ -27,4 +27,22 @@ app.use("/api/clock", clockRouter);
 
 app.use("*", defaultRouter);
 
+app.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err);
+    }
+
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    const errorLocation = err.stack ? err.stack.split('\n')[1].trim() : "Unknown location";
+
+    logger.error(`ERROR: ${message} | ${errorLocation}`);
+
+    res.status(statusCode).json({
+        status: "error",
+        message: message
+    });
+});
+
 module.exports = app;
