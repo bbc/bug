@@ -53,7 +53,6 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
-                { name: "ping", seconds: 15 },
                 { name: "wanaddress", seconds: 30 },
             ], context: { conn, mongoSingle, pingCollection, wanAddressesCollection }, baseDir: __dirname
         });
