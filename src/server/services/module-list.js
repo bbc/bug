@@ -4,6 +4,7 @@ const logger = require("@core/logger")(module);
 const moduleConfig = require("@models/module-config");
 const dockerListImages = require("@services/docker-listimages");
 const settingsModel = require("@models/settings");
+const constants = require("@core/constants");
 
 module.exports = async () => {
     try {
@@ -28,6 +29,7 @@ module.exports = async () => {
             delete eachModule.defaultconfig;
             delete eachModule.devmounts;
 
+            eachModule.documentationUrl = `${constants.DOCS_BASEURL}pages/modules/${eachModule.name}`;
             return eachModule;
         });
 

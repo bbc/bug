@@ -5,8 +5,6 @@
 
 # Do next
 
-- add link to modules in system/modules to the documentation page
-
 # Backlog
 
 - sort out overlaying menu in bug api table
@@ -23,4 +21,3 @@
 - new worker design using tasks
 - update mikrotik modules using new core class
 - mikrotik routes module doesn't understand sub routing tables
-- check app.js API error in all modules
