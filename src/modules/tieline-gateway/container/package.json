@@ -29,6 +29,7 @@
         "node-fetch": "^2.6.7",
         "ping": "^0.4.1",
         "underscore": "^1.13.1",
+        "winston": "^3.19.0",
         "xml-js": "^1.6.11"
     },
     "devDependencies": {

@@ -2,6 +2,7 @@ const express = require("express");
 const workerStore = require("@core/worker-store");
 const createError = require("http-errors");
 const path = require("path");
+const logger = require("@core/logger")(module);
 
 // load routes
 const statusRouter = require("@routes/status");

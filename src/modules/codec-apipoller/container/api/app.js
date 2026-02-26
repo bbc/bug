@@ -1,6 +1,7 @@
 const express = require("express");
 const createError = require("http-errors");
 const workerStore = require("@core/worker-store");
+const logger = require("@core/logger")(module);
 
 // load routes
 const configRouter = require("./routes/config");

@@ -24,9 +24,10 @@
         "mongodb": "^3.6.8",
         "morgan": "^1.10.0",
         "node-cache": "^5.1.2",
+        "p3x-xml2json": "2022.4.128",
         "ping": "^0.4.1",
         "underscore": "^1.13.1",
-        "p3x-xml2json": "2022.4.128"
+        "winston": "^3.19.0"
     },
     "devDependencies": {
         "jest": "^30.2.0",

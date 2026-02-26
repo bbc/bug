@@ -9,6 +9,7 @@
 
 const mongoSingle = require("@core/mongo-single");
 const StatusItem = require("@core/StatusItem");
+const logger = require("@core/logger")(module);
 
 module.exports = async (options) => {
     const defaults = {
@@ -20,7 +21,7 @@ module.exports = async (options) => {
     options = Object.assign({}, defaults, options);
 
     if (options.collectionName === undefined) {
-        console.error("status-checkmongosingle: collectionName not specified");
+        logger.error("status-checkmongosingle: collectionName not specified");
         return;
     }
 

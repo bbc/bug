@@ -1,6 +1,7 @@
 const express = require("express");
 const createError = require("http-errors");
 const path = require("path");
+const logger = require("@core/logger")(module);
 
 // load routes
 const statusRouter = require("@routes/status");

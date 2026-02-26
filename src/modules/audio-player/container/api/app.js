@@ -1,5 +1,6 @@
 const express = require("express");
 const createError = require("http-errors");
+const logger = require("@core/logger")(module);
 
 // load routes
 const audioRouter = require("@routes/audio");

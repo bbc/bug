@@ -27,7 +27,8 @@
         "node-routeros": "^1.6.9",
         "ping": "^0.4.1",
         "uuid": "^9.0.0",
-        "wildcard-regex": "^3.0.2"
+        "wildcard-regex": "^3.0.2",
+        "winston": "^3.19.0"
     },
     "devDependencies": {
         "jest": "^30.2.0",

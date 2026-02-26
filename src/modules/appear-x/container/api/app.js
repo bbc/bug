@@ -1,6 +1,7 @@
 const express = require("express");
 const createError = require("http-errors");
 const workerStore = require("@core/worker-store");
+const logger = require("@core/logger")(module);
 
 // load routes
 const configRouter = require("@routes/config");
@@ -52,7 +53,7 @@ app.use((err, req, res, next) => {
 
     const errorLocation = err.stack ? err.stack.split('\n')[1].trim() : "Unknown location";
 
-    console.error(`ERROR: ${message} | ${errorLocation}`);
+    logger.error(`ERROR: ${message} | ${errorLocation}`);
 
     res.status(statusCode).json({
         status: "error",

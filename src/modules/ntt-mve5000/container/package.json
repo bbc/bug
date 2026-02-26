@@ -24,7 +24,8 @@
         "morgan": "^1.10.0",
         "net-snmp": "^3.5.6",
         "node-cache": "^5.1.2",
-        "ping": "^0.4.1"
+        "ping": "^0.4.1",
+        "winston": "^3.19.0"
     },
     "devDependencies": {
         "jest": "^30.2.0",
