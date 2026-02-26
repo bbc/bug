@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.12
+
+- 2026-02-26: tweak ui colours ([ff51611](https://github.com/bbc/bug/commit/ff51611eefeba6c6e24e4984efb5fc0bd1a81537))
+
 ### version 1.0.11
 
 - 2026-02-26: remove unused ping task ([a336027](https://github.com/bbc/bug/commit/a336027fd923b0c1049a312eba3f4853ea3325d4))

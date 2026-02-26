@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.12
+
+- 2026-02-24: add readme and screenshot ([fa49d53](https://github.com/bbc/bug/commit/fa49d53a6f3671809ef43e4466e3e3796c687e9d))
+- 2026-02-24: use new mikrotik core class ([6f569e3](https://github.com/bbc/bug/commit/6f569e32a5cb87d4264c39dea73dcf1d16855873))
+
 ### version 1.0.11
 
 - 2026-02-25: fix routeros message queuing ([35aa0fd](https://github.com/bbc/bug/commit/35aa0fd7922dd393f19c20b13d2326ae52b32c09))
