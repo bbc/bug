@@ -1,5 +1,14 @@
 ## Changelog
 
+### version 1.1.11
+
+- 2026-02-24: use node-routeros-v2 ([944c361](https://github.com/bbc/bug/commit/944c361ddf60b66d5a4bf8815901e9088d83788d))
+- 2026-02-24: add readme and screenshots ([bff326a](https://github.com/bbc/bug/commit/bff326ac664ae03d7d8833d7b9aa767aa1d45ba5))
+- 2026-02-24: add default status ([b825f4e](https://github.com/bbc/bug/commit/b825f4e109e9691918e286f2c6fa85122b90016a))
+- 2026-02-24: update services with new routeros api and error handling ([76a5de7](https://github.com/bbc/bug/commit/76a5de7680b82b9224243c8bb54782f2a2286460))
+- 2026-02-24: update routes with new error handling ([1d00dfb](https://github.com/bbc/bug/commit/1d00dfb965b75a54a3497248d0a4652f873aa5c8))
+- 2026-02-24: refactor workers into tasks ([f1a8429](https://github.com/bbc/bug/commit/f1a8429cf5d8a153c5967dc915697701debd43eb))
+
 ### version 1.1.10
 
 - 2026-02-24: use node-routeros-v2 ([9102cfa](https://github.com/bbc/bug/commit/9102cfae6ab87e6e02f7ed7234bee93aab7b63e2))
