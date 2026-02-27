@@ -43,7 +43,7 @@ jobs:
             # get backend version
             - name: get backend version
               id: backend-version
-              uses: martinbeentjes/npm-get-version-action@v1.1.0
+              uses: martinbeentjes/npm-get-version-action@v1.3.1
               with:
                   path: ./
 
