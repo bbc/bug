@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.13
+
+- 2026-03-03: fix loopback addresses for ping/wanaddress ([595520c](https://github.com/bbc/bug/commit/595520c6281142ada0a994ed4950f81b319c4159))
+
 ### version 1.0.12
 
 - 2026-02-26: tweak ui colours ([ff51611](https://github.com/bbc/bug/commit/ff51611eefeba6c6e24e4984efb5fc0bd1a81537))
