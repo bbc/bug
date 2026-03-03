@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.15
+
+- 2026-03-03: match address and mac ([c97a6ef](https://github.com/bbc/bug/commit/c97a6ef4407b0c91e14bc0084fe4c7bbff4026c7))
+
 ### version 1.0.14
 
 - 2026-03-03: fix setting comment on dynamic lease ([c1acad0](https://github.com/bbc/bug/commit/c1acad00ffd605a8abbe4f18f73848bcc3fe1ec8))
