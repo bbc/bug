@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.14
+
+- 2026-03-03: fix setting comment on dynamic lease ([c1acad0](https://github.com/bbc/bug/commit/c1acad00ffd605a8abbe4f18f73848bcc3fe1ec8))
+
 ### version 1.0.13
 
 - 2026-03-03: fix loopback addresses for ping/wanaddress ([595520c](https://github.com/bbc/bug/commit/595520c6281142ada0a994ed4950f81b319c4159))
