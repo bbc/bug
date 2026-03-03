@@ -2,7 +2,7 @@
 
 const delay = require("delay");
 const logger = require("@core/logger")(module);
-const srcAddressGet = require('@utils/srcaddress-get');
+const loopbackAddressGet = require('@utils/loopbackaddress-get');
 
 module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) => {
 
@@ -36,7 +36,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
 
         const fetchTasks = filteredRoutes.map(async (route) => {
             try {
-                const address = srcAddressGet(route, dbAddresses, dbRules);
+                const address = loopbackAddressGet(route, dbAddresses, dbRules);
                 if (!address) return null;
 
                 logger.debug(`fetch: from ${address} via bridge ${route._bridgeName}`);

@@ -13,21 +13,21 @@ module.exports = function getSrcAddress(route, dbAddresses, dbRules) {
         );
 
         if (!addressObj || addressObj.length === 0) {
-            logger.warning(`srcaddress-get: no matching address found for dynamic route ${route._bridgeName}`);
+            logger.warning(`loopbackaddress-get: no matching address found for dynamic route ${route._bridgeName}`);
             return null;
         }
         if (addressObj.length > 1) {
-            logger.warning(`srcaddress-get: multiple addresses found for dynamic route ${route._bridgeName}`);
+            logger.warning(`loopbackaddress-get: multiple addresses found for dynamic route ${route._bridgeName}`);
             return null;
         }
 
         address = addressObj[0].address;
-        logger.debug(`srcaddress-get: found address ${address} for dynamic route ${route._bridgeName}`);
+        logger.debug(`loopbackaddress-get: found address ${address} for dynamic route ${route._bridgeName}`);
 
     } else {
         // static route: find a rule that matches an address on the bridge
         const bridgeAddresses = dbAddresses.filter(addr => addr.interface === route._bridgeName);
-        address = bridgeAddresses && bridgeAddresses.find(addr => !ruleAddresses.includes(addr?.address))?.address;
+        address = bridgeAddresses && bridgeAddresses.find(addr => ruleAddresses.includes(addr?.address))?.address;
     }
 
     // strip CIDR if present
