@@ -31,13 +31,14 @@ module.exports = async (lease) => {
         const newComment = leaseLabel.stringify({ ...lease, isManaged: true });
 
         // check if mac address is in db
-        const existingMacIndex = dbLeases.findIndex((li) => li.macAddress === lease?.macAddress);
+        const existingMacIndex = dbLeases.findIndex((li) => li.macAddress === lease?.macAddress && li.address === lease?.address);
 
         if (existingMacIndex > -1) {
             // it's an update to the existing item
             logger.info(`dhcplease-add: updating existing item with mac address ${lease.macAddress}`);
 
             const existingLease = dbLeases[existingMacIndex];
+            console.log(existingLease);
 
             if (existingLease.dynamic === true) {
                 // we need to add it
