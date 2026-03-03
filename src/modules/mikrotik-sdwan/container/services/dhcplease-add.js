@@ -39,12 +39,24 @@ module.exports = async (lease) => {
 
             const existingLease = dbLeases[existingMacIndex];
 
-            await routerOsApi.run(`/ip/dhcp-server/lease/set`, [
-                `=.id=${existingLease.id}`,
-                `=comment=${newComment}`,
-                `=address=${lease.address}`,
-                `=server=${lease.dhcpServer}`
-            ]);
+            if (existingLease.dynamic === true) {
+                // we need to add it
+                await routerOsApi.run(`/ip/dhcp-server/lease/add`, [
+                    `=comment=${newComment}`,
+                    `=address=${lease.address}`,
+                    `=mac-address=${lease.macAddress}`,
+                    `=server=${lease.dhcpServer}`
+                ]);
+            }
+            else {
+                // update existing
+                await routerOsApi.run(`/ip/dhcp-server/lease/set`, [
+                    `=.id=${existingLease.id}`,
+                    `=comment=${newComment}`,
+                    `=address=${lease.address}`,
+                    `=server=${lease.dhcpServer}`
+                ]);
+            }
 
             // update local cache 
             dbLeases[existingMacIndex] = {
