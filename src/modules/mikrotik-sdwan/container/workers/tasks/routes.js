@@ -20,7 +20,7 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
             return {
                 ...parsedItem, _bridgeName
             }
-        }).filter((route) => route?.["dst-address"] === "0.0.0.0/0" && route?.['routing-table'] === "main");
+        }).filter((route) => route?.["dst-address"] === "0.0.0.0/0" && route?.gateway);
 
         logger.debug(`routes: found ${result.length} route(s) - saving to db`);
         await mongoSingle.set("routes", result, 60);

@@ -110,9 +110,9 @@ export default function RouteList({ panelId }) {
             return "ACTIVE";
         }
         if (item.pingOk) {
-            return "CONNECTED";
+            return "ONLINE";
         }
-        return "NO CONNECTION";
+        return "OFFLINE";
     };
 
     return (

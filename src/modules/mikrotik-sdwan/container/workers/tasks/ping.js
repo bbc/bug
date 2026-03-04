@@ -31,7 +31,7 @@ module.exports = async ({ routerOsApi, mongoSingle, pingCollection }) => {
         }
 
         // filter routes to only enabled
-        const filteredRoutes = dbRoutes.filter(route => !route.disabled);
+        const filteredRoutes = dbRoutes.filter(route => !route.disabled && route?.['routing-table'] === "main");
 
         const pingTasks = filteredRoutes.map(async (route) => {
             try {

@@ -22,7 +22,6 @@ module.exports = function getSrcAddress(route, dbAddresses, dbRules) {
         }
 
         address = addressObj[0].address;
-        logger.debug(`srcaddress-get: found address ${address} for dynamic route ${route._bridgeName}`);
 
     } else {
         // static route: find a rule that matches an address on the bridge

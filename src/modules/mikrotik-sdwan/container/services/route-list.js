@@ -23,7 +23,7 @@ module.exports = async () => {
         const wanAddressResults = await wanAddressCollection.find().toArray();
 
         const results = await Promise.all(
-            dbRoutes.map(async (route) => {
+            dbRoutes.filter((r) => r?.['routing-table'] === "main").map(async (route) => {
 
                 const bridge = route._bridgeName && dbBridges.find(
                     (b) => b.name === route._bridgeName

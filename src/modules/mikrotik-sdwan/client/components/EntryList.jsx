@@ -2,6 +2,7 @@ import BugItemMenu from "@components/BugItemMenu";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
+import BugStatusLabel from "@core/BugStatusLabel";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import CheckIcon from "@mui/icons-material/Check";
@@ -45,7 +46,6 @@ export default function EntryList({ panelId }) {
 
     useEffect(() => {
         if (location.state?.forceRefresh) {
-            console.log("Force refreshing entry list due to navigation state");
             doForceRefresh();
 
             // Clean up the state so refreshing the browser
@@ -175,6 +175,16 @@ export default function EntryList({ panelId }) {
         }
     };
 
+    const getStatusText = (item) => {
+        if (item.pingOk === null) {
+            return "PENDING";
+        }
+        if (item.pingOk) {
+            return "ONLINE";
+        }
+        return "OFFLINE";
+    };
+
     const menuItems = [
         {
             title: "Edit Name",
@@ -241,7 +251,6 @@ export default function EntryList({ panelId }) {
                     </Typography>
 
                     {group.items.map((item, index) => {
-                        const isOffline = item.dhcpStatus === "waiting" && !item.static;
                         return (
                             <Paper
                                 key={index}
@@ -301,26 +310,27 @@ export default function EntryList({ panelId }) {
                                     }}
                                 >
                                     <Button
-                                        color="warning"
-                                        variant={!item?.list ? "contained" : "outlined"}
+                                        color={item?.list ? "primary" : "warning"}
+                                        variant={item?.isLocked ? "outlined" : "contained"}
                                         onClick={() => {
                                             if (!item?.isLocked && item?.list) {
                                                 handleDefaultEntryClick(item);
                                             }
                                         }}
                                         sx={{
-                                            opacity: item.isLocked ? 0.5 : 1,
                                             cursor: item.isLocked ? "default" : "pointer",
                                             WebkitTapHighlightColor: item.isLocked ? "transparent" : "inherit",
                                         }}
                                     >
                                         {activeRoute ? (
                                             <Stack>
-                                                <Box>DEFAULT</Box>
-                                                <Box sx={{ opacity: 0.5 }}>{activeRoute.comment}</Box>
+                                                <Box sx={{ color: "text.primary" }}>DEFAULT</Box>
+                                                <Box sx={{ color: "text.primary", opacity: 0.5 }}>
+                                                    {activeRoute.comment}
+                                                </Box>
                                             </Stack>
                                         ) : (
-                                            "DEFAULT"
+                                            <Box sx={{ color: "text.primary" }}>DEFAULT</Box>
                                         )}
                                     </Button>
 
@@ -328,9 +338,9 @@ export default function EntryList({ panelId }) {
                                         const isActive = wan.name === item?.list;
                                         return (
                                             <Button
-                                                color={item.isLocked || isOffline ? "secondary" : "primary"}
+                                                color={isActive ? "warning" : wan.pingOk ? "primary" : "secondary"}
                                                 key={wan.id}
-                                                variant={isActive ? "contained" : "outlined"}
+                                                variant={item?.isLocked ? "outlined" : "contained"}
                                                 onClick={() => {
                                                     if (!item.isLocked && !isActive) {
                                                         handleEntryClick(item, wan);
@@ -341,7 +351,20 @@ export default function EntryList({ panelId }) {
                                                     WebkitTapHighlightColor: item.isLocked ? "transparent" : "inherit",
                                                 }}
                                             >
-                                                {wan.comment ? wan.comment : wan.name}
+                                                <Stack>
+                                                    <Box sx={{ fontWeight: 500, color: "text.primary" }}>
+                                                        {wan.comment ? wan.comment : wan.name}
+                                                    </Box>
+                                                    <BugStatusLabel
+                                                        sx={{
+                                                            whiteSpace: "nowrap",
+                                                            color: "text.primary",
+                                                            opacity: 0.5,
+                                                        }}
+                                                    >
+                                                        {getStatusText(wan)}
+                                                    </BugStatusLabel>
+                                                </Stack>
                                             </Button>
                                         );
                                     })}

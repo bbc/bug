@@ -32,7 +32,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
         }
 
         // filter routes to only enabled
-        const filteredRoutes = dbRoutes.filter(route => !route.disabled);
+        const filteredRoutes = dbRoutes.filter(route => !route.disabled && route?.['routing-table'] === "main");
 
         const fetchTasks = filteredRoutes.map(async (route) => {
             try {
