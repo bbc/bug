@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const entryList = require("@services/entry-list");
 const entrySetRoute = require("@services/entry-setroute");
-const entryRemoveRoute = require("@services/entry-removeroute");
+const entryDelete = require("@services/entry-delete");
 const entryLock = require("@services/entry-lock");
+const entryAdd = require("@services/entry-add");
 const entryUnlock = require("@services/entry-unlock");
 const entrySetLabel = require("@services/entry-setlabel");
 const entrySetGroup = require("@services/entry-setgroup");
@@ -17,6 +18,13 @@ router.get("/", asyncHandler(async (req, res) => {
     });
 }));
 
+router.post("/add", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await entryAdd(req.body)
+    });
+}));
+
 router.put("/route", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
@@ -24,10 +32,10 @@ router.put("/route", asyncHandler(async (req, res) => {
     });
 }));
 
-router.delete("/route", asyncHandler(async (req, res) => {
+router.delete("/", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await entryRemoveRoute(req.body?.address),
+        data: await entryDelete(req.body?.address),
     });
 }));
 

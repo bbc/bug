@@ -2,6 +2,7 @@
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 const logger = require("@core/logger")(module);
+const commentParser = require("@utils/comment-parser");
 
 module.exports = async ({ routerOsApi, mongoSingle }) => {
 
@@ -23,8 +24,12 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
                 timeFields: ["creation-time"]
             });
 
+            // extract label information from the comment field
+            const parsedLabel = commentParser.parse(item.comment);
+
             // return only the required fields with clean keys
             return {
+                ...parsedLabel,
                 list: parsed.list,
                 address: parsed.address,
                 dynamic: parsed.dynamic,

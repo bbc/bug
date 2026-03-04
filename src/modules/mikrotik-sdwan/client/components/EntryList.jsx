@@ -2,7 +2,6 @@ import BugItemMenu from "@components/BugItemMenu";
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugCustomDialog } from "@core/BugCustomDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
-import BugStatusLabel from "@core/BugStatusLabel";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { useForceRefresh } from "@hooks/ForceRefresh";
 import CheckIcon from "@mui/icons-material/Check";
@@ -18,19 +17,6 @@ import { useAlert } from "@utils/Snackbar";
 import { useEffect } from "react";
 import AddEntryButton from "./AddEntryButton";
 import SetGroupDialog from "./SetGroupDialog";
-
-const EntryStatus = ({ entry }) => {
-    if (entry.static) {
-        return <BugStatusLabel>STATIC</BugStatusLabel>;
-    }
-    if (entry.dhcpStatus === "waiting") {
-        return <BugStatusLabel sx={{ color: "error.main" }}>OFFLINE</BugStatusLabel>;
-    }
-    if (entry.dhcpStatus === "bound") {
-        return <BugStatusLabel sx={{ color: "success.main" }}>ONLINE</BugStatusLabel>;
-    }
-    return <BugStatusLabel>UNKNOWN</BugStatusLabel>;
-};
 
 export default function EntryList({ panelId }) {
     const sendAlert = useAlert();
@@ -88,16 +74,17 @@ export default function EntryList({ panelId }) {
     };
 
     const handleDefaultEntryClick = async (item) => {
-        const response = await AxiosDelete(`/container/${panelId}/entry/route`, {
+        const response = await AxiosPut(`/container/${panelId}/entry/route`, {
             address: item.address,
+            list: "none",
         });
         if (response) {
-            sendAlert(`Removed route for ${item.label}`, {
+            sendAlert(`Set default route for ${item.label}`, {
                 variant: "success",
             });
             doForceRefresh();
         } else {
-            sendAlert(`Failed to remove route for ${item.label}`, {
+            sendAlert(`Failed to set default route for ${item.label}`, {
                 variant: "error",
             });
         }
@@ -109,7 +96,7 @@ export default function EntryList({ panelId }) {
             defaultValue: item["label"],
             placeholder: "Enter custom label",
             confirmButtonText: "Rename",
-            allowBlank: false,
+            allowBlank: true,
         });
         if (result !== false) {
             if (
@@ -157,10 +144,7 @@ export default function EntryList({ panelId }) {
         if (
             !(await confirmDialog({
                 title: "Remove Entry",
-                message: [
-                    `This will remove this entry from BUG, but will not delete the DHCP lease on the router.`,
-                    `Are you sure?`,
-                ],
+                message: [`This will remove this SDWAN entry from BUG.`, `Are you sure?`],
                 confirmButtonText: "Delete",
             }))
         ) {
@@ -168,7 +152,7 @@ export default function EntryList({ panelId }) {
             return false;
         }
 
-        if (await AxiosDelete(`/container/${panelId}/dhcp/${item.address}`)) {
+        if (await AxiosDelete(`/container/${panelId}/entry`, { address: item.address })) {
             sendAlert(`Removed SDWAN entry`, { variant: "success" });
         } else {
             sendAlert(`Failed to remove SDWAN entry`, { variant: "error" });
@@ -241,7 +225,7 @@ export default function EntryList({ panelId }) {
     }
 
     return (
-        <Stack spacing={1}>
+        <Stack spacing={0.5}>
             {entries?.data?.map((group) => (
                 <Box key={group.group} sx={{ mb: 0 }}>
                     <Typography
@@ -277,16 +261,17 @@ export default function EntryList({ panelId }) {
                                 <Box sx={{ flexShrink: 0, minWidth: "160px", pl: 1 }}>
                                     <Stack
                                         direction="row"
-                                        spacing={1}
+                                        spacing={3}
                                         alignItems="center"
                                         sx={{ justifyContent: "space-between" }}
                                     >
                                         <Stack sx={{ whiteSpace: "nowrap" }}>
-                                            <Typography sx={{ fontWeight: 400 }}>
-                                                {item.label || item.address}
+                                            <Typography sx={{ fontWeight: 600 }}>{item.label}</Typography>
+                                            <Typography sx={{ fontWeight: 400, color: "text.secondary" }}>
+                                                {item.address}
                                             </Typography>
-                                            <EntryStatus entry={item} />
                                         </Stack>
+
                                         {item.isLocked && (
                                             <LockIcon
                                                 sx={{

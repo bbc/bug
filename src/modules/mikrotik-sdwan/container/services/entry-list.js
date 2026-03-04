@@ -3,6 +3,7 @@
 const mongoSingle = require('@core/mongo-single');
 const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
+const commentParser = require("@utils/comment-parser");
 
 module.exports = async () => {
     const ungroupedLabel = "UNGROUPED";
@@ -15,51 +16,43 @@ module.exports = async () => {
             configGet()
         ]);
 
-        // if config is missing, we cannot determine lock status or prefixes
         if (!config) {
             throw new Error("failed to retrieve system configuration");
         }
 
-        // create a set for fast lookup of locked addresses
         const lockedAddresses = new Set(config?.lockedEntries || []);
+        const managedEntries = (dbListItems || []).filter(item => item.comment?.includes("[bug_sdwan]"));
 
-        // filter for managed leases immediately
-        const managedLeases = (dbDhcpLeases || []).filter(d => d.isManaged === true);
-
-        // return empty array if no managed leases exist
-        if (dbDhcpLeases?.length === 0) return [];
-
-        // create a map for list items metadata
-        const listItemMap = new Map(dbListItems.filter(i => i.comment?.includes("[bug_sdwan]"))?.map(i => [i.address, i]));
-
-        // group the managed entries using the properties on the lease
-        const groupedEntries = managedLeases.reduce((acc, dhcp) => {
-            // force the group name to uppercase and trim whitespace
-            const groupKey = (dhcp.group || ungroupedLabel).trim().toUpperCase();
-
+        const groupedEntries = managedEntries.reduce((acc, item) => {
+            const parsedLabel = commentParser.parse(item.comment);
+            const groupKey = (parsedLabel.group || ungroupedLabel)
+                .trim()
+                .toUpperCase();
             if (!acc[groupKey]) {
                 acc[groupKey] = { group: groupKey, items: [] };
             }
 
-            const dbItem = listItemMap.get(dhcp.address);
+            const list = item.list === "none" ? null : item.list;
+
+            const dhcpLease = dbDhcpLeases.find((l) => l.address === item.address);
 
             acc[groupKey].items.push({
-                address: dhcp.address,
-                label: dhcp.label,
-                group: dhcp.group,
-                list: dbItem?.list ?? null,
-                comment: dbItem?.comment,
-                listItemId: dbItem?.id,
-                static: dhcp.clientId ? false : true,
-                macAddress: dhcp.macAddress,
-                hostName: dhcp.hostName,
-                lastSeen: dhcp.lastSeen,
-                dhcpStatus: dhcp.status,
-                dhcpId: dhcp.id,
-                isLocked: lockedAddresses.has(dhcp.address)
+                ...parsedLabel,
+                address: item.address,
+                list,
+                comment: item.comment,
+                listItemId: item.id,
+                static: true,
+                hostName: null,
+                lastSeen: null,
+                macAddress: dhcpLease?.macAddress,
+                server: dhcpLease?.server,
+                dhcpDynamic: dhcpLease?.dynamic ?? false,
+                isLocked: lockedAddresses.has(item.address),
             });
 
             return acc;
+
         }, {});
 
         // convert to array and sort items within each group

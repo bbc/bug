@@ -5,7 +5,7 @@ const logger = require("@core/logger")(module);
 const RouterOSApi = require("@core/routeros-api");
 const configGet = require("@core/config-get");
 
-module.exports = async (address, list) => {
+module.exports = async (address, list = "none") => {
 
     try {
         const config = await configGet();

@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
-const leaseLabel = require("@utils/lease-label");
+const commentParser = require("@utils/comment-parser");
 const logger = require("@core/logger")(module);
 const RouterOSApi = require("@core/routeros-api");
 const configGet = require("@core/config-get");
@@ -25,30 +25,30 @@ module.exports = async (address, label) => {
             throw new Error("no address provided to set label");
         }
 
-        const dbLeases = await mongoSingle.get('dhcpLeases') || [];
-        const existingIndex = dbLeases.findIndex((li) => li.address === address);
+        const dbListItems = await mongoSingle.get('listItems') || [];
+        const existingIndex = dbListItems.findIndex((li) => li.address === address);
 
         if (existingIndex === -1) {
-            throw new Error(`address ${address} not found`);
+            throw new Error(`entry ${address} not found`);
         }
 
-        const lease = dbLeases[existingIndex];
+        const entry = dbListItems[existingIndex];
 
         // update existing
         logger.info(`entry-setlabel: renaming ${address} to '${label}'`);
-        const newEntry = { ...lease, label: label }
-        const newComment = leaseLabel.stringify(newEntry);
+        const newEntry = { ...entry, label: label }
+        const newComment = commentParser.stringify(newEntry);
 
-        await routerOsApi.run(`/ip/dhcp-server/lease/set`, [
-            `=numbers=${lease.id}`,
+        await routerOsApi.run(`/ip/firewall/address-list/set`, [
+            `=numbers=${entry.id}`,
             `=comment=${newComment}`
         ]);
 
         // update db item
-        dbLeases[existingIndex].comment = newComment;
-        dbLeases[existingIndex].label = label;
+        dbListItems[existingIndex].comment = newComment;
+        dbListItems[existingIndex].label = label;
 
-        await mongoSingle.set('dhcpLeases', dbLeases);
+        await mongoSingle.set('listItems', dbListItems);
 
         return true;
 

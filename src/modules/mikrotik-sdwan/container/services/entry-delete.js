@@ -22,38 +22,30 @@ module.exports = async (address) => {
 
         // ensure address is provided to prevent logic errors
         if (!address || address === "undefined") {
-            throw new Error("no address provided for lease removal");
+            throw new Error("no address provided for entry removal");
         }
 
-        // get the list of leases first
-        const dbLeases = await mongoSingle.get('dhcpLeases') || [];
-        const leaseIndex = dbLeases.findIndex((li) => li.address === address);
+        // get the list of items first
+        const dbListItems = await mongoSingle.get('listItems') || [];
+        const entryIndex = dbListItems.findIndex((li) => li.address === address);
 
-        if (leaseIndex === -1) {
-            throw new Error(`lease with address ${address} not found in database`);
+        if (entryIndex === -1) {
+            throw new Error(`entry with address ${address} not found in database`);
         }
-
-        const targetLease = dbLeases[leaseIndex];
 
         // update the mikrotik router to clear the comment
-        await routerOsApi.run(`/ip/dhcp-server/lease/set`, [
-            `=.id=${targetLease.id}`,
-            `=comment=`
+        await routerOsApi.run(`/ip/firewall/address-list/remove`, [
+            `=numbers=${dbListItems[entryIndex].id}`,
         ]);
 
-        // update local cache for consistency and flag as unmanaged
-        dbLeases[leaseIndex].comment = "";
-        dbLeases[leaseIndex].group = "";
-        dbLeases[leaseIndex].label = "";
-        dbLeases[leaseIndex].isManaged = false;
-
         // save the updated list back to the database
-        await mongoSingle.set('dhcpLeases', dbLeases);
+        console.log(dbListItems.filter((i) => i.address !== dbListItems[entryIndex].address));
+        await mongoSingle.set('listItems', dbListItems.filter((i) => i.address !== dbListItems[entryIndex].address));
 
         return true;
 
     } catch (err) {
-        err.message = `dhcplease-delete: ${err.stack || err.message}`;
+        err.message = `entry-delete: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

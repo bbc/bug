@@ -1,7 +1,6 @@
 "use strict";
 
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
-const leaseLabel = require("@utils/lease-label");
 const logger = require("@core/logger")(module);
 
 module.exports = async ({ routerOsApi, mongoSingle }) => {
@@ -26,12 +25,8 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
                 arrayFields: ["address-lists"]
             });
 
-            // extract label information from the comment field
-            const parsedLabel = leaseLabel.parse(lease.comment);
-
             // return clean object with camelcase keys
             return {
-                ...parsedLabel,
                 address: lease.address,
                 macAddress: lease["mac-address"],
                 hostName: lease["host-name"],

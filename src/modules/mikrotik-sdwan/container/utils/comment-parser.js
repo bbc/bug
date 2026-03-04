@@ -2,7 +2,7 @@ const TAG = "[bug_sdwan]";
 
 const parse = (comment = "") => {
 
-    // parses a DHCP lease comment like this:
+    // parses a comment like this:
     // "Device 1 / Interface 1 [bug_sdwan]"
     // or 
     // "Single Device [bug_sdwan]"
