@@ -41,7 +41,7 @@ module.exports = async () => {
 
                 const geoIp = matchingWanAddress
                     ? await freeIpApiLookup(
-                        matchingWanAddress.address.split("/")[0]
+                        matchingWanAddress?.address?.split("/")?.[0]
                     )
                     : null;
 

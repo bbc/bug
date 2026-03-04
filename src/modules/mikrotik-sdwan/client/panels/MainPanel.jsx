@@ -7,7 +7,7 @@ export default function MainPanel({ panelId }) {
     return (
         <Box>
             <BugPanelTabbedForm
-                labels={["SDWAN Entries", "Default Routes"]}
+                labels={["SDWAN Routing", "Default Routes"]}
                 content={[<EntryList panelId={panelId} />, <RouteList panelId={panelId} />]}
                 locations={[`/panel/${panelId}/entries`, `/panel/${panelId}/routes`]}
                 defaultTab={0}
