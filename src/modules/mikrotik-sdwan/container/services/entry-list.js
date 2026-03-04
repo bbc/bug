@@ -30,7 +30,7 @@ module.exports = async () => {
         if (dbDhcpLeases?.length === 0) return [];
 
         // create a map for list items metadata
-        const listItemMap = new Map(dbListItems?.map(i => [i.address, i]));
+        const listItemMap = new Map(dbListItems.filter(i => i.comment?.includes("[bug_sdwan]"))?.map(i => [i.address, i]));
 
         // group the managed entries using the properties on the lease
         const groupedEntries = managedLeases.reduce((acc, dhcp) => {
