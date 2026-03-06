@@ -1,5 +1,12 @@
 ## Changelog
 
+### version 1.0.16
+
+- 2026-03-04: add display of route status to entry page ([c30623e](https://github.com/bbc/bug/commit/c30623e1ab03d29eca96b1198f382b27476b7e14))
+- 2026-03-04: add support for subnet routing ([38b5ce8](https://github.com/bbc/bug/commit/38b5ce85d5a5f0fab36b2e898e7427e91e9d5ba4))
+- 2026-03-04: fix handle extra address list entries ([b5c82e2](https://github.com/bbc/bug/commit/b5c82e252db5dde79f4c9884dfa47d7b07df1736))
+- 2026-03-04: fix client error when no wan address ([1d27614](https://github.com/bbc/bug/commit/1d27614ffa25fef61c03e84e28bb8c77516511cf))
+
 ### version 1.0.15
 
 - 2026-03-03: match address and mac ([c97a6ef](https://github.com/bbc/bug/commit/c97a6ef4407b0c91e14bc0084fe4c7bbff4026c7))
