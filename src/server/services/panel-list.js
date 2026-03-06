@@ -36,7 +36,7 @@ module.exports = async () => {
         for (const eachPanelConfig of panelConfig) {
             const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
             if (thisModuleConfig) {
-                const thisStatus = panelStatus ? panelStatus.find((o) => o.panelId === eachPanelConfig["id"]) : null;
+                const thisStatus = panelStatus ? panelStatus.find((o) => o.panelId === eachPanelConfig["id"]) : [];
                 const thisContainerInfo =
                     containerInfoList !== null ? containerInfoList.find((o) => o.name === eachPanelConfig["id"]) : null;
                 const thisBuild =

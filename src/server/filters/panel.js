@@ -12,7 +12,9 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     // remove timestamps from statusItems
     let statusItems = thisStatus?.statusItems ? thisStatus.statusItems : [];
     for (let eachStatusItem of statusItems) {
-        delete eachStatusItem.timestamp;
+        if (eachStatusItem?.timestamp) {
+            delete eachStatusItem.timestamp;
+        }
     }
 
     // check container states
