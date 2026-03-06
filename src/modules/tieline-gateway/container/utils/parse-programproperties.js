@@ -18,7 +18,7 @@ module.exports = async (programPropertiesResult) => {
     };
 
     const getChannelCount = (mixerId, encId) => {
-        const stream = streamsConfig.find((stream) => stream?.id.toString() === mixerId.toString());
+        const stream = streamsConfig && streamsConfig.find((stream) => stream?.id.toString() === mixerId.toString());
         if (stream) {
             const encObj = stream.encStream.find((enc) => parseInt(enc?.id) === parseInt(encId));
             if (encObj) {

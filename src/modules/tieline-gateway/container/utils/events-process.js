@@ -1,29 +1,31 @@
 "use strict";
 
-const processCxnStatus = require("@services/process-cxnstatus");
-const processCxnStatistics = require("@services/process-cxnstatistics");
-const processGroupStatistics = require("@services/process-groupstatistics");
-const fetchConnections = require("@services/fetch-connections");
-const fetchLoadedProgram = require("@services/fetch-loadedprogram");
+const processCxnStatus = require("@utils/process-cxnstatus");
+const processCxnStatistics = require("@utils/process-cxnstatistics");
+const processGroupStatistics = require("@utils/process-groupstatistics");
+const fetchConnections = require("@utils/fetch-connections");
+const fetchLoadedProgram = require("@utils/fetch-loadedprogram");
+const logger = require("@core/logger")(module);
 
-module.exports = async (TielineApi, data) => {
-    for (const eachEvent of data) {
-        switch (eachEvent["_attributes"]["event"]) {
+module.exports = async (props) => {
+    for (const event of props?.payload) {
+        const propsWithData = { ...props, event }
+        switch (event["_attributes"]["event"]) {
             case "statistics":
-                processCxnStatistics(eachEvent);
-                processGroupStatistics(eachEvent);
+                processCxnStatistics(propsWithData);
+                processGroupStatistics(propsWithData);
                 return;
             case "cxn-status":
-                processCxnStatus(TielineApi, eachEvent);
+                processCxnStatus(propsWithData);
                 return;
             case "cxn-create":
-                fetchConnections(TielineApi);
+                fetchConnections(propsWithData);
                 return;
             case "gpi-status-change":
                 // we don't care
                 return;
             case "cxn-live-prop":
-                fetchConnections(TielineApi);
+                fetchConnections(propsWithData);
                 return;
             case "alarm-led-status-changed":
                 // we don't care
@@ -38,17 +40,17 @@ module.exports = async (TielineApi, data) => {
                 // not a chance
                 return;
             case "prog-prop":
-                fetchLoadedProgram(TielineApi);
+                fetchLoadedProgram(propsWithData);
                 return;
             case "prog-loaded":
                 // just loaded (or unloaded) a program
-                fetchLoadedProgram(TielineApi);
+                fetchLoadedProgram(propsWithData);
                 return;
             case "prog-group-add-cxn":
-                fetchConnections(TielineApi);
+                fetchConnections(propsWithData);
                 return;
             case "prog-group-remove-cxn":
-                fetchConnections(TielineApi);
+                fetchConnections(propsWithData);
                 return;
             case "digest-change":
                 // do nothing
@@ -56,8 +58,11 @@ module.exports = async (TielineApi, data) => {
             case "ref-level-changed":
                 // do nothing
                 return;
+            case "connected-led-status-changed":
+                // do nothing
+                return;
             default:
-                console.warn(`unhandled event: ${JSON.stringify(eachEvent)}`);
+                logger.warning(`unhandled event: ${JSON.stringify(event)}`);
                 return;
         }
     }

@@ -2,13 +2,13 @@
 
 const fetch = require("node-fetch");
 
-module.exports = async (url, options = {}, timeout = 2000) => {
+module.exports = async (url, options = {}, timeout = 10000) => {
     let didTimeOut = false;
 
     return new Promise((resolve, reject) => {
         const timeoutTimer = setTimeout(function () {
             didTimeOut = true;
-            reject(new Error("Request timed out"));
+            reject(new Error(`Request timed out: ${url}`));
         }, timeout);
 
         fetch(url, options)

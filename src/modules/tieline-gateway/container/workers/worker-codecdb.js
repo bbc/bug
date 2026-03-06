@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const axios = require("axios");
 const modulePort = process.env.PORT;
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -34,7 +35,7 @@ const main = async () => {
                     codecs = response.data.data;
                 }
             } catch (error) {
-                console.log(`worker-codecdb: ${error.stack || error || error.message}`);
+                logger.error(error.stack || error || error.message);
                 // it's not available - wait a few seconds
                 await delay(5000);
             }

@@ -4,6 +4,7 @@ const httpDigestClient = require("http-digest-client");
 const getBoundaryText = require("@utils/boundary-text");
 const convert = require("xml-js");
 const ensureArray = require("@utils/ensure-array");
+const logger = require("@core/logger")(module);
 
 module.exports = class TielineApiNotifications {
     constructor({ host = "127.0.0.1", port = 80, username = "admin", password = "password", timeout = 2000 }) {
@@ -14,7 +15,7 @@ module.exports = class TielineApiNotifications {
         this.port = port;
     }
 
-    get({ path = "", update = () => {}, keepAlive = () => {} }) {
+    get({ path = "", update = () => { }, keepAlive = () => { } }) {
         const client = httpDigestClient(this.username, this.password);
         let runningData = "";
 
@@ -68,7 +69,7 @@ module.exports = class TielineApiNotifications {
                     }
                 });
                 res.on("error", function (err) {
-                    console.error(err);
+                    logger.error(err);
                     reject();
                 });
             }
