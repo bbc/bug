@@ -6,7 +6,7 @@
         "dhcp-server"
     ],
     "notes": "",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "icon": "mdi-clipboard-list",
     "author": "Geoff House",
     "needsContainer": true,
