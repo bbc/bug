@@ -43,3 +43,12 @@ This capability is used primary for video routers. It can be used to provide rou
 | outputLabel | text label of the router output              |
 | inputIndex  | 0-based index of the currently routed source |
 | inputLabel  | text label of the currently routed source    |
+
+## codec-db
+
+This provides a way to share codec information between modules. A module that provides this can either host it locally, or serve this from an external source.
+It is consumed by codec modules, usually in the form of a dropdown list, which then auto-populates IP address and port information.
+
+`/container/{panelid}/capabilities/codec-db/`
+
+(Data structure to be confirmed)
