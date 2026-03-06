@@ -55,7 +55,7 @@ jobs:
                   npm run build-storybook -- --output-dir storybook-static
 
             - name: Upload Storybook Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: storybook
                   path: src/client/storybook-static
