@@ -3,6 +3,8 @@
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
 const statusCheckLinkQuality = require("@services/status-checklinkquality");
 const statusCheckAlarms = require("@services/status-checkalarms");
+const statusGetDefault = require("@services/status-getdefault");
+const statusGetConnection = require("@services/status-getconnection");
 const { getStatus } = require("@core/heartbeat");
 
 module.exports = async () => {
@@ -16,6 +18,8 @@ module.exports = async () => {
         }),
         await statusCheckLinkQuality(),
         await statusCheckAlarms(),
-        await getStatus({ timeout: 20 })
+        await getStatus({ timeout: 20 }),
+        await statusGetDefault(),
+        await statusGetConnection()
     );
 };
