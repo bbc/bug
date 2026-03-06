@@ -33,9 +33,9 @@ It also provides per-connection and overall statistics, as well as device alarms
 
 This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}bug/pages/development/capabilities.html).
 
-| Type         | List |
-| ------------ | ---- |
-| **Exposes**  | None |
-| **Consumes** | None |
+| Type         | List     |
+| ------------ | -------- |
+| **Exposes**  | None     |
+| **Consumes** | codec-db |
 
 ---

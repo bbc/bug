@@ -7,3 +7,10 @@
 - 2026-03-06: add readme ([01b282d](https://github.com/bbc/bug/commit/01b282dcca86509cfc48857f6fd970b7f8c435f5))
 - 2026-03-06: tidy up api routes ([809e61a](https://github.com/bbc/bug/commit/809e61a1aafc65d2568e1b3f64789314ebb8da34))
 
+### version 1.0.1
+
+- 2023-07-21: workaround for group/connection connect bug
+
+### version 1.0.0
+
+- 2023-07-12: add tieline gateway module
