@@ -36,13 +36,13 @@ module.exports = async ({ tielineApi, mongoSingle }) => {
         }
 
         if (alarmsForDb.length > 0) {
-            logger.warning(`alarms: found ${alarmsForDb.length} alarm(s) - saving to db`);
+            logger.warning(`found ${alarmsForDb.length} alarm(s) - saving to db`);
         }
 
         await mongoSingle.set("alarms", alarmsForDb, 60);
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`alarms: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

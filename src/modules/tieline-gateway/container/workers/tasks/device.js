@@ -26,7 +26,7 @@ module.exports = async ({ tielineApi, mongoSingle }) => {
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`device: ${error?.message || error}`);
+        logger.error(error.message);
         throw error;
     }
 };

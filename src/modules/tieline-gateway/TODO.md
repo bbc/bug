@@ -1,12 +1,5 @@
 - codex integration
-- config validation
-- add README.md
 - add historical entries to CHANGELOG.md
-- add screenshot
 - add panel status (default/success etc)
-- check module status (dev/beta/stable etc)
-- add JSON error handler to api.js
-- use asyncHandler in routes
 - refactor services with try/catch/throw
-- refactor workers to improve error handling
-- use bulkwrite in workers to improve db performance
+- add 2s stagger start to loadedProgram

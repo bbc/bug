@@ -38,7 +38,7 @@ const main = async () => {
         });
 
         // kick things off
-        logger.info(`worker-tieline: starting ...`);
+        logger.info(`starting ...`);
 
         workerTaskManager({
             tasks: [{ name: "connections", seconds: 10 }, { name: "alarms", seconds: 10 }, { name: "device", seconds: 60 }, { name: "loadedprogram", seconds: 5 }, { name: "programs", seconds: 15 }, { name: "heartbeat", seconds: 5 },],
@@ -46,14 +46,14 @@ const main = async () => {
         });
 
     } catch (err) {
-        logger.error(`worker-tieline: fatal error`);
+        logger.error(`fatal error`);
         logger.error(err.stack || err.message || err);
         process.exit();
     }
 }
 
 main().catch(err => {
-    logger.error(`worker-tieline: startup failure`);
+    logger.error(`startup failure`);
     logger.error(err.stack || err);
     process.exit(1);
 });

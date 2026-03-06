@@ -1,28 +1,35 @@
 "use strict";
 
-const tielineApi = require("@utils/tieline-api");
+const TielineApi = require("@utils/tieline-api");
 const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async (groupId) => {
-    const config = await configGet();
-    if (!config) {
-        throw new Error();
-    }
-
     try {
-        const TielineApi = new tielineApi({
+        if (!groupId) {
+            throw new Error("invalid group id");
+        }
+
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        const tielineApi = new TielineApi({
             host: config.address,
             username: config.username,
             password: config.password,
         });
 
-        console.log(`group-connect: connecting to ${groupId}`);
+        logger.info(`connecting to ${groupId}`);
 
-        await TielineApi.post("/api/connect", {
-            "group-id": groupId,
-        });
+        await tielineApi.post("/api/connect", { "group-id": groupId });
+
+        logger.info(`connection to ${groupId} completed successfully`);
+
         return true;
     } catch (error) {
-        console.log(error);
+        logger.error(error?.message || error);
+        throw error;
     }
 };

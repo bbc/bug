@@ -8,7 +8,7 @@ module.exports = async ({ tielineApi, connectionsCollection }) => {
         await fetchConnections({ tielineApi, connectionsCollection });
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`connections: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

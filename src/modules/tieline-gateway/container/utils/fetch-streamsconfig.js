@@ -11,7 +11,7 @@ module.exports = async ({ tielineApi, mongoSingle }) => {
         const mixes = ensureArray(streamsConfig?.streamscfg?.mix);
 
         if (!mixes.length) {
-            logger.info("streamsConfig: no mixes found - saving empty config");
+            logger.info("no mixes found - saving empty config");
             await mongoSingle.set("streamsConfig", [], 600);
             return;
         }
@@ -31,11 +31,11 @@ module.exports = async ({ tielineApi, mongoSingle }) => {
             };
         });
 
-        logger.info(`streamsConfig: saved ${parsedStreamsConfig.length} mix(es) to DB`);
+        logger.info(`saved ${parsedStreamsConfig.length} mix(es) to DB`);
 
         await mongoSingle.set("streamsConfig", parsedStreamsConfig, 600);
     } catch (error) {
-        logger.error(`streamsConfig: ${error?.message || error}`);
+        logger.error(error?.message || error);
         throw error;
     }
 };

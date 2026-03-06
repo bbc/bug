@@ -82,7 +82,7 @@ module.exports = async ({ tielineApi, connectionsCollection }) => {
     }
 
     if (bulkOps.length) {
-        logger.debug(`fetch-connections: writing ${bulkOps.length} operations to database`);
+        logger.debug(`writing ${bulkOps.length} operations to database`);
         await connectionsCollection.bulkWrite(bulkOps);
     }
 };

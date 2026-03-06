@@ -18,14 +18,12 @@ module.exports = async ({ tielineApi, mongoSingle }) => {
     };
 
     if (!loadedProgram.handle) {
-        logger.debug(`fetch-loadedprogram: no loaded program`);
+        logger.debug(`no loaded program`);
         await mongoSingle.set("loadedProgram", null, 120);
         return;
     }
 
-    logger.debug(
-        `fetch-loadedprogram: currently loaded program is '${loadedProgram.name} (${loadedProgram.handle})' - fetching properties`
-    );
+    logger.debug(`currently loaded program is '${loadedProgram.name} (${loadedProgram.handle})' - fetching properties`);
 
     // fetch program properties
     const programPropertiesResult = await tielineApi.get(

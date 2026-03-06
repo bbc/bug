@@ -1,25 +1,31 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
-    const programList = await mongoSingle.get("programList");
-    if (!programList) {
-        return [];
-    }
+    try {
+        const programList = await mongoSingle.get("programList");
+        if (!programList) {
+            return [];
+        }
 
-    const loadedProgram = await mongoSingle.get("loadedProgram");
-    const mappedProgramList =
-        programList &&
-        programList.map((program) => {
+        const loadedProgram = await mongoSingle.get("loadedProgram");
+
+        return programList.map((program) => {
+            const groups = Array.isArray(program.groups) ? program.groups : [];
             return {
                 index: program.index,
                 handle: program.handle,
                 name: program.name,
                 description: program.description,
-                _groupCount: program.groups.length,
+                _groupCount: groups.length,
                 _loaded: program.handle === loadedProgram?.handle,
             };
         });
-    return mappedProgramList;
+
+    } catch (error) {
+        logger.error(error?.message || error);
+        throw error;
+    }
 };

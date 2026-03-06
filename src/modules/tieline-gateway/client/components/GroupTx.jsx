@@ -58,7 +58,6 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                                 apiUrl={`/container/${panelId}/codecdb`}
                                 capability="tieline"
                                 onChange={(e, codec) => {
-                                    console.log("change", codec.address, codec.port);
                                     onChange(group.id, connection.id, {
                                         destination: codec.address,
                                         audioPort: codec.port,
