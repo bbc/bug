@@ -44,7 +44,7 @@ export default function BugAlert({
         warning: "warning",
         info: "info",
         error: "error",
-        default: "",
+        default: "info",
     };
 
     const renderMessage = () => {
@@ -151,6 +151,8 @@ export default function BugAlert({
                 "& .MuiAlert-message": {
                     paddingRight: "4px",
                 },
+                backgroundColor:
+                    type === "default" ? "transparent" : (theme) => theme.palette[mappedSeverity[type]]?.main,
                 ...sx,
             }}
             severity={mappedSeverity[type]}
