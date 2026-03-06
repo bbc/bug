@@ -41,7 +41,7 @@ const main = async () => {
         logger.info(`starting ...`);
 
         workerTaskManager({
-            tasks: [{ name: "connections", seconds: 10 }, { name: "alarms", seconds: 10 }, { name: "device", seconds: 60 }, { name: "loadedprogram", seconds: 5 }, { name: "programs", seconds: 15 }, { name: "heartbeat", seconds: 5 },],
+            tasks: [{ name: "connections", seconds: 10 }, { name: "alarms", seconds: 10 }, { name: "device", seconds: 60 }, { name: "loadedprogram", seconds: 5, delay: 5 }, { name: "programs", seconds: 15 }, { name: "heartbeat", seconds: 5 },],
             context: { tielineApi, connectionsCollection, mongoSingle }, baseDir: __dirname
         });
 

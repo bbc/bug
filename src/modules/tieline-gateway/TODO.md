@@ -1,5 +1,0 @@
-- codex integration
-- add historical entries to CHANGELOG.md
-- add panel status (default/success etc)
-- refactor services with try/catch/throw
-- add 2s stagger start to loadedProgram
