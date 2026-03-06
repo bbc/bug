@@ -1,4 +1,4 @@
-var express = require("express"),
+const express = require("express"),
     defaultRoute = express.Router();
 
 defaultRoute.use("/", function (req, res) {

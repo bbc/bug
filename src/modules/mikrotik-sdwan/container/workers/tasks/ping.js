@@ -98,7 +98,7 @@ module.exports = async ({ routerOsApi, mongoSingle, pingCollection }) => {
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        console.error(`ping: ${error.message}`);
+        logger.error(`ping: ${error.message}`);
         throw error;
     }
 };

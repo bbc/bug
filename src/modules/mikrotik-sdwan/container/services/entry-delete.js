@@ -39,7 +39,6 @@ module.exports = async (address) => {
         ]);
 
         // save the updated list back to the database
-        console.log(dbListItems.filter((i) => i.address !== dbListItems[entryIndex].address));
         await mongoSingle.set('listItems', dbListItems.filter((i) => i.address !== dbListItems[entryIndex].address));
 
         return true;

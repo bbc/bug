@@ -27,7 +27,7 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        console.error(`bridges: ${error.message}`);
+        logger.error(`bridges: ${error.message}`);
         throw error;
     }
 };
