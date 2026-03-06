@@ -1,0 +1,19 @@
+meta {
+  name: Get System
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://{{HOSTNAME}}/api/get_config?config-param=SYSTEM
+  body: none
+  auth: inherit
+}
+
+params:query {
+  config-param: SYSTEM
+}
+
+settings {
+  encodeUrl: true
+}

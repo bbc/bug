@@ -1,0 +1,20 @@
+meta {
+  name: Get RTP
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://{{HOSTNAME}}/api/get_config?config-param=RTP
+  body: none
+  auth: inherit
+}
+
+params:query {
+  config-param: RTP
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

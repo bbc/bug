@@ -1,0 +1,20 @@
+meta {
+  name: Get Program Properties
+  type: http
+  seq: 9
+}
+
+get {
+  url: http://{{HOSTNAME}}/api/get_program_properties?prog-handle=prg-0006f
+  body: none
+  auth: inherit
+}
+
+params:query {
+  prog-handle: prg-0006f
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

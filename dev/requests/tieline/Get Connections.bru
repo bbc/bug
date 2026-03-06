@@ -1,0 +1,16 @@
+meta {
+  name: Get Connections
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://{{HOSTNAME}}/api/get_cxns
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

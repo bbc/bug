@@ -1,0 +1,20 @@
+meta {
+  name: Get QOS
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://{{HOSTNAME}}/api/get_config?config-param=QOS
+  body: none
+  auth: inherit
+}
+
+params:query {
+  config-param: QOS
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

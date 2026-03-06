@@ -1,0 +1,26 @@
+meta {
+  name: Disconnect
+  type: http
+  seq: 12
+}
+
+post {
+  url: http://{{HOSTNAME}}/api/disconnect
+  body: xml
+  auth: inherit
+}
+
+body:json {
+  {
+    "cxn-id": "main::0-0"
+  }
+}
+
+body:xml {
+  <cxn-id>main::0-0</cxn-id>
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Get Connection Live Properties
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://{{HOSTNAME}}/api/get_cxn_live_properties?cxn-handle=cxn-0006f-00005
+  body: none
+  auth: inherit
+}
+
+params:query {
+  cxn-handle: cxn-0006f-00005
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

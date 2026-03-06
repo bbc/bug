@@ -1,0 +1,20 @@
+meta {
+  name: Get Version
+  type: http
+  seq: 11
+}
+
+get {
+  url: http://{{HOSTNAME}}/api/version
+  body: none
+  auth: inherit
+}
+
+params:query {
+  config-param: SYSTEM
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

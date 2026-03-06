@@ -1,0 +1,26 @@
+meta {
+  name: Connect
+  type: http
+  seq: 10
+}
+
+post {
+  url: http://{{HOSTNAME}}/api/connect
+  body: xml
+  auth: inherit
+}
+
+body:json {
+  {
+    "cxn-id": "main::0-0"
+  }
+}
+
+body:xml {
+  <cxn-id>main::0-0</cxn-id>
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
