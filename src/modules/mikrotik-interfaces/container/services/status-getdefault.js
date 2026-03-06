@@ -13,7 +13,7 @@ module.exports = async () => {
 
         const config = await configGet();
         if (!config) {
-            return null;
+            return [];
         }
 
         const dbInterfaces = await mongoCollection("interfaces");
