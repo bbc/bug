@@ -28,10 +28,9 @@ router.get(
 router.get(
     "/load/:programHandle",
     asyncHandler(async (req, res) => {
-        const result = await programLoad(req.params.programHandle);
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await programLoad(req.params.programHandle),
         });
     })
 );
@@ -39,10 +38,9 @@ router.get(
 router.get(
     "/unload/",
     asyncHandler(async (req, res) => {
-        const result = await programLoad("prg-00001");
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await programLoad("prg-00001"),
         });
     })
 );
@@ -50,10 +48,9 @@ router.get(
 router.get(
     "/unload/:programHandle",
     asyncHandler(async (req, res) => {
-        const result = await programLoad("prg-00001");
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await programLoad("prg-00001"),
         });
     })
 );

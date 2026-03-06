@@ -10,10 +10,9 @@ const connectionGet = require("@services/connection-get");
 router.get(
     "/connect/:connectionId",
     asyncHandler(async (req, res) => {
-        const result = await connectionConnect(req.params.connectionId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await connectionConnect(req.params.connectionId),
         });
     })
 );
@@ -21,10 +20,9 @@ router.get(
 router.get(
     "/disconnect/:connectionId",
     asyncHandler(async (req, res) => {
-        const result = await connectionDisconnect(req.params.connectionId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await connectionDisconnect(req.params.connectionId),
         });
     })
 );
