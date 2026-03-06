@@ -4,15 +4,22 @@
     "description": "Control and monitor Tieline Gateway codecs",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "icon": "mdi-transit-connection-variant",
     "author": "Geoff House",
     "memory": 200,
     "license": "Apache-2.0",
     "status": "beta",
     "needsContainer": true,
-    "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
