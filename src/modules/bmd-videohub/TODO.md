@@ -1,1 +1,3 @@
 - Clicking an already selected destination should lock it
+- remove filename from all log actions......
+- add heartbeat status check and worker task

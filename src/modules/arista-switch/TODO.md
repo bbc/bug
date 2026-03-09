@@ -1,1 +1,4 @@
 - use bulkwrite in workers to improve db performance
+- new worker design using tasks
+- remove filename from all log actions......
+- add heartbeat status check and worker task

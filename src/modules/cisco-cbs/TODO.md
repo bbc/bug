@@ -1,2 +1,5 @@
 - show errdisabled state (like aristas)
 - interface on now-deleted vlan - does it show 'loading' in control?
+- new worker design using tasks
+- remove filename from all log actions......
+- add heartbeat status check and worker task

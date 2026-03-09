@@ -13,3 +13,6 @@
 - update routes with asynchandler
 - update services with try/catch
 - update workers with process.exit & global main().catch
+- new worker design using tasks
+- remove filename from all log actions......
+- add heartbeat status check and worker task
