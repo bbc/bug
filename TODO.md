@@ -22,3 +22,6 @@
 - update mikrotik modules using new core class
 - mikrotik routes module doesn't understand sub routing tables
 - default route hadnelr should return 404
+- remove filename from all log actions......
+- make a heartbeat helper which updates a mongodb single, and a centralised status check with a configurable timeout
+- codecs should show green when connected
