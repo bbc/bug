@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.4
+
+- 2026-03-06: refactor all services and utils ([966dbe9](https://github.com/bbc/bug/commit/966dbe9a6253f130ab1df2cfc698f70ca3715103))
+
 ### version 1.0.3
 
 - 2026-03-06: add heartbeat status check ([e80dbf7](https://github.com/bbc/bug/commit/e80dbf7d3e88325b9dccc13e67131f97cedfa02b))
