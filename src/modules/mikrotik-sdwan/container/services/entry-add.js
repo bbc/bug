@@ -31,7 +31,7 @@ module.exports = async (entry) => {
         const newComment = commentParser.stringify({ ...entry, isManaged: true });
 
         // check if entry already exists in db
-        const existingEntry = dbListItems.find((i) => i.address === entry.address)
+        const existingEntry = dbListItems.find((i) => i.address === entry.address && i.isManaged)
         if (existingEntry) {
             throw new Error(`entry ${entry.address} already exists`);
         }
