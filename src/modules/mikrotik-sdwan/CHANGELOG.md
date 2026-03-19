@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.18
+
+- 2026-03-19: fix managed routes ([72ba334](https://github.com/bbc/bug/commit/72ba334353b0d6b655a37bc1bcdcfa77a558a616))
+
 ### version 1.0.17
 
 - 2026-03-18: fix duplicate network error ([84e0684](https://github.com/bbc/bug/commit/84e06849799c26146d4ce8ab56708c388f9f970e))
