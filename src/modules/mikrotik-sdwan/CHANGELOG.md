@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.17
+
+- 2026-03-18: fix duplicate network error ([84e0684](https://github.com/bbc/bug/commit/84e06849799c26146d4ce8ab56708c388f9f970e))
+
 ### version 1.0.16
 
 - 2026-03-04: add display of route status to entry page ([c30623e](https://github.com/bbc/bug/commit/c30623e1ab03d29eca96b1198f382b27476b7e14))
