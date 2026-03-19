@@ -25,7 +25,7 @@ module.exports = async (address, list = "none") => {
         }
 
         const dbListItems = await mongoSingle.get('listItems') || [];
-        const existingIndex = dbListItems.findIndex((li) => li.address === address);
+        const existingIndex = dbListItems.findIndex((li) => li.address === address && li.isManaged);
 
         if (existingIndex !== -1) {
             // update existing

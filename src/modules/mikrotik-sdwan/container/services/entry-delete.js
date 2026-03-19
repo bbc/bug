@@ -27,7 +27,7 @@ module.exports = async (address) => {
 
         // get the list of items first
         const dbListItems = await mongoSingle.get('listItems') || [];
-        const entryIndex = dbListItems.findIndex((li) => li.address === address);
+        const entryIndex = dbListItems.findIndex((li) => li.address === address && li.isManaged);
 
         if (entryIndex === -1) {
             throw new Error(`entry with address ${address} not found in database`);

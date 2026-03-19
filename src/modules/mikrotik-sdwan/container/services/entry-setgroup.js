@@ -26,7 +26,7 @@ module.exports = async (address, group) => {
         }
 
         const dbListItems = await mongoSingle.get('listItems') || [];
-        const existingIndex = dbListItems.findIndex((li) => li.address === address);
+        const existingIndex = dbListItems.findIndex((li) => li.address === address && li.isManaged);
 
         if (existingIndex === -1) {
             throw new Error(`address ${address} not found`);
