@@ -57,8 +57,9 @@ let lastCommitHash = null;
 
 if (fs.existsSync(CHANGELOG_FILE)) {
     existingContent = fs.readFileSync(CHANGELOG_FILE, "utf-8");
+
     const match = existingContent.match(
-        /\[([0-9a-f]{7})\]\(https?:\/\/github\.com\/[^)]+\/commit\/[0-9a-f]{7,40}\)/
+        /### version [\d.]+[\s\S]*?\/commit\/([0-9a-f]{40})/
     );
     if (match) lastCommitHash = match[1];
 }
