@@ -9,9 +9,9 @@ const delay = require("delay");
 module.exports = async (backup) => {
     try {
         let status;
-        const absolutePath = path.join(__dirname, "..", backup?.tempFilePath);
-        const extractPath = path.join(__dirname, "..", "data");
-        const configFolder = path.join(__dirname, "..", "config");
+        const absolutePath = path.join(__dirname, "..", "..", "..", backup?.tempFilePath);
+        const extractPath = path.join(__dirname, "..", "..", "..", "data");
+        const configFolder = path.join(__dirname, "..", "..", "..", "config");
         const configFolders = ["panels", "global"];
 
         logger.info(`system-restore: backup file "${backup?.name}" with a size of ${backup?.size} bytes uploaded`);

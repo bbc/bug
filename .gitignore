@@ -5,6 +5,7 @@ node_modules
 # backup data
 /src/server/data/*
 !/src/server/data/.gitkeep
+/src/data/*
 
 # panel configs
 /config/panels/*.json

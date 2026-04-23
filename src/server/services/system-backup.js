@@ -20,7 +20,7 @@ module.exports = async () => {
             title = "";
         }
 
-        const configFolder = path.join(__dirname, "..", "config");
+        const configFolder = path.join(__dirname, "..", "..", "..", "config");
         const filename = `${title}-backup-${format(new Date(), "dd-MM-yyyy-HH-mm-ss")}.tgz`;
 
         logger.info(`system-backup: creating system backup file ${filename}`);
