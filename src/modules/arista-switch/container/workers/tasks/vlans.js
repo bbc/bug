@@ -1,23 +1,22 @@
 "use strict";
 
-const register = require("module-alias/register");
-const mongoSingle = require("@core/mongo-single");
-const aristaApi = require("@utils/arista-api");
+const logger = require("@core/logger")(module);
 
-module.exports = async (config) => {
+module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
+
     try {
         // fetch vlan info from device
         const result = await aristaApi({
-            host: config.address,
+            host: workerData.address,
             protocol: "https",
             port: 443,
-            username: config.username,
-            password: config.password,
+            username: workerData.username,
+            password: workerData.password,
             commands: ["show vlan"],
         });
 
         if (!result?.vlans) {
-            console.info("arista-fetchvlans: no vlans returned from device");
+            logger.info("no vlans returned from device");
             await mongoSingle.set("vlans", [], 60);
             return;
         }
@@ -33,10 +32,10 @@ module.exports = async (config) => {
         // save vlans to db
         await mongoSingle.set("vlans", vlans, 60);
 
-        console.info(`arista-fetchvlans: saved ${vlans.length} vlan(s) to the db`);
+        logger.info(`saved ${vlans.length} vlan(s) to the db`);
 
     } catch (err) {
-        console.error(`arista-fetchvlans failed: ${err.message}`);
+        logger.error(`failed: ${err.message}`);
         throw err;
     }
 };

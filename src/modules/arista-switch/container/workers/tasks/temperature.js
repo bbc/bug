@@ -1,24 +1,22 @@
 "use strict";
 
-const register = require("module-alias/register");
-const aristaApi = require("@utils/arista-api");
-const mongoSingle = require("@core/mongo-single");
-const delay = require("delay");
+const logger = require("@core/logger")(module);
 
-module.exports = async (config) => {
+module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
     try {
         // fetch temperature from device
         const result = await aristaApi({
-            host: config.address,
+            host: workerData.address,
             protocol: "https",
             port: 443,
-            username: config.username,
-            password: config.password,
+            username: workerData.username,
+            password: workerData.password,
             commands: ["show system environment temperature"],
         });
 
         if (!result) {
-            throw new Error("no temperature data returned from device");
+            logger.info("no temperature data returned from device");
+            return;
         }
 
         // get main system sensors
@@ -59,12 +57,12 @@ module.exports = async (config) => {
         // save readings to db
         await mongoSingle.set("temperature", allTemps, 120);
 
-        console.log(`arista-fetchtemperature: fetched readings for ${allTemps.length} temperature sensor(s)`);
+        logger.info(`fetched readings for ${allTemps.length} temperature sensor(s)`);
 
         return allTemps;
 
     } catch (err) {
-        console.error(`arista-fetchtemperature failed: ${err.message}`);
+        logger.error(`arista-fetchtemperature failed: ${err.message}`);
         throw err;
     }
 };

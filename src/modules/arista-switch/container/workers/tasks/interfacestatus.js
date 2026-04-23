@@ -1,24 +1,23 @@
 "use strict";
 
-const aristaApi = require("@utils/arista-api");
-const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
-module.exports = async (config) => {
+module.exports = async ({ aristaApi, workerData, mongoSingle }) => {
     try {
         const interfaceStatuses = [];
 
         // fetch list of interfaces which are error-disabled
         const result = await aristaApi({
-            host: config.address,
+            host: workerData.address,
             protocol: "https",
             port: 443,
-            username: config.username,
-            password: config.password,
+            username: workerData.username,
+            password: workerData.password,
             commands: ["show interfaces status errdisabled"],
         });
 
         if (!result?.interfaceStatuses) {
-            console.log("arista-fetchinterfacestatus: no errdisabled interfaces returned from device");
+            logger.info("no errdisabled interfaces returned from device");
             await mongoSingle.set("interfacestatuses", [], 60);
             return;
         }
@@ -37,13 +36,13 @@ module.exports = async (config) => {
             });
         }
 
-        console.log(`arista-fetchinterfacestatus: found ${interfaceStatuses.length} interface(s) in errdisabled state`);
+        logger.info(`found ${interfaceStatuses.length} interface(s) in errdisabled state`);
 
         // save to mongo with 60s expiry
         await mongoSingle.set("interfacestatuses", interfaceStatuses, 60);
 
     } catch (err) {
-        console.error(`arista-fetchinterfacestatus failed: ${err.message}`);
+        logger.error(`arista-fetchinterfacestatus failed: ${err.message}`);
         throw err;
     }
 };

@@ -1,36 +1,27 @@
 "use strict";
 
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoCollection = require("@core/mongo-collection");
 const formatBps = require("@core/format-bps");
-const trafficSaveHistory = require("../services/traffic-savehistory");
-const aristaApi = require("@utils/arista-api");
+const trafficSaveHistory = require("@utils/traffic-savehistory");
+const logger = require("@core/logger")(module);
 
-module.exports = async (config) => {
-    let interfacesCollection;
-    let historyCollection;
+module.exports = async ({ aristaApi, interfacesCollection, historyCollection, workerData }) => {
 
     try {
-        // get collections
-        interfacesCollection = await mongoCollection("interfaces");
-        historyCollection = await mongoCollection("history");
 
         // get list of interfaces
         const interfaces = await interfacesCollection.find().toArray();
         if (!interfaces?.length) {
-            console.log("arista-fetchinterfacestats: no interfaces found in db - waiting ...");
-            await delay(5000);
+            logger.info("no interfaces found in db - waiting ...");
             return;
         }
 
         // fetch stats from device
         const result = await aristaApi({
-            host: config.address,
+            host: workerData.address,
             protocol: "https",
             port: 443,
-            username: config.username,
-            password: config.password,
+            username: workerData.username,
+            password: workerData.password,
             commands: ["show interfaces counters"],
         });
 
@@ -105,15 +96,15 @@ module.exports = async (config) => {
             interfaceCount += 1;
         }
 
-        console.log(
-            `arista-fetchinterfacestats: updated stats for ${interfaceCount} interface(s), pushed ${historyArray.length} stat(s) to interface history`
+        logger.info(
+            `updated stats for ${interfaceCount} interface(s), pushed ${historyArray.length} stat(s) to interface history`
         );
 
         // save history
         await trafficSaveHistory(historyCollection, historyArray);
 
     } catch (err) {
-        console.error(`arista-fetchinterfacestats failed: ${err.message}`);
+        logger.error(err.message);
         throw err;
     }
 };

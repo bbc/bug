@@ -1,40 +1,33 @@
 "use strict";
 
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoCollection = require("@core/mongo-collection");
-const aristaApi = require("@utils/arista-api");
+const logger = require("@core/logger")(module);
 
-module.exports = async (config) => {
-    let interfacesCollection;
+module.exports = async ({ mongoCollection, aristaApi, interfacesCollection, workerData }) => {
 
     try {
-        // get interfaces collection
-        interfacesCollection = await mongoCollection("interfaces");
 
         // get list of interfaces
         const interfaces = await interfacesCollection.find().toArray();
         if (!interfaces || !interfaces.length) {
-            console.log("arista-fetchinterfacepoe: no interfaces found in db - waiting ...");
-            await delay(5000);
+            logger.info("no interfaces found in db - waiting ...");
             return;
         }
 
-        console.log(`arista-fetchinterfacepoe: fetching poe details from ${config.address} ...`);
+        logger.info(`fetching poe details from ${workerData.address} ...`);
 
         // get poe details from device
         const result = await aristaApi({
-            host: config.address,
+            host: workerData.address,
             protocol: "https",
             port: 443,
-            username: config.username,
-            password: config.password,
+            username: workerData.username,
+            password: workerData.password,
             commands: ["enable", "configure", "show poe"],
         });
 
         const poePorts = result.find(r => r?.poePorts)?.poePorts;
         if (!poePorts) {
-            console.log("arista-fetchinterfacepoe: no poe data returned from device");
+            logger.info("no poe data returned from device");
             return;
         }
 
@@ -61,16 +54,16 @@ module.exports = async (config) => {
         }));
 
         if (!ops.length) {
-            console.log("arista-fetchinterfacepoe: no poe updates to write");
+            logger.info("no poe updates to write");
             return;
         }
 
         // update db
         const bulkResult = await interfacesCollection.bulkWrite(ops);
-        console.log(`arista-fetchinterfacepoe: updated db with poe details for ${bulkResult.modifiedCount} interface(s)`);
+        logger.info(`updated db with poe details for ${bulkResult.modifiedCount} interface(s)`);
 
     } catch (err) {
-        console.error(`arista-fetchinterfacepoe failed: ${err.message}`);
+        logger.error(`failed: ${err.message}`);
         throw err;
     }
 };

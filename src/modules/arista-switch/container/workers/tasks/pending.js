@@ -1,18 +1,16 @@
 "use strict";
 
-const register = require("module-alias/register");
-const mongoSingle = require("@core/mongo-single");
-const aristaApi = require("@utils/arista-api");
+const logger = require("@core/logger")(module);
 
-module.exports = async (config) => {
+module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
     try {
         // fetch diffs from device
         const result = await aristaApi({
-            host: config.address,
+            host: workerData.address,
             protocol: "https",
             port: 443,
-            username: config.username,
-            password: config.password,
+            username: workerData.username,
+            password: workerData.password,
             commands: ["enable", "show running-config diffs"],
             format: "text",
         });
@@ -28,13 +26,13 @@ module.exports = async (config) => {
             }
         }
 
-        console.info(`arista-fetchpending: set isPending to ${isPending ? "true" : "false"}`);
+        logger.info(`arista-fetchpending: set isPending to ${isPending ? "true" : "false"}`);
 
         // save pending status to db
         await mongoSingle.set("pending", isPending, 120);
 
     } catch (err) {
-        console.error(`arista-fetchpending failed: ${err.message}`);
+        logger.error(`failed: ${err.message}`);
         throw err;
     }
 };
