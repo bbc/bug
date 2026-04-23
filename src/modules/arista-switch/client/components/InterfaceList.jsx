@@ -21,7 +21,7 @@ import { useAlert } from "@utils/Snackbar";
 import { useNavigate } from "react-router-dom";
 import StatusIcon from "./StatusIcon";
 
-export default function InterfaceList({ panelId, stackId = null }) {
+export default function InterfaceList({ panelId }) {
     const sendAlert = useAlert();
     const navigate = useNavigate();
     const { renameDialog } = useBugRenameDialog();
@@ -442,11 +442,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     onClick: handleProtectClicked,
                 },
             ]}
-            apiUrl={
-                stackId !== null
-                    ? `/container/${panelId}/interface/stack/${stackId}`
-                    : `/container/${panelId}/interface`
-            }
+            apiUrl={`/container/${panelId}/interface`}
             panelId={panelId}
             hideHeader={false}
             noData={

@@ -22,7 +22,6 @@ export default function Module(props) {
                         </BugRestrictTo>
                     }
                 />
-                <Route path="/:stackId" element={<MainPanel {...props} />} />
             </Routes>
         </BugModuleWrapper>
     );
