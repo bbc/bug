@@ -13,6 +13,15 @@ const modules = fs.readdirSync(modulesBase).filter(f =>
     fs.statSync(path.join(modulesBase, f)).isDirectory()
 )
 
+function hashExistsInHistory(hash) {
+    try {
+        execSync(`git cat-file -e ${hash}^{commit}`, { stdio: 'ignore' })
+        return true
+    } catch {
+        return false
+    }
+}
+
 console.log(`processing modules for updates ...`)
 
 modules.forEach(moduleName => {
@@ -22,24 +31,48 @@ modules.forEach(moduleName => {
 
     console.log(`${moduleName}`)
 
-    // read existing changelog.md to find last commit
+    // read existing changelog to find last commit hash and date
     let lastCommitHash = null
+    let lastCommitDate = null
     let existingContent = ''
+
     if (fs.existsSync(mdFile)) {
         existingContent = fs.readFileSync(mdFile, 'utf-8')
-        const match = existingContent.match(
+
+        // extract full hash from the first commit URL in the most recent version entry
+        const hashMatch = existingContent.match(
             /### version [\d.]+[\s\S]*?\/commit\/([0-9a-f]{40})/
         )
-        if (match) lastCommitHash = match[1]
+        if (hashMatch) lastCommitHash = hashMatch[1]
+
+        // extract the most recent date as a fallback
+        const dateMatch = existingContent.match(
+            /### version [\d.]+[\s\S]*?- (\d{4}-\d{2}-\d{2}):/
+        )
+        if (dateMatch) lastCommitDate = dateMatch[1]
+    }
+
+    // build git log range argument - with fallback if hash no longer exists
+    let rangeArg = ''
+    if (lastCommitHash) {
+        if (hashExistsInHistory(lastCommitHash)) {
+            rangeArg = `${lastCommitHash}..HEAD`
+            console.log(` - resuming from commit ${lastCommitHash.slice(0, 7)}`)
+        } else if (lastCommitDate) {
+            rangeArg = `--after="${lastCommitDate}"`
+            console.log(` - hash ${lastCommitHash.slice(0, 7)} not found (squashed?), falling back to date ${lastCommitDate}`)
+        } else {
+            console.log(` - hash not found and no date fallback, processing all commits`)
+        }
     }
 
     // fetch new commits for this module
     let gitLog = ''
     try {
         gitLog = execSync(
-            `git log --pretty=format:"%H|%ad|%s" --date=short ${lastCommitHash ? lastCommitHash + '..HEAD' : ''} -- src/modules/${moduleName}`,
+            `git log --pretty=format:"%H|%ad|%s" --date=short ${rangeArg} -- src/modules/${moduleName}`,
             { encoding: 'utf-8' }
-        );
+        )
         console.log(` - found ${gitLog.split('\n').length} total commit(s) in git`)
     } catch (err) {
         console.log(` - no new commits`)
@@ -51,6 +84,11 @@ modules.forEach(moduleName => {
         return
     }
 
+    // collect existing commit descriptions to deduplicate against
+    const existingDescriptions = new Set(
+        [...existingContent.matchAll(/^- \d{4}-\d{2}-\d{2}: (.+?) \(\[/gm)].map(m => m[1])
+    )
+
     // parse commits for this module
     const commits = gitLog.split('\n')
         .map(line => {
@@ -60,6 +98,13 @@ modules.forEach(moduleName => {
             return { hash, date, description: match[2] }
         })
         .filter(Boolean)
+        .filter(c => {
+            if (existingDescriptions.has(c.description)) {
+                console.log(` - skipping duplicate: ${c.description}`)
+                return false
+            }
+            return true
+        })
 
     if (!commits.length) {
         console.log(` - no new commits to process`)
@@ -82,7 +127,6 @@ modules.forEach(moduleName => {
     patch += 1
     moduleData.version = `${major}.${minor}.${patch}`
 
-    // only write back if version changed
     if (moduleData.version !== oldVersion) {
         console.log(` - bumping version ${oldVersion} -> ${moduleData.version}`)
         fs.writeFileSync(moduleJsonFile, JSON.stringify(moduleData, null, 4))

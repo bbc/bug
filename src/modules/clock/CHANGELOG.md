@@ -1,16 +1,8 @@
 ## Changelog
 
-### version 1.0.3
-
-- 2026-01-27: fix analogue ui at low screen resolutions ([adcc119](https://github.com/bbc/bug/commit/adcc1196f1bd856f314302d08e15ab7147196c66))
-
 ### version 1.0.2
 
 - 2026-01-27: fix analogue ui at low screen resolutions ([bd02aa0](https://github.com/bbc/bug/commit/bd02aa03cf69f69a58a7ed572ec61af0ec2166c9))
-
-### version 1.0.1
-
-- 2026-01-27: fix analogue ui at low screen resolutions (bd02aa0)
 
 ### version 1.0.0
 

@@ -7,29 +7,6 @@
 - 2026-04-23: remove stack functionality ([401ff90](https://github.com/bbc/bug/commit/401ff902ff4a069e521df64ed6c57a2169845f20))
 - 2026-04-23: new worker design using tasks ([5e6984e](https://github.com/bbc/bug/commit/5e6984eff238e2aef28db46946b4c1d5b519f9e0))
 
-### version 1.2.6
-
-- 2026-02-23: fix async code in protect/unprotect ([1d6045f](https://github.com/bbc/bug/commit/1d6045fdcdda560819e6de43ee46ab3bbc9ee811))
-- 2026-02-06: improve service logging ([1a43550](https://github.com/bbc/bug/commit/1a43550e871a89da46a10f8d460296c44e0c9bb2))
-- 2026-02-03: show poe info in details tab ([b8551f9](https://github.com/bbc/bug/commit/b8551f93a12a38644045921594812801455b59f5))
-- 2026-02-03: add panel status ([9cffcd6](https://github.com/bbc/bug/commit/9cffcd6c2e99de0bf7784db6be1e5a3afac64258))
-- 2026-02-03: set save pending flag on changes ([e699963](https://github.com/bbc/bug/commit/e69996321da337268f1923989a02468fb7edf81e))
-- 2026-02-03: improve api error handling ([67e0c70](https://github.com/bbc/bug/commit/67e0c70b7ad3691f1f33c065e06371fb6bfe7c62))
-- 2026-02-03: improve error handling in utils ([b42fe40](https://github.com/bbc/bug/commit/b42fe40116f825ac3404cbd6c4f207baa3c100b5))
-- 2026-02-03: add visiblity and control of POE status ([c51a720](https://github.com/bbc/bug/commit/c51a720dacbbb9ed16919173d689b02ea2f62ac0))
-- 2026-02-03: add temperature monitoring and alerts ([4b874b4](https://github.com/bbc/bug/commit/4b874b48423112c00c9f51fd70dfd9c586fe8cd1))
-- 2026-02-02: refactor workers to reduce memory ([fea38a5](https://github.com/bbc/bug/commit/fea38a5d9950e5464c54b4562238367a80a4917d))
-
-### version 1.2.5
-
-- 2026-02-23: fix async code in protect/unprotect ([56a7f78](https://github.com/bbc/bug/commit/56a7f78931b6e500c90bc9262ed5c263591a18d5))
-- 2026-02-06: improve service logging ([f7be880](https://github.com/bbc/bug/commit/f7be8803e55f3b5156bd126d4657929f6a519ee8))
-- 2026-02-03: show poe info in details tab ([5250644](https://github.com/bbc/bug/commit/5250644b24ceaf32d40f9b9c92eee9ae2da41a59))
-- 2026-02-03: add panel status ([367cc3a](https://github.com/bbc/bug/commit/367cc3af3a83c2d38790f97ea37b70a44c23eb5f))
-- 2026-02-03: set save pending flag on changes ([4b6ff0d](https://github.com/bbc/bug/commit/4b6ff0dab847639ac7cd07594309fa07bc2031a1))
-- 2026-02-03: improve api error handling ([b1a551e](https://github.com/bbc/bug/commit/b1a551e873f75a3fac1b3266de8b4a3f62eb7ae2))
-- 2026-02-03: improve error handling in utils ([35e8281](https://github.com/bbc/bug/commit/35e82812da077ce3adc3c4f7f2d0f869fe6b5fa4))
-
 ### version 1.2.4
 
 - 2026-02-23: fix async code in protect/unprotect ([9955d9c](https://github.com/bbc/bug/commit/9955d9c6ab38c11df11415bd1a8f9ef49663d1c5))

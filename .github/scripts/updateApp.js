@@ -51,25 +51,55 @@ function compareVersions(a, b) {
     return 0;
 }
 
-// read last processed commit in changelog file
+function hashExistsInHistory(hash) {
+    try {
+        execSync(`git cat-file -e ${hash}^{commit}`, { stdio: "ignore" });
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+// read existing changelog
 let existingContent = "";
 let lastCommitHash = null;
+let lastCommitDate = null;
 
 if (fs.existsSync(CHANGELOG_FILE)) {
     existingContent = fs.readFileSync(CHANGELOG_FILE, "utf-8");
 
-    const match = existingContent.match(
+    // extract full hash from the first commit URL in the most recent version entry
+    const hashMatch = existingContent.match(
         /### version [\d.]+[\s\S]*?\/commit\/([0-9a-f]{40})/
     );
-    if (match) lastCommitHash = match[1];
+    if (hashMatch) lastCommitHash = hashMatch[1];
+
+    // extract the most recent date from the changelog as a fallback
+    const dateMatch = existingContent.match(
+        /### version [\d.]+[\s\S]*?- (\d{4}-\d{2}-\d{2}):/
+    );
+    if (dateMatch) lastCommitDate = dateMatch[1];
+}
+
+// build git log range argument - with fallback if hash no longer exists
+let rangeArg = "";
+if (lastCommitHash) {
+    if (hashExistsInHistory(lastCommitHash)) {
+        rangeArg = `${lastCommitHash}..HEAD`;
+        console.log(` - resuming from commit ${lastCommitHash.slice(0, 7)}`);
+    } else if (lastCommitDate) {
+        rangeArg = `--after="${lastCommitDate}"`;
+        console.log(` - hash ${lastCommitHash.slice(0, 7)} not found (squashed?), falling back to date ${lastCommitDate}`);
+    } else {
+        console.log(` - hash not found and no date fallback, processing all commits`);
+    }
 }
 
 // fetch commits (exclude modules)
 let gitLog = "";
 try {
     gitLog = execSync(
-        `git log --pretty=format:"%H|%ad|%s" --date=short ${lastCommitHash ? lastCommitHash + "..HEAD" : ""
-        } -- . ":(exclude)src/modules"`,
+        `git log --pretty=format:"%H|%ad|%s" --date=short ${rangeArg} -- . ":(exclude)src/modules"`,
         { encoding: "utf-8" }
     );
 } catch {
@@ -81,6 +111,11 @@ if (!gitLog.trim()) {
     console.log(" - no new commits");
     process.exit(0);
 }
+
+// collect existing commit descriptions to deduplicate against
+const existingDescriptions = new Set(
+    [...existingContent.matchAll(/^- \d{4}-\d{2}-\d{2}: (.+?) \(\[/gm)].map(m => m[1])
+);
 
 // parse [app] commits
 const commits = gitLog
@@ -97,7 +132,14 @@ const commits = gitLog
             breaking: Boolean(match[1])
         };
     })
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter(c => {
+        if (existingDescriptions.has(c.description)) {
+            console.log(` - skipping duplicate: ${c.description}`);
+            return false;
+        }
+        return true;
+    });
 
 if (!commits.length) {
     console.log(" - no [app] commits to process");
@@ -170,12 +212,10 @@ existingContent = existingContent.replace(
 
 fs.writeFileSync(CHANGELOG_FILE, existingContent);
 
-// done
 console.log(" - updated app CHANGELOG.md");
 
 // create and push Git tag
 try {
-    // check if tag already exists
     const tags = execSync(`git tag`, { encoding: "utf-8" }).split("\n");
     const tagName = `v${newVersion}`;
     if (tags.includes(tagName)) {
