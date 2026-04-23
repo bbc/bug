@@ -9,11 +9,11 @@ module.exports = async ({ mongoCollection, aristaApi, interfacesCollection, work
         // get list of interfaces
         const interfaces = await interfacesCollection.find().toArray();
         if (!interfaces || !interfaces.length) {
-            logger.info("no interfaces found in db - waiting ...");
+            logger.debug("no interfaces found in db - waiting ...");
             return;
         }
 
-        logger.info(`fetching poe details from ${workerData.address} ...`);
+        logger.debug(`fetching poe details from ${workerData.address} ...`);
 
         // get poe details from device
         const result = await aristaApi({
@@ -27,7 +27,7 @@ module.exports = async ({ mongoCollection, aristaApi, interfacesCollection, work
 
         const poePorts = result.find(r => r?.poePorts)?.poePorts;
         if (!poePorts) {
-            logger.info("no poe data returned from device");
+            logger.debug("no poe data returned from device");
             return;
         }
 
@@ -54,13 +54,13 @@ module.exports = async ({ mongoCollection, aristaApi, interfacesCollection, work
         }));
 
         if (!ops.length) {
-            logger.info("no poe updates to write");
+            logger.debug("no poe updates to write");
             return;
         }
 
         // update db
         const bulkResult = await interfacesCollection.bulkWrite(ops);
-        logger.info(`updated db with poe details for ${bulkResult.modifiedCount} interface(s)`);
+        logger.debug(`updated db with poe details for ${bulkResult.modifiedCount} interface(s)`);
 
     } catch (err) {
         logger.error(`failed: ${err.message}`);

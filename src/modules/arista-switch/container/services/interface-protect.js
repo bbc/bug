@@ -17,7 +17,7 @@ module.exports = async (interfaceId) => {
             throw new Error(`interface ${interfaceId} already protected`);
         }
 
-        logger.info(`interface-protect: protecting interface ${interfaceId}`);
+        logger.info(`protecting interface ${interfaceId}`);
         config.protectedInterfaces.push(interfaceId);
 
         return await configPutViaCore(config);

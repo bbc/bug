@@ -19,7 +19,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         if (!iface) {
             throw new Error(`interface ${interfaceId} not found`);
         }
-        logger.info(`interface-setvlantrunk: interface ${interfaceId} found in db`);
+        logger.info(`interface ${interfaceId} found in db`);
 
         // so ... arista uses the word 'ALL' whereas the bug UI controls deliver '1-4094'
         // we need to convert
@@ -36,7 +36,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             `switchport trunk native vlan ${untaggedVlan}`,
         ];
 
-        logger.info(`interface-setvlantrunk: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
+        logger.info(`setting vlan ${untaggedVlan} on interface ${interfaceId}`);
 
         if (taggedVlans !== "ALL") {
             commands.push(`switchport trunk allowed vlan ${taggedVlans.join(",")}`);
@@ -52,7 +52,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             commands: commands,
         });
 
-        logger.info(`interface-setvlantrunk: success - updating DB`);
+        logger.info(`success - updating DB`);
 
         // we're going to break out any ranges or 'ALL's into an array of desired vlans
         const dataToSet = {
@@ -63,7 +63,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         logger.info("dataToSet", dataToSet);
         // update db
         const dbResult = await interfaceCollection.updateOne({ interfaceId: interfaceId }, { $set: dataToSet });
-        logger.info(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
         await deviceSetPending(false);
         return true;
     } catch (error) {

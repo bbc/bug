@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const axios = require("axios");
 const modulePort = process.env.PORT;
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -34,7 +35,7 @@ const main = async () => {
                     dhcpLeases = dhcpLeases.concat(response.data.data);
                 }
             } catch (error) {
-                console.log(`worker-dhcpserver: ${error.stack || error || error.message}`);
+                logger.error(`worker-dhcpserver: ${error.stack || error || error.message}`);
             }
         }
 
@@ -46,7 +47,7 @@ const main = async () => {
 };
 
 main().catch(err => {
-    console.error("worker-dhcpserver: startup failure");
-    console.error(err.stack || err.message || err);
+    logger.error("worker-dhcpserver: startup failure");
+    logger.error(err.stack || err.message || err);
     process.exit(1);
 });

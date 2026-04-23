@@ -13,7 +13,7 @@ module.exports = async (interfaceId, newName) => {
             throw new Error("failed to load config");
         }
 
-        logger.info(`interface-rename: renaming interface ${interfaceId} to '${newName}' ...`);
+        logger.info(`renaming interface ${interfaceId} to '${newName}' ...`);
 
         const descriptionCommand = newName ? `description ${newName}` : "no description";
 
@@ -27,7 +27,7 @@ module.exports = async (interfaceId, newName) => {
             commands: ["enable", "configure", `interface ${interfaceId}`, descriptionCommand],
         });
 
-        logger.info(`interface-rename: success - updating DB`);
+        logger.info(`success - updating DB`);
 
         // update DB
         const interfacesCollection = await mongoCollection("interfaces");
@@ -36,12 +36,12 @@ module.exports = async (interfaceId, newName) => {
             { $set: { description: newName } }
         );
 
-        logger.info(`interface-rename: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
         await deviceSetPending(false);
         return true;
 
     } catch (err) {
-        err.message = `interface-rename: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

@@ -59,9 +59,9 @@ module.exports = async ({ aristaApi, interfacesCollection, workerData }) => {
 
         if (operations.length) {
             const res = await interfacesCollection.bulkWrite(operations);
-            logger.info(`saved switchport info for ${res.modifiedCount} interface(s)`);
+            logger.debug(`saved switchport info for ${res.modifiedCount} interface(s)`);
         } else {
-            logger.info("no switchport updates to apply");
+            logger.debug("no switchport updates to apply");
         }
 
     } catch (err) {

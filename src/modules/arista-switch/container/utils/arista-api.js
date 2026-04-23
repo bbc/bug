@@ -1,6 +1,7 @@
 "use strict";
 const axios = require("axios");
 const https = require("https");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({
     protocol = "https",
@@ -26,8 +27,8 @@ module.exports = async ({
     };
 
     if (debug) {
-        console.log("arista-api request body:", jsonBody);
-        console.log("arista-api url:", url);
+        logger.debug("arista-api request body:", jsonBody);
+        logger.debug("arista-api url:", url);
     }
 
     try {
@@ -58,9 +59,9 @@ module.exports = async ({
 
     } catch (err) {
         const msg = getAxiosErrorMessage(err);
-        console.error(`arista-api: ERROR: ${msg}`);
-        console.log("arista-api url:", url);
-        console.log("arista-api request body:", jsonBody);
+        logger.error(`ERROR: ${msg}`);
+        logger.info("arista-api url:", url);
+        logger.info("arista-api request body:", jsonBody);
         throw new Error("arista-api request failed", { cause: err });
     }
 };

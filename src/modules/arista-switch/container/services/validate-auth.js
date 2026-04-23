@@ -15,7 +15,7 @@ module.exports = async (formData) => {
             commands: ["show version"],
         });
 
-        logger.info("validate-auth:", result);
+        logger.info(result);
 
         if (result?.modelName) {
             return new ValidationResult([

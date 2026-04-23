@@ -14,7 +14,7 @@ module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
             commands: ["show version"],
         });
 
-        logger.info(`saved ${Object.keys(systemResult).length} bit(s) of system info to the db`);
+        logger.debug(`saved ${Object.keys(systemResult).length} bit(s) of system info to the db`);
         await mongoSingle.set("system", systemResult, 120);
 
         // fetch power supply status from device
@@ -28,7 +28,7 @@ module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
         });
 
         const psuCount = powerResult?.powerSupplies ? Object.keys(powerResult.powerSupplies).length : 0;
-        logger.info(`saved status of ${psuCount} PSU(s) to the db`);
+        logger.debug(`saved status of ${psuCount} PSU(s) to the db`);
         await mongoSingle.set("power", powerResult?.powerSupplies || [], 120);
 
     } catch (err) {

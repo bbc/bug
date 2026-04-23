@@ -16,7 +16,7 @@ module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
         });
 
         if (!result?.vlans) {
-            logger.info("no vlans returned from device");
+            logger.debug("no vlans returned from device");
             await mongoSingle.set("vlans", [], 60);
             return;
         }
@@ -32,7 +32,7 @@ module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
         // save vlans to db
         await mongoSingle.set("vlans", vlans, 60);
 
-        logger.info(`saved ${vlans.length} vlan(s) to the db`);
+        logger.debug(`saved ${vlans.length} vlan(s) to the db`);
 
     } catch (err) {
         logger.error(`failed: ${err.message}`);

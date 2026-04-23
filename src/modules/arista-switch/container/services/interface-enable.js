@@ -13,7 +13,7 @@ module.exports = async (interfaceId) => {
             throw new Error("failed to load config");
         }
 
-        logger.info(`interface-enable: enabling interface ${interfaceId} ...`);
+        logger.info(`enabling interface ${interfaceId} ...`);
 
         // enable the interface on the device
         await aristaApi({
@@ -25,7 +25,7 @@ module.exports = async (interfaceId) => {
             commands: ["enable", "configure", `interface ${interfaceId}`, "no shutdown"],
         });
 
-        logger.info(`interface-enable: success - updating DB`);
+        logger.info(`success - updating DB`);
 
         // update the DB to reflect enabled interface
         const interfacesCollection = await mongoCollection("interfaces");
@@ -43,7 +43,7 @@ module.exports = async (interfaceId) => {
             { $set: { linkStatus } }
         );
 
-        logger.info(`interface-enable: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
         await deviceSetPending(false);
         return true;
 

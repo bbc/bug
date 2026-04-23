@@ -26,7 +26,7 @@ module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
             }
         }
 
-        logger.info(`arista-fetchpending: set isPending to ${isPending ? "true" : "false"}`);
+        logger.debug(`arista-fetchpending: set isPending to ${isPending ? "true" : "false"}`);
 
         // save pending status to db
         await mongoSingle.set("pending", isPending, 120);

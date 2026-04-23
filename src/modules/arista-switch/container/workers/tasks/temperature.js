@@ -57,7 +57,7 @@ module.exports = async ({ aristaApi, mongoSingle, workerData }) => {
         // save readings to db
         await mongoSingle.set("temperature", allTemps, 120);
 
-        logger.info(`fetched readings for ${allTemps.length} temperature sensor(s)`);
+        logger.debug(`fetched readings for ${allTemps.length} temperature sensor(s)`);
 
         return allTemps;
 

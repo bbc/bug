@@ -96,7 +96,7 @@ module.exports = async ({ aristaApi, interfacesCollection, historyCollection, wo
             interfaceCount += 1;
         }
 
-        logger.info(
+        logger.debug(
             `updated stats for ${interfaceCount} interface(s), pushed ${historyArray.length} stat(s) to interface history`
         );
 

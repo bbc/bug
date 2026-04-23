@@ -11,7 +11,7 @@ module.exports = async () => {
             throw new Error("failed to load config");
         }
 
-        logger.info("device-save: saving device config ...");
+        logger.info("saving device config ...");
 
         await aristaApi({
             host: config.address,
@@ -22,10 +22,10 @@ module.exports = async () => {
             commands: ["enable", "write memory"],
         });
 
-        logger.info("device-save: success");
+        logger.info("success");
 
     } catch (err) {
-        err.message = `device-save: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

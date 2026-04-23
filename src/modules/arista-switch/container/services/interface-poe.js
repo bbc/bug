@@ -22,7 +22,7 @@ module.exports = async (interfaceId, action) => {
         }
 
         const actionText = action === "enable" ? "enabling" : "disabling";
-        logger.info(`interface-poe: ${actionText} POE on interface ${interfaceId} ...`);
+        logger.info(`${actionText} POE on interface ${interfaceId} ...`);
 
         await aristaApi({
             host: config.address,
@@ -38,7 +38,7 @@ module.exports = async (interfaceId, action) => {
             ],
         });
 
-        logger.info(`interface-poe: success - updating DB`);
+        logger.info(`success - updating DB`);
 
         const interfacesCollection = await mongoCollection("interfaces");
         const dbResult = await interfacesCollection.updateOne(
@@ -46,7 +46,7 @@ module.exports = async (interfaceId, action) => {
             { $set: { "poe.enabled": action === "enable" } }
         );
 
-        logger.info(`interface-poe: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
 
         if (dbResult.matchedCount !== 1) {
             throw new Error(`expected to update 1 interface in DB, matched ${dbResult.matchedCount}`);

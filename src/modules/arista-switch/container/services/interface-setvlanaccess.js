@@ -13,7 +13,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             throw new Error("failed to load config");
         }
 
-        logger.info(`interface-setvlanaccess: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
+        logger.info(`setting vlan ${untaggedVlan} on interface ${interfaceId}`);
 
         const interfaceCollection = await mongoCollection("interfaces");
         const iface = await interfaceCollection.findOne({ interfaceId: interfaceId });
@@ -25,7 +25,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
 
         // if the interface is currently in trunk mode, change it
         if (iface.mode === "trunk") {
-            logger.info(`interface-setvlanaccess: interface ${interfaceId} is in trunk mode, changing to access`);
+            logger.info(`interface ${interfaceId} is in trunk mode, changing to access`);
             commands.push("no switchport trunk native vlan");
             commands.push("switchport mode access");
         }
@@ -42,14 +42,14 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             commands: commands,
         });
 
-        logger.info(`interface-setvlanaccess: success - updating DB`);
+        logger.info(`success - updating DB`);
 
         // update db
         const dbResult = await interfaceCollection.updateOne(
             { interfaceId: interfaceId },
             { $set: { mode: "access", accessVlanId: parseInt(untaggedVlan) } }
         );
-        logger.info(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
         await deviceSetPending(false);
         return true;
     } catch (error) {

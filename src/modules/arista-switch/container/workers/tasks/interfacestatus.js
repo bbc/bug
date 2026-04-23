@@ -17,7 +17,7 @@ module.exports = async ({ aristaApi, workerData, mongoSingle }) => {
         });
 
         if (!result?.interfaceStatuses) {
-            logger.info("no errdisabled interfaces returned from device");
+            logger.debug("no errdisabled interfaces returned from device");
             await mongoSingle.set("interfacestatuses", [], 60);
             return;
         }
@@ -36,7 +36,7 @@ module.exports = async ({ aristaApi, workerData, mongoSingle }) => {
             });
         }
 
-        logger.info(`found ${interfaceStatuses.length} interface(s) in errdisabled state`);
+        logger.debug(`found ${interfaceStatuses.length} interface(s) in errdisabled state`);
 
         // save to mongo with 60s expiry
         await mongoSingle.set("interfacestatuses", interfaceStatuses, 60);

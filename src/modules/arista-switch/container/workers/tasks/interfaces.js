@@ -63,7 +63,7 @@ module.exports = async ({ aristaApi, interfacesCollection, workerData }) => {
             await interfacesCollection.bulkWrite(operations);
         }
 
-        logger.info(`updated db with details for ${operations.length} interface(s)`);
+        logger.debug(`updated db with details for ${operations.length} interface(s)`);
 
     } catch (error) {
         logger.error(error.message);

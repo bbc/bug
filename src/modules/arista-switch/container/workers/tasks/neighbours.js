@@ -39,7 +39,7 @@ module.exports = async ({ aristaApi, mongoSingle, interfacesCollection, workerDa
             }
         }));
         if (arpOps.length) await interfacesCollection.bulkWrite(arpOps);
-        logger.info(`updated db with arp details for ${arpOps.length} interface(s)`);
+        logger.debug(`updated db with arp details for ${arpOps.length} interface(s)`);
 
         // fetch LLDP neighbors
         const lldpResult = await aristaApi({
@@ -81,7 +81,7 @@ module.exports = async ({ aristaApi, mongoSingle, interfacesCollection, workerDa
             }
         }));
         if (lldpOps.length) await interfacesCollection.bulkWrite(lldpOps);
-        logger.info(`updated db with lldp details for ${lldpOps.length} interface(s)`);
+        logger.debug(`updated db with lldp details for ${lldpOps.length} interface(s)`);
 
 
     } catch (err) {
