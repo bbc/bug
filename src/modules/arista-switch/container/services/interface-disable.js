@@ -22,7 +22,7 @@ module.exports = async (interfaceId) => {
             port: 443,
             username: config.username,
             password: config.password,
-            commands: ["enable", "configure", `intserface ${interfaceId}`, "shutdown"],
+            commands: ["enable", "configure", `interface ${interfaceId}`, "shutdown"],
         });
 
         logger.info(`interface-disable: success - updating DB`);
