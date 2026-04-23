@@ -27,7 +27,9 @@ modules.forEach(moduleName => {
     let existingContent = ''
     if (fs.existsSync(mdFile)) {
         existingContent = fs.readFileSync(mdFile, 'utf-8')
-        const match = existingContent.match(/\[([0-9a-f]{7})\]\(https?:\/\/github\.com\/[^)]+\/commit\/[0-9a-f]{7,40}\)/)
+        const match = existingContent.match(
+            /### version [\d.]+[\s\S]*?\/commit\/([0-9a-f]{40})/
+        )
         if (match) lastCommitHash = match[1]
     }
 
