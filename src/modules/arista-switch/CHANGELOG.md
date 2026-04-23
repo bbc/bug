@@ -1,5 +1,12 @@
 ## Changelog
 
+### version 1.2.7
+
+- 2026-04-23: improve logging ([4197f2f](https://github.com/bbc/bug/commit/4197f2fefa8d4b6975bd0026d48ee0eb04327d81))
+- 2026-04-23: fix interface-disable ([1117a26](https://github.com/bbc/bug/commit/1117a26cf1f6b4e8891000433a7f50c76c733eb2))
+- 2026-04-23: remove stack functionality ([401ff90](https://github.com/bbc/bug/commit/401ff902ff4a069e521df64ed6c57a2169845f20))
+- 2026-04-23: new worker design using tasks ([5e6984e](https://github.com/bbc/bug/commit/5e6984eff238e2aef28db46946b4c1d5b519f9e0))
+
 ### version 1.2.6
 
 - 2026-02-23: fix async code in protect/unprotect ([1d6045f](https://github.com/bbc/bug/commit/1d6045fdcdda560819e6de43ee46ab3bbc9ee811))
