@@ -1,0 +1,26 @@
+info:
+  name: ipGateway/getIpInterfaces
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: https://{{HOSTNAME}}/board/ui/board/1/api/jsonrpc
+  body:
+    type: json
+    data: |
+      {
+        "jsonrpc": "2.0",
+        "method": "ipGateway:1.31/ipinterface/GetIpInterfaces",
+        "params": {},
+        "id": "GetIpInterfaces"
+      }
+  auth:
+    type: bearer
+    token: "{{authToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

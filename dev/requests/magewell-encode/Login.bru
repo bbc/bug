@@ -1,0 +1,23 @@
+meta {
+  name: Login
+  type: http
+  seq: 10
+}
+
+post {
+  url: https://{{HOSTNAME}}/api/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id":"{{USERNAME}}",
+    "pass":"{{PASSWORD}}"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

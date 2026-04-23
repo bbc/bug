@@ -1,0 +1,37 @@
+info:
+  name: login
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: https://{{HOSTNAME}}/api/jsonrpc
+  body:
+    type: json
+    data: |-
+      {
+        "jsonrpc": "2.0",
+        "method": "authentication:1.0/BeginSession",
+        "params": {
+          "local": {
+            "username": "{{USERNAME}}",
+            "password": "{{PASSWORD}}"
+          }
+        },
+        "id": "login"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        const body = res.getBody();
+
+        bru.setEnvVar("authToken", body.result.accessToken);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

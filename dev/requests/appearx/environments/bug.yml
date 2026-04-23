@@ -1,0 +1,10 @@
+name: bug
+variables:
+  - name: HOSTNAME
+    value: "{{process.env.HOSTNAME}}"
+  - name: USERNAME
+    value: "{{process.env.USERNAME}}"
+  - name: PASSWORD
+    value: "{{process.env.PASSWORD}}"
+  - name: authToken
+    value: ""

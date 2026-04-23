@@ -1,0 +1,26 @@
+info:
+  name: Xger/GetAudioProfiles
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: https://{{HOSTNAME}}/mmi/service_encoderpool/api/jsonrpc
+  body:
+    type: json
+    data: |
+      {
+        "jsonrpc": "2.0",
+        "method": "Xger:2.31/audioProfile/GetAudioProfiles",
+        "params": {},
+        "id": "GetAudioProfiles"
+      }
+  auth:
+    type: bearer
+    token: "{{authToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,26 @@
+info:
+  name: mmi/getChassisInfo
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: https://{{HOSTNAME}}/mmi/api/jsonrpc
+  body:
+    type: json
+    data: |
+      {
+        "jsonrpc": "2.0",
+        "method": "mmi:3.6/cards/GetChassisInfo",
+        "params": {},
+        "id": "GetChassisInfo"
+      }
+  auth:
+    type: bearer
+    token: "{{authToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

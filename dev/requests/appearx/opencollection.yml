@@ -1,0 +1,28 @@
+opencollection: 1.0.0
+
+info:
+  name: appearx
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+docs:
+  content: |-
+    Example API docs for AppearX chassis.
+
+    Use the login request first, which stores your login token in 'authToken'. Other requests use this as bearer auth.
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

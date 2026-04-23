@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "magewell-encode via hub",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

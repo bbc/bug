@@ -1,0 +1,26 @@
+info:
+  name: ipGateway/getInputs
+  type: http
+  seq: 14
+
+http:
+  method: POST
+  url: https://{{HOSTNAME}}/board/1/ui/firewall-gui/board/1/api/jsonrpc
+  body:
+    type: json
+    data: |-
+      {
+        "jsonrpc": "2.0",
+        "method": "ipGateway:1.47/input/GetInputs",
+        "params": {},
+        "id": "GetInputs"
+      }
+  auth:
+    type: bearer
+    token: "{{authToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

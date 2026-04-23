@@ -17,12 +17,12 @@ module.exports = ({ tasks, context, baseDir }) => {
         try {
             handler = require(taskPath);
         } catch (err) {
-            logger.error(`worker-taskmanager: failed to load task file: ${task.name}`);
+            logger.error(`failed to load task file: ${task.name}`);
             throw err;
         }
 
         const addJob = () => {
-            logger.info(`worker-taskmanager: adding task ${task.name}, interval: ${task.seconds}s`);
+            logger.info(`adding task ${task.name}, interval: ${task.seconds}s`);
             scheduler.addSimpleIntervalJob(
                 new SimpleIntervalJob(
                     { seconds: task.seconds, runImmediately: true },
@@ -37,14 +37,14 @@ module.exports = ({ tasks, context, baseDir }) => {
         };
 
         if (task.delay && task.delay > 0) {
-            logger.info(`worker-taskmanager: delaying start of task ${task.name} by ${task.delay}s`);
+            logger.info(`delaying start of task ${task.name} by ${task.delay}s`);
             setTimeout(addJob, task.delay * 1000); // convert seconds to ms
         } else {
             addJob();
         }
     }
 
-    logger.info(`worker-taskmanager: ${tasks.length} task(s) scheduled, scheduler started`);
+    logger.info(`${tasks.length} task(s) scheduled, scheduler started`);
 };
 
 // keep node alive

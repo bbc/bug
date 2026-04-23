@@ -1,0 +1,33 @@
+info:
+  name: Xger/GetServiceStatus
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: https://{{HOSTNAME}}/mmi/service_encoderpool/api/jsonrpc
+  body:
+    type: json
+    data: |-
+      {
+        "jsonrpc": "2.0",
+        "method": "Xger:2.31/serviceStatus/GetServiceStatus",
+        "params": {
+          "query": [
+            {
+              "id": "04a3ec85-c792-4d25-af87-f3e3fc6df461",
+              "slot": 6
+            }
+          ]
+        },
+        "id": "GetServiceStatus"
+      }
+  auth:
+    type: bearer
+    token: "{{authToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
