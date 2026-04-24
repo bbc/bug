@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.10
+
+- 2026-02-09: fix status timeouts ([993e81c](https://github.com/bbc/bug/commit/993e81c1700903597ad6efc18ea1c9e49838bac5))
+
 ### version 1.1.6
 
 - 2026-02-09: service/util updates ([73e1f9e](https://github.com/bbc/bug/commit/73e1f9eaa87b8b5d1bd2e6a2ea571dbe39b94644))
