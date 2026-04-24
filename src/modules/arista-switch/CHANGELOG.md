@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.2.8
+
+- 2026-04-24: fix crash when poe not available on switch ([677cbde](https://github.com/bbc/bug/commit/677cbde504f9e799d4eb00f0e8f1d02f32ab5106))
+- 2026-04-24: fix incorrect temperature alarm ([f369a9d](https://github.com/bbc/bug/commit/f369a9d4f5fbc70a64a3f4e8422fbbe3c860f7a3))
+
 ### version 1.2.7
 
 - 2026-04-23: improve logging ([4197f2f](https://github.com/bbc/bug/commit/4197f2fefa8d4b6975bd0026d48ee0eb04327d81))
