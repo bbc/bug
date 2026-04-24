@@ -23,7 +23,7 @@ module.exports = async () => {
             if (sensor.current >= sensor.overheat) {
                 type = "error";
                 message = `${prefix}${sensor.description} temperature is overheating: ${sensor.current.toFixed(1)}°C / ${sensor.overheat}°C`
-            } else if (sensor.current >= sensor.target) {
+            } else if (sensor.target != null && sensor.current >= sensor.target) {
                 type = "warning";
                 message = `${prefix}${sensor.description} temperature is high: ${sensor.current.toFixed(1)}°C / ${sensor.target}°C`
             } else if (sensor.inAlert) {
