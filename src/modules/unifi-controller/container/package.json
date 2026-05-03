@@ -26,7 +26,7 @@
         "node-cache": "^5.1.2",
         "node-unifi": "^2.1.0",
         "ping": "^0.4.1",
-        "underscore": "^1.13.1",
+        "underscore": "^1.13.8",
         "winston": "^3.19.0"
     },
     "devDependencies": {
