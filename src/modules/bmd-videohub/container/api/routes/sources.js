@@ -16,14 +16,14 @@ route.get("/", asyncHandler(async (req, res) => {
 route.post("/seticon/:index", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await buttonSetIcon("source", req.params?.index, req.body?.icon, req.body?.color),
+        data: await buttonSetIcon("source", parseInt(req.params?.index), req.body?.icon, req.body?.color),
     });
 }));
 
 route.get("/:destination?/:group?", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await videohubGetSources(req.params?.destination, req.params?.group),
+        data: await videohubGetSources(parseInt(req.params?.destination), parseInt(req.params?.group)),
     });
 }));
 
@@ -31,8 +31,8 @@ route.post("/:destination?/:group?", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
         data: await videohubGetSources(
-            req.params?.destination,
-            req.params?.group,
+            parseInt(req.params?.destination),
+            parseInt(req.params?.group),
             req.body.showExcluded ? true : false
         ),
     });
@@ -41,7 +41,7 @@ route.post("/:destination?/:group?", asyncHandler(async (req, res) => {
 route.delete("/:groupIndex/:index", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await buttonRemove("source", req.params?.groupIndex, req.params?.index),
+        data: await buttonRemove("source", parseInt(req.params?.groupIndex), parseInt(req.params?.index)),
     });
 }));
 

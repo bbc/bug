@@ -19,49 +19,49 @@ route.get("/", asyncHandler(async (req, res) => {
 route.post("/seticon/:index", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await buttonSetIcon("destination", req.params?.index, req.body?.icon, req.body?.color),
+        data: await buttonSetIcon("destination", parseInt(req.params?.index), req.body?.icon, req.body?.color),
     });
 }));
 
 route.get("/:groupIndex", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await videohubGetDestinations(req.params?.groupIndex),
+        data: await videohubGetDestinations(parseInt(req.params?.groupIndex)),
     });
 }));
 
 route.post("/:groupIndex", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await videohubGetDestinations(req.params?.groupIndex, req.body.showExcluded ? true : false),
+        data: await videohubGetDestinations(parseInt(req.params?.groupIndex), req.body.showExcluded ? true : false),
     });
 }));
 
 route.get("/lock/:index", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await videohubLock(req.params?.index),
+        data: await videohubLock(parseInt(req.params?.index)),
     });
 }));
 
 route.get("/unlock/:index", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await videohubUnlock(req.params?.index),
+        data: await videohubUnlock(parseInt(req.params?.index)),
     });
 }));
 
 route.get("/forceunlock/:index", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await videohubForceUnlock(req.params?.index),
+        data: await videohubForceUnlock(parseInt(req.params?.index)),
     });
 }));
 
 route.delete("/:groupIndex/:index", asyncHandler(async (req, res) => {
     res.json({
         status: "success",
-        data: await buttonRemove("destination", req.params?.groupIndex, req.params?.index),
+        data: await buttonRemove("destination", parseInt(req.params?.groupIndex), parseInt(req.params?.index)),
     });
 }));
 
