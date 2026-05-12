@@ -14,7 +14,7 @@
     "author": "",
     "license": "Apache-2.0",
     "dependencies": {
-        "axios": "^1.13.2",
+        "axios": "^1.15.0",
         "base-64": "^1.0.0",
         "delay": "^5.0.0",
         "express": "^4.18.2",
@@ -28,7 +28,7 @@
         "node-cache": "^5.1.2",
         "node-fetch": "^2.6.7",
         "ping": "^0.4.1",
-        "underscore": "^1.13.1",
+        "underscore": "^1.13.8",
         "winston": "^3.19.0",
         "xml-js": "^1.6.11"
     },
