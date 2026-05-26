@@ -33,7 +33,7 @@ router.get(
 /**
  * @swagger
  * /bug/shutdown:
- *    get:
+ *    post:
  *      description: Shuts down the BUG application
  *      tags: [bug]
  *      produces:
@@ -42,7 +42,7 @@ router.get(
  *        '200':
  *          description: Success
  */
-router.get(
+router.post(
     "/shutdown",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
@@ -56,7 +56,7 @@ router.get(
 /**
  * @swagger
  * /bug/restart:
- *    get:
+ *    post:
  *      description: Restarts the BUG application and all associated modules
  *      tags: [bug]
  *      produces:
@@ -65,7 +65,7 @@ router.get(
  *        '200':
  *          description: Success
  */
-router.get(
+router.post(
     "/restart",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {

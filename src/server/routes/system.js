@@ -34,7 +34,7 @@ router.get("/hello", function (req, res, next) {
 /**
  * @swagger
  * /system/cleanup:
- *    get:
+ *    post:
  *      description: Cleans up unused images, containers volumes and other system junk.
  *      tags: [system]
  *      produces:
@@ -43,7 +43,7 @@ router.get("/hello", function (req, res, next) {
  *        '200':
  *          description: Success
  */
-router.get("/cleanup", restrict.to(["admin"]), async function (req, res, next) {
+router.post("/cleanup", restrict.to(["admin"]), async function (req, res, next) {
     const data = await dockerCleanup();
     hashResponse(res, req, {
         status: data ? "success" : "failure",

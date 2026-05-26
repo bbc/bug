@@ -4,7 +4,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import AxiosGet from "@utils/AxiosGet";
+import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 import React from "react";
 export default function SystemToolbar(props) {
@@ -14,18 +14,18 @@ export default function SystemToolbar(props) {
 
     const handleShutdown = async () => {
         sendAlert(`Application shutting down`, { broadcast: "true", variant: "success" });
-        AxiosGet("/api/bug/shutdown");
+        AxiosPost("/api/bug/shutdown");
     };
 
     const handleRestart = async () => {
         sendAlert(`Application restarting`, { broadcast: "true", variant: "success" });
-        AxiosGet("/api/bug/restart");
+        AxiosPost("/api/bug/restart");
     };
 
     const handleCleanup = async () => {
         sendAlert(`Cleaning up system`, { broadcast: "true", variant: "success" });
 
-        const status = await AxiosGet("/api/system/cleanup");
+        const status = await AxiosPost("/api/system/cleanup");
         if (status) {
             sendAlert(`Cleanup successful`, { broadcast: "true", variant: "success" });
         }
