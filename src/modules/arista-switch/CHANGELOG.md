@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.9
+
+- 2026-05-26: improve poe failure handling ([aa5387f](https://github.com/bbc/bug/commit/aa5387f4916070535b3cf5bbe1a4070bbe3238d9))
+
 ### version 1.2.8
 
 - 2026-04-24: fix crash when poe not available on switch ([677cbde](https://github.com/bbc/bug/commit/677cbde504f9e799d4eb00f0e8f1d02f32ab5106))

@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.5
+
+- 2026-05-26: fix async job scheduler ([ff9a46f](https://github.com/bbc/bug/commit/ff9a46f3728ba7165ce6b4be399b5c7b02b584c2))
+
 ### version 1.0.4
 
 - 2026-03-06: refactor all services and utils ([966dbe9](https://github.com/bbc/bug/commit/966dbe9a6253f130ab1df2cfc698f70ca3715103))

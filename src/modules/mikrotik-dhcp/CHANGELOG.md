@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.23
+
+- 2026-05-26: fix async job scheduler ([eb006f6](https://github.com/bbc/bug/commit/eb006f6b4556197eedae6ed28ceff100c385081f))
+
 ### version 1.1.3
 
 - 2026-02-24: use node-routeros-v2 ([ddc9305](https://github.com/bbc/bug/commit/ddc9305ebe49a3d9cc61191698afc072f6361f21))
