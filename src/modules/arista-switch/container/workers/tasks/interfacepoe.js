@@ -1,5 +1,6 @@
 "use strict";
 
+const delay = require("delay");
 const logger = require("@core/logger")(module);
 
 module.exports = async ({ mongoCollection, aristaApi, interfacesCollection, workerData }) => {
@@ -63,7 +64,11 @@ module.exports = async ({ mongoCollection, aristaApi, interfacesCollection, work
         logger.debug(`updated db with poe details for ${bulkResult.modifiedCount} interface(s)`);
 
     } catch (err) {
-        // the switch might not support poe. log the error but don't throw it, since this worker is not critical and we don't want it to keep retrying if poe is not supported.
-        logger.warning(`failed: ${err.message}`);
+        if (err.message.includes("'show poe' failed")) {
+            logger.warning(`device does not support poe - retrying in 30 seconds ...`);
+            await delay(30000);
+        } else {
+            logger.warning(`failed: ${err.message}`);
+        }
     }
 };

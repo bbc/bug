@@ -38,6 +38,11 @@ module.exports = async ({
             timeout,
         });
 
+        const error = response.data?.error;
+        if (error) {
+            throw new Error(error.message || "unknown error returned from device");
+        }
+
         const results = response.data?.result;
         if (!results) {
             throw new Error("no result returned from device");
@@ -62,7 +67,7 @@ module.exports = async ({
         logger.error(`ERROR: ${msg}`);
         logger.info("arista-api url:", url);
         logger.info("arista-api request body:", jsonBody);
-        throw new Error("arista-api request failed", { cause: err });
+        throw new Error(err.message);
     }
 };
 
