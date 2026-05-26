@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.2.10
+
+- 2026-05-26: clean up vlan trunk members in access mode ([4142ced](https://github.com/bbc/bug/commit/4142ced6b4f54e8ff8dc8a749cb190d60e648b62))
+- 2026-05-26: fix missing trunk vlan in allowed list ([8fdb046](https://github.com/bbc/bug/commit/8fdb04638393d33c0101d4c8ba24733e0e8f7660))
+
 ### version 1.2.9
 
 - 2026-05-26: improve poe failure handling ([aa5387f](https://github.com/bbc/bug/commit/aa5387f4916070535b3cf5bbe1a4070bbe3238d9))
