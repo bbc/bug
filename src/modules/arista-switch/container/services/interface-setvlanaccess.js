@@ -27,6 +27,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
         if (iface.mode === "trunk") {
             logger.info(`interface ${interfaceId} is in trunk mode, changing to access`);
             commands.push("no switchport trunk native vlan");
+            commands.push("no switchport trunk allowed vlan");
             commands.push("switchport mode access");
         }
 
