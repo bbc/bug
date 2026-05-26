@@ -43,7 +43,7 @@ router.get("/hello", function (req, res, next) {
  *        '200':
  *          description: Success
  */
-router.get("/cleanup", restrict.to(["admin", "user"]), async function (req, res, next) {
+router.get("/cleanup", restrict.to(["admin"]), async function (req, res, next) {
     const data = await dockerCleanup();
     hashResponse(res, req, {
         status: data ? "success" : "failure",
@@ -144,6 +144,7 @@ router.get("/settings", async function (req, res, next) {
  * @swagger
  * /system/settings:
  *   put:
+ *     description: Updates the global settings for BUG
  *     tags: [system]
  *     produces:
  *       - application/json
@@ -164,7 +165,7 @@ router.get("/settings", async function (req, res, next) {
  *         schema:
  *           type: object
  */
-router.put("/settings", restrict.to(["admin", "user"]), async function (req, res, next) {
+router.put("/settings", restrict.to(["admin"]), async function (req, res, next) {
     const result = await systemSettingsUpdate(req.body);
     hashResponse(res, req, {
         status: result ? "success" : "failure",
@@ -186,7 +187,7 @@ router.put("/settings", restrict.to(["admin", "user"]), async function (req, res
  */
 router.get(
     "/backup",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const backup = await systemBackup();
         res.header("Content-Disposition", `attachment; filename="${backup.filename}"`);
@@ -208,7 +209,7 @@ router.get(
  */
 router.post(
     "/restore",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         let result = {};
         if (!req.files || !req.files.backup) {

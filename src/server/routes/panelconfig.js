@@ -90,7 +90,7 @@ router.put(
  */
 router.get(
     "/push/:panelId",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",

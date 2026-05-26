@@ -17,10 +17,6 @@ const panelSetGroup = require("@services/panel-setgroup");
 const restrict = require("@middleware/restrict");
 const logger = require("@core/logger")(module);
 
-// const authUser = require('@middleware/auth-user');
-// const authGuest = require('@middleware/auth-guest');
-// const authAdmin = require('@middleware/auth-admin');
-
 /**
  * @swagger
  * /panel/{panelId}:
@@ -44,7 +40,7 @@ const logger = require("@core/logger")(module);
  */
 router.delete(
     "/:panelId",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await panelDelete(req.params.panelId);
         hashResponse(res, req, {
@@ -152,7 +148,7 @@ router.get(
  */
 router.post(
     "/",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await panelAdd(req.body);
         hashResponse(res, req, {
@@ -190,7 +186,7 @@ router.post(
  */
 router.get(
     "/build/:moduleName",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         let result;
         try {
@@ -233,7 +229,7 @@ router.get(
  */
 router.get(
     "/start/:panelId",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         // starts and builds if necessary
         const result = await panelStart(req.params.panelId);
@@ -272,7 +268,7 @@ router.get(
  */
 router.get(
     "/restart/:panelId",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         // stop and start (and rebuild if necessary)
         const result = await panelRestart(req.params.panelId);
@@ -311,6 +307,7 @@ router.get(
  */
 router.get(
     "/stop/:panelId",
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         // stops the image running (probably won't ever be run from the UI)
         const result = await panelStop(req.params.panelId);
@@ -355,6 +352,7 @@ router.get(
  */
 router.get(
     "/group/:panelId/:group?",
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await panelSetGroup(req.params.panelId, req.params.group ? req.params.group : "");
         hashResponse(res, req, {
@@ -392,6 +390,7 @@ router.get(
  */
 router.get(
     "/enable/:panelId",
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await panelEnable(req.params.panelId);
         hashResponse(res, req, {
@@ -429,6 +428,7 @@ router.get(
  */
 router.get(
     "/disable/:panelId",
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await panelDisable(req.params.panelId);
         hashResponse(res, req, {
@@ -466,6 +466,7 @@ router.get(
  */
 router.get(
     "/:panelId",
+    restrict.to(["admin", "user"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",

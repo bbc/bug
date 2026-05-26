@@ -87,6 +87,7 @@ router.get(
  */
 router.post(
     "/reorder",
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyReorder(req?.body?.strategies);
         hashResponse(res, req, {
@@ -120,7 +121,7 @@ router.post(
  */
 router.get(
     "/:type",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyGet(req.params.type);
         hashResponse(res, req, {
@@ -187,7 +188,7 @@ router.get(
  */
 router.get(
     "/:type/enable",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, true);
         hashResponse(res, req, {
@@ -221,7 +222,7 @@ router.get(
  */
 router.get(
     "/:type/disable",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyState(req.params.type, false);
         hashResponse(res, req, {
@@ -260,7 +261,7 @@ router.get(
  */
 router.put(
     "/:type",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await strategyUpdate(req.params.type, req.body);
         hashResponse(res, req, {

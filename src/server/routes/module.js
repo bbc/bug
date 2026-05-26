@@ -9,10 +9,6 @@ const moduleRebuild = require("@services/module-rebuild");
 const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
 
-// const authUser = require('@middleware/auth-user');
-// const authGuest = require('@middleware/auth-guest');
-// const authAdmin = require('@middleware/auth-admin');
-
 /**
  * @swagger
  * /module:
@@ -105,7 +101,7 @@ router.get(
  */
 router.get(
     "/build/:moduleName",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await moduleBuild(req.params.moduleName);
         hashResponse(res, req, {
@@ -142,7 +138,7 @@ router.get(
  */
 router.get(
     "/rebuild/:moduleName",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await moduleRebuild(req.params.moduleName);
         hashResponse(res, req, {

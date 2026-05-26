@@ -8,18 +8,18 @@ const isPublicRoute = require("@services/panel-ispublicroute");
 
 const restrictedTo = (roles) => {
     const checkCredentials = async (req, res, next) => {
-        //Checks if the request is directed at a panel and if the route is not subject to auth
+        // checks if the request is directed at a panel and if the route is not subject to auth
         if (await isPublicRoute(req.params.panelid, req.path)) {
             return next();
         }
 
-        //Check if any stragetgies are enabled
+        // check if any stragetgies are enabled
         if ((await strategyGetEnabledCount()) === 0) {
             req.logout();
             return next();
         }
 
-        //If the endpoint is allowed to be accessed from a panel - check it's keys
+        // if the endpoint is allowed to be accessed from a panel - check its keys
         if (roles.includes("panel")) {
             const apiKey = await keyClean(await req.headers["authorization"]);
             if (await panelCheckKey(apiKey)) {
@@ -27,12 +27,12 @@ const restrictedTo = (roles) => {
             }
         }
 
-        //Check if user has been authenticated by passport
+        // check if user has been authenticated by passport
         if (await req.isAuthenticated()) {
             //Gets up to date info on the user from the model
             const user = await userGet(req.user);
 
-            //Check if the user is still enabled
+            // check if the user is still enabled
             if (!user?.enabled) {
                 req.logout();
                 return hashResponse(res, req, {
@@ -42,7 +42,7 @@ const restrictedTo = (roles) => {
                 });
             }
 
-            //Check if the user has the correct roles
+            // check if the user has the correct roles
             if (!checkUserRoles(roles, user?.roles)) {
                 return hashResponse(res, req, {
                     status: "failure",
@@ -53,7 +53,7 @@ const restrictedTo = (roles) => {
             return next();
         }
 
-        //User must not pass. Give them the news
+        // user must not pass. Give them the news
         return hashResponse(res, req, {
             status: "failure",
             message: `Sorry to BUG but you're not authorised, please log in.`,

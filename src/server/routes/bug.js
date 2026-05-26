@@ -6,6 +6,7 @@ const bugQuote = require("@services/bug-quote");
 const bugShutdown = require("@services/bug-shutdown");
 const bugRestart = require("@services/bug-restart");
 const hashResponse = require("@core/hash-response");
+const restrict = require("@middleware/restrict");
 
 /**
  * @swagger
@@ -43,6 +44,7 @@ router.get(
  */
 router.get(
     "/shutdown",
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",
@@ -65,6 +67,7 @@ router.get(
  */
 router.get(
     "/restart",
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         hashResponse(res, req, {
             status: "success",

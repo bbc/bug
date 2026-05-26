@@ -40,7 +40,7 @@ const hashResponse = require("@core/hash-response");
  */
 router.put(
     "/:groupName/:newGroupName",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await panelGroupRename(req.params.groupName, req.params.newGroupName);
         hashResponse(res, req, {
@@ -78,7 +78,7 @@ router.put(
  */
 router.delete(
     "/:groupName",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await panelGroupDelete(req.params.groupName);
         hashResponse(res, req, {

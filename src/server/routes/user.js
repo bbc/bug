@@ -35,7 +35,7 @@ const userGetProxyId = require("@services/user-getproxyid");
  */
 router.delete(
     "/:id",
-    restrict.to(["admin", "user"]),
+    restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
         const result = await userDelete(req.params.id);
         hashResponse(res, req, {
