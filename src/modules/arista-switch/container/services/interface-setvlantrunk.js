@@ -39,6 +39,10 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         logger.info(`setting vlan ${untaggedVlan} on interface ${interfaceId}`);
 
         if (taggedVlans !== "ALL") {
+            // make sure taggedVlans contains the untagged vlan
+            if (!taggedVlans.includes(untaggedVlan)) {
+                taggedVlans.push(untaggedVlan);
+            }
             commands.push(`switchport trunk allowed vlan ${taggedVlans.join(",")}`);
         }
 
