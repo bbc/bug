@@ -65,8 +65,8 @@ module.exports = async ({ mongoCollection, aristaApi, interfacesCollection, work
 
     } catch (err) {
         if (err.message.includes("'show poe' failed")) {
-            logger.warning(`device does not support poe - retrying in 30 seconds ...`);
-            await delay(30000);
+            logger.warning(`device does not support poe - retrying in 10 minutes ...`);
+            await delay(600000);
         } else {
             logger.warning(`failed: ${err.message}`);
         }
