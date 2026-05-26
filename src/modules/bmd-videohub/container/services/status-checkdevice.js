@@ -19,7 +19,7 @@ module.exports = async () => {
 
         // return status item
         return new StatusItem({
-            message: `device active with ${sourceCount} source(s) and ${destinationCount} destination(s)`,
+            message: `Device active with ${sourceCount} source(s) and ${destinationCount} destination(s)`,
             key: "deviceactive",
             type: "default",
             flags: [],

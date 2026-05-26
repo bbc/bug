@@ -1,6 +1,6 @@
 "use strict";
 
-const { ToadScheduler, SimpleIntervalJob, Task } = require("toad-scheduler");
+const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require("toad-scheduler");
 const logger = require("@core/logger")(module);
 const path = require("path");
 
@@ -26,13 +26,13 @@ module.exports = ({ tasks, context, baseDir }) => {
             scheduler.addSimpleIntervalJob(
                 new SimpleIntervalJob(
                     { seconds: task.seconds, runImmediately: true },
-                    new Task(task.name, async () => {
+                    new AsyncTask(task.name, async () => {
                         await handler(context);
-                    })
+                    }),
+                    {
+                        preventOverrun: true,
+                    }
                 ),
-                {
-                    preventOverrun: true,
-                }
             );
         };
 
