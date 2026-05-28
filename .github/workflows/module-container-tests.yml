@@ -125,6 +125,24 @@ jobs:
               with:
                   node-version: 22
 
+            - name: ensure module test Dockerfile exists
+              run: |
+                  dockerfile_path="${{ matrix.working_directory }}/Dockerfile"
+                  if [[ -f "$dockerfile_path" ]]; then
+                      echo "Using existing Dockerfile at $dockerfile_path"
+                      exit 0
+                  fi
+
+                  echo "No Dockerfile found at $dockerfile_path, creating CI test Dockerfile"
+                  cat > "$dockerfile_path" <<EOF_DOCKER
+                  FROM node:22-alpine
+                  WORKDIR /home/node/module
+                  COPY src/server/core ./core
+                  COPY src/modules/${{ matrix.module }}/container ./
+                  RUN npm install
+                  CMD ["npm", "run", "development"]
+                  EOF_DOCKER
+
             - name: run tests for module
               run: |
                   cd "${{ matrix.working_directory }}"
