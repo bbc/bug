@@ -4,7 +4,7 @@
     "scripts": {
         "production": "node ./api/server",
         "development": "nodemon --verbose ./api/server",
-        "test": "jest"
+        "test": "docker build -f ./Dockerfile -t bug-module-test ../../../.. && docker run --rm --name bug-module-test-run bug-module-test npx jest --runInBand --config ./jest.config.cjs"
     },
     "nodemonConfig": {
         "ignore": [
