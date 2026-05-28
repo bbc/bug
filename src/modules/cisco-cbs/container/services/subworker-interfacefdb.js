@@ -61,7 +61,7 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
             );
         });
     } catch (err) {
-        err.message = `subworker-interfacefdb: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

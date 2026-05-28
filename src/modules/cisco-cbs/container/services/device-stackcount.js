@@ -12,7 +12,7 @@ module.exports = async () => {
         }
         return result;
     } catch (err) {
-        err.message = `device-stackcount: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

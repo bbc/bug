@@ -71,3 +71,8 @@ This module follows BUG’s standard capabilities model. For more information, s
 ---
 
 ## Troubleshooting
+
+## Development Conventions
+
+- Start logger messages with a lowercase letter.
+- Avoid prefixing logger messages with file names (logger metadata already includes source context).

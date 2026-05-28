@@ -36,7 +36,7 @@ module.exports = async (interfaceId, startTime = null, endTime = null) => {
 
         return dataPoints;
     } catch (err) {
-        err.message = `interface-history(${interfaceId}): ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

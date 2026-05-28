@@ -18,7 +18,7 @@ module.exports = async () => {
         }
         return [];
     } catch (err) {
-        logger.error(`status-checkpending: ${err.stack || err.message}`);
+        logger.error(`${err.stack || err.message}`);
         return [];
     }
 

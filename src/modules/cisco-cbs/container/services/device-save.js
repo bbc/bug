@@ -12,9 +12,9 @@ module.exports = async () => {
             throw new Error("failed to load config");
         }
 
-        logger.info("device-save: saving device config ...");
+        logger.info("saving device config ...");
 
-        result = await ciscoCBSSSH({
+        const result = await ciscoCBSSSH({
             host: config.address,
             username: config.username,
             password: config.password,
@@ -34,12 +34,12 @@ module.exports = async () => {
             );
         }
 
-        logger.info("device-save: success");
+        logger.info("success");
 
         await deviceSetPending(false);
 
     } catch (err) {
-        err.message = `device-save: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

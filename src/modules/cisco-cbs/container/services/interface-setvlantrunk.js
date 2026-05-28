@@ -37,7 +37,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         });
 
         // set the mode
-        logger.info(`interface-setvlantrunk: setting interface to trunk mode`);
+        logger.info("setting interface to trunk mode");
         await snmpAwait.set({
             oid: `.1.3.6.1.4.1.9.6.1.101.48.22.1.1.${interfaceId}`,
             value: 12,
@@ -55,7 +55,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
         // summarise this into a list of vlans - it's used to update the db
         const vlanArray = ciscoCBSVlanArray(vlans, taggedVlans);
         logger.info(
-            `interface-setvlantrunk: setting vlan trunk members to ${JSON.stringify(
+            `setting VLAN trunk members to ${JSON.stringify(
                 vlanArray
             )}, native ${untaggedVlan} on interface ${interfaceId}`
         );
@@ -83,7 +83,7 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             },
         });
 
-        logger.info(`interface-setvlantrunk: success - updating DB`);
+        logger.info("success - updating DB");
 
         // update db
         const interfaceCollection = await mongoCollection("interfaces");
@@ -91,13 +91,13 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
             { interfaceId: Number(interfaceId) },
             { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": vlanArray } }
         );
-        logger.info(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
 
         await deviceSetPending(true);
 
         return true;
     } catch (err) {
-        err.message = `interface-setvlantrunk: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     } finally {

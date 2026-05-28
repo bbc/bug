@@ -35,7 +35,7 @@ module.exports = async (interfaceId) => {
 
         return interfaceResult;
     } catch (err) {
-        err.message = `interface-get(${interfaceId}): ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

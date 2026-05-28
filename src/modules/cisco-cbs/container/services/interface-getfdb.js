@@ -54,7 +54,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, i
 
         return fdbArray;
     } catch (err) {
-        err.message = `interface-fdb(${interfaceId}): ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

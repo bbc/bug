@@ -50,7 +50,7 @@ app.use((err, req, res, next) => {
 
     const errorLocation = err.stack ? err.stack.split('\n')[1].trim() : "Unknown location";
 
-    logger.error(`ERROR: ${message} | ${errorLocation}`);
+    logger.error(`error: ${message} | ${errorLocation}`);
 
     res.status(statusCode).json({
         status: "error",

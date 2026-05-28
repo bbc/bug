@@ -5,10 +5,10 @@ const logger = require("@core/logger")(module);
 
 module.exports = async (pendingStatus) => {
     try {
-        logger.info(`device-setpending: setting pending status to ${pendingStatus ? "true" : "false"}`);
+        logger.info(`setting pending status to ${pendingStatus ? "true" : "false"}`);
         await mongoSingle.set("pending", pendingStatus, 60);
     } catch (err) {
-        err.message = `device-setpending: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

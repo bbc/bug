@@ -7,7 +7,7 @@ module.exports = async () => {
     try {
         return mongoSingle.get("vlans");
     } catch (err) {
-        err.message = `vlan-list: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

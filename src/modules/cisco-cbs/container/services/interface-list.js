@@ -66,7 +66,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}, s
 
         return interfaces;
     } catch (err) {
-        err.message = `interface-list: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

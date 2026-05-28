@@ -2,12 +2,6 @@
 const SSH2Shell = require("ssh2shell");
 
 module.exports = ({ host, port = 22, username, password, commands = [], debug = false, timeout = 5000 }) => {
-    process.on("uncaughtException", function (err) {
-        if (err.toString().indexOf("Connection closed") === -1) {
-            console.log(err);
-        }
-    });
-
     const preCommands = ["terminal datadump", "terminal no prompt"];
     const results = [];
 

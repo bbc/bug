@@ -37,7 +37,7 @@ module.exports = async () => {
         })
 
     } catch (error) {
-        logger.error(`status-getsystem: ${error.message}`);
+        logger.error(`${error.message}`);
         return []
     }
 };

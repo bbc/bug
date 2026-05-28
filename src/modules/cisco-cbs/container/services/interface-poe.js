@@ -31,7 +31,7 @@ module.exports = async (interfaceId, action) => {
             community: config.snmpCommunity,
         });
 
-        logger.info(`interface-poe: ${actionText} POE on interface ${interfaceId} ...`);
+        logger.info(`${actionText} POE on interface ${interfaceId} ...`);
 
         // perform SNMP set to enable/disable POE
         await snmpAwait.set({
@@ -39,7 +39,7 @@ module.exports = async (interfaceId, action) => {
             value: action === "enable" ? 1 : 2,
         });
 
-        logger.info(`interface-poe: success - updating DB`);
+        logger.info("success - updating DB");
 
         // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
@@ -48,7 +48,7 @@ module.exports = async (interfaceId, action) => {
             { $set: { "poe-admin-enable": action === "enable" } }
         );
 
-        logger.info(`interface-poe: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
 
         if (dbResult.matchedCount !== 1) {
             throw new Error(
@@ -59,9 +59,9 @@ module.exports = async (interfaceId, action) => {
         // mark system as pending
         await deviceSetPending(true);
 
-        logger.info(`interface-poe: complete`);
+        logger.info("complete");
     } catch (err) {
-        err.message = `interface-poe(${interfaceId}, ${action}): ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     } finally {
