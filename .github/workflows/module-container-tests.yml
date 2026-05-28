@@ -1,0 +1,141 @@
+name: Module Container Tests
+
+permissions:
+    contents: read
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - "src/modules/**"
+            - "src/server/core/**"
+            - ".github/workflows/module-container-tests.yml"
+
+jobs:
+    discover-modules:
+        name: Discover modules to test
+        runs-on: ubuntu-latest
+        outputs:
+            matrix: ${{ steps.discover.outputs.matrix }}
+            has_modules: ${{ steps.discover.outputs.has_modules }}
+            selected_modules: ${{ steps.discover.outputs.selected_modules }}
+        steps:
+            - name: checkout repository
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+
+            - name: set commit range
+              id: commit-range
+              shell: bash
+              run: |
+                  base_sha="${{ github.event.before }}"
+                  head_sha="${{ github.sha }}"
+                  if [[ "$base_sha" =~ ^0+$ ]]; then
+                      base_sha="$(git rev-parse "$head_sha^")"
+                  fi
+                  echo "base_sha=$base_sha" >> "$GITHUB_OUTPUT"
+                  echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+
+            - name: discover changed and testable modules
+              id: discover
+              env:
+                  BASE_SHA: ${{ steps.commit-range.outputs.base_sha }}
+                  HEAD_SHA: ${{ steps.commit-range.outputs.head_sha }}
+              run: |
+                  node <<'NODE'
+                  const fs = require("fs");
+                  const path = require("path");
+                  const { execSync } = require("child_process");
+
+                  const baseSha = process.env.BASE_SHA;
+                  const headSha = process.env.HEAD_SHA;
+
+                  let changedFiles = [];
+                  try {
+                      const diff = execSync(`git diff --name-only ${baseSha} ${headSha}`, { encoding: "utf8" });
+                      changedFiles = diff.split("\n").map((s) => s.trim()).filter(Boolean);
+                  } catch {
+                      changedFiles = [];
+                  }
+
+                  const changedModules = Array.from(
+                      new Set(
+                          changedFiles
+                              .map((file) => {
+                                  const match = file.match(/^src\/modules\/([^/]+)\//);
+                                  return match ? match[1] : null;
+                              })
+                              .filter(Boolean)
+                      )
+                  );
+
+                  const coreChanged = changedFiles.some((file) => file.startsWith("src/server/core/"));
+
+                  const modulesRoot = path.join("src", "modules");
+                  const testableModules = [];
+
+                  for (const moduleName of fs.readdirSync(modulesRoot)) {
+                      const packagePath = path.join(modulesRoot, moduleName, "container", "package.json");
+                      if (!fs.existsSync(packagePath)) {
+                          continue;
+                      }
+
+                      try {
+                          const pkg = JSON.parse(fs.readFileSync(packagePath, "utf8"));
+                          if (pkg?.scripts?.test) {
+                              testableModules.push(moduleName);
+                          }
+                      } catch {
+                          // Skip invalid package.json files.
+                      }
+                  }
+
+                  const selected = coreChanged
+                      ? testableModules
+                      : testableModules.filter((moduleName) => changedModules.includes(moduleName));
+
+                  const matrix = selected.map((moduleName) => ({
+                      module: moduleName,
+                      working_directory: `src/modules/${moduleName}/container`,
+                  }));
+
+                  const out = process.env.GITHUB_OUTPUT;
+                  fs.appendFileSync(out, `matrix=${JSON.stringify(matrix)}\n`);
+                  fs.appendFileSync(out, `has_modules=${matrix.length > 0}\n`);
+                  fs.appendFileSync(out, `selected_modules=${selected.join(",")}\n`);
+                  NODE
+
+    module-tests:
+        name: Module Tests (${{ matrix.module }})
+        needs: discover-modules
+        if: needs.discover-modules.outputs.has_modules == 'true'
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include: ${{ fromJson(needs.discover-modules.outputs.matrix) }}
+        steps:
+            - name: checkout repository
+              uses: actions/checkout@v6
+
+            - name: setup node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 22
+
+            - name: run tests for module
+              run: |
+                  cd "${{ matrix.working_directory }}"
+                  npm ci
+                  npm run test
+
+    no-modules-changed:
+        name: No module tests required
+        needs: discover-modules
+        if: needs.discover-modules.outputs.has_modules != 'true'
+        runs-on: ubuntu-latest
+        steps:
+            - name: print skip reason
+              run: echo "No changed modules with a test script were detected."

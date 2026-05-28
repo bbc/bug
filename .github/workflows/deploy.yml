@@ -1,4 +1,4 @@
-name: BUG Deploy
+name: Deploy
 env:
     registry: "ghcr.io"
 

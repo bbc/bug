@@ -1,5 +1,5 @@
-# .github/workflows/frontend.yml
-name: BUG Frontend
+name: Frontend
+
 permissions:
     contents: read
 on:
