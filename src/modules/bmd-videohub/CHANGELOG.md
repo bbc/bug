@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.3.10
+
+- 2026-05-28: add tests ([5c7094a](https://github.com/bbc/bug/commit/5c7094a37e462a60c7f7256017ac40045a767e43))
+
 ### version 1.3.9
 
 - 2026-05-05: fix group navigation ([7b3a9b4](https://github.com/bbc/bug/commit/7b3a9b49fe78d042a155badc3d87a9ce5fa2e55c))
