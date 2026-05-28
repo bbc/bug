@@ -17,3 +17,6 @@
 - check upgrade - the panel enabled should be false and it takes a long time to update
 - update mikrotik modules using new core class
 - codecs should show green when connected
+- explain admin/user
+- disable UI for actions for users
+- use health check in modules
