@@ -9,7 +9,7 @@ layout: page
 
 All the information you need to get started developing BUG modules can be found here.
 
-First off you'll need to get a development instance up and running. Both production and development versions of BUG run in a docker container.
+First off you'll need to get a development instance up and running. Both production and development versions of BUG run in Docker.
 
 The development version has live mount and runs `nodemon` and `vite` meaning the app reloads on each file save for both the frontend and backend. You develop on your development machine's filesystem and the files are mounted into the running bug container.
 
@@ -17,14 +17,14 @@ Running BUG for production? You probably want [these instructions](/bug/pages/in
 
 ## Installation
 
-For development on your local machine with docker (recommended)
+For development on your local machine with Docker (recommended):
 
-1. To begin you'll need to install the [Docker Desktop](https://www.docker.com/products/docker-desktop/) and the latest LTS version of [Node.js](https://nodejs.dev/en) on your development machine.
-1. Check your Docker and Node.js installations are working using the commands `docker -v` and `node -v`. You should see some sensible version numbers. At least `26.x.x` for Docker and at least `20.x.x` for Node.js.
+1. To begin you'll need to install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and the latest LTS version of [Node.js](https://nodejs.org/) on your development machine.
+1. Check your Docker and Node.js installations are working using the commands `docker -v` and `node -v`.
 1. Next, clone the BUG repository using `git clone https://github.com/bbc/bug`
-1. Run `npm i`. This installs all the backend dependencies locally.
-1. Spin up your development instance with `docker-compose up -d`. It may take around 5 minutes for the development build of the frontend react app to become available. You can view the live logs from the main BUG container `bug` using the command `docker logs --tail 1000 -f bug`.
-1. Get developing. If you're using the default ports, the web interface will be available on port 3000, the API on port 3101 and the GUI view of the MongoDB database on port 3202.
+1. Run `npm i`. This installs backend dependencies locally.
+1. Spin up your development instance with `docker compose up -d`. It may take around 5 minutes for the development build of the frontend app to become available. You can view logs from the main BUG container with `docker logs --tail 1000 -f bug`.
+1. Get developing. If you're using default ports, the web interface is available on port `3000`, the API on port `3101`, and MongoDB on port `27017`.
 
 You can change many of the port parameters and logging locations by setting environment variables in the `docker-compose.yml` file in the root directory.
 
@@ -34,7 +34,7 @@ Microsoft's [Visual Studio Code](https://code.visualstudio.com/) has been used f
 
 ## Troubleshooting
 
-- The `-d` in the command `docker compose -d` deataches the process from the terminal running the container in the background.
+- The `-d` in `docker compose up -d` detaches the process from the terminal and runs the containers in the background.
 - If you're getting Docker related 'permission denied' errors, make sure you've run the Docker [post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/) on Linux.
 - If you're developing on a linux OS you may see errors on the main bug container logs regarding file write permission. This can be solved by giving the docker group read write permissions on the repository directory.
 - If using a linux machine for development it's suggested that [docker engine](https://docs.docker.com/engine/install/ubuntu/) is used rather than docker desktop.
