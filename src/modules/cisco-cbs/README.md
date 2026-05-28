@@ -12,7 +12,7 @@ Interface list features:
 - add description to interface (click on the name to edit)
 - select VLAN, including editing of trunk or access mode
 - display of interface rate (1G/100M)
-- ablity to 'protect' ports to prevent accidental changes (useful for uplinks etc) - stored locally in BUG
+- ability to 'protect' ports to prevent accidental changes (useful for uplinks etc) - stored locally in BUG
 - display of neighbors and/or known devices (LLDP or FDB)
 - configurable DHCP address source to convert discovered MAC addresses to IP
 
@@ -33,22 +33,22 @@ Also checks the device to see if the password has expired - this is a common cau
 
 ## Configuration
 
-| Field                 | Default Value   | Description                                                          |
-| --------------------- | --------------- | -------------------------------------------------------------------- |
-| `id`                  | `""`            | Unique identifier for this module instance (usually auto-generated). |
-| `needsConfigured`     | `true`          | Indicates whether the module has been configured since build.        |
-| `title`               | `""`            | Human-readable title for this module instance, shown in the UI.      |
-| `module`              | `"cisco-c1300"` | Internal name of the module.                                         |
-| `description`         | `""`            | Optional text describing the module instance in the UI.              |
-| `notes`               | `""`            | Free-text field for extra notes about this configuration.            |
-| `enabled`             | `false`         | Whether the module instance is enabled                               |
-| `address`             | `""`            | IP address or hostname of the device to connect to.                  |
-| `username`            | `"bug"`         | Username used to authenticate with the device                        |
-| `password`            | `""`            | Password for the user                                                |
-| `enabled`             | `false`         | Flag indicating whether this module instance is active.              |
-| `snmpCommunity`       | `public`        | SNMP community with write access to the device                       |
-| `protectedInterfaces` | `[]`            | An of array of interfaces which are 'protected'                      |
-| `dhcpSources`         | `[]`            | An of array panel IDs which provide the dhcp server capability       |
+| Field                 | Default Value | Description                                                          |
+| --------------------- | ------------- | -------------------------------------------------------------------- |
+| `id`                  | `""`          | Unique identifier for this module instance (usually auto-generated). |
+| `needsConfigured`     | `true`        | Indicates whether the module has been configured since build.        |
+| `title`               | `""`          | Human-readable title for this module instance, shown in the UI.      |
+| `module`              | `"cisco-cbs"` | Internal name of the module.                                         |
+| `description`         | `""`          | Optional text describing the module instance in the UI.              |
+| `notes`               | `""`          | Free-text field for extra notes about this configuration.            |
+| `enabled`             | `false`       | Whether the module instance is enabled                               |
+| `address`             | `""`          | IP address or hostname of the device to connect to.                  |
+| `username`            | `"bug"`       | Username used to authenticate with the device                        |
+| `password`            | `""`          | Password for the user                                                |
+| `enabled`             | `false`       | Flag indicating whether this module instance is active.              |
+| `snmpCommunity`       | `public`      | SNMP community with write access to the device                       |
+| `protectedInterfaces` | `[]`          | An of array of interfaces which are 'protected'                      |
+| `dhcpSources`         | `[]`          | An of array panel IDs which provide the dhcp server capability       |
 
 ---
 
