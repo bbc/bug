@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.20
+
+- 2026-05-28: added tests ([a0be767](https://github.com/bbc/bug/commit/a0be76708ffb943a512541158a0fa3e4411d79e5))
+
 ### version 1.0.19
 
 - 2026-05-26: fix async job scheduler ([2628a0f](https://github.com/bbc/bug/commit/2628a0fb4df451110bff957db070288182a825b4))
