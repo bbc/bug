@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.12
+
+- 2026-05-28: fix typo ([89fb6ee](https://github.com/bbc/bug/commit/89fb6ee3a246ba2125ebc019fa1bf4af3886db80))
+
 ### version 1.1.11
 
 - 2026-05-28: add tests ([4cb69d0](https://github.com/bbc/bug/commit/4cb69d070d6c7fa6070377f3622be43362de7016))
