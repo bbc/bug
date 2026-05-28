@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.11
+
+- 2026-05-28: add tests ([fc8827a](https://github.com/bbc/bug/commit/fc8827ad5c2fd26a5210163fce24b3352827c9e7))
+
 ### version 1.2.10
 
 - 2026-05-26: clean up vlan trunk members in access mode ([4142ced](https://github.com/bbc/bug/commit/4142ced6b4f54e8ff8dc8a749cb190d60e648b62))
