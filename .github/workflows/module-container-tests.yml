@@ -98,7 +98,6 @@ jobs:
 
                   const matrix = selected.map((moduleName) => ({
                       module: moduleName,
-                      working_directory: `src/modules/${moduleName}/container`,
                   }));
 
                   const out = process.env.GITHUB_OUTPUT;
@@ -131,7 +130,7 @@ jobs:
 
             - name: ensure module test Dockerfile exists
               run: |
-                  dockerfile_path="${{ matrix.working_directory }}/Dockerfile"
+                  dockerfile_path="src/modules/${{ matrix.module }}/container/Dockerfile"
                   if [[ -f "$dockerfile_path" ]]; then
                       echo "Using existing Dockerfile at $dockerfile_path"
                       exit 0
@@ -149,7 +148,7 @@ jobs:
 
             - name: run tests for module
               run: |
-                  cd "${{ matrix.working_directory }}"
+                  cd "src/modules/${{ matrix.module }}/container"
                   npm ci
                   npm run test
 
