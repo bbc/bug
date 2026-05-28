@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.1.11
+
+- 2026-05-28: add tests ([4cb69d0](https://github.com/bbc/bug/commit/4cb69d070d6c7fa6070377f3622be43362de7016))
+- 2026-05-28: add test framework ([1d4c175](https://github.com/bbc/bug/commit/1d4c175b184d333bcf9305ee5ddb9f23341fc5cd))
+
 ### version 1.1.10
 
 - 2026-02-09: fix status timeouts ([993e81c](https://github.com/bbc/bug/commit/993e81c1700903597ad6efc18ea1c9e49838bac5))
