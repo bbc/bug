@@ -108,7 +108,7 @@ jobs:
                   NODE
 
     module-tests:
-        name: Module Tests (${{ matrix.module }})
+        name: Module Tests
         needs: discover-modules
         if: needs.discover-modules.outputs.has_modules == 'true'
         runs-on: ubuntu-latest
@@ -119,6 +119,10 @@ jobs:
         steps:
             - name: checkout repository
               uses: actions/checkout@v6
+
+            - name: module under test
+              run: |
+                  echo "Testing module: ${{ matrix.module }}"
 
             - name: setup node
               uses: actions/setup-node@v6
