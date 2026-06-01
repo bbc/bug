@@ -13,6 +13,12 @@ export default function BugApiTable({ onChange, columns, classes, filters, onClo
         setLocalFilters(filters || {});
     }, [filters]);
 
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timer.current);
+        };
+    }, []);
+
     const handleFilterChanged = (field, value) => {
         clearTimeout(timer.current);
         let filterCopy = Object.assign({}, localFilters);
