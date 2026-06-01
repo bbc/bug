@@ -17,6 +17,7 @@ import {
     TableHead,
     TableRow,
     TableSortLabel,
+    Typography,
 } from "@mui/material";
 import React, { useMemo } from "react";
 import { useCookies } from "react-cookie";
@@ -43,7 +44,7 @@ export default function BugApiTable({
 }) {
     const cookieId = useCookieId("BugApiTable");
     const [cookies, setCookie] = useCookies([cookieId]);
-    const [localForceRefresh, doLocalForceRefresh] = useForceRefresh();
+    const [localForceRefresh] = useForceRefresh();
 
     // initialize state directly to avoid unnecessary re-renders via useeffect
     const [sortField, setSortField] = React.useState(() => {
@@ -122,6 +123,15 @@ export default function BugApiTable({
     if (!pollData?.data?.length && noData && !showFilters) {
         return noData;
     }
+
+    const handleRowKeyDown = (event, item) => {
+        if (!onRowClick) return;
+
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onRowClick(event, item);
+        }
+    };
 
     return (
         <TableContainer sx={sx} component={Paper} square elevation={0}>
@@ -203,7 +213,10 @@ export default function BugApiTable({
                                     backgroundColor: highlightThisRow ? "success.light" : "transparent",
                                 }}
                                 key={rowKey}
+                                role={onRowClick ? "button" : undefined}
+                                tabIndex={onRowClick ? 0 : undefined}
                                 onClick={(event) => onRowClick?.(event, item)}
+                                onKeyDown={(event) => handleRowKeyDown(event, item)}
                             >
                                 {columns.map((column, colIndex) => (
                                     <BugApiTableCell
