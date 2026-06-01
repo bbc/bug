@@ -5,7 +5,7 @@ import FilterTextField from "@components/FilterTextField";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, TableCell, TableRow } from "@mui/material";
 import React from "react";
-export default function BugApiTable({ onChange, columns, classes, filters, onClose }) {
+export default function BugApiTableFilters({ onChange, columns, filters, onClose }) {
     const [localFilters, setLocalFilters] = React.useState({});
     const timer = React.useRef();
 
@@ -70,7 +70,7 @@ export default function BugApiTable({ onChange, columns, classes, filters, onClo
         <>
             <TableRow key="filters">
                 {columns.map((column, index) => (
-                    <BugApiTableCell key={index} column={column} index={index}>
+                    <BugApiTableCell key={column.field || index} column={column} index={index}>
                         {renderFilterCell(column)}
                     </BugApiTableCell>
                 ))}
