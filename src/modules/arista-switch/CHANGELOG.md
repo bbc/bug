@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.12
+
+- 2026-06-01: add support for 100G interfaces ([0643275](https://github.com/bbc/bug/commit/06432753e257bf91ff7619632602f7939bcbc104))
+
 ### version 1.2.11
 
 - 2026-05-28: add tests ([fc8827a](https://github.com/bbc/bug/commit/fc8827ad5c2fd26a5210163fce24b3352827c9e7))
