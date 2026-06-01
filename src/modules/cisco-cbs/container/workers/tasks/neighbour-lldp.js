@@ -3,18 +3,19 @@
 const chunk = require("@core/chunk");
 const logger = require("@core/logger")(module);
 
-const parseHexString = (hexString) => {
-    // check if the string value is only letters, numbers or slash
-    const string = hexString.toString();
-    if (/^[a-zA-Z0-9\/]+$/.test(string)) {
-        return string;
-    }
-    // otherwise, it's probably a MAC address
-    const chunks = chunk(hexString.toString("hex"), 2);
-    return chunks.join(":");
-};
+module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
 
-module.exports = async ({ snmpAwait, interfacesCollection }) => {
+    const parseHexString = (hexString) => {
+        // check if the string value is only letters, numbers or slash
+        const string = hexString.toString();
+        if (/^[a-zA-Z0-9\/]+$/.test(string)) {
+            return string;
+        }
+        // otherwise, it's probably a MAC address
+        const chunks = chunk(hexString.toString("hex"), 2);
+        return chunks.join(":");
+    };
+
     try {
         // fetch list of LLDP neighbors
         const lldpInfo = await snmpAwait.subtree({
@@ -51,17 +52,20 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
             }
         });
 
-        lldpByInterface.forEach(async (lldpObject, eachIndex) => {
-            await interfacesCollection.updateOne(
-                { interfaceId: parseInt(eachIndex) },
-                {
-                    $set: {
-                        lldp: lldpObject,
+        await Promise.all(
+            lldpByInterface
+                .map((lldpObject, eachIndex) => ({ lldpObject, eachIndex }))
+                .filter(({ lldpObject }) => lldpObject && typeof lldpObject === "object")
+                .map(({ lldpObject, eachIndex }) => interfacesCollection.updateOne(
+                    { interfaceId: parseInt(eachIndex) },
+                    {
+                        $set: {
+                            lldp: lldpObject,
+                        },
                     },
-                },
-                { upsert: false }
-            );
-        });
+                    { upsert: false }
+                ))
+        );
     } catch (err) {
         err.message = `${err.stack || err.message}`;
         logger.error(err.message);

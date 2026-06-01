@@ -1,10 +1,8 @@
 "use strict";
 
 const delay = require("delay");
-const register = require("module-alias/register");
-const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 const formatBps = require("@core/format-bps");
-const trafficSaveHistory = require("../services/traffic-savehistory");
 
 const convert32BitCounters = (results) => {
     // this switch incorrectly reports these OIDs as 64 bit even though they are 32 bit
@@ -20,16 +18,12 @@ const convert32BitCounters = (results) => {
     return output;
 }
 
-module.exports = async function (config, snmpAwait) {
-
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
-    const historyCollection = await mongoCollection("history");
+module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) => {
 
     // get list of interfaces
     const interfaces = await interfacesCollection.find().toArray();
-    if (!interfaces) {
-        console.log("worker-interfacestats: no interfaces found in db - waiting ...");
+    if (!interfaces?.length) {
+        logger.debug("no interfaces found in db - waiting ...");
         await delay(5000);
         return;
     }
@@ -142,10 +136,28 @@ module.exports = async function (config, snmpAwait) {
 
     // perform bulk update
     if (bulkOperations.length) {
-        await interfacesCollection.bulkWrite(bulkOperations);
+        const bulkResult = await interfacesCollection.bulkWrite(bulkOperations);
+        logger.debug(`updated db for ${bulkResult.modifiedCount} interface(s)`);
     }
 
     // save history
-    await trafficSaveHistory(historyCollection, historyArray);
+    let saveDocument = {
+        timestamp: new Date(),
+        interfaces: {},
+    };
+
+    for (let eachInterface of historyArray) {
+        try {
+            saveDocument.interfaces[eachInterface["id"]] = {
+                tx: eachInterface["tx-rate"],
+                rx: eachInterface["rx-rate"],
+            };
+        } catch (error) {
+            logger.info(error);
+        }
+    }
+
+    await historyCollection.insertOne(saveDocument);
+    logger.debug(`saved history for ${historyArray.length} interface(s)`);
 
 };

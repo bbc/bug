@@ -1,13 +1,8 @@
 "use strict";
 
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
-module.exports = async function (config, snmpAwait) {
-
-    // Kick things off
-    console.log(`ciscocbs-fetchsystem: connecting to device at ${config.address} via snmp`);
+module.exports = async ({ snmpAwait, mongoSingle }) => {
 
     // get the system info
     const systemResult = await snmpAwait.getMultiple({
@@ -29,21 +24,12 @@ module.exports = async function (config, snmpAwait) {
             location: systemResult["1.3.6.1.2.1.1.6.0"],
         };
         if (payload.description && payload.uptime) {
-            console.log(`ciscocbs-fetchsystem: saving system data to db - uptime ${payload.uptime}`);
+            logger.debug(`saving system data to db - uptime ${payload.uptime}`);
             await mongoSingle.set("system", payload, 1200000);
         }
         else {
-            console.log(`ciscocbs-fetchsystem: failed to retrieve system data from device`);
+            logger.warning(`failed to retrieve system data from device`);
         }
     }
-    await delay(1000);
-
-    // get the pending flag
-    const pendingResult = await snmpAwait.get({
-        oid: ".1.3.6.1.4.1.9.6.1.101.1.13.0",
-    });
-    await mongoSingle.set("pending", pendingResult === 2, 1200000);
-    await delay(1000);
-
 };
 

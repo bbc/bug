@@ -1,5 +1,6 @@
 "use strict";
 const SSH2Shell = require("ssh2shell");
+const logger = require("@core/logger")(module);
 
 module.exports = ({ host, port = 22, username, password, commands = [], debug = false, timeout = 5000 }) => {
     const preCommands = ["terminal datadump", "terminal no prompt"];
@@ -76,8 +77,8 @@ module.exports = ({ host, port = 22, username, password, commands = [], debug = 
         try {
             ssh.connect();
         } catch (error) {
-            console.log(error);
-            reject();
+            logger.error(error);
+            reject(error);
         }
     });
 };

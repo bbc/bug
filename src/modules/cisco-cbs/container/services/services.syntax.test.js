@@ -1,34 +1,10 @@
+const fs = require("fs");
 const path = require("path");
 
-const serviceFiles = [
-    "device-save.js",
-    "device-setpending.js",
-    "device-stackcount.js",
-    "interface-disable.js",
-    "interface-enable.js",
-    "interface-get.js",
-    "interface-getfdb.js",
-    "interface-history.js",
-    "interface-list.js",
-    "interface-poe.js",
-    "interface-protect.js",
-    "interface-rename.js",
-    "interface-setvlanaccess.js",
-    "interface-setvlantrunk.js",
-    "interface-unprotect.js",
-    "pending-get.js",
-    "status-checkpasswordexpired.js",
-    "status-checkpending.js",
-    "status-get.js",
-    "status-getsystem.js",
-    "subworker-interfacefdb.js",
-    "subworker-interfacelldp.js",
-    "traffic-savehistory.js",
-    "validate-address.js",
-    "validate-auth.js",
-    "validate-snmp.js",
-    "vlan-list.js",
-];
+const serviceFiles = fs
+    .readdirSync(__dirname)
+    .filter((file) => file.endsWith(".js") && !file.endsWith(".test.js"))
+    .sort();
 
 describe("services syntax smoke", () => {
     test.each(serviceFiles)("loads %s", (file) => {

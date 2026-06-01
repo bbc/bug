@@ -1,9 +1,9 @@
 "use strict";
 
-const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 
-module.exports = async ({ snmpAwait, interfacesCollection }) => {
+module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
+
     try {
         // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
         // more details to the user
@@ -49,17 +49,20 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
                 }
             }
         }
-        fdbByInterface.forEach(async (fdbArray, eachIndex) => {
-            await interfacesCollection.updateOne(
-                { interfaceId: eachIndex },
-                {
-                    $set: {
-                        fdb: fdbArray,
+        await Promise.all(
+            fdbByInterface
+                .map((fdbArray, eachIndex) => ({ fdbArray, eachIndex }))
+                .filter(({ fdbArray }) => Array.isArray(fdbArray))
+                .map(({ fdbArray, eachIndex }) => interfacesCollection.updateOne(
+                    { interfaceId: eachIndex },
+                    {
+                        $set: {
+                            fdb: fdbArray,
+                        },
                     },
-                },
-                { upsert: false }
-            );
-        });
+                    { upsert: false }
+                ))
+        );
     } catch (err) {
         err.message = `${err.stack || err.message}`;
         logger.error(err.message);

@@ -1,19 +1,14 @@
 "use strict";
 
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 const ciscoCBSVlanlist = require("@utils/ciscocbs-vlanlist");
 
-module.exports = async function (config, snmpAwait) {
-
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
+module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
     const interfaces = await interfacesCollection.find().toArray();
 
     if (!interfaces?.length) {
-        console.info(`ciscocbs-fetchinterfacevlans: no interfaces in db - skipping update of vlans`);
+        logger.debug(`no interfaces in db - skipping update of vlans`);
         return;
     }
 
@@ -71,6 +66,6 @@ module.exports = async function (config, snmpAwait) {
 
     if (bulkOperations.length) {
         const bulkResult = await interfacesCollection.bulkWrite(bulkOperations);
-        console.info(`ciscocbs-fetchinterfacevlans: updated db with vlans for ${bulkResult.modifiedCount} interface(s)`);
+        logger.debug(`updated db with vlans for ${bulkResult.modifiedCount} interface(s)`);
     }
 };

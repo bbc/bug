@@ -13,3 +13,32 @@ docker build -f ./Dockerfile -t bug-module-test ../../../.. && docker run --rm -
 ## Scope
 
 - Applies project-wide to modules under `src/modules/*/container`.
+
+## Module Container Quick Check Profile
+
+- Purpose: run a quick agentic pre-commit check in chat before major module container changes are committed.
+- Use trigger phrase in chat: Run the module container quick check before commit.
+- Rule: keep worker restart checks aligned to real config dependencies.
+- Rule: prefer logs without filename-style prefixes in worker and task messages (for example avoid `worker-...:` labels in log text).
+- Rule: in `src/modules/*/container`, all runtime files should use the logger module, except `api/app.js` and `api/server.js`.
+- Rule: use `logger.debug` for worker and worker task operational messages to reduce visual noise.
+- Rule: use `logger.info` for normal service action logs.
+- Rule: use `logger.warning` when actions fail but execution can continue.
+- Rule: use `logger.error` for exceptions and critical failures.
+- Rule: keep `api/app.js` error middleware behavior as-is, including `errorLocation`, unless a task explicitly asks to change it.
+- Rule: keep `api/server.js` using `console.log` for startup and uncaught exception output unless a task explicitly asks to change it.
+- Rule: keep syntax smoke tests generic by discovering service files dynamically where possible (for example `services/services.syntax.test.js`).
+- Check: run an unused-file reference sweep before deleting files (for example `find` + `grep` across `.js`, `.json`, and `.md`, excluding `node_modules`).
+- Check: run module container tests with Docker (`npm test` in the module container).
+- Check: verify worker restart triggers match real config keys used by each worker.
+- Check: verify worker/task log messages avoid filename-style prefixes.
+- Check: run logger policy audit across container runtime files before major commits.
+- Maintenance: add future items as new single-line bullets prefixed with `Rule:` or `Check:`.
+
+### Logger Audit Command
+
+Use this one-liner from the container folder to quickly find policy violations:
+
+```sh
+node -e 'const fs=require("fs"),path=require("path");const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.name==="node_modules"?[]:e.isDirectory()?walk(path.join(d,e.name)):e.isFile()&&e.name.endsWith(".js")?[path.join(d,e.name)]:[]);const root=process.cwd();const files=walk(root).map(p=>path.relative(root,p).replace(/\\\\/g,"/")).filter(f=>!f.endsWith(".test.js")&&!f.endsWith(".spec.js"));const skip=new Set(["api/app.js","api/server.js"]);for(const f of files){const t=fs.readFileSync(path.join(root,f),"utf8");if(!skip.has(f)&&/console\\.(log|error|warn|info)\\(/.test(t))console.log("console:",f);if(!skip.has(f)&&!/require\\(["\x27]@core\\/logger["\x27]\\)\\(module\\)/.test(t))console.log("missing logger:",f);if(f.startsWith("workers/")&&/logger\\.(info|warning|error)\\(/.test(t))console.log("worker non-debug:",f);if(f.startsWith("services/")&&/logger\\.debug\\(/.test(t))console.log("service debug:",f);} '
+```

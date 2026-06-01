@@ -22,7 +22,7 @@ module.exports = ({ tasks, context, baseDir }) => {
         }
 
         const addJob = () => {
-            logger.info(`adding task ${task.name}, interval: ${task.seconds}s`);
+            logger.info(`starting task ${task.name}, interval: ${task.seconds}s`);
             scheduler.addSimpleIntervalJob(
                 new SimpleIntervalJob(
                     { seconds: task.seconds, runImmediately: true },
