@@ -10,9 +10,7 @@ export default function BugApiTable({ onChange, columns, classes, filters, onClo
     const timer = React.useRef();
 
     React.useEffect(() => {
-        if (filters && Object.keys(filters).length > 0) {
-            setLocalFilters(filters);
-        }
+        setLocalFilters(filters || {});
     }, [filters]);
 
     const handleFilterChanged = (field, value) => {
