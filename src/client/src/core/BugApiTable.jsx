@@ -22,6 +22,64 @@ import {
 import React, { useMemo } from "react";
 import { useCookies } from "react-cookie";
 
+const BugApiTableRow = React.memo(function BugApiTableRow({
+    item,
+    rowKey,
+    columns,
+    filterable,
+    menuItems,
+    onRowClick,
+    rowHeight,
+    showNavArrow,
+    highlightRow,
+    onRowKeyDown,
+}) {
+    const highlightThisRow = highlightRow?.(item);
+
+    return (
+        <TableRow
+            hover={!!onRowClick}
+            sx={{
+                cursor: onRowClick ? "pointer" : "auto",
+                height: rowHeight ? rowHeight : "auto",
+                backgroundColor: highlightThisRow ? "success.light" : "transparent",
+            }}
+            key={rowKey}
+            role={onRowClick ? "button" : undefined}
+            tabIndex={onRowClick ? 0 : undefined}
+            onClick={(event) => onRowClick?.(event, item)}
+            onKeyDown={(event) => onRowKeyDown(event, item)}
+        >
+            {columns.map((column, colIndex) => (
+                <BugApiTableCell
+                    key={`cell-${rowKey}-${colIndex}`}
+                    column={column}
+                    index={colIndex}
+                    sx={{ verticalAlign: "middle" }}
+                >
+                    {column.content ? column.content(item) : item[column.field]}
+                </BugApiTableCell>
+            ))}
+
+            {filterable && !menuItems && !showNavArrow && <TableCell key="placeholder">&nbsp;</TableCell>}
+
+            {menuItems && (
+                <TableCell key="menu-cell" sx={{ width: "2rem", paddingLeft: "0px", paddingRight: "4px" }}>
+                    <BugItemMenu item={item} menuItems={menuItems} />
+                </TableCell>
+            )}
+
+            {showNavArrow && !menuItems && (
+                <TableCell key="nav-cell" sx={{ width: "2rem", paddingLeft: "0px", paddingRight: "4px" }}>
+                    <ChevronRightIcon />
+                </TableCell>
+            )}
+        </TableRow>
+    );
+});
+
+const filtersAreEqual = (left = {}, right = {}) => JSON.stringify(left) === JSON.stringify(right);
+
 export default function BugApiTable({
     apiUrl,
     mockApiData = null,
@@ -63,18 +121,26 @@ export default function BugApiTable({
         return Object.keys(filters).length > 0;
     });
 
-    // handle filter logic
-    const handleFilterClicked = () => {
+    const handleFilterClicked = React.useCallback(() => {
         if (showFilters) {
             handleFiltersChanged({});
         }
         setShowFilters(!showFilters);
-    };
+    }, [showFilters]);
 
-    const handleFiltersChanged = (value) => {
-        setFilters(value);
-        setCookie(`${cookieId}_filters`, value, { path: "/" });
-    };
+    const handleFiltersChanged = React.useCallback(
+        (value) => {
+            setFilters((currentFilters) => {
+                if (filtersAreEqual(currentFilters, value)) {
+                    return currentFilters;
+                }
+
+                setCookie(`${cookieId}_filters`, value, { path: "/" });
+                return value;
+            });
+        },
+        [cookieId, setCookie]
+    );
 
     // usememo for postdata to prevent unnecessary polling triggers
     const postData = useMemo(
@@ -94,16 +160,31 @@ export default function BugApiTable({
         forceRefresh: `${forceRefresh}${localForceRefresh}`,
     });
 
-    const handleSortClicked = (column) => {
-        if (!sortable || !column.sortable) return;
+    const handleSortClicked = React.useCallback(
+        (column) => {
+            if (!sortable || !column.sortable) return;
 
-        if (column.field === sortField) {
-            setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-        } else {
-            setSortField(column.field);
-            setSortDirection(column.defaultSortDirection || "asc");
-        }
-    };
+            if (column.field === sortField) {
+                setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+            } else {
+                setSortField(column.field);
+                setSortDirection(column.defaultSortDirection || "asc");
+            }
+        },
+        [sortField, sortable]
+    );
+
+    const handleRowKeyDown = React.useCallback(
+        (event, item) => {
+            if (!onRowClick) return;
+
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onRowClick(event, item);
+            }
+        },
+        [onRowClick]
+    );
 
     // early returns for loading or empty states
     if (pollData.status === "loading" || pollData.status === "idle") {
@@ -123,15 +204,6 @@ export default function BugApiTable({
     if (!pollData?.data?.length && noData && !showFilters) {
         return noData;
     }
-
-    const handleRowKeyDown = (event, item) => {
-        if (!onRowClick) return;
-
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            onRowClick(event, item);
-        }
-    };
 
     return (
         <TableContainer sx={sx} component={Paper} square elevation={0}>
@@ -200,58 +272,23 @@ export default function BugApiTable({
                 )}
                 <TableBody>
                     {pollData?.data?.map((item, rowIndex) => {
-                        const highlightThisRow = highlightRow?.(item);
                         // use a unique id if available, otherwise fallback to index
                         const rowKey = item.id || item.uuid || rowIndex;
 
                         return (
-                            <TableRow
-                                hover={!!onRowClick}
-                                sx={{
-                                    cursor: onRowClick ? "pointer" : "auto",
-                                    height: rowHeight ? rowHeight : "auto",
-                                    backgroundColor: highlightThisRow ? "success.light" : "transparent",
-                                }}
+                            <BugApiTableRow
                                 key={rowKey}
-                                role={onRowClick ? "button" : undefined}
-                                tabIndex={onRowClick ? 0 : undefined}
-                                onClick={(event) => onRowClick?.(event, item)}
-                                onKeyDown={(event) => handleRowKeyDown(event, item)}
-                            >
-                                {columns.map((column, colIndex) => (
-                                    <BugApiTableCell
-                                        key={`cell-${rowKey}-${colIndex}`}
-                                        column={column}
-                                        index={colIndex}
-                                        sx={{ verticalAlign: "middle" }}
-                                    >
-                                        {/* fallback to field value if content isn't provided */}
-                                        {column.content ? column.content(item) : item[column.field]}
-                                    </BugApiTableCell>
-                                ))}
-
-                                {filterable && !menuItems && !showNavArrow && (
-                                    <TableCell key="placeholder">&nbsp;</TableCell>
-                                )}
-
-                                {menuItems && (
-                                    <TableCell
-                                        key="menu-cell"
-                                        sx={{ width: "2rem", paddingLeft: "0px", paddingRight: "4px" }}
-                                    >
-                                        <BugItemMenu item={item} menuItems={menuItems} />
-                                    </TableCell>
-                                )}
-
-                                {showNavArrow && !menuItems && (
-                                    <TableCell
-                                        key="nav-cell"
-                                        sx={{ width: "2rem", paddingLeft: "0px", paddingRight: "4px" }}
-                                    >
-                                        <ChevronRightIcon />
-                                    </TableCell>
-                                )}
-                            </TableRow>
+                                item={item}
+                                rowKey={rowKey}
+                                columns={columns}
+                                filterable={filterable}
+                                menuItems={menuItems}
+                                onRowClick={onRowClick}
+                                rowHeight={rowHeight}
+                                showNavArrow={showNavArrow}
+                                highlightRow={highlightRow}
+                                onRowKeyDown={handleRowKeyDown}
+                            />
                         );
                     })}
                 </TableBody>
