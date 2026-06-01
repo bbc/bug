@@ -109,6 +109,16 @@ export default function BugApiTable({
         return <BugLoading />;
     }
 
+    if (pollData.status === "failure") {
+        return (
+            <TableContainer sx={sx} component={Paper} square elevation={0}>
+                <Typography sx={{ p: 2 }} color="error.main" role="alert">
+                    {pollData.error || "Unable to load table data."}
+                </Typography>
+            </TableContainer>
+        );
+    }
+
     if (!pollData?.data?.length && noData && !showFilters) {
         return noData;
     }
