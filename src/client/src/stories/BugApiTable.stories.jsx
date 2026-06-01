@@ -31,7 +31,7 @@ export default {
             description: {
                 component: `A table control which integrates with BUG module APIs.<br />
                 Provides sorting, filtering and item menu capabilities.<br />
-**Please Note**: filtering and supporting are not implemented on this storybook`,
+**Please Note**: filtering and sorting are not implemented on this storybook`,
             },
         },
         controls: { sort: "requiredFirst" },
