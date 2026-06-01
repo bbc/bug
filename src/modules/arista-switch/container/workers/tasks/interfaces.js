@@ -4,6 +4,7 @@ const logger = require("@core/logger")(module);
 
 const convertBandwidth = (bandwidth) => {
     switch (bandwidth) {
+        case 100000000000: return "100G";
         case 10000000000: return "10G";
         case 1000000000: return "1G";
         case 100000000: return "100M";
