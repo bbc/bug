@@ -20,13 +20,19 @@ export default function BugApiTable({ onChange, columns, classes, filters, onClo
     }, []);
 
     const handleFilterChanged = (field, value) => {
-        clearTimeout(timer.current);
-        let filterCopy = Object.assign({}, localFilters);
-        filterCopy[field] = value;
-        setLocalFilters(filterCopy);
-        timer.current = setTimeout(() => {
-            onChange(filterCopy);
-        }, 500);
+        setLocalFilters((prev) => {
+            const filterCopy = {
+                ...prev,
+                [field]: value,
+            };
+
+            clearTimeout(timer.current);
+            timer.current = setTimeout(() => {
+                onChange(filterCopy);
+            }, 500);
+
+            return filterCopy;
+        });
     };
 
     const renderFilterCell = (column) => {
