@@ -13,6 +13,7 @@ on:
             - "src/client/src/hooks/**"
             - "src/client/src/utils/**"
             - "src/modules/**/*.md"
+            - ".github/workflows/documentation.yml"
     workflow_dispatch:
 
 permissions:

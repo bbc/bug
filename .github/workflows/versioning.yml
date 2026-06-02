@@ -8,6 +8,9 @@ on:
             - "src/server/**"
             - "src/client/**"
             - "src/modules/**"
+            - ".github/workflows/versioning.yml"
+            - ".github/scripts/updateModules.js"
+            - ".github/scripts/updateApp.js"
     workflow_dispatch:
 
 permissions:
