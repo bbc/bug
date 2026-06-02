@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.2
+
+- 2026-06-02: fix parsing of interface counters in new firmware ([4a3d14a](https://github.com/bbc/bug/commit/4a3d14ae7777f903626b90cd8ead565494b6900a))
+
 ### version 1.2.1
 
 - 2026-06-01: refactor workers, tidy services, fix multiple bugs, improve logging ([e78e98a](https://github.com/bbc/bug/commit/e78e98a32a9d4c5db9611d3b10526c6be66a6c40))
