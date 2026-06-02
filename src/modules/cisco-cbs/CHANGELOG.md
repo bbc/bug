@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.2.1
+
+- 2026-06-01: refactor workers, tidy services, fix multiple bugs, improve logging ([e78e98a](https://github.com/bbc/bug/commit/e78e98a32a9d4c5db9611d3b10526c6be66a6c40))
+- 2026-06-01: remove unused files ([dc2451f](https://github.com/bbc/bug/commit/dc2451f94e5b4e7281e338e37a1d937c97b56caa))
+
 ### version 1.1.12
 
 - 2026-05-28: fix typo ([89fb6ee](https://github.com/bbc/bug/commit/89fb6ee3a246ba2125ebc019fa1bf4af3886db80))
