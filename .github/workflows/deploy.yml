@@ -15,12 +15,26 @@ permissions:
 
 jobs:
     docker:
+        if: ${{ github.event.repository.fork == false && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success') }}
         runs-on: ubuntu-latest
         defaults:
             run:
                 working-directory: ./src/server
 
         steps:
+            - name: set start timestamp
+              id: start-time
+              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+
+            - name: Send slack start message
+              uses: slackapi/slack-github-action@v2.0.0
+              with:
+                  method: chat.postMessage
+                  token: ${{ secrets.SLACK_BOT_TOKEN }}
+                  payload: |
+                      channel: ${{ secrets.SLACK_CHANNEL_ID }}
+                      text: "Starting <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|deployment> to GHCR at ${{ steps.start-time.outputs.value }}"
+
             # checkout the repository at the latest commit
             - name: checkout repository
               uses: actions/checkout@v6
@@ -38,7 +52,8 @@ jobs:
 
             # set build timestamp
             - name: set build timestamp
-              run: echo "timestamp=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+              id: build-time
+              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
             # get backend version
             - name: get backend version
@@ -86,6 +101,21 @@ jobs:
                       author=${{ github.actor }}
                       version=${{ steps.backend-version.outputs.current-version }}
                       org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
-                      uk.co.bbc.bug.build.timestamp=${{ env.timestamp }}
+                      uk.co.bbc.bug.build.timestamp=${{ steps.build-time.outputs.value }}
                       uk.co.bbc.bug.build.number=${{ github.run_number }}
                       uk.co.bbc.bug.build.commit=${{ github.sha }}
+
+            - name: set end timestamp
+              id: end-time
+              if: ${{ always() }}
+              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+
+            - name: Send slack end message
+              if: ${{ always() }}
+              uses: slackapi/slack-github-action@v2.0.0
+              with:
+                  method: chat.postMessage
+                  token: ${{ secrets.SLACK_BOT_TOKEN }}
+                  payload: |
+                      channel: ${{ secrets.SLACK_CHANNEL_ID }}
+                      text: "Deployment to GHCR finished with status ${{ job.status }} at ${{ steps.end-time.outputs.value }}"
