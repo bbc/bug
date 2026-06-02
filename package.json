@@ -63,7 +63,6 @@
         "@mui/system": "^7.3.6",
         "@mui/x-date-pickers": "^8.22.0",
         "@reduxjs/toolkit": "^2.11.2",
-        "@storybook/theming": "^6.4.18",
         "@testing-library/jest-dom": "^5.11.4",
         "ansi-to-html": "^0.7.2",
         "axios": "^1.15.0",
@@ -162,38 +161,6 @@
             "react-app/jest"
         ]
     },
-    "DELETEME_jest": {
-        "rootDir": ".",
-        "testEnvironment": "node",
-        "testPathIgnorePatterns": [
-            "./node_modules/",
-            "./modulebuilder/",
-            "./modules/",
-            "./client/",
-            "./routes/icons.test.js"
-        ],
-        "setupFilesAfterEnv": [
-            "jest-extended/all"
-        ],
-        "moduleNameMapper": {
-            "@modules/(.*)": "<rootDir>/modules/$1",
-            "@components/(.*)": "<rootDir>/src/client/components/$1",
-            "@core/(.*)": "<rootDir>/src/server/core/$1",
-            "@data/(.*)": "<rootDir>/src/server/data/$1",
-            "@redux/(.*)": "<rootDir>/src/client/src/redux/$1",
-            "@utils/(.*)": "<rootDir>/src/utils/$1",
-            "@hooks/(.*)": "<rootDir>/src/hooks/$1",
-            "@root/(.*)": "<rootDir>/$1",
-            "@bin/(.*)": "<rootDir>/bin/$1",
-            "@filters/(.*)": "<rootDir>/filters/$1",
-            "@routes/(.*)": "<rootDir>/routes/$1",
-            "@models/(.*)": "<rootDir>/models/$1",
-            "@workers/(.*)": "<rootDir>/workers/$1",
-            "@sockets/(.*)": "<rootDir>/sockets/$1",
-            "@services/(.*)": "<rootDir>/services/$1",
-            "@middleware/(.*)": "<rootDir>/middleware/$1"
-        }
-    },
     "_moduleAliases": {
         "@root": "./src",
         "@bin": "./src/server/bin/",
@@ -210,14 +177,6 @@
     "devDependencies": {
         "@babel/core": "^7.14.3",
         "@babel/plugin-proposal-numeric-separator": "^7.18.6",
-        "@storybook/addon-actions": "^6.5",
-        "@storybook/addon-essentials": "^6.5.16",
-        "@storybook/addon-links": "^6.5",
-        "@storybook/builder-vite": "^10.2.0",
-        "@storybook/builder-webpack5": "^6.5.16",
-        "@storybook/manager-webpack5": "^6.5.16",
-        "@storybook/react": "^10.3.5",
-        "@storybook/storybook-deployer": "^2.8.11",
         "@vitejs/plugin-react": "^5.1.2",
         "babel-plugin-bulk-import": "^2.0.0",
         "jest": "^30.0.0",
