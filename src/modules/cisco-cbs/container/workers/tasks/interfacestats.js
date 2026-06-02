@@ -5,11 +5,11 @@ const logger = require("@core/logger")(module);
 const formatBps = require("@core/format-bps");
 
 const convert32BitCounters = (results) => {
-    // this switch incorrectly reports these OIDs as 64 bit even though they are 32 bit
+    // older firmware versions of this switch incorrectly report these OIDs as 64 bit even though they are 32 bit
     const output = {}
     Object.entries(results).forEach(([key, value]) => {
         if (value.length !== 4) {
-            output[key] = 0;
+            output[key] = parseInt(value);
         }
         else {
             output[key] = value.readInt32BE(0)
