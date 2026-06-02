@@ -1,0 +1,17 @@
+FROM node:22-alpine
+
+WORKDIR /home/node/bug
+
+# install dependencies from root workspace lockfile
+COPY package*.json ./
+RUN npm ci --legacy-peer-deps
+
+# copy runtime config and only source needed by server tests
+COPY config ./config
+COPY src/server ./src/server
+COPY src/modules ./src/modules
+COPY src/client/public/icons/favicon.ico ./src/client/public/icons/favicon.ico
+
+ENV NODE_ENV=test
+
+CMD ["npm", "run", "test:server"]

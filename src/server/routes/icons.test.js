@@ -5,7 +5,7 @@ afterAll(async () => {
     await new Promise((resolve) => setTimeout(() => resolve(), 500));
 });
 
-const testIcons = ["mdi-abacus", "access-alarm"];
+const testIcons = ["mdi-abacus", "AccessAlarm"];
 
 describe("Test the '/api/icons/' endpoint", () => {
     test("Test the '/icons' getall route", async () => {
