@@ -17,11 +17,12 @@ jobs:
     docker:
         if: ${{ github.event.repository.fork == false && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success') }}
         runs-on: ubuntu-latest
-        defaults:
-            run:
-                working-directory: ./src/server
 
         steps:
+            # checkout the repository at the latest commit
+            - name: checkout repository
+              uses: actions/checkout@v6
+
             - name: set start timestamp
               id: start-time
               run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
@@ -34,10 +35,6 @@ jobs:
                   payload: |
                       channel: ${{ secrets.SLACK_CHANNEL_ID }}
                       text: "Starting <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|deployment> to GHCR at ${{ steps.start-time.outputs.value }}"
-
-            # checkout the repository at the latest commit
-            - name: checkout repository
-              uses: actions/checkout@v6
 
             # setup node
             - name: setup node
