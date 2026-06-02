@@ -1,0 +1,38 @@
+name: BUG Server Tests
+
+permissions:
+    contents: read
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - "src/server/**"
+            - "config/**"
+            - "package.json"
+            - "package-lock.json"
+            - ".github/workflows/test-bug-server.yml"
+    pull_request:
+        paths:
+            - "src/server/**"
+            - "config/**"
+            - "package.json"
+            - "package-lock.json"
+            - ".github/workflows/test-bug-server.yml"
+
+jobs:
+    server-tests:
+        name: Server Tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout repository
+              uses: actions/checkout@v6
+
+            - name: setup node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 22
+
+            - name: run dockerized server tests
+              run: npm run test:server

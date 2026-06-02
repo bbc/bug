@@ -10,7 +10,7 @@ on:
         paths:
             - "src/modules/**"
             - "src/server/core/**"
-            - ".github/workflows/module-container-tests.yml"
+            - ".github/workflows/test-module-container.yml"
 
 jobs:
     discover-modules:

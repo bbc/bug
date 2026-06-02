@@ -1,17 +1,28 @@
 const request = require("supertest");
-const system = require("@bin/api");
 const panelDelete = require("@services/panel-delete");
 const panelAdd = require("@services/panel-add");
+
+jest.mock("@services/docker-listimages", () => jest.fn(async () => []));
+jest.mock("@models/docker-container", () => ({
+    get: jest.fn(async () => null),
+    list: jest.fn(async () => []),
+    set: jest.fn(async () => true),
+    setMultiple: jest.fn(async () => true),
+}));
+jest.mock("@services/panelconfig-push", () => jest.fn(async () => true));
+
+const system = require("@bin/api");
+const testPanelId = `test-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 const testPanel = {
     module: "clock",
-    id: "test",
+    id: testPanelId,
     title: "test-title",
     group: "test-group",
     description: "test-description",
 };
 const newTestPanel = {
     module: "clock",
-    id: "test",
+    id: testPanelId,
     title: "test-title",
     group: "test-group",
     description: "new-test-description",
