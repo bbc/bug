@@ -7,7 +7,7 @@ layout: page
 
 # Panel Status
 
-Each module exposes an API endoint `/status` used to report panel status. This reponse can include one or more StatusItems which are displayed in the UI.
+Each module exposes an API endpoint `/status` used to report panel status. This response can include one or more StatusItems which are displayed in the UI.
 
 Here's an example:
 
