@@ -1,24 +1,70 @@
 name: Version Bump
 
 on:
-    push:
+    workflow_run:
+        workflows:
+            - BUG Server Tests
+            - Module Container Tests
+            - BUG Client Tests
+        types:
+            - completed
         branches:
             - main
-        paths:
-            - "src/server/**"
-            - "src/client/**"
-            - "src/modules/**"
-            - ".github/workflows/versioning.yml"
-            - ".github/scripts/updateModules.js"
-            - ".github/scripts/updateApp.js"
     workflow_dispatch:
 
 permissions:
+    actions: read
     contents: write
     pull-requests: write
 
 jobs:
+    verify-tests:
+        name: Verify required tests passed
+        runs-on: ubuntu-latest
+        outputs:
+            tests_passed: ${{ steps.required-tests.outputs.tests_passed }}
+        steps:
+            - name: check required workflow results
+              id: required-tests
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const requiredWorkflows = [
+                          "test-bug-server.yml",
+                          "test-module-container.yml",
+                          "test-bug-client.yml",
+                      ];
+
+                      const headSha = context.payload.workflow_run?.head_sha ?? context.sha;
+                      const branch = context.payload.workflow_run?.head_branch ?? context.ref.replace("refs/heads/", "");
+
+                      for (const workflowId of requiredWorkflows) {
+                          const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                              workflow_id: workflowId,
+                              branch,
+                              per_page: 100,
+                          });
+
+                          const successfulRun = runs.find((run) => (
+                              run.head_sha === headSha
+                              && run.status === "completed"
+                              && run.conclusion === "success"
+                          ));
+
+                          if (!successfulRun) {
+                              core.info(`${workflowId} has not succeeded for ${headSha}.`);
+                              core.setOutput("tests_passed", "false");
+                              return;
+                          }
+                      }
+
+                      core.setOutput("tests_passed", "true");
+
     version:
+        needs: verify-tests
+        if: needs.verify-tests.outputs.tests_passed == 'true'
         runs-on: ubuntu-latest
         steps:
             # checkout code
