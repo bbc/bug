@@ -1,7 +1,5 @@
-- add historical entries to CHANGELOG.md
 - add panel status (default/success etc)
 - Add firmware check for mikrotik devices (info only, maybe?) and bugfix
 - Use the interface capacity to colour the sparkline to show utilisation.
 - add status warning when one or more interfaces are at 90% of capacity?
-- use bulkwrite in workers to improve db performance
 - add heartbeat status check and worker task
