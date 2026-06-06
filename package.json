@@ -140,7 +140,7 @@
         "socket.io-client": "^4.0.1",
         "swagger-jsdoc": "^6.2.1",
         "swagger-ui-express": "^4.4.0",
-        "systeminformation": "^5.16.1",
+        "systeminformation": "^5.31.7",
         "tar": "^7.5.13",
         "text-hex": "^1.0.0",
         "timezones.json": "^1.6.1",
