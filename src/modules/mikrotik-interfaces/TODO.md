@@ -4,7 +4,6 @@
 - Use the interface capacity to colour the sparkline to show utilisation.
 - add status warning when one or more interfaces are at 90% of capacity?
 - use asyncHandler in routes
-- refactor services with try/catch/throw
 - refactor workers to improve error handling
 - use bulkwrite in workers to improve db performance
 - remove filename from all log actions......

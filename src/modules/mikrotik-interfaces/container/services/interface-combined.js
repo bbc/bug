@@ -1,25 +1,30 @@
-'use strict';
+"use strict";
 
-const mongoCollection = require('@core/mongo-collection');
+const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceName) => {
+    try {
+        const dbInterfaces = await mongoCollection("interfaces");
+        let iface = await dbInterfaces.findOne({ name: interfaceName });
 
-    const dbInterfaces = await mongoCollection('interfaces');
-    let iface = await dbInterfaces.findOne({ 'name': interfaceName });
+        if (!iface) {
+            return null;
+        }
 
-    if (!iface) {
-        return null;
+        const dbLinkStats = await mongoCollection("linkstats");
+        const linkStats = await dbLinkStats.findOne({ name: interfaceName });
+
+        const dbTraffic = await mongoCollection("traffic");
+        const traffic = await dbTraffic.findOne({ name: interfaceName });
+
+        iface["linkstats"] = linkStats;
+        iface["traffic"] = traffic;
+
+        return iface;
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
-
-    const dbLinkStats = await mongoCollection('linkstats');
-    const linkStats = await dbLinkStats.findOne({ 'name': interfaceName });
-
-    const dbTraffic = await mongoCollection('traffic');
-    const traffic = await dbTraffic.findOne({ 'name': interfaceName });
-
-    iface['linkstats'] = linkStats;
-    iface['traffic'] = traffic;
-
-    return iface;
-}
-
+};

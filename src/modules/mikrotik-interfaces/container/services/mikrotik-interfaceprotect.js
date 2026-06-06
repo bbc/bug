@@ -5,7 +5,6 @@ const configPutViaCore = require("@core/config-putviacore");
 const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceName) => {
-
     try {
         const config = await configGet();
         if (!config) {
@@ -13,14 +12,14 @@ module.exports = async (interfaceName) => {
         }
 
         if (config.protectedInterfaces.includes(interfaceName)) {
-            logger.info(`mikrotik-interfaceprotect: interface ${interfaceName} already protected`);
+            logger.info(`interface ${interfaceName} is already protected`);
             return false;
         }
 
         config.protectedInterfaces.push(interfaceName);
         return await configPutViaCore(config);
     } catch (err) {
-        err.message = `mikrotik-interfaceprotect: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

@@ -11,9 +11,8 @@ module.exports = async (interfaceName) => {
             throw new Error("failed to load config");
         }
 
-
         if (!config.protectedInterfaces.includes(interfaceName)) {
-            logger.info(`mikrotik-interfaceunprotect: cannot find interface ${interfaceName}`);
+            logger.info(`cannot find interface ${interfaceName}`);
             return false;
         }
 
@@ -21,7 +20,7 @@ module.exports = async (interfaceName) => {
 
         return await configPutViaCore(config);
     } catch (err) {
-        err.message = `mikrotik-interfaceprotect: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

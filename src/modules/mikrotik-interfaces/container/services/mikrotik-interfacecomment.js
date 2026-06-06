@@ -20,7 +20,7 @@ module.exports = async (interfaceId, interfaceComment) => {
         });
 
         await routerOsApi.run(`/interface/set`, [`=numbers=${interfaceId}`, "=comment=" + interfaceComment]);
-        logger.info(`mikrotik-interfacecomment: set comment on interface ${interfaceId} to '${interfaceComment}'`);
+        logger.info(`Set comment on interface ${interfaceId} to '${interfaceComment}'`);
 
         // now update DB
         const interfacesCollection = await mongoCollection("interfaces");
@@ -28,11 +28,12 @@ module.exports = async (interfaceId, interfaceComment) => {
             { id: interfaceId },
             { $set: { comment: interfaceComment } }
         );
-        logger.info(`interface-interfacecomment: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`Database update result: ${JSON.stringify(dbResult.result)}`);
 
         return true;
-    } catch (error) {
-        logger.error(`mikrotik-interfacecomment: ${error.stack || error || error.message}`);
-        return false;
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };
