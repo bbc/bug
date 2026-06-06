@@ -22,7 +22,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
         groupIndex = Number.isInteger(groupIndex) && groupIndex >= 0 ? groupIndex : null;
 
         // if no groupIndex given, default to 0 if groups exist
-        groupIndex = groups.length > 0 ? groupIndex ?? 0 : null;
+        groupIndex = groups.length > 0 ? (groupIndex ?? 0) : null;
 
         const dataCollection = await mongoCollection("data");
 
@@ -54,7 +54,7 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
             // check quad destinations
             // it's a quad destination, so we need to check that the following 3 sources match the following 3 destinations
             const isValidQuad = (startIndex, selectedSource) =>
-                [1, 2, 3].every(a => parseInt(dbOutputRouting?.data?.[startIndex + a]) === selectedSource + a);
+                [1, 2, 3].every((a) => parseInt(dbOutputRouting?.data?.[startIndex + a]) === selectedSource + a);
 
             if (destinationQuads?.[destinationIndex] && !isValidQuad(destinationIndex, selectedSourceIndex)) {
                 selectedSourceIndex = null;
@@ -92,15 +92,13 @@ module.exports = async (destinationIndex = null, groupIndex = null, showExcluded
             // sort by order field
             outputArray.sources.sort((a, b) => a.order - b.order);
         } else {
-            logger.warning("videohub-getsources: input_labels not found in database");
+            logger.warning("input_labels not found in database");
         }
 
-        // logger.info(`videohub-getsources: retrieved ${outputArray.sources.length} sources`);
+        // logger.info(`retrieved ${outputArray.sources.length} sources`);
         return outputArray;
-
     } catch (err) {
-        err.message = `videohub-getsources: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

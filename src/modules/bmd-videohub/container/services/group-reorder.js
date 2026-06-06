@@ -33,18 +33,16 @@ module.exports = async (type, groupNames) => {
                     value: groupsByName[eachGroupName],
                 });
             } else {
-                logger.warning(`group-reorder: group "${eachGroupName}" not found in ${groupVar}`);
+                logger.warning(`group "${eachGroupName}" not found in ${groupVar}`);
             }
         }
 
         config[groupVar] = orderedGroupArray;
 
-        logger.info(`group-reorder: reordered groups in ${groupVar} to [${groupNames.join(", ")}]`);
+        logger.info(`reordered groups in ${groupVar} to [${groupNames.join(", ")}]`);
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `group-reorder: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

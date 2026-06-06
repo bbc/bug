@@ -24,9 +24,8 @@ module.exports = async () => {
             type: "default",
             flags: [],
         });
-
     } catch (err) {
-        logger.error(`status-checkdevice: ${err.stack || err.message}`);
+        logger.error(err.stack || err.message);
         return [];
     }
 };

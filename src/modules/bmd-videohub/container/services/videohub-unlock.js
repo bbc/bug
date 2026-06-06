@@ -20,19 +20,17 @@ module.exports = async (index) => {
         // create router instance
         const router = new videohub({ port: config.port, host: config.address });
         await router.connect();
-        logger.info(`videohub-unlock: connected to router at ${config.address}:${config.port}`);
+        logger.info(`connected to router at ${config.address}:${config.port}`);
 
         // send unlock command
         const field = "VIDEO OUTPUT LOCKS";
         const command = `${index} U`;
         await router.send(field, command, true);
-        logger.info(`videohub-unlock: unlocked output ${index}`);
+        logger.info(`unlocked output ${index}`);
 
         return true;
-
     } catch (err) {
-        err.message = `videohub-unlock: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

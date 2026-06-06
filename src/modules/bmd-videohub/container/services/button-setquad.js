@@ -22,13 +22,11 @@ module.exports = async (type, buttonIndex, value) => {
 
         config[typeVar][buttonIndex] = value;
 
-        logger.info(`button-setquad: set ${typeVar}[${buttonIndex}] = ${JSON.stringify(value)}`);
+        logger.info(`set ${typeVar}[${buttonIndex}] = ${JSON.stringify(value)}`);
 
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `button-setquad: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

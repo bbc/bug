@@ -16,12 +16,10 @@ module.exports = async (index) => {
         await router.connect();
         await router.send(field, command);
 
-        logger.info(`videohub-forceunlock: unlocked output ${index}`);
+        logger.info(`unlocked output ${index}`);
         return true;
-
     } catch (err) {
-        err.message = `videohub-forceunlock: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

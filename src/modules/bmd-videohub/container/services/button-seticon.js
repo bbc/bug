@@ -29,13 +29,11 @@ module.exports = async (type, buttonIndex, icon, color) => {
         }
         config[colorVar][buttonIndex] = color;
 
-        logger.info(`button-seticon: set button index ${buttonIndex} to icon ${icon}, color ${color}`);
+        logger.info(`set button index ${buttonIndex} to icon ${icon}, color ${color}`);
 
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `button-seticon: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

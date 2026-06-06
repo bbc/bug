@@ -46,19 +46,16 @@ module.exports = async (params) => {
                 // send command
                 await router.send(field, command, true);
 
-                logger.info(`videohub-setlabels: set ${normalizedType} label '${labelValue}' for index ${index}`);
-
+                logger.info(`set ${normalizedType} label '${labelValue}' for index ${index}`);
             } catch (err) {
-                logger.error(`videohub-setlabels: ${err.stack || err.message}`);
+                logger.error(`${err.stack || err.message}`);
                 throw err;
             }
         }
 
         return true;
-
     } catch (err) {
-        err.message = `videohub-setlabels: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

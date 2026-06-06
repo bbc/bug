@@ -26,12 +26,10 @@ module.exports = async (index) => {
         // send lock command
         await router.send(field, command, true);
 
-        logger.info(`videohub-lock: locked output ${index}`);
+        logger.info(`locked output ${index}`);
         return true;
-
     } catch (err) {
-        err.message = `videohub-lock: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

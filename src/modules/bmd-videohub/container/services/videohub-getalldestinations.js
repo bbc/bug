@@ -13,17 +13,15 @@ module.exports = async () => {
         const dbOutputLabels = await dataCollection.findOne({ title: "output_labels" });
 
         if (!dbOutputLabels || !dbOutputLabels.data) {
-            logger.warning("videohub-getalldestinations: no output labels found");
+            logger.warning("no output labels found");
             return [];
         }
 
         const destinations = Object.values(dbOutputLabels.data);
-        logger.info(`videohub-getalldestinations: retrieved ${destinations.length} destinations`);
+        logger.info(`retrieved ${destinations.length} destinations`);
         return destinations;
-
     } catch (err) {
-        err.message = `videohub-getalldestinations: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

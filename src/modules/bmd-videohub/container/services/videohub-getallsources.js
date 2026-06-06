@@ -13,17 +13,15 @@ module.exports = async () => {
         const dbInputLabels = await dataCollection.findOne({ title: "input_labels" });
 
         if (!dbInputLabels || !dbInputLabels.data) {
-            logger.warning("videohub-getallsources: no input labels found");
+            logger.warning("no input labels found");
             return [];
         }
 
         const sources = Object.values(dbInputLabels.data);
-        logger.info(`videohub-getallsources: retrieved ${sources.length} sources`);
+        logger.info(`retrieved ${sources.length} sources`);
         return sources;
-
     } catch (err) {
-        err.message = `videohub-getallsources: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

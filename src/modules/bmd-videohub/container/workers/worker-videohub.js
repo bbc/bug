@@ -61,7 +61,7 @@ const main = async () => {
     await dataCollection.deleteMany({});
 
     // Kick things off
-    logger.info(`worker-videohub: connecting to device at ${workerData.address}:${workerData.port}`);
+    logger.info(`connecting to device at ${workerData.address}:${workerData.port}`);
 
     let router;
     try {
@@ -74,10 +74,10 @@ const main = async () => {
     }
 
     router.on("update", saveResult);
-    logger.debug("worker-videohub: attempting connection ... ");
+    logger.debug("attempting connection ... ");
 
     await router.connect();
-    logger.debug("worker-videohub: waiting for events ...");
+    logger.debug("waiting for events ...");
 
     let statusDumpTime = Date.now();
     let statusDumpFields = [

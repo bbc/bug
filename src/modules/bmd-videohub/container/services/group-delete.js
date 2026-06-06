@@ -15,19 +15,17 @@ module.exports = async (type, groupName) => {
         }
 
         const originalLength = config[groupVar].length;
-        config[groupVar] = config[groupVar].filter(group => group.name !== groupName);
+        config[groupVar] = config[groupVar].filter((group) => group.name !== groupName);
 
         if (config[groupVar].length < originalLength) {
-            logger.info(`group-delete: removed group ${groupName} from ${groupVar}`);
+            logger.info(`removed group ${groupName} from ${groupVar}`);
         } else {
-            logger.warning(`group-delete: group ${groupName} not found in ${groupVar}`);
+            logger.warning(`group ${groupName} not found in ${groupVar}`);
         }
 
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `group-delete: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

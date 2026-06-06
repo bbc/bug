@@ -24,13 +24,11 @@ module.exports = async (type, groupIndex, index) => {
             config[groupVar][groupIndex].value.splice(arrayIndex, 1);
         }
 
-        logger.info(`button-remove: removed button type ${type}, index ${index} from group index ${groupIndex}`);
+        logger.info(`removed button type ${type}, index ${index} from group index ${groupIndex}`);
 
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `button-remove: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };
