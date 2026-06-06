@@ -16,15 +16,15 @@ module.exports = async ({ aristaApi, mongoSingle, interfacesCollection, workerDa
         });
 
         // fetch leases once
-        const leases = await mongoSingle.get("leases") || [];
-        const leasesByMac = Object.fromEntries(leases.map(lease => [lease.mac, lease]));
+        const leases = (await mongoSingle.get("leases")) || [];
+        const leasesByMac = Object.fromEntries(leases.map((lease) => [lease.mac, lease]));
 
         // process ARP / FDB-like info
         const arpByInterface = {};
-        (arpResult?.ipV4Neighbors || []).forEach(eachArp => {
+        (arpResult?.ipV4Neighbors || []).forEach((eachArp) => {
             const mac = parseHex(eachArp.hwAddress).toUpperCase();
             const interfaceArray = eachArp.interface.split(", ");
-            interfaceArray.forEach(iface => {
+            interfaceArray.forEach((iface) => {
                 if (!arpByInterface[iface]) arpByInterface[iface] = [];
                 arpByInterface[iface].push(leasesByMac[mac] || { mac });
             });
@@ -35,8 +35,8 @@ module.exports = async ({ aristaApi, mongoSingle, interfacesCollection, workerDa
             updateOne: {
                 filter: { interfaceId },
                 update: { $set: { fdb: data } },
-                upsert: false
-            }
+                upsert: false,
+            },
         }));
         if (arpOps.length) await interfacesCollection.bulkWrite(arpOps);
         logger.debug(`updated db with arp details for ${arpOps.length} interface(s)`);
@@ -53,7 +53,7 @@ module.exports = async ({ aristaApi, mongoSingle, interfacesCollection, workerDa
 
         // process LLDP info
         const lldpByInterface = {};
-        (lldpResult?.lldpNeighbors || []).forEach(eachNeighbor => {
+        (lldpResult?.lldpNeighbors || []).forEach((eachNeighbor) => {
             const interfaceId = eachNeighbor.port;
             if (!lldpByInterface[interfaceId]) lldpByInterface[interfaceId] = {};
 
@@ -72,18 +72,37 @@ module.exports = async ({ aristaApi, mongoSingle, interfacesCollection, workerDa
             }
         });
 
+        const activeInterfaceIds = Object.keys(lldpByInterface);
+        const lldpClearFilter = {
+            lldp: { $exists: true },
+        };
+
+        if (activeInterfaceIds.length) {
+            lldpClearFilter.interfaceId = { $nin: activeInterfaceIds };
+        }
+
         // bulk update LLDP info
-        const lldpOps = Object.entries(lldpByInterface).map(([interfaceId, data]) => ({
-            updateOne: {
-                filter: { interfaceId },
-                update: { $set: { lldp: data } },
-                upsert: false
-            }
-        }));
-        if (lldpOps.length) await interfacesCollection.bulkWrite(lldpOps);
-        logger.debug(`updated db with lldp details for ${lldpOps.length} interface(s)`);
-
-
+        const lldpOps = [
+            {
+                updateMany: {
+                    filter: lldpClearFilter,
+                    update: {
+                        $unset: {
+                            lldp: "",
+                        },
+                    },
+                },
+            },
+            ...Object.entries(lldpByInterface).map(([interfaceId, data]) => ({
+                updateOne: {
+                    filter: { interfaceId },
+                    update: { $set: { lldp: data } },
+                    upsert: false,
+                },
+            })),
+        ];
+        await interfacesCollection.bulkWrite(lldpOps, { ordered: false });
+        logger.debug(`updated db with lldp details for ${activeInterfaceIds.length} interface(s)`);
     } catch (err) {
         logger.error(`failed: ${err.message}`);
         throw err;
