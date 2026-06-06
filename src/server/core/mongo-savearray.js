@@ -2,18 +2,40 @@
 const logger = require("@core/logger")(module);
 
 module.exports = async (collection, dataArray, idFieldName, update = false) => {
-    for (let eachArrayItem of dataArray) {
-        try {
-            let matchArray = {};
-            matchArray[idFieldName] = eachArrayItem[idFieldName];
+    if (!Array.isArray(dataArray) || dataArray.length === 0) {
+        return null;
+    }
 
-            if (update) {
-                await collection.updateOne(matchArray, { $set: eachArrayItem }, { upsert: true });
-            } else {
-                await collection.replaceOne(matchArray, eachArrayItem, { upsert: true });
-            }
-        } catch (error) {
-            logger.error(`mongo-savearray: ${error.stack || error || error.message}`);
+    const operations = dataArray.map((eachArrayItem) => {
+        if (eachArrayItem?.[idFieldName] === undefined) {
+            throw new Error(`mongo-savearray: missing id field '${idFieldName}'`);
         }
+
+        const filter = { [idFieldName]: eachArrayItem[idFieldName] };
+
+        if (update) {
+            return {
+                updateOne: {
+                    filter,
+                    update: { $set: eachArrayItem },
+                    upsert: true,
+                },
+            };
+        }
+
+        return {
+            replaceOne: {
+                filter,
+                replacement: eachArrayItem,
+                upsert: true,
+            },
+        };
+    });
+
+    try {
+        return await collection.bulkWrite(operations, { ordered: false });
+    } catch (error) {
+        logger.error(`mongo-savearray: ${error.stack || error || error.message}`);
+        throw error;
     }
 };
