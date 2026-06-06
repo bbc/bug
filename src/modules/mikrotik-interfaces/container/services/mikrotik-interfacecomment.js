@@ -20,7 +20,7 @@ module.exports = async (interfaceId, interfaceComment) => {
         });
 
         await routerOsApi.run(`/interface/set`, [`=numbers=${interfaceId}`, "=comment=" + interfaceComment]);
-        logger.info(`Set comment on interface ${interfaceId} to '${interfaceComment}'`);
+        logger.info(`set comment on interface ${interfaceId} to '${interfaceComment}'`);
 
         // now update DB
         const interfacesCollection = await mongoCollection("interfaces");
@@ -28,7 +28,7 @@ module.exports = async (interfaceId, interfaceComment) => {
             { id: interfaceId },
             { $set: { comment: interfaceComment } }
         );
-        logger.info(`Database update result: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`database update result: ${JSON.stringify(dbResult.result)}`);
 
         return true;
     } catch (err) {

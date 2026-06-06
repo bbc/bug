@@ -6,7 +6,6 @@ const interfaceList = require("@services/interface-list");
 const logger = require("@core/logger")(module);
 
 module.exports = async ({ routerOsApi, linkStatsCollection }) => {
-
     try {
         // fetch interface list from db (empty if not yet fetched)
         const interfaces = await interfaceList();
@@ -22,7 +21,7 @@ module.exports = async ({ routerOsApi, linkStatsCollection }) => {
             await mongoSaveArray(linkStatsCollection, linkStatsArray, "name");
         }
     } catch (error) {
-        logger.error(`linkstats: ${error.message}`);
+        logger.error(error.stack || error.message);
         throw error;
     }
 };

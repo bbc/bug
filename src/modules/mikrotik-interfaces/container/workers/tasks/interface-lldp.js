@@ -4,7 +4,6 @@ const logger = require("@core/logger")(module);
 const mikrotikParseResults = require("@core/mikrotik-parseresults");
 
 module.exports = async ({ routerOsApi, interfacesCollection }) => {
-
     try {
         const data = await routerOsApi.run("/ip/neighbor/print");
 
@@ -52,11 +51,9 @@ module.exports = async ({ routerOsApi, interfacesCollection }) => {
                 { upsert: false }
             );
         }
-        logger.debug(`interface-lldp: found ${Object.entries(lldpByInterface).length} interface(s) with LLDP data - saved to db`);
-
+        logger.debug(`found ${Object.entries(lldpByInterface).length} interface(s) with LLDP data - saved to db`);
     } catch (error) {
-        logger.error(`interface-lldp: ${error.message}`);
+        logger.error(error.stack || error.message);
         throw error;
     }
 };
-

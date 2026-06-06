@@ -6,5 +6,4 @@
 - use asyncHandler in routes
 - refactor workers to improve error handling
 - use bulkwrite in workers to improve db performance
-- remove filename from all log actions......
 - add heartbeat status check and worker task

@@ -33,7 +33,7 @@ module.exports = async (routerOsApi, interfaceName) => {
             bitrateFields: [],
         });
     } catch (error) {
-        logger.error(`mikrotik-fetchlinkstats: error fetching interface ${interfaceName}`);
+        logger.error(`error fetching interface ${interfaceName}`);
     }
     return null;
 };
