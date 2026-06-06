@@ -80,17 +80,47 @@ const main = async () => {
             }
         });
 
-        lldpByInterface.forEach(async (lldpObject, eachIndex) => {
-            await interfacesCollection.updateOne(
-                { interfaceId: parseInt(eachIndex) },
-                {
-                    $set: {
-                        lldp: lldpObject,
+        const activeLldpEntries = lldpByInterface
+            .map((lldpObject, eachIndex) => ({ lldpObject, eachIndex }))
+            .filter(({ lldpObject }) => lldpObject && typeof lldpObject === "object");
+
+        const activeInterfaceIds = activeLldpEntries.map(({ eachIndex }) => parseInt(eachIndex));
+        const clearFilter = {
+            lldp: { $exists: true },
+        };
+
+        if (activeInterfaceIds.length) {
+            clearFilter.interfaceId = { $nin: activeInterfaceIds };
+        }
+
+        const operations = [
+            {
+                updateMany: {
+                    filter: clearFilter,
+                    update: {
+                        $unset: {
+                            lldp: "",
+                        },
                     },
                 },
-                { upsert: false }
-            );
-        });
+            },
+        ];
+
+        for (const { lldpObject, eachIndex } of activeLldpEntries) {
+            operations.push({
+                updateOne: {
+                    filter: { interfaceId: parseInt(eachIndex) },
+                    update: {
+                        $set: {
+                            lldp: lldpObject,
+                        },
+                    },
+                    upsert: false,
+                },
+            });
+        }
+
+        await interfacesCollection.bulkWrite(operations, { ordered: false });
 
         // every 30 seconds
         await delay(30000);
