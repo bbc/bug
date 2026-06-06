@@ -12,8 +12,7 @@ module.exports = async (sourceIndex) => {
         await deviceConfigSet("Solo enabled", "true");
         await delay(500);
     } catch (err) {
-        err.message = `source-setsolo: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

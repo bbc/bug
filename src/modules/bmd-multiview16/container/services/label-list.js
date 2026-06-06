@@ -31,10 +31,8 @@ module.exports = async () => {
         }
 
         return labelsArray;
-
     } catch (err) {
-        err.message = `label-list: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

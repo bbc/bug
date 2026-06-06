@@ -18,8 +18,7 @@ module.exports = async () => {
         }
         return parsedConfig;
     } catch (err) {
-        err.message = `deviceconfig-list: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

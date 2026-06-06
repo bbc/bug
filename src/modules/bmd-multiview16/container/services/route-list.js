@@ -14,8 +14,7 @@ module.exports = async () => {
         }
         return returnRoutes;
     } catch (err) {
-        err.message = `route-list: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

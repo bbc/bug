@@ -9,8 +9,7 @@ module.exports = async () => {
         await deviceConfigSet("Solo enabled", "false");
         await delay(500);
     } catch (err) {
-        err.message = `source-clearsolo: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

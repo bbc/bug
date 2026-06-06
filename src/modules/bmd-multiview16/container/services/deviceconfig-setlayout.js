@@ -42,10 +42,8 @@ module.exports = async (layout) => {
         }
 
         return true;
-
     } catch (err) {
-        err.message = `deviceconfig-setlayout: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

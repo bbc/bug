@@ -24,12 +24,10 @@ module.exports = async (inputIndex, routerIndex) => {
             delete config.autoLabelIndex[inputIndex];
         }
 
-        logger.info(`label-setautoindex: set autolabel index for input ${inputIndex} to ${routerIndex}`);
+        logger.info(`set autolabel index for input ${inputIndex} to ${routerIndex}`);
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `label-setautoindex: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };
