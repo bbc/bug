@@ -5,3 +5,4 @@
 - add panel status (default/success etc)
 - check module status (dev/beta/stable etc)
 - test masonry changes
+- add tests

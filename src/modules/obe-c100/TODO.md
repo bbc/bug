@@ -9,3 +9,4 @@
 - refactor workers to improve error handling
 - remove filename from all log actions......
 - add heartbeat status check and worker task
+- add tests
