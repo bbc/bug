@@ -3,16 +3,15 @@
 const mongoSingle = require("@core/mongo-single");
 
 const types = {
-    "1": "Chassis component",
-    "2": "Interface alias",
-    "3": "Port component",
-    "4": "MAC address",
-    "5": "Network address",
-    "6": "Interface",
-}
+    1: "Chassis component",
+    2: "Interface alias",
+    3: "Port component",
+    4: "MAC address",
+    5: "Network address",
+    6: "Interface",
+};
 
 module.exports = async (NetgearApi, interfacesCollection) => {
-
     // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
     // more details to the user
     const leases = await mongoSingle.get("leases");
@@ -41,21 +40,45 @@ module.exports = async (NetgearApi, interfacesCollection) => {
                 address: matchingLease?.address ?? "",
                 hostname: matchingLease?.hostname ?? "",
                 comment: matchingLease?.comment ?? "",
-            }
+            };
         }
     }
 
-    // save to db
-    for (let [port, lldpObject] of Object.entries(lldpByInterface)) {
-        await interfacesCollection.updateOne(
-            { port: parseInt(port) },
-            {
-                $set: {
-                    lldp: lldpObject,
-                },
-            },
-            { upsert: false }
-        );
+    const activePorts = Object.keys(lldpByInterface).map((port) => parseInt(port));
+    const clearFilter = {
+        lldp: { $exists: true },
+    };
+
+    if (activePorts.length) {
+        clearFilter.port = { $nin: activePorts };
     }
 
+    const operations = [
+        {
+            updateMany: {
+                filter: clearFilter,
+                update: {
+                    $unset: {
+                        lldp: "",
+                    },
+                },
+            },
+        },
+    ];
+
+    for (let [port, lldpObject] of Object.entries(lldpByInterface)) {
+        operations.push({
+            updateOne: {
+                filter: { port: parseInt(port) },
+                update: {
+                    $set: {
+                        lldp: lldpObject,
+                    },
+                },
+                upsert: false,
+            },
+        });
+    }
+
+    await interfacesCollection.bulkWrite(operations, { ordered: false });
 };
