@@ -19,16 +19,12 @@ function resolveAliasTarget(alias, target) {
     const normalized = normalizeAliasTarget(target);
     const localTargetPath = path.join(__dirname, normalized);
 
-    if (alias === "@core") {
-        const localLoggerPath = path.join(localTargetPath, "logger.js");
-        if (fs.existsSync(localLoggerPath)) {
-            return normalized;
-        }
-        return "../../../server/core/";
-    }
-
     if (fs.existsSync(localTargetPath)) {
         return normalized;
+    }
+
+    if (alias === "@core") {
+        return "../../../server/core/";
     }
 
     return normalized;

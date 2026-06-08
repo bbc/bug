@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const { _moduleAliases = {} } = require("./package.json");
 
 function escapeRegExp(value) {
@@ -13,9 +15,24 @@ function normalizeAliasTarget(target) {
     return withoutPrefix.endsWith("/") ? withoutPrefix : `${withoutPrefix}/`;
 }
 
+function resolveAliasTarget(alias, target) {
+    const normalized = normalizeAliasTarget(target);
+    const localTargetPath = path.join(__dirname, normalized);
+
+    if (fs.existsSync(localTargetPath)) {
+        return normalized;
+    }
+
+    if (alias === "@core") {
+        return "../../../server/core/";
+    }
+
+    return normalized;
+}
+
 const moduleNameMapper = Object.entries(_moduleAliases).reduce((acc, [alias, target]) => {
     const escapedAlias = escapeRegExp(alias);
-    const normalizedTarget = normalizeAliasTarget(target);
+    const normalizedTarget = resolveAliasTarget(alias, target);
 
     acc[`^${escapedAlias}$`] = `<rootDir>/${normalizedTarget}`.replace(/\/$/, "");
     acc[`^${escapedAlias}/(.*)$`] = `<rootDir>/${normalizedTarget}$1`;
