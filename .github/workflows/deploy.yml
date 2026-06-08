@@ -27,7 +27,7 @@ jobs:
         steps:
             - name: verify version job succeeded
               id: check-version
-              uses: actions/github-script@v7
+              uses: actions/github-script@v9
               with:
                   script: |
                       if (context.eventName === "workflow_dispatch") {
@@ -73,7 +73,7 @@ jobs:
               run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
             - name: Send slack start message
-              uses: slackapi/slack-github-action@v2.0.0
+              uses: slackapi/slack-github-action@v3.0.3
               with:
                   method: chat.postMessage
                   token: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -83,7 +83,7 @@ jobs:
 
             # setup node
             - name: setup node
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v6
               with:
                   node-version: 20
                   cache: npm
@@ -110,18 +110,18 @@ jobs:
 
             # setup qemu for multi-platform builds
             - name: set up qemu
-              uses: docker/setup-qemu-action@v3
+              uses: docker/setup-qemu-action@v4
 
             # setup docker buildx
             - name: set up docker buildx
               id: buildx
-              uses: docker/setup-buildx-action@v3
+              uses: docker/setup-buildx-action@v4
               with:
                   buildkitd-flags: --debug
 
             # login to GHCR
             - name: login to ghcr
-              uses: docker/login-action@v3
+              uses: docker/login-action@v4
               with:
                   registry: ${{ env.registry }}
                   username: ${{ github.actor }}
@@ -130,7 +130,7 @@ jobs:
 
             # build and push server image
             - name: build and push server image
-              uses: docker/build-push-action@v6
+              uses: docker/build-push-action@v7
               with:
                   context: "."
                   file: ./src/server/Dockerfile
@@ -154,7 +154,7 @@ jobs:
 
             - name: Send slack end message
               if: ${{ always() }}
-              uses: slackapi/slack-github-action@v2.0.0
+              uses: slackapi/slack-github-action@v3.0.3
               with:
                   method: chat.postMessage
                   token: ${{ secrets.SLACK_BOT_TOKEN }}
