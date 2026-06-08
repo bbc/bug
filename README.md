@@ -1,4 +1,9 @@
-[![Deploy](https://github.com/bbc/bug/actions/workflows/deploy.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/deploy.yml)  [![Documentation](https://github.com/bbc/bug/actions/workflows/documentation.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/documentation.yml)
+[![BUG Client Tests](https://github.com/bbc/bug/actions/workflows/test-bug-client.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/test-bug-client.yml)
+[![Module Container Tests](https://github.com/bbc/bug/actions/workflows/test-module-container.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/test-module-container.yml)
+[![BUG Server Tests](https://github.com/bbc/bug/actions/workflows/test-bug-server.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/test-bug-server.yml)
+
+[![Deploy](https://github.com/bbc/bug/actions/workflows/deploy.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/deploy.yml)  
+[![Documentation + Storybook](https://github.com/bbc/bug/actions/workflows/documentation.yml/badge.svg)](https://github.com/bbc/bug/actions/workflows/documentation.yml)
 
 # BUG (Broadcast Universal Gateway)
 
