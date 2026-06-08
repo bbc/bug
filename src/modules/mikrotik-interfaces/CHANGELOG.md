@@ -1,5 +1,12 @@
 ## Changelog
 
+### version 1.0.28
+
+- 2026-06-06: fix stale entries in interface-lldp ([ca1dfed](https://github.com/bbc/bug/commit/ca1dfed878f19e2c883a9900a0eeb30f36c708e0))
+- 2026-06-06: use asyncHandler in routes ([62fc558](https://github.com/bbc/bug/commit/62fc55852f9391bd87d8d8a96beda4552856b4df))
+- 2026-06-06: remove filename from all log actions ([1a658ba](https://github.com/bbc/bug/commit/1a658ba03e7ef73db3cd1a39051e1736c51ce36e))
+- 2026-06-06: refactor error handling in services ([4140192](https://github.com/bbc/bug/commit/4140192c5a0e00ff6fdb33a18c0badcfdefb8cd5))
+
 ### version 1.0.27
 
 - 2026-05-28: add tests ([23dc9bf](https://github.com/bbc/bug/commit/23dc9bfe88c8e52545e08d8cc546e1657394120e))

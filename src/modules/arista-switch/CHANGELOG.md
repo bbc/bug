@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.13
+
+- 2026-06-06: fix stale lldp ([6f67b1b](https://github.com/bbc/bug/commit/6f67b1b262f2b5bd3c757bef162a258ff410a477))
+
 ### version 1.2.12
 
 - 2026-06-01: add support for 100G interfaces ([0643275](https://github.com/bbc/bug/commit/06432753e257bf91ff7619632602f7939bcbc104))

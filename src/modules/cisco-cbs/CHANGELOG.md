@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.3
+
+- 2026-06-06: fix stale lldp ([ad85642](https://github.com/bbc/bug/commit/ad8564220e5fa6c3cba0ce8bf74e03b73ba933bd))
+
 ### version 1.2.2
 
 - 2026-06-02: fix parsing of interface counters in new firmware ([4a3d14a](https://github.com/bbc/bug/commit/4a3d14ae7777f903626b90cd8ead565494b6900a))

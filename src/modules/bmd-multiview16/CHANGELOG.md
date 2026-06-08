@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.7
+
+- 2026-06-06: remove filename from all log actions ([56c7090](https://github.com/bbc/bug/commit/56c709087ea0327535a0a6a233fd513195c0e8dd))
+
 ### version 1.0.4
 
 - 2026-02-04: add api JSON error handler ([c200e1b](https://github.com/bbc/bug/commit/c200e1b741a423a6aa9ab25d045a3bad45659f53))

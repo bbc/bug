@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.27
+
+- 2026-06-06: fix stale lldp ([169f146](https://github.com/bbc/bug/commit/169f146b82b04908e58c5ee1412fa10d48402093))
+
 ### version 1.2.26
 
 - 2026-02-06: improve service logging ([7cd5dc1](https://github.com/bbc/bug/commit/7cd5dc1adedcb5e62a280a5fc88ca0088c1ec31b))

@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.3.11
+
+- 2026-06-06: update logging ([18b84af](https://github.com/bbc/bug/commit/18b84af874c29c6272bb566a5f76cadc9b40983a))
+
 ### version 1.3.10
 
 - 2026-05-28: add tests ([5c7094a](https://github.com/bbc/bug/commit/5c7094a37e462a60c7f7256017ac40045a767e43))
