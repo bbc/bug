@@ -17,26 +17,23 @@ module.exports = async (inputIndex, state) => {
 
         if (state) {
             if (config.autoLabelEnabled.includes(inputIndex)) {
-                logger.info(`label-setautostate: input ${inputIndex} already enabled`);
+                logger.info(`input ${inputIndex} already enabled`);
                 return false;
             }
             config.autoLabelEnabled.push(inputIndex);
         } else {
             if (!config.autoLabelEnabled.includes(inputIndex)) {
-                logger.info(`label-setautostate: input ${inputIndex} not found`);
+                logger.info(`input ${inputIndex} not found`);
                 return false;
             }
             config.autoLabelEnabled.splice(config.autoLabelEnabled.indexOf(inputIndex), 1);
         }
 
-        logger.info(
-            `label-setautostate: ${state ? "enabling" : "disabling"} autolabel for input ${inputIndex}`
-        );
+        logger.info(`${state ? "enabling" : "disabling"} autolabel for input ${inputIndex}`);
 
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `label-setautostate: ${err.stack || err.message}`;
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

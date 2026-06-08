@@ -30,9 +30,7 @@ module.exports = async (address, port) => {
             setTimer();
         });
     } catch (err) {
-        err.message = `videohub-test: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
-
 };

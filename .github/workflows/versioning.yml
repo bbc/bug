@@ -12,6 +12,10 @@ on:
             - main
     workflow_dispatch:
 
+concurrency:
+    group: version-bump-${{ github.ref }}
+    cancel-in-progress: false
+
 permissions:
     actions: read
     contents: write

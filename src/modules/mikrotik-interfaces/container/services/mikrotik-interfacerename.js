@@ -6,7 +6,6 @@ const configGet = require("@core/config-get");
 const RouterOSApi = require("@core/routeros-api");
 
 module.exports = async (interfaceId, interfaceName) => {
-
     try {
         const config = await configGet();
         if (!config) {
@@ -21,16 +20,17 @@ module.exports = async (interfaceId, interfaceName) => {
         });
 
         await routerOsApi.run(`/interface/set`, [`=numbers=${interfaceId}`, "=name=" + interfaceName]);
-        logger.info(`mikrotik-interfacerename: renamed interface ${interfaceName}`);
+        logger.info(`renamed interface to ${interfaceName}`);
 
         // now update DB
         const interfacesCollection = await mongoCollection("interfaces");
         const dbResult = await interfacesCollection.updateOne({ id: interfaceId }, { $set: { name: interfaceName } });
-        logger.info(`interface-interfacerename: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`database update result: ${JSON.stringify(dbResult.result)}`);
 
         return true;
-    } catch (error) {
-        logger.error(`mikrotik-interfacerename: ${error.stack || error || error.message}`);
-        return false;
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

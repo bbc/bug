@@ -11,6 +11,7 @@ on:
             - "src/modules/**"
             - "src/server/core/**"
             - ".github/workflows/test-module-container.yml"
+    workflow_dispatch:
 
 jobs:
     discover-modules:

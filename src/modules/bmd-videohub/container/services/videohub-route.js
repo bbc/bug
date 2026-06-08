@@ -50,12 +50,10 @@ module.exports = async (destinationIndex, sourceIndex) => {
         // send routing commands
         await router.send("VIDEO OUTPUT ROUTING", routeCommands, true);
 
-        logger.info(`videohub-route: routed destination ${destinationIndex} to source ${sourceIndex}`);
+        logger.info(`routed destination ${destinationIndex} to source ${sourceIndex}`);
         return true;
-
     } catch (err) {
-        err.message = `videohub-route: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

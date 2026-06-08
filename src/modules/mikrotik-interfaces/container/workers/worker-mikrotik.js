@@ -17,7 +17,6 @@ parentPort.postMessage({
 
 const main = async () => {
     try {
-
         await mongoDb.connect(workerData.id);
         const interfacesCollection = await mongoCollection("interfaces");
         const linkStatsCollection = await mongoCollection("linkstats");
@@ -45,15 +44,15 @@ const main = async () => {
             onDisconnect: (err) => {
                 logger.error(err.message || err);
                 process.exit(1);
-            }
+            },
         });
 
         logger.info(
-            `worker-mikrotik: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
+            `connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
         );
 
         await routerOsApi.connect();
-        logger.info("worker-mikrotik: device connected ok");
+        logger.info("device connected ok");
 
         workerTaskManager({
             tasks: [
@@ -61,19 +60,19 @@ const main = async () => {
                 { name: "interface-lldp", seconds: 5 },
                 { name: "linkstats", seconds: 5 },
                 { name: "traffic", seconds: 2 },
-            ], context: { routerOsApi, interfacesCollection, linkStatsCollection, trafficCollection, historyCollection }, baseDir: __dirname
+            ],
+            context: { routerOsApi, interfacesCollection, linkStatsCollection, trafficCollection, historyCollection },
+            baseDir: __dirname,
         });
-
     } catch (err) {
-        logger.error(`worker-mikrotik: fatal error`);
+        logger.error(`fatal error`);
         logger.error(err.stack || err.message || err);
         process.exit();
     }
-}
+};
 
-main().catch(err => {
-    logger.error(`worker-mikrotik: startup failure`);
+main().catch((err) => {
+    logger.error(`startup failure`);
     logger.error(err.stack || err);
     process.exit(1);
 });
-

@@ -44,13 +44,11 @@ module.exports = async () => {
         }
 
         logger.info(
-            `videohub-getlabels: retrieved ${outputArray.inputLabels.length} input labels and ${outputArray.outputLabels.length} output labels`
+            `retrieved ${outputArray.inputLabels.length} input labels and ${outputArray.outputLabels.length} output labels`
         );
         return outputArray;
-
     } catch (err) {
-        err.message = `videohub-getlabels: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

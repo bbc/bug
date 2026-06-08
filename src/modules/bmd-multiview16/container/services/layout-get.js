@@ -43,10 +43,8 @@ module.exports = async () => {
         }
 
         return layoutArray;
-
     } catch (err) {
-        err.message = `layout-get: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

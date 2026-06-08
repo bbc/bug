@@ -1,0 +1,44 @@
+name: Dependabot Auto Approve
+
+on:
+    pull_request_target:
+        types:
+            - opened
+            - synchronize
+            - reopened
+            - ready_for_review
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    auto-approve:
+        if: github.actor == 'dependabot[bot]'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Fetch Dependabot metadata
+              id: metadata
+              uses: dependabot/fetch-metadata@v2
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Auto-approve minor and patch updates
+              if: >-
+                  steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
+                  steps.metadata.outputs.update-type == 'version-update:semver-patch'
+              uses: actions/github-script@v7
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      try {
+                          await github.rest.pulls.createReview({
+                              owner: context.repo.owner,
+                              repo: context.repo.repo,
+                              pull_number: context.payload.pull_request.number,
+                              event: 'APPROVE',
+                              body: 'Auto-approved because this is a Dependabot semver minor/patch update.'
+                          });
+                      } catch (error) {
+                          core.warning(`Approval skipped: ${error.message}`);
+                      }

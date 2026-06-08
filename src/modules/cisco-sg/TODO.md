@@ -6,7 +6,6 @@
 - use setPending (like cisco-c1300) to update save flag when something is changed
 - add POE support?
 - interface on now-deleted vlan shows 'loading' in control
-- add JSON error handler to api.js
 - use asyncHandler in routes
 - refactor services with try/catch/throw
 - refactor workers to improve error handling
@@ -14,3 +13,4 @@
 - new worker design using tasks
 - remove filename from all log actions......
 - add heartbeat status check and worker task
+- add tests

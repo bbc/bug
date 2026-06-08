@@ -8,9 +8,7 @@ const trafficAddHistory = require("@utils/traffic-addhistory");
 const logger = require("@core/logger")(module);
 
 module.exports = async ({ routerOsApi, trafficCollection, historyCollection }) => {
-
     try {
-
         // fetch interface list from db (empty if not yet fetched)
         const interfaces = await interfaceList();
 
@@ -23,7 +21,7 @@ module.exports = async ({ routerOsApi, trafficCollection, historyCollection }) =
         }
 
         // save history
-        logger.debug(`traffic: got traffic data for ${trafficArray.length} interface(s) - saving to db`);
+        logger.debug(`got traffic data for ${trafficArray.length} interface(s) - saving to db`);
         await trafficSaveHistory(historyCollection, trafficArray);
 
         // add historical data (for sparklines)
@@ -32,8 +30,7 @@ module.exports = async ({ routerOsApi, trafficCollection, historyCollection }) =
         // save to mongo
         await mongoSaveArray(trafficCollection, trafficArray, "name");
     } catch (error) {
-        logger.error(`traffic: ${error.message}`);
+        logger.error(error.stack || error.message);
         throw error;
     }
 };
-

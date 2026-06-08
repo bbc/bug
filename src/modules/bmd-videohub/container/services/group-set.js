@@ -18,13 +18,11 @@ module.exports = async (type, groupIndex, buttons) => {
         // update the group buttons
         group.value = buttons;
 
-        logger.info(`group-setbuttons: updated buttons for ${groupVar}[${groupIndex}] to [${buttons.join(", ")}]`);
+        logger.info(`updated buttons for ${groupVar}[${groupIndex}] to [${buttons.join(", ")}]`);
 
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `group-setbuttons: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

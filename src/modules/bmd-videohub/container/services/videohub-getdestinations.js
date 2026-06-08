@@ -26,7 +26,7 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
         groupIndex = Number.isInteger(groupIndex) && groupIndex >= 0 ? groupIndex : null;
 
         const groups = config.destinationGroups ?? [];
-        groupIndex = groups.length > 0 ? groupIndex ?? 0 : null;
+        groupIndex = groups.length > 0 ? (groupIndex ?? 0) : null;
 
         // add groups to output array
         outputArray.groups = groups.map((eachGroup, eachIndex) => ({
@@ -92,15 +92,13 @@ module.exports = async (groupIndex = null, showExcluded = false) => {
             // sort by order field
             outputArray.destinations.sort((a, b) => a.order - b.order);
         } else {
-            logger.warning("videohub-getdestinations: missing database data (output_labels, routing, or input_labels)");
+            logger.warning("missing database data (output_labels, routing, or input_labels)");
         }
 
-        // logger.info(`videohub-getdestinations: retrieved ${outputArray.destinations.length} destinations`);
+        // logger.info(`retrieved ${outputArray.destinations.length} destinations`);
         return outputArray;
-
     } catch (err) {
-        err.message = `videohub-getdestinations: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

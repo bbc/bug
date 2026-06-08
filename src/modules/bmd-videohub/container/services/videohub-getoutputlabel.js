@@ -18,12 +18,10 @@ module.exports = async (index) => {
             return dbOutputLabels.data[index];
         }
 
-        logger.warning(`videohub-getoutputlabel: no output label found for index ${index}`);
+        logger.warning(`no output label found for index ${index}`);
         return null;
-
     } catch (err) {
-        err.message = `videohub-getoutputlabel: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

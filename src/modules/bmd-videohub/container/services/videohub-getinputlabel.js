@@ -19,12 +19,10 @@ module.exports = async (index) => {
             return dbInputLabels.data[index];
         }
 
-        logger.warning(`videohub-getinputlabel: no input label found for index ${index}`);
+        logger.warning(`no input label found for index ${index}`);
         return null;
-
     } catch (err) {
-        err.message = `videohub-getinputlabel: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

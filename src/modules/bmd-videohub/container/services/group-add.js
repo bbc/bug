@@ -25,12 +25,10 @@ module.exports = async (type, groupName) => {
             value: [],
         });
 
-        logger.info(`group-add: added group ${groupName} to ${groupVar}`);
+        logger.info(`added group ${groupName} to ${groupVar}`);
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `group-add: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

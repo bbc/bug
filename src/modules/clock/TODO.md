@@ -1,5 +1,0 @@
-- add README.md
-- add historical entries to CHANGELOG.md
-- add screenshot
-- check try/catch/throw (see mikrotik-sdwan)
-- check module status (dev/beta/stable etc)

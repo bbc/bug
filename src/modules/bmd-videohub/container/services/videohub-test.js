@@ -14,13 +14,13 @@ module.exports = async (address, port) => {
 
         // connect to router
         await router.connect();
-        logger.info(`videohub-ping: connected to ${address}:${port}`);
+        logger.info(`connected to ${address}:${port}`);
 
         // return a promise that resolves on first update or after max retries
         return await new Promise((resolve) => {
             // resolve on update event
             router.on("update", () => {
-                logger.info("videohub-ping: received update from router");
+                logger.info("received update from router");
                 resolve(true);
             });
 
@@ -32,16 +32,14 @@ module.exports = async (address, port) => {
                     router.send("PING", null, true);
                     setTimeout(sendPing, 200);
                 } else {
-                    logger.warning("videohub-ping: no response after 5 attempts");
+                    logger.warning("no response after 5 attempts");
                     resolve(false);
                 }
             };
             sendPing();
         });
-
     } catch (err) {
-        err.message = `videohub-ping: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

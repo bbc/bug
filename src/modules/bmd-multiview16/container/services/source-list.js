@@ -8,8 +8,7 @@ module.exports = async () => {
         const labels = await mongoSingle.get("input_labels");
         return labels ? Object.values(labels) : [];
     } catch (err) {
-        err.message = `source-list: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

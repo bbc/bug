@@ -7,10 +7,10 @@
 - add screenshot
 - add panel status (default/success etc)
 - check module status (dev/beta/stable etc)
-- add JSON error handler to api.js
 - use asyncHandler in routes
 - refactor services with try/catch/throw
 - refactor workers to improve error handling
 - new worker design using tasks
 - remove filename from all log actions......
 - add heartbeat status check and worker task
+- add tests

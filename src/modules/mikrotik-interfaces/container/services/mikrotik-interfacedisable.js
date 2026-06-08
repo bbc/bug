@@ -6,7 +6,6 @@ const RouterOSApi = require("@core/routeros-api");
 const configGet = require("@core/config-get");
 
 module.exports = async (interfaceName) => {
-
     try {
         const config = await configGet();
         if (!config) {
@@ -21,16 +20,17 @@ module.exports = async (interfaceName) => {
         });
 
         await routerOsApi.run("/interface/disable", ["=numbers=" + interfaceName]);
-        logger.info(`mikrotik-interfacedisable: disabled interface ${interfaceName}`);
+        logger.info(`disabled interface ${interfaceName}`);
 
         // now update DB
         const interfacesCollection = await mongoCollection("interfaces");
         const dbResult = await interfacesCollection.updateOne({ name: interfaceName }, { $set: { disabled: true } });
-        logger.info(`interface-interfacedisable: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`database update result: ${JSON.stringify(dbResult.result)}`);
 
         return true;
-    } catch (error) {
-        logger.error(`mikrotik-interfacedisable: ${error.stack || error || error.message}`);
-        return false;
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

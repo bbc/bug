@@ -40,12 +40,10 @@ module.exports = async (index, type, label) => {
         // send label command
         await router.send(field, command, true);
 
-        logger.info(`videohub-setlabel: set ${type} label '${label}' for index ${index}`);
+        logger.info(`set ${type} label '${label}' for index ${index}`);
         return true;
-
     } catch (err) {
-        err.message = `videohub-setlabel: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

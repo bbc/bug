@@ -18,7 +18,7 @@ module.exports = async (type, groupName, newGroupName) => {
 
         // check the old group exists
         const groupExistsCheck = config[groupVar].filter(
-            group => !group.name.localeCompare(groupName, "en", { sensitivity: "base" })
+            (group) => !group.name.localeCompare(groupName, "en", { sensitivity: "base" })
         );
         if (groupExistsCheck.length === 0) {
             throw new Error(`group "${groupName}" not found in ${groupVar}`);
@@ -26,26 +26,24 @@ module.exports = async (type, groupName, newGroupName) => {
 
         // check the new group name doesn't already exist
         const newGroupCheck = config[groupVar].filter(
-            group => !group.name.localeCompare(newGroupName, "en", { sensitivity: "base" })
+            (group) => !group.name.localeCompare(newGroupName, "en", { sensitivity: "base" })
         );
         if (newGroupCheck.length > 0) {
             throw new Error(`group "${newGroupName}" already exists in ${groupVar}`);
         }
 
         // rename the group
-        config[groupVar] = config[groupVar].map(eachGroup => {
+        config[groupVar] = config[groupVar].map((eachGroup) => {
             if (!eachGroup.name.localeCompare(groupName, "en", { sensitivity: "base" })) {
                 eachGroup.name = newGroupName;
             }
             return eachGroup;
         });
 
-        logger.info(`group-rename: renamed group "${groupName}" to "${newGroupName}" in ${groupVar}`);
+        logger.info(`renamed group "${groupName}" to "${newGroupName}" in ${groupVar}`);
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `group-rename: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

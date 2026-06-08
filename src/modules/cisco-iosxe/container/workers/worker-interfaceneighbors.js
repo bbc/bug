@@ -112,29 +112,55 @@ const main = async () => {
             password: workerData["password"],
         });
 
-        for (const eachInterface of lldpResult?.["Cisco-IOS-XE-lldp-oper:lldp-intf-details"]) {
+        const lldpByInterface = {};
+        for (const eachInterface of lldpResult?.["Cisco-IOS-XE-lldp-oper:lldp-intf-details"] || []) {
             if (eachInterface["lldp-neighbor-details"] && eachInterface["lldp-neighbor-details"].length > 0) {
                 // just use the first one - no idea why there's more than one ...
                 const neighbor = eachInterface["lldp-neighbor-details"][0];
-                const lldpObject = {
+                lldpByInterface[eachInterface["if-name"]] = {
                     chassis_id: parseHexString(neighbor["chassis-id"]),
                     port_id: neighbor["port-id"],
                     port_description: neighbor["port-desc"],
                     system_name: neighbor["system-name"],
                     system_description: neighbor["system-desc"],
                 };
+            }
+        }
 
-                await interfacesCollection.updateOne(
-                    { interfaceId: eachInterface["if-name"] },
-                    {
+        const activeInterfaceIds = Object.keys(lldpByInterface);
+        const lldpClearFilter = {
+            lldp: { $exists: true },
+        };
+
+        if (activeInterfaceIds.length) {
+            lldpClearFilter.interfaceId = { $nin: activeInterfaceIds };
+        }
+
+        const lldpOps = [
+            {
+                updateMany: {
+                    filter: lldpClearFilter,
+                    update: {
+                        $unset: {
+                            lldp: "",
+                        },
+                    },
+                },
+            },
+            ...Object.entries(lldpByInterface).map(([interfaceId, lldpObject]) => ({
+                updateOne: {
+                    filter: { interfaceId },
+                    update: {
                         $set: {
                             lldp: lldpObject,
                         },
                     },
-                    { upsert: false }
-                );
-            }
-        }
+                    upsert: false,
+                },
+            })),
+        ];
+
+        await interfacesCollection.bulkWrite(lldpOps, { ordered: false });
 
         // every 20 seconds
         await delay(20000);

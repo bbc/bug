@@ -22,15 +22,14 @@ module.exports = async (type, groupIndexes, buttonIndex) => {
             if (group) {
                 if (!group.value.includes(parsedButtonIndex)) {
                     group.value.push(parsedButtonIndex);
-                    logger.info(`group-addbutton: added button ${parsedButtonIndex} to ${groupVar}[${groupIndex}]`);
+                    logger.info(`added button ${parsedButtonIndex} to ${groupVar}[${groupIndex}]`);
                 }
             }
         }
 
         return await configPutViaCore(config);
-
     } catch (err) {
-        err.message = `group-addbutton: ${err.stack || err.message}`;
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

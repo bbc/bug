@@ -17,17 +17,11 @@ module.exports = async (destinationIndex, sourceIndex) => {
         });
 
         await router.connect();
-        await router.send(
-            "VIDEO OUTPUT ROUTING",
-            `${destinationIndex} ${sourceIndex}`,
-            true
-        );
+        await router.send("VIDEO OUTPUT ROUTING", `${destinationIndex} ${sourceIndex}`, true);
 
         return true;
-
     } catch (err) {
-        err.message = `destination-route: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

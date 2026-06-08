@@ -35,9 +35,8 @@ module.exports = async () => {
                 type: "warning",
             });
         });
-
     } catch (error) {
-        logger.error(`status-checkalarms: ${error.stack || error.message}`);
+        logger.error(err.stack || err.message);
         return [];
     }
 };

@@ -28,10 +28,8 @@ module.exports = async () => {
         }
 
         return returnArray;
-
     } catch (err) {
-        err.message = `capability-videorouter: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };

@@ -4,7 +4,6 @@ const chunk = require("@core/chunk");
 const logger = require("@core/logger")(module);
 
 module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
-
     const parseHexString = (hexString) => {
         // check if the string value is only letters, numbers or slash
         const string = hexString.toString();
@@ -52,24 +51,50 @@ module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
             }
         });
 
-        await Promise.all(
-            lldpByInterface
-                .map((lldpObject, eachIndex) => ({ lldpObject, eachIndex }))
-                .filter(({ lldpObject }) => lldpObject && typeof lldpObject === "object")
-                .map(({ lldpObject, eachIndex }) => interfacesCollection.updateOne(
-                    { interfaceId: parseInt(eachIndex) },
-                    {
+        const activeLldpEntries = lldpByInterface
+            .map((lldpObject, eachIndex) => ({ lldpObject, eachIndex }))
+            .filter(({ lldpObject }) => lldpObject && typeof lldpObject === "object");
+
+        const activeInterfaceIds = activeLldpEntries.map(({ eachIndex }) => parseInt(eachIndex));
+        const clearFilter = {
+            lldp: { $exists: true },
+        };
+
+        if (activeInterfaceIds.length) {
+            clearFilter.interfaceId = { $nin: activeInterfaceIds };
+        }
+
+        const operations = [
+            {
+                updateMany: {
+                    filter: clearFilter,
+                    update: {
+                        $unset: {
+                            lldp: "",
+                        },
+                    },
+                },
+            },
+        ];
+
+        for (const { lldpObject, eachIndex } of activeLldpEntries) {
+            operations.push({
+                updateOne: {
+                    filter: { interfaceId: parseInt(eachIndex) },
+                    update: {
                         $set: {
                             lldp: lldpObject,
                         },
                     },
-                    { upsert: false }
-                ))
-        );
+                    upsert: false,
+                },
+            });
+        }
+
+        await interfacesCollection.bulkWrite(operations, { ordered: false });
     } catch (err) {
         err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }
-
 };

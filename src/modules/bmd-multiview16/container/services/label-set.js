@@ -16,10 +16,8 @@ module.exports = async (inputIndex, label) => {
         await router.send("INPUT LABELS", `${inputIndex} ${label}`, true);
 
         return true;
-
     } catch (err) {
-        err.message = `label-set: ${err.stack || err.message}`;
-        logger.error(err.message);
+        logger.error(err.stack || err.message);
         throw err;
     }
 };
