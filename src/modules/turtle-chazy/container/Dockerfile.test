@@ -1,0 +1,6 @@
+FROM node:20-alpine
+WORKDIR /home/node/module
+COPY src/server/core ./core
+COPY src/modules/turtle-chazy/container ./
+RUN npm install
+CMD ["npm","run","development"]

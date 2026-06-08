@@ -1,0 +1,6 @@
+FROM node:20-alpine
+WORKDIR /home/node/module
+COPY src/server/core ./core
+COPY src/modules/cisco-iosxe/container ./
+RUN npm install
+CMD ["npm","run","development"]

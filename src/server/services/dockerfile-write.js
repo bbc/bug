@@ -18,7 +18,6 @@ module.exports = async (filepath, moduleName) => {
         const fileArray = [
             "FROM node:22-alpine",
             `WORKDIR ${moduleHome}`,
-            "RUN apk add --no-cache iputils",
 
             // copy the shared core folder first
             `COPY ${relCorePath} ./core`,
