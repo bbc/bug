@@ -81,7 +81,35 @@ jobs:
                   const modulesRoot = path.join("src", "modules");
                   const testableModules = [];
 
+                  function hasTestFiles(dirPath) {
+                      const stack = [dirPath];
+
+                      while (stack.length > 0) {
+                          const current = stack.pop();
+                          const entries = fs.readdirSync(current, { withFileTypes: true });
+
+                          for (const entry of entries) {
+                              if (entry.name === "node_modules" || entry.name.startsWith(".")) {
+                                  continue;
+                              }
+
+                              const fullPath = path.join(current, entry.name);
+                              if (entry.isDirectory()) {
+                                  stack.push(fullPath);
+                                  continue;
+                              }
+
+                              if (/\.(test|spec)\.[cm]?[jt]sx?$/.test(entry.name)) {
+                                  return true;
+                              }
+                          }
+                      }
+
+                      return false;
+                  }
+
                   for (const moduleName of fs.readdirSync(modulesRoot)) {
+                      const containerPath = path.join(modulesRoot, moduleName, "container");
                       const packagePath = path.join(modulesRoot, moduleName, "container", "package.json");
                       if (!fs.existsSync(packagePath)) {
                           continue;
@@ -89,7 +117,7 @@ jobs:
 
                       try {
                           const pkg = JSON.parse(fs.readFileSync(packagePath, "utf8"));
-                          if (pkg?.scripts?.test) {
+                          if (pkg?.scripts?.test && hasTestFiles(containerPath)) {
                               testableModules.push(moduleName);
                           }
                       } catch {
@@ -164,4 +192,4 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: print skip reason
-              run: echo "No changed modules with a test script were detected."
+              run: echo "No changed modules with both a test script and test files were detected."
