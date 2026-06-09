@@ -1,37 +1,32 @@
 version: 2
+
 updates:
     - package-ecosystem: "npm"
       directory: "/"
       schedule:
           interval: "weekly"
-      open-pull-requests-limit: 20
-      groups:
-          other-updates:
-              patterns:
-                  - "*"
-              update-types:
-                  - "major"
+
+      open-pull-requests-limit: 5
+
+      allow:
+          - dependency-type: "security"
 
     - package-ecosystem: "npm"
       directory: "/src/client"
       schedule:
           interval: "weekly"
-      open-pull-requests-limit: 20
-      groups:
-          other-updates:
-              patterns:
-                  - "*"
-              update-types:
-                  - "major"
+
+      open-pull-requests-limit: 5
+
+      allow:
+          - dependency-type: "security"
 
     - package-ecosystem: "github-actions"
       directory: "/"
       schedule:
           interval: "weekly"
-      open-pull-requests-limit: 20
-      groups:
-          other-updates:
-              patterns:
-                  - "*"
-              update-types:
-                  - "major"
+
+      open-pull-requests-limit: 5
+
+      allow:
+          - dependency-type: "security"
