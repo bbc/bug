@@ -92,7 +92,7 @@
         "html-react-parser": "^1.4.14",
         "inquirer": "^9.0.0",
         "ip-range-check": "^0.2.0",
-        "javascript-time-ago": "^2.3.10",
+        "javascript-time-ago": "^2.6.4",
         "leaflet": "^1.9.4",
         "lodash": "^4.17.21",
         "md5": "^2.3.0",
