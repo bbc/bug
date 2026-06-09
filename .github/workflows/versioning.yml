@@ -155,7 +155,10 @@ jobs:
               id: workflow-status
               run: |
                   workflow_status="success"
-                  if [[ "${{ needs.verify-tests.result }}" == "failure" || "${{ needs.verify-tests.result }}" == "cancelled" || "${{ needs.version.result }}" == "failure" || "${{ needs.version.result }}" == "cancelled" ]]; then
+                  # If the required test gate fails, delete the start notification.
+                  if [[ "${{ needs.verify-tests.result }}" == "failure" || "${{ needs.verify-tests.result }}" == "cancelled" ]]; then
+                      workflow_status="skipped"
+                  elif [[ "${{ needs.version.result }}" == "failure" || "${{ needs.version.result }}" == "cancelled" ]]; then
                       workflow_status="failure"
                   fi
                   echo "status=$workflow_status" >> "$GITHUB_OUTPUT"
