@@ -37,6 +37,9 @@ jobs:
             channel_id: ${{ steps.slack-start.outputs.channel_id }}
             ts: ${{ steps.slack-start.outputs.ts }}
         steps:
+            - name: checkout repository
+              uses: actions/checkout@v6
+
             - name: send slack start message
               id: slack-start
               uses: ./.github/actions/slack-run-start
@@ -149,6 +152,9 @@ jobs:
             - deploy
         runs-on: ubuntu-latest
         steps:
+            - name: checkout repository
+              uses: actions/checkout@v6
+
             - name: set end timestamp
               id: end-time
               run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"

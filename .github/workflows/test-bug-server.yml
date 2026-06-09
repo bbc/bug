@@ -30,15 +30,15 @@ jobs:
         name: Server Tests
         runs-on: ubuntu-latest
         steps:
+            - name: checkout repository
+              uses: actions/checkout@v6
+
             - name: send slack start message
               id: slack-start
               if: ${{ github.event_name != 'pull_request' }}
               uses: ./.github/actions/slack-run-start
               with:
                   message_prefix: Workflow running
-
-            - name: checkout repository
-              uses: actions/checkout@v6
 
             - name: setup node
               uses: actions/setup-node@v6

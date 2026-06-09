@@ -30,6 +30,8 @@ jobs:
             matrix:
                 node-version: [22]
         steps:
+            - uses: actions/checkout@v6
+
             - name: send slack start message
               id: slack-start
               if: ${{ github.event_name != 'pull_request' }}
@@ -37,7 +39,6 @@ jobs:
               with:
                   message_prefix: Workflow running
 
-            - uses: actions/checkout@v6
             - uses: actions/setup-node@v6
               name: Client Build & Test using Node.js ${{ matrix.node-version }}
               with:
