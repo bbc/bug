@@ -1,10 +1,14 @@
 module.exports = {
-    rootDir: ".",
+    rootDir: __dirname,
     testEnvironment: "node",
     roots: ["<rootDir>"],
     testMatch: ["**/*.test.js", "**/*.spec.js"],
     setupFilesAfterEnv: ["jest-extended/all"],
     moduleNameMapper: {
+        "^delay$": "<rootDir>/test/shims/delay.js",
+        "^nanoid$": "<rootDir>/test/shims/nanoid.js",
+        "^uuid$": "<rootDir>/test/shims/uuid.js",
+        "^change-case$": "<rootDir>/test/shims/change-case.js",
         "^@root$": "<rootDir>/..",
         "^@root/(.*)$": "<rootDir>/../$1",
         "^@bin$": "<rootDir>/bin",
