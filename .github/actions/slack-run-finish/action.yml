@@ -1,5 +1,5 @@
 name: Slack Run Finish
-description: Update a posted workflow Slack message with final status color.
+description: Update a posted workflow Slack message with final status color, or delete it when skipped.
 
 inputs:
     channel_id:
@@ -9,7 +9,7 @@ inputs:
         description: Slack message timestamp returned by start action.
         required: true
     status:
-        description: Final workflow status. Expected success or failure.
+        description: Final workflow status (for example success, skipped, failure, cancelled).
         required: true
     message_prefix:
         description: Prefix text for the Slack finish message.
@@ -24,11 +24,13 @@ runs:
     using: composite
     steps:
         - name: Set end timestamp
+          if: ${{ inputs.status != 'skipped' }}
           id: end-time
           shell: bash
           run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
 
         - name: Map status to color
+          if: ${{ inputs.status != 'skipped' }}
           id: style
           shell: bash
           run: |
@@ -40,7 +42,18 @@ runs:
                 echo "label=failed" >> "$GITHUB_OUTPUT"
               fi
 
+        - name: Delete skipped message
+          if: ${{ inputs.status == 'skipped' }}
+          uses: slackapi/slack-github-action@v2.0.0
+          with:
+              method: chat.delete
+              token: ${{ env.SLACK_BOT_TOKEN }}
+              payload: |
+                  channel: ${{ inputs.channel_id }}
+                  ts: ${{ inputs.ts }}
+
         - name: Update message
+          if: ${{ inputs.status != 'skipped' }}
           uses: slackapi/slack-github-action@v2.0.0
           with:
               method: chat.update
