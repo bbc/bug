@@ -175,7 +175,7 @@
         "@middleware": "./src/server/middleware/"
     },
     "devDependencies": {
-        "@babel/core": "^7.14.3",
+        "@babel/core": "^7.29.7",
         "@babel/plugin-proposal-numeric-separator": "^7.18.6",
         "@vitejs/plugin-react": "^5.1.2",
         "babel-plugin-bulk-import": "^2.0.0",
