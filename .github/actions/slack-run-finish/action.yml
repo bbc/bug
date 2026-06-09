@@ -41,7 +41,7 @@ runs:
 
         - name: Delete skipped message
           if: ${{ inputs.status == 'skipped' }}
-          uses: slackapi/slack-github-action@v2.0.0
+          uses: slackapi/slack-github-action@v2.1.1
           with:
               method: chat.delete
               token: ${{ env.SLACK_BOT_TOKEN }}
@@ -51,7 +51,7 @@ runs:
 
         - name: Update message
           if: ${{ inputs.status != 'skipped' }}
-          uses: slackapi/slack-github-action@v2.0.0
+          uses: slackapi/slack-github-action@v2.1.1
           with:
               method: chat.update
               token: ${{ env.SLACK_BOT_TOKEN }}

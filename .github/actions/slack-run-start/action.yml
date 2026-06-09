@@ -26,7 +26,7 @@ runs:
 
         - name: Post start message
           id: post
-          uses: slackapi/slack-github-action@v2.0.0
+          uses: slackapi/slack-github-action@v2.1.1
           with:
               method: chat.postMessage
               token: ${{ env.SLACK_BOT_TOKEN }}
