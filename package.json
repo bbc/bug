@@ -18,6 +18,7 @@
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
         "docs:serve": "cd docs && node scripts/generateModules.js && RUBYOPT='-W0' bundle exec jekyll serve --livereload --config _config.yml,_config.local.yml",
+        "update:module-containers": "ok=0; fail=0; for d in src/modules/*/container; do [ -d \"$d\" ] || continue; echo \"==================================================\"; echo \"Updating: $d\"; if (cd \"$d\" && npm update); then echo \"Result: OK ($d)\"; ok=$((ok+1)); else echo \"Result: FAIL ($d)\"; fail=$((fail+1)); fi; done; echo \"==================================================\"; echo \"Done. Success: $ok Failed: $fail\"",
         "test:server": "docker build -f ./src/server/Dockerfile.test -t bug-server-test . && docker run --rm --name bug-server-test-run bug-server-test sh -lc 'if find ./src/server -path ./node_modules -prune -o -type f -name \"*.test.js\" -print | grep -q . || find ./src/server -path ./node_modules -prune -o -type f -name \"*.spec.js\" -print | grep -q .; then npx jest --runInBand --config ./src/server/jest.server.config.cjs; else echo \"No server tests found, skipping.\"; fi'"
     },
     "nodemonConfig": {
