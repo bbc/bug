@@ -1,0 +1,24 @@
+# VCS and editor metadata
+.git
+.github
+.vscode
+
+# Logs and coverage artifacts
+**/npm-debug.log
+**/*.log
+**/coverage
+
+# Dependency folders
+**/node_modules
+
+# Build artifacts
+**/dist
+**/storybook-static
+
+# Docs output and caches
+docs/_site
+docs/.jekyll-cache
+
+# Local runtime data not required for image builds
+config/panels
+config/global
