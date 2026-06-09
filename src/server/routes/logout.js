@@ -4,6 +4,27 @@ const router = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const hashResponse = require("@core/hash-response");
 const userGet = require("@services/user-get");
+
+const logoutAsync = async (req) => {
+    if (typeof req?.logout !== "function") {
+        return null;
+    }
+
+    if (req.logout.length > 0) {
+        return new Promise((resolve, reject) => {
+            req.logout((error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(null);
+            });
+        });
+    }
+
+    return req.logout();
+};
 /**
  * @swagger
  * /logout:
@@ -22,7 +43,13 @@ router.post(
     "/",
     asyncHandler(async (req, res) => {
         const user = await userGet(req?.user);
-        const status = await req.logout();
+        let status = null;
+
+        try {
+            await logoutAsync(req);
+        } catch (error) {
+            status = error;
+        }
 
         hashResponse(res, req, {
             status: status ? "failure" : "success",

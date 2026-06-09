@@ -7,6 +7,27 @@ const keyClean = require("@utils/key-clean");
 const isPublicRoute = require("@services/panel-ispublicroute");
 const logger = require("@core/logger")(module);
 
+const logoutAsync = async (req) => {
+    if (typeof req?.logout !== "function") {
+        return null;
+    }
+
+    if (req.logout.length > 0) {
+        return new Promise((resolve, reject) => {
+            req.logout((error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                resolve(null);
+            });
+        });
+    }
+
+    return req.logout();
+};
+
 const restrictedTo = (roles) => {
     const checkCredentials = async (req, res, next) => {
         // checks if the request is directed at a panel and if the route is not subject to auth
@@ -16,7 +37,11 @@ const restrictedTo = (roles) => {
 
         // check if any stragetgies are enabled
         if ((await strategyGetEnabledCount()) === 0) {
-            req.logout();
+            try {
+                await logoutAsync(req);
+            } catch (error) {
+                logger.warning(`Failed to logout unauthenticated request for ${req.path}: ${error}`);
+            }
             return next();
         }
 
@@ -35,7 +60,11 @@ const restrictedTo = (roles) => {
 
             // check if the user is still enabled
             if (!user?.enabled) {
-                req.logout();
+                try {
+                    await logoutAsync(req);
+                } catch (error) {
+                    logger.warning(`Failed to logout disabled user ${user?.username}: ${error}`);
+                }
                 logger.warning(`Unauthorized access attempt to ${req.path} from ${req.ip} with user ${user?.username} - account disabled`);
                 return hashResponse(res, req, {
                     status: "failure",
