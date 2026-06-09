@@ -133,10 +133,9 @@ jobs:
                       uk.co.bbc.bug.build.commit=${{ github.sha }}
 
             - name: update slack message
-              if: ${{ always() && steps.slack-start.outputs.ts != '' && steps.slack-start.outputs.channel_id != '' }}
+              if: ${{ always() && steps.slack-start.outputs.ts != '' }}
               uses: ./.github/actions/slack-run-finish
               with:
-                  channel_id: ${{ steps.slack-start.outputs.channel_id }}
                   ts: ${{ steps.slack-start.outputs.ts }}
                   status: ${{ job.status }}
                   message_prefix: Deployment

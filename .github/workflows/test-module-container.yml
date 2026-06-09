@@ -22,7 +22,6 @@ jobs:
         name: Slack start message
         runs-on: ubuntu-latest
         outputs:
-            channel_id: ${{ steps.slack-start.outputs.channel_id }}
             ts: ${{ steps.slack-start.outputs.ts }}
         steps:
             - name: checkout repository
@@ -219,7 +218,7 @@ jobs:
 
     slack-finish:
         name: Slack final status
-        if: ${{ always() && needs.slack-start.result == 'success' && needs.slack-start.outputs.ts != '' && needs.slack-start.outputs.channel_id != '' }}
+        if: ${{ always() && needs.slack-start.result == 'success' && needs.slack-start.outputs.ts != '' }}
         needs:
             - slack-start
             - discover-modules
@@ -247,7 +246,6 @@ jobs:
             - name: update slack message
               uses: ./.github/actions/slack-run-finish
               with:
-                  channel_id: ${{ needs.slack-start.outputs.channel_id }}
                   ts: ${{ needs.slack-start.outputs.ts }}
                   status: ${{ steps.workflow-status.outputs.status }}
                   message_prefix: Workflow

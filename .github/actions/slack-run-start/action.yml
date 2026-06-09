@@ -12,9 +12,6 @@ inputs:
         default: "#1d4ed8"
 
 outputs:
-    channel_id:
-        description: Slack channel id for the posted message.
-        value: ${{ steps.extract.outputs.channel_id }}
     ts:
         description: Slack message timestamp for updates.
         value: ${{ steps.extract.outputs.ts }}
@@ -45,19 +42,13 @@ runs:
           env:
               SLACK_RESPONSE: ${{ steps.post.outputs.response }}
               SLACK_TS: ${{ steps.post.outputs.ts }}
-              SLACK_CHANNEL_ID: ${{ steps.post.outputs.channel_id }}
           run: |
               ts="$SLACK_TS"
-              channel_id="$SLACK_CHANNEL_ID"
 
               if [[ -n "$SLACK_RESPONSE" && "$SLACK_RESPONSE" != "null" ]]; then
                   if [[ -z "$ts" ]]; then
                       ts=$(echo "$SLACK_RESPONSE" | jq -r '.ts // empty')
                   fi
-                  if [[ -z "$channel_id" ]]; then
-                      channel_id=$(echo "$SLACK_RESPONSE" | jq -r '.channel_id // .channel // empty')
-                  fi
               fi
 
               echo "ts=$ts" >> "$GITHUB_OUTPUT"
-              echo "channel_id=$channel_id" >> "$GITHUB_OUTPUT"

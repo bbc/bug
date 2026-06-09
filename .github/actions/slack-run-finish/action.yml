@@ -2,9 +2,6 @@ name: Slack Run Finish
 description: Update a posted workflow Slack message with final status color, or delete it when skipped.
 
 inputs:
-    channel_id:
-        description: Slack channel id returned by start action.
-        required: true
     ts:
         description: Slack message timestamp returned by start action.
         required: true
@@ -49,7 +46,7 @@ runs:
               method: chat.delete
               token: ${{ env.SLACK_BOT_TOKEN }}
               payload: |
-                  channel: ${{ inputs.channel_id }}
+                  channel: ${{ env.SLACK_CHANNEL_ID }}
                   ts: ${{ inputs.ts }}
 
         - name: Update message
@@ -59,7 +56,7 @@ runs:
               method: chat.update
               token: ${{ env.SLACK_BOT_TOKEN }}
               payload: |
-                  channel: ${{ inputs.channel_id }}
+                  channel: ${{ env.SLACK_CHANNEL_ID }}
                   ts: ${{ inputs.ts }}
                   attachments:
                     - color: "${{ steps.style.outputs.color }}"
