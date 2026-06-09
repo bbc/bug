@@ -138,7 +138,7 @@ jobs:
 
     slack-finish:
         name: Slack final status
-        if: ${{ always() && needs.slack-start.outputs.ts != '' }}
+        if: ${{ always() && needs.slack-start.outputs.ts != '' && needs.slack-start.outputs.channel_id != '' }}
         needs:
             - slack-start
             - verify-tests
