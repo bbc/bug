@@ -1,6 +1,8 @@
 name: Deploy
 env:
     registry: "ghcr.io"
+    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
 
 on:
     workflow_run:
@@ -64,62 +66,46 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            # checkout the repository at the latest commit
             - name: checkout repository
               uses: actions/checkout@v6
 
-            - name: set start timestamp
-              id: start-time
-              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-
-            - name: Send slack start message
-              uses: slackapi/slack-github-action@v2.0.0
+            - name: send slack start message
+              id: slack-start
+              uses: ./.github/actions/slack-run-start
               with:
-                  method: chat.postMessage
-                  token: ${{ secrets.SLACK_BOT_TOKEN }}
-                  payload: |
-                      channel: ${{ secrets.SLACK_CHANNEL_ID }}
-                      text: "Starting <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|deployment> to GHCR at ${{ steps.start-time.outputs.value }}"
+                  message_prefix: Deployment running
 
-            # setup node
             - name: setup node
               uses: actions/setup-node@v3
               with:
                   node-version: 20
                   cache: npm
 
-            # install dependencies
             - name: install dependencies
               run: npm ci
 
-            # set build timestamp
             - name: set build timestamp
               id: build-time
-              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
 
-            # get backend version
             - name: get backend version
               id: backend-version
               uses: martinbeentjes/npm-get-version-action@v1.1.0
               with:
                   path: ./
 
-            # print version
             - name: print backend version
               run: echo "building server image with version ${{ steps.backend-version.outputs.current-version }}"
 
-            # setup qemu for multi-platform builds
             - name: set up qemu
               uses: docker/setup-qemu-action@v3
 
-            # setup docker buildx
             - name: set up docker buildx
               id: buildx
               uses: docker/setup-buildx-action@v3
               with:
                   buildkitd-flags: --debug
 
-            # login to GHCR
             - name: login to ghcr
               uses: docker/login-action@v3
               with:
@@ -128,7 +114,6 @@ jobs:
                   password: ${{ secrets.GITHUB_TOKEN }}
                   logout: false
 
-            # build and push server image
             - name: build and push server image
               uses: docker/build-push-action@v6
               with:
@@ -147,17 +132,11 @@ jobs:
                       uk.co.bbc.bug.build.number=${{ github.run_number }}
                       uk.co.bbc.bug.build.commit=${{ github.sha }}
 
-            - name: set end timestamp
-              id: end-time
-              if: ${{ always() }}
-              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-
-            - name: Send slack end message
-              if: ${{ always() }}
-              uses: slackapi/slack-github-action@v2.0.0
+            - name: update slack message
+              if: ${{ always() && steps.slack-start.outputs.ts != '' }}
+              uses: ./.github/actions/slack-run-finish
               with:
-                  method: chat.postMessage
-                  token: ${{ secrets.SLACK_BOT_TOKEN }}
-                  payload: |
-                      channel: ${{ secrets.SLACK_CHANNEL_ID }}
-                      text: "Deployment to GHCR finished with status ${{ job.status }} at ${{ steps.end-time.outputs.value }}"
+                  channel_id: ${{ steps.slack-start.outputs.channel_id }}
+                  ts: ${{ steps.slack-start.outputs.ts }}
+                  status: ${{ job.status }}
+                  message_prefix: Deployment

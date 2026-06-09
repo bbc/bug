@@ -1,5 +1,9 @@
 name: Documentation + Storybook
 
+env:
+    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+
 on:
     push:
         branches: ["main"]
@@ -26,6 +30,19 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
+    slack-start:
+        name: Slack start message
+        runs-on: ubuntu-latest
+        outputs:
+            channel_id: ${{ steps.slack-start.outputs.channel_id }}
+            ts: ${{ steps.slack-start.outputs.ts }}
+        steps:
+            - name: send slack start message
+              id: slack-start
+              uses: ./.github/actions/slack-run-start
+              with:
+                  message_prefix: Workflow running
+
     # spell check documentation
     codespell:
         runs-on: ubuntu-latest
@@ -120,3 +137,35 @@ jobs:
             - name: Deploy to GitHub Pages
               id: deployment
               uses: actions/deploy-pages@v4
+
+    slack-finish:
+        name: Slack final status
+        if: ${{ always() && needs.slack-start.result == 'success' && needs.slack-start.outputs.ts != '' }}
+        needs:
+            - slack-start
+            - codespell
+            - storybook
+            - pages
+            - deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: set end timestamp
+              id: end-time
+              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+            - name: determine workflow status
+              id: workflow-status
+              run: |
+                  workflow_status="success"
+                  if [[ "${{ needs.codespell.result }}" == "failure" || "${{ needs.codespell.result }}" == "cancelled" || "${{ needs.storybook.result }}" == "failure" || "${{ needs.storybook.result }}" == "cancelled" || "${{ needs.pages.result }}" == "failure" || "${{ needs.pages.result }}" == "cancelled" || "${{ needs.deploy.result }}" == "failure" || "${{ needs.deploy.result }}" == "cancelled" ]]; then
+                      workflow_status="failure"
+                  fi
+                  echo "status=$workflow_status" >> "$GITHUB_OUTPUT"
+
+            - name: update slack message
+              uses: ./.github/actions/slack-run-finish
+              with:
+                  channel_id: ${{ needs.slack-start.outputs.channel_id }}
+                  ts: ${{ needs.slack-start.outputs.ts }}
+                  status: ${{ steps.workflow-status.outputs.status }}
+                  message_prefix: Workflow

@@ -1,0 +1,53 @@
+name: Slack Run Finish
+description: Update a posted workflow Slack message with final status color.
+
+inputs:
+    channel_id:
+        description: Slack channel id returned by start action.
+        required: true
+    ts:
+        description: Slack message timestamp returned by start action.
+        required: true
+    status:
+        description: Final workflow status. Expected success or failure.
+        required: true
+    message_prefix:
+        description: Prefix text for the Slack finish message.
+        required: false
+        default: Workflow
+    extra_text:
+        description: Optional trailing text appended to the message.
+        required: false
+        default: ""
+
+runs:
+    using: composite
+    steps:
+        - name: Set end timestamp
+          id: end-time
+          shell: bash
+          run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+        - name: Map status to color
+          id: style
+          shell: bash
+          run: |
+              if [[ "${{ inputs.status }}" == "success" ]]; then
+                echo "color=#16a34a" >> "$GITHUB_OUTPUT"
+                echo "label=succeeded" >> "$GITHUB_OUTPUT"
+              else
+                echo "color=#dc2626" >> "$GITHUB_OUTPUT"
+                echo "label=failed" >> "$GITHUB_OUTPUT"
+              fi
+
+        - name: Update message
+          uses: slackapi/slack-github-action@v2.0.0
+          with:
+              method: chat.update
+              token: ${{ env.SLACK_BOT_TOKEN }}
+              payload: |
+                  channel: ${{ inputs.channel_id }}
+                  ts: ${{ inputs.ts }}
+                  attachments:
+                    - color: "${{ steps.style.outputs.color }}"
+                      text: "${{ inputs.message_prefix }} ${{ steps.style.outputs.label }}: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}> finished at ${{ steps.end-time.outputs.value }}${{ inputs.extra_text }}"

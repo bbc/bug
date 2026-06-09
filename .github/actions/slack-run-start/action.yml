@@ -1,0 +1,40 @@
+name: Slack Run Start
+description: Post a workflow start message to Slack with running color.
+
+inputs:
+    message_prefix:
+        description: Prefix text for the Slack start message.
+        required: false
+        default: Workflow running
+    running_color:
+        description: Slack attachment color for running state.
+        required: false
+        default: "#1d4ed8"
+
+outputs:
+    channel_id:
+        description: Slack channel id for the posted message.
+        value: ${{ steps.post.outputs.channel_id }}
+    ts:
+        description: Slack message timestamp for updates.
+        value: ${{ steps.post.outputs.ts }}
+
+runs:
+    using: composite
+    steps:
+        - name: Set start timestamp
+          id: start-time
+          shell: bash
+          run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+        - name: Post start message
+          id: post
+          uses: slackapi/slack-github-action@v2.0.0
+          with:
+              method: chat.postMessage
+              token: ${{ env.SLACK_BOT_TOKEN }}
+              payload: |
+                  channel: ${{ env.SLACK_CHANNEL_ID }}
+                  attachments:
+                    - color: "${{ inputs.running_color }}"
+                      text: "${{ inputs.message_prefix }}: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}> started at ${{ steps.start-time.outputs.value }}"

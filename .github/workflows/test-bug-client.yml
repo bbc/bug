@@ -1,7 +1,12 @@
 name: BUG Client Tests
 
+env:
+    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+
 permissions:
     contents: read
+
 on:
     push:
         branches:
@@ -25,6 +30,13 @@ jobs:
             matrix:
                 node-version: [22]
         steps:
+            - name: send slack start message
+              id: slack-start
+              if: ${{ github.event_name != 'pull_request' }}
+              uses: ./.github/actions/slack-run-start
+              with:
+                  message_prefix: Workflow running
+
             - uses: actions/checkout@v6
             - uses: actions/setup-node@v6
               name: Client Build & Test using Node.js ${{ matrix.node-version }}
@@ -33,3 +45,12 @@ jobs:
             - run: npm ci
             - run: cd src/client && npm test
             - run: cd src/client && npm run build --if-present
+
+            - name: update slack message
+              if: ${{ always() && steps.slack-start.outputs.ts != '' }}
+              uses: ./.github/actions/slack-run-finish
+              with:
+                  channel_id: ${{ steps.slack-start.outputs.channel_id }}
+                  ts: ${{ steps.slack-start.outputs.ts }}
+                  status: ${{ job.status }}
+                  message_prefix: Workflow

@@ -1,5 +1,9 @@
 name: Module Container Tests
 
+env:
+    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+
 permissions:
     contents: read
 
@@ -14,6 +18,19 @@ on:
     workflow_dispatch:
 
 jobs:
+    slack-start:
+        name: Slack start message
+        runs-on: ubuntu-latest
+        outputs:
+            channel_id: ${{ steps.slack-start.outputs.channel_id }}
+            ts: ${{ steps.slack-start.outputs.ts }}
+        steps:
+            - name: send slack start message
+              id: slack-start
+              uses: ./.github/actions/slack-run-start
+              with:
+                  message_prefix: Workflow running
+
     discover-modules:
         name: Discover modules to test
         runs-on: ubuntu-latest
@@ -21,6 +38,7 @@ jobs:
             matrix: ${{ steps.discover.outputs.matrix }}
             has_modules: ${{ steps.discover.outputs.has_modules }}
             selected_modules: ${{ steps.discover.outputs.selected_modules }}
+            module_count: ${{ steps.discover.outputs.module_count }}
         steps:
             - name: checkout repository
               uses: actions/checkout@v6
@@ -137,6 +155,7 @@ jobs:
                   fs.appendFileSync(out, `matrix=${JSON.stringify(matrix)}\n`);
                   fs.appendFileSync(out, `has_modules=${matrix.length > 0}\n`);
                   fs.appendFileSync(out, `selected_modules=${selected.join(",")}\n`);
+                  fs.appendFileSync(out, `module_count=${matrix.length}\n`);
                   NODE
 
     module-tests:
@@ -192,4 +211,38 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: print skip reason
-              run: echo "No changed modules with both a test script and test files were detected."
+              run: |
+                  echo "No changed modules with both a test script and test files were detected. Module count: ${{ needs.discover-modules.outputs.module_count }}"
+
+    slack-finish:
+        name: Slack final status
+        if: ${{ always() && needs.slack-start.result == 'success' && needs.slack-start.outputs.ts != '' }}
+        needs:
+            - slack-start
+            - discover-modules
+            - module-tests
+            - no-modules-changed
+        runs-on: ubuntu-latest
+        steps:
+            - name: set end timestamp
+              id: end-time
+              run: |
+                  echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+            - name: determine workflow status
+              id: workflow-status
+              run: |
+                  workflow_status="success"
+                  if [[ "${{ needs.discover-modules.result }}" == "failure" || "${{ needs.discover-modules.result }}" == "cancelled" || "${{ needs.module-tests.result }}" == "failure" || "${{ needs.module-tests.result }}" == "cancelled" || "${{ needs.no-modules-changed.result }}" == "failure" || "${{ needs.no-modules-changed.result }}" == "cancelled" ]]; then
+                      workflow_status="failure"
+                  fi
+                  echo "status=$workflow_status" >> "$GITHUB_OUTPUT"
+
+            - name: update slack message
+              uses: ./.github/actions/slack-run-finish
+              with:
+                  channel_id: ${{ needs.slack-start.outputs.channel_id }}
+                  ts: ${{ needs.slack-start.outputs.ts }}
+                  status: ${{ steps.workflow-status.outputs.status }}
+                  message_prefix: Workflow
+                  extra_text: ". Modules selected: ${{ needs.discover-modules.outputs.module_count }}"

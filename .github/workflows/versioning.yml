@@ -1,5 +1,9 @@
 name: Version Bump
 
+env:
+    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+
 on:
     workflow_run:
         workflows:
@@ -22,6 +26,19 @@ permissions:
     pull-requests: write
 
 jobs:
+    slack-start:
+        name: Slack start message
+        runs-on: ubuntu-latest
+        outputs:
+            channel_id: ${{ steps.slack-start.outputs.channel_id }}
+            ts: ${{ steps.slack-start.outputs.ts }}
+        steps:
+            - name: send slack start message
+              id: slack-start
+              uses: ./.github/actions/slack-run-start
+              with:
+                  message_prefix: Workflow running
+
     verify-tests:
         name: Verify required tests passed
         runs-on: ubuntu-latest
@@ -80,28 +97,23 @@ jobs:
         needs: verify-tests
         runs-on: ubuntu-latest
         steps:
-            # checkout code
             - name: checkout repository
               uses: actions/checkout@v6
               with:
                   fetch-depth: 0
 
-            # setup node
             - name: setup node
               uses: actions/setup-node@v3
               with:
                   node-version: 20
                   cache: npm
 
-            # install dependencies
             - name: install dependencies
               run: npm ci
 
-            # update module changelogs and bump module.json versions
             - name: update module changelogs
               run: node .github/scripts/updateModules.js
 
-            # commit any changes from updateModules.js
             - name: commit changelog/module changes
               run: |
                   git config user.name "github-actions[bot]"
@@ -110,11 +122,9 @@ jobs:
                   git diff --cached --quiet || git commit -m "ci: update module changelogs and bump versions"
                   git push
 
-            # update app changelog and bump package.json versions
             - name: update app changelogs
               run: node .github/scripts/updateApp.js
 
-            # commit any changes from updateApp.js
             - name: commit changelog/app changes
               run: |
                   git config user.name "github-actions[bot]"
@@ -122,3 +132,33 @@ jobs:
                   git add CHANGELOG.md package.json src/client/package.json
                   git diff --cached --quiet || git commit -m "ci: update app changelog and bump versions"
                   git push
+
+    slack-finish:
+        name: Slack final status
+        if: ${{ always() && needs.slack-start.outputs.ts != '' }}
+        needs:
+            - slack-start
+            - verify-tests
+            - version
+        runs-on: ubuntu-latest
+        steps:
+            - name: set end timestamp
+              id: end-time
+              run: echo "value=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
+            - name: determine workflow status
+              id: workflow-status
+              run: |
+                  workflow_status="success"
+                  if [[ "${{ needs.verify-tests.result }}" == "failure" || "${{ needs.verify-tests.result }}" == "cancelled" || "${{ needs.version.result }}" == "failure" || "${{ needs.version.result }}" == "cancelled" ]]; then
+                      workflow_status="failure"
+                  fi
+                  echo "status=$workflow_status" >> "$GITHUB_OUTPUT"
+
+            - name: update slack message
+              uses: ./.github/actions/slack-run-finish
+              with:
+                  channel_id: ${{ needs.slack-start.outputs.channel_id }}
+                  ts: ${{ needs.slack-start.outputs.ts }}
+                  status: ${{ steps.workflow-status.outputs.status }}
+                  message_prefix: Workflow
