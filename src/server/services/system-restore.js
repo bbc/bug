@@ -4,7 +4,7 @@ const path = require("path");
 const logger = require("@core/logger")(module);
 const untarFolder = require("@utils/untar-folder");
 const fs = require("fs-extra");
-const delay = require("delay");
+const delay = require("delay").default;
 
 module.exports = async (backup) => {
     try {
