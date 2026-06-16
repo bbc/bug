@@ -90,7 +90,7 @@ export default function PanelAdd(props) {
                             </Grid>
 
                             <Grid size={{ xs: 12, md: 6 }}>
-                                <BugConfigFormPanelGroup name="group" control={control} defaultValue="" />
+                                <BugConfigFormPanelGroup name="group" control={control} defaultValue="" fullWidth />
                             </Grid>
 
                             <Grid size={{ xs: 12, md: 6 }}>
