@@ -1,12 +1,13 @@
 "use strict";
 
 const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     const config = await configGet();
-    console.log("device-save: saving device config ...");
+    logger.info("saving device config ...");
 
     // save device config via API
 
-    console.log("device-save: success");
+    logger.info("success");
 };

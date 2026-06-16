@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -28,7 +29,7 @@ const main = async () => {
     await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
 
     // Kick things off
-    console.log(`worker-interfacestats: connecting to device at ${workerData.address}`);
+    logger.debug(`connecting to device at ${workerData.address}`);
 
     while (true) {
         await delay(5000);
@@ -37,7 +38,7 @@ const main = async () => {
         const interfaces = await interfacesCollection.find().toArray();
 
         if (!interfaces) {
-            console.log("worker-interfacestats: no interfaces found in db - waiting ...");
+            logger.debug("no interfaces found in db - waiting ...");
             await delay(5000);
         } else {
             // get stats from device API ...

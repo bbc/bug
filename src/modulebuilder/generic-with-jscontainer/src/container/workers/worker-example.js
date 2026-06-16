@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoSingle = require("@core/mongo-single");
 const axios = require("axios");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 // make sure you add an array of config fields in 'restartOn' - the worker will restart whenever these are updated
@@ -20,7 +21,7 @@ const main = async () => {
         await mongoDb.connect(workerData.id);
 
         // Kick things off
-        console.log(`worker-example: doing something ...`);
+        logger.debug("doing something ...");
 
         // use an infinite loop
         while (true) {
@@ -33,14 +34,14 @@ const main = async () => {
             await delay(300000);
         }
     } catch (err) {
-        console.error(`worker-example: fatal error`);
-        console.error(err.stack || err.message || err);
+        logger.error("fatal error");
+        logger.error(err.stack || err.message || err);
         process.exit();
     }
 };
 
 main().catch(err => {
-    console.error("worker-example: startup failure");
-    console.error(err.stack || err.message || err);
+    logger.error("startup failure");
+    logger.error(err.stack || err.message || err);
     process.exit(1);
 });
