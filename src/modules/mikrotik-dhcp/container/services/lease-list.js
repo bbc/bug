@@ -1,9 +1,11 @@
 "use strict";
 
 const mongoCollection = require("@core/mongo-collection");
-const oui = require("oui");
+const ouiData = require("oui-data");
 const sortHandlers = require("@core/sort-handlers");
 const logger = require("@core/logger")(module);
+
+const getOuiPrefix = (macAddress = "") => macAddress.replace(/[^a-fA-F0-9]/g, "").slice(0, 6).toUpperCase();
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     try {
@@ -50,7 +52,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
             // set manufacturer
             eachLease["manufacturer"] = "";
             if (eachLease["mac-address"]) {
-                const manufacturerResult = oui(eachLease["mac-address"]);
+                const ouiPrefix = getOuiPrefix(eachLease["mac-address"]);
+                const manufacturerResult = ouiData[ouiPrefix];
                 if (manufacturerResult) {
                     const resultArray = manufacturerResult.split("\n");
                     eachLease["manufacturer"] = resultArray[0];
