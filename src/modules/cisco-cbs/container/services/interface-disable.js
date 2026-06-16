@@ -7,6 +7,7 @@ const deviceSetPending = require("@services/device-setpending");
 const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId) => {
+    let snmpAwait;
 
     try {
         // validate input
@@ -22,7 +23,7 @@ module.exports = async (interfaceId) => {
         logger.info(`disabling interface ${interfaceId} via SNMP`);
 
         // create SNMP session
-        const snmpAwait = new SnmpAwait({
+        snmpAwait = new SnmpAwait({
             host: config.address,
             community: config.snmpCommunity,
         });
