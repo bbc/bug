@@ -5,6 +5,7 @@ const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
 
 module.exports = async (destinationIndex, sourceIndex) => {
+    let router = null;
     try {
         // fetch config
         const config = await configGet();
@@ -44,16 +45,26 @@ module.exports = async (destinationIndex, sourceIndex) => {
         }
 
         // connect to videohub router
-        const router = new videohub({ port: config.port, host: config.address });
+        router = new videohub({ port: config.port, host: config.address });
         await router.connect();
 
-        // send routing commands
-        await router.send("VIDEO OUTPUT ROUTING", routeCommands, true);
+        // send routing command and wait for response
+        await router.send("VIDEO OUTPUT ROUTING", routeCommands);
+
+        // Wait briefly for device to process the command
+        const response = await router.query("VIDEO OUTPUT ROUTING");
+        if (!response) {
+            throw new Error("Failed to verify routing command");
+        }
 
         logger.info(`routed destination ${destinationIndex} to source ${sourceIndex}`);
         return true;
     } catch (err) {
         logger.error(err.stack || err.message);
         throw err;
+    } finally {
+        if (router) {
+            await router.disconnect();
+        }
     }
 };
