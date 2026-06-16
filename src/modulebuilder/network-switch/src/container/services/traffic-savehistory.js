@@ -1,5 +1,7 @@
 "use strict";
 
+const logger = require("@core/logger")(module);
+
 module.exports = async (collection, interfaceArray) => {
     let saveDocument = {
         timestamp: new Date(),
@@ -12,7 +14,7 @@ module.exports = async (collection, interfaceArray) => {
                 rx: eachInterface["rx-rate"],
             };
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     }
     collection.insertOne(saveDocument);

@@ -4,6 +4,7 @@ const { parentPort, workerData, threadId } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -22,7 +23,7 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     // Kick things off
-    console.log(`worker-interfacelldp: connecting to device at ${workerData.address}`);
+    logger.debug(`connecting to device at ${workerData.address}`);
 
     while (true) {
         // fetch list of LLDP neighbors

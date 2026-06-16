@@ -5,6 +5,7 @@ const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -26,7 +27,7 @@ const main = async () => {
     const interfacesCollection = await mongoCollection("interfaces");
 
     // Kick things off
-    console.log(`worker-switchports: connecting to device at ${workerData.address}`);
+    logger.debug(`connecting to device at ${workerData.address}`);
 
     while (true) {
         // connect to device API

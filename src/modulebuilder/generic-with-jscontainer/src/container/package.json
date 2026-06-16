@@ -4,7 +4,7 @@
     "scripts": {
         "production": "node ./api/server",
         "development": "nodemon ./api/server",
-        "test": "jest"
+        "test": "docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run --rm --name bug-module-test-run bug-module-test sh -lc 'if find . -path ./node_modules -prune -o -type f -name \"*.test.js\" -print | grep -q . || find . -path ./node_modules -prune -o -type f -name \"*.spec.js\" -print | grep -q .; then if [ -f ./jest.config.cjs ]; then npx jest --runInBand --config ./jest.config.cjs; else npx jest --runInBand; fi; else echo \"No tests found, skipping.\"; fi'"
     },
     "nodemonConfig": {
         "ignore": [

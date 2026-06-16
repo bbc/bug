@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const axios = require("axios");
 const modulePort = process.env.PORT;
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -36,7 +37,7 @@ const main = async () => {
                 dhcpLeases = dhcpLeases.concat(response.data.data);
             }
         } catch (error) {
-            console.log(`worker-dhcpserver: ${error.stack || error || error.message}`);
+            logger.warning(error.stack || error || error.message);
         }
     }
 

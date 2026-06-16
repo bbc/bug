@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -45,7 +46,7 @@ const main = async () => {
     interfacesCollection.deleteMany({});
 
     // Kick things off
-    console.log(`worker-interfaces: connecting to device at ${workerData.address}`);
+    logger.debug(`connecting to device at ${workerData.address}`);
 
     while (true) {
         // fetch interfaces from your API
