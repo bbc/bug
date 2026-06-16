@@ -42,4 +42,5 @@ const moduleNameMapper = Object.entries(_moduleAliases).reduce((acc, [alias, tar
 module.exports = {
     testEnvironment: "node",
     moduleNameMapper,
+    testPathIgnorePatterns: ["<rootDir>/core/"],
 };

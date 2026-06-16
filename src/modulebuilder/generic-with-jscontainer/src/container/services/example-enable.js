@@ -3,12 +3,13 @@
 const configGet = require("@core/config-get");
 const yourApi = require("@utils/your-api");
 const deviceSetPending = require("@services/device-setpending");
+const logger = require("@core/logger")(module);
 
 module.exports = async (id) => {
     try {
         const config = await configGet();
 
-        console.log(`example-enable: enabling item ${id} ...`);
+        logger.info(`enabling item ${id} ...`);
 
         // enable the item on the device
         await yourApi({
@@ -20,7 +21,7 @@ module.exports = async (id) => {
             commands: ["enable"],
         });
 
-        console.log(`example-enable: success - updating DB`);
+        logger.info("success - updating DB");
 
         // update the DB to reflect enabled interface
         const itemCollection = await mongoCollection("items");
@@ -29,7 +30,7 @@ module.exports = async (id) => {
             { $set: { enabled: true } }
         );
 
-        console.log(`example-enable: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`${JSON.stringify(dbResult.result)}`);
         await deviceSetPending(true);
         return true;
 
