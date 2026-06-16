@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.4
+
+- 2026-06-16: fix spurious error when disabling interface ([6d5c3e3](https://github.com/bbc/bug/commit/6d5c3e371577f32b1d82c3a4ac618ef6412ce54d))
+
 ### version 1.2.3
 
 - 2026-06-06: fix stale lldp ([ad85642](https://github.com/bbc/bug/commit/ad8564220e5fa6c3cba0ce8bf74e03b73ba933bd))
