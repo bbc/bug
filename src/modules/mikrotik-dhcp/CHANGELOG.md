@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.25
+
+- 2026-06-16: fix upgrade to 'oui' package ([2b7d636](https://github.com/bbc/bug/commit/2b7d6367637be593b45ea6f485ba106254ef89b7))
+
 ### version 1.1.24
 
 - 2026-05-28: add tests ([ff46564](https://github.com/bbc/bug/commit/ff4656493c8144ce8d3677727f4525b968847a01))
