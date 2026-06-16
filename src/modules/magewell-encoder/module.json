@@ -1,0 +1,25 @@
+{
+    "name": "magewell-encoder",
+    "longname": "Magewell Encoder",
+    "description": "Control of Magewell Encoders",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "mdi-video-wireless",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "development",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "memory": 200,
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "title": "",
+        "module": "magewell-encoder",
+        "description": "",
+        "notes": "",
+        "enabled": false
+    }
+}
