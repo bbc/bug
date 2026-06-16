@@ -1,0 +1,25 @@
+{
+    "name": "lynxtechnik-yellobrik",
+    "longname": "LYNXTechnik yellobrik",
+    "description": "Control and monitoring of LYNXTechnik yellobrik devices",
+    "capabilities": [],
+    "notes": "",
+    "version": "1.0.0",
+    "icon": "abc-icon",
+    "author": "Geoff House",
+    "license": "Apache-2.0",
+    "status": "development",
+    "needsContainer": true,
+    "devmounts": ["api", "services", "workers", "utils"],
+    "memory": 200,
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "needsConfigured": true,
+        "title": "",
+        "module": "lynxtechnik-yellobrik",
+        "description": "",
+        "notes": "",
+        "enabled": false
+    }
+}
