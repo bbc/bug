@@ -2,7 +2,22 @@
 const SSH2Shell = require("ssh2shell");
 const logger = require("@core/logger")(module);
 
+let uncaughtExceptionHandlerAttached = false;
+
 module.exports = ({ host, port = 22, username, password, commands = [], debug = false, timeout = 5000 }) => {
+    if (!uncaughtExceptionHandlerAttached) {
+        process.on("uncaughtException", (err) => {
+            const errMessage = err?.stack || err?.message || `${err}`;
+            if (errMessage.includes("Connection closed")) {
+                // This is expected on some devices after cleanly issuing "exit".
+                logger.debug("ignoring expected SSH disconnect: Connection closed");
+                return;
+            }
+            logger.error(errMessage);
+        });
+        uncaughtExceptionHandlerAttached = true;
+    }
+
     const preCommands = ["terminal datadump", "terminal no prompt"];
     const results = [];
 
