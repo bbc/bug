@@ -8,7 +8,7 @@ const dockerStartContainer = require("@services/docker-startcontainer");
 const dockerCreateContainer = require("@services/docker-createcontainer");
 const panelBuildStatusModel = require("@models/panel-buildstatus");
 const moduleNeedsContainer = require("@services/module-needscontainer");
-const delay = require("delay");
+const delay = require("delay").default;
 const panelConfigPush = require("@services/panelconfig-push");
 
 module.exports = async (panelId) => {

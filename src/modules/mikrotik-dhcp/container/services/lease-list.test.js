@@ -1,4 +1,6 @@
-jest.mock("oui", () => jest.fn(() => "Vendor"), { virtual: true });
+jest.mock("oui-data", () => ({
+    AABBCC: "Vendor\nAddress",
+}), { virtual: true });
 
 const service = require("./lease-list");
 

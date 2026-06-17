@@ -60,7 +60,6 @@ class RouterOSApi {
 
             return this.conn;
         } catch (err) {
-            logger.error(`routeros-api: failed connecting to ${this.host}`, err);
             throw err;
         } finally {
             this._connecting = false;

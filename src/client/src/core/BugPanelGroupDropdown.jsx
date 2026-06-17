@@ -10,7 +10,7 @@ const CustomPaper = (props) => {
     return <Paper elevation={8} {...props} />;
 };
 
-export default function BugPanelGroupDropdown({ value, onChange, fullWidth = false, variant = "standard", sx = {} }) {
+export default function BugPanelGroupDropdown({ value, onChange, fullWidth = true, variant = "standard", sx = {} }) {
     const panelList = useSelector((state) => state.panelList);
     const [inputValue, setInputValue] = React.useState(value);
 

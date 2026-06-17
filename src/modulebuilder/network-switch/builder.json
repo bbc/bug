@@ -3,7 +3,13 @@
     "description": "Generic network switch module",
     "version": "1.0.0",
     "author": "Geoff House",
-    "files": ["module.json", "container/package.json", "client/components/ExampleList.jsx"],
+    "files": [
+        "module.json",
+        "README.md",
+        "container/package.json",
+        "container/package-lock.json",
+        "container/Dockerfile.test"
+    ],
     "fields": [
         {
             "name": "name",

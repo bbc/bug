@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId) => {
     const config = await configGet();
@@ -9,10 +10,10 @@ module.exports = async (interfaceId) => {
         return false;
     }
     if (config.protectedInterfaces.includes(interfaceId)) {
-        console.log(`interface-protect: interface ${interfaceId} already protected`);
+        logger.warning(`interface ${interfaceId} already protected`);
         return false;
     }
-    console.log(`interface-protect: protecting interface ${interfaceId}`);
+    logger.info(`protecting interface ${interfaceId}`);
     config.protectedInterfaces.push(interfaceId);
     return await configPutViaCore(config);
 };

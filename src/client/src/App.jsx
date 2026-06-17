@@ -14,6 +14,7 @@ import { SnackbarConfigurator } from "@utils/Snackbar";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import { SnackbarProvider } from "notistack";
+import { CookiesProvider } from "react-cookie";
 import { ModalProvider } from "react-modal-hook";
 import { Provider, useSelector } from "react-redux";
 import theme from "./theme";
@@ -29,27 +30,29 @@ const ThemedApp = (props) => {
             <BugConfirmDialogProvider>
                 <BugRenameDialogProvider>
                     <BugCustomDialogProvider>
-                        <SnackbarProvider
-                            dense
-                            autoHideDuration={3000}
-                            preventDuplicate
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "right",
-                            }}
-                            TransitionComponent={Fade}
-                            maxSnack={3}
-                        >
-                            <SnackbarConfigurator />
-                            <CssBaseline />
-                            <UserHandler />
-                            <StrategiesHandler />
-                            <SettingsHandler />
-                            <PanelListHandler />
-                            <ModalProvider>
-                                <AuthRouter />
-                            </ModalProvider>
-                        </SnackbarProvider>
+                        <CookiesProvider>
+                            <SnackbarProvider
+                                dense
+                                autoHideDuration={3000}
+                                preventDuplicate
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "right",
+                                }}
+                                TransitionComponent={Fade}
+                                maxSnack={3}
+                            >
+                                <SnackbarConfigurator />
+                                <CssBaseline />
+                                <UserHandler />
+                                <StrategiesHandler />
+                                <SettingsHandler />
+                                <PanelListHandler />
+                                <ModalProvider>
+                                    <AuthRouter />
+                                </ModalProvider>
+                            </SnackbarProvider>
+                        </CookiesProvider>
                     </BugCustomDialogProvider>
                 </BugRenameDialogProvider>
             </BugConfirmDialogProvider>

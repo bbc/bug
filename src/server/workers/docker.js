@@ -6,7 +6,7 @@ const logger = require("@core/logger")(module);
 const dockerListContainerInfo = require("@services/docker-listcontainerinfo");
 const dockerContainer = require("@models/docker-container");
 const mongoDb = require("@core/mongo-db");
-const delay = require("delay");
+const delay = require("delay").default;
 
 const databaseName = process.env.BUG_CONTAINER || "bug";
 
