@@ -3,8 +3,10 @@
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
+const cacheResponse = require("@utils/videohub-cache-response");
 
 module.exports = async (params) => {
+    let router = null;
     try {
         // params should contain a single array, with an object for each label to set:
         // { "labels": [ { "type": "output", "index": 0, "label": "Output 1" }, { ... } ] }
@@ -19,7 +21,7 @@ module.exports = async (params) => {
         if (!config) throw new Error("failed to load config");
 
         // connect to videohub router
-        const router = new videohub({ port: config.port, host: config.address });
+        router = new videohub({ port: config.port, host: config.address });
         await router.connect();
 
         // loop through each label and send command
@@ -44,7 +46,7 @@ module.exports = async (params) => {
                 const command = `${index} ${labelValue}`;
 
                 // send command
-                await router.send(field, command, true);
+                await router.send(field, command);
 
                 logger.info(`set ${normalizedType} label '${labelValue}' for index ${index}`);
             } catch (err) {
@@ -53,9 +55,21 @@ module.exports = async (params) => {
             }
         }
 
+        // Verify labels were set by querying back
+        const response = await router.query("OUTPUT LABELS");
+        if (!response) {
+            throw new Error("Failed to verify label settings");
+        }
+
+        await cacheResponse(response);
+
         return true;
     } catch (err) {
         logger.error(err.stack || err.message);
         throw err;
+    } finally {
+        if (router) {
+            await router.disconnect();
+        }
     }
 };

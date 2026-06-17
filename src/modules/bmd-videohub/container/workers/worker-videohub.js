@@ -73,14 +73,11 @@ const main = async () => {
         throw error;
     }
 
-    router.on("update", saveResult);
-    logger.debug("attempting connection ... ");
-
+    logger.debug("attempting connection ...");
     await router.connect();
-    logger.debug("waiting for events ...");
+    logger.debug("connected, beginning polls");
 
-    let statusDumpTime = Date.now();
-    let statusDumpFields = [
+    const statusDumpFields = [
         "VIDEOHUB DEVICE",
         "INPUT LABELS",
         "OUTPUT LABELS",
@@ -88,27 +85,30 @@ const main = async () => {
         "VIDEO OUTPUT ROUTING",
         "ALARM STATUS",
     ];
+
     while (true) {
-        // poll occasionally
-        await delay(updateDelay);
+        try {
+            // Query all status fields in batch
+            const results = await router.queryBatch(statusDumpFields);
 
-        // every 30 seconds we re-request all the blocks
-        if (statusDumpTime + 30 * 1000 < Date.now()) {
-            statusDumpTime = Date.now();
-            for (let eachField of statusDumpFields) {
-                await router.send(eachField);
+            // Save all results
+            await saveResult(results);
+
+            // Poll periodically
+            await delay(updateDelay);
+        } catch (error) {
+            logger.warning(`Poll error: ${error.message}`);
+
+            // Check if device is still responsive
+            if (!lastSeen) {
+                throw new Error("No response from device");
             }
-        } else {
-            // otherwise we just request an 'ack' to keep the database timestamp fresh
-            await router.send("PING");
-        }
+            if (Date.now() - lastSeen > 1000 * 30) {
+                throw new Error("Device not seen in 30 seconds");
+            }
 
-        if (!lastSeen) {
-            // it didn't work
-            throw new Error("No response from device");
-        }
-        if (Date.now() - lastSeen > 1000 * 10) {
-            throw new Error("Device not seen in 10 seconds");
+            // Wait before retrying
+            await delay(1000);
         }
     }
 };

@@ -1,3 +1,0 @@
-- Clicking an already selected destination should lock it
-- add heartbeat status check and worker task
-- copilot changes don't update label straight away
