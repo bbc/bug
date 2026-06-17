@@ -33,6 +33,7 @@ class RouterOSApi {
         this._connecting = false;
         this._queue = Promise.resolve();
         this._heartbeatTimer = null;
+        this._heartbeatInFlight = false;
     }
 
     async connect() {
@@ -118,18 +119,17 @@ class RouterOSApi {
         logger.info(`routeros-api: heartbeat started (${this.heartbeatInterval}s) for ${this.host}`);
 
         this._heartbeatTimer = setInterval(async () => {
-            if (!this.conn.connected) return;
+            if (!this.conn.connected || this._heartbeatInFlight) return;
+
+            this._heartbeatInFlight = true;
 
             try {
-                await this._withTimeout(
-                    this.conn.write("/system/identity/print"),
-                    3
-                );
+                await this.run("/system/identity/print");
                 logger.debug(`routeros-api: heartbeat OK for ${this.host}`);
             } catch (err) {
                 logger.warning(`routeros-api: heartbeat failed for ${this.host}`);
-                try { await this.conn.close(); } catch { }
-                if (this.onDisconnect) this.onDisconnect(err);
+            } finally {
+                this._heartbeatInFlight = false;
             }
         }, this.heartbeatInterval * 1000);
     }
