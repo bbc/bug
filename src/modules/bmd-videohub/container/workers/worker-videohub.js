@@ -12,6 +12,7 @@ const videohub = require("@utils/videohub-promise");
 const updateDelay = 2000;
 let dataCollection;
 let lastSeen = null;
+const disabledStatusFields = new Set();
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -45,6 +46,33 @@ const saveResult = async (newResults) => {
             await dataCollection.replaceOne({ title: newResult["title"] }, existingData, { upsert: true });
         }
     }
+};
+
+const queryStatusFields = async (router, fields) => {
+    const results = [];
+
+    for (const field of fields) {
+        if (disabledStatusFields.has(field)) {
+            continue;
+        }
+
+        try {
+            const result = await router.query(field);
+            if (result) {
+                results.push(result);
+                lastSeen = Date.now();
+            }
+        } catch (error) {
+            logger.warning(`Poll field error (${field}): ${error.message}`);
+
+            // Some devices do not implement all fields (e.g. ALARM STATUS).
+            // Disable field after first failure to avoid repeated timeout noise.
+            disabledStatusFields.add(field);
+            logger.info(`Disabling unsupported poll field: ${field}`);
+        }
+    }
+
+    return results;
 };
 
 const main = async () => {
@@ -88,11 +116,18 @@ const main = async () => {
 
     while (true) {
         try {
-            // Query all status fields in batch
-            const results = await router.queryBatch(statusDumpFields);
+            // Query all status fields with per-field fault tolerance
+            const results = await queryStatusFields(router, statusDumpFields);
 
-            // Save all results
-            await saveResult(results);
+            // Save any successful responses and continue polling
+            if (results.length > 0) {
+                await saveResult(results);
+            } else {
+                logger.warning("Poll returned no status blocks");
+                if (!lastSeen || Date.now() - lastSeen > 1000 * 30) {
+                    throw new Error("No response from device in 30 seconds");
+                }
+            }
 
             // Poll periodically
             await delay(updateDelay);
