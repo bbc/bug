@@ -268,13 +268,14 @@ export default function InterfaceList({ panelId, stackId = null }) {
                     noPadding: true,
                     width: 44,
                     content: (item) => {
+                        console.log(item);
                         if (!item?.["poe-available"]) {
                             return null;
                         }
                         return (
                             <BugPoeIcon
                                 disabled={!item?.["poe-admin-enable"]}
-                                active={item?.["poe-operational-status"]}
+                                active={item?.["poe-oper-status"]}
                                 error={item?.["poe-error"]}
                             />
                         );
