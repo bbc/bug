@@ -2,6 +2,7 @@
 
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
+const cacheResponse = require("@utils/videohub-cache-response");
 const logger = require("@core/logger")(module);
 
 module.exports = async (destinationIndex, sourceIndex) => {
@@ -53,9 +54,11 @@ module.exports = async (destinationIndex, sourceIndex) => {
 
         // Wait briefly for device to process the command
         const response = await router.query("VIDEO OUTPUT ROUTING");
-        if (!response) {
+        if (!response?.data) {
             throw new Error("Failed to verify routing command");
         }
+
+        await cacheResponse(response);
 
         logger.info(`routed destination ${destinationIndex} to source ${sourceIndex}`);
         return true;

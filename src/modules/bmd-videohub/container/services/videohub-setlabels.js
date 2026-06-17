@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
+const cacheResponse = require("@utils/videohub-cache-response");
 
 module.exports = async (params) => {
     let router = null;
@@ -59,6 +60,8 @@ module.exports = async (params) => {
         if (!response) {
             throw new Error("Failed to verify label settings");
         }
+
+        await cacheResponse(response);
 
         return true;
     } catch (err) {

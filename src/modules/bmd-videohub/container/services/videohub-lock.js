@@ -3,6 +3,7 @@
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
+const cacheResponse = require("@utils/videohub-cache-response");
 
 module.exports = async (index) => {
     let router = null;
@@ -32,6 +33,8 @@ module.exports = async (index) => {
         if (!response || !response.data[index]) {
             throw new Error("Failed to verify lock setting");
         }
+
+        await cacheResponse(response);
 
         logger.info(`locked output ${index}`);
         return true;

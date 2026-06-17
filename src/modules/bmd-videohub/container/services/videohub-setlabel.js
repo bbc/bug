@@ -3,6 +3,8 @@
 const configGet = require("@core/config-get");
 const videohub = require("@utils/videohub-promise");
 const logger = require("@core/logger")(module);
+const cacheResponse = require("@utils/videohub-cache-response");
+const delay = require("delay");
 
 module.exports = async (index, type, label) => {
     let router = null;
@@ -41,11 +43,16 @@ module.exports = async (index, type, label) => {
         // send label command
         await router.send(field, command);
 
+        // Wait briefly for device to process the label change
+        await delay(200);
+
         // Verify the label was set by querying back
         const response = await router.query(field);
         if (!response || !response.data[index]) {
             throw new Error("Failed to verify label setting");
         }
+
+        await cacheResponse(response);
 
         logger.info(`set ${type} label '${label}' for index ${index}`);
         return true;

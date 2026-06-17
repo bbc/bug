@@ -1,3 +1,10 @@
+"use strict";
+
+const configGet = require("@core/config-get");
+const videohub = require("@utils/videohub-promise");
+const logger = require("@core/logger")(module);
+const cacheResponse = require("@utils/videohub-cache-response");
+
 module.exports = async (index) => {
     let router = null;
     try {
@@ -27,6 +34,8 @@ module.exports = async (index) => {
         if (!response || !response.data[index]) {
             throw new Error("Failed to verify unlock setting");
         }
+
+        await cacheResponse(response);
 
         logger.info(`unlocked output ${index}`);
 
