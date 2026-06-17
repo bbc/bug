@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.3.12
+
+- 2026-06-17: device connection reliability improvements [copilot] ([6c3da25](https://github.com/bbc/bug/commit/6c3da250c222893ec3980752aca6e8770a6d2319))
+
 ### version 1.3.11
 
 - 2026-06-06: update logging ([18b84af](https://github.com/bbc/bug/commit/18b84af874c29c6272bb566a5f76cadc9b40983a))
