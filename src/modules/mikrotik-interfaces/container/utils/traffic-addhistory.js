@@ -13,8 +13,8 @@ module.exports = async (trafficCollection, trafficArray) => {
         const existingTraffic = existingTrafficArray.find((o) => o.name === eachTraffic.name) ?? null;
 
         if (!existingTraffic) {
-            eachTraffic["tx-history"] = new Array(maxLength).fill(0);
-            eachTraffic["rx-history"] = new Array(maxLength).fill(0);
+            eachTraffic["tx-history"] = [];
+            eachTraffic["rx-history"] = [];
         } else {
             eachTraffic["tx-history"] = existingTraffic["tx-history"];
             eachTraffic["rx-history"] = existingTraffic["rx-history"];
