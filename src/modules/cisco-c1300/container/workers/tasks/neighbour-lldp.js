@@ -4,6 +4,8 @@ const chunk = require("@core/chunk");
 const logger = require("@core/logger")(module);
 
 module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
+    const pollStartedAt = new Date();
+
     const parseHexString = (hexString) => {
         // check if the string value is only letters, numbers or slash
         const string = hexString.toString();
@@ -58,6 +60,10 @@ module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
         const activeInterfaceIds = activeLldpEntries.map(({ eachIndex }) => parseInt(eachIndex));
         const clearFilter = {
             lldp: { $exists: true },
+            $or: [
+                { lastUpdated: { $exists: false } },
+                { lastUpdated: { $lte: pollStartedAt } },
+            ],
         };
 
         if (activeInterfaceIds.length) {
@@ -80,7 +86,13 @@ module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
         for (const { lldpObject, eachIndex } of activeLldpEntries) {
             operations.push({
                 updateOne: {
-                    filter: { interfaceId: parseInt(eachIndex) },
+                    filter: {
+                        interfaceId: parseInt(eachIndex),
+                        $or: [
+                            { lastUpdated: { $exists: false } },
+                            { lastUpdated: { $lte: pollStartedAt } },
+                        ],
+                    },
                     update: {
                         $set: {
                             lldp: lldpObject,

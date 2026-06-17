@@ -5,6 +5,8 @@ const ciscoC1300SplitPort = require("@utils/ciscoc1300-splitport");
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
+    const pollStartedAt = new Date();
+
     const ifIDs = await snmpAwait.subtree({
         maxRepetitions: 1000,
         oid: "1.3.6.1.2.1.2.2.1.8",
@@ -45,7 +47,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
                 // prepare bulk write operation
                 bulkOperations.push({
                     updateOne: {
-                        filter: { interfaceId: dbDocument.interfaceId },
+                        filter: {
+                            interfaceId: dbDocument.interfaceId,
+                            $or: [
+                                { lastUpdated: { $exists: false } },
+                                { lastUpdated: { $lte: pollStartedAt } },
+                            ],
+                        },
                         update: { $set: dbDocument },
                         upsert: true,
                     },

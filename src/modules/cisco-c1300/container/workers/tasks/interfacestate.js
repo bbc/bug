@@ -4,6 +4,8 @@ const logger = require("@core/logger")(module);
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
+    const pollStartedAt = new Date();
+
     // get list of interfaces
     const interfaces = await interfacesCollection.find().toArray();
     if (!interfaces?.length) {
@@ -35,7 +37,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
         bulkOperations.push({
             updateOne: {
-                filter: { interfaceId },
+                filter: {
+                    interfaceId,
+                    $or: [
+                        { lastUpdated: { $exists: false } },
+                        { lastUpdated: { $lte: pollStartedAt } },
+                    ],
+                },
                 update: {
                     $set: {
                         "link-state": linkState,

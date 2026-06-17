@@ -37,9 +37,10 @@ module.exports = async (interfaceId, newName) => {
 
         // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
+        const lastUpdated = new Date();
         const dbResult = await interfacesCollection.updateOne(
             { interfaceId: Number(interfaceId) },
-            { $set: { alias: newName } }
+            { $set: { alias: newName, lastUpdated } }
         );
 
         logger.info(`interface-rename: ${JSON.stringify(dbResult.result)}`);

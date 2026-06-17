@@ -87,9 +87,10 @@ module.exports = async (interfaceId, untaggedVlan = 1, taggedVlans = []) => {
 
         // update db
         const interfaceCollection = await mongoCollection("interfaces");
+        const lastUpdated = new Date();
         const dbResult = await interfaceCollection.updateOne(
             { interfaceId: Number(interfaceId) },
-            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": vlanArray } }
+            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": vlanArray, lastUpdated } }
         );
         logger.info(`interface-setvlantrunk: ${JSON.stringify(dbResult.result)}`);
 

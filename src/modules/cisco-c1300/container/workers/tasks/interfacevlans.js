@@ -5,6 +5,8 @@ const ciscoC1300Vlanlist = require("@utils/ciscoc1300-vlanlist");
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
+    const pollStartedAt = new Date();
+
     const interfaces = await interfacesCollection.find().toArray();
 
     if (!interfaces?.length) {
@@ -57,7 +59,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
         // Add this interface update to the bulk operations array
         bulkOperations.push({
             updateOne: {
-                filter: { interfaceId: eachInterface.interfaceId },
+                filter: {
+                    interfaceId: eachInterface.interfaceId,
+                    $or: [
+                        { lastUpdated: { $exists: false } },
+                        { lastUpdated: { $lte: pollStartedAt } },
+                    ],
+                },
                 update: { $set: updateFields },
                 upsert: false,
             }
