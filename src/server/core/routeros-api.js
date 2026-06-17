@@ -86,9 +86,12 @@ class RouterOSApi {
 
     async run(command, params = {}) {
         // queue commands so RouterOS API never overlaps
+        // use .catch(() => {}) to prevent a failed command from poisoning the queue
+        // and blocking all subsequent commands
         logger.debug(`routeros-api: queueing command ${command} with params ${JSON.stringify(params)} for ${this.host}`);
-        this._queue = this._queue.then(() => this._execute(command, params));
-        return this._queue;
+        const next = this._queue.catch(() => { }).then(() => this._execute(command, params));
+        this._queue = next;
+        return next;
     }
 
     async _execute(command, params) {

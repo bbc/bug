@@ -46,7 +46,7 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
-                { name: "wanaddress", seconds: 30 },
+                { name: "wanaddress", seconds: 30, delay: 10 },
             ], context: { routerOsApi, mongoSingle, wanAddressesCollection }, baseDir: __dirname
         });
 

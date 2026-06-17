@@ -42,7 +42,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
                 logger.debug(`fetch: from ${address} via bridge ${route._bridgeName}`);
 
                 // do the fetch
-                const data = await routerOsApi.run("/tool/fetch", [
+                const data = await routerOsApi.conn.write("/tool/fetch", [
                     `=src-address=${address}`,
                     `=url=https://ifconfig.me/ip`,
                     `=mode=https`,
