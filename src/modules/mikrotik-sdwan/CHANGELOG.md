@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.21
+
+- 2026-06-17: update fetch method in wanaddress ([977d077](https://github.com/bbc/bug/commit/977d077ce0eded5b9f5c3649a98339713e7db312))
+
 ### version 1.0.20
 
 - 2026-05-28: added tests ([a0be767](https://github.com/bbc/bug/commit/a0be76708ffb943a512541158a0fa3e4411d79e5))
