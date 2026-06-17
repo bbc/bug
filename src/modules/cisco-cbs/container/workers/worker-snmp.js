@@ -1,7 +1,6 @@
 "use strict";
 
 const { parentPort, workerData, threadId } = require("worker_threads");
-const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const mongoCollection = require("@core/mongo-collection");

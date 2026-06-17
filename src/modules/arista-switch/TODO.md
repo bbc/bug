@@ -1,1 +1,2 @@
 - add heartbeat status check and worker task
+- fix db updating race conditions when updating labels, vlans etc

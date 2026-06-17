@@ -14,3 +14,4 @@
 - remove filename from all log actions......
 - add heartbeat status check and worker task
 - add tests
+- fix db updating race conditions when updating labels, vlans etc (like cisco c1300)
