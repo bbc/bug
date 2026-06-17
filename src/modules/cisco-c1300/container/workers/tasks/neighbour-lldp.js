@@ -3,18 +3,18 @@
 const chunk = require("@core/chunk");
 const logger = require("@core/logger")(module);
 
-const parseHexString = (hexString) => {
-    // check if the string value is only letters, numbers or slash
-    const string = hexString.toString();
-    if (/^[a-zA-Z0-9\/]+$/.test(string)) {
-        return string;
-    }
-    // otherwise, it's probably a MAC address
-    const chunks = chunk(hexString.toString("hex"), 2);
-    return chunks.join(":");
-};
+module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
+    const parseHexString = (hexString) => {
+        // check if the string value is only letters, numbers or slash
+        const string = hexString.toString();
+        if (/^[a-zA-Z0-9\/]+$/.test(string)) {
+            return string;
+        }
+        // otherwise, it's probably a MAC address
+        const chunks = chunk(hexString.toString("hex"), 2);
+        return chunks.join(":");
+    };
 
-module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
         // fetch list of LLDP neighbors
         const lldpInfo = await snmpAwait.subtree({
@@ -93,7 +93,7 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
         await interfacesCollection.bulkWrite(operations, { ordered: false });
     } catch (err) {
-        err.message = `subworker-interfacefdb: ${err.stack || err.message}`;
+        err.message = `${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

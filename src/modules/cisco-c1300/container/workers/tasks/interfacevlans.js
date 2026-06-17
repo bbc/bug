@@ -1,19 +1,14 @@
 "use strict";
 
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 const ciscoC1300Vlanlist = require("@utils/ciscoc1300-vlanlist");
 
-module.exports = async function (config, snmpAwait) {
-
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
+module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
     const interfaces = await interfacesCollection.find().toArray();
 
     if (!interfaces?.length) {
-        console.info(`ciscoc1300-fetchinterfacevlans: no interfaces in db - skipping update of vlans`);
+        logger.debug(`no interfaces in db - skipping update of vlans`);
         return;
     }
 
@@ -55,26 +50,22 @@ module.exports = async function (config, snmpAwait) {
                 }
             }
 
-            if (allVlans) {
-                updateFields["tagged-vlans"] = "1-4094";
-            } else {
-                updateFields["tagged-vlans"] = taggedVlans;
-            }
+            updateFields["tagged-vlans"] = allVlans ? "1-4094" : taggedVlans;
             updateFields["untagged-vlan"] = nativeVlan;
         }
 
+        // Add this interface update to the bulk operations array
         bulkOperations.push({
             updateOne: {
                 filter: { interfaceId: eachInterface.interfaceId },
                 update: { $set: updateFields },
-                upsert: false
+                upsert: false,
             }
         });
     }
 
     if (bulkOperations.length) {
-        await interfacesCollection.bulkWrite(bulkOperations);
+        const bulkResult = await interfacesCollection.bulkWrite(bulkOperations);
+        logger.debug(`updated db with vlans for ${bulkResult.modifiedCount} interface(s)`);
     }
-
-    console.info(`ciscoc1300-fetchinterfacevlans: updated db with vlans for ${interfaces.length} interface(s)`);
 };

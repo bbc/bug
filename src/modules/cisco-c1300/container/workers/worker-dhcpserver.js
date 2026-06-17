@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const axios = require("axios");
 const modulePort = process.env.PORT;
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -24,8 +25,8 @@ const fetchDhcpLeases = async (dhcpSource) => {
         }
         return [];
     } catch (err) {
-        console.error(`worker-dhcpserver: failed to fetch from ${dhcpSource}`);
-        console.error(err.stack || err.message || err);
+        logger.warning(`failed to fetch from ${dhcpSource}`);
+        logger.warning(err.stack || err.message || err);
         return [];
     }
 };
@@ -56,13 +57,13 @@ const main = async () => {
             await delay(30000);
         }
     } catch (err) {
-        console.error(`worker-dhcpserver: unexpected error`);
-        console.error(err.stack || err.message || err);
+        logger.error(`unexpected error`);
+        logger.error(err.stack || err.message || err);
     }
 };
 
 main().catch(err => {
-    console.error("worker-dhcpserver: startup failure");
-    console.error(err.stack || err.message || err);
+    logger.error("startup failure");
+    logger.error(err.stack || err.message || err);
     process.exit(1);
 });

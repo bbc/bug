@@ -1,19 +1,13 @@
 "use strict";
 
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 
-module.exports = async function (config, snmpAwait) {
-
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
+module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
     // get list of interfaces
     const interfaces = await interfacesCollection.find().toArray();
     if (!interfaces?.length) {
-        console.log("ciscoc1300-fetchinterfacestate: no interfaces found in db - waiting ...");
-        await delay(5000);
+        logger.debug("no interfaces found in db - waiting ...");
         return;
     }
 
@@ -29,7 +23,7 @@ module.exports = async function (config, snmpAwait) {
         oid: "1.3.6.1.2.1.2.2.1.7",
     });
 
-    console.log(`ciscoc1300-fetchinterfacestate: got state for ${interfaces.length} interface(s) - updating db`);
+    logger.debug(`got state for ${interfaces.length} interface(s)`);
 
     const bulkOperations = [];
 
@@ -42,14 +36,21 @@ module.exports = async function (config, snmpAwait) {
         bulkOperations.push({
             updateOne: {
                 filter: { interfaceId },
-                update: { $set: { "link-state": linkState, "admin-state": adminState } },
-                upsert: false
-            }
+                update: {
+                    $set: {
+                        "link-state": linkState,
+                        "admin-state": adminState,
+                    },
+                },
+                upsert: false,
+            },
         });
-
     }
 
     if (bulkOperations.length) {
-        await interfacesCollection.bulkWrite(bulkOperations);
+        const bulkResult = await interfacesCollection.bulkWrite(bulkOperations);
+        if (bulkResult.modifiedCount) {
+            logger.debug(`updated db for ${bulkResult.modifiedCount} interface state(s)`);
+        }
     }
 };

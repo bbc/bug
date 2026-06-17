@@ -4,66 +4,71 @@ const SnmpAwait = require("@core/snmp-await");
 const logger = require("@core/logger")(module);
 
 module.exports = async (formData) => {
-    // create new snmp session
-    const snmpAwait = new SnmpAwait({
-        host: formData.address,
-        community: formData.snmpCommunity,
-        timeout: 2000,
-    });
+    let snmpAwait;
 
     try {
-        const result = await snmpAwait.get({
-            oid: ".1.3.6.1.2.1.1.1.0",
+        // create new snmp session
+        snmpAwait = new SnmpAwait({
+            host: formData.address,
+            community: formData.snmpCommunity,
+            timeout: 2000,
         });
 
-        if (!result) {
-            // we're done with the SNMP session
-            snmpAwait.close();
-            throw new Error("SNMP error");
+        try {
+            const result = await snmpAwait.get({
+                oid: ".1.3.6.1.2.1.1.1.0",
+            });
+
+            if (!result) {
+                throw new Error("SNMP error");
+            }
+        } catch (error) {
+            return new validationResult([
+                {
+                    state: false,
+                    field: "snmpCommunity",
+                    message: "Could not log into device",
+                },
+            ]);
         }
-    } catch (error) {
-        // we're done with the SNMP session
-        snmpAwait.close();
+
+        try {
+            // now we check if we can write with the community string
+            const contactName = await snmpAwait.get({
+                oid: "1.3.6.1.2.1.1.4.0",
+            });
+            const writeResult = await snmpAwait.set({
+                oid: "1.3.6.1.2.1.1.4.0",
+                value: contactName.toString(),
+            });
+
+            if (!writeResult) {
+                throw new Error("SNMP error");
+            }
+        } catch (error) {
+            return new validationResult([
+                {
+                    state: false,
+                    field: "snmpCommunity",
+                    message: "SNMP community does not have write-access",
+                },
+            ]);
+        }
+
         return new validationResult([
             {
-                state: false,
+                state: true,
                 field: "snmpCommunity",
-                message: "Could not log into device",
+                message: "Logged into device OK",
             },
         ]);
-    }
-
-    try {
-        // now we check if we can write with the community string
-        const contactName = await snmpAwait.get({
-            oid: "1.3.6.1.2.1.1.4.0",
-        });
-        const writeResult = await snmpAwait.set({
-            oid: "1.3.6.1.2.1.1.4.0",
-            value: contactName.toString(),
-        });
-
-        // we're done with the SNMP session
-        snmpAwait.close();
-
-        if (!writeResult) {
-            throw new Error("SNMP error");
+    } finally {
+        if (snmpAwait) {
+            try {
+                snmpAwait.close();
+            } catch (error) {
+                logger.warning(`validate-snmp: failed to close snmp session`);
+            }
         }
-    } catch (error) {
-        return new validationResult([
-            {
-                state: false,
-                field: "snmpCommunity",
-                message: "SNMP community does not have write-access",
-            },
-        ]);
     }
-
-    return new validationResult([
-        {
-            state: true,
-            field: "snmpCommunity",
-            message: "Logged into device OK",
-        },
-    ]);
 };

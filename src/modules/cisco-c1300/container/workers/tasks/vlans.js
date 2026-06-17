@@ -1,13 +1,8 @@
 "use strict";
 
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
-module.exports = async function (config, snmpAwait) {
-
-    // Kick things off
-    console.log(`ciscoc1300-fetchvlans: connecting to device at ${config.address} via snmp`);
+module.exports = async function ({ mongoSingle, snmpAwait }) {
 
     const vlanResults = await snmpAwait.subtree({
         oid: ".1.3.6.1.2.1.17.7.1.4.3.1.1",
@@ -33,8 +28,7 @@ module.exports = async function (config, snmpAwait) {
             });
         }
 
-        console.log(`ciscoc1300-fetchvlans: updating db with ${vlans.length} vlan(s)`);
+        logger.debug(`updating db with ${vlans.length} vlan(s)`);
         await mongoSingle.set("vlans", vlans, 600);
     }
 };
-

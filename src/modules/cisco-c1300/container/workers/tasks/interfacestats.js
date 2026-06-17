@@ -1,34 +1,29 @@
 "use strict";
 
 const delay = require("delay");
-const register = require("module-alias/register");
-const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 const formatBps = require("@core/format-bps");
-const trafficSaveHistory = require("../services/traffic-savehistory");
 
 const convert32BitCounters = (results) => {
-    // this switch incorrectly reports these OIDs as 64 bit even though they are 32 bit
-    const output = {};
+    // older firmware versions of this switch incorrectly report these OIDs as 64 bit even though they are 32 bit
+    const output = {}
     Object.entries(results).forEach(([key, value]) => {
         if (value.length !== 4) {
-            output[key] = 0;
-        } else {
-            output[key] = value.readInt32BE(0);
+            output[key] = Number.parseInt(value, 10) || 0;
+        }
+        else {
+            output[key] = value.readInt32BE(0)
         }
     });
     return output;
 }
 
-module.exports = async function (config, snmpAwait) {
-
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
-    const historyCollection = await mongoCollection("history");
+module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) => {
 
     // get list of interfaces
     const interfaces = await interfacesCollection.find().toArray();
     if (!interfaces?.length) {
-        console.log("ciscoc1300-interfacestats: no interfaces found in db - waiting ...");
+        logger.debug("no interfaces found in db - waiting ...");
         await delay(5000);
         return;
     }
@@ -60,9 +55,8 @@ module.exports = async function (config, snmpAwait) {
         const fieldsToUpdate = {};
 
         // fetch the values from the SNMP results
-        const interfaceId = eachInterface.interfaceId;
-        const inOctets = ifInOctets32Bit[`1.3.6.1.2.1.2.2.1.10.${interfaceId}`];
-        const outOctets = ifOutOctets32Bit[`1.3.6.1.2.1.2.2.1.16.${interfaceId}`];
+        const inOctets = ifInOctets32Bit[`1.3.6.1.2.1.2.2.1.10.${eachInterface.interfaceId}`];
+        const outOctets = ifOutOctets32Bit[`1.3.6.1.2.1.2.2.1.16.${eachInterface.interfaceId}`];
 
         let rxRate = 0;
         let txRate = 0;
@@ -90,17 +84,33 @@ module.exports = async function (config, snmpAwait) {
         fieldsToUpdate["rx-rate"] = rxRate;
 
         // we copy these across from the db result - so they get updated too
-        fieldsToUpdate["tx-history"] = eachInterface["tx-history"] ?? [];
-        fieldsToUpdate["rx-history"] = eachInterface["rx-history"] ?? [];
+        fieldsToUpdate["tx-history"] = eachInterface["tx-history"];
+        fieldsToUpdate["rx-history"] = eachInterface["rx-history"];
 
-        // if not empty, push value onto stats array (for spark line etc)
-        if (eachInterface["tx-history"]?.length) {
-            fieldsToUpdate["tx-history"].push({ value: txRate, timestamp: sampleDate });
-            fieldsToUpdate["tx-history"] = fieldsToUpdate["tx-history"].slice(Math.max(fieldsToUpdate["tx-history"].length - 20, 0));
+        // check we have empty arrays
+        if (fieldsToUpdate["tx-history"] === undefined) {
+            fieldsToUpdate["tx-history"] = [];
+        } else {
+            // if not, push value onto stats array (for spark line etc)
+            fieldsToUpdate["tx-history"].push({
+                value: txRate,
+                timestamp: sampleDate,
+            });
+            fieldsToUpdate["tx-history"] = fieldsToUpdate["tx-history"].slice(
+                Math.max(fieldsToUpdate["tx-history"].length - 20, 0)
+            );
         }
-        if (eachInterface["rx-history"]?.length) {
-            fieldsToUpdate["rx-history"].push({ value: rxRate, timestamp: sampleDate });
-            fieldsToUpdate["rx-history"] = fieldsToUpdate["rx-history"].slice(Math.max(fieldsToUpdate["rx-history"].length - 20, 0));
+        if (fieldsToUpdate["rx-history"] === undefined) {
+            fieldsToUpdate["rx-history"] = [];
+        } else {
+            // if not, push value onto stats array (for spark line etc)
+            fieldsToUpdate["rx-history"].push({
+                value: rxRate,
+                timestamp: sampleDate,
+            });
+            fieldsToUpdate["rx-history"] = fieldsToUpdate["rx-history"].slice(
+                Math.max(fieldsToUpdate["rx-history"].length - 20, 0)
+            );
         }
 
         // and then lastly we need nicely formatted text versions
@@ -108,12 +118,12 @@ module.exports = async function (config, snmpAwait) {
         fieldsToUpdate["rx-rate-text"] = formatBps(rxRate);
 
         // save history
-        historyArray.push({ id: interfaceId, "tx-rate": txRate, "rx-rate": rxRate });
+        historyArray.push({ id: eachInterface.interfaceId, "tx-rate": txRate, "rx-rate": rxRate });
 
         // add to bulk operations
         bulkOperations.push({
             updateOne: {
-                filter: { interfaceId },
+                filter: { interfaceId: eachInterface.interfaceId },
                 update: { $set: fieldsToUpdate },
                 upsert: false
             }
@@ -125,6 +135,18 @@ module.exports = async function (config, snmpAwait) {
         await interfacesCollection.bulkWrite(bulkOperations);
     }
 
-    // save history
-    await trafficSaveHistory(historyCollection, historyArray);
+    // save history in bulk
+    if (historyArray.length) {
+        const historyOps = historyArray.map(entry => ({
+            insertOne: {
+                document: {
+                    id: entry.id,
+                    "tx-rate": entry["tx-rate"],
+                    "rx-rate": entry["rx-rate"],
+                    timestamp: sampleDate,
+                }
+            }
+        }));
+        await historyCollection.bulkWrite(historyOps);
+    }
 };
