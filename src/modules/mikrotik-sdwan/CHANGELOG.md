@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.22
+
+- 2026-06-17: don't restart worker on wanaddress failure ([e156227](https://github.com/bbc/bug/commit/e15622721b7c76b23ec7722be21e6d460083b183))
+
 ### version 1.0.21
 
 - 2026-06-17: update fetch method in wanaddress ([977d077](https://github.com/bbc/bug/commit/977d077ce0eded5b9f5c3649a98339713e7db312))
