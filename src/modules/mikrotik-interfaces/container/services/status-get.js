@@ -23,13 +23,13 @@ module.exports = async () => {
             collectionName: "traffic",
             message: "There is no recent interface traffic data for this device.",
             itemType: "warning",
-            timeoutSeconds: 15,
+            timeoutSeconds: 60,
         }),
         await statusCheckCollection({
             collectionName: "linkstats",
             message: "There is no recent link statistic data for this device.",
             itemType: "warning",
-            timeoutSeconds: 15,
+            timeoutSeconds: 60,
         }),
         await statusGetDefault()
     );
