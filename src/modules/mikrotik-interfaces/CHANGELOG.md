@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.30
+
+- 2026-06-17: reduce timeout for traffic status check ([a1a9af4](https://github.com/bbc/bug/commit/a1a9af4a722f24cd315f71d92ab92bd32de58950))
+
 ### version 1.0.29
 
 - 2026-06-17: fix traffic empty arrays ([5912914](https://github.com/bbc/bug/commit/59129149b45c8fa05e288ba0275d30f3521cdb99))
