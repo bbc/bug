@@ -1,5 +1,12 @@
 ## Changelog
 
+### version 1.2.28
+
+- 2026-06-17: fix db updating race condition ([213ed49](https://github.com/bbc/bug/commit/213ed494bf9897dcbf2760a649409160d5b16e0c))
+- 2026-06-17: add service tests ([a7df5ec](https://github.com/bbc/bug/commit/a7df5ec60add564162997806ff1c623a3431e1d4))
+- 2026-06-17: fix password error handling ([497700c](https://github.com/bbc/bug/commit/497700cf047ddf7bb74418800851be2ec0f15171))
+- 2026-06-17: refactor workers/tasks and fix traffic ([7482db6](https://github.com/bbc/bug/commit/7482db6e9e00b3b9779b463080e3da6315d90814))
+
 ### version 1.2.27
 
 - 2026-06-06: fix stale lldp ([169f146](https://github.com/bbc/bug/commit/169f146b82b04908e58c5ee1412fa10d48402093))
