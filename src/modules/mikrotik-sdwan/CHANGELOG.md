@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.23
+
+- 2026-06-17: fix wan address reslolving after failed route ([c55660e](https://github.com/bbc/bug/commit/c55660e7a31493f991daff711348fa754afb5ba9))
+
 ### version 1.0.22
 
 - 2026-06-17: don't restart worker on wanaddress failure ([e156227](https://github.com/bbc/bug/commit/e15622721b7c76b23ec7722be21e6d460083b183))
