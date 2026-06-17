@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.29
+
+- 2026-06-17: fix traffic empty arrays ([5912914](https://github.com/bbc/bug/commit/59129149b45c8fa05e288ba0275d30f3521cdb99))
+- 2026-06-17: use local calculation for interface stats ([101f86e](https://github.com/bbc/bug/commit/101f86e5c0d576399d18d0f5852809568843d708))
+
 ### version 1.0.28
 
 - 2026-06-06: fix stale entries in interface-lldp ([ca1dfed](https://github.com/bbc/bug/commit/ca1dfed878f19e2c883a9900a0eeb30f36c708e0))
