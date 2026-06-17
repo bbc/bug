@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.29
+
+- 2026-06-17: fix poe icon ([3b9bc4c](https://github.com/bbc/bug/commit/3b9bc4cf0d854d3da792d20574daddad700d34fc))
+
 ### version 1.2.28
 
 - 2026-06-17: fix db updating race condition ([213ed49](https://github.com/bbc/bug/commit/213ed494bf9897dcbf2760a649409160d5b16e0c))
