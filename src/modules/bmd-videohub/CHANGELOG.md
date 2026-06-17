@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.3.13
+
+- 2026-06-17: handle missing 'ALARM STATUS' on some models ([484e4e7](https://github.com/bbc/bug/commit/484e4e7b304aee7bc64f030c604c23e2665474fa))
+
 ### version 1.3.12
 
 - 2026-06-17: device connection reliability improvements [copilot] ([6c3da25](https://github.com/bbc/bug/commit/6c3da250c222893ec3980752aca6e8770a6d2319))
