@@ -1,6 +1,6 @@
 "use strict";
 
-const speedtest = require("../utils/speedtest");
+const logger = require("@core/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
 
 module.exports = async () => {
@@ -9,7 +9,7 @@ module.exports = async () => {
         const result = await testCollection.findOne({}, { sort: { timestamp: -1 } });
         return { data: result };
     } catch (error) {
-        console.log(error);
+        logger.error(`failed to fetch test status: ${error.message}`);
         return { error: error };
     }
 };

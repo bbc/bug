@@ -20,6 +20,12 @@ describe("config routes", () => {
             next();
         });
         app.use("/", router);
+        app.use((err, req, res, next) => {
+            res.status(err.statusCode || 500).json({
+                status: "error",
+                message: err.message || "Internal Server Error",
+            });
+        });
     });
 
     test("GET / returns config payload", async () => {
@@ -39,7 +45,7 @@ describe("config routes", () => {
 
         const response = await request(app).get("/");
 
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(500);
         expect(response.body).toEqual({
             status: "error",
             message: "Failed to fetch panel config",
@@ -66,7 +72,7 @@ describe("config routes", () => {
 
         const response = await request(app).put("/").send({ address: "10.0.0.6" });
 
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(500);
         expect(response.body).toEqual({
             status: "error",
             message: "Failed to update panel config",

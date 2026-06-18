@@ -1,6 +1,6 @@
 "use strict";
 
-const speedtest = require("../utils/speedtest");
+const logger = require("@core/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
 const ObjectId = require("mongodb").ObjectID;
 
@@ -10,7 +10,7 @@ module.exports = async (id) => {
         const { deletedCount } = await testCollection.deleteOne({ _id: ObjectId(id) });
         return { data: { deletedCount: deletedCount } };
     } catch (error) {
-        console.log(error);
+        logger.error(`failed to delete test result: ${error.message}`);
         return { error: error };
     }
 };

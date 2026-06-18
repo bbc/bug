@@ -30,17 +30,6 @@ route.get(
     })
 );
 
-route.get(
-    "/status",
-    asyncHandler(async (req, res) => {
-        const result = await statusTest();
-        hashResponse(res, req, {
-            status: result.error ? "failure" : "success",
-            ...result,
-        });
-    })
-);
-
 route.post(
     "/result/:limit",
     asyncHandler(async (req, res) => {
