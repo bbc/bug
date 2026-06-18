@@ -5,12 +5,14 @@ jest.mock("@services/test-start", () => jest.fn());
 jest.mock("@services/test-status", () => jest.fn());
 jest.mock("@services/test-results", () => jest.fn());
 jest.mock("@services/test-delete", () => jest.fn());
+jest.mock("@services/stats-clear", () => jest.fn());
 jest.mock("@core/hash-response", () => jest.fn((res, req, payload) => res.json(payload)));
 
 const startTest = require("@services/test-start");
 const statusTest = require("@services/test-status");
 const resultsTest = require("@services/test-results");
 const deleteTest = require("@services/test-delete");
+const clearStats = require("@services/stats-clear");
 const router = require("./test");
 
 describe("test routes", () => {
@@ -21,6 +23,12 @@ describe("test routes", () => {
         app = express();
         app.use(express.json());
         app.use("/", router);
+        app.use((err, req, res, next) => {
+            res.status(err.statusCode || 500).json({
+                status: "error",
+                message: err.message || "Internal Server Error",
+            });
+        });
     });
 
     test("GET /start returns success when service has no error", async () => {
@@ -33,15 +41,15 @@ describe("test routes", () => {
         expect(response.body.message).toBe("Speedtest started");
     });
 
-    test("GET /start returns failure when service returns error", async () => {
+    test("GET /start returns error when service returns error", async () => {
         startTest.mockResolvedValue({ error: "failed" });
 
         const response = await request(app).get("/start");
 
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(500);
         expect(response.body).toEqual({
-            status: "failure",
-            error: "failed",
+            status: "error",
+            message: "failed",
         });
     });
 
@@ -67,6 +75,27 @@ describe("test routes", () => {
         expect(response.body).toEqual({
             status: "success",
             data: [{ id: 1 }],
+        });
+    });
+
+    test("DELETE /stats clears live graph stats", async () => {
+        clearStats.mockResolvedValue({
+            data: {
+                downloadDeletedCount: 2,
+                uploadDeletedCount: 2,
+            },
+        });
+
+        const response = await request(app).delete("/stats");
+
+        expect(response.statusCode).toBe(200);
+        expect(clearStats).toHaveBeenCalledWith();
+        expect(response.body).toEqual({
+            status: "success",
+            data: {
+                downloadDeletedCount: 2,
+                uploadDeletedCount: 2,
+            },
         });
     });
 

@@ -2,7 +2,6 @@ const express = require("express");
 const request = require("supertest");
 
 jest.mock("@services/upload-stats", () => jest.fn());
-jest.mock("@core/hash-response", () => jest.fn((res, req, payload) => res.json(payload)));
 
 const getUploadStats = require("@services/upload-stats");
 const router = require("./upload");
@@ -29,14 +28,14 @@ describe("upload routes", () => {
         });
     });
 
-    test("GET /stats returns failure for empty results", async () => {
+    test("GET /stats returns success for empty results", async () => {
         getUploadStats.mockResolvedValue([]);
 
         const response = await request(app).get("/stats");
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toEqual({
-            status: "failure",
+            status: "success",
             data: [],
         });
     });

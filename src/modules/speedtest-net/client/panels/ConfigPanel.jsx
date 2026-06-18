@@ -66,7 +66,7 @@ export default function ConfigPanel() {
                         control={control}
                         rules={{ required: true }}
                         numeric
-                        min={5}
+                        min={1}
                         max={3600}
                         InputProps={{
                             endAdornment: <InputAdornment position="end">minutes</InputAdornment>,
