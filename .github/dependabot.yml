@@ -8,8 +8,10 @@ updates:
 
       open-pull-requests-limit: 5
 
-      allow:
-          - dependency-type: "security"
+      ignore:
+          - dependency-name: "*"
+            update-types:
+                - "version-update:semver-major"
 
     - package-ecosystem: "npm"
       directory: "/src/client"
@@ -18,8 +20,10 @@ updates:
 
       open-pull-requests-limit: 5
 
-      allow:
-          - dependency-type: "security"
+      ignore:
+          - dependency-name: "*"
+            update-types:
+                - "version-update:semver-major"
 
     - package-ecosystem: "github-actions"
       directory: "/"
@@ -28,5 +32,7 @@ updates:
 
       open-pull-requests-limit: 5
 
-      allow:
-          - dependency-type: "security"
+      ignore:
+          - dependency-name: "*"
+            update-types:
+                - "version-update:semver-major"
