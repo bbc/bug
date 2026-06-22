@@ -35,26 +35,22 @@ describe("test-results service", () => {
         expect(mockTestStatusClean).toHaveBeenCalledTimes(1);
         expect(find).toHaveBeenCalledWith({}, { sort: { timestamp: -1 } });
         expect(limit).toHaveBeenCalledWith(7);
-        expect(result).toEqual({
-            data: [
-                {
-                    id: 1,
-                    interface: { externalIp: "1.2.3.4" },
-                    server: { name: "London" },
-                    isp: "BBC ISP",
-                    testSummary: "Test from 1.2.3.4 to London using ISP BBC ISP",
-                },
-            ],
-        });
+        expect(result).toEqual([
+            {
+                id: 1,
+                interface: { externalIp: "1.2.3.4" },
+                server: { name: "London" },
+                isp: "BBC ISP",
+                testSummary: "Test from 1.2.3.4 to London using ISP BBC ISP",
+            },
+        ]);
     });
 
-    test("returns error when query fails", async () => {
+    test("throws when query fails", async () => {
         const error = new Error("db down");
         mockMongoCollection.mockRejectedValue(error);
 
-        const result = await testResults();
-
-        expect(result).toEqual({ error });
+        await expect(testResults()).rejects.toThrow("db down");
     });
 
     test("prepends scheduled status row when periodic test is scheduled", async () => {
@@ -71,12 +67,12 @@ describe("test-results service", () => {
 
         const result = await testResults("10");
 
-        expect(result.data[0]).toEqual(
+        expect(result[0]).toEqual(
             expect.objectContaining({
                 statusRowType: "scheduled",
             })
         );
-        expect(result.data[0].testSummary).toMatch(/^Next test starting in \d{2}:\d{2}$/);
+        expect(result[0].testSummary).toMatch(/^Next test starting in \d{2}:\d{2}$/);
     });
 
     test("prepends running status row with elapsed time when a test is running", async () => {
@@ -95,13 +91,13 @@ describe("test-results service", () => {
 
         const result = await testResults("10");
 
-        expect(result.data[0]).toEqual(
+        expect(result[0]).toEqual(
             expect.objectContaining({
                 statusRowType: "running",
             })
         );
-        expect(result.data[0].testSummary).toMatch(/^Test running \d{2}:\d{2}$/);
-        expect(result.data).toHaveLength(1);
+        expect(result[0].testSummary).toMatch(/^Test running \d{2}:\d{2}$/);
+        expect(result).toHaveLength(1);
     });
 
     test("hides transient running result rows from table body", async () => {
@@ -128,18 +124,18 @@ describe("test-results service", () => {
 
         const result = await testResults("10");
 
-        expect(result.data[0]).toEqual(
+        expect(result[0]).toEqual(
             expect.objectContaining({
                 statusRowType: "running",
             })
         );
-        expect(result.data[1]).toEqual(
+        expect(result[1]).toEqual(
             expect.objectContaining({
                 id: 2,
                 testSummary: "Test from 1.2.3.4 to London using ISP BBC ISP",
             })
         );
-        expect(result.data.find((item) => item.id === 1)).toBeUndefined();
+        expect(result.find((item) => item.id === 1)).toBeUndefined();
     });
 
     test("shows scheduled status when latest running result is stale", async () => {
@@ -162,12 +158,12 @@ describe("test-results service", () => {
 
         const result = await testResults("10");
 
-        expect(result.data[0]).toEqual(
+        expect(result[0]).toEqual(
             expect.objectContaining({
                 statusRowType: "scheduled",
             })
         );
-        expect(result.data[0].testSummary).toMatch(/^Next test starting in \d{2}:\d{2}$/);
+        expect(result[0].testSummary).toMatch(/^Next test starting in \d{2}:\d{2}$/);
     });
 
 });

@@ -14,13 +14,11 @@ module.exports = async () => {
         ]);
 
         return {
-            data: {
-                downloadDeletedCount: downloadResult.deletedCount,
-                uploadDeletedCount: uploadResult.deletedCount,
-            },
+            downloadDeletedCount: downloadResult.deletedCount,
+            uploadDeletedCount: uploadResult.deletedCount,
         };
     } catch (error) {
         logger.error(`failed to clear graph stats: ${error.message}`);
-        return { error };
+        throw error;
     }
 };

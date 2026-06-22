@@ -12,13 +12,11 @@ module.exports = async () => {
         ]);
 
         return {
-            data: {
-                ...(schedule || {}),
-                ...(result || {}),
-            },
+            ...(schedule || {}),
+            ...(result || {}),
         };
     } catch (error) {
         logger.error(`failed to fetch test status: ${error.message}`);
-        return { error: error };
+        throw error;
     }
 };

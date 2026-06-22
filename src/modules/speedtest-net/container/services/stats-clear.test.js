@@ -24,19 +24,15 @@ describe("stats-clear service", () => {
         expect(downloadDeleteMany).toHaveBeenCalledWith({});
         expect(uploadDeleteMany).toHaveBeenCalledWith({});
         expect(result).toEqual({
-            data: {
-                downloadDeletedCount: 3,
-                uploadDeletedCount: 4,
-            },
+            downloadDeletedCount: 3,
+            uploadDeletedCount: 4,
         });
     });
 
-    test("returns error when collection access fails", async () => {
+    test("throws when collection access fails", async () => {
         const error = new Error("db down");
         mockMongoCollection.mockRejectedValue(error);
 
-        const result = await clearStats();
-
-        expect(result).toEqual({ error });
+        await expect(clearStats()).rejects.toThrow("db down");
     });
 });

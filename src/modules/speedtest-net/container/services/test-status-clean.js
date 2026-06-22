@@ -3,7 +3,7 @@
 const logger = require("@core/logger")(module);
 const mongoCollection = require("@core/mongo-collection");
 
-const STALL_TIMEOUT_MS = 60 * 1000; // 60 seconds
+const STALL_TIMEOUT_S = 60;
 
 module.exports = async () => {
     try {
@@ -20,7 +20,7 @@ module.exports = async () => {
         if (latestTest.running === true) {
             const testAgeMs = Date.now() - new Date(latestTest.timestamp).getTime();
 
-            if (testAgeMs > STALL_TIMEOUT_MS) {
+            if (testAgeMs > STALL_TIMEOUT_S * 1000) {
                 logger.warning(`detected stalled test (${Math.round(testAgeMs / 1000)}s old), marking as failed`);
 
                 await testCollection.updateOne(
@@ -31,7 +31,7 @@ module.exports = async () => {
                             failed: true,
                             timedOut: true,
                             status: "failed",
-                            error: "Test did not complete within 60 seconds (likely process crash)",
+                            error: `Test did not complete within ${STALL_TIMEOUT_S} seconds`,
                         },
                     }
                 );

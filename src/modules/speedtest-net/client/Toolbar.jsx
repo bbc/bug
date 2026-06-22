@@ -59,7 +59,9 @@ export default function Toolbar({ panelId, ...props }) {
     const resetDisabled = manualDisabled || !hasGraphResults;
 
     const handleStart = async (event, item) => {
-        if (await AxiosGet(`/container/${panelId}/test/start`)) {
+        const response = await AxiosGet(`/container/${panelId}/test/start`);
+
+        if (response?.running) {
             sendAlert("Speedtest has started", {
                 broadcast: "true",
                 variant: "success",

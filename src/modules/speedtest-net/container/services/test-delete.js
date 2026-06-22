@@ -8,9 +8,9 @@ module.exports = async (id) => {
     try {
         const testCollection = await mongoCollection("test-results");
         const { deletedCount } = await testCollection.deleteOne({ _id: ObjectId(id) });
-        return { data: { deletedCount: deletedCount } };
+        return { deletedCount: deletedCount };
     } catch (error) {
         logger.error(`failed to delete test result: ${error.message}`);
-        return { error: error };
+        throw error;
     }
 };

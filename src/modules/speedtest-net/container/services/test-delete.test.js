@@ -22,15 +22,13 @@ describe("test-delete service", () => {
         expect(mockMongoCollection).toHaveBeenCalledWith("test-results");
         expect(mockObjectId).toHaveBeenCalledWith("abc123");
         expect(deleteOne).toHaveBeenCalledWith({ _id: "oid-123" });
-        expect(result).toEqual({ data: { deletedCount: 1 } });
+        expect(result).toEqual({ deletedCount: 1 });
     });
 
-    test("returns error when delete fails", async () => {
+    test("throws when delete fails", async () => {
         const error = new Error("delete failed");
         mockMongoCollection.mockRejectedValue(error);
 
-        const result = await testDelete("abc123");
-
-        expect(result).toEqual({ error });
+        await expect(testDelete("abc123")).rejects.toThrow("delete failed");
     });
 });

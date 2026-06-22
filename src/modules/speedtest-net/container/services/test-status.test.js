@@ -21,11 +21,9 @@ describe("test-status service", () => {
         expect(mockTestStatusClean).toHaveBeenCalledWith();
         expect(mockMongoSingleGet).toHaveBeenCalledWith("test-schedule");
         expect(result).toEqual({
-            data: {
-                periodicTesting: false,
-                scheduleState: "idle",
-                running: false,
-            },
+            periodicTesting: false,
+            scheduleState: "idle",
+            running: false,
         });
     });
 
@@ -41,21 +39,17 @@ describe("test-status service", () => {
         const result = await testStatus();
 
         expect(result).toEqual({
-            data: {
-                periodicTesting: true,
-                interval: 10,
-                nextRunAt: "2026-06-18T12:00:00.000Z",
-                scheduleState: "waiting",
-            },
+            periodicTesting: true,
+            interval: 10,
+            nextRunAt: "2026-06-18T12:00:00.000Z",
+            scheduleState: "waiting",
         });
     });
 
-    test("returns error when database lookup fails", async () => {
+    test("throws when database lookup fails", async () => {
         const error = new Error("db down");
         mockTestStatusClean.mockRejectedValue(error);
 
-        const result = await testStatus();
-
-        expect(result).toEqual({ error });
+        await expect(testStatus()).rejects.toThrow("db down");
     });
 });

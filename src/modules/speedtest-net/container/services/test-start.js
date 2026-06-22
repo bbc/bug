@@ -23,9 +23,9 @@ module.exports = async () => {
             logger.error(`speedtest failed: ${error.message}`);
         });
 
-        return { data: { running: true }, message: "Speedtest started" };
+        return { running: true };
     } catch (error) {
         logger.error(`speedtest failed to start: ${error.message}`);
-        return { error: error };
+        throw error;
     }
 };

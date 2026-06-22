@@ -26,8 +26,7 @@ describe("test-start service", () => {
         expect(mockSpeedtest).toHaveBeenCalledTimes(1);
         expect(mockMongoSingleSet).not.toHaveBeenCalled();
         expect(result).toEqual({
-            data: { running: true },
-            message: "Speedtest started",
+            running: true,
         });
     });
 
@@ -51,21 +50,18 @@ describe("test-start service", () => {
         }));
         expect(mockMongoSingleSet.mock.calls[0][1].nextRunAt).toBeDefined();
         expect(result).toEqual({
-            data: { running: true },
-            message: "Speedtest started",
+            running: true,
         });
     });
 
-    test("returns error object when speedtest throws synchronously", async () => {
+    test("throws when speedtest throws synchronously", async () => {
         const error = new Error("failed");
         mockMongoSingleGet.mockResolvedValue(null);
         mockSpeedtest.mockImplementation(() => {
             throw error;
         });
 
-        const result = await testStart();
-
-        expect(result).toEqual({ error });
+        await expect(testStart()).rejects.toThrow("failed");
     });
 
     test("logs async speedtest failures without changing the immediate response", async () => {
@@ -77,8 +73,7 @@ describe("test-start service", () => {
         await Promise.resolve();
 
         expect(result).toEqual({
-            data: { running: true },
-            message: "Speedtest started",
+            running: true,
         });
         expect(mockLoggerError).toHaveBeenCalledWith("speedtest failed: async failed");
     });

@@ -6,7 +6,6 @@ jest.mock("@services/test-status", () => jest.fn());
 jest.mock("@services/test-results", () => jest.fn());
 jest.mock("@services/test-delete", () => jest.fn());
 jest.mock("@services/stats-clear", () => jest.fn());
-jest.mock("@core/hash-response", () => jest.fn((res, req, payload) => res.json(payload)));
 
 const startTest = require("@services/test-start");
 const statusTest = require("@services/test-status");
@@ -32,7 +31,7 @@ describe("test routes", () => {
     });
 
     test("GET /start returns success when service has no error", async () => {
-        startTest.mockResolvedValue({ data: { running: true }, message: "Speedtest started" });
+        startTest.mockResolvedValue({ running: true });
 
         const response = await request(app).get("/start");
 
@@ -41,8 +40,8 @@ describe("test routes", () => {
         expect(response.body.message).toBe("Speedtest started");
     });
 
-    test("GET /start returns error when service returns error", async () => {
-        startTest.mockResolvedValue({ error: "failed" });
+    test("GET /start returns error when service throws", async () => {
+        startTest.mockRejectedValue(new Error("failed"));
 
         const response = await request(app).get("/start");
 
@@ -54,7 +53,7 @@ describe("test routes", () => {
     });
 
     test("GET /status returns current status", async () => {
-        statusTest.mockResolvedValue({ data: { running: false } });
+        statusTest.mockResolvedValue({ running: false });
 
         const response = await request(app).get("/status");
 
@@ -66,7 +65,7 @@ describe("test routes", () => {
     });
 
     test("POST /result/:limit passes limit to service", async () => {
-        resultsTest.mockResolvedValue({ data: [{ id: 1 }] });
+        resultsTest.mockResolvedValue([{ id: 1 }]);
 
         const response = await request(app).post("/result/5");
 
@@ -80,10 +79,8 @@ describe("test routes", () => {
 
     test("DELETE /stats clears live graph stats", async () => {
         clearStats.mockResolvedValue({
-            data: {
-                downloadDeletedCount: 2,
-                uploadDeletedCount: 2,
-            },
+            downloadDeletedCount: 2,
+            uploadDeletedCount: 2,
         });
 
         const response = await request(app).delete("/stats");
@@ -100,7 +97,7 @@ describe("test routes", () => {
     });
 
     test("DELETE /result/:id passes id to service", async () => {
-        deleteTest.mockResolvedValue({ data: { deletedCount: 1 } });
+        deleteTest.mockResolvedValue({ deletedCount: 1 });
 
         const response = await request(app).delete("/result/abc123");
 

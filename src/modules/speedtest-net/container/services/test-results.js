@@ -82,11 +82,9 @@ module.exports = async (resultsLimit = 10) => {
             testSummary: buildTestSummary(result),
         }));
 
-        const data = statusRow ? [statusRow, ...decoratedResults] : decoratedResults;
-
-        return { data };
+        return statusRow ? [statusRow, ...decoratedResults] : decoratedResults;
     } catch (error) {
         logger.error(`failed to fetch test results: ${error.message}`);
-        return { error: error };
+        throw error;
     }
 };
