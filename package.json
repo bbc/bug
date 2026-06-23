@@ -97,7 +97,7 @@
         "module-alias": "^2.2.2",
         "mongodb": "^4.6.0",
         "morgan": "^1.11.0",
-        "nanoid": "^5.1.11",
+        "nanoid": "^5.1.15",
         "node-cache": "^5.1.2",
         "node-schedule": "^2.1.1",
         "notistack": "^3.0.2",
