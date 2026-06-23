@@ -144,7 +144,7 @@
         "use-async-effect": "^2.2.3",
         "use-debounce": "^6.0.1",
         "use-long-press": "^2.0.2",
-        "uuid": "^14.0.0",
+        "uuid": "^14.0.1",
         "video.js": "^7.20.3",
         "web-vitals": "^1.0.1",
         "wildcard-match": "^5.1.2",
