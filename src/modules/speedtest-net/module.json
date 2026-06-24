@@ -4,15 +4,22 @@
     "description": "Speedtest.net test from your server to determine upload and download speed",
     "capabilities": [],
     "notes": "",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "icon": "mdi-speedometer",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
     "memory": 200,
-    "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
