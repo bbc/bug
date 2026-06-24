@@ -43,7 +43,7 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
-                { name: "interfaces", seconds: 900 },
+                { name: "interfaces", seconds: 120 },
                 { name: "interfacedetails", seconds: 15, delay: 5 },
                 { name: "interfacestats", seconds: 10, delay: 8 },
                 { name: "interfacestate", seconds: 5, delay: 8 },

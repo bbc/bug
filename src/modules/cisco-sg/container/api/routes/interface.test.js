@@ -12,6 +12,7 @@ jest.mock("@services/interface-unprotect", () => jest.fn(async () => ({ updated:
 jest.mock("@services/interface-setvlantrunk", () => jest.fn(async () => ({ updated: true })));
 jest.mock("@services/interface-setvlanaccess", () => jest.fn(async () => ({ updated: true })));
 jest.mock("@services/interface-rename", () => jest.fn(async () => ({ updated: true })));
+jest.mock("@services/interface-poe", () => jest.fn(async () => ({ updated: true })));
 
 const interfaceRouter = require("./interface");
 
@@ -32,6 +33,22 @@ describe("interface routes", () => {
         const response = await request(app)
             .post("/setvlantrunk/123")
             .send({ untaggedVlan: 1, taggedVlans: [2, 3] });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("status", "success");
+        expect(response.body).toHaveProperty("data");
+    });
+
+    test("GET /enablepoe/:interfaceId should return success response", async () => {
+        const response = await request(app).get("/enablepoe/123/");
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty("status", "success");
+        expect(response.body).toHaveProperty("data");
+    });
+
+    test("GET /disablepoe/:interfaceId should return success response", async () => {
+        const response = await request(app).get("/disablepoe/123/");
 
         expect(response.statusCode).toBe(200);
         expect(response.body).toHaveProperty("status", "success");
