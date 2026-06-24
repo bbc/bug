@@ -2,16 +2,13 @@
 - add historical entries to CHANGELOG.md
 - add screenshot
 - add panel status (default/success etc)
-- check module status (dev/beta/stable etc)
 - use setPending (like cisco-c1300) to update save flag when something is changed
 - add POE support?
 - interface on now-deleted vlan shows 'loading' in control
 - use asyncHandler in routes
 - refactor services with try/catch/throw
-- refactor workers to improve error handling
-- use bulkwrite in workers to improve db performance
-- new worker design using tasks
 - remove filename from all log actions......
 - add heartbeat status check and worker task
 - add tests
 - fix db updating race conditions when updating labels, vlans etc (like cisco c1300)
+- all changes should update pending

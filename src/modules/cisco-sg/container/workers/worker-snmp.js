@@ -36,7 +36,7 @@ const main = async () => {
                 { name: "interfaces", seconds: 900 },
                 { name: "vlans", seconds: 60 },
                 { name: "system", seconds: 30 },
-                { name: "pending", seconds: 5, delay: 10 },
+                { name: "pending", seconds: 60, delay: 10 },
                 { name: "interfacestate", seconds: 5, delay: 8 },
                 { name: "interfacevlans", seconds: 30, delay: 5 },
                 { name: "interfacedetails", seconds: 20, delay: 4 },

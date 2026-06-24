@@ -4,6 +4,12 @@ const logger = require("@core/logger")(module);
 
 // see: http://www.circitor.fr/Mibs/Html/C/CISCOSB-rlInterfaces.php
 
+const ALIAS_OID = "1.3.6.1.2.1.31.1.1.1.18";
+const AUTO_NEGOTIATION_OID = "1.3.6.1.4.1.9.6.1.101.43.1.1.16";
+const ADMIN_PORT_SPEED_OID = "1.3.6.1.4.1.9.6.1.101.43.1.1.15";
+const OPERATIONAL_PORT_SPEED_OID = "1.3.6.1.2.1.31.1.1.1.15";
+const SNMP_CHUNK_SIZE = 25;
+
 const convertAdminPortSpeed = (speed) => {
     switch (speed) {
         case 10:
@@ -43,38 +49,57 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
             return;
         }
 
-        const ifAliases = await snmpAwait.subtree({
-            maxRepetitions: 50,
-            oid: "1.3.6.1.2.1.31.1.1.1.18",
-        });
+        const interfaceIds = interfaces.map((iface) => iface.interfaceId);
+        const aliasOids = interfaceIds.map((interfaceId) => `${ALIAS_OID}.${interfaceId}`);
+        const autoNegotiationOids = interfaceIds.map((interfaceId) => `${AUTO_NEGOTIATION_OID}.${interfaceId}`);
+        const adminPortSpeedOids = interfaceIds.map((interfaceId) => `${ADMIN_PORT_SPEED_OID}.${interfaceId}`);
+        const operationalPortSpeedOids = interfaceIds.map(
+            (interfaceId) => `${OPERATIONAL_PORT_SPEED_OID}.${interfaceId}`
+        );
 
-        const ifAutoNegotiation = await snmpAwait.subtree({
-            maxRepetitions: 50,
-            oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.16",
-        });
+        const ifAliases = aliasOids.length
+            ? await snmpAwait.getMultiple({
+                oids: aliasOids,
+                ignoreMissing: true,
+                chunkSize: SNMP_CHUNK_SIZE,
+            })
+            : {};
 
-        const ifAdminPortSpeed = await snmpAwait.subtree({
-            maxRepetitions: 50,
-            oid: "1.3.6.1.4.1.9.6.1.101.43.1.1.15",
-        });
+        const ifAutoNegotiation = autoNegotiationOids.length
+            ? await snmpAwait.getMultiple({
+                oids: autoNegotiationOids,
+                ignoreMissing: true,
+                chunkSize: SNMP_CHUNK_SIZE,
+            })
+            : {};
 
-        const ifOperationalPortSpeed = await snmpAwait.subtree({
-            maxRepetitions: 50,
-            oid: "1.3.6.1.2.1.31.1.1.1.15",
-        });
+        const ifAdminPortSpeed = adminPortSpeedOids.length
+            ? await snmpAwait.getMultiple({
+                oids: adminPortSpeedOids,
+                ignoreMissing: true,
+                chunkSize: SNMP_CHUNK_SIZE,
+            })
+            : {};
+
+        const ifOperationalPortSpeed = operationalPortSpeedOids.length
+            ? await snmpAwait.getMultiple({
+                oids: operationalPortSpeedOids,
+                ignoreMissing: true,
+                chunkSize: SNMP_CHUNK_SIZE,
+            })
+            : {};
 
         const bulkOperations = [];
 
         for (const eachInterface of interfaces) {
             const interfaceId = eachInterface.interfaceId;
-            const alias = ifAliases[`1.3.6.1.2.1.31.1.1.1.18.${interfaceId}`];
-            const autoNegotiationState =
-                ifAutoNegotiation[`1.3.6.1.4.1.9.6.1.101.43.1.1.16.${interfaceId}`] === 1;
+            const alias = ifAliases[`${ALIAS_OID}.${interfaceId}`];
+            const autoNegotiationState = ifAutoNegotiation[`${AUTO_NEGOTIATION_OID}.${interfaceId}`] === 1;
             const adminPortSpeed = convertAdminPortSpeed(
-                ifAdminPortSpeed[`1.3.6.1.4.1.9.6.1.101.43.1.1.15.${interfaceId}`]
+                ifAdminPortSpeed[`${ADMIN_PORT_SPEED_OID}.${interfaceId}`]
             );
             const operationalPortSpeed = convertOperationalPortSpeed(
-                ifOperationalPortSpeed[`1.3.6.1.2.1.31.1.1.1.15.${interfaceId}`]
+                ifOperationalPortSpeed[`${OPERATIONAL_PORT_SPEED_OID}.${interfaceId}`]
             );
 
             bulkOperations.push({

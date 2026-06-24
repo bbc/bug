@@ -3,54 +3,72 @@
 const ciscoSGSplitPort = require("@utils/ciscosg-splitport");
 const logger = require("@core/logger")(module);
 
+const IF_STATUS_OID = "1.3.6.1.2.1.2.2.1.8";
+const IF_SHORT_ID_OID = "1.3.6.1.2.1.31.1.1.1.1";
+const IF_DESCRIPTION_OID = "1.3.6.1.2.1.2.2.1.2";
+
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
         const ifIDs = await snmpAwait.subtree({
             maxRepetitions: 1000,
-            oid: "1.3.6.1.2.1.2.2.1.8",
+            oid: IF_STATUS_OID,
         });
 
-        const ifShortIDs = await snmpAwait.subtree({
-            maxRepetitions: 1000,
-            oid: "1.3.6.1.2.1.31.1.1.1.1",
-        });
+        const candidateInterfaceIds = Object.entries(ifIDs)
+            .map(([eachOid, eachResult]) => ({
+                interfaceId: parseInt(eachOid.substring(eachOid.lastIndexOf(".") + 1), 10),
+                state: eachResult,
+            }))
+            .filter(({ interfaceId, state }) => state < 3 && interfaceId < 1000)
+            .map(({ interfaceId }) => interfaceId);
 
-        // Fetch interface name, needed to calculate stack/slot/port metadata.
-        const ifDescriptions = await snmpAwait.subtree({
-            maxRepetitions: 1000,
-            oid: "1.3.6.1.2.1.2.2.1.2",
-        });
+        const shortIdOids = candidateInterfaceIds.map((interfaceId) => `${IF_SHORT_ID_OID}.${interfaceId}`);
+        const descriptionOids = candidateInterfaceIds.map((interfaceId) => `${IF_DESCRIPTION_OID}.${interfaceId}`);
+
+        // Fetch additional details only for interfaces we actually keep.
+        const [ifShortIDs, ifDescriptions] = await Promise.all([
+            shortIdOids.length
+                ? snmpAwait.getMultiple({
+                    oids: shortIdOids,
+                    ignoreMissing: true,
+                    chunkSize: 40,
+                })
+                : {},
+            descriptionOids.length
+                ? snmpAwait.getMultiple({
+                    oids: descriptionOids,
+                    ignoreMissing: true,
+                    chunkSize: 40,
+                })
+                : {},
+        ]);
 
         const bulkOperations = [];
 
-        for (const [eachOid, eachResult] of Object.entries(ifIDs)) {
-            const interfaceId = parseInt(eachOid.substring(eachOid.lastIndexOf(".") + 1), 10);
+        for (const interfaceId of candidateInterfaceIds) {
+            const shortId = ifShortIDs[`${IF_SHORT_ID_OID}.${interfaceId}`];
+            const description = ifDescriptions[`${IF_DESCRIPTION_OID}.${interfaceId}`];
 
-            if (eachResult < 3 && interfaceId < 1000) {
-                const shortId = ifShortIDs[`1.3.6.1.2.1.31.1.1.1.1.${interfaceId}`];
-                const description = ifDescriptions[`1.3.6.1.2.1.2.2.1.2.${interfaceId}`];
+            if (description) {
+                const portArray = ciscoSGSplitPort(description);
+                const dbDocument = {
+                    longId: description,
+                    interfaceId,
+                    shortId,
+                    description: `${portArray.label}${portArray.port}`,
+                    device: portArray.device,
+                    slot: portArray.slot,
+                    port: portArray.port,
+                    timestamp: new Date(),
+                };
 
-                if (description) {
-                    const portArray = ciscoSGSplitPort(description);
-                    const dbDocument = {
-                        longId: description,
-                        interfaceId,
-                        shortId,
-                        description: `${portArray.label}${portArray.port}`,
-                        device: portArray.device,
-                        slot: portArray.slot,
-                        port: portArray.port,
-                        timestamp: new Date(),
-                    };
-
-                    bulkOperations.push({
-                        updateOne: {
-                            filter: { interfaceId: dbDocument.interfaceId },
-                            update: { $set: dbDocument },
-                            upsert: true,
-                        },
-                    });
-                }
+                bulkOperations.push({
+                    updateOne: {
+                        filter: { interfaceId: dbDocument.interfaceId },
+                        update: { $set: dbDocument },
+                        upsert: true,
+                    },
+                });
             }
         }
 

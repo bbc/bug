@@ -2,6 +2,9 @@
 
 const logger = require("@core/logger")(module);
 
+const LINK_STATE_OID = "1.3.6.1.2.1.2.2.1.8";
+const ADMIN_STATE_OID = "1.3.6.1.2.1.2.2.1.7";
+
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
         const interfaces = await interfacesCollection.find().toArray();
@@ -11,22 +14,33 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
             return;
         }
 
-        const ifLinkStates = await snmpAwait.subtree({
-            maxRepetitions: 50,
-            oid: "1.3.6.1.2.1.2.2.1.8",
-        });
+        const interfaceIds = interfaces.map((iface) => iface.interfaceId);
+        const linkStateOids = interfaceIds.map((interfaceId) => `${LINK_STATE_OID}.${interfaceId}`);
+        const adminStateOids = interfaceIds.map((interfaceId) => `${ADMIN_STATE_OID}.${interfaceId}`);
 
-        const ifAdminStates = await snmpAwait.subtree({
-            maxRepetitions: 50,
-            oid: "1.3.6.1.2.1.2.2.1.7",
-        });
+        const [ifLinkStates, ifAdminStates] = await Promise.all([
+            linkStateOids.length
+                ? snmpAwait.getMultiple({
+                    oids: linkStateOids,
+                    ignoreMissing: true,
+                    chunkSize: 40,
+                })
+                : {},
+            adminStateOids.length
+                ? snmpAwait.getMultiple({
+                    oids: adminStateOids,
+                    ignoreMissing: true,
+                    chunkSize: 40,
+                })
+                : {},
+        ]);
 
         const bulkOperations = [];
 
         for (const eachInterface of interfaces) {
             const interfaceId = eachInterface.interfaceId;
-            const linkState = ifLinkStates[`1.3.6.1.2.1.2.2.1.8.${interfaceId}`] === 1;
-            const adminState = ifAdminStates[`1.3.6.1.2.1.2.2.1.7.${interfaceId}`] === 1;
+            const linkState = ifLinkStates[`${LINK_STATE_OID}.${interfaceId}`] === 1;
+            const adminState = ifAdminStates[`${ADMIN_STATE_OID}.${interfaceId}`] === 1;
 
             bulkOperations.push({
                 updateOne: {

@@ -6,26 +6,6 @@ const trafficSaveHistory = require("@services/traffic-savehistory");
 
 const IN_OCTETS_OID = "1.3.6.1.2.1.2.2.1.10";
 const OUT_OCTETS_OID = "1.3.6.1.2.1.2.2.1.16";
-const SNMP_GET_BATCH_SIZE = 40;
-
-async function fetchInterfaceCounterMap({ snmpAwait, interfaceIds, baseOid }) {
-    const results = {};
-
-    for (let i = 0; i < interfaceIds.length; i += SNMP_GET_BATCH_SIZE) {
-        const batchIds = interfaceIds.slice(i, i + SNMP_GET_BATCH_SIZE);
-        const batchOids = batchIds.map((id) => `${baseOid}.${id}`);
-        const batchResult = await snmpAwait.getMultiple({
-            oids: batchOids,
-            ignoreMissing: true,
-        });
-
-        for (const [oid, value] of Object.entries(batchResult)) {
-            results[oid] = value;
-        }
-    }
-
-    return results;
-}
 
 module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) => {
     try {
@@ -35,20 +15,27 @@ module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) 
             logger.debug("no interfaces found in db - skipping update of interface stats");
             return;
         }
-        console.log("START-------------------");
 
         const interfaceIds = interfaces.map((iface) => iface.interfaceId);
-        const ifInOctets = await fetchInterfaceCounterMap({
-            snmpAwait,
-            interfaceIds,
-            baseOid: IN_OCTETS_OID,
-        });
+        const inOctetOids = interfaceIds.map((interfaceId) => `${IN_OCTETS_OID}.${interfaceId}`);
+        const outOctetOids = interfaceIds.map((interfaceId) => `${OUT_OCTETS_OID}.${interfaceId}`);
 
-        const ifOutOctets = await fetchInterfaceCounterMap({
-            snmpAwait,
-            interfaceIds,
-            baseOid: OUT_OCTETS_OID,
-        });
+        const [ifInOctets, ifOutOctets] = await Promise.all([
+            inOctetOids.length
+                ? snmpAwait.getMultiple({
+                    oids: inOctetOids,
+                    ignoreMissing: true,
+                    chunkSize: 40,
+                })
+                : {},
+            outOctetOids.length
+                ? snmpAwait.getMultiple({
+                    oids: outOctetOids,
+                    ignoreMissing: true,
+                    chunkSize: 40,
+                })
+                : {},
+        ]);
 
         const sampleDate = new Date();
         const historyArray = [];
@@ -134,8 +121,6 @@ module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) 
             });
         }
 
-        console.log(bulkOperations);
-        console.log("END-------------------");
         logger.debug(`interfacestats: updating ${bulkOperations.length} interface(s)`);
         if (bulkOperations.length) {
             const bulkResult = await interfacesCollection.bulkWrite(bulkOperations);
