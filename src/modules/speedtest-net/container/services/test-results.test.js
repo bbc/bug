@@ -80,7 +80,7 @@ describe("test-results service", () => {
             {
                 id: 1,
                 running: true,
-                timestamp: new Date(Date.now() - 45 * 1000).toISOString(),
+                timestamp: new Date(Date.now() - 30 * 1000).toISOString(),
             },
         ]);
         const limit = jest.fn(() => ({ toArray }));
