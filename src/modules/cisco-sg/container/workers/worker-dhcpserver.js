@@ -4,6 +4,7 @@ const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
+const logger = require("@core/logger")(module);
 const axios = require("axios");
 const modulePort = process.env.PORT;
 const mongoSingle = require("@core/mongo-single");
@@ -21,11 +22,14 @@ const main = async () => {
     // Connect to the db
     await mongoDb.connect(workerData.id);
 
+    await mongoSingle.clear("leases");
+
     while (true) {
         let dhcpLeases = [];
+        const dhcpSources = Array.isArray(workerData?.dhcpSources) ? workerData.dhcpSources : [];
 
         // loop through each dhcp source and fetch the list
-        for (const dhcpSource of workerData?.dhcpSources) {
+        for (const dhcpSource of dhcpSources) {
             const url = `http://${dhcpSource}:${modulePort}/api/capabilities/dhcp-server`;
             try {
                 // make the request
@@ -34,7 +38,7 @@ const main = async () => {
                     dhcpLeases = dhcpLeases.concat(response.data.data);
                 }
             } catch (error) {
-                console.log(`worker-dhcpserver: ${error.stack || error || error.message}`);
+                logger.error(error?.message || `${error}`);
             }
         }
 
@@ -45,4 +49,8 @@ const main = async () => {
     }
 };
 
-main();
+main().catch((err) => {
+    logger.error("dhcp lease worker startup failure");
+    logger.error(err.stack || err.message || err);
+    process.exit(1);
+});

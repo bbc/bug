@@ -1,54 +1,22 @@
 "use strict";
 
-const { parentPort, workerData, threadId } = require("worker_threads");
-const delay = require("delay");
-const register = require("module-alias/register");
-const mongoDb = require("@core/mongo-db");
-const mongoCollection = require("@core/mongo-collection");
 const chunk = require("@core/chunk");
-const SnmpAwait = require("@core/snmp-await");
-
-// Tell the manager the things you care about
-parentPort.postMessage({
-    restartDelay: 10000,
-    restartOn: ["address", "snmpCommunity"],
-});
-
-// create new snmp session
-const snmpAwait = new SnmpAwait({
-    host: workerData.address,
-    community: workerData.snmpCommunity,
-});
+const logger = require("@core/logger")(module);
 
 const parseHexString = (hexString) => {
-    // check if the string value is only letters, numbers or slash
     const string = hexString.toString();
     if (/^[a-zA-Z0-9\/]+$/.test(string)) {
         return string;
     }
-    // otherwise, it's probably a MAC address
+
     const chunks = chunk(hexString.toString("hex"), 2);
     return chunks.join(":");
 };
 
-const main = async () => {
-    // stagger start of script ...
-    await delay(4000);
-
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
-
-    // get the collection reference
-    const interfacesCollection = await mongoCollection("interfaces");
-
-    // Kick things off
-    console.log(`worker-interfacelldp: connecting to device at ${workerData.address}`);
-
-    while (true) {
-        // fetch list of LLDP neighbors
+module.exports = async ({ snmpAwait, interfacesCollection }) => {
+    try {
         const lldpInfo = await snmpAwait.subtree({
             oid: "1.0.8802.1.1.2.1.4.1.1",
-            timeout: 30000,
             raw: true,
         });
 
@@ -66,11 +34,12 @@ const main = async () => {
             for (const [needleOid, needleValue] of Object.entries(needles)) {
                 if (oid.indexOf(needleOid) === 0) {
                     const oidArray = oid.split(".");
-                    const interfaceId = parseInt(oidArray[oidArray.length - 2]);
+                    const interfaceId = parseInt(oidArray[oidArray.length - 2], 10);
 
                     if (!lldpByInterface[interfaceId]) {
                         lldpByInterface[interfaceId] = {};
                     }
+
                     if (needleValue === "chassis_id" || needleValue === "port_id") {
                         lldpByInterface[interfaceId][needleValue] = parseHexString(value);
                     } else {
@@ -84,7 +53,7 @@ const main = async () => {
             .map((lldpObject, eachIndex) => ({ lldpObject, eachIndex }))
             .filter(({ lldpObject }) => lldpObject && typeof lldpObject === "object");
 
-        const activeInterfaceIds = activeLldpEntries.map(({ eachIndex }) => parseInt(eachIndex));
+        const activeInterfaceIds = activeLldpEntries.map(({ eachIndex }) => parseInt(eachIndex, 10));
         const clearFilter = {
             lldp: { $exists: true },
         };
@@ -109,7 +78,7 @@ const main = async () => {
         for (const { lldpObject, eachIndex } of activeLldpEntries) {
             operations.push({
                 updateOne: {
-                    filter: { interfaceId: parseInt(eachIndex) },
+                    filter: { interfaceId: parseInt(eachIndex, 10) },
                     update: {
                         $set: {
                             lldp: lldpObject,
@@ -121,10 +90,8 @@ const main = async () => {
         }
 
         await interfacesCollection.bulkWrite(operations, { ordered: false });
-
-        // every 30 seconds
-        await delay(30000);
+    } catch (err) {
+        logger.warning(`neighbour-lldp task failed: ${err.stack || err.message || err}`);
+        return;
     }
 };
-
-main();

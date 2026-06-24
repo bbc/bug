@@ -3,41 +3,60 @@
 const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
-const ciscoSGSSH = require("@utils/ciscosg-ssh");
 const mongoDb = require("@core/mongo-db");
+const logger = require("@core/logger")(module);
+const ciscoSGSSH = require("@utils/ciscosg-ssh");
 const mongoSingle = require("@core/mongo-single");
+const pollInterval = 60 * 1000; // 1 minute
 
 // Tell the manager the things you care about
 parentPort.postMessage({
-    restartDelay: 10000,
-    restartOn: ["address", "username", "password"],
+	restartDelay: 10000,
+	restartOn: ["address", "username", "password"],
 });
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
+	try {
+		if (!workerData?.address || !workerData?.username || !workerData?.password) {
+			throw new Error("missing connection details in workerData");
+		}
 
-    // Kick things off
-    console.log(`worker-passwordexpired: connecting to device at ${workerData.address}`);
+		// Connect to the db
+		await mongoDb.connect(workerData.id);
 
-    while (true) {
-        try {
-            await ciscoSGSSH({
-                host: workerData.address,
-                username: workerData.username,
-                password: workerData.password,
-                timeout: 20000,
-                commands: ["exit"],
-            });
-            await mongoSingle.set("passwordexpired", false, 600);
-        } catch (error) {
-            if (error && error.includes("exceeded the maximum lifetime")) {
-                await mongoSingle.set("passwordexpired", true, 600);
-            }
-        }
+		while (true) {
+			try {
+				await ciscoSGSSH({
+					host: workerData.address,
+					username: workerData.username,
+					password: workerData.password,
+					timeout: 20000,
+					commands: ["exit"],
+				});
 
-        await delay(60000);
-    }
+				await mongoSingle.set("passwordexpired", false, 1200000);
+			} catch (error) {
+				const errorMessage = error?.stack || error?.message || `${error}`;
+
+				if (errorMessage.includes("exceeded the maximum lifetime")) {
+					logger.warning("password has expired!!");
+					await mongoSingle.set("passwordexpired", true, 1200000);
+				} else {
+					logger.error(errorMessage);
+				}
+			}
+
+			// wait until next poll
+			await delay(pollInterval);
+		}
+	} catch (err) {
+		logger.error("password check worker fatal error");
+		logger.error(err.stack || err.message || err);
+	}
 };
 
-main();
+main().catch((err) => {
+	logger.error("password check worker startup failure");
+	logger.error(err.stack || err.message || err);
+	process.exit(1);
+});
