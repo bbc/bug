@@ -21,7 +21,7 @@ describe("status-getdefault", () => {
 
         expect(result).toHaveProperty("key", "defaultservice");
         expect(result).toHaveProperty("type", "default");
-        expect(result.message).toBe("Most recent test: download 120Mb/s, upload 80Mb/s");
+        expect(result.message).toBe("Last test: 120Mb/s down, 80Mb/s up");
     });
 
     test("returns result count summary when latest has no upload/download", async () => {

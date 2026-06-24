@@ -40,7 +40,7 @@ describe("test-status-clean service", () => {
             failed: true,
             timedOut: true,
             status: "failed",
-            error: "Test did not complete within 60 seconds (likely process crash)",
+            error: "Test did not complete within 60 seconds",
             timestamp: stalledDoc.timestamp,
         };
 
