@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.25
+
+- 2026-06-24: check ping and wan on disabled routes ([fb5f16d](https://github.com/bbc/bug/commit/fb5f16dc8b922a907956429682453d4abb4ab345))
+
 ### version 1.0.24
 
 - 2026-06-24: improve behaviour when dns isn't working ([a85b449](https://github.com/bbc/bug/commit/a85b4498922c8f7d942d4b368e0fd957571b6412))
