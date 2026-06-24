@@ -1,5 +1,71 @@
 # Project Agent Guidelines
 
+## Scope
+
+- Applies project-wide to modules under `src/modules/*/container`.
+
+## Commit Message Guidelines
+
+When generating commit messages for this project, follow these conventions:
+
+### Format and Length
+
+- Keep messages short, aiming for 50 characters or less when possible.
+- Use the format `[prefix]: <description>` or `<description>` if no prefix applies.
+- Start with lowercase after the colon.
+- Do not end with a period.
+- Use present tense and imperative mood.
+
+### Prefixes (Applied in Priority Order)
+
+#### 1. Module Prefix (Highest Priority)
+
+- If code in a module under `/src/modules/` is changed, prefix with `[modulename]`.
+- Example: `[cisco-iosxe] fix auth timeout`
+- Example: `[dante-router] add new parameter`
+
+#### 2. Bug-App Prefix
+
+- If major code changes in `/src/server`, prepend with `[bug-app]`.
+- Use this only when it is the primary and most significant change.
+- Example: `[bug-app] refactor panel API`
+
+#### 3. Copilot Suffix
+
+- If Copilot was used to generate code changes, append `[copilot]` at the end.
+- Example: `[cisco-iosxe] fix auth timeout [copilot]`
+- Example: `[bug-app] refactor worker manager [copilot]`
+
+### Priority When Multiple Changes Exist
+
+- Choose the most significant change and ignore others if multiple items exist.
+- Order: module changes > bug-app changes > other changes.
+- Example: if both a module and server code changed, use the module prefix only if that was the main work.
+
+### Common Patterns
+
+- `[modulename] fix connection issue`
+- `[modulename] add new feature`
+- `[bug-app] refactor API layer`
+- `fix: typo in docs`
+- `docs: update readme`
+- `chore: bump dependencies`
+
+### Examples from Project History (Adapted)
+
+- `[cisco-iosxe] fix auth` instead of `fix: auto-reconnect of log stream`
+- `[dice-pointer] add button` instead of `feat: add 'view panels' button to home screen`
+- `[bug-app] use winston logging` for major server changes
+- `test: add group tests` when no module is affected
+
+### What Not To Do
+
+- Do not list all changes; pick the most significant one.
+- Do not use all caps except acronyms like API and SSH.
+- Do not combine unrelated changes without prioritizing.
+- Do not use a module prefix for minor docs/config changes to a module.
+- Keep it under 60 characters for readability.
+
 ## Module Testing Standard
 
 - Use docker-based test execution for module containers.
@@ -9,10 +75,6 @@
 ```sh
 docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run --rm --name bug-module-test-run bug-module-test npx jest --runInBand --config ./jest.config.cjs
 ```
-
-## Scope
-
-- Applies project-wide to modules under `src/modules/*/container`.
 
 ## Module Container Quick Check Profile
 
@@ -25,6 +87,7 @@ docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run -
 - Rule: use `logger.info` for normal service action logs.
 - Rule: use `logger.warning` when actions fail but execution can continue.
 - Rule: use `logger.error` for exceptions and critical failures.
+- Rule: never add regression tests for changes unless a task explicitly asks for them.
 - Rule: keep `api/app.js` error middleware behavior as-is, including `errorLocation`, unless a task explicitly asks to change it.
 - Rule: keep `api/server.js` using `console.log` for startup and uncaught exception output unless a task explicitly asks to change it.
 - Rule: keep syntax smoke tests generic by discovering service files dynamically where possible (for example `services/services.syntax.test.js`).

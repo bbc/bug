@@ -8,7 +8,6 @@
 # Backlog
 
 - sort out overlaying menu in bug api table
-- move jest to vitest
 - update diagrams in docs to remove watchtower
 - add tests for groups
 - when enabling security strategy it should warn if you're cutting off your branch
@@ -23,3 +22,7 @@
 - remove network switch modulebuilder template?
 - improve validation logic with UI
 - improve behaviour when panel restarting
+- system-wide alerts when cpu over 50%
+- system-wide alerts when disk 90%
+- upgrade all modules?
+- only allow one module upgrade at a time?

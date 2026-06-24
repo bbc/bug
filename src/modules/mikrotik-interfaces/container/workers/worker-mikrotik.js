@@ -56,10 +56,10 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
-                { name: "interfaces", seconds: 2 },
+                { name: "interfaces", seconds: 5 },
                 { name: "interface-lldp", seconds: 5 },
                 { name: "linkstats", seconds: 5 },
-                { name: "traffic", seconds: 2 },
+                { name: "traffic", seconds: 10 },
             ],
             context: { routerOsApi, interfacesCollection, linkStatsCollection, trafficCollection, historyCollection },
             baseDir: __dirname,
