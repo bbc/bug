@@ -140,13 +140,12 @@ module.exports = class SnmpAwait {
 
             self.session.subtree(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
                 if (err) {
-                    throw new Error(`subtree session error: ${err.message || err}`);
+                    return reject(new Error(`subtree session error: ${err.message || err}`));
                 }
                 resolve(result);
             });
         });
     }
-
 
     checkExists({ oids }) {
         const self = this;
@@ -228,7 +227,7 @@ module.exports = class SnmpAwait {
                 if (snmp.ObjectType[detectedType] !== undefined) {
                     return { oid, type: snmp.ObjectType[detectedType], value };
                 }
-                throw new Error(`snmp-await: unsupported SNMP type '${detectedType}' for OID ${oid}`);
+                return reject(new Error(`unsupported SNMP type '${detectedType}' for OID ${oid}`));
         }
     }
 
