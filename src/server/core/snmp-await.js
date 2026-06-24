@@ -165,20 +165,48 @@ module.exports = class SnmpAwait {
         });
     }
 
-    getMultiple({ oids = [], raw = false, ignoreMissing = false }) {
+    getMultiple({ oids = [], raw = false, ignoreMissing = false, chunkSize = 0 }) {
         const self = this;
-        return new Promise((resolve, reject) => {
-            const results = {};
-            self.session.get(self.trimOids(oids), (err, varbinds) => {
+
+        if (!Array.isArray(oids) || !oids.length) {
+            return Promise.resolve({});
+        }
+
+        const normalizedChunkSize = Number.isInteger(chunkSize) && chunkSize > 0 ? chunkSize : 0;
+
+        const fetchChunk = (chunkOids) => new Promise((resolve, reject) => {
+            const chunkResults = {};
+            self.session.get(self.trimOids(chunkOids), (err, varbinds) => {
                 if (err) return reject(err);
 
                 for (const vb of varbinds) {
                     if (!(snmp.isVarbindError(vb) && self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
-                        results[vb.oid] = self.convertVarbind(vb, raw);
+                        chunkResults[vb.oid] = self.convertVarbind(vb, raw);
                     }
                 }
-                resolve(results);
+
+                resolve(chunkResults);
             });
+        });
+
+        if (normalizedChunkSize === 0) {
+            return fetchChunk(oids);
+        }
+
+        return new Promise((resolve, reject) => {
+            const results = {};
+
+            const run = async () => {
+                for (let i = 0; i < oids.length; i += normalizedChunkSize) {
+                    const chunkOids = oids.slice(i, i + normalizedChunkSize);
+                    const chunkResults = await fetchChunk(chunkOids);
+                    Object.assign(results, chunkResults);
+                }
+
+                resolve(results);
+            };
+
+            run().catch(reject);
         });
     }
 
