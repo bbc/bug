@@ -87,7 +87,10 @@ docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run -
 - Rule: use `logger.info` for normal service action logs.
 - Rule: use `logger.warning` when actions fail but execution can continue.
 - Rule: use `logger.error` for exceptions and critical failures.
+- Rule: default to simple, readable implementations over maximum efficiency; only optimize for performance when there is a clear, measured requirement.
 - Rule: never add regression tests for changes unless a task explicitly asks for them.
+- Rule: across all modules, separate workers by connection method (for example SNMP, SSH, HTTP/API, RouterOS) and keep them as distinct workers.
+- Rule: across all modules, separate capability-handling workers (for example DHCP/leases discovery) from core telemetry/control workers; do not fold capability workers into unrelated polling workers.
 - Rule: keep `api/app.js` error middleware behavior as-is, including `errorLocation`, unless a task explicitly asks to change it.
 - Rule: keep `api/server.js` using `console.log` for startup and uncaught exception output unless a task explicitly asks to change it.
 - Rule: keep syntax smoke tests generic by discovering service files dynamically where possible (for example `services/services.syntax.test.js`).
