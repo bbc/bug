@@ -6,11 +6,13 @@ const logger = require("@core/logger")(module);
 const IF_STATUS_OID = "1.3.6.1.2.1.2.2.1.8";
 const IF_SHORT_ID_OID = "1.3.6.1.2.1.31.1.1.1.1";
 const IF_DESCRIPTION_OID = "1.3.6.1.2.1.2.2.1.2";
+const INTERFACE_SUBTREE_MAX_REPETITIONS = 20;
+const SNMP_CHUNK_SIZE = 25;
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
         const ifIDs = await snmpAwait.subtree({
-            maxRepetitions: 1000,
+            maxRepetitions: INTERFACE_SUBTREE_MAX_REPETITIONS,
             oid: IF_STATUS_OID,
         });
 
@@ -31,14 +33,14 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
                 ? snmpAwait.getMultiple({
                     oids: shortIdOids,
                     ignoreMissing: true,
-                    chunkSize: 40,
+                    chunkSize: SNMP_CHUNK_SIZE,
                 })
                 : {},
             descriptionOids.length
                 ? snmpAwait.getMultiple({
                     oids: descriptionOids,
                     ignoreMissing: true,
-                    chunkSize: 40,
+                    chunkSize: SNMP_CHUNK_SIZE,
                 })
                 : {},
         ]);
