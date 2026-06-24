@@ -2,19 +2,30 @@
 
 const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId) => {
-    const config = await configGet();
-    if (!config) {
-        return false;
-    }
+    try {
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
+        }
 
-    if (config.protectedInterfaces.includes(interfaceId)) {
-        console.log(`interface-protect: interface ${interfaceId} already protected`);
-        return false;
-    }
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
 
-    console.log(`interface-protect: protecting interface ${interfaceId}`);
-    config.protectedInterfaces.push(interfaceId);
-    return await configPutViaCore(config);
+        if (config.protectedInterfaces.includes(interfaceId)) {
+            logger.info(`interface ${interfaceId} already protected`);
+            return;
+        }
+
+        logger.info(`protecting interface ${interfaceId}`);
+        config.protectedInterfaces.push(interfaceId);
+        return await configPutViaCore(config);
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
+    }
 };

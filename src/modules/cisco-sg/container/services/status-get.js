@@ -3,6 +3,7 @@
 const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckPending = require("@services/status-checkpending");
 const statusCheckPasswordExpired = require("@services/status-checkpasswordexpired");
+const statusGetSystem = require("@services/status-getsystem");
 
 module.exports = async () => {
     return [].concat(
@@ -23,9 +24,10 @@ module.exports = async () => {
             collectionName: "system",
             message: "System information is out of date.",
             itemType: "warning",
-            timeoutSeconds: 150,
+            timeoutSeconds: 1200,
         }),
         await statusCheckPending(),
-        await statusCheckPasswordExpired()
+        await statusCheckPasswordExpired(),
+        await statusGetSystem()
     );
 };

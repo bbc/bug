@@ -1,0 +1,43 @@
+
+'use strict';
+
+const mongoSingle = require('@core/mongo-single');
+const StatusItem = require("@core/StatusItem");
+const logger = require("@core/logger")(module);
+
+module.exports = async () => {
+
+    try {
+        const dbSystem = await mongoSingle.get('system');
+        if (!dbSystem) {
+            throw new Error("failed to retrieve system info");
+        }
+
+        if (!dbSystem?.description) {
+            return new StatusItem({
+                key: `nodescription`,
+                message: `Device active and running`,
+                type: "default",
+                flags: [],
+            })
+        }
+
+        let description = dbSystem.description;
+        const match = description.match(/SG[A-Z0-9-]*/i);
+
+        if (match) {
+            description = `Switch model ${match[0]} active and running`;
+        }
+
+        return new StatusItem({
+            key: `description`,
+            message: description,
+            type: "default",
+            flags: [],
+        })
+
+    } catch (error) {
+        logger.error(`${error.message}`);
+        return []
+    }
+};

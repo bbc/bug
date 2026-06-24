@@ -3,42 +3,51 @@
 const SnmpAwait = require("@core/snmp-await");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
+const deviceSetPending = require("@services/device-setpending");
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId) => {
-    const config = await configGet();
+    let snmpAwait;
 
-    // create new snmp session
-    const snmpAwait = new SnmpAwait({
-        host: config.address,
-        community: config.snmpCommunity,
-    });
+    try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
 
-    console.log(`interface-enable: disabling interface ${interfaceId} ...`);
+        logger.info(`enabling interface ${interfaceId} ...`);
 
-    const result = await snmpAwait.set({
-        oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,
-        value: 1,
-    });
+        snmpAwait = new SnmpAwait({
+            host: config.address,
+            community: config.snmpCommunity,
+        });
 
-    // we're done with the SNMP session
-    snmpAwait.close();
+        await snmpAwait.set({
+            oid: `1.3.6.1.2.1.2.2.1.7.${interfaceId}`,
+            value: 1,
+        });
 
-    if (result) {
-        console.log(`interface-enable: success - updating DB`);
-        try {
-            const interfacesCollection = await mongoCollection("interfaces");
-            const dbResult = await interfacesCollection.updateOne(
-                { interfaceId: parseInt(interfaceId) },
-                { $set: { "admin-state": true } }
-            );
-            console.log(`interface-enable: ${JSON.stringify(dbResult.result)}`);
-            return true;
-        } catch (error) {
-            console.log(`interface-enable: failed to update db`);
-            console.log(error);
-            return false;
+        logger.info("snmp success - updating DB");
+
+        const interfacesCollection = await mongoCollection("interfaces");
+        const dbResult = await interfacesCollection.updateOne(
+            { interfaceId: Number(interfaceId) },
+            { $set: { "admin-state": true } }
+        );
+
+        if (dbResult.matchedCount !== 1) {
+            throw new Error(`expected to update 1 interface in DB, matched ${dbResult.matchedCount}`);
+        }
+
+        await deviceSetPending(true);
+        logger.info("complete");
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
+    } finally {
+        if (snmpAwait) {
+            snmpAwait.close();
         }
     }
-    console.log(`interface-enable: failed to disable interface ${interfaceId}`);
-    return false;
 };

@@ -2,7 +2,6 @@
 
 const logger = require("@core/logger")(module);
 const formatBps = require("@core/format-bps");
-const trafficSaveHistory = require("@services/traffic-savehistory");
 
 const IN_OCTETS_OID = "1.3.6.1.2.1.2.2.1.10";
 const OUT_OCTETS_OID = "1.3.6.1.2.1.2.2.1.16";
@@ -127,8 +126,26 @@ module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) 
             logger.debug(`updated db for ${bulkResult.modifiedCount} interface(s)`);
         }
 
-        await trafficSaveHistory(historyCollection, historyArray);
+        // save history
+        let saveDocument = {
+            timestamp: new Date(),
+            interfaces: {},
+        };
+
+        for (let eachInterface of historyArray) {
+            try {
+                saveDocument.interfaces[eachInterface["id"]] = {
+                    tx: eachInterface["tx-rate"],
+                    rx: eachInterface["rx-rate"],
+                };
+            } catch (error) {
+                logger.info(error);
+            }
+        }
+
+        await historyCollection.insertOne(saveDocument);
         logger.debug(`saved history for ${historyArray.length} interface(s)`);
+
     } catch (err) {
         logger.warning(`interfacestats task failed: ${err.stack || err.message || err}`);
         return;

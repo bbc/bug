@@ -1,33 +1,50 @@
 "use strict";
 
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId, startTime = null, endTime = null) => {
     try {
-        if (endTime === null) {
-            endTime = Date.now();
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
         }
 
-        if (startTime === null) {
-            startTime = endTime - 60 * 5 * 1000; // 5 mins
+        const now = Date.now();
+        endTime = endTime ?? now;
+        startTime = startTime ?? (endTime - 5 * 60 * 1000);
+
+        if (!(startTime instanceof Date)) {
+            startTime = new Date(startTime);
         }
+
+        if (!(endTime instanceof Date)) {
+            endTime = new Date(endTime);
+        }
+
         const historyCollection = await mongoCollection("history");
 
-        let history = await historyCollection
-            .find({ timestamp: { $gte: new Date(startTime), $lte: new Date(endTime) } })
+        const history = await historyCollection
+            .find({ timestamp: { $gte: startTime, $lte: endTime } })
             .toArray();
 
-        let dataPoints = [];
+        const dataPoints = history
+            .map((item) => {
+                const ifaceData = item.interfaces?.[interfaceId];
+                if (!ifaceData) {
+                    return null;
+                }
 
-        for (let eachItem of history) {
-            if (eachItem["interfaces"][interfaceId]) {
-                let dataPoint = eachItem["interfaces"][interfaceId];
-                dataPoint.timestamp = new Date(eachItem.timestamp).getTime();
-                dataPoints.push(dataPoint);
-            }
-        }
+                return {
+                    ...ifaceData,
+                    timestamp: new Date(item.timestamp).getTime(),
+                };
+            })
+            .filter(Boolean);
+
         return dataPoints;
-    } catch (error) {
-        console.log(`interface-history: ${error.stack || error || error.message}`);
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

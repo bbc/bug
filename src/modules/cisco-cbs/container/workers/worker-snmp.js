@@ -17,7 +17,6 @@ parentPort.postMessage({
 
 const main = async () => {
     try {
-
         // connect to the db
         await mongoDb.connect(workerData.id);
 

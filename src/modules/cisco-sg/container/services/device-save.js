@@ -2,24 +2,42 @@
 
 const ciscoSGSSH = require("@utils/ciscosg-ssh");
 const configGet = require("@core/config-get");
+const deviceSetPending = require("@services/device-setpending");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
-    const config = await configGet();
-    console.log("device-save: saving device config ...");
+    try {
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
 
-    const result = await ciscoSGSSH({
-        host: config.address,
-        username: config.username,
-        password: config.password,
-        timeout: 20000,
-        commands: ["write memory"],
-        debug: true,
-    });
+        logger.info("saving device config ...");
 
-    if (result && result.length === 1 && result[0].indexOf("Copy succeeded") > -1) {
-        console.log("device-save: success");
-    } else {
-        console.log("device-save: failed");
-        console.log(result);
+        const result = await ciscoSGSSH({
+            host: config.address,
+            username: config.username,
+            password: config.password,
+            timeout: 20000,
+            commands: ["write memory"],
+        });
+
+        const success =
+            Array.isArray(result) &&
+            result.length === 1 &&
+            typeof result[0] === "string" &&
+            result[0].includes("Copy succeeded");
+
+        if (!success) {
+            throw new Error(`device did not confirm save (response: ${JSON.stringify(result)})`);
+        }
+
+        logger.info("success");
+
+        await deviceSetPending(false);
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
 };

@@ -4,69 +4,84 @@ const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
 const ciscoSGSSH = require("@utils/ciscosg-ssh");
 const mongoSingle = require("@core/mongo-single");
+const deviceSetPending = require("@services/device-setpending");
+const logger = require("@core/logger")(module);
 
 module.exports = async (interfaceId, untaggedVlan = "1") => {
-    const config = await configGet();
-
-    console.log(`interface-setvlanaccess: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
-
-    const interfaceCollection = await mongoCollection("interfaces");
-    const iface = await interfaceCollection.findOne({ interfaceId: parseInt(interfaceId) });
-    if (!iface) {
-        throw new Error(`interface ${interfaceId} not found`);
-    }
-
-    console.log(`interface-setvlanaccess: interface ${interfaceId} found in db`);
-
-    // and the switch system information
-    const system = await mongoSingle.get("system");
-
-    // initalise command array with the first few commands
-    const commands = ["conf", `interface ${iface.longId}`];
-
-    const commandOptions = {
-        1: `switchport trunk allowed vlan remove all`,
-        2: `switchport trunk allowed vlan none`,
-    };
-
-    if (iface["tagged-vlans"].length > 0) {
-        // it's a trunk port - we need to set it to access first
-        commands.push(commandOptions[system["control-version"]]);
-    }
-
-    // then set it to access
-    commands.push(`switchport mode access`);
-    commands.push(`switchport access vlan ${untaggedVlan}`);
-
-    console.log(`interface-setvlanaccess: sending commands to switch: ${JSON.stringify(commands)}`);
-
-    const result = await ciscoSGSSH({
-        host: config.address,
-        username: config.username,
-        password: config.password,
-        timeout: 10000,
-        commands: commands,
-    });
-
-    let allOk = true;
-    for (let eachResult of result) {
-        if (eachResult.indexOf("Unrecognized command") > -1) {
-            console.log(eachResult);
-            allOk = false;
+    try {
+        if (!interfaceId) {
+            throw new Error("interfaceId is required");
         }
-    }
 
-    if (allOk) {
-        console.log(`interface-setvlanaccess: success - updating DB`);
+        if (!untaggedVlan) {
+            throw new Error("untaggedVlan is required");
+        }
 
-        // update db
+        const config = await configGet();
+        if (!config) {
+            throw new Error("failed to load config");
+        }
+
+        logger.info(`setting VLAN ${untaggedVlan} on interface ${interfaceId}`);
+
+        const interfaceCollection = await mongoCollection("interfaces");
+        const iface = await interfaceCollection.findOne({ interfaceId: Number(interfaceId) });
+        if (!iface) {
+            throw new Error(`interface ${interfaceId} not found`);
+        }
+
+        logger.info(`interface ${interfaceId} found in DB`);
+
+        const system = await mongoSingle.get("system");
+
+        const commands = ["conf", `interface ${iface.longId}`];
+        const commandOptions = {
+            1: "switchport trunk allowed vlan remove all",
+            2: "switchport trunk allowed vlan none",
+        };
+
+        if (iface["tagged-vlans"].length > 0) {
+            commands.push(commandOptions[system["control-version"]]);
+        }
+
+        commands.push("switchport mode access");
+        commands.push(`switchport access vlan ${untaggedVlan}`);
+
+        logger.info(`sending commands to switch: ${JSON.stringify(commands)}`);
+
+        const result = await ciscoSGSSH({
+            host: config.address,
+            username: config.username,
+            password: config.password,
+            timeout: 10000,
+            commands: commands,
+        });
+
+        for (const eachResult of result) {
+            if (eachResult.includes("Unrecognized command")) {
+                throw new Error(eachResult);
+            }
+        }
+
+        logger.info("success - updating DB");
+
         const dbResult = await interfaceCollection.updateOne(
-            { interfaceId: parseInt(interfaceId) },
-            { $set: { "untagged-vlan": parseInt(untaggedVlan), "tagged-vlans": [] } }
+            { interfaceId: Number(interfaceId) },
+            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": [] } }
         );
-        console.log(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+
+        if (dbResult.matchedCount !== 1) {
+            throw new Error(`expected to update 1 interface in DB, matched ${dbResult.matchedCount}`);
+        }
+
+        logger.info(`${JSON.stringify(dbResult.result)}`);
+
+        await deviceSetPending(true);
+
         return true;
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
     }
-    console.log(`interface-setvlanaccess: failed to set vlan ${untaggedVlan} on interface ${interfaceId}`);
-    return false;
 };

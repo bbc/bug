@@ -1,7 +1,14 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async () => {
-    return mongoSingle.get("vlans");
+    try {
+        return mongoSingle.get("vlans");
+    } catch (err) {
+        err.message = `${err.stack || err.message}`;
+        logger.error(err.message);
+        throw err;
+    }
 };
