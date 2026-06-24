@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.3
+
+- 2026-06-24: fix toobig on interfaces worker ([165ea06](https://github.com/bbc/bug/commit/165ea06481e70b52688d6b986a0652935032df6d))
+
 ### version 1.1.2
 
 - 2026-06-24: add poe support ([cffd00b](https://github.com/bbc/bug/commit/cffd00b1f0d8014b016c82f491ffa619016a4aef))
