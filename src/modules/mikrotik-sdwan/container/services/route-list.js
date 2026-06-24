@@ -39,11 +39,15 @@ module.exports = async () => {
                     (w) => w.bridge === route._bridgeName
                 );
 
-                const geoIp = matchingWanAddress
-                    ? await freeIpApiLookup(
-                        matchingWanAddress?.address?.split("/")?.[0]
-                    )
-                    : null;
+                let geoIp = null;
+                if (matchingWanAddress?.address) {
+                    const ipAddress = matchingWanAddress.address.split("/")[0];
+                    try {
+                        geoIp = await freeIpApiLookup(ipAddress);
+                    } catch (geoIpError) {
+                        logger.warning(`route-list: geoip lookup failed for ${ipAddress}: ${geoIpError.message}`);
+                    }
+                }
 
                 return {
                     id: route.id,

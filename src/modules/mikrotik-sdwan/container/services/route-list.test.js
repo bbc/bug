@@ -9,7 +9,11 @@ jest.mock("@core/mongo-single", () => ({
 jest.mock("@core/mongo-collection", () => (...args) => mockMongoCollection(...args));
 jest.mock("@utils/freeipapi-lookup", () => (...args) => mockFreeIpApiLookup(...args));
 jest.mock("@utils/srcaddress-get", () => (...args) => mockSrcAddressGet(...args));
-jest.mock("@core/logger", () => () => ({ error: jest.fn(), info: jest.fn() }));
+jest.mock("@core/logger", () => () => ({
+    error: jest.fn(),
+    info: jest.fn(),
+    warning: jest.fn(),
+}));
 
 const routeList = require("./route-list");
 
@@ -47,5 +51,21 @@ describe("route-list", () => {
         const result = await routeList();
         expect(Array.isArray(result)).toBe(true);
         expect(result).toHaveLength(1);
+    });
+
+    test("does not fail route list when geoip lookup fails", async () => {
+        const mockFind = jest.fn(() => ({ toArray: jest.fn().mockResolvedValue([{ bridge: "br1", address: "1.2.3.4/24" }]) }));
+        mockMongoCollection.mockResolvedValue({ find: mockFind });
+        mockGet
+            .mockResolvedValueOnce([{ id: "*1", "routing-table": "main", _bridgeName: "br1", distance: 1, dynamic: false }])
+            .mockResolvedValueOnce([{ name: "br1", comment: "wan1" }])
+            .mockResolvedValueOnce([])
+            .mockResolvedValueOnce([]);
+        mockSrcAddressGet.mockReturnValue("10.0.0.1");
+        mockFreeIpApiLookup.mockRejectedValue(new Error("dns temporary failure"));
+
+        const result = await routeList();
+        expect(result).toHaveLength(1);
+        expect(result[0].geoIp).toBe(null);
     });
 });
