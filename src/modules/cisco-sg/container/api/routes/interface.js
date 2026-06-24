@@ -36,10 +36,9 @@ router.all(
 router.get(
     "/:interfaceId",
     asyncHandler(async (req, res) => {
-        const result = await interfaceGet(req.params.interfaceId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await interfaceGet(req.params.interfaceId),
         });
     })
 );
@@ -62,10 +61,9 @@ router.all(
 router.get(
     "/history/:interfaceId",
     asyncHandler(async (req, res) => {
-        const result = await interfaceHistory(req.params.interfaceId);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await interfaceHistory(req.params.interfaceId),
         });
     })
 );
@@ -73,10 +71,9 @@ router.get(
 router.get(
     "/rename/:interfaceId/:interfaceName",
     asyncHandler(async (req, res) => {
-        const result = await interfaceRename(req.params.interfaceId, req.params.interfaceName);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await interfaceRename(req.params.interfaceId, req.params.interfaceName),
         });
     })
 );
@@ -84,10 +81,9 @@ router.get(
 router.get(
     "/rename/:interfaceId/",
     asyncHandler(async (req, res) => {
-        const result = await interfaceRename(req.params.interfaceId, "");
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await interfaceRename(req.params.interfaceId, ""),
         });
     })
 );
@@ -95,10 +91,9 @@ router.get(
 router.post(
     "/setvlantrunk/:interfaceId/",
     asyncHandler(async (req, res) => {
-        const result = await interfaceSetVlanTrunk(req.params.interfaceId, req.body.untaggedVlan, req.body.taggedVlans);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await interfaceSetVlanTrunk(req.params.interfaceId, req.body.untaggedVlan, req.body.taggedVlans),
         });
     })
 );
@@ -106,10 +101,9 @@ router.post(
 router.get(
     "/setvlanaccess/:interfaceId/:untaggedVlan",
     asyncHandler(async (req, res) => {
-        const result = await interfaceSetVlanAccess(req.params.interfaceId, req.params.untaggedVlan);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await interfaceSetVlanAccess(req.params.interfaceId, req.params.untaggedVlan),
         });
     })
 );
@@ -117,14 +111,13 @@ router.get(
 router.get(
     "/history/:interfaceId/:start/:end",
     asyncHandler(async (req, res) => {
-        const result = await interfaceHistory(
-            req.params.interfaceId,
-            parseInt(req.params.start),
-            parseInt(req.params.end)
-        );
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await interfaceHistory(
+                req.params.interfaceId,
+                parseInt(req.params.start),
+                parseInt(req.params.end)
+            ),
         });
     })
 );
@@ -132,10 +125,9 @@ router.get(
 router.get(
     "/enable/:interfaceId",
     asyncHandler(async (req, res) => {
-        const result = await interfaceEnable(req.params.interfaceId);
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await interfaceEnable(req.params.interfaceId),
         });
     })
 );
@@ -143,10 +135,9 @@ router.get(
 router.get(
     "/disable/:interfaceId",
     asyncHandler(async (req, res) => {
-        const result = await interfaceDisable(req.params.interfaceId);
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await interfaceDisable(req.params.interfaceId),
         });
     })
 );
@@ -154,10 +145,9 @@ router.get(
 router.get(
     "/protect/:interfaceId",
     asyncHandler(async (req, res) => {
-        const result = await interfaceProtect(req.params.interfaceId);
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await interfaceProtect(req.params.interfaceId),
         });
     })
 );
@@ -165,10 +155,9 @@ router.get(
 router.get(
     "/unprotect/:interfaceId",
     asyncHandler(async (req, res) => {
-        const result = await interfaceUnprotect(req.params.interfaceId);
         res.json({
-            status: result ? "success" : "failure",
-            data: null,
+            status: "success",
+            data: await interfaceUnprotect(req.params.interfaceId),
         });
     })
 );
