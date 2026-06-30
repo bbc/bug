@@ -34,7 +34,7 @@ jobs:
 
             - name: send slack start message
               id: slack-start
-              if: ${{ github.event_name != 'pull_request' }}
+              if: ${{ github.event_name != 'pull_request' && env.SLACK_BOT_TOKEN != '' }}
               uses: ./.github/actions/slack-run-start
               with:
                   message_prefix: Workflow running
