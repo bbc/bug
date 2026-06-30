@@ -6,6 +6,7 @@ const moduleList = require("@services/module-list");
 const moduleGet = require("@services/module-get");
 const moduleBuild = require("@services/module-build");
 const moduleRebuild = require("@services/module-rebuild");
+const moduleUpgradeStatusModel = require("@models/module-upgradestatus");
 const hashResponse = require("@core/hash-response");
 const restrict = require("@middleware/restrict");
 
@@ -140,7 +141,34 @@ router.get(
     "/rebuild/:moduleName",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
-        const result = await moduleRebuild(req.params.moduleName);
+        const moduleName = req.params.moduleName;
+        const activeUpgrade = await moduleUpgradeStatusModel.get(moduleName);
+
+        if (activeUpgrade && activeUpgrade.active) {
+            res.status(409);
+            return hashResponse(res, req, {
+                status: "failure",
+                message: `Module '${moduleName}' upgrade already in progress`,
+                data: null,
+            });
+        }
+
+        let result;
+        try {
+            result = await moduleRebuild(moduleName);
+        } catch (error) {
+            if (error.code === "MODULE_UPGRADE_IN_PROGRESS") {
+                res.status(409);
+                return hashResponse(res, req, {
+                    status: "failure",
+                    message: error.message,
+                    data: null,
+                });
+            }
+
+            throw error;
+        }
+
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             data: null,

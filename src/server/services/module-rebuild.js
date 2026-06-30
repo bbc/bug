@@ -10,12 +10,24 @@ const moduleUpgradeStatusModel = require("@models/module-upgradestatus");
 const panelConfigModel = require("@models/panel-config");
 const panelStart = require("@services/panel-start");
 
+const activeRebuilds = new Set();
+
 module.exports = async (moduleName, updateProgressCallback) => {
+    if (activeRebuilds.has(moduleName)) {
+        const error = new Error(`Module '${moduleName}' upgrade already in progress`);
+        error.code = "MODULE_UPGRADE_IN_PROGRESS";
+        throw error;
+    }
+
+    activeRebuilds.add(moduleName);
+
     const updateProgress = (progressText) => {
         if (typeof updateProgressCallback === 'function') {
             updateProgressCallback(progressText);
         }
     };
+
+    let upgradeStatusCreated = false;
 
     try {
         updateProgress("Validating module config");
@@ -41,7 +53,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
         }
 
         // update the UI to show we're building
-        await moduleUpgradeStatusModel.create(moduleName)
+        upgradeStatusCreated = await moduleUpgradeStatusModel.create(moduleName)
 
         // delete existing module images/containers - we do this first to ensure the build isn't using cached layers we want gone
         updateProgress("Stopping containers");
@@ -82,12 +94,20 @@ module.exports = async (moduleName, updateProgressCallback) => {
         }
 
         updateProgress("Rebuild complete");
-        await moduleUpgradeStatusModel.delete(moduleName)
         return result
 
 
     } catch (error) {
         logger.error(`${error.stack}`);
         throw new Error(`Failed to rebuild module ${moduleName}: ${error.message}`);
+    } finally {
+        activeRebuilds.delete(moduleName);
+
+        if (upgradeStatusCreated) {
+            const deleted = await moduleUpgradeStatusModel.delete(moduleName);
+            if (!deleted) {
+                logger.warning(`failed to clear module upgrade status for ${moduleName}`);
+            }
+        }
     }
 };

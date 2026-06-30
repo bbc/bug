@@ -25,4 +25,3 @@
 - system-wide alerts when cpu over 50%
 - system-wide alerts when disk 90%
 - upgrade all modules?
-- only allow one module upgrade at a time?
