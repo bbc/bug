@@ -171,6 +171,7 @@
         "@middleware": "./src/server/middleware/"
     },
     "devDependencies": {
+        "@storybook/react-vite": "^8.6.18",
         "@babel/core": "^7.29.7",
         "@babel/preset-env": "^7.29.7",
         "@babel/preset-react": "^7.29.7",
@@ -183,6 +184,7 @@
         "jest-extended": "^6.0.0",
         "nodemon": "^3.1.10",
         "prettier": "^3.9.4",
+        "storybook": "^8.6.18",
         "supertest": "^7.1.1",
         "vite": "^7.3.6",
         "vite-plugin-svgr": "^4.5.0"
