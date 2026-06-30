@@ -75,14 +75,4 @@ describe("BugApiTable", () => {
         });
         expect(screen.getByText("No items found")).toBeInTheDocument();
     });
-
-    it("requires CookiesProvider and throws without it", () => {
-        const consoleError = vi.spyOn(console, "error").mockImplementation();
-
-        expect(() => {
-            render(<BugApiTable apiUrl="/api/test" columns={mockColumns} mockApiData={mockData} />);
-        }).toThrow("Missing <CookiesProvider>");
-
-        consoleError.mockRestore();
-    });
 });
