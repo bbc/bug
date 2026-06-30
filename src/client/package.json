@@ -7,6 +7,7 @@
         "build": "vite build",
         "prebuild": "node scripts/generateMuiIcons.mjs",
         "preview": "vite preview",
+        "pretest": "node scripts/generateMuiIcons.mjs",
         "test": "vitest run",
         "prestorybook": "node scripts/generateMuiIcons.mjs",
         "storybook": "storybook dev -p 3303",
