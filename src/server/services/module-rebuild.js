@@ -11,7 +11,15 @@ const panelConfigModel = require("@models/panel-config");
 const panelStart = require("@services/panel-start");
 
 module.exports = async (moduleName, updateProgressCallback) => {
+    const updateProgress = (progressText) => {
+        if (typeof updateProgressCallback === 'function') {
+            updateProgressCallback(progressText);
+        }
+    };
+
     try {
+        updateProgress("Validating module config");
+
         // fetch module config
         const moduleList = await moduleConfig.list();
         const matchedModule = moduleList.find(m => m.name === moduleName);
@@ -19,6 +27,8 @@ module.exports = async (moduleName, updateProgressCallback) => {
         if (!matchedModule) {
             throw new Error(`Module config '${moduleName}' not found`);
         }
+
+        updateProgress("Identifying affected panels");
 
         // get all panels using this module before we delete anything
         const allPanels = await panelConfigModel.list();
@@ -34,11 +44,13 @@ module.exports = async (moduleName, updateProgressCallback) => {
         await moduleUpgradeStatusModel.create(moduleName)
 
         // delete existing module images/containers - we do this first to ensure the build isn't using cached layers we want gone
+        updateProgress("Stopping containers");
         logger.info(`module-rebuild: deleting existing module assets for: ${moduleName}`);
         const deleted = await dockerDeleteModule(moduleName);
         if (!deleted) {
             logger.warning(`module-rebuild: could not fully delete assets for ${moduleName} - proceeding with build anyway`);
         }
+        updateProgress("Removing images");
 
         // write/update the dockerfile
         const modulePath = path.resolve(__dirname, "..", "..", "modules", moduleName, "container");
@@ -49,14 +61,18 @@ module.exports = async (moduleName, updateProgressCallback) => {
         }
 
         // trigger the build
+        updateProgress("Building image");
         logger.info(`module-rebuild: rebuilding image for ${moduleName}...`);
-        const result = await dockerBuildModule(moduleName, updateProgressCallback);
+        const result = await dockerBuildModule(moduleName, updateProgress);
 
         // restart affected panels after successful rebuild
         if (affectedPanelIds.length > 0) {
+            updateProgress("Restarting panels");
             logger.info(`module-rebuild: restarting ${affectedPanelIds.length} panel(s) after rebuild`);
-            for (const panelId of affectedPanelIds) {
+            for (let i = 0; i < affectedPanelIds.length; i++) {
+                const panelId = affectedPanelIds[i];
                 try {
+                    updateProgress(`Restarting panel ${i + 1} of ${affectedPanelIds.length}`);
                     logger.info(`module-rebuild: starting panel ${panelId}`);
                     await panelStart(panelId);
                 } catch (error) {
@@ -65,6 +81,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
             }
         }
 
+        updateProgress("Rebuild complete");
         await moduleUpgradeStatusModel.delete(moduleName)
         return result
 
