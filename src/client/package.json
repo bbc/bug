@@ -7,7 +7,7 @@
         "build": "vite build",
         "prebuild": "node scripts/generateMuiIcons.mjs",
         "preview": "vite preview",
-        "test": "jest",
+        "test": "vitest run",
         "prestorybook": "node scripts/generateMuiIcons.mjs",
         "storybook": "storybook dev -p 3303",
         "prebuild-storybook": "node scripts/generateMuiIcons.mjs",
@@ -27,6 +27,9 @@
         ]
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.3.0",
+        "@testing-library/user-event": "^14.5.2",
         "@storybook/addon-essentials": "^8.6.15",
         "@storybook/addon-highlight": "^8.6.15",
         "@storybook/addon-interactions": "^8.6.15",
@@ -37,6 +40,8 @@
         "@storybook/react-vite": "^8.6.15",
         "@storybook/test": "^8.6.15",
         "@storybook/theming": "^8.6.15",
-        "storybook": "^8.6.15"
+        "storybook": "^8.6.15",
+        "jsdom": "^26.1.0",
+        "vitest": "^3.2.4"
     }
 }

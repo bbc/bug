@@ -21,6 +21,7 @@ export default defineConfig({
             '@redux': path.resolve(__dirname, './src/redux'),
             '@utils': path.resolve(__dirname, './src/utils'),
             '@hooks': path.resolve(__dirname, './src/hooks'),
+            '@stories': path.resolve(__dirname, './src/stories'),
         },
         dedupe: [
             'react',
@@ -107,5 +108,11 @@ export default defineConfig({
         outDir: 'dist',
         sourcemap: true,
         chunkSizeWarningLimit: 3000,
-    }
+    },
+
+    test: {
+        environment: 'jsdom',
+        globals: true,
+        setupFiles: ['./src/setupTests.js'],
+    },
 });

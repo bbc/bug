@@ -77,7 +77,7 @@ describe("BugApiTable", () => {
     });
 
     it("requires CookiesProvider and throws without it", () => {
-        const consoleError = jest.spyOn(console, "error").mockImplementation();
+        const consoleError = vi.spyOn(console, "error").mockImplementation();
 
         expect(() => {
             render(<BugApiTable apiUrl="/api/test" columns={mockColumns} mockApiData={mockData} />);
