@@ -26,8 +26,8 @@ exports.list = async function () {
         moduleArray = [];
         for (let i in files) {
             if (!files[i].startsWith(".")) {
+                const filename = path.join(modulesFolder, files[i], "module.json");
                 try {
-                    let filename = path.join(modulesFolder, files[i], "module.json");
                     let packageFile = await readJson(filename);
                     if (!packageFile) {
                         logger.warning(`file '${filename}' not found`);
@@ -35,7 +35,26 @@ exports.list = async function () {
                     }
                     moduleArray.push(packageFile);
                 } catch (error) {
-                    logger.warning(`${error.stack || error || error.message}`);
+                    if (error?.code === "ENOENT") {
+                        const moduleName = files[i];
+                        let panelId = "none";
+
+                        try {
+                            const panelConfigModel = require("@models/panel-config");
+                            const panelConfigList = await panelConfigModel.list();
+
+                            const panelConfig = panelConfigList.find((panel) => panel?.module === moduleName);
+                            panelId = panelConfig?.id || "none";
+                        } catch (contextError) {
+                            logger.warning(`failed to load panel context: ${contextError.stack || contextError || contextError.message}`);
+                        }
+
+                        logger.warning(
+                            `cannot find configuration for module '${moduleName}', panel id: ${panelId}`
+                        );
+                    } else {
+                        logger.warning(`${error.stack || error || error.message}`);
+                    }
                 }
             }
         }
