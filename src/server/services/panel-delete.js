@@ -15,19 +15,19 @@ module.exports = async (panelId) => {
 
         let container = await dockerGetContainer(panelId);
         if (container) {
-            logger.info(`panel-delete: stopping container for panel id ${panelId}`);
+            logger.info(`stopping container for panel id ${panelId}`);
             if (await dockerStopContainer(container)) {
-                logger.info(`panel-delete: deleting container for panel id ${panelId}`);
+                logger.info(`deleting container for panel id ${panelId}`);
                 await dockerDeleteContainer(container);
             } else {
                 throw new Error(`Failed to stop container for panel id ${panelId}`);
             }
         } else {
-            logger.warning(`panel-delete: no container found for panel id ${panelId}`);
+            logger.warning(`no container found for panel id ${panelId}`);
         }
         return await panelConfigModel.delete(panelId);
     } catch (error) {
-        logger.warning(`panel-delete: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to delete panel id ${panelId}`);
     }
 };

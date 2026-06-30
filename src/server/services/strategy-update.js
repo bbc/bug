@@ -7,7 +7,7 @@ module.exports = async (type, strategy) => {
     try {
         return await strategyModel.update(type, strategy);
     } catch (error) {
-        logger.error(`strategy-update: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to update strategy.`);
     }
 };

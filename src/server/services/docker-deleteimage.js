@@ -5,7 +5,7 @@ const logger = require("@core/logger")(module);
 
 module.exports = async (imageId, force = false) => {
     try {
-        logger.info(`docker-deleteimage: deleting image ${imageId}`);
+        logger.info(`deleting image ${imageId}`);
 
         return await new Promise((resolve, reject) => {
             const opts = force ? { force: true } : {};
@@ -14,13 +14,13 @@ module.exports = async (imageId, force = false) => {
                     logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
-                    logger.info(`docker-deleteimage: image id ${imageId} deleted OK`);
+                    logger.info(`image id ${imageId} deleted OK`);
                     resolve(true);
                 }
             });
         });
     } catch (error) {
-        logger.debug(`docker-deleteimage: ${error?.stack}`);
+        logger.debug(`${error?.stack}`);
         throw new Error(`Failed to delete docker image id ${imageId}`);
     }
 };

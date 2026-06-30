@@ -12,10 +12,10 @@ const logger = require("@core/logger")(module);
 
 module.exports = async (workers, config) => {
     try {
-        logger.info(`config-put: received config update`);
+        logger.info(`received config update`);
         const filename = path.join(__dirname, "..", "config", "panel.json");
         await writeJson(filename, config);
-        logger.info(`config-put: saved config file to ${filename}`);
+        logger.info(`saved config file to ${filename}`);
 
         //Tell the worker manager that a new config is avalible
         if (workers) {
@@ -24,7 +24,7 @@ module.exports = async (workers, config) => {
 
         return true;
     } catch (error) {
-        logger.error(`config-put: ${error.stack || error || error.message}`);
+        logger.error(`${error.stack || error || error.message}`);
     }
 
     return false;

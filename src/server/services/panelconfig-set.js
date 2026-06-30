@@ -14,7 +14,7 @@ module.exports = async (newConfig) => {
     }
 
     try {
-        logger.info(`panelconfig-set: updating configuration for panel: ${panelId}`);
+        logger.info(`updating configuration for panel: ${panelId}`);
 
         // fetch existing config
         const config = await panelConfigModel.get(panelId);
@@ -27,7 +27,7 @@ module.exports = async (newConfig) => {
 
         // get an API Key for the panel if it doesn't have one already
         if (!combinedConfig.key) {
-            logger.info(`panelconfig-set: generating new API key for panel: ${panelId}`);
+            logger.info(`generating new API key for panel: ${panelId}`);
             combinedConfig.key = await key();
         }
 
@@ -45,18 +45,18 @@ module.exports = async (newConfig) => {
 
         // check if we need to interact with a container
         if (!moduleData.needsContainer) {
-            logger.info(`panelconfig-set: config saved for ${panelId} - no container push required`);
+            logger.info(`config saved for ${panelId} - no container push required`);
             return true;
         }
 
         // push config to the running container
-        logger.info(`panelconfig-set: pushing updated configuration to running container for: ${panelId}`);
+        logger.info(`pushing updated configuration to running container for: ${panelId}`);
         await panelConfigPush(panelId);
 
         return true;
 
     } catch (error) {
-        logger.error(`panelconfig-set: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to set panel config for ${panelId}`);
     }
 };

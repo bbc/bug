@@ -22,7 +22,7 @@ module.exports = async () => {
         }
         return response;
     } catch (error) {
-        logger.error(`system-ip: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve system IP.`);
     }
 };

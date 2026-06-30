@@ -19,7 +19,7 @@ module.exports = async () => {
         if (error.code === "ENOENT") {
             return null;
         }
-        logger.error(`config-get: ${error.stack || error || error.message}`);
+        logger.error(`${error.stack || error || error.message}`);
     }
     return null;
 };

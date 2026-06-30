@@ -17,7 +17,7 @@ module.exports = async (headers) => {
         }
         return false;
     } catch (error) {
-        logger.error(`user-getproxyid: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve user proxy id.`);
     }
 };

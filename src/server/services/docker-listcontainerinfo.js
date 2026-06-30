@@ -39,7 +39,7 @@ module.exports = async () => {
                 }
             }
         } catch (error) {
-            logger.error(`docker-listcontainerinfo: ${error?.stack}`);
+            logger.error(`${error?.stack}`);
             throw new Error(`Failed to list container info`);
         }
         cacheStore.set(cacheKey, response, 1);

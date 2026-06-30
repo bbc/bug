@@ -26,7 +26,7 @@ module.exports = async (options) => {
 
     const connection = await mongoCollection(options.collectionName);
     if (!connection) {
-        logger.warning(`status-checkcollection: collection ${options.collectionName} not found`);
+        logger.warning(`collection ${options.collectionName} not found`);
         return;
     }
 

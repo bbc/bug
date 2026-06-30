@@ -21,7 +21,7 @@ module.exports = async (panelId) => {
         logger.info(`panel-restart restarting container for panel id ${panelId}`);
         return dockerRestartContainer(container);
     } catch (error) {
-        logger.warning(`panel-restart: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to restart panel id ${panelId}`);
     }
 };

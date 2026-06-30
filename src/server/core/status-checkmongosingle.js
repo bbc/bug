@@ -21,7 +21,7 @@ module.exports = async (options) => {
     options = Object.assign({}, defaults, options);
 
     if (options.collectionName === undefined) {
-        logger.error("status-checkmongosingle: collectionName not specified");
+        logger.error("collectionName not specified");
         return;
     }
 

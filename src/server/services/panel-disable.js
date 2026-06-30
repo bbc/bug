@@ -22,7 +22,7 @@ module.exports = async (panelId) => {
         // then we stop the container in docker
         return await panelStop(panelId);
     } catch (error) {
-        logger.warning(`panel-disable: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to disable panel id ${panelId}`);
     }
 };

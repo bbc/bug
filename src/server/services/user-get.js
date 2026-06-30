@@ -12,7 +12,7 @@ module.exports = async (id) => {
         }
         return null;
     } catch (error) {
-        logger.error(`user-get: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve user.`);
     }
 };

@@ -23,7 +23,7 @@ module.exports = async (panelId) => {
 
         return panelFilter(panelConfig, moduleConfig, containerInfo, panelBuildStatus, panelStatus, moduleUpgradeStatus, builtModules);
     } catch (error) {
-        logger.error(`panel-get: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to get panel id ${panelId}`);
     }
 };

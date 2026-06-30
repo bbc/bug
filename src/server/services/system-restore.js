@@ -14,7 +14,7 @@ module.exports = async (backup) => {
         const configFolder = path.join(__dirname, "..", "..", "..", "config");
         const configFolders = ["panels", "global"];
 
-        logger.info(`system-restore: backup file "${backup?.name}" with a size of ${backup?.size} bytes uploaded`);
+        logger.info(`backup file "${backup?.name}" with a size of ${backup?.size} bytes uploaded`);
 
         if (backup?.mimetype === "application/gzip") {
             status = await untarFolder(absolutePath, extractPath);
@@ -34,7 +34,7 @@ module.exports = async (backup) => {
             data: "Restored settings from file",
         };
     } catch (error) {
-        logger.error(`system-restore: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to complete system restore`);
     }
 };

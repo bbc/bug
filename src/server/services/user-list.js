@@ -29,7 +29,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
 
         return users;
     } catch (error) {
-        logger.error(`user-list: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve users`);
     }
 };

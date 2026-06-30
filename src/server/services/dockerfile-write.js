@@ -41,13 +41,13 @@ module.exports = async (filepath, moduleName) => {
         }
 
         if (existingFile !== newFile) {
-            logger.info(`dockerfile-write: writing updated Dockerfile for ${moduleName} at ${filename}`);
+            logger.info(`writing updated Dockerfile for ${moduleName} at ${filename}`);
             await fs.writeFile(filename, newFile);
         }
 
         return true;
     } catch (error) {
-        logger.error(`dockerfile-write: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to write Dockerfile for ${moduleName}`);
     }
 };

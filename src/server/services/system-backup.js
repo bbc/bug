@@ -23,7 +23,7 @@ module.exports = async () => {
         const configFolder = path.join(__dirname, "..", "..", "..", "config");
         const filename = `${title}-backup-${format(new Date(), "dd-MM-yyyy-HH-mm-ss")}.tgz`;
 
-        logger.info(`system-backup: creating system backup file ${filename}`);
+        logger.info(`creating system backup file ${filename}`);
         const stream = await tarFolder(configFolder, ["panels", "global"]);
 
         return {
@@ -31,7 +31,7 @@ module.exports = async () => {
             filename,
         };
     } catch (error) {
-        logger.error(`system-backup: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to complete system backup`);
     }
 };

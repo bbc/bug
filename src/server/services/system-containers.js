@@ -14,7 +14,7 @@ module.exports = async () => {
 
         return response;
     } catch (error) {
-        logger.error(`system-containers: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed retrieve containers.`);
     }
 };

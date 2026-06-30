@@ -37,7 +37,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
             .map(p => p.id);
 
         if (affectedPanelIds.length > 0) {
-            logger.info(`module-rebuild: found ${affectedPanelIds.length} panel(s) using module ${moduleName}: ${affectedPanelIds.join(", ")}`);
+            logger.info(`found ${affectedPanelIds.length} panel(s) using module ${moduleName}: ${affectedPanelIds.join(", ")}`);
         }
 
         // update the UI to show we're building
@@ -45,10 +45,10 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
         // delete existing module images/containers - we do this first to ensure the build isn't using cached layers we want gone
         updateProgress("Stopping containers");
-        logger.info(`module-rebuild: deleting existing module assets for: ${moduleName}`);
+        logger.info(`deleting existing module assets for: ${moduleName}`);
         const deleted = await dockerDeleteModule(moduleName);
         if (!deleted) {
-            logger.warning(`module-rebuild: could not fully delete assets for ${moduleName} - proceeding with build anyway`);
+            logger.warning(`could not fully delete assets for ${moduleName} - proceeding with build anyway`);
         }
         updateProgress("Removing images");
 
@@ -62,21 +62,21 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
         // trigger the build
         updateProgress("Building image");
-        logger.info(`module-rebuild: rebuilding image for ${moduleName}...`);
+        logger.info(`rebuilding image for ${moduleName}...`);
         const result = await dockerBuildModule(moduleName, updateProgress);
 
         // restart affected panels after successful rebuild
         if (affectedPanelIds.length > 0) {
             updateProgress("Restarting panels");
-            logger.info(`module-rebuild: restarting ${affectedPanelIds.length} panel(s) after rebuild`);
+            logger.info(`restarting ${affectedPanelIds.length} panel(s) after rebuild`);
             for (let i = 0; i < affectedPanelIds.length; i++) {
                 const panelId = affectedPanelIds[i];
                 try {
                     updateProgress(`Restarting panel ${i + 1} of ${affectedPanelIds.length}`);
-                    logger.info(`module-rebuild: starting panel ${panelId}`);
+                    logger.info(`starting panel ${panelId}`);
                     await panelStart(panelId);
                 } catch (error) {
-                    logger.warning(`module-rebuild: failed to start panel ${panelId}: ${error.message}`);
+                    logger.warning(`failed to start panel ${panelId}: ${error.message}`);
                 }
             }
         }
@@ -87,7 +87,7 @@ module.exports = async (moduleName, updateProgressCallback) => {
 
 
     } catch (error) {
-        logger.error(`module-rebuild: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to rebuild module ${moduleName}: ${error.message}`);
     }
 };

@@ -64,31 +64,31 @@ class RouterOSRestApi {
 
     // GET - print
     get(path, params = null) {
-        logger.debug(`routeros-restapi: GET ${path}`);
+        logger.debug(`GET ${path}`);
         return this.request("get", path, null, params);
     }
 
     // PUT - add
     put(path, data) {
-        logger.debug(`routeros-restapi: PUT ${path} with data ${JSON.stringify(data)}`);
+        logger.debug(`PUT ${path} with data ${JSON.stringify(data)}`);
         return this.request("put", path, data);
     }
 
     // PATCH - set
     patch(path, data) {
-        logger.debug(`routeros-restapi: PATCH ${path} with data ${JSON.stringify(data)}`);
+        logger.debug(`PATCH ${path} with data ${JSON.stringify(data)}`);
         return this.request("patch", path, data);
     }
 
     // DELETE - remove
     delete(path) {
-        logger.debug(`routeros-restapi: DELETE ${path}`);
+        logger.debug(`DELETE ${path}`);
         return this.request("delete", path);
     }
 
     // POST - execute API command
     post(path, data = {}) {
-        logger.debug(`routeros-restapi: POST ${path} with data ${JSON.stringify(data)}`);
+        logger.debug(`POST ${path} with data ${JSON.stringify(data)}`);
         return this.request("post", path, data);
     }
 }

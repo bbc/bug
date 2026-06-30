@@ -53,7 +53,7 @@ class RouterOSApi {
 
             await this._withTimeout(this.conn.connect(), this.timeout);
 
-            logger.info(`routeros-api: connected to ${this.host}`);
+            logger.info(`connected to ${this.host}`);
 
             if (this.keepalive && this.heartbeatInterval > 0) {
                 this._startHeartbeat();
@@ -71,15 +71,15 @@ class RouterOSApi {
         if (this._heartbeatTimer) {
             clearInterval(this._heartbeatTimer);
             this._heartbeatTimer = null;
-            logger.info(`routeros-api: stopped heartbeat for ${this.host}`);
+            logger.info(`stopped heartbeat for ${this.host}`);
         }
 
         if (this.conn?.connected) {
             try {
                 await this.conn.close();
-                logger.info(`routeros-api: disconnected from ${this.host}`);
+                logger.info(`disconnected from ${this.host}`);
             } catch (err) {
-                logger.warning(`routeros-api: disconnect error from ${this.host}`);
+                logger.warning(`disconnect error from ${this.host}`);
             }
         }
     }
@@ -88,7 +88,7 @@ class RouterOSApi {
         // queue commands so RouterOS API never overlaps
         // use .catch(() => {}) to prevent a failed command from poisoning the queue
         // and blocking all subsequent commands
-        logger.debug(`routeros-api: queueing command ${command} with params ${JSON.stringify(params)} for ${this.host}`);
+        logger.debug(`queueing command ${command} with params ${JSON.stringify(params)} for ${this.host}`);
         const next = this._queue.catch(() => { }).then(() => this._execute(command, params));
         this._queue = next;
         return next;
@@ -103,7 +103,7 @@ class RouterOSApi {
                 this.timeout
             );
         } catch (err) {
-            logger.warning(`routeros-api: command failed ${command} on ${this.host}`);
+            logger.warning(`command failed ${command} on ${this.host}`);
 
             try {
                 if (this.conn.connected) await this.conn.close();
@@ -119,7 +119,7 @@ class RouterOSApi {
     _startHeartbeat() {
         if (this._heartbeatTimer) return;
 
-        logger.info(`routeros-api: heartbeat started (${this.heartbeatInterval}s) for ${this.host}`);
+        logger.info(`heartbeat started (${this.heartbeatInterval}s) for ${this.host}`);
 
         this._heartbeatTimer = setInterval(async () => {
             if (!this.conn.connected || this._heartbeatInFlight) return;
@@ -128,9 +128,9 @@ class RouterOSApi {
 
             try {
                 await this.run("/system/identity/print");
-                logger.debug(`routeros-api: heartbeat OK for ${this.host}`);
+                logger.debug(`heartbeat OK for ${this.host}`);
             } catch (err) {
-                logger.warning(`routeros-api: heartbeat failed for ${this.host}`);
+                logger.warning(`heartbeat failed for ${this.host}`);
             } finally {
                 this._heartbeatInFlight = false;
             }

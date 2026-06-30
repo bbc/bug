@@ -8,7 +8,7 @@ module.exports = async (groupName, newGroupName) => {
         throw new Error("Both current and new group names are required");
     }
 
-    logger.info(`panelgroup-rename: renaming group '${groupName}' to '${newGroupName}'`);
+    logger.info(`renaming group '${groupName}' to '${newGroupName}'`);
 
     try {
         const panelConfigs = await panelConfigModel.list();
@@ -30,14 +30,14 @@ module.exports = async (groupName, newGroupName) => {
         // check if any failed
         const failures = results.filter(r => r.status === "rejected");
         if (failures.length > 0) {
-            logger.error(`panelgroup-rename: ${failures.length} panel(s) failed to rename.`);
+            logger.error(`${failures.length} panel(s) failed to rename.`);
         }
 
-        logger.info(`panelgroup-rename: successfully moved ${results.length} panels to '${newGroupName}'`);
+        logger.info(`successfully moved ${results.length} panels to '${newGroupName}'`);
         return true;
 
     } catch (error) {
-        logger.error(`panelgroup-rename: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to rename group: ${error.message}`);
     }
 };

@@ -34,7 +34,7 @@ module.exports = async () => {
                 });
             }
         } catch (error) {
-            logger.error(`docker-listimages: ${error?.stack}`);
+            logger.error(`${error?.stack}`);
             throw new Error(`Failed to list images`);
         }
         cacheStore.set(cacheKey, response, 5);

@@ -13,7 +13,7 @@ module.exports = async (uuid, state) => {
         }
         return user;
     } catch (error) {
-        logger.error(`user-enable: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to change the user state.`);
     }
 };

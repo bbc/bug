@@ -37,7 +37,7 @@ module.exports = async () => {
         };
         return response;
     } catch (error) {
-        logger.error(`system-info: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve bug system info.`);
     }
 };

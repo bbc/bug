@@ -11,7 +11,7 @@ module.exports = async (moduleName) => {
     try {
         return await moduleConfig.get(moduleName);
     } catch (error) {
-        logger.warning(`module-get: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to get module ${moduleName}`);
     }
 };

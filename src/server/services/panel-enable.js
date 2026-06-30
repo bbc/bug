@@ -22,7 +22,7 @@ module.exports = async (panelId) => {
         // then we start the container in docker
         return await panelStart(panelId);
     } catch (error) {
-        logger.warning(`panel-enable: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to enable panel id ${panelId}`);
     }
 };

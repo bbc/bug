@@ -4,7 +4,7 @@ const logger = require("@core/logger")(module);
 
 module.exports = async (container) => {
     try {
-        logger.info(`docker-restartcontainer: restarting container id ${container.id}`);
+        logger.info(`restarting container id ${container.id}`);
 
         return await new Promise((resolve, reject) => {
             container.restart(function (error, data) {
@@ -12,13 +12,13 @@ module.exports = async (container) => {
                     logger.warning(`${error.stack || error || error.message}`);
                     resolve(false);
                 } else {
-                    logger.info(`docker-restartcontainer: container id ${container.id} restarted OK`);
+                    logger.info(`container id ${container.id} restarted OK`);
                     resolve(true);
                 }
             });
         });
     } catch (error) {
-        logger.error(`docker-restartcontainer: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to restart container id ${container.id}`);
     }
 };

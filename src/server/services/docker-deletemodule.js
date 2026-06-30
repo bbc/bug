@@ -12,11 +12,11 @@ module.exports = async (moduleName) => {
         // get all images associated with this module
         const imagesToDelete = await listModuleImages(moduleName);
         if (imagesToDelete.length === 0) {
-            logger.info(`docker-deletemodule: no images found for module ${moduleName}. Nothing to delete.`);
+            logger.info(`no images found for module ${moduleName}. Nothing to delete.`);
             return true;
         }
 
-        logger.info(`docker-deletemodule: deleting ${moduleName}: found ${imagesToDelete.length} image(s) to cleanup`);
+        logger.info(`deleting ${moduleName}: found ${imagesToDelete.length} image(s) to cleanup`);
 
         // get all containers once
         const containers = await docker.listContainers({ all: true });
@@ -34,21 +34,21 @@ module.exports = async (moduleName) => {
 
                 const container = docker.getContainer(containerInfo.Id);
 
-                logger.info(`docker-deletemodule: cleaning up container ${containerName} (ID: ${containerInfo.Id.substring(0, 12)})`);
+                logger.info(`cleaning up container ${containerName} (ID: ${containerInfo.Id.substring(0, 12)})`);
 
                 // stop if running
                 if (containerInfo.State === 'running') {
                     if (!(await dockerStopContainer(container))) {
                         throw new Error(`Failed to stop container ${containerName}`);
                     }
-                    logger.info(`docker-deletemodule: stopped container: ${containerName}`);
+                    logger.info(`stopped container: ${containerName}`);
                 }
 
                 // remove container
                 if (!(await dockerDeleteContainer(container))) {
                     throw new Error(`Failed to delete container ${containerName}`);
                 }
-                logger.info(`docker-deletemodule: deleted container: ${containerName}`);
+                logger.info(`deleted container: ${containerName}`);
             }
         }
 
@@ -56,16 +56,16 @@ module.exports = async (moduleName) => {
         for (const image of imagesToDelete) {
             // using force: true helps if there are multiple tags for the same id
             if (!(await dockerDeleteImage(image.Id, true))) {
-                logger.warning(`docker-deletemodule: failed to delete image ${image.Id.substring(0, 12)} - it might be in use elsewhere`);
+                logger.warning(`failed to delete image ${image.Id.substring(0, 12)} - it might be in use elsewhere`);
                 // we don't necessarily want to crash the whole process here if other images were deleted successfully
             } else {
-                logger.info(`docker-deletemodule: deleted image: ${image.Id.substring(0, 12)}`);
+                logger.info(`deleted image: ${image.Id.substring(0, 12)}`);
             }
         }
 
         return true;
     } catch (error) {
-        logger.error(`docker-deletemodule: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to delete module ${moduleName}: ${error.message}`);
     }
 };

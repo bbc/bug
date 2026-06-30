@@ -12,7 +12,7 @@ module.exports = async (variant = null) => {
         try {
             filenames = await readDir(directory);
         } catch (error) {
-            logger.error(`icons-list: Failed to read folder ${directory}: ${error.message}`);
+            logger.error(`Failed to read folder ${directory}: ${error.message}`);
             throw new Error(`Failed to read icons directory`);
         }
 
@@ -38,7 +38,7 @@ module.exports = async (variant = null) => {
         try {
             mdi = require("@mdi/js");
         } catch (err) {
-            logger.error("icons-list: Failed to load @mdi/js package.");
+            logger.error("Failed to load @mdi/js package.");
             return [];
         }
 
@@ -58,7 +58,7 @@ module.exports = async (variant = null) => {
         let icons = cacheStore.get(cacheKey);
 
         if (!icons) {
-            logger.info("icons-list: cache miss - scanning MUI and MDI icons...");
+            logger.info("cache miss - scanning MUI and MDI icons...");
 
             const muiIconsPath = path.join(
                 __dirname,
@@ -84,7 +84,7 @@ module.exports = async (variant = null) => {
 
             // set cache for 10 minutes
             cacheStore.set(cacheKey, icons, 10);
-            logger.info(`icons-list: icon cache stored ${icons.length} icons.`);
+            logger.info(`icon cache stored ${icons.length} icons.`);
         }
 
         // filter by variant and return IDs
@@ -96,7 +96,7 @@ module.exports = async (variant = null) => {
             .map((icon) => icon.id);
 
     } catch (error) {
-        logger.error(`icons-list: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error("Failed to fetch icons list");
     }
 };

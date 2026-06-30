@@ -12,7 +12,7 @@ module.exports = async (imageName) => {
         });
         return image[0];
     } catch (error) {
-        logger.warning(`docker-getimage: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to get list of any image for module ${moduleName}`);
     }
 };

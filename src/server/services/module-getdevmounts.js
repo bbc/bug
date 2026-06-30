@@ -12,7 +12,7 @@ module.exports = async (moduleName) => {
         }
         return [];
     } catch (error) {
-        logger.warning(`module-getdevmounts: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to get devmounts for module ${moduleName}`);
     }
 };

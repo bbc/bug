@@ -15,7 +15,7 @@ module.exports = async (panelId) => {
         }
 
         if (!(await moduleNeedsContainer(config?.module))) {
-            logger.info(`panel-stop: no container required for panel id ${panelId}`);
+            logger.info(`no container required for panel id ${panelId}`);
             return true;
         }
 
@@ -24,13 +24,13 @@ module.exports = async (panelId) => {
             logger.info(`No container found for panel id ${panelId}`);
         }
 
-        logger.info(`panel-stop: stopping container for panel id ${panelId}`);
+        logger.info(`stopping container for panel id ${panelId}`);
         if (await dockerStopContainer(container)) {
             return await dockerRemoveContainer(container);
         }
         return false;
     } catch (error) {
-        logger.warning(`panel-stop: ${error?.stack}`);
+        logger.warning(`${error?.stack}`);
         throw new Error(`Failed to stop panel id ${panelId}`);
     }
 };

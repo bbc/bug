@@ -23,7 +23,7 @@ const systemHandler = (namespace, socket) => {
 
     // whenver the system info changes on the server side broadcast the changes
     global.on("info", async (data) => {
-        logger.info("sockets-system: model fired event");
+        logger.info("model fired event");
         logger.info(JSON.stringify(data));
         const info = await systemInfo();
         socket.broadcast.emit("info", { status: info ? "success" : "failure", data: info?.data });

@@ -7,7 +7,7 @@ module.exports = async (uuid, user) => {
     try {
         return await userModel.update(uuid, user);
     } catch (error) {
-        logger.error(`user-update: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to update user.`);
     }
 };

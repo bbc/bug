@@ -15,19 +15,19 @@ module.exports = async (strategies) => {
             if (match) {
                 reorderedStrategies.push(match);
             } else {
-                logger.warning(`strategy-reorder: could not find strategy type '${eachStrategyType}' in existing list`);
+                logger.warning(`could not find strategy type '${eachStrategyType}' in existing list`);
             }
         }
 
         const success = await strategyModel.setAll(reorderedStrategies);
 
         if (success) {
-            logger.info(`strategy-reorder: successfully updated strategy order`);
+            logger.info(`successfully updated strategy order`);
         }
 
         return success;
     } catch (error) {
-        logger.error(`strategy-reorder: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to reorder strategies.`);
     }
 };

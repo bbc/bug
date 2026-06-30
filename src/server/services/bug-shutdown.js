@@ -8,7 +8,7 @@ const bugContainer = process.env.BUG_CONTAINER || "bug";
 
 module.exports = async () => {
     try {
-        logger.info(`bug-shutdown: BUG is shutting down...`);
+        logger.info(`BUG is shutting down...`);
         const containerInfoList = await dockerListContainerInfo();
         for (let eachContainer of containerInfoList) {
             if (eachContainer.image !== "bug_app") {
@@ -19,7 +19,7 @@ module.exports = async () => {
         const container = docker.getContainer(bugContainer);
         await dockerStopContainer(container);
     } catch (error) {
-        logger.error(`bug-shutdown: ${error?.stack}`);
+        logger.error(`${error?.stack}`);
     }
     return null;
 };

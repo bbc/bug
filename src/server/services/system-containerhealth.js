@@ -32,7 +32,7 @@ module.exports = async () => {
             data: containersResult?.containers,
         };
     } catch (error) {
-        logger.error(`system-containerhealth: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve container health`);
     }
 };

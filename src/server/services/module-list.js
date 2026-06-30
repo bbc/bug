@@ -42,7 +42,7 @@ module.exports = async () => {
         return response;
 
     } catch (error) {
-        logger.warning(`module-list: ${error.stack}`);
+        logger.warning(`${error.stack}`);
         throw new Error(`Failed to get module list`);
     }
 };

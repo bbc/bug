@@ -13,7 +13,7 @@ module.exports = (logger) => {
 
     //Print the heap size
     if (logger) {
-        logger.debug(`heap-info: Heap size is ${Math.round(heap?.total_available_size / 1024 / 1024)}MB.`);
+        logger.debug(`Heap size is ${Math.round(heap?.total_available_size / 1024 / 1024)}MB.`);
         logger.debug(
             `heap-info: ${Math.round(heap?.used_heap_size / 1024 / 1024)}MB of the heap is used. Usage is ${Math.round(
                 (heap?.used_heap_size / heap?.total_available_size) * 100

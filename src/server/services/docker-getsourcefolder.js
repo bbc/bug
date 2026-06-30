@@ -34,7 +34,7 @@ module.exports = async () => {
             }
         }
     } catch (error) {
-        logger.error(`docker-getsourcefolder: ${error?.stack}`);
+        logger.error(`${error?.stack}`);
         throw new Error(`Failed to get modules folder`);
     }
     return null;

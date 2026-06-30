@@ -25,7 +25,7 @@ module.exports = async (userFieldValue, userFieldName) => {
 
         return null;
     } catch (error) {
-        logger.error(`user-get-by-field: ${error.stack}`);
+        logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve user by ${userFieldName}`);
     }
 };

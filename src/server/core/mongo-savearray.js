@@ -35,7 +35,7 @@ module.exports = async (collection, dataArray, idFieldName, update = false) => {
     try {
         return await collection.bulkWrite(operations, { ordered: false });
     } catch (error) {
-        logger.error(`mongo-savearray: ${error.stack || error || error.message}`);
+        logger.error(`${error.stack || error || error.message}`);
         throw error;
     }
 };

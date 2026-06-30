@@ -36,7 +36,7 @@ module.exports = async () => {
 
         return response;
     } catch (error) {
-        logger.error(`system-git-info: ${error.stack}`);
+        logger.error(`${error.stack}`);
         return { status: "error,", message: "Could not pull update", error: error };
     }
 };
