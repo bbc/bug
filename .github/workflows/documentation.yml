@@ -56,7 +56,7 @@ jobs:
                   check_hidden: true
                   path: docs
                   only_warn: 1
-                  ignore_words_list: aoto,daa,te
+                  ignore_words_list: aoto,daa,rouge,te
 
     storybook:
         runs-on: ubuntu-latest
