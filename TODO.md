@@ -19,7 +19,6 @@
 - explain admin/user
 - disable UI for actions for users
 - use health check in modules
-- remove network switch modulebuilder template?
 - improve validation logic with UI
 - improve behaviour when panel restarting
 - system-wide alerts when cpu over 50%
