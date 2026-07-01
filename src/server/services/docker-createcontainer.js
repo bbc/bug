@@ -3,10 +3,13 @@
 const logger = require("@core/logger")(module);
 const docker = require("@utils/docker");
 const path = require("path");
+const fs = require("fs");
 const dockerGetSourceFolder = require("@services/docker-getsourcefolder");
 const moduleDevMounts = require("@services/module-getdevmounts");
 const moduleGet = require("@services/module-get");
 const DEFAULT_NODE_ENV = process.env.NODE_ENV || "production";
+
+const pathExists = (folderPath) => fs.existsSync(folderPath);
 
 module.exports = async (configObject) => {
     if (!configObject?.id || !configObject?.module) {
@@ -14,6 +17,7 @@ module.exports = async (configObject) => {
     }
 
     let moduleData;
+    let mountDiagnostic = null;
     try {
         moduleData = await moduleGet(configObject.module);
         logger.info(`creating container for panel id: ${configObject.id}`);
@@ -66,6 +70,10 @@ module.exports = async (configObject) => {
             const sourceFolder = await dockerGetSourceFolder();
             const devMounts = await moduleDevMounts(configObject.module);
 
+            if (!sourceFolder) {
+                throw new Error(`Failed to resolve development source folder for module ${configObject.module}`);
+            }
+
             const mounts = [
                 {
                     Target: path.join(envVars.moduleHome, "core"),
@@ -82,7 +90,27 @@ module.exports = async (configObject) => {
                 });
             });
 
-            logger.info(`adding development mounts for module ${configObject.module}: ${JSON.stringify(mounts)}`);
+            logger.info(`development mounts for module ${configObject.module} (panel ${configObject.id}): sourceFolder=${sourceFolder}, devMounts=${devMounts.length}`);
+            mountDiagnostic = { sourceFolder, devMountsCount: devMounts.length, mountSources: mounts.map(mount => mount.Source) };
+
+            const canValidateLocally = pathExists(sourceFolder);
+            if (canValidateLocally) {
+                const missingSourceMounts = mounts
+                    .filter(mount => !pathExists(mount.Source))
+                    .map(mount => ({ target: mount.Target, source: mount.Source }));
+
+                if (missingSourceMounts.length > 0) {
+                    const missingSources = missingSourceMounts.map(mount => mount.source);
+                    const previewMissing = missingSources.slice(0, 2).join(", ");
+                    logger.error(`missing development bind mount sources for module ${configObject.module} (panel ${configObject.id}): missing=${missingSourceMounts.length}, sourceFolder=${sourceFolder}`);
+                    logger.debug(`missing mount sources detail for module ${configObject.module} (panel ${configObject.id}): ${JSON.stringify(missingSourceMounts)}`);
+
+                    throw new Error(`Invalid development bind mounts for module ${configObject.module}: ${missingSourceMounts.length} source path(s) missing (${previewMissing}${missingSources.length > 2 ? ", ..." : ""})`);
+                }
+            } else {
+                logger.debug(`skipping local bind source validation for module ${configObject.module} (panel ${configObject.id}) because sourceFolder is not accessible from app container: ${sourceFolder}`);
+            }
+
             containerOptions.HostConfig.Mounts = mounts;
         }
 
@@ -91,6 +119,9 @@ module.exports = async (configObject) => {
         return container;
 
     } catch (error) {
+        if (error?.message?.includes("invalid mount config for type \"bind\"")) {
+            logger.error(`docker bind mount validation failed for module ${configObject.module} (panel ${configObject.id}): ${JSON.stringify(mountDiagnostic)}`);
+        }
         logger.error(`${error.stack}`);
         throw new Error(`Failed to create docker container ${configObject.module}: ${error.message}`);
     }
