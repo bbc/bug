@@ -61,14 +61,14 @@ const main = async () => {
         });
 
     } catch (err) {
-        logger.error(`worker-mikrotik: fatal error`);
+        logger.error(`fatal error`);
         logger.error(err.stack || err.message || err);
         process.exit();
     }
 }
 
 main().catch(err => {
-    logger.error(`worker-mikrotik: startup failure`);
+    logger.error(`startup failure`);
     logger.error(err.stack || err);
     process.exit(1);
 });
