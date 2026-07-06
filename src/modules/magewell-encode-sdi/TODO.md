@@ -2,3 +2,6 @@
 - check that get-signal-info returns nothing when input is unplugged
 - if SRT can't connect the status block should be red
 - check unused components
+- limitations - only supports first audio stream
+- add launch button
+- do I need localdata_id? Or jusyt localdata

@@ -2,6 +2,7 @@
 
 const mongoSingle = require("@core/mongo-single");
 const formatBps = require("@core/format-bps");
+const durationToFps = require("@utils/duration-to-fps");
 
 // formats a video-info object into a standard resolution string, e.g. "1080i50" or "720p59.94"
 const formatVideoResolution = (videoInfo) => {
@@ -12,6 +13,13 @@ const formatVideoResolution = (videoInfo) => {
     return scan === "interlaced" ? `${height}i${rate}` : `${height}p${rate}`;
 };
 
+const formatEncodeResolution = (encoderObject) => {
+    if (!encoderObject) return null;
+    const { cy, duration } = encoderObject;
+    if (!cy || !duration) return null;
+    return `${cy}p${durationToFps(duration)}`;
+}
+
 module.exports = async () => {
     // fetch codec data
     const codecSignal = await mongoSingle.get("signal");
@@ -21,11 +29,15 @@ module.exports = async () => {
     // group into nice status blocks
     let statusBlocks = [];
 
+    statusBlocks.push({
+        image: `/container/${process.env.PANEL_ID}/thumb?${new Date().getTime()}`,
+    });
+
     // format
     statusBlocks.push({
-        label: "Format",
+        label: "Input",
         state: codecSignal?._active ? "success" : "inactive",
-        items: [formatVideoResolution(codecSignal)]
+        items: ["SDI", formatVideoResolution(codecSignal)]
     });
 
     // main stream
@@ -34,7 +46,7 @@ module.exports = async () => {
     statusBlocks.push({
         label: "Main Encoder",
         state: "success",
-        items: [mainVideoBitrate?.value.toString(), { "size": "small", value: mainVideoBitrate?.label }],
+        items: [{ "size": "large", value: mainVideoBitrate?.value.toString() }, { "size": "small", value: mainVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['main-stream'])?.toString() }],
     });
 
     // sub stream
@@ -43,7 +55,7 @@ module.exports = async () => {
     statusBlocks.push({
         label: "Sub Encoder",
         state: subStreamEnabled ? "success" : "inactive",
-        items: [subVideoBitrate?.value.toString(), { "size": "small", value: subVideoBitrate?.label }],
+        items: [{ "size": "large", value: subVideoBitrate?.value.toString() }, { "size": "small", value: subVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['sub-stream'])?.toString() }],
     });
 
     // audio channels
@@ -51,7 +63,7 @@ module.exports = async () => {
     statusBlocks.push({
         label: "Audio Bitrate",
         state: subStreamEnabled ? "success" : "inactive",
-        items: [audioChannelsBitrate.toString(), { "size": "small", value: "kb/s" }],
+        items: [{ "size": "medium", "value": `${codecStatus?.codec?.audio?.channels} channels` }, { "size": "large", "value": audioChannelsBitrate?.toString() }, { "size": "small", "value": "kb/s" }],
     });
 
     // servers

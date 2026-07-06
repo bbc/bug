@@ -1,41 +1,31 @@
 "use strict";
 
 const mongoSingle = require("@core/mongo-single");
-const deviceIdGet = require("@services/deviceid-get");
-
-const isPlainObject = (value) => {
-    return value !== null && typeof value === "object" && !Array.isArray(value);
-};
-
-const deepMerge = (base, patch) => {
-    if (!isPlainObject(base)) {
-        return isPlainObject(patch) ? { ...patch } : patch;
-    }
-
-    const merged = { ...base };
-    for (const [key, patchValue] of Object.entries(patch || {})) {
-        const baseValue = merged[key];
-        if (isPlainObject(baseValue) && isPlainObject(patchValue)) {
-            merged[key] = deepMerge(baseValue, patchValue);
-            continue;
-        }
-
-        merged[key] = patchValue;
-    }
-
-    return merged;
-};
+const deepMerge = require("@utils/deep-merge");
 
 module.exports = async () => {
     const codecData = (await mongoSingle.get("settings")) || {};
-    let deviceId;
+    const codecStatus = (await mongoSingle.get("status")) || {};
+
     try {
-        deviceId = await deviceIdGet();
+
+        // now add custom _isActive property to each stream
+        const streamIndexes = [
+            { name: "main-stream", index: 0 },
+            { name: "sub-stream", index: 1 },
+        ];
+        for (let eachStream of streamIndexes) {
+            const matchingStreams = codecStatus["live-status"].live.filter((stream) =>
+                stream?.["stream-index"] === eachStream.index
+            );
+            codecData[eachStream.name]._isActive = (matchingStreams.length > 0);
+        }
+
     } catch (error) {
         return codecData;
     }
 
-    const localData = (await mongoSingle.get(`localdata_${deviceId}`)) || {};
+    const localData = (await mongoSingle.get(`localdata`)) || {};
 
     return deepMerge(codecData, localData);
 };

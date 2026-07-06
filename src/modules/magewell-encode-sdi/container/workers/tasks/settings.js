@@ -14,7 +14,7 @@ module.exports = async ({ magewellClient, mongoSingle }) => {
 		}
 		const parsedPayload = {};
 		parsedPayload["name"] = payload["name"];
-		parsedPayload["use-nosignal-file"] = (payload["use-nosignal-file"] === 1)
+		parsedPayload["use-nosignal-file"] = payload["use-nosignal-file"];
 		parsedPayload["nosignal-files"] = payload["nosignal-files"];
 		parsedPayload["enable-deinterlace"] = payload["enable-deinterlace"];
 		parsedPayload["deinterlace-mode"] = payload["deinterlace-mode"];

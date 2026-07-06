@@ -1,29 +1,105 @@
-import React from "react";
+import BugApiButton from "@core/BugApiButton";
 import BugToolbarWrapper from "@core/BugToolbarWrapper";
-import { usePanelStatus } from "@hooks/PanelStatus";
+import { useApiPoller } from "@hooks/ApiPoller";
+import { usePanelToolbarEventTrigger } from "@hooks/PanelToolbarEvent";
 import CheckIcon from "@mui/icons-material/Check";
-import { Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import UndoIcon from "@mui/icons-material/Undo";
+import { Button, Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import AxiosCommand from "@utils/AxiosCommand";
 import AxiosPut from "@utils/AxiosPut";
+import { useAlert } from "@utils/Snackbar";
 import { useSelector } from "react-redux";
 
 export default function Toolbar({ panelId, ...props }) {
-    const toolbarProps = { ...props };
-    const panelStatus = usePanelStatus();
+    const sendAlert = useAlert();
     const panelConfig = useSelector((state) => state.panelConfig);
+    const panel = useSelector((state) => state.panel);
+    const triggerPanelEvent = usePanelToolbarEventTrigger();
 
-    if (!panelStatus) {
-        return null;
-    }
+    const pending = useApiPoller({
+        url: `/container/${panelId}/localdata/checkpending/`,
+        interval: 1000,
+    });
 
-    const handleShowAdvancedClicked = async () => {
+    const isPending = pending.status === "success" && pending.data;
+    const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
+
+    const handleCancelClicked = async (event, item) => {
+        if (await AxiosCommand(`/container/${panelId}/device/revert`)) {
+            triggerPanelEvent("refresh");
+        } else {
+            sendAlert("Failed to revert device config", {
+                variant: "error",
+            });
+        }
+    };
+
+    const handleSaveClicked = async (event, item) => {
+        sendAlert("Saving device config ... please wait", {
+            variant: "info",
+        });
+        if (await AxiosCommand(`/container/${panelId}/device/save`)) {
+            triggerPanelEvent("refresh");
+            sendAlert("Saved device config", {
+                broadcast: "true",
+                variant: "success",
+            });
+        } else {
+            sendAlert("Failed to save device config", {
+                variant: "error",
+            });
+        }
+    };
+
+    const handleShowAdvancedClicked = async (event, item) => {
         await AxiosPut(`/api/panelconfig/${panelId}`, {
             showAdvanced: !panelConfig?.data?.showAdvanced,
         });
     };
 
-    const buttons = () => {};
+    let toolbarProps = { ...props };
+
+    const buttons = () => (
+        <>
+            <BugApiButton
+                key="save_button"
+                disabled={!isPending || hasCritical}
+                variant="outlined"
+                color={isPending ? "warning" : "primary"}
+                onClick={handleSaveClicked}
+                timeout={5000}
+                icon={<SaveIcon />}
+            >
+                Save
+            </BugApiButton>
+            <Button
+                key="cancel_button"
+                disabled={!isPending || hasCritical}
+                variant="outlined"
+                color="primary"
+                onClick={handleCancelClicked}
+            >
+                Cancel
+            </Button>
+        </>
+    );
+
     const menuItems = () => {
         return [
+            <Divider key="divider1" />,
+            <MenuItem key="save" disabled={!isPending} onClick={handleSaveClicked}>
+                <ListItemIcon>
+                    <SaveIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Save Changes" />
+            </MenuItem>,
+            <MenuItem key="cancel" disabled={!isPending} onClick={handleCancelClicked}>
+                <ListItemIcon>
+                    <UndoIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Cancel" />
+            </MenuItem>,
             <Divider key="divider" />,
             <MenuItem key="showadvanced" onClick={handleShowAdvancedClicked}>
                 <ListItemIcon>{panelConfig?.data?.showAdvanced ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
@@ -32,7 +108,7 @@ export default function Toolbar({ panelId, ...props }) {
         ];
     };
 
-    toolbarProps["buttons"] = panelStatus.hasCritical ? null : buttons();
+    toolbarProps["buttons"] = buttons();
     toolbarProps["menuItems"] = menuItems();
     toolbarProps["onClick"] = null;
     return <BugToolbarWrapper {...toolbarProps} />;
