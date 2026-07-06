@@ -1,0 +1,46 @@
+{
+    "stream-server": [
+        {
+            "id": 0,
+            "type": 133,
+            "name": "output-8M",
+            "is-use": 1,
+            "url": "192.168.100.1",
+            "port": 5001,
+            "net-mode": 1,
+            "stream-index": 0,
+            "ttl": 0,
+            "audio": 0,
+            "audio-streams": 1,
+            "is-custom-pid": 0,
+            "pmt-pid": 0,
+            "pcr-pid": 0,
+            "video-pid": 0,
+            "audio-pid": 0,
+            "audio-pids": [0, 0, 0, 0, 0, 0, 0, 0],
+            "opt": 0,
+            "is-media-hub": 0
+        },
+        {
+            "id": 1,
+            "type": 133,
+            "name": "output-3M",
+            "is-use": 1,
+            "url": "192.168.100.2",
+            "port": 5002,
+            "net-mode": 1,
+            "stream-index": 1,
+            "ttl": 0,
+            "audio": 0,
+            "audio-streams": 1,
+            "is-custom-pid": 0,
+            "pmt-pid": 0,
+            "pcr-pid": 0,
+            "video-pid": 0,
+            "audio-pid": 0,
+            "audio-pids": [0, 0, 0, 0, 0, 0, 0, 0],
+            "opt": 0,
+            "is-media-hub": 0
+        }
+    ]
+}
