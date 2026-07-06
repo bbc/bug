@@ -21,7 +21,7 @@ const BugMenuIcon = () => {
                 <FontAwesomeIcon color={theme.palette.text.primary} size="lg" icon={faBug} />
             </ListItemIcon>
             <ListItemText
-                primary="Bug"
+                primary="BUG"
                 secondary={info?.version}
                 secondaryTypographyProps={{ align: "right", display: "inline" }}
             />
