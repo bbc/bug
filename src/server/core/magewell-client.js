@@ -25,6 +25,25 @@ class MagewellClient {
         return crypto.createHash("md5").update(String(value || ""), "utf8").digest("hex");
     }
 
+    setCookie(setCookieHeader) {
+        if (!setCookieHeader) {
+            return;
+        }
+
+        const values = Array.isArray(setCookieHeader) ? setCookieHeader : [setCookieHeader];
+        this.cookie = values
+            .map((value) => String(value).split(";")[0])
+            .filter(Boolean)
+            .join("; ");
+    }
+
+    buildHeaders(headers = {}) {
+        return {
+            ...(this.cookie ? { Cookie: this.cookie } : {}),
+            ...headers,
+        };
+    }
+
     normalizeResponse(data) {
         const code = Number(data?.[this.codeField]);
         const payload = { ...(data || {}) };
@@ -45,7 +64,7 @@ class MagewellClient {
                 ...params,
             },
             timeout: options.timeout || this.timeout,
-            headers: this.cookie ? { Cookie: this.cookie } : undefined,
+            headers: this.buildHeaders(options.headers),
         });
 
         return response;
@@ -57,7 +76,7 @@ class MagewellClient {
             pass: MagewellClient.md5(this.password),
         }, { timeout: this.timeout });
 
-        this.cookie = response.headers?.["set-cookie"] || this.cookie;
+        this.setCookie(response.headers?.["set-cookie"]);
         return this.normalizeResponse(response.data);
     }
 
@@ -104,6 +123,7 @@ class MagewellClient {
             throw clientError;
         }
     }
+
 }
 
 module.exports = MagewellClient;
