@@ -81,7 +81,6 @@ function BugDetailsCard({
                             fontWeight: 500,
                             color: "text.primary",
                         },
-                        height: "32px",
                         padding: "8px 16px",
                         borderBottomWidth: "1px",
                         borderBottomStyle: "solid",
