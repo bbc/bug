@@ -1,7 +1,7 @@
 import BugDetailsTable from "@core/BugDetailsTable";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Card, CardHeader, Collapse, IconButton, Paper } from "@mui/material";
+import { Alert, AlertTitle, Box, Card, CardHeader, Collapse, IconButton, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
 const ExpandMore = styled((props) => {
@@ -23,6 +23,7 @@ function BugDetailsCard({
     title,
     width = "10rem",
     items = [],
+    footerAlert,
     collapsible = false,
     closable = false,
     onClose,
@@ -34,6 +35,28 @@ function BugDetailsCard({
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
+    };
+
+    const renderFooterAlert = () => {
+        if (!footerAlert?.message) {
+            return null;
+        }
+
+        return (
+            <Box
+                sx={{
+                    borderTopWidth: "1px",
+                    borderTopStyle: "solid",
+                    borderTopColor: "border.light",
+                    padding: "8px",
+                }}
+            >
+                <Alert severity={footerAlert?.severity || "info"}>
+                    {footerAlert?.title && <AlertTitle>{footerAlert.title}</AlertTitle>}
+                    {footerAlert.message}
+                </Alert>
+            </Box>
+        );
     };
 
     const getAction = () => {
@@ -95,6 +118,7 @@ function BugDetailsCard({
                     <Box sx={{ margin: "2px" }}>
                         <MemoizedBugDetailsTable width={width} gridLines={false} items={items} />
                     </Box>
+                    {renderFooterAlert()}
                 </Collapse>
             )}
         </Card>

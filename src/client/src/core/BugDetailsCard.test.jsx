@@ -16,4 +16,26 @@ describe("BugDetailsCard", () => {
         render(<BugDetailsCard title="Test Details" items={[{ label: "Item 1" }, { label: "Item 2" }]} />);
         expect(screen.getByText("2 items")).toBeInTheDocument();
     });
+
+    it("renders footer alert when provided", () => {
+        render(
+            <BugDetailsCard
+                title="Test Details"
+                items={[]}
+                footerAlert={{
+                    severity: "warning",
+                    title: "Attention",
+                    message: "Panel connection is unstable.",
+                }}
+            />
+        );
+
+        expect(screen.getByText("Attention")).toBeInTheDocument();
+        expect(screen.getByText("Panel connection is unstable.")).toBeInTheDocument();
+    });
+
+    it("does not render footer alert when missing", () => {
+        render(<BugDetailsCard title="Test Details" items={[]} />);
+        expect(screen.queryByText("Panel connection is unstable.")).not.toBeInTheDocument();
+    });
 });

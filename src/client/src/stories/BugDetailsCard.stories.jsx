@@ -22,12 +22,19 @@ export default {
         },
         controls: { sort: "requiredFirst" },
     },
+    argTypes: {
+        footerAlert: {
+            description: "Optional footer alert object: { severity, title, message }",
+            control: "object",
+        },
+    },
     args: {
         title: "My Details Card",
         width: "50%",
         closable: false,
         collapsible: false,
         collapsed: false,
+        footerAlert: null,
         items: [
             { name: "Voltage 1", value: "12.3 V" },
             { name: "Voltage 2", value: "12.1 V" },
