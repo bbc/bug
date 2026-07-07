@@ -11,8 +11,8 @@ module.exports = async ({ magewellClient, mongoSingle }) => {
         2: "YouTube",
         3: "Facebook",
         100: "RTSP",
-        120: "SRT Caller",
-        121: "SRT Listen",
+        120: "SRT",
+        121: "SRT",
         130: "NDI HX",
         131: "HLS",
         132: "UDP",
@@ -30,6 +30,7 @@ module.exports = async ({ magewellClient, mongoSingle }) => {
         }
         const parsedPayload = payload["stream-server"].map((s) => {
             return {
+                "id": s.id,
                 "type": s.type,
                 "_typeDescription": streamTypes[s.type] ?? "Unknown",
                 "name": s.name,

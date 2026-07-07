@@ -7,6 +7,12 @@ module.exports = async () => {
     const codecData = (await mongoSingle.get("settings")) || {};
     const codecStatus = (await mongoSingle.get("status")) || {};
 
+    if (!codecData["sub-stream"] || typeof codecData["sub-stream"] !== "object") {
+        codecData["sub-stream"] = {};
+    }
+
+    codecData["sub-stream"]["_originalSubStreamEnabledState"] = codecData["sub-stream"]?.enable;
+
     try {
 
         // now add custom _isActive property to each stream

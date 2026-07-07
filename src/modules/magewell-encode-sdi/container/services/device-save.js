@@ -106,7 +106,23 @@ module.exports = async () => {
 
         // sub encode settings
         if (localdata["sub-stream"] !== undefined) {
-            await updateClient("set-video", buildVideoPayload(mergedSettings["sub-stream"], 1));
+            const wasEnabled = savedSettings["sub-stream"]?.enable;
+            const isEnabled = mergedSettings["sub-stream"]?.enable;
+
+            if (isEnabled && !wasEnabled) {
+                // enable only: no need to send sub-stream video settings as the controls are disabled
+                await updateClient("set-enable-stream1", { enable: 1 });
+            }
+            else if (!isEnabled && wasEnabled) {
+                // disable path requires sending video settings first, then turning stream off
+                await updateClient("set-video", buildVideoPayload(mergedSettings["sub-stream"], 1));
+                await updateClient("set-enable-stream1", { enable: 0 });
+            }
+            else if (isEnabled) {
+                // still enabled: apply updated sub-stream video settings
+                await updateClient("set-video", buildVideoPayload(mergedSettings["sub-stream"], 1));
+            }
+
             await clearLocaldataKeys(["sub-stream"]);
         }
 

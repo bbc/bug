@@ -90,6 +90,10 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
 
     const bitrateOptions = [32768, 25600, 24576, 20480, 16384, 12288, 10240, 8192, 6144, 5120, 4096, 3072, 2048];
 
+    const isSubStreamEnabled = codecdata?.["sub-stream"]?.enable === 1;
+    const originalSubStreamEnabledState = codecdata?.["sub-stream"]?.["_originalSubStreamEnabledState"];
+    const isSubStreamEnablePending = isSubStreamEnabled && originalSubStreamEnabledState !== 1;
+
     const getEncodingProfile = (codec) => {
         if (codec === 0) {
             return [
@@ -339,6 +343,15 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
             <BugDetailsCard
                 title="Sub Stream Encode"
                 width="10rem"
+                footerAlert={
+                    isSubStreamEnablePending
+                        ? {
+                              severity: "warning",
+                              title: "Sub Stream Enable Pending",
+                              message: "Sub stream is enabled locally but not yet applied on device settings.",
+                          }
+                        : null
+                }
                 items={[
                     {
                         name: "Enabled",
@@ -360,6 +373,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Resolution",
                         value: (
                             <BugSelect
+                                disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 value={
                                     codecdata?.["sub-stream"]
                                         ? `${codecdata["sub-stream"].cx}x${codecdata["sub-stream"].cy}`
@@ -386,6 +400,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Frame Rate",
                         value: (
                             <BugSelect
+                                disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 value={snapDurationToOption(codecdata?.["sub-stream"]?.duration) ?? ""}
                                 onChange={(event) =>
                                     onChange({
@@ -407,6 +422,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Bit Rate",
                         value: (
                             <BugBitrateAutocomplete
+                                disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 value={codecdata?.["sub-stream"]?.kbps ?? ""}
                                 options={bitrateOptions}
                                 onChange={(kbps) => onChange({ "sub-stream": { kbps } })}
@@ -419,6 +435,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Bitrate Encoding",
                         value: (
                             <BugSelect
+                                disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 value={codecdata?.["sub-stream"]?.["is-vbr"] ?? ""}
                                 onChange={(event) =>
                                     onChange({
@@ -438,6 +455,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Codec Type",
                         value: (
                             <BugSelect
+                                disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 value={codecdata?.["sub-stream"]?.codec ?? ""}
                                 onChange={(event) =>
                                     onChange({
@@ -458,6 +476,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Encoding Profile",
                         value: (
                             <BugSelect
+                                disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 value={codecdata?.["sub-stream"]?.profile ?? ""}
                                 onChange={(event) =>
                                     onChange({
@@ -474,6 +493,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Keyframe Interval",
                         value: (
                             <BugTextField
+                                disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 changeOnBlur
                                 value={codecdata?.["sub-stream"]?.gop ?? ""}
                                 onChange={(event) =>

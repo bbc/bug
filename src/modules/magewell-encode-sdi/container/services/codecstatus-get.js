@@ -3,6 +3,7 @@
 const mongoSingle = require("@core/mongo-single");
 const formatBps = require("@core/format-bps");
 const durationToFps = require("@utils/duration-to-fps");
+const ApiStatus = require("../utils/api-status");
 
 // formats a video-info object into a standard resolution string, e.g. "1080i50" or "720p59.94"
 const formatVideoResolution = (videoInfo) => {
@@ -20,7 +21,6 @@ const formatEncodeResolution = (encoderObject) => {
     return `${cy}p${durationToFps(duration)}`;
 };
 
-
 module.exports = async () => {
     // fetch codec data
     const codecSignal = await mongoSingle.get("signal");
@@ -31,15 +31,42 @@ module.exports = async () => {
         // servers
         const serverList = Array.isArray(codecServers) ? codecServers : [];
         const serverBlocks = serverList.filter((s) => s['stream-index'] === streamIndex).map((s) => {
+            let state = "inactive";
+            let clients = "";
+
+            // if the output is enabled
+            if (s['is-use']) {
+                // get the active server details (to get the result code)
+                const serverStatus = codecStatus?.["live-status"]?.["live"]?.find((srv) => srv['id'] === s.id);
+                if (s.type === 121) {
+                    // SRT listener - behaves slightly differently
+                    if (serverStatus?.['num-client'] > 0) {
+                        state = "success";
+                    }
+                    else {
+                        state = "warning";
+                    }
+                    clients = `${serverStatus?.['num-client']?.toString()} listener${serverStatus?.['num-client'] === 1 ? "" : "s"}`;
+                }
+                else {
+                    // parse it
+                    const apiStatus = ApiStatus(serverStatus?.['result']);
+                    if (apiStatus) {
+                        state = apiStatus.type;
+                    }
+                }
+            }
+
             const items = [
                 s._typeDescription,
                 s.url,
                 s.port,
+                clients,
             ].filter((item) => item !== undefined && item !== null && item !== "");
 
             return {
                 label: s.name,
-                state: (s['is-use'] && isActive) ? "success" : "inactive",
+                state: state,
                 items,
             }
         });
@@ -76,7 +103,7 @@ module.exports = async () => {
 
     // audio channels
     statusBlocks.push({
-        label: "Audio Bitrate",
+        label: "Audio",
         state: hasInputVideo ? "success" : "inactive",
         items: [{ "size": "medium", "value": `${codecStatus?.codec?.audio?.channels} channels` }, { "size": "large", "value": audioChannelsBitrate?.toString() }, { "size": "small", "value": "kb/s" }],
     });
@@ -88,13 +115,14 @@ module.exports = async () => {
     });
 
     // main stream
-    statusBlocks.push({
-        label: "Main Encoder",
-        state: hasInputVideo ? "success" : "inactive",
-        items: [{ "size": "large", value: mainVideoBitrate?.value.toString() }, { "size": "small", value: mainVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['main-stream'])?.toString() }],
-    });
-
-    statusBlocks = [...statusBlocks, ...getServers(0, hasInputVideo)];
+    statusBlocks = [...statusBlocks, [
+        {
+            label: "Main Encoder",
+            state: hasInputVideo ? "success" : "inactive",
+            items: [{ "size": "large", value: mainVideoBitrate?.value.toString() }, { "size": "small", value: mainVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['main-stream'])?.toString() }],
+        },
+        ...getServers(0, hasInputVideo)]
+    ];
 
     statusBlocks.push({
         label: "",
@@ -103,39 +131,14 @@ module.exports = async () => {
     });
 
     // sub stream
-    statusBlocks.push({
-        label: "Sub Encoder",
-        state: subStreamEnabled ? "success" : "inactive",
-        items: [{ "size": "large", value: subVideoBitrate?.value.toString() }, { "size": "small", value: subVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['sub-stream'])?.toString() }],
-    });
-
-    statusBlocks = [...statusBlocks, ...getServers(1, subStreamEnabled)];
-
-    // // servers
-    // const serverList = Array.isArray(codecServers) ? codecServers : [];
-    // const serverBlocks = serverList.map((s) => {
-    //     const items = [
-    //         s._typeDescription,
-    //         s.url,
-    //         s.port,
-    //     ].filter((item) => item !== undefined && item !== null && item !== "");
-
-    //     return {
-    //         label: s.name,
-    //         state: (s['is-use'] && isLive) ? "success" : "inactive",
-    //         items,
-    //     }
-    // });
-    // if (serverBlocks.length === 0) {
-    //     statusBlocks.push({
-    //         label: "Outputs",
-    //         state: "inactive",
-    //         items: ["NO OUTPUTS"],
-    //     });
-    // }
-    // else {
-    //     statusBlocks = [...statusBlocks, ...serverBlocks];
-    // }
+    statusBlocks = [...statusBlocks, [
+        {
+            label: "Sub Encoder",
+            state: subStreamEnabled ? "success" : "inactive",
+            items: [{ "size": "large", value: subVideoBitrate?.value.toString() }, { "size": "small", value: subVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['sub-stream'])?.toString() }],
+        },
+        ...getServers(1, subStreamEnabled)]
+    ];
 
     return statusBlocks;
 };

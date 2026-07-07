@@ -25,7 +25,6 @@ const mainVideoPayloadKeys = [
 ];
 
 const subVideoPayloadKeys = [
-    "enable",
     "codec",
     "cx",
     "cy",
