@@ -10,6 +10,7 @@ export default function BugStatusBlockContainer({ items, sx = {} }) {
             }}
             contentSx={{
                 gap: "8px",
+                justifyContent: "center",
             }}
         >
             {items &&
