@@ -5,125 +5,12 @@ const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
 const magewellEncodeSdi = require("@utils/magewell-encode-sdi");
 const deepMerge = require("@utils/deep-merge");
+const { buildVideoPayload } = require("@utils/video-payload");
+const {
+    buildStreamServerPayload,
+    hasStreamServerPayloadChanged,
+} = require("@utils/stream-server-payload");
 const codecdataGet = require("@services/codecdata-get");
-
-const mainVideoPayloadKeys = [
-    "is-auto",
-    "codec",
-    "cx",
-    "cy",
-    "duration",
-    "kbps",
-    "gop",
-    "fourcc",
-    "profile",
-    "cbrstat",
-    "fullrange",
-    "is-vbr",
-    "min-vbr-qp",
-    "max-vbr-qp",
-    "is-time-code-sei",
-    "is-closed-caption-sei",
-    "ar-convert-mode",
-    "rotation",
-    "mirroring",
-];
-
-const subVideoPayloadKeys = [
-    "enable",
-    "codec",
-    "cx",
-    "cy",
-    "duration",
-    "kbps",
-    "gop",
-    "fourcc",
-    "profile",
-    "cbrstat",
-    "fullrange",
-    "is-vbr",
-    "min-vbr-qp",
-    "max-vbr-qp",
-    "is-time-code-sei",
-    "ar-convert-mode",
-    "rotation",
-    "mirroring",
-    "is-auto",
-];
-
-const streamServerPayloadKeys = [
-    "id",
-    "type",
-    "name",
-    "url",
-    "port",
-    "net-mode",
-    "stream-index",
-    "ttl",
-    "audio",
-    "audio-streams",
-    "is-custom-pid",
-    "opt",
-    "is-media-hub",
-];
-
-const pickDefined = (source, keys) => {
-    const payload = {};
-
-    for (const key of keys) {
-        if (source?.[key] !== undefined) {
-            payload[key] = source[key];
-        }
-    }
-
-    return payload;
-};
-
-const hasPayloadChanged = (previousPayload, nextPayload, keys) => {
-    if (!previousPayload) {
-        return true;
-    }
-
-    for (const key of keys) {
-        if (previousPayload[key] !== nextPayload[key]) {
-            return true;
-        }
-    }
-
-    return false;
-};
-
-const buildVideoPayload = (streamSettings, streamIndex) => {
-    const payloadKeys = streamIndex === 1 ? subVideoPayloadKeys : mainVideoPayloadKeys;
-    const payload = {
-        stream: streamIndex,
-        ...pickDefined(streamSettings, payloadKeys),
-    };
-
-    if (streamSettings?.crop !== undefined) {
-        payload.crop = JSON.stringify(streamSettings.crop);
-    }
-
-    // Sub stream requires explicit custom mode in browser requests.
-    if (streamIndex === 1 && payload["is-auto"] === undefined) {
-        payload["is-auto"] = 0;
-    }
-
-    // Match browser behavior for sub stream: CBR mode payload.
-    if (streamIndex === 1) {
-        payload["is-vbr"] = 0;
-        if (payload["min-vbr-qp"] === undefined) {
-            payload["min-vbr-qp"] = 0;
-        }
-        if (payload["max-vbr-qp"] === undefined) {
-            payload["max-vbr-qp"] = 0;
-        }
-    }
-
-    return payload;
-};
-
-const buildStreamServerPayload = (serverSettings) => pickDefined(serverSettings, streamServerPayloadKeys);
 
 const getServerIds = (servers) => {
     return new Set(
@@ -280,7 +167,7 @@ module.exports = async () => {
                     continue;
                 }
 
-                const streamServerPayloadChanged = hasPayloadChanged(previousPayload, nextPayload, streamServerPayloadKeys);
+                const streamServerPayloadChanged = hasStreamServerPayloadChanged(previousPayload, nextPayload);
                 const hasEnableChanged = previousServer?.["is-use"] !== streamServer?.["is-use"];
 
                 if (!streamServerPayloadChanged && !hasEnableChanged) {
@@ -312,7 +199,7 @@ module.exports = async () => {
 
         return true;
     } catch (error) {
-        logger.error(`device save failed: ${error.message}`);
-        return false;
+        logger.error(`device save failed`);
+        throw error;
     }
 };

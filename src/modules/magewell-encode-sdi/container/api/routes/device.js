@@ -2,33 +2,26 @@ const express = require("express");
 const router = express.Router();
 const deviceSave = require("@services/device-save");
 const deviceRevert = require("@services/device-revert");
+const asyncHandler = require("express-async-handler");
 
-router.get("/save", async function (req, res) {
-    try {
+router.get(
+    "/save",
+    asyncHandler(async (req, res) => {
         res.json({
             status: "success",
             data: await deviceSave(),
         });
-    } catch (error) {
-        res.json({
-            status: "error",
-            message: "Failed to save device config",
-        });
-    }
-});
+    })
+);
 
-router.get("/revert", async function (req, res) {
-    try {
+router.get(
+    "/revert",
+    asyncHandler(async (req, res) => {
         res.json({
             status: "success",
             data: await deviceRevert(),
         });
-    } catch (error) {
-        res.json({
-            status: "error",
-            message: "Failed to revert device config",
-        });
-    }
-});
+    })
+);
 
 module.exports = router;

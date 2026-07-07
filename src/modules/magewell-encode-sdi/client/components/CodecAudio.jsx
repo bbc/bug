@@ -43,7 +43,7 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                         name: "Bitrate",
                         value: (
                             <BugSelect
-                                value={codecdata?.audio.kbps}
+                                value={codecdata?.audio?.kbps ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         audio: {
@@ -72,7 +72,7 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                                         },
                                     })
                                 }
-                                value={codecdata?.audio?.channels}
+                                value={codecdata?.audio?.channels ?? ""}
                                 options={audioChannelCountOptions}
                             ></BugSelect>
                         ),
@@ -88,7 +88,7 @@ export default function CodecAudio({ codecdata, onChange, showAdvanced }) {
                                         },
                                     })
                                 }
-                                value={codecdata?.audio?.[`ch${channelIndex}`]}
+                                value={codecdata?.audio?.[`ch${channelIndex}`] ?? ""}
                                 options={sdiAudioChannelOptions}
                             ></BugSelect>
                         ),

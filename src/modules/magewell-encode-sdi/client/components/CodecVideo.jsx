@@ -162,7 +162,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                             name: "Deinterlace Mode",
                             value: (
                                 <BugSelect
-                                    value={codecdata?.["deinterlace-mode"]}
+                                    value={codecdata?.["deinterlace-mode"] ?? ""}
                                     onChange={(event) => onChange({ "deinterlace-mode": parseInt(event.target.value) })}
                                     options={[
                                         { id: 1, label: "Blend" },
@@ -198,7 +198,11 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         value: (
                             <BugSelect
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
-                                value={codecdata?.["main-stream"].cx + "x" + codecdata?.["main-stream"].cy}
+                                value={
+                                    codecdata?.["main-stream"]
+                                        ? `${codecdata["main-stream"].cx}x${codecdata["main-stream"].cy}`
+                                        : ""
+                                }
                                 onChange={(event) =>
                                     onChange({
                                         "main-stream": {
@@ -221,7 +225,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         value: (
                             <BugSelect
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
-                                value={snapDurationToOption(codecdata?.["main-stream"]?.duration)}
+                                value={snapDurationToOption(codecdata?.["main-stream"]?.duration) ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         "main-stream": {
@@ -243,7 +247,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         value: (
                             <BugBitrateAutocomplete
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
-                                value={codecdata?.["main-stream"]?.kbps}
+                                value={codecdata?.["main-stream"]?.kbps ?? ""}
                                 options={bitrateOptions}
                                 onChange={(kbps) => onChange({ "main-stream": { kbps } })}
                                 min={2048}
@@ -255,7 +259,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Bitrate Encoding",
                         value: (
                             <BugSelect
-                                value={codecdata?.["main-stream"]?.["is-vbr"]}
+                                value={codecdata?.["main-stream"]?.["is-vbr"] ?? ""}
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
                                 onChange={(event) =>
                                     onChange({
@@ -275,7 +279,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Codec Type",
                         value: (
                             <BugSelect
-                                value={codecdata?.["main-stream"]?.codec}
+                                value={codecdata?.["main-stream"]?.codec ?? ""}
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
                                 onChange={(event) =>
                                     onChange({
@@ -296,7 +300,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Encoding Profile",
                         value: (
                             <BugSelect
-                                value={codecdata?.["main-stream"]?.profile}
+                                value={codecdata?.["main-stream"]?.profile ?? ""}
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
                                 onChange={(event) =>
                                     onChange({
@@ -315,7 +319,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                             <BugTextField
                                 changeOnBlur
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
-                                value={codecdata?.["main-stream"]?.gop}
+                                value={codecdata?.["main-stream"]?.gop ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         "main-stream": {
@@ -356,7 +360,11 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Resolution",
                         value: (
                             <BugSelect
-                                value={codecdata?.["sub-stream"].cx + "x" + codecdata?.["sub-stream"].cy}
+                                value={
+                                    codecdata?.["sub-stream"]
+                                        ? `${codecdata["sub-stream"].cx}x${codecdata["sub-stream"].cy}`
+                                        : ""
+                                }
                                 onChange={(event) =>
                                     onChange({
                                         "sub-stream": {
@@ -378,7 +386,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Frame Rate",
                         value: (
                             <BugSelect
-                                value={snapDurationToOption(codecdata?.["sub-stream"]?.duration)}
+                                value={snapDurationToOption(codecdata?.["sub-stream"]?.duration) ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         "sub-stream": {
@@ -399,7 +407,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Bit Rate",
                         value: (
                             <BugBitrateAutocomplete
-                                value={codecdata?.["sub-stream"]?.kbps}
+                                value={codecdata?.["sub-stream"]?.kbps ?? ""}
                                 options={bitrateOptions}
                                 onChange={(kbps) => onChange({ "sub-stream": { kbps } })}
                                 min={2048}
@@ -411,7 +419,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Bitrate Encoding",
                         value: (
                             <BugSelect
-                                value={codecdata?.["sub-stream"]?.["is-vbr"]}
+                                value={codecdata?.["sub-stream"]?.["is-vbr"] ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         "sub-stream": {
@@ -430,7 +438,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Codec Type",
                         value: (
                             <BugSelect
-                                value={codecdata?.["sub-stream"]?.codec}
+                                value={codecdata?.["sub-stream"]?.codec ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         "sub-stream": {
@@ -450,7 +458,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         name: "Encoding Profile",
                         value: (
                             <BugSelect
-                                value={codecdata?.["sub-stream"]?.profile}
+                                value={codecdata?.["sub-stream"]?.profile ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         "sub-stream": {
@@ -467,7 +475,7 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                         value: (
                             <BugTextField
                                 changeOnBlur
-                                value={codecdata?.["sub-stream"]?.gop}
+                                value={codecdata?.["sub-stream"]?.gop ?? ""}
                                 onChange={(event) =>
                                     onChange({
                                         "sub-stream": {

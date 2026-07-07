@@ -12,7 +12,7 @@ module.exports = async ({ magewellClient, mongoSingle }) => {
         3: "Facebook",
         100: "RTSP",
         120: "SRT Caller",
-        121: "SRT Listener",
+        121: "SRT Listen",
         130: "NDI HX",
         131: "HLS",
         132: "UDP",

@@ -36,6 +36,7 @@ export default function Codec({ panelId }) {
     const panelConfig = useSelector((state) => state.panelConfig);
     const timer = React.useRef();
     const sendAlert = useAlert();
+    const outputs = Array.isArray(codecdata?.["stream-server"]) ? codecdata["stream-server"] : [];
 
     const showAdvanced = panelConfig && panelConfig.data.showAdvanced;
     const showCodecDropdown = panelConfig && panelConfig.data.codecSource;
@@ -134,19 +135,18 @@ export default function Codec({ panelId }) {
                 </Grid>
             </Grid>
             <Grid size={{ xs: 12, md: 6, xl: 4 }}>
-                {codecdata &&
-                    codecdata["stream-server"].map((output, index) => (
-                        <CodecOutput
-                            key={output.id ?? index}
-                            outputData={output}
-                            outputIndex={index}
-                            onOutputChange={(values) => onOutputChange(index, values)}
-                            onClose={onOutputClose}
-                            showAdvanced={showAdvanced}
-                            panelId={panelId}
-                            showCodecDropdown={showCodecDropdown}
-                        />
-                    ))}
+                {outputs.map((output, index) => (
+                    <CodecOutput
+                        key={output.id ?? index}
+                        outputData={output}
+                        outputIndex={index}
+                        onOutputChange={(values) => onOutputChange(index, values)}
+                        onClose={onOutputClose}
+                        showAdvanced={showAdvanced}
+                        panelId={panelId}
+                        showCodecDropdown={showCodecDropdown}
+                    />
+                ))}
                 <BugDetailsCardAdd onAdd={onOutputAdd} />
             </Grid>
         </Grid>
