@@ -1,7 +1,108 @@
 import { Box } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { memo } from "react";
-import { Textfit } from "react-textfit";
+
+const StatusValue = memo(function StatusValue({ children, fontSize, compact = false }) {
+    return (
+        <Box
+            sx={{
+                width: "100%",
+                height: compact ? "auto" : "100%",
+                display: compact ? "block" : "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "500",
+                fontFamily: "Fira Code",
+                lineHeight: 1,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                fontSize: `${fontSize}px`,
+                textAlign: "center",
+            }}
+        >
+            {children}
+        </Box>
+    );
+});
+
+const normalizeStatusItem = (item) => {
+    if (item && typeof item === "object" && !Array.isArray(item)) {
+        return {
+            value: item.value ?? "",
+            size: String(item.size ?? "auto")
+                .trim()
+                .toLowerCase(),
+        };
+    }
+
+    return {
+        value: item,
+        size: "auto",
+    };
+};
+
+const getRowWeight = (size, itemCount) => {
+    if (itemCount <= 1) {
+        return 1;
+    }
+
+    switch (size) {
+        case "small":
+            return 0.85;
+        case "medium":
+            return 1;
+        case "large":
+            return 1.6;
+        case "auto":
+        default:
+            return 1;
+    }
+};
+
+const getSizeConfig = (size, isSmall, itemCount) => {
+    const isSingle = itemCount === 1;
+
+    switch (size) {
+        case "small":
+            return {
+                widthFactor: 0.72,
+                heightFactor: 0.68,
+                maxSize: isSmall ? 18 : isSingle ? 22 : 20,
+            };
+        case "medium":
+            return {
+                widthFactor: 0.62,
+                heightFactor: 0.75,
+                maxSize: isSmall ? 22 : isSingle ? 36 : 30,
+            };
+        case "large":
+            return {
+                widthFactor: 0.52,
+                heightFactor: 0.9,
+                maxSize: isSmall ? 24 : isSingle ? 48 : 40,
+            };
+        case "auto":
+        default:
+            return {
+                widthFactor: 0.58,
+                heightFactor: 0.8,
+                maxSize: isSmall ? (isSingle ? 24 : 22) : 56,
+            };
+    }
+};
+
+const getStatusFontSize = (value, size, isSmall, itemCount, gapPx = 0, rowHeightOverride) => {
+    const text = String(value ?? "");
+    const availableWidth = isSmall ? 74 : 104;
+    const availableHeight = isSmall ? 74 : 104;
+    const rowHeight =
+        rowHeightOverride ??
+        (itemCount > 1 ? (availableHeight - (itemCount - 1) * gapPx) / itemCount : availableHeight);
+    const sizeConfig = getSizeConfig(size, isSmall, itemCount);
+    const widthBased = availableWidth / Math.max(text.length * sizeConfig.widthFactor, 1);
+    const heightBased = rowHeight * sizeConfig.heightFactor;
+    return Math.max(10, Math.min(sizeConfig.maxSize, Math.floor(Math.min(widthBased, heightBased))));
+};
 
 export default function BugStatusBlock({ items, label, state, sx = {}, image }) {
     const stateColors = {
@@ -13,34 +114,26 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
     };
 
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+    const tileSize = isSmall ? "90px" : "120px";
+    const statusItems = (items || []).map(normalizeStatusItem);
+    const itemGap = statusItems.length > 1 ? (statusItems.length === 2 ? 2 : 4) : 0;
+    const availableHeight = isSmall ? 74 : 104;
+    const totalGapHeight = statusItems.length > 1 ? (statusItems.length - 1) * itemGap : 0;
+    const totalWeight = Math.max(
+        1,
+        statusItems.reduce((sum, item) => sum + getRowWeight(item.size, statusItems.length), 0)
+    );
 
-    // Memoized Textfit to prevent unnecessary recalculation
-    const MemoTextfit = memo(({ children }) => (
-        <Textfit
-            mode="multi"
-            min={10}
-            max={1000}
-            forceSingleModeWidth={false}
-            style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "500",
-                fontFamily: "Fira Code",
-            }}
-        >
-            {children}
-        </Textfit>
-    ));
+    if (state === "spacer") {
+        return <Box sx={{ width: "16px", minWidth: "16px", flex: "0 0 16px", ...sx }} />;
+    }
 
     if (image) {
         return (
             <Box
                 sx={{
-                    marginTop: "32px",
-                    padding: "4px",
+                    marginTop: "29px",
+                    padding: "0px",
                     display: "inline-block",
                     verticalAlign: "top",
                     ...sx,
@@ -48,7 +141,7 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
             >
                 <img
                     style={{
-                        height: isSmall ? "90px" : "120px",
+                        height: tileSize,
                     }}
                     src={image}
                     alt=""
@@ -58,13 +151,13 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
     }
 
     return (
-        <Box sx={{ padding: "4px", display: "inline-block", verticalAlign: "top", ...sx }}>
+        <Box sx={{ width: tileSize, display: "flex", flexDirection: "column", verticalAlign: "top", ...sx }}>
             <Box
                 sx={{
                     textTransform: "uppercase",
                     color: "rgba(255, 255, 255, 0.5)",
                     textAlign: "center",
-                    fontSize: "16px",
+                    fontSize: "14px",
                     fontWeight: "500",
                     padding: "4px",
                     overflow: "hidden",
@@ -77,34 +170,56 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
 
             <Box
                 sx={{
-                    width: isSmall ? "90px" : "120px",
-                    height: isSmall ? "90px" : "120px",
+                    width: tileSize,
+                    height: tileSize,
                     backgroundColor: stateColors[state],
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
                     padding: "8px",
-                    gap: "4px",
+                    gap: `${itemGap}px`,
                     overflow: "hidden",
                     boxSizing: "border-box",
+                    minWidth: 0,
+                    minHeight: 0,
                 }}
             >
-                {items &&
-                    items.map((item, index) => (
-                        <Box
-                            key={index}
-                            sx={{
-                                flex: 1,
-                                width: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <MemoTextfit>{item}</MemoTextfit>
-                        </Box>
-                    ))}
+                {statusItems.map((item, index) =>
+                    (() => {
+                        const rowWeight = getRowWeight(item.size, statusItems.length);
+                        const rowHeight = ((availableHeight - totalGapHeight) / totalWeight) * rowWeight;
+
+                        return (
+                            <Box
+                                key={index}
+                                sx={{
+                                    flex: `${rowWeight} 1 0`,
+                                    width: "100%",
+                                    minWidth: 0,
+                                    minHeight: 0,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <StatusValue
+                                    fontSize={getStatusFontSize(
+                                        item.value,
+                                        item.size,
+                                        isSmall,
+                                        statusItems.length,
+                                        itemGap,
+                                        rowHeight
+                                    )}
+                                    compact={statusItems.length === 2}
+                                >
+                                    {item.value}
+                                </StatusValue>
+                            </Box>
+                        );
+                    })()
+                )}
             </Box>
         </Box>
     );

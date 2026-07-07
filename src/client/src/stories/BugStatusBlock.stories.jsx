@@ -38,15 +38,16 @@ export default {
             },
         },
         items: {
-            description: "An array of strings rendered in the center of the block. Font size scales automatically.",
+            description:
+                "An array of strings or { value, size } objects rendered in the center of the block. Size scales automatically unless overridden per item.",
             table: {
-                type: { summary: "string[]" },
+                type: { summary: "Array<string | { value: string, size?: 'auto' | 'small' | 'medium' | 'large' }>" },
                 defaultValue: { summary: "[]" },
             },
         },
         state: {
             control: "select",
-            options: ["success", "warning", "error", "info", "disabled", "active"],
+            options: ["success", "warning", "error", "info", "inactive", "spacer"],
             description: "Determines the background color and theme of the block.",
             table: {
                 type: { summary: "string" },
