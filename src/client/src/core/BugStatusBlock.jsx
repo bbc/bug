@@ -115,6 +115,7 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
 
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down("lg"));
     const tileSize = isSmall ? "90px" : "120px";
+    const tileHeight = isSmall ? "90px" : "150px";
     const statusItems = (items || []).map(normalizeStatusItem);
     const itemGap = statusItems.length > 1 ? (statusItems.length === 2 ? 2 : 4) : 0;
     const availableHeight = isSmall ? 74 : 104;
@@ -125,14 +126,15 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
     );
 
     if (state === "spacer") {
-        return <Box sx={{ width: "16px", minWidth: "16px", flex: "0 0 16px", ...sx }} />;
+        const width = isSmall ? "12px" : "16px";
+        return <Box sx={{ width: width, minWidth: width, flex: `0 0 ${width}`, ...sx }} />;
     }
 
     if (image) {
         return (
             <Box
                 sx={{
-                    marginTop: "29px",
+                    marginTop: "29px", // because of the 1px border
                     padding: "0px",
                     display: "inline-block",
                     verticalAlign: "top",
@@ -151,18 +153,34 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
     }
 
     return (
-        <Box sx={{ width: tileSize, display: "flex", flexDirection: "column", verticalAlign: "top", ...sx }}>
+        <Box
+            sx={{
+                width: tileSize,
+                height: tileHeight,
+                minHeight: tileHeight,
+                maxHeight: tileHeight,
+                display: "flex",
+                flexDirection: "column",
+                boxSizing: "border-box",
+                overflow: "hidden",
+                verticalAlign: "top",
+                ...sx,
+            }}
+        >
             <Box
                 sx={{
                     textTransform: "uppercase",
                     color: "rgba(255, 255, 255, 0.5)",
                     textAlign: "center",
-                    fontSize: "14px",
+                    fontSize: isSmall ? "12px" : "14px",
                     fontWeight: "500",
+                    lineHeight: 1,
                     padding: "4px",
+                    boxSizing: "border-box",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
+                    height: isSmall ? "26px" : "30px",
                 }}
             >
                 {label}&nbsp;
