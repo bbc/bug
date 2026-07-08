@@ -97,7 +97,7 @@ module.exports = async () => {
     // format
     statusBlocks.push({
         label: "Input",
-        state: hasInputVideo ? "success" : "error",
+        state: hasInputVideo ? "success" : "warning",
         items: ["SDI", formatVideoResolution(codecSignal)],
     });
 
