@@ -10,7 +10,7 @@ module.exports = async () => {
     const errorStatusCodes = [30, 29, 28, 27, 25, 24, 23];
     let statusItems = [];
 
-    for (let eachServer of status?.['live-status']?.['live']) {
+    for (let eachServer of status?.["live-status"]?.["live"] || []) {
         if (errorStatusCodes.includes(eachServer?.['result'])) {
             const apiStatus = ApiStatus(eachServer?.['result']);
             statusItems.push(new StatusItem({
