@@ -3,8 +3,10 @@ const validationResult = require("@core/ValidationResult");
 const RouterOSApi = require("@core/routeros-api");
 
 module.exports = async (formData) => {
+    let routerOsApi;
+
     try {
-        const routerOsApi = new RouterOSApi({
+        routerOsApi = new RouterOSApi({
             host: formData.address,
             user: formData.username,
             password: formData.password,
@@ -25,6 +27,14 @@ module.exports = async (formData) => {
                 message: "Could not log into device",
             },
         ]);
+    } finally {
+        if (routerOsApi) {
+            try {
+                await routerOsApi.disconnect();
+            } catch (disconnectError) {
+                // Validation should report auth status even if cleanup fails.
+            }
+        }
     }
 
     return new validationResult([
