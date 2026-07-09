@@ -20,7 +20,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+    const { register, handleSubmit, control, errors, validateServer, messages, validationResults } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -59,7 +59,7 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors.address}
-                        helperText={messages.address}
+                        validationResult={validationResults.address}
                         defaultValue={panelConfig.data.address}
                         supportsValidation
                         onChange={(event) => validateServer(event, "address")}
@@ -74,7 +74,7 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors?.username}
-                        helperText={messages.username}
+                        validationResult={validationResults.username}
                         defaultValue={panelConfig.data.username}
                         supportsValidation
                         onChange={(event) => validateServer(event, "username", ["address", "password"])}
@@ -89,7 +89,7 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors?.password}
-                        helperText={messages.password}
+                        validationResult={validationResults.password}
                         defaultValue={panelConfig.data.password}
                         supportsValidation
                         onChange={(event) => validateServer(event, "password", ["address", "username"])}

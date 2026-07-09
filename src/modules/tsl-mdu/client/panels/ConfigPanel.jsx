@@ -19,7 +19,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { handleSubmit, control, validateServer, errors, messages } = useConfigFormHandler({
+    const { handleSubmit, control, validateServer, errors, messages, validationResults } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -55,7 +55,7 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors?.address}
-                        helperText={messages.address}
+                        validationResult={validationResults.address}
                         defaultValue={panelConfig.data.address}
                         supportsValidation={true}
                         onChange={(event) => validateServer(event, "address")}
@@ -70,10 +70,10 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors?.username}
-                        helperText={messages.username}
+                        validationResult={validationResults.username}
                         defaultValue={panelConfig.data.username}
                         supportsValidation={true}
-                        onChange={(event) => validateServer(event, "username", ["address", " username", "password"])}
+                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
                         label="Web Interface Username"
                     />
                 </Grid>
@@ -85,10 +85,10 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors?.password}
-                        helperText={messages.password}
+                        validationResult={validationResults.password}
                         defaultValue={panelConfig.data.password}
                         supportsValidation={true}
-                        onChange={(event) => validateServer(event, "password", ["address", "username", "password"])}
+                        onChange={(event) => validateServer(event, "password", ["address", "username"])}
                         label="Web Interface Password"
                     />
                 </Grid>

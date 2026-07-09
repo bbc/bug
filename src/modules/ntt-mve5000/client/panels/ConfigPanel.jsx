@@ -18,7 +18,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
+    const { register, handleSubmit, control, errors, validateServer, messages, validationResults } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -57,7 +57,7 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors.address}
-                        helperText={messages.address}
+                        validationResult={validationResults.address}
                         defaultValue={panelConfig.data.address}
                         supportsValidation
                         onChange={(event) => validateServer(event, "address")}
@@ -72,7 +72,7 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors.snmpCommunity}
-                        helperText={messages.snmpCommunity}
+                        validationResult={validationResults.snmpCommunity}
                         defaultValue={panelConfig.data.snmpCommunity}
                         supportsValidation
                         onChange={(event) => validateServer(event, "snmpCommunity", ["address"])}

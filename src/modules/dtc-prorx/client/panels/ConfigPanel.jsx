@@ -18,7 +18,7 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { handleSubmit, control, validateServer, errors, messages } = useConfigFormHandler({
+    const { handleSubmit, control, validateServer, errors, messages, validationResults } = useConfigFormHandler({
         panelId: panelConfig.data.id,
     });
 
@@ -56,7 +56,7 @@ export default function ConfigPanel() {
                         rules={{ required: false }}
                         fullWidth
                         error={errors?.address}
-                        helperText={messages.address}
+                        validationResult={validationResults.address}
                         defaultValue={panelConfig.data.address}
                         supportsValidation={true}
                         onChange={(event) => validateServer(event, "address")}

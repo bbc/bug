@@ -12,19 +12,35 @@ const BugConfigFormPasswordTextField = ({
     error,
     helperText,
     supportsValidation = false,
+    validationResult,
     variant = "standard",
     allowShowPassword = true,
     type = "text",
     sx = {},
     ...props
 }) => {
+    const validationStatus = validationResult?.status || "idle";
+    const validationMessage = validationResult?.message;
+    const resolvedHelperText =
+        validationStatus === "pending"
+            ? validationMessage || "Checking..."
+            : validationStatus !== "idle"
+              ? validationMessage
+              : helperText;
+    const helperColor =
+        resolvedHelperText === "Checking..." || validationStatus === "pending"
+            ? "text.secondary"
+            : validationStatus === "success" || validationStatus === "valid"
+              ? "success.main"
+              : "text.primary";
+
     return (
         <>
             <FormControl
                 {...props}
                 sx={{
                     "& .MuiFormHelperText-root:not(.Mui-error)": {
-                        color: supportsValidation ? "success.main" : "text.primary",
+                        color: helperColor,
                     },
                 }}
             >
@@ -39,8 +55,8 @@ const BugConfigFormPasswordTextField = ({
                                 disabled={disabled}
                                 onChange={onChange}
                                 variant={variant}
-                                error={error}
-                                helperText={helperText}
+                                error={error || validationStatus === "error"}
+                                helperText={resolvedHelperText}
                                 allowShowPassword={allowShowPassword}
                             />
                         );

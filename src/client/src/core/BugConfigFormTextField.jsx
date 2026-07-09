@@ -18,18 +18,35 @@ const BugConfigFormTextField = ({
     rules,
     type = "text",
     supportsValidation = false,
+    validationResult,
     variant = "standard",
     InputProps = {},
     sx = {},
     ...props
 }) => {
+    const validationStatus = validationResult?.status || "idle";
+    const validationMessage = validationResult?.message;
+    const resolvedHelperText =
+        validationStatus === "pending"
+            ? validationMessage || "Checking..."
+            : validationStatus !== "idle"
+              ? validationMessage
+              : helperText;
+    const helperColor =
+        resolvedHelperText === "Checking..." || validationStatus === "pending"
+            ? "text.secondary"
+            : validationStatus === "success" || validationStatus === "valid"
+              ? "success.main"
+              : "text.primary";
+
+    console.log(validationResult);
     return (
         <>
             <FormControl
                 fullWidth={fullWidth}
                 sx={{
                     "& .MuiFormHelperText-root:not(.Mui-error)": {
-                        color: supportsValidation ? "success.main" : "text.primary",
+                        color: helperColor,
                     },
                 }}
             >
@@ -52,10 +69,10 @@ const BugConfigFormTextField = ({
                                 }}
                                 numeric={numeric}
                                 variant={variant}
-                                error={error}
+                                error={error || validationStatus === "error"}
                                 min={min}
                                 max={max}
-                                helperText={helperText}
+                                helperText={resolvedHelperText}
                                 InputProps={InputProps}
                                 type={type}
                             />

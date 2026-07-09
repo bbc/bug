@@ -20,9 +20,10 @@ export default function ConfigPanel() {
         return null;
     }
 
-    const { register, handleSubmit, control, errors, validateServer, messages } = useConfigFormHandler({
-        panelId: panelConfig.data.id,
-    });
+    const { register, handleSubmit, control, errors, validateServer, messages, validationResults } =
+        useConfigFormHandler({
+            panelId: panelConfig.data.id,
+        });
 
     return (
         <>
@@ -58,7 +59,7 @@ export default function ConfigPanel() {
                         rules={{ required: true }}
                         fullWidth
                         error={errors.address}
-                        helperText={messages.address}
+                        validationResult={validationResults.address}
                         defaultValue={panelConfig.data.address}
                         supportsValidation
                         onChange={(event) => validateServer(event, "address", ["port"])}
@@ -75,7 +76,7 @@ export default function ConfigPanel() {
                         max={65535}
                         fullWidth
                         error={errors.port}
-                        helperText={messages.port}
+                        validationResult={validationResults.port}
                         defaultValue={panelConfig.data.port}
                         supportsValidation
                         onChange={(event) => validateServer(event, "port", ["address"])}
