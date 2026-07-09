@@ -8,7 +8,7 @@ function buildDefaultOutput(nextId) {
         id: nextId,
         type: 133,
         name: `output-${nextId + 1}`,
-        "is-use": 1,
+        "is-use": 0,
         url: "192.168.100.1",
         port: 5001 + nextId,
         "net-mode": 1,

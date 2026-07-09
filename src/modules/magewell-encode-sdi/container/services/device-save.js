@@ -180,6 +180,12 @@ module.exports = async () => {
 
                 if (previousServer === undefined) {
                     await updateClient("add-server", nextPayload);
+                    if (streamServer?.["is-use"] === 1) {
+                        await updateClient("enable-server", {
+                            id: streamServer.id,
+                            "is-use": streamServer["is-use"],
+                        });
+                    }
                     continue;
                 }
 
