@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.31
+
+- 2026-07-09: fix routeros timeout ([52cd5e4](https://github.com/bbc/bug/commit/52cd5e4bb126748fb8daeff44beb0541cee0d565))
+- 2026-07-08: improve address validation and error handling [copilot] ([69ae392](https://github.com/bbc/bug/commit/69ae3921e549c79c6ebb6ec313d76bfb0be98391))
+
 ### version 1.0.30
 
 - 2026-06-17: reduce timeout for traffic status check ([a1a9af4](https://github.com/bbc/bug/commit/a1a9af4a722f24cd315f71d92ab92bd32de58950))
