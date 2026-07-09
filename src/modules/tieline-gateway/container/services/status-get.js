@@ -5,7 +5,7 @@ const statusCheckLinkQuality = require("@services/status-checklinkquality");
 const statusCheckAlarms = require("@services/status-checkalarms");
 const statusGetDefault = require("@services/status-getdefault");
 const statusGetConnection = require("@services/status-getconnection");
-const { getStatus } = require("@core/heartbeat");
+const { statusCheckHeartbeat } = require("@core/heartbeat");
 
 module.exports = async () => {
     return [].concat(
@@ -18,7 +18,7 @@ module.exports = async () => {
         }),
         await statusCheckLinkQuality(),
         await statusCheckAlarms(),
-        await getStatus({ timeout: 20 }),
+        await statusCheckHeartbeat({ timeout: 20 }),
         await statusGetDefault(),
         await statusGetConnection()
     );
