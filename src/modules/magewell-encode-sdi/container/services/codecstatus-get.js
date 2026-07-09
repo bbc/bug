@@ -29,6 +29,9 @@ module.exports = async () => {
 
     const getServers = (streamIndex, isActive) => {
         // servers
+        if (!codecServers) {
+            return [];
+        }
         const serverList = Array.isArray(codecServers) ? codecServers : [];
         const serverBlocks = serverList.filter((s) => s['stream-index'] === streamIndex).map((s) => {
             let state = "inactive";
@@ -81,11 +84,14 @@ module.exports = async () => {
     }
 
     const hasInputVideo = codecSignal?._active ?? false;
-    const mainVideoBitrate = formatBps(codecStatus?.["codec"]?.["main-stream"]?.["kbps"] * 1024, 1, true);
+    const mainStream = codecStatus?.codec?.["main-stream"];
+    const mainVideoBitrate = mainStream?.kbps == null ? null : formatBps(mainStream.kbps * 1024, 1, true);
     const isLive = codecStatus?._isLive ?? false;
-    const subStreamEnabled = codecStatus?.codec?.["sub-stream"]?.enable === 1;
-    const subVideoBitrate = formatBps(codecStatus?.["codec"]?.["sub-stream"]?.["kbps"] * 1024, 1, true);
+    const subStream = codecStatus?.codec?.["sub-stream"];
+    const subStreamEnabled = subStream?.enable === 1;
+    const subVideoBitrate = subStream?.kbps == null ? null : formatBps(subStream.kbps * 1024, 1, true);
     const audioChannelsBitrate = codecStatus?.codec?.audio?.kbps;
+    const audioChannelText = codecStatus?.codec?.audio?.channels ? `${codecStatus?.codec?.audio?.channels} channels` : "";
 
     // group into nice status blocks
     let statusBlocks = [];
@@ -95,18 +101,18 @@ module.exports = async () => {
     });
 
     // format
-    statusBlocks.push({
+    statusBlocks.push(codecSignal ? {
         label: "Input",
         state: hasInputVideo ? "success" : "warning",
         items: ["SDI", formatVideoResolution(codecSignal)],
-    });
+    } : {});
 
     // audio channels
-    statusBlocks.push({
+    statusBlocks.push(codecStatus?.codec?.audio ? {
         label: "Audio",
         state: hasInputVideo ? "success" : "inactive",
-        items: [{ "size": "medium", "value": `${codecStatus?.codec?.audio?.channels} channels` }, { "size": "large", "value": audioChannelsBitrate?.toString() }, { "size": "small", "value": "kb/s" }],
-    });
+        items: [{ "size": "medium", "value": audioChannelText }, { "size": "large", "value": audioChannelsBitrate?.toString() }, { "size": "small", "value": audioChannelsBitrate ? "kb/s" : "" }],
+    } : {});
 
     statusBlocks.push({
         label: "",
@@ -115,14 +121,14 @@ module.exports = async () => {
     });
 
     // main stream
-    statusBlocks = [...statusBlocks, [
+    statusBlocks = codecStatus?.codec?.["main-stream"] ? [...statusBlocks, [
         {
             label: "Main Encoder",
             state: hasInputVideo ? "success" : "inactive",
-            items: [{ "size": "large", value: mainVideoBitrate?.value.toString() }, { "size": "small", value: mainVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['main-stream'])?.toString() }],
+            items: [{ "size": "large", value: mainVideoBitrate?.value.toString() }, { "size": "small", value: mainVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(mainStream)?.toString() }],
         },
         ...getServers(0, hasInputVideo)]
-    ];
+    ] : statusBlocks;
 
     statusBlocks.push({
         label: "",
@@ -131,14 +137,14 @@ module.exports = async () => {
     });
 
     // sub stream
-    statusBlocks = [...statusBlocks, [
+    statusBlocks = codecStatus?.codec?.["sub-stream"] ? [...statusBlocks, [
         {
             label: "Sub Encoder",
             state: subStreamEnabled ? "success" : "inactive",
-            items: [{ "size": "large", value: subVideoBitrate?.value.toString() }, { "size": "small", value: subVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(codecStatus?.['codec']?.['sub-stream'])?.toString() }],
+            items: [{ "size": "large", value: subVideoBitrate?.value.toString() }, { "size": "small", value: subVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(subStream)?.toString() }],
         },
         ...getServers(1, subStreamEnabled)]
-    ];
+    ] : statusBlocks;
 
     return statusBlocks;
 };

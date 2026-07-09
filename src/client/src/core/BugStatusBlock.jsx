@@ -138,6 +138,7 @@ export default function BugStatusBlock({ items, label, state, sx = {}, image }) 
                     padding: "0px",
                     display: "inline-block",
                     verticalAlign: "top",
+                    height: `calc(${tileSize} + 1px)`,
                     ...sx,
                 }}
             >

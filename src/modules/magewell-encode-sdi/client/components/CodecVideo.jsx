@@ -203,7 +203,8 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                             <BugSelect
                                 disabled={codecdata?.["main-stream"]?.["is-auto"] === 1}
                                 value={
-                                    codecdata?.["main-stream"]
+                                    codecdata?.["main-stream"]?.cx !== undefined &&
+                                    codecdata["main-stream"]?.cy !== undefined
                                         ? `${codecdata["main-stream"].cx}x${codecdata["main-stream"].cy}`
                                         : ""
                                 }
@@ -375,7 +376,8 @@ export default function CodecVideo({ codecdata, codecstatus, onChange, showAdvan
                             <BugSelect
                                 disabled={codecdata?.["sub-stream"]?.["enable"] !== 1 || isSubStreamEnablePending}
                                 value={
-                                    codecdata?.["sub-stream"]
+                                    codecdata?.["sub-stream"]?.cx !== undefined &&
+                                    codecdata["sub-stream"]?.cy !== undefined
                                         ? `${codecdata["sub-stream"].cx}x${codecdata["sub-stream"].cy}`
                                         : ""
                                 }
