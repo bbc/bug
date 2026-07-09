@@ -24,3 +24,8 @@
 - system-wide alerts when cpu over 50%
 - system-wide alerts when disk 90%
 - upgrade all modules?
+- overhaul status logic and handling for modules
+- do I need a way to view some basic info on a device? Maybe a details view expandable from the home screen with device name, model, IP, contact details etc
+- do I remove the menu on the home page tiles and just have an expand icon?
+- rewrite ping module?
+- improve ping validation/address validation in all modules (look at mikrotik-interfaces)
