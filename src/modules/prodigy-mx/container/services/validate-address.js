@@ -2,9 +2,20 @@
 const validationResult = require("@core/ValidationResult");
 const ping = require("ping");
 const prodigyTest = require("@services/prodigy-test");
+const isValidAddress = require("@core/isValidAddress");
 
 module.exports = async (formData) => {
     try {
+        if (!isValidAddress(formData["address"])) {
+            return new validationResult([
+                {
+                    state: false,
+                    field: "address",
+                    message: "Address is not valid",
+                },
+            ]);
+        }
+
         let res = await ping.promise.probe(formData["address"]);
         console.log(res);
         if (res.alive) {

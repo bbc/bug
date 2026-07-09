@@ -25,6 +25,14 @@ describe("validate-address", () => {
         expect(result.items[0]).toHaveProperty("state", false);
     });
 
+    test("rejects invalid address format without probing", async () => {
+        const result = await service({ address: "not a valid host", port: 9990 });
+
+        expect(mockPingProbe).not.toHaveBeenCalled();
+        expect(result).toBeDefined();
+        expect(result.items[0]).toHaveProperty("state", false);
+    });
+
     test("returns success response when ping and videohub checks pass", async () => {
         mockPingProbe.mockResolvedValue({ alive: true });
         mockVideohubTest.mockResolvedValue(true);

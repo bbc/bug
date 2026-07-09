@@ -29,3 +29,4 @@
 - do I remove the menu on the home page tiles and just have an expand icon?
 - rewrite ping module?
 - improve ping validation/address validation in all modules (look at mikrotik-interfaces)
+- use rounding on sparklines to reduce bps noise

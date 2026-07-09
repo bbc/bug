@@ -3,9 +3,16 @@
 const ValidationResult = require("@core/ValidationResult");
 const ping = require("ping");
 const logger = require("@core/logger")(module);
+const isValidAddress = require("@core/isValidAddress");
 
 module.exports = async (formData) => {
     try {
+        if (!isValidAddress(formData?.address)) {
+            return new ValidationResult([
+                { state: false, field: "address", message: "Address is not valid" },
+            ]);
+        }
+
         const res = await ping.promise.probe(formData?.address);
         if (res?.alive) {
             logger.info(`device ${formData.address} is reachable`);

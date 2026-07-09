@@ -42,11 +42,11 @@ describe("validate-address service", () => {
         ]);
     });
 
-    test("returns invalid-address validation result when probe throws", async () => {
-        mockProbe.mockRejectedValue(new Error("invalid"));
+    test("rejects invalid address format without probing", async () => {
 
         const result = await validateAddress({ address: "not-an-ip" });
 
+        expect(mockProbe).not.toHaveBeenCalled();
         expect(result.validationResults).toEqual([
             {
                 state: false,

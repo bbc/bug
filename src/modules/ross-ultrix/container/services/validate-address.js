@@ -1,11 +1,22 @@
 "use strict";
 const validationResult = require("@core/ValidationResult");
 const ping = require("ping");
+const isValidAddress = require("@core/isValidAddress");
 const matrixTestProbel = require("@services/matrix-testprobel");
 const matrixTestUi = require("@services/matrix-testui");
 
 module.exports = async (formData) => {
     try {
+        if (!isValidAddress(formData["address"])) {
+            return new validationResult([
+                {
+                    state: false,
+                    field: "address",
+                    message: "Address is not valid",
+                },
+            ]);
+        }
+
         let res = await ping.promise.probe(formData["address"]);
         if (res.alive) {
             if (await matrixTestProbel(formData.address, formData.port)) {

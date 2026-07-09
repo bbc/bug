@@ -2,9 +2,20 @@
 const validationResult = require("@core/ValidationResult");
 const ping = require("ping");
 const matrixTest = require("@services/matrix-test");
+const isValidAddress = require("@core/isValidAddress");
 
 module.exports = async (formData) => {
     try {
+        if (!isValidAddress(formData["address"])) {
+            return new validationResult([
+                {
+                    state: false,
+                    field: "address",
+                    message: "Address is not valid",
+                },
+            ]);
+        }
+
         let res = await ping.promise.probe(formData["address"]);
         if (res.alive) {
             if (await matrixTest(formData.address, formData.port)) {
