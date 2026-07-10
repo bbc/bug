@@ -12,9 +12,11 @@ export default function Module(props) {
         <BugModuleWrapper {...props}>
             <Routes>
                 <Route index element={<MainPanel {...props} />} />
+                <Route path="/route" element={<MainPanel {...props} />} />
                 <Route path="/route/:sourceGroup" element={<MainPanel {...props} />} />
                 <Route path="/route/:sourceGroup/:destinationGroup" element={<MainPanel {...props} />} />
                 <Route path="/edit" element={<EditPanel {...props} />} />
+                <Route path="/edit/:sourceGroup" element={<EditPanel {...props} />} />
                 <Route path="/edit/:sourceGroup/:destinationGroup" element={<EditPanel {...props} />} />
                 <Route
                     path="config"

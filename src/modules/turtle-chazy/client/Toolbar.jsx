@@ -27,21 +27,17 @@ export default function Toolbar({ panelId, ...props }) {
     };
 
     const handleEditClicked = (event, item) => {
-        const params = getParams(5);
-        navigate(`/panel/${panelId}/edit/${params}`);
+        const urlParts = location.pathname.split("/");
+        const routeIdx = urlParts.indexOf("route");
+        const groups = routeIdx !== -1 ? urlParts.slice(routeIdx + 1).join("/") : "";
+        navigate(`/panel/${panelId}/edit/${groups}`);
     };
 
     const handleDoneClicked = (event, item) => {
-        const params = getParams(6);
-        navigate(`/panel/${panelId}/route/${params}`);
-    };
-
-    const getParams = (matchCount) => {
         const urlParts = location.pathname.split("/");
-        if (urlParts.length === matchCount) {
-            return urlParts.slice(-2).join("/");
-        }
-        return "";
+        const editIdx = urlParts.indexOf("edit");
+        const groups = editIdx !== -1 ? urlParts.slice(editIdx + 1).join("/") : "";
+        navigate(`/panel/${panelId}/route/${groups}`);
     };
 
     const buttons = () => (
