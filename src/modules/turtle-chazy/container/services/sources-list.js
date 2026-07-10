@@ -56,6 +56,7 @@ module.exports = async (sourceDevice = null, destinationDevice = null, destinati
             label: eachSource.name,
             selected: matchingRoute ? true : false,
             status: matchingRoute?.status ?? null,
+            deviceName: sourceDevice,
             // icon: icons[intIndex] ? icons[intIndex] : null,
             // iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
         });

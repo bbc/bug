@@ -73,7 +73,8 @@ module.exports = async (destinationDevice = null) => {
             sourceDevice: matchingRoute?.sourceDevice ?? null,
             sourceChannel: matchingRoute?.sourceChannel ?? null,
             sourceIndex: matchingRoute?.sourceIndex ?? null,
-            status: status
+            status: status,
+            deviceName: destinationDevice,
             // icon: icons[intIndex] ? icons[intIndex] : null,
             // iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
         });

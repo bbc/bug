@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 
 const MainPanel = React.lazy(() => import("./panels/MainPanel"));
 const ConfigPanel = React.lazy(() => import("./panels/ConfigPanel"));
+const EditPanel = React.lazy(() => import("./panels/EditPanel"));
 
 export default function Module(props) {
     return (
@@ -13,6 +14,8 @@ export default function Module(props) {
                 <Route index element={<MainPanel {...props} />} />
                 <Route path="/route/:sourceGroup" element={<MainPanel {...props} />} />
                 <Route path="/route/:sourceGroup/:destinationGroup" element={<MainPanel {...props} />} />
+                <Route path="/edit" element={<EditPanel {...props} />} />
+                <Route path="/edit/:sourceGroup/:destinationGroup" element={<EditPanel {...props} />} />
                 <Route
                     path="config"
                     element={
