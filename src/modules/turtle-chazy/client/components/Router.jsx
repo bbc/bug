@@ -8,6 +8,7 @@ import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import DeviceButtons from "./DeviceButtons";
 import RouterButtons from "./RouterButtons";
 const SectionHeader = styled("div")(({ theme }) => ({
@@ -25,28 +26,64 @@ const SectionHeader = styled("div")(({ theme }) => ({
 
 export default function Router({ panelId, editMode = false, sourceGroup = "-", destinationGroup = "-" }) {
     const sendAlert = useAlert();
+    const navigate = useNavigate();
     const [selectedDestinationIndex, setSelectedDestinationIndex] = React.useState(null);
     const [sourceForceRefresh, setSourceForceRefresh] = useForceRefresh();
     const [destinationForceRefresh, setDestinationForceRefresh] = useForceRefresh();
     const panelConfig = useSelector((state) => state.panelConfig);
     const useDoubleClick = panelConfig && panelConfig.data.useTake;
+    const normalizedDestinationGroup = destinationGroup || "-";
+    const normalizedSourceGroup = sourceGroup || "-";
+
+    const destinationButtons = useApiPoller({
+        url: `/container/${panelId}/destinations/${normalizedDestinationGroup}`,
+        interval: 2000,
+        forceRefresh: destinationForceRefresh,
+    });
+
+    const firstDestinationGroup = destinationButtons?.data?.devices?.[0]?.label;
+    // Use a concrete destination group ASAP so route requests never include an empty segment.
+    const effectiveDestinationGroup = destinationGroup || firstDestinationGroup || "-";
 
     const sourceButtons = useApiPoller({
         url: `/container/${panelId}/sources/`,
         postData: {
-            sourceDevice: sourceGroup,
-            destinationDevice: destinationGroup,
+            sourceDevice: normalizedSourceGroup,
+            destinationDevice: effectiveDestinationGroup,
             destinationIndex: selectedDestinationIndex,
         },
         interval: 2000,
         forceRefresh: sourceForceRefresh,
     });
 
-    const destinationButtons = useApiPoller({
-        url: `/container/${panelId}/destinations/${destinationGroup ?? "-"}`,
-        interval: 2000,
-        forceRefresh: destinationForceRefresh,
-    });
+    const firstSourceGroup = sourceButtons?.data?.devices?.[0]?.label;
+    const effectiveSourceGroup = sourceGroup || firstSourceGroup || "-";
+
+    React.useEffect(() => {
+        // Canonicalize bare/partial URLs to a real source/destination pair once defaults are known.
+        const sourceMissing = !sourceGroup || sourceGroup === "-";
+        const destinationMissing = !destinationGroup;
+
+        if (!sourceMissing && !destinationMissing) {
+            return;
+        }
+
+        const targetSourceGroup = sourceMissing ? firstSourceGroup : sourceGroup;
+        if (!targetSourceGroup) {
+            return;
+        }
+
+        const targetDestinationGroup = destinationMissing ? firstDestinationGroup : destinationGroup;
+
+        const actionText = editMode ? "edit" : "route";
+        const groupsPath = targetDestinationGroup
+            ? `${encodeURIComponent(targetSourceGroup)}/${encodeURIComponent(targetDestinationGroup)}`
+            : `${encodeURIComponent(targetSourceGroup)}`;
+
+        navigate(`/panel/${panelId}/${actionText}/${groupsPath}`, {
+            replace: true,
+        });
+    }, [destinationGroup, editMode, firstDestinationGroup, firstSourceGroup, navigate, panelId, sourceGroup]);
 
     const handleDestinationButtonClicked = (destinationIndex) => {
         if (editMode) {
@@ -67,9 +104,9 @@ export default function Router({ panelId, editMode = false, sourceGroup = "-", d
             return;
         }
 
-        const url = `/container/${panelId}/route/${encodeURIComponent(destinationGroup)}/${encodeURIComponent(
+        const url = `/container/${panelId}/route/${encodeURIComponent(effectiveDestinationGroup)}/${encodeURIComponent(
             destination.index
-        )}/${encodeURIComponent(sourceGroup)}/${source.index}`;
+        )}/${encodeURIComponent(effectiveSourceGroup)}/${source.index}`;
         if (await AxiosCommand(url)) {
             sendAlert(`Successfully routed '${source.label}' to '${destination.label}'`, {
                 broadcast: "true",
@@ -125,14 +162,6 @@ export default function Router({ panelId, editMode = false, sourceGroup = "-", d
             return <BugLoading />;
         }
 
-        // let destinationLocked = false;
-        // if (destinationButtons.status === "success" && selectedDestination !== null) {
-        //     const selectedDestinationObject = destinationButtons.data.destinations.find(
-        //         (x) => x.index === selectedDestination
-        //     );
-        //     destinationLocked = selectedDestinationObject && selectedDestinationObject.isLocked;
-        // }
-
         return (
             <Box
                 sx={{
@@ -149,8 +178,8 @@ export default function Router({ panelId, editMode = false, sourceGroup = "-", d
                     editMode: editMode,
                     groupType: "source",
                     selectedDestinationIndex: selectedDestinationIndex,
-                    sourceGroup: sourceGroup,
-                    destinationGroup: destinationGroup,
+                    sourceGroup: effectiveSourceGroup,
+                    destinationGroup: effectiveDestinationGroup,
                     buttons: sourceButtons,
                     onChange: () => setSourceForceRefresh(),
                 })}
@@ -203,8 +232,8 @@ export default function Router({ panelId, editMode = false, sourceGroup = "-", d
                     panelId: panelId,
                     editMode: editMode,
                     groupType: "destination",
-                    sourceGroup: sourceGroup,
-                    destinationGroup: destinationGroup,
+                    sourceGroup: effectiveSourceGroup,
+                    destinationGroup: effectiveDestinationGroup,
                     buttons: destinationButtons,
                     onChange: () => setDestinationForceRefresh(),
                 })}

@@ -61,42 +61,8 @@ export default function RouterButton({
         onChange();
     };
 
-    const handleLockClicked = async (event, item) => {
-        // let action = "lock";
-        // let actionLong = "Locked";
-        // if (button.isLocked) {
-        //     action = "unlock";
-        //     actionLong = "Unlocked";
-        //     if (button.isRemoteLocked) {
-        //         // we're unlocking and we need to check ...
-        //         action = "forceunlock";
-        //         if (
-        //             !(await confirmDialog({
-        //                 title: "Unlock Destination",
-        //                 message:
-        //                     "This destination has been locked by another user. Are you sure you want to unlock it?",
-        //                 confirmButtonText: "Unlock",
-        //             }))
-        //         ) {
-        //             // they've changed their mind ...
-        //             return false;
-        //         }
-        //     }
-        // }
-        // if (await AxiosCommand(`/container/${panelId}/destinations/${action}/${button.index}`)) {
-        //     sendAlert(`${actionLong} ${buttonType} ${button.index + 1}`, {
-        //         variant: "success",
-        //     });
-        // } else {
-        //     sendAlert(`Failed to ${action} ${buttonType} ${button.index + 1}`, {
-        //         variant: "error",
-        //     });
-        // }
-        // onChange();
-    };
-
     const statusSecondaryLabels = {
-        UNRESOLVED: { text: "DEVICE UNAVAILABLE", color: "warning.main" },
+        UNRESOLVED: { text: "DEVICE UNAVAILABLE" },
         UNSUPPORTED: { text: "ROUTE NOT SUPPORTED", color: "warning.main" },
         SUBSCRIBE_SELF: { text: "INTERNAL ROUTE", color: "primary.main" },
     };
@@ -136,8 +102,9 @@ export default function RouterButton({
                         fontWeight: 700,
                         fontSize: "0.7rem",
                         opacity: 0.9,
-                        padding: "8px 0px",
+                        padding: "12px 0px",
                         color: statusLabel.color,
+                        textAlign: "center",
                     }}
                 >
                     {statusLabel.text}
@@ -181,7 +148,7 @@ export default function RouterButton({
 
     const isPending = buttonType === "source" && button.status === "IN_PROGRESS";
     const buttonColorByStatus = {
-        UNRESOLVED: "warning.main",
+        UNRESOLVED: "error.main",
         UNSUPPORTED: "warning.main",
         MISSING: "error.main",
         OK: "success.main",

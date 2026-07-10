@@ -40,8 +40,7 @@ export default function Router({
             color: color,
             icon: icon,
         };
-        const url = `/container/${panelId}/${buttonType}s/seticon/${button.index}`;
-
+        const url = `/container/${panelId}/button/seticon/${buttonType}/${encodeURIComponent(button.deviceName)}/${button.index}`;
         if (await AxiosPost(url, postData)) {
             onChange();
         } else {

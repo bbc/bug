@@ -47,6 +47,7 @@ export default function DeviceButton({ panelId, group, onClick, groupType, editM
             item={group}
             primaryLabel={group.label}
             selected={group.selected}
+            buttonColor={group.active ? null : "warning"}
             editMode={editMode}
             wide
             menuItems={[

@@ -3,6 +3,7 @@ const buttonRename = require("@services/button-rename");
 const buttonClearLabel = require("@services/button-clearlabel");
 const asyncHandler = require("express-async-handler");
 const route = express.Router();
+const buttonSetIcon = require("@services/button-seticon");
 
 route.post("/rename/:buttonType/:device/:index", asyncHandler(async (req, res) => {
 
@@ -17,6 +18,13 @@ route.post("/rename/:buttonType/:device/:index", asyncHandler(async (req, res) =
     res.json({
         status: "success",
         data: result,
+    });
+}));
+
+route.post("/seticon/:buttonType/:device/:index", asyncHandler(async (req, res) => {
+    res.json({
+        status: "success",
+        data: await buttonSetIcon(req.params?.buttonType, req.params?.device, parseInt(req.params?.index), req.body?.icon, req.body?.color),
     });
 }));
 
