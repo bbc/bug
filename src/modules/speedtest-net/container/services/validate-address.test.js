@@ -44,7 +44,7 @@ describe("validate-address service", () => {
 
     test("rejects invalid address format without probing", async () => {
 
-        const result = await validateAddress({ address: "not-an-ip" });
+        const result = await validateAddress({ address: "not a valid host" });
 
         expect(mockProbe).not.toHaveBeenCalled();
         expect(result.validationResults).toEqual([
