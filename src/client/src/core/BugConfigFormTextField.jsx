@@ -39,7 +39,6 @@ const BugConfigFormTextField = ({
               ? "success.main"
               : "text.primary";
 
-    console.log(validationResult);
     return (
         <>
             <FormControl

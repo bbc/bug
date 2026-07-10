@@ -20,6 +20,9 @@ export default async function AxiosPost(url, data) {
         }
         return response;
     } catch (error) {
+        if (error?.response?.status === 404) {
+            throw error;
+        }
         console.log("ERROR", error);
         return false;
     }

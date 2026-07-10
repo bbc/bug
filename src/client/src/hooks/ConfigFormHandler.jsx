@@ -41,6 +41,18 @@ export function useConfigFormHandler({ panelId = null }) {
                 });
             }
         } catch (error) {
+            console.log(error?.response?.status);
+            if (error?.response?.status === 404) {
+                setValidatedFields((currentValidatedFields) => {
+                    const nextValidatedFields = { ...currentValidatedFields };
+                    for (const key of Object.keys(fieldData)) {
+                        if (nextValidatedFields[key] === "Checking...") {
+                            delete nextValidatedFields[key];
+                        }
+                    }
+                    return nextValidatedFields;
+                });
+            }
             return;
         }
     };
